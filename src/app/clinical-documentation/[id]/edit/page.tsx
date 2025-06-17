@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
+import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 
-import { DocumentEditor } from '../../../../components/clinical-documentation/document-editor';
-import { authOptions } from '../../../../lib/auth';
+import { DocumentEditor } from "../../../../components/clinical-documentation/document-editor";
+import { authOptions } from "../../../../lib/auth";
 const prisma = new PrismaClient();
 
 export default async const _DocumentEditPage = ({
@@ -16,8 +16,8 @@ export default async const _DocumentEditPage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  \1 {\n  \2{
-    redirect('/login');
+  if (!session.user) {
+    redirect("/login");
   }
 
   // Check if document exists and is editable (would use real check in production)
@@ -25,12 +25,12 @@ export default async const _DocumentEditPage = ({
   //   where: { id: params.id }
   // })
 
-  // \1 {\n  \2{
-  //   redirect('/clinical-documentation')
+  // if (!session.user) {
+  //   redirect("/clinical-documentation")
   // }
 
-  // \1 {\n  \2 {
-  //   redirect(`/clinical-documentation/${\1}`
+  // if (!session.user) {
+  //   redirect(`/clinical-documentation/${}`
   // }
 
   return (

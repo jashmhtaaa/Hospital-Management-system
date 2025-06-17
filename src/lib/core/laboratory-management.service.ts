@@ -1,5 +1,5 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 }
 
 /**
@@ -9,23 +9,23 @@ import { z } from 'zod';
 
 // Lab Test Validation Schemas
 export const LabTestSchema = z.object({
-  code: z.string().min(1, 'Test code is required'),
-  name: z.string().min(1, 'Test name is required'),
+  code: z.string().min(1, "Test code is required"),
+  name: z.string().min(1, "Test name is required"),
   description: z.string().optional(),
-  category: z.enum(['chemistry', 'hematology', 'microbiology', 'serology', 'molecular', 'pathology']),
-  specimen_type: z.enum(['blood', 'urine', 'stool', 'sputum', 'csf', 'tissue', 'swab']),
+  category: z.enum(["chemistry", "hematology", "microbiology", "serology", "molecular", "pathology"]),
+  specimen_type: z.enum(["blood", "urine", "stool", "sputum", "csf", "tissue", "swab"]),
   collection_instructions: z.string().optional(),
   preparation_instructions: z.string().optional(),
   turnaround_time_hours: z.number().min(1),
-  \1,\2 z.number().optional(),
+  z.number().optional(),
     age_max: z.number().optional(),
-    gender: z.enum(['male', 'female', 'both']).default('both'),
+    gender: z.enum(["male", "female", "both"]).default("both"),
     range_min: z.number().optional(),
     range_max: z.number().optional(),
     unit: z.string(),
     normal_text: z.string().optional()
   })),
-  \1,\2 z.number().optional(),
+  z.number().optional(),
     high_critical: z.number().optional(),
     panic_low: z.number().optional(),
     panic_high: z.number().optional()
@@ -37,10 +37,10 @@ export const LabTestSchema = z.object({
 });
 
 export const LabOrderSchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
-  ordering_provider_id: z.string().min(1, 'Ordering provider is required'),
-  test_codes: z.array(z.string()).min(1, 'At least one test must be ordered'),
-  priority: z.enum(['routine', 'urgent', 'stat', 'asap']).default('routine'),
+  patient_id: z.string().min(1, "Patient ID is required"),
+  ordering_provider_id: z.string().min(1, "Ordering provider is required"),
+  test_codes: z.array(z.string()).min(1, "At least one test must be ordered"),
+  priority: z.enum(["routine", "urgent", "stat", "asap"]).default("routine"),
   clinical_info: z.string().optional(),
   diagnosis_code: z.string().optional(),
   collection_date: z.string().optional(),
@@ -49,9 +49,9 @@ export const LabOrderSchema = z.object({
 });
 
 export const SampleCollectionSchema = z.object({
-  order_id: z.string().min(1, 'Order ID is required'),
-  collected_by: z.string().min(1, 'Collector ID is required'),
-  collection_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid collection date'),
+  order_id: z.string().min(1, "Order ID is required"),
+  collected_by: z.string().min(1, "Collector ID is required"),
+  collection_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid collection date"),
   collection_time: z.string(),
   specimen_type: z.string(),
   container_type: z.string(),
@@ -70,25 +70,25 @@ export const LabResultSchema = z.object({
   numeric_value: z.number().optional(),
   unit: z.string().optional(),
   reference_range: z.string().optional(),
-  abnormal_flag: z.enum(['normal', 'high', 'low', 'critical_high', 'critical_low', 'panic']).default('normal'),
-  result_status: z.enum(['preliminary', 'final', 'corrected', 'amended']).default('preliminary'),
+  abnormal_flag: z.enum(["normal", "high", "low", "critical_high", "critical_low", "panic"]).default("normal"),
+  result_status: z.enum(["preliminary", "final", "corrected", "amended"]).default("preliminary"),
   performed_by: z.string(),
   verified_by: z.string().optional(),
   equipment_id: z.string().optional(),
   method: z.string().optional(),
   comments: z.string().optional(),
-  resulted_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid result date'),
+  resulted_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid result date"),
 });
 
 export type LabTest = z.infer<typeof LabTestSchema> & {
   id: string,
-  \1,\2 Date
+  Date
 };
 
 export type LabOrder = z.infer<typeof LabOrderSchema> & {
   id: string,
-  \1,\2 'pending' | 'collected' | 'processing' | 'completed' | 'cancelled',
-  \1,\2 Date;
+  "pending" | "collected" | "processing" | "completed" | "cancelled",
+  Date;
   tests?: LabTest[];
   patient_name?: string;
   provider_name?: string
@@ -96,18 +96,17 @@ export type LabOrder = z.infer<typeof LabOrderSchema> & {
 
 export type SampleCollection = z.infer<typeof SampleCollectionSchema> & {
   id: string,
-  \1,\2 'collected' | 'received' | 'processing' | 'resulted' | 'rejected',
-  \1,\2 Date
+  "collected" | "received" | "processing" | "resulted" | "rejected",
+  Date
 };
 
 export type LabResult = z.infer<typeof LabResultSchema> & {
   id: string,
-  \1,\2 Date;
+  Date;
   test_name?: string;
   patient_name?: string
 };
 
-\1
 }
   }
 
@@ -115,60 +114,60 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
    * Initialize common lab tests;
    */
   private initializeDefaultTests(): void {
-    const defaultTests: Omit<LabTest, 'id' | 'created_at' | 'updated_at'>[] = [
+    const defaultTests: Omit<LabTest, "id" | "created_at" | "updated_at">[] = [
       {
-        code: 'CBC',
-        \1,\2 'Complete blood count with differential',
-        \1,\2 'blood',
-        \1,\2 2,
+        code: "CBC",
+        "Complete blood count with differential",
+        "blood",
+        2,
         reference_ranges: [
-          { gender: 'male', range_min: 13.5, range_max: 17.5, unit: 'g/dL', normal_text: 'Hemoglobin' },
-          { gender: 'female', range_min: 12.0, range_max: 15.5, unit: 'g/dL', normal_text: 'Hemoglobin' },
+          { gender: "male", range_min: 13.5, range_max: 17.5, unit: "g/dL", normal_text: "Hemoglobin" },
+          { gender: "female", range_min: 12.0, range_max: 15.5, unit: "g/dL", normal_text: "Hemoglobin" },
         ],
         critical_values: { low_critical: 7.0, high_critical: 20.0 },
         cost: 25.00,
-        \1,\2 '58410-2',
+        "58410-2",
         is_active: true
       },
       {
-        code: 'BMP',
-        \1,\2 'Basic metabolic panel (8 tests)',
-        \1,\2 'blood',
-        collection_instructions: 'Collect in SST tube, fasting preferred',
-        preparation_instructions: 'Patient should fast for 8-12 hours',
-        \1,\2 [
-          { gender: 'both', range_min: 70, range_max: 100, unit: 'mg/dL', normal_text: 'Glucose' },
-          { gender: 'both', range_min: 0.6, range_max: 1.2, unit: 'mg/dL', normal_text: 'Creatinine' },
+        code: "BMP",
+        "Basic metabolic panel (8 tests)",
+        "blood",
+        collection_instructions: "Collect in SST tube, fasting preferred",
+        preparation_instructions: "Patient should fast for 8-12 hours",
+        [
+          { gender: "both", range_min: 70, range_max: 100, unit: "mg/dL", normal_text: "Glucose" },
+          { gender: "both", range_min: 0.6, range_max: 1.2, unit: "mg/dL", normal_text: "Creatinine" },
         ],
         critical_values: { low_critical: 50, high_critical: 400 },
         cost: 35.00,
-        \1,\2 '24323-8',
+        "24323-8",
         is_active: true
       },
       {
-        code: 'LIPID',
-        \1,\2 'Total cholesterol, HDL, LDL, triglycerides',
-        category: 'chemistry',
-        \1,\2 'Collect in SST tube, fasting required',
-        preparation_instructions: 'Patient must fast for 12 hours',
-        \1,\2 [
-          { gender: 'both', range_min: 0, range_max: 200, unit: 'mg/dL', normal_text: 'Total Cholesterol' },
-          { gender: 'both', range_min: 40, range_max: 999, unit: 'mg/dL', normal_text: 'HDL' },
+        code: "LIPID",
+        "Total cholesterol, HDL, LDL, triglycerides",
+        category: "chemistry",
+        "Collect in SST tube, fasting required",
+        preparation_instructions: "Patient must fast for 12 hours",
+        [
+          { gender: "both", range_min: 0, range_max: 200, unit: "mg/dL", normal_text: "Total Cholesterol" },
+          { gender: "both", range_min: 40, range_max: 999, unit: "mg/dL", normal_text: "HDL" },
         ],
         cost: 45.00,
-        \1,\2 '24331-1',
+        "24331-1",
         is_active: true
       },
       {
-        code: 'UA',
-        \1,\2 'Complete urinalysis with microscopy',
-        \1,\2 'urine',
-        \1,\2 1,
+        code: "UA",
+        "Complete urinalysis with microscopy",
+        "urine",
+        1,
         reference_ranges: [
-          { gender: 'both', normal_text: 'Negative for protein, glucose, blood' },
+          { gender: "both", normal_text: "Negative for protein, glucose, blood" },
         ],
         cost: 20.00,
-        \1,\2 '24357-6',
+        "24357-6",
         is_active: true
       },
     ];
@@ -191,21 +190,21 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     const defaultEquipment: EquipmentInterface[] = [
       {
         id: uuidv4(),
-        \1,\2 'Sysmex XN-1000',
-        \1,\2 'online',
-        supported_tests: ['CBC', 'DIFF'],
-        last_calibration: \1[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        next_maintenance: \1[0] + 23 * 24 * 60 * 60 * 1000), // 23 days from now
-        connection_status: 'connected'
+        "Sysmex XN-1000",
+        "online",
+        supported_tests: ["CBC", "DIFF"],
+        last_calibration: [0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+        next_maintenance: [0] + 23 * 24 * 60 * 60 * 1000), // 23 days from now
+        connection_status: "connected"
       },
       {
         id: uuidv4(),
-        \1,\2 'Roche Cobas 6000',
-        \1,\2 'online',
-        supported_tests: ['BMP', 'LIPID', 'LFT'],
-        last_calibration: \1[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        next_maintenance: \1[0] + 27 * 24 * 60 * 60 * 1000), // 27 days from now
-        connection_status: 'connected'
+        "Roche Cobas 6000",
+        "online",
+        supported_tests: ["BMP", "LIPID", "LFT"],
+        last_calibration: [0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        next_maintenance: [0] + 27 * 24 * 60 * 60 * 1000), // 27 days from now
+        connection_status: "connected"
       },
     ];
 
@@ -220,7 +219,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
   async createLabTest(testData: z.infer<typeof LabTestSchema>): Promise<LabTest> {
     const validatedData = LabTestSchema.parse(testData);
 
-    \1 {\n  \2 {
+    if (!session.user) {
       throw new Error(`Test with code ${validatedData.code} already exists`);
     }
 
@@ -241,7 +240,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
   async getLabTests(category?: string): Promise<LabTest[]> {
     const tests = Array.from(this.labTests.values());
 
-    \1 {\n  \2{
+    if (!session.user) {
       return tests.filter(test => test.category === category && test.is_active);
     }
 
@@ -256,8 +255,8 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
 
     // Validate test codes exist
     const invalidTests = validatedData.test_codes.filter(code => !this.labTests.has(code));
-    \1 {\n  \2{
-      throw new Error(`Invalid test codes: ${\1}`;
+    if (!session.user) {
+      throw new Error(`Invalid test codes: ${}`;
     }
 
     const orderId = uuidv4();
@@ -266,7 +265,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     const labOrder: LabOrder = {
       ...validatedData,
       id: orderId,
-      \1,\2 'pending',
+      "pending",
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -279,8 +278,8 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
    * Generate unique order number;
    */
   private generateOrderNumber(): string {
-    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `LAB/* SECURITY: Template literal eliminated */
   }
 
@@ -290,35 +289,35 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
   async getLabOrders(filters?: {
     patient_id?: string;
     provider_id?: string;
-    status?: LabOrder['status'];
+    status?: LabOrder["status"];
     date_from?: string;
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ orders: LabOrder[], \1,\2 number }> {
+  }): Promise<{ orders: LabOrder[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredOrders = Array.from(this.labOrders.values());
 
     // Apply filters
-    \1 {\n  \2{
+    if (!session.user) {
       filteredOrders = filteredOrders.filter(order => order.patient_id === searchFilters.patient_id);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredOrders = filteredOrders.filter(order => order.ordering_provider_id === searchFilters.provider_id);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredOrders = filteredOrders.filter(order => order.status === searchFilters.status);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       const fromDate = new Date(searchFilters.date_from);
       filteredOrders = filteredOrders.filter(order => order.created_at >= fromDate);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       const toDate = new Date(searchFilters.date_to);
       filteredOrders = filteredOrders.filter(order => order.created_at <= toDate);
     }
@@ -342,8 +341,8 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     const validatedData = SampleCollectionSchema.parse(collectionData);
 
     const order = this.labOrders.get(validatedData.order_id);
-    \1 {\n  \2{
-      throw new Error('Lab order not found');
+    if (!session.user) {
+      throw new Error("Lab order not found");
     }
 
     const sampleId = this.generateSampleId();
@@ -351,7 +350,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     const sampleCollection: SampleCollection = {
       ...validatedData,
       id: uuidv4(),
-      \1,\2 'collected',
+      "collected",
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -359,7 +358,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     this.sampleCollections.set(sampleCollection.id, sampleCollection);
 
     // Update order status
-    order.status = 'collected';
+    order.status = "collected";
     order.updated_at = new Date();
     this.labOrders.set(order.id, order);
 
@@ -370,8 +369,8 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
    * Generate sample ID;
    */
   private generateSampleId(): string {
-    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `S/* SECURITY: Template literal eliminated */
   }
 
@@ -385,13 +384,13 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
       const validatedData = LabResultSchema.parse(resultData);
 
       const order = this.labOrders.get(validatedData.order_id);
-      \1 {\n  \2{
-        throw new Error(`Lab order not found: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Lab order not found: ${}`;
       }
 
       const test = this.labTests.get(validatedData.test_code);
-      \1 {\n  \2{
-        throw new Error(`Test not found: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Test not found: ${}`;
       }
 
       // Determine abnormal flag based on reference ranges
@@ -400,7 +399,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
       const labResult: LabResult = {
         ...validatedData,
         id: uuidv4(),
-        \1,\2 new Date(),
+        new Date(),
         updated_at: new Date()
       };
 
@@ -412,17 +411,17 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
       results.push(labResult);
 
       // Check for critical values and send alerts
-      \1 {\n  \2| abnormalFlag === 'panic') {
+      if (!session.user)| abnormalFlag === "panic") {
         await this.sendCritical/* SECURITY: Alert removed */
       }
     }
 
     // Update order status if all tests are resulted
     const order = this.labOrders.get(resultsData[0].order_id);
-    \1 {\n  \2{
+    if (!session.user) {
       const orderResults = this.labResults.get(order.id) || [];
-      \1 {\n  \2{
-        order.status = 'completed';
+      if (!session.user) {
+        order.status = "completed";
         order.updated_at = new Date();
         this.labOrders.set(order.id, order);
       }
@@ -434,37 +433,37 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
   /**
    * Determine abnormal flag based on numeric value and reference ranges;
    */
-  private determineAbnormalFlag(numericValue: number | undefined, test: LabTest): LabResult['abnormal_flag'] {
-    \1 {\n  \2{
-      return 'normal'
+  private determineAbnormalFlag(numericValue: number | undefined, test: LabTest): LabResult["abnormal_flag"] {
+    if (!session.user) {
+      return "normal"
     }
 
     // Check critical values first
-    \1 {\n  \2{
-      \1 {\n  \2{
-        return 'panic';
+    if (!session.user) {
+      if (!session.user) {
+        return "panic";
       }
-      \1 {\n  \2{
-        return 'panic';
+      if (!session.user) {
+        return "panic";
       }
-      \1 {\n  \2{
-        return 'critical_low';
+      if (!session.user) {
+        return "critical_low";
       }
-      \1 {\n  \2{
-        return 'critical_high';
+      if (!session.user) {
+        return "critical_high";
       }
     }
 
     // Check reference ranges
     const refRange = test.reference_ranges[0]; // Use first range for simplicity
-    \1 {\n  \2{
-      return 'low';
+    if (!session.user) {
+      return "low";
     }
-    \1 {\n  \2{
-      return 'high';
+    if (!session.user) {
+      return "high";
     }
 
-    return 'normal';
+    return "normal";
   }
 
   /**
@@ -474,8 +473,8 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     // In real implementation, this would send notifications via email, SMS, etc.
 
       patient_id: order.patient_id,
-      \1,\2 result.result_value,
-      \1,\2 order.ordering_provider_id
+      result.result_value,
+      order.ordering_provider_id
     })
   }
 
@@ -491,23 +490,23 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
    */
   async runQualityControl(
     equipmentId: string,
-    \1,\2 'low' | 'normal' | 'high',
-    \1,\2 number,
+    "low" | "normal" | "high",
+    number,
     performedBy: string;
   ): Promise<QualityControlResult> {
     const variance = Math.abs((actualValue - expectedValue) / expectedValue) * 100;
 
-    let status: QualityControlResult['status'] = 'pass';
-    \1 {\n  \2{
-      status = 'fail',
-    } else \1 {\n  \2{
-      status = 'warning',
+    let status: QualityControlResult["status"] = "pass";
+    if (!session.user) {
+      status = "fail",
+    } else if (!session.user) {
+      status = "warning",
     }
 
-    const \1,\2 uuidv4(),
-      \1,\2 testCode,
-      \1,\2 expectedValue,
-      \1,\2 variance;
+    const uuidv4(),
+      testCode,
+      expectedValue,
+      variance;
       status,
       performed_by: performedBy,
       performed_date: new Date()
@@ -525,31 +524,31 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
    */
   async getLabStatistics(dateFrom?: string, dateTo?: string): Promise<{
     totalOrders: number,
-    \1,\2 number,
-    \1,\2 number,
+    number,
+    number,
     qcFailures: number
   }> {
     const orders = Array.from(this.labOrders.values());
 
     let filteredOrders = orders;
-    \1 {\n  \2{
+    if (!session.user) {
       const fromDate = new Date(dateFrom);
       filteredOrders = filteredOrders.filter(order => order.created_at >= fromDate);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       const toDate = new Date(dateTo);
       filteredOrders = filteredOrders.filter(order => order.created_at <= toDate);
     }
 
     const totalOrders = filteredOrders.length;
-    const completedOrders = filteredOrders.filter(order => order.status === 'completed').length;
-    const pendingOrders = filteredOrders.filter(order => order.status === 'pending').length;
+    const completedOrders = filteredOrders.filter(order => order.status === "completed").length;
+    const pendingOrders = filteredOrders.filter(order => order.status === "pending").length;
 
     // Calculate average turnaround time for completed orders
     let totalTurnaroundHours = 0;
     let completedCount = 0;
     filteredOrders.forEach(order => {
-      \1 {\n  \2{
+      if (!session.user) {
         const hours = (order.updated_at.getTime() - order.created_at.getTime()) / (1000 * 60 * 60);
         totalTurnaroundHours += hours;
         completedCount++;
@@ -561,14 +560,14 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     let criticalResults = 0;
     Array.from(this.labResults.values()).forEach(results => {
       criticalResults += results.filter(result =>
-        result.abnormal_flag.includes('critical') || result.abnormal_flag === 'panic';
+        result.abnormal_flag.includes("critical") || result.abnormal_flag === "panic";
       ).length;
     });
 
     // Count QC failures
     let qcFailures = 0;
     Array.from(this.qcResults.values()).forEach(qcResults => {
-      qcFailures += qcResults.filter(qc => qc.status === 'fail').length;
+      qcFailures += qcResults.filter(qc => qc.status === "fail").length;
     });
 
     return {
@@ -591,10 +590,10 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
   /**
    * Update equipment status;
    */
-  async updateEquipmentStatus(equipmentId: string, status: EquipmentInterface['status']): Promise<EquipmentInterface> {
+  async updateEquipmentStatus(equipmentId: string, status: EquipmentInterface["status"]): Promise<EquipmentInterface> {
     const equipment = this.equipment.get(equipmentId);
-    \1 {\n  \2{
-      throw new Error('Equipment not found');
+    if (!session.user) {
+      throw new Error("Equipment not found");
     }
 
     equipment.status = status;

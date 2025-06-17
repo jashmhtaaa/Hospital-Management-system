@@ -3,13 +3,13 @@ import React from "react";
 }
 
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // Placeholder component for the Laboratory page
 const LaboratoryPage = () => {
   return (
-    \1>
-      <h1 className="text-2xl font-bold mb-4">Laboratory Management\1>
+    >
+      <h1 className="text-2xl font-bold mb-4">Laboratory Management>
       <p>
         Laboratory module content goes here. This section is under development.
       </p>

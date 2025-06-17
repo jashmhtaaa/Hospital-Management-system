@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // src/app/dashboard/er/page.tsx
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
   Card,
   CardContent,
@@ -25,9 +25,9 @@ export default const _ERDashboardPage = () {
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   return (
-    \1>
-      \1>
-        <h1 className="text-3xl font-bold">Emergency Department\1>
+    >
+      >
+        <h1 className="text-3xl font-bold">Emergency Department>
         <Button onClick={() => setIsRegistrationModalOpen(true)}>
           Register New Patient
         </Button>
@@ -35,15 +35,15 @@ export default const _ERDashboardPage = () {
 
       <ERDashboardStats />
 
-      \1>
-        \1>
-          <TabsTrigger value="tracking">Patient Tracking\1>
-          <TabsTrigger value="triage">Triage\1>
-          <TabsTrigger value="alerts">Critical Alerts\1>
+      >
+        >
+          <TabsTrigger value="tracking">Patient Tracking>
+          <TabsTrigger value="triage">Triage>
+          <TabsTrigger value="alerts">Critical Alerts>
           <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Patient Tracking Board</CardTitle>
@@ -57,7 +57,7 @@ export default const _ERDashboardPage = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Triage Assessment</CardTitle>
@@ -71,7 +71,7 @@ export default const _ERDashboardPage = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Critical Alerts</CardTitle>
@@ -85,7 +85,7 @@ export default const _ERDashboardPage = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>ER Reports</CardTitle>

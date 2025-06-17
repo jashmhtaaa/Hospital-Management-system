@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import { type NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from "@prisma/client";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { DrugInteractionService } from '../../../../implementation/services/drug-interaction-service';
-import { AuditLogger } from '../../../../implementation/utils/audit-logger';
-import { ErrorHandler } from '../../../../implementation/utils/error-handler';
-import { RBACService } from '../../../../implementation/utils/rbac-service';
+import { DrugInteractionService } from "../../../../implementation/services/drug-interaction-service";
+import { AuditLogger } from "../../../../implementation/utils/audit-logger";
+import { ErrorHandler } from "../../../../implementation/utils/error-handler";
+import { RBACService } from "../../../../implementation/utils/rbac-service";
 }
 
 /**
@@ -31,66 +31,66 @@ export const GET = async (req: NextRequest): Promise<NextResponse> {
   try {
     // Extract query parameters
     const searchParams = req.nextUrl.searchParams;
-    const _patientId = searchParams.get('patientId');
-    const daysToExpiration = Number.parseInt(searchParams.get('daysToExpiration') || '30', 10);
+    const _patientId = searchParams.get("patientId");
+    const daysToExpiration = Number.parseInt(searchParams.get("daysToExpiration") || "30", 10);
 
     // Validate user permissions
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
-    const hasPermission = await rbacService.hasPermission(userId, 'prescription:read');
-    \1 {\n  \2{
+    const userId = authHeader.split(" ")[1]; // In a real app, this would be a JWT token
+    const hasPermission = await rbacService.hasPermission(userId, "prescription:read");
+    if (!session.user) {
       auditLogger.logEvent({
-        eventType: 'PERMISSION_DENIED';
+        eventType: "PERMISSION_DENIED";
         userId,
-        resourceType: 'Prescription',
-        \1,\2 'WARNING'
+        resourceType: "Prescription",
+        "WARNING"
       });
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // In a real implementation, this would query the database for prescriptions
     // that are nearing expiration or have a limited number of refills remaining
     const eligiblePrescriptions = [
       {
-        id: 'rx123',
-        \1,\2 'John Smith',
-        \1,\2 'Lisinopril 10mg Tablet',
-        \1,\2 'Dr. Jane Doe',
-        issueDate: new Date('2025-03-15'),
-        expirationDate: new Date('2025-06-15'),
-        \1,\2 0,
-        lastFillDate: new Date('2025-05-01'),
-        status: 'active'
+        id: "rx123",
+        "John Smith",
+        "Lisinopril 10mg Tablet",
+        "Dr. Jane Doe",
+        issueDate: new Date("2025-03-15"),
+        expirationDate: new Date("2025-06-15"),
+        0,
+        lastFillDate: new Date("2025-05-01"),
+        status: "active"
       },
       {
-        id: 'rx456',
-        \1,\2 'John Smith',
-        \1,\2 'Metformin 500mg Tablet',
-        \1,\2 'Dr. Jane Doe',
-        issueDate: new Date('2025-02-01'),
-        expirationDate: new Date('2025-06-01'),
-        \1,\2 1,
-        lastFillDate: new Date('2025-05-01'),
-        status: 'active'
+        id: "rx456",
+        "John Smith",
+        "Metformin 500mg Tablet",
+        "Dr. Jane Doe",
+        issueDate: new Date("2025-02-01"),
+        expirationDate: new Date("2025-06-01"),
+        1,
+        lastFillDate: new Date("2025-05-01"),
+        status: "active"
       }
     ];
 
     // Log the successful retrieval
     auditLogger.logEvent({
-      eventType: 'PRESCRIPTION_RENEWAL_LIST_ACCESSED';
+      eventType: "PRESCRIPTION_RENEWAL_LIST_ACCESSED";
       userId,
-      resourceType: 'Prescription',
+      resourceType: "Prescription",
       details: `Retrieved $eligiblePrescriptions.lengthprescriptions eligible for renewal`,
-      severity: 'INFO'
+      severity: "INFO"
     });
 
     return NextResponse.json({ prescriptions: eligiblePrescriptions });
   } catch (error) {
-    return errorHandler.handleApiError(error, 'Failed to retrieve eligible prescriptions');
+    return errorHandler.handleApiError(error, "Failed to retrieve eligible prescriptions");
   }
 }
 
@@ -106,56 +106,56 @@ export const POST = async (req: NextRequest): Promise<NextResponse> {
     const { prescriptionId, patientId, notes } = body;
 
     // Validate user permissions
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
-    const hasPermission = await rbacService.hasPermission(userId, 'prescription:renew:request');
-    \1 {\n  \2{
+    const userId = authHeader.split(" ")[1]; // In a real app, this would be a JWT token
+    const hasPermission = await rbacService.hasPermission(userId, "prescription:renew:request");
+    if (!session.user) {
       auditLogger.logEvent({
-        eventType: 'PERMISSION_DENIED';
+        eventType: "PERMISSION_DENIED";
         userId,
-        resourceType: 'Prescription',
-        \1,\2 'Attempted to request prescription renewal without permission',
-        severity: 'WARNING'
+        resourceType: "Prescription",
+        "Attempted to request prescription renewal without permission",
+        severity: "WARNING"
       });
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Missing required fields: prescriptionId and patientId are required' },
+        { error: "Missing required fields: prescriptionId and patientId are required" },
         { status: 400 }
       );
     }
 
     // In a real implementation, this would create a renewal request in the database
     const renewalRequest = {
-      id: `renewal-${crypto.getRandomValues(\1[0]}`,
+      id: `renewal-${crypto.getRandomValues([0]}`,
       prescriptionId,
       patientId,
       requesterId: userId,
       requestDate: new Date(),
-      status: 'pending',
-      \1,\2 null,
-      \1,\2 null
+      status: "pending",
+      null,
+      null
     };
 
     // Log the renewal request
     auditLogger.logEvent({
-      eventType: 'PRESCRIPTION_RENEWAL_REQUESTED';
+      eventType: "PRESCRIPTION_RENEWAL_REQUESTED";
       userId,
-      resourceType: 'Prescription',
-      \1,\2 `Renewal requested for prescription ${prescriptionId}`,
-      severity: 'INFO'
+      resourceType: "Prescription",
+      `Renewal requested for prescription ${prescriptionId}`,
+      severity: "INFO"
     });
 
     return NextResponse.json({ renewalRequest }, { status: 201 });
   } catch (error) {
-    return errorHandler.handleApiError(error, 'Failed to request prescription renewal');
+    return errorHandler.handleApiError(error, "Failed to request prescription renewal");
   }
 }
 
@@ -171,36 +171,36 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     const { renewalId, action, notes } = body;
 
     // Validate user permissions
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = authHeader.split(' ')[1]; // In a real app, this would be a JWT token
-    const hasPermission = await rbacService.hasPermission(userId, 'prescription:renew:approve');
-    \1 {\n  \2{
+    const userId = authHeader.split(" ")[1]; // In a real app, this would be a JWT token
+    const hasPermission = await rbacService.hasPermission(userId, "prescription:renew:approve");
+    if (!session.user) {
       auditLogger.logEvent({
-        eventType: 'PERMISSION_DENIED';
+        eventType: "PERMISSION_DENIED";
         userId,
-        resourceType: 'PrescriptionRenewal',
-        \1,\2 'Attempted to approve/deny prescription renewal without permission',
-        severity: 'WARNING'
+        resourceType: "PrescriptionRenewal",
+        "Attempted to approve/deny prescription renewal without permission",
+        severity: "WARNING"
       });
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Missing required fields: renewalId and action are required' },
+        { error: "Missing required fields: renewalId and action are required" },
         { status: 400 }
       );
     }
 
     // Validate action
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Invalid action: must be either "approve" or "deny"' },
+        { error: "Invalid action: must be either "approve" or "deny"" },
         { status: 400 }
       );
     }
@@ -209,36 +209,36 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
     // and create a new prescription if approved
     const updatedRenewal = {
       id: renewalId,
-      \1,\2 'patient456',
-      \1,\2 \1[0] - 24 * 60 * 60 * 1000), // 1 day ago
-      status: action === 'approve' ? 'approved' : 'denied',
-      \1,\2 userId,
+      "patient456",
+      [0] - 24 * 60 * 60 * 1000), // 1 day ago
+      status: action === "approve" ? "approved" : "denied",
+      userId,
       reviewDate: new Date(),
-      reviewNotes: notes || ''
+      reviewNotes: notes || ""
     };
 
     // If approved, create a new prescription
     let newPrescription: Record<string, unknown> | null = null;
-    \1 {\n  \2{
+    if (!session.user) {
       newPrescription = {
-        id: `rx-$crypto.getRandomValues(\1[0]`,
-        patientId: 'patient456',
-        \1,\2 userId,
+        id: `rx-$crypto.getRandomValues([0]`,
+        patientId: "patient456",
+        userId,
         issueDate: new Date(),
-        expirationDate: \1[0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now
+        expirationDate: [0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now
         refillsRemaining: 3,
-        status: 'active';
+        status: "active";
         renewalId
       };
     }
 
     // Log the renewal action
     auditLogger.logEvent({
-      eventType: action === 'approve' ? 'PRESCRIPTION_RENEWAL_APPROVED' : 'PRESCRIPTION_RENEWAL_DENIED';
+      eventType: action === "approve" ? "PRESCRIPTION_RENEWAL_APPROVED" : "PRESCRIPTION_RENEWAL_DENIED";
       userId,
-      resourceType: 'PrescriptionRenewal',
-      \1,\2 `Renewal $actiond for request ${renewalId}`,
-      severity: 'INFO'
+      resourceType: "PrescriptionRenewal",
+      `Renewal $actiond for request ${renewalId}`,
+      severity: "INFO"
     });
 
     return NextResponse.json({
@@ -246,5 +246,5 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> {
       prescription: newPrescription
     });
   } catch (error) {
-    return errorHandler.handleApiError(error, 'Failed to process prescription renewal');
+    return errorHandler.handleApiError(error, "Failed to process prescription renewal");
   }

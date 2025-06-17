@@ -39,7 +39,7 @@ const patientRegisterSchema = z.object({
     password: z.string().optional(), // Required if create_user_account is true
 }).refine(data => {
     // If creating a user account, username and password are required
-    \1 {\n  \2{
+    if (!session.user) {
         return data?.username && data.password;
     }
     return true;
@@ -67,7 +67,7 @@ export const _POST = async (request: NextRequest) => {
         const body = await request.json();
         const validationResult = patientRegisterSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
@@ -85,7 +85,7 @@ export const _POST = async (request: NextRequest) => {
         // const _existingPatient = await DB.prepare("SELECT patient_id FROM Patients WHERE mrn = ? OR email = ?")
         //     .bind(mrn, patientData.email)
         //     .first()
-        // \1 {\n  \2{
+        // if (!session.user) {
         //     return NextResponse.json({ message: "Patient with this MRN or Email already exists" }, { status: 409 })
         // }
 
@@ -131,7 +131,7 @@ export const _POST = async (request: NextRequest) => {
 
         const insertResult = await patientInsertStmt.run() as D1ResultWithMeta; // Use D1ResultWithMeta
 
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to register patient");
         }
@@ -140,7 +140,7 @@ export const _POST = async (request: NextRequest) => {
 
         // 2. Optionally Create User Account
         let newUserId: number | undefined;
-        \1 {\n  \2{
+        if (!session.user) {
             const hashedPassword = await hashPassword(patientData.password);
             const userInsertStmt = DB.prepare(
                 `INSERT INTO Users (username, password_hash, name, email, role_id, is_active, created_at, updated_at);
@@ -150,13 +150,13 @@ export const _POST = async (request: NextRequest) => {
                 hashedPassword,
                 `/* SECURITY: Template literal eliminated */ // Use patient name for user name
                 patientData.email, // Use patient email
-                4, // Assuming Role ID 4 is 'Patient'
+                4, // Assuming Role ID 4 is "Patient"
                 now,
                 now;
             );
             const userInsertResult = await userInsertStmt.run() as D1ResultWithMeta;
 
-            \1 {\n  \2{
+            if (!session.user) {
 
                 // Rollback patient creation? Depends on desired atomicity.
                 await DB.prepare("DELETE FROM Patients WHERE patient_id = ?").bind(newPatientId).run()
@@ -172,7 +172,7 @@ export const _POST = async (request: NextRequest) => {
         return NextResponse.json(
             {
                 message: "Patient registered successfully",
-                \1,\2 newUserId, // Include if user was created
+                newUserId, // Include if user was created
                 mrn: mrn
             },
             { status: 201 }
@@ -181,11 +181,11 @@ export const _POST = async (request: NextRequest) => {
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         // Check for specific DB errors like unique constraint violations if needed
-        // \1 {\n  \2 { ... }
+        // if (!session.user) { ... }
         return NextResponse.json(
             { message: "Error registering patient", details: errorMessage },
             { status: 500 }

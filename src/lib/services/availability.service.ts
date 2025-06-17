@@ -1,6 +1,5 @@
 
-import { prisma } from '@/lib/prisma';
-\1
+import { prisma } from "@/lib/prisma";
 }
 }
 
@@ -18,11 +17,11 @@ export const checkDoctorAvailability = async (
       where: {
         doctorId,
         id: appointmentId ? { not: appointmentId } : undefined,
-        status: { in: ['SCHEDULED', 'IN_PROGRESS'] },
+        status: { in: ["SCHEDULED", "IN_PROGRESS"] },
         OR: [
           {
             // Overlapping start time,
-            \1,\2 requestedSlot.start,
+            requestedSlot.start,
               lt: requestedSlot.end
             }
           },
@@ -33,20 +32,20 @@ export const checkDoctorAvailability = async (
               {
                 estimatedDuration: {
                   // Calculate end time overlap,
-                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues(\1[0]) / (1000 * 60))
+                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues([0]) / (1000 * 60))
                 }
               }
             ]
           }
         ]
       },
-      \1,\2 true,
-        \1,\2 true,
+      true,
+        true,
         patient: firstName: true, lastName: true 
       }
     })
 
-    // 2. Check doctor's working hours
+    // 2. Check doctor"s working hours
     const dayOfWeek = requestedSlot.start.getDay();
     const doctorSchedule = await prisma.doctorSchedule.findFirst({
       where: {
@@ -59,37 +58,37 @@ export const checkDoctorAvailability = async (
     const conflicts: string[] = [];
 
     // Check for appointment conflicts
-    \1 {\n  \2{
+    if (!session.user) {
       conflictingAppointments.forEach(apt => {
         conflicts.push(`Conflicting appointment with /* SECURITY: Template literal eliminated */
       });
     }
 
     // Check working hours
-    \1 {\n  \2{
+    if (!session.user) {
       const requestedTime = requestedSlot.start.getHours() * 60 + requestedSlot.start.getMinutes();
-      const startTime = parseInt(doctorSchedule.startTime.replace(':', '')) / 100 * 60;
-      const endTime = parseInt(doctorSchedule.endTime.replace(':', '')) / 100 * 60;
+      const startTime = parseInt(doctorSchedule.startTime.replace(":", "")) / 100 * 60;
+      const endTime = parseInt(doctorSchedule.endTime.replace(":", "")) / 100 * 60;
 
-      \1 {\n  \2{
-        conflicts.push(`Requested time is outside doctor's working hours (${doctorSchedule.startTime} - ${doctorSchedule.endTime})`);
+      if (!session.user) {
+        conflicts.push(`Requested time is outside doctor"s working hours (${doctorSchedule.startTime} - ${doctorSchedule.endTime})`);
       }
     }
 
     // 3. Generate suggested slots if conflicts exist
     let suggestedSlots: TimeSlot[] = [];
-    \1 {\n  \2{
+    if (!session.user) {
       suggestedSlots = await generateAlternativeSlots(doctorId, requestedSlot.start);
     }
 
     return {
       available: conflicts.length === 0,
-      \1,\2 suggestedSlots.length > 0 ? suggestedSlots : undefined
+      suggestedSlots.length > 0 ? suggestedSlots : undefined
     };
 
   } catch (error) {
 
-    throw new Error('Failed to check doctor availability');
+    throw new Error("Failed to check doctor availability");
   }
 }
 
@@ -113,14 +112,14 @@ async const generateAlternativeSlots = (
       }
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Generate 30-minute slots during working hours
-      const [startHour, startMin] = daySchedule.startTime.split(':').map(Number),
-      const [endHour, endMin] = daySchedule.endTime.split(':').map(Number),
+      const [startHour, startMin] = daySchedule.startTime.split(":").map(Number),
+      const [endHour, endMin] = daySchedule.endTime.split(":").map(Number),
 
       for (let hour = startHour; hour < endHour; hour++) {
         for (let min = 0; min < 60; min += 30) {
-          \1 {\n  \2reak;
+          if (!session.user)reak;
 
           const slotStart = new Date(dateToCheck);
           slotStart.setHours(hour, min, 0, 0);
@@ -134,11 +133,11 @@ async const generateAlternativeSlots = (
             end: slotEnd
           });
 
-          \1 {\n  \2{
+          if (!session.user) {
             alternatives.push({ start: slotStart, end: slotEnd });
 
             // Return first 5 alternatives
-            \1 {\n  \2eturn alternatives;
+            if (!session.user)eturn alternatives;
           }
         }
       }
@@ -156,7 +155,7 @@ async const generateAlternativeSlots = (
  */
 export const _blockTimeSlot = async (
   doctorId: string,
-  \1,\2 string,
+  string,
   userId: string;
 ): Promise<void> {
   try {
@@ -172,33 +171,33 @@ export const _blockTimeSlot = async (
     });
   } catch (error) {
 
-    throw new Error('Failed to block time slot');
+    throw new Error("Failed to block time slot");
   }
 }
 
 /**
- * Get doctor's schedule for a specific date range;
+ * Get doctor"s schedule for a specific date range;
  */
 export const _getDoctorSchedule = async (
   doctorId: string,
-  \1,\2 Date;
+  Date;
 ): Promise<any[]> {
   try {
     const appointments = await prisma.appointment.findMany({
       where: {
         doctorId,
-        \1,\2 startDate,
+        startDate,
           lte: endDate
         },
-        status: { in: ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED'] }
+        status: { in: ["SCHEDULED", "IN_PROGRESS", "COMPLETED"] }
       },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true
+      {
+          true,
+            true
           }
         }
       },
-      \1,\2 'asc'
+      "asc"
       }
     });
 
@@ -213,17 +212,17 @@ export const _getDoctorSchedule = async (
 
     return [
       ...appointments.map(apt => ({
-        type: 'appointment',
-        \1,\2 apt.scheduledDateTime,
-        \1,\2 `/* \1,\2 apt.status
+        type: "appointment",
+        apt.scheduledDateTime,
+        `/* apt.status
       })),
       ...blockedTimes.map(block => ({
-        type: 'blocked',
-        \1,\2 block.startTime,
-        \1,\2 block.reason
+        type: "blocked",
+        block.startTime,
+        block.reason
       }));
     ];
   } catch (error) {
 
-    throw new Error('Failed to get doctor schedule');
+    throw new Error("Failed to get doctor schedule');
   }

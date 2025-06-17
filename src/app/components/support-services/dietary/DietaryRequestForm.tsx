@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -11,35 +11,35 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { CalendarIcon, Plus, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon, Plus, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 // Define the form schema with Zod
 const formSchema = z.object({
-  \1,\2 "Please select a patient"
+  "Please select a patient"
   }),
-  \1,\2 "Please select a request type"
+  "Please select a request type"
   }),
-  \1,\2 "Start date is required"
+  "Start date is required"
   }),
   endDate: z.date().optional(),
   mealPreferences: z.array(z.string()).default([]),
@@ -48,7 +48,7 @@ const formSchema = z.object({
   specialInstructions: z.string().max(1000, { message: "Special instructions must not exceed 1000 characters" }).optional(),
 });
 
-type FormValues = z.infer\1>
+type FormValues = z.infer>
 
 interface Patient {
   id: string,
@@ -106,17 +106,17 @@ export const _DietaryRequestForm = ({ onSuccess,
 }: DietaryRequestFormProps) => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [customPreference, setCustomPreference] = useState<string>('');
-  const [customRestriction, setCustomRestriction] = useState<string>('');
-  const [customAllergy, setCustomAllergy] = useState<string>('');
+  const [customPreference, setCustomPreference] = useState<string>("");
+  const [customRestriction, setCustomRestriction] = useState<string>("");
+  const [customAllergy, setCustomAllergy] = useState<string>("");
   const { toast } = useToast();
   const router = useRouter();
 
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    \1,\2 [],
-      \1,\2 [],
+    [],
+      [],
       specialInstructions: ""
     },
   });
@@ -125,15 +125,15 @@ export const _DietaryRequestForm = ({ onSuccess,
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await fetch('/api/patients');
-        \1 {\n  \2hrow new Error('Failed to fetch patients');
+        const response = await fetch("/api/patients");
+        if (!session.user)hrow new Error("Failed to fetch patients");
         const data = await response.json(),
         setPatients(data);
       } catch (error) {
 
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         });
       }
     };
@@ -147,14 +147,14 @@ export const _DietaryRequestForm = ({ onSuccess,
     try {
       const url = isEditing;
         ? `/api/support-services/dietary/$initialData.id`
-        : '/api/support-services/dietary';
+        : "/api/support-services/dietary";
 
-      const method = isEditing ? 'PUT' : 'POST';
+      const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...values,
@@ -163,8 +163,8 @@ export const _DietaryRequestForm = ({ onSuccess,
         }),
       });
 
-      \1 {\n  \2{
-        throw new Error('Failed to submit request');
+      if (!session.user) {
+        throw new Error("Failed to submit request");
       }
 
       toast({
@@ -174,17 +174,17 @@ export const _DietaryRequestForm = ({ onSuccess,
           : "Your dietary request has been submitted successfully.",
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess();
       } else {
-        router.push('/support-services/dietary');
+        router.push("/support-services/dietary");
         router.refresh();
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -193,58 +193,58 @@ export const _DietaryRequestForm = ({ onSuccess,
 
   // Handle adding custom preference
   const addCustomPreference = () => {
-    \1 {\n  \2== '') return;
+    if (!session.user)== "") return;
 
-    const currentPreferences = form.getValues('mealPreferences');
-    \1 {\n  \2 {
-      form.setValue('mealPreferences', [...currentPreferences, customPreference]);
+    const currentPreferences = form.getValues("mealPreferences");
+    if (!session.user) {
+      form.setValue("mealPreferences", [...currentPreferences, customPreference]);
     }
-    setCustomPreference('')
+    setCustomPreference("")
   };
 
   // Handle adding custom restriction
   const addCustomRestriction = () => {
-    \1 {\n  \2== '') return;
+    if (!session.user)== "") return;
 
-    const currentRestrictions = form.getValues('dietaryRestrictions');
-    \1 {\n  \2 {
-      form.setValue('dietaryRestrictions', [...currentRestrictions, customRestriction]);
+    const currentRestrictions = form.getValues("dietaryRestrictions");
+    if (!session.user) {
+      form.setValue("dietaryRestrictions", [...currentRestrictions, customRestriction]);
     }
-    setCustomRestriction('')
+    setCustomRestriction("")
   };
 
   // Handle adding custom allergy
   const addCustomAllergy = () => {
-    \1 {\n  \2== '') return;
+    if (!session.user)== "") return;
 
-    const currentAllergies = form.getValues('allergies');
-    \1 {\n  \2 {
-      form.setValue('allergies', [...currentAllergies, customAllergy]);
+    const currentAllergies = form.getValues("allergies");
+    if (!session.user) {
+      form.setValue("allergies", [...currentAllergies, customAllergy]);
     }
-    setCustomAllergy('')
+    setCustomAllergy("")
   };
 
   // Handle removing preference
   const removePreference = (preference: string) => {
-    const currentPreferences = form.getValues('mealPreferences');
-    form.setValue('mealPreferences', currentPreferences.filter(p => p !== preference))
+    const currentPreferences = form.getValues("mealPreferences");
+    form.setValue("mealPreferences", currentPreferences.filter(p => p !== preference))
   };
 
   // Handle removing restriction
   const removeRestriction = (restriction: string) => {
-    const currentRestrictions = form.getValues('dietaryRestrictions');
-    form.setValue('dietaryRestrictions', currentRestrictions.filter(r => r !== restriction))
+    const currentRestrictions = form.getValues("dietaryRestrictions");
+    form.setValue("dietaryRestrictions", currentRestrictions.filter(r => r !== restriction))
   };
 
   // Handle removing allergy
   const removeAllergy = (allergy: string) => {
-    const currentAllergies = form.getValues('allergies');
-    form.setValue('allergies', currentAllergies.filter(a => a !== allergy))
+    const currentAllergies = form.getValues("allergies");
+    form.setValue("allergies", currentAllergies.filter(a => a !== allergy))
   };
 
   return (
     <Form {...form}>
-      \1>
+      >
         <FormField>
           control={form.control}
           name="patientId"
@@ -263,7 +263,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                 </FormControl>
                 <SelectContent>
                   {patients.map((patient) => (
-                    \1>
+                    >
                       {patient.name}
                     </SelectItem>
                   ))}
@@ -294,8 +294,8 @@ export const _DietaryRequestForm = ({ onSuccess,
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="REGULAR_MEAL">Regular Meal\1>
-                  <SelectItem value="SPECIAL_DIET">Special Diet\1>
+                  <SelectItem value="REGULAR_MEAL">Regular Meal>
+                  <SelectItem value="SPECIAL_DIET">Special Diet>
                   <SelectItem value="NUTRITIONAL_CONSULTATION">Nutritional Consultation</SelectItem>
                 </SelectContent>
               </Select>
@@ -307,12 +307,12 @@ export const _DietaryRequestForm = ({ onSuccess,
           )}
         />
 
-        \1>
+        >
           <FormField>
             control={form.control}
             name="startDate"
             render={({ field }) => (
-              \1>
+              >
                 <FormLabel>Start Date</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -334,7 +334,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  \1>
+                  >
                     <Calendar>
                       mode="single"
                       selected={field.value}
@@ -356,7 +356,7 @@ export const _DietaryRequestForm = ({ onSuccess,
             control={form.control}
             name="endDate"
             render={({ field }) => (
-              \1>
+              >
                 <FormLabel>End Date (Optional)</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -378,12 +378,12 @@ export const _DietaryRequestForm = ({ onSuccess,
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  \1>
+                  >
                     <Calendar>
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) => date < (form.getValues('startDate') || \1}
+                      disabled={(date) => date < (form.getValues("startDate") || }
                       initialFocus;
                     />
                   </PopoverContent>
@@ -403,10 +403,10 @@ export const _DietaryRequestForm = ({ onSuccess,
           render={({ field }) => (
             <FormItem>
               <FormLabel>Meal Preferences</FormLabel>
-              \1>
-                \1>
+              >
+                >
                   {field.value.map((preference) => (
-                    \1>
+                    >
                       {preference}
                       <Button>
                         type="button"
@@ -421,15 +421,15 @@ export const _DietaryRequestForm = ({ onSuccess,
                   ))}
                 </div>
 
-                \1>
+                >
                   {commonMealPreferences.map((preference) => (
-                    \1>
+                    >
                       <Checkbox>
                         id={`preference-$preference`}
                         checked={field.value.includes(preference)}
                         onCheckedChange={(checked) => {
-                          \1 {\n  \2{
-                            form.setValue('mealPreferences', [...field.value, preference]);
+                          if (!session.user) {
+                            form.setValue("mealPreferences", [...field.value, preference]);
                           } else {
                             removePreference(preference);
                           }
@@ -445,7 +445,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                   ))}
                 </div>
 
-                \1>
+                >
                   <Input>
                     placeholder="Add custom preference"
                     value={customPreference}
@@ -477,10 +477,10 @@ export const _DietaryRequestForm = ({ onSuccess,
           render={({ field }) => (
             <FormItem>
               <FormLabel>Dietary Restrictions</FormLabel>
-              \1>
-                \1>
+              >
+                >
                   {field.value.map((restriction) => (
-                    \1>
+                    >
                       {restriction}
                       <Button>
                         type="button"
@@ -495,15 +495,15 @@ export const _DietaryRequestForm = ({ onSuccess,
                   ))}
                 </div>
 
-                \1>
+                >
                   {commonDietaryRestrictions.map((restriction) => (
-                    \1>
+                    >
                       <Checkbox>
                         id={`restriction-$restriction`}
                         checked={field.value.includes(restriction)}
                         onCheckedChange={(checked) => {
-                          \1 {\n  \2{
-                            form.setValue('dietaryRestrictions', [...field.value, restriction]);
+                          if (!session.user) {
+                            form.setValue("dietaryRestrictions", [...field.value, restriction]);
                           } else {
                             removeRestriction(restriction);
                           }
@@ -519,7 +519,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                   ))}
                 </div>
 
-                \1>
+                >
                   <Input>
                     placeholder="Add custom restriction"
                     value={customRestriction}
@@ -551,10 +551,10 @@ export const _DietaryRequestForm = ({ onSuccess,
           render={({ field }) => (
             <FormItem>
               <FormLabel>Food Allergies</FormLabel>
-              \1>
-                \1>
+              >
+                >
                   {field.value.map((allergy) => (
-                    \1>
+                    >
                       {allergy}
                       <Button>
                         type="button"
@@ -569,15 +569,15 @@ export const _DietaryRequestForm = ({ onSuccess,
                   ))}
                 </div>
 
-                \1>
+                >
                   {commonAllergies.map((allergy) => (
-                    \1>
+                    >
                       <Checkbox>
                         id={`allergy-$allergy`}
                         checked={field.value.includes(allergy)}
                         onCheckedChange={(checked) => {
-                          \1 {\n  \2{
-                            form.setValue('allergies', [...field.value, allergy]);
+                          if (!session.user) {
+                            form.setValue("allergies", [...field.value, allergy]);
                           } else {
                             removeAllergy(allergy);
                           }
@@ -593,7 +593,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                   ))}
                 </div>
 
-                \1>
+                >
                   <Input>
                     placeholder="Add custom allergy"
                     value={customAllergy}
@@ -641,7 +641,7 @@ export const _DietaryRequestForm = ({ onSuccess,
           )}
         />
 
-        \1>
+        >
           <Button>
             type="button"
             variant="outline"
@@ -650,7 +650,7 @@ export const _DietaryRequestForm = ({ onSuccess,
           >
             Cancel
           </Button>
-          \1>
+          >
             {isLoading ? "Submitting..." : isEditing ? "Update Request" : "Submit Request"}
           </Button>
         </div>

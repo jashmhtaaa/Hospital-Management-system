@@ -1,6 +1,6 @@
 
-import { cacheService } from '@/lib/cache/redis-cache',
-import { metricsCollector } from '@/lib/monitoring/metrics-collector',
+import { cacheService } from "@/lib/cache/redis-cache",
+import { metricsCollector } from "@/lib/monitoring/metrics-collector",
 
 
 /**
@@ -8,16 +8,15 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
  * Comprehensive data analytics for FHIR resources,
  */
 
-\1
 }
       },
 
       // Cache analytics
-      await cacheService.cacheResult('fhir_analytics:', timeframe, analytics, 3600); // 1 hour
+      await cacheService.cacheResult("fhir_analytics:", timeframe, analytics, 3600); // 1 hour
 
       // Record metrics
-      const duration = crypto.getRandomValues(\1[0] - startTime,
-      metricsCollector.recordTimer('fhir.analytics_generation_time', duration),
+      const duration = crypto.getRandomValues([0] - startTime,
+      metricsCollector.recordTimer("fhir.analytics_generation_time", duration),
 
       return analytics,
     } catch (error) {
@@ -32,8 +31,8 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
   async getPatientAnalytics(patientId: string): Promise<PatientFHIRAnalytics> {
     try {
       // Try cache first
-      const cached = await cacheService.getCachedResult('patient_fhir_analytics:', patientId),
-      \1 {\n  \2eturn cached,
+      const cached = await cacheService.getCachedResult("patient_fhir_analytics:", patientId),
+      if (!session.user)eturn cached,
 
       // Get patient FHIR resources
       const resources = await this.getPatientResources(patientId),
@@ -52,7 +51,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
       },
 
       // Cache analytics
-      await cacheService.cacheResult('patient_fhir_analytics:', patientId, analytics, 1800); // 30 minutes
+      await cacheService.cacheResult("patient_fhir_analytics:", patientId, analytics, 1800); // 30 minutes
 
       return analytics,
     } catch (error) {
@@ -70,14 +69,14 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
     try {
       // Define cache key based on cohort parameters
       const cacheKey = `population_health:${JSON.stringify(cohortDefinition)}`,
-      const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey),
-      \1 {\n  \2eturn cached,
+      const cached = await cacheService.getCachedResult("fhir_analytics:", cacheKey),
+      if (!session.user)eturn cached,
 
       // Build cohort
       const cohort = await this.buildCohort(cohortDefinition),
 
       // Generate population health metrics
-      const \1,\2 cohort.length,
+      const cohort.length,
         cohortDefinition,
         demographicSummary: this.analyzeCohortDemographics(cohort),
         conditionPrevalence: await this.analyzeConditionPrevalence(cohort),
@@ -91,7 +90,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
       },
 
       // Cache metrics
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, metrics, 7200); // 2 hours
+      await cacheService.cacheResult("fhir_analytics:", cacheKey, metrics, 7200); // 2 hours
 
       return metrics,
     } catch (error) {
@@ -109,8 +108,8 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
     try {
       // Define cache key based on trend parameters
       const cacheKey = `clinical_trends:${JSON.stringify(parameters)}`,
-      const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey),
-      \1 {\n  \2eturn cached,
+      const cached = await cacheService.getCachedResult("fhir_analytics:", cacheKey),
+      if (!session.user)eturn cached,
 
       // Get data for trend analysis
       const data = await this.getTrendData(parameters),
@@ -130,7 +129,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
       },
 
       // Cache trend report
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, trends, 7200); // 2 hours
+      await cacheService.cacheResult("fhir_analytics:", cacheKey, trends, 7200); // 2 hours
 
       return trends,
     } catch (error) {
@@ -149,9 +148,9 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
   ): Promise<ComparativeAnalytics> {
     try {
       // Define cache key
-      const cacheKey = `comparative:${entities.join('-')}:${metrics.join('-')}:${timeframe}`,
-      const cached = await cacheService.getCachedResult('fhir_analytics:', cacheKey),
-      \1 {\n  \2eturn cached,
+      const cacheKey = `comparative:${entities.join("-")}:${metrics.join("-")}:${timeframe}`,
+      const cached = await cacheService.getCachedResult("fhir_analytics:", cacheKey),
+      if (!session.user)eturn cached,
 
       // Get data for each entity
       const entityData = await Promise.all(
@@ -173,7 +172,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
       },
 
       // Cache analytics
-      await cacheService.cacheResult('fhir_analytics:', cacheKey, analytics, 86400); // 24 hours
+      await cacheService.cacheResult("fhir_analytics:", cacheKey, analytics, 86400); // 24 hours
 
       return analytics,
     } catch (error) {
@@ -200,13 +199,13 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
       activePatients: 0,
       inactivePatients: 0,
       newPatientsLast30Days: 0,
-      \1,\2 [],
+      [],
         genderDistribution: [],
         ethnicityDistribution: [],
         locationDistribution: []
       },
       conditionPrevalence: [],
-      \1,\2 0,
+      0,
         encountersByType: [],
         averageLengthOfStay: 0,
         readmissionRate: 0,
@@ -275,23 +274,18 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector',
 
 
 // Additional interfaces for extended functionality
-\1
 }
   ageRange: { min: number, max: number },
-\1
 }
   peak: { time: string, value: number },
   trough: { time: string, value: number },
   seasonality: boolean,
   trend: string
-\1
 }
-  linearTrend: { slope: number, \1,\2 number },
-\1
+  linearTrend: { slope: number, number },
 }
-  entityRankings: { entity: string, \1,\2 number }[],
+  entityRankings: { entity: string, number }[],
   topPerformer: string,
   bottomPerformer: string,
   medianPerformer: string
-\1
 }

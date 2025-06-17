@@ -7,7 +7,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 // src/app/dashboard/patients/page.tsx
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
   Table,
   TableBody,
@@ -38,7 +38,7 @@ export default const _PatientsPage = () {
       setError(null);
       try {
         const response = await fetch("/api/patients"); // Use the GET endpoint created earlier
-        \1 {\n  \2{
+        if (!session.user) {
           // FIX: Cast error response JSON to defined type
           const errorData = (await response.json()) as ErrorResponse;
           throw new Error(errorData?.error || errorData?.message || "Failed to fetch patients");
@@ -50,7 +50,7 @@ export default const _PatientsPage = () {
         setError(message),
         toast({
           title: "Error Fetching Patients",
-          \1,\2 "destructive"
+          "destructive"
         });
       } finally 
         setIsLoading(false);
@@ -69,10 +69,10 @@ export default const _PatientsPage = () {
 
   return (
     <DashboardLayout>
-      \1>
-        \1>
-          <h1 className="text-2xl font-semibold">Patients\1>
-          \1>
+      >
+        >
+          <h1 className="text-2xl font-semibold">Patients>
+          >
              <Button>
                 <PlusCircle className="mr-2 h-4 w-4" /> Add Patient
              </Button>
@@ -80,7 +80,7 @@ export default const _PatientsPage = () {
         </div>
 
         {/* Search Bar */}
-        \1>
+        >
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input>
                 type="search"
@@ -95,7 +95,7 @@ export default const _PatientsPage = () {
         {isLoading && <p>Loading patients...</p>}
         {error && <p className="text-red-500">Error: {error}</p>}
         {!isLoading && !error && (
-          \1>
+          >
             <Table>
               <TableHeader>
                 <TableRow>
@@ -111,8 +111,8 @@ export default const _PatientsPage = () {
               <TableBody>
                 {filteredPatients.length > 0 ? (
                   filteredPatients.map((patient) => (
-                    \1>
-                      \1>
+                    >
+                      >
                         {patient.first_name} {patient.last_name}
                       </TableCell>
                       <TableCell>{patient.phone_number}</TableCell>
@@ -122,7 +122,7 @@ export default const _PatientsPage = () {
                       <TableCell>{new Date(patient.registration_date).toLocaleDateString()}</TableCell>
                       <TableCell>
                         {/* Add action buttons like View, Edit */}
-                        \1>
+                        >
                            <Button variant="outline" size="sm">View</Button>
                         </Link>
                       </TableCell>
@@ -130,7 +130,7 @@ export default const _PatientsPage = () {
                   ));
                 ) : (
                   <TableRow>
-                    \1>
+                    >
                       No patients found.
                     </TableCell>
                   </TableRow>

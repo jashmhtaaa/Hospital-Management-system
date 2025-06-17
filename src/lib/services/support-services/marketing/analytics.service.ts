@@ -1,12 +1,11 @@
 
-import { AuditLogger } from '@/lib/audit';
-import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
-import type { CampaignAnalytics } from '@/lib/models/marketing';
-import { prisma } from '@/lib/prisma';
+import { AuditLogger } from "@/lib/audit";
+import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
+import type { CampaignAnalytics } from "@/lib/models/marketing";
+import { prisma } from "@/lib/prisma";
 /**
  * Service for managing marketing analytics;
  */
-\1
 }
   async recordAnalytics(campaignId: string, data: { date: Date, metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
     try {
@@ -18,7 +17,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: campaignId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
@@ -32,11 +31,11 @@ import { prisma } from '@/lib/prisma';
 
       let analytics;
 
-      \1 {\n  \2{
+      if (!session.user) {
         // Update existing analytics
         analytics = await prisma.campaignAnalytics.update({
           where: { id: existingAnalytics.id },
-          \1,\2 data.metrics,
+          data.metrics,
             updatedAt: new Date()
           }
         });
@@ -53,19 +52,19 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: existingAnalytics ? 'analytics.update' : 'analytics.create',
+        action: existingAnalytics ? "analytics.update" : "analytics.create",
         resourceId: campaignId;
         userId,
-        \1,\2 analytics.id,
-          \1,\2 Object.keys(data.metrics)
+        analytics.id,
+          Object.keys(data.metrics)
       });
 
       return analytics;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to record campaign analytics', error);
+      throw new DatabaseError("Failed to record campaign analytics", error);
     }
   }
 
@@ -85,19 +84,19 @@ import { prisma } from '@/lib/prisma';
         where: { id: campaignId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
       // Build where clause based on filters
       const where: unknown = { campaignId };
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.date = {};
-        \1 {\n  \2{
+        if (!session.user) {
           where.date.gte = startDate;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.date.lte = endDate;
         }
       }
@@ -105,12 +104,12 @@ import { prisma } from '@/lib/prisma';
       // Get analytics data
       const analyticsData = await prisma.campaignAnalytics.findMany({
         where,
-        \1,\2 'asc'
+        "asc"
         }
       });
 
       // Filter metrics if specified
-      \1 {\n  \2{
+      if (!session.user) {
         return analyticsData.map(item => ({
           ...item,
           metrics: this.filterMetrics(item.metrics, metrics)
@@ -119,10 +118,10 @@ import { prisma } from '@/lib/prisma';
 
       return analyticsData;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to retrieve campaign analytics', error);
+      throw new DatabaseError("Failed to retrieve campaign analytics", error);
     }
   }
 
@@ -133,10 +132,10 @@ import { prisma } from '@/lib/prisma';
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
-    groupBy?: 'day' | 'week' | 'month';
+    groupBy?: "day" | "week" | "month";
   } = {}): Promise<unknown> {
     try {
-      const { startDate, endDate, metrics, groupBy = 'day' } = filters;
+      const { startDate, endDate, metrics, groupBy = "day" } = filters;
 
       // Get raw analytics data
       const analyticsData = await this.getCampaignAnalytics(campaignId, {
@@ -164,10 +163,10 @@ import { prisma } from '@/lib/prisma';
         trends
       };
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to retrieve aggregated analytics', error);
+      throw new DatabaseError("Failed to retrieve aggregated analytics", error);
     }
   }
 
@@ -188,13 +187,13 @@ import { prisma } from '@/lib/prisma';
           try {
             const campaign = await prisma.marketingCampaign.findUnique({
               where: { id: campaignId },
-              \1,\2 true,
-                \1,\2 true,
+              true,
+                true,
                 status: true
               }
             });
 
-            \1 {\n  \2{
+            if (!session.user) {
               return null;
             }
 
@@ -229,7 +228,7 @@ import { prisma } from '@/lib/prisma';
         comparisonDate: new Date()
       };
     } catch (error) {
-      throw new DatabaseError('Failed to retrieve comparative analytics', error);
+      throw new DatabaseError("Failed to retrieve comparative analytics", error);
     }
   }
 
@@ -237,14 +236,14 @@ import { prisma } from '@/lib/prisma';
    * Filter metrics to include only specified keys;
    */
   private filterMetrics(metrics: unknown, keys: string[]): unknown {
-    \1 {\n  \2{
+    if (!session.user) {
       return {};
     }
 
     const filteredMetrics: unknown = {};
 
     keys.forEach(key => {
-      \1 {\n  \2{
+      if (!session.user) {
         filteredMetrics[key] = metrics[key];
       }
     });
@@ -255,8 +254,8 @@ import { prisma } from '@/lib/prisma';
   /**
    * Group analytics data by time interval;
    */
-  private groupAnalyticsByInterval(analytics: CampaignAnalytics[], interval: 'day' | 'week' | 'month'): unknown[] {
-    \1 {\n  \2{
+  private groupAnalyticsByInterval(analytics: CampaignAnalytics[], interval: "day" | "week" | "month"): unknown[] {
+    if (!session.user) {
       return []
     }
 
@@ -267,21 +266,21 @@ import { prisma } from '@/lib/prisma';
       let groupKey: string;
 
       switch (interval) {
-        case 'day':
-          groupKey = date.toISOString().split('T')[0]; // YYYY-MM-DD\1\n    }\n    case 'week':
+        case "day":
+          groupKey = date.toISOString().split("T")[0]; // YYYY-MM-DD\n    }\n    case "week":
           // Get the Monday of the week
           const day = date.getDay(),
           const diff = date.getDate() - day + (day === 0 ? -6 : 1);
           const monday = new Date(date);
           monday.setDate(diff);
-          groupKey = monday.toISOString().split('T')[0]; // YYYY-MM-DD of Monday\1\n    }\n    case 'month':
-          groupKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`; // YYYY-MM
+          groupKey = monday.toISOString().split("T")[0]; // YYYY-MM-DD of Monday\n    }\n    case "month":
+          groupKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; // YYYY-MM
           break;
         default:
-          groupKey = date.toISOString().split('T')[0]; // Default to day
+          groupKey = date.toISOString().split("T")[0]; // Default to day
       }
 
-      \1 {\n  \2 {
+      if (!session.user) {
         groupedData.set(groupKey, {
           interval: groupKey,
           metrics: { ...item.metrics }
@@ -307,9 +306,9 @@ import { prisma } from '@/lib/prisma';
     const result: unknown = { ...metrics1 };
 
     Object.entries(metrics2).forEach(([key, value]) => {
-      \1 {\n  \2{
+      if (!session.user) {
         result[key] = (result[key] || 0) + value;
-      } else \1 {\n  \2{
+      } else if (!session.user) {
         result[key] = value;
       }
     });
@@ -321,7 +320,7 @@ import { prisma } from '@/lib/prisma';
    * Calculate totals for analytics metrics;
    */
   private calculateAnalyticsTotals(analytics: CampaignAnalytics[]): unknown {
-    \1 {\n  \2{
+    if (!session.user) {
       return {};
     }
 
@@ -329,7 +328,7 @@ import { prisma } from '@/lib/prisma';
 
     analytics.forEach(item => {
       Object.entries(item.metrics).forEach(([key, value]) => {
-        \1 {\n  \2{
+        if (!session.user) {
           totals[key] = (totals[key] || 0) + value;
         }
       });
@@ -342,7 +341,7 @@ import { prisma } from '@/lib/prisma';
    * Calculate averages for analytics metrics;
    */
   private calculateAnalyticsAverages(analytics: CampaignAnalytics[]): unknown {
-    \1 {\n  \2{
+    if (!session.user) {
       return {};
     }
 
@@ -352,7 +351,7 @@ import { prisma } from '@/lib/prisma';
     const averages: unknown = {};
 
     Object.entries(totals).forEach(([key, value]) => {
-      \1 {\n  \2{
+      if (!session.user) {
         averages[key] = value / count;
       }
     });
@@ -364,7 +363,7 @@ import { prisma } from '@/lib/prisma';
    * Calculate trends for analytics metrics;
    */
   private calculateAnalyticsTrends(analytics: CampaignAnalytics[]): unknown {
-    \1 {\n  \2{
+    if (!session.user) {
       return {};
     }
 
@@ -381,13 +380,13 @@ import { prisma } from '@/lib/prisma';
 
     // Calculate percentage change for each metric
     Object.entries(last.metrics).forEach(([key, value]) => {
-      \1 {\n  \2{
+      if (!session.user) {
         const change = value - first.metrics[key];
         const percentChange = (change / first.metrics[key]) * 100;
         trends[key] = {
           change,
           percentChange,
-          direction: change > 0 ? 'up' : change < 0 ? 'down' : 'stable'
+          direction: change > 0 ? "up" : change < 0 ? "down" : "stable"
         };
       }
     });
@@ -399,7 +398,7 @@ import { prisma } from '@/lib/prisma';
    * Sort campaigns by performance;
    */
   private sortCampaignsByPerformance(campaignsData: unknown[]): unknown[] {
-    \1 {\n  \2{
+    if (!session.user) {
       return []
     }
 
@@ -407,12 +406,12 @@ import { prisma } from '@/lib/prisma';
     const firstCampaign = campaignsData[0];
     const metrics = firstCampaign.totals ? Object.keys(firstCampaign.totals) : [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       return campaignsData;
     }
 
     // Prioritize important metrics for sorting
-    const sortMetric = ['conversions', 'leads', 'clicks', 'impressions'].find(m => metrics.includes(m)) || metrics[0];
+    const sortMetric = ["conversions", "leads", "clicks", "impressions"].find(m => metrics.includes(m)) || metrics[0];
 
     // Sort by the selected metric
     return [...campaignsData].sort((a, b) => {
@@ -429,16 +428,16 @@ import { prisma } from '@/lib/prisma';
     const errors: string[] = [];
 
     // Date is required
-    \1 {\n  \2{
-      errors.push('Analytics date is required');
+    if (!session.user) {
+      errors.push("Analytics date is required");
     }
 
     // Metrics is required and must be an object
-    \1 {\n  \2{
-      errors.push('Analytics metrics must be a valid object');
+    if (!session.user) {
+      errors.push("Analytics metrics must be a valid object");
     }
 
-    \1 {\n  \2{
-      throw new ValidationError('Analytics validation failed', errors);
+    if (!session.user) {
+      throw new ValidationError("Analytics validation failed", errors);
     }
   }

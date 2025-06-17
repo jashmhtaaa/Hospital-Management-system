@@ -18,8 +18,8 @@ import { Edit, Trash2 } from "lucide-react";
 // Mock data structure - replace with actual API response type
 interface SurgeryType {
   id: string,
-  \1,\2 string | null,
-  \1,\2 number | null,
+  string | null,
+  number | null,
   updated_at: string
 export default const _OTSurgeryTypeList = () {
   const [surgeryTypes, setSurgeryTypes] = useState<SurgeryType[]>([]);
@@ -34,7 +34,7 @@ export default const _OTSurgeryTypeList = () {
 
         // Replace with actual API call
         // const _response = await fetch("/api/ot/surgery-types")
-        // \1 {\n  \2{
+        // if (!session.user) {
         //   throw new Error("Failed to fetch surgery types")
         // }
         // const _data = await response.json()
@@ -45,33 +45,33 @@ export default const _OTSurgeryTypeList = () {
         const mockData: SurgeryType[] = [
           {
             id: "st-1",
-            \1,\2 "Surgical removal of the appendix.",
-            \1,\2 60,
+            "Surgical removal of the appendix.",
+            60,
             updated_at: "2025-04-27T10:00:00Z"
           },
           {
             id: "st-2",
-            \1,\2 "Surgical removal of the gallbladder via laparoscopy.",
-            \1,\2 90,
+            "Surgical removal of the gallbladder via laparoscopy.",
+            90,
             updated_at: "2025-04-27T11:00:00Z"
           },
           {
             id: "st-3",
-            \1,\2 "Minimally invasive surgical procedure on a joint.",
-            \1,\2 120,
+            "Minimally invasive surgical procedure on a joint.",
+            120,
             updated_at: "2025-04-28T08:00:00Z"
           },
           {
             id: "st-4",
-            \1,\2 "Surgical procedure to restore normal blood flow to an obstructed coronary artery.",
-            \1,\2 240,
+            "Surgical procedure to restore normal blood flow to an obstructed coronary artery.",
+            240,
             updated_at: "2025-04-26T14:00:00Z"
           },
         ];
         setSurgeryTypes(mockData),
         setLoading(false);
       } catch (error_: unknown) {
-        \1 {\n  \2{
+        if (!session.user) {
           setError(error_.message)
         } else {
           setError("An unknown error occurred while fetching surgery types");
@@ -85,7 +85,7 @@ export default const _OTSurgeryTypeList = () {
 
   return (
     <Card>
-      \1>
+      >
         {loading && <div>Loading surgery types...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && (
@@ -102,23 +102,23 @@ export default const _OTSurgeryTypeList = () {
             <TableBody>
               {surgeryTypes.length === 0 ? (
                 <TableRow>
-                  \1>
+                  >
                     No surgery types found.
                   </TableCell>
                 </TableRow>
               ) : (
                 surgeryTypes.map((type) => (
-                  \1>
+                  >
                     <TableCell>{type.name}</TableCell>
                     <TableCell>{type.specialty || "N/A"}</TableCell>
                     <TableCell>
                       {type.estimated_duration_minutes || "N/A"}
                     </TableCell>
-                    \1>
+                    >
                       {type.description || "N/A"}
                     </TableCell>
                     <TableCell>
-                      \1>
+                      >
                         <Button>
                           variant="outline"
                           size="icon"

@@ -19,7 +19,7 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CreateRadiologyOrderModal, {
   type OrderPayload,
-} from './create-radiology-order-modal.ts'; // Import OrderPayload
+} from "./create-radiology-order-modal.ts"; // Import OrderPayload
 import { toast } from "@/components/ui/use-toast"; // Import toast for notifications
 
 // Define interface for the order data
@@ -46,12 +46,12 @@ export default const _RadiologyOrderList = () {
     setError(undefined); // Clear previous errors
     try {
       const response = await fetch("/api/radiology/orders");
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(
           `Failed to fetch radiology orders: ${response.statusText}`;
         );
       }
-      // Assume API returns an object with a 'results' array or the array directly
+      // Assume API returns an object with a "results" array or the array directly
       const data: { results: RadiologyOrder[] } | RadiologyOrder[] =;
         await response.json();
       const fetchedOrders = Array.isArray(data) ? data : data.results || [];
@@ -65,7 +65,7 @@ export default const _RadiologyOrderList = () {
       ),
       toast(
         title: "Error Loading Orders",
-        \1,\2 "destructive");
+        "destructive");
     } finally {
       setLoading(false);
     }
@@ -73,7 +73,7 @@ export default const _RadiologyOrderList = () {
 
   // Correctly type the parameter
   const handleViewOrder = (orderId: string) => {
-    router.push(`/dashboard/radiology/orders/${\1}`
+    router.push(`/dashboard/radiology/orders/${}`
   };
 
   // Correctly type the parameter using the imported OrderPayload
@@ -87,7 +87,7 @@ export default const _RadiologyOrderList = () {
         body: JSON.stringify(orderData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = "Failed to create radiology order";
         try {
           // Attempt to parse error message from response body
@@ -113,7 +113,7 @@ export default const _RadiologyOrderList = () {
 
       toast({
         title: "Error Creating Order",
-        \1,\2 "destructive"
+        "destructive"
       });
       // Keep the modal open on error so the user can retry or correct input
     }
@@ -124,8 +124,8 @@ export default const _RadiologyOrderList = () {
     // Define styles for specific statuses
     const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
       pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      \1,\2 "bg-purple-100 text-purple-800 border-purple-200",
-      \1,\2 "bg-red-100 text-red-800 border-red-200"
+      "bg-purple-100 text-purple-800 border-purple-200",
+      "bg-red-100 text-red-800 border-red-200"
     };
 
     // Format status text (capitalize first letter, replace underscores)
@@ -146,28 +146,28 @@ export default const _RadiologyOrderList = () {
 
   return (
     <Card>
-      \1>
-        \1>
-          <h2 className="text-xl font-semibold">Radiology Orders\1>
+      >
+        >
+          <h2 className="text-xl font-semibold">Radiology Orders>
           <Button onClick={() => setShowCreateModal(true)}>
             Create New Order
           </Button>
         </div>
 
         {loading ? (
-          \1>
+          >
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
-          \1>
+          >
             {error}
           </div>
         ) : orders.length === 0 ? (
-          \1>
+          >
             No radiology orders found.
           </div>
         ) : (
-          \1>
+          >
             <Table>
               <TableHeader>
                 <TableRow>
@@ -181,8 +181,8 @@ export default const _RadiologyOrderList = () {
               </TableHeader>
               <TableBody>
                 {orders.map((order) => (
-                  \1>
-                    \1>
+                  >
+                    >
                       {order.patient_name || "N/A"}
                     </TableCell>
                     <TableCell>{order.procedure_name || "N/A"}</TableCell>
@@ -201,7 +201,7 @@ export default const _RadiologyOrderList = () {
                       </Badge>
                     </TableCell>
                     <TableCell>{getStatusBadge(order.status)}</TableCell>
-                    \1>
+                    >
                       <Button>
                         variant="outline"
                         size="sm"

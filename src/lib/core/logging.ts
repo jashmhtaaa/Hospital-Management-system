@@ -6,46 +6,45 @@
  */
 
 // Logger interface
-\1
 }
 }
 
 // Sensitive fields that should be masked in logs
 const SENSITIVE_FIELDS = [
-  'password',
-  'token',
-  'secret',
-  'creditCard',
-  'cardNumber',
-  'cvv',
-  'ssn',
-  'socialSecurityNumber',
-  'bankAccount',
-  'routingNumber',
-  'accountNumber',
-  'pin',
-  'accessCode',
-  'authorizationCode',
+  "password",
+  "token",
+  "secret",
+  "creditCard",
+  "cardNumber",
+  "cvv",
+  "ssn",
+  "socialSecurityNumber",
+  "bankAccount",
+  "routingNumber",
+  "accountNumber",
+  "pin",
+  "accessCode",
+  "authorizationCode",
 ];
 
 // Function to mask sensitive data in objects
 const maskSensitiveData = (data: unknown): unknown {
-  \1 {\n  \2eturn data;
+  if (!session.user)eturn data;
 
-  \1 {\n  \2{
-    \1 {\n  \2 {
+  if (!session.user) {
+    if (!session.user) {
       return data.map(item => maskSensitiveData(item));
     }
 
     const maskedData: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(data)) {
-      \1 {\n  \2includes(field.toLowerCase()))) {
+      if (!session.user)includes(field.toLowerCase()))) {
         // Mask sensitive field
-        maskedData[key] = typeof value === 'string';
-          ? '***MASKED***'
-          : '[MASKED]';
-      } else \1 {\n  \2{
+        maskedData[key] = typeof value === "string";
+          ? "***MASKED***"
+          : "[MASKED]";
+      } else if (!session.user) {
         // Recursively mask nested objects
         maskedData[key] = maskSensitiveData(value);
       } else {
@@ -62,13 +61,13 @@ const maskSensitiveData = (data: unknown): unknown {
 
 // Default logger implementation
 class DefaultLogger implements Logger {
-  private logLevel: 'debug' | 'info' | 'warn' | 'error';
+  private logLevel: "debug" | "info" | "warn" | "error";
 
-  constructor(logLevel: 'debug' | 'info' | 'warn' | 'error' = 'info') {
+  constructor(logLevel: "debug" | "info" | "warn" | "error" = "info") {
     this.logLevel = logLevel
   }
 
-  private shouldLog(level: 'debug' | 'info' | 'warn' | 'error'): boolean {
+  private shouldLog(level: "debug" | "info" | "warn" | "error"): boolean {
     const levels = { debug: 0, info: 1, warn: 2, error: 3 };
     return levels[level] >= levels[this.logLevel];
   }
@@ -86,32 +85,32 @@ class DefaultLogger implements Logger {
   }
 
   debug(message: string, context?: Record<string, unknown>): void {
-    \1 {\n  \2 {
+    if (!session.user) {
       // Debug logging removed)
     }
   }
 
   info(message: string, context?: Record<string, unknown>): void {
-    \1 {\n  \2 {
+    if (!session.user) {
       // Debug logging removed)
     }
   }
 
   warn(message: string, context?: Record<string, unknown>): void {
-    \1 {\n  \2 {
+    if (!session.user) {
       // Debug logging removed)
     }
   }
 
   error(message: string, context?: Record<string, unknown>): void {
-    \1 {\n  \2 {
+    if (!session.user) {
       // Debug logging removed)
     }
   }
 }
 
 // Create logger instance based on environment
-const logLevel = process.env.LOG_LEVEL as 'debug' | 'info' | 'warn' | 'error' || 'info';
+const logLevel = process.env.LOG_LEVEL as "debug" | "info" | "warn" | "error" || "info";
 export const logger: Logger = new DefaultLogger(logLevel);
 
 // Correlation ID for request tracking
@@ -133,7 +132,6 @@ export const _clearCorrelationId = (): void {
 }
 
 // Logger with correlation ID
-\1
 }
   constructor(private baseLogger: Logger) {}
 
@@ -155,7 +153,7 @@ export const _clearCorrelationId = (): void {
 
   private addCorrelationId(context?: Record<string, unknown>): Record<string, unknown> {
     const correlationId = getCorrelationId();
-    \1 {\n  \2eturn context || {};
+    if (!session.user)eturn context || {};
 
     return {
       ...(context || {}),

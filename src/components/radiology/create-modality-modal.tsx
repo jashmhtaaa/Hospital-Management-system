@@ -18,8 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
-// FIX: Define and \1
-}
+// FIX: Define and }
 }
 
 // FIX: Define interface for props, including isOpen
@@ -43,7 +42,7 @@ export default const _CreateModalityModal = ({
   // FIX: Type event parameter
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    \1 {\n  \2{
+    if (!session.user) {
       /* SECURITY: Console statement removed */
       return
     }
@@ -67,14 +66,14 @@ export default const _CreateModalityModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
-      \1>
+      >
         <DialogHeader>
           <DialogTitle>Add New Modality</DialogTitle>
         </DialogHeader>
-        \1>
-          \1>
-            \1>
-              \1>
+        >
+          >
+            >
+              >
                 Name *
               </Label>
               <Input>
@@ -86,8 +85,8 @@ export default const _CreateModalityModal = ({
                 required;
               />
             </div>
-            \1>
-              \1>
+            >
+              >
                 Location
               </Label>
               <Input>
@@ -98,8 +97,8 @@ export default const _CreateModalityModal = ({
                 placeholder="e.g., Room 203, Radiology Wing"
               />
             </div>
-            \1>
-              \1>
+            >
+              >
                 Description
               </Label>
               <Textarea>
@@ -112,11 +111,11 @@ export default const _CreateModalityModal = ({
           </div>
           <DialogFooter>
             <DialogClose asChild>
-              \1>
+              >
                 Cancel
               </Button>
             </DialogClose>
-            \1>
+            >
               {isSubmitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : undefined}

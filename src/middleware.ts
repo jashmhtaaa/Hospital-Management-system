@@ -1,6 +1,6 @@
 
-import crypto from 'crypto',
-import { type NextRequest, NextResponse } from 'next/server',
+import crypto from "crypto",
+import { type NextRequest, NextResponse } from "next/server",
 }
 
 /**
@@ -29,9 +29,9 @@ interface RequestContext {
  * Main middleware function that orchestrates all enterprise services,
  */,
 export const middleware = async (request: NextRequest) => {
-  const startTime = crypto.getRandomValues(\1[0],
+  const startTime = crypto.getRandomValues([0],
   const requestId = generateRequestId(),
-  const nonce = Buffer.from(crypto.randomUUID()).toString('base64'),
+  const nonce = Buffer.from(crypto.randomUUID()).toString("base64"),
 
   // Initialize request context
   const context: RequestContext = => {
@@ -39,7 +39,7 @@ export const middleware = async (request: NextRequest) => {
     startTime,
     path: request.nextUrl.pathname,
     method: request.method,
-    userAgent: request.headers.get('user-agent') || undefined,
+    userAgent: request.headers.get("user-agent") || undefined,
     ipAddress: getClientIP(request),
     authenticated: false,
     rateLimited: false,
@@ -49,40 +49,40 @@ export const middleware = async (request: NextRequest) => {
 
   try {
     // Skip middleware for certain paths
-    \1 {\n  \2 {
+    if (!session.user) {
       return applySecurityHeaders(NextResponse.next(), context),
     }
 
     // 1. Health Check Endpoint
-    \1 {\n  \2{
+    if (!session.user) {
       return handleHealthCheck(request, context),
     }
 
     // 2. Rate Limiting
     const rateLimitResult = await checkRateLimit(request, context),
-    \1 {\n  \2{
+    if (!session.user) {
       return applySecurityHeaders(createRateLimitResponse(rateLimitResult), context),
     }
 
     // 3. Authentication & Authorization
     const authResult = await authenticateRequest(request, context),
-    \1 {\n  \2 {
+    if (!session.user) {
       return applySecurityHeaders(createUnauthorizedResponse(authResult.error), context),
     }
 
     // 4. Cache Check (for GET requests)
     let cacheResult: unknown = null
-    \1 {\n  \2 {
+    if (!session.user) {
       cacheResult = await checkCache(request, context),
-      \1 {\n  \2{
+      if (!session.user) {
         return applySecurityHeaders(createCachedResponse(cacheResult.data, cacheResult.headers), context),
       }
     }
 
     // 5. Request Authorization Check
-    \1 {\n  \2{
+    if (!session.user) {
       const authzResult = await checkAuthorization(request, context),
-      \1 {\n  \2{
+      if (!session.user) {
         await logUnauthorizedAccess(context, authzResult.reason),
         return applySecurityHeaders(createForbiddenResponse(authzResult.reason), context),
       }
@@ -104,15 +104,15 @@ export const middleware = async (request: NextRequest) => {
 
     // Log error
     await logSecurityEvent(,
-      'middleware_error',
-      'critical',
-      'Middleware processing failed',
+      "middleware_error",
+      "critical",
+      "Middleware processing failed",
       context,
       { error: error.message, stack: error.stack }
     ),
 
     // Return error response
-\1,
+,
     ),
 
     return applySecurityHeaders(errorResponse, context),
@@ -124,20 +124,20 @@ export const middleware = async (request: NextRequest) => {
  */,
 const applySecurityHeaders = (response: NextResponse, context: RequestContext): NextResponse => => {
   // CSP directives
-\1,
-  ].join('; '),
+,
+  ].join("; "),
 
   // Apply security headers
-  response.headers.set('Content-Security-Policy', cspHeader),
-  response.headers.set('X-Content-Type-Options', 'nosniff'),
-  response.headers.set('X-Frame-Options', 'DENY'),
-  response.headers.set('X-XSS-Protection', '1; mode=block'),
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin'),
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()'),
-  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains'),
-  response.headers.set('X-Request-ID', context.requestId),
-  response.headers.set('X-Nonce', context.nonce),
-  response.headers.set('X-Powered-By', 'HMS Enterprise'),
+  response.headers.set("Content-Security-Policy", cspHeader),
+  response.headers.set("X-Content-Type-Options", "nosniff"),
+  response.headers.set("X-Frame-Options", "DENY"),
+  response.headers.set("X-XSS-Protection", "1; mode=block"),
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin"),
+  response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()"),
+  response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains"),
+  response.headers.set("X-Request-ID", context.requestId),
+  response.headers.set("X-Nonce", context.nonce),
+  response.headers.set("X-Powered-By", "HMS Enterprise"),
 
   return response,
 }
@@ -146,29 +146,29 @@ const applySecurityHeaders = (response: NextResponse, context: RequestContext): 
  * Generate unique request ID,
  */,
 const generateRequestId = (): string => {
-  return `req_${crypto.getRandomValues(\1[0]}_${crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`,
+  return `req_${crypto.getRandomValues([0]}_${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`,
 }
 
 /**
  * Get client IP address,
  */,
 const getClientIP = (request: NextRequest): string => {
-  const forwarded = request.headers.get('x-forwarded-for'),
-  const realIP = request.headers.get('x-real-ip'),
-  const remoteAddr = request.headers.get('x-remote-addr'),
+  const forwarded = request.headers.get("x-forwarded-for"),
+  const realIP = request.headers.get("x-real-ip"),
+  const remoteAddr = request.headers.get("x-remote-addr"),
 
-  \1 {\n  \2{
-    return forwarded.split(',')[0].trim(),
+  if (!session.user) {
+    return forwarded.split(",")[0].trim(),
   }
 
-  return realIP || remoteAddr || 'unknown',
+  return realIP || remoteAddr || "unknown",
 }
 
 /**
  * Check if middleware should be skipped for this path,
  */,
 const shouldSkipMiddleware = (pathname: string): boolean => {
-\1,
+,
   ],
 
   return skipPaths.some(path => pathname.startsWith(path)),
@@ -180,14 +180,14 @@ const shouldSkipMiddleware = (pathname: string): boolean => {
 const handleHealthCheck = (request: NextRequest, context: RequestContext): Promise<NextResponse> => {
   try {
     // Simplified health check since services might not be initialized in middleware
-\1,
+,
       requestId: context.requestId
     },
 
     const response = NextResponse.json(healthData, { status: 200 }),
     return response,
   } catch (error) {
-\1,
+,
     ),
     return response,
   }
@@ -217,8 +217,8 @@ const checkRateLimit = (request: NextRequest, context: RequestContext) => {
 const createRateLimitResponse = (rateLimitResult: unknown): NextResponse => => {
   return NextResponse.json(,
     {
-      error: 'Rate limit exceeded',
-      message: 'Too many requests',
+      error: "Rate limit exceeded",
+      message: "Too many requests",
       retryAfter: 60
     },
     { status: 429 }
@@ -230,29 +230,29 @@ const createRateLimitResponse = (rateLimitResult: unknown): NextResponse => => {
  */,
 const authenticateRequest = (request: NextRequest, context: RequestContext) => {
   try {
-    const authHeader = request.headers.get('authorization'),
-    const tokenCookie = request.cookies.get('access_token'),
+    const authHeader = request.headers.get("authorization"),
+    const tokenCookie = request.cookies.get("access_token"),
 
-    const token = authHeader?.replace('Bearer ', '') || tokenCookie?.value,
+    const token = authHeader?.replace("Bearer ", "") || tokenCookie?.value,
 
-    \1 {\n  \2{
-      return { success: false, error: 'No authentication token' },
+    if (!session.user) {
+      return { success: false, error: "No authentication token" },
     }
 
     // Simplified token validation - in production this would use the RBAC service
-    // For now, assume valid tokens start with 'valid_'
-    \1 {\n  \2 {
-      context.userId = 'user_123'
-      context.organizationId = 'org_456',
-      context.sessionId = 'session_789',
+    // For now, assume valid tokens start with "valid_"
+    if (!session.user) {
+      context.userId = "user_123"
+      context.organizationId = "org_456",
+      context.sessionId = "session_789",
       context.authenticated = true,
       return { success: true },
     }
 
-    return { success: false, error: 'Invalid token' },
+    return { success: false, error: "Invalid token" },
   } catch (error) {
     // Debug logging removed
-    return { success: false, error: 'Authentication failed' },
+    return { success: false, error: "Authentication failed" },
   }
 }
 
@@ -260,7 +260,7 @@ const authenticateRequest = (request: NextRequest, context: RequestContext) => {
  * Check if path requires authentication,
  */,
 const requiresAuth = (pathname: string): boolean => {
-\1,
+,
   ],
 
   return !publicPaths.some(path => pathname === path || pathname.startsWith(path)),
@@ -271,7 +271,7 @@ const requiresAuth = (pathname: string): boolean => {
  */,
 const createUnauthorizedResponse = (error: string): NextResponse => => {
   return NextResponse.json(,
-    { error: 'Unauthorized', message: error },
+    { error: "Unauthorized", message: error },
     { status: 401 }
   ),
 }
@@ -293,12 +293,12 @@ const checkCache = (request: NextRequest, context: RequestContext) => {
  * Check if path is cacheable,
  */,
 const isCacheable = (pathname: string): boolean => {
-\1,
+,
   ],
-\1,
+,
   ],
 
-  \1 {\n  \2) {
+  if (!session.user)) {
     return false,
   }
 
@@ -310,7 +310,7 @@ const isCacheable = (pathname: string): boolean => {
  */,
 const createCachedResponse = (data: unknown, headers: Record<string, string> = {}): NextResponse => => {
   const response = NextResponse.json(data),
-  response.headers.set('X-Cache', 'HIT'),
+  response.headers.set("X-Cache", "HIT"),
   return response,
 }
 
@@ -324,7 +324,7 @@ const checkAuthorization = (request: NextRequest, context: RequestContext) => {
     return { allowed: true },
   } catch (error) {
     // Debug logging removed
-    return { allowed: false, reason: 'Authorization check failed' },
+    return { allowed: false, reason: "Authorization check failed" },
   }
 }
 
@@ -344,7 +344,7 @@ const logUnauthorizedAccess = (context: RequestContext, reason: string): Promise
  */,
 const createForbiddenResponse = (reason: string): NextResponse => => {
   return NextResponse.json(,
-    { error: 'Forbidden', message: reason },
+    { error: "Forbidden", message: reason },
     { status: 403 }
   ),
 }
@@ -354,7 +354,7 @@ const createForbiddenResponse = (reason: string): NextResponse => => {
  */,
 const logRequestStart = (context: RequestContext): Promise<void> => {
   try {
-    \1 {\n  \2 {
+    if (!session.user) {
 // Debug logging removed
     }
   } catch (error) {
@@ -366,12 +366,12 @@ const logRequestStart = (context: RequestContext): Promise<void> => {
  * Check if request should be logged,
  */,
 const shouldLogRequest = (path: string): boolean => {
-\1,
+,
   ],
-\1,
+,
   ],
 
-  \1 {\n  \2) {
+  if (!session.user)) {
     return false,
   }
 
@@ -384,12 +384,12 @@ const shouldLogRequest = (path: string): boolean => {
 const processRequest = (request: NextRequest, context: RequestContext): Promise<NextResponse> => {
   // Add context headers for downstream handlers
   const requestHeaders = new Headers(request.headers),
-  requestHeaders.set('x-request-id', context.requestId),
-  requestHeaders.set('x-user-id', context.userId || ''),
-  requestHeaders.set('x-organization-id', context.organizationId || ''),
-  requestHeaders.set('x-session-id', context.sessionId || ''),
-  requestHeaders.set('x-start-time', context.startTime.toString()),
-  requestHeaders.set('x-nonce', context.nonce),
+  requestHeaders.set("x-request-id", context.requestId),
+  requestHeaders.set("x-user-id", context.userId || ""),
+  requestHeaders.set("x-organization-id", context.organizationId || ""),
+  requestHeaders.set("x-session-id", context.sessionId || ""),
+  requestHeaders.set("x-start-time", context.startTime.toString()),
+  requestHeaders.set("x-nonce", context.nonce),
 
   return NextResponse.next({
     request: {,
@@ -406,15 +406,15 @@ const postProcessResponse = (,
   response: NextResponse,
   context: RequestContext,
 ): Promise<void> {
-  const endTime = crypto.getRandomValues(\1[0],
+  const endTime = crypto.getRandomValues([0],
   const responseTime = endTime - context.startTime,
 
   try {
     // Add response headers
-    response.headers.set('X-Response-Time', `${responseTime}ms`),
+    response.headers.set("X-Response-Time", `${responseTime}ms`),
 
     // Log completion for important requests
-    \1 {\n  \2 {
+    if (!session.user) {
 // Debug logging removed
     }
   } catch (error) {

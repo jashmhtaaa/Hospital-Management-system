@@ -27,7 +27,7 @@ export const _GET = async (
 ) {
   try {
     const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Surgery Type ID is required" },
         { status: 400 }
@@ -41,7 +41,7 @@ export const _GET = async (
       .bind(surgeryTypeId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Surgery type not found" },
         { status: 404 }
@@ -51,10 +51,10 @@ export const _GET = async (
     const surgeryType = results[0];
     // Parse JSON fields
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         surgeryType.required_staff = JSON.parse(surgeryType.required_staff);
       }
-      \1 {\n  \2{
+      if (!session.user) {
         surgeryType.required_equipment = JSON.parse(
           surgeryType.required_equipment;
         );
@@ -81,7 +81,7 @@ export const _PUT = async (
 ) {
   try {
     const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Surgery Type ID is required" },
         { status: 400 }
@@ -99,7 +99,7 @@ export const _PUT = async (
     } = body;
 
     // Basic validation
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         { message: "No update fields provided" },
         { status: 400 }
       );
@@ -110,12 +110,12 @@ export const _PUT = async (
     // Construct the update query dynamically
     // FIX: Use specific type for fieldsToUpdate
     const fieldsToUpdate: { [key: string]: string | number | null } = {};
-    \1 {\n  \2ieldsToUpdate.name = name;
-    \1 {\n  \2ieldsToUpdate.description = description;
-    \1 {\n  \2ieldsToUpdate.specialty = specialty;
-    \1 {\n  \2ieldsToUpdate.estimated_duration_minutes = estimated_duration_minutes;
-    \1 {\n  \2ieldsToUpdate.required_staff = JSON.stringify(required_staff);
-    \1 {\n  \2ieldsToUpdate.required_equipment = JSON.stringify(required_equipment);
+    if (!session.user)ieldsToUpdate.name = name;
+    if (!session.user)ieldsToUpdate.description = description;
+    if (!session.user)ieldsToUpdate.specialty = specialty;
+    if (!session.user)ieldsToUpdate.estimated_duration_minutes = estimated_duration_minutes;
+    if (!session.user)ieldsToUpdate.required_staff = JSON.stringify(required_staff);
+    if (!session.user)ieldsToUpdate.required_equipment = JSON.stringify(required_equipment);
     fieldsToUpdate.updated_at = now;
 
     const setClauses = Object.keys(fieldsToUpdate);
@@ -130,14 +130,14 @@ export const _PUT = async (
       .bind(...values);
       .run();
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Check if the type actually exists before returning 404
       const { results: checkExists } = await DB.prepare(
         "SELECT id FROM SurgeryTypes WHERE id = ?";
       );
         .bind(surgeryTypeId);
         .all();
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { message: "Surgery type not found" },
           { status: 404 }
@@ -153,7 +153,7 @@ export const _PUT = async (
       .bind(surgeryTypeId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           message: "Failed to fetch updated surgery type details after update"
@@ -165,12 +165,12 @@ export const _PUT = async (
     const updatedSurgeryType = results[0];
     // Parse JSON fields
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         updatedSurgeryType.required_staff = JSON.parse(
           updatedSurgeryType.required_staff;
         );
       }
-      \1 {\n  \2{
+      if (!session.user) {
         updatedSurgeryType.required_equipment = JSON.parse(
           updatedSurgeryType.required_equipment;
         );
@@ -184,7 +184,7 @@ export const _PUT = async (
     // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage
       return NextResponse.json(
         { message: "Surgery type name must be unique", details: errorMessage },
@@ -205,21 +205,21 @@ export const DELETE = async (
 ) {
   try {
     const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Surgery Type ID is required" },
         { status: 400 }
       );
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database
     const info = await DB.prepare("DELETE FROM SurgeryTypes WHERE id = ?");
       .bind(surgeryTypeId);
       .run();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Surgery type not found" },
         { status: 404 }
@@ -235,7 +235,7 @@ export const DELETE = async (
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // Handle potential foreign key constraint errors if bookings exist
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage
       return NextResponse.json(
         {

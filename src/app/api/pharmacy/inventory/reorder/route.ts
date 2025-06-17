@@ -1,11 +1,11 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-import { validateReorderRequest } from '../../../../../lib/validation/pharmacy-validation';
-import type { PharmacyDomain } from '../../../models/domain-models';
+import { auditLog } from "../../../../../lib/audit";
+import { errorHandler } from "../../../../../lib/error-handler";
+import { getMedicationById } from "../../../../../lib/services/pharmacy/pharmacy.service";
+import { validateReorderRequest } from "../../../../../lib/validation/pharmacy-validation";
+import type { PharmacyDomain } from "../../../models/domain-models";
 }
 
 /**
@@ -16,10 +16,10 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const \1,\2 getMedicationById,
+const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
@@ -30,7 +30,7 @@ const inventoryRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findBelowReorderLevel: () => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
+  save: (item: unknown) => Promise.resolve(item.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
@@ -41,7 +41,7 @@ const reorderRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (reorder: unknown) => Promise.resolve(reorder.id || 'new-id'),
+  save: (reorder: unknown) => Promise.resolve(reorder.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
@@ -50,7 +50,7 @@ const supplierRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (supplier: unknown) => Promise.resolve(supplier.id || 'new-id'),
+  save: (supplier: unknown) => Promise.resolve(supplier.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
@@ -62,42 +62,42 @@ const supplierRepository = {
 export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
     const url = new URL(req.url);
-    const locationId = url.searchParams.get('locationId');
-    const includeOnOrder = url.searchParams.get('includeOnOrder') === 'true';
-    const criticalOnly = url.searchParams.get('criticalOnly') === 'true';
-    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
+    const locationId = url.searchParams.get("locationId");
+    const includeOnOrder = url.searchParams.get("includeOnOrder") === "true";
+    const criticalOnly = url.searchParams.get("criticalOnly") === "true";
+    const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
+    const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Get inventory items below reorder level
     const itemsBelowReorderLevel = await inventoryRepository.findBelowReorderLevel();
 
     // Apply filters
     let filteredItems = itemsBelowReorderLevel;
-    \1 {\n  \2{
+    if (!session.user) {
       filteredItems = filteredItems.filter(item => item.locationId === locationId);
     }
 
     // Get existing reorders
-    const existingReorders = await reorderRepository.findByStatus('pending');
+    const existingReorders = await reorderRepository.findByStatus("pending");
     const medicationsOnOrder = existingReorders.map(reorder => reorder.medicationId);
 
     // Filter out items already on order if not including them
-    \1 {\n  \2{
+    if (!session.user) {
       filteredItems = filteredItems.filter(item => !medicationsOnOrder.includes(item.medicationId));
     }
 
     // Filter for critical items only if requested
-    \1 {\n  \2{
+    if (!session.user) {
       filteredItems = filteredItems.filter(item => {
         const stockRatio = item.quantityOnHand / item.reorderLevel;
         return stockRatio < 0.5; // Consider critical if less than 50% of reorder level
@@ -119,13 +119,13 @@ export const GET = async (req: NextRequest) => {
 
       return {
         inventoryId: item.id,
-        \1,\2 medication ? medication.name : 'Unknown',
-        \1,\2 item.quantityOnHand,
+        medication ? medication.name : "Unknown",
+        item.quantityOnHand,
         reorderLevel: item.reorderLevel;
         suggestedQuantity,
         estimatedCost: suggestedQuantity * (item.unitCost || 0),
-        \1,\2 medication ? medication.isHighAlert : false,
-        \1,\2 preferredSupplier ? preferredSupplier.name : null,
+        medication ? medication.isHighAlert : false,
+        preferredSupplier ? preferredSupplier.name : null,
         isOnOrder: medicationsOnOrder.includes(item.medicationId),
         stockStatus: getStockStatus(item.quantityOnHand, item.reorderLevel)
       };
@@ -144,14 +144,14 @@ export const GET = async (req: NextRequest) => {
 
     // Group by status for reporting
     const statusCounts = {
-      critical: reorderItems.filter(item => item.stockStatus === 'critical').length,
-      \1,\2 reorderItems.filter(item => item.stockStatus === 'normal').length
+      critical: reorderItems.filter(item => item.stockStatus === "critical").length,
+      reorderItems.filter(item => item.stockStatus === "normal").length
     };
 
     // Audit logging
-    await auditLog('INVENTORY', {
-      action: 'LIST_REORDER',
-      \1,\2 userId,
+    await auditLog("INVENTORY", {
+      action: "LIST_REORDER",
+      userId,
       details: {
         locationId,
         includeOnOrder,
@@ -173,7 +173,7 @@ export const GET = async (req: NextRequest) => {
       }
     }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error retrieving reorder items');
+    return errorHandler(error, "Error retrieving reorder items");
   }
 }
 
@@ -186,36 +186,36 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateReorderRequest(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
+        { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Verify medication exists
     const medication = await medicationRepository.findById(data.medicationId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Medication not found" }, { status: 404 });
     }
 
     // Check for existing pending reorder for this medication
     const existingReorders = await reorderRepository.findByMedicationId(data.medicationId);
-    const pendingReorder = existingReorders.find(r => r.status === 'pending');
+    const pendingReorder = existingReorders.find(r => r.status === "pending");
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
-          error: 'Pending reorder already exists for this medication',
+          error: "Pending reorder already exists for this medication",
           existingReorderId: pendingReorder.id
         },
         { status: 409 }
@@ -225,26 +225,26 @@ export const POST = async (req: NextRequest) => {
     // Create reorder record
     const reorder = {
       id: data.id || crypto.randomUUID(),
-      \1,\2 data.locationId,
-      \1,\2 data.supplierId,
-      \1,\2 data.quantity * (data.unitCost || 0),
-      \1,\2 new Date(),
-      \1,\2 data.notes || '',
-      \1,\2 data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null,
+      data.locationId,
+      data.supplierId,
+      data.quantity * (data.unitCost || 0),
+      new Date(),
+      data.notes || "",
+      data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null,
       purchaseOrderNumber: generatePurchaseOrderNumber()
     };
 
     // Special handling for controlled substances
-    \1 {\n  \2{
+    if (!session.user) {
       reorder.requiresApproval = true;
-      reorder.approvalStatus = 'pending';
+      reorder.approvalStatus = "pending";
 
       // Additional logging for controlled substances
-      await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'REORDER_REQUEST',
-        \1,\2 userId,
-        \1,\2 data.medicationId,
-          \1,\2 data.supplierId,
+      await auditLog("CONTROLLED_SUBSTANCE", {
+        action: "REORDER_REQUEST",
+        userId,
+        data.medicationId,
+          data.supplierId,
           purchaseOrderNumber: reorder.purchaseOrderNumber
       });
     }
@@ -253,13 +253,13 @@ export const POST = async (req: NextRequest) => {
     const reorderId = await reorderRepository.save(reorder);
 
     // Regular audit logging
-    await auditLog('INVENTORY', {
-      action: 'CREATE_REORDER',
-      \1,\2 reorderId,
+    await auditLog("INVENTORY", {
+      action: "CREATE_REORDER",
+      reorderId,
       userId: userId;
       {
         medicationId: data.medicationId,
-        \1,\2 data.supplierId,
+        data.supplierId,
         purchaseOrderNumber: reorder.purchaseOrderNumber
       }
     });
@@ -268,28 +268,28 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: reorderId,
-        \1,\2 reorder.requiresApproval,
-        message: 'Reorder request created successfully'
+        reorder.requiresApproval,
+        message: "Reorder request created successfully"
       },
       { status: 201 }
     );
   } catch (error) {
-    return errorHandler(error, 'Error creating reorder request');
+    return errorHandler(error, "Error creating reorder request");
   }
 }
 
 /**
  * Helper function to determine stock status based on quantity and reorder level;
  */
-const getStockStatus = (quantity: number, reorderLevel: number): 'critical' | 'low' | 'normal' {
+const getStockStatus = (quantity: number, reorderLevel: number): "critical" | "low" | "normal" {
   const ratio = quantity / reorderLevel;
 
-  \1 {\n  \2{
-    return 'critical';
-  } else \1 {\n  \2{
-    return 'low';
+  if (!session.user) {
+    return "critical";
+  } else if (!session.user) {
+    return "low";
   } else {
-    return 'normal';
+    return "normal";
   }
 }
 
@@ -297,7 +297,7 @@ const getStockStatus = (quantity: number, reorderLevel: number): 'critical' | 'l
  * Helper function to generate a purchase order number;
  */
 const generatePurchaseOrderNumber = (): string {
-  const prefix = 'PO';
-  const timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
-  const random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
+  const prefix = "PO";
+  const timestamp = crypto.getRandomValues([0].toString().slice(-6);
+  const random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, "0");
   return `${prefix}-${timestamp}-${random}`;

@@ -1,11 +1,11 @@
-import type { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
-import { CircuitBreaker, type CircuitBreakerOptions } from 'opossum';
+import type { HttpService } from "@nestjs/axios";
+import { Injectable } from "@nestjs/common";
+import { CircuitBreaker, type CircuitBreakerOptions } from "opossum";
 
 
-import { cacheService } from '@/lib/cache/redis-cache';
-import { pubsub } from '@/lib/graphql/schema-base';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import { cacheService } from "@/lib/cache/redis-cache";
+import { pubsub } from "@/lib/graphql/schema-base";
+import { metricsCollector } from "@/lib/monitoring/metrics-collector";
 }
 
 /**
@@ -13,12 +13,10 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
  * Advanced communication layer between microservices with circuit breakers and monitoring;
  */
 
-\1
 }
 }
 
 @Injectable();
-\1
 }
   constructor(private readonly httpService: HttpService) {}
 
@@ -30,7 +28,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     this.setupCircuitBreakers(config);
     this.batchQueues.set(config.name, []);
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     // Schedule health check
     this.scheduleHealthCheck(config.name)
@@ -59,7 +57,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     params?: unknown,
     headers?: Record<string, string>
   ): Promise<ServiceResponse<T>> {
-    const startTime = crypto.getRandomValues(\1[0];
+    const startTime = crypto.getRandomValues([0];
 
     try {
       // Get service and endpoint configuration
@@ -67,12 +65,12 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
       const endpoint = this.getEndpointConfig(service, endpointName);
 
       // Check cache if endpoint is cacheable
-      \1 {\n  \2{
+      if (!session.user) {
         const cacheKey = this.generateCacheKey(serviceName, endpointName, params);
-        const cached = await cacheService.getCachedResult('ms_gateway:', cacheKey);
+        const cached = await cacheService.getCachedResult("ms_gateway:", cacheKey);
 
-        \1 {\n  \2{
-          metricsCollector.incrementCounter('gateway.cache_hits', 1, {
+        if (!session.user) {
+          metricsCollector.incrementCounter("gateway.cache_hits", 1, {
             service: serviceName,
             endpoint: endpointName
           });
@@ -80,13 +78,13 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
           return {
             ...cached,
             cached: true,
-            \1,\2 new Date()
+            new Date()
           };
         }
       }
 
       // Check if endpoint supports batching
-      \1 {\n  \2 {
+      if (!session.user) {
         return await this.enqueueBatchRequest<T>(serviceName, endpointName, params, headers);
       }
 
@@ -94,8 +92,8 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
       const circuitBreakerKey = `${serviceName}:${endpointName}`;
       const circuitBreaker = this.circuitBreakers.get(circuitBreakerKey);
 
-      \1 {\n  \2{
-        throw new Error(`Circuit breaker not found for ${\1}`;
+      if (!session.user) {
+        throw new Error(`Circuit breaker not found for ${}`;
       }
 
       // Prepare request
@@ -118,19 +116,19 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
         ? this.transforms.get(endpoint.transform)!(response.data);
         : response.data;
 
-      const \1,\2 transformedData,
-        \1,\2 response.statusText,
+      const transformedData,
+        response.statusText,
         headers: response.headers as Record<string, string>,
         cached: false,
-        \1,\2 new Date()
+        new Date()
       };
 
       // Cache result if endpoint is cacheable
-      \1 {\n  \2{
+      if (!session.user) {
         const cacheKey = this.generateCacheKey(serviceName, endpointName, params);
         const ttl = endpoint.cacheTTL || service.cacheTTL || 300; // Default 5 minutes
 
-        await cacheService.cacheResult('ms_gateway:', cacheKey, result, ttl)
+        await cacheService.cacheResult("ms_gateway:", cacheKey, result, ttl)
       }
 
       // Record metrics
@@ -140,21 +138,21 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     } catch (error) {
 
       // Record metrics
-      this.recordMetrics(serviceName, endpointName, false, crypto.getRandomValues(\1[0] - startTime);
+      this.recordMetrics(serviceName, endpointName, false, crypto.getRandomValues([0] - startTime);
 
       // Try fallback if configured
       const endpoint = this.getEndpointConfig(this.getServiceConfig(serviceName), endpointName);
 
-      \1 {\n  \2 {
+      if (!session.user) {
         try {
           const fallbackResult = await this.fallbacks.get(endpoint.fallback)!(params);
 
           return {
             data: fallbackResult,
-            \1,\2 'OK (Fallback)',
+            "OK (Fallback)",
             headers: ,
             cached: false,
-            \1,\2 new Date()
+            new Date()
           };
         } catch (fallbackError) 
       }
@@ -171,28 +169,28 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
       const service = this.getServiceConfig(serviceName);
       const url = `/* SECURITY: Template literal eliminated */
 
-      const startTime = crypto.getRandomValues(\1[0];
+      const startTime = crypto.getRandomValues([0];
       const response = await this.httpService.get(url).toPromise();
-      const responseTime = crypto.getRandomValues(\1[0] - startTime;
+      const responseTime = crypto.getRandomValues([0] - startTime;
 
       // Get circuit breaker stats
       const circuitBreakerKey = `$serviceName:health`;
       const circuitBreaker = this.circuitBreakers.get(circuitBreakerKey);
       const stats = circuitBreaker?.stats || {
         successful: 0,
-        \1,\2 0,
+        0,
         total: 0
       };
 
-      const \1,\2 serviceName,
-        status: response.status === 200 ? 'UP' : 'DEGRADED';
+      const serviceName,
+        status: response.status === 200 ? "UP" : "DEGRADED";
         responseTime,
         lastChecked: new Date(),
-        \1,\2 circuitBreaker?.status.state || 'CLOSED',
-        \1,\2 stats.total,
-          \1,\2 stats.failed,
-          \1,\2 stats.total > 0 ? (stats.failed + stats.timedOut) / stats.total : 0,
-          \1,\2 responseTime, // Would be calculated from collected samples
+        circuitBreaker?.status.state || "CLOSED",
+        stats.total,
+          stats.failed,
+          stats.total > 0 ? (stats.failed + stats.timedOut) / stats.total : 0,
+          responseTime, // Would be calculated from collected samples
           cacheHitRate: 0, // Would be calculated from collected metrics
           circuitBreakerTrips: 0, // Would be collected from circuit breaker events
           retryCount: 0, // Would be collected from retry metrics,
@@ -203,15 +201,15 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
       return {
         name: serviceName,
-        \1,\2 0,
+        0,
         lastChecked: new Date(),
         message: `Service is down: $error.message`,
-        circuitState: 'OPEN',
-        \1,\2 0,
-          \1,\2 0,
-          \1,\2 1,
-          \1,\2 0,
-          \1,\2 0,
+        circuitState: "OPEN",
+        0,
+          0,
+          1,
+          0,
+          0,
           retryCount: 0
         },
       };
@@ -232,15 +230,15 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
         statuses.push({
           name: serviceName,
-          \1,\2 0,
+          0,
           lastChecked: new Date(),
           message: `Failed to get status: $error.message`,
-          circuitState: 'UNKNOWN',
-          \1,\2 0,
-            \1,\2 0,
-            \1,\2 1,
-            \1,\2 0,
-            \1,\2 0,
+          circuitState: "UNKNOWN",
+          0,
+            0,
+            1,
+            0,
+            0,
             retryCount: 0
           },
         });
@@ -256,7 +254,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
   async refreshServiceConfig(serviceName: string): Promise<void> {
     try {
       // This would typically fetch updated configuration from a config service
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
       // For now, just reset circuit breakers
       const service = this.getServiceConfig(serviceName),
@@ -276,7 +274,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
   async clearServiceCache(serviceName: string): Promise<void> {
     try {
       await cacheService.invalidatePattern(`ms_gateway:$serviceName:*`);
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (error) {
 
       throw error
@@ -287,8 +285,8 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
   private getServiceConfig(serviceName: string): MicroserviceConfig {
     const service = this.services.get(serviceName);
 
-    \1 {\n  \2{
-      throw new Error(`Microservice '${serviceName}' not registered`);
+    if (!session.user) {
+      throw new Error(`Microservice "${serviceName}" not registered`);
     }
 
     return service;
@@ -297,8 +295,8 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
   private getEndpointConfig(service: MicroserviceConfig, endpointName: string): EndpointConfig {
     const endpoint = service.endpoints[endpointName];
 
-    \1 {\n  \2{
-      throw new Error(`Endpoint '${endpointName}' not configured for service '${service.name}'`);
+    if (!session.user) {
+      throw new Error(`Endpoint "${endpointName}" not configured for service "${service.name}"`);
     }
 
     return endpoint;
@@ -314,7 +312,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
       },
       {
         timeout: 5000,
-        \1,\2 10000;
+        10000;
         ...service.circuitBreakerOptions,
       }
     );
@@ -327,8 +325,8 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
       const circuitBreakerKey = `$service.name:$endpointName`;
       const circuitBreakerOptions = endpoint.circuitBreakerOptions || service.circuitBreakerOptions || {
         timeout: endpoint.timeout || service.timeout || 30000,
-        \1,\2 30000,
-        \1,\2 10
+        30000,
+        10
       };
 
       const circuitBreaker = new CircuitBreaker(
@@ -353,58 +351,58 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
   }
 
   private setupCircuitBreakerEvents(key: string, circuitBreaker: CircuitBreaker): void {
-    const [serviceName, endpointName] = key.split(':');
+    const [serviceName, endpointName] = key.split(":");
 
-    circuitBreaker.on('open', () => {
+    circuitBreaker.on("open", () => {
 
-      metricsCollector.incrementCounter('gateway.circuit_breaker_trips', 1, {
+      metricsCollector.incrementCounter("gateway.circuit_breaker_trips", 1, {
         service: serviceName,
-        endpoint: endpointName || 'health'
+        endpoint: endpointName || "health"
       });
 
       // Publish event
-      pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {
         circuitBreakerStateChange: {
           serviceName,
-          endpointName: endpointName || 'health',
-          \1,\2 new Date()
+          endpointName: endpointName || "health",
+          new Date()
         },
       });
     });
 
-    circuitBreaker.on('close', () => {
+    circuitBreaker.on("close", () => {
 
       // Publish event
-      pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {
         circuitBreakerStateChange: {
           serviceName,
-          endpointName: endpointName || 'health',
-          \1,\2 new Date()
+          endpointName: endpointName || "health",
+          new Date()
         },
       });
     });
 
-    circuitBreaker.on('halfOpen', () => {
+    circuitBreaker.on("halfOpen", () => {
 
       // Publish event
-      pubsub.publish('CIRCUIT_BREAKER_STATE_CHANGE', {
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {
         circuitBreakerStateChange: {
           serviceName,
-          endpointName: endpointName || 'health',
-          \1,\2 new Date()
+          endpointName: endpointName || "health",
+          new Date()
         },
       });
     });
 
-    circuitBreaker.on('fallback', (result) => {
+    circuitBreaker.on("fallback", (result) => {
 
     });
 
-    circuitBreaker.on('timeout', () => {
+    circuitBreaker.on("timeout", () => {
 
-      metricsCollector.incrementCounter('gateway.timeouts', 1, {
+      metricsCollector.incrementCounter("gateway.timeouts", 1, {
         service: serviceName,
-        endpoint: endpointName || 'health'
+        endpoint: endpointName || "health"
       });
     });
   }
@@ -417,9 +415,9 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     let url = `/* SECURITY: Template literal eliminated */
 
     // Replace path parameters
-    \1 {\n  \2{
+    if (!session.user) {
       const pathParams = Object.entries(params).filter(([key, value]) => {
-        return endpoint.path.includes(`:${\1}`;
+        return endpoint.path.includes(`:${}`;
       });
 
       for (const [key, value] of pathParams) {
@@ -428,23 +426,23 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     }
 
     // Add query parameters for GET requests
-    \1 {\n  \2{
+    if (!session.user) {
       const queryParams = Object.entries(params).filter(([key, value]) => {
-        return !endpoint.path.includes(`:${\1}`;
+        return !endpoint.path.includes(`:${}`;
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const queryString = queryParams;
           .map(([key, value]) => 
-            \1 {\n  \2 {
+            if (!session.user) {
               return value;
                 .map(v => `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`);
-                .join('&');
+                .join("&");
             }
             return `/* SECURITY: Safe parameter encoding */=/* SECURITY: Safe parameter encoding */`);
-          .join('&');
+          .join("&");
 
-        url += url.includes('?') ? `&/* SECURITY: Parameterized query */ queryString ? `?/* SECURITY: Using parameterized query builder */ this.buildSecureQuery(queryString, query`
+        url += url.includes("?") ? `&/* SECURITY: Parameterized query */ queryString ? `?/* SECURITY: Using parameterized query builder */ this.buildSecureQuery(queryString, query`
       }
     }
 
@@ -456,8 +454,8 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     endpoint: EndpointConfig;
     customHeaders?: Record<string, string>
   ): Promise<unknown> {
-    const \1,\2 {
-        'Content-Type': 'application/json',
+    const {
+        "Content-Type": "application/json",
         ...endpoint.headers,
         ...customHeaders,
       },
@@ -465,16 +463,16 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     };
 
     // Add authentication
-    \1 {\n  \2{
+    if (!session.user) {
       switch (service.authentication.type) {
-        case 'bearer':
-          config.headers.Authorization = `Bearer ${await this.getAuthToken(service)}`;\1\n    }\n    case 'apikey':
-          const header = service.authentication.header || 'X-API-Key';
-          config.headers[header] = service.authentication.value || '';\1\n    }\n    case 'basic':
+        case "bearer":
+          config.headers.Authorization = `Bearer ${await this.getAuthToken(service)}`;\n    }\n    case "apikey":
+          const header = service.authentication.header || "X-API-Key";
+          config.headers[header] = service.authentication.value || "";\n    }\n    case "basic":
           const auth = Buffer.from(
             `${service.authentication.username}:${service.authentication.password}`;
-          ).toString('base64');
-          config.headers.Authorization = `Basic ${auth}`;\1\n    }\n    case 'none':
+          ).toString("base64");
+          config.headers.Authorization = `Basic ${auth}`;\n    }\n    case "none":
         default: break
       }
     }
@@ -484,11 +482,11 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
   private async getAuthToken(service: MicroserviceConfig): Promise<string> {
     // This would typically check token expiration and refresh if needed
-    \1 {\n  \2{
-      return service.authentication.token || '';
+    if (!session.user) {
+      return service.authentication.token || "";
     }
 
-    return '';
+    return "";
   }
 
   private async executeRequest<T>(
@@ -511,44 +509,44 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
         let response;
         switch (method.toUpperCase()) {
-          case 'GET':
-            response = await this.httpService.get(url, config).toPromise(),\1\n    }\n    case 'POST':
-            response = await this.httpService.post(url, data, config).toPromise(),\1\n    }\n    case 'PUT':
-            response = await this.httpService.put(url, data, config).toPromise(),\1\n    }\n    case 'DELETE':
-            response = await this.httpService.delete(url, config).toPromise(),\1\n    }\n    case 'PATCH':
+          case "GET":
+            response = await this.httpService.get(url, config).toPromise(),\n    }\n    case "POST":
+            response = await this.httpService.post(url, data, config).toPromise(),\n    }\n    case "PUT":
+            response = await this.httpService.put(url, data, config).toPromise(),\n    }\n    case "DELETE":
+            response = await this.httpService.delete(url, config).toPromise(),\n    }\n    case "PATCH":
             response = await this.httpService.patch(url, data, config).toPromise(),
             break;
           default:
-            throw new Error(`Unsupported method: ${\1}`,
+            throw new Error(`Unsupported method: ${}`,
         }
 
         return response;
       } catch (error) {
         lastError = error;
 
-        // Don't retry if we've reached max attempts or certain status codes
-        \1 {\n  \2;
+        // Don"t retry if we"ve reached max attempts or certain status codes
+        if (!session.user);
         ) 
           break;
 
         // Calculate delay with exponential backoff if enabled
         let delay = initialDelay;
-        \1 {\n  \2{
+        if (!session.user) {
           delay = Math.min(initialDelay * Math.pow(2, attempts - 1), maxDelay);
         }
 
         // Debug logging removed`)
 
         // Record retry metric
-        metricsCollector.incrementCounter('gateway.retries', 1, {
+        metricsCollector.incrementCounter("gateway.retries", 1, {
           url,
           method,
-          statusCode: error.response?.status?.toString() || 'unknown'
+          statusCode: error.response?.status?.toString() || "unknown"
         });
 
         // Wait before retrying
-        \1 {\n  \2{
-          await \1;
+        if (!session.user) {
+          await ;
         }
       }
     }
@@ -561,17 +559,17 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     endpointName: string;
     params?: unknown;
   ): string {
-    const paramsKey = params ? JSON.stringify(params) : '';
+    const paramsKey = params ? JSON.stringify(params) : "";
     return `${serviceName}:${endpointName}:${paramsKey}`;
   }
 
   private isBatchable(params: unknown): boolean {
-    return params && typeof params === 'object' && !Array.isArray(params)
+    return params && typeof params === "object" && !Array.isArray(params)
   }
 
   private async enqueueBatchRequest<T>(
     serviceName: string,
-    \1,\2 unknown;
+    unknown;
     headers?: Record<string, string>
   ): Promise<ServiceResponse<T>> {
     return new Promise((resolve, reject) => {
@@ -595,7 +593,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
       this.batchQueues.set(batchKey, queue);
 
       // Start timer if not already running
-      \1 {\n  \2 {
+      if (!session.user) {
         const timer = setTimeout(
           () => this.processBatch(serviceName, endpointName),
           batchConfig.maxDelay;
@@ -605,7 +603,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
       }
 
       // Process batch immediately if max size reached
-      \1 {\n  \2{
+      if (!session.user) {
         // Clear timer
         clearTimeout(this.batchTimers.get(batchKey));
         this.batchTimers.delete(batchKey);
@@ -620,7 +618,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     const batchKey = `${serviceName}:${endpointName}`;
     const queue = this.batchQueues.get(batchKey) || [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       return;
     }
 
@@ -628,7 +626,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
     this.batchQueues.set(batchKey, []);
 
     // Clear timer if exists
-    \1 {\n  \2 {
+    if (!session.user) {
       clearTimeout(this.batchTimers.get(batchKey));
       this.batchTimers.delete(batchKey);
     }
@@ -658,15 +656,15 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
           ? results.find(r => r[batchConfig.idProperty] === id);
           : results[id];
 
-        \1 {\n  \2{
+        if (!session.user) {
           request.resolve({
             data: result,
-            \1,\2 batchResponse.statusText,
-            \1,\2 batchResponse.cached,
-            \1,\2 new Date()
+            batchResponse.statusText,
+            batchResponse.cached,
+            new Date()
           });
         } else 
-          request.reject(\1;
+          request.reject(;
       }
     } catch (error) {
       // Reject all requests in the queue
@@ -678,17 +676,17 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 
   private recordMetrics(
     serviceName: string,
-    \1,\2 boolean,
+    boolean,
     duration: number;
   ): void {
     // Record request count
-    metricsCollector.incrementCounter('gateway.requests', 1, {
+    metricsCollector.incrementCounter("gateway.requests", 1, {
       service: serviceName,
-      \1,\2 success.toString()
+      success.toString()
     });
 
     // Record response time
-    metricsCollector.recordTimer('gateway.response_time', duration, {
+    metricsCollector.recordTimer("gateway.response_time", duration, {
       service: serviceName,
       endpoint: endpointName
     });
@@ -709,7 +707,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
           const status = await this.getServiceStatus(serviceName);
 
           // Publish health status update
-          pubsub.publish('SERVICE_HEALTH_UPDATE', {
+          pubsub.publish("SERVICE_HEALTH_UPDATE", {
             serviceHealthUpdate: status
           });
         } catch (error) {

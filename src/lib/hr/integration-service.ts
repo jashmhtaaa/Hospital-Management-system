@@ -1,12 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import { getServerSession } from 'next-auth';
+import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
 
 
-import { authOptions } from '@/lib/hr/auth-integration';
+import { authOptions } from "@/lib/hr/auth-integration";
 /**
  * Integration service for connecting HR & Asset Management with other HMS modules;
  */
-\1
 }
   }
 
@@ -16,25 +15,25 @@ import { authOptions } from '@/lib/hr/auth-integration';
    */
   async getEmployeesForClinical() {
     return this.prisma.employee.findMany({
-      \1,\2 true,
-        \1,\2 {
+      true,
+        {
             endDate: null, // Current positions
-            \1,\2 'CLINICAL'
+            "CLINICAL"
             }
           }
         }
       },
-      \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-        \1,\2 null,
-          \1,\2 true,
-            \1,\2 true,
+      true,
+        true,
+        true,
+        null,
+          true,
+            true,
                 name: true,
-        \1,\2 new Date(),
-          \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+        new Date(),
+          true,
+            true,
+            true,
             expiryDate: true
       }
     });
@@ -46,18 +45,18 @@ import { authOptions } from '@/lib/hr/auth-integration';
    */
   async getBiomedicalEquipmentForClinical() {
     return this.prisma.biomedicalEquipment.findMany({
-      \1,\2 {
-          status: 'AVAILABLE'
+      {
+          status: "AVAILABLE"
         }
       },
-      \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+      true,
+        true,
+        true,
+        true,
+        true,
+            true,
+            true,
+            true,
                 name: true
       }
     });
@@ -69,16 +68,16 @@ import { authOptions } from '@/lib/hr/auth-integration';
    */
   async getAssetsForFinance() {
     return this.prisma.asset.findMany({
-      \1,\2 {
-          not: 'DISPOSED'
+      {
+          not: "DISPOSED"
         }
       },
-      \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
+      true,
+        true,
+        true,
+        true,
+        true,
+        true,
             name: true,
         status: true
       }
@@ -91,20 +90,20 @@ import { authOptions } from '@/lib/hr/auth-integration';
    */
   async getPayrollForFinance(periodId: string) {
     return this.prisma.payrollPeriod.findUnique({
-      \1,\2 periodId,
-        status: 'PAID'
+      periodId,
+        status: "PAID"
       },
-      \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-            \1,\2 true,
-                \1,\2 true,
-                \1,\2 true,
+      true,
+        true,
+        true,
+        true,
+            true,
+                true,
+                true,
                     name: true,
             baseSalary: true,
-            \1,\2 true,
-            \1,\2 true
+            true,
+            true
       }
     });
   }
@@ -117,11 +116,11 @@ import { authOptions } from '@/lib/hr/auth-integration';
     return this.prisma.attendance.findMany({
       where: {
         employeeId,
-        \1,\2 startDate,
+        startDate,
           lte: endDate
         }
       },
-      \1,\2 'asc'
+      "asc"
       }
     });
   }
@@ -134,13 +133,13 @@ import { authOptions } from '@/lib/hr/auth-integration';
     return this.prisma.leave.findMany({
       where: {
         employeeId,
-        \1,\2 endDate
+        endDate
         },
-        \1,\2 startDate
+        startDate
         },
-        status: 'APPROVED'
+        status: "APPROVED"
       },
-      \1,\2 'asc'
+      "asc"
       }
     });
   }
@@ -149,20 +148,20 @@ import { authOptions } from '@/lib/hr/auth-integration';
    * Update asset status from clinical module;
    * This allows clinical modules to update equipment status;
    */
-  async updateAssetStatusFromClinical(assetId: string, status: 'AVAILABLE' | 'IN_USE' | 'UNDER_MAINTENANCE', notes?: string) {
+  async updateAssetStatusFromClinical(assetId: string, status: "AVAILABLE" | "IN_USE" | "UNDER_MAINTENANCE", notes?: string) {
     // Get current session for audit
     const session = await getServerSession(authOptions);
-    \1 {\n  \2{
-      throw new Error('Unauthorized');
+    if (!session.user) {
+      throw new Error("Unauthorized");
     }
 
     // Check if user has permission
     const hasPermission = session.user.roles.some(role =>
-      ['ADMIN', 'CLINICAL_STAFF', 'DOCTOR', 'NURSE'].includes(role);
+      ["ADMIN", "CLINICAL_STAFF", "DOCTOR", "NURSE"].includes(role);
     );
 
-    \1 {\n  \2{
-      throw new Error('Insufficient permissions');
+    if (!session.user) {
+      throw new Error("Insufficient permissions");
     }
 
     // Update asset status
@@ -171,14 +170,14 @@ import { authOptions } from '@/lib/hr/auth-integration';
       data: {
         status,
         notes: notes ? `${notes}\nUpdated by: ${session.user.name} (${session.user.email})` : undefined,
-        \1,\2 {
-            type: 'STATUS_CHANGE',
+        {
+            type: "STATUS_CHANGE",
             date: new Date(),
-            \1,\2 'UNKNOWN', // Will be replaced in service layer
+            "UNKNOWN", // Will be replaced in service layer
               newStatus: status;
               notes,
               updatedBy: session.user.email,
-              \1,\2 'CLINICAL_MODULE'
+              "CLINICAL_MODULE"
             }
           }
         }
@@ -190,7 +189,7 @@ import { authOptions } from '@/lib/hr/auth-integration';
    * Record maintenance from clinical module;
    * This allows clinical modules to record equipment maintenance;
    */
-  async recordMaintenanceFromClinical(assetId: string, \1,\2 'PREVENTIVE' | 'CORRECTIVE' | 'CALIBRATION' | 'INSPECTION',
+  async recordMaintenanceFromClinical(assetId: string, "PREVENTIVE" | "CORRECTIVE" | "CALIBRATION" | "INSPECTION",
     date: Date;
     performedBy?: string;
     cost?: number;
@@ -199,17 +198,17 @@ import { authOptions } from '@/lib/hr/auth-integration';
   }) {
     // Get current session for audit
     const session = await getServerSession(authOptions);
-    \1 {\n  \2{
-      throw new Error('Unauthorized');
+    if (!session.user) {
+      throw new Error("Unauthorized");
     }
 
     // Check if user has permission
     const hasPermission = session.user.roles.some(role =>
-      ['ADMIN', 'CLINICAL_STAFF', 'BIOMEDICAL_ENGINEER'].includes(role);
+      ["ADMIN", "CLINICAL_STAFF", "BIOMEDICAL_ENGINEER"].includes(role);
     );
 
-    \1 {\n  \2{
-      throw new Error('Insufficient permissions');
+    if (!session.user) {
+      throw new Error("Insufficient permissions");
     }
 
     // Create maintenance record
@@ -217,9 +216,9 @@ import { authOptions } from '@/lib/hr/auth-integration';
       data: {
         assetId,
         maintenanceType: data.maintenanceType,
-        \1,\2 data.performedBy || `${session.user.name} (${session.user.email})`,
+        data.performedBy || `${session.user.name} (${session.user.email})`,
         cost: data.cost,
-        \1,\2 data.nextMaintenanceDate
+        data.nextMaintenanceDate
       },
     });
 
@@ -227,11 +226,11 @@ import { authOptions } from '@/lib/hr/auth-integration';
     await this.prisma.assetHistory.create({
       data: {
         assetId,
-        type: 'MAINTENANCE',
+        type: "MAINTENANCE",
         date: new Date(),
-        \1,\2 maintenanceRecord.id,
-          \1,\2 data.description,
-          \1,\2 session.user.email,
+        maintenanceRecord.id,
+          data.description,
+          session.user.email,
           updatedByName: session.user.name
         },
         employeeId: session.user.employeeId || null
@@ -241,8 +240,8 @@ import { authOptions } from '@/lib/hr/auth-integration';
     // Update asset status
     await this.prisma.asset.update({
       where: { id: assetId },
-      \1,\2 'AVAILABLE',
-        \1,\2 data.nextMaintenanceDate
+      "AVAILABLE",
+        data.nextMaintenanceDate
       },
     });
 
@@ -255,10 +254,10 @@ import { authOptions } from '@/lib/hr/auth-integration';
    */
   async getDepartmentsForAllModules() {
     return this.prisma.department.findMany({
-      \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
-        \1,\2 true,
+      true,
+        true,
+        true,
+        true,
             name: true
       }
     });

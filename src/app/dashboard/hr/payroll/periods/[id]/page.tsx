@@ -1,9 +1,9 @@
 <>
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -11,17 +11,17 @@ import {
   CardFooter,
   CardHeader,
   CardTitle;
-} from '@/components/ui/card';
+} from "@/components/ui/card";
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow;
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
   Dialog,
   DialogContent,
   DialogDescription,
@@ -40,9 +40,9 @@ import { Separator } from '@/components/ui/separator';
   XCircle,
   AlertCircle,
   Download;
-} from 'lucide-react';
-import { format } from 'date-fns';
-import { toast } from '@/components/ui/use-toast';
+} from "lucide-react";
+import { format } from "date-fns";
+import { toast } from "@/components/ui/use-toast";
 
 export default const _PayrollPeriodDetail = ({ params }: { params: { id: string } }) {
   const router = useRouter(),
@@ -56,13 +56,13 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     const fetchPayrollPeriod = async () => {
       try {
         setLoading(true),
-        const response = await fetch(`/api/hr/payroll/periods/${\1}`,
+        const response = await fetch(`/api/hr/payroll/periods/${}`,
 
-        \1 {\n  \2{
-          \1 {\n  \2{
-            throw new Error('Payroll period not found'),
+        if (!session.user) {
+          if (!session.user) {
+            throw new Error("Payroll period not found"),
           }
-          throw new Error('Failed to fetch payroll period data'),
+          throw new Error("Failed to fetch payroll period data"),
         }
 
         const data = await response.json(),
@@ -71,7 +71,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         setError(err.message),
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         }),
       } finally {
         setLoading(false),
@@ -86,11 +86,11 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     try {
       setProcessingAction(true),
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/generate`, {
-        method: 'POST'
+        method: "POST"
       }),
 
-      \1 {\n  \2{
-        throw new Error('Failed to generate payroll entries'),
+      if (!session.user) {
+        throw new Error("Failed to generate payroll entries"),
       }
 
       const data = await response.json(),
@@ -100,15 +100,15 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }),
 
       // Refresh payroll period data
-      const periodResponse = await fetch(`/api/hr/payroll/periods/${\1}`,
-      \1 {\n  \2{
+      const periodResponse = await fetch(`/api/hr/payroll/periods/${}`,
+      if (!session.user) {
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData),
       }
     } catch (err) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       }),
     } finally {
       setProcessingAction(false),
@@ -120,11 +120,11 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     try {
       setProcessingAction(true),
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/approve`, {
-        method: 'POST'
+        method: "POST"
       }),
 
-      \1 {\n  \2{
-        throw new Error('Failed to approve payroll period'),
+      if (!session.user) {
+        throw new Error("Failed to approve payroll period"),
       }
 
       const data = await response.json(),
@@ -134,15 +134,15 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }),
 
       // Refresh payroll period data
-      const periodResponse = await fetch(`/api/hr/payroll/periods/${\1}`,
-      \1 {\n  \2{
+      const periodResponse = await fetch(`/api/hr/payroll/periods/${}`,
+      if (!session.user) {
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData),
       }
     } catch (err) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       }),
     } finally {
       setProcessingAction(false),
@@ -154,16 +154,16 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     try {
       setProcessingAction(true),
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/pay`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        \1,\2 new Date()
+        new Date()
         }),
       }),
 
-      \1 {\n  \2{
-        throw new Error('Failed to mark payroll period as paid'),
+      if (!session.user) {
+        throw new Error("Failed to mark payroll period as paid"),
       }
 
       const data = await response.json(),
@@ -173,15 +173,15 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       }),
 
       // Refresh payroll period data
-      const periodResponse = await fetch(`/api/hr/payroll/periods/${\1}`,
-      \1 {\n  \2{
+      const periodResponse = await fetch(`/api/hr/payroll/periods/${}`,
+      if (!session.user) {
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData),
       }
     } catch (err) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       }),
     } finally {
       setProcessingAction(false),
@@ -207,7 +207,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     } catch (error) {
       toast({
         title: "Export Failed",
-        \1,\2 "destructive"
+        "destructive"
       }),
     }
   };
@@ -215,34 +215,34 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
   // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
-      case 'DRAFT':
-        return 'secondary';
-      case 'PROCESSING':
-        return 'warning';
-      case 'APPROVED':
-        return 'default';
-      case 'PAID':
-        return 'success';
-      default: return 'default'
+      case "DRAFT":
+        return "secondary";
+      case "PROCESSING":
+        return "warning";
+      case "APPROVED":
+        return "default";
+      case "PAID":
+        return "success";
+      default: return "default"
     }
   };
 
   // Format currency
   const formatCurrency = (amount: unknown) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD"
     }).format(amount)
   };
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">
         <div className="flex items-center gap-2">
           <Button>
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/dashboard/hr/payroll')}
+            onClick={() => router.push("/dashboard/hr/payroll")}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Payroll
@@ -255,14 +255,14 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     ),
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">
         <div className="flex items-center gap-2">
           <Button>
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/dashboard/hr/payroll')}
+            onClick={() => router.push("/dashboard/hr/payroll")}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Payroll
@@ -275,7 +275,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
             <p className="text-muted-foreground">{error}</p>
             <Button>
               className="mt-4"
-              onClick={() => router.push('/dashboard/hr/payroll')}
+              onClick={() => router.push("/dashboard/hr/payroll")}
             >
               Return to Payroll
             </Button>
@@ -285,7 +285,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     ),
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     return null;
   }
 
@@ -295,7 +295,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         <Button>
           variant="ghost"
           size="sm"
-          onClick={() => router.push('/dashboard/hr/payroll')}
+          onClick={() => router.push("/dashboard/hr/payroll")}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Payroll
@@ -308,12 +308,12 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
             {payrollPeriod.name}
           </h1>
           <p className="text-muted-foreground">
-            {format(new Date(payrollPeriod.startDate), 'PP')} - {format(new Date(payrollPeriod.endDate), 'PP')}
+            {format(new Date(payrollPeriod.startDate), "PP")} - {format(new Date(payrollPeriod.endDate), "PP")}
           </p>
         </div>
 
         <div className="flex gap-2">
-          {payrollPeriod.status === 'DRAFT' && (
+          {payrollPeriod.status === "DRAFT" && (
             <Button>
               onClick={handleGenerateEntries}
               disabled={processingAction}
@@ -323,7 +323,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
             </Button>
           )}
 
-          {payrollPeriod.status === 'PROCESSING' && (
+          {payrollPeriod.status === "PROCESSING" && (
             <Button>
               onClick={handleApprovePeriod}
               disabled={processingAction}
@@ -333,7 +333,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
             </Button>
           )}
 
-          {payrollPeriod.status === 'APPROVED' && (
+          {payrollPeriod.status === "APPROVED" && (
             <Button>
               onClick={handleMarkAsPaid}
               disabled={processingAction}
@@ -361,7 +361,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
                 <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
                   <p className="text-sm text-muted-foreground">Period</p>
-                  <p className="font-medium">{format(new Date(payrollPeriod.startDate), 'PP')} - {format(new Date(payrollPeriod.endDate), 'PP')}</p>
+                  <p className="font-medium">{format(new Date(payrollPeriod.startDate), "PP")} - {format(new Date(payrollPeriod.endDate), "PP")}</p>
                 </div>
               </div>
 
@@ -369,7 +369,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
                 <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
                   <p className="text-sm text-muted-foreground">Payment Date</p>
-                  <p className="font-medium">{format(new Date(payrollPeriod.paymentDate), 'PP')}</p>
+                  <p className="font-medium">{format(new Date(payrollPeriod.paymentDate), "PP")}</p>
                 </div>
               </div>
 
@@ -395,7 +395,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
                 </div>
 <div
                   <p className="text-sm text-muted-foreground">Created On</p>
-                  <p className="font-medium">{format(new Date(payrollPeriod.createdAt), 'PP')}</p>
+                  <p className="font-medium">{format(new Date(payrollPeriod.createdAt), "PP")}</p>
                 </div>
               </div>
             </div>
@@ -422,7 +422,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
           <CardContent>
             {!payrollPeriod.payrollEntries || payrollPeriod.payrollEntries.length === 0 ? (
               <div className="text-center py-4">
-                {payrollPeriod.status === 'DRAFT' ? (
+                {payrollPeriod.status === "DRAFT" ? (
                   <div className="flex flex-col items-center gap-2">
                     <p>No payroll entries generated yet.</p>
                     <Button>
@@ -459,7 +459,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
                           </div>
                         </TableCell>
                         <TableCell>
-                          {entry.employee.department?.name || 'N/A'}
+                          {entry.employee.department?.name || "N/A"}
                         </TableCell>
                         <TableCell>
                           {formatCurrency(entry.baseSalary)}
@@ -476,7 +476,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
                           <Button>
                             variant="ghost"
                             size="sm"
-                            onClick={() => router.push(`/dashboard/hr/payroll/entries/${\1}`}
+                            onClick={() => router.push(`/dashboard/hr/payroll/entries/${}`}
                           >
                             View
                           </Button>

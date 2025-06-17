@@ -1,15 +1,15 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../lib/audit';
-import { errorHandler } from '../../../../lib/error-handler';
-import { encryptionService } from '../../../../lib/security.service';
-import { getPatientAllergies, getPatientById } from '../../../../lib/services/patient/patient.service';
-import { getMedicationById } from '../../../../lib/services/pharmacy/pharmacy.service';
-import { validatePrescriptionRequest } from '../../../../lib/validation/pharmacy-validation';
-import { PharmacyDomain } from '../../models/domain-models';
-import { FHIRMapper } from '../../models/fhir-mappers';
-import { DrugInteractionService } from '../../services/drug-interaction-service';
+import { auditLog } from "../../../../lib/audit";
+import { errorHandler } from "../../../../lib/error-handler";
+import { encryptionService } from "../../../../lib/security.service";
+import { getPatientAllergies, getPatientById } from "../../../../lib/services/patient/patient.service";
+import { getMedicationById } from "../../../../lib/services/pharmacy/pharmacy.service";
+import { validatePrescriptionRequest } from "../../../../lib/validation/pharmacy-validation";
+import { PharmacyDomain } from "../../models/domain-models";
+import { FHIRMapper } from "../../models/fhir-mappers";
+import { DrugInteractionService } from "../../services/drug-interaction-service";
 }
 
 /**
@@ -20,10 +20,10 @@ import { DrugInteractionService } from '../../services/drug-interaction-service'
  */
 
 // Initialize repositories (in production, use dependency injection)
-const \1,\2 getMedicationById,
+const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
@@ -35,7 +35,7 @@ const prescriptionRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findByStatus: (status: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (prescription: unknown) => Promise.resolve(prescription.id || 'new-id'),
+  save: (prescription: unknown) => Promise.resolve(prescription.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
@@ -53,37 +53,37 @@ const interactionService = new DrugInteractionService(
 export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
     const url = new URL(req.url);
-    const patientId = url.searchParams.get('patientId');
-    const prescriberId = url.searchParams.get('prescriberId');
-    const medicationId = url.searchParams.get('medicationId');
-    const status = url.searchParams.get('status');
-    const startDate = url.searchParams.get('startDate');
-    const endDate = url.searchParams.get('endDate');
-    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
+    const patientId = url.searchParams.get("patientId");
+    const prescriberId = url.searchParams.get("prescriberId");
+    const medicationId = url.searchParams.get("medicationId");
+    const status = url.searchParams.get("status");
+    const startDate = url.searchParams.get("startDate");
+    const endDate = url.searchParams.get("endDate");
+    const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
+    const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria
     const filter: unknown = {};
-    \1 {\n  \2ilter.patientId = patientId;
-    \1 {\n  \2ilter.prescriberId = prescriberId;
-    \1 {\n  \2ilter.medicationId = medicationId;
-    \1 {\n  \2ilter.status = status;
+    if (!session.user)ilter.patientId = patientId;
+    if (!session.user)ilter.prescriberId = prescriberId;
+    if (!session.user)ilter.medicationId = medicationId;
+    if (!session.user)ilter.status = status;
 
     // Add date range if provided
-    \1 {\n  \2{
+    if (!session.user) {
       filter.createdAt = {};
-      \1 {\n  \2ilter.createdAt.gte = new Date(startDate);
-      \1 {\n  \2ilter.createdAt.lte = new Date(endDate);
+      if (!session.user)ilter.createdAt.gte = new Date(startDate);
+      if (!session.user)ilter.createdAt.lte = new Date(endDate);
     }
 
     // Get prescriptions (mock implementation)
@@ -91,16 +91,16 @@ export const GET = async (req: NextRequest) => {
 
     // Apply filters
     let filteredPrescriptions = prescriptions;
-    \1 {\n  \2{
+    if (!session.user) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.patientId === patientId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.prescriberId === prescriberId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.medicationId === medicationId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.status === status);
     }
 
@@ -113,9 +113,9 @@ export const GET = async (req: NextRequest) => {
     const fhirPrescriptions = paginatedPrescriptions.map(FHIRMapper.toFHIRMedicationRequest);
 
     // Audit logging
-    await auditLog('PRESCRIPTION', {
-      action: 'LIST',
-      \1,\2 userId,
+    await auditLog("PRESCRIPTION", {
+      action: "LIST",
+      userId,
       details: 
         filter,
         page,
@@ -134,7 +134,7 @@ export const GET = async (req: NextRequest) => {
       }
     }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error retrieving prescriptions');
+    return errorHandler(error, "Error retrieving prescriptions");
   }
 }
 
@@ -147,32 +147,32 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validatePrescriptionRequest(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
+        { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Verify patient exists
     const patient = await getPatientById(data.patientId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Patient not found" }, { status: 404 });
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(data.medicationId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Medication not found" }, { status: 404 });
     }
 
     // Check for drug interactions
@@ -203,15 +203,15 @@ export const POST = async (req: NextRequest) => {
 
     // Check for severe interactions that should block the prescription
     const severeInteractions = allInteractions.filter(i =>
-      i.severity === 'contraindicated' || i.severity === 'severe';
+      i.severity === "contraindicated" || i.severity === "severe";
     );
 
     // If there are severe interactions and no override provided, return error
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
-          error: 'Severe drug interactions detected',
-          \1,\2 true
+          error: "Severe drug interactions detected",
+          true
         },status: 409 
       );
     }
@@ -234,18 +234,18 @@ export const POST = async (req: NextRequest) => {
       dosage,
       data.startDate ? new Date(data.startDate) : new Date(),
       data.endDate ? new Date(data.endDate) : null,
-      data.status || 'active',
-      data.priority || 'routine',
-      data.notes || '';
+      data.status || "active",
+      data.priority || "routine",
+      data.notes || "";
     );
 
     // Special handling for controlled substances
-    \1 {\n  \2{
+    if (!session.user) {
       // Encrypt controlled substance data
       prescription.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           dea: data.dea,
-          \1,\2 new Date()
+          new Date()
         });
       );
     }
@@ -254,18 +254,18 @@ export const POST = async (req: NextRequest) => {
     const prescriptionId = await prescriptionRepository.save(prescription);
 
     // If interaction override was provided, save it
-    \1 {\n  \2{
+    if (!session.user) {
       // In a real implementation, save override record
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     }
 
     // Audit logging
-    await auditLog('PRESCRIPTION', {
-      action: 'CREATE',
-      \1,\2 prescriptionId,
-      \1,\2 data.patientId,
-      \1,\2 data.medicationId,
-        \1,\2 severeInteractions.length,
+    await auditLog("PRESCRIPTION", {
+      action: "CREATE",
+      prescriptionId,
+      data.patientId,
+      data.medicationId,
+        severeInteractions.length,
         overrideProvided: !!data.interactionOverride
       }
     });
@@ -274,10 +274,10 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: prescriptionId,
-        \1,\2 allInteractions.length > 0 ? allInteractions : undefined
+        allInteractions.length > 0 ? allInteractions : undefined
       },
       { status: 201 }
     );
   } catch (error) {
-    return errorHandler(error, 'Error creating prescription');
+    return errorHandler(error, "Error creating prescription");
   }

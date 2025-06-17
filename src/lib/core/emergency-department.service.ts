@@ -1,5 +1,5 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 }
 
 /**
@@ -9,12 +9,12 @@ import { z } from 'zod';
 
 // ED Triage Schemas
 export const TriageAssessmentSchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
-  arrival_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid arrival time'),
-  arrival_mode: z.enum(['ambulance', 'walk_in', 'helicopter', 'police', 'other']),
-  chief_complaint: z.string().min(1, 'Chief complaint is required'),
+  patient_id: z.string().min(1, "Patient ID is required"),
+  arrival_time: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid arrival time"),
+  arrival_mode: z.enum(["ambulance", "walk_in", "helicopter", "police", "other"]),
+  chief_complaint: z.string().min(1, "Chief complaint is required"),
   pain_scale: z.number().min(0).max(10).optional(),
-  \1,\2 z.number().optional(),
+  z.number().optional(),
     blood_pressure_systolic: z.number().optional(),
     blood_pressure_diastolic: z.number().optional(),
     heart_rate: z.number().optional(),
@@ -28,59 +28,59 @@ export const TriageAssessmentSchema = z.object({
   presenting_symptoms: z.array(z.string()).default([]),
   onset_time: z.string().optional(),
   duration: z.string().optional(),
-  severity: z.enum(['mild', 'moderate', 'severe']).optional(),
-  pregnancy_status: z.enum(['not_pregnant', 'pregnant', 'unknown', 'n_a']).default('unknown'),
+  severity: z.enum(["mild", "moderate", "severe"]).optional(),
+  pregnancy_status: z.enum(["not_pregnant", "pregnant", "unknown", "n_a"]).default("unknown"),
   last_menstrual_period: z.string().optional(),
   fall_risk_factors: z.array(z.string()).default([]),
   isolation_required: z.boolean().default(false),
   isolation_type: z.string().optional(),
-  triaged_by: z.string().min(1, 'Triage nurse ID is required'),
+  triaged_by: z.string().min(1, "Triage nurse ID is required"),
 });
 
 export const BedAssignmentSchema = z.object({
-  ed_visit_id: z.string().min(1, 'ED visit ID is required'),
-  bed_number: z.string().min(1, 'Bed number is required'),
-  room_type: z.enum(['triage', 'acute', 'trauma', 'observation', 'isolation', 'psychiatric']),
-  assigned_by: z.string().min(1, 'Staff ID is required'),
-  assignment_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid assignment time'),
+  ed_visit_id: z.string().min(1, "ED visit ID is required"),
+  bed_number: z.string().min(1, "Bed number is required"),
+  room_type: z.enum(["triage", "acute", "trauma", "observation", "isolation", "psychiatric"]),
+  assigned_by: z.string().min(1, "Staff ID is required"),
+  assignment_time: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid assignment time"),
   special_requirements: z.array(z.string()).default([])
 });
 
 export const PhysicianAssessmentSchema = z.object({
-  ed_visit_id: z.string().min(1, 'ED visit ID is required'),
-  physician_id: z.string().min(1, 'Physician ID is required'),
-  assessment_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid assessment time'),
+  ed_visit_id: z.string().min(1, "ED visit ID is required"),
+  physician_id: z.string().min(1, "Physician ID is required"),
+  assessment_time: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid assessment time"),
   history_of_present_illness: z.string(),
   review_of_systems: z.string().optional(),
   physical_examination: z.string(),
   assessment_and_plan: z.string(),
   differential_diagnosis: z.array(z.string()).default([]),
-  \1,\2 z.enum(['lab', 'imaging', 'medication', 'procedure', 'consultation']),
+  z.enum(["lab", "imaging", "medication", "procedure", "consultation"]),
     description: z.string(),
-    priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
+    priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
     ordered_time: z.string()
   })).default([]),
-  disposition: z.enum(['discharge', 'admit', 'transfer', 'observe', 'ama', 'expired']).optional(),
+  disposition: z.enum(["discharge", "admit", "transfer", "observe", "ama", "expired"]).optional(),
   follow_up_instructions: z.string().optional()
 });
 
 export const EDDischargeSchema = z.object({
-  ed_visit_id: z.string().min(1, 'ED visit ID is required'),
-  discharge_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid discharge time'),
-  discharge_disposition: z.enum(['home', 'admit_observation', 'admit_inpatient', 'transfer', 'ama', 'expired', 'psych_hold']),
+  ed_visit_id: z.string().min(1, "ED visit ID is required"),
+  discharge_time: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid discharge time"),
+  discharge_disposition: z.enum(["home", "admit_observation", "admit_inpatient", "transfer", "ama", "expired", "psych_hold"]),
   discharge_diagnosis: z.array(z.string()),
-  \1,\2 z.string(),
+  z.string(),
     dosage: z.string(),
     instructions: z.string()
   })).default([]),
-  \1,\2 z.string(),
+  z.string(),
     timeframe: z.string(),
     instructions: z.string()
   })).default([]),
   discharge_instructions: z.string(),
   patient_education_provided: z.array(z.string()).default([]),
-  discharged_by: z.string().min(1, 'Physician ID is required'),
-  patient_condition_at_discharge: z.enum(['stable', 'improved', 'unchanged', 'worse']),
+  discharged_by: z.string().min(1, "Physician ID is required"),
+  patient_condition_at_discharge: z.enum(["stable", "improved", "unchanged", "worse"]),
   transportation_arranged: z.boolean().default(false),
   transportation_type: z.string().optional()
 });
@@ -96,15 +96,15 @@ export type TriageAssessment = z.infer<typeof TriageAssessmentSchema> & {
 
 export type EDVisit = {
   id: string,
-  \1,\2 string,
+  string,
   arrival_time: Date;
   triage_time?: Date;
   bed_assignment_time?: Date;
   physician_seen_time?: Date;
   discharge_time?: Date;
-  status: 'arrived' | 'triaged' | 'waiting_for_bed' | 'in_bed' | 'being_treated' | 'ready_for_discharge' | 'discharged' | 'admitted' | 'transferred' | 'left_ama' | 'expired';
+  status: "arrived" | "triaged" | "waiting_for_bed" | "in_bed" | "being_treated" | "ready_for_discharge" | "discharged" | "admitted" | "transferred" | "left_ama" | "expired";
   bed_number?: string;
-  room_type?: BedAssignmentSchema['_type']['room_type'];
+  room_type?: BedAssignmentSchema["_type"]["room_type"];
   assigned_physician?: string;
   chief_complaint: string;
   esi_level?: 1 | 2 | 3 | 4 | 5;
@@ -126,28 +126,26 @@ export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
 
 export type PhysicianAssessment = z.infer<typeof PhysicianAssessmentSchema> & {
   id: string,
-  \1,\2 Date
+  Date
 };
 
 export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
   id: string,
-  \1,\2 Date
+  Date
 };
 
-\1
 }
     }
   };
   waiting_patients: number,
-  \1,\2 number,
-    \1,\2 number,
-    \1,\2 number
+  number,
+    number,
+    number
   };
   average_wait_time: number,
   longest_wait_time: number
-\1
 }
-  private edBeds: Map<string, { type: BedAssignmentSchema['_type']['room_type'], occupied: boolean; patient_id?: string }> = new Map(),
+  private edBeds: Map<string, { type: BedAssignmentSchema["_type"]["room_type"], occupied: boolean; patient_id?: string }> = new Map(),
   constructor() {
     this.initializeEDBeds();
   }
@@ -158,33 +156,33 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
   private initializeEDBeds(): void {
     const bedConfiguration = [
       // Trauma bays
-      { number: 'T1', type: 'trauma' as const },
-      { number: 'T2', type: 'trauma' as const },
-      { number: 'T3', type: 'trauma' as const },
+      { number: "T1", type: "trauma" as const },
+      { number: "T2", type: "trauma" as const },
+      { number: "T3", type: "trauma" as const },
 
       // Acute care beds
-      { number: 'A1', type: 'acute' as const },
-      { number: 'A2', type: 'acute' as const },
-      { number: 'A3', type: 'acute' as const },
-      { number: 'A4', type: 'acute' as const },
-      { number: 'A5', type: 'acute' as const },
-      { number: 'A6', type: 'acute' as const },
-      { number: 'A7', type: 'acute' as const },
-      { number: 'A8', type: 'acute' as const },
+      { number: "A1", type: "acute" as const },
+      { number: "A2", type: "acute" as const },
+      { number: "A3", type: "acute" as const },
+      { number: "A4", type: "acute" as const },
+      { number: "A5", type: "acute" as const },
+      { number: "A6", type: "acute" as const },
+      { number: "A7", type: "acute" as const },
+      { number: "A8", type: "acute" as const },
 
       // Observation beds
-      { number: 'O1', type: 'observation' as const },
-      { number: 'O2', type: 'observation' as const },
-      { number: 'O3', type: 'observation' as const },
-      { number: 'O4', type: 'observation' as const },
+      { number: "O1", type: "observation" as const },
+      { number: "O2", type: "observation" as const },
+      { number: "O3", type: "observation" as const },
+      { number: "O4", type: "observation" as const },
 
       // Isolation rooms
-      { number: 'I1', type: 'isolation' as const },
-      { number: 'I2', type: 'isolation' as const },
+      { number: "I1", type: "isolation" as const },
+      { number: "I2", type: "isolation" as const },
 
       // Psychiatric hold
-      { number: 'P1', type: 'psychiatric' as const },
-      { number: 'P2', type: 'psychiatric' as const },
+      { number: "P1", type: "psychiatric" as const },
+      { number: "P2", type: "psychiatric" as const },
     ];
 
     bedConfiguration.forEach(bed => {
@@ -200,16 +198,16 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
    */
   async registerArrival(
     patientId: string,
-    \1,\2 string;
+    string;
   ): Promise<EDVisit> {
     const visitId = uuidv4();
     const visitNumber = this.generateVisitNumber();
 
-    const \1,\2 visitId,
-      \1,\2 visitNumber,
+    const visitId,
+      visitNumber,
       arrival_time: new Date(),
-      status: 'arrived',
-      \1,\2 new Date(),
+      status: "arrived",
+      new Date(),
       updated_at: new Date()
     };
 
@@ -221,8 +219,8 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
    * Generate ED visit number;
    */
   private generateVisitNumber(): string {
-    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `ED/* SECURITY: Template literal eliminated */
   }
 
@@ -233,8 +231,8 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const validatedData = TriageAssessmentSchema.parse(triageData);
 
     const visit = this.edVisits.get(validatedData.patient_id);
-    \1 {\n  \2{
-      throw new Error('ED visit not found');
+    if (!session.user) {
+      throw new Error("ED visit not found");
     }
 
     // Calculate ESI level and acuity score
@@ -244,15 +242,15 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const triageAssessment: TriageAssessment = {
       ...validatedData,
       id: uuidv4(),
-      \1,\2 acuityScore,
-      \1,\2 new Date(),
+      acuityScore,
+      new Date(),
       updated_at: new Date()
     };
 
     this.triageAssessments.set(triageAssessment.id, triageAssessment);
 
     // Update visit status and ESI level
-    visit.status = 'triaged';
+    visit.status = "triaged";
     visit.triage_time = new Date();
     visit.esi_level = esiLevel;
     visit.updated_at = new Date();
@@ -271,38 +269,38 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     let acuityScore = 0;
 
     // Life-threatening conditions (ESI 1)
-    \1 {\n  \2{
+    if (!session.user) {
       return { esiLevel: 1, acuityScore: 100 }
     }
-    \1 {\n  \2{
+    if (!session.user) {
       return { esiLevel: 1, acuityScore: 100 };
     }
-    \1 {\n  \2{
+    if (!session.user) {
       acuityScore += 25;
     }
 
     // High-risk conditions (ESI 2)
-    \1 {\n  \2{
+    if (!session.user) {
       acuityScore += 20
     }
-    \1 {\n  \2{
+    if (!session.user) {
       acuityScore += 30;
     }
-    \1 {\n  \2{
+    if (!session.user) {
       acuityScore += 15;
     }
-    \1 {\n  \2{
+    if (!session.user) {
       acuityScore += 25;
     }
 
     // Determine ESI level based on acuity score and other factors
-    \1 {\n  \2includes('chest pain')) {
+    if (!session.user)includes("chest pain")) {
       return { esiLevel: 2, acuityScore };
     }
-    \1 {\n  \2{
+    if (!session.user) {
       return { esiLevel: 3, acuityScore };
     }
-    \1 {\n  \2{
+    if (!session.user) {
       return { esiLevel: 4, acuityScore };
     }
 
@@ -329,17 +327,17 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const validatedData = BedAssignmentSchema.parse(bedData);
 
     const visit = this.edVisits.get(validatedData.ed_visit_id);
-    \1 {\n  \2{
-      throw new Error('ED visit not found');
+    if (!session.user) {
+      throw new Error("ED visit not found");
     }
 
     const bed = this.edBeds.get(validatedData.bed_number);
-    \1 {\n  \2{
-      throw new Error('Bed not found');
+    if (!session.user) {
+      throw new Error("Bed not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Bed is already occupied');
+    if (!session.user) {
+      throw new Error("Bed is already occupied");
     }
 
     // Assign bed
@@ -361,7 +359,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     this.bedAssignments.set(validatedData.ed_visit_id, visitBedAssignments);
 
     // Update visit status
-    visit.status = 'in_bed';
+    visit.status = "in_bed";
     visit.bed_assignment_time = new Date();
     visit.bed_number = validatedData.bed_number;
     visit.room_type = validatedData.room_type;
@@ -378,8 +376,8 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const validatedData = PhysicianAssessmentSchema.parse(assessmentData);
 
     const visit = this.edVisits.get(validatedData.ed_visit_id);
-    \1 {\n  \2{
-      throw new Error('ED visit not found');
+    if (!session.user) {
+      throw new Error("ED visit not found");
     }
 
     const assessment: PhysicianAssessment = {
@@ -395,10 +393,10 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     this.physicianAssessments.set(validatedData.ed_visit_id, visitAssessments);
 
     // Update visit status
-    \1 {\n  \2{
+    if (!session.user) {
       visit.physician_seen_time = new Date();
     }
-    visit.status = 'being_treated';
+    visit.status = "being_treated";
     visit.assigned_physician = validatedData.physician_id;
     visit.updated_at = new Date();
     this.edVisits.set(visit.id, visit);
@@ -413,8 +411,8 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const validatedData = EDDischargeSchema.parse(dischargeData);
 
     const visit = this.edVisits.get(validatedData.ed_visit_id);
-    \1 {\n  \2{
-      throw new Error('ED visit not found');
+    if (!session.user) {
+      throw new Error("ED visit not found");
     }
 
     const discharge: EDDischarge = {
@@ -427,9 +425,9 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     this.discharges.set(validatedData.ed_visit_id, discharge);
 
     // Release bed if assigned
-    \1 {\n  \2{
+    if (!session.user) {
       const bed = this.edBeds.get(visit.bed_number);
-      \1 {\n  \2{
+      if (!session.user) {
         bed.occupied = false;
         bed.patient_id = undefined;
         this.edBeds.set(visit.bed_number, bed);
@@ -438,15 +436,15 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       // End bed assignment
       const bedAssignments = this.bedAssignments.get(validatedData.ed_visit_id) || [];
       const currentAssignment = bedAssignments.find(assignment => !assignment.end_time);
-      \1 {\n  \2{
+      if (!session.user) {
         currentAssignment.end_time = new Date();
         this.bedAssignments.set(validatedData.ed_visit_id, bedAssignments);
       }
     }
 
     // Update visit status
-    visit.status = validatedData.discharge_disposition === 'home' ? 'discharged' :
-                  validatedData.discharge_disposition.includes('admit') ? 'admitted' : 'transferred';
+    visit.status = validatedData.discharge_disposition === "home" ? "discharged" :
+                  validatedData.discharge_disposition.includes("admit") ? "admitted" : "transferred";
     visit.discharge_time = new Date(validatedData.discharge_time);
 
     // Calculate total length of stay
@@ -470,26 +468,26 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
 
     // Group beds by type
     const bedsByType = beds.reduce((acc, bed) => {
-      \1 {\n  \2{
+      if (!session.user) {
         acc[bed.type] = { total: 0, occupied: 0, available: 0 };
       }
       acc[bed.type].total++;
-      \1 {\n  \2{
+      if (!session.user) {
         acc[bed.type].occupied++;
       } else {
         acc[bed.type].available++;
       }
       return acc;
-    }, {} as EDCapacity['beds_by_type']);
+    }, {} as EDCapacity["beds_by_type"]);
 
     // Count waiting patients and by ESI level
     const waitingVisits = Array.from(this.edVisits.values());
-      .filter(visit => ['arrived', 'triaged', 'waiting_for_bed'].includes(visit.status));
+      .filter(visit => ["arrived", "triaged", "waiting_for_bed"].includes(visit.status));
 
     const waitingPatients = waitingVisits.length;
 
     const patientsByESI = waitingVisits.reduce((acc, visit) => {
-      \1 {\n  \2{
+      if (!session.user) {
         const key = `level_$visit.esi_level` as keyof typeof acc;
         acc[key]++;
       }
@@ -498,7 +496,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
 
     // Calculate wait times
     const waitTimes = waitingVisits.map(visit => {
-      const waitMinutes = (crypto.getRandomValues(\1[0] - visit.arrival_time.getTime()) / (1000 * 60);
+      const waitMinutes = (crypto.getRandomValues([0] - visit.arrival_time.getTime()) / (1000 * 60);
       return waitMinutes;
     });
 
@@ -507,9 +505,9 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
 
     return {
       total_beds: totalBeds,
-      \1,\2 availableBeds,
-      \1,\2 waitingPatients,
-      \1,\2 Math.round(averageWaitTime),
+      availableBeds,
+      waitingPatients,
+      Math.round(averageWaitTime),
       longest_wait_time: Math.round(longestWaitTime)
     };
   }
@@ -521,18 +519,18 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const visits = Array.from(this.edVisits.values());
 
     let filteredVisits = visits;
-    \1 {\n  \2{
+    if (!session.user) {
       const fromDate = new Date(dateFrom);
       filteredVisits = filteredVisits.filter(visit => visit.arrival_time >= fromDate);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       const toDate = new Date(dateTo);
       filteredVisits = filteredVisits.filter(visit => visit.arrival_time <= toDate);
     }
 
     // Filter to completed visits
     const completedVisits = filteredVisits.filter(visit =>
-      ['discharged', 'admitted', 'transferred'].includes(visit.status);
+      ["discharged", "admitted", "transferred"].includes(visit.status);
     );
 
     // Calculate door-to-provider time
@@ -553,22 +551,22 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
 
     // Calculate other metrics
     const totalVisits = filteredVisits.length;
-    const admittedVisits = completedVisits.filter(visit => visit.status === 'admitted').length;
+    const admittedVisits = completedVisits.filter(visit => visit.status === "admitted").length;
     const admitRate = totalVisits > 0 ? (admittedVisits / totalVisits) * 100 : 0;
 
     // Simulate other metrics (in real implementation, these would be calculated from actual data)
-    const leftWithoutBeingSeenRate = crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 5; // 0-5%
-    const patientSatisfactionScore = 7 + crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 2; // 7-9
-    const returnRate72h = crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 3; // 0-3%
-    const timeToPainMedication = 30 + crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 60; // 30-90 minutes
+    const leftWithoutBeingSeenRate = crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 5; // 0-5%
+    const patientSatisfactionScore = 7 + crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 2; // 7-9
+    const returnRate72h = crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 3; // 0-3%
+    const timeToPainMedication = 30 + crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 60; // 30-90 minutes
     const throughputPerHour = totalVisits / 24; // Assuming 24-hour period
 
     return {
       door_to_provider_time: Math.round(averageDoorToProvider),
       length_of_stay: Math.round(averageLengthOfStay),
       left_without_being_seen_rate: Math.round(leftWithoutBeingSeenRate * 100) / 100,
-      \1,\2 Math.round(admitRate * 100) / 100,
-      \1,\2 Math.round(timeToPainMedication),
+      Math.round(admitRate * 100) / 100,
+      Math.round(timeToPainMedication),
       throughput_per_hour: Math.round(throughputPerHour * 100) / 100
     };
   }
@@ -580,52 +578,52 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const alerts: CriticalAlert[] = [];
 
     // ESI Level 1 alert
-    \1 {\n  \2{
+    if (!session.user) {
       alerts.push({
         id: uuidv4(),
-        \1,\2 visit.patient_id,
-        \1,\2 'critical',
-        \1,\2 new Date(),
-        \1,\2 false
+        visit.patient_id,
+        "critical",
+        new Date(),
+        false
       });
     }
 
     // ESI Level 2 alert
-    \1 {\n  \2{
+    if (!session.user) {
       alerts.push({
         id: uuidv4(),
-        \1,\2 visit.patient_id,
-        \1,\2 'high',
-        \1,\2 new Date(),
-        \1,\2 false
+        visit.patient_id,
+        "high",
+        new Date(),
+        false
       });
     }
 
     // Fall risk alert
-    \1 {\n  \2{
+    if (!session.user) {
       alerts.push({
         id: uuidv4(),
-        \1,\2 visit.patient_id,
-        \1,\2 'medium',
-        message: `Fall risk factors identified: $triage.fall_risk_factors.join(', ')`,
+        visit.patient_id,
+        "medium",
+        message: `Fall risk factors identified: $triage.fall_risk_factors.join(", ")`,
         triggered_time: new Date(),
-        \1,\2 false
+        false
       });
     }
 
     // Isolation alert
-    \1 {\n  \2{
+    if (!session.user) {
       alerts.push({
         id: uuidv4(),
-        \1,\2 visit.patient_id,
-        \1,\2 'high',
-        message: `Isolation required: $triage.isolation_type || 'Standard precautions'`,
+        visit.patient_id,
+        "high",
+        message: `Isolation required: $triage.isolation_type || "Standard precautions"`,
         triggered_time: new Date(),
-        \1,\2 false
+        false
       });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       this.criticalAlerts.set(visit.id, alerts);
     }
   }
@@ -638,7 +636,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
 
     Array.from(this.criticalAlerts.values()).forEach(alertList => {
       alertList.forEach(alert => {
-        \1 {\n  \2 {
+        if (!session.user) {
           allAlerts.push(alert);
         }
       });
@@ -653,7 +651,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
   async acknowledgeCritical/* SECURITY: Alert removed */: Promise<void> {
     for (const [visitId, alerts] of this.criticalAlerts.entries()) {
       const alert = alerts.find(a => a.id === alertId);
-      \1 {\n  \2{
+      if (!session.user) {
         alert.acknowledged = true;
         alert.acknowledged_by = staffId;
         alert.acknowledged_time = new Date();
@@ -662,13 +660,13 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       }
     }
 
-    throw new Error('Alert not found');
+    throw new Error("Alert not found");
   }
 
   /**
    * Get ED visit details;
    */
-  async getEDVisitDetails(\1,\2 EDVisit;
+  async getEDVisitDetails(EDVisit;
     triage?: TriageAssessment;
     bedAssignments: BedAssignment[],
     assessments: PhysicianAssessment[];
@@ -676,7 +674,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     alerts: CriticalAlert[]
   } | null> {
     const visit = this.edVisits.get(visitId);
-    \1 {\n  \2{
+    if (!session.user) {
       return null;
     }
 
@@ -703,15 +701,15 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
    */
   async getWaitingRoomStatus(): Promise<{
     patients: EDVisit[],
-    \1,\2 number,
-    \1,\2 { [key: string]: number };
+    number,
+    { [key: string]: number };
   }> {
     const waitingPatients = Array.from(this.edVisits.values());
-      .filter(visit => ['arrived', 'triaged', 'waiting_for_bed'].includes(visit.status));
+      .filter(visit => ["arrived", "triaged", "waiting_for_bed"].includes(visit.status));
       .sort((a, b) => (a.esi_level || 5) - (b.esi_level || 5)); // Sort by ESI level
 
     const waitTimes = waitingPatients.map(visit => {
-      return (crypto.getRandomValues(\1[0] - visit.arrival_time.getTime()) / (1000 * 60);
+      return (crypto.getRandomValues([0] - visit.arrival_time.getTime()) / (1000 * 60);
     });
 
     const averageWaitTime = waitTimes.length > 0 ? waitTimes.reduce((a, b) => a + b) / waitTimes.length : 0;
@@ -725,7 +723,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
 
     return {
       patients: waitingPatients,
-      \1,\2 Math.round(averageWaitTime),
+      Math.round(averageWaitTime),
       longestWaitTime: Math.round(longestWaitTime),
       patientsByESI,
     };

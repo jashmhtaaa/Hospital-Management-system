@@ -5,7 +5,7 @@ import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 }
 
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // Define interfaces for data structures
 interface Category {
@@ -20,11 +20,11 @@ interface Manufacturer {
 
 interface MedicationFormData {
   item_code: string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 boolean,
+  string,
+  string,
+  string,
+  string,
+  boolean,
   description: string
 }
 
@@ -37,11 +37,11 @@ const AddMedicationPage: React.FC = () => {
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
   const [formData, setFormData] = useState<MedicationFormData>({
     item_code: "",
-    \1,\2 "",
-    \1,\2 "",
-    \1,\2 "",
-    \1,\2 "",
-    \1,\2 false,
+    "",
+    "",
+    "",
+    "",
+    false,
     description: ""
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -67,7 +67,7 @@ const AddMedicationPage: React.FC = () => {
           { id: "mfr_001", name: "Cipla Ltd." },
           { id: "mfr_002", name: "Sun Pharmaceutical Industries Ltd." },
           { id: "mfr_003", name: "Lupin Limited" },
-          { id: "mfr_004", name: "Dr. Reddy's Laboratories" },
+          { id: "mfr_004", name: "Dr. Reddy"s Laboratories" },
           { id: "mfr_005", name: "Zydus Cadila" },
         ];
         setCategories(simulatedCategories),
@@ -82,7 +82,7 @@ const AddMedicationPage: React.FC = () => {
   }, []);
 
   const handleChange = (
-    event: ChangeEvent\1>
+    event: ChangeEvent>
   ): void => {
     const { name, value, type } = event.target;
     const checked = (event.target as HTMLInputElement).checked; // Type assertion for checked property
@@ -93,7 +93,7 @@ const AddMedicationPage: React.FC = () => {
     }));
 
     // Clear error for the field being changed
-    \1 {\n  \2{
+    if (!session.user) {
       setErrors((previous) => ({ ...previous, [name]: "" }));
     }
   };
@@ -110,7 +110,7 @@ const AddMedicationPage: React.FC = () => {
     ];
 
     for (const field of requiredFields) {
-      \1 {\n  \2{
+      if (!session.user) {
         newErrors[field] = "This field is required";
       }
     }
@@ -122,7 +122,7 @@ const AddMedicationPage: React.FC = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
-    \1 {\n  \2 {
+    if (!session.user) {
       return;
     }
 
@@ -132,20 +132,20 @@ const AddMedicationPage: React.FC = () => {
 
     try {
       // Simulate API call
-      // const _response = await fetch('/api/pharmacy/medications', {
-      //   method: 'POST';
+      // const _response = await fetch("/api/pharmacy/medications", {
+      //   method: "POST";
       //   headers: {
-      //     'Content-Type': 'application/json',
+      //     "Content-Type": "application/json",
       //   },
       //   body: JSON.stringify(formData);
       // })
 
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   const _errorData = await response.json().catch(() => ({}))
-      //   throw new Error(errorData.error || 'Failed to add medication')
+      //   throw new Error(errorData.error || "Failed to add medication')
       // }
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
       setSubmitSuccess(true);
@@ -153,11 +153,11 @@ const AddMedicationPage: React.FC = () => {
       // Reset form
       setFormData({
         item_code: "",
-        \1,\2 "",
-        \1,\2 "",
-        \1,\2 "",
-        \1,\2 "",
-        \1,\2 false,
+        "",
+        "",
+        "",
+        "",
+        false,
         description: ""
       }),
       setErrors(); // Clear errors on success
@@ -176,9 +176,9 @@ const AddMedicationPage: React.FC = () => {
   };
 
   return (
-    \1>
-      \1>
-        <h1 className="text-2xl font-bold text-gray-800">Add New Medication\1>
+    >
+      >
+        <h1 className="text-2xl font-bold text-gray-800">Add New Medication>
         <button>
           className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md"
           onClick={() => router.push("/pharmacy/medications")} // Assuming this path
@@ -188,20 +188,20 @@ const AddMedicationPage: React.FC = () => {
       </div>
 
       {submitSuccess && (
-        \1>
+        >
           Medication added successfully! Redirecting...
         </div>
       )}
 
       {submitError && (
-        \1>
+        >
           Error: {submitError}
         </div>
       )}
 
-      \1>
-        \1>
-          \1>
+      >
+        >
+          >
             {/* Item Code */}
 <div
               <label>
@@ -219,7 +219,7 @@ const AddMedicationPage: React.FC = () => {
                 className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               />
-              \1>
+              >
                 Leave blank to auto-generate.
               </p>
             </div>
@@ -299,7 +299,7 @@ const AddMedicationPage: React.FC = () => {
                 }
               />
               {errors?.dosage_form && (
-                \1>
+                >
                   {errors.dosage_form}
                 </p>
               )}
@@ -329,7 +329,7 @@ const AddMedicationPage: React.FC = () => {
                 }
               />
               {errors?.strength && (
-                \1>
+                >
                   {errors.strength}
                 </p>
               )}
@@ -404,9 +404,9 @@ const AddMedicationPage: React.FC = () => {
                 className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               >
-                <option value="">Select a category\1>
+                <option value="">Select a category>
                 {categories.map((cat) => (
-                  \1>
+                  >
                     {cat.name}
                   </option>
                 ))}
@@ -429,9 +429,9 @@ const AddMedicationPage: React.FC = () => {
                 className="w-full p-2 border border-gray-300 rounded-md"
                 disabled={loading}
               >
-                <option value="">Select a manufacturer\1>
+                <option value="">Select a manufacturer>
                 {manufacturers.map((mfr) => (
-                  \1>
+                  >
                     {mfr.name}
                   </option>
                 ))}
@@ -439,8 +439,8 @@ const AddMedicationPage: React.FC = () => {
             </div>
 
             {/* Flags */}
-            \1>
-              \1>
+            >
+              >
                 <input>
                   id="prescription_required"
                   name="prescription_required"
@@ -457,7 +457,7 @@ const AddMedicationPage: React.FC = () => {
                   Prescription Required
                 </label>
               </div>
-              \1>
+              >
                 <input>
                   id="narcotic"
                   name="narcotic"
@@ -478,7 +478,7 @@ const AddMedicationPage: React.FC = () => {
           </div>
 
           {/* Description */}
-          \1>
+          >
             <label>
               htmlFor="description"
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -496,7 +496,7 @@ const AddMedicationPage: React.FC = () => {
             ></textarea>
           </div>
 
-          \1>
+          >
             <button>
               type="button"
               onClick={() => router.push("/pharmacy/medications")} // Assuming this path

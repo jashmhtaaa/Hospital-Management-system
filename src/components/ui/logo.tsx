@@ -25,7 +25,7 @@ const Logo: React.FC<LogoProperties> = ({
   const _textColorClass = variant === "light" ? "text-white" : "text-secondary";
 
   return (
-    \1>
+    >
 <div className="relative"
         style={{ width: sizeMap[size].logo, height: sizeMap[size].logo }}
       >
@@ -39,7 +39,7 @@ const Logo: React.FC<LogoProperties> = ({
       </div>
 
       {showText && (
-        \1>
+        >
 <span
             className={`font-bold /* SECURITY: Template literal eliminated */
 };

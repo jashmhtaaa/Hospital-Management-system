@@ -1,6 +1,6 @@
 
-import { EventEmitter } from 'events';
-import { PrismaClient } from '@prisma/client';
+import { EventEmitter } from "events";
+import { PrismaClient } from "@prisma/client";
 }
 
 /**
@@ -9,14 +9,12 @@ import { PrismaClient } from '@prisma/client';
  * Implements evidence-based medicine and clinical guidelines;
  */
 
-\1
 }
   };
   respiratoryRate?: number;
   oxygenSaturation?: number;
   pain?: number; // 0-10 scale
   timestamp: Date
-\1
 }
 }
 
@@ -49,9 +47,9 @@ class ClinicalDecisionSupportService extends EventEmitter {
       await this.loadInteractionDatabase();
 
       this.isInitialized = true;
-      this.emit('initialized');
+      this.emit("initialized");
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (error) {
 
       throw error
@@ -62,8 +60,8 @@ class ClinicalDecisionSupportService extends EventEmitter {
    * Process clinical data and generate recommendations;
    */
   async processPatientData(context: ClinicalContext): Promise<CDSSRecommendation[]> {
-    \1 {\n  \2{
-      throw new Error('CDSS not initialized')
+    if (!session.user) {
+      throw new Error("CDSS not initialized")
     }
 
     const recommendations: CDSSRecommendation[] = [];
@@ -111,11 +109,11 @@ class ClinicalDecisionSupportService extends EventEmitter {
       });
 
       // Emit events for critical recommendations
-      const criticalRecs = recommendations.filter(r => r.priority === 'critical');
-      \1 {\n  \2{
-        this.emit('critical_recommendations', {
+      const criticalRecs = recommendations.filter(r => r.priority === "critical");
+      if (!session.user) {
+        this.emit("critical_recommendations", {
           patientId: context.patientId,
-          \1,\2 criticalRecs
+          criticalRecs
         });
       }
 
@@ -138,24 +136,24 @@ class ClinicalDecisionSupportService extends EventEmitter {
       for (let j = i + 1; j < medications.length; j++) {
         const interaction = this.findDrugInteraction(medications[i].name, medications[j].name);
 
-        \1 {\n  \2{
-          const \1,\2 `drug_interaction_${crypto.getRandomValues(\1[0]}_${i}_${j}`,
-            type: 'drug_interaction',
+        if (!session.user) {
+          const `drug_interaction_${crypto.getRandomValues([0]}_${i}_${j}`,
+            type: "drug_interaction",
             priority: this.mapSeverityToPriority(interaction.severity),
             title: `Drug Interaction: ${interaction.drug1} + ${interaction.drug2}`,
             description: `${interaction.severity.toUpperCase()} interaction detected between ${interaction.drug1} and ${interaction.drug2}`,
             recommendation: interaction.management,
-            \1,\2 'B',
-              \1,\2 'Drug Interaction Database',
+            "B",
+              "Drug Interaction Database",
               lastUpdated: new Date(),
-              strength: 'strong'
+              strength: "strong"
             },
             clinicalContext: context,
-            \1,\2 95,
-            \1,\2 [{
-              severity: interaction.severity === 'contraindicated' ? 'critical' : 'warning',
-              \1,\2 true,
-              category: 'safety'
+            95,
+            [{
+              severity: interaction.severity === "contraindicated" ? "critical" : "warning",
+              true,
+              category: "safety"
             }],
             references: interaction.references,
             createdAt: new Date()
@@ -177,23 +175,23 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
     for (const medication of context.medications) {
       for (const allergy of context.allergies) {
-        \1 {\n  \2 {
-          const \1,\2 `allergy_alert_${crypto.getRandomValues(\1[0]}_${medication.name}`,
-            type: 'allergy_alert',
-            \1,\2 `Allergy Alert: ${medication.name}`,
+        if (!session.user) {
+          const `allergy_alert_${crypto.getRandomValues([0]}_${medication.name}`,
+            type: "allergy_alert",
+            `Allergy Alert: ${medication.name}`,
             description: `Patient has documented $allergy.severityallergy to $allergy.allergen`,
             recommendation: `STOP $medication.nameimmediately. Consider alternative therapy.`,
-            \1,\2 'A',
-              \1,\2 new Date(),
-              strength: 'strong'
+            "A",
+              new Date(),
+              strength: "strong"
             },
             clinicalContext: context,
-            \1,\2 100,
-            \1,\2 [{
-              severity: 'critical',
+            100,
+            [{
+              severity: "critical",
               message: `ALLERGY ALERT: $allergy.reaction`,
               actionRequired: true,
-              category: 'safety'
+              category: "safety"
             }],
             references: [],
             createdAt: new Date()
@@ -216,25 +214,25 @@ class ClinicalDecisionSupportService extends EventEmitter {
     for (const medication of context.medications) {
       const adjustment = this.calculateDosageAdjustment(medication, context);
 
-      \1 {\n  \2{
-        const \1,\2 `dosage_adjustment_$crypto.getRandomValues(\1[0]_$medication.name`,
-          type: 'dosage_adjustment',
-          \1,\2 `Dosage Adjustment: $medication.name`,
+      if (!session.user) {
+        const `dosage_adjustment_$crypto.getRandomValues([0]_$medication.name`,
+          type: "dosage_adjustment",
+          `Dosage Adjustment: $medication.name`,
           description: `Current dose may need adjustment based on $adjustment.reason`,
           recommendation: `Consider adjusting dose from $adjustment.currentDoseto $adjustment.recommendedDose. $adjustment.calculation ||
-            ''`,
-          \1,\2 'B',
-            \1,\2 'Dosing Guidelines',
+            ""`,
+          "B",
+            "Dosing Guidelines",
             lastUpdated: new Date(),
-            strength: 'moderate'
+            strength: "moderate"
           },
           clinicalContext: context,
-          \1,\2 85,
-          \1,\2 [{
-            severity: 'warning',
+          85,
+          [{
+            severity: "warning",
             message: `Dosage adjustment recommended for ${medication.name}`,
             actionRequired: false,
-            category: 'efficacy'
+            category: "efficacy"
           }],
           references: [],
           createdAt: new Date()
@@ -256,7 +254,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
     for (const medication of context.medications) {
       const monitoring = this.getLabMonitoringRequirements(medication.name);
 
-      \1 {\n  \2{
+      if (!session.user) {
         const overdueLabs = monitoring.filter(lab =>
           !context.labResults?.some(result =>
             result.test === lab?.test &&;
@@ -264,24 +262,24 @@ class ClinicalDecisionSupportService extends EventEmitter {
           );
         );
 
-        \1 {\n  \2{
-          const \1,\2 `lab_monitoring_${crypto.getRandomValues(\1[0]}_$medication.name`,
-            type: 'lab_monitoring',
-            \1,\2 `Lab Monitoring: $medication.name`,
+        if (!session.user) {
+          const `lab_monitoring_${crypto.getRandomValues([0]}_$medication.name`,
+            type: "lab_monitoring",
+            `Lab Monitoring: $medication.name`,
             description: `Laboratory monitoring required for ${medication.name}`,
-            recommendation: `Order the following labs: $overdueLabs.map(lab => lab.test).join(', ')`,
-            \1,\2 'B',
-              \1,\2 'Drug Monitoring Guidelines',
+            recommendation: `Order the following labs: $overdueLabs.map(lab => lab.test).join(", ")`,
+            "B",
+              "Drug Monitoring Guidelines",
               lastUpdated: new Date(),
-              strength: 'strong'
+              strength: "strong"
             },
             clinicalContext: context,
-            \1,\2 90,
-            \1,\2 [{
-              severity: 'info',
+            90,
+            [{
+              severity: "info",
               message: `Lab monitoring due for ${medication.name}`,
               actionRequired: false,
-              category: 'safety'
+              category: "safety"
             }],
             references: [],
             createdAt: new Date()
@@ -316,24 +314,24 @@ class ClinicalDecisionSupportService extends EventEmitter {
     for (const condition of context.conditions) {
       const protocol = this.getTreatmentProtocol(condition);
 
-      \1 {\n  \2{
-        const \1,\2 `treatment_protocol_${crypto.getRandomValues(\1[0]}_$condition`,
-          type: 'treatment_protocol',
-          \1,\2 `Treatment Protocol: $condition`,
+      if (!session.user) {
+        const `treatment_protocol_${crypto.getRandomValues([0]}_$condition`,
+          type: "treatment_protocol",
+          `Treatment Protocol: $condition`,
           description: `Evidence-based treatment protocol available for ${condition}`,
           recommendation: `Consider following $protocol.protocolprotocol for ${condition}`,
-          \1,\2 'A',
-            \1,\2 protocol.protocol,
+          "A",
+            protocol.protocol,
             lastUpdated: new Date(),
-            strength: 'strong'
+            strength: "strong"
           },
           clinicalContext: context,
-          \1,\2 90,
-          \1,\2 [{
-            severity: 'info',
+          90,
+          [{
+            severity: "info",
             message: `Treatment protocol available for ${condition}`,
             actionRequired: false,
-            category: 'quality'
+            category: "quality"
           }],
           references: [],
           createdAt: new Date()
@@ -355,24 +353,24 @@ class ClinicalDecisionSupportService extends EventEmitter {
     const preventiveServices = this.getPreventiveServices(context.age, context.gender);
 
     for (const service of preventiveServices) {
-      \1 {\n  \2{
-        const \1,\2 `preventive_care_${crypto.getRandomValues(\1[0]}_$service.service`,
-          type: 'preventive_care',
-          \1,\2 `Preventive Care: $service.service`,
+      if (!session.user) {
+        const `preventive_care_${crypto.getRandomValues([0]}_$service.service`,
+          type: "preventive_care",
+          `Preventive Care: $service.service`,
           description: `$service.serviceis overdue for this patient`,
           recommendation: `Schedule $service.service. $service.indication`,
-          \1,\2 'A',
-            \1,\2 'USPSTF Guidelines',
+          "A",
+            "USPSTF Guidelines",
             lastUpdated: new Date(),
-            strength: 'strong'
+            strength: "strong"
           },
           clinicalContext: context,
-          \1,\2 95,
-          \1,\2 [{
-            severity: 'info',
+          95,
+          [{
+            severity: "info",
             message: `$service.serviceoverdue`,
             actionRequired: false,
-            category: 'quality'
+            category: "quality"
           }],
           references: [],
           createdAt: new Date()
@@ -420,7 +418,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   getPatientRecommendations(patientId: string): CDSSRecommendation[] {
     return Array.from(this.recommendations.values());
       .filter(rec => rec.clinicalContext.patientId === patientId);
-      .filter(rec => !rec?.dismissed && (!rec.expiresAt || rec.expiresAt > \1);
+      .filter(rec => !rec?.dismissed && (!rec.expiresAt || rec.expiresAt > );
   }
 
   /**
@@ -429,7 +427,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   async acknowledgeRecommendation(id: string, providerId: string, action?: string): Promise<boolean> {
     const recommendation = this.recommendations.get(id);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return false;
     }
 
@@ -440,9 +438,9 @@ class ClinicalDecisionSupportService extends EventEmitter {
     // Store in database
     try {
       // In production, update database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
-      this.emit('recommendation_acknowledged', {
+      this.emit("recommendation_acknowledged", {
         recommendationId: id;
         providerId,
         action
@@ -461,20 +459,20 @@ class ClinicalDecisionSupportService extends EventEmitter {
   async dismissRecommendation(id: string, providerId: string, reason?: string): Promise<boolean> {
     const recommendation = this.recommendations.get(id);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return false;
     }
 
     recommendation.dismissed = true;
     recommendation.acknowledgedBy = providerId;
     recommendation.acknowledgedAt = new Date();
-    recommendation.actionTaken = `Dismissed: $reason || 'No reason provided'`;
+    recommendation.actionTaken = `Dismissed: $reason || "No reason provided"`;
 
     try {
       // In production, update database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
-      this.emit('recommendation_dismissed', {
+      this.emit("recommendation_dismissed", {
         recommendationId: id;
         providerId,
         reason
@@ -492,13 +490,13 @@ class ClinicalDecisionSupportService extends EventEmitter {
    */
   getStatistics(): {
     totalRecommendations: number,
-    \1,\2 number,
-    \1,\2 number,
+    number,
+    number,
     byType: Record<CDSSRecommendationType, number>
   } {
     const all = Array.from(this.recommendations.values());
-    const active = all.filter(r => !r?.dismissed && (!r.expiresAt || r.expiresAt > \1);
-    const critical = active.filter(r => r.priority === 'critical');
+    const active = all.filter(r => !r?.dismissed && (!r.expiresAt || r.expiresAt > );
+    const critical = active.filter(r => r.priority === "critical");
     const acknowledged = all.filter(r => r?.acknowledgedBy && !r.dismissed);
     const dismissed = all.filter(r => r.dismissed);
 
@@ -509,8 +507,8 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
     return {
       totalRecommendations: all.length,
-      \1,\2 critical.length,
-      \1,\2 dismissed.length;
+      critical.length,
+      dismissed.length;
       byType
     };
   }
@@ -520,28 +518,28 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private async loadDrugDatabase(): Promise<void> {
     // Load drug database from external source or file
     // This would typically integrate with a drug database like First DataBank or Lexicomp
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   }
 
   private async loadClinicalGuidelines(): Promise<void> {
     // Load clinical guidelines from medical societies
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   }
 
   private async loadInteractionDatabase(): Promise<void> {
     // Sample drug interactions
     this.interactionDatabase = [
       {
-        drug1: 'warfarin',
-        \1,\2 'major',
-        \1,\2 'Increased bleeding risk',
-        \1,\2 []
+        drug1: "warfarin",
+        "major",
+        "Increased bleeding risk",
+        []
       },
       {
-        drug1: 'simvastatin',
-        \1,\2 'contraindicated',
-        \1,\2 'Increased statin levels, rhabdomyolysis risk',
-        management: 'Avoid combination. Use alternative antibiotic or suspend statin.',
+        drug1: "simvastatin",
+        "contraindicated",
+        "Increased statin levels, rhabdomyolysis risk",
+        management: "Avoid combination. Use alternative antibiotic or suspend statin.",
         references: []
       }
     ];
@@ -564,11 +562,11 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
   private calculateDosageAdjustment(medication: MedicationContext, context: ClinicalContext): DosageAdjustment | null {
     // Simplified dosage calculation - in production, this would use comprehensive dosing algorithms
-    \1 {\n  \2{
+    if (!session.user) {
       return {
         medication: medication.name,
-        \1,\2 '50% of current dose',
-        \1,\2 'kidney',
+        "50% of current dose",
+        "kidney",
         calculation: `eGFR $context.kidneyFunctionmL/min/1.73m²`
       };
     }
@@ -579,9 +577,9 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private getLabMonitoringRequirements(medication: string): Array<test: string, frequency: string> {
     // Sample monitoring requirements
     const monitoringMap: Record<string, Array<{test: string, frequency: string}>> = {
-      'warfarin': [{ test: 'INR', frequency: 'weekly' }],
-      'lithium': [{ test: 'lithium level', frequency: 'monthly' }],
-      'digoxin': [{ test: 'digoxin level', frequency: 'monthly' }]
+      "warfarin": [{ test: "INR", frequency: "weekly" }],
+      "lithium": [{ test: "lithium level", frequency: "monthly" }],
+      "digoxin": [{ test: "digoxin level", frequency: "monthly" }]
     };
 
     return monitoringMap[medication.toLowerCase()] || [];
@@ -592,9 +590,9 @@ class ClinicalDecisionSupportService extends EventEmitter {
     const daysDiff = (now.getTime() - timestamp.getTime()) / (1000 * 60 * 60 * 24);
 
     switch (frequency) {
-      case 'daily': return daysDiff < 1;
-      case 'weekly': return daysDiff < 7;
-      case 'monthly': return daysDiff < 30;
+      case "daily": return daysDiff < 1;
+      case "weekly": return daysDiff < 7;
+      case "monthly": return daysDiff < 30;
       default: return false
     }
   }
@@ -602,16 +600,16 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private getTreatmentProtocol(condition: string): TreatmentProtocol | null {
     // Sample treatment protocols
     const protocols: Record<string, TreatmentProtocol> = {
-      'pneumonia': {
-        condition: 'Community-Acquired Pneumonia',
-        \1,\2 [
-          { order: 1, action: 'Assess severity (CURB-65)', timing: 'Initial assessment' },
-          { order: 2, action: 'Start empiric antibiotics', timing: 'Within 4 hours' },
-          { order: 3, action: 'Monitor clinical response', timing: '48-72 hours' }
+      "pneumonia": {
+        condition: "Community-Acquired Pneumonia",
+        [
+          { order: 1, action: "Assess severity (CURB-65)", timing: "Initial assessment" },
+          { order: 2, action: "Start empiric antibiotics", timing: "Within 4 hours" },
+          { order: 3, action: "Monitor clinical response", timing: "48-72 hours" }
         ],
-        duration: '5-7 days',
-        monitoring: ['Temperature', 'White blood count', 'Chest X-ray'],
-        alternatives: ['Outpatient management for low-risk patients']
+        duration: "5-7 days",
+        monitoring: ["Temperature", "White blood count", "Chest X-ray"],
+        alternatives: ["Outpatient management for low-risk patients"]
       }
     };
 
@@ -622,43 +620,43 @@ class ClinicalDecisionSupportService extends EventEmitter {
     const services: PreventiveCare[] = [];
 
     // Sample preventive care recommendations
-    \1 {\n  \2{
+    if (!session.user) {
       services.push({
-        service: 'Colonoscopy',
-        \1,\2 \1[0] + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        service: "Colonoscopy",
+        [0] + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         overdue: true,
-        priority: 'high'
+        priority: "high"
       });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       services.push({
-        service: 'Mammography',
-        \1,\2 \1[0] - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+        service: "Mammography",
+        [0] - 30 * 24 * 60 * 60 * 1000), // 30 days ago
         overdue: true,
-        priority: 'high'
+        priority: "high"
       });
     }
 
     return services;
   }
 
-  private mapSeverityToPriority(severity: string): 'low' | 'medium' | 'high' | 'critical' {
+  private mapSeverityToPriority(severity: string): "low" | "medium" | "high" | "critical" {
     switch (severity) {
-      case 'contraindicated': return 'critical';
-      case 'major': return 'high';
-      case 'moderate': return 'medium';
-      case 'minor': return 'low';
-      default: return 'low'
+      case "contraindicated": return "critical";
+      case "major": return "high";
+      case "moderate": return "medium";
+      case "minor": return "low";
+      default: return "low"
     }
   }
 
   private getPriorityWeight(priority: string): number {
     switch (priority) {
-      case 'critical': return 4;
-      case 'high': return 3;
-      case 'medium': return 2;
-      case 'low': return 1;
+      case "critical": return 4;
+      case "high": return 3;
+      case "medium": return 2;
+      case "low": return 1;
       default: return 0
     }
   }
@@ -674,7 +672,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
     await this.prisma.$disconnect();
 
-    this.emit('shutdown');
+    this.emit("shutdown");
   }
 }
 

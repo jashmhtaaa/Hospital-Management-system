@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { assetService } from '@/lib/hr/asset-service';
+import { assetService } from "@/lib/hr/asset-service";
 // GET handler for retrieving a specific asset
 export const _GET = async (
   request: NextRequest;
@@ -11,7 +11,7 @@ export const _GET = async (
   try {
     const asset = await assetService.getAsset(params.id);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Asset not found" },
         { status: 404 }
@@ -31,7 +31,7 @@ export const _GET = async (
 // Schema for asset update
 const assetUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
-  assetType: z.enum(['EQUIPMENT', 'FURNITURE', 'IT', 'VEHICLE', 'BUILDING', 'OTHER'], {
+  assetType: z.enum(["EQUIPMENT", "FURNITURE", "IT", "VEHICLE", "BUILDING", "OTHER"], {
     errorMap: () => ({ message: "Invalid asset type" }),
   }).optional(),
   serialNumber: z.string().optional(),
@@ -47,7 +47,7 @@ const assetUpdateSchema = z.object({
   location: z.string().optional(),
   departmentId: z.string().optional().nullable(),
   assignedToId: z.string().optional().nullable(),
-  status: z.enum(['AVAILABLE', 'IN_USE', 'UNDER_MAINTENANCE', 'DISPOSED', 'LOST'], {
+  status: z.enum(["AVAILABLE", "IN_USE", "UNDER_MAINTENANCE", "DISPOSED", "LOST"], {
     errorMap: () => ({ message: "Invalid status" }),
   }).optional(),
   notes: z.string().optional(),
@@ -65,7 +65,7 @@ export const _PUT = async (
 
     // Validate request data
     const validationResult = assetUpdateSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }

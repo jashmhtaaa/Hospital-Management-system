@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { type NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { authOptions } from '@/lib/auth';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { TemplateService } from '@/lib/services/support-services/marketing';
+import { authOptions } from "@/lib/auth";
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
 /**
@@ -20,16 +20,16 @@ export const GET = async (request: NextRequest) => {
 
       // Parse query parameters
       const filters = {
-        type: searchParams.get('type') || undefined,
-        isActive: searchParams.has('isActive');
-          ? searchParams.get('isActive') === 'true';
+        type: searchParams.get("type") || undefined,
+        isActive: searchParams.has("isActive");
+          ? searchParams.get("isActive") === "true";
           : undefined,
-        search: searchParams.get('search') || undefined,
-        page: searchParams.has('page');
-          ? parseInt(searchParams.get('page') || '1', 10);
+        search: searchParams.get("search") || undefined,
+        page: searchParams.has("page");
+          ? parseInt(searchParams.get("page") || "1", 10);
           : 1,
-        limit: searchParams.has('limit');
-          ? parseInt(searchParams.get('limit') || '10', 10);
+        limit: searchParams.has("limit");
+          ? parseInt(searchParams.get("limit") || "10", 10);
           : 10,
       };
 
@@ -38,8 +38,8 @@ export const GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.templates.read',
-      auditAction: 'TEMPLATES_LIST'
+      requiredPermission: "marketing.templates.read",
+      auditAction: "TEMPLATES_LIST"
     }
   );
 }
@@ -63,7 +63,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json(template, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.templates.create',
-      auditAction: 'TEMPLATE_CREATE'
+      requiredPermission: "marketing.templates.create",
+      auditAction: "TEMPLATE_CREATE"
     }
   );

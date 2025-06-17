@@ -15,7 +15,7 @@ interface ModalityInput {
 // GET all Radiology Modalities
 export const _GET = async (request: NextRequest) => {
   const session = await getSession();
-  \1 {\n  \2;
+  if (!session.user);
   ) 
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
@@ -39,7 +39,7 @@ export const _GET = async (request: NextRequest) => {
 // POST a new Radiology Modality (Admin only)
 export const _POST = async (request: NextRequest) => {
   const session = await getSession()
-  \1 {\n  \2) {
+  if (!session.user)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
@@ -48,7 +48,7 @@ export const _POST = async (request: NextRequest) => {
     const { name, description, location } =;
       (await request.json()) as ModalityInput; // Cast to ModalityInput
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Missing required field: name" },
         { status: 400 }
@@ -61,7 +61,7 @@ export const _POST = async (request: NextRequest) => {
     );
       .bind(name);
       .first();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Modality with this name already exists" },
         { status: 409 }
@@ -85,7 +85,7 @@ export const _POST = async (request: NextRequest) => {
     // FIX: Use unknown instead of any
     const errorMessage = error instanceof Error ? error.message : String(error),
 
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json(
         { error: "Modality with this name already exists" },
         { status: 409 }

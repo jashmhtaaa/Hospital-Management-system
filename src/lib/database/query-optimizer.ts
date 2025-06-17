@@ -1,8 +1,8 @@
-import { Prisma, type PrismaClient } from '@prisma/client';
+import { Prisma, type PrismaClient } from "@prisma/client";
 
 
-import { cache } from '@/lib/cache';
-import { prisma } from './connection-pool.ts';
+import { cache } from "@/lib/cache";
+import { prisma } from "./connection-pool.ts";
 }
 
 /**
@@ -11,12 +11,11 @@ import { prisma } from './connection-pool.ts';
  */
 
 // Query optimization patterns for common scenarios
-\1
 }
   }
 
   public static getInstance(): QueryOptimizer {
-    \1 {\n  \2{
+    if (!session.user) {
       QueryOptimizer.instance = new QueryOptimizer();
     }
     return QueryOptimizer.instance;
@@ -34,27 +33,27 @@ import { prisma } from './connection-pool.ts';
   }) {
     const cacheKey = `patients_with_bills:${JSON.stringify(filters)}`;
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+    if (!session.user)eturn cached;
 
     const result = await this.client.patient.findMany({
-      \1,\2 filters?.active ?? true
+      filters?.active ?? true
       },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+      {
+          true,
+            true,
+            true,
             billDate: true
           },
-          orderBy: { billDate: 'desc' },
+          orderBy: { billDate: "desc" },
           take: 10, // Limit related records
         },
-        \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
         },
       },
       take: filters?.limit ?? 50,
       skip: filters?.offset ?? 0;
-      { createdAt: 'desc' },
+      { createdAt: "desc" },
     });
 
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes
@@ -65,39 +64,39 @@ import { prisma } from './connection-pool.ts';
   async getPatientsWithUpcomingAppointments(days: number = 30) {
     const cacheKey = `patients_upcoming_appointments:${days}`
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+    if (!session.user)eturn cached;
 
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + days);
 
     const result = await this.client.patient.findMany({
-      \1,\2 true,
-        \1,\2 {
-            \1,\2 new Date(),
+      true,
+        {
+            new Date(),
               lte: futureDate
             },
-            \1,\2 ['SCHEDULED', 'CONFIRMED'],
+            ["SCHEDULED", "CONFIRMED"],
             },
           },
         },
       },
-      \1,\2 {
-          \1,\2 {
+      {
+          {
               gte: new Date(),
               lte: futureDate
             },
-            \1,\2 ['SCHEDULED', 'CONFIRMED'],
+            ["SCHEDULED", "CONFIRMED"],
             },
           },
-          \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true
+          true,
+            true,
+            true,
+            true
           },
-          orderBy: { appointmentDate: 'asc' },
+          orderBy: { appointmentDate: "asc" },
         },
       },
-      orderBy: { lastName: 'asc' },
+      orderBy: { lastName: "asc" },
     });
 
     await cache.set(cacheKey, result, 600); // Cache for 10 minutes
@@ -121,28 +120,28 @@ import { prisma } from './connection-pool.ts';
         ...(filters?.patientId && { patientId: filters.patientId }),
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.dateFrom && {
-          \1,\2 filters.dateFrom;
+          filters.dateFrom;
             ...(filters?.dateTo && lte: filters.dateTo ),
           },
         }),
       },
-      \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,,
-        \1,\2 true,
-                \1,\2 true,
+      true,
+            true,
+            true,,
+        true,
+                true,
                 category: true,,,
-          orderBy: createdAt: 'asc' ,,
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-          orderBy: paymentDate: 'desc' ,,
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,,
+          orderBy: createdAt: "asc" ,,
+        true,
+            true,
+            true,
+          orderBy: paymentDate: "desc" ,,
+        true,
+            true,
+            true,,
       },
       take: filters?.limit ?? 100,
-      orderBy: { billDate: 'desc' },
+      orderBy: { billDate: "desc" },
     });
 
     return result;
@@ -150,9 +149,9 @@ import { prisma } from './connection-pool.ts';
 
   // Optimized outstanding bills calculation
   async getOutstandingBillsSummary() {
-    const cacheKey = 'outstanding_bills_summary';
+    const cacheKey = "outstanding_bills_summary";
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+    if (!session.user)eturn cached;
 
     // Use raw SQL for better performance on aggregations
     const result = await this.client.$queryRaw`;
@@ -162,7 +161,7 @@ import { prisma } from './connection-pool.ts';
         AVG(outstanding_amount) as average_outstanding,
         COUNT(CASE WHEN outstanding_amount > 0 THEN 1 END) as bills_with_outstanding;
       FROM bills;
-      WHERE status NOT IN ('CANCELLED', 'REFUNDED');
+      WHERE status NOT IN ("CANCELLED", "REFUNDED");
     ` as any[];
 
     await cache.set(cacheKey, result[0], 300);
@@ -186,51 +185,51 @@ import { prisma } from './connection-pool.ts';
         ...(filters?.departmentId && { departmentId: filters.departmentId }),
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.date && {
-          \1,\2 filters.date,
+          filters.date,
             lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000)
           },
         }),
       },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true
+      {
+          true,
+            true,
+            true,
+            true
           },
         },
       },
-      orderBy: { startTime: 'asc' },
+      orderBy: { startTime: "asc" },
     });
 
     return result;
   }
 
-  // Doctor's schedule optimization
+  // Doctor"s schedule optimization
   async getDoctorScheduleOptimized(
     doctorId: string,
-    \1,\2 Date;
+    Date;
   ) {
     const cacheKey = `doctor_schedule:${doctorId}:${startDate.toISOString()}:${endDate.toISOString()}`;
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+    if (!session.user)eturn cached;
 
     const result = await this.client.appointment.findMany({
       where: {
         doctorId,
-        \1,\2 startDate,
+        startDate,
           lte: endDate
         },
-        \1,\2 ['CANCELLED', 'NO_SHOW'],
+        ["CANCELLED", "NO_SHOW"],
         },
       },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
-            \1,\2 true
+      {
+          true,
+            true,
+            true
           },
         },
       },
-      orderBy: { startTime: 'asc' },
+      orderBy: { startTime: "asc" },
     });
 
     await cache.set(cacheKey, result, 1800); // Cache for 30 minutes
@@ -254,35 +253,35 @@ import { prisma } from './connection-pool.ts';
         ...(filters?.doctorId && { doctorId: filters.doctorId }),
         ...(filters?.status && { status: filters.status as any }),
       },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+      {
+          true,
+            true,
+            true,
+            true,
             allergies: true
           },
         },
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
+            true,
+            true,
             oxygenSaturation: true,
-          orderBy: recordedAt: 'desc' ,
+          orderBy: recordedAt: "desc" ,
           take: 5, // Latest 5 vital signs
         },
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-          orderBy: administeredAt: 'desc' ,
+        true,
+            true,
+            true,
+          orderBy: administeredAt: "desc" ,
           take: 10, // Latest 10 medications
         },
-        \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
             progressNotes: true,
         },
       },
       take: filters?.limit ?? 50,
-      orderBy: { admissionDate: 'desc' },
+      orderBy: { admissionDate: "desc" },
     });
 
     return result;
@@ -290,15 +289,15 @@ import { prisma } from './connection-pool.ts';
 
   // Ward occupancy optimization
   async getWardOccupancyOptimized() {
-    const cacheKey = 'ward_occupancy';
+    const cacheKey = "ward_occupancy";
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+    if (!session.user)eturn cached;
 
     const result = await this.client.$queryRaw`;
       SELECT;
         ward_id,
         COUNT(*) as occupied_beds,
-        COUNT(CASE WHEN status = 'ACTIVE' THEN 1 END) as active_admissions,
+        COUNT(CASE WHEN status = "ACTIVE" THEN 1 END) as active_admissions,
         AVG(EXTRACT(EPOCH FROM (COALESCE(discharge_date, NOW()) - admission_date)) / 86400) as avg_length_of_stay;
       FROM admissions;
       WHERE ward_id IS NOT NULL;
@@ -328,25 +327,25 @@ import { prisma } from './connection-pool.ts';
         ...(filters?.doctorId && { doctorId: filters.doctorId }),
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.dateFrom && {
-          \1,\2 filters.dateFrom;
+          filters.dateFrom;
             ...(filters?.dateTo && lte: filters.dateTo ),
           },
         }),
       },
-      \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+      true,
+            true,
+            true,
             gender: true,,
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
+            true,
             unit: true,,
-        \1,\2 true,
-                \1,\2 true,
-                \1,\2 true,,,
-          orderBy: reportedDate: 'desc' ,,
+        true,
+                true,
+                true,,,
+          orderBy: reportedDate: "desc" ,,
       },
-      orderBy: { orderDate: 'desc' },
+      orderBy: { orderDate: "desc" },
     });
 
     return result;
@@ -356,33 +355,33 @@ import { prisma } from './connection-pool.ts';
   async getCriticalLabResults(hours: number = 24) {
     const cacheKey = `critical_lab_results:${hours}`;
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+    if (!session.user)eturn cached;
 
-    const sinceDate = \1[0] - hours * 60 * 60 * 1000);
+    const sinceDate = [0] - hours * 60 * 60 * 1000);
 
     const result = await this.client.labResult.findMany({
-      \1,\2 {
-          in: ['CRITICAL_HIGH', 'CRITICAL_LOW'],
+      {
+          in: ["CRITICAL_HIGH", "CRITICAL_LOW"],
         },
-        \1,\2 sinceDate
+        sinceDate
         },
-        status: 'VERIFIED'
+        status: "VERIFIED"
       },
-      \1,\2 {
-          \1,\2 {
-              \1,\2 true,
-                \1,\2 true,
-                \1,\2 true
+      {
+          {
+              true,
+                true,
+                true
               },
             },
           },
         },
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
+            true,
         },
       },
-      orderBy: { reportedDate: 'desc' },
+      orderBy: { reportedDate: "desc" },
     });
 
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes
@@ -398,37 +397,37 @@ import { prisma } from './connection-pool.ts';
     const result = await this.client.insurancePolicy.findMany({
       where: {
         ...(patientId && { patientId }),
-        status: 'active'
+        status: "active"
       },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
+      {
+          true,
+            true,
             lastName: true
           },
         },
-        \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
             phone: true,
         },
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
+            true,
+            true,
             lastResponseDate: true,
-          orderBy: submittedAt: 'desc' ,
+          orderBy: submittedAt: "desc" ,
           take: 10, // Latest 10 claims
         },
-        \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
             verifiedBy: true,
-          orderBy: verifiedAt: 'desc' ,
+          orderBy: verifiedAt: "desc" ,
           take: 3, // Latest 3 verifications
         },
-        \1,\2 true,
+        true,
             verifications: true,
         },
       },
-      orderBy: { startDate: 'desc' },
+      orderBy: { startDate: "desc" },
     });
 
     return result;
@@ -440,12 +439,12 @@ import { prisma } from './connection-pool.ts';
 
   async bulkUpdateBillStatus(
     billIds: string[],
-    \1,\2 string;
+    string;
   ) {
     return this.client.bill.updateMany({
-      \1,\2 { in: billIds },
+      { in: billIds },
       },
-      \1,\2 status as any,
+      status as any,
         updatedAt: new Date()
       },
     });
@@ -465,12 +464,12 @@ import { prisma } from './connection-pool.ts';
   private patientLoader = new Map<string, Promise<unknown>>();
 
   async getPatientOptimized(patientId: string) {
-    \1 {\n  \2 {
+    if (!session.user) {
       const promise = this.client.patient.findUnique({
         where: { id: patientId },
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true,
+        {
+            true,
+              true,
               labOrders: true
             },
           },
@@ -491,7 +490,7 @@ import { prisma } from './connection-pool.ts';
    */
 
   async analyzeSlowQueries() {
-    // This would integrate with PostgreSQL's pg_stat_statements
+    // This would integrate with PostgreSQL"s pg_stat_statements
     const result = await this.client.$queryRaw`;
       SELECT;
         query,
@@ -510,13 +509,13 @@ import { prisma } from './connection-pool.ts';
   }
 
   async getQueryPerformanceStats() {
-    const cacheKey = 'query_performance_stats';
+    const cacheKey = "query_performance_stats";
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+    if (!session.user)eturn cached;
 
     const stats = {
       totalQueries: 0,
-      \1,\2 0,
+      0,
       cacheHitRate: 0
     };
 

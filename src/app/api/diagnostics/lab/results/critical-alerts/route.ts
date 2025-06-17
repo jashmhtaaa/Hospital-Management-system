@@ -1,12 +1,12 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '@/lib/audit';
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { RedisCache } from '@/lib/cache/redis';
-import { DB } from '@/lib/database';
-import { notifyUsers } from '@/lib/notifications';
-import { getSession } from '@/lib/session';
+import { auditLog } from "@/lib/audit";
+import { CacheInvalidation } from "@/lib/cache/invalidation";
+import { RedisCache } from "@/lib/cache/redis";
+import { DB } from "@/lib/database";
+import { notifyUsers } from "@/lib/notifications";
+import { getSession } from "@/lib/session";
 /**
  * GET /api/diagnostics/lab/results/critical-alerts;
  * Get critical result alerts;
@@ -15,21 +15,21 @@ export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Parse query parameters
     const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
-    const assignedTo = searchParams.get('assignedTo');
-    const page = Number.parseInt(searchParams.get('page') || '1');
-    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
+    const status = searchParams.get("status");
+    const assignedTo = searchParams.get("assignedTo");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Cache key
     const cacheKey = `diagnostic:lab:critical-alerts:${status ||;
-      'all'}:${assignedTo ||
-      'all'}:${page}:${pageSize}:${session.user.id}`;
+      "all"}:${assignedTo ||
+      "all"}:${page}:${pageSize}:${session.user.id}`;
 
     // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
@@ -54,34 +54,34 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add status filter if provided
-        \1 {\n  \2{
-          query += ' AND ca.status = ?';
+        if (!session.user) {
+          query += " AND ca.status = ?";
           params.push(status);
         }
 
         // Add assigned_to filter if provided
-        \1 {\n  \2{
-          \1 {\n  \2{
-            query += ' AND ca.assigned_to = ?';
+        if (!session.user) {
+          if (!session.user) {
+            query += " AND ca.assigned_to = ?";
             params.push(session.user.id);
-          } else \1 {\n  \2{
-            query += ' AND ca.assigned_to IS NULL';
+          } else if (!session.user) {
+            query += " AND ca.assigned_to IS NULL";
           } else {
-            query += ' AND ca.assigned_to = ?';
+            query += " AND ca.assigned_to = ?";
             params.push(assignedTo);
           }
         }
 
         // Add role-based filtering
-        \1 {\n  \2 {
+        if (!session.user) {
           // Regular users can only see alerts assigned to them or unassigned
-          query += ' AND (ca.assigned_to = ? OR ca.assigned_to IS NULL)';
+          query += " AND (ca.assigned_to = ? OR ca.assigned_to IS NULL)";
           params.push(session.user.id);
         }
 
         // Add pagination
         const offset = (page - 1) * pageSize;
-        query += ' ORDER BY ca.created_at DESC LIMIT ? OFFSET ?';
+        query += " ORDER BY ca.created_at DESC LIMIT ? OFFSET ?";
         params.push(pageSize, offset);
 
         // Execute query
@@ -92,8 +92,8 @@ export const GET = async (request: NextRequest) => {
           SELECT COUNT(*) as total;
           FROM laboratory_critical_alerts ca;
           WHERE 1=1;
-          /* SECURITY: Template literal eliminated */ 'lab_manager', 'lab_supervisor'].includes(session.user.roleName) ?
-            ' AND (ca.assigned_to = ? OR ca.assigned_to IS NULL)' : ''}
+          /* SECURITY: Template literal eliminated */ "lab_manager", "lab_supervisor"].includes(session.user.roleName) ?
+            " AND (ca.assigned_to = ? OR ca.assigned_to IS NULL)" : ""}
         `;
 
         const countParams = [...params.slice(0, -2)];
@@ -114,7 +114,7 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'laboratory_critical_alerts',
+          "laboratory_critical_alerts",
           details: status, assignedTo, page, pageSize 
         });
 
@@ -135,8 +135,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch critical alerts',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to fetch critical alerts",
+      details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }
 }
@@ -149,13 +149,13 @@ export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Parse request body
@@ -163,30 +163,30 @@ export const POST = async (request: NextRequest) => {
     const { resultId, criticalValueId, notes, assignedTo } = body;
 
     // Validate required fields
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Result ID and Critical Value ID are required' }, { status: 400 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Result ID and Critical Value ID are required" }, { status: 400 });
     }
 
     // Check if result exists
-    const resultCheck = await DB.query('SELECT * FROM laboratory_results WHERE id = ?', [resultId]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Result not found' }, { status: 404 });
+    const resultCheck = await DB.query("SELECT * FROM laboratory_results WHERE id = ?", [resultId]);
+    if (!session.user) {
+      return NextResponse.json({ error: "Result not found" }, { status: 404 });
     }
 
     // Check if critical value exists
-    const criticalValueCheck = await DB.query('SELECT * FROM laboratory_critical_values WHERE id = ?', [criticalValueId]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Critical value not found' }, { status: 404 });
+    const criticalValueCheck = await DB.query("SELECT * FROM laboratory_critical_values WHERE id = ?", [criticalValueId]);
+    if (!session.user) {
+      return NextResponse.json({ error: "Critical value not found" }, { status: 404 });
     }
 
     // Check if alert already exists for this result
     const existingAlertCheck = await DB.query(
-      'SELECT id FROM laboratory_critical_alerts WHERE result_id = ? AND status != ?',
-      [resultId, 'resolved']
+      "SELECT id FROM laboratory_critical_alerts WHERE result_id = ? AND status != ?",
+      [resultId, "resolved"]
     );
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'An active alert already exists for this result' }, { status: 409 });
+    if (!session.user) {
+      return NextResponse.json({ error: "An active alert already exists for this result" }, { status: 409 });
     }
 
     // Insert critical alert
@@ -200,7 +200,7 @@ export const POST = async (request: NextRequest) => {
       resultId,
       criticalValueId,
       notes || null,
-      'pending',
+      "pending",
       assignedTo || null,
       session.user.id,
       session.user.id;
@@ -211,39 +211,39 @@ export const POST = async (request: NextRequest) => {
     // Log creation
     await auditLog({
       userId: session.user.id,
-      \1,\2 'laboratory_critical_alerts',
-      \1,\2 body
+      "laboratory_critical_alerts",
+      body
     });
 
     // Send notifications
-    \1 {\n  \2{
+    if (!session.user) {
       await notifyUsers({
         userIds: [assignedTo],
-        \1,\2 'You have been assigned a critical result alert that requires your attention',
-        \1,\2 result.insertId,
-        \1,\2 'high'
+        "You have been assigned a critical result alert that requires your attention",
+        result.insertId,
+        "high"
       });
     } else {
       // Notify all lab supervisors and managers if unassigned
       const supervisors = await DB.query(
-        'SELECT id FROM users WHERE role_id IN (SELECT id FROM roles WHERE name IN (?, ?))',
-        ['lab_supervisor', 'lab_manager']
+        "SELECT id FROM users WHERE role_id IN (SELECT id FROM roles WHERE name IN (?, ?))",
+        ["lab_supervisor", "lab_manager"]
       );
 
       const supervisorIds = supervisors.results.map(user => user.id);
 
-      \1 {\n  \2{
+      if (!session.user) {
         await notifyUsers({
           userIds: supervisorIds,
-          \1,\2 'A new critical result alert requires assignment',
-          \1,\2 result.insertId,
-          \1,\2 'high'
+          "A new critical result alert requires assignment",
+          result.insertId,
+          "high"
         });
       }
     }
 
     // Invalidate cache
-    await CacheInvalidation.invalidatePattern('diagnostic:lab:critical-alerts:*');
+    await CacheInvalidation.invalidatePattern("diagnostic:lab:critical-alerts:*");
 
     // Get the created alert
     const createdAlert = await DB.query(
@@ -267,8 +267,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create critical alert',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to create critical alert",
+      details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }
 }
@@ -281,13 +281,13 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
     // Parse request body
@@ -295,123 +295,123 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const { status, notes, assignedTo, acknowledgement } = body;
 
     // Check if alert exists
-    const existingCheck = await DB.query('SELECT * FROM laboratory_critical_alerts WHERE id = ?', [id]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Critical alert not found' }, { status: 404 });
+    const existingCheck = await DB.query("SELECT * FROM laboratory_critical_alerts WHERE id = ?", [id]);
+    if (!session.user) {
+      return NextResponse.json({ error: "Critical alert not found" }, { status: 404 });
     }
 
     const existingAlert = existingCheck.results[0];
 
     // Authorization
     const isAssignedToUser = existingAlert.assigned_to === session.user.id;
-    const isManager = ['admin', 'lab_manager', 'lab_supervisor'].includes(session.user.roleName);
+    const isManager = ["admin", "lab_manager", "lab_supervisor"].includes(session.user.roleName);
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Build update query
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Only managers or assigned users can change status
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Forbidden: Cannot change status' }, { status: 403 });
+      if (!session.user) {
+        return NextResponse.json({ error: "Forbidden: Cannot change status" }, { status: 403 });
       }
 
-      updateFields.push('status = ?');
+      updateFields.push("status = ?");
       updateParams.push(status);
 
       // If resolving, require acknowledgement
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json({
-          error: 'Acknowledgement required to resolve critical alert'
+          error: "Acknowledgement required to resolve critical alert"
         }, { status: 400 });
       }
     }
 
-    \1 {\n  \2{
-      updateFields.push('notes = ?');
+    if (!session.user) {
+      updateFields.push("notes = ?");
       updateParams.push(notes);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Only managers can reassign
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Forbidden: Cannot reassign alert' }, { status: 403 });
+      if (!session.user) {
+        return NextResponse.json({ error: "Forbidden: Cannot reassign alert" }, { status: 403 });
       }
 
-      updateFields.push('assigned_to = ?');
+      updateFields.push("assigned_to = ?");
       updateParams.push(assignedTo || null);
     }
 
-    \1 {\n  \2{
-      updateFields.push('acknowledged_at = NOW()');
-      updateFields.push('acknowledged_by = ?');
+    if (!session.user) {
+      updateFields.push("acknowledged_at = NOW()");
+      updateFields.push("acknowledged_by = ?");
       updateParams.push(session.user.id);
     }
 
-    updateFields.push('updated_by = ?');
+    updateFields.push("updated_by = ?");
     updateParams.push(session.user.id);
 
-    updateFields.push('updated_at = NOW()');
+    updateFields.push("updated_at = NOW()");
 
     // Add ID to params
     updateParams.push(id);
 
     // Execute update
-    \1 {\n  \2{
-      const query = `UPDATE laboratory_critical_alerts SET ${updateFields.join(', ')} WHERE id = ?`;
+    if (!session.user) {
+      const query = `UPDATE laboratory_critical_alerts SET ${updateFields.join(", ")} WHERE id = ?`;
       await DB.query(query, updateParams);
 
       // Log update
       await auditLog({
         userId: session.user.id,
-        \1,\2 'laboratory_critical_alerts',
-        \1,\2 body
+        "laboratory_critical_alerts",
+        body
       });
 
       // Send notifications for assignment changes
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           await notifyUsers({
             userIds: [assignedTo],
-            \1,\2 'You have been assigned a critical result alert that requires your attention',
-            \1,\2 id,
-            \1,\2 'high'
+            "You have been assigned a critical result alert that requires your attention",
+            id,
+            "high"
           });
         }
       }
 
       // Send notifications for status changes
-      \1 {\n  \2{
+      if (!session.user) {
         // Notify relevant parties about status change
         const notifyIds = [];
 
         // Always notify the creator
-        \1 {\n  \2{
+        if (!session.user) {
           notifyIds.push(existingAlert.created_by);
         }
 
-        // Notify the assigned user if they didn't make the change
-        \1 {\n  \2{
+        // Notify the assigned user if they didn"t make the change
+        if (!session.user) {
           notifyIds.push(existingAlert.assigned_to);
         }
 
-        \1 {\n  \2{
+        if (!session.user) {
           await notifyUsers({
             userIds: notifyIds,
-            \1,\2 `Critical alert status changed to ${status}`,
-            type: 'critical_alert_update',
-            \1,\2 'laboratory_critical_alerts',
-            priority: 'medium'
+            `Critical alert status changed to ${status}`,
+            type: "critical_alert_update",
+            "laboratory_critical_alerts",
+            priority: "medium"
           });
         }
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: lab: critical-alerts:*')
+      await CacheInvalidation.invalidatePattern("diagnostic: lab: critical-alerts:*")
     }
 
     // Get the updated alert
@@ -436,7 +436,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update critical alert',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to update critical alert",
+      details: error instanceof Error ? error.message : "Unknown error'
     }, { status: 500 });
   }

@@ -26,7 +26,7 @@ export const _GET = async (
 ) {
   try {
     const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Template ID is required" },
         { status: 400 }
@@ -40,7 +40,7 @@ export const _GET = async (
       .bind(templateId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Checklist template not found" },
         { status: 404 }
@@ -50,7 +50,7 @@ export const _GET = async (
     const template = results[0];
     // Parse items JSON before sending response
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         template.items = JSON.parse(template.items);
       }
     } catch (parseError) {
@@ -79,7 +79,7 @@ export const _PUT = async (
 ) {
   try {
     const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Template ID is required" },
         { status: 400 }
@@ -90,7 +90,7 @@ export const _PUT = async (
     const { name, phase, items } = body;
 
     // Basic validation
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "No update fields provided" },
         { status: 400 }
@@ -103,17 +103,17 @@ export const _PUT = async (
     // Construct the update query dynamically
     // FIX: Use specific type for fieldsToUpdate
     const fieldsToUpdate: { [key: string]: string } = {};
-    \1 {\n  \2ieldsToUpdate.name = name;
-    \1 {\n  \2{
+    if (!session.user)ieldsToUpdate.name = name;
+    if (!session.user) {
       const validPhases = ["pre-op", "intra-op", "post-op"];
-      \1 {\n  \2 {
+      if (!session.user) {
         return NextResponse.json({ message: "Invalid phase" }, { status: 400 });
       }
       fieldsToUpdate.phase = phase;
     }
-    \1 {\n  \2{
+    if (!session.user) {
       // Add more robust validation for items structure if needed
-      \1 {\n  \2|
+      if (!session.user)|
         !items.every(
           (item) =>
             typeof item === "object" &&
@@ -145,14 +145,14 @@ export const _PUT = async (
       .bind(...values);
       .run();
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Check if the template actually exists before returning 404
       const { results: checkExists } = await DB.prepare(
         "SELECT id FROM OTChecklistTemplates WHERE id = ?";
       );
         .bind(templateId);
         .all();
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { message: "Checklist template not found" },
           { status: 404 }
@@ -168,7 +168,7 @@ export const _PUT = async (
       .bind(templateId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       // This case should ideally not happen if the update was successful or the check above passed
       return NextResponse.json(
         { message: "Failed to fetch updated template details after update" },
@@ -179,7 +179,7 @@ export const _PUT = async (
     const updatedTemplate = results[0];
     // Parse items JSON before sending response
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         updatedTemplate.items = JSON.parse(updatedTemplate.items);
       }
     } catch (parseError) {
@@ -191,7 +191,7 @@ export const _PUT = async (
     // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage instead of error.message
       return NextResponse.json(
         {
@@ -215,14 +215,14 @@ export const DELETE = async (
 ) {
   try {
     const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Template ID is required" },
         { status: 400 }
       );
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database
     const info = await DB.prepare(
@@ -231,7 +231,7 @@ export const DELETE = async (
       .bind(templateId);
       .run();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Checklist template not found" },
         { status: 404 }
@@ -247,7 +247,7 @@ export const DELETE = async (
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // Handle potential foreign key constraint errors if responses exist
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage instead of error.message
       return NextResponse.json(
         {

@@ -19,14 +19,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 
 // Define the type for the form data
-\1
 }
 }
 
 // Define the type for the component props
 interface CreateProcedureTypeModalProperties {
   isOpen: boolean,
-  \1,\2 (data: ProcedureTypeFormData) => Promise<void>
+  (data: ProcedureTypeFormData) => Promise<void>
 export default const _CreateProcedureTypeModal = ({
   isOpen,
   onClose,
@@ -39,7 +38,7 @@ export default const _CreateProcedureTypeModal = ({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    \1 {\n  \2{
+    if (!session.user) {
       /* SECURITY: Console statement removed */
       return
     }
@@ -67,14 +66,14 @@ export default const _CreateProcedureTypeModal = ({
   // Use the isOpen prop to control the dialog's open state
   return (
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
-      \1>
+      >
         <DialogHeader>
           <DialogTitle>Add New Procedure Type</DialogTitle>
         </DialogHeader>
-        \1>
-          \1>
-            \1>
-              \1>
+        >
+          >
+            >
+              >
                 Name *
               </Label>
               <Input>
@@ -86,8 +85,8 @@ export default const _CreateProcedureTypeModal = ({
                 disabled={isSubmitting}
               />
             </div>
-            \1>
-              \1>
+            >
+              >
                 Modality Type
               </Label>
               <Input>
@@ -99,8 +98,8 @@ export default const _CreateProcedureTypeModal = ({
                 disabled={isSubmitting}
               />
             </div>
-            \1>
-              \1>
+            >
+              >
                 Description
               </Label>
               <Textarea>
@@ -123,7 +122,7 @@ export default const _CreateProcedureTypeModal = ({
                 Cancel
               </Button>
             </DialogClose>
-            \1>
+            >
               {isSubmitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : undefined}

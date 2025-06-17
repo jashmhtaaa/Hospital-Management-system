@@ -11,10 +11,10 @@ interface OPDStatisticsProperties {
 
 interface StatisticsData {
   totalAppointments: number,
-  \1,\2 number,
-  \1,\2 number; // in minutes
-  \1,\2 string,
-    \1,\2 number; // in minutes
+  number,
+  number; // in minutes
+  string,
+    number; // in minutes
   }[];
 }
 
@@ -40,7 +40,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
           `/api/opd/statistics?date=${formattedDate}`;
         );
 
-        \1 {\n  \2{
+        if (!session.user) {
           const errorMessage = "Failed to fetch statistics";
           try {
             const errorData: ApiErrorResponse = await response.json(),
@@ -54,7 +54,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         // FIX: Type the response data
         const data: StatisticsApiResponse = await response.json();
         // Validate the structure if necessary before setting state
-        \1 {\n  \2{
+        if (!session.user) {
           setStatistics(data);
         } else {
 
@@ -76,27 +76,27 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
     fetchStatistics();
   }, [date]);
 
-  \1 {\n  \2{
-    return <div className="text-center p-4">Loading statistics...\1>
+  if (!session.user) {
+    return <div className="text-center p-4">Loading statistics...>
   }
 
-  \1 {\n  \2{
-    return <div className="text-red-500 p-4">Error: {error}\1>
+  if (!session.user) {
+    return <div className="text-red-500 p-4">Error: {error}>
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         No statistics available for this date.
       </div>
     );
   }
 
   return (
-\1>
-        <h3 className="text-lg font-medium">OPD Statistics\1>
-        \1>
-          \1>
+>
+        <h3 className="text-lg font-medium">OPD Statistics>
+        >
+          >
             <Image>
               src="/logo.png"
               alt="Shlokam Logo"
@@ -109,40 +109,40 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
         </div>
       </div>
 
-      \1>
-        \1>
-          <div className="text-sm text-gray-500">Total\1>
-          \1>
+      >
+        >
+          <div className="text-sm text-gray-500">Total>
+          >
             {statistics.totalAppointments}
           </div>
         </div>
 
-        \1>
-          <div className="text-sm text-gray-500">Completed\1>
-          \1>
+        >
+          <div className="text-sm text-gray-500">Completed>
+          >
             {statistics.completed}
           </div>
         </div>
 
-        \1>
-          <div className="text-sm text-gray-500">Checked In\1>
-          \1>
+        >
+          <div className="text-sm text-gray-500">Checked In>
+          >
             {statistics.checkedIn}
           </div>
         </div>
 
-        \1>
-          <div className="text-sm text-gray-500">Cancelled\1>
-          \1>
+        >
+          <div className="text-sm text-gray-500">Cancelled>
+          >
             {statistics.cancelled}
           </div>
         </div>
       </div>
 
-      \1>
-        <div className="text-sm text-gray-500 mb-1">Average Wait Time\1>
-        \1>
-          \1>
+      >
+        <div className="text-sm text-gray-500 mb-1">Average Wait Time>
+        >
+          >
 <div
               className={`h-2 rounded-full ${
                 statistics.averageWaitTime < 15;
@@ -156,7 +156,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
               }}
             ></div>
           </div>
-          \1>
+          >
             {Math.floor(statistics.averageWaitTime / 60)}h{" "}
             {statistics.averageWaitTime % 60}m
           </span>
@@ -164,14 +164,14 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
       </div>
 
 <div
-        <div className="text-sm text-gray-500 mb-2">Doctor Performance\1>
+        <div className="text-sm text-gray-500 mb-2">Doctor Performance>
         {statistics.doctorPerformance.map((doctor, index) => (
-          \1>
-            \1>
+          >
+            >
               <span>{doctor.doctorName}</span>
               <span>{doctor.patientsServed} patients</span>
             </div>
-            \1>
+            >
 <div className="h-1.5 bg-blue-500 rounded-full"
                 // FIX: Ensure divisor is not zero if doctorPerformance can be empty
                 style={{

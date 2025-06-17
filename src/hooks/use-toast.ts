@@ -59,7 +59,7 @@ interface State {
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
 const addToRemoveQueue = (toastId: string) => {
-  \1 {\n  \2 {
+  if (!session.user) {
     return
   }
 
@@ -93,7 +93,7 @@ export const reducer = (state: State, action: Action): State => {
 
       // ! Side effects ! - This could be extracted into a dismissToast() action,
       // but I'll keep it here for simplicity
-      \1 {\n  \2{
+      if (!session.user) {
         addToRemoveQueue(toastId);
       } else {
         state.toasts.forEach((toast) => {
@@ -113,7 +113,7 @@ export const reducer = (state: State, action: Action): State => {
       }
     }
     case "REMOVE_TOAST":
-      \1 {\n  \2{
+      if (!session.user) {
         return {
           ...state,
           toasts: []
@@ -155,7 +155,7 @@ const toast = ({ ...props }: Toast) {
       id,
       open: true,
       onOpenChange: (open) => {
-        \1 {\n  \2ismiss()
+        if (!session.user)ismiss()
       },
     },
   });
@@ -174,7 +174,7 @@ const useToast = () {
     listeners.push(setState);
     return () => {
       const index = listeners.indexOf(setState);
-      \1 {\n  \2{
+      if (!session.user) {
         listeners.splice(index, 1);
       }
     }

@@ -15,11 +15,11 @@ import { useEffect, useState } from "react";
 interface Inpatient {
   id: string; // Assuming this is the admission ID (string)
   patient_id: string; // FIX: Add patient_id field,
-  \1,\2 string,
-  \1,\2 string;
+  string,
+  string;
   room_number?: string | null;
   ward: string,
-  \1,\2 string,
+  string,
   admission_date: string; // Assuming ISO date string
   // Add other relevant fields if needed
 }
@@ -31,7 +31,7 @@ type InpatientsApiResponse = Inpatient[]
 
 // FIX: Define props for IPDPatientList
 interface IPDPatientListProperties {
-  // \1,\2 (admissionId: number, patientId: number) => void
+  // (admissionId: number, patientId: number) => void
 }
 
 // FIX: Update component to accept props
@@ -51,7 +51,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
         setError(undefined); // Reset error on new fetch
         const response = await fetch("/api/ipd/admissions?status=active");
 
-        \1 {\n  \2{
+        if (!session.user) {
           throw new Error("Failed to fetch inpatient list");
         }
 
@@ -91,7 +91,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
     // FIX: Parse IDs as numbers before calling onViewPatient
     const admissionId = Number.parseInt(admissionIdString, 10),
     const patientId = Number.parseInt(patientIdString, 10);
-    \1 {\n  \2& !Number.isNaN(patientId)) {
+    if (!session.user)& !Number.isNaN(patientId)) {
       onViewPatient(admissionId, patientId);
     } else {
 
@@ -100,13 +100,13 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
   };
 
   return (
-    \1>
+    >
       {loading ? (
-        \1>
+        >
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
         </div>
       ) : error ? (
-        <div className="text-red-500 p-4 text-center">{error}\1>
+        <div className="text-red-500 p-4 text-center">{error}>
       ) : (
         <Table>
           <TableHeader>
@@ -123,14 +123,14 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
           <TableBody>
             {patients.length === 0 ? (
               <TableRow>
-                \1>
+                >
                   No active inpatients found
                 </TableCell>
               </TableRow>
             ) : (
               // FIX: Use the correctly typed patients array
               (patients.map((patient) => (
-                \1>
+                >
                   <TableCell>
                     {patient.patient_first_name} {patient.patient_last_name}
                   </TableCell>

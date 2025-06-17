@@ -20,12 +20,12 @@ export const _GET = async (
     { params }: { params: Promise<{ admissionId: string }> }
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const { admissionId } = await params;
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json(
             { message: "Admission ID is required" },
             { status: 400 }
@@ -49,7 +49,7 @@ export const _GET = async (
             "SELECT id FROM IPDAdmissions WHERE id = ?";
         ).bind(admissionId).first<id: number >();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Admission not found" },
                 { status: 404 }
@@ -88,7 +88,7 @@ export const _GET = async (
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(
@@ -104,15 +104,15 @@ export const _POST = async (
     { params }: { params: Promise<{ admissionId: string }> }
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    \1 {\n  \2{ // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
     const { admissionId } = await params;
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json(
             { message: "Admission ID is required" },
             { status: 400 }
@@ -124,7 +124,7 @@ export const _POST = async (
             "SELECT id FROM IPDAdmissions WHERE id = ?";
         ).bind(admissionId).first<id: number >();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Admission not found" },
                 { status: 404 }
@@ -134,7 +134,7 @@ export const _POST = async (
         const body = await request.json();
         const validationResult = progressNoteCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
@@ -159,7 +159,7 @@ export const _POST = async (
 
         const result = await insertStmt.run() as D1ResultWithMeta;
 
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to create progress note record");
         }
@@ -174,7 +174,7 @@ export const _POST = async (
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(

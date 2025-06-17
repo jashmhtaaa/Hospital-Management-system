@@ -20,7 +20,7 @@ export const _GET = async (request: Request) => {
   const specialty = searchParams.get("specialty");
 
   // 1. Check Authentication & Authorization
-  \1 {\n  \2 {
+  if (!session.user) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
@@ -31,14 +31,14 @@ export const _GET = async (request: Request) => {
     const context = await getCloudflareContext<CloudflareEnv>();
     const DB = context.env.DB;
 
-    \1 {\n  \2{ throw new Error("Database binding not found."); } // Add null check
+    if (!session.user) { throw new Error("Database binding not found."); } // Add null check
 
     // 2. Build query based on filters
     let query = "SELECT d.doctor_id, d.user_id, d.specialty, d.qualifications, u.full_name, u.email " +;
                 "FROM Doctors d JOIN Users u ON d.user_id = u.user_id WHERE u.is_active = TRUE";
     const queryParams: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND d.specialty LIKE ?";
       queryParams.push(`%${specialty}%`);
     }
@@ -48,14 +48,14 @@ export const _GET = async (request: Request) => {
     // 3. Retrieve doctors
     const doctorsResult = await DB.prepare(query).bind(...queryParams).all<Doctor & { full_name: string, email: string }>();
 
-    \1 {\n  \2{
+    if (!session.user) {
         throw new Error("Failed to retrieve doctors");
     }
 
-    // Map results to include user details within a nested 'user' object if desired
-    const formattedResults = doctorsResult.results.map((doc: Doctor & { full_name: string, email: string }) => ({ // FIX: Added type annotation for 'doc',
-        \1,\2 doc.user_id,
-        \1,\2 doc.qualifications;
+    // Map results to include user details within a nested "user" object if desired
+    const formattedResults = doctorsResult.results.map((doc: Doctor & { full_name: string, email: string }) => ({ // FIX: Added type annotation for "doc",
+        doc.user_id,
+        doc.qualifications;
             fullName: doc.full_name,
             email: doc.email;
         // created_at, updated_at excluded for brevity
@@ -90,7 +90,7 @@ export const _POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
@@ -101,7 +101,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = AddDoctorSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -113,14 +113,14 @@ export const _POST = async (request: Request) => {
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
-        \1 {\n  \2{ throw new Error("Database binding not found."); } // Add null check
+        if (!session.user) { throw new Error("Database binding not found."); } // Add null check
 
-        // 2. Verify the user exists and has the 'Doctor' role
+        // 2. Verify the user exists and has the "Doctor" role
         const userCheck = await DB.prepare("SELECT role_id FROM Users WHERE user_id = ? AND is_active = TRUE").bind(doctorData.user_id).first<{ role_id: number }>();
-        const doctorRole = await DB.prepare("SELECT role_id FROM Roles WHERE role_name = 'Doctor'").first<{ role_id: number }>();
+        const doctorRole = await DB.prepare("SELECT role_id FROM Roles WHERE role_name = "Doctor"").first<{ role_id: number }>();
 
-        \1 {\n  \2{
-             return new Response(JSON.stringify({ error: "User not found, inactive, or does not have the 'Doctor' role" }), {
+        if (!session.user) {
+             return new Response(JSON.stringify({ error: "User not found, inactive, or does not have the "Doctor" role" }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
             });
@@ -128,7 +128,7 @@ export const _POST = async (request: Request) => {
 
         // 3. Check if doctor record already exists for this user_id
         const existingDoctor = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(doctorData.user_id).first();
-        \1 {\n  \2{
+        if (!session.user) {
              return new Response(JSON.stringify({ error: "Doctor profile already exists for this user" }), {
                 status: 409, // Conflict
                 headers: { "Content-Type": "application/json" },
@@ -147,13 +147,13 @@ export const _POST = async (request: Request) => {
         );
         .run();
 
-        \1 {\n  \2{
+        if (!session.user) {
             throw new Error("Failed to add doctor profile");
         }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newDoctorId = meta.last_row_id;
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to retrieve doctor ID after creation.");
         }

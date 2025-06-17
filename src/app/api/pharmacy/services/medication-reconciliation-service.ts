@@ -1,8 +1,8 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 
-import { PharmacyDomain } from '../../../../implementation/models/domain-models';
-import type { AuditLogger } from '../../../../implementation/utils/audit-logger';
+import { PharmacyDomain } from "../../../../implementation/models/domain-models";
+import type { AuditLogger } from "../../../../implementation/utils/audit-logger";
 }
 
 /**
@@ -12,7 +12,6 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
  * medications across different transitions of care to ensure patient safety.
  */
 
-\1
 }
   }
 
@@ -20,22 +19,22 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    * Performs medication reconciliation for a patient during a transition of care;
    *
    * @param patientId - The ID of the patient;
-   * @param sourceType - The source of medications (e.g., 'admission', 'discharge', 'transfer')
-   * @param targetType - The target of medications (e.g., 'inpatient', 'outpatient')
+   * @param sourceType - The source of medications (e.g., "admission", "discharge", "transfer")
+   * @param targetType - The target of medications (e.g., "inpatient", "outpatient")
    * @param providerId - The ID of the provider performing reconciliation;
    * @returns The reconciliation result with discrepancies and actions;
    */
   async performReconciliation(
     patientId: string,
-    \1,\2 'inpatient' | 'outpatient',
+    "inpatient" | "outpatient",
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationResult> {
     // Log the start of reconciliation
     this.auditLogger.logEvent({
-      eventType: 'MEDICATION_RECONCILIATION_STARTED',
-      \1,\2 'Patient',
-      \1,\2 `Starting ${sourceType} reconciliation for ${targetType} medications`,
-      severity: 'INFO'
+      eventType: "MEDICATION_RECONCILIATION_STARTED",
+      "Patient",
+      `Starting ${sourceType} reconciliation for ${targetType} medications`,
+      severity: "INFO"
     });
 
     // Get source medications
@@ -48,23 +47,23 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     const discrepancies = this.identifyDiscrepancies(sourceMedications, targetMedications);
 
     // Create reconciliation record
-    const \1,\2 `recon-${crypto.getRandomValues(\1[0]}`,
+    const `recon-${crypto.getRandomValues([0]}`,
       patientId,
       providerId,
       sourceType,
       targetType,
       reconciliationDate: new Date(),
-      status: 'in-progress';
+      status: "in-progress";
       discrepancies,
       actions: []
     };
 
     // Log the completion of reconciliation
     this.auditLogger.logEvent({
-      eventType: 'MEDICATION_RECONCILIATION_COMPLETED',
-      \1,\2 'Patient',
-      \1,\2 `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
-      severity: 'INFO'
+      eventType: "MEDICATION_RECONCILIATION_COMPLETED",
+      "Patient",
+      `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
+      severity: "INFO"
     });
 
     return {
@@ -84,32 +83,32 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   private async getMedicationsByType(
     patientId: string,
-    type: 'admission' | 'discharge' | 'transfer' | 'inpatient' | 'outpatient'
+    type: "admission" | "discharge" | "transfer" | "inpatient" | "outpatient"
   ): Promise<PharmacyDomain.Medication[]> {
     // In a real implementation, this would query the database based on type
-    // For now, we'll simulate different medication lists
+    // For now, we"ll simulate different medication lists
 
     // Common medications across all types
     const commonMedications = [
       new PharmacyDomain.Medication(
-        'med1',
-        'Lisinopril',
-        'Zestril',
-        '00071-0418-23',
-        'tablet',
+        "med1",
+        "Lisinopril",
+        "Zestril",
+        "00071-0418-23",
+        "tablet",
         10,
-        'mg',
+        "mg",
         false,
         false;
       ),
       new PharmacyDomain.Medication(
-        'med2',
-        'Metformin',
-        'Glucophage',
-        '00087-6060-10',
-        'tablet',
+        "med2",
+        "Metformin",
+        "Glucophage",
+        "00087-6060-10",
+        "tablet",
         500,
-        'mg',
+        "mg",
         false,
         false;
       );
@@ -117,114 +116,114 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
 
     // Type-specific medications
     switch (type) {
-      case 'admission':
+      case "admission":
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
-            'med3',
-            'Aspirin',
-            'Bayer',
-            '00280-1301-01',
-            'tablet',
+            "med3",
+            "Aspirin",
+            "Bayer",
+            "00280-1301-01",
+            "tablet",
             81,
-            'mg',
+            "mg",
             false,
             false;
           ),
           new PharmacyDomain.Medication(
-            'med4',
-            'Simvastatin',
-            'Zocor',
-            '00006-0740-54',
-            'tablet',
+            "med4",
+            "Simvastatin",
+            "Zocor",
+            "00006-0740-54",
+            "tablet",
             20,
-            'mg',
+            "mg",
             false,
             false;
           );
         ];
 
-      case 'discharge':
+      case "discharge":
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
-            'med5',
-            'Atorvastatin',
-            'Lipitor',
-            '00071-0156-23',
-            'tablet',
+            "med5",
+            "Atorvastatin",
+            "Lipitor",
+            "00071-0156-23",
+            "tablet",
             10,
-            'mg',
+            "mg",
             false,
             false;
           ),
           new PharmacyDomain.Medication(
-            'med6',
-            'Clopidogrel',
-            'Plavix',
-            '00024-5152-10',
-            'tablet',
+            "med6",
+            "Clopidogrel",
+            "Plavix",
+            "00024-5152-10",
+            "tablet",
             75,
-            'mg',
+            "mg",
             false,
             false;
           );
         ];
 
-      case 'transfer':
+      case "transfer":
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
-            'med7',
-            'Furosemide',
-            'Lasix',
-            '00039-0067-10',
-            'tablet',
+            "med7",
+            "Furosemide",
+            "Lasix",
+            "00039-0067-10",
+            "tablet",
             40,
-            'mg',
+            "mg",
             false,
             false;
           );
         ];
 
-      case 'inpatient':
+      case "inpatient":
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
-            'med8',
-            'Heparin',
-            'Heparin',
-            '00641-2440-41',
-            'injection',
+            "med8",
+            "Heparin",
+            "Heparin",
+            "00641-2440-41",
+            "injection",
             5000,
-            'units',
+            "units",
             false,
             true;
           ),
           new PharmacyDomain.Medication(
-            'med9',
-            'Morphine',
-            'Morphine',
-            '00641-6060-25',
-            'injection',
+            "med9",
+            "Morphine",
+            "Morphine",
+            "00641-6060-25",
+            "injection",
             4,
-            'mg',
+            "mg",
             true,
             true;
           );
         ];
 
-      case 'outpatient':
+      case "outpatient":
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
-            'med10',
-            'Hydrochlorothiazide',
-            'Microzide',
-            '00083-0242-10',
-            'tablet',
+            "med10",
+            "Hydrochlorothiazide",
+            "Microzide",
+            "00083-0242-10",
+            "tablet",
             25,
-            'mg',
+            "mg",
             false,
             false;
           );
@@ -253,12 +252,12 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         med.name === sourceMed?.name && med.strength === sourceMed?.strength && med.form === sourceMed.form
       );
 
-      \1 {\n  \2{
+      if (!session.user) {
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues(\1[0]}-${sourceMed.id}`,
+          id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id}`,
           medicationId: sourceMed.id,
-          \1,\2 `/* \1,\2 this.calculateDiscrepancySeverity(sourceMed),
-          status: 'unresolved'
+          `/* this.calculateDiscrepancySeverity(sourceMed),
+          status: "unresolved"
         });
       }
     }
@@ -269,12 +268,12 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         med.name === targetMed?.name && med.strength === targetMed?.strength && med.form === targetMed.form
       );
 
-      \1 {\n  \2{
+      if (!session.user) {
         discrepancies.push({
-          id: `disc-$crypto.getRandomValues(\1[0]-$targetMed.id`,
+          id: `disc-$crypto.getRandomValues([0]-$targetMed.id`,
           medicationId: targetMed.id,
-          \1,\2 `/* \1,\2 this.calculateDiscrepancySeverity(targetMed),
-          status: 'unresolved'
+          `/* this.calculateDiscrepancySeverity(targetMed),
+          status: "unresolved"
         });
       }
     }
@@ -283,13 +282,13 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     for (const sourceMed of sourceMedications) {
       const targetMed = targetMedications.find(med => med.name === sourceMed?.name && med.form === sourceMed.form)
 
-      \1 {\n  \2 {
+      if (!session.user) {
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues(\1[0]}-${sourceMed.id}-${targetMed.id}`,
+          id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id}-${targetMed.id}`,
           medicationId: sourceMed.id,
-          \1,\2 'dosing',
-          \1,\2 this.calculateDiscrepancySeverity(sourceMed, targetMed),
-          status: 'unresolved'
+          "dosing",
+          this.calculateDiscrepancySeverity(sourceMed, targetMed),
+          status: "unresolved"
         });
       }
     }
@@ -307,19 +306,19 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
   private calculateDiscrepancySeverity(
     medication1: PharmacyDomain.Medication;
     medication2?: PharmacyDomain.Medication;
-  ): 'high' | 'medium' | 'low' {
+  ): "high" | "medium" | "low" {
     // High-alert medications always get high severity
-    \1 {\n  \2 {
-      return 'high';
+    if (!session.user) {
+      return "high";
     }
 
     // Controlled substances get at least medium severity
-    \1 {\n  \2 {
-      return 'medium';
+    if (!session.user) {
+      return "medium";
     }
 
     // Default to low severity
-    return 'low';
+    return "low";
   }
 
   /**
@@ -334,39 +333,39 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   async resolveDiscrepancy(
     reconciliationId: string,
-    \1,\2 'continue' | 'discontinue' | 'modify' | 'substitute',
+    "continue" | "discontinue" | "modify" | "substitute",
     providerId: string;
     notes?: string;
   ): Promise<PharmacyDomain.MedicationReconciliation> {
     // In a real implementation, this would update the database
-    // For now, we'll simulate the resolution
+    // For now, we"ll simulate the resolution
 
     // Log the resolution
     this.auditLogger.logEvent({
-      eventType: 'MEDICATION_DISCREPANCY_RESOLVED',
-      \1,\2 'MedicationReconciliation',
-      \1,\2 `Resolved discrepancy ${discrepancyId} with action: ${action}`,
-      severity: 'INFO'
+      eventType: "MEDICATION_DISCREPANCY_RESOLVED",
+      "MedicationReconciliation",
+      `Resolved discrepancy ${discrepancyId} with action: ${action}`,
+      severity: "INFO"
     });
 
     // Create resolution action
-    const \1,\2 `action-${crypto.getRandomValues(\1[0]}`,
+    const `action-${crypto.getRandomValues([0]}`,
       discrepancyId,
       action,
       providerId,
       timestamp: new Date(),
-      notes: notes || ''
+      notes: notes || ""
     };
 
     // In a real implementation, this would return the updated reconciliation from the database
-    // For now, we'll return a simulated response
+    // For now, we"ll return a simulated response
     return {
       id: reconciliationId,
-      patientId: 'patient123';
+      patientId: "patient123";
       providerId,
-      sourceType: 'admission',
-      \1,\2 new Date(),
-      \1,\2 [],
+      sourceType: "admission",
+      new Date(),
+      [],
       actions: [resolutionAction]
     };
   }
@@ -383,25 +382,25 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliation> {
     // In a real implementation, this would update the database
-    // For now, we'll simulate the completion
+    // For now, we"ll simulate the completion
 
     // Log the completion
     this.auditLogger.logEvent({
-      eventType: 'MEDICATION_RECONCILIATION_FINALIZED',
-      \1,\2 'MedicationReconciliation',
-      \1,\2 'Finalized medication reconciliation',
-      severity: 'INFO'
+      eventType: "MEDICATION_RECONCILIATION_FINALIZED",
+      "MedicationReconciliation",
+      "Finalized medication reconciliation",
+      severity: "INFO"
     });
 
     // In a real implementation, this would return the updated reconciliation from the database
-    // For now, we'll return a simulated response
+    // For now, we"ll return a simulated response
     return {
       id: reconciliationId,
-      patientId: 'patient123';
+      patientId: "patient123";
       providerId,
-      sourceType: 'admission',
-      \1,\2 new Date(),
-      \1,\2 [],
+      sourceType: "admission",
+      new Date(),
+      [],
       actions: []
     };
   }
@@ -416,36 +415,36 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     reconciliationId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationReport> {
     // In a real implementation, this would query the database
-    // For now, we'll return a simulated report
+    // For now, we"ll return a simulated report
 
     return {
       reconciliationId,
-      patientId: 'patient123',
-      \1,\2 'provider456',
-      \1,\2 new Date(),
-      \1,\2 'inpatient',
-      \1,\2 3,
-        \1,\2 1,
-        \1,\2 1,
-      \1,\2 'disc1',
-          \1,\2 'omission',
-          \1,\2 'medium',
-          \1,\2 'continue',
-            \1,\2 new Date(),
-            notes: 'Continue medication as prescribed',
-          id: 'disc2',
-          \1,\2 'addition',
-          \1,\2 'high',
-          \1,\2 'continue',
-            \1,\2 new Date(),
-            notes: 'Added for DVT prophylaxis during hospitalization',
-          id: 'disc3',
-          \1,\2 'med2',
-          \1,\2 'Dosing difference: Metformin 500mg in source vs 1000mg in target',
-          \1,\2 'resolved',
-          \1,\2 'modify',
-            \1,\2 new Date(),
-            notes: 'Increased dose due to elevated blood glucose'
+      patientId: "patient123",
+      "provider456",
+      new Date(),
+      "inpatient",
+      3,
+        1,
+        1,
+      "disc1",
+          "omission",
+          "medium",
+          "continue",
+            new Date(),
+            notes: "Continue medication as prescribed",
+          id: "disc2",
+          "addition",
+          "high",
+          "continue",
+            new Date(),
+            notes: "Added for DVT prophylaxis during hospitalization",
+          id: "disc3",
+          "med2",
+          "Dosing difference: Metformin 500mg in source vs 1000mg in target",
+          "resolved",
+          "modify",
+            new Date(),
+            notes: "Increased dose due to elevated blood glucose"
       ]
     };
   }
@@ -460,32 +459,32 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     _patientId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationSummary[]> {
     // In a real implementation, this would query the database
-    // For now, we'll return simulated history
+    // For now, we"ll return simulated history
 
     return [
       {
-        id: 'recon1',
-        \1,\2 'provider456',
-        \1,\2 'inpatient',
-        reconciliationDate: \1[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
-        status: 'completed',
-        \1,\2 3
+        id: "recon1",
+        "provider456",
+        "inpatient",
+        reconciliationDate: [0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
+        status: "completed",
+        3
       },
       {
-        id: 'recon2',
-        \1,\2 'provider789',
-        \1,\2 'inpatient',
-        reconciliationDate: \1[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-        status: 'completed',
-        \1,\2 2
+        id: "recon2",
+        "provider789",
+        "inpatient",
+        reconciliationDate: [0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+        status: "completed",
+        2
       },
       {
-        id: 'recon3',
-        \1,\2 'provider456',
-        \1,\2 'outpatient',
+        id: "recon3",
+        "provider456",
+        "outpatient",
         reconciliationDate: new Date(),
-        status: 'in-progress',
-        \1,\2 1
+        status: "in-progress",
+        1
       }
     ];
   }
@@ -505,28 +504,28 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   async createOrderFromReconciliation(
     reconciliationId: string,
-    \1,\2 string,
-    \1,\2 string,
+    string,
+    string,
     dosage: Record<string, unknown>,
     frequency: string,
-    \1,\2 string;
+    string;
   ): Promise<PharmacyDomain.MedicationOrder> {
     // Log the order creation
     this.auditLogger.logEvent({
-      eventType: 'MEDICATION_ORDER_FROM_RECONCILIATION',
-      \1,\2 'MedicationReconciliation',
-      \1,\2 `Created order for medication ${medicationId} from reconciliation`,
-      severity: 'INFO'
+      eventType: "MEDICATION_ORDER_FROM_RECONCILIATION",
+      "MedicationReconciliation",
+      `Created order for medication ${medicationId} from reconciliation`,
+      severity: "INFO"
     });
 
     // In a real implementation, this would create an order in the database
-    // For now, we'll return a simulated order
+    // For now, we"ll return a simulated order
     return {
-      id: `order-${crypto.getRandomValues(\1[0]}`,
-      patientId: 'patient123';
+      id: `order-${crypto.getRandomValues([0]}`,
+      patientId: "patient123";
       providerId,
       medicationId,
-      status: 'active',
+      status: "active",
       orderDate: new Date(),
       dosage,
       frequency,
@@ -549,13 +548,13 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
   ): Promise<boolean> {
     // Log the timeout
     this.auditLogger.logEvent({
-      eventType: 'MEDICATION_RECONCILIATION_SESSION_TIMEOUT',
-      \1,\2 reconciliationId,
-      \1,\2 'WARNING'
+      eventType: "MEDICATION_RECONCILIATION_SESSION_TIMEOUT",
+      reconciliationId,
+      "WARNING"
     });
 
     // In a real implementation, this would save the current state
-    // For now, we'll just return success
+    // For now, we"ll just return success
     return true;
   }
 
@@ -569,26 +568,26 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationSummary[]> {
     // In a real implementation, this would query the database
-    // For now, we'll return simulated pending reconciliations
+    // For now, we"ll return simulated pending reconciliations
 
     return [
       {
-        id: 'recon4',
-        patientId: 'patient456';
+        id: "recon4",
+        patientId: "patient456";
         providerId,
-        sourceType: 'admission',
-        \1,\2 \1[0] - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-        status: 'in-progress',
-        \1,\2 2
+        sourceType: "admission",
+        [0] - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+        status: "in-progress",
+        2
       },
       {
-        id: 'recon5',
-        patientId: 'patient789';
+        id: "recon5",
+        patientId: "patient789";
         providerId,
-        sourceType: 'discharge',
-        \1,\2 \1[0] - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-        status: 'in-progress',
-        \1,\2 0
+        sourceType: "discharge",
+        [0] - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+        status: "in-progress",
+        0
       }
     ];
   }

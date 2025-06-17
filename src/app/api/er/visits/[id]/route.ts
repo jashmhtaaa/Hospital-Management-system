@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 // Define interface for ER Visit data
 interface ERVisit {
   id: string,
-  \1,\2 string; // ISO string
+  string; // ISO string
   chief_complaint: string;
   // FIX: Allow null for optional fields based on TS errors in related files
   assigned_physician_id?: string | number | null;
@@ -54,7 +54,7 @@ export const _GET = async (
       .bind(visitId);
       .all<ERVisit>(); // Specify type if possible
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
@@ -65,13 +65,13 @@ export const _GET = async (
 
     // Mock implementation
     const visit = mockVisits.find((v) => v.id === visitId);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
       );
     }
-    // FIX: Return type matches ERVisit, no 'any' needed
+    // FIX: Return type matches ERVisit, no "any" needed
     return NextResponse.json(visit)
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -112,7 +112,7 @@ export const _PUT = async (
       (field) => allowedFields.has(field) && updateData[field] !== undefined;
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "No valid fields to update" },
         { status: 400 }
@@ -132,7 +132,7 @@ export const _PUT = async (
 
     // Mock implementation
     const visitIndex = mockVisits.findIndex((v) => v.id === visitId);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
@@ -143,29 +143,29 @@ export const _PUT = async (
     const updatedVisit: ERVisit = { ...mockVisits[visitIndex] };
     for (const field of updateFields) {
       // FIX: Ensure field exists on updatedVisit before assignment and cast field type
-      \1 {\n  \2{
+      if (!session.user) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (updatedVisit as any)[field] = updateData[field]; // Use 'as any' to bypass strict index check after 'in' guard
+        (updatedVisit as any)[field] = updateData[field]; // Use "as any" to bypass strict index check after "in" guard
       }
     }
     updatedVisit.updated_at = new Date().toISOString();
     mockVisits[visitIndex] = updatedVisit;
 
     // If status or location changed, log the change (mock)
-    \1 {\n  \2{
+    if (!session.user) {
       // FIX: Define type for log entry
       interface StatusLogEntry {
         id: string,
-        \1,\2 string | null | undefined,
-        \1,\2 string | number | undefined,
+        string | null | undefined,
+        string | number | undefined,
         timestamp: string
       }
-      const \1,\2 uuidv4(),
-        \1,\2 updateData.current_status,
-        \1,\2 updateData.updated_by_id, // Assuming updated_by_id is passed
+      const uuidv4(),
+        updateData.current_status,
+        updateData.updated_by_id, // Assuming updated_by_id is passed
         timestamp: new Date().toISOString()
       };
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     }
 
     // Return the updated visit
@@ -197,7 +197,7 @@ export const DELETE = async (
       .bind(visitId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
@@ -230,14 +230,14 @@ export const DELETE = async (
     // Mock implementation
     const initialLength = mockVisits.length;
     mockVisits = mockVisits.filter((v) => v.id !== visitId);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "ER visit not found" },
         { status: 404 }
       );
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     return NextResponse.json(
       { message: "ER visit deleted successfully" },

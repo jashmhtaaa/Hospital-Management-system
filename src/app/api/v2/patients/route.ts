@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { PatientCreateSchema, patientManagementService } from '@/lib/core/patient-management.service';
+import { PatientCreateSchema, patientManagementService } from "@/lib/core/patient-management.service";
 }
 
 /**
@@ -18,9 +18,9 @@ const SearchQuerySchema = z.object({
   mrn: z.string().optional(),
   phone: z.string().optional(),
   email: z.string().optional(),
-  status: z.enum(['active', 'inactive', 'deceased']).optional(),
-  page: z.string().transform(Number).default('1'),
-  limit: z.string().transform(Number).default('10')
+  status: z.enum(["active", "inactive", "deceased"]).optional(),
+  page: z.string().transform(Number).default("1"),
+  limit: z.string().transform(Number).default("10")
 });
 
 /**
@@ -39,18 +39,18 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      \1,\2 `Found ${result.total} patients`,
-      \1,\2 result.page,
-        \1,\2 result.total,
-        \1,\2 result.page > 1,
+      `Found ${result.total} patients`,
+      result.page,
+        result.total,
+        result.page > 1,
     });
   } catch (error) {
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 error.errors
+          error.errors
         },status: 400 
       );
     }
@@ -58,7 +58,7 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: false,
-        \1,\2 'Failed to search patients'
+        "Failed to search patients"
       },
       { status: 500 }
     );
@@ -81,28 +81,28 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: true,
-        \1,\2 'Patient created successfully',
-        \1,\2 patient.id,
-          \1,\2 patient.createdAt,
+        "Patient created successfully",
+        patient.id,
+          patient.createdAt,
       },status: 201 
     );
   } catch (error) {
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 error.errors,
-          message: 'Please check the provided patient information'
+          error.errors,
+          message: "Please check the provided patient information"
         },status: 400 
       );
     }
 
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 error.message
+          error.message
         },
         { status: 409 }
       );
@@ -111,7 +111,7 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: false,
-        \1,\2 'Failed to create patient'
+        "Failed to create patient"
       },
       { status: 500 }
     );

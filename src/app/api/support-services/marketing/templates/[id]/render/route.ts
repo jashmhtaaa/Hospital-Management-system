@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { type NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { authOptions } from '@/lib/auth';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { TemplateService } from '@/lib/services/support-services/marketing';
+import { authOptions } from "@/lib/auth";
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
 /**
@@ -21,9 +21,9 @@ export const POST = async (
       const _session = await getServerSession(authOptions);
       const { variables } = await req.json();
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
-          { error: 'Variables must be a valid object' },
+          { error: "Variables must be a valid object" },
           { status: 400 }
         );
       }
@@ -36,7 +36,7 @@ export const POST = async (
       return NextResponse.json({ renderedContent });
     },
     {
-      requiredPermission: 'marketing.templates.read',
-      auditAction: 'TEMPLATE_RENDER'
+      requiredPermission: "marketing.templates.read",
+      auditAction: "TEMPLATE_RENDER"
     }
   );

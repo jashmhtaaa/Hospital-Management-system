@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { type NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { authOptions } from '@/lib/auth';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { ContactService } from '@/lib/services/support-services/marketing';
+import { authOptions } from "@/lib/auth";
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { ContactService } from "@/lib/services/support-services/marketing";
 const contactService = new ContactService();
 
 /**
@@ -21,9 +21,9 @@ export const POST = async (
       const session = await getServerSession(authOptions);
       const { patientId } = await req.json();
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
-          { error: 'Patient ID is required' },
+          { error: "Patient ID is required" },
           { status: 400 }
         );
       }
@@ -37,7 +37,7 @@ export const POST = async (
       return NextResponse.json(contact);
     },
     {
-      requiredPermission: 'marketing.contacts.update',
-      auditAction: 'CONTACT_LINK_PATIENT'
+      requiredPermission: "marketing.contacts.update",
+      auditAction: "CONTACT_LINK_PATIENT"
     }
   );

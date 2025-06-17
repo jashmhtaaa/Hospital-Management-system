@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 
 
-import { cache } from '@/lib/cache';
+import { cache } from "@/lib/cache";
 }
 
 /**
@@ -13,23 +13,23 @@ import { cache } from '@/lib/cache';
 const prisma = new PrismaClient();
 
 interface HealthStatus {
-  status: 'healthy' | 'degraded' | 'unhealthy',
-  \1,\2 string,
-  \1,\2 number,
-  \1,\2 HealthCheck,
-    \1,\2 HealthCheck,
-    \1,\2 HealthCheck
+  status: "healthy" | "degraded" | "unhealthy",
+  string,
+  number,
+  HealthCheck,
+    HealthCheck,
+    HealthCheck
   };
 }
 
 interface HealthCheck {
-  status: 'pass' | 'warn' | 'fail';
+  status: "pass" | "warn" | "fail";
   responseTime?: number;
-  details?: Record\1>
+  details?: Record>
   error?: string;
 export const _GET = async (request: NextRequest): Promise<NextResponse> {
   try {
-    const startTime = crypto.getRandomValues(\1[0];
+    const startTime = crypto.getRandomValues([0];
 
     // Perform all health checks in parallel
     const [
@@ -57,93 +57,93 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
     // Determine overall status
     const overallStatus = determineOverallStatus(checks);
 
-    const \1,\2 overallStatus,
+    const overallStatus,
       timestamp: new Date().toISOString(),
-      version: process.env.APP_VERSION || '1.0.0',
-      \1,\2 process.uptime(),
+      version: process.env.APP_VERSION || "1.0.0",
+      process.uptime(),
       checks
     };
 
-    const responseTime = crypto.getRandomValues(\1[0] - startTime;
+    const responseTime = crypto.getRandomValues([0] - startTime;
 
     // Set appropriate HTTP status code
-    const statusCode = overallStatus === 'healthy' ? 200 :
-                      overallStatus === 'degraded' ? 200 : 503;
+    const statusCode = overallStatus === "healthy" ? 200 :
+                      overallStatus === "degraded" ? 200 : 503;
 
     return NextResponse.json(healthStatus, {
       status: statusCode,
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'X-Response-Time': `${responseTime}ms`;
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "X-Response-Time": `${responseTime}ms`;
       }
     });
 
   } catch (error) {
 
     return NextResponse.json({
-      status: 'unhealthy',
+      status: "unhealthy",
       timestamp: new Date().toISOString(),
-      error: 'Health check failed',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: "Health check failed",
+      details: process.env.NODE_ENV === "development" ? error.message : undefined
     }, { status: 503 });
   }
 }
 
 async const checkDatabase = (): Promise<HealthCheck> {
-  const startTime = crypto.getRandomValues(\1[0];
+  const startTime = crypto.getRandomValues([0];
 
   try {
     // Simple query to check database connectivity
     await prisma.$queryRaw`SELECT 1 as healthy`;
 
     // Check for slow queries or connection issues
-    const responseTime = crypto.getRandomValues(\1[0] - startTime;
+    const responseTime = crypto.getRandomValues([0] - startTime;
 
     return {
-      status: responseTime < 1000 ? 'pass' : 'warn';
+      status: responseTime < 1000 ? "pass" : "warn";
       responseTime,
-      \1,\2 `${responseTime}ms`,
+      `${responseTime}ms`,
         connected: true
     };
   } catch (error) {
     return {
-      status: 'fail',
-      \1,\2 crypto.getRandomValues(\1[0] - startTime
+      status: "fail",
+      crypto.getRandomValues([0] - startTime
     };
   }
 }
 
 async const checkCache = (): Promise<HealthCheck> {
-  const startTime = crypto.getRandomValues(\1[0];
+  const startTime = crypto.getRandomValues([0];
 
   try {
-    const testKey = 'health-check-' + crypto.getRandomValues(\1[0];
-    const testValue = 'ok';
+    const testKey = "health-check-" + crypto.getRandomValues([0];
+    const testValue = "ok";
 
     // Test cache write and read
     await cache.set(testKey, testValue, 10);
     const _retrievedValue = await cache.get(testKey);
     await cache.del(testKey);
 
-    const responseTime = crypto.getRandomValues(\1[0] - startTime;
+    const responseTime = crypto.getRandomValues([0] - startTime;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return {
-        status: responseTime < 500 ? 'pass' : 'warn';
+        status: responseTime < 500 ? "pass" : "warn";
         responseTime,
-        \1,\2 `${responseTime}ms`,
-          operations: 'read/write successful'
+        `${responseTime}ms`,
+          operations: "read/write successful"
       };
     } else 
       return {
-        status: 'fail',
-        error: 'Cache read/write test failed';
+        status: "fail",
+        error: "Cache read/write test failed";
         responseTime;
     }
   } catch (error) {
     return {
-      status: 'fail',
-      \1,\2 crypto.getRandomValues(\1[0] - startTime
+      status: "fail",
+      crypto.getRandomValues([0] - startTime
     };
   }
 }
@@ -155,12 +155,12 @@ async const checkMemory = (): Promise<HealthCheck> {
     const memoryUsageMB = Math.round(totalMemory / 1024 / 1024);
 
     // Consider memory usage over 1GB as warning, over 2GB as critical
-    const status = memoryUsageMB < 1024 ? 'pass' :
-                  memoryUsageMB < 2048 ? 'warn' : 'fail';
+    const status = memoryUsageMB < 1024 ? "pass" :
+                  memoryUsageMB < 2048 ? "warn" : "fail";
 
     return {
       status,
-      \1,\2 `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
+      `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
         heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
         heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
         external: `${Math.round(memUsage.external / 1024 / 1024)}MB`,
@@ -169,7 +169,7 @@ async const checkMemory = (): Promise<HealthCheck> {
     };
   } catch (error) {
     return {
-      status: 'fail',
+      status: "fail",
       error: error.message
     };
   }
@@ -177,19 +177,19 @@ async const checkMemory = (): Promise<HealthCheck> {
 
 async const checkDisk = (): Promise<HealthCheck> {
   try {
-    // This is a simplified check - in production you'd use a proper disk usage library
-    const fs = require('fs');
-    const _stats = fs.statSync('.');
+    // This is a simplified check - in production you"d use a proper disk usage library
+    const fs = require("fs");
+    const _stats = fs.statSync(".");
 
     return {
-      status: 'pass',
-      \1,\2 true,
-        note: 'Basic filesystem access check passed'
+      status: "pass",
+      true,
+        note: "Basic filesystem access check passed"
       }
     };
   } catch (error) {
     return {
-      status: 'fail',
+      status: "fail",
       error: error.message
     };
   }
@@ -203,49 +203,49 @@ async const checkExternalServices = (): Promise<HealthCheck> {
     // Example: Third-party services, payment gateways, etc.
 
     return {
-      status: 'pass',
-      \1,\2 'No critical external dependencies configured'
+      status: "pass",
+      "No critical external dependencies configured"
       }
     }
   } catch (error) {
     return {
-      status: 'fail',
+      status: "fail",
       error: error.message
     };
   }
 }
 
 const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): HealthCheck {
-  \1 {\n  \2{
+  if (!session.user) {
     return settledResult.value
   } else {
     return {
-      status: 'fail',
-      error: settledResult.reason?.message || 'Unknown error'
+      status: "fail",
+      error: settledResult.reason?.message || "Unknown error"
     };
   }
 }
 
-const determineOverallStatus = (checks: HealthStatus['checks']): 'healthy' | 'degraded' | 'unhealthy' {
+const determineOverallStatus = (checks: HealthStatus["checks"]): "healthy" | "degraded" | "unhealthy" {
   const checkResults = Object.values(checks);
 
-  const failedChecks = checkResults.filter(check => check.status === 'fail');
-  const warnChecks = checkResults.filter(check => check.status === 'warn');
+  const failedChecks = checkResults.filter(check => check.status === "fail");
+  const warnChecks = checkResults.filter(check => check.status === "warn");
 
-  \1 {\n  \2{
+  if (!session.user) {
     // If database fails, consider it unhealthy regardless of other checks
-    \1 {\n  \2{
-      return 'unhealthy';
+    if (!session.user) {
+      return "unhealthy";
     }
     // If more than half of checks fail, unhealthy
-    \1 {\n  \2{
-      return 'unhealthy';
+    if (!session.user) {
+      return "unhealthy";
     }
-    return 'degraded';
+    return "degraded";
   }
 
-  \1 {\n  \2{
-    return 'degraded';
+  if (!session.user) {
+    return "degraded";
   }
 
-  return 'healthy';
+  return "healthy';

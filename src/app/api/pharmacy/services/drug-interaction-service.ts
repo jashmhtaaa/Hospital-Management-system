@@ -1,8 +1,8 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from "@prisma/client";
 
 
-import { PharmacyDomain } from '../../../../implementation/models/domain-models';
-import type { AuditLogger } from '../../../../implementation/utils/audit-logger';
+import { PharmacyDomain } from "../../../../implementation/models/domain-models";
+import type { AuditLogger } from "../../../../implementation/utils/audit-logger";
 }
 
 /**
@@ -12,11 +12,10 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
  * including drug-drug, drug-allergy, drug-condition, and drug-lab interactions.
  */
 
-\1
 }
-  private allergyClasses: Array\1>
-  private conditionInteractions: Array\1>
-  private labInteractions: Array\1>
+  private allergyClasses: Array>
+  private conditionInteractions: Array>
+  private labInteractions: Array>
 
   constructor(prisma: PrismaClient, auditLogger: AuditLogger) {
     this.prisma = prisma;
@@ -34,67 +33,67 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     // Initialize allergy classes
     this.allergyClasses = [
       {
-        id: 'class1',
-        \1,\2 ['Amoxicillin', 'Ampicillin', 'Penicillin G', 'Piperacillin']
+        id: "class1",
+        ["Amoxicillin", "Ampicillin", "Penicillin G", "Piperacillin"]
       },
       {
-        id: 'class2',
-        \1,\2 ['Cefazolin', 'Ceftriaxone', 'Cefuroxime', 'Cephalexin']
+        id: "class2",
+        ["Cefazolin", "Ceftriaxone", "Cefuroxime", "Cephalexin"]
       },
       {
-        id: 'class3',
-        \1,\2 ['Sulfamethoxazole', 'Sulfadiazine', 'Sulfasalazine']
+        id: "class3",
+        ["Sulfamethoxazole", "Sulfadiazine", "Sulfasalazine"]
       },
       {
-        id: 'class4',
-        \1,\2 ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Celecoxib']
+        id: "class4",
+        ["Aspirin", "Ibuprofen", "Naproxen", "Diclofenac", "Celecoxib"]
       }
     ];
 
     // Initialize condition interactions
     this.conditionInteractions = [
       {
-        id: 'condint1',
-        \1,\2 'N17.9', // Acute kidney failure
-        severity: 'severe',
-        \1,\2 'https://example.com/interactions/metformin-kidney-failure'
+        id: "condint1",
+        "N17.9", // Acute kidney failure
+        severity: "severe",
+        "https://example.com/interactions/metformin-kidney-failure"
       },
       {
-        id: 'condint2',
-        \1,\2 'K92.2', // Gastrointestinal hemorrhage
-        severity: 'severe',
-        \1,\2 'https://example.com/interactions/warfarin-gi-bleeding'
+        id: "condint2",
+        "K92.2", // Gastrointestinal hemorrhage
+        severity: "severe",
+        "https://example.com/interactions/warfarin-gi-bleeding"
       },
       {
-        id: 'condint3',
-        \1,\2 'J45.909', // Asthma
-        severity: 'severe',
-        \1,\2 'https://example.com/interactions/propranolol-asthma'
+        id: "condint3",
+        "J45.909", // Asthma
+        severity: "severe",
+        "https://example.com/interactions/propranolol-asthma"
       }
     ]
 
     // Initialize lab interactions
     this.labInteractions = [
       {
-        id: 'labint1',
-        \1,\2 '2823-3', // Potassium
-        abnormalFlag: 'L', // Low
-        severity: 'severe',
-        \1,\2 'https://example.com/interactions/digoxin-hypokalemia'
+        id: "labint1",
+        "2823-3", // Potassium
+        abnormalFlag: "L", // Low
+        severity: "severe",
+        "https://example.com/interactions/digoxin-hypokalemia"
       },
       {
-        id: 'labint2',
-        \1,\2 '6301-6', // INR
-        abnormalFlag: 'H', // High
-        severity: 'severe',
-        \1,\2 'https://example.com/interactions/warfarin-inr'
+        id: "labint2",
+        "6301-6", // INR
+        abnormalFlag: "H", // High
+        severity: "severe",
+        "https://example.com/interactions/warfarin-inr"
       },
       {
-        id: 'labint3',
-        \1,\2 '2951-2', // Sodium
-        abnormalFlag: 'L', // Low
-        severity: 'severe',
-        \1,\2 'https://example.com/interactions/lithium-hyponatremia'
+        id: "labint3",
+        "2951-2", // Sodium
+        abnormalFlag: "L", // Low
+        severity: "severe",
+        "https://example.com/interactions/lithium-hyponatremia"
       }
     ]
   }
@@ -115,10 +114,10 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     try {
       // Log the interaction check
       this.auditLogger.logEvent({
-        eventType: 'INTERACTION_CHECK',
-        \1,\2 `${medicationId1},${medicationId2}`,
+        eventType: "INTERACTION_CHECK",
+        `${medicationId1},${medicationId2}`,
         details: `Checking drug-drug interaction between medications $medicationId1and $medicationId2`,
-        severity: 'INFO'
+        severity: "INFO"
       });
 
       // Get medication details
@@ -130,13 +129,13 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         where: { id: medicationId2 }
       });
 
-      \1 {\n  \2{
-        throw new Error('One or both medications not found');
+      if (!session.user) {
+        throw new Error("One or both medications not found");
       }
 
       // Check for interactions in the database
       const interactions = await this.prisma.medication.findMany({
-        \1,\2 [
+        [
             {
               AND: [
                 { medicationId1: medicationId1 },
@@ -154,11 +153,11 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       });
 
       // If no interactions found, return negative result
-      \1 {\n  \2{
+      if (!session.user) {
         return {
           hasInteraction: false,
           medications: [medication1, medication2],
-          interactionType: 'drug-drug'
+          interactionType: "drug-drug"
         };
       }
 
@@ -166,46 +165,46 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       const interaction = interactions.reduce((prev, current) => {
         const severityRank: Record<string, number> = {
           severe: 3,
-          \1,\2 1
+          1
         };
 
         return severityRank[current.severity] > severityRank[prev.severity] ? current : prev;
       });
 
-      // Check if there's an override for this interaction
+      // Check if there"s an override for this interaction
       let isOverridden = false;
-      let overrideReason = '';
+      let overrideReason = "";
 
-      \1 {\n  \2{
+      if (!session.user) {
         const override = await this.prisma.interactionOverride.findFirst({
-          \1,\2 interaction.id;
+          interaction.id;
             patientId,
-            \1,\2 new Date() // Only active overrides
+            new Date() // Only active overrides
             }
           }
         })
 
-        \1 {\n  \2{
+        if (!session.user) {
           isOverridden = true;
           overrideReason = override.reason;
 
           // Log the override application
           this.auditLogger.logEvent({
-            eventType: 'INTERACTION_OVERRIDE_APPLIED',
-            \1,\2 `$medicationId1,$medicationId2`,
+            eventType: "INTERACTION_OVERRIDE_APPLIED",
+            `$medicationId1,$medicationId2`,
             details: `Applied override for interaction between medications $medicationId1and $medicationId2`,
-            severity: 'WARNING'
+            severity: "WARNING"
           });
-        } else \1 {\n  \2/ Expired overrides
+        } else if (!session.user)/ Expired overrides
             }
           }
         })) {
           // Log expired override
           this.auditLogger.logEvent({
-            eventType: 'EXPIRED_OVERRIDE_IGNORED',
-            \1,\2 `$medicationId1,$medicationId2`,
+            eventType: "EXPIRED_OVERRIDE_IGNORED",
+            `$medicationId1,$medicationId2`,
             details: `Expired override found for interaction between medications $medicationId1and $medicationId2`,
-            severity: 'WARNING'
+            severity: "WARNING"
           });
         }
       }
@@ -216,17 +215,17 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         isOverridden,
         overrideReason,
         medications: [medication1, medication2],
-        interactionType: 'drug-drug',
-        \1,\2 interaction.description,
+        interactionType: "drug-drug",
+        interaction.description,
         reference: interaction.reference
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'INTERACTION_CHECK_ERROR',
-        \1,\2 `$medicationId1,$medicationId2`,
-        details: `Error checking drug-drug interaction: $error instanceof Error ? error.message : 'Unknown error'`,
-        severity: 'ERROR'
+        eventType: "INTERACTION_CHECK_ERROR",
+        `$medicationId1,$medicationId2`,
+        details: `Error checking drug-drug interaction: $error instanceof Error ? error.message : "Unknown error"`,
+        severity: "ERROR"
       });
 
       throw error;
@@ -247,10 +246,10 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     try {
       // Log the interaction check
       this.auditLogger.logEvent({
-        eventType: 'ALLERGY_INTERACTION_CHECK',
-        \1,\2 medicationId,
+        eventType: "ALLERGY_INTERACTION_CHECK",
+        medicationId,
         details: `Checking drug-allergy interaction for medication ${medicationId} and patient $patientId`,
-        severity: 'INFO'
+        severity: "INFO"
       });
 
       // Get medication details
@@ -258,15 +257,15 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         where: { id: medicationId }
       });
 
-      \1 {\n  \2{
-        throw new Error('Medication not found');
+      if (!session.user) {
+        throw new Error("Medication not found");
       }
 
       // Get patient allergies
       const allergies = await this.prisma.allergy.findMany({
         where: {
           patientId,
-          status: 'active'
+          status: "active"
         }
       });
 
@@ -275,20 +274,20 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         allergy.allergen.toLowerCase() === medication.name.toLowerCase();
       );
 
-      \1 {\n  \2{
+      if (!session.user) {
         // Log the interaction detection
         this.auditLogger.logEvent({
-          eventType: 'ALLERGY_INTERACTION_DETECTED',
-          \1,\2 medicationId,
+          eventType: "ALLERGY_INTERACTION_DETECTED",
+          medicationId,
           details: `Direct allergy match detected for ${medication.name}`,
-          severity: 'WARNING'
+          severity: "WARNING"
         });
 
         return {
           hasInteraction: true;
           medication,
-          interactionType: 'drug-allergy',
-          \1,\2 directMatch.severity,
+          interactionType: "drug-allergy",
+          directMatch.severity,
           reaction: directMatch.reaction
         };
       }
@@ -299,22 +298,22 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
           cls.name.toLowerCase() === allergy.allergen.toLowerCase();
         );
 
-        \1 {\n  \2== medication.name.toLowerCase();
+        if (!session.user)== medication.name.toLowerCase();
         )) {
           // Log the interaction detection
           this.auditLogger.logEvent({
-            eventType: 'ALLERGY_INTERACTION_DETECTED',
-            \1,\2 medicationId,
+            eventType: "ALLERGY_INTERACTION_DETECTED",
+            medicationId,
             details: `Class-based allergy match detected for ${medication.name} in class ${allergyClass.name}`,
-            severity: 'WARNING'
+            severity: "WARNING"
           });
 
           return {
             hasInteraction: true;
             medication,
-            interactionType: 'drug-allergy',
-            \1,\2 allergy.severity,
-            \1,\2 allergyClass.name
+            interactionType: "drug-allergy",
+            allergy.severity,
+            allergyClass.name
           };
         }
       }
@@ -323,15 +322,15 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       return {
         hasInteraction: false;
         medication,
-        interactionType: 'drug-allergy'
+        interactionType: "drug-allergy"
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'ALLERGY_INTERACTION_CHECK_ERROR',
-        \1,\2 medicationId,
-        details: `Error checking drug-allergy interaction: $error instanceof Error ? error.message : 'Unknown error'`,
-        severity: 'ERROR'
+        eventType: "ALLERGY_INTERACTION_CHECK_ERROR",
+        medicationId,
+        details: `Error checking drug-allergy interaction: $error instanceof Error ? error.message : "Unknown error"`,
+        severity: "ERROR"
       });
 
       throw error;
@@ -352,10 +351,10 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     try {
       // Log the interaction check
       this.auditLogger.logEvent({
-        eventType: 'CONDITION_INTERACTION_CHECK',
-        \1,\2 medicationId,
+        eventType: "CONDITION_INTERACTION_CHECK",
+        medicationId,
         details: `Checking drug-condition interaction for medication ${medicationId} and patient $patientId`,
-        severity: 'INFO'
+        severity: "INFO"
       });
 
       // Get medication details
@@ -363,15 +362,15 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         where: { id: medicationId }
       });
 
-      \1 {\n  \2{
-        throw new Error('Medication not found');
+      if (!session.user) {
+        throw new Error("Medication not found");
       }
 
       // Get patient conditions
       const conditions = await this.prisma.condition.findMany({
         where: {
           patientId,
-          status: 'active'
+          status: "active"
         }
       });
 
@@ -382,21 +381,21 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
           int.conditionCode === condition.code;
         );
 
-        \1 {\n  \2{
+        if (!session.user) {
           // Log the interaction detection
           this.auditLogger.logEvent({
-            eventType: 'CONDITION_INTERACTION_DETECTED',
-            \1,\2 medicationId,
+            eventType: "CONDITION_INTERACTION_DETECTED",
+            medicationId,
             details: `Condition interaction detected for ${medication.name} with condition $condition.name`,
-            severity: 'WARNING'
+            severity: "WARNING"
           });
 
           return {
             hasInteraction: true;
             medication,
             condition,
-            interactionType: 'drug-condition',
-            \1,\2 interaction.description,
+            interactionType: "drug-condition",
+            interaction.description,
             reference: interaction.reference
           };
         }
@@ -406,15 +405,15 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       return {
         hasInteraction: false;
         medication,
-        interactionType: 'drug-condition'
+        interactionType: "drug-condition"
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'CONDITION_INTERACTION_CHECK_ERROR',
-        \1,\2 medicationId,
-        details: `Error checking drug-condition interaction: $error instanceof Error ? error.message : 'Unknown error'`,
-        severity: 'ERROR'
+        eventType: "CONDITION_INTERACTION_CHECK_ERROR",
+        medicationId,
+        details: `Error checking drug-condition interaction: $error instanceof Error ? error.message : "Unknown error"`,
+        severity: "ERROR"
       });
 
       throw error;
@@ -435,10 +434,10 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     try {
       // Log the interaction check
       this.auditLogger.logEvent({
-        eventType: 'LAB_INTERACTION_CHECK',
-        \1,\2 medicationId,
+        eventType: "LAB_INTERACTION_CHECK",
+        medicationId,
         details: `Checking drug-lab interaction for medication ${medicationId} and patient $patientId`,
-        severity: 'INFO'
+        severity: "INFO"
       });
 
       // Get medication details
@@ -446,20 +445,20 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         where: { id: medicationId }
       });
 
-      \1 {\n  \2{
-        throw new Error('Medication not found');
+      if (!session.user) {
+        throw new Error("Medication not found");
       }
 
       // Get patient lab results (recent abnormal results)
       const labResults = await this.prisma.labResult.findMany({
         where: {
           patientId,
-          \1,\2 ['H', 'L', 'HH', 'LL', 'A'] // Abnormal flags
+          ["H", "L", "HH", "LL", "A"] // Abnormal flags
           },
-          \1,\2 \1[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days
+          [0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days
           }
         },
-        \1,\2 'desc'
+        "desc"
         }
       })
 
@@ -471,21 +470,21 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
           int.abnormalFlag === labResult.abnormalFlag;
         );
 
-        \1 {\n  \2{
+        if (!session.user) {
           // Log the interaction detection
           this.auditLogger.logEvent({
-            eventType: 'LAB_INTERACTION_DETECTED',
-            \1,\2 medicationId,
+            eventType: "LAB_INTERACTION_DETECTED",
+            medicationId,
             details: `Lab interaction detected for ${medication.name} with abnormal $labResult.name`,
-            severity: 'WARNING'
+            severity: "WARNING"
           });
 
           return {
             hasInteraction: true;
             medication,
             labResult,
-            interactionType: 'drug-lab',
-            \1,\2 interaction.description,
+            interactionType: "drug-lab",
+            interaction.description,
             reference: interaction.reference
           };
         }
@@ -495,15 +494,15 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       return {
         hasInteraction: false;
         medication,
-        interactionType: 'drug-lab'
+        interactionType: "drug-lab"
       };
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'LAB_INTERACTION_CHECK_ERROR',
-        \1,\2 medicationId,
-        details: `Error checking drug-lab interaction: $error instanceof Error ? error.message : 'Unknown error'`,
-        severity: 'ERROR'
+        eventType: "LAB_INTERACTION_CHECK_ERROR",
+        medicationId,
+        details: `Error checking drug-lab interaction: $error instanceof Error ? error.message : "Unknown error"`,
+        severity: "ERROR"
       });
 
       throw error;
@@ -522,16 +521,16 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   async createInteractionOverride(
     interactionId: string,
-    \1,\2 string,
-    \1,\2 number;
+    string,
+    number;
   ): Promise<PharmacyDomain.InteractionOverride> {
     try {
       // Log the override creation
       this.auditLogger.logEvent({
-        eventType: 'INTERACTION_OVERRIDE_CREATED',
-        \1,\2 'Interaction',
-        \1,\2 `Creating override for interaction ${interactionId} for patient ${patientId}`,
-        severity: 'WARNING'
+        eventType: "INTERACTION_OVERRIDE_CREATED",
+        "Interaction",
+        `Creating override for interaction ${interactionId} for patient ${patientId}`,
+        severity: "WARNING"
       });
 
       // Calculate expiration date
@@ -554,10 +553,10 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'INTERACTION_OVERRIDE_ERROR',
-        \1,\2 'Interaction',
-        \1,\2 `Error creating interaction override: $error instanceof Error ? error.message : 'Unknown error'`,
-        severity: 'ERROR'
+        eventType: "INTERACTION_OVERRIDE_ERROR",
+        "Interaction",
+        `Error creating interaction override: $error instanceof Error ? error.message : "Unknown error"`,
+        severity: "ERROR"
       });
 
       throw error;
@@ -578,10 +577,10 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     try {
       // Log the batch check
       this.auditLogger.logEvent({
-        eventType: 'BATCH_INTERACTION_CHECK',
-        \1,\2 patientId,
+        eventType: "BATCH_INTERACTION_CHECK",
+        patientId,
         details: `Performing batch interaction check for ${medicationIds.length} medications`,
-        severity: 'INFO'
+        severity: "INFO"
       });
 
       const drugDrugInteractions: PharmacyDomain.DrugInteractionResult[] = [];
@@ -598,7 +597,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
             patientId;
           );
 
-          \1 {\n  \2{
+          if (!session.user) {
             drugDrugInteractions.push(interaction);
           }
         }
@@ -608,7 +607,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       for (const medicationId of medicationIds) {
         const interaction = await this.checkDrugAllergyInteraction(medicationId, patientId);
 
-        \1 {\n  \2{
+        if (!session.user) {
           drugAllergyInteractions.push(interaction);
         }
       }
@@ -617,7 +616,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       for (const medicationId of medicationIds) {
         const interaction = await this.checkDrugConditionInteraction(medicationId, patientId);
 
-        \1 {\n  \2{
+        if (!session.user) {
           drugConditionInteractions.push(interaction);
         }
       }
@@ -626,7 +625,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       for (const medicationId of medicationIds) {
         const interaction = await this.checkDrugLabInteraction(medicationId, patientId);
 
-        \1 {\n  \2{
+        if (!session.user) {
           drugLabInteractions.push(interaction);
         }
       }
@@ -637,7 +636,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         ...drugAllergyInteractions,
         ...drugConditionInteractions,
         ...drugLabInteractions;
-      ].some(interaction => interaction.severity === 'severe');
+      ].some(interaction => interaction.severity === "severe");
 
       return {
         patientId,
@@ -655,10 +654,10 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     } catch (error) {
       // Log the error
       this.auditLogger.logEvent({
-        eventType: 'BATCH_INTERACTION_CHECK_ERROR',
-        \1,\2 patientId,
-        details: `Error performing batch interaction check: $error instanceof Error ? error.message : 'Unknown error'`,
-        severity: 'ERROR'
+        eventType: "BATCH_INTERACTION_CHECK_ERROR",
+        patientId,
+        details: `Error performing batch interaction check: $error instanceof Error ? error.message : "Unknown error"`,
+        severity: "ERROR'
       });
 
       throw error;

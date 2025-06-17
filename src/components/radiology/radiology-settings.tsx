@@ -18,8 +18,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Plus } from "lucide-react";
 import CreateProcedureTypeModal, {
   type ProcedureTypeFormData,
-} from './create-procedure-type-modal.ts'; // Assuming modal exports form data type
-import CreateModalityModal, { type ModalityFormData } from './create-modality-modal.ts'; // Assuming modal exports form data type
+} from "./create-procedure-type-modal.ts"; // Assuming modal exports form data type
+import CreateModalityModal, { type ModalityFormData } from "./create-modality-modal.ts"; // Assuming modal exports form data type
 
 // Define interfaces
 interface ProcedureType {
@@ -58,7 +58,7 @@ export default const _RadiologySettings = () {
     setErrorProcedures(undefined);
     try {
       const response = await fetch("/api/radiology/procedure-types");
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = `Failed to fetch procedure types (status: ${response.status})`;
         try {
           const errorData: { error?: string } = await response.json();
@@ -69,11 +69,11 @@ export default const _RadiologySettings = () {
         throw new Error(errorMessage);
       }
       const data: ProcedureType[] = await response.json(),
-      setProcedureTypes(data || []); // Ensure it's always an array
-    } catch (err) { // Changed 'error' to 'err'
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use 'err'
-      // Debug logging removed // Use 'err'
-      setErrorProcedures(`Failed to load procedure types: ${\1}`,
+      setProcedureTypes(data || []); // Ensure it"s always an array
+    } catch (err) { // Changed "error" to "err"
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use "err"
+      // Debug logging removed // Use "err"
+      setErrorProcedures(`Failed to load procedure types: ${}`,
       setProcedureTypes([]); // Clear on error
     } finally {
       setLoadingProcedures(false);
@@ -85,7 +85,7 @@ export default const _RadiologySettings = () {
     setErrorModalities(undefined);
     try {
       const response = await fetch("/api/radiology/modalities");
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = `Failed to fetch modalities (status: ${response.status})`;
         try {
           const errorData: { error?: string } = await response.json();
@@ -96,11 +96,11 @@ export default const _RadiologySettings = () {
         throw new Error(errorMessage);
       }
       const data: Modality[] = await response.json(),
-      setModalities(data || []); // Ensure it's always an array
+      setModalities(data || []); // Ensure it"s always an array
     } catch (err) { // Changed error to err
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err
       // Debug logging removed // Use err
-      setErrorModalities(`Failed to load modalities: ${\1}`,
+      setErrorModalities(`Failed to load modalities: ${}`,
       setModalities([]); // Clear on error
     } finally {
       setLoadingModalities(false);
@@ -119,7 +119,7 @@ export default const _RadiologySettings = () {
         body: JSON.stringify(procedureData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = `Failed to create procedure type (status: ${response.status})`;
         try {
           const errorData: { error?: string } = await response.json();
@@ -152,7 +152,7 @@ export default const _RadiologySettings = () {
         body: JSON.stringify(modalityData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = `Failed to create modality (status: ${response.status})`;
         try {
           const errorData: { error?: string } = await response.json();
@@ -175,16 +175,16 @@ export default const _RadiologySettings = () {
 
   return (
     <Card>
-      \1>
-        \1>
-          \1>
-            <TabsTrigger value="procedure-types">Procedure Types\1>
+      >
+        >
+          >
+            <TabsTrigger value="procedure-types">Procedure Types>
             <TabsTrigger value="modalities">Modalities</TabsTrigger>
           </TabsList>
 
-          \1>
-            \1>
-              \1>
+          >
+            >
+              >
                 Radiology Procedure Types
               </h2>
               <Button onClick={() => setShowCreateProcedureModal(true)}>
@@ -193,15 +193,15 @@ export default const _RadiologySettings = () {
             </div>
 
             {loadingProcedures ? (
-              \1>
+              >
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             ) : errorProcedures ? (
-              \1>
+              >
                 {errorProcedures}
               </div>
             ) : (
-              \1>
+              >
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -222,8 +222,8 @@ export default const _RadiologySettings = () {
                       </TableRow>
                     ) : (
                       procedureTypes.map((type) => (
-                        \1>
-                          \1>
+                        >
+                          >
                             {type.name}
                           </TableCell>
                           <TableCell>{type.modality_type || "N/A"}</TableCell>
@@ -237,24 +237,24 @@ export default const _RadiologySettings = () {
             )}
           </TabsContent>
 
-          \1>
-            \1>
-              <h2 className="text-xl font-semibold">Radiology Modalities\1>
+          >
+            >
+              <h2 className="text-xl font-semibold">Radiology Modalities>
               <Button onClick={() => setShowCreateModalityModal(true)}>
                 <Plus className="h-4 w-4 mr-2" /> Add Modality
               </Button>
             </div>
 
             {loadingModalities ? (
-              \1>
+              >
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             ) : errorModalities ? (
-              \1>
+              >
                 {errorModalities}
               </div>
             ) : (
-              \1>
+              >
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -275,8 +275,8 @@ export default const _RadiologySettings = () {
                       </TableRow>
                     ) : (
                       modalities.map((modality) => (
-                        \1>
-                          \1>
+                        >
+                          >
                             {modality.name}
                           </TableCell>
                           <TableCell>{modality.location || "N/A"}</TableCell>

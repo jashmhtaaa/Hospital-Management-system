@@ -1,17 +1,17 @@
 import {
-import { NextRequest } from 'next/server';
-import { z } from 'zod';
+import { NextRequest } from "next/server";
+import { z } from "zod";
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   checkPermission,
   createSuccessResponse;
-} from '@/lib/core/middleware';
-import { ValidationError, NotFoundError } from '@/lib/core/errors';
-import { claimStatusSchema } from '@/lib/core/validation';
-import { convertToFHIRClaim } from '@/lib/core/fhir';
-import { logger } from '@/lib/core/logging';
+} from "@/lib/core/middleware";
+import { ValidationError, NotFoundError } from "@/lib/core/errors";
+import { claimStatusSchema } from "@/lib/core/validation";
+import { convertToFHIRClaim } from "@/lib/core/fhir";
+import { logger } from "@/lib/core/logging";
 
 // Schema for claim update
 const updateClaimSchema = z.object({
@@ -23,7 +23,7 @@ const updateClaimSchema = z.object({
 // Schema for claim submission
 const submitClaimSchema = z.object({
   submittedBy: z.string(),
-  submissionMethod: z.enum(['electronic', 'paper', 'fax', 'portal']),
+  submissionMethod: z.enum(["electronic", "paper", "fax", "portal"]),
   submissionReference: z.string().optional(),
   notes: z.string().optional()
 });
@@ -32,7 +32,7 @@ const submitClaimSchema = z.object({
 const claimResponseSchema = z.object({
   responseDate: z.coerce.date(),
   responseReference: z.string(),
-  status: z.enum(['approved', 'partially_approved', 'denied', 'pending_additional_info']),
+  status: z.enum(["approved", "partially_approved", "denied", "pending_additional_info"]),
   approvedAmount: z.number().optional(),
   deniedAmount: z.number().optional(),
   denialReason: z.string().optional(),
@@ -44,41 +44,41 @@ const claimResponseSchema = z.object({
 // GET handler for retrieving a specific claim
 export const _GET = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Check permissions
-  await checkPermission(permissionService, 'read', 'claim')(req);
+  await checkPermission(permissionService, "read", "claim")(req);
 
   // Get format from query parameters
   const url = new URL(req.url);
-  const format = url.searchParams.get('format') || 'json';
+  const format = url.searchParams.get("format") || "json";
 
   // Retrieve claim from database
   const claim = await prisma.insuranceClaim.findUnique({
     where: { id: params.id },
-    \1,\2 {
-        \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-              \1,\2 true,
+    {
+        true,
+          true,
+          true,
+              true,
               mrn: true,,
         },
       },
-      \1,\2 true,
-          \1,\2 true,
+      true,
+          true,
               name: true,,,
       },
       diagnoses: true,
-      \1,\2 true,
+      true,
       },
       followUps: true,
       responses: true
     },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
   // Convert to FHIR format if requested
-  \1 {\n  \2{
+  if (!session.user) {
     const fhirClaim = convertToFHIRClaim(claim);
     return createSuccessResponse(fhirClaim);
   }
@@ -93,22 +93,22 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   const data = await validateBody(updateClaimSchema)(req);
 
   // Check permissions
-  await checkPermission(permissionService, 'update', 'claim')(req);
+  await checkPermission(permissionService, "update", "claim")(req);
 
   // Retrieve existing claim
   const existingClaim = await prisma.insuranceClaim.findUnique({
     where: { id: params.id },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
   // Check if claim can be updated (only draft claims can be updated)
-  \1 {\n  \2{
+  if (!session.user) {
     throw new ValidationError(
-      'Only draft claims can be updated',
-      'CLAIM_UPDATE_FORBIDDEN',
+      "Only draft claims can be updated",
+      "CLAIM_UPDATE_FORBIDDEN",
       { currentStatus: existingClaim.status }
     )
   }
@@ -116,33 +116,33 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   // Prepare update data
   const updateData: unknown = {};
 
-  \1 {\n  \2pdateData.status = data.status;
-  \1 {\n  \2pdateData.notes = data.notes;
-  \1 {\n  \2pdateData.preAuthorizationNumber = data.preAuthorizationNumber;
+  if (!session.user)pdateData.status = data.status;
+  if (!session.user)pdateData.notes = data.notes;
+  if (!session.user)pdateData.preAuthorizationNumber = data.preAuthorizationNumber;
 
   // Update claim
   const updatedClaim = await prisma.insuranceClaim.update({
     where: { id: params.id },
     data: updateData,
-    \1,\2 {
-        \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-              \1,\2 true,
+    {
+        true,
+          true,
+          true,
+              true,
               mrn: true,,
         },
       },
-      \1,\2 true,
-          \1,\2 true,
+      true,
+          true,
               name: true,,,
       },
       diagnoses: true,
-      \1,\2 true,
+      true,
       },
     },
   });
 
-  logger.info('Claim updated', { claimId: updatedClaim.id });
+  logger.info("Claim updated", { claimId: updatedClaim.id });
 
   return createSuccessResponse(updatedClaim);
 });
@@ -150,22 +150,22 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
 // DELETE handler for deleting a claim
 export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Check permissions
-  await checkPermission(permissionService, 'delete', 'claim')(req);
+  await checkPermission(permissionService, "delete", "claim")(req);
 
   // Retrieve existing claim
   const existingClaim = await prisma.insuranceClaim.findUnique({
     where: { id: params.id },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
   // Check if claim can be deleted (only draft claims can be deleted)
-  \1 {\n  \2{
+  if (!session.user) {
     throw new ValidationError(
-      'Only draft claims can be deleted',
-      'CLAIM_DELETE_FORBIDDEN',
+      "Only draft claims can be deleted",
+      "CLAIM_DELETE_FORBIDDEN",
       { currentStatus: existingClaim.status }
     )
   }
@@ -204,19 +204,19 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
     });
   });
 
-  logger.info('Claim deleted', { claimId: params.id });
+  logger.info("Claim deleted", { claimId: params.id });
 
-  return createSuccessResponse({ success: true, message: 'Claim deleted successfully' });
+  return createSuccessResponse({ success: true, message: "Claim deleted successfully" });
 });
 
 // PATCH handler for claim operations (submit, respond)
 export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Get operation from query parameters
   const url = new URL(req.url);
-  const operation = url.searchParams.get('operation');
+  const operation = url.searchParams.get("operation");
 
-  \1 {\n  \2{
-    throw new ValidationError('Operation parameter is required', 'MISSING_OPERATION');
+  if (!session.user) {
+    throw new ValidationError("Operation parameter is required", "MISSING_OPERATION");
   }
 
   // Retrieve existing claim
@@ -224,34 +224,34 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
     where: { id: params.id },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
   // Handle different operations
   switch (operation) {
-    case 'submit':
+    case "submit":
       return submitClaim(req, params.id, existingClaim),
-    case 'respond':
+    case "respond":
       return recordClaimResponse(req, params.id, existingClaim),
     default:
-      throw new ValidationError(`Unknown operation: ${operation}`, 'INVALID_OPERATION'),
+      throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION"),
   }
 });
 
 // Helper function to submit a claim
 async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unknown) {
   // Check permissions
-  await checkPermission(permissionService, 'submit', 'claim')(req);
+  await checkPermission(permissionService, "submit", "claim")(req);
 
   // Validate request body
   const data = await validateBody(submitClaimSchema)(req);
 
   // Check if claim can be submitted
-  \1 {\n  \2{
+  if (!session.user) {
     throw new ValidationError(
-      'Only draft claims can be submitted',
-      'CLAIM_SUBMIT_FORBIDDEN',
+      "Only draft claims can be submitted",
+      "CLAIM_SUBMIT_FORBIDDEN",
       { currentStatus: existingClaim.status }
     );
   }
@@ -259,40 +259,40 @@ async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unk
   // Update claim
   const updatedClaim = await prisma.insuranceClaim.update({
     where: { id: claimId },
-    \1,\2 'submitted',
-      \1,\2 new Date(),
-      \1,\2 data.submissionReference,
+    "submitted",
+      new Date(),
+      data.submissionReference,
       notes: data.notes
     },
-    \1,\2 {
-        \1,\2 true,
-          \1,\2 true,
-          \1,\2 {
+    {
+        true,
+          true,
+          {
               id: true,
-              \1,\2 true,
+              true,
               mrn: true
             },
           },
         },
       },
-      \1,\2 {
+      {
           id: true,
-          \1,\2 {
-            \1,\2 true,
+          {
+            true,
               name: true
             },
           },
         },
       },
       diagnoses: true,
-      \1,\2 {
+      {
           serviceItem: true
         },
       },
     },
   });
 
-  logger.info('Claim submitted', {
+  logger.info("Claim submitted", {
     claimId,
     submittedBy: data.submittedBy,
     method: data.submissionMethod
@@ -304,16 +304,16 @@ async const submitClaim = (req: NextRequest, claimId: string, existingClaim: unk
 // Helper function to record a claim response
 async const recordClaimResponse = (req: NextRequest, claimId: string, existingClaim: unknown) {
   // Check permissions
-  await checkPermission(permissionService, 'respond', 'claim')(req);
+  await checkPermission(permissionService, "respond", "claim")(req);
 
   // Validate request body
   const data = await validateBody(claimResponseSchema)(req);
 
   // Check if claim can receive a response
-  \1 {\n  \2{
+  if (!session.user) {
     throw new ValidationError(
-      'Only submitted or in-progress claims can receive responses',
-      'CLAIM_RESPONSE_FORBIDDEN',
+      "Only submitted or in-progress claims can receive responses",
+      "CLAIM_RESPONSE_FORBIDDEN",
       { currentStatus: existingClaim.status }
     );
   }
@@ -321,11 +321,11 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
   // Determine new claim status based on response
   let newClaimStatus;
   switch (data.status) {
-    case 'approved':
-      newClaimStatus = 'approved';\1\n    }\n    case 'partially_approved':
-      newClaimStatus = 'partially_approved';\1\n    }\n    case 'denied':
-      newClaimStatus = 'denied';\1\n    }\n    case 'pending_additional_info':
-      newClaimStatus = 'additional_info_needed';
+    case "approved":
+      newClaimStatus = "approved";\n    }\n    case "partially_approved":
+      newClaimStatus = "partially_approved";\n    }\n    case "denied":
+      newClaimStatus = "denied";\n    }\n    case "pending_additional_info":
+      newClaimStatus = "additional_info_needed";
       break;
     default: newClaimStatus = existingClaim.status
   }
@@ -337,29 +337,29 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
       data: {
         claimId,
         responseDate: data.responseDate,
-        \1,\2 data.status,
-        \1,\2 data.deniedAmount,
-        \1,\2 data.notes,
-        \1,\2 data.additionalInfoRequested
+        data.status,
+        data.deniedAmount,
+        data.notes,
+        data.additionalInfoRequested
       },
     });
 
     // Update claim status
     const updatedClaim = await prisma.insuranceClaim.update({
       where: { id: claimId },
-      \1,\2 newClaimStatus,
-        \1,\2 data.responseDate
+      newClaimStatus,
+        data.responseDate
       },
-      \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-                \1,\2 true,
+      true,
+            true,
+            true,
+                true,
                 mrn: true,,,,
-        \1,\2 true,
-            \1,\2 true,
+        true,
+            true,
                 name: true,,,,
         diagnoses: true,
-        \1,\2 true,,
+        true,,
         responses: true
       },
     });
@@ -367,7 +367,7 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
     return { response, updatedClaim };
   });
 
-  logger.info('Claim response recorded', {
+  logger.info("Claim response recorded", {
     claimId,
     responseId: result.response.id,
     status: data.status

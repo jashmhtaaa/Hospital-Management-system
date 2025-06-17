@@ -1,14 +1,14 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { employeeService } from '@/lib/hr/employee-service';
+import { employeeService } from "@/lib/hr/employee-service";
 // Schema for employee update
 const updateEmployeeSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   middleName: z.string().optional(),
-  gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
+  gender: z.enum(["MALE", "FEMALE", "OTHER", "UNKNOWN"]).optional(),
   birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
   email: z.string().email("Invalid email format").optional(),
   phone: z.string().optional(),
@@ -28,9 +28,9 @@ export const _GET = async (
   try {
     const employee = await employeeService.getEmployeeById(params.id)
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Employee not found' },
+        { error: "Employee not found" },
         { status: 404 }
       );
     }
@@ -39,7 +39,7 @@ export const _GET = async (
   } catch (error: unknown) {
 
     return NextResponse.json(
-      { error: 'Failed to fetch employee', details: error.message },
+      { error: "Failed to fetch employee", details: error.message },
       { status: 500 }
     );
   }
@@ -63,23 +63,23 @@ export const _PUT = async (
   } catch (error: unknown) {
 
     // Handle validation errors
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation error', details: error.errors },
+        { error: "Validation error", details: error.errors },
         { status: 400 }
       );
     }
 
     // Handle not found errors
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Employee not found' },
+        { error: "Employee not found" },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { error: 'Failed to update employee', details: error.message },
+      { error: "Failed to update employee", details: error.message },
       { status: 500 }
     );
   }
@@ -101,15 +101,15 @@ export const _DELETE = async (
   } catch (error: unknown) {
 
     // Handle not found errors
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Employee not found' },
+        { error: "Employee not found" },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
-      { error: 'Failed to delete employee', details: error.message },
+      { error: "Failed to delete employee", details: error.message },
       { status: 500 }
     );
   }

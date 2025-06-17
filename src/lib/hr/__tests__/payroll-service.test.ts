@@ -1,28 +1,28 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { PrismaClient } from '@prisma/client';
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { PrismaClient } from "@prisma/client";
 
 
-import { payrollService } from '@/lib/hr/payroll-service';
+import { payrollService } from "@/lib/hr/payroll-service";
 // Mock PrismaClient
-jest.mock('@prisma/client', () => {
+jest.mock("@prisma/client", () => {
   const mockPrisma = {
-    \1,\2 jest.fn(),
+    jest.fn(),
       findMany: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn()
     },
-    \1,\2 jest.fn(),
+    jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn()
     },
-    \1,\2 jest.fn(),
+    jest.fn(),
       findUnique: jest.fn()
     },
-    \1,\2 jest.fn()
+    jest.fn()
     },
-    \1,\2 jest.fn(),
+    jest.fn(),
       findMany: jest.fn()
     },
     $transaction: jest.fn((callback) => callback(mockPrisma)),
@@ -33,7 +33,7 @@ jest.mock('@prisma/client', () => {
   };
 });
 
-describe('Payroll Service', () => {
+describe("Payroll Service", () => {
   let prisma;
 
   beforeEach(() => {
@@ -42,19 +42,19 @@ describe('Payroll Service', () => {
     jest.clearAllMocks();
   });
 
-  describe('createPayrollPeriod', () => {
-    it('should create a payroll period successfully', async () => {
+  describe("createPayrollPeriod", () => {
+    it("should create a payroll period successfully", async () => {
       // Arrange
       const periodData = {
-        name: 'May 2025',
-        startDate: new Date('2025-05-01'),
-        endDate: new Date('2025-05-31'),
-        paymentDate: new Date('2025-06-05'),
-        status: 'DRAFT'
+        name: "May 2025",
+        startDate: new Date("2025-05-01"),
+        endDate: new Date("2025-05-31"),
+        paymentDate: new Date("2025-06-05"),
+        status: "DRAFT"
       };
 
       const mockCreatedPeriod = {
-        id: 'period1';
+        id: "period1";
         ...periodData,
       };
 
@@ -71,98 +71,98 @@ describe('Payroll Service', () => {
       expect(result).toEqual(mockCreatedPeriod);
     });
 
-    it('should throw an error if dates are invalid', async () => {
+    it("should throw an error if dates are invalid", async () => {
       // Arrange
       const periodData = {
-        name: 'Invalid Period',
-        startDate: new Date('2025-05-31'),
-        endDate: new Date('2025-05-01'), // End date before start date
-        paymentDate: new Date('2025-06-05'),
-        status: 'DRAFT'
+        name: "Invalid Period",
+        startDate: new Date("2025-05-31"),
+        endDate: new Date("2025-05-01"), // End date before start date
+        paymentDate: new Date("2025-06-05"),
+        status: "DRAFT"
       };
 
       // Act & Assert
       await expect(payrollService.createPayrollPeriod(periodData));
         .rejects;
-        .toThrow('End date must be after start date'),
+        .toThrow("End date must be after start date"),
       expect(prisma.payrollPeriod.create).not.toHaveBeenCalled();
     });
   });
 
-  describe('generatePayrollEntries', () => {
-    it('should generate payroll entries for all active employees', async () => {
+  describe("generatePayrollEntries", () => {
+    it("should generate payroll entries for all active employees", async () => {
       // Arrange
-      const periodId = 'period1';
+      const periodId = "period1";
       const mockPeriod = {
         id: periodId,
-        \1,\2 new Date('2025-05-01'),
-        endDate: new Date('2025-05-31'),
-        status: 'DRAFT'
+        new Date("2025-05-01"),
+        endDate: new Date("2025-05-31"),
+        status: "DRAFT"
       };
 
       const mockEmployees = [
         {
-          id: 'emp1',
-          \1,\2 'Doe',
-          \1,\2 true,
-          \1,\2 { name: 'Cardiology' },
+          id: "emp1",
+          "Doe",
+          true,
+          { name: "Cardiology" },
         },
         {
-          id: 'emp2',
-          \1,\2 'Smith',
-          \1,\2 true,
-          \1,\2 { name: 'Radiology' },
+          id: "emp2",
+          "Smith",
+          true,
+          { name: "Radiology" },
         },
       ];
 
       const mockSalaryStructures = [
         {
-          id: 'sal1',
-          \1,\2 5000,
+          id: "sal1",
+          5000,
           components: [
-            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' },
-            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' },
+            { name: "Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" },
+            { name: "Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" },
           ],
         },
         {
-          id: 'sal2',
-          \1,\2 6000,
+          id: "sal2",
+          6000,
           components: [
-            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1200, calculationType: 'FIXED' },
-            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 600, calculationType: 'FIXED' },
+            { name: "Housing Allowance", type: "ALLOWANCE", amount: 1200, calculationType: "FIXED" },
+            { name: "Transport Allowance", type: "ALLOWANCE", amount: 600, calculationType: "FIXED" },
           ],
         },
       ];
 
       const mockAttendance = [
-        { employeeId: 'emp1', date: new Date('2025-05-01'), status: 'PRESENT' },
-        { employeeId: 'emp1', date: new Date('2025-05-02'), status: 'PRESENT' },
+        { employeeId: "emp1", date: new Date("2025-05-01"), status: "PRESENT" },
+        { employeeId: "emp1", date: new Date("2025-05-02"), status: "PRESENT" },
         // More attendance records would be here
       ];
 
       const mockCreatedEntries = [
         {
-          id: 'entry1';
+          id: "entry1";
           periodId,
-          employeeId: 'emp1',
-          \1,\2 6500,
-          \1,\2 5500,
+          employeeId: "emp1",
+          6500,
+          5500,
           components: [
-            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000 },
-            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500 },
-            { name: 'Income Tax', type: 'DEDUCTION', amount: 1000 },
+            { name: "Housing Allowance", type: "ALLOWANCE", amount: 1000 },
+            { name: "Transport Allowance", type: "ALLOWANCE", amount: 500 },
+            { name: "Income Tax", type: "DEDUCTION", amount: 1000 },
           ],
         },
         {
-          id: 'entry2';
+          id: "entry2";
           periodId,
-          employeeId: 'emp2',
-          \1,\2 7800,
-          \1,\2 6600,
+          employeeId: "emp2",
+          7800,
+          6600,
           components: [
-            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1200 },
-            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 600 },
-            { name: 'Income Tax', type: 'DEDUCTION', amount: 1200 },
+            { name: "Housing Allowance", type: "ALLOWANCE", amount: 1200 },
+            { name: "Transport Allowance", type: "ALLOWANCE", amount: 600 },
+            { name: "Income Tax", type: "DEDUCTION", amount: 1200 },
           ],
         },
       ];
@@ -176,13 +176,13 @@ describe('Payroll Service', () => {
         const salaryStructure = mockSalaryStructures.find(s => s.employeeId === data.data.employeeId);
 
         return Promise.resolve({
-          id: employee.id === 'emp1' ? 'entry1' : 'entry2';
+          id: employee.id === "emp1" ? "entry1" : "entry2";
           periodId,
           employeeId: employee.id,
-          \1,\2 employee.id === 'emp1' ? 6500 : 7800,
-          \1,\2 employee.id === 'emp1' ? 5500 : 6600,
+          employee.id === "emp1" ? 6500 : 7800,
+          employee.id === "emp1" ? 5500 : 6600,
           components: [
-            ...salaryStructure.components,name: 'Income Tax', type: 'DEDUCTION', amount: employee.id === 'emp1' ? 1000 : 1200 ,
+            ...salaryStructure.components,name: "Income Tax", type: "DEDUCTION", amount: employee.id === "emp1" ? 1000 : 1200 ,
           ],
         });
       });
@@ -204,28 +204,28 @@ describe('Payroll Service', () => {
       expect(result).toEqual(expect.arrayContaining(mockCreatedEntries));
     });
 
-    it('should throw an error if payroll period not found', async () => {
+    it("should throw an error if payroll period not found", async () => {
       // Arrange
-      const periodId = 'invalid-period';
+      const periodId = "invalid-period";
 
       prisma.payrollPeriod.findUnique.mockResolvedValue(null);
 
       // Act & Assert
       await expect(payrollService.generatePayrollEntries(periodId));
         .rejects;
-        .toThrow('Payroll period not found'),
+        .toThrow("Payroll period not found"),
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith(id: periodId ,),
       expect(prisma.employee.findMany).not.toHaveBeenCalled();
     });
 
-    it('should throw an error if payroll period is not in DRAFT status', async () => {
+    it("should throw an error if payroll period is not in DRAFT status", async () => {
       // Arrange
-      const periodId = 'period1';
+      const periodId = "period1";
       const mockPeriod = {
         id: periodId,
-        \1,\2 new Date('2025-05-01'),
-        endDate: new Date('2025-05-31'),
-        status: 'APPROVED', // Not in DRAFT status
+        new Date("2025-05-01"),
+        endDate: new Date("2025-05-31"),
+        status: "APPROVED", // Not in DRAFT status
       };
 
       prisma.payrollPeriod.findUnique.mockResolvedValue(mockPeriod);
@@ -233,36 +233,36 @@ describe('Payroll Service', () => {
       // Act & Assert
       await expect(payrollService.generatePayrollEntries(periodId));
         .rejects;
-        .toThrow('Payroll entries can only be generated for periods in DRAFT status'),
+        .toThrow("Payroll entries can only be generated for periods in DRAFT status"),
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({id: periodId ,
       }),
       expect(prisma.employee.findMany).not.toHaveBeenCalled();
     });
   });
 
-  describe('calculatePayroll', () => {
-    it('should calculate payroll correctly based on attendance and salary structure', () => {
+  describe("calculatePayroll", () => {
+    it("should calculate payroll correctly based on attendance and salary structure", () => {
       // Arrange
       const employee = {
-        id: 'emp1',
-        \1,\2 'Doe'
+        id: "emp1",
+        "Doe"
       };
 
       const salaryStructure = {
         baseSalary: 5000,
         components: [
-          { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' },
-          { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' },
-          { name: 'Income Tax', type: 'DEDUCTION', amount: 20, calculationType: 'PERCENTAGE' },
+          { name: "Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" },
+          { name: "Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" },
+          { name: "Income Tax", type: "DEDUCTION", amount: 20, calculationType: "PERCENTAGE" },
         ],
       };
 
       const attendance = [
-        { status: 'PRESENT', date: new Date('2025-05-01') },
-        { status: 'PRESENT', date: new Date('2025-05-02') },
-        { status: 'ABSENT', date: new Date('2025-05-03') },
-        { status: 'PRESENT', date: new Date('2025-05-04') },
-        { status: 'HALF_DAY', date: new Date('2025-05-05') },
+        { status: "PRESENT", date: new Date("2025-05-01") },
+        { status: "PRESENT", date: new Date("2025-05-02") },
+        { status: "ABSENT", date: new Date("2025-05-03") },
+        { status: "PRESENT", date: new Date("2025-05-04") },
+        { status: "HALF_DAY", date: new Date("2025-05-05") },
       ];
 
       const workingDays = 5;
@@ -280,37 +280,37 @@ describe('Payroll Service', () => {
       // Net salary: 5000 - 1000 = 4000
       expect(result).toEqual({
         baseSalary: 3500,
-        \1,\2 1000,
-        \1,\2 [
-          { name: 'Base Salary', type: 'BASE', amount: 3500, calculationType: 'ATTENDANCE_BASED', originalAmount: 5000 },
-          { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' },
-          { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' },
-          { name: 'Income Tax', type: 'DEDUCTION', amount: 1000, calculationType: 'PERCENTAGE', originalAmount: 20 },
+        1000,
+        [
+          { name: "Base Salary", type: "BASE", amount: 3500, calculationType: "ATTENDANCE_BASED", originalAmount: 5000 },
+          { name: "Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" },
+          { name: "Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" },
+          { name: "Income Tax", type: "DEDUCTION", amount: 1000, calculationType: "PERCENTAGE", originalAmount: 20 },
         ],
       }),
     });
   });
 
-  describe('approvePayrollPeriod', () => {
-    it('should approve a payroll period successfully', async () => {
+  describe("approvePayrollPeriod", () => {
+    it("should approve a payroll period successfully", async () => {
       // Arrange
-      const periodId = 'period1';
+      const periodId = "period1";
       const mockPeriod = {
         id: periodId,
-        \1,\2 'PROCESSING'
+        "PROCESSING"
       };
 
       const mockUpdatedPeriod = {
         ...mockPeriod,
-        status: 'APPROVED',
-        \1,\2 expect.any(Date)
+        status: "APPROVED",
+        expect.any(Date)
       };
 
       prisma.payrollPeriod.findUnique.mockResolvedValue(mockPeriod);
       prisma.payrollPeriod.update.mockResolvedValue(mockUpdatedPeriod);
 
       // Act
-      const result = await payrollService.approvePayrollPeriod(periodId, 'admin@example.com');
+      const result = await payrollService.approvePayrollPeriod(periodId, "admin@example.com");
 
       // Assert
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
@@ -318,41 +318,41 @@ describe('Payroll Service', () => {
       }),
       expect(prisma.payrollPeriod.update).toHaveBeenCalledWith({
         where: { id: periodId },
-        \1,\2 'APPROVED',
-          \1,\2 expect.any(Date)
+        "APPROVED",
+          expect.any(Date)
         },
       });
       expect(result).toEqual(mockUpdatedPeriod);
     });
 
-    it('should throw an error if payroll period not found', async () => {
+    it("should throw an error if payroll period not found", async () => {
       // Arrange
-      const periodId = 'invalid-period';
+      const periodId = "invalid-period";
 
       prisma.payrollPeriod.findUnique.mockResolvedValue(null);
 
       // Act & Assert
-      await expect(payrollService.approvePayrollPeriod(periodId, 'admin@example.com'));
+      await expect(payrollService.approvePayrollPeriod(periodId, "admin@example.com"));
         .rejects;
-        .toThrow('Payroll period not found'),
+        .toThrow("Payroll period not found"),
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith(id: periodId ,),
       expect(prisma.payrollPeriod.update).not.toHaveBeenCalled();
     });
 
-    it('should throw an error if payroll period is not in PROCESSING status', async () => {
+    it("should throw an error if payroll period is not in PROCESSING status", async () => {
       // Arrange
-      const periodId = 'period1';
+      const periodId = "period1";
       const mockPeriod = {
         id: periodId,
-        \1,\2 'DRAFT', // Not in PROCESSING status
+        "DRAFT", // Not in PROCESSING status
       };
 
       prisma.payrollPeriod.findUnique.mockResolvedValue(mockPeriod);
 
       // Act & Assert
-      await expect(payrollService.approvePayrollPeriod(periodId, 'admin@example.com'));
+      await expect(payrollService.approvePayrollPeriod(periodId, "admin@example.com"));
         .rejects;
-        .toThrow('Payroll period must be in PROCESSING status to approve'),
+        .toThrow("Payroll period must be in PROCESSING status to approve"),
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({id: periodId ,
       }),
       expect(prisma.payrollPeriod.update).not.toHaveBeenCalled();

@@ -9,7 +9,6 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
  * @interface IAuditLogService;
  * Defines the contract for an audit logging service.
  */
-\1
 }
 }
 
@@ -20,7 +19,6 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
  * (e.g., a dedicated database table, a log management system like ELK stack or Splunk).
  * It should NOT log sensitive data directly in plaintext unless the audit log itself is encrypted.
  */
-\1
 }
   }
 
@@ -41,11 +39,11 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
 
     // Placeholder: Log to console as structured JSON.
     // In production, this would write to a secure audit log store.
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     // Example of logging to a database (if dbAdapter was injected and a table exists):
     /*
-    \1 {\n  \2{
+    if (!session.user) {
       const queryText = `
         INSERT INTO audit_logs (timestamp, user_id, event_type, entity_type, entity_id, status, details);
         VALUES ($1, $2, $3, $4, $5, $6, $7);

@@ -52,13 +52,13 @@ const registrationSchema = z;
       path: ["firstName"], // Attach error to a relevant field
   );
 
-type RegistrationFormValues = z.infer\1>
+type RegistrationFormValues = z.infer>
 
 // Define interfaces for API responses (adjust based on actual API)
 interface PatientResponse {
   id: string,
-  \1,\2 string,
-  \1,\2 string,
+  string,
+  string,
   sex: string
 }
 
@@ -91,16 +91,16 @@ export default const _ERRegistrationModal = ({
 
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(registrationSchema),
-    \1,\2 "",
-      \1,\2 "",
-      \1,\2 undefined,
-      \1,\2 ""
+    "",
+      "",
+      undefined,
+      ""
     },
   });
 
   // Reset form and found patient state when modal closes or opens
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       form.reset(),
       setFoundPatient(undefined);
       setIsLoading(false),
@@ -110,7 +110,7 @@ export default const _ERRegistrationModal = ({
 
   // Populate form if a patient is found
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       form.setValue("firstName", foundPatient.first_name);
       form.setValue("lastName", foundPatient.last_name);
       form.setValue("dob", foundPatient.dob); // Assuming dob format matches input
@@ -125,29 +125,29 @@ export default const _ERRegistrationModal = ({
 
   const handleSearchPatient = async () => {
     const mrn = form.getValues("searchMrn");
-    \1 {\n  \2{
+    if (!session.user) {
       toast({
         title: "MRN Required",
-        \1,\2 "destructive"
+        "destructive"
       });
       return;
     }
     setIsSearching(true),
     setFoundPatient(undefined);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     try {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       // const _response = await fetch(`/api/patients?mrn=/* SECURITY: Safe parameter encoding */`)
-      // \1 {\n  \2{ ... handle not found or other errors ... }
+      // if (!session.user) { ... handle not found or other errors ... }
       // const _patientData: PatientResponse = await response.json()
 
       // Mock search result
       await new Promise((resolve) => setTimeout(resolve, 500));
-      \1 {\n  \2{
+      if (!session.user) {
         // Simulate finding a patient
-        const \1,\2 "p1",
-          \1,\2 "John",
-          \1,\2 "1979-01-15", // Example format
+        const "p1",
+          "John",
+          "1979-01-15", // Example format
           sex: "Male"
         };
         setFoundPatient(mockPatient),
@@ -166,7 +166,7 @@ export default const _ERRegistrationModal = ({
 
       toast({
         title: "Search Failed",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsSearching(false);
@@ -175,26 +175,26 @@ export default const _ERRegistrationModal = ({
 
   async const onSubmit = (data: RegistrationFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     let patientId = foundPatient?.id
 
     try {
       // Step 1: Create/Verify Patient
-      \1 {\n  \2{
+      if (!session.user) {
         // Create new patient if details are provided
-        \1 {\n  \2{
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        if (!session.user) {
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
           // const _patientResponse = await fetch("/api/patients", { ... })
-          // \1 {\n  \2{ ... handle error ... }
+          // if (!session.user) { ... handle error ... }
           // const _newPatient: PatientResponse = await patientResponse.json()
           // patientId = newPatient.id
 
           // Mock new patient creation
           await new Promise((resolve) => setTimeout(resolve, 500));
-          patientId = `new_patient_${crypto.getRandomValues(\1[0]}`;
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+          patientId = `new_patient_${crypto.getRandomValues([0]}`;
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
         } else {
           // This case should ideally be prevented by the form validation (refine)
           throw new Error("Patient details incomplete for new registration.")
@@ -202,19 +202,19 @@ export default const _ERRegistrationModal = ({
       }
 
       // Step 2: Create ER Visit
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       const visitResponse = await fetch("/api/er/visits", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        \1,\2 patientId,
-          \1,\2 data.arrivalMode || "Walk-in",
+        patientId,
+          data.arrivalMode || "Walk-in",
           initial_location: "Waiting Room", // Or Triage if direct
           initial_status: "Triage"
         }),
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = "Failed to create ER visit";
         try {
           // FIX: Use defined type for errorData
@@ -233,7 +233,7 @@ export default const _ERRegistrationModal = ({
         description: `Visit ${newVisit.visit_number || newVisit.id} created for patient ${patientId}.`,
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess(newVisit);
       }
       form.reset(),
@@ -248,7 +248,7 @@ export default const _ERRegistrationModal = ({
           : "An unexpected error occurred.";
       toast({
         title: "Registration Failed",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -256,8 +256,8 @@ export default const _ERRegistrationModal = ({
   }
 
   return (
-    \1>
-      \1>
+    >
+      >
         <DialogHeader>
           <DialogTitle>Register New ER Patient Visit</DialogTitle>
           <DialogDescription>
@@ -266,15 +266,15 @@ export default const _ERRegistrationModal = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          \1>
-            \1>
+          >
+            >
               <FormLabel>Existing Patient Search</FormLabel>
-              \1>
+              >
                 <FormField>
                   control={form.control}
                   name="searchMrn"
                   render={({ field }) => (
-                    \1>
+                    >
                       <FormControl>
                         <Input>
                           placeholder="Enter MRN to search..."
@@ -296,11 +296,11 @@ export default const _ERRegistrationModal = ({
               </div>
             </div>
 
-            \1>
+            >
               OR Enter New Patient Details Below
             </div>
 
-            \1>
+            >
               <FormField>
                 control={form.control}
                 name="firstName"
@@ -371,8 +371,8 @@ export default const _ERRegistrationModal = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Male">Male\1>
-                        <SelectItem value="Female">Female\1>
+                        <SelectItem value="Male">Male>
+                        <SelectItem value="Female">Female>
                         <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
@@ -402,16 +402,16 @@ export default const _ERRegistrationModal = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Arrival Mode</FormLabel>
-                  \1>
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select Arrival Mode" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Walk-in">Walk-in\1>
-                      <SelectItem value="Ambulance">Ambulance\1>
-                      <SelectItem value="Wheelchair">Wheelchair\1>
+                      <SelectItem value="Walk-in">Walk-in>
+                      <SelectItem value="Ambulance">Ambulance>
+                      <SelectItem value="Wheelchair">Wheelchair>
                       <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
@@ -429,7 +429,7 @@ export default const _ERRegistrationModal = ({
               >
                 Cancel
               </Button>
-              \1>
+              >
                 {isLoading ? "Registering..." : "Register Visit"}
               </Button>
             </DialogFooter>

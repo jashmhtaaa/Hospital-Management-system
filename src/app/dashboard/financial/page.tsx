@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
 }
 
-'use client';
+"use client";
 
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription;
-} from '@/components/ui/card';
+} from "@/components/ui/card";
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger;
-} from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue;
-} from '@/components/ui/select';
-import { DatePicker } from '@/components/ui/date-picker';
+} from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date-picker";
   BarChart,
   LineChart,
   PieChart,
   DonutChart;
-} from '@/components/ui/charts';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { DataTable } from '@/components/ui/data-table';
-import { Spinner } from '@/components/ui/spinner';
-import { formatCurrency, formatDate, formatNumber } from '@/lib/formatters';
+} from "@/components/ui/charts";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { DataTable } from "@/components/ui/data-table";
+import { Spinner } from "@/components/ui/spinner";
+import { formatCurrency, formatDate, formatNumber } from "@/lib/formatters";
 
 export default const _FinancialDashboard = () {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState("overview");
   const [dateRange, setDateRange] = useState({
     startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
     endDate: new Date()
@@ -54,19 +54,19 @@ export default const _FinancialDashboard = () {
 
     try {
       // In a real implementation, this would fetch data from the API
-      // For now, we'll simulate the data
+      // For now, we"ll simulate the data
 
       // Simulate API call delay
-      await \1;
+      await ;
 
       // Generate simulated data based on active tab
       let data;
       switch (activeTab) {
-        case 'overview':
-          data = generateOverviewData(),\1\n    }\n    case 'revenue':
-          data = generateRevenueData(),\1\n    }\n    case 'billing':
-          data = generateBillingData(),\1\n    }\n    case 'insurance':
-          data = generateInsuranceData(),\1\n    }\n    case 'reports':
+        case "overview":
+          data = generateOverviewData(),\n    }\n    case "revenue":
+          data = generateRevenueData(),\n    }\n    case "billing":
+          data = generateBillingData(),\n    }\n    case "insurance":
+          data = generateInsuranceData(),\n    }\n    case "reports":
           data = generateReportsData(),
           break;
         default: data = generateOverviewData()
@@ -74,7 +74,7 @@ export default const _FinancialDashboard = () {
 
       setDashboardData(data);
     } catch (err) {
-      setError('Failed to load dashboard data. Please try again.');
+      setError("Failed to load dashboard data. Please try again.");
 
     } finally {
       setLoading(false);
@@ -85,86 +85,86 @@ export default const _FinancialDashboard = () {
   const generateOverviewData = () => {
     return {
       kpis: [
-        { title: 'Total Revenue', value: 1250000, change: 5.2, changeType: 'increase' },
-        { title: 'Outstanding Amount', value: 320000, change: -2.1, changeType: 'decrease' },
-        { title: 'Average Collection Period', value: 32, unit: 'days', change: -3, changeType: 'decrease' },
-        { title: 'Claim Approval Rate', value: 87.5, unit: '%', change: 1.5, changeType: 'increase' }
+        { title: "Total Revenue", value: 1250000, change: 5.2, changeType: "increase" },
+        { title: "Outstanding Amount", value: 320000, change: -2.1, changeType: "decrease" },
+        { title: "Average Collection Period", value: 32, unit: "days", change: -3, changeType: "decrease" },
+        { title: "Claim Approval Rate", value: 87.5, unit: "%", change: 1.5, changeType: "increase" }
       ],
-      \1,\2 ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
         datasets: [
           {
-            label: 'Revenue',
+            label: "Revenue",
             data: [120000, 150000, 180000, 220000, 250000, 280000],
-            backgroundColor: 'rgba(34, 197, 94, 0.2)',
-            borderColor: 'rgb(34, 197, 94)',
+            backgroundColor: "rgba(34, 197, 94, 0.2)",
+            borderColor: "rgb(34, 197, 94)",
           },
           {
-            label: 'Expenses',
+            label: "Expenses",
             data: [90000, 110000, 130000, 150000, 170000, 190000],
-            backgroundColor: 'rgba(239, 68, 68, 0.2)',
-            borderColor: 'rgb(239, 68, 68)',
+            backgroundColor: "rgba(239, 68, 68, 0.2)",
+            borderColor: "rgb(239, 68, 68)",
           }
         ]
       },
-      \1,\2 ['Paid', 'Partial', 'Pending', 'Overdue'],
+      ["Paid", "Partial", "Pending", "Overdue"],
         data: [65, 15, 10, 10],
         backgroundColor: [
-          'rgba(34, 197, 94, 0.6)',
-          'rgba(59, 130, 246, 0.6)',
-          'rgba(250, 204, 21, 0.6)',
-          'rgba(239, 68, 68, 0.6)';
+          "rgba(34, 197, 94, 0.6)",
+          "rgba(59, 130, 246, 0.6)",
+          "rgba(250, 204, 21, 0.6)",
+          "rgba(239, 68, 68, 0.6)";
         ]
       },
       recentTransactions: [
-        { id: 'INV-2025-000123', patient: 'John Smith', date: '2025-05-25', amount: 1250, status: 'paid' },
-        { id: 'INV-2025-000124', patient: 'Sarah Johnson', date: '2025-05-24', amount: 2340, status: 'partial' },
-        { id: 'INV-2025-000125', patient: 'Michael Brown', date: '2025-05-23', amount: 890, status: 'pending' },
-        { id: 'INV-2025-000126', patient: 'Emily Davis', date: '2025-05-22', amount: 1780, status: 'overdue' },
-        { id: 'INV-2025-000127', patient: 'Robert Wilson', date: '2025-05-21', amount: 3450, status: 'paid' }
+        { id: "INV-2025-000123", patient: "John Smith", date: "2025-05-25", amount: 1250, status: "paid" },
+        { id: "INV-2025-000124", patient: "Sarah Johnson", date: "2025-05-24", amount: 2340, status: "partial" },
+        { id: "INV-2025-000125", patient: "Michael Brown", date: "2025-05-23", amount: 890, status: "pending" },
+        { id: "INV-2025-000126", patient: "Emily Davis", date: "2025-05-22", amount: 1780, status: "overdue" },
+        { id: "INV-2025-000127", patient: "Robert Wilson", date: "2025-05-21", amount: 3450, status: "paid" }
       ]
     }
   };
 
   const generateRevenueData = () => {
     return {
-      \1,\2 ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+      ["Week 1", "Week 2", "Week 3", "Week 4"],
         datasets: [
           {
-            label: 'Revenue',
+            label: "Revenue",
             data: [65000, 72000, 68000, 78000],
-            backgroundColor: 'rgba(34, 197, 94, 0.2)',
-            borderColor: 'rgb(34, 197, 94)',
+            backgroundColor: "rgba(34, 197, 94, 0.2)",
+            borderColor: "rgb(34, 197, 94)",
           }
         ]
       },
-      \1,\2 ['OPD', 'IPD', 'Emergency', 'Laboratory', 'Radiology', 'Pharmacy'],
+      ["OPD", "IPD", "Emergency", "Laboratory", "Radiology", "Pharmacy"],
         data: [30, 25, 15, 10, 12, 8],
         backgroundColor: [
-          'rgba(59, 130, 246, 0.6)',
-          'rgba(34, 197, 94, 0.6)',
-          'rgba(239, 68, 68, 0.6)',
-          'rgba(250, 204, 21, 0.6)',
-          'rgba(168, 85, 247, 0.6)',
-          'rgba(236, 72, 153, 0.6)';
+          "rgba(59, 130, 246, 0.6)",
+          "rgba(34, 197, 94, 0.6)",
+          "rgba(239, 68, 68, 0.6)",
+          "rgba(250, 204, 21, 0.6)",
+          "rgba(168, 85, 247, 0.6)",
+          "rgba(236, 72, 153, 0.6)";
         ]
       },
       revenueByService: [
-        { service: 'General Consultation', revenue: 125000, percentage: 15 },
-        { service: 'Specialist Consultation', revenue: 180000, percentage: 22 },
-        { service: 'Laboratory Tests', revenue: 95000, percentage: 12 },
-        { service: 'Radiology Services', revenue: 110000, percentage: 13 },
-        { service: 'Inpatient Care', revenue: 210000, percentage: 26 },
-        { service: 'Pharmacy', revenue: 75000, percentage: 9 },
-        { service: 'Emergency Services', revenue: 65000, percentage: 8 }
+        { service: "General Consultation", revenue: 125000, percentage: 15 },
+        { service: "Specialist Consultation", revenue: 180000, percentage: 22 },
+        { service: "Laboratory Tests", revenue: 95000, percentage: 12 },
+        { service: "Radiology Services", revenue: 110000, percentage: 13 },
+        { service: "Inpatient Care", revenue: 210000, percentage: 26 },
+        { service: "Pharmacy", revenue: 75000, percentage: 9 },
+        { service: "Emergency Services", revenue: 65000, percentage: 8 }
       ],
-      \1,\2 ['Cash', 'Credit Card', 'Insurance', 'Bank Transfer', 'Online Payment'],
+      ["Cash", "Credit Card", "Insurance", "Bank Transfer", "Online Payment"],
         data: [15, 30, 40, 5, 10],
         backgroundColor: [
-          'rgba(250, 204, 21, 0.6)',
-          'rgba(59, 130, 246, 0.6)',
-          'rgba(34, 197, 94, 0.6)',
-          'rgba(168, 85, 247, 0.6)',
-          'rgba(236, 72, 153, 0.6)';
+          "rgba(250, 204, 21, 0.6)",
+          "rgba(59, 130, 246, 0.6)",
+          "rgba(34, 197, 94, 0.6)",
+          "rgba(168, 85, 247, 0.6)",
+          "rgba(236, 72, 153, 0.6)";
         ]
       }
     }
@@ -172,108 +172,108 @@ export default const _FinancialDashboard = () {
 
   const generateBillingData = () => {
     return {
-      \1,\2 ['Draft', 'Pending', 'Verified', 'Approved', 'Sent', 'Partial', 'Paid', 'Overdue'],
+      ["Draft", "Pending", "Verified", "Approved", "Sent", "Partial", "Paid", "Overdue"],
         data: [5, 8, 12, 15, 10, 18, 25, 7],
         backgroundColor: [
-          'rgba(156, 163, 175, 0.6)',
-          'rgba(250, 204, 21, 0.6)',
-          'rgba(59, 130, 246, 0.6)',
-          'rgba(168, 85, 247, 0.6)',
-          'rgba(236, 72, 153, 0.6)',
-          'rgba(14, 165, 233, 0.6)',
-          'rgba(34, 197, 94, 0.6)',
-          'rgba(239, 68, 68, 0.6)';
+          "rgba(156, 163, 175, 0.6)",
+          "rgba(250, 204, 21, 0.6)",
+          "rgba(59, 130, 246, 0.6)",
+          "rgba(168, 85, 247, 0.6)",
+          "rgba(236, 72, 153, 0.6)",
+          "rgba(14, 165, 233, 0.6)",
+          "rgba(34, 197, 94, 0.6)",
+          "rgba(239, 68, 68, 0.6)";
         ]
       },
-      \1,\2 ['Current', '1-30 days', '31-60 days', '61-90 days', '90+ days'],
+      ["Current", "1-30 days", "31-60 days", "61-90 days", "90+ days"],
         datasets: [
           {
-            label: 'Outstanding Amount',
+            label: "Outstanding Amount",
             data: [120000, 85000, 45000, 35000, 25000],
             backgroundColor: [
-              'rgba(34, 197, 94, 0.6)',
-              'rgba(250, 204, 21, 0.6)',
-              'rgba(249, 115, 22, 0.6)',
-              'rgba(239, 68, 68, 0.6)',
-              'rgba(220, 38, 38, 0.6)';
+              "rgba(34, 197, 94, 0.6)",
+              "rgba(250, 204, 21, 0.6)",
+              "rgba(249, 115, 22, 0.6)",
+              "rgba(239, 68, 68, 0.6)",
+              "rgba(220, 38, 38, 0.6)";
             ]
           }
         ]
       },
       recentInvoices: [
-        { id: 'INV-2025-000128', patient: 'Thomas Anderson', date: '2025-05-25', amount: 2150, status: 'approved' },
-        { id: 'INV-2025-000129', patient: 'Jennifer Lee', date: '2025-05-25', amount: 1890, status: 'pending' },
-        { id: 'INV-2025-000130', patient: 'David Miller', date: '2025-05-24', amount: 3450, status: 'verified' },
-        { id: 'INV-2025-000131', patient: 'Susan White', date: '2025-05-24', amount: 1250, status: 'draft' },
-        { id: 'INV-2025-000132', patient: 'James Brown', date: '2025-05-23', amount: 2780, status: 'sent' },
-        { id: 'INV-2025-000133', patient: 'Patricia Davis', date: '2025-05-23', amount: 1950, status: 'paid' },
-        { id: 'INV-2025-000134', patient: 'Robert Johnson', date: '2025-05-22', amount: 3250, status: 'partial' },
-        { id: 'INV-2025-000135', patient: 'Linda Wilson', date: '2025-05-21', amount: 1650, status: 'overdue' }
+        { id: "INV-2025-000128", patient: "Thomas Anderson", date: "2025-05-25", amount: 2150, status: "approved" },
+        { id: "INV-2025-000129", patient: "Jennifer Lee", date: "2025-05-25", amount: 1890, status: "pending" },
+        { id: "INV-2025-000130", patient: "David Miller", date: "2025-05-24", amount: 3450, status: "verified" },
+        { id: "INV-2025-000131", patient: "Susan White", date: "2025-05-24", amount: 1250, status: "draft" },
+        { id: "INV-2025-000132", patient: "James Brown", date: "2025-05-23", amount: 2780, status: "sent" },
+        { id: "INV-2025-000133", patient: "Patricia Davis", date: "2025-05-23", amount: 1950, status: "paid" },
+        { id: "INV-2025-000134", patient: "Robert Johnson", date: "2025-05-22", amount: 3250, status: "partial" },
+        { id: "INV-2025-000135", patient: "Linda Wilson", date: "2025-05-21", amount: 1650, status: "overdue" }
       ],
       recentPayments: [
-        { id: 'PAY-2025-000089', invoice: 'INV-2025-000123', patient: 'John Smith', date: '2025-05-25', amount: 1250, method: 'Credit Card' },
-        { id: 'PAY-2025-000090', invoice: 'INV-2025-000124', patient: 'Sarah Johnson', date: '2025-05-24', amount: 1500, method: 'Insurance' },
-        { id: 'PAY-2025-000091', invoice: 'INV-2025-000127', patient: 'Robert Wilson', date: '2025-05-21', amount: 3450, method: 'Bank Transfer' },
-        { id: 'PAY-2025-000092', invoice: 'INV-2025-000133', patient: 'Patricia Davis', date: '2025-05-23', amount: 1950, method: 'Cash' },
-        { id: 'PAY-2025-000093', invoice: 'INV-2025-000134', patient: 'Robert Johnson', date: '2025-05-22', amount: 2000, method: 'Online Payment' }
+        { id: "PAY-2025-000089", invoice: "INV-2025-000123", patient: "John Smith", date: "2025-05-25", amount: 1250, method: "Credit Card" },
+        { id: "PAY-2025-000090", invoice: "INV-2025-000124", patient: "Sarah Johnson", date: "2025-05-24", amount: 1500, method: "Insurance" },
+        { id: "PAY-2025-000091", invoice: "INV-2025-000127", patient: "Robert Wilson", date: "2025-05-21", amount: 3450, method: "Bank Transfer" },
+        { id: "PAY-2025-000092", invoice: "INV-2025-000133", patient: "Patricia Davis", date: "2025-05-23", amount: 1950, method: "Cash" },
+        { id: "PAY-2025-000093", invoice: "INV-2025-000134", patient: "Robert Johnson", date: "2025-05-22", amount: 2000, method: "Online Payment" }
       ]
     }
   };
 
   const generateInsuranceData = () => {
     return {
-      \1,\2 ['Draft', 'Submitted', 'In Progress', 'Additional Info Needed', 'Approved', 'Partially Approved', 'Denied', 'Appealed'],
+      ["Draft", "Submitted", "In Progress", "Additional Info Needed", "Approved", "Partially Approved", "Denied", "Appealed"],
         data: [10, 15, 20, 8, 30, 7, 5, 5],
         backgroundColor: [
-          'rgba(156, 163, 175, 0.6)',
-          'rgba(59, 130, 246, 0.6)',
-          'rgba(250, 204, 21, 0.6)',
-          'rgba(249, 115, 22, 0.6)',
-          'rgba(34, 197, 94, 0.6)',
-          'rgba(168, 85, 247, 0.6)',
-          'rgba(239, 68, 68, 0.6)',
-          'rgba(236, 72, 153, 0.6)';
+          "rgba(156, 163, 175, 0.6)",
+          "rgba(59, 130, 246, 0.6)",
+          "rgba(250, 204, 21, 0.6)",
+          "rgba(249, 115, 22, 0.6)",
+          "rgba(34, 197, 94, 0.6)",
+          "rgba(168, 85, 247, 0.6)",
+          "rgba(239, 68, 68, 0.6)",
+          "rgba(236, 72, 153, 0.6)";
         ]
       },
-      \1,\2 ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      ["Jan", "Feb", "Mar", "Apr", "May"],
         datasets: [
           {
-            label: 'Submitted Claims',
+            label: "Submitted Claims",
             data: [45, 52, 48, 58, 63],
-            borderColor: 'rgb(59, 130, 246)',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderColor: "rgb(59, 130, 246)",
+            backgroundColor: "rgba(59, 130, 246, 0.1)",
           },
           {
-            label: 'Approved Claims',
+            label: "Approved Claims",
             data: [35, 42, 38, 48, 53],
-            borderColor: 'rgb(34, 197, 94)',
-            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+            borderColor: "rgb(34, 197, 94)",
+            backgroundColor: "rgba(34, 197, 94, 0.1)",
           }
         ]
       },
       topInsuranceProviders: [
-        { provider: 'Blue Cross Blue Shield', claimsCount: 125, approvalRate: 92, averageProcessingDays: 12 },
-        { provider: 'UnitedHealthcare', claimsCount: 98, approvalRate: 88, averageProcessingDays: 15 },
-        { provider: 'Aetna', claimsCount: 87, approvalRate: 85, averageProcessingDays: 14 },
-        { provider: 'Cigna', claimsCount: 76, approvalRate: 90, averageProcessingDays: 13 },
-        { provider: 'Humana', claimsCount: 65, approvalRate: 87, averageProcessingDays: 16 }
+        { provider: "Blue Cross Blue Shield", claimsCount: 125, approvalRate: 92, averageProcessingDays: 12 },
+        { provider: "UnitedHealthcare", claimsCount: 98, approvalRate: 88, averageProcessingDays: 15 },
+        { provider: "Aetna", claimsCount: 87, approvalRate: 85, averageProcessingDays: 14 },
+        { provider: "Cigna", claimsCount: 76, approvalRate: 90, averageProcessingDays: 13 },
+        { provider: "Humana", claimsCount: 65, approvalRate: 87, averageProcessingDays: 16 }
       ],
       recentClaims: [
-        { id: 'CLM-2025-000056', invoice: 'INV-2025-000123', patient: 'John Smith', provider: 'Blue Cross Blue Shield', amount: 1250, status: 'approved' },
-        { id: 'CLM-2025-000057', invoice: 'INV-2025-000124', patient: 'Sarah Johnson', provider: 'UnitedHealthcare', amount: 2340, status: 'in_progress' },
-        { id: 'CLM-2025-000058', invoice: 'INV-2025-000127', patient: 'Robert Wilson', provider: 'Aetna', amount: 3450, status: 'submitted' },
-        { id: 'CLM-2025-000059', invoice: 'INV-2025-000132', patient: 'James Brown', provider: 'Cigna', amount: 2780, status: 'additional_info_needed' },
-        { id: 'CLM-2025-000060', invoice: 'INV-2025-000133', patient: 'Patricia Davis', provider: 'Humana', amount: 1950, status: 'denied' }
+        { id: "CLM-2025-000056", invoice: "INV-2025-000123", patient: "John Smith", provider: "Blue Cross Blue Shield", amount: 1250, status: "approved" },
+        { id: "CLM-2025-000057", invoice: "INV-2025-000124", patient: "Sarah Johnson", provider: "UnitedHealthcare", amount: 2340, status: "in_progress" },
+        { id: "CLM-2025-000058", invoice: "INV-2025-000127", patient: "Robert Wilson", provider: "Aetna", amount: 3450, status: "submitted" },
+        { id: "CLM-2025-000059", invoice: "INV-2025-000132", patient: "James Brown", provider: "Cigna", amount: 2780, status: "additional_info_needed" },
+        { id: "CLM-2025-000060", invoice: "INV-2025-000133", patient: "Patricia Davis", provider: "Humana", amount: 1950, status: "denied" }
       ],
-      \1,\2 ['Eligibility Issues', 'Missing Information', 'Non-covered Service', 'Authorization Required', 'Duplicate Claim', 'Coding Errors'],
+      ["Eligibility Issues", "Missing Information", "Non-covered Service", "Authorization Required", "Duplicate Claim", "Coding Errors"],
         data: [30, 25, 15, 12, 8, 10],
         backgroundColor: [
-          'rgba(239, 68, 68, 0.6)',
-          'rgba(249, 115, 22, 0.6)',
-          'rgba(250, 204, 21, 0.6)',
-          'rgba(168, 85, 247, 0.6)',
-          'rgba(59, 130, 246, 0.6)',
-          'rgba(236, 72, 153, 0.6)';
+          "rgba(239, 68, 68, 0.6)",
+          "rgba(249, 115, 22, 0.6)",
+          "rgba(250, 204, 21, 0.6)",
+          "rgba(168, 85, 247, 0.6)",
+          "rgba(59, 130, 246, 0.6)",
+          "rgba(236, 72, 153, 0.6)";
         ]
       }
     }
@@ -282,28 +282,28 @@ export default const _FinancialDashboard = () {
   const generateReportsData = () => {
     return {
       availableReports: [
-        { id: 'REP-001', name: 'Revenue Report', description: 'Detailed breakdown of revenue by department, service, and time period', lastRun: '2025-05-20' },
-        { id: 'REP-002', name: 'Expenses Report', description: 'Analysis of expenses by category and department', lastRun: '2025-05-19' },
-        { id: 'REP-003', name: 'Profit & Loss Statement', description: 'Financial performance summary with revenue, expenses, and profit', lastRun: '2025-05-18' },
-        { id: 'REP-004', name: 'Accounts Receivable Aging', description: 'Outstanding invoices categorized by age', lastRun: '2025-05-25' },
-        { id: 'REP-005', name: 'Insurance Claims Analysis', description: 'Status and performance of insurance claims', lastRun: '2025-05-24' },
-        { id: 'REP-006', name: 'Payment Collection Report', description: 'Analysis of payment collection by method and time period', lastRun: '2025-05-23' },
-        { id: 'REP-007', name: 'Department Revenue Report', description: 'Revenue breakdown by department with patient volume', lastRun: '2025-05-22' },
-        { id: 'REP-008', name: 'Service Revenue Report', description: 'Revenue analysis by service type and volume', lastRun: '2025-05-21' }
+        { id: "REP-001", name: "Revenue Report", description: "Detailed breakdown of revenue by department, service, and time period", lastRun: "2025-05-20" },
+        { id: "REP-002", name: "Expenses Report", description: "Analysis of expenses by category and department", lastRun: "2025-05-19" },
+        { id: "REP-003", name: "Profit & Loss Statement", description: "Financial performance summary with revenue, expenses, and profit", lastRun: "2025-05-18" },
+        { id: "REP-004", name: "Accounts Receivable Aging", description: "Outstanding invoices categorized by age", lastRun: "2025-05-25" },
+        { id: "REP-005", name: "Insurance Claims Analysis", description: "Status and performance of insurance claims", lastRun: "2025-05-24" },
+        { id: "REP-006", name: "Payment Collection Report", description: "Analysis of payment collection by method and time period", lastRun: "2025-05-23" },
+        { id: "REP-007", name: "Department Revenue Report", description: "Revenue breakdown by department with patient volume", lastRun: "2025-05-22" },
+        { id: "REP-008", name: "Service Revenue Report", description: "Revenue analysis by service type and volume", lastRun: "2025-05-21" }
       ],
       scheduledReports: [
-        { id: 'SCH-001', report: 'Revenue Report', frequency: 'Weekly', nextRun: '2025-05-27', recipients: 'Finance Team' },
-        { id: 'SCH-002', report: 'Profit & Loss Statement', frequency: 'Monthly', nextRun: '2025-06-01', recipients: 'Management Team' },
-        { id: 'SCH-003', report: 'Accounts Receivable Aging', frequency: 'Weekly', nextRun: '2025-06-01', recipients: 'Billing Team' },
-        { id: 'SCH-004', report: 'Insurance Claims Analysis', frequency: 'Weekly', nextRun: '2025-05-31', recipients: 'Insurance Team' }
+        { id: "SCH-001", report: "Revenue Report", frequency: "Weekly", nextRun: "2025-05-27", recipients: "Finance Team" },
+        { id: "SCH-002", report: "Profit & Loss Statement", frequency: "Monthly", nextRun: "2025-06-01", recipients: "Management Team" },
+        { id: "SCH-003", report: "Accounts Receivable Aging", frequency: "Weekly", nextRun: "2025-06-01", recipients: "Billing Team" },
+        { id: "SCH-004", report: "Insurance Claims Analysis", frequency: "Weekly", nextRun: "2025-05-31", recipients: "Insurance Team" }
       ]
     }
   };
 
   // Render loading state
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         <Spinner size="lg" />
         <span className="ml-2">Loading financial dashboard...</span>
       </div>
@@ -311,10 +311,10 @@ export default const _FinancialDashboard = () {
   }
 
   // Render error state
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
-        \1>
+      >
+        >
           <AlertDescription>{error}</AlertDescription>
         </Alert>
         <Button className="mt-4" onClick={fetchDashboardData}>Retry</Button>
@@ -323,19 +323,19 @@ export default const _FinancialDashboard = () {
   }
 
   return (
-    \1>
-      \1>
-        <h1 className="text-3xl font-bold">Financial Dashboard\1>
-        \1>
-          \1>
-            <span className="text-sm font-medium">From:\1>
+    >
+      >
+        <h1 className="text-3xl font-bold">Financial Dashboard>
+        >
+          >
+            <span className="text-sm font-medium">From:>
             <DatePicker>
               date={dateRange.startDate}
               onDateChange={(date) => setDateRange({ ...dateRange, startDate: date })}
             />
           </div>
-          \1>
-            <span className="text-sm font-medium">To:\1>
+          >
+            <span className="text-sm font-medium">To:>
             <DatePicker>
               date={dateRange.endDate}
               onDateChange={(date) => setDateRange({ ...dateRange, endDate: date })}
@@ -345,32 +345,32 @@ export default const _FinancialDashboard = () {
         </div>
       </div>
 
-      \1>
-        \1>
-          <TabsTrigger value="overview">Overview\1>
-          <TabsTrigger value="revenue">Revenue Analysis\1>
-          <TabsTrigger value="billing">Billing & Payments\1>
-          <TabsTrigger value="insurance">Insurance Claims\1>
+      >
+        >
+          <TabsTrigger value="overview">Overview>
+          <TabsTrigger value="revenue">Revenue Analysis>
+          <TabsTrigger value="billing">Billing & Payments>
+          <TabsTrigger value="insurance">Insurance Claims>
           <TabsTrigger value="reports">Reports</TabsTrigger>
         </TabsList>
 
-        \1>
+        >
           {dashboardData && (
             <>
-              \1>
+              >
                 {dashboardData.kpis.map((kpi, index) => (
-                  \1>
-                    \1>
-                      \1>
-                        <span className="text-sm font-medium text-muted-foreground">{kpi.title}\1>
-                        \1>
-                          \1>
-                            {kpi.unit === '%' ? formatNumber(kpi.value) + '%' :
-                             kpi.unit === 'days' ? formatNumber(kpi.value) + ' days' :
+                  >
+                    >
+                      >
+                        <span className="text-sm font-medium text-muted-foreground">{kpi.title}>
+                        >
+                          >
+                            {kpi.unit === "%" ? formatNumber(kpi.value) + "%" :
+                             kpi.unit === "days" ? formatNumber(kpi.value) + " days" :
                              formatCurrency(kpi.value)}
                           </span>
-                          \1>
-                            {kpi.changeType === 'increase' ? '↑' : '↓'} {Math.abs(kpi.change)}%
+                          >
+                            {kpi.changeType === "increase" ? "↑" : "↓"} {Math.abs(kpi.change)}%
                           </span>
                         </div>
                       </div>
@@ -379,7 +379,7 @@ export default const _FinancialDashboard = () {
                 ))}
               </div>
 
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue vs Expenses</CardTitle>
@@ -416,28 +416,28 @@ export default const _FinancialDashboard = () {
                   <DataTable>
                     data={dashboardData.recentTransactions}
                     columns={[
-                      { header: 'Invoice ID', accessorKey: 'id' },
-                      { header: 'Patient', accessorKey: 'patient' },
+                      { header: "Invoice ID", accessorKey: "id" },
+                      { header: "Patient", accessorKey: "patient" },
                       {
-                        header: 'Date',
-                        \1,\2 ({ row }) => formatDate(row.original.date);
+                        header: "Date",
+                        ({ row }) => formatDate(row.original.date);
                       },
                       {
-                        header: 'Amount',
-                        \1,\2 ({ row }) => formatCurrency(row.original.amount);
+                        header: "Amount",
+                        ({ row }) => formatCurrency(row.original.amount);
                       },
                       {
-                        header: 'Status',
-                        \1,\2 ({ row }) => {
+                        header: "Status",
+                        ({ row }) => {
                           const status = row.original.status;
                           const statusColors = {
-                            paid: 'bg-green-100 text-green-800',
-                            \1,\2 'bg-yellow-100 text-yellow-800',
-                            overdue: 'bg-red-100 text-red-800'
+                            paid: "bg-green-100 text-green-800",
+                            "bg-yellow-100 text-yellow-800",
+                            overdue: "bg-red-100 text-red-800"
                           };
 
                           return (
-                            \1>
+                            >
                               {status.charAt(0).toUpperCase() + status.slice(1)}
                             </Badge>
                           );
@@ -451,10 +451,10 @@ export default const _FinancialDashboard = () {
           )}
         </TabsContent>
 
-        \1>
+        >
           {dashboardData && (
             <>
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue Trend</CardTitle>
@@ -482,7 +482,7 @@ export default const _FinancialDashboard = () {
                 </Card>
               </div>
 
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Revenue by Service</CardTitle>
@@ -492,14 +492,14 @@ export default const _FinancialDashboard = () {
                     <DataTable>
                       data={dashboardData.revenueByService}
                       columns={[
-                        { header: 'Service', accessorKey: 'service' },
+                        { header: "Service", accessorKey: "service" },
                         {
-                          header: 'Revenue',
-                          \1,\2 ({ row }) => formatCurrency(row.original.revenue);
+                          header: "Revenue",
+                          ({ row }) => formatCurrency(row.original.revenue);
                         },
                         {
-                          header: 'Percentage',
-                          \1,\2 ({ row }) => `${row.original.percentage}%`;
+                          header: "Percentage",
+                          ({ row }) => `${row.original.percentage}%`;
                         }
                       ]}
                     />
@@ -523,10 +523,10 @@ export default const _FinancialDashboard = () {
           )}
         </TabsContent>
 
-        \1>
+        >
           {dashboardData && (
             <>
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Invoice Status</CardTitle>
@@ -536,8 +536,8 @@ export default const _FinancialDashboard = () {
                     <BarChart>
                       data={{
                         labels: dashboardData.invoiceStatus.labels,
-                        \1,\2 'Invoices',
-                          \1,\2 dashboardData.invoiceStatus.backgroundColor
+                        "Invoices",
+                          dashboardData.invoiceStatus.backgroundColor
                         }]
                       }}
                       height={300}
@@ -562,7 +562,7 @@ export default const _FinancialDashboard = () {
                 </Card>
               </div>
 
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Invoices</CardTitle>
@@ -572,40 +572,40 @@ export default const _FinancialDashboard = () {
                     <DataTable>
                       data={dashboardData.recentInvoices}
                       columns={[
-                        { header: 'Invoice ID', accessorKey: 'id' },
-                        { header: 'Patient', accessorKey: 'patient' },
+                        { header: "Invoice ID", accessorKey: "id" },
+                        { header: "Patient", accessorKey: "patient" },
                         {
-                          header: 'Date',
-                          \1,\2 ({ row }) => formatDate(row.original.date);
+                          header: "Date",
+                          ({ row }) => formatDate(row.original.date);
                         },
                         {
-                          header: 'Amount',
-                          \1,\2 ({ row }) => formatCurrency(row.original.amount);
+                          header: "Amount",
+                          ({ row }) => formatCurrency(row.original.amount);
                         },
                         {
-                          header: 'Status',
-                          \1,\2 ({ row }) => {
+                          header: "Status",
+                          ({ row }) => {
                             const status = row.original.status;
                             const statusColors: Record<string, string> = {
-                              draft: 'bg-gray-100 text-gray-800',
-                              \1,\2 'bg-blue-100 text-blue-800',
-                              \1,\2 'bg-pink-100 text-pink-800',
-                              \1,\2 'bg-green-100 text-green-800',
-                              overdue: 'bg-red-100 text-red-800'
+                              draft: "bg-gray-100 text-gray-800",
+                              "bg-blue-100 text-blue-800",
+                              "bg-pink-100 text-pink-800",
+                              "bg-green-100 text-green-800",
+                              overdue: "bg-red-100 text-red-800"
                             };
 
                             return (
-                              \1>
+                              >
                                 {status.charAt(0).toUpperCase() + status.slice(1)}
                               </Badge>
                             );
                           }
                         },
                         {
-                          header: 'Actions',
+                          header: "Actions",
                           cell: () => (
-                            \1>
-                              <Button variant="outline" size="sm">View\1>
+                            >
+                              <Button variant="outline" size="sm">View>
                               <Button variant="outline" size="sm">Edit</Button>
                             </div>
                           ),
@@ -625,23 +625,23 @@ export default const _FinancialDashboard = () {
                   <DataTable>
                     data={dashboardData.recentPayments}
                     columns={[
-                      { header: 'Payment ID', accessorKey: 'id' },
-                      { header: 'Invoice', accessorKey: 'invoice' },
-                      { header: 'Patient', accessorKey: 'patient' },
+                      { header: "Payment ID", accessorKey: "id" },
+                      { header: "Invoice", accessorKey: "invoice" },
+                      { header: "Patient", accessorKey: "patient" },
                       {
-                        header: 'Date',
-                        \1,\2 ({ row }) => formatDate(row.original.date);
+                        header: "Date",
+                        ({ row }) => formatDate(row.original.date);
                       },
                       {
-                        header: 'Amount',
-                        \1,\2 ({ row }) => formatCurrency(row.original.amount);
+                        header: "Amount",
+                        ({ row }) => formatCurrency(row.original.amount);
                       },
-                      { header: 'Method', accessorKey: 'method' },
+                      { header: "Method", accessorKey: "method" },
                       {
-                        header: 'Actions',
+                        header: "Actions",
                         cell: () => (
-                          \1>
-                            <Button variant="outline" size="sm">View\1>
+                          >
+                            <Button variant="outline" size="sm">View>
                             <Button variant="outline" size="sm">Receipt</Button>
                           </div>
                         ),
@@ -654,10 +654,10 @@ export default const _FinancialDashboard = () {
           )}
         </TabsContent>
 
-        \1>
+        >
           {dashboardData && (
             <>
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Claim Status</CardTitle>
@@ -685,7 +685,7 @@ export default const _FinancialDashboard = () {
                 </Card>
               </div>
 
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Top Insurance Providers</CardTitle>
@@ -695,18 +695,18 @@ export default const _FinancialDashboard = () {
                     <DataTable>
                       data={dashboardData.topInsuranceProviders}
                       columns={[
-                        { header: 'Provider', accessorKey: 'provider' },
+                        { header: "Provider", accessorKey: "provider" },
                         {
-                          header: 'Claims Count',
-                          \1,\2 ({ row }) => formatNumber(row.original.claimsCount);
+                          header: "Claims Count",
+                          ({ row }) => formatNumber(row.original.claimsCount);
                         },
                         {
-                          header: 'Approval Rate',
-                          \1,\2 ({ row }) => `${row.original.approvalRate}%`;
+                          header: "Approval Rate",
+                          ({ row }) => `${row.original.approvalRate}%`;
                         },
                         {
-                          header: 'Avg. Processing Days',
-                          \1,\2 ({ row }) => `${row.original.averageProcessingDays} days`;
+                          header: "Avg. Processing Days",
+                          ({ row }) => `${row.original.averageProcessingDays} days`;
                         }
                       ]}
                     />
@@ -714,7 +714,7 @@ export default const _FinancialDashboard = () {
                 </Card>
               </div>
 
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Claims</CardTitle>
@@ -724,28 +724,28 @@ export default const _FinancialDashboard = () {
                     <DataTable>
                       data={dashboardData.recentClaims}
                       columns={[
-                        { header: 'Claim ID', accessorKey: 'id' },
-                        { header: 'Patient', accessorKey: 'patient' },
-                        { header: 'Provider', accessorKey: 'provider' },
+                        { header: "Claim ID", accessorKey: "id" },
+                        { header: "Patient", accessorKey: "patient" },
+                        { header: "Provider", accessorKey: "provider" },
                         {
-                          header: 'Amount',
-                          \1,\2 ({ row }) => formatCurrency(row.original.amount);
+                          header: "Amount",
+                          ({ row }) => formatCurrency(row.original.amount);
                         },
                         {
-                          header: 'Status',
-                          \1,\2 ({ row }) => {
+                          header: "Status",
+                          ({ row }) => {
                             const status = row.original.status;
                             const statusColors: Record<string, string> = {
-                              draft: 'bg-gray-100 text-gray-800',
-                              \1,\2 'bg-yellow-100 text-yellow-800',
-                              \1,\2 'bg-green-100 text-green-800',
-                              \1,\2 'bg-red-100 text-red-800',
-                              appealed: 'bg-pink-100 text-pink-800'
+                              draft: "bg-gray-100 text-gray-800",
+                              "bg-yellow-100 text-yellow-800",
+                              "bg-green-100 text-green-800",
+                              "bg-red-100 text-red-800",
+                              appealed: "bg-pink-100 text-pink-800"
                             };
 
                             return (
-                              \1>
-                                {status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                              >
+                                {status.split("_").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
                               </Badge>
                             );
                           }
@@ -772,10 +772,10 @@ export default const _FinancialDashboard = () {
           )}
         </TabsContent>
 
-        \1>
+        >
           {dashboardData && (
             <>
-              \1>
+              >
                 <Card>
                   <CardHeader>
                     <CardTitle>Available Reports</CardTitle>
@@ -785,18 +785,18 @@ export default const _FinancialDashboard = () {
                     <DataTable>
                       data={dashboardData.availableReports}
                       columns={[
-                        { header: 'Report ID', accessorKey: 'id' },
-                        { header: 'Name', accessorKey: 'name' },
-                        { header: 'Description', accessorKey: 'description' },
+                        { header: "Report ID", accessorKey: "id" },
+                        { header: "Name", accessorKey: "name" },
+                        { header: "Description", accessorKey: "description" },
                         {
-                          header: 'Last Run',
-                          \1,\2 ({ row }) => formatDate(row.original.lastRun);
+                          header: "Last Run",
+                          ({ row }) => formatDate(row.original.lastRun);
                         },
                         {
-                          header: 'Actions',
+                          header: "Actions",
                           cell: () => (
-                            \1>
-                              <Button variant="outline" size="sm">Generate\1>
+                            >
+                              <Button variant="outline" size="sm">Generate>
                               <Button variant="outline" size="sm">Schedule</Button>
                             </div>
                           ),
@@ -816,19 +816,19 @@ export default const _FinancialDashboard = () {
                   <DataTable>
                     data={dashboardData.scheduledReports}
                     columns={[
-                      { header: 'Schedule ID', accessorKey: 'id' },
-                      { header: 'Report', accessorKey: 'report' },
-                      { header: 'Frequency', accessorKey: 'frequency' },
+                      { header: "Schedule ID", accessorKey: "id" },
+                      { header: "Report", accessorKey: "report" },
+                      { header: "Frequency", accessorKey: "frequency" },
                       {
-                        header: 'Next Run',
-                        \1,\2 ({ row }) => formatDate(row.original.nextRun);
+                        header: "Next Run",
+                        ({ row }) => formatDate(row.original.nextRun);
                       },
-                      { header: 'Recipients', accessorKey: 'recipients' },
+                      { header: "Recipients", accessorKey: "recipients" },
                       {
-                        header: 'Actions',
+                        header: "Actions',
                         cell: () => (
-                          \1>
-                            <Button variant="outline" size="sm">Edit\1>
+                          >
+                            <Button variant="outline" size="sm">Edit>
                             <Button variant="outline" size="sm">Delete</Button>
                           </div>
                         ),

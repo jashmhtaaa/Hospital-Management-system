@@ -1,18 +1,18 @@
-import { useRouter } from 'next/navigation';
-import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useRouter } from "next/navigation";
+import type React from "react";
+import { useEffect, useState } from "react";
 
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from '@/components/ui/use-toast';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "@/components/ui/use-toast";
 interface ContactManagementProps {
   contactId?: string;
   onSuccess?: (contact: unknown) => void
@@ -22,64 +22,64 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   const [contact, setContact] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
   const [formData, setFormData] = useState({
-    name: '',
-    \1,\2 '',
-    \1,\2 'ACTIVE',
-    \1,\2 '',
-      \1,\2 '',
-      \1,\2 '',
-    \1,\2 true,
-      \1,\2 'EMAIL',
-      preferredLanguage: 'English',
+    name: "",
+    "",
+    "ACTIVE",
+    "",
+      "",
+      "",
+    true,
+      "EMAIL",
+      preferredLanguage: "English",
     customFields: 
   });
   const [notes, setNotes] = useState<any[]>([]);
-  const [newNote, setNewNote] = useState('');
+  const [newNote, setNewNote] = useState("");
   const [segments, setSegments] = useState<any[]>([]);
   const [availableSegments, setAvailableSegments] = useState<any[]>([]);
   const [patientData, setPatientData] = useState<unknown>(null);
-  const [patientId, setPatientId] = useState('');
+  const [patientId, setPatientId] = useState("");
   const [activities, setActivities] = useState<any[]>([]);
 
   // Fetch contact data if editing an existing contact
   useEffect(() => {
     const fetchContact = async () => {
-      \1 {\n  \2eturn;
+      if (!session.user)eturn;
 
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/support-services/marketing/contacts/${\1}`;
-        \1 {\n  \2hrow new Error('Failed to fetch contact');
+        const response = await fetch(`/api/support-services/marketing/contacts/${}`;
+        if (!session.user)hrow new Error("Failed to fetch contact");
 
         const data = await response.json(),
         setContact(data);
 
         // Set form values from contact data
         setFormData({
-          name: data.name || '',
-          \1,\2 data.phone || '',
-          \1,\2 data.status || 'ACTIVE',
-          \1,\2 '',
-            \1,\2 '',
-            \1,\2 '',
-          \1,\2 true,
-            \1,\2 'EMAIL',
-            preferredLanguage: 'English',
+          name: data.name || "",
+          data.phone || "",
+          data.status || "ACTIVE",
+          "",
+            "",
+            "",
+          true,
+            "EMAIL",
+            preferredLanguage: "English",
           customFields: data.customFields || 
         });
 
         // Fetch contact notes
-        \1 {\n  \2{
+        if (!session.user) {
           setNotes(data.notes);
         }
 
         // Fetch contact segments
-        \1 {\n  \2{
+        if (!session.user) {
           setSegments(data.segments);
         }
 
         // Fetch patient data if linked
-        \1 {\n  \2{
+        if (!session.user) {
           setPatientId(data.patientId),
           fetchPatientData(data.patientId);
         }
@@ -90,7 +90,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
         toast({
           title: "Error",
-          \1,\2 "destructive");
+          "destructive");
       } finally {
         setIsLoading(false);
       }
@@ -103,8 +103,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   useEffect(() => {
     const fetchSegments = async () => {
       try {
-        const response = await fetch('/api/support-services/marketing/segments?isActive=true');
-        \1 {\n  \2hrow new Error('Failed to fetch segments');
+        const response = await fetch("/api/support-services/marketing/segments?isActive=true");
+        if (!session.user)hrow new Error("Failed to fetch segments");
 
         const data = await response.json(),
         setAvailableSegments(data.data || []);
@@ -119,8 +119,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   // Fetch patient data
   const fetchPatientData = async (id: string) => {
     try {
-      const response = await fetch(`/api/patients/${\1}`;
-      \1 {\n  \2hrow new Error('Failed to fetch patient data');
+      const response = await fetch(`/api/patients/${}`;
+      if (!session.user)hrow new Error("Failed to fetch patient data");
 
       const data = await response.json(),
       setPatientData(data);
@@ -133,7 +133,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   const fetchContactActivities = async (id: string) => {
     try {
       const response = await fetch(`/api/support-services/marketing/contacts/${id}/activities`);
-      \1 {\n  \2hrow new Error('Failed to fetch contact activities');
+      if (!session.user)hrow new Error("Failed to fetch contact activities");
 
       const data = await response.json(),
       setActivities(data || []);
@@ -146,8 +146,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    \1 {\n  \2 {
-      const [parent, child] = name.split('.'),
+    if (!session.user) {
+      const [parent, child] = name.split("."),
       setFormData({
         ...formData,
         [parent]: {
@@ -165,8 +165,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
   // Handle select changes
   const handleSelectChange = (name: string, value: string) => {
-    \1 {\n  \2 {
-      const [parent, child] = name.split('.'),
+    if (!session.user) {
+      const [parent, child] = name.split("."),
       setFormData({
         ...formData,
         [parent]: {
@@ -184,8 +184,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
   // Handle checkbox changes
   const handleCheckboxChange = (name: string, checked: boolean) => {
-    \1 {\n  \2 {
-      const [parent, child] = name.split('.'),
+    if (!session.user) {
+      const [parent, child] = name.split("."),
       setFormData({
         ...formData,
         [parent]: {
@@ -209,36 +209,36 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
     try {
       const url = contactId;
         ? `/api/support-services/marketing/contacts/$contactId`
-        : '/api/support-services/marketing/contacts';
+        : "/api/support-services/marketing/contacts";
 
-      const method = contactId ? 'PUT' : 'POST';
+      const method = contactId ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData)
       });
 
-      \1 {\n  \2hrow new Error('Failed to save contact');
+      if (!session.user)hrow new Error("Failed to save contact");
 
       const savedContact = await response.json(),
       toast({
         title: "Success",
-        description: `Contact $contactId ? 'updated' : 'created'successfully.`,
+        description: `Contact $contactId ? "updated" : "created"successfully.`,
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess(savedContact);
-      } else \1 {\n  \2{
+      } else if (!session.user) {
         router.push(`/marketing/contacts/$savedContact.id`);
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -247,21 +247,21 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
   // Handle adding a note
   const handleAddNote = async () => {
-    \1 {\n  \2 return;
+    if (!session.user) return;
 
     try {
       const response = await fetch(`/api/support-services/marketing/contacts/$contactId/notes`, {
-        method: 'POST',
+        method: "POST",
         headers: 
-          'Content-Type': 'application/json',,
+          "Content-Type": "application/json",,
         body: JSON.stringify(content: newNote ),
       });
 
-      \1 {\n  \2hrow new Error('Failed to add note');
+      if (!session.user)hrow new Error("Failed to add note");
 
       const addedNote = await response.json(),
       setNotes([...notes, addedNote]);
-      setNewNote(''),
+      setNewNote(""),
       toast({
         title: "Success",
         description: "Note added successfully."
@@ -270,25 +270,25 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     }
   };
 
   // Handle linking patient
   const handleLinkPatient = async () => {
-    \1 {\n  \2 return;
+    if (!session.user) return;
 
     try {
       const response = await fetch(`/api/support-services/marketing/contacts/${contactId}/link-patient`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ patientId }),
       });
 
-      \1 {\n  \2hrow new Error('Failed to link patient');
+      if (!session.user)hrow new Error("Failed to link patient");
 
       const updatedContact = await response.json(),
       setContact(updatedContact);
@@ -301,29 +301,29 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     }
   };
 
   // Handle adding to segment
   const handleAddToSegment = async (segmentId: string) => {
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     try {
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ contactId }),
       });
 
-      \1 {\n  \2hrow new Error('Failed to add to segment');
+      if (!session.user)hrow new Error("Failed to add to segment");
 
       // Update segments
       const segment = availableSegments.find(s => s.id === segmentId);
-      \1 {\n  \2{
+      if (!session.user) {
         setSegments([...segments, segment]);
       }
 
@@ -335,36 +335,36 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     }
   };
 
   return (
-    \1>
+    >
       <CardHeader>
-        <CardTitle>{contactId ? 'Edit Contact' : 'Create New Contact'}</CardTitle>
+        <CardTitle>{contactId ? "Edit Contact" : "Create New Contact"}</CardTitle>
         <CardDescription>
           {contactId;
-            ? 'Update contact information and preferences'
-            : 'Add a new contact to your marketing database'}
+            ? "Update contact information and preferences"
+            : "Add a new contact to your marketing database"}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        \1>
-          \1>
-            <TabsTrigger value="details">Contact Details\1>
-            <TabsTrigger value="preferences">Preferences\1>
-            <TabsTrigger value="segments" disabled={!contactId}>Segments\1>
+        >
+          >
+            <TabsTrigger value="details">Contact Details>
+            <TabsTrigger value="preferences">Preferences>
+            <TabsTrigger value="segments" disabled={!contactId}>Segments>
             <TabsTrigger value="activity" disabled={!contactId}>Activity</TabsTrigger>
           </TabsList>
 
-          \1>
-            \1>
-              \1>
-                \1>
-                  \1>
-                    <Label htmlFor="name">Full Name\1>
+          >
+            >
+              >
+                >
+                  >
+                    <Label htmlFor="name">Full Name>
                     <Input>
                       id="name"
                       name="name"
@@ -375,8 +375,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                     />
                   </div>
 
-                  \1>
-                    <Label htmlFor="email">Email Address\1>
+                  >
+                    <Label htmlFor="email">Email Address>
                     <Input>
                       id="email"
                       name="email"
@@ -389,9 +389,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                   </div>
                 </div>
 
-                \1>
-                  \1>
-                    <Label htmlFor="phone">Phone Number\1>
+                >
+                  >
+                    <Label htmlFor="phone">Phone Number>
                     <Input>
                       id="phone"
                       name="phone"
@@ -401,52 +401,52 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                     />
                   </div>
 
-                  \1>
-                    <Label htmlFor="source">Contact Source\1>
+                  >
+                    <Label htmlFor="source">Contact Source>
                     <Select>
                       value={formData.source}
-                      onValueChange={(value) => handleSelectChange('source', value)}
+                      onValueChange={(value) => handleSelectChange("source", value)}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select source" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="WEBSITE">Website\1>
-                        <SelectItem value="REFERRAL">Referral\1>
-                        <SelectItem value="SOCIAL_MEDIA">Social Media\1>
-                        <SelectItem value="EVENT">Event\1>
-                        <SelectItem value="PHONE">Phone\1>
-                        <SelectItem value="WALK_IN">Walk-in\1>
+                        <SelectItem value="WEBSITE">Website>
+                        <SelectItem value="REFERRAL">Referral>
+                        <SelectItem value="SOCIAL_MEDIA">Social Media>
+                        <SelectItem value="EVENT">Event>
+                        <SelectItem value="PHONE">Phone>
+                        <SelectItem value="WALK_IN">Walk-in>
                         <SelectItem value="OTHER">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
-                \1>
-                  <Label htmlFor="status">Status\1>
+                >
+                  <Label htmlFor="status">Status>
                   <Select>
                     value={formData.status}
-                    onValueChange={(value) => handleSelectChange('status', value)}
+                    onValueChange={(value) => handleSelectChange("status", value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ACTIVE">Active\1>
-                      <SelectItem value="INACTIVE">Inactive\1>
-                      <SelectItem value="UNSUBSCRIBED">Unsubscribed\1>
+                      <SelectItem value="ACTIVE">Active>
+                      <SelectItem value="INACTIVE">Inactive>
+                      <SelectItem value="UNSUBSCRIBED">Unsubscribed>
                       <SelectItem value="BOUNCED">Bounced</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
-                \1>
-                  <h3 className="text-lg font-medium">Address Information\1>
+                >
+                  <h3 className="text-lg font-medium">Address Information>
 
-                  \1>
-                    \1>
-                      <Label htmlFor="address.street">Street Address\1>
+                  >
+                    >
+                      <Label htmlFor="address.street">Street Address>
                       <Input>
                         id="address.street"
                         name="address.street"
@@ -456,9 +456,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                       />
                     </div>
 
-                    \1>
-                      \1>
-                        <Label htmlFor="address.city">City\1>
+                    >
+                      >
+                        <Label htmlFor="address.city">City>
                         <Input>
                           id="address.city"
                           name="address.city"
@@ -468,8 +468,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                         />
                       </div>
 
-                      \1>
-                        <Label htmlFor="address.state">State/Province\1>
+                      >
+                        <Label htmlFor="address.state">State/Province>
                         <Input>
                           id="address.state"
                           name="address.state"
@@ -480,9 +480,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                       </div>
                     </div>
 
-                    \1>
-                      \1>
-                        <Label htmlFor="address.postalCode">Postal Code\1>
+                    >
+                      >
+                        <Label htmlFor="address.postalCode">Postal Code>
                         <Input>
                           id="address.postalCode"
                           name="address.postalCode"
@@ -492,8 +492,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                         />
                       </div>
 
-                      \1>
-                        <Label htmlFor="address.country">Country\1>
+                      >
+                        <Label htmlFor="address.country">Country>
                         <Input>
                           id="address.country"
                           name="address.country"
@@ -507,17 +507,17 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                 </div>
 
                 {contactId && (
-                  \1>
-                    <h3 className="text-lg font-medium">Patient Information\1>
+                  >
+                    <h3 className="text-lg font-medium">Patient Information>
 
                     {patientData ? (
-                      \1>
-                        \1>
+                      >
+                        >
 <div
-                            <h4 className="font-medium">{patientData.name}\1>
-                            <p className="text-sm text-muted-foreground">Patient ID: {patientData.id}\1>
+                            <h4 className="font-medium">{patientData.name}>
+                            <p className="text-sm text-muted-foreground">Patient ID: {patientData.id}>
                             {patientData?.dateOfBirth && (
-                              \1>
+                              >
                                 DOB: {new Date(patientData.dateOfBirth).toLocaleDateString()}
                               </p>
                             )}
@@ -526,9 +526,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                         </div>
                       </div>
                     ) : (
-                      \1>
-                        \1>
-                          <Label htmlFor="patientId">Patient ID\1>
+                      >
+                        >
+                          <Label htmlFor="patientId">Patient ID>
                           <Input>
                             id="patientId"
                             value={patientId}
@@ -536,7 +536,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                             placeholder="Enter patient ID to link"
                           />
                         </div>
-                        \1>
+                        >
                           Link Patient
                         </Button>
                       </div>
@@ -545,13 +545,13 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                 )}
 
                 {contactId && (
-                  \1>
-                    <h3 className="text-lg font-medium">Notes\1>
+                  >
+                    <h3 className="text-lg font-medium">Notes>
 
-                    \1>
-                      \1>
-                        \1>
-                          <Label htmlFor="newNote">Add Note\1>
+                    >
+                      >
+                        >
+                          <Label htmlFor="newNote">Add Note>
                           <Input>
                             id="newNote"
                             value={newNote}
@@ -559,23 +559,23 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                             placeholder="Enter a note about this contact"
                           />
                         </div>
-                        \1>
+                        >
                           Add Note
                         </Button>
                       </div>
 
-                      \1>
+                      >
                         {notes.map((note, index) => (
-                          \1>
-                            <p className="text-sm">{note.content}\1>
-                            \1>
-                              {new Date(note.createdAt).toLocaleString()} • {note.createdBy?.name || 'System'}
+                          >
+                            <p className="text-sm">{note.content}>
+                            >
+                              {new Date(note.createdAt).toLocaleString()} • {note.createdBy?.name || "System"}
                             </p>
                           </div>
                         ))}
 
                         {notes.length === 0 && (
-                          <p className="text-sm text-muted-foreground">No notes yet\1>
+                          <p className="text-sm text-muted-foreground">No notes yet>
                         )}
                       </div>
                     </div>
@@ -583,7 +583,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                 )}
               </div>
 
-              \1>
+              >
                 <Button>
                   type="button"
                   variant="outline"
@@ -591,84 +591,84 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                 >
                   Cancel
                 </Button>
-                \1>
-                  {isLoading ? 'Saving...' : contactId ? 'Update Contact' : 'Create Contact'}
+                >
+                  {isLoading ? "Saving..." : contactId ? "Update Contact" : "Create Contact"}
                 </Button>
               </div>
             </form>
           </TabsContent>
 
-          \1>
-            \1>
-              \1>
-                \1>
-                  <h3 className="text-lg font-medium">Communication Preferences\1>
+          >
+            >
+              >
+                >
+                  <h3 className="text-lg font-medium">Communication Preferences>
 
-                  \1>
-                    \1>
-                      \1>
-                        <Label htmlFor="preferences.emailOptIn">Email Opt-in\1>
-                        \1>
+                  >
+                    >
+                      >
+                        <Label htmlFor="preferences.emailOptIn">Email Opt-in>
+                        >
                           Receive marketing emails from us
                         </p>
                       </div>
                       <Switch>
                         id="preferences.emailOptIn"
                         checked={formData.preferences.emailOptIn}
-                        onCheckedChange={(checked) => handleCheckboxChange('preferences.emailOptIn', checked)}
+                        onCheckedChange={(checked) => handleCheckboxChange("preferences.emailOptIn", checked)}
                       />
                     </div>
 
-                    \1>
-                      \1>
-                        <Label htmlFor="preferences.smsOptIn">SMS Opt-in\1>
-                        \1>
+                    >
+                      >
+                        <Label htmlFor="preferences.smsOptIn">SMS Opt-in>
+                        >
                           Receive marketing text messages from us
                         </p>
                       </div>
                       <Switch>
                         id="preferences.smsOptIn"
                         checked={formData.preferences.smsOptIn}
-                        onCheckedChange={(checked) => handleCheckboxChange('preferences.smsOptIn', checked)}
+                        onCheckedChange={(checked) => handleCheckboxChange("preferences.smsOptIn", checked)}
                       />
                     </div>
 
-                    \1>
-                      <Label htmlFor="preferences.preferredContactMethod">Preferred Contact Method\1>
+                    >
+                      <Label htmlFor="preferences.preferredContactMethod">Preferred Contact Method>
                       <Select>
                         value={formData.preferences.preferredContactMethod}
-                        onValueChange={(value) => handleSelectChange('preferences.preferredContactMethod', value)}
+                        onValueChange={(value) => handleSelectChange("preferences.preferredContactMethod", value)}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select preferred method" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="EMAIL">Email\1>
-                          <SelectItem value="PHONE">Phone\1>
-                          <SelectItem value="SMS">SMS\1>
+                          <SelectItem value="EMAIL">Email>
+                          <SelectItem value="PHONE">Phone>
+                          <SelectItem value="SMS">SMS>
                           <SelectItem value="MAIL">Mail</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
 
-                    \1>
-                      <Label htmlFor="preferences.preferredLanguage">Preferred Language\1>
+                    >
+                      <Label htmlFor="preferences.preferredLanguage">Preferred Language>
                       <Select>
                         value={formData.preferences.preferredLanguage}
-                        onValueChange={(value) => handleSelectChange('preferences.preferredLanguage', value)}
+                        onValueChange={(value) => handleSelectChange("preferences.preferredLanguage", value)}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select preferred language" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="English">English\1>
-                          <SelectItem value="Spanish">Spanish\1>
-                          <SelectItem value="French">French\1>
-                          <SelectItem value="German">German\1>
-                          <SelectItem value="Chinese">Chinese\1>
-                          <SelectItem value="Japanese">Japanese\1>
-                          <SelectItem value="Korean">Korean\1>
-                          <SelectItem value="Arabic">Arabic\1>
+                          <SelectItem value="English">English>
+                          <SelectItem value="Spanish">Spanish>
+                          <SelectItem value="French">French>
+                          <SelectItem value="German">German>
+                          <SelectItem value="Chinese">Chinese>
+                          <SelectItem value="Japanese">Japanese>
+                          <SelectItem value="Korean">Korean>
+                          <SelectItem value="Arabic">Arabic>
                           <SelectItem value="Hindi">Hindi</SelectItem>
                         </SelectContent>
                       </Select>
@@ -676,42 +676,42 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                   </div>
                 </div>
 
-                \1>
-                  <h3 className="text-lg font-medium">Interest Categories\1>
-                  \1>
+                >
+                  <h3 className="text-lg font-medium">Interest Categories>
+                  >
                     Select topics this contact is interested in
                   </p>
 
-                  \1>
-                    \1>
+                  >
+                    >
                       <Checkbox id="interest-preventive" />
                       <Label htmlFor="interest-preventive">Preventive Care</Label>
                     </div>
-                    \1>
+                    >
                       <Checkbox id="interest-wellness" />
                       <Label htmlFor="interest-wellness">Wellness Programs</Label>
                     </div>
-                    \1>
+                    >
                       <Checkbox id="interest-nutrition" />
                       <Label htmlFor="interest-nutrition">Nutrition</Label>
                     </div>
-                    \1>
+                    >
                       <Checkbox id="interest-fitness" />
                       <Label htmlFor="interest-fitness">Fitness</Label>
                     </div>
-                    \1>
+                    >
                       <Checkbox id="interest-mental" />
                       <Label htmlFor="interest-mental">Mental Health</Label>
                     </div>
-                    \1>
+                    >
                       <Checkbox id="interest-family" />
                       <Label htmlFor="interest-family">Family Health</Label>
                     </div>
-                    \1>
+                    >
                       <Checkbox id="interest-senior" />
                       <Label htmlFor="interest-senior">Senior Care</Label>
                     </div>
-                    \1>
+                    >
                       <Checkbox id="interest-specialty" />
                       <Label htmlFor="interest-specialty">Specialty Services</Label>
                     </div>
@@ -719,7 +719,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                 </div>
               </div>
 
-              \1>
+              >
                 <Button>
                   type="button"
                   variant="outline"
@@ -727,24 +727,24 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                 >
                   Back
                 </Button>
-                \1>
-                  {isLoading ? 'Saving...' : 'Save Preferences'}
+                >
+                  {isLoading ? "Saving..." : "Save Preferences"}
                 </Button>
               </div>
             </form>
           </TabsContent>
 
-          \1>
+          >
             {contactId ? (
-              \1>
+              >
 <div
-                  <h3 className="text-lg font-medium">Contact Segments\1>
-                  \1>
+                  <h3 className="text-lg font-medium">Contact Segments>
+                  >
                     Manage which segments this contact belongs to
                   </p>
 
-                  \1>
-                    \1>
+                  >
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Add to segment" />
                       </SelectTrigger>
@@ -752,7 +752,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                         {availableSegments;
                           .filter(segment => !segments.some(s => s.id === segment.id));
                           .map(segment => (
-                            \1>
+                            >
                               {segment.name}
                             </SelectItem>
                           ));
@@ -761,61 +761,61 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                     </Select>
                   </div>
 
-                  \1>
+                  >
                     {segments.map(segment => (
-                      \1>
+                      >
 <div
-                          <h4 className="font-medium">{segment.name}\1>
+                          <h4 className="font-medium">{segment.name}>
                           <p className="text-sm text-muted-foreground">{segment.description}</p>
                         </div>
-                        \1>
+                        >
                           <Button variant="outline" size="sm">Remove</Button>
                         </div>
                       </div>
                     ))}
 
                     {segments.length === 0 && (
-                      <p className="text-sm text-muted-foreground">Not in any segments yet\1>
+                      <p className="text-sm text-muted-foreground">Not in any segments yet>
                     )}
                   </div>
                 </div>
               </div>
             ) : (
-              \1>
+              >
                 <p>Please save the contact first to manage segments.</p>
               </div>
             )}
           </TabsContent>
 
-          \1>
+          >
             {contactId ? (
-              \1>
+              >
 <div
-                  <h3 className="text-lg font-medium">Contact Activity\1>
-                  \1>
+                  <h3 className="text-lg font-medium">Contact Activity>
+                  >
                     Recent interactions and engagement history
                   </p>
 
-                  \1>
+                  >
                     {activities.map((activity, index) => (
-                      \1>
-                        \1>
-                          \1>
-                            {activity.type === 'EMAIL_OPEN' ? '📧' :
-                             activity.type === 'EMAIL_CLICK' ? '🔗' :
-                             activity.type === 'FORM_SUBMISSION' ? '📝' :
-                             activity.type === 'PAGE_VIEW' ? '👁️' : '🔔'}
+                      >
+                        >
+                          >
+                            {activity.type === "EMAIL_OPEN" ? "📧" :
+                             activity.type === "EMAIL_CLICK" ? "🔗" :
+                             activity.type === "FORM_SUBMISSION" ? "📝" :
+                             activity.type === "PAGE_VIEW" ? "👁️" : "🔔"}
                           </span>
                         </div>
-                        \1>
-                          \1>
-                            {activity.type === 'EMAIL_OPEN' ? 'Opened Email' :
-                             activity.type === 'EMAIL_CLICK' ? 'Clicked Email Link' :
-                             activity.type === 'FORM_SUBMISSION' ? 'Submitted Form' :
-                             activity.type === 'PAGE_VIEW' ? 'Viewed Page' : activity.type}
+                        >
+                          >
+                            {activity.type === "EMAIL_OPEN" ? "Opened Email" :
+                             activity.type === "EMAIL_CLICK" ? "Clicked Email Link" :
+                             activity.type === "FORM_SUBMISSION" ? "Submitted Form" :
+                             activity.type === "PAGE_VIEW" ? "Viewed Page" : activity.type}
                           </h4>
-                          <p className="text-sm">{activity.description}\1>
-                          \1>
+                          <p className="text-sm">{activity.description}>
+                          >
                             {new Date(activity.timestamp).toLocaleString()}
                           </p>
                         </div>
@@ -823,13 +823,13 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                     ))}
 
                     {activities.length === 0 && (
-                      <p className="text-sm text-muted-foreground">No activity recorded yet\1>
+                      <p className="text-sm text-muted-foreground">No activity recorded yet>
                     )}
                   </div>
                 </div>
               </div>
             ) : (
-              \1>
+              >
                 <p>Please save the contact first to view activity.</p>
               </div>
             )}

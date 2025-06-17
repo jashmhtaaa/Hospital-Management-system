@@ -1,22 +1,21 @@
 
-import { AuditLogger } from '@/lib/audit';
-import { decryptData, encryptData } from '@/lib/encryption';
-import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
-import { FhirResourceGenerator } from '@/lib/fhir';
-import { CampaignChannel, Contact, ContactSegment, Lead, MarketingCampaign } from '@/lib/models/marketing';
-import { NotificationService } from '@/lib/notifications';
-import { prisma } from '@/lib/prisma';
+import { AuditLogger } from "@/lib/audit";
+import { decryptData, encryptData } from "@/lib/encryption";
+import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
+import { FhirResourceGenerator } from "@/lib/fhir";
+import { CampaignChannel, Contact, ContactSegment, Lead, MarketingCampaign } from "@/lib/models/marketing";
+import { NotificationService } from "@/lib/notifications";
+import { prisma } from "@/lib/prisma";
 /**
  * Service for managing marketing campaigns and related operations;
  */
-\1
 }
         },
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.create',
+        action: "campaign.create",
         resourceId: campaign.id;
         userId,
         details: { campaignName: campaign.name, campaignType: campaign.type }
@@ -24,18 +23,18 @@ import { prisma } from '@/lib/prisma';
 
       // Notify relevant users
       await this.notificationService.sendNotification({
-        type: 'CAMPAIGN_CREATED',
-        \1,\2 `A new marketing campaign "${campaign.name}" has been created`,
-        recipientRoles: ['MARKETING_MANAGER', 'MARKETING_STAFF'],
+        type: "CAMPAIGN_CREATED",
+        `A new marketing campaign "${campaign.name}" has been created`,
+        recipientRoles: ["MARKETING_MANAGER", "MARKETING_STAFF"],
         metadata: { campaignId: campaign.id }
       });
 
       return campaign;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to create marketing campaign', error);
+      throw new DatabaseError("Failed to create marketing campaign", error);
     }
   }
 
@@ -46,43 +45,43 @@ import { prisma } from '@/lib/prisma';
     try {
       const campaign = await prisma.marketingCampaign.findUnique({
         where: { id },
-        \1,\2 true,
-          \1,\2 {
+        true,
+          {
               segment: true
             }
           },
-          \1,\2 10,
-            \1,\2 'desc'
+          10,
+            "desc"
             }
           },
-          \1,\2 5,
-            \1,\2 'desc'
+          5,
+            "desc"
             }
           },
-          \1,\2 {
+          {
               id: true,
-              \1,\2 true
+              true
             }
           }
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
 
       // Generate FHIR representation if requested
       const result: unknown = campaign;
-      \1 {\n  \2{
+      if (!session.user) {
         result.fhir = this.generateCampaignFHIR(campaign);
       }
 
       return result;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to retrieve marketing campaign', error);
+      throw new DatabaseError("Failed to retrieve marketing campaign", error);
     }
   }
 
@@ -98,7 +97,7 @@ import { prisma } from '@/lib/prisma';
     endDateTo?: Date;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingCampaign[], pagination: total: number, \1,\2 number, totalPages: number }> {
+  }): Promise<{ data: MarketingCampaign[], pagination: total: number, number, totalPages: number }> {
     try {
       const {
         type,
@@ -114,30 +113,30 @@ import { prisma } from '@/lib/prisma';
       // Build where clause based on filters
       const where: unknown = {};
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.type = type;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.status = status;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.startDate = {};
-        \1 {\n  \2{
+        if (!session.user) {
           where.startDate.gte = startDateFrom;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.startDate.lte = startDateTo;
         }
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.endDate = {};
-        \1 {\n  \2{
+        if (!session.user) {
           where.endDate.gte = endDateFrom;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.endDate.lte = endDateTo;
         }
       }
@@ -148,24 +147,24 @@ import { prisma } from '@/lib/prisma';
       // Get campaigns with pagination
       const campaigns = await prisma.marketingCampaign.findMany({
         where,
-        \1,\2 true,
-          \1,\2 {
+        true,
+          {
               segment: true
             }
           },
-          \1,\2 {
+          {
               leads: true,
               activities: true
             }
           },
-          \1,\2 {
+          {
               id: true,
               name: true
             }
           }
         },
         skip: (page - 1) * limit,
-        \1,\2 'desc'
+        "desc"
       });
 
       return {
@@ -178,7 +177,7 @@ import { prisma } from '@/lib/prisma';
         }
       };
     } catch (error) {
-      throw new DatabaseError('Failed to retrieve marketing campaigns', error);
+      throw new DatabaseError("Failed to retrieve marketing campaigns", error);
     }
   }
 
@@ -192,7 +191,7 @@ import { prisma } from '@/lib/prisma';
         where: { id }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
 
@@ -207,19 +206,19 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.update',
+        action: "campaign.update",
         resourceId: id;
         userId,
-        \1,\2 updatedCampaign.name,
+        updatedCampaign.name,
           updatedFields: Object.keys(data)
       });
 
       return updatedCampaign;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to update marketing campaign', error);
+      throw new DatabaseError("Failed to update marketing campaign", error);
     }
   }
 
@@ -233,7 +232,7 @@ import { prisma } from '@/lib/prisma';
         where: { id }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Marketing campaign with ID ${id} not found`);
       }
 
@@ -244,31 +243,31 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.delete',
+        action: "campaign.delete",
         resourceId: id;
         userId,
-        \1,\2 existingCampaign.name,
+        existingCampaign.name,
           campaignType: existingCampaign.type
       });
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to delete marketing campaign', error);
+      throw new DatabaseError("Failed to delete marketing campaign", error);
     }
   }
 
   /**
    * Add a channel to a campaign;
    */
-  async addCampaignChannel(campaignId: string, channelData: Omit<CampaignChannel, 'id' | 'campaignId' | 'createdAt' | 'updatedAt'>, userId: string): Promise<CampaignChannel> {
+  async addCampaignChannel(campaignId: string, channelData: Omit<CampaignChannel, "id" | "campaignId" | "createdAt" | "updatedAt">, userId: string): Promise<CampaignChannel> {
     try {
       // Check if campaign exists
       const existingCampaign = await prisma.marketingCampaign.findUnique({
         where: { id: campaignId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
@@ -277,28 +276,28 @@ import { prisma } from '@/lib/prisma';
         data: {
           campaignId,
           channelType: channelData.channelType,
-          \1,\2 channelData.content,
-          \1,\2 channelData.status || 'DRAFT',
+          channelData.content,
+          channelData.status || "DRAFT",
           metrics: channelData.metrics
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.channel.add',
+        action: "campaign.channel.add",
         resourceId: campaignId;
         userId,
-        \1,\2 channel.id,
-          \1,\2 channel.channelName
+        channel.id,
+          channel.channelName
         }
       });
 
       return channel;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to add campaign channel', error);
+      throw new DatabaseError("Failed to add campaign channel", error);
     }
   }
 
@@ -312,22 +311,22 @@ import { prisma } from '@/lib/prisma';
         where: { id: campaignId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
       // Get analytics data
       const analytics = await prisma.campaignAnalytics.findMany({
         where: { campaignId },
-        orderBy: { date: 'asc' }
+        orderBy: { date: "asc" }
       });
 
       // Get channel metrics
       const channels = await prisma.campaignChannel.findMany({
         where: { campaignId },
-        \1,\2 {
-            \1,\2 {
-                \1,\2 true
+        {
+            {
+                true
                 }
               }
             }
@@ -338,8 +337,8 @@ import { prisma } from '@/lib/prisma';
       // Get lead conversion metrics
       const leads = await prisma.lead.findMany({
         where: { campaignId },
-        \1,\2 true,
-          \1,\2 true
+        true,
+          true
         }
       });
 
@@ -350,20 +349,20 @@ import { prisma } from '@/lib/prisma';
 
       // Aggregate analytics data
       const aggregatedData = {
-        \1,\2 campaignId,
-          \1,\2 existingCampaign.type,
-          \1,\2 existingCampaign.endDate,
+        campaignId,
+          existingCampaign.type,
+          existingCampaign.endDate,
           status: existingCampaign.status
         },
         metrics: analytics.map(item => item.metrics),
-        \1,\2 channel.id,
-          \1,\2 channel.channelName,
-          \1,\2 channel.messages.length,
+        channel.id,
+          channel.channelName,
+          channel.messages.length,
           interactionCount: channel.messages.reduce((sum, msg) => sum + msg._count.interactions, 0),
           metrics: channel.metrics
         })),
-        \1,\2 totalLeads,
-          \1,\2 conversionRate.toFixed(2) + '%',
+        totalLeads,
+          conversionRate.toFixed(2) + "%",
           byStatus: this.groupLeadsByStatus(leads)
         },
         timeSeriesData: this.aggregateTimeSeriesData(analytics)
@@ -371,10 +370,10 @@ import { prisma } from '@/lib/prisma';
 
       return aggregatedData;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to retrieve campaign analytics', error);
+      throw new DatabaseError("Failed to retrieve campaign analytics", error);
     }
   }
 
@@ -388,7 +387,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: campaignId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
@@ -397,7 +396,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: segmentId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact segment with ID ${segmentId} not found`);
       }
 
@@ -409,7 +408,7 @@ import { prisma } from '@/lib/prisma';
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         return existingRelation;
       }
 
@@ -423,7 +422,7 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'campaign.segment.add',
+        action: "campaign.segment.add",
         resourceId: campaignId;
         userId,
         details: {
@@ -434,10 +433,10 @@ import { prisma } from '@/lib/prisma';
 
       return campaignSegment;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to add segment to campaign', error);
+      throw new DatabaseError("Failed to add segment to campaign", error);
     }
   }
 
@@ -448,56 +447,56 @@ import { prisma } from '@/lib/prisma';
   private generateCampaignFHIR(campaign: unknown): unknown {
     // Create FHIR Communication resource for the campaign
     const communicationResource = {
-      resourceType: 'Communication',
+      resourceType: "Communication",
       id: `marketing-campaign-${campaign.id}`,
       status: this.mapCampaignStatusToFHIR(campaign.status),
       category: [
         {
           coding: [
             {
-              system: 'https://terminology.hl7.org/CodeSystem/communication-category',
-              \1,\2 'Marketing'
+              system: "https://terminology.hl7.org/CodeSystem/communication-category",
+              "Marketing"
             }
           ]
         }
       ],
-      \1,\2 'Group/marketing-segment',
-        display: 'Marketing Target Audience'
+      "Group/marketing-segment",
+        display: "Marketing Target Audience"
       },
       sent: campaign.startDate,
-      \1,\2 [],
-      \1,\2 `Organization/hospital`,
-        display: 'Hospital Marketing Department',
-      \1,\2 campaign.description
+      [],
+      `Organization/hospital`,
+        display: "Hospital Marketing Department",
+      campaign.description
       ],
-      \1,\2 `Marketing campaign: ${campaign.name}`
+      `Marketing campaign: ${campaign.name}`
       ]
     };
 
     // Create FHIR CommunicationRequest resource for campaign planning
     const communicationRequestResource = {
-      resourceType: 'CommunicationRequest',
+      resourceType: "CommunicationRequest",
       id: `marketing-campaign-request-${campaign.id}`,
       status: this.mapCampaignStatusToFHIRRequest(campaign.status),
       category: [
         {
           coding: [
             {
-              system: 'https://terminology.hl7.org/CodeSystem/communication-category',
-              \1,\2 'Marketing'
+              system: "https://terminology.hl7.org/CodeSystem/communication-category",
+              "Marketing"
             }
           ]
         }
       ],
-      priority: 'routine',
-      \1,\2 'Group/marketing-segment',
-        display: 'Marketing Target Audience'
+      priority: "routine",
+      "Group/marketing-segment",
+        display: "Marketing Target Audience"
       },
-      \1,\2 `Practitioner/${campaign.createdById}`,
-        display: campaign.createdByUser?.name || 'Marketing Staff'
+      `Practitioner/${campaign.createdById}`,
+        display: campaign.createdByUser?.name || "Marketing Staff"
       },
       recipient: [],
-      \1,\2 campaign.startDate,
+      campaign.startDate,
         end: campaign.endDate
       },
       authoredOn: campaign.createdAt,
@@ -519,19 +518,19 @@ import { prisma } from '@/lib/prisma';
    */
   private mapCampaignStatusToFHIR(status: string): string {
     switch (status) {
-      case 'DRAFT':
-        return 'preparation';
-      case 'SCHEDULED':
-        return 'preparation';
-      case 'ACTIVE':
-        return 'in-progress';
-      case 'PAUSED':
-        return 'suspended';
-      case 'COMPLETED':
-        return 'completed';
-      case 'CANCELLED':
-        return 'stopped';
-      default: return 'unknown'
+      case "DRAFT":
+        return "preparation";
+      case "SCHEDULED":
+        return "preparation";
+      case "ACTIVE":
+        return "in-progress";
+      case "PAUSED":
+        return "suspended";
+      case "COMPLETED":
+        return "completed";
+      case "CANCELLED":
+        return "stopped";
+      default: return "unknown"
     }
   }
 
@@ -540,19 +539,19 @@ import { prisma } from '@/lib/prisma';
    */
   private mapCampaignStatusToFHIRRequest(status: string): string {
     switch (status) {
-      case 'DRAFT':
-        return 'draft';
-      case 'SCHEDULED':
-        return 'active';
-      case 'ACTIVE':
-        return 'active';
-      case 'PAUSED':
-        return 'on-hold';
-      case 'COMPLETED':
-        return 'completed';
-      case 'CANCELLED':
-        return 'revoked';
-      default: return 'unknown'
+      case "DRAFT":
+        return "draft";
+      case "SCHEDULED":
+        return "active";
+      case "ACTIVE":
+        return "active";
+      case "PAUSED":
+        return "on-hold";
+      case "COMPLETED":
+        return "completed";
+      case "CANCELLED":
+        return "revoked";
+      default: return "unknown"
     }
   }
 
@@ -562,12 +561,12 @@ import { prisma } from '@/lib/prisma';
   private groupLeadsByStatus(leads: unknown[]): Record<string, number> {
     const result: Record<string, number> = {
       NEW: 0,
-      \1,\2 0,
-      \1,\2 0
+      0,
+      0
     };
 
     leads.forEach(lead => {
-      \1 {\n  \2{
+      if (!session.user) {
         result[lead.status]++;
       }
     });
@@ -593,24 +592,24 @@ import { prisma } from '@/lib/prisma';
   private validateCampaignData(data: unknown): void {
     const errors = [];
 
-    \1 {\n  \2== '') {
-      errors.push('Campaign name is required');
+    if (!session.user)== "") {
+      errors.push("Campaign name is required");
     }
 
-    \1 {\n  \2{
-      errors.push('Campaign type is required');
+    if (!session.user) {
+      errors.push("Campaign type is required");
     }
 
-    \1 {\n  \2{
-      errors.push('Campaign start date is required');
+    if (!session.user) {
+      errors.push("Campaign start date is required");
     }
 
-    \1 {\n  \2 \1 {
-      errors.push('End date cannot be before start date');
+    if (!session.user) if (condition) {
+      errors.push("End date cannot be before start date");
     }
 
-    \1 {\n  \2{
-      throw new ValidationError('Campaign validation failed', errors);
+    if (!session.user) {
+      throw new ValidationError("Campaign validation failed", errors);
     }
   }
 }
@@ -618,25 +617,24 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing contacts and segments;
  */
-\1
 }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.create',
+        action: "contact.create",
         resourceId: contact.id;
         userId,
-        \1,\2 data.email,
+        data.email,
           contactSource: data.source
       });
 
       return this.decryptSensitiveData(contact);
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to create contact', error);
+      throw new DatabaseError("Failed to create contact", error);
     }
   }
 
@@ -647,35 +645,35 @@ import { prisma } from '@/lib/prisma';
     try {
       const contact = await prisma.contact.findUnique({
         where: { id },
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true,
+        {
+            true,
+              true,
               dateOfBirth: true
             }
           },
-          \1,\2 true,
+          true,
                   name: true,
-            \1,\2 'desc'
+            "desc"
           },
-          \1,\2 true,
-            \1,\2 true
+          true,
+            true
           },
-          \1,\2 true,
-              \1,\2 true
+          true,
+              true
           }
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
       return this.decryptSensitiveData(contact);
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to retrieve contact', error);
+      throw new DatabaseError("Failed to retrieve contact", error);
     }
   }
 
@@ -689,7 +687,7 @@ import { prisma } from '@/lib/prisma';
     tags?: string[];
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[], pagination: total: number, \1,\2 number, totalPages: number }> {
+  }): Promise<{ data: Contact[], pagination: total: number, number, totalPages: number }> {
     try {
       const {
         search,
@@ -703,24 +701,24 @@ import { prisma } from '@/lib/prisma';
       // Build where clause based on filters
       const where: unknown = {};
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.OR = [
-          { firstName: { contains: search, mode: 'insensitive' } },
-          { lastName: { contains: search, mode: 'insensitive' } },
-          { email: { contains: search, mode: 'insensitive' } },
+          { firstName: { contains: search, mode: "insensitive" } },
+          { lastName: { contains: search, mode: "insensitive" } },
+          { email: { contains: search, mode: "insensitive" } },
           { phone: { contains: search } }
         ];
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.status = status;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.source = source;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.tags = {
           hasSome: tags
         };
@@ -732,13 +730,13 @@ import { prisma } from '@/lib/prisma';
       // Get contacts with pagination
       const contacts = await prisma.contact.findMany({
         where,
-        \1,\2 {
-            \1,\2 true
+        {
+            true
             }
           },
-          \1,\2 {
+          {
               interactions: true,
-              \1,\2 true,
+              true,
               segmentMembers: true
             }
           }
@@ -746,7 +744,7 @@ import { prisma } from '@/lib/prisma';
         skip: (page - 1) * limit,
         take: limit;
         {
-          createdAt: 'desc'
+          createdAt: "desc"
         }
       });
 
@@ -763,7 +761,7 @@ import { prisma } from '@/lib/prisma';
         }
       };
     } catch (error) {
-      throw new DatabaseError('Failed to retrieve contacts', error);
+      throw new DatabaseError("Failed to retrieve contacts", error);
     }
   }
 
@@ -777,7 +775,7 @@ import { prisma } from '@/lib/prisma';
         where: { id }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
@@ -792,18 +790,18 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.update',
+        action: "contact.update",
         resourceId: id;
         userId,
-        \1,\2 Object.keys(data)
+        Object.keys(data)
       });
 
       return this.decryptSensitiveData(updatedContact);
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to update contact', error);
+      throw new DatabaseError("Failed to update contact", error);
     }
   }
 
@@ -817,7 +815,7 @@ import { prisma } from '@/lib/prisma';
         where: { id }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
@@ -828,16 +826,16 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.delete',
+        action: "contact.delete",
         resourceId: id;
         userId,
-        \1,\2 existingContact.email
+        existingContact.email
       });
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to delete contact', error);
+      throw new DatabaseError("Failed to delete contact", error);
     }
   }
 
@@ -851,7 +849,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: contactId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -862,8 +860,8 @@ import { prisma } from '@/lib/prisma';
           content,
           createdById: userId
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             }
           }
@@ -872,54 +870,54 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.note.add',
+        action: "contact.note.add",
         resourceId: contactId;
         userId,
-        \1,\2 note.id
+        note.id
       });
 
       return note;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to add contact note', error);
+      throw new DatabaseError("Failed to add contact note", error);
     }
   }
 
   /**
    * Create a new contact segment;
    */
-  async createSegment(data: Omit<ContactSegment, 'id' | 'createdAt' | 'updatedAt'>, userId: string): Promise<ContactSegment> {
+  async createSegment(data: Omit<ContactSegment, "id" | "createdAt" | "updatedAt">, userId: string): Promise<ContactSegment> {
     try {
       // Validate segment data
-      \1 {\n  \2== '') {
-        throw new ValidationError('Segment validation failed', ['Segment name is required']);
+      if (!session.user)== "") {
+        throw new ValidationError("Segment validation failed", ["Segment name is required"]);
       }
 
       // Create segment in database
       const segment = await prisma.contactSegment.create({
-        \1,\2 data.name,
-          \1,\2 data.criteria,
-          \1,\2 userId
+        data.name,
+          data.criteria,
+          userId
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.create',
+        action: "segment.create",
         resourceId: segment.id;
         userId,
-        \1,\2 segment.name
+        segment.name
         }
       });
 
       return segment;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to create contact segment', error);
+      throw new DatabaseError("Failed to create contact segment", error);
     }
   }
 
@@ -930,7 +928,7 @@ import { prisma } from '@/lib/prisma';
     isActive?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[], pagination: total: number, \1,\2 number, totalPages: number }> {
+  }): Promise<{ data: ContactSegment[], pagination: total: number, number, totalPages: number }> {
     try {
       const {
         isActive,
@@ -941,7 +939,7 @@ import { prisma } from '@/lib/prisma';
       // Build where clause based on filters
       const where: unknown = {};
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.isActive = isActive;
       }
 
@@ -951,19 +949,19 @@ import { prisma } from '@/lib/prisma';
       // Get segments with pagination
       const segments = await prisma.contactSegment.findMany({
         where,
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               campaigns: true
             }
           },
-          \1,\2 {
+          {
               id: true,
               name: true
             }
           }
         },
         skip: (page - 1) * limit,
-        \1,\2 'desc'
+        "desc"
       });
 
       return {
@@ -976,7 +974,7 @@ import { prisma } from '@/lib/prisma';
         }
       };
     } catch (error) {
-      throw new DatabaseError('Failed to retrieve segments', error);
+      throw new DatabaseError("Failed to retrieve segments", error);
     }
   }
 
@@ -990,7 +988,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: segmentId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
       }
 
@@ -999,7 +997,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: contactId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -1012,7 +1010,7 @@ import { prisma } from '@/lib/prisma';
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         return existingMembership;
       }
 
@@ -1025,17 +1023,17 @@ import { prisma } from '@/lib/prisma';
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const updatedMembership = await prisma.segmentMember.update({
           where: { id: inactiveMemebership.id },
-          \1,\2 true,
+          true,
             removedAt: null
           }
         });
 
         // Log audit event
         await this.auditLogger.log({
-          action: 'segment.contact.reactivate',
+          action: "segment.contact.reactivate",
           resourceId: segmentId;
           userId,
           details: 
@@ -1057,7 +1055,7 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.contact.add',
+        action: "segment.contact.add",
         resourceId: segmentId;
         userId,
         details: 
@@ -1067,10 +1065,10 @@ import { prisma } from '@/lib/prisma';
 
       return membership;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to add contact to segment', error);
+      throw new DatabaseError("Failed to add contact to segment", error);
     }
   }
 
@@ -1084,7 +1082,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: segmentId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
       }
 
@@ -1093,7 +1091,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: contactId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -1106,21 +1104,21 @@ import { prisma } from '@/lib/prisma';
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact is not a member of this segment`);
       }
 
       // Remove contact from segment (soft delete)
       const updatedMembership = await prisma.segmentMember.update({
         where: { id: membership.id },
-        \1,\2 false,
+        false,
           removedAt: new Date()
         }
       })
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'segment.contact.remove',
+        action: "segment.contact.remove",
         resourceId: segmentId;
         userId,
         details: 
@@ -1130,10 +1128,10 @@ import { prisma } from '@/lib/prisma';
 
       return updatedMembership;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to remove contact from segment', error);
+      throw new DatabaseError("Failed to remove contact from segment", error);
     }
   }
 
@@ -1144,12 +1142,12 @@ import { prisma } from '@/lib/prisma';
     const result = { ...data };
 
     // Encrypt address if present
-    \1 {\n  \2{
+    if (!session.user) {
       result.address = encryptData(JSON.stringify(result.address));
     }
 
     // Encrypt preferences if present
-    \1 {\n  \2{
+    if (!session.user) {
       result.preferences = encryptData(JSON.stringify(result.preferences));
     }
 
@@ -1163,7 +1161,7 @@ import { prisma } from '@/lib/prisma';
     const result = { ...data };
 
     // Decrypt address if present
-    \1 {\n  \2{
+    if (!session.user) {
       try {
         result.address = JSON.parse(decryptData(result.address));
       } catch (error) {
@@ -1172,7 +1170,7 @@ import { prisma } from '@/lib/prisma';
     }
 
     // Decrypt preferences if present
-    \1 {\n  \2{
+    if (!session.user) {
       try {
         result.preferences = JSON.parse(decryptData(result.preferences));
       } catch (error) {
@@ -1190,17 +1188,17 @@ import { prisma } from '@/lib/prisma';
     const errors = [];
 
     // Either email or phone is required
-    \1 {\n  \2{
-      errors.push('Either email or phone is required');
+    if (!session.user) {
+      errors.push("Either email or phone is required");
     }
 
     // Validate email format if provided
-    \1 {\n  \2 {
-      errors.push('Invalid email format');
+    if (!session.user) {
+      errors.push("Invalid email format");
     }
 
-    \1 {\n  \2{
-      throw new ValidationError('Contact validation failed', errors);
+    if (!session.user) {
+      throw new ValidationError("Contact validation failed", errors);
     }
   }
 
@@ -1216,39 +1214,38 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing leads;
  */
-\1
 }
         },
-        \1,\2 true,
-          \1,\2 true,
-              \1,\2 true
+        true,
+          true,
+              true
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'lead.create',
+        action: "lead.create",
         resourceId: lead.id;
         userId,
-        \1,\2 lead.contactId,
-          \1,\2 lead.status
+        lead.contactId,
+          lead.status
         }
       });
 
       // Notify assigned user if applicable
-      \1 {\n  \2{
+      if (!session.user) {
         await this.notificationService.sendNotification({
-          type: 'LEAD_ASSIGNED',
-          \1,\2 `A new lead has been assigned to \1,\2 [lead.assignedToId],
+          type: "LEAD_ASSIGNED",
+          `A new lead has been assigned to [lead.assignedToId],
           metadata: { leadId: lead.id }
         });
       }
 
       return lead;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to create lead', error);
+      throw new DatabaseError("Failed to create lead", error);
     }
   }
 
@@ -1259,41 +1256,41 @@ import { prisma } from '@/lib/prisma';
     try {
       const lead = await prisma.lead.findUnique({
         where: { id },
-        \1,\2 true,
-          \1,\2 {
-            \1,\2 true,
-              \1,\2 true
+        true,
+          {
+            true,
+              true
             }
           },
-          \1,\2 {
+          {
               id: true,
-              \1,\2 true,
+              true,
               dateOfBirth: true
             }
           },
-          \1,\2 {
-              \1,\2 {
+          {
+              {
                   id: true,
                   name: true
                 }
               }
             },
-            \1,\2 'desc'
+            "desc"
             }
           }
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Lead with ID $idnot found`);
       }
 
       return lead;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to retrieve lead', error);
+      throw new DatabaseError("Failed to retrieve lead", error);
     }
   }
 
@@ -1307,7 +1304,7 @@ import { prisma } from '@/lib/prisma';
     assignedToId?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Lead[], pagination: { total: number, \1,\2 number, totalPages: number } }> {
+  }): Promise<{ data: Lead[], pagination: { total: number, number, totalPages: number } }> {
     try {
       const {
         status,
@@ -1321,19 +1318,19 @@ import { prisma } from '@/lib/prisma';
       // Build where clause based on filters
       const where: unknown = {};
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.status = status;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.source = source;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.campaignId = campaignId;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.assignedToId = assignedToId;
       }
 
@@ -1343,30 +1340,30 @@ import { prisma } from '@/lib/prisma';
       // Get leads with pagination
       const leads = await prisma.lead.findMany({
         where,
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true,
-              \1,\2 true
+        {
+            true,
+              true,
+              true
             }
           },
-          \1,\2 {
+          {
               id: true,
               name: true
             }
           },
-          \1,\2 {
+          {
               id: true,
               name: true
             }
           },
-          \1,\2 {
+          {
               activities: true
             }
           }
         },
         skip: (page - 1) * limit,
-        \1,\2 {
-          createdAt: 'desc'
+        {
+          createdAt: "desc"
         }
       });
 
@@ -1380,7 +1377,7 @@ import { prisma } from '@/lib/prisma';
         }
       };
     } catch (error) {
-      throw new DatabaseError('Failed to retrieve leads', error);
+      throw new DatabaseError("Failed to retrieve leads", error);
     }
   }
 
@@ -1392,20 +1389,20 @@ import { prisma } from '@/lib/prisma';
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({
         where: { id },
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true
+        {
+            true,
+              true
             }
           }
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Lead with ID $idnot found`);
       }
 
       // Check if status is changing to CONVERTED and set conversion date
-      \1 {\n  \2{
+      if (!session.user) {
         data.conversionDate = new Date();
       }
 
@@ -1413,10 +1410,10 @@ import { prisma } from '@/lib/prisma';
       const updatedLead = await prisma.lead.update({
         where: { id },
         data,
-        \1,\2 true,
-          \1,\2 {
-            \1,\2 true,
-              \1,\2 true
+        true,
+          {
+            true,
+              true
             }
           }
         }
@@ -1424,51 +1421,51 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'lead.update',
+        action: "lead.update",
         resourceId: id;
         userId,
-        \1,\2 Object.keys(data)
+        Object.keys(data)
         }
       });
 
       // Create activity for status change if applicable
-      \1 {\n  \2{
+      if (!session.user) {
         await this.addLeadActivity(id, {
-          activityType: 'STATUS_CHANGE',
+          activityType: "STATUS_CHANGE",
           description: `Status changed from $existingLead.statusto $data.status`,
           performedById: userId
         });
       }
 
       // Notify newly assigned user if applicable
-      \1 {\n  \2{
+      if (!session.user) {
         await this.notificationService.sendNotification({
-          type: 'LEAD_ASSIGNED',
-          \1,\2 `A lead has been assigned to \1,\2 [data.assignedToId],
+          type: "LEAD_ASSIGNED",
+          `A lead has been assigned to [data.assignedToId],
           metadata: leadId: id 
         });
       }
 
       return updatedLead;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to update lead', error);
+      throw new DatabaseError("Failed to update lead", error);
     }
   }
 
   /**
    * Add an activity to a lead;
    */
-  async addLeadActivity(leadId: string, data: { activityType: string, \1,\2 string; metadata?: unknown }): Promise<unknown> {
+  async addLeadActivity(leadId: string, data: { activityType: string, string; metadata?: unknown }): Promise<unknown> {
     try {
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({
         where: { id: leadId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
       }
 
@@ -1477,28 +1474,28 @@ import { prisma } from '@/lib/prisma';
         data: {
           leadId,
           activityType: data.activityType,
-          \1,\2 data.performedById,
+          data.performedById,
           metadata: data.metadata
         },
-        \1,\2 true,
+        true,
               name: true
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'lead.activity.add',
-        \1,\2 data.performedById,
-        \1,\2 activity.id,
+        action: "lead.activity.add",
+        data.performedById,
+        activity.id,
           activityType: data.activityType
         }
       });
 
       return activity;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to add lead activity', error);
+      throw new DatabaseError("Failed to add lead activity", error);
     }
   }
 
@@ -1510,25 +1507,25 @@ import { prisma } from '@/lib/prisma';
       // Check if lead exists
       const existingLead = await prisma.lead.findUnique({
         where: { id: leadId },
-        \1,\2 true
+        true
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
       }
 
       // Check if lead is already converted
-      \1 {\n  \2{
-        throw new ValidationError('Lead conversion failed', ['Lead is already converted']);
+      if (!session.user) {
+        throw new ValidationError("Lead conversion failed", ["Lead is already converted"]);
       }
 
       // Create patient from lead data
       const patient = await prisma.patient.create({
-        \1,\2 patientData.firstName || existingLead.contact.firstName,
-          \1,\2 patientData.email || existingLead.contact.email,
-          \1,\2 patientData.dateOfBirth || existingLead.contact.dateOfBirth,
-          \1,\2 patientData.address || existingLead.contact.address;
+        patientData.firstName || existingLead.contact.firstName,
+          patientData.email || existingLead.contact.email,
+          patientData.dateOfBirth || existingLead.contact.dateOfBirth,
+          patientData.address || existingLead.contact.address;
           // Add other patient fields as needed
         }
       });
@@ -1536,24 +1533,24 @@ import { prisma } from '@/lib/prisma';
       // Update lead with conversion data
       const updatedLead = await prisma.lead.update({
         where: { id: leadId },
-        \1,\2 'CONVERTED',
-          \1,\2 new Date()
+        "CONVERTED",
+          new Date()
         }
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'lead.convert',
+        action: "lead.convert",
         resourceId: leadId;
         userId,
-        \1,\2 patient.id
+        patient.id
         }
       });
 
       // Add lead activity
       await this.addLeadActivity(leadId, {
-        activityType: 'CONVERSION',
-        \1,\2 userId,
+        activityType: "CONVERSION",
+        userId,
         metadata: { patientId: patient.id }
       });
 
@@ -1562,10 +1559,10 @@ import { prisma } from '@/lib/prisma';
         patient
       };
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to convert lead to patient', error);
+      throw new DatabaseError("Failed to convert lead to patient", error);
     }
   }
 
@@ -1575,15 +1572,15 @@ import { prisma } from '@/lib/prisma';
   private validateLeadData(data: unknown): void {
     const errors = [];
 
-    \1 {\n  \2{
-      errors.push('Contact ID is required');
+    if (!session.user) {
+      errors.push("Contact ID is required");
     }
 
-    \1 {\n  \2{
-      errors.push('Lead source is required');
+    if (!session.user) {
+      errors.push("Lead source is required");
     }
 
-    \1 {\n  \2{
-      throw new ValidationError('Lead validation failed', errors);
+    if (!session.user) {
+      throw new ValidationError("Lead validation failed", errors);
     }
   }

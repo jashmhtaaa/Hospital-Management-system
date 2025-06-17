@@ -27,8 +27,8 @@ Command.displayName = CommandPrimitive.displayName;
 const CommandDialog = ({ children, ...props }: DialogProps) => {
   return (
     <Dialog {...props}>
-      \1>
-        \1>
+      >
+        >
           {children}
         </Command>
       </DialogContent>
@@ -40,7 +40,7 @@ const CommandInput = React.forwardRef<;
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  \1>
+  >
     <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
     <CommandPrimitive.Input;
       ref={ref}

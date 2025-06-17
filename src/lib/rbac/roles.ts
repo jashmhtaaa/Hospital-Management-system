@@ -5,192 +5,191 @@
  * Implements hierarchical role structure with granular permissions;
  */
 
-\1
 }
 }
 
 // Core Resources
 export enum Resource {
   // Patient Management
-  PATIENT = 'patient',
-  PATIENT_MEDICAL_RECORD = 'patient.medical_record',
-  PATIENT_BILLING = 'patient.billing',
-  PATIENT_INSURANCE = 'patient.insurance',
+  PATIENT = "patient",
+  PATIENT_MEDICAL_RECORD = "patient.medical_record",
+  PATIENT_BILLING = "patient.billing",
+  PATIENT_INSURANCE = "patient.insurance",
 
   // Staff Management
-  STAFF = 'staff',
-  STAFF_SCHEDULE = 'staff.schedule',
-  STAFF_PAYROLL = 'staff.payroll',
+  STAFF = "staff",
+  STAFF_SCHEDULE = "staff.schedule",
+  STAFF_PAYROLL = "staff.payroll",
 
   // Clinical Operations
-  APPOINTMENT = 'appointment',
-  CONSULTATION = 'consultation',
-  PRESCRIPTION = 'prescription',
-  LAB_ORDER = 'lab.order',
-  LAB_RESULT = 'lab.result',
-  RADIOLOGY_ORDER = 'radiology.order',
-  RADIOLOGY_RESULT = 'radiology.result',
+  APPOINTMENT = "appointment",
+  CONSULTATION = "consultation",
+  PRESCRIPTION = "prescription",
+  LAB_ORDER = "lab.order",
+  LAB_RESULT = "lab.result",
+  RADIOLOGY_ORDER = "radiology.order",
+  RADIOLOGY_RESULT = "radiology.result",
 
   // Pharmacy
-  MEDICATION = 'medication',
-  INVENTORY = 'inventory',
-  PHARMACY_BILLING = 'pharmacy.billing',
+  MEDICATION = "medication",
+  INVENTORY = "inventory",
+  PHARMACY_BILLING = "pharmacy.billing",
 
   // Financial
-  BILLING = 'billing',
-  PAYMENT = 'payment',
-  INVOICE = 'invoice',
-  FINANCIAL_REPORT = 'financial.report',
+  BILLING = "billing",
+  PAYMENT = "payment",
+  INVOICE = "invoice",
+  FINANCIAL_REPORT = "financial.report",
 
   // Administration
-  SYSTEM_CONFIG = 'system.config',
-  USER_MANAGEMENT = 'user.management',
-  AUDIT_LOG = 'audit.log',
-  BACKUP = 'backup',
+  SYSTEM_CONFIG = "system.config",
+  USER_MANAGEMENT = "user.management",
+  AUDIT_LOG = "audit.log",
+  BACKUP = "backup",
 
   // Emergency & Critical
-  EMERGENCY = 'emergency',
-  ICU = 'icu',
-  OPERATION_THEATER = 'operation_theater',
+  EMERGENCY = "emergency",
+  ICU = "icu",
+  OPERATION_THEATER = "operation_theater",
 
   // Support Services
-  HOUSEKEEPING = 'housekeeping',
-  MAINTENANCE = 'maintenance',
-  DIETARY = 'dietary',
-  AMBULANCE = 'ambulance',
+  HOUSEKEEPING = "housekeeping",
+  MAINTENANCE = "maintenance",
+  DIETARY = "dietary",
+  AMBULANCE = "ambulance",
 }
 
 // Core Actions
 export enum Action {
-  CREATE = 'create',
-  READ = 'read',
-  UPDATE = 'update',
-  DELETE = 'delete',
-  APPROVE = 'approve',
-  REJECT = 'reject',
-  ASSIGN = 'assign',
-  UNASSIGN = 'unassign',
-  EXPORT = 'export',
-  PRINT = 'print',
-  ARCHIVE = 'archive',
-  RESTORE = 'restore',
-  AUDIT = 'audit',
-  CONFIGURE = 'configure',
-  EXECUTE = 'execute',
-  OVERRIDE = 'override',
-  EMERGENCY_ACCESS = 'emergency_access',
+  CREATE = "create",
+  READ = "read",
+  UPDATE = "update",
+  DELETE = "delete",
+  APPROVE = "approve",
+  REJECT = "reject",
+  ASSIGN = "assign",
+  UNASSIGN = "unassign",
+  EXPORT = "export",
+  PRINT = "print",
+  ARCHIVE = "archive",
+  RESTORE = "restore",
+  AUDIT = "audit",
+  CONFIGURE = "configure",
+  EXECUTE = "execute",
+  OVERRIDE = "override",
+  EMERGENCY_ACCESS = "emergency_access",
 }
 
 // Predefined Permissions
 export const PERMISSIONS: Record<string, Permission> = {
   // Patient Management Permissions
-  \1,\2 'patient:create',
-    \1,\2 'Create new patient records',
-    \1,\2 Action.CREATE
+  "patient:create",
+    "Create new patient records",
+    Action.CREATE
   },
-  \1,\2 'patient:read',
-    \1,\2 'View patient information',
-    \1,\2 Action.READ
+  "patient:read",
+    "View patient information",
+    Action.READ
   },
-  \1,\2 'patient:update',
-    \1,\2 'Modify patient information',
-    \1,\2 Action.UPDATE
+  "patient:update",
+    "Modify patient information",
+    Action.UPDATE
   },
-  \1,\2 'patient:delete',
-    \1,\2 'Delete patient records',
-    \1,\2 Action.DELETE
+  "patient:delete",
+    "Delete patient records",
+    Action.DELETE
   },
 
   // Medical Records (PHI/PII)
-  \1,\2 'patient.medical_record:read',
-    \1,\2 'Access patient medical records',
-    \1,\2 Action.READ
+  "patient.medical_record:read",
+    "Access patient medical records",
+    Action.READ
   },
-  \1,\2 'patient.medical_record:update',
-    \1,\2 'Modify patient medical records',
-    \1,\2 Action.UPDATE
+  "patient.medical_record:update",
+    "Modify patient medical records",
+    Action.UPDATE
   },
 
   // Clinical Operations
-  \1,\2 'appointment:manage',
-    \1,\2 'Create, update, and cancel appointments',
+  "appointment:manage",
+    "Create, update, and cancel appointments",
     resource: Resource.APPOINTMENT,
     action: Action.UPDATE
   },
-  \1,\2 'prescription:create',
-    \1,\2 'Create new prescriptions',
-    \1,\2 Action.CREATE
+  "prescription:create",
+    "Create new prescriptions",
+    Action.CREATE
   },
-  \1,\2 'prescription:approve',
-    \1,\2 'Approve prescription requests',
-    \1,\2 Action.APPROVE
+  "prescription:approve",
+    "Approve prescription requests",
+    Action.APPROVE
   },
 
   // Laboratory
-  \1,\2 'lab.order:create',
-    \1,\2 'Order laboratory tests',
-    \1,\2 Action.CREATE
+  "lab.order:create",
+    "Order laboratory tests",
+    Action.CREATE
   },
-  \1,\2 'lab.result:update',
-    \1,\2 'Enter and modify lab results',
-    \1,\2 Action.UPDATE
+  "lab.result:update",
+    "Enter and modify lab results",
+    Action.UPDATE
   },
-  \1,\2 'lab.result:approve',
-    \1,\2 'Approve and release lab results',
-    \1,\2 Action.APPROVE
+  "lab.result:approve",
+    "Approve and release lab results",
+    Action.APPROVE
   },
 
   // Financial Management
-  \1,\2 'billing:create',
-    \1,\2 'Generate patient bills',
-    \1,\2 Action.CREATE
+  "billing:create",
+    "Generate patient bills",
+    Action.CREATE
   },
-  \1,\2 'billing:approve',
-    \1,\2 'Approve billing charges',
-    \1,\2 Action.APPROVE
+  "billing:approve",
+    "Approve billing charges",
+    Action.APPROVE
   },
-  \1,\2 'payment:create',
-    \1,\2 'Process patient payments',
-    \1,\2 Action.CREATE
+  "payment:create",
+    "Process patient payments",
+    Action.CREATE
   },
-  \1,\2 'financial.report:read',
-    \1,\2 'Access financial reports and analytics',
-    \1,\2 Action.READ
+  "financial.report:read",
+    "Access financial reports and analytics",
+    Action.READ
   },
 
   // Administration
-  \1,\2 'user.management:*',
-    \1,\2 'Full user management capabilities',
-    \1,\2 Action.UPDATE
+  "user.management:*",
+    "Full user management capabilities",
+    Action.UPDATE
   },
-  \1,\2 'system.config:*',
-    \1,\2 'Configure system settings',
-    \1,\2 Action.CONFIGURE
+  "system.config:*",
+    "Configure system settings",
+    Action.CONFIGURE
   },
-  \1,\2 'audit.log:read',
-    \1,\2 'Access system audit logs',
-    \1,\2 Action.READ
+  "audit.log:read",
+    "Access system audit logs",
+    Action.READ
   },
 
   // Emergency Access
-  \1,\2 'emergency:override',
-    \1,\2 'Emergency access to all systems',
-    \1,\2 Action.EMERGENCY_ACCESS
+  "emergency:override",
+    "Emergency access to all systems",
+    Action.EMERGENCY_ACCESS
   },
 };
 
 // Predefined Roles
 export const ROLES: Record<string, Role> = {
   // Administrative Roles
-  \1,\2 'super_admin',
-    \1,\2 'Full system access with all permissions',
+  "super_admin",
+    "Full system access with all permissions",
     permissions: Object.values(PERMISSIONS),
     priority: 1000,
     isActive: true
   },
 
-  \1,\2 'hospital_admin',
-    \1,\2 'Hospital-wide administrative access',
+  "hospital_admin",
+    "Hospital-wide administrative access",
     permissions: [
       PERMISSIONS.PATIENT_CREATE,
       PERMISSIONS.PATIENT_READ,
@@ -207,8 +206,8 @@ export const ROLES: Record<string, Role> = {
   },
 
   // Clinical Roles
-  \1,\2 'chief_medical_officer',
-    \1,\2 'Senior medical staff with oversight responsibilities',
+  "chief_medical_officer",
+    "Senior medical staff with oversight responsibilities",
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
@@ -224,8 +223,8 @@ export const ROLES: Record<string, Role> = {
     isActive: true
   },
 
-  \1,\2 'doctor',
-    \1,\2 'Licensed physician with clinical privileges',
+  "doctor",
+    "Licensed physician with clinical privileges",
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
@@ -239,8 +238,8 @@ export const ROLES: Record<string, Role> = {
     isActive: true
   },
 
-  \1,\2 'nurse',
-    \1,\2 'Registered nurse with patient care responsibilities',
+  "nurse",
+    "Registered nurse with patient care responsibilities",
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.MEDICAL_RECORD_READ,
@@ -252,8 +251,8 @@ export const ROLES: Record<string, Role> = {
   },
 
   // Laboratory Roles
-  \1,\2 'lab_technician',
-    \1,\2 'Laboratory staff for sample processing',
+  "lab_technician",
+    "Laboratory staff for sample processing",
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.LAB_RESULT_UPDATE,
@@ -262,20 +261,20 @@ export const ROLES: Record<string, Role> = {
     isActive: true
   },
 
-  \1,\2 'lab_manager',
-    \1,\2 'Laboratory management with approval authority',
+  "lab_manager",
+    "Laboratory management with approval authority",
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.LAB_RESULT_UPDATE,
       PERMISSIONS.LAB_RESULT_APPROVE,
     ],
-    inherits: ['lab_technician'],
-    \1,\2 true
+    inherits: ["lab_technician"],
+    true
   },
 
   // Financial Roles
-  \1,\2 'billing_clerk',
-    \1,\2 'Billing and payment processing staff',
+  "billing_clerk",
+    "Billing and payment processing staff",
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.BILLING_CREATE,
@@ -285,8 +284,8 @@ export const ROLES: Record<string, Role> = {
     isActive: true
   },
 
-  \1,\2 'finance_manager',
-    \1,\2 'Financial management and reporting',
+  "finance_manager",
+    "Financial management and reporting",
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.BILLING_CREATE,
@@ -294,13 +293,13 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.PAYMENT_PROCESS,
       PERMISSIONS.FINANCIAL_REPORT_READ,
     ],
-    inherits: ['billing_clerk'],
-    \1,\2 true
+    inherits: ["billing_clerk"],
+    true
   },
 
   // Support Roles
-  \1,\2 'receptionist',
-    \1,\2 'Front desk and appointment management',
+  "receptionist",
+    "Front desk and appointment management",
     permissions: [
       PERMISSIONS.PATIENT_CREATE,
       PERMISSIONS.PATIENT_READ,
@@ -311,8 +310,8 @@ export const ROLES: Record<string, Role> = {
     isActive: true
   },
 
-  \1,\2 'pharmacist',
-    \1,\2 'Licensed pharmacist with medication authority',
+  "pharmacist",
+    "Licensed pharmacist with medication authority",
     permissions: [
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PRESCRIPTION_APPROVE,
@@ -323,8 +322,8 @@ export const ROLES: Record<string, Role> = {
   },
 
   // Limited Access Roles
-  \1,\2 'patient_portal',
-    \1,\2 'Patient self-service portal access',
+  "patient_portal",
+    "Patient self-service portal access",
     permissions: [
       // Limited patient read access to own records only
     ],
@@ -332,8 +331,8 @@ export const ROLES: Record<string, Role> = {
     isActive: true
   },
 
-  \1,\2 'audit_viewer',
-    \1,\2 'Read-only access to audit logs',
+  "audit_viewer",
+    "Read-only access to audit logs",
     permissions: [
       PERMISSIONS.AUDIT_LOG_READ,
     ],
@@ -345,14 +344,14 @@ export const ROLES: Record<string, Role> = {
 // Role hierarchy and inheritance helper
 export const getRoleWithInheritedPermissions = (roleId: string): Role | null {
   const role = ROLES[roleId];
-  \1 {\n  \2eturn null;
+  if (!session.user)eturn null;
 
   const inheritedPermissions: Permission[] = [];
 
-  \1 {\n  \2{
+  if (!session.user) {
     for (const inheritedRoleId of role.inherits) {
       const inheritedRole = getRoleWithInheritedPermissions(inheritedRoleId);
-      \1 {\n  \2{
+      if (!session.user) {
         inheritedPermissions.push(...inheritedRole.permissions);
       }
     }
@@ -367,22 +366,22 @@ export const getRoleWithInheritedPermissions = (roleId: string): Role | null {
 // Permission checker helper
 export const hasPermission = (
   userPermissions: Permission[],
-  \1,\2 string;
+  string;
   context?: Record<string, unknown>
 ): boolean {
   return userPermissions.some(permission => {
     // Exact match
-    \1 {\n  \2{
+    if (!session.user) {
       return checkConditions(permission.conditions, context);
     }
 
     // Wildcard action
-    \1 {\n  \2{
+    if (!session.user) {
       return checkConditions(permission.conditions, context);
     }
 
     // Wildcard resource and action
-    \1 {\n  \2{
+    if (!session.user) {
       return checkConditions(permission.conditions, context);
     }
 
@@ -394,8 +393,8 @@ const checkConditions = (
   conditions?: Record<string, unknown>,
   context?: Record<string, unknown>
 ): boolean {
-  \1 {\n  \2eturn true;
-  \1 {\n  \2eturn false;
+  if (!session.user)eturn true;
+  if (!session.user)eturn false;
 
   return Object.entries(conditions).every(([key, value]) => {
     return context[key] === value;

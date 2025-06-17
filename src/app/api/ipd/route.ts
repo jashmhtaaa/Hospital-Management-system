@@ -53,27 +53,27 @@ export async function GET(request: NextRequest): unknown {
     const conditions: string[] = [];
     const parameters: (string | number)[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("a.patient_id = ?");
       parameters.push(patientId);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("a.doctor_id = ?");
       parameters.push(doctorId);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("a.status = ?");
       parameters.push(status);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("a.admission_date >= ?");
       parameters.push(dateFrom);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("a.admission_date <= ?");
       parameters.push(dateTo);
     }
@@ -151,7 +151,7 @@ export async function POST(request: NextRequest): unknown {
 
     // Validate input data
     const validationResult = AdmissionSchema.safeParse(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return new Response(
         JSON.stringify({
           error: "Invalid input data",
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest): unknown {
     const patientCheck =;
       patientCheckResult?.results && patientCheckResult.results.length > 0;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return new Response(
         JSON.stringify({ error: "Patient not found or inactive" }),
         { status: 404, headers: { "Content-Type": "application/json" } }
@@ -187,7 +187,7 @@ export async function POST(request: NextRequest): unknown {
     const doctorCheck =;
       doctorCheckResult?.results && doctorCheckResult.results.length > 0;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return new Response(
         JSON.stringify({ error: "Doctor not found or inactive" }),
         { status: 404, headers: { "Content-Type": "application/json" } }
@@ -195,11 +195,11 @@ export async function POST(request: NextRequest): unknown {
     }
 
     const bedCheckResult = await database.prepare(
-      "SELECT bed_id FROM Beds WHERE bed_id = ? AND status = 'Available'";
+      "SELECT bed_id FROM Beds WHERE bed_id = ? AND status = "Available"";
     ).bind(admissionData.bed_id).all();
     const bedCheck = bedCheckResult?.results && bedCheckResult.results.length > 0;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return new Response(JSON.stringify({ error: "Bed not available" }), {
         status: 409,
         headers: { "Content-Type": "application/json" },
@@ -211,11 +211,11 @@ export async function POST(request: NextRequest): unknown {
       // Create admission using production service
       const admissionData = {
         patientId: data.patient_id,
-        \1,\2 new Date(data.admission_date),
-        \1,\2 data.ward_id,
-        \1,\2 data.admission_type || 'elective',
-        \1,\2 data.admission_notes,
-        admittedBy: '1' // TODO: Get from authenticated user context
+        new Date(data.admission_date),
+        data.ward_id,
+        data.admission_type || "elective",
+        data.admission_notes,
+        admittedBy: "1" // TODO: Get from authenticated user context
       }
 
       const admissionId = await ipdService.createAdmission(admissionData);
@@ -224,8 +224,8 @@ export async function POST(request: NextRequest): unknown {
       await ipdService.assignBed({
         admissionId,
         ward: data.ward_id,
-        \1,\2 data.bed_id,
-        assignedBy: '1' // TODO: Get from authenticated user context
+        data.bed_id,
+        assignedBy: "1" // TODO: Get from authenticated user context
       })
 
       return new Response(

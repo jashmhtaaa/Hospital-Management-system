@@ -1,12 +1,12 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { biometricService } from '@/lib/hr/biometric-service';
+import { biometricService } from "@/lib/hr/biometric-service";
 // Schema for biometric verification
 const biometricVerificationSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
-  templateType: z.enum(['FINGERPRINT', 'FACIAL', 'IRIS'], {
+  templateType: z.enum(["FINGERPRINT", "FACIAL", "IRIS"], {
     errorMap: () => ({ message: "Template type must be FINGERPRINT, FACIAL, or IRIS" }),
   }),
   sampleData: z.string().min(1, "Sample data is required"),
@@ -20,7 +20,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = biometricVerificationSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }

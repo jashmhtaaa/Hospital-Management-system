@@ -105,7 +105,7 @@ const ContextMenuCheckboxItem = React.forwardRef<;
     checked={checked}
     {...props}
   >
-    \1>
+    >
       <ContextMenuPrimitive.ItemIndicator>
         <Check className="h-4 w-4" />
       </ContextMenuPrimitive.ItemIndicator>
@@ -128,7 +128,7 @@ const ContextMenuRadioItem = React.forwardRef<;
     )}
     {...props}
   >
-    \1>
+    >
       <ContextMenuPrimitive.ItemIndicator>
         <Circle className="h-4 w-4 fill-current" />
       </ContextMenuPrimitive.ItemIndicator>

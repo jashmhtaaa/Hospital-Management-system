@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { errorHandlingMiddleware } from '@/lib/middleware/error-handling.middleware';
-import { HMSIntegrationService } from '@/lib/services/integration/hms-integration.service';
+import { errorHandlingMiddleware } from "@/lib/middleware/error-handling.middleware";
+import { HMSIntegrationService } from "@/lib/services/integration/hms-integration.service";
 /**
  * Integration API for Support Services;
  *
@@ -19,7 +19,7 @@ export const GET = async (
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
-    const userId = req.userId || 'anonymous';
+    const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
     // Get patient information
@@ -46,7 +46,7 @@ export const GET = async (
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
-    const userId = req.userId || 'anonymous';
+    const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
     // Get location information
@@ -70,7 +70,7 @@ export const GET = async (
 export const POST = async (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
-    const userId = req.userId || 'anonymous';
+    const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
     // Parse request body
@@ -78,12 +78,12 @@ export const POST = async (request: NextRequest) => {
     const { recipientId, type, title, message, metadata } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 'VALIDATION_ERROR',
-            \1,\2 ['recipientId', 'type', 'title', 'message']
+          "VALIDATION_ERROR",
+            ["recipientId", "type", "title", "message"]
           }
         },
         { status: 400 }
@@ -115,7 +115,7 @@ export const POST = async (request: NextRequest) => {
 export const POST = async (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
-    const userId = req.userId || 'anonymous';
+    const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
     // Parse request body
@@ -123,12 +123,12 @@ export const POST = async (request: NextRequest) => {
     const { reportType, reportData } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 'VALIDATION_ERROR',
-            \1,\2 ['reportType', 'reportData']
+          "VALIDATION_ERROR",
+            ["reportType", "reportData"]
           }
         },
         { status: 400 }
@@ -160,7 +160,7 @@ export const POST = async (
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
-    const userId = req.userId || 'anonymous';
+    const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
     // Parse request body
@@ -168,12 +168,12 @@ export const POST = async (
     const { patientId } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 'VALIDATION_ERROR',
-            \1,\2 ['patientId']
+          "VALIDATION_ERROR",
+            ["patientId"]
           }
         },
         { status: 400 }
@@ -181,15 +181,15 @@ export const POST = async (
     }
 
     // Validate service type
-    const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE', 'FEEDBACK'];
+    const validServiceTypes = ["HOUSEKEEPING", "MAINTENANCE", "DIETARY", "AMBULANCE", "FEEDBACK"];
     const serviceType = params.serviceType.toUpperCase();
 
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 'VALIDATION_ERROR',
-            message: 'Invalid service type';
+          "VALIDATION_ERROR",
+            message: "Invalid service type";
               validServiceTypes
           }
         },
@@ -223,7 +223,7 @@ export const POST = async (
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
-    const userId = req.userId || 'anonymous';
+    const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
     // Parse request body
@@ -231,12 +231,12 @@ export const POST = async (
     const { locationId } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 'VALIDATION_ERROR',
-            \1,\2 ['locationId']
+          "VALIDATION_ERROR",
+            ["locationId"]
           }
         },
         { status: 400 }
@@ -244,15 +244,15 @@ export const POST = async (
     }
 
     // Validate service type
-    const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE'];
+    const validServiceTypes = ["HOUSEKEEPING", "MAINTENANCE", "DIETARY", "AMBULANCE"];
     const serviceType = params.serviceType.toUpperCase();
 
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 'VALIDATION_ERROR',
-            message: 'Invalid service type';
+          "VALIDATION_ERROR",
+            message: "Invalid service type";
               validServiceTypes
           }
         },

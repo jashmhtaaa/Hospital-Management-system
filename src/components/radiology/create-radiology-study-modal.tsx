@@ -37,7 +37,6 @@ interface Technician {
 }
 
 // FIX: Export StudyPayload interface
-\1
 }
 }
 
@@ -74,8 +73,8 @@ export default const _CreateRadiologyStudyModal = ({
           fetch("/api/users?role=Technician"), // Assuming API endpoint exists to fetch technicians
         ]);
 
-        \1 {\n  \2hrow new Error("Failed to fetch modalities");
-        \1 {\n  \2hrow new Error("Failed to fetch technicians");
+        if (!session.user)hrow new Error("Failed to fetch modalities");
+        if (!session.user)hrow new Error("Failed to fetch technicians");
 
         // FIX: Type the fetched data before setting state
         const modalitiesData: Modality[] = await modalitiesResponse.json(),
@@ -100,7 +99,7 @@ export default const _CreateRadiologyStudyModal = ({
   // FIX: Type the event parameter
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    \1 {\n  \2{
+    if (!session.user) {
       /* SECURITY: Console statement removed */.";
       );
       return;
@@ -108,9 +107,9 @@ export default const _CreateRadiologyStudyModal = ({
     setIsSubmitting(true);
     await onSubmit({
       order_id: orderId,
-      \1,\2 studyDatetime,
-      \1,\2 technicianId,
-      \1,\2 seriesDescription || null,
+      studyDatetime,
+      technicianId,
+      seriesDescription || null,
       number_of_images: numberOfImages;
         ? Number.parseInt(numberOfImages, 10);
         : null,
@@ -121,21 +120,21 @@ export default const _CreateRadiologyStudyModal = ({
 
   return (
     <Dialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      \1>
+      >
         <DialogHeader>
           <DialogTitle>Create Radiology Study</DialogTitle>
         </DialogHeader>
         {loading ? (
-          \1>
+          >
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
-          <div className="text-center text-red-500 p-4">{error}\1>
+          <div className="text-center text-red-500 p-4">{error}>
         ) : (
-          \1>
-            \1>
-              \1>
-                \1>
+          >
+            >
+              >
+                >
                   Accession #
                 </Label>
                 <Input>
@@ -147,8 +146,8 @@ export default const _CreateRadiologyStudyModal = ({
                 />
               </div>
 
-              \1>
-                \1>
+              >
+                >
                   Study Date/Time *
                 </Label>
                 <Input>
@@ -161,18 +160,18 @@ export default const _CreateRadiologyStudyModal = ({
                 />
               </div>
 
-              \1>
-                \1>
+              >
+                >
                   Modality
                 </Label>
-                \1>
-                  \1>
+                >
+                  >
                     <SelectValue placeholder="Select Modality" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">None\1>
+                    <SelectItem value="">None>
                     {modalities.map((modality) => (
-                      \1>
+                      >
                         {modality.name}
                       </SelectItem>
                     ))}
@@ -180,8 +179,8 @@ export default const _CreateRadiologyStudyModal = ({
                 </Select>
               </div>
 
-              \1>
-                \1>
+              >
+                >
                   Technician *
                 </Label>
                 <Select>
@@ -189,12 +188,12 @@ export default const _CreateRadiologyStudyModal = ({
                   onValueChange={setTechnicianId}
                   required;
                 >
-                  \1>
+                  >
                     <SelectValue placeholder="Select Technician" />
                   </SelectTrigger>
                   <SelectContent>
                     {technicians.map((tech) => (
-                      \1>
+                      >
                         {tech.name}
                       </SelectItem>
                     ))}
@@ -202,8 +201,8 @@ export default const _CreateRadiologyStudyModal = ({
                 </Select>
               </div>
 
-              \1>
-                \1>
+              >
+                >
                   Protocol
                 </Label>
                 <Input>
@@ -214,8 +213,8 @@ export default const _CreateRadiologyStudyModal = ({
                 />
               </div>
 
-              \1>
-                \1>
+              >
+                >
                   Series Description
                 </Label>
                 <Textarea>
@@ -226,8 +225,8 @@ export default const _CreateRadiologyStudyModal = ({
                 />
               </div>
 
-              \1>
-                \1>
+              >
+                >
                   Number of Images
                 </Label>
                 <Input>
@@ -242,11 +241,11 @@ export default const _CreateRadiologyStudyModal = ({
             </div>
             <DialogFooter>
               <DialogClose asChild>
-                \1>
+                >
                   Cancel
                 </Button>
               </DialogClose>
-              \1>
+              >
                 {isSubmitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}

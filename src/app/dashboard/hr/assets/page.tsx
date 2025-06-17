@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -10,32 +10,32 @@ import {
   CardFooter,
   CardHeader,
   CardTitle;
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow;
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue;
-} from '@/components/ui/select';
+} from "@/components/ui/select";
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious;
-} from '@/components/ui/pagination';
-import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
+} from "@/components/ui/pagination";
+import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
   Search,
   Calendar as CalendarIcon,
   Filter,
@@ -47,20 +47,20 @@ import { Calendar } from '@/components/ui/calendar';
   AlertTriangle,
   Building,
   Tag;
-} from 'lucide-react';
-import { format } from 'date-fns';
-import { toast } from '@/components/ui/use-toast';
+} from "lucide-react";
+import { format } from "date-fns";
+import { toast } from "@/components/ui/use-toast";
 
 export default const _AssetManagement = () {
   const router = useRouter();
   const [assets, setAssets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any | null>(null);
-  const [search, setSearch] = useState('');
-  const [assetTypeFilter, setAssetTypeFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [departmentFilter, setDepartmentFilter] = useState('');
-  const [locationFilter, setLocationFilter] = useState('');
+  const [search, setSearch] = useState("");
+  const [assetTypeFilter, setAssetTypeFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [departmentFilter, setDepartmentFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
   const [departments, setDepartments] = useState<any[]>([]);
   const [locations, setLocations] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
@@ -69,9 +69,9 @@ export default const _AssetManagement = () {
   });
   const [pagination, setPagination] = useState({
     skip: 0,
-    \1,\2 0
+    0
   });
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState("all");
   const [statistics, setStatistics] = useState<any | null>(null);
 
   // Fetch assets
@@ -84,24 +84,24 @@ export default const _AssetManagement = () {
           take: pagination.take.toString()
         });
 
-        \1 {\n  \2ueryParams.append('search', search);
-        \1 {\n  \2ueryParams.append('assetType', assetTypeFilter);
-        \1 {\n  \2ueryParams.append('status', statusFilter);
-        \1 {\n  \2ueryParams.append('departmentId', departmentFilter);
-        \1 {\n  \2ueryParams.append('location', locationFilter);
+        if (!session.user)ueryParams.append("search", search);
+        if (!session.user)ueryParams.append("assetType", assetTypeFilter);
+        if (!session.user)ueryParams.append("status", statusFilter);
+        if (!session.user)ueryParams.append("departmentId", departmentFilter);
+        if (!session.user)ueryParams.append("location", locationFilter);
 
-        \1 {\n  \2{
-          queryParams.append('purchaseDateStart', format(dateRange.from, 'yyyy-MM-dd'));
+        if (!session.user) {
+          queryParams.append("purchaseDateStart", format(dateRange.from, "yyyy-MM-dd"));
         }
 
-        \1 {\n  \2{
-          queryParams.append('purchaseDateEnd', format(dateRange.to, 'yyyy-MM-dd'));
+        if (!session.user) {
+          queryParams.append("purchaseDateEnd", format(dateRange.to, "yyyy-MM-dd"));
         }
 
-        const response = await fetch(`/api/hr/assets?${\1}`;
+        const response = await fetch(`/api/hr/assets?${}`;
 
-        \1 {\n  \2{
-          throw new Error('Failed to fetch assets');
+        if (!session.user) {
+          throw new Error("Failed to fetch assets");
         }
 
         const data = await response.json(),
@@ -114,13 +114,13 @@ export default const _AssetManagement = () {
         setError(err.message),
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         });
       } finally 
         setLoading(false);
     };
 
-    \1 {\n  \2{
+    if (!session.user) {
       fetchAssets();
     }
   }, [search, assetTypeFilter, statusFilter, departmentFilter, locationFilter, dateRange, pagination.skip, pagination.take, activeTab]);
@@ -129,8 +129,8 @@ export default const _AssetManagement = () {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await fetch('/api/hr/departments');
-        \1 {\n  \2{
+        const response = await fetch("/api/hr/departments");
+        if (!session.user) {
           const data = await response.json(),
           setDepartments(data.departments || []);
         }
@@ -146,8 +146,8 @@ export default const _AssetManagement = () {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await fetch('/api/hr/assets/statistics');
-        \1 {\n  \2{
+        const response = await fetch("/api/hr/assets/statistics");
+        if (!session.user) {
           const data = await response.json(),
           setStatistics(data);
         }
@@ -161,7 +161,7 @@ export default const _AssetManagement = () {
 
   // Extract unique locations from assets
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       const uniqueLocations = [...new Set(assets.map(asset => asset.location).filter(Boolean))];
       setLocations(uniqueLocations);
     }
@@ -169,7 +169,7 @@ export default const _AssetManagement = () {
 
   // Handle pagination
   const handlePreviousPage = () => {
-    \1 {\n  \2{
+    if (!session.user) {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -178,7 +178,7 @@ export default const _AssetManagement = () {
   };
 
   const handleNextPage = () => {
-    \1 {\n  \2{
+    if (!session.user) {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -206,16 +206,16 @@ export default const _AssetManagement = () {
     }));
 
     // Set appropriate filters based on tab
-    \1 {\n  \2{
-      setStatusFilter('UNDER_MAINTENANCE');
-    } else \1 {\n  \2{
-      setStatusFilter('');
+    if (!session.user) {
+      setStatusFilter("UNDER_MAINTENANCE");
+    } else if (!session.user) {
+      setStatusFilter("");
     }
   };
 
   // Create new asset
   const handleCreateAsset = () => {
-    router.push('/dashboard/hr/assets/new')
+    router.push("/dashboard/hr/assets/new")
   };
 
   // Export asset data
@@ -237,7 +237,7 @@ export default const _AssetManagement = () {
     } catch (error) {
       toast({
         title: "Export Failed",
-        \1,\2 "destructive"
+        "destructive"
       });
     }
   };
@@ -245,32 +245,32 @@ export default const _AssetManagement = () {
   // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
-      case 'AVAILABLE':
-        return 'default';
-      case 'IN_USE':
-        return 'secondary';
-      case 'UNDER_MAINTENANCE':
-        return 'warning';
-      case 'DISPOSED':
-        return 'destructive';
-      case 'LOST':
-        return 'outline';
-      default: return 'default'
+      case "AVAILABLE":
+        return "default";
+      case "IN_USE":
+        return "secondary";
+      case "UNDER_MAINTENANCE":
+        return "warning";
+      case "DISPOSED":
+        return "destructive";
+      case "LOST":
+        return "outline";
+      default: return "default"
     }
   };
 
   // Get asset type icon
   const getAssetTypeIcon = (type: unknown) => {
     switch (type) {
-      case 'EQUIPMENT':
+      case "EQUIPMENT":
         return <Package className="h-4 w-4" />
-      case 'FURNITURE':
+      case "FURNITURE":
         return <Tag className="h-4 w-4" />
-      case 'IT':
+      case "IT":
         return <Package className="h-4 w-4" />
-      case 'VEHICLE':
+      case "VEHICLE":
         return <Truck className="h-4 w-4" />
-      case 'BUILDING':
+      case "BUILDING":
         return <Building className="h-4 w-4" />
       default: return <Package className="h-4 w-4" />
     }
@@ -278,56 +278,56 @@ export default const _AssetManagement = () {
 
   // Format currency
   const formatCurrency = (amount: unknown) => {
-    \1 {\n  \2eturn '—';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+    if (!session.user)eturn "—";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD"
     }).format(amount)
   };
 
   return (
-    \1>
-      \1>
-        <h1 className="text-3xl font-bold">Asset Management\1>
-        \1>
+    >
+      >
+        <h1 className="text-3xl font-bold">Asset Management>
+        >
           Track and manage hospital assets and equipment
         </p>
       </div>
 
-      \1>
-        \1>
+      >
+        >
           <TabsList>
-            <TabsTrigger value="all">All Assets\1>
-            <TabsTrigger value="maintenance">Maintenance\1>
+            <TabsTrigger value="all">All Assets>
+            <TabsTrigger value="maintenance">Maintenance>
             <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
           </TabsList>
 
-          \1>
-            \1>
+          >
+            >
               <Plus className="mr-2 h-4 w-4" />
               New Asset
             </Button>
-            \1>
+            >
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>
         </div>
 
-        \1>
+        >
           <Card>
-            \1>
+            >
               <CardTitle>Asset Inventory</CardTitle>
               <CardDescription>
-                {loading ? 'Loading assets...' :
+                {loading ? "Loading assets..." :
                   `Showing ${assets.length} of ${pagination.total} assets`}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              \1>
-                \1>
-                  \1>
-                    \1>
+              >
+                >
+                  >
+                    >
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input>
                         type="search"
@@ -337,50 +337,50 @@ export default const _AssetManagement = () {
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    \1>
+                    >
                       Search
                     </Button>
                   </form>
                 </div>
 
-                \1>
-                  \1>
-                    \1>
+                >
+                  >
+                    >
                       <SelectValue placeholder="All Types" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types\1>
-                      <SelectItem value="EQUIPMENT">Equipment\1>
-                      <SelectItem value="FURNITURE">Furniture\1>
-                      <SelectItem value="IT">IT\1>
-                      <SelectItem value="VEHICLE">Vehicle\1>
-                      <SelectItem value="BUILDING">Building\1>
+                      <SelectItem value="">All Types>
+                      <SelectItem value="EQUIPMENT">Equipment>
+                      <SelectItem value="FURNITURE">Furniture>
+                      <SelectItem value="IT">IT>
+                      <SelectItem value="VEHICLE">Vehicle>
+                      <SelectItem value="BUILDING">Building>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  \1>
-                    \1>
+                  >
+                    >
                       <SelectValue placeholder="All Statuses" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Statuses\1>
-                      <SelectItem value="AVAILABLE">Available\1>
-                      <SelectItem value="IN_USE">In Use\1>
-                      <SelectItem value="UNDER_MAINTENANCE">Under Maintenance\1>
-                      <SelectItem value="DISPOSED">Disposed\1>
+                      <SelectItem value="">All Statuses>
+                      <SelectItem value="AVAILABLE">Available>
+                      <SelectItem value="IN_USE">In Use>
+                      <SelectItem value="UNDER_MAINTENANCE">Under Maintenance>
+                      <SelectItem value="DISPOSED">Disposed>
                       <SelectItem value="LOST">Lost</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  \1>
-                    \1>
+                  >
+                    >
                       <SelectValue placeholder="All Departments" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Departments\1>
+                      <SelectItem value="">All Departments>
                       {departments.map((dept) => (
-                        \1>
+                        >
                           {dept.name}
                         </SelectItem>
                       ))}
@@ -390,19 +390,19 @@ export default const _AssetManagement = () {
               </div>
 
               {error ? (
-                \1>
+                >
                   Error: {error}
                 </div>
               ) : loading ? (
-                \1>
+                >
                   Loading...
                 </div>
               ) : assets.length === 0 ? (
-                \1>
+                >
                   No assets found. Try adjusting your filters or create a new asset.
                 </div>
               ) : (
-                \1>
+                >
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -417,9 +417,9 @@ export default const _AssetManagement = () {
                     </TableHeader>
                     <TableBody>
                       {assets.map((asset) => (
-                        \1>
-                          \1>
-                            \1>
+                        >
+                          >
+                            >
                               {getAssetTypeIcon(asset.assetType)}
                               <span>{asset.name}</span>
                             </div>
@@ -428,24 +428,24 @@ export default const _AssetManagement = () {
                             {asset.assetType}
                           </TableCell>
                           <TableCell>
-                            {asset.serialNumber || '—'}
+                            {asset.serialNumber || "—"}
                           </TableCell>
                           <TableCell>
-                            {asset.department?.name || '—'}
+                            {asset.department?.name || "—"}
                           </TableCell>
                           <TableCell>
-                            {asset.location || '—'}
+                            {asset.location || "—"}
                           </TableCell>
                           <TableCell>
-                            \1>
-                              {asset.status.replace('_', ' ')}
+                            >
+                              {asset.status.replace("_", " ")}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/assets/${\1}`}
+                              onClick={() => router.push(`/dashboard/hr/assets/${}`}
                             >
                               View
                             </Button>
@@ -463,11 +463,11 @@ export default const _AssetManagement = () {
                   <PaginationItem>
                     <PaginationPrevious>
                       onClick={handlePreviousPage}
-                      className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
+                      className={pagination.skip === 0 ? "pointer-events-none opacity-50" : ""}
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    \1>
+                    >
                       Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
                         1}
                     </span>
@@ -475,7 +475,7 @@ export default const _AssetManagement = () {
                   <PaginationItem>
                     <PaginationNext>
                       onClick={handleNextPage}
-                      className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
+                      className={pagination.skip + pagination.take >= pagination.total ? "pointer-events-none opacity-50" : ""}
                     />
                   </PaginationItem>
                 </PaginationContent>
@@ -484,9 +484,9 @@ export default const _AssetManagement = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
-            \1>
+            >
               <CardTitle>Maintenance Schedule</CardTitle>
               <CardDescription>
                 Assets currently under maintenance or scheduled for maintenance
@@ -494,16 +494,16 @@ export default const _AssetManagement = () {
             </CardHeader>
             <CardContent>
               {/* Maintenance content would go here */}
-              \1>
+              >
                 Loading maintenance schedule...
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
-            \1>
+            >
               <CardTitle>Asset Reports & Analytics</CardTitle>
               <CardDescription>
                 View asset distribution, value, and maintenance costs
@@ -511,7 +511,7 @@ export default const _AssetManagement = () {
             </CardHeader>
             <CardContent>
               {/* Reports content would go here */}
-              \1>
+              >
                 Loading asset reports...
               </div>
             </CardContent>
@@ -519,15 +519,15 @@ export default const _AssetManagement = () {
         </TabsContent>
       </Tabs>
 
-      \1>
+      >
         <Card>
-          \1>
+          >
             <CardTitle className="text-sm font-medium">Total Assets</CardTitle>
           </CardHeader>
           <CardContent>
-            \1>
+            >
               <Package className="h-5 w-5 text-blue-500 mr-2" />
-              \1>
+              >
                 {statistics?.totalAssets || 0}
               </span>
             </div>
@@ -535,26 +535,26 @@ export default const _AssetManagement = () {
         </Card>
 
         <Card>
-          \1>
+          >
             <CardTitle className="text-sm font-medium">Under Maintenance</CardTitle>
           </CardHeader>
           <CardContent>
-            \1>
+            >
               <Wrench className="h-5 w-5 text-yellow-500 mr-2" />
-              \1>
-                {statistics?.assetsByStatus?.find(s => s.status === 'UNDER_MAINTENANCE')?.count || 0}
+              >
+                {statistics?.assetsByStatus?.find(s => s.status === "UNDER_MAINTENANCE")?.count || 0}
               </span>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          \1>
+          >
             <CardTitle className="text-sm font-medium">Total Value</CardTitle>
           </CardHeader>
           <CardContent>
-            \1>
-              \1>
+            >
+              >
                 {formatCurrency(statistics?.totalValue || 0)}
               </span>
             </div>
@@ -562,12 +562,12 @@ export default const _AssetManagement = () {
         </Card>
 
         <Card>
-          \1>
+          >
             <CardTitle className="text-sm font-medium">Maintenance Costs</CardTitle>
           </CardHeader>
           <CardContent>
-            \1>
-              \1>
+            >
+              >
                 {formatCurrency(statistics?.maintenanceCosts || 0)}
               </span>
             </div>

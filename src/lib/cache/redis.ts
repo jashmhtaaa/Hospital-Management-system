@@ -1,7 +1,7 @@
-import { createClient } from 'redis';
+import { createClient } from "redis";
 
 
-import { config } from '@/config';
+import { config } from "@/config";
 // Create Redis client
 const redisClient = createClient({
   url: config.redis.url,
@@ -14,12 +14,11 @@ redisClient.connect().catch((err) => {
 });
 
 // Handle Redis errors
-redisClient.on('error', (err) => {
+redisClient.on("error", (err) => {
 
 });
 
 // Cache wrapper class
-\1
 }
     } catch (error) {
 
@@ -55,7 +54,7 @@ redisClient.on('error', (err) => {
   static async deletePattern(pattern: string): Promise<void> {
     try {
       const keys = await redisClient.keys(pattern);
-      \1 {\n  \2{
+      if (!session.user) {
         await redisClient.del(keys);
       }
     } catch (error) {
@@ -68,7 +67,7 @@ redisClient.on('error', (err) => {
    */
   static async getOrSet<T>(
     key: string,
-    fetchFn: () => Promise\1>
+    fetchFn: () => Promise>
     ttlSeconds = 3600;
   ): Promise<T> {
     try {
@@ -76,7 +75,7 @@ redisClient.on('error', (err) => {
       const cachedData = await RedisCache.get<T>(key);
 
       // If found in cache, return it
-      \1 {\n  \2{
+      if (!session.user) {
         return cachedData;
       }
 

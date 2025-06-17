@@ -1,5 +1,5 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 }
 
 /**
@@ -9,10 +9,10 @@ import { z } from 'zod';
 
 // Clinical Note Schemas
 export const ClinicalNoteSchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
-  encounter_id: z.string().min(1, 'Encounter ID is required'),
-  provider_id: z.string().min(1, 'Provider ID is required'),
-  note_type: z.enum(['progress_note', 'soap_note', 'admission_note', 'discharge_summary', 'consultation_note', 'procedure_note', 'nursing_note']),
+  patient_id: z.string().min(1, "Patient ID is required"),
+  encounter_id: z.string().min(1, "Encounter ID is required"),
+  provider_id: z.string().min(1, "Provider ID is required"),
+  note_type: z.enum(["progress_note", "soap_note", "admission_note", "discharge_summary", "consultation_note", "procedure_note", "nursing_note"]),
   template_id: z.string().optional();
 
   // SOAP components
@@ -31,7 +31,7 @@ export const ClinicalNoteSchema = z.object({
   social_history: z.string().optional(),
   family_history: z.string().optional(),
   physical_examination: z.string().optional(),
-  \1,\2 z.number().optional(),
+  z.number().optional(),
     blood_pressure_systolic: z.number().optional(),
     blood_pressure_diastolic: z.number().optional(),
     heart_rate: z.number().optional(),
@@ -49,10 +49,10 @@ export const ClinicalNoteSchema = z.object({
   icd10_codes: z.array(z.string()).default([]);
 
   // Treatment plan
-  \1,\2 z.enum(['medication', 'lab', 'imaging', 'procedure', 'consultation', 'therapy']),
+  z.enum(["medication", "lab", "imaging", "procedure", "consultation", "therapy"]),
     description: z.string(),
     instructions: z.string().optional(),
-    priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
+    priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
   })).default([]),
 
   // Follow-up
@@ -65,9 +65,9 @@ export const ClinicalNoteSchema = z.object({
   guidelines_referenced: z.array(z.string()).default([]);
 
   // Note metadata
-  note_status: z.enum(['draft', 'preliminary', 'final', 'amended', 'corrected']).default('draft'),
-  priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
-  confidentiality_level: z.enum(['normal', 'restricted', 'very_restricted']).default('normal'),
+  note_status: z.enum(["draft", "preliminary", "final", "amended", "corrected"]).default("draft"),
+  priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
+  confidentiality_level: z.enum(["normal", "restricted", "very_restricted"]).default("normal"),
 
   // Voice-to-text
   audio_recording_id: z.string().optional(),
@@ -79,33 +79,33 @@ export const ClinicalNoteSchema = z.object({
 });
 
 export const CarePlanSchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
-  provider_id: z.string().min(1, 'Provider ID is required'),
-  care_plan_name: z.string().min(1, 'Care plan name is required'),
-  diagnosis: z.string().min(1, 'Primary diagnosis is required'),
+  patient_id: z.string().min(1, "Patient ID is required"),
+  provider_id: z.string().min(1, "Provider ID is required"),
+  care_plan_name: z.string().min(1, "Care plan name is required"),
+  diagnosis: z.string().min(1, "Primary diagnosis is required"),
   icd10_code: z.string().optional(),
 
-  \1,\2 z.string(),
+  z.string(),
     description: z.string(),
     target_date: z.string().optional(),
-    priority: z.enum(['high', 'medium', 'low']).default('medium'),
-    status: z.enum(['active', 'completed', 'cancelled', 'on_hold']).default('active'),
+    priority: z.enum(["high", "medium", "low"]).default("medium"),
+    status: z.enum(["active", "completed", "cancelled", "on_hold"]).default("active"),
     outcome_measure: z.string().optional(),
     target_value: z.string().optional(),
     current_value: z.string().optional()
   })),
 
-  \1,\2 z.string(),
-    type: z.enum(['medication', 'therapy', 'lifestyle', 'monitoring', 'education', 'procedure']),
+  z.string(),
+    type: z.enum(["medication", "therapy", "lifestyle", "monitoring", "education", "procedure"]),
     description: z.string(),
     instructions: z.string().optional(),
     frequency: z.string().optional(),
     duration: z.string().optional(),
     responsible_provider: z.string().optional(),
-    status: z.enum(['active', 'completed', 'discontinued', 'pending']).default('active'),
+    status: z.enum(["active", "completed", "discontinued", "pending"]).default("active"),
   })),
 
-  \1,\2 z.string(),
+  z.string(),
     role: z.string(),
     responsibilities: z.string().optional(),
     contact_information: z.string().optional()
@@ -119,28 +119,28 @@ export const CarePlanSchema = z.object({
   effective_date: z.string(),
   end_date: z.string().optional(),
 
-  status: z.enum(['active', 'completed', 'cancelled', 'on_hold']).default('active'),
+  status: z.enum(["active", "completed", "cancelled", "on_hold"]).default("active"),
   notes: z.string().optional()
 });
 
 export const ProblemListSchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
-  provider_id: z.string().min(1, 'Provider ID is required'),
+  patient_id: z.string().min(1, "Patient ID is required"),
+  provider_id: z.string().min(1, "Provider ID is required"),
 
-  problem_name: z.string().min(1, 'Problem name is required'),
+  problem_name: z.string().min(1, "Problem name is required"),
   icd10_code: z.string().optional(),
   snomed_code: z.string().optional(),
 
-  problem_type: z.enum(['diagnosis', 'symptom', 'finding', 'concern']),
-  severity: z.enum(['mild', 'moderate', 'severe', 'critical']).optional(),
+  problem_type: z.enum(["diagnosis", "symptom", "finding", "concern"]),
+  severity: z.enum(["mild", "moderate", "severe", "critical"]).optional(),
 
   onset_date: z.string().optional(),
   resolution_date: z.string().optional(),
 
-  status: z.enum(['active', 'resolved', 'inactive', 'chronic', 'recurrent']),
-  verification_status: z.enum(['confirmed', 'provisional', 'differential', 'ruled_out']),
+  status: z.enum(["active", "resolved", "inactive", "chronic", "recurrent"]),
+  verification_status: z.enum(["confirmed", "provisional", "differential", "ruled_out"]),
 
-  priority: z.enum(['high', 'medium', 'low']).default('medium'),
+  priority: z.enum(["high", "medium", "low"]).default("medium"),
 
   clinical_context: z.string().optional(),
   treatment_status: z.string().optional(),
@@ -158,20 +158,20 @@ export const ClinicalGuidelineSchema = z.object({
   version: z.string(),
   effective_date: z.string(),
 
-  \1,\2 z.array(z.string()),
+  z.array(z.string()),
 
-  \1,\2 z.string(),
+  z.string(),
     recommendation_text: z.string(),
-    strength: z.enum(['strong', 'weak', 'conditional']),
-    quality_of_evidence: z.enum(['high', 'moderate', 'low', 'very_low']),
+    strength: z.enum(["strong", "weak", "conditional"]),
+    quality_of_evidence: z.enum(["high", "moderate", "low", "very_low"]),
     patient_population: z.string().optional(),
     considerations: z.string().optional()
   })),
 
-  \1,\2 z.string(),
+  z.string(),
     condition: z.string(),
     action: z.string(),
-    alert_type: z.enum(['info', 'warning', 'critical']),
+    alert_type: z.enum(["info", "warning", "critical"]),
   })),
 
   evidence_links: z.array(z.string()).default([]),
@@ -179,7 +179,7 @@ export const ClinicalGuidelineSchema = z.object({
 
 export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
   id: string,
-  \1,\2 Date,
+  Date,
   updated_at: Date;
   signed_at?: Date;
   signed_by?: string;
@@ -191,99 +191,96 @@ export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
 
 export type CarePlan = z.infer<typeof CarePlanSchema> & {
   id: string,
-  \1,\2 Date,
-  \1,\2 number;
+  Date,
+  number;
   last_reviewed_date?: Date;
   next_review_date?: Date
 };
 
 export type ProblemListItem = z.infer<typeof ProblemListSchema> & {
   id: string,
-  \1,\2 Date,
+  Date,
   last_updated_by: string
 };
 
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   id: string,
-  \1,\2 Date,
-  \1,\2 Date
+  Date,
+  Date
 };
 
-\1
 }
   }[];
-  \1,\2 string,
-    \1,\2 string[],
+  string,
+    string[],
     triggered_rules: string[]
   }[];
-\1
 }
   };
 
   active_problems: ProblemListItem[],
-  \1,\2 string[],
-  \1,\2 unknown[],
-  \1,\2 unknown[],
-  \1,\2 QualityMeasure[],
-  \1,\2 string,
+  string[],
+  unknown[],
+  unknown[],
+  QualityMeasure[],
+  string,
   last_encounter_date: Date
-\1
 }
           },
           {
-            id: 'HTN-2',
-            recommendation_text: 'First-line therapy should include ACE inhibitor, ARB, calcium channel blocker, or thiazide diuretic',
-            strength: 'strong',
-            \1,\2 'Adults initiating antihypertensive therapy'
+            id: "HTN-2",
+            recommendation_text: "First-line therapy should include ACE inhibitor, ARB, calcium channel blocker, or thiazide diuretic",
+            strength: "strong",
+            "Adults initiating antihypertensive therapy"
           },
         ],
         decision_support_rules: [
           {
-            rule_id: 'HTN-ALERT-1',
-            \1,\2 'Alert provider of hypertensive crisis',
-            alert_type: 'critical'
+            rule_id: "HTN-ALERT-1",
+            "Alert provider of hypertensive crisis",
+            alert_type: "critical"
           },
           {
-            rule_id: 'HTN-ALERT-2',
-            \1,\2 'Suggest antihypertensive therapy',
-            alert_type: 'warning'
+            rule_id: "HTN-ALERT-2",
+            "Suggest antihypertensive therapy",
+            alert_type: "warning"
           },
         ],
-        evidence_links: ['https://doi.org/10.1161/HYP.0000000000000065'],
-        references: ['2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults'],
+        evidence_links: ["https://doi.org/10.1161/HYP.0000000000000065"],
+        references: ["2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults"],
       },
       {
-        guideline_id: 'ADA-DM-2024',
-        \1,\2 'American Diabetes Association',
-        \1,\2 '2024-01-01',
-        applicable_conditions: ['Type 1 Diabetes', 'Type 2 Diabetes', 'Gestational Diabetes'],
-        icd10_codes: ['E10', 'E11', 'O24'],
+        guideline_id: "ADA-DM-2024",
+        "American Diabetes Association",
+        "2024-01-01",
+        applicable_conditions: ["Type 1 Diabetes", "Type 2 Diabetes", "Gestational Diabetes"],
+        icd10_codes: ["E10", "E11", "O24"],
         recommendations: [
           {
-            id: 'DM-1',
-            \1,\2 'strong',
-            \1,\2 'Adults with Type 1 or Type 2 diabetes'
+            id: "DM-1",
+            "strong",
+            "Adults with Type 1 or Type 2 diabetes"
           },
           {
-            id: 'DM-2',
-            \1,\2 'strong',
-            \1,\2 'Adults with Type 2 diabetes'
+            id: "DM-2",
+            "strong",
+            "Adults with Type 2 diabetes"
           },
         ],
         decision_support_rules: [
           {
-            rule_id: 'DM-ALERT-1',
-            \1,\2 'Alert provider of poor glycemic control',
-            alert_type: 'warning'
+            rule_id: "DM-ALERT-1",
+            "Alert provider of poor glycemic control",
+            alert_type: "warning"
           },
           {
-            rule_id: 'DM-ALERT-2',
-            \1,\2 'Recommend HbA1c testing',
-            alert_type: 'info'
+            rule_id: "DM-ALERT-2",
+            "Recommend HbA1c testing",
+            alert_type: "info"
           },
         ],
-        evidence_links: ['https://doi.org/10.2337/dc24-S001'],
-        references: ['American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)'],
+        evidence_links: ["https://doi.org/10.2337/dc24-S001"],
+        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)"],
       },
     ];
 
@@ -293,7 +290,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         id: uuidv4(),
         created_at: new Date(),
         updated_at: new Date(),
-        \1,\2 new Date()
+        new Date()
       };
       this.clinicalGuidelines.set(guideline.guideline_id, guideline);
     });
@@ -305,29 +302,29 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   private initializeNoteTemplates(): void {
     const templates = [
       {
-        id: 'soap-general',
-        \1,\2 'soap_note',
-        \1,\2 'Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n',
-          objective: 'Vital Signs:\n\nPhysical Examination:\n\nLaboratory/Diagnostic Results:\n',
-          assessment: 'Primary Diagnosis:\n\nSecondary Diagnoses:\n\nDifferential Diagnosis:\n',
-          plan: 'Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n'
+        id: "soap-general",
+        "soap_note",
+        "Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n",
+          objective: "Vital Signs:\n\nPhysical Examination:\n\nLaboratory/Diagnostic Results:\n",
+          assessment: "Primary Diagnosis:\n\nSecondary Diagnoses:\n\nDifferential Diagnosis:\n",
+          plan: "Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n"
         },
       },
       {
-        id: 'progress-note',
-        \1,\2 'progress_note',
-        \1,\2 'Patient reports:\n',
-          objective: 'Vital Signs:\nPhysical Examination:\n',
-          assessment: 'Assessment and Plan:\n'
+        id: "progress-note",
+        "progress_note",
+        "Patient reports:\n",
+          objective: "Vital Signs:\nPhysical Examination:\n",
+          assessment: "Assessment and Plan:\n"
         },
       },
       {
-        id: 'discharge-summary',
-        \1,\2 'discharge_summary',
-        \1,\2 '',
-          \1,\2 '',
-          \1,\2 '',
-          discharge_disposition: ''
+        id: "discharge-summary",
+        "discharge_summary",
+        "",
+          "",
+          "",
+          discharge_disposition: ""
         },
       },
     ];
@@ -348,9 +345,9 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
 
     // Apply template if specified
     let templateData = {};
-    \1 {\n  \2{
+    if (!session.user) {
       const template = this.templates.get(validatedData.template_id);
-      \1 {\n  \2{
+      if (!session.user) {
         templateData = template.template;
       }
     }
@@ -359,7 +356,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       ...validatedData,
       ...templateData,
       id: noteId,
-      \1,\2 new Date(),
+      new Date(),
       updated_at: new Date(),
       amendments: [],
       version: 1
@@ -377,8 +374,8 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    * Generate note number;
    */
   private generateNoteNumber(): string {
-    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `NOTE/* SECURITY: Template literal eliminated */
   }
 
@@ -387,12 +384,12 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */
   async updateClinicalNote(noteId: string, updateData: Partial<ClinicalNote>): Promise<ClinicalNote> {
     const existingNote = this.clinicalNotes.get(noteId);
-    \1 {\n  \2{
-      throw new Error('Clinical note not found');
+    if (!session.user) {
+      throw new Error("Clinical note not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Cannot modify signed note. Create an amendment instead.');
+    if (!session.user) {
+      throw new Error("Cannot modify signed note. Create an amendment instead.");
     }
 
     const updatedNote: ClinicalNote = {
@@ -410,15 +407,15 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */
   async signClinicalNote(noteId: string, providerId: string): Promise<ClinicalNote> {
     const note = this.clinicalNotes.get(noteId);
-    \1 {\n  \2{
-      throw new Error('Clinical note not found');
+    if (!session.user) {
+      throw new Error("Clinical note not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Note is already signed');
+    if (!session.user) {
+      throw new Error("Note is already signed");
     }
 
-    note.note_status = 'final';
+    note.note_status = "final";
     note.signed_at = new Date();
     note.signed_by = providerId;
     note.updated_at = new Date();
@@ -432,12 +429,12 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */
   async createNoteAmendment(originalNoteId: string, amendmentText: string, providerId: string): Promise<ClinicalNote> {
     const originalNote = this.clinicalNotes.get(originalNoteId);
-    \1 {\n  \2{
-      throw new Error('Original note not found');
+    if (!session.user) {
+      throw new Error("Original note not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Can only amend signed notes');
+    if (!session.user) {
+      throw new Error("Can only amend signed notes");
     }
 
     const amendmentId = uuidv4();
@@ -446,11 +443,11 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     const amendment: ClinicalNote = {
       ...originalNote,
       id: amendmentId,
-      \1,\2 'amended',
-      \1,\2 new Date(),
+      "amended",
+      new Date(),
       updated_at: new Date(),
       signed_at: new Date(),
-      \1,\2 originalNote.version + 1,
+      originalNote.version + 1,
       amendments: []
     };
 
@@ -480,10 +477,10 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     const carePlan: CarePlan = {
       ...validatedData,
       id: carePlanId,
-      \1,\2 new Date(),
+      new Date(),
       updated_at: new Date(),
       version: 1,
-      next_review_date: nextReviewDate.toISOString().split('T')[0]
+      next_review_date: nextReviewDate.toISOString().split("T")[0]
     };
 
     this.carePlans.set(carePlanId, carePlan);
@@ -494,13 +491,13 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    * Generate care plan number;
    */
   private generateCarePlanNumber(): string {
-    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `CP/* SECURITY: Template literal eliminated */
   }
 
   /**
-   * Add problem to patient's problem list;
+   * Add problem to patient"s problem list;
    */
   async addProblem(problemData: z.infer<typeof ProblemListSchema>): Promise<ProblemListItem> {
     const validatedData = ProblemListSchema.parse(problemData);
@@ -527,22 +524,22 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */
   async updateProblemStatus(
     patientId: string,
-    \1,\2 ProblemListItem['status'],
+    ProblemListItem["status"],
     providerId: string;
     resolutionDate?: string;
   ): Promise<ProblemListItem> {
     const patientProblems = this.problemLists.get(patientId) || [];
     const problem = patientProblems.find(p => p.id === problemId);
 
-    \1 {\n  \2{
-      throw new Error('Problem not found');
+    if (!session.user) {
+      throw new Error("Problem not found");
     }
 
     problem.status = status;
     problem.last_updated_by = providerId;
     problem.updated_at = new Date();
 
-    \1 {\n  \2{
+    if (!session.user) {
       problem.resolution_date = resolutionDate;
     }
 
@@ -551,11 +548,11 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   }
 
   /**
-   * Get patient's active problems;
+   * Get patient"s active problems;
    */
   async getActiveProblems(patientId: string): Promise<ProblemListItem[]> {
     const patientProblems = this.problemLists.get(patientId) || [];
-    return patientProblems.filter(problem => problem.status === 'active' || problem.status === 'chronic');
+    return patientProblems.filter(problem => problem.status === "active" || problem.status === "chronic");
   }
 
   /**
@@ -563,28 +560,28 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */
   private async triggerClinicalDecisionSupport(
     patientId: string,
-    \1,\2 ClinicalNote;
+    ClinicalNote;
   ): Promise<void> {
-    const alerts: ClinicalDecisionSupport['alerts'] = [];
-    const guidelines: ClinicalDecisionSupport['guidelines'] = [];
+    const alerts: ClinicalDecisionSupport["alerts"] = [];
+    const guidelines: ClinicalDecisionSupport["guidelines"] = [];
 
     // Check vital signs for alerts
-    \1 {\n  \2{
-      \1 {\n  \2{
+    if (!session.user) {
+      if (!session.user) {
         alerts.push({
           id: uuidv4(),
-          \1,\2 'critical',
-          \1,\2 'Immediate evaluation and treatment required',
-          \1,\2 false
+          "critical",
+          "Immediate evaluation and treatment required",
+          false
         });
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         alerts.push({
           id: uuidv4(),
-          \1,\2 'warning',
-          \1,\2 'Consider infectious workup and antipyretic therapy',
-          \1,\2 false
+          "warning",
+          "Consider infectious workup and antipyretic therapy",
+          false
         });
       }
     }
@@ -608,20 +605,20 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         .filter(rule => this.evaluateRule(rule, note));
         .map(rule => rule.rule_id);
 
-      \1 {\n  \2{
+      if (!session.user) {
         guidelines.push({
           guideline_id: guideline.guideline_id,
-          \1,\2 applicableRecommendations,
+          applicableRecommendations,
           triggered_rules: triggeredRules
         });
 
         // Create alerts for triggered rules
         for (const rule of guideline.decision_support_rules) {
-          \1 {\n  \2 {
+          if (!session.user) {
             alerts.push({
               id: uuidv4(),
-              \1,\2 rule.alert_type === 'critical' ? 'critical' : rule.alert_type === 'warning' ? 'warning' : 'info',
-              \1,\2 `Based on ${guideline.name}`,
+              rule.alert_type === "critical" ? "critical" : rule.alert_type === "warning" ? "warning" : "info",
+              `Based on ${guideline.name}`,
               source: guideline.organization,
               dismissed: false
             });
@@ -630,7 +627,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       }
     }
 
-    const \1,\2 patientId,
+    const patientId,
       encounter_id: encounterId;
       alerts,
       guidelines,
@@ -646,18 +643,18 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     // Simplified rule evaluation - in real implementation, this would be more sophisticated
     const condition = rule.condition.toLowerCase();
 
-    \1 {\n  \2& note.vital_signs?.blood_pressure_systolic) {
+    if (!session.user)& note.vital_signs?.blood_pressure_systolic) {
       const match = condition.match(/bp >= (\d+)/);
-      \1 {\n  \2{
+      if (!session.user) {
         return note.vital_signs.blood_pressure_systolic >= Number.parseInt(match[1]);
       }
     }
 
-    \1 {\n  \2& note.assessment?.toLowerCase().includes('hba1c')) {
+    if (!session.user)& note.assessment?.toLowerCase().includes("hba1c")) {
       const match = condition.match(/hba1c > (\d+)%/);
-      \1 {\n  \2{
+      if (!session.user) {
         // In real implementation, this would check actual lab values
-        return crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) > 0.8; // Simulate 20% chance of high HbA1c
+        return crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.8; // Simulate 20% chance of high HbA1c
       }
     }
 
@@ -676,13 +673,13 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */
   async dismissClinical/* SECURITY: Alert removed */: Promise<void> {
     const cds = this.decisionSupport.get(encounterId);
-    \1 {\n  \2{
-      throw new Error('Clinical decision support data not found');
+    if (!session.user) {
+      throw new Error("Clinical decision support data not found");
     }
 
     const alert = cds.alerts.find(a => a.id === alertId);
-    \1 {\n  \2{
-      throw new Error('Alert not found');
+    if (!session.user) {
+      throw new Error("Alert not found");
     }
 
     alert.dismissed = true;
@@ -698,41 +695,41 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */
   async generateClinicalSummary(
     patientId: string,
-    summaryType: 'encounter' | 'episodic' | 'comprehensive' = 'comprehensive';
+    summaryType: "encounter" | "episodic" | "comprehensive" = "comprehensive";
   ): Promise<ClinicalSummary> {
     // Get patient data
     const activeProblems = await this.getActiveProblems(patientId);
     const patientCarePlans = Array.from(this.carePlans.values());
-      .filter(cp => cp.patient_id === patientId && cp.status === 'active');
+      .filter(cp => cp.patient_id === patientId && cp.status === "active");
 
     // Generate quality measures (simplified)
     const qualityMeasures: QualityMeasure[] = [
       {
-        id: 'BP-Control',
-        \1,\2 'Percentage of patients with controlled blood pressure',
-        \1,\2 'Patients with hypertension',
-        \1,\2 crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) > 0.5 ? 'met' : 'not_met',
-        \1,\2 '2024',
-        next_opportunity: 'Next visit'
+        id: "BP-Control",
+        "Percentage of patients with controlled blood pressure",
+        "Patients with hypertension",
+        crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.5 ? "met" : "not_met",
+        "2024",
+        next_opportunity: "Next visit"
       },
     ]
 
-    const \1,\2 patientId,
+    const patientId,
       generated_date: new Date(),
       summary_type: summaryType,
-      \1,\2 'Patient Name', // In real implementation, fetch from patient service
+      "Patient Name", // In real implementation, fetch from patient service
         age: 45,
-        \1,\2 `MRN${patientId.slice(-6)}`,
+        `MRN${patientId.slice(-6)}`,
       },
       active_problems: activeProblems,
-      current_medications: ['Lisinopril 10mg daily', 'Metformin 500mg BID'], // Simplified
-      allergies: ['NKDA'],
-      recent_vitals: { bp: '130/80', hr: '72', temp: '98.6' },
+      current_medications: ["Lisinopril 10mg daily", "Metformin 500mg BID"], // Simplified
+      allergies: ["NKDA"],
+      recent_vitals: { bp: "130/80", hr: "72", temp: "98.6" },
       recent_lab_results: [],
-      \1,\2 [],
-      \1,\2 qualityMeasures,
-      risk_factors: ['Hypertension', 'Diabetes'],
-      provider_notes: 'Patient stable, continue current management',
+      [],
+      qualityMeasures,
+      risk_factors: ["Hypertension", "Diabetes"],
+      provider_notes: "Patient stable, continue current management",
       last_encounter_date: new Date()
     };
 
@@ -745,24 +742,24 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   async searchClinicalNotes(criteria: {
     patient_id?: string;
     provider_id?: string;
-    note_type?: ClinicalNote['note_type'];
+    note_type?: ClinicalNote["note_type"];
     date_from?: string;
     date_to?: string;
     search_text?: string;
-    status?: ClinicalNote['note_status'];
+    status?: ClinicalNote["note_status"];
     page?: number;
     limit?: number;
-  }): Promise<{ notes: ClinicalNote[], \1,\2 number }> {
+  }): Promise<{ notes: ClinicalNote[], number }> {
     const { page = 1, limit = 10, search_text, ...filters } = criteria;
 
     let filteredNotes = Array.from(this.clinicalNotes.values());
 
     // Apply filters
     Object.entries(filters).forEach(([key, value]) => {
-      \1 {\n  \2{
+      if (!session.user) {
         filteredNotes = filteredNotes.filter(note => {
           const noteValue = (note as any)[key];
-          \1 {\n  \2 {
+          if (!session.user) {
             return new Date(noteValue) >= new Date(value as string);
           }
           return noteValue === value;
@@ -771,7 +768,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     });
 
     // Text search
-    \1 {\n  \2{
+    if (!session.user) {
       const searchLower = search_text.toLowerCase();
       filteredNotes = filteredNotes.filter(note =>
         note.subjective?.toLowerCase().includes(searchLower) ||
@@ -800,7 +797,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   async getNoteTemplates(noteType?: string): Promise<any[]> {
     const templates = Array.from(this.templates.values());
 
-    \1 {\n  \2{
+    if (!session.user) {
       return templates.filter(template => template.type === noteType);
     }
 
@@ -813,7 +810,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   async getClinicalGuidelines(condition?: string): Promise<ClinicalGuideline[]> {
     const guidelines = Array.from(this.clinicalGuidelines.values());
 
-    \1 {\n  \2{
+    if (!session.user) {
       return guidelines.filter(guideline =>
         guideline.applicable_conditions.some(c =>
           c.toLowerCase().includes(condition.toLowerCase());
@@ -829,12 +826,12 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */
   async autoSaveNote(noteId: string, draftContent: Partial<ClinicalNote>): Promise<void> {
     const note = this.clinicalNotes.get(noteId);
-    \1 {\n  \2{
-      throw new Error('Note not found');
+    if (!session.user) {
+      throw new Error("Note not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Can only auto-save draft notes');
+    if (!session.user) {
+      throw new Error("Can only auto-save draft notes");
     }
 
     const updatedNote = {

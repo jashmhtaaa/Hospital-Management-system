@@ -1,27 +1,27 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 // Create enums to match Prisma schema
 export enum HousekeepingTaskStatus {
-  PENDING = 'PENDING',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED',
-\1\n\nexport \2 HousekeepingTaskPriority {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  URGENT = 'URGENT',
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
+\n\nexport HousekeepingTaskPriority {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  URGENT = "URGENT",
 }
 
 // Validation schemas
 export const createHousekeepingTaskSchema = z.object({
-  taskName: z.string().min(1, 'Task name is required'),
+  taskName: z.string().min(1, "Task name is required"),
   description: z.string().optional(),
-  location: z.string().min(1, 'Location is required'),
+  location: z.string().min(1, "Location is required"),
   assignedToId: z.string().optional().nullable(),
   status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING),
   priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM),
-  requestedAt: z.date().default(() => \1,  completedAt: z.date().optional().nullable(),
+  requestedAt: z.date().default(() => ,  completedAt: z.date().optional().nullable(),
   notes: z.string().optional()
 });
 
@@ -29,23 +29,22 @@ export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial
   id: z.string()
 });
 
-export type CreateHousekeepingTaskInput = z.infer\1>
-export type UpdateHousekeepingTaskInput = z.infer\1>
+export type CreateHousekeepingTaskInput = z.infer>
+export type UpdateHousekeepingTaskInput = z.infer>
 
 // Import prisma client
-import { prisma } from '../lib/prisma';
+import { prisma } from "../lib/prisma";
 
 /**
  * Service class for managing housekeeping tasks;
  */
-\1
 }
       });
 
       return task;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -65,17 +64,17 @@ import { prisma } from '../lib/prisma';
     try {
       const where: unknown = {};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.priority = filters.priority;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.location = { contains: filters.location };
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.assignedToId = filters.assignedToId;
         }
       }
@@ -83,11 +82,11 @@ import { prisma } from '../lib/prisma';
       const tasks = await prisma.housekeepingTask.findMany({
         where,
         orderBy: [
-          { priority: 'desc' },
-          { requestedAt: 'asc' },
+          { priority: "desc" },
+          { requestedAt: "asc" },
         ],
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -109,8 +108,8 @@ import { prisma } from '../lib/prisma';
     try {
       const task = await prisma.housekeepingTask.findUnique({
         where: { id },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -141,8 +140,8 @@ import { prisma } from '../lib/prisma';
       const task = await prisma.housekeepingTask.update({
         where: { id },
         data: updateData,
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -151,8 +150,8 @@ import { prisma } from '../lib/prisma';
 
       return task;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -185,11 +184,11 @@ import { prisma } from '../lib/prisma';
     try {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
-        \1,\2 userId,
+        userId,
           status: HousekeepingTaskStatus.IN_PROGRESS
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -211,11 +210,11 @@ import { prisma } from '../lib/prisma';
     try {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
-        \1,\2 HousekeepingTaskStatus.COMPLETED,
+        HousekeepingTaskStatus.COMPLETED,
           completedAt: new Date()
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -237,10 +236,10 @@ import { prisma } from '../lib/prisma';
     try {
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
-        \1,\2 HousekeepingTaskStatus.CANCELLED
+        HousekeepingTaskStatus.CANCELLED
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },

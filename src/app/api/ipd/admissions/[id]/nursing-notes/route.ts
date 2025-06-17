@@ -22,7 +22,7 @@ export const _GET = async (
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -46,7 +46,7 @@ export const _GET = async (
         ? admissionResult.results[0] // Changed .rows to .results
         : undefined;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Admission not found" },
         { status: 404 }
@@ -61,7 +61,7 @@ export const _GET = async (
     const canViewNotes =;
       session.user.permissions?.includes("nursing_notes:view") ?? false;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -101,7 +101,7 @@ export const _POST = async (
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -111,7 +111,7 @@ export const _POST = async (
     const canCreateNotes =;
       session.user.permissions?.includes("nursing_notes:create") ?? false;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -120,7 +120,7 @@ export const _POST = async (
     const data = (await request.json()) as NursingNoteInput;
 
     // Basic validation (using typed data)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Missing required field: notes" },
         { status: 400 }
@@ -140,14 +140,14 @@ export const _POST = async (
         ? (admissionResult.results[0] as { id: string, status: string }) // Changed .rows to .results
         : undefined;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Admission not found" },
         { status: 404 }
       );
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Cannot add nursing notes to a non-active admission" },
         { status: 409 }

@@ -27,10 +27,10 @@ import { Edit, Eye, Filter, Trash2 } from "lucide-react";
 // Mock data structure - replace with actual API response type
 interface Booking {
   id: string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string,
+  string,
+  string,
+  string,
+  string,
   surgeon_name: string
 export default const _OTBookingList = () {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -38,7 +38,7 @@ export default const _OTBookingList = () {
   const [error, setError] = useState<string | null>();
   const [filters, setFilters] = useState({
     status: "",
-    \1,\2 "",
+    "",
     date: ""
   });
   const [showFilters, setShowFilters] = useState(false),
@@ -50,17 +50,17 @@ export default const _OTBookingList = () {
 
         // Construct query parameters based on filters
         const queryParameters = new URLSearchParams();
-        \1 {\n  \2ueryParameters.append("status", filters.status);
-        \1 {\n  \2ueryParameters.append("theatreId", filters.theatreId);
-        \1 {\n  \2ueryParameters.append("surgeonId", filters.surgeonId);
-        \1 {\n  \2{
+        if (!session.user)ueryParameters.append("status", filters.status);
+        if (!session.user)ueryParameters.append("theatreId", filters.theatreId);
+        if (!session.user)ueryParameters.append("surgeonId", filters.surgeonId);
+        if (!session.user) {
           queryParameters.append("startDate", filters.date);
           queryParameters.append("endDate", filters.date);
         }
 
         // Replace with actual API call
-        // const _response = await fetch(`/api/ot/bookings?${\1}`
-        // \1 {\n  \2{
+        // const _response = await fetch(`/api/ot/bookings?${}`
+        // if (!session.user) {
         //   throw new Error("Failed to fetch bookings")
         // }
         // const _data = await response.json()
@@ -73,27 +73,27 @@ export default const _OTBookingList = () {
             id: "booking-1",
             scheduled_start_time: "2025-04-28T08:00:00Z",
             scheduled_end_time: "2025-04-28T10:30:00Z",
-            \1,\2 "routine",
-            \1,\2 "MRN001",
-            \1,\2 "OT-1",
+            "routine",
+            "MRN001",
+            "OT-1",
             surgeon_name: "Dr. Alice Brown"
           },
           {
             id: "booking-2",
             scheduled_start_time: "2025-04-28T09:30:00Z",
             scheduled_end_time: "2025-04-28T12:00:00Z",
-            \1,\2 "urgent",
-            \1,\2 "MRN002",
-            \1,\2 "OT-2",
+            "urgent",
+            "MRN002",
+            "OT-2",
             surgeon_name: "Dr. Bob White"
           },
           {
             id: "booking-3",
             scheduled_start_time: "2025-04-28T14:00:00Z",
             scheduled_end_time: "2025-04-28T16:00:00Z",
-            \1,\2 "routine",
-            \1,\2 "MRN004",
-            \1,\2 "OT-1",
+            "routine",
+            "MRN004",
+            "OT-1",
             surgeon_name: "Dr. Alice Brown"
           },
         ];
@@ -110,7 +110,7 @@ export default const _OTBookingList = () {
 
         setLoading(false);
       } catch (error_: unknown) {
-        \1 {\n  \2{
+        if (!session.user) {
           setError(error_.message)
         } else {
           setError("An unknown error occurred");
@@ -132,35 +132,35 @@ export default const _OTBookingList = () {
         return <Badge variant="secondary">Scheduled</Badge>
       }
       case "confirmed": {
-        return <Badge className="bg-blue-100 text-blue-800">Confirmed\1>
+        return <Badge className="bg-blue-100 text-blue-800">Confirmed>
       }
       case "in_progress": {
         return (
-          <Badge className="bg-yellow-100 text-yellow-800">In Progress\1>
+          <Badge className="bg-yellow-100 text-yellow-800">In Progress>
         );
       }
       case "completed": {
-        return <Badge className="bg-green-100 text-green-800">Completed\1>
+        return <Badge className="bg-green-100 text-green-800">Completed>
       }
       case "cancelled": {
-        return <Badge variant="destructive">Cancelled\1>
+        return <Badge variant="destructive">Cancelled>
       }
       case "postponed": {
         return (
-          <Badge className="bg-purple-100 text-purple-800">Postponed\1>
+          <Badge className="bg-purple-100 text-purple-800">Postponed>
         );
       }
       default: {
-        return <Badge>{status}\1>
+        return <Badge>{status}>
       }
     }
   };
 
   return (
     <Card>
-      \1>
-        \1>
-          <h3 className="text-lg font-medium">Booking List\1>
+      >
+        >
+          <h3 className="text-lg font-medium">Booking List>
           <Button>
             variant="outline"
             size="sm"
@@ -171,7 +171,7 @@ export default const _OTBookingList = () {
         </div>
 
         {showFilters && (
-          \1>
+          >
             <Input>
               type="date"
               value={filters.date}
@@ -185,12 +185,12 @@ export default const _OTBookingList = () {
                 <SelectValue placeholder="Filter by Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses\1>
-                <SelectItem value="scheduled">Scheduled\1>
-                <SelectItem value="confirmed">Confirmed\1>
-                <SelectItem value="in_progress">In Progress\1>
-                <SelectItem value="completed">Completed\1>
-                <SelectItem value="cancelled">Cancelled\1>
+                <SelectItem value="">All Statuses>
+                <SelectItem value="scheduled">Scheduled>
+                <SelectItem value="confirmed">Confirmed>
+                <SelectItem value="in_progress">In Progress>
+                <SelectItem value="completed">Completed>
+                <SelectItem value="cancelled">Cancelled>
                 <SelectItem value="postponed">Postponed</SelectItem>
               </SelectContent>
             </Select>
@@ -218,13 +218,13 @@ export default const _OTBookingList = () {
             <TableBody>
               {bookings.length === 0 ? (
                 <TableRow>
-                  \1>
+                  >
                     No bookings found.
                   </TableCell>
                 </TableRow>
               ) : (
                 bookings.map((booking) => (
-                  \1>
+                  >
                     <TableCell>
                       {format(new Date(booking.scheduled_start_time), "HH:mm")}{" "}
                       - {format(new Date(booking.scheduled_end_time), "HH:mm")}
@@ -237,7 +237,7 @@ export default const _OTBookingList = () {
                     <TableCell>{booking.surgeon_name}</TableCell>
                     <TableCell>{getStatusBadge(booking.status)}</TableCell>
                     <TableCell>
-                      \1>
+                      >
                         <Button>
                           variant="outline"
                           size="icon"

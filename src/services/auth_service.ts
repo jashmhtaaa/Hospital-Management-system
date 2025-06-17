@@ -18,8 +18,7 @@ interface IAuthUtils {
 
 // Placeholder for AuditLogService
 interface IAuditLogService {
-  logEvent(userId: string, eventType: string, entityType: string, entityId: string | null, status: string, details?: object): Promise\1>
-\1
+  logEvent(userId: string, eventType: string, entityType: string, entityId: string | null, status: string, details?: object): Promise>
 }
   ) {}
 
@@ -29,12 +28,12 @@ interface IAuditLogService {
     let _loginStatus = "FAILURE";
 
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error("Username and password are required");
       }
 
       const user = await this.userRepository.findByUsername(username);
-      \1 {\n  \2{
+      if (!session.user) {
         // Log audit event for failed login (user not found)
         await this.auditLogService.logEvent(username, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: "User not found" })
         return null; // Or throw specific error
@@ -42,7 +41,7 @@ interface IAuditLogService {
       userIdForAudit = user.id || username; // Use actual user ID if available
 
       const isPasswordValid = await this.authUtils.verifyPassword(password, user.passwordHash); // Assuming user object has passwordHash
-      \1 {\n  \2{
+      if (!session.user) {
         // Log audit event for failed login (invalid password)
         await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", user.id, "FAILURE", { reason: "Invalid password" })
         return null; // Or throw specific error
@@ -60,7 +59,7 @@ interface IAuditLogService {
     } catch (error: unknown) {
 
       // Log audit event for generic login failure if not already logged
-      \1 {\n  \2{
+      if (!session.user) {
          // Avoid double logging if specific failure was already logged
       } else {
         await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: error.message ||
@@ -76,7 +75,7 @@ interface IAuditLogService {
     // For a simple JWT setup, logout is often client-side (clearing the token).
     // Server-side logout might involve logging the event.
     try {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       // Placeholder: In a real system, you might add the token to a blacklist here.
       await this.auditLogService.logEvent(userId, "LOGOUT_SUCCESS", "Auth", userId, "SUCCESS")
       return Promise.resolve()

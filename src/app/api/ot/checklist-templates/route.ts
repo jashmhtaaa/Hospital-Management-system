@@ -15,7 +15,7 @@ interface ChecklistItem {
 // Interface for the POST request body
 interface ChecklistTemplateCreateBody {
   name: string,
-  \1,\2 ChecklistItem[]
+  ChecklistItem[]
 }
 
 // GET /api/ot/checklist-templates - List all checklist templates
@@ -28,7 +28,7 @@ export const _GET = async (request: NextRequest) => {
     let query = "SELECT id, name, phase, updated_at FROM OTChecklistTemplates";
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " WHERE phase = ?";
       parameters.push(phase);
     }
@@ -56,7 +56,7 @@ export const _POST = async (request: NextRequest) => {
     const body = (await request.json()) as ChecklistTemplateCreateBody;
     const { name, phase, items } = body;
 
-    \1 {\n  \2|
+    if (!session.user)|
       items.length === 0;
     ) 
       return NextResponse.json(
@@ -66,7 +66,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate phase
     const validPhases = ["pre-op", "intra-op", "post-op"]; // Add specific intra-op phases if needed
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json(
         { message: "Invalid phase. Must be one of: " + validPhases.join(", ") },
         { status: 400 }
@@ -74,7 +74,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate items structure (basic check)
-    \1 {\n  \2>
+    if (!session.user)>
           typeof item === "object" &&
           item !== undefined &&
           item?.id &&
@@ -106,11 +106,11 @@ export const _POST = async (request: NextRequest) => {
       .bind(id);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       const newTemplate = results[0];
       // Parse items JSON before sending response
       try {
-        \1 {\n  \2{
+        if (!session.user) {
           newTemplate.items = JSON.parse(newTemplate.items);
         }
       } catch (parseError) {
@@ -129,7 +129,7 @@ export const _POST = async (request: NextRequest) => {
     // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json(
         {
           message: "Checklist template name must be unique",

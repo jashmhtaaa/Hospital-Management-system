@@ -1,17 +1,39 @@
-module.exports = {
-  extends: ["next/core-web-vitals"],
-  rules: {
-    "semi": ["error", "always"],
-    "quotes": ["error", "double"],
-    "no-console": "warn",
-    "prefer-const": "error",
-    "no-var": "error",
+import js from '@eslint/js'
+import typescript from '@typescript-eslint/eslint-plugin'
+import typescriptParser from '@typescript-eslint/parser'
+
+export default [
+  {
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'dist/**',
+      'build/**',
+      '.enterprise-backup/**',
+      '.quality-backup/**'
+    ]
   },
-  ignorePatterns: [
-    "node_modules/",
-    ".next/",
-    "dist/",
-    "build/",
-    "coverage/",
-  ],
-};
+  js.configs.recommended,
+  {
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true
+        }
+      }
+    },
+    plugins: {
+      '@typescript-eslint': typescript
+    },
+    rules: {
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'no-console': 'warn',
+      'prefer-const': 'error'
+    }
+  }
+]

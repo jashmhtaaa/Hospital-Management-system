@@ -48,7 +48,7 @@ const labOrderFormSchema = z.object({
   clinicalNotes: z.string().optional()
 });
 
-type LabOrderFormValues = z.infer\1>
+type LabOrderFormValues = z.infer>
 
 interface ERLabOrderModalProperties {
   isOpen: boolean,
@@ -96,19 +96,19 @@ export default const _ERLabOrderModal = ({
 
   const form = useForm<LabOrderFormValues>({
     resolver: zodResolver(labOrderFormSchema),
-    \1,\2 visitData?.id || "",
-      \1,\2 visitData?.assignedDoctorId || "", // Pre-fill if available
+    visitData?.id || "",
+      visitData?.assignedDoctorId || "", // Pre-fill if available
       selectedTests: [],
-      \1,\2 ""
+      ""
     },
   });
 
   // Update form when visitData changes
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       form.reset({
         visitId: visitData.id,
-        \1,\2 visitData.assignedDoctorId || "",
+        visitData.assignedDoctorId || "",
         selectedTests: [], // Reset tests when visit changes
         priority: "STAT",
         clinicalNotes: ""
@@ -118,10 +118,10 @@ export default const _ERLabOrderModal = ({
 
   async const onSubmit = (data: LabOrderFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     try {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       const response = await fetch("/api/lab/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -129,8 +129,8 @@ export default const _ERLabOrderModal = ({
           // Ensure payload matches backend expectations,
           patient_id: visitData?.id, // Assuming visit ID links to patient
           visit_id: data.visitId,
-          \1,\2 data.selectedTests,
-          \1,\2 data.clinicalNotes || undefined,
+          data.selectedTests,
+          data.clinicalNotes || undefined,
           source: "ER", // Indicate order source
         }),
       });
@@ -141,7 +141,7 @@ export default const _ERLabOrderModal = ({
         responseData = await response.json();
       } catch {
         // Handle non-JSON responses or empty responses
-        \1 {\n  \2{
+        if (!session.user) {
           throw new Error(
             `HTTP error ${response.status}: Failed to create lab order. Invalid response from server.`;
           );
@@ -150,7 +150,7 @@ export default const _ERLabOrderModal = ({
         responseData = {};
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         // FIX: Cast errorData and access error message safely
         const errorData = responseData as ApiErrorResponse;
         throw new Error(
@@ -162,7 +162,7 @@ export default const _ERLabOrderModal = ({
       // FIX: Cast newOrder to the success response type
       const newOrder = responseData as LabOrderSuccessResponse;
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
       toast({
         title: "Lab Order Submitted";
@@ -170,7 +170,7 @@ export default const _ERLabOrderModal = ({
         description: `STAT order ${newOrder?.id || "(ID not returned)"} placed successfully.`,
       })
 
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess(); // Trigger potential refresh of tracking board
       }
       form.reset({
@@ -199,7 +199,7 @@ export default const _ERLabOrderModal = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       {" "}
       {/* Ensure close on overlay click */}
-      \1>
+      >
         <DialogHeader>
           <DialogTitle>Place STAT Lab Order</DialogTitle>
           <DialogDescription>
@@ -208,7 +208,7 @@ export default const _ERLabOrderModal = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          \1>
+          >
             {/* Hidden fields for context */}
             <FormField>
               control={form.control}
@@ -246,14 +246,14 @@ export default const _ERLabOrderModal = ({
               name="selectedTests"
               render={() => (
                 <FormItem>
-                  \1>
-                    <FormLabel className="text-base">Available Tests\1>
+                  >
+                    <FormLabel className="text-base">Available Tests>
                     {/* FIX: Use FormDescription component */}
                     <FormDescription>
                       Select one or more STAT tests to order.
                     </FormDescription>
                   </div>
-                  \1>
+                  >
                     {availableTests.map((item) => (
                       <FormField>
                         key={item.id}
@@ -283,7 +283,7 @@ export default const _ERLabOrderModal = ({
                                   }}
                                 />
                               </FormControl>
-                              \1>
+                              >
                                 {item.name}
                               </FormLabel>
                             </FormItem>
@@ -320,7 +320,7 @@ export default const _ERLabOrderModal = ({
               )}
             />
 
-            \1>
+            >
               <Button>
                 type="button"
                 variant="outline"

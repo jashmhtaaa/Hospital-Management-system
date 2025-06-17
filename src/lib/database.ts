@@ -8,7 +8,6 @@
 /**
  * Database connection interface
  */
-\1
 }
 }
 
@@ -23,9 +22,9 @@ export const DB = (): DBConnection => {
     query: async (sql: string, params: unknown[] = []) => {
       try {
         // In a real implementation, this would execute the query against a database
-        // For testing purposes, we're returning a mock result
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // For testing purposes, we"re returning a mock result
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
         return {
 
@@ -60,7 +59,7 @@ export const executeTransaction = async (
 
   try {
     // Start transaction
-    await db.query('BEGIN');
+    await db.query("BEGIN");
 
     // Execute each query
     for (const query of queries) {
@@ -69,12 +68,12 @@ export const executeTransaction = async (
     }
 
     // Commit transaction
-    await db.query('COMMIT');
+    await db.query("COMMIT");
 
     return results;
   } catch (error) {
     // Rollback transaction on error
-    await db.query('ROLLBACK');
+    await db.query("ROLLBACK');
     throw error;
   } finally {
     await db.close();

@@ -33,13 +33,13 @@ interface OTStaffAssignmentProperties {
 // Mock data structures
 interface AssignedStaff {
   assignment_id: string,
-  \1,\2 string,
+  string,
   role: string
 }
 
 interface User {
   id: string,
-  \1,\2 string; // Assuming user object has a role
+  string; // Assuming user object has a role
 }
 
 // Mock users - replace with API call to user management
@@ -72,7 +72,7 @@ export default const _OTStaffAssignment = ({
 
       // Replace with actual API call
       // const _response = await fetch(`/api/ot/bookings/${bookingId}/staff`)
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   throw new Error("Failed to fetch assigned staff")
       // }
       // const _data = await response.json()
@@ -82,24 +82,24 @@ export default const _OTStaffAssignment = ({
       const mockAssigned: AssignedStaff[] = [
         {
           assignment_id: "assign-1",
-          \1,\2 "Dr. Alice Brown",
+          "Dr. Alice Brown",
           role: "Lead Surgeon"
         },
         {
           assignment_id: "assign-2",
-          \1,\2 "Dr. Charlie Green",
+          "Dr. Charlie Green",
           role: "Anesthesiologist"
         },
         {
           assignment_id: "assign-3",
-          \1,\2 "Nurse Eve Adams",
+          "Nurse Eve Adams",
           role: "Scrub Nurse"
         },
       ];
       setAssignedStaff(mockAssigned),
       setLoading(false);
     } catch (error_: unknown) {
-      \1 {\n  \2{
+      if (!session.user) {
         setError(error_.message)
       } else {
         setError("An unknown error occurred while fetching staff");
@@ -110,16 +110,16 @@ export default const _OTStaffAssignment = ({
   }, [bookingId]);
 
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       fetchAssignedStaff();
     }
   }, [bookingId, fetchAssignedStaff]);
 
   const handleAddStaff = async () => {
-    \1 {\n  \2{
+    if (!session.user) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
       return;
     }
@@ -127,7 +127,7 @@ export default const _OTStaffAssignment = ({
     setIsAdding(true);
     try {
       const userData = availableUsers.find((u) => u.id === selectedUser);
-      \1 {\n  \2hrow new Error("Selected user not found");
+      if (!session.user)hrow new Error("Selected user not found");
 
       // const _assignmentData = { // Removed unused variable (used only in commented-out API call)
       //   user_id: selectedUser;
@@ -140,7 +140,7 @@ export default const _OTStaffAssignment = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(assignmentData);
       // })
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to assign staff")
       // }
@@ -148,9 +148,9 @@ export default const _OTStaffAssignment = ({
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const \1,\2 `assign-${crypto.getRandomValues(\1[0]}`,
+      const `assign-${crypto.getRandomValues([0]}`,
         user_id: selectedUser,
-        \1,\2 selectedRole
+        selectedRole
       };
 
       setAssignedStaff((previous) => [...previous, newAssignment]);
@@ -160,12 +160,12 @@ export default const _OTStaffAssignment = ({
     } catch (error: unknown) {
 
       let errorMessage = "Failed to assign staff.";
-      \1 {\n  \2{
+      if (!session.user) {
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsAdding(false);
@@ -178,7 +178,7 @@ export default const _OTStaffAssignment = ({
       // const _response = await fetch(`/api/ot/bookings/${bookingId}/staff/${assignmentId}`, {
       //   method: "DELETE";
       // })
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to remove staff")
       // }
@@ -193,12 +193,12 @@ export default const _OTStaffAssignment = ({
     } catch (error: unknown) {
 
       let errorMessage = "Failed to remove staff.";
-      \1 {\n  \2{
+      if (!session.user) {
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     }
   };
@@ -206,32 +206,32 @@ export default const _OTStaffAssignment = ({
   return (
     <Card>
       <CardHeader>
-        \1>
+        >
           <Users className="mr-2 h-5 w-5" />
           Assigned Staff
         </CardTitle>
       </CardHeader>
       <CardContent>
         {/* Add Staff Form */}
-        \1>
-          \1>
-            <Label htmlFor="user-select">Select User\1>
-            \1>
-              \1>
+        >
+          >
+            <Label htmlFor="user-select">Select User>
+            >
+              >
                 <SelectValue placeholder="Search and select staff member..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Select User\1>
+                <SelectItem value="">Select User>
                 {availableUsers.map((user) => (
-                  \1>
+                  >
                     {user.name} ({user.role})
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          \1>
-            <Label htmlFor="role-input">Assign Role\1>
+          >
+            <Label htmlFor="role-input">Assign Role>
             <Input>
               id="role-input"
               value={selectedRole}
@@ -240,7 +240,7 @@ export default const _OTStaffAssignment = ({
               className="mt-1"
             />
           </div>
-          \1>
+          >
             <Button>
               onClick={handleAddStaff}
               disabled={isAdding || !selectedUser || !selectedRole}
@@ -272,16 +272,16 @@ export default const _OTStaffAssignment = ({
             <TableBody>
               {assignedStaff.length === 0 ? (
                 <TableRow>
-                  \1>
+                  >
                     No staff assigned yet.
                   </TableCell>
                 </TableRow>
               ) : (
                 assignedStaff.map((staff) => (
-                  \1>
+                  >
                     <TableCell>{staff.user_name}</TableCell>
                     <TableCell>{staff.role}</TableCell>
-                    \1>
+                    >
                       <Button>
                         variant="ghost"
                         size="icon"

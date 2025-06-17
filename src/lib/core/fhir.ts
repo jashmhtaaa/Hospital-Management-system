@@ -7,67 +7,65 @@
 
 // FHIR Resource Types relevant to Financial Management
 export enum FHIRResourceType {
-  ACCOUNT = 'Account',
-  CLAIM = 'Claim',
-  CLAIM_RESPONSE = 'ClaimResponse',
-  COVERAGE = 'Coverage',
-  PAYMENT_NOTICE = 'PaymentNotice',
-  PAYMENT_RECONCILIATION = 'PaymentReconciliation',
-  INVOICE = 'Invoice',
-  CHARGE_ITEM = 'ChargeItem',
+  ACCOUNT = "Account",
+  CLAIM = "Claim",
+  CLAIM_RESPONSE = "ClaimResponse",
+  COVERAGE = "Coverage",
+  PAYMENT_NOTICE = "PaymentNotice",
+  PAYMENT_RECONCILIATION = "PaymentReconciliation",
+  INVOICE = "Invoice",
+  CHARGE_ITEM = "ChargeItem",
 }
 
 // FHIR Account resource interface (simplified)
-\1
 }
   }>;
-  status: 'active' | 'inactive' | 'entered-in-error' | 'on-hold' | 'unknown';
+  status: "active" | "inactive" | "entered-in-error" | "on-hold" | "unknown";
   type?: {
-    \1,\2 string,
+    string,
       code: string;
       display?: string;
     }>
   };
-  subject?: Array\1>
+  subject?: Array>
   servicePeriod?: {
     start: string;
     end?: string
   };
-  coverage?: Array\1>
+  coverage?: Array>
   owner?: {
     reference: string
   };
   description?: string;
-  balance?: Array\1>
+  balance?: Array>
 }
 
 // FHIR Claim resource interface (simplified)
-\1
 }
   }>;
-  status: 'active' | 'cancelled' | 'draft' | 'entered-in-error',
-  \1,\2 Array<{
+  status: "active" | "cancelled" | "draft" | "entered-in-error",
+  Array<{
       system: string,
       code: string;
       display?: string;
     }>
   };
-  use: 'claim' | 'preauthorization' | 'predetermination',
-  \1,\2 string
+  use: "claim" | "preauthorization" | "predetermination",
+  string
   };
   created: string,
-  \1,\2 string
+  string
   };
-  \1,\2 Array<{
+  Array<{
       system: string,
       code: string;
       display?: string;
     }>
   };
-  insurance: Array\1>
+  insurance: Array>
   diagnosis?: Array<{
     sequence: number,
-    \1,\2 Array<{
+    Array<{
         system: string,
         code: string;
         display?: string;
@@ -76,7 +74,7 @@ export enum FHIRResourceType {
   }>;
   item?: Array<{
     sequence: number,
-    \1,\2 Array<{
+    Array<{
         system: string,
         code: string;
         display?: string;
@@ -99,12 +97,11 @@ export enum FHIRResourceType {
 }
 
 // FHIR Coverage resource interface (simplified)
-\1
 }
   }>;
-  status: 'active' | 'cancelled' | 'draft' | 'entered-in-error';
+  status: "active" | "cancelled" | "draft" | "entered-in-error";
   type?: {
-    \1,\2 string,
+    string,
       code: string;
       display?: string;
     }>
@@ -112,10 +109,10 @@ export enum FHIRResourceType {
   subscriber?: {
     reference: string
   };
-  \1,\2 string
+  string
   };
   relationship?: {
-    \1,\2 string,
+    string,
       code: string;
       display?: string;
     }>
@@ -124,9 +121,9 @@ export enum FHIRResourceType {
     start: string;
     end?: string
   };
-  payor: Array\1>
+  payor: Array>
   class?: Array<{
-    \1,\2 Array<{
+    Array<{
         system: string,
         code: string;
         display?: string;
@@ -138,22 +135,21 @@ export enum FHIRResourceType {
 }
 
 // FHIR Invoice resource interface (simplified)
-\1
 }
   }>;
-  status: 'draft' | 'issued' | 'balanced' | 'cancelled' | 'entered-in-error';
+  status: "draft" | "issued" | "balanced" | "cancelled" | "entered-in-error";
   subject?: {
     reference: string
   };
   date: string;
   participant?: Array<{
     role?: {
-      \1,\2 string,
+      string,
         code: string;
         display?: string;
       }>
     };
-    \1,\2 string
+    string
     };
   }>;
   issuer?: {
@@ -162,7 +158,7 @@ export enum FHIRResourceType {
   account?: {
     reference: string
   };
-  lineItem?: Array\1>
+  lineItem?: Array>
   }>;
   totalNet?: {
     value: number,
@@ -175,10 +171,9 @@ export enum FHIRResourceType {
 }
 
 // FHIR PaymentReconciliation resource interface (simplified)
-\1
 }
   }>;
-  status: 'active' | 'cancelled' | 'draft' | 'entered-in-error';
+  status: "active" | "cancelled" | "draft" | "entered-in-error";
   period?: {
     start: string;
     end?: string
@@ -190,10 +185,10 @@ export enum FHIRResourceType {
   request?: {
     reference: string
   };
-  outcome?: 'complete' | 'error' | 'partial';
+  outcome?: "complete" | "error" | "partial";
   disposition?: string;
   paymentDate: string,
-  \1,\2 number,
+  number,
     currency: string
   };
   paymentIdentifier?: {
@@ -206,7 +201,7 @@ export enum FHIRResourceType {
       value: string
     };
     type?: {
-      \1,\2 string,
+      string,
         code: string;
         display?: string;
       }>
@@ -234,51 +229,51 @@ export enum FHIRResourceType {
 // Utility function to convert internal invoice to FHIR Invoice
 export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
   // Map internal invoice status to FHIR Invoice status
-  const statusMap: Record<string, 'draft' | 'issued' | 'balanced' | 'cancelled' | 'entered-in-error'> = {
-    draft: 'draft',
-    \1,\2 'issued',
-    \1,\2 'issued',
-    \1,\2 'balanced',
-    \1,\2 'cancelled',
-    refunded: 'balanced'
+  const statusMap: Record<string, "draft" | "issued" | "balanced" | "cancelled" | "entered-in-error"> = {
+    draft: "draft",
+    "issued",
+    "issued",
+    "balanced",
+    "cancelled",
+    refunded: "balanced"
   };
 
   return {
     resourceType: FHIRResourceType.INVOICE,
-    \1,\2 [
+    [
       {
-        system: 'https://hospital.example.org/identifiers/invoice',
+        system: "https://hospital.example.org/identifiers/invoice",
         value: invoice.invoiceNumber
       },
     ],
-    status: statusMap[invoice.status] || 'draft',
-    \1,\2 `Patient/${invoice.patientId}`,
+    status: statusMap[invoice.status] || "draft",
+    `Patient/${invoice.patientId}`,
     },
     date: invoice.invoiceDate,
-    \1,\2 'Organization/hospital'
+    "Organization/hospital"
     },
-    \1,\2 `Account/${invoice.accountId}`,
+    `Account/${invoice.accountId}`,
     } : undefined,
-    lineItem: invoice.items.map((item: unknown, \1,\2 index + 1,
-      \1,\2 `ChargeItem/${item.id}`,,
-      \1,\2 'base',
-          \1,\2 item.unitPrice,
-            currency: 'USD',,
+    lineItem: invoice.items.map((item: unknown, index + 1,
+      `ChargeItem/${item.id}`,,
+      "base",
+          item.unitPrice,
+            currency: "USD",,
         ...(item.discount > 0 ? [
-          type: 'discount',
-          \1,\2 -item.discount,
-            currency: 'USD',] : []),
+          type: "discount",
+          -item.discount,
+            currency: "USD",] : []),
         ...(item.tax > 0 ? [
-          type: 'tax',
-          \1,\2 item.tax,
-            currency: 'USD',] : []),
+          type: "tax",
+          item.tax,
+            currency: "USD",] : []),
       ],
     })),
-    \1,\2 invoice.totalAmount - invoice.taxAmount,
-      currency: 'USD'
+    invoice.totalAmount - invoice.taxAmount,
+      currency: "USD"
     },
-    \1,\2 invoice.totalAmount,
-      currency: 'USD'
+    invoice.totalAmount,
+      currency: "USD"
     },
   }
 }
@@ -286,74 +281,74 @@ export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
 // Utility function to convert internal claim to FHIR Claim
 export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
   // Map internal claim status to FHIR Claim status
-  const statusMap: Record<string, 'active' | 'cancelled' | 'draft' | 'entered-in-error'> = {
-    draft: 'draft',
-    \1,\2 'active',
-    \1,\2 'active',
-    \1,\2 'active',
-    \1,\2 'active',
-    \1,\2 'cancelled'
+  const statusMap: Record<string, "active" | "cancelled" | "draft" | "entered-in-error"> = {
+    draft: "draft",
+    "active",
+    "active",
+    "active",
+    "active",
+    "cancelled"
   };
 
   return {
     resourceType: FHIRResourceType.CLAIM,
-    \1,\2 [
+    [
       {
-        system: 'https://hospital.example.org/identifiers/claim',
+        system: "https://hospital.example.org/identifiers/claim",
         value: claim.claimNumber
       },
     ],
-    status: statusMap[claim.status] || 'draft',
+    status: statusMap[claim.status] || "draft",
     {
       coding: [
         {
-          system: 'https://terminology.hl7.org/CodeSystem/claim-type',
-          \1,\2 'Institutional'
+          system: "https://terminology.hl7.org/CodeSystem/claim-type",
+          "Institutional"
         },
       ],
     },
-    use: 'claim',
-    \1,\2 `Patient/${claim.patientId}`,
+    use: "claim",
+    `Patient/${claim.patientId}`,
     },
     created: claim.createdAt,
-    \1,\2 `Organization/hospital`
+    `Organization/hospital`
     },
-    \1,\2 [
+    [
         {
-          system: 'https://terminology.hl7.org/CodeSystem/processpriority',
-          \1,\2 'Normal'
+          system: "https://terminology.hl7.org/CodeSystem/processpriority",
+          "Normal"
         },
       ],
     },
     insurance: [
       {
         sequence: 1,
-        \1,\2 `Coverage/${claim.insurancePolicyId}`,,
+        `Coverage/${claim.insurancePolicyId}`,,
       },
     ],
-    diagnosis: claim.diagnoses.map((diagnosis: unknown, \1,\2 index + 1,
-      \1,\2 [
+    diagnosis: claim.diagnoses.map((diagnosis: unknown, index + 1,
+      [
           {
-            system: 'https://hl7.org/fhir/sid/icd-10',
-            \1,\2 diagnosis.description
+            system: "https://hl7.org/fhir/sid/icd-10",
+            diagnosis.description
           },
         ],,
     })),
-    item: claim.items.map((item: unknown, \1,\2 index + 1,
-      \1,\2 [
+    item: claim.items.map((item: unknown, index + 1,
+      [
           {
-            system: 'https://www.ama-assn.org/go/cpt',
-            \1,\2 item.serviceItem.name
+            system: "https://www.ama-assn.org/go/cpt",
+            item.serviceItem.name
           },
         ],,
       servicedDate: item.serviceDate,
-      \1,\2 item.unitPrice,
-        currency: 'USD',
-      \1,\2 item.totalPrice,
-        currency: 'USD',
+      item.unitPrice,
+        currency: "USD",
+      item.totalPrice,
+        currency: "USD",
     })),
-    \1,\2 claim.totalAmount,
-      currency: 'USD'
+    claim.totalAmount,
+      currency: "USD"
     },
   }
 }
@@ -362,37 +357,37 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
 export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
   return {
     resourceType: FHIRResourceType.COVERAGE,
-    \1,\2 [
+    [
       {
-        system: 'https://hospital.example.org/identifiers/coverage',
+        system: "https://hospital.example.org/identifiers/coverage",
         value: coverage.policyNumber
       },
     ],
-    status: coverage.status === 'active' ? 'active' : 'cancelled',
+    status: coverage.status === "active" ? "active" : "cancelled",
       coding: [
         {
-          system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
-          \1,\2 coverage.typeName
+          system: "https://terminology.hl7.org/CodeSystem/v3-ActCode",
+          coverage.typeName
         },
       ],,
-    \1,\2 `Patient/${coverage.subscriberId}`,,
-    \1,\2 `Patient/${coverage.patientId}`,,
-    \1,\2 [
+    `Patient/${coverage.subscriberId}`,,
+    `Patient/${coverage.patientId}`,,
+    [
         {
-          system: 'https://terminology.hl7.org/CodeSystem/subscriber-relationship',
-          \1,\2 coverage.relationshipName
+          system: "https://terminology.hl7.org/CodeSystem/subscriber-relationship",
+          coverage.relationshipName
         },
       ],,
-    \1,\2 coverage.startDate,
+    coverage.startDate,
       end: coverage.endDate,
-    \1,\2 `Organization/${coverage.insuranceProviderId}`,,
+    `Organization/${coverage.insuranceProviderId}`,,
     ],
     class: [
       {
-        \1,\2 [
+        [
             {
-              system: 'https://terminology.hl7.org/CodeSystem/coverage-class',
-              \1,\2 'Group'
+              system: "https://terminology.hl7.org/CodeSystem/coverage-class",
+              "Group"
             },
           ],
         },
@@ -408,7 +403,7 @@ export const _validateFHIRResource = (resource: unknown): boolean {
   // This would typically use a FHIR validation library
   // For now, we'll do basic validation
 
-  \1 {\n  \2{
+  if (!session.user) {
     return false;
   }
 

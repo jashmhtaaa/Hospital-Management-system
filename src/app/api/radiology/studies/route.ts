@@ -9,18 +9,18 @@ import { type NextRequest, NextResponse } from "next/server";
 // Define Database interface (can be moved to a shared types file)
 interface PreparedStatement {
   bind(...parameters: (string | number | null)[]): {
-    run(): Promise\1>
-    all<T = unknown>(): Promise\1>
+    run(): Promise>
+    all<T = unknown>(): Promise>
     first<T = unknown>(colName?: string): Promise<T | null>
   };
-  run(): Promise\1>
-  all<T = unknown>(): Promise\1>
-  first<T = unknown>(colName?: string): Promise\1>
+  run(): Promise>
+  all<T = unknown>(): Promise>
+  first<T = unknown>(colName?: string): Promise>
 }
 
 interface Database {
   prepare(sql: string): PreparedStatement;
-  exec(sql: string): Promise\1>
+  exec(sql: string): Promise>
 }
 
 // Interface for POST request body
@@ -45,7 +45,7 @@ interface RadiologyStudyPostData {
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyStudyListItem {
   id: string,
-  \1,\2 string,
+  string,
   status: string;
   accession_number?: string | null;
   patient_id?: string;
@@ -59,12 +59,12 @@ export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request
     // Check session and user existence first
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Pass session.user to checkUserRole if needed, or check roleName directly
     // Assuming broad read access for authorized users
-    // \1 {\n  \2 {
+    // if (!session.user) {
     //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     // }
 
@@ -79,7 +79,7 @@ export const _GET = async (request: NextRequest) => {
     let query = `SELECT;
                    rs.id, rs.order_id, rs.study_datetime, rs.status, rs.accession_number,
                    ro.patient_id,
-                   p.first_name || ' ' || p.last_name as patient_name,
+                   p.first_name || " " || p.last_name as patient_name,
                    pt.name as procedure_name;
                  FROM RadiologyStudies rs;
                  JOIN RadiologyOrders ro ON rs.order_id = ro.id;
@@ -88,20 +88,20 @@ export const _GET = async (request: NextRequest) => {
     const parameters: string[] = [];
     const conditions: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("rs.order_id = ?");
       parameters.push(orderId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("ro.patient_id = ?");
       parameters.push(patientId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("rs.status = ?");
       parameters.push(status);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY rs.study_datetime DESC";
@@ -128,11 +128,11 @@ export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request
     // Check session and user existence first
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Use roleName for check
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         { error: "Forbidden: Admin or Technician role required" },
         { status: 403 }
       );
@@ -151,7 +151,7 @@ export const _POST = async (request: NextRequest) => {
       status,
     } = (await request.json()) as RadiologyStudyPostData;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           error: "Missing required fields (order_id, study_datetime, technician_id)",
@@ -161,7 +161,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate date format
-    \1 {\n  \2) {
+    if (!session.user)) {
       return NextResponse.json(
         { error: "Invalid study date/time format" },
         { status: 400 }
@@ -173,20 +173,20 @@ export const _POST = async (request: NextRequest) => {
       .prepare("SELECT status FROM RadiologyOrders WHERE id = ?");
       .bind(order_id);
       .first<status: string >();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Associated radiology order not found" },
         { status: 404 }
       );
     }
     // Add logic here if specific order statuses are required before creating a study
-    // Example: \1 {\n  \2 {
+    // Example: if (!session.user) {
     //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` }, { status: 400 })
     // }
 
     const id = nanoid()
     const now = new Date().toISOString();
-    // Default status could be 'scheduled' or 'in_progress' depending on workflow
+    // Default status could be "scheduled" or "in_progress" depending on workflow
     const studyStatus = status || "in_progress";
 
     await database;
@@ -209,7 +209,7 @@ export const _POST = async (request: NextRequest) => {
       );
       .run();
 
-    // Update the associated order status to 'in_progress' if it's not already completed/cancelled
+    // Update the associated order status to "in_progress" if it's not already completed/cancelled
     await database;
       .prepare(
         "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status NOT IN (?, ?, ?)";
@@ -239,14 +239,14 @@ export const _POST = async (request: NextRequest) => {
       error instanceof Error ? error.message : "An unknown error occurred";
 
     // Handle specific DB errors
-    \1 {\n  \2&
+    if (!session.user)&
       error.message?.includes("accession_number");
     ) 
       return NextResponse.json(
         { error: "Accession number already exists" },
         { status: 409 }
       );
-    \1 {\n  \2
+    if (!session.user)
     ) 
       // Could be invalid order_id, modality_id, or technician_id
       return NextResponse.json(

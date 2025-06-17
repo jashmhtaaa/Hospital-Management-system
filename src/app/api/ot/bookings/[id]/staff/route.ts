@@ -16,7 +16,7 @@ export const _GET = async (
 ) {
   try {
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
         { status: 400 }
@@ -56,7 +56,7 @@ export const _POST = async (
 ) {
   try {
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
         { status: 400 }
@@ -66,7 +66,7 @@ export const _POST = async (
     const body = (await _request.json()) as StaffAssignmentBody;
     const { user_id, role } = body;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "User ID and role are required" },
         { status: 400 }
@@ -85,7 +85,7 @@ export const _POST = async (
       "OT Assistant",
     ];
 
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json(
         { message: "Invalid role. Must be one of: " + validRoles.join(", ") },
         { status: 400 }
@@ -100,7 +100,7 @@ export const _POST = async (
     );
       .bind(bookingId);
       .all();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "OT Booking not found" },
         { status: 404 }
@@ -113,7 +113,7 @@ export const _POST = async (
     );
       .bind(user_id);
       .all();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
@@ -124,7 +124,7 @@ export const _POST = async (
       .bind(bookingId, user_id, role);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Staff member already assigned with this role" },
         { status: 409 }
@@ -176,7 +176,7 @@ export const DELETE = async (
 ) {
   try {
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
         { status: 400 }

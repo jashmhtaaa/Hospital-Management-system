@@ -53,14 +53,14 @@ const admitFormSchema = z.object({
     .min(1, { message: "Admission reason is required." }),
 });
 
-type AdmitFormValues = z.infer\1>
+type AdmitFormValues = z.infer>
 
 interface ERPatientAdmitModalProperties {
   isOpen: boolean,
   onClose: () => void;
   visitData?: {
     id: string,
-    \1,\2 string
+    string
   };
   onSuccess?: () => void;
 }
@@ -85,22 +85,22 @@ export default const _ERPatientAdmitModal = ({
 
   const form = useForm<AdmitFormValues>({
     resolver: zodResolver(admitFormSchema),
-    \1,\2 visitData?.id || "",
-      \1,\2 "",
-      \1,\2 "",
-      \1,\2 visitData?.chiefComplaint || ""
+    visitData?.id || "",
+      "",
+      "",
+      visitData?.chiefComplaint || ""
     },
   });
 
   // Update form when visitData changes
   useEffect(() => {
     // FIX: Changed useState to useEffect
-    \1 {\n  \2{
+    if (!session.user) {
       form.reset({
         visitId: visitData.id,
-        \1,\2 "", // Keep doctor selection empty
+        "", // Keep doctor selection empty
         admissionNotes: "",
-        \1,\2 "",
+        "",
         admissionReason: visitData.chiefComplaint || ""
       });
     }
@@ -108,18 +108,18 @@ export default const _ERPatientAdmitModal = ({
 
   async const onSubmit = (data: AdmitFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     try {
       // Step 1: Create IPD admission
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       const admissionResponse = await fetch("/api/ipd/admissions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        \1,\2 data.visitId,
-          \1,\2 data.wardType,
-          \1,\2 data.admissionReason,
-          \1,\2 "ER"
+        data.visitId,
+          data.wardType,
+          data.admissionReason,
+          "ER"
         }),
       })
 
@@ -128,7 +128,7 @@ export default const _ERPatientAdmitModal = ({
       try {
         admissionResponseData = await admissionResponse.json();
       } catch {
-        \1 {\n  \2{
+        if (!session.user) {
           throw new Error(
             `HTTP error ${admissionResponse.status}: Failed to create admission. Invalid response from server.`;
           );
@@ -136,7 +136,7 @@ export default const _ERPatientAdmitModal = ({
         admissionResponseData = {}; // OK but no JSON body
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         // FIX: Cast errorData and access error message safely
         const errorData = admissionResponseData as ApiErrorResponse;
         throw new Error(
@@ -147,14 +147,14 @@ export default const _ERPatientAdmitModal = ({
 
       // FIX: Cast newAdmission to the success response type
       const newAdmission = admissionResponseData as AdmissionSuccessResponse;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
       // Step 2: Update ER visit status
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       const visitResponse = await fetch(`/api/er/visits/${data.visitId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        \1,\2 "Admitted",
+        "Admitted",
           disposition: "Admitted to IPD";
           // Optionally link admission_id if backend supports it
           // admission_id: newAdmission?.id
@@ -165,7 +165,7 @@ export default const _ERPatientAdmitModal = ({
       try {
         visitResponseData = await visitResponse.json();
       } catch {
-        \1 {\n  \2{
+        if (!session.user) {
           throw new Error(
             `HTTP error ${visitResponse.status}: Failed to update ER visit status. Invalid response from server.`;
           );
@@ -173,7 +173,7 @@ export default const _ERPatientAdmitModal = ({
         visitResponseData = {}; // OK but no JSON body
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         // FIX: Cast errorData and access error message safely
         const errorData = visitResponseData as ApiErrorResponse;
         throw new Error(
@@ -182,14 +182,14 @@ export default const _ERPatientAdmitModal = ({
         );
       }
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
       toast({
         title: "Patient Admitted",
         description: `Admission ${newAdmission?.id || "(ID not returned)"} created. Awaiting bed assignment.`,
       })
 
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess();
       }
       form.reset(),
@@ -230,7 +230,7 @@ export default const _ERPatientAdmitModal = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       {" "}
       {/* Ensure close on overlay click */}
-      \1>
+      >
         <DialogHeader>
           <DialogTitle>Admit Patient to IPD</DialogTitle>
           <DialogDescription>
@@ -239,8 +239,8 @@ export default const _ERPatientAdmitModal = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          \1>
-            \1>
+          >
+            >
               <FormField>
                 control={form.control}
                 name="patientName"
@@ -295,7 +295,7 @@ export default const _ERPatientAdmitModal = ({
                     </FormControl>
                     <SelectContent>
                       {doctors.map((doctor) => (
-                        \1>
+                        >
                           {doctor.name}
                         </SelectItem>
                       ))}
@@ -324,7 +324,7 @@ export default const _ERPatientAdmitModal = ({
                     </FormControl>
                     <SelectContent>
                       {wardTypes.map((ward) => (
-                        \1>
+                        >
                           {ward.name}
                         </SelectItem>
                       ))}
@@ -392,7 +392,7 @@ export default const _ERPatientAdmitModal = ({
               )}
             />
 
-            \1>
+            >
               <Button>
                 type="button"
                 variant="outline"

@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { FileUploader } from '@/components/shared/FileUploader';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/components/ui/use-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle, AlertTriangle, Loader2 } from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { FileUploader } from "@/components/shared/FileUploader";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AlertCircle, AlertTriangle, Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
 
 // Form schema
 const complaintFormSchema = z.object({
@@ -26,24 +26,24 @@ const complaintFormSchema = z.object({
   description: z.string().min(10, {
     message: "Description must be at least 10 characters"
   }),
-  \1,\2 "Please select a complaint category"
+  "Please select a complaint category"
   }),
-  \1,\2 "Please select a severity level"
+  "Please select a severity level"
   }),
   departmentId: z.string().optional(),
   anonymous: z.boolean().default(false),
-  \1,\2 z.string().optional(),
+  z.string().optional(),
     email: z.string().email().optional(),
     phone: z.string().optional()
   }).optional(),
 });
 
-type ComplaintFormValues = z.infer\1>
+type ComplaintFormValues = z.infer>
 
 interface ComplaintFormProps {
   departments?: { id: string, name: string }[];
   onSuccess?: (data: unknown) => void;
-  defaultValues?: Partial\1>
+  defaultValues?: Partial>
 export default const _ComplaintForm = ({ departments = [], onSuccess, defaultValues }: ComplaintFormProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,19 +55,19 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
   // Initialize form
   const form = useForm<ComplaintFormValues>({
     resolver: zodResolver(complaintFormSchema),
-    \1,\2 defaultValues?.title || '',
-      \1,\2 defaultValues?.category || '',
-      \1,\2 defaultValues?.departmentId || '',
-      \1,\2 defaultValues?.contactInfo || {
-        name: '',
-        \1,\2 ''
+    defaultValues?.title || "",
+      defaultValues?.category || "",
+      defaultValues?.departmentId || "",
+      defaultValues?.contactInfo || {
+        name: "",
+        ""
       },
     },
   });
 
   // Watch for anonymous field changes
-  const isAnonymous = form.watch('anonymous');
-  const severity = form.watch('severity'),
+  const isAnonymous = form.watch("anonymous");
+  const severity = form.watch("severity"),
   useEffect(() => {
     setShowContactInfo(isAnonymous);
   }, [isAnonymous]);
@@ -75,7 +75,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
   // Handle form submission
   const onSubmit = async (values: ComplaintFormValues) => {
     // For critical complaints, show confirmation dialog
-    \1 {\n  \2{
+    if (!session.user) {
       setFormValues(values),
       setShowConfirmDialog(true);
       return;
@@ -88,23 +88,23 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
     setIsSubmitting(true);
     try {
       // Submit complaint
-      const response = await fetch('/api/support-services/feedback/complaint', {
-        method: 'POST',
+      const response = await fetch("/api/support-services/feedback/complaint", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(values)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const error = await response.json();
-        throw new Error(error.error || 'Failed to submit complaint');
+        throw new Error(error.error || "Failed to submit complaint");
       }
 
       const data = await response.json();
 
       // If there are files, upload them
-      \1 {\n  \2{
+      if (!session.user) {
         await uploadFiles(data.id);
       }
 
@@ -118,13 +118,13 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       setFiles([]);
 
       // Call onSuccess callback if provided
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess(data);
       }
     } catch (error: unknown) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsSubmitting(false),
@@ -135,11 +135,11 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
   const uploadFiles = async (complaintId: string) => {
     for (const file of files) {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
       try {
         await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {
-          method: 'POST',
+          method: "POST",
           body: formData
         });
       } catch (error) {
@@ -154,7 +154,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
   return (
     <>
-      \1>
+      >
         <CardHeader>
           <CardTitle>Submit Complaint</CardTitle>
           <CardDescription>
@@ -162,22 +162,22 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
           </CardDescription>
         </CardHeader>
         <CardContent>
-          \1>
-            \1>
+          >
+            >
 <div
-                <Label htmlFor="title">Title\1>
+                <Label htmlFor="title">Title>
                 <Input>
-                  {...form.register('title')}
+                  {...form.register("title")}
                   placeholder="Brief title of your complaint"
                   disabled={isSubmitting}
                 />
                 {form.formState.errors?.title && (
-                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.title.message}\1>
+                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.title.message}>
                 )}
               </div>
 
 <div
-                <Label htmlFor="category">Category\1>
+                <Label htmlFor="category">Category>
                 <Controller>
                   name="category"
                   control={form.control}
@@ -191,23 +191,23 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
                         <SelectValue placeholder="Select complaint category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="CLINICAL">Clinical Care\1>
-                        <SelectItem value="ADMINISTRATIVE">Administrative\1>
-                        <SelectItem value="FACILITY">Facility\1>
-                        <SelectItem value="STAFF">Staff Behavior\1>
-                        <SelectItem value="BILLING">Billing\1>
+                        <SelectItem value="CLINICAL">Clinical Care>
+                        <SelectItem value="ADMINISTRATIVE">Administrative>
+                        <SelectItem value="FACILITY">Facility>
+                        <SelectItem value="STAFF">Staff Behavior>
+                        <SelectItem value="BILLING">Billing>
                         <SelectItem value="OTHER">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
                 />
                 {form.formState.errors?.category && (
-                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.category.message}\1>
+                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.category.message}>
                 )}
               </div>
 
 <div
-                <Label htmlFor="severity">Severity\1>
+                <Label htmlFor="severity">Severity>
                 <Controller>
                   name="severity"
                   control={form.control}
@@ -221,21 +221,21 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
                         <SelectValue placeholder="Select severity level" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="LOW">Low - Minor issue\1>
-                        <SelectItem value="MEDIUM">Medium - Moderate concern\1>
-                        <SelectItem value="HIGH">High - Serious issue\1>
+                        <SelectItem value="LOW">Low - Minor issue>
+                        <SelectItem value="MEDIUM">Medium - Moderate concern>
+                        <SelectItem value="HIGH">High - Serious issue>
                         <SelectItem value="CRITICAL">Critical - Urgent attention needed</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
                 />
                 {form.formState.errors?.severity && (
-                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.severity.message}\1>
+                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.severity.message}>
                 )}
-                {severity === 'CRITICAL' && (
-                  \1>
+                {severity === "CRITICAL" && (
+                  >
                     <AlertTriangle className="h-4 w-4 text-red-500 mr-2" />
-                    \1>
+                    >
                       Critical complaints require immediate attention and will be escalated to senior management.
                     </p>
                   </div>
@@ -244,7 +244,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
               {departments.length > 0 && (
 <div
-                  <Label htmlFor="departmentId">Department (Optional)\1>
+                  <Label htmlFor="departmentId">Department (Optional)>
                   <Controller>
                     name="departmentId"
                     control={form.control}
@@ -259,7 +259,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
                         </SelectTrigger>
                         <SelectContent>
                           {departments.map((dept) => (
-                            \1>
+                            >
                               {dept.name}
                             </SelectItem>
                           ))}
@@ -271,15 +271,15 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
               )}
 
 <div
-                <Label htmlFor="description">Description\1>
+                <Label htmlFor="description">Description>
                 <Textarea>
-                  {...form.register('description')}
+                  {...form.register("description")}
                   placeholder="Please provide detailed information about your complaint..."
                   className="min-h-[150px]"
                   disabled={isSubmitting}
                 />
                 {form.formState.errors?.description && (
-                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.description.message}\1>
+                  <p className="text-sm text-red-500 mt-1">{form.formState.errors.description.message}>
                 )}
               </div>
 
@@ -290,60 +290,60 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
                   maxFiles={5}
                   maxSize={5 * 1024 * 1024} // 5MB
                   acceptedFileTypes={[
-                    'image/jpeg',
-                    'image/png',
-                    'image/gif',
-                    'application/pdf',
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                    "image/jpeg",
+                    "image/png",
+                    "image/gif",
+                    "application/pdf",
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
                   ]}
                   disabled={isSubmitting}
                 />
-                \1>
+                >
                   You can upload up to 5 files (images, PDFs, or documents) to support your complaint.
                 </p>
               </div>
 
-              \1>
+              >
                 <Checkbox>
                   id="anonymous"
                   checked={isAnonymous}
                   onCheckedChange={(checked) => {
-                    form.setValue('anonymous', checked === true);
+                    form.setValue("anonymous", checked === true);
                   }}
                   disabled={isSubmitting}
                 />
-                \1>
+                >
                   Submit anonymously
                 </Label>
               </div>
 
               {showContactInfo && (
-                \1>
-                  \1>
-                    If you'd like us to follow up with you, please provide your contact information (optional):
+                >
+                  >
+                    If you"d like us to follow up with you, please provide your contact information (optional):
                   </p>
 <div
-                    <Label htmlFor="contactInfo.name">Name\1>
+                    <Label htmlFor="contactInfo.name">Name>
                     <Input>
-                      {...form.register('contactInfo.name')}
+                      {...form.register("contactInfo.name")}
                       placeholder="Your name"
                       disabled={isSubmitting}
                     />
                   </div>
 <div
-                    <Label htmlFor="contactInfo.email">Email\1>
+                    <Label htmlFor="contactInfo.email">Email>
                     <Input>
-                      {...form.register('contactInfo.email')}
+                      {...form.register("contactInfo.email")}
                       type="email"
                       placeholder="Your email"
                       disabled={isSubmitting}
                     />
                   </div>
 <div
-                    <Label htmlFor="contactInfo.phone">Phone\1>
+                    <Label htmlFor="contactInfo.phone">Phone>
                     <Input>
-                      {...form.register('contactInfo.phone')}
+                      {...form.register("contactInfo.phone")}
                       placeholder="Your phone number"
                       disabled={isSubmitting}
                     />
@@ -352,31 +352,31 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
               )}
             </div>
 
-            \1>
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Submitting...
                 </>
               ) : (
-                'Submit Complaint';
+                "Submit Complaint";
               )}
             </Button>
           </form>
         </CardContent>
-        \1>
-          \1>
+        >
+          >
             {!isAnonymous &&
-              session ? 'Your complaint will be linked to your account.' : 'Your complaint will be anonymous.'}
+              session ? "Your complaint will be linked to your account." : "Your complaint will be anonymous."}
           </p>
         </CardFooter>
       </Card>
 
       {/* Confirmation Dialog for Critical Complaints */}
-      \1>
+      >
         <DialogContent>
           <DialogHeader>
-            \1>
+            >
               <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
               Confirm Critical Complaint
             </DialogTitle>
@@ -384,12 +384,12 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
               You are about to submit a critical complaint. This will be immediately escalated to senior management.
             </DialogDescription>
           </DialogHeader>
-          \1>
-            <p className="text-sm font-medium">Are you sure this complaint requires critical priority?\1>
-            \1>
+          >
+            <p className="text-sm font-medium">Are you sure this complaint requires critical priority?>
+            >
               Critical complaints should be reserved for serious issues that require immediate attention, such as:
             </p>
-            \1>
+            >
               <li>Patient safety concerns</li>
               <li>Serious breaches of protocol</li>
               <li>Situations that pose immediate risk</li>
@@ -410,7 +410,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
                   Submitting...
                 </>
               ) : (
-                'Confirm & Submit';
+                "Confirm & Submit';
               )}
             </Button>
           </DialogFooter>

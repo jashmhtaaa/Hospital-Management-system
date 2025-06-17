@@ -24,8 +24,8 @@ import { Calculator } from "lucide-react";
 // FIX: Define interface for billing item
 interface BillingItem {
   id: string,
-  \1,\2 string,
-  \1,\2 number,
+  string,
+  number,
   status: "billed" | "unbilled" | "cancelled"; // Define possible statuses
   surgery_id: string;
   invoice_id?: string;
@@ -49,7 +49,7 @@ interface OTBillingItemsProperties {
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
-    \1,\2 0
+    0
   }).format(amount)
 };
 
@@ -60,13 +60,13 @@ const getStatusBadge = (status: BillingItem["status"]) => {
       return <Badge className="bg-green-100 text-green-800">Billed</Badge>
     }
     case "unbilled": {
-      return <Badge variant="secondary">Unbilled\1>
+      return <Badge variant="secondary">Unbilled>
     }
     case "cancelled": {
-      return <Badge variant="destructive">Cancelled\1>
+      return <Badge variant="destructive">Cancelled>
     }
     default: {
-      return <Badge>{status}\1>
+      return <Badge>{status}>
     }
   }
 };
@@ -90,26 +90,26 @@ export default const _OTBillingItems = ({
         setError(undefined);
 
         // Replace with actual API call
-        // const _response = await fetch(`/api/ot/billing-items?patientId=/* \1,\2 "2025-04-28T09:00:00Z",
-            \1,\2 "Surgery",
-            \1,\2 "unbilled",
+        // const _response = await fetch(`/api/ot/billing-items?patientId=/* "2025-04-28T09:00:00Z",
+            "Surgery",
+            "unbilled",
             surgery_id: "booking-1"
           },
             id: "bill-item-2",
             date: "2025-04-28T09:00:00Z",
-            \1,\2 "Facility",
-            \1,\2 "unbilled",
+            "Facility",
+            "unbilled",
             surgery_id: "booking-1",
             id: "bill-item-3",
             date: "2025-04-28T09:00:00Z",
-            \1,\2 "Anesthesia",
-            \1,\2 "unbilled",
+            "Anesthesia",
+            "unbilled",
             surgery_id: "booking-1",
             id: "bill-item-4",
             date: "2025-04-28T09:00:00Z",
-            \1,\2 "Consumables",
-            \1,\2 "billed",
-            \1,\2 "INV-001",
+            "Consumables",
+            "billed",
+            "INV-001",
         ]
         setBillingItems(mockData),
         setLoading(false);
@@ -124,7 +124,7 @@ export default const _OTBillingItems = ({
       }
     };
 
-    \1 {\n  \2{
+    if (!session.user) {
       fetchOTBillingItems();
     }
   }, [patientId, invoiceId]);
@@ -138,7 +138,7 @@ export default const _OTBillingItems = ({
   };
 
   const handleAddToBill = () => {
-    \1 {\n  \2{
+    if (!session.user) {
       // FIX: Use BillingItem type
       const itemsToAdd = billingItems.filter((item: BillingItem) =>
         selectedItems.includes(item.id);
@@ -152,7 +152,7 @@ export default const _OTBillingItems = ({
   return (
     <Card>
       <CardHeader>
-        \1>
+        >
           <Calculator className="mr-2 h-5 w-5" />
           Operation Theatre Charges
         </CardTitle>
@@ -161,7 +161,7 @@ export default const _OTBillingItems = ({
         {loading && <div>Loading billing items...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && billingItems.length === 0 && (
-          \1>
+          >
             No operation theatre charges found for this patient.
           </div>
         )}
@@ -174,14 +174,14 @@ export default const _OTBillingItems = ({
                   <TableHead>Date</TableHead>
                   <TableHead>Description</TableHead>
                   <TableHead>Category</TableHead>
-                  <TableHead className="text-right">Amount\1>
+                  <TableHead className="text-right">Amount>
                   <TableHead>Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {/* FIX: Use BillingItem type */}
                 {billingItems.map((item: BillingItem) => (
-                  \1>
+                  >
                     {!readOnly && (
                       <TableCell>
                         <input>
@@ -198,7 +198,7 @@ export default const _OTBillingItems = ({
                     </TableCell>
                     <TableCell>{item.description}</TableCell>
                     <TableCell>{item.category}</TableCell>
-                    \1>
+                    >
                       {formatCurrency(item.amount)}
                     </TableCell>
                     <TableCell>{getStatusBadge(item.status)}</TableCell>
@@ -208,15 +208,15 @@ export default const _OTBillingItems = ({
             </Table>
 
             {!readOnly && onAddToBill && (
-              \1>
+              >
 <div
                   {selectedItems.length > 0 ? (
-                    \1>
+                    >
                       {selectedItems.length} item;
                       {selectedItems.length === 1 ? "" : "s"} selected
                     </span>
                   ) : (
-                    \1>
+                    >
                       Select items to add to bill
                     </span>
                   )}

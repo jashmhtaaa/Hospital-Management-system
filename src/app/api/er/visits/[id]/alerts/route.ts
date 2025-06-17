@@ -13,7 +13,7 @@ interface AlertInput {
 // Define interface for alert data (including generated fields)
 interface Alert {
   id: string,
-  \1,\2 string,
+  string,
   activated_by_id: string | number;
   details?: string | null; // FIX: Changed to allow null to match usage,
   activation_timestamp: string; // ISO 8601 date string
@@ -79,7 +79,7 @@ export const _POST = async (
     const alertId = uuidv4();
 
     // Basic validation
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Missing required fields (alert_type, activated_by_id)" },
         { status: 400 }
@@ -105,9 +105,9 @@ export const _POST = async (
     */
 
     // FIX: Explicitly type newAlert to match interface Alert
-    const \1,\2 alertId,
-      \1,\2 alertData.alert_type,
-      \1,\2 alertData.details ?? undefined, // Use nullish coalescing
+    const alertId,
+      alertData.alert_type,
+      alertData.details ?? undefined, // Use nullish coalescing
       activation_timestamp: alertData.activation_timestamp || new Date().toISOString(),
       status: alertData.status || "Active"
     };
@@ -115,8 +115,8 @@ export const _POST = async (
     // Mock implementation
     mockAlerts.push(newAlert); // This should now be type-compatible
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     return NextResponse.json(newAlert, { status: 201 })
   } catch (error: unknown) {

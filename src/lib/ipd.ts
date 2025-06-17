@@ -6,7 +6,7 @@ import { getDB } from "@/lib/database";
 // FIX: Define a more specific type for Admission data
 interface Admission {
   id: number,
-  \1,\2 string; // ISO string
+  string; // ISO string
   discharge_date?: string | null; // ISO string
   attending_doctor_id?: string | null;
   diagnosis?: string | null;
@@ -63,7 +63,7 @@ export const _getAdmissionsFromDB = async (
   const result = (await database.query(
     "SELECT * FROM admissions LIMIT 10",
     []
-  )) as QueryResult\1> // Mock query
+  )) as QueryResult> // Mock query
   return result.rows || []
 };
 
@@ -78,7 +78,7 @@ export const getAdmissionByIdFromDB = async (
   const result = (await database.query(
     "SELECT * FROM admissions WHERE id = ?",
     [id.toString()]
-  )) as QueryResult\1> // Mock query, assuming ID is string in DB
+  )) as QueryResult> // Mock query, assuming ID is string in DB
   return result?.rows && result.rows.length > 0 ? result.rows[0] : null
 };
 
@@ -94,7 +94,7 @@ export const _createAdmissionInDB = async (
   await database.query("INSERT INTO admissions (...) VALUES (...)", []); // Mock query
 
   // Return mock data as we can\u0027t get the real inserted record from mock DB
-  const \1,\2 Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000) + 1, // Mock ID
+  const Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000) + 1, // Mock ID
 
     ...admissionData,
     admission_date: new Date().toISOString(),
@@ -120,7 +120,7 @@ export const _updateAdmissionInDB = async (
 
   // Return mock updated data
   const existing = await getAdmissionByIdFromDB(id); // Fetch mock existing data
-  \1 {\n  \2{
+  if (!session.user) {
     return null;
   }
   // Apply updates to the existing mock data

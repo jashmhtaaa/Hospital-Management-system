@@ -39,12 +39,12 @@ export const _GET = async (
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const { id: patientId } = await params;
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json(
             { message: "Patient ID is required" },
             { status: 400 }
@@ -64,7 +64,7 @@ export const _GET = async (
         `;
         const patientResult = await (DB as D1Database).prepare(query).bind(patientId).first<Patient & { created_by_user_name?: string, updated_by_user_name?: string }>();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Patient not found" },
                 { status: 404 }
@@ -76,7 +76,7 @@ export const _GET = async (
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(
@@ -92,15 +92,15 @@ export const _PUT = async (
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    \1 {\n  \2{ // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
     const { id: patientId } = await params;
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json(
             { message: "Patient ID is required" },
             { status: 400 }
@@ -111,7 +111,7 @@ export const _PUT = async (
         const body = await request.json();
         const validationResult = patientUpdateSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
@@ -120,7 +120,7 @@ export const _PUT = async (
 
         const updateData = validationResult.data;
 
-        \1 {\n  \2length === 0) {
+        if (!session.user)length === 0) {
             return NextResponse.json(
                 { message: "No update fields provided" },
                 { status: 400 }
@@ -144,9 +144,9 @@ export const _PUT = async (
 
         const updateResult = await (DB as D1Database).prepare(updateQuery).bind(...values).run() as D1ResultWithMeta;
 
-        \1 {\n  \2 {
+        if (!session.user) {
 
-             \1 {\n  \2{
+             if (!session.user) {
                 throw new Error("Failed to update patient record");
              }
         }
@@ -159,7 +159,7 @@ export const _PUT = async (
         `;
         const updatedPatient = await (DB as D1Database).prepare(fetchUpdatedQuery).bind(patientId).first<Patient & { updated_by_user_name?: string }>();
 
-        \1 {\n  \2{
+        if (!session.user) {
 
              throw new Error("Failed to retrieve updated patient data");
         }
@@ -169,7 +169,7 @@ export const _PUT = async (
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(
@@ -185,12 +185,12 @@ export const DELETE = async (
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession()
-    \1 {\n  \2{ // Added !session.user check
+    if (!session.user) { // Added !session.user check
         return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
     const { id: patientId } = await params;
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json(
             { message: "Patient ID is required" },
             { status: 400 }
@@ -201,12 +201,12 @@ export const DELETE = async (
         const deleteQuery = "DELETE FROM Patients WHERE patient_id = ?";
         const deleteResult = await (DB as D1Database).prepare(deleteQuery).bind(patientId).run() as D1ResultWithMeta;
 
-        \1 {\n  \2 {
+        if (!session.user) {
 
-            \1 {\n  \2{
+            if (!session.user) {
                  return NextResponse.json({ message: "Patient not found or already deleted" }, { status: 404 });
             }
-            \1 {\n  \2{
+            if (!session.user) {
                 throw new Error("Failed to delete patient record");
             }
         }
@@ -219,7 +219,7 @@ export const DELETE = async (
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(

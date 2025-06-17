@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -10,32 +10,32 @@ import {
   CardFooter,
   CardHeader,
   CardTitle;
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow;
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue;
-} from '@/components/ui/select';
+} from "@/components/ui/select";
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious;
-} from '@/components/ui/pagination';
-import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
+} from "@/components/ui/pagination";
+import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
   Search,
   Calendar as CalendarIcon,
   Filter,
@@ -49,28 +49,28 @@ import { Calendar } from '@/components/ui/calendar';
   Heart,
   AlertTriangle,
   Clock;
-} from 'lucide-react';
-import { format } from 'date-fns';
-import { toast } from '@/components/ui/use-toast';
+} from "lucide-react";
+import { format } from "date-fns";
+import { toast } from "@/components/ui/use-toast";
 
 export default const _BiomedicalEquipment = () {
   const router = useRouter();
   const [equipment, setEquipment] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any | null>(null);
-  const [search, setSearch] = useState('');
-  const [equipmentTypeFilter, setEquipmentTypeFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [departmentFilter, setDepartmentFilter] = useState('');
-  const [regulatoryClassFilter, setRegulatoryClassFilter] = useState('');
-  const [riskLevelFilter, setRiskLevelFilter] = useState('');
+  const [search, setSearch] = useState("");
+  const [equipmentTypeFilter, setEquipmentTypeFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [departmentFilter, setDepartmentFilter] = useState("");
+  const [regulatoryClassFilter, setRegulatoryClassFilter] = useState("");
+  const [riskLevelFilter, setRiskLevelFilter] = useState("");
   const [calibrationDueFilter, setCalibrationDueFilter] = useState(false);
   const [departments, setDepartments] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
     skip: 0,
-    \1,\2 0
+    0
   });
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState("all");
   const [statistics, setStatistics] = useState<any | null>(null);
 
   // Fetch biomedical equipment
@@ -83,18 +83,18 @@ export default const _BiomedicalEquipment = () {
           take: pagination.take.toString()
         });
 
-        \1 {\n  \2ueryParams.append('search', search);
-        \1 {\n  \2ueryParams.append('equipmentType', equipmentTypeFilter);
-        \1 {\n  \2ueryParams.append('status', statusFilter);
-        \1 {\n  \2ueryParams.append('departmentId', departmentFilter);
-        \1 {\n  \2ueryParams.append('regulatoryClass', regulatoryClassFilter);
-        \1 {\n  \2ueryParams.append('riskLevel', riskLevelFilter);
-        \1 {\n  \2ueryParams.append('calibrationDue', 'true');
+        if (!session.user)ueryParams.append("search", search);
+        if (!session.user)ueryParams.append("equipmentType", equipmentTypeFilter);
+        if (!session.user)ueryParams.append("status", statusFilter);
+        if (!session.user)ueryParams.append("departmentId", departmentFilter);
+        if (!session.user)ueryParams.append("regulatoryClass", regulatoryClassFilter);
+        if (!session.user)ueryParams.append("riskLevel", riskLevelFilter);
+        if (!session.user)ueryParams.append("calibrationDue", "true");
 
-        const response = await fetch(`/api/hr/biomedical?${\1}`;
+        const response = await fetch(`/api/hr/biomedical?${}`;
 
-        \1 {\n  \2{
-          throw new Error('Failed to fetch biomedical equipment');
+        if (!session.user) {
+          throw new Error("Failed to fetch biomedical equipment");
         }
 
         const data = await response.json(),
@@ -107,13 +107,13 @@ export default const _BiomedicalEquipment = () {
         setError(err.message),
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         });
       } finally 
         setLoading(false);
     };
 
-    \1 {\n  \2{
+    if (!session.user) {
       fetchEquipment();
     }
   }, [search, equipmentTypeFilter, statusFilter, departmentFilter, regulatoryClassFilter, riskLevelFilter, calibrationDueFilter, pagination.skip, pagination.take, activeTab]);
@@ -122,8 +122,8 @@ export default const _BiomedicalEquipment = () {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await fetch('/api/hr/departments');
-        \1 {\n  \2{
+        const response = await fetch("/api/hr/departments");
+        if (!session.user) {
           const data = await response.json(),
           setDepartments(data.departments || []);
         }
@@ -139,8 +139,8 @@ export default const _BiomedicalEquipment = () {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await fetch('/api/hr/biomedical/statistics');
-        \1 {\n  \2{
+        const response = await fetch("/api/hr/biomedical/statistics");
+        if (!session.user) {
           const data = await response.json(),
           setStatistics(data);
         }
@@ -154,7 +154,7 @@ export default const _BiomedicalEquipment = () {
 
   // Handle pagination
   const handlePreviousPage = () => {
-    \1 {\n  \2{
+    if (!session.user) {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -163,7 +163,7 @@ export default const _BiomedicalEquipment = () {
   };
 
   const handleNextPage = () => {
-    \1 {\n  \2{
+    if (!session.user) {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -191,16 +191,16 @@ export default const _BiomedicalEquipment = () {
     }));
 
     // Set appropriate filters based on tab
-    \1 {\n  \2{
+    if (!session.user) {
       setCalibrationDueFilter(true);
-    } else \1 {\n  \2{
+    } else if (!session.user) {
       setCalibrationDueFilter(false);
     }
   };
 
   // Create new biomedical equipment
   const handleCreateEquipment = () => {
-    router.push('/dashboard/hr/biomedical/new')
+    router.push("/dashboard/hr/biomedical/new")
   };
 
   // Export equipment data
@@ -222,7 +222,7 @@ export default const _BiomedicalEquipment = () {
     } catch (error) {
       toast({
         title: "Export Failed",
-        \1,\2 "destructive"
+        "destructive"
       });
     }
   };
@@ -230,34 +230,34 @@ export default const _BiomedicalEquipment = () {
   // Get status badge variant
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
-      case 'AVAILABLE':
-        return 'default';
-      case 'IN_USE':
-        return 'secondary';
-      case 'UNDER_MAINTENANCE':
-        return 'warning';
-      case 'DISPOSED':
-        return 'destructive';
-      case 'LOST':
-        return 'outline';
-      default: return 'default'
+      case "AVAILABLE":
+        return "default";
+      case "IN_USE":
+        return "secondary";
+      case "UNDER_MAINTENANCE":
+        return "warning";
+      case "DISPOSED":
+        return "destructive";
+      case "LOST":
+        return "outline";
+      default: return "default"
     }
   };
 
   // Get equipment type icon
   const getEquipmentTypeIcon = (type: unknown) => {
     switch (type) {
-      case 'DIAGNOSTIC':
+      case "DIAGNOSTIC":
         return <Stethoscope className="h-4 w-4" />
-      case 'THERAPEUTIC':
+      case "THERAPEUTIC":
         return <Activity className="h-4 w-4" />
-      case 'MONITORING':
+      case "MONITORING":
         return <Thermometer className="h-4 w-4" />
-      case 'LABORATORY':
+      case "LABORATORY":
         return <Microscope className="h-4 w-4" />
-      case 'SURGICAL':
+      case "SURGICAL":
         return <Scissors className="h-4 w-4" />
-      case 'LIFE_SUPPORT':
+      case "LIFE_SUPPORT":
         return <Heart className="h-4 w-4" />
       default: return <Stethoscope className="h-4 w-4" />
     }
@@ -266,90 +266,90 @@ export default const _BiomedicalEquipment = () {
   // Get regulatory class badge variant
   const getRegulatoryClassBadgeVariant = (regulatoryClass: unknown) => {
     switch (regulatoryClass) {
-      case 'CLASS_I':
-        return 'default';
-      case 'CLASS_II':
-        return 'secondary';
-      case 'CLASS_III':
-        return 'destructive';
-      default: return 'outline'
+      case "CLASS_I":
+        return "default";
+      case "CLASS_II":
+        return "secondary";
+      case "CLASS_III":
+        return "destructive";
+      default: return "outline"
     }
   };
 
   // Get risk level badge variant
   const _getRiskLevelBadgeVariant = (riskLevel: unknown) => {
     switch (riskLevel) {
-      case 'LOW':
-        return 'default';
-      case 'MEDIUM':
-        return 'secondary';
-      case 'HIGH':
-        return 'warning';
-      case 'CRITICAL':
-        return 'destructive';
-      default: return 'outline'
+      case "LOW":
+        return "default";
+      case "MEDIUM":
+        return "secondary";
+      case "HIGH":
+        return "warning";
+      case "CRITICAL":
+        return "destructive";
+      default: return "outline"
     }
   };
 
   // Format currency
   const _formatCurrency = (amount: unknown) => {
-    \1 {\n  \2eturn '—';
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+    if (!session.user)eturn "—";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD"
     }).format(amount)
   };
 
   // Format date or show placeholder
   const formatDateOrPlaceholder = (date: unknown) => {
-    return date ? format(new Date(date), 'PPP') : '—'
+    return date ? format(new Date(date), "PPP") : "—"
   };
 
   // Check if calibration is due
   const isCalibrationDue = (nextCalibrationDate: unknown) => {
-    \1 {\n  \2eturn false;
-    return new Date(nextCalibrationDate) \1>
-      \1>
-        <h1 className="text-3xl font-bold">Biomedical Equipment Management\1>
-        \1>
+    if (!session.user)eturn false;
+    return new Date(nextCalibrationDate) >
+      >
+        <h1 className="text-3xl font-bold">Biomedical Equipment Management>
+        >
           Track and manage specialized medical devices and equipment
         </p>
       </div>
 
-      \1>
-        \1>
+      >
+        >
           <TabsList>
-            <TabsTrigger value="all">All Equipment\1>
-            <TabsTrigger value="calibration">Calibration Due\1>
+            <TabsTrigger value="all">All Equipment>
+            <TabsTrigger value="calibration">Calibration Due>
             <TabsTrigger value="reports">Reports & Analytics</TabsTrigger>
           </TabsList>
 
-          \1>
-            \1>
+          >
+            >
               <Plus className="mr-2 h-4 w-4" />
               New Equipment
             </Button>
-            \1>
+            >
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>
         </div>
 
-        \1>
+        >
           <Card>
-            \1>
+            >
               <CardTitle>Biomedical Equipment Inventory</CardTitle>
               <CardDescription>
-                {loading ? 'Loading equipment...' :
+                {loading ? "Loading equipment..." :
                   `Showing ${equipment.length} of ${pagination.total} biomedical devices`}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              \1>
-                \1>
-                  \1>
-                    \1>
+              >
+                >
+                  >
+                    >
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input>
                         type="search"
@@ -359,49 +359,49 @@ export default const _BiomedicalEquipment = () {
                         onChange={(e) => setSearch(e.target.value)}
                       />
                     </div>
-                    \1>
+                    >
                       Search
                     </Button>
                   </form>
                 </div>
 
-                \1>
-                  \1>
-                    \1>
+                >
+                  >
+                    >
                       <SelectValue placeholder="All Types" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types\1>
-                      <SelectItem value="DIAGNOSTIC">Diagnostic\1>
-                      <SelectItem value="THERAPEUTIC">Therapeutic\1>
-                      <SelectItem value="MONITORING">Monitoring\1>
-                      <SelectItem value="LABORATORY">Laboratory\1>
-                      <SelectItem value="SURGICAL">Surgical\1>
-                      <SelectItem value="LIFE_SUPPORT">Life Support\1>
+                      <SelectItem value="">All Types>
+                      <SelectItem value="DIAGNOSTIC">Diagnostic>
+                      <SelectItem value="THERAPEUTIC">Therapeutic>
+                      <SelectItem value="MONITORING">Monitoring>
+                      <SelectItem value="LABORATORY">Laboratory>
+                      <SelectItem value="SURGICAL">Surgical>
+                      <SelectItem value="LIFE_SUPPORT">Life Support>
                       <SelectItem value="OTHER">Other</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  \1>
-                    \1>
+                  >
+                    >
                       <SelectValue placeholder="All Classes" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Classes\1>
-                      <SelectItem value="CLASS_I">Class I\1>
-                      <SelectItem value="CLASS_II">Class II\1>
+                      <SelectItem value="">All Classes>
+                      <SelectItem value="CLASS_I">Class I>
+                      <SelectItem value="CLASS_II">Class II>
                       <SelectItem value="CLASS_III">Class III</SelectItem>
                     </SelectContent>
                   </Select>
 
-                  \1>
-                    \1>
+                  >
+                    >
                       <SelectValue placeholder="All Departments" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Departments\1>
+                      <SelectItem value="">All Departments>
                       {departments.map((dept) => (
-                        \1>
+                        >
                           {dept.name}
                         </SelectItem>
                       ))}
@@ -411,19 +411,19 @@ export default const _BiomedicalEquipment = () {
               </div>
 
               {error ? (
-                \1>
+                >
                   Error: {error}
                 </div>
               ) : loading ? (
-                \1>
+                >
                   Loading...
                 </div>
               ) : equipment.length === 0 ? (
-                \1>
+                >
                   No biomedical equipment found. Try adjusting your filters or create a new equipment record.
                 </div>
               ) : (
-                \1>
+                >
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -439,29 +439,29 @@ export default const _BiomedicalEquipment = () {
                     </TableHeader>
                     <TableBody>
                       {equipment.map((item) => (
-                        \1>
-                          \1>
-                            \1>
+                        >
+                          >
+                            >
                               {getEquipmentTypeIcon(item.equipmentType)}
                               <span>{item.asset.name}</span>
                             </div>
                           </TableCell>
                           <TableCell>
-                            {item.equipmentType.replace('_', ' ')}
+                            {item.equipmentType.replace("_", " ")}
                           </TableCell>
                           <TableCell>
-                            {item.asset.serialNumber || '—'}
+                            {item.asset.serialNumber || "—"}
                           </TableCell>
                           <TableCell>
-                            {item.asset.department?.name || '—'}
+                            {item.asset.department?.name || "—"}
                           </TableCell>
                           <TableCell>
-                            \1>
-                              {item.regulatoryClass ? item.regulatoryClass.replace('CLASS_', 'Class ') : '—'}
+                            >
+                              {item.regulatoryClass ? item.regulatoryClass.replace("CLASS_", "Class ") : "—"}
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            \1>
+                            >
                               {isCalibrationDue(item.nextCalibrationDate) && (
                                 <AlertTriangle className="h-4 w-4 text-destructive" />
                               )}
@@ -469,15 +469,15 @@ export default const _BiomedicalEquipment = () {
                             </div>
                           </TableCell>
                           <TableCell>
-                            \1>
-                              {item.asset.status.replace('_', ' ')}
+                            >
+                              {item.asset.status.replace("_", " ")}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/biomedical/${\1}`}
+                              onClick={() => router.push(`/dashboard/hr/biomedical/${}`}
                             >
                               View
                             </Button>
@@ -495,11 +495,11 @@ export default const _BiomedicalEquipment = () {
                   <PaginationItem>
                     <PaginationPrevious>
                       onClick={handlePreviousPage}
-                      className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
+                      className={pagination.skip === 0 ? "pointer-events-none opacity-50" : ""}
                     />
                   </PaginationItem>
                   <PaginationItem>
-                    \1>
+                    >
                       Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take) ||
                         1}
                     </span>
@@ -507,7 +507,7 @@ export default const _BiomedicalEquipment = () {
                   <PaginationItem>
                     <PaginationNext>
                       onClick={handleNextPage}
-                      className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
+                      className={pagination.skip + pagination.take >= pagination.total ? "pointer-events-none opacity-50" : ""}
                     />
                   </PaginationItem>
                 </PaginationContent>
@@ -516,9 +516,9 @@ export default const _BiomedicalEquipment = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
-            \1>
+            >
               <CardTitle>Calibration Schedule</CardTitle>
               <CardDescription>
                 Equipment due for calibration or recently calibrated
@@ -526,15 +526,15 @@ export default const _BiomedicalEquipment = () {
             </CardHeader>
             <CardContent>
               {loading ? (
-                \1>
+                >
                   Loading calibration schedule...
                 </div>
               ) : equipment.length === 0 ? (
-                \1>
+                >
                   No equipment due for calibration.
                 </div>
               ) : (
-                \1>
+                >
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -549,31 +549,31 @@ export default const _BiomedicalEquipment = () {
                     </TableHeader>
                     <TableBody>
                       {equipment.map((item) => (
-                        \1>
-                          \1>
-                            \1>
+                        >
+                          >
+                            >
                               {getEquipmentTypeIcon(item.equipmentType)}
                               <span>{item.asset.name}</span>
                             </div>
                           </TableCell>
                           <TableCell>
-                            {item.equipmentType.replace('_', ' ')}
+                            {item.equipmentType.replace("_", " ")}
                           </TableCell>
                           <TableCell>
-                            {item.asset.department?.name || '—'}
+                            {item.asset.department?.name || "—"}
                           </TableCell>
                           <TableCell>
                             {formatDateOrPlaceholder(item.lastCalibrationDate)}
                           </TableCell>
                           <TableCell>
-                            \1>
+                            >
                               <AlertTriangle className="h-4 w-4 text-destructive" />
                               {formatDateOrPlaceholder(item.nextCalibrationDate)}
                             </div>
                           </TableCell>
                           <TableCell>
-                            \1>
-                              {item.asset.status.replace('_', ' ')}
+                            >
+                              {item.asset.status.replace("_", " ")}
                             </Badge>
                           </TableCell>
                           <TableCell>
@@ -595,9 +595,9 @@ export default const _BiomedicalEquipment = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
-            \1>
+            >
               <CardTitle>Biomedical Equipment Reports & Analytics</CardTitle>
               <CardDescription>
                 View equipment distribution, compliance, and calibration status
@@ -605,7 +605,7 @@ export default const _BiomedicalEquipment = () {
             </CardHeader>
             <CardContent>
               {/* Reports content would go here */}
-              \1>
+              >
                 Loading biomedical reports...
               </div>
             </CardContent>
@@ -613,15 +613,15 @@ export default const _BiomedicalEquipment = () {
         </TabsContent>
       </Tabs>
 
-      \1>
+      >
         <Card>
-          \1>
+          >
             <CardTitle className="text-sm font-medium">Total Equipment</CardTitle>
           </CardHeader>
           <CardContent>
-            \1>
+            >
               <Stethoscope className="h-5 w-5 text-blue-500 mr-2" />
-              \1>
+              >
                 {statistics?.totalEquipment || 0}
               </span>
             </div>
@@ -629,13 +629,13 @@ export default const _BiomedicalEquipment = () {
         </Card>
 
         <Card>
-          \1>
+          >
             <CardTitle className="text-sm font-medium">Calibration Due</CardTitle>
           </CardHeader>
           <CardContent>
-            \1>
+            >
               <AlertTriangle className="h-5 w-5 text-destructive mr-2" />
-              \1>
+              >
                 {statistics?.calibrationDue || 0}
               </span>
             </div>
@@ -643,27 +643,27 @@ export default const _BiomedicalEquipment = () {
         </Card>
 
         <Card>
-          \1>
+          >
             <CardTitle className="text-sm font-medium">Class III Devices</CardTitle>
           </CardHeader>
           <CardContent>
-            \1>
+            >
               <Heart className="h-5 w-5 text-red-500 mr-2" />
-              \1>
-                {statistics?.equipmentByRegulatoryClass?.find(c => c.class === 'CLASS_III')?.count || 0}
+              >
+                {statistics?.equipmentByRegulatoryClass?.find(c => c.class === "CLASS_III")?.count || 0}
               </span>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          \1>
+          >
             <CardTitle className="text-sm font-medium">Upcoming Calibrations</CardTitle>
           </CardHeader>
           <CardContent>
-            \1>
+            >
               <Clock className="h-5 w-5 text-yellow-500 mr-2" />
-              \1>
+              >
                 {statistics?.calibrationUpcoming || 0}
               </span>
             </div>

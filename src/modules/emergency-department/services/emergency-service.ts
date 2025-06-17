@@ -1,30 +1,28 @@
 
-import { AuditService } from '@/lib/audit/audit-service';
-import { prisma } from '@/lib/prisma';
+import { AuditService } from "@/lib/audit/audit-service";
+import { prisma } from "@/lib/prisma";
 // src/modules/emergency-department/services/emergency-service.ts
-\1
 }
   };
 }
 
-\1
 }
       },
-      \1,\2 true
+      true
       }
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       await AuditService.logUserAction(
         { userId: performedBy },
-        'TRIAGE',
-        'EMERGENCY_VISIT',
+        "TRIAGE",
+        "EMERGENCY_VISIT",
         emergencyVisit.id,
-        `Triage completed - Level: ${\1}`;
+        `Triage completed - Level: ${}`;
     }
 
     // Auto-alert for critical cases
-    \1 {\n  \2{
+    if (!session.user) {
       await this.triggerCritical/* SECURITY: Alert removed */
     }
 
@@ -39,32 +37,32 @@ import { prisma } from '@/lib/prisma';
 
   static async getEmergencyQueue() {
     return await prisma.emergencyVisit.findMany({
-      where: { status: 'ACTIVE' },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
-            \1,\2 true
+      where: { status: "ACTIVE" },
+      {
+          true,
+            true,
+            true
           }
         }
       },
       orderBy: [
-        { triageLevel: 'asc' },
-        { createdAt: 'asc' }
+        { triageLevel: "asc" },
+        { createdAt: "asc" }
       ]
     });
   }
 
   static async updateEmergencyStatus(
     emergencyVisitId: string,
-    status: 'ACTIVE' | 'IN_TREATMENT' | 'DISCHARGED' | 'ADMITTED';
+    status: "ACTIVE" | "IN_TREATMENT" | "DISCHARGED" | "ADMITTED";
     updatedBy?: string
   ) {
     const oldVisit = await prisma.emergencyVisit.findUnique({
       where: { id: emergencyVisitId }
     });
 
-    \1 {\n  \2{
-      throw new Error('Emergency visit not found');
+    if (!session.user) {
+      throw new Error("Emergency visit not found");
     }
 
     const emergencyVisit = await prisma.emergencyVisit.update({
@@ -72,10 +70,10 @@ import { prisma } from '@/lib/prisma';
       data: { status }
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       await AuditService.logDataChange(
         { userId: updatedBy },
-        'EMERGENCY_VISIT',
+        "EMERGENCY_VISIT",
         emergencyVisitId,
         oldVisit,
         emergencyVisit
@@ -87,26 +85,26 @@ import { prisma } from '@/lib/prisma';
 
   static async getEmergencyStats(date?: Date) {
     const targetDate = date || new Date();
-    const startOfDay = \1;
-    const endOfDay = \1;
+    const startOfDay = ;
+    const endOfDay = ;
 
     const [total, critical, high, active] = await Promise.all([
       prisma.emergencyVisit.count({
-        \1,\2 { gte: startOfDay, lte: endOfDay }
+        { gte: startOfDay, lte: endOfDay }
         }
       }),
       prisma.emergencyVisit.count({
-        \1,\2 { gte: startOfDay, lte: endOfDay },
-          triageLevel: 'CRITICAL'
+        { gte: startOfDay, lte: endOfDay },
+          triageLevel: "CRITICAL"
         }
       }),
       prisma.emergencyVisit.count({
-        \1,\2 { gte: startOfDay, lte: endOfDay },
-          triageLevel: 'HIGH'
+        { gte: startOfDay, lte: endOfDay },
+          triageLevel: "HIGH"
         }
       }),
       prisma.emergencyVisit.count({
-        where: { status: 'ACTIVE' }
+        where: { status: "ACTIVE" }
       })
     ]);
 

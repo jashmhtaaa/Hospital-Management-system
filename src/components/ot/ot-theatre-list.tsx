@@ -19,8 +19,8 @@ import { Activity, Edit, Trash2, WifiOff } from "lucide-react";
 // Mock data structure - replace with actual API response type
 interface Theatre {
   id: string,
-  \1,\2 string | null,
-  \1,\2 string,
+  string | null,
+  string,
   updated_at: string
 export default const _OTTheatreList = () {
   const [theatres, setTheatres] = useState<Theatre[]>([]);
@@ -35,7 +35,7 @@ export default const _OTTheatreList = () {
 
         // Replace with actual API call
         // const _response = await fetch("/api/ot/theatres")
-        // \1 {\n  \2{
+        // if (!session.user) {
         //   throw new Error("Failed to fetch theatres")
         // }
         // const _data = await response.json()
@@ -46,33 +46,33 @@ export default const _OTTheatreList = () {
         const mockData: Theatre[] = [
           {
             id: "theatre-1",
-            \1,\2 "Floor 2, Wing A",
+            "Floor 2, Wing A",
             specialty: "General Surgery",
-            \1,\2 "2025-04-28T10:00:00Z"
+            "2025-04-28T10:00:00Z"
           },
           {
             id: "theatre-2",
-            \1,\2 "Floor 2, Wing A",
+            "Floor 2, Wing A",
             specialty: "Orthopedics",
-            \1,\2 "2025-04-28T09:30:00Z"
+            "2025-04-28T09:30:00Z"
           },
           {
             id: "theatre-3",
-            \1,\2 "Floor 2, Wing B",
+            "Floor 2, Wing B",
             specialty: "Cardiology",
-            \1,\2 "2025-04-27T15:00:00Z"
+            "2025-04-27T15:00:00Z"
           },
           {
             id: "theatre-4",
-            \1,\2 "Floor 3, Wing C",
+            "Floor 3, Wing C",
             specialty: "Neurosurgery",
-            \1,\2 "2025-04-28T11:00:00Z"
+            "2025-04-28T11:00:00Z"
           },
         ];
         setTheatres(mockData),
         setLoading(false);
       } catch (error_: unknown) {
-        \1 {\n  \2{
+        if (!session.user) {
           setError(error_.message)
         } else {
           setError("An unknown error occurred while fetching theatres");
@@ -93,17 +93,17 @@ export default const _OTTheatreList = () {
         return <WifiOff className="h-4 w-4 text-red-500" />
       }
       case "maintenance": {
-        return <Badge variant="secondary">Maintenance\1>
+        return <Badge variant="secondary">Maintenance>
       }
       default: {
-        return <Badge>{status}\1>
+        return <Badge>{status}>
       }
     }
   };
 
   return (
     <Card>
-      \1>
+      >
         {loading && <div>Loading theatres...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
         {!loading && !error && (
@@ -120,18 +120,18 @@ export default const _OTTheatreList = () {
             <TableBody>
               {theatres.length === 0 ? (
                 <TableRow>
-                  \1>
+                  >
                     No theatres found.
                   </TableCell>
                 </TableRow>
               ) : (
                 theatres.map((theatre) => (
-                  \1>
+                  >
                     <TableCell>{theatre.name}</TableCell>
                     <TableCell>{theatre.location || "N/A"}</TableCell>
                     <TableCell>{theatre.specialty || "N/A"}</TableCell>
                     <TableCell>
-                      \1>
+                      >
                         {getStatusIcon(theatre.status)}
 <span
                           {theatre.status.charAt(0).toUpperCase() +
@@ -140,7 +140,7 @@ export default const _OTTheatreList = () {
                       </div>
                     </TableCell>
                     <TableCell>
-                      \1>
+                      >
                         <Button>
                           variant="outline"
                           size="icon"

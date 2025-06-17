@@ -1,6 +1,6 @@
 
-import { EventEmitter } from 'events';
-import { PrismaClient } from '@prisma/client';
+import { EventEmitter } from "events";
+import { PrismaClient } from "@prisma/client";
 }
 
 /**
@@ -9,11 +9,10 @@ import { PrismaClient } from '@prisma/client';
  * Supports HL7 FHIR, HL7 v2/v3, DICOM, and various EHR/HIS systems;
  */
 
-\1
 }
   };
-  headers?: Record\1>
-  queryParams?: Record\1>
+  headers?: Record>
+  queryParams?: Record>
   tls?: {
     enabled: boolean;
     certificate?: string;
@@ -21,9 +20,8 @@ import { PrismaClient } from '@prisma/client';
     ca?: string
   };
   compression?: boolean;
-  format: 'json' | 'xml' | 'hl7' | 'dicom' | 'csv' | 'pipe_delimited',
-  encoding: 'utf8' | 'utf16' | 'ascii'
-\1
+  format: "json" | "xml" | "hl7" | "dicom" | "csv" | "pipe_delimited",
+  encoding: "utf8" | "utf16" | "ascii"
 }
 }
 
@@ -47,7 +45,7 @@ class IntegrationHubService extends EventEmitter {
    * Start the integration hub;
    */
   async start(): Promise<void> {
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     try {
       this.isRunning = true;
@@ -65,8 +63,8 @@ class IntegrationHubService extends EventEmitter {
       // Start message processing
       this.startMessageProcessing();
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      this.emit('hub_started')
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+      this.emit("hub_started")
     } catch (error) {
 
       throw error
@@ -77,7 +75,7 @@ class IntegrationHubService extends EventEmitter {
    * Stop the integration hub;
    */
   async stop(): Promise<void> {
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     this.isRunning = false;
 
@@ -89,19 +87,19 @@ class IntegrationHubService extends EventEmitter {
     this.healthChecks.forEach(check => clearInterval(check));
     this.healthChecks.clear();
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    this.emit('hub_stopped')
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+    this.emit("hub_stopped")
   }
 
   /**
    * Register a new integration endpoint
    */
-  async registerEndpoint(config: Omit<IntegrationEndpoint, 'id' | 'createdAt' | 'updatedAt' | 'errorCount' | 'successCount' | 'lastSync' | 'nextSync'>): Promise<string> {
+  async registerEndpoint(config: Omit<IntegrationEndpoint, "id" | "createdAt" | "updatedAt" | "errorCount" | "successCount" | "lastSync" | "nextSync">): Promise<string> {
     const endpoint: IntegrationEndpoint = {
       ...config,
       id: uuidv4(),
-      \1,\2 0,
-      \1,\2 \1[0] + config.syncFrequency * 60 * 1000),
+      0,
+      [0] + config.syncFrequency * 60 * 1000),
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -109,24 +107,24 @@ class IntegrationHubService extends EventEmitter {
     this.endpoints.set(endpoint.id, endpoint);
 
     // Start sync job if active
-    \1 {\n  \2{
+    if (!session.user) {
       this.startSyncJob(endpoint);
     }
 
     // Start health check if enabled
-    \1 {\n  \2{
+    if (!session.user) {
       this.startHealthCheck(endpoint);
     }
 
     // Persist to database
     try {
       // In production, save to database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (error) {
 
     }
 
-    this.emit('endpoint_registered', endpoint)
+    this.emit("endpoint_registered", endpoint)
     return endpoint.id;
   }
 
@@ -135,7 +133,7 @@ class IntegrationHubService extends EventEmitter {
    */
   async updateEndpoint(endpointId: string, updates: Partial<IntegrationEndpoint>): Promise<boolean> {
     const endpoint = this.endpoints.get(endpointId);
-    \1 {\n  \2eturn false;
+    if (!session.user)eturn false;
 
     const updatedEndpoint = {
       ...endpoint,
@@ -146,22 +144,22 @@ class IntegrationHubService extends EventEmitter {
     this.endpoints.set(endpointId, updatedEndpoint);
 
     // Restart sync job if needed
-    \1 {\n  \2{
+    if (!session.user) {
       this.stopSyncJob(endpointId);
-      \1 {\n  \2{
+      if (!session.user) {
         this.startSyncJob(updatedEndpoint);
       }
     }
 
     // Restart health check if needed
-    \1 {\n  \2{
+    if (!session.user) {
       this.stopHealthCheck(endpointId);
-      \1 {\n  \2{
+      if (!session.user) {
         this.startHealthCheck(updatedEndpoint);
       }
     }
 
-    this.emit('endpoint_updated', updatedEndpoint);
+    this.emit("endpoint_updated", updatedEndpoint);
     return true;
   }
 
@@ -170,7 +168,7 @@ class IntegrationHubService extends EventEmitter {
    */
   async removeEndpoint(endpointId: string): Promise<boolean> {
     const endpoint = this.endpoints.get(endpointId);
-    \1 {\n  \2eturn false;
+    if (!session.user)eturn false;
 
     // Stop jobs
     this.stopSyncJob(endpointId);
@@ -182,12 +180,12 @@ class IntegrationHubService extends EventEmitter {
     // Remove from database
     try {
       // In production, delete from database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (error) {
 
     }
 
-    this.emit('endpoint_removed', { endpointId, name: endpoint.name })
+    this.emit("endpoint_removed", { endpointId, name: endpoint.name })
     return true;
   }
 
@@ -196,24 +194,24 @@ class IntegrationHubService extends EventEmitter {
    */
   async sendMessage(endpointId: string, messageType: string, data: unknown, metadata?: Partial<MessageMetadata>): Promise<string> {
     const endpoint = this.endpoints.get(endpointId);
-    \1 {\n  \2{
-      throw new Error(`Endpoint not found: ${\1}`;
+    if (!session.user) {
+      throw new Error(`Endpoint not found: ${}`;
     }
 
-    \1 {\n  \2{
-      throw new Error(`Endpoint not active: ${\1}`;
+    if (!session.user) {
+      throw new Error(`Endpoint not active: ${}`;
     }
 
-    const \1,\2 uuidv4(),
+    const uuidv4(),
       endpointId,
-      direction: 'outbound';
+      direction: "outbound";
       messageType,
-      status: 'pending',
-      \1,\2 data,
-      \1,\2 endpoint.configuration.retryAttempts,
+      status: "pending",
+      data,
+      endpoint.configuration.retryAttempts,
       createdAt: new Date(),
-      \1,\2 metadata?.correlationId || uuidv4(),
-        \1,\2 metadata?.organizationId;
+      metadata?.correlationId || uuidv4(),
+        metadata?.organizationId;
         ...metadata;
     };
 
@@ -230,19 +228,19 @@ class IntegrationHubService extends EventEmitter {
    */
   async processInboundMessage(endpointId: string, rawData: unknown, metadata?: Partial<MessageMetadata>): Promise<string> {
     const endpoint = this.endpoints.get(endpointId);
-    \1 {\n  \2{
-      throw new Error(`Endpoint not found: ${\1}`;
+    if (!session.user) {
+      throw new Error(`Endpoint not found: ${}`;
     }
 
-    const \1,\2 uuidv4(),
+    const uuidv4(),
       endpointId,
-      direction: 'inbound',
+      direction: "inbound",
       messageType: this.detectMessageType(rawData, endpoint.type),
-      status: 'pending',
-      \1,\2 rawData,
-      \1,\2 3,
+      status: "pending",
+      rawData,
+      3,
       createdAt: new Date(),
-      \1,\2 metadata?.correlationId || uuidv4();
+      metadata?.correlationId || uuidv4();
         ...metadata;
     };
 
@@ -259,18 +257,18 @@ class IntegrationHubService extends EventEmitter {
    */
   getStatistics(): IntegrationStatistics {
     const allMessages = Array.from(this.messages.values());
-    const successfulMessages = allMessages.filter(m => m.status === 'success');
-    const failedMessages = allMessages.filter(m => m.status === 'failed');
+    const successfulMessages = allMessages.filter(m => m.status === "success");
+    const failedMessages = allMessages.filter(m => m.status === "failed");
 
     const endpointStats: EndpointStats[] = Array.from(this.endpoints.values()).map(endpoint => {
       const endpointMessages = allMessages.filter(m => m.endpointId === endpoint.id),
-      const successfulEndpointMessages = endpointMessages.filter(m => m.status === 'success');
+      const successfulEndpointMessages = endpointMessages.filter(m => m.status === "success");
 
       return {
         endpointId: endpoint.id,
-        \1,\2 endpoint.type,
-        \1,\2 endpointMessages.length,
-        \1,\2 this.calculateAverageProcessingTime(endpointMessages),
+        endpoint.type,
+        endpointMessages.length,
+        this.calculateAverageProcessingTime(endpointMessages),
         lastActivity: endpoint.lastSync
       };
     });
@@ -283,21 +281,21 @@ class IntegrationHubService extends EventEmitter {
     }, {} as Record<string, IntegrationMessage[]>);
 
     Object.entries(messagesByType).forEach(([messageType, messages]) => {
-      const successful = messages.filter(m => m.status === 'success');
+      const successful = messages.filter(m => m.status === "success");
       messageTypeStats.push({
         messageType,
         count: messages.length,
-        \1,\2 this.calculateAverageProcessingTime(messages)
+        this.calculateAverageProcessingTime(messages)
       });
     });
 
     return {
       totalEndpoints: this.endpoints.size,
-      \1,\2 allMessages.length,
-      \1,\2 failedMessages.length,
+      allMessages.length,
+      failedMessages.length,
       averageProcessingTime: this.calculateAverageProcessingTime(allMessages),
-      uptime: crypto.getRandomValues(\1[0] - this.startTime.getTime(),
-      \1,\2 allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0,
+      uptime: crypto.getRandomValues([0] - this.startTime.getTime(),
+      allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0,
       throughput: this.calculateThroughput(allMessages),
       byEndpoint: endpointStats,
       byMessageType: messageTypeStats
@@ -347,28 +345,28 @@ class IntegrationHubService extends EventEmitter {
   /**
    * Test endpoint connection;
    */
-  async testEndpoint(endpointId: string): Promise<{ success: boolean, \1,\2 number }> {
+  async testEndpoint(endpointId: string): Promise<{ success: boolean, number }> {
     const endpoint = this.endpoints.get(endpointId);
-    \1 {\n  \2{
-      return { success: false, message: 'Endpoint not found', responseTime: 0 };
+    if (!session.user) {
+      return { success: false, message: "Endpoint not found", responseTime: 0 };
     }
 
-    const startTime = crypto.getRandomValues(\1[0];
+    const startTime = crypto.getRandomValues([0];
 
     try {
       const result = await this.performHealthCheck(endpoint);
-      const responseTime = crypto.getRandomValues(\1[0] - startTime;
+      const responseTime = crypto.getRandomValues([0] - startTime;
 
-      \1 {\n  \2{
-        await this.updateEndpoint(endpointId, { status: 'active' });
-        return { success: true, message: 'Connection successful', responseTime };
+      if (!session.user) {
+        await this.updateEndpoint(endpointId, { status: "active" });
+        return { success: true, message: "Connection successful", responseTime };
       } else {
-        await this.updateEndpoint(endpointId, { status: 'error', lastError: result.error });
-        return { success: false, message: result.error || 'Connection failed', responseTime };
+        await this.updateEndpoint(endpointId, { status: "error", lastError: result.error });
+        return { success: false, message: result.error || "Connection failed", responseTime };
       }
     } catch (error) {
-      const responseTime = crypto.getRandomValues(\1[0] - startTime;
-      await this.updateEndpoint(endpointId, { status: 'error', lastError: error.message });
+      const responseTime = crypto.getRandomValues([0] - startTime;
+      await this.updateEndpoint(endpointId, { status: "error", lastError: error.message });
       return { success: false, message: error.message, responseTime };
     }
   }
@@ -377,10 +375,10 @@ class IntegrationHubService extends EventEmitter {
 
   private async initializeTransformers(): Promise<void> {
     // Initialize FHIR transformer
-    this.transformers.set('fhir_r4', {
-      name: 'FHIR R4 Transformer',
-      \1,\2 'json',
-      \1,\2 async (data, mappings) => {
+    this.transformers.set("fhir_r4", {
+      name: "FHIR R4 Transformer",
+      "json",
+      async (data, mappings) => {
         return this.transformFHIRData(data, mappings);
       },
       validate: async (data, rules) => 
@@ -388,10 +386,10 @@ class IntegrationHubService extends EventEmitter {
     });
 
     // Initialize HL7 v2 transformer
-    this.transformers.set('hl7_v2', {
-      name: 'HL7 v2 Transformer',
-      \1,\2 'pipe_delimited',
-      \1,\2 async (data, mappings) => {
+    this.transformers.set("hl7_v2", {
+      name: "HL7 v2 Transformer",
+      "pipe_delimited",
+      async (data, mappings) => {
         return this.transformHL7Data(data, mappings);
       },
       validate: async (data, rules) => {
@@ -400,10 +398,10 @@ class IntegrationHubService extends EventEmitter {
     });
 
     // Initialize DICOM transformer
-    this.transformers.set('dicom', {
-      name: 'DICOM Transformer',
-      \1,\2 'dicom',
-      \1,\2 async (data, mappings) => {
+    this.transformers.set("dicom", {
+      name: "DICOM Transformer",
+      "dicom",
+      async (data, mappings) => {
         return this.transformDICOMData(data, mappings);
       },
       validate: async (data, rules) => {
@@ -415,26 +413,26 @@ class IntegrationHubService extends EventEmitter {
   private async loadEndpoints(): Promise<void> {
     try {
       // In production, load from database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
       // Sample endpoints for demo
       await this.registerEndpoint({
-        name: 'Epic MyChart API',
-        \1,\2 'active',
-        \1,\2 'https://api.epic.example.com',
-          \1,\2 30000,
-          \1,\2 1000,
-          \1,\2 'utf8',
-        \1,\2 'oauth2',
-          \1,\2 process.env.EPIC_CLIENT_SECRET || 'secure-epic-client-secret',
-          tokenUrl: 'https://api.epic.example.com/oauth2/token',
-          scope: 'patient.read observation.read',
+        name: "Epic MyChart API",
+        "active",
+        "https://api.epic.example.com",
+          30000,
+          1000,
+          "utf8",
+        "oauth2",
+          process.env.EPIC_CLIENT_SECRET || "secure-epic-client-secret",
+          tokenUrl: "https://api.epic.example.com/oauth2/token",
+          scope: "patient.read observation.read",
         mappings: [],
-        \1,\2 true,
-          \1,\2 '/api/health',
-          \1,\2 10000,
+        true,
+          "/api/health",
+          10000,
           expectedStatus: [200],
-        version: '1.0.0'
+        version: "1.0.0"
       })
 
     } catch (error) {
@@ -444,14 +442,14 @@ class IntegrationHubService extends EventEmitter {
 
   private startSyncJobs(): void {
     this.endpoints.forEach(endpoint => {
-      \1 {\n  \2{
+      if (!session.user) {
         this.startSyncJob(endpoint);
       }
     });
   }
 
   private startSyncJob(endpoint: IntegrationEndpoint): void {
-    \1 {\n  \2 {
+    if (!session.user) {
       this.stopSyncJob(endpoint.id)
     }
 
@@ -464,7 +462,7 @@ class IntegrationHubService extends EventEmitter {
 
   private stopSyncJob(endpointId: string): void {
     const job = this.syncJobs.get(endpointId);
-    \1 {\n  \2{
+    if (!session.user) {
       clearInterval(job);
       this.syncJobs.delete(endpointId);
     }
@@ -472,26 +470,26 @@ class IntegrationHubService extends EventEmitter {
 
   private startHealthChecks(): void {
     this.endpoints.forEach(endpoint => {
-      \1 {\n  \2{
+      if (!session.user) {
         this.startHealthCheck(endpoint);
       }
     });
   }
 
   private startHealthCheck(endpoint: IntegrationEndpoint): void {
-    \1 {\n  \2 {
+    if (!session.user) {
       this.stopHealthCheck(endpoint.id)
     }
 
     const interval = setInterval(async () => {
       const result = await this.performHealthCheck(endpoint);
-      \1 {\n  \2{
+      if (!session.user) {
         await this.updateEndpoint(endpoint.id, {
-          status: 'error',
-          \1,\2 endpoint.errorCount + 1
+          status: "error",
+          endpoint.errorCount + 1
         });
 
-        this.logEvent(endpoint.id, 'error', 'Health check failed', result.error);
+        this.logEvent(endpoint.id, "error", "Health check failed", result.error);
       }
     }, endpoint.healthCheck.interval * 60 * 1000);
 
@@ -500,7 +498,7 @@ class IntegrationHubService extends EventEmitter {
 
   private stopHealthCheck(endpointId: string): void {
     const check = this.healthChecks.get(endpointId);
-    \1 {\n  \2{
+    if (!session.user) {
       clearInterval(check);
       this.healthChecks.delete(endpointId);
     }
@@ -517,7 +515,7 @@ class IntegrationHubService extends EventEmitter {
     const startTime = new Date();
 
     try {
-      this.logEvent(endpoint.id, 'sync_started', 'Synchronization started');
+      this.logEvent(endpoint.id, "sync_started", "Synchronization started");
 
       // Perform sync based on endpoint type
       const result = await this.executeSyncForEndpoint(endpoint);
@@ -525,21 +523,21 @@ class IntegrationHubService extends EventEmitter {
       // Update endpoint
       await this.updateEndpoint(endpoint.id, {
         lastSync: new Date(),
-        \1,\2 endpoint.successCount + result.recordsSuccess,
+        endpoint.successCount + result.recordsSuccess,
         errorCount: endpoint.errorCount + result.recordsFailed
       });
 
-      this.logEvent(endpoint.id, 'sync_completed', `Sync completed: ${result.recordsProcessed} records processed`);
+      this.logEvent(endpoint.id, "sync_completed", `Sync completed: ${result.recordsProcessed} records processed`);
 
       return result;
 
     } catch (error) {
-      const \1,\2 endpoint.id;
+      const endpoint.id;
         startTime,
         endTime: new Date(),
-        \1,\2 0,
-        \1,\2 0,
-        \1,\2 [],
+        0,
+        0,
+        [],
         metadata: 
       };
 
@@ -548,7 +546,7 @@ class IntegrationHubService extends EventEmitter {
         lastError: error.message
       });
 
-      this.logEvent(endpoint.id, 'sync_failed', 'Synchronization failed', error.message);
+      this.logEvent(endpoint.id, "sync_failed", "Synchronization failed", error.message);
 
       return result;
     }
@@ -557,30 +555,30 @@ class IntegrationHubService extends EventEmitter {
   private async executeSyncForEndpoint(endpoint: IntegrationEndpoint): Promise<SyncResult> {
     // This would implement the actual sync logic based on endpoint type
     // For demo purposes, return a mock result
-    await \1;
+    await ;
 
     return {
       endpointId: endpoint.id,
       startTime: new Date(),
       endTime: new Date(),
-      \1,\2 150,
-      \1,\2 2,
-      \1,\2 ['2 records had validation warnings'],
-      metadata: syncType: 'incremental' 
+      150,
+      2,
+      ["2 records had validation warnings"],
+      metadata: syncType: "incremental" 
     };
   }
 
   private async performHealthCheck(endpoint: IntegrationEndpoint): Promise<{ success: boolean; error?: string }> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         return { success: true };
       }
 
       // Perform health check based on endpoint type
-      const _healthUrl = endpoint.configuration.baseUrl + (endpoint.healthCheck.endpoint || '/health');
+      const _healthUrl = endpoint.configuration.baseUrl + (endpoint.healthCheck.endpoint || "/health");
 
       // Simulate health check
-      await \1;
+      await ;
 
       return { success: true };
 
@@ -591,18 +589,18 @@ class IntegrationHubService extends EventEmitter {
 
   private async processOutboundMessage(message: IntegrationMessage): Promise<void> {
     const endpoint = this.endpoints.get(message.endpointId);
-    \1 {\n  \2{
-      this.updateMessageStatus(message.id, 'failed', 'Endpoint not found');
+    if (!session.user) {
+      this.updateMessageStatus(message.id, "failed", "Endpoint not found");
       return;
     }
 
     try {
-      message.status = 'processing';
+      message.status = "processing";
       this.messages.set(message.id, message);
 
       // Transform data
       const transformer = this.transformers.get(endpoint.type);
-      \1 {\n  \2{
+      if (!session.user) {
         message.transformedData = await transformer.transform(message.sourceData, endpoint.mappings);
       } else {
         message.transformedData = message.sourceData;
@@ -611,18 +609,18 @@ class IntegrationHubService extends EventEmitter {
       // Send message
       await this.sendToEndpoint(endpoint, message);
 
-      this.updateMessageStatus(message.id, 'success');
+      this.updateMessageStatus(message.id, "success");
       endpoint.successCount++;
 
     } catch (error) {
       message.retryCount++;
 
-      \1 {\n  \2{
-        this.updateMessageStatus(message.id, 'retry', error.message);
+      if (!session.user) {
+        this.updateMessageStatus(message.id, "retry", error.message);
         // Retry after delay
         setTimeout(() => this.processOutboundMessage(message), endpoint.configuration.retryDelay);
       } else {
-        this.updateMessageStatus(message.id, 'failed', error.message);
+        this.updateMessageStatus(message.id, "failed", error.message);
         endpoint.errorCount++;
       }
     }
@@ -630,18 +628,18 @@ class IntegrationHubService extends EventEmitter {
 
   private async processInboundMessageInternal(message: IntegrationMessage): Promise<void> {
     const endpoint = this.endpoints.get(message.endpointId);
-    \1 {\n  \2{
-      this.updateMessageStatus(message.id, 'failed', 'Endpoint not found');
+    if (!session.user) {
+      this.updateMessageStatus(message.id, "failed", "Endpoint not found");
       return;
     }
 
     try {
-      message.status = 'processing';
+      message.status = "processing";
       this.messages.set(message.id, message);
 
       // Transform data
       const transformer = this.transformers.get(endpoint.type);
-      \1 {\n  \2{
+      if (!session.user) {
         message.transformedData = await transformer.transform(message.sourceData, endpoint.mappings);
       } else {
         message.transformedData = message.sourceData;
@@ -650,31 +648,31 @@ class IntegrationHubService extends EventEmitter {
       // Process transformed data
       await this.processTransformedData(message.transformedData, message.metadata);
 
-      this.updateMessageStatus(message.id, 'success');
+      this.updateMessageStatus(message.id, "success");
       endpoint.successCount++;
 
     } catch (error) {
-      this.updateMessageStatus(message.id, 'failed', error.message);
+      this.updateMessageStatus(message.id, "failed", error.message);
       endpoint.errorCount++;
     }
   }
 
   private async sendToEndpoint(endpoint: IntegrationEndpoint, message: IntegrationMessage): Promise<void> {
     // Implement actual sending logic based on endpoint type
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   }
 
   private async processTransformedData(data: unknown, metadata: MessageMetadata): Promise<void> {
     // Process the transformed data (save to database, trigger workflows, etc.)
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   }
 
   private processRetryMessages(): void {
     const retryMessages = Array.from(this.messages.values())
-      .filter(m => m.status === 'retry');
+      .filter(m => m.status === "retry");
 
     retryMessages.forEach(message => {
-      \1 {\n  \2{
+      if (!session.user) {
         this.processOutboundMessage(message);
       } else {
         this.processInboundMessageInternal(message);
@@ -682,14 +680,14 @@ class IntegrationHubService extends EventEmitter {
     });
   }
 
-  private updateMessageStatus(messageId: string, status: IntegrationMessage['status'], errorMessage?: string): void {
+  private updateMessageStatus(messageId: string, status: IntegrationMessage["status"], errorMessage?: string): void {
     const message = this.messages.get(messageId);
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     message.status = status;
     message.errorMessage = errorMessage;
 
-    \1 {\n  \2{
+    if (!session.user) {
       message.processedAt = new Date();
     }
 
@@ -699,20 +697,20 @@ class IntegrationHubService extends EventEmitter {
   private detectMessageType(data: unknown, endpointType: IntegrationType): string {
     // Detect message type based on data structure and endpoint type
     switch (endpointType) {
-      case 'fhir_r4':
-      case 'fhir_r5':
-        return data.resourceType || 'Unknown';
-      case 'hl7_v2':
-        return data.substring(0, 3) || 'Unknown'; // MSH, ADT, etc.
-      default: return 'Unknown'
+      case "fhir_r4":
+      case "fhir_r5":
+        return data.resourceType || "Unknown";
+      case "hl7_v2":
+        return data.substring(0, 3) || "Unknown"; // MSH, ADT, etc.
+      default: return "Unknown"
     }
   }
 
-  private logEvent(endpointId: string, type: IntegrationEvent['type'], message: string, data?: unknown): void {
-    const \1,\2 uuidv4(),
+  private logEvent(endpointId: string, type: IntegrationEvent["type"], message: string, data?: unknown): void {
+    const uuidv4(),
       endpointId,
       type,
-      severity: type === 'error' || type === 'sync_failed' ? 'error' : 'info';
+      severity: type === "error" || type === "sync_failed" ? "error" : "info";
       message,
       data,
       timestamp: new Date(),
@@ -722,16 +720,16 @@ class IntegrationHubService extends EventEmitter {
     this.events.push(event);
 
     // Keep only last 1000 events
-    \1 {\n  \2{
+    if (!session.user) {
       this.events = this.events.slice(-1000);
     }
 
-    this.emit('integration_event', event);
+    this.emit("integration_event", event);
   }
 
   private calculateAverageProcessingTime(messages: IntegrationMessage[]): number {
     const processedMessages = messages.filter(m => m?.processedAt && m.createdAt);
-    \1 {\n  \2eturn 0;
+    if (!session.user)eturn 0;
 
     const totalTime = processedMessages.reduce((sum, m) => {
       return sum + (m.processedAt!.getTime() - m.createdAt.getTime());
@@ -741,7 +739,7 @@ class IntegrationHubService extends EventEmitter {
   }
 
   private calculateThroughput(messages: IntegrationMessage[]): number {
-    const oneHourAgo = \1[0] - 60 * 60 * 1000);
+    const oneHourAgo = [0] - 60 * 60 * 1000);
     const recentMessages = messages.filter(m => m.createdAt >= oneHourAgo);
     return recentMessages.length;
   }
@@ -791,7 +789,7 @@ class IntegrationHubService extends EventEmitter {
 
     await this.prisma.$disconnect();
 
-    this.emit('shutdown');
+    this.emit("shutdown");
   }
 }
 

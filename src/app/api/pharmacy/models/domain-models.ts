@@ -1,5 +1,5 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 }
 
 /**
@@ -10,14 +10,11 @@ import { z } from 'zod';
  */
 
 // Define domain models using ES2015 module syntax instead of namespace
-\1
 }
   };
-\1
 }
   };
-  discrepancies: Array\1>
-\1
+  discrepancies: Array>
 }
 }
 
@@ -56,7 +53,7 @@ export const MedicationInventorySchema = z.object({
   reorderThreshold: z.number().int().nonnegative(),
   reorderQuantity: z.number().int().positive(),
   lastCountDate: z.date(),
-  status: z.enum(['active', 'expired', 'recalled', 'depleted']),
+  status: z.enum(["active", "expired", "recalled", "depleted"]),
   cost: z.number().nonnegative(),
   supplier: z.string(),
   receivedDate: z.date(),
@@ -69,11 +66,11 @@ export const MedicationOrderSchema = z.object({
   providerId: z.string(),
   medicationId: z.string(),
   status: z.enum([
-    'draft', 'active', 'on-hold', 'cancelled', 'completed',
-    'entered-in-error', 'stopped', 'unknown';
+    "draft", "active", "on-hold", "cancelled", "completed",
+    "entered-in-error", "stopped", "unknown";
   ]),
   orderDate: z.date(),
-  \1,\2 z.string(),
+  z.string(),
   route: z.string(),
   duration: z.string(),
   startDate: z.date().optional(),

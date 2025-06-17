@@ -1,38 +1,38 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 // Create enums to match Prisma schema
 export enum BloodType {
-  A_POSITIVE = 'A_POSITIVE',
-  A_NEGATIVE = 'A_NEGATIVE',
-  B_POSITIVE = 'B_POSITIVE',
-  B_NEGATIVE = 'B_NEGATIVE',
-  AB_POSITIVE = 'AB_POSITIVE',
-  AB_NEGATIVE = 'AB_NEGATIVE',
-  O_POSITIVE = 'O_POSITIVE',
-  O_NEGATIVE = 'O_NEGATIVE',
-\1\n\nexport \2 BloodDonationStatus {
-  PENDING = 'PENDING',
-  COMPLETED = 'COMPLETED',
-  REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED',
-\1\n\nexport \2 BloodRequestStatus {
-  PENDING = 'PENDING',
-  APPROVED = 'APPROVED',
-  FULFILLED = 'FULFILLED',
-  REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED',
-\1\n\nexport \2 BloodRequestPriority {
-  ROUTINE = 'ROUTINE',
-  URGENT = 'URGENT',
-  EMERGENCY = 'EMERGENCY',
+  A_POSITIVE = "A_POSITIVE",
+  A_NEGATIVE = "A_NEGATIVE",
+  B_POSITIVE = "B_POSITIVE",
+  B_NEGATIVE = "B_NEGATIVE",
+  AB_POSITIVE = "AB_POSITIVE",
+  AB_NEGATIVE = "AB_NEGATIVE",
+  O_POSITIVE = "O_POSITIVE",
+  O_NEGATIVE = "O_NEGATIVE",
+\n\nexport BloodDonationStatus {
+  PENDING = "PENDING",
+  COMPLETED = "COMPLETED",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED",
+\n\nexport BloodRequestStatus {
+  PENDING = "PENDING",
+  APPROVED = "APPROVED",
+  FULFILLED = "FULFILLED",
+  REJECTED = "REJECTED",
+  CANCELLED = "CANCELLED",
+\n\nexport BloodRequestPriority {
+  ROUTINE = "ROUTINE",
+  URGENT = "URGENT",
+  EMERGENCY = "EMERGENCY",
 }
 
 // Validation schemas for BloodDonation
 export const createBloodDonationSchema = z.object({
-  donorId: z.string().min(1, 'Donor ID is required'),
+  donorId: z.string().min(1, "Donor ID is required"),
   bloodType: z.nativeEnum(BloodType),
-  quantity: z.number().positive('Quantity must be positive'),
-  donationDate: z.date().default(() => \1,
+  quantity: z.number().positive("Quantity must be positive"),
+  donationDate: z.date().default(() => ,
   expirationDate: z.date(),
   status: z.nativeEnum(BloodDonationStatus).default(BloodDonationStatus.PENDING),
   notes: z.string().optional().nullable()
@@ -44,12 +44,12 @@ export const updateBloodDonationSchema = createBloodDonationSchema.partial().ext
 
 // Validation schemas for BloodRequest
 export const createBloodRequestSchema = z.object({
-  patientId: z.string().min(1, 'Patient ID is required'),
-  requestedBy: z.string().min(1, 'Requester ID is required'),
+  patientId: z.string().min(1, "Patient ID is required"),
+  requestedBy: z.string().min(1, "Requester ID is required"),
   bloodType: z.nativeEnum(BloodType),
-  quantity: z.number().positive('Quantity must be positive'),
+  quantity: z.number().positive("Quantity must be positive"),
   priority: z.nativeEnum(BloodRequestPriority).default(BloodRequestPriority.ROUTINE),
-  requestDate: z.date().default(() => \1,  requiredBy: z.date().optional().nullable(),
+  requestDate: z.date().default(() => ,  requiredBy: z.date().optional().nullable(),
   status: z.nativeEnum(BloodRequestStatus).default(BloodRequestStatus.PENDING),
   fulfilledDate: z.date().optional().nullable(),
   notes: z.string().optional().nullable()
@@ -59,42 +59,41 @@ export const updateBloodRequestSchema = createBloodRequestSchema.partial().exten
   id: z.string()
 });
 
-export type CreateBloodDonationInput = z.infer\1>
-export type UpdateBloodDonationInput = z.infer\1>
-export type CreateBloodRequestInput = z.infer\1>
-export type UpdateBloodRequestInput = z.infer\1>
+export type CreateBloodDonationInput = z.infer>
+export type UpdateBloodDonationInput = z.infer>
+export type CreateBloodRequestInput = z.infer>
+export type UpdateBloodRequestInput = z.infer>
 
 // Import prisma client
-import { prisma } from '../lib/prisma';
+import { prisma } from "../lib/prisma";
 
 /**
  * Service class for managing blood bank operations;
  */
-\1
 }
         });
 
         // If the donation status is COMPLETED, update the inventory
-        \1 {\n  \2{
+        if (!session.user) {
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            \1,\2 validatedData.bloodType
+            validatedData.bloodType
             },
           });
 
-          \1 {\n  \2{
+          if (!session.user) {
             // Update existing inventory
             await tx.bloodInventory.update({
-              \1,\2 validatedData.bloodType
+              validatedData.bloodType
               },
-              \1,\2 inventory.quantity + validatedData.quantity,
+              inventory.quantity + validatedData.quantity,
                 lastUpdated: new Date()
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              \1,\2 validatedData.bloodType,
+              validatedData.bloodType,
                 quantity: validatedData.quantity,                lastUpdated: new Date()
               },
             });
@@ -106,8 +105,8 @@ import { prisma } from '../lib/prisma';
 
       return donation;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -128,22 +127,22 @@ import { prisma } from '../lib/prisma';
     try {
       const where: unknown = {};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.bloodType = filters.bloodType;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.donorId = filters.donorId;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.donationDate = {};
-          \1 {\n  \2{
+          if (!session.user) {
             where.donationDate.gte = filters.fromDate;
           }
-          \1 {\n  \2{
+          if (!session.user) {
             where.donationDate.lte = filters.toDate;
           }
         }
@@ -152,10 +151,10 @@ import { prisma } from '../lib/prisma';
       const donations = await prisma.bloodDonation.findMany({
         where,
         orderBy: [
-          { donationDate: 'desc' },
+          { donationDate: "desc" },
         ],
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -177,8 +176,8 @@ import { prisma } from '../lib/prisma';
     try {
       const donation = await prisma.bloodDonation.findUnique({
         where: { id },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -210,7 +209,7 @@ import { prisma } from '../lib/prisma';
         where: { id },
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Blood donation with ID ${id} not found`);
       }
 
@@ -223,9 +222,9 @@ import { prisma } from '../lib/prisma';
         });
 
         // Handle inventory updates if status changes
-        \1 {\n  \2{
+        if (!session.user) {
           // If changing to COMPLETED, add to inventory
-          \1 {\n  \2{
+          if (!session.user) {
             const bloodType = updateData.bloodType || currentDonation.bloodType;
             const quantity = updateData.quantity || currentDonation.quantity;
 
@@ -236,13 +235,13 @@ import { prisma } from '../lib/prisma';
               },
             });
 
-            \1 {\n  \2{
+            if (!session.user) {
               // Update existing inventory
               await tx.bloodInventory.update({
                 where: {
                   bloodType,
                 },
-                \1,\2 inventory.quantity + quantity,
+                inventory.quantity + quantity,
                   lastUpdated: new Date()
                 },
               });
@@ -259,7 +258,7 @@ import { prisma } from '../lib/prisma';
           }
 
           // If changing from COMPLETED to something else, remove from inventory
-          \1 {\n  \2{
+          if (!session.user) {
             const bloodType = currentDonation.bloodType;
             const quantity = currentDonation.quantity;
 
@@ -270,13 +269,13 @@ import { prisma } from '../lib/prisma';
               },
             });
 
-            \1 {\n  \2{
+            if (!session.user) {
               // Update existing inventory
               await tx.bloodInventory.update({
                 where: {
                   bloodType,
                 },
-                \1,\2 Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn't go below 0
+                Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn"t go below 0
                   lastUpdated: new Date()
                 },
               });
@@ -289,8 +288,8 @@ import { prisma } from '../lib/prisma';
 
       return updatedDonation;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -308,7 +307,7 @@ import { prisma } from '../lib/prisma';
         where: { id },
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Blood donation with ID ${id} not found`);
       }
 
@@ -320,19 +319,19 @@ import { prisma } from '../lib/prisma';
         });
 
         // If the donation was COMPLETED, update the inventory
-        \1 {\n  \2{
+        if (!session.user) {
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            \1,\2 currentDonation.bloodType
+            currentDonation.bloodType
             },
           });
 
-          \1 {\n  \2{
+          if (!session.user) {
             // Update existing inventory
             await tx.bloodInventory.update({
-              \1,\2 currentDonation.bloodType
+              currentDonation.bloodType
               },
-              \1,\2 Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn't go below 0
+              Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn"t go below 0
                 lastUpdated: new Date()
               },
             });
@@ -365,8 +364,8 @@ import { prisma } from '../lib/prisma';
 
       return request;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -388,25 +387,25 @@ import { prisma } from '../lib/prisma';
     try {
       const where: unknown = {};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.bloodType = filters.bloodType;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.patientId = filters.patientId;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.priority = filters.priority;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.requestDate = {};
-          \1 {\n  \2{
+          if (!session.user) {
             where.requestDate.gte = filters.fromDate;
           }
-          \1 {\n  \2{
+          if (!session.user) {
             where.requestDate.lte = filters.toDate;
           }
         }
@@ -415,11 +414,11 @@ import { prisma } from '../lib/prisma';
       const requests = await prisma.bloodRequest.findMany({
         where,
         orderBy: [
-          { priority: 'desc' },
-          { requestDate: 'asc' },
+          { priority: "desc" },
+          { requestDate: "asc" },
         ],
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -441,8 +440,8 @@ import { prisma } from '../lib/prisma';
     try {
       const request = await prisma.bloodRequest.findUnique({
         where: { id },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -474,17 +473,17 @@ import { prisma } from '../lib/prisma';
         where: { id },
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
       // Update the request and inventory in a transaction if status changes to FULFILLED
       const updatedRequest = await prisma.$transaction(async (tx) => {
         // Special handling for status transitions
-        \1 {\n  \2{
+        if (!session.user) {
           updateData.fulfilledDate = new Date();
 
-          // Check if there's enough inventory
+          // Check if there"s enough inventory
           const bloodType = updateData.bloodType || currentRequest.bloodType;
           const quantity = updateData.quantity || currentRequest.quantity;
 
@@ -494,7 +493,7 @@ import { prisma } from '../lib/prisma';
             },
           });
 
-          \1 {\n  \2{
+          if (!session.user) {
             throw new Error(`Not enough ${bloodType} blood in inventory to fulfill this request`);
           }
 
@@ -503,35 +502,35 @@ import { prisma } from '../lib/prisma';
             where: {
               bloodType,
             },
-            \1,\2 inventory.quantity - quantity,
+            inventory.quantity - quantity,
               lastUpdated: new Date()
             },
           });
         }
 
         // If changing from FULFILLED to something else, add back to inventory
-        \1 {\n  \2{
+        if (!session.user) {
           updateData.fulfilledDate = null;
 
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            \1,\2 currentRequest.bloodType
+            currentRequest.bloodType
             },
           });
 
-          \1 {\n  \2{
+          if (!session.user) {
             // Update existing inventory
             await tx.bloodInventory.update({
-              \1,\2 currentRequest.bloodType
+              currentRequest.bloodType
               },
-              \1,\2 inventory.quantity + currentRequest.quantity,
+              inventory.quantity + currentRequest.quantity,
                 lastUpdated: new Date()
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              \1,\2 currentRequest.bloodType,
+              currentRequest.bloodType,
                 quantity: currentRequest.quantity,                lastUpdated: new Date()
               },
             });
@@ -549,8 +548,8 @@ import { prisma } from '../lib/prisma';
 
       return updatedRequest;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -568,7 +567,7 @@ import { prisma } from '../lib/prisma';
         where: { id },
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
@@ -580,26 +579,26 @@ import { prisma } from '../lib/prisma';
         });
 
         // If the request was FULFILLED, update the inventory
-        \1 {\n  \2{
+        if (!session.user) {
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            \1,\2 currentRequest.bloodType
+            currentRequest.bloodType
             },
           });
 
-          \1 {\n  \2{
+          if (!session.user) {
             // Update existing inventory
             await tx.bloodInventory.update({
-              \1,\2 currentRequest.bloodType
+              currentRequest.bloodType
               },
-              \1,\2 inventory.quantity + currentRequest.quantity,
+              inventory.quantity + currentRequest.quantity,
                 lastUpdated: new Date()
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              \1,\2 currentRequest.bloodType,
+              currentRequest.bloodType,
                 quantity: currentRequest.quantity,                lastUpdated: new Date()
               },
             });
@@ -624,14 +623,14 @@ import { prisma } from '../lib/prisma';
     try {
       const where: unknown = {};
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.bloodType = bloodType;
       }
 
       const inventory = await prisma.bloodInventory.findMany({
         where,
         orderBy: [
-          { bloodType: 'asc' },
+          { bloodType: "asc" },
         ],
       });
 
@@ -642,15 +641,15 @@ import { prisma } from '../lib/prisma';
   }
 
   /**
-   * Check if there's enough blood of a specific type in inventory;
+   * Check if there"s enough blood of a specific type in inventory;
    * @param bloodType Blood type to check;
    * @param quantity Quantity needed;
-   * @returns Boolean indicating if there's enough blood;
+   * @returns Boolean indicating if there"s enough blood;
    */
   async checkInventoryAvailability(bloodType: string, quantity: number) {
     try {
       const inventory = await prisma.bloodInventory.findUnique({
-        \1,\2 bloodType as BloodType
+        bloodType as BloodType
         },
       });
 
@@ -672,25 +671,25 @@ import { prisma } from '../lib/prisma';
         where: { id },
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Blood request with ID ${id} is already fulfilled`);
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Cannot fulfill a ${request.status.toLowerCase()} blood request`);
       }
 
-      // Check if there's enough inventory
+      // Check if there"s enough inventory
       const inventory = await prisma.bloodInventory.findUnique({
-        \1,\2 request.bloodType
+        request.bloodType
         },
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Not enough ${request.bloodType} blood in inventory to fulfill this request`);
       }
 
@@ -699,16 +698,16 @@ import { prisma } from '../lib/prisma';
         // Update the request
         const updatedRequest = await tx.bloodRequest.update({
           where: { id },
-          \1,\2 BloodRequestStatus.FULFILLED,
+          BloodRequestStatus.FULFILLED,
             fulfilledDate: new Date()
           },
         });
 
         // Update inventory
         await tx.bloodInventory.update({
-          \1,\2 request.bloodType
+          request.bloodType
           },
-          \1,\2 inventory.quantity - request.quantity,
+          inventory.quantity - request.quantity,
             lastUpdated: new Date()
           },
         });

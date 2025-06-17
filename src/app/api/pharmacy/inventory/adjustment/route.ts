@@ -1,9 +1,9 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { validateInventoryAdjustmentRequest } from '../../../../../lib/validation/pharmacy-validation';
+import { auditLog } from "../../../../../lib/audit";
+import { errorHandler } from "../../../../../lib/error-handler";
+import { validateInventoryAdjustmentRequest } from "../../../../../lib/validation/pharmacy-validation";
 }
 
 /**
@@ -19,7 +19,7 @@ const inventoryRepository = {
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
+  save: (item: unknown) => Promise.resolve(item.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true)
@@ -31,7 +31,7 @@ const adjustmentRepository = {
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (adjustment: unknown) => Promise.resolve(adjustment.id || 'new-id')
+  save: (adjustment: unknown) => Promise.resolve(adjustment.id || "new-id")
 };
 
 /**
@@ -43,26 +43,26 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateInventoryAdjustmentRequest(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
+        { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Verify inventory exists
     const inventory = await inventoryRepository.findById(data.inventoryId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Inventory not found' }, { status: 404 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Inventory not found" }, { status: 404 });
     }
 
     // Calculate adjustment quantity
@@ -71,13 +71,13 @@ export const POST = async (req: NextRequest) => {
     // Create adjustment record
     const adjustment = {
       id: crypto.randomUUID(),
-      \1,\2 inventory.locationId,
-      \1,\2 inventory.quantityOnHand,
+      inventory.locationId,
+      inventory.quantityOnHand,
       newQuantity: data.newQuantity;
       adjustmentQuantity,
       reason: data.reason,
-      \1,\2 new Date(),
-      notes: data.notes || ''
+      new Date(),
+      notes: data.notes || ""
     };
 
     // Save adjustment record
@@ -87,28 +87,28 @@ export const POST = async (req: NextRequest) => {
     await inventoryRepository.adjustStock(data.inventoryId, data.newQuantity);
 
     // Special handling for controlled substances
-    \1 {\n  \2{
+    if (!session.user) {
       // Additional logging for controlled substances
-      await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'ADJUST',
-        \1,\2 data.inventoryId,
+      await auditLog("CONTROLLED_SUBSTANCE", {
+        action: "ADJUST",
+        data.inventoryId,
         userId: userId;
           adjustmentId,
           medicationId: inventory.medicationId,
-          \1,\2 data.newQuantity;
+          data.newQuantity;
           adjustmentQuantity,
           reason: data.reason
       });
     }
 
     // Regular audit logging
-    await auditLog('INVENTORY', {
-      action: 'ADJUST',
-      \1,\2 adjustmentId,
+    await auditLog("INVENTORY", {
+      action: "ADJUST",
+      adjustmentId,
       userId: userId;
       {
         inventoryId: data.inventoryId,
-        \1,\2 inventory.quantityOnHand,
+        inventory.quantityOnHand,
         newQuantity: data.newQuantity;
         adjustmentQuantity,
         reason: data.reason
@@ -119,12 +119,12 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: adjustmentId,
-        message: 'Inventory adjusted successfully'
+        message: "Inventory adjusted successfully"
       },
       { status: 201 }
     );
   } catch (error) {
-    return errorHandler(error, 'Error adjusting inventory');
+    return errorHandler(error, "Error adjusting inventory");
   }
 }
 
@@ -135,37 +135,37 @@ export const POST = async (req: NextRequest) => {
 export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
     const url = new URL(req.url);
-    const inventoryId = url.searchParams.get('inventoryId');
-    const locationId = url.searchParams.get('locationId');
-    const medicationId = url.searchParams.get('medicationId');
-    const reason = url.searchParams.get('reason');
-    const startDate = url.searchParams.get('startDate');
-    const endDate = url.searchParams.get('endDate');
-    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
+    const inventoryId = url.searchParams.get("inventoryId");
+    const locationId = url.searchParams.get("locationId");
+    const medicationId = url.searchParams.get("medicationId");
+    const reason = url.searchParams.get("reason");
+    const startDate = url.searchParams.get("startDate");
+    const endDate = url.searchParams.get("endDate");
+    const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
+    const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria
     const filter: unknown = {};
-    \1 {\n  \2ilter.inventoryId = inventoryId;
-    \1 {\n  \2ilter.locationId = locationId;
-    \1 {\n  \2ilter.medicationId = medicationId;
-    \1 {\n  \2ilter.reason = reason;
+    if (!session.user)ilter.inventoryId = inventoryId;
+    if (!session.user)ilter.locationId = locationId;
+    if (!session.user)ilter.medicationId = medicationId;
+    if (!session.user)ilter.reason = reason;
 
     // Add date range if provided
-    \1 {\n  \2{
+    if (!session.user) {
       filter.adjustedAt = {};
-      \1 {\n  \2ilter.adjustedAt.gte = new Date(startDate);
-      \1 {\n  \2ilter.adjustedAt.lte = new Date(endDate);
+      if (!session.user)ilter.adjustedAt.gte = new Date(startDate);
+      if (!session.user)ilter.adjustedAt.lte = new Date(endDate);
     }
 
     // Get adjustments (mock implementation)
@@ -173,9 +173,9 @@ export const GET = async (req: NextRequest) => {
     const total = 0; // In production, get total count
 
     // Audit logging
-    await auditLog('INVENTORY', {
-      action: 'LIST_ADJUSTMENTS',
-      \1,\2 userId,
+    await auditLog("INVENTORY", {
+      action: "LIST_ADJUSTMENTS",
+      userId,
       details: 
         filter,
         page,
@@ -194,5 +194,5 @@ export const GET = async (req: NextRequest) => {
       }
     }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error retrieving inventory adjustments');
+    return errorHandler(error, "Error retrieving inventory adjustments");
   }

@@ -15,7 +15,7 @@ export const _GET = async (
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -39,7 +39,7 @@ export const _GET = async (
         ? admissionResult.results[0] // Changed .rows to .results
         : undefined;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Admission not found" },
         { status: 404 }
@@ -54,7 +54,7 @@ export const _GET = async (
     const canViewDischarge =;
       session.user.permissions?.includes("discharge_summary:view") ?? false;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

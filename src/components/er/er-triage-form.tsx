@@ -45,7 +45,7 @@ const triageFormSchema = z.object({
   assessmentNotes: z.string().optional()
 });
 
-type TriageFormValues = z.infer\1>
+type TriageFormValues = z.infer>
 
 // FIX: Define type for API error response
 interface ApiErrorResponse {
@@ -68,18 +68,18 @@ export default const _ERTriageForm = () {
 
   const form = useForm<TriageFormValues>({
     resolver: zodResolver(triageFormSchema),
-    \1,\2 "", // Needs a mechanism to set this (e.g., from tracking board selection)
+    "", // Needs a mechanism to set this (e.g., from tracking board selection)
       triageNurseId: MOCK_NURSE_ID,
-      \1,\2 undefined,
-      \1,\2 undefined,
-      \1,\2 undefined,
-      \1,\2 ""
+      undefined,
+      undefined,
+      undefined,
+      ""
     },
   });
 
   async const onSubmit = (data: TriageFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const vitalSigns = {
       HR: data.hr,
@@ -88,7 +88,7 @@ export default const _ERTriageForm = () {
           ? `${data.bpSystolic}/${data.bpDiastolic}`
           : undefined,
       RR: data.rr,
-      \1,\2 data.spo2
+      data.spo2
     };
 
     // Filter out undefined vital signs
@@ -105,13 +105,13 @@ export default const _ERTriageForm = () {
       const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        \1,\2 data.triageNurseId,
-          \1,\2 filteredVitalSigns,
+        data.triageNurseId,
+          filteredVitalSigns,
           assessment_notes: data.assessmentNotes
         }),
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const errorMessage = "Failed to submit triage assessment";
         try {
           // FIX: Use defined type for errorData
@@ -130,7 +130,7 @@ export default const _ERTriageForm = () {
         description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`,
       });
       form.reset(); // Reset form after successful submission
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (error: unknown) {
       // FIX: Use unknown for catch block
 
@@ -140,7 +140,7 @@ export default const _ERTriageForm = () {
           : "An unexpected error occurred.";
       toast({
         title: "Submission Failed",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -149,7 +149,7 @@ export default const _ERTriageForm = () {
 
   return (
     <Form {...form}>
-      \1>
+      >
         {/* TODO: Add a way to select the patient/visit ID, e.g., a search input or linking from tracking board */}
         <FormField>
           control={form.control}
@@ -189,7 +189,7 @@ export default const _ERTriageForm = () {
                 </FormControl>
                 <SelectContent>
                   {[1, 2, 3, 4, 5].map((level) => (
-                    \1>
+                    >
                       {level}
                     </SelectItem>
                   ))}
@@ -200,7 +200,7 @@ export default const _ERTriageForm = () {
           )}
         />
 
-        \1>
+        >
           <FormField>
             control={form.control}
             name="hr"
@@ -332,7 +332,7 @@ export default const _ERTriageForm = () {
           )}
         />
 
-        \1>
+        >
           {isLoading ? "Submitting..." : "Submit Triage Assessment"}
         </Button>
       </form>

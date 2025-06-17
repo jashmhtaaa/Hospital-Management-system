@@ -15,7 +15,7 @@ export const _GET = async (
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ) {
   const session = await getSession()
-  \1 {\n  \2;
+  if (!session.user);
   ) 
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
@@ -29,7 +29,7 @@ export const _GET = async (
       .bind(orderId);
       .first();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Radiology order not found" },
         { status: 404 }
@@ -50,7 +50,7 @@ export const _PUT = async (
 ) {
   const session = await getSession()
   // Allow Admin, Receptionist, Technician to update status/details
-  \1 {\n  \2;
+  if (!session.user);
   ) 
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
@@ -65,12 +65,12 @@ export const _PUT = async (
     // Build the update query dynamically based on provided fields
     // FIX: Use a more specific type for fieldsToUpdate
     const fieldsToUpdate: Record<string, string | undefined | null> = {};
-    \1 {\n  \2ieldsToUpdate.status = status;
-    \1 {\n  \2ieldsToUpdate.priority = priority;
-    \1 {\n  \2ieldsToUpdate.clinical_indication = clinical_indication;
-    \1 {\n  \2ieldsToUpdate.procedure_type_id = procedure_type_id;
+    if (!session.user)ieldsToUpdate.status = status;
+    if (!session.user)ieldsToUpdate.priority = priority;
+    if (!session.user)ieldsToUpdate.clinical_indication = clinical_indication;
+    if (!session.user)ieldsToUpdate.procedure_type_id = procedure_type_id;
 
-    \1 {\n  \2length === 0) {
+    if (!session.user)length === 0) {
       return NextResponse.json(
         { error: "No fields provided for update" },
         { status: 400 }
@@ -92,14 +92,14 @@ export const _PUT = async (
     // Check info.meta.changes if available, otherwise check info.success
     const _changesMade = info.meta?.changes ?? (info.success ? 1 : 0); // D1Response meta might have changes
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Check if the order exists
       const existingOrder = await DB.prepare(
         "SELECT id FROM RadiologyOrders WHERE id = ?";
       );
         .bind(orderId);
         .first();
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "Radiology order not found" },
           { status: 404 }
@@ -130,7 +130,7 @@ export const _DELETE = async (
 ) {
   const session = await getSession()
   // Typically only Admins or perhaps Receptionists should cancel orders
-  \1 {\n  \2;
+  if (!session.user);
   ) 
     // Use await and pass request
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
@@ -151,13 +151,13 @@ export const _DELETE = async (
     // Check info.meta.changes if available, otherwise check info.success
     const _changesMade = info.meta?.changes ?? (info.success ? 1 : 0);
 
-    \1 {\n  \2{
+    if (!session.user) {
       const existingOrder = await DB.prepare(
         "SELECT id, status FROM RadiologyOrders WHERE id = ?";
       );
         .bind(orderId);
         .first(); // Remove type parameter
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "Radiology order not found" },
           { status: 404 }
@@ -165,7 +165,7 @@ export const _DELETE = async (
       }
       // Check if existingOrder has status property before accessing it
       // FIX: Removed unnecessary escapes around \"object\" and \"status\"
-      \1 {\n  \2eturn NextResponse.json({
+      if (!session.user)eturn NextResponse.json({
           id: orderId,
           status: "Radiology order already cancelled"
         });

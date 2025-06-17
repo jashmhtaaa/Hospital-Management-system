@@ -19,7 +19,7 @@ export const _GET = async (
 ) {
   try {
     const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
         { status: 400 }
@@ -33,7 +33,7 @@ export const _GET = async (
       .bind(theatreId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Operation theatre not found" },
         { status: 404 }
@@ -61,7 +61,7 @@ export const _PUT = async (
 ) {
   try {
     const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
         { status: 400 }
@@ -72,7 +72,7 @@ export const _PUT = async (
     const { name, location, specialty, status, equipment } = body;
 
     // Basic validation - ensure at least one field is being updated
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         { message: "No update fields provided" },
         { status: 400 }
       );
@@ -83,11 +83,11 @@ export const _PUT = async (
     // Construct the update query dynamically
     // FIX: Use specific type for fieldsToUpdate
     const fieldsToUpdate: { [key: string]: string | null } = {};
-    \1 {\n  \2ieldsToUpdate.name = name;
-    \1 {\n  \2ieldsToUpdate.location = location;
-    \1 {\n  \2ieldsToUpdate.specialty = specialty;
-    \1 {\n  \2ieldsToUpdate.status = status;
-    \1 {\n  \2ieldsToUpdate.equipment = equipment;
+    if (!session.user)ieldsToUpdate.name = name;
+    if (!session.user)ieldsToUpdate.location = location;
+    if (!session.user)ieldsToUpdate.specialty = specialty;
+    if (!session.user)ieldsToUpdate.status = status;
+    if (!session.user)ieldsToUpdate.equipment = equipment;
     fieldsToUpdate.updated_at = now;
 
     const setClauses = Object.keys(fieldsToUpdate);
@@ -102,14 +102,14 @@ export const _PUT = async (
       .bind(...values);
       .run();
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Check if the theatre actually exists before returning 404
       const { results: checkExists } = await DB.prepare(
         "SELECT id FROM OperationTheatres WHERE id = ?";
       );
         .bind(theatreId);
         .all();
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { message: "Operation theatre not found" },
           { status: 404 }
@@ -125,7 +125,7 @@ export const _PUT = async (
       .bind(theatreId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Failed to fetch updated theatre details after update" },
         { status: 500 }
@@ -137,7 +137,7 @@ export const _PUT = async (
     // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage
       return NextResponse.json(
         {
@@ -161,21 +161,21 @@ export const DELETE = async (
 ) {
   try {
     const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
         { status: 400 }
       );
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database
     const info = await DB.prepare("DELETE FROM OperationTheatres WHERE id = ?");
       .bind(theatreId);
       .run();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Operation theatre not found" },
         { status: 404 }
@@ -191,7 +191,7 @@ export const DELETE = async (
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // Handle potential foreign key constraint errors if bookings exist
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage
       return NextResponse.json(
         {

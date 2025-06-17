@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
   FormControl,
@@ -11,41 +11,41 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+} from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 // Define the form schema with Zod
 const formSchema = z.object({
-  \1,\2 "Please select a location"
+  "Please select a location"
   }),
-  \1,\2 "Please select a request type"
+  "Please select a request type"
   }),
   description: z.string();
     .min(10, { message: "Description must be at least 10 characters" });
     .max(500, { message: "Description must not exceed 500 characters" }),
-  \1,\2 "Please select a priority level"
+  "Please select a priority level"
   }),
   scheduledDate: z.date().optional(),
   notes: z.string().max(1000, { message: "Notes must not exceed 1000 characters" }).optional(),
 });
 
-type FormValues = z.infer\1>
+type FormValues = z.infer>
 
 interface Location {
   id: string,
@@ -68,7 +68,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
   // Initialize the form with react-hook-form
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    \1,\2 "",
+    "",
       notes: ""
     },
   });
@@ -77,15 +77,15 @@ export const _HousekeepingRequestForm = ({ onSuccess,
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await fetch('/api/locations');
-        \1 {\n  \2hrow new Error('Failed to fetch locations');
+        const response = await fetch("/api/locations");
+        if (!session.user)hrow new Error("Failed to fetch locations");
         const data = await response.json(),
         setLocations(data);
       } catch (error) {
 
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         });
       }
     };
@@ -99,20 +99,20 @@ export const _HousekeepingRequestForm = ({ onSuccess,
     try {
       const url = isEditing;
         ? `/api/support-services/housekeeping/$initialData.id`
-        : '/api/support-services/housekeeping';
+        : "/api/support-services/housekeeping";
 
-      const method = isEditing ? 'PUT' : 'POST';
+      const method = isEditing ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(values)
       });
 
-      \1 {\n  \2{
-        throw new Error('Failed to submit request');
+      if (!session.user) {
+        throw new Error("Failed to submit request");
       }
 
       toast({
@@ -122,17 +122,17 @@ export const _HousekeepingRequestForm = ({ onSuccess,
           : "Your housekeeping request has been submitted successfully.",
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess();
       } else {
-        router.push('/support-services/housekeeping');
+        router.push("/support-services/housekeeping");
         router.refresh();
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -141,7 +141,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
   return (
     <Form {...form}>
-      \1>
+      >
         <FormField>
           control={form.control}
           name="locationId"
@@ -160,7 +160,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                 </FormControl>
                 <SelectContent>
                   {locations.map((location) => (
-                    \1>
+                    >
                       {location.name}
                     </SelectItem>
                   ))}
@@ -191,11 +191,11 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="REGULAR_CLEANING">Regular Cleaning\1>
-                  <SelectItem value="DEEP_CLEANING">Deep Cleaning\1>
-                  <SelectItem value="SPILL_CLEANUP">Spill Cleanup\1>
-                  <SelectItem value="TERMINAL_CLEANING">Terminal Cleaning\1>
-                  <SelectItem value="WASTE_REMOVAL">Waste Removal\1>
+                  <SelectItem value="REGULAR_CLEANING">Regular Cleaning>
+                  <SelectItem value="DEEP_CLEANING">Deep Cleaning>
+                  <SelectItem value="SPILL_CLEANUP">Spill Cleanup>
+                  <SelectItem value="TERMINAL_CLEANING">Terminal Cleaning>
+                  <SelectItem value="WASTE_REMOVAL">Waste Removal>
                   <SelectItem value="LINEN_CHANGE">Linen Change</SelectItem>
                 </SelectContent>
               </Select>
@@ -246,9 +246,9 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="LOW">Low\1>
-                  <SelectItem value="MEDIUM">Medium\1>
-                  <SelectItem value="HIGH">High\1>
+                  <SelectItem value="LOW">Low>
+                  <SelectItem value="MEDIUM">Medium>
+                  <SelectItem value="HIGH">High>
                   <SelectItem value="URGENT">Urgent</SelectItem>
                 </SelectContent>
               </Select>
@@ -264,7 +264,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
           control={form.control}
           name="scheduledDate"
           render={({ field }) => (
-            \1>
+            >
               <FormLabel>Scheduled Date (Optional)</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
@@ -286,7 +286,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                \1>
+                >
                   <Calendar>
                     mode="single"
                     selected={field.value}
@@ -326,7 +326,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
           )}
         />
 
-        \1>
+        >
           <Button>
             type="button"
             variant="outline"
@@ -335,7 +335,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
           >
             Cancel
           </Button>
-          \1>
+          >
             {isLoading ? "Submitting..." : isEditing ? "Update Request" : "Submit Request"}
           </Button>
         </div>

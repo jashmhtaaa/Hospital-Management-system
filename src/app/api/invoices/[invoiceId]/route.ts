@@ -24,14 +24,14 @@ const getInvoiceId = (pathname: string): number | null {
 // Define interfaces for the complex query results
 interface InvoiceQueryResult {
     invoice_id: number,
-    \1,\2 number,
-    \1,\2 number | null,
+    number,
+    number | null,
     invoice_date: string; // ISO String
     due_date: string | null; // ISO String
     total_amount: number,
-    \1,\2 number,
-    \1,\2 InvoiceStatus,
-    \1,\2 number,
+    number,
+    InvoiceStatus,
+    number,
     created_at: string; // ISO String
     updated_at: string; // ISO String
     patient_first_name: string,
@@ -40,11 +40,11 @@ interface InvoiceQueryResult {
 
 interface InvoiceItemQueryResult {
     invoice_item_id: number,
-    \1,\2 number,
-    \1,\2 string,
-    \1,\2 number,
-    \1,\2 number,
-    \1,\2 string; // ISO String
+    number,
+    string,
+    number,
+    number,
+    string; // ISO String
     billable_item_name: string,
     billable_item_type: string; // Assuming ItemType is string-based enum
 }
@@ -57,14 +57,14 @@ export const _GET = async (request: Request) => {
     const invoiceId = getInvoiceId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -86,7 +86,7 @@ export const _GET = async (request: Request) => {
              WHERE i.invoice_id = ?`;
         ).bind(invoiceId).first<InvoiceQueryResult>();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invoice not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -94,9 +94,9 @@ export const _GET = async (request: Request) => {
         }
 
         // 3. Authorization check for Patients (can only view their own invoices)
-        \1 {\n  \2{
+        if (!session.user) {
             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>()
-            \1 {\n  \2{
+            if (!session.user) {
                  return new Response(JSON.stringify({ error: "Forbidden: You can only view your own invoices" }), {
                     status: 403,
                     headers: { "Content-Type": "application/json" },
@@ -118,24 +118,24 @@ export const _GET = async (request: Request) => {
         ).bind(invoiceId).all<Payment>();
 
         // 6. Format the final response
-        const \1,\2 invoiceResult.invoice_id,
-            \1,\2 invoiceResult.patient_id,
-            \1,\2 invoiceResult.admission_id,
-            \1,\2 invoiceResult.due_date,
-            \1,\2 invoiceResult.paid_amount,
-            \1,\2 invoiceResult.tax_amount,
-            \1,\2 invoiceResult.notes,
-            \1,\2 invoiceResult.created_at,
-            \1,\2 invoiceResult.patient_id,
-                \1,\2 invoiceResult.patient_last_name,
-            \1,\2 item.invoice_item_id,
-                \1,\2 item.billable_item_id,
-                \1,\2 item.description,
-                \1,\2 item.unit_price,
-                \1,\2 item.tax_amount,
-                \1,\2 item.created_at,
-                \1,\2 item.billable_item_id,
-                    \1,\2 item.billable_item_type as ItemType, // Cast to ItemType enum)) as InvoiceItem[] || [],
+        const invoiceResult.invoice_id,
+            invoiceResult.patient_id,
+            invoiceResult.admission_id,
+            invoiceResult.due_date,
+            invoiceResult.paid_amount,
+            invoiceResult.tax_amount,
+            invoiceResult.notes,
+            invoiceResult.created_at,
+            invoiceResult.patient_id,
+                invoiceResult.patient_last_name,
+            item.invoice_item_id,
+                item.billable_item_id,
+                item.description,
+                item.unit_price,
+                item.tax_amount,
+                item.created_at,
+                item.billable_item_id,
+                    item.billable_item_type as ItemType, // Cast to ItemType enum)) as InvoiceItem[] || [],
             payments: paymentsResult.results || []
         };
 
@@ -170,14 +170,14 @@ export const _PUT = async (request: Request) => {
     const invoiceId = getInvoiceId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -188,7 +188,7 @@ export const _PUT = async (request: Request) => {
         const body = await request.json();
         const validation = UpdateInvoiceSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -198,7 +198,7 @@ export const _PUT = async (request: Request) => {
         const updateData = validation.data;
 
         // Check if there's anything to update
-        \1 {\n  \2length === 0) {
+        if (!session.user)length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), {
                 status: 200, // Or 304 Not Modified
                 headers: { "Content-Type": "application/json" },
@@ -213,7 +213,7 @@ export const _PUT = async (request: Request) => {
         const invoiceCheck = await DB.prepare("SELECT invoice_id, status FROM Invoices WHERE invoice_id = ?");
                                    .bind(invoiceId);
                                    .first<invoice_id: number, status: string >();
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invoice not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -221,14 +221,14 @@ export const _PUT = async (request: Request) => {
         }
 
         // Optional: Add logic to prevent certain status transitions (e.g., cannot change from Paid)
-        // \1 {\n  \2{ ... }
+        // if (!session.user) { ... }
 
         // 3. Build update query
         let query = "UPDATE Invoices SET updated_at = CURRENT_TIMESTAMP";
         const queryParams: (string | null | number)[] = [];
 
         Object.entries(updateData).forEach(([key, value]) => {
-            \1 {\n  \2{ // Allow null values to be set
+            if (!session.user) { // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
             }
@@ -242,7 +242,7 @@ export const _PUT = async (request: Request) => {
         const updateResult = await DB.prepare(query).bind(...queryParams).run() as { success: boolean; meta?: unknown };
 
         // Check success property directly
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to update invoice");
         }

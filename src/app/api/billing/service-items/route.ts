@@ -7,31 +7,31 @@ import { getCurrentUser, hasPermission } from "@/lib/auth"; // Assuming auth hel
 const mockServiceItems = [
   {
     id: "si_001",
-    \1,\2 "Doctor Consultation",
-    \1,\2 "Consultation",
-    \1,\2 0,
-    \1,\2 1
+    "Doctor Consultation",
+    "Consultation",
+    0,
+    1
   },
   {
     id: "si_002",
-    \1,\2 "X-Ray Chest PA View",
-    \1,\2 "Radiology",
-    \1,\2 1,
-    \1,\2 1
+    "X-Ray Chest PA View",
+    "Radiology",
+    1,
+    1
   },
   {
     id: "si_003",
-    \1,\2 "Complete Blood Count",
-    \1,\2 "Laboratory",
-    \1,\2 1,
-    \1,\2 1
+    "Complete Blood Count",
+    "Laboratory",
+    1,
+    1
   },
   {
     id: "si_004",
-    \1,\2 "General Ward Room Charge",
-    \1,\2 "Room Charge",
-    \1,\2 0,
-    \1,\2 1
+    "General Ward Room Charge",
+    "Room Charge",
+    0,
+    1
   },
 ]
 let nextItemId = 5;
@@ -52,7 +52,7 @@ interface ServiceItemInput {
 export const _GET = async (request: NextRequest) => {
   try {
     // Permission check (example: only admin or billing staff)
-    \1 {\n  \2) {
+    if (!session.user)) {
       return NextResponse.json(
         {
           error: "Forbidden: You do not have permission to view service items."
@@ -68,7 +68,7 @@ export const _GET = async (request: NextRequest) => {
 
     let filteredItems = mockServiceItems;
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredItems = filteredItems.filter(
         (item) =>
           item.item_code.toLowerCase().includes(query) ||
@@ -76,13 +76,13 @@ export const _GET = async (request: NextRequest) => {
       );
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredItems = filteredItems.filter(
         (item) => item.category === category;
       );
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       const activeBool = isActive.toLowerCase() === "true";
       filteredItems = filteredItems.filter(
         (item) => (item.is_active === 1) === activeBool;
@@ -105,7 +105,7 @@ export const _GET = async (request: NextRequest) => {
   } catch (error) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(
@@ -119,7 +119,7 @@ export const _GET = async (request: NextRequest) => {
 export const _POST = async (request: NextRequest) => {
   try {
     // Permission check (example: only admin or billing manager)
-    \1 {\n  \2) {
+    if (!session.user)) {
       return NextResponse.json(
         {
           error: "Forbidden: You do not have permission to create service items."
@@ -130,7 +130,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Get user ID after permission check for logging/audit
     const user = await getCurrentUser(request);
-    \1 {\n  \2{
+    if (!session.user) {
       // Should not happen if hasPermission passed, but good practice
       return NextResponse.json(
         { error: "Authentication failed after permission check" },
@@ -143,7 +143,7 @@ export const _POST = async (request: NextRequest) => {
     const itemData = body as ServiceItemInput;
 
     // Enhanced validation
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         {
           error: "Missing required fields (item_code, item_name, category, unit_price)",
         },
@@ -151,17 +151,17 @@ export const _POST = async (request: NextRequest) => {
       );
 
     // Validate data types and formats
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         { error: "Invalid item_code format" },
         { status: 400 }
       );
 
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         { error: "Invalid item_name format" },
         { status: 400 }
       );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Unit price must be a positive number" },
         { status: 400 }
@@ -176,7 +176,7 @@ export const _POST = async (request: NextRequest) => {
       (item) => item.item_code === itemData.item_code;
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Item code already exists" },
         { status: 400 }
@@ -187,9 +187,9 @@ export const _POST = async (request: NextRequest) => {
     const newItem = {
       id: `si_${String(nextItemId++).padStart(3, "0")}`,
       item_code: itemData.item_code,
-      \1,\2 itemData.description || "",
-      \1,\2 itemData.unit_price,
-      \1,\2 itemData.is_discountable ? 1 : 0,
+      itemData.description || "",
+      itemData.unit_price,
+      itemData.is_discountable ? 1 : 0,
       is_active: 1, // Default to active
       // created_by: user.id, // Would use user.id in real implementation
       // created_at: new Date().toISOString() // Would use current time
@@ -207,7 +207,7 @@ export const _POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(

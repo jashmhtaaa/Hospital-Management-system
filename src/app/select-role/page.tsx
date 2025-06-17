@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // src/app/select-role/page.tsx
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // import { useSession } from "@/hooks/useSession"; // Hypothetical hook to get session data
 
@@ -28,28 +28,28 @@ export default const _SelectRolePage = () {
   useEffect(() => {
     // In a real app, fetch available roles for the logged-in user from the session or an API
     // For now, use mock data
-    // \1 {\n  \2{ setAvailableRoles(user.roles); }
+    // if (!session.user) { setAvailableRoles(user.roles); }
     setAvailableRoles(MOCK_USER_ROLES);
-    \1 {\n  \2{
+    if (!session.user) {
         setSelectedRole(MOCK_USER_ROLES[0]); // Default to the first role
     }
   }, []); // Add dependencies like `user` when using real data
 
   const handleContinue = async () => {
-    \1 {\n  \2{
+    if (!session.user) {
       toast({
         title: "Selection Required",
-        \1,\2 "destructive"
+        "destructive"
       });
       return;
     }
 
     setIsLoading(true);
     try {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       // This might involve an API call or just updating client-side state/session
       // await updateSessionRole(selectedRole)
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
       toast({
         title: "Role Selected",
@@ -63,7 +63,7 @@ export default const _SelectRolePage = () {
       const message = error instanceof Error ? error.message : "Failed to set role.";
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -71,31 +71,31 @@ export default const _SelectRolePage = () {
   };
 
   return (
-    \1>
-      \1>
-        \1>
+    >
+      >
+        >
           <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={120} height={40} className="mb-4" />
-          \1>
+          >
             Select Role
           </h2>
         </div>
-        \1>
+        >
 <div
-            <Label htmlFor="role-select">Role\1>
-            \1>
-              \1>
+            <Label htmlFor="role-select">Role>
+            >
+              >
                 <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent>
                 {availableRoles.map((role) => (
-                  \1>
+                  >
                     {role}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-\1>
+>
               {isLoading ? "Continuing..." : "Continue"}
             </Button>
           </div>

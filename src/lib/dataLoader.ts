@@ -1,8 +1,8 @@
-import DataLoader from 'dataloader';
+import DataLoader from "dataloader";
 
 
-import { logger } from '@/lib/logger';
-import { prisma } from '@/lib/prisma';
+import { logger } from "@/lib/logger";
+import { prisma } from "@/lib/prisma";
 /**
  * DataLoader implementation for efficient batch loading of database records;
  * Prevents N+1 query problems by batching database requests;
@@ -13,7 +13,7 @@ export const createLoaders = () {
      * Patient loader - batch loads patients by ID;
      */
     patient: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.patient', count: ids.length }, 'Batch loading patients');
+      logger.debug({ action: "dataLoader.patient", count: ids.length }, "Batch loading patients");
 
       const patients = await prisma.patient.findMany({
         where: { id: { in: ids as string[] } },
@@ -27,7 +27,7 @@ export const createLoaders = () {
      * Bed loader - batch loads beds by ID;
      */
     bed: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.bed', count: ids.length }, 'Batch loading beds');
+      logger.debug({ action: "dataLoader.bed", count: ids.length }, "Batch loading beds");
 
       const beds = await prisma.bed.findMany({
         where: { id: { in: ids as string[] } },
@@ -40,7 +40,7 @@ export const createLoaders = () {
      * Ward loader - batch loads wards by ID;
      */
     ward: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.ward', count: ids.length }, 'Batch loading wards');
+      logger.debug({ action: "dataLoader.ward", count: ids.length }, "Batch loading wards");
 
       const wards = await prisma.ward.findMany({
         where: { id: { in: ids as string[] } },
@@ -53,7 +53,7 @@ export const createLoaders = () {
      * Doctor loader - batch loads doctors by ID;
      */
     doctor: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.doctor', count: ids.length }, 'Batch loading doctors');
+      logger.debug({ action: "dataLoader.doctor", count: ids.length }, "Batch loading doctors");
 
       const doctors = await prisma.doctor.findMany({
         where: { id: { in: ids as string[] } },
@@ -66,7 +66,7 @@ export const createLoaders = () {
      * Encounter loader - batch loads encounters by ID;
      */
     encounter: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.encounter', count: ids.length }, 'Batch loading encounters');
+      logger.debug({ action: "dataLoader.encounter", count: ids.length }, "Batch loading encounters");
 
       const encounters = await prisma.encounter.findMany({
         where: { id: { in: ids as string[] } },
@@ -79,7 +79,7 @@ export const createLoaders = () {
      * Admission loader - batch loads admissions by ID;
      */
     admission: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.admission', count: ids.length }, 'Batch loading admissions');
+      logger.debug({ action: "dataLoader.admission", count: ids.length }, "Batch loading admissions");
 
       const admissions = await prisma.admission.findMany({
         where: { id: { in: ids as string[] } },
@@ -92,7 +92,7 @@ export const createLoaders = () {
      * Discharge loader - batch loads discharges by ID;
      */
     discharge: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.discharge', count: ids.length }, 'Batch loading discharges');
+      logger.debug({ action: "dataLoader.discharge", count: ids.length }, "Batch loading discharges");
 
       const discharges = await prisma.discharge.findMany({
         where: { id: { in: ids as string[] } },
@@ -105,7 +105,7 @@ export const createLoaders = () {
      * Progress note loader - batch loads progress notes by ID;
      */
     progressNote: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.progressNote', count: ids.length }, 'Batch loading progress notes');
+      logger.debug({ action: "dataLoader.progressNote", count: ids.length }, "Batch loading progress notes");
 
       const progressNotes = await prisma.progressNote.findMany({
         where: { id: { in: ids as string[] } },
@@ -118,7 +118,7 @@ export const createLoaders = () {
      * Observation loader - batch loads observations by ID;
      */
     observation: new DataLoader(async (ids: string[]) => {
-      logger.debug({ action: 'dataLoader.observation', count: ids.length }, 'Batch loading observations');
+      logger.debug({ action: "dataLoader.observation", count: ids.length }, "Batch loading observations");
 
       const observations = await prisma.observation.findMany({
         where: { id: { in: ids as string[] } },
@@ -132,4 +132,4 @@ export const createLoaders = () {
 /**
  * Type definition for the data loaders;
  */
-export type Loaders = ReturnType\1>
+export type Loaders = ReturnType>

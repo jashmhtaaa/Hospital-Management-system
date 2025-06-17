@@ -1,11 +1,10 @@
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 /**
  * Service for biometric integration and management;
  */
-\1
 }
   }) {
     const { employeeId, templateType, templateData, deviceId, notes } = data;
@@ -15,8 +14,8 @@ const prisma = new PrismaClient();
       where: { id: employeeId },
     });
 
-    \1 {\n  \2{
-      throw new Error('Employee not found');
+    if (!session.user) {
+      throw new Error("Employee not found");
     }
 
     // Check if template already exists for this employee and type
@@ -27,10 +26,10 @@ const prisma = new PrismaClient();
       },
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Update existing template
       return prisma.biometricTemplate.update({
-        \1,\2 existingTemplate.id
+        existingTemplate.id
         },
         data: {
           templateData,
@@ -59,7 +58,7 @@ const prisma = new PrismaClient();
   async getEmployeeBiometricTemplates(employeeId: string) {
     return prisma.biometricTemplate.findMany({
       where: { employeeId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
   }
 
@@ -76,8 +75,8 @@ const prisma = new PrismaClient();
    * Verify biometric data against stored template;
    * This is a placeholder for actual biometric verification logic;
    */
-  async verifyBiometric(\1,\2 string,
-    \1,\2 string
+  async verifyBiometric(string,
+    string
   }) {
     const { employeeId, templateType, sampleData } = data;
 
@@ -89,25 +88,25 @@ const prisma = new PrismaClient();
       },
     });
 
-    \1 {\n  \2{
-      throw new Error('No biometric template found for this employee');
+    if (!session.user) {
+      throw new Error("No biometric template found for this employee");
     }
 
     // In a real implementation, this would:
     // 1. Use a biometric matching algorithm to compare the sample with the template
     // 2. Return a match score and a boolean indicating if the match is above threshold
 
-    // For demonstration purposes, we'll simulate verification
+    // For demonstration purposes, we"ll simulate verification
     // In production, this would integrate with a biometric verification service
 
     // Simulate 95% success rate for verification
-    const isMatch = crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) < 0.95;
-    const matchScore = isMatch ? 0.8 + (crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 0.2) : crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 0.7;
+    const isMatch = crypto.getRandomValues([0] / (0xFFFFFFFF + 1) < 0.95;
+    const matchScore = isMatch ? 0.8 + (crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 0.2) : crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 0.7;
 
     // Log the verification attempt
     await prisma.auditLog.create({
-      \1,\2 null,
-        eventType: 'BIOMETRIC_VERIFICATION';
+      null,
+        eventType: "BIOMETRIC_VERIFICATION";
           employeeId,
           templateType,
           isMatch,
@@ -126,8 +125,8 @@ const prisma = new PrismaClient();
   /**
    * Register a biometric device;
    */
-  async registerBiometricDevice(\1,\2 string,
-    \1,\2 string;
+  async registerBiometricDevice(string,
+    string;
     ipAddress?: string;
     serialNumber?: string;
     manufacturer?: string;
@@ -141,10 +140,10 @@ const prisma = new PrismaClient();
       where: { deviceId },
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Update existing device
       return prisma.biometricDevice.update({
-        \1,\2 existingDevice.id
+        existingDevice.id
         },
         data: {
           deviceType,
@@ -179,7 +178,7 @@ const prisma = new PrismaClient();
    */
   async getBiometricDevices() {
     return prisma.biometricDevice.findMany({
-      orderBy: { location: 'asc' },
+      orderBy: { location: "asc" },
     });
   }
 
@@ -196,22 +195,22 @@ const prisma = new PrismaClient();
     const { employeeId, startDate, endDate, skip = 0, take = 50 } = options;
 
     // Build where clause
-    const \1,\2 'BIOMETRIC_VERIFICATION'
+    const "BIOMETRIC_VERIFICATION"
     };
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.details = {
-        path: ['employeeId'],
+        path: ["employeeId"],
         equals: employeeId
       };
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.createdAt = {};
-      \1 {\n  \2{
+      if (!session.user) {
         where.createdAt.gte = startDate;
       }
-      \1 {\n  \2{
+      if (!session.user) {
         where.createdAt.lte = endDate;
       }
     }
@@ -220,7 +219,7 @@ const prisma = new PrismaClient();
     const [logs, total] = await Promise.all([
       prisma.auditLog.findMany({
         where,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc' },
         skip,
         take,
       }),

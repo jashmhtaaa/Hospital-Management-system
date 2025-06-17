@@ -6,9 +6,9 @@ import { getSession } from "@/lib/session";
 // Define interface for POST request body
 interface BedInput {
   bed_number: string,
-  \1,\2 string,
-  \1,\2 number;
-  status?: "available" | "occupied" | "maintenance"; // Optional, defaults to 'available'
+  string,
+  number;
+  status?: "available" | "occupied" | "maintenance"; // Optional, defaults to "available"
   features?: string | null
 }
 
@@ -18,7 +18,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -32,17 +32,17 @@ export const _GET = async (request: NextRequest) => {
     let query = "SELECT * FROM beds WHERE 1=1";
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND ward = ?";
       parameters.push(ward);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND category = ?";
       parameters.push(category);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND status = ?";
       parameters.push(status);
     }
@@ -70,7 +70,7 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession(); // Removed request argument
 
     // Check authentication and permissions
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -78,7 +78,7 @@ export const _POST = async (request: NextRequest) => {
     // Assuming permissions are correctly populated in the mock session
     const canCreateBed =;
       session.user.permissions?.includes("bed:create") ?? false;
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -95,7 +95,7 @@ export const _POST = async (request: NextRequest) => {
     ]
     for (const field of requiredFields) {
       // Check if the field exists and is not empty (for strings)
-      \1 {\n  \2trim())
+      if (!session.user)trim())
       ) {
         return NextResponse.json(
           { error: `Missing or empty required field: ${field}` },
@@ -104,7 +104,7 @@ export const _POST = async (request: NextRequest) => {
       }
     }
     // Validate price is a positive number
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Invalid price_per_day: must be a positive number" },
         { status: 400 }
@@ -124,7 +124,7 @@ export const _POST = async (request: NextRequest) => {
         ? existingBedResult.results[0] // Changed .rows to .results
         : undefined;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Bed number already exists in this room and ward" },
         { status: 409 }

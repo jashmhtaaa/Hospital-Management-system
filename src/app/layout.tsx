@@ -16,7 +16,7 @@ const _geistMono = Geist_Mono({
 });
 
 // Use metadata from HEAD
-export const \1,\2 "Hospital Management System",
+export const "Hospital Management System",
   description: "Comprehensive HMS"
 };
 
@@ -27,7 +27,7 @@ export default const _RootLayout = ({
 }>) {
   return (
     // Keep lang="en" and dark class from origin/master
-    \1>
+    >
       {/* Use Geist fonts and antialiased from origin/master */}
       <body className={`/* SECURITY: Template literal eliminated */
         {/* Wrap children with ThemeProvider */}

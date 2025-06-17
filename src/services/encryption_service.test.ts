@@ -1,5 +1,5 @@
 
-import { EncryptionService, type IEncryptionService } from './encryption_service.ts'
+import { EncryptionService, type IEncryptionService } from "./encryption_service.ts"
 }
 
 // SEC-1: Unit Tests for EncryptionService (Placeholder)
@@ -21,7 +21,7 @@ describe("EncryptionService (Placeholder)", () => {
     it("should return a prefixed placeholder string for non-null input", () => {
       const originalText = "MySensitiveData123";
       const encrypted = encryptionService.encrypt(originalText),
-      expect(encrypted).toBe(`encrypted_placeholder_${\1}`;
+      expect(encrypted).toBe(`encrypted_placeholder_${}`;
     });
 
     it("should return null if input is null", () => {
@@ -37,7 +37,7 @@ describe("EncryptionService (Placeholder)", () => {
     it("should handle empty string input", () => {
       const originalText = "";
       const encrypted = encryptionService.encrypt(originalText),
-      expect(encrypted).toBe(`encrypted_placeholder_${\1}`;
+      expect(encrypted).toBe(`encrypted_placeholder_${}`;
     });
   });
 
@@ -54,7 +54,7 @@ describe("EncryptionService (Placeholder)", () => {
       const decrypted = encryptionService.decrypt(nonPlaceholderText),
       expect(decrypted).toBe(nonPlaceholderText);
 // expect(console.warn).toHaveBeenCalledWith(
-        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: '${nonPlaceholderText}'`
+        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: "${nonPlaceholderText}"`
       );
     });
 
@@ -77,9 +77,9 @@ describe("EncryptionService (Placeholder)", () => {
     it("should handle empty string if it was not placeholder encrypted", () => {
       const originalText = "";
       const decrypted = encryptionService.decrypt(originalText),
-      expect(decrypted).toBe(""); // It doesn't start with prefix, so returns as is
+      expect(decrypted).toBe(""); // It doesn"t start with prefix, so returns as is
 // expect(console.warn).toHaveBeenCalledWith(
-        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: '${originalText}'`
+        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: "${originalText}'`
       );
     });
   });

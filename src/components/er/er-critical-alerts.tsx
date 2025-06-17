@@ -20,7 +20,7 @@ import { AlertTriangle } from "lucide-react";
 // Mock data structure - replace with API data
 interface CriticalAlert {
   id: string,
-  \1,\2 string; // Need to join with visits/patients table
+  string; // Need to join with visits/patients table
   mrn: string; // Need to join
   location: string; // Need to join
   alert_type: string; // Sepsis, Stroke, STEMI, Critical Lab, etc.
@@ -33,31 +33,31 @@ interface CriticalAlert {
 const mockAlerts: CriticalAlert[] = [
   {
     id: "alert_uuid_1",
-    \1,\2 "John Doe",
-    \1,\2 "Room 3",
-    \1,\2 \1[0] - 30 * 60 * 1000).toISOString(),
-    \1,\2 "ECG shows ST elevation."
+    "John Doe",
+    "Room 3",
+    [0] - 30 * 60 * 1000).toISOString(),
+    "ECG shows ST elevation."
   },
   {
     id: "alert_uuid_2",
-    \1,\2 "Alice Wonderland",
-    \1,\2 "Triage Room 2",
-    \1,\2 \1[0] - 10 * 60 * 1000).toISOString(),
-    \1,\2 "FAST positive, right-sided weakness.",
+    "Alice Wonderland",
+    "Triage Room 2",
+    [0] - 10 * 60 * 1000).toISOString(),
+    "FAST positive, right-sided weakness.",
   },
   {
     id: "alert_uuid_3",
-    \1,\2 "Bob Builder",
-    \1,\2 "Room 1",
-    \1,\2 \1[0] - 60 * 60 * 1000).toISOString(),
-    \1,\2 "Meets SIRS criteria, lactate elevated.",
+    "Bob Builder",
+    "Room 1",
+    [0] - 60 * 60 * 1000).toISOString(),
+    "Meets SIRS criteria, lactate elevated.",
   },
   {
     id: "alert_uuid_4",
-    \1,\2 "Jane Smith",
-    \1,\2 "Room 5",
-    \1,\2 \1[0] - 5 * 60 * 1000).toISOString(),
-    \1,\2 "Potassium: 6.8 mmol/L"
+    "Jane Smith",
+    "Room 5",
+    [0] - 5 * 60 * 1000).toISOString(),
+    "Potassium: 6.8 mmol/L"
   },
 ];
 
@@ -83,19 +83,19 @@ export default const _ERCriticalAlerts = () {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast(); // Added hook call
 
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // useEffect(() => {
   //   fetch("/api/er/alerts?status=active") // Example: fetch only active alerts
   //     .then(res => res.json())
   //     .then(data => setAlerts(data))
   // }, [])
 
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
   const handleAcknowledge = async (alertId: string) => {
     setIsLoading(true)
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -111,7 +111,7 @@ export default const _ERCriticalAlerts = () {
     } catch {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally 
       setIsLoading(false);
@@ -119,8 +119,8 @@ export default const _ERCriticalAlerts = () {
 
   const handleResolve = async (alertId: string) => {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -135,7 +135,7 @@ export default const _ERCriticalAlerts = () {
     } catch {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -147,30 +147,30 @@ export default const _ERCriticalAlerts = () {
   );
 
   return (
-    \1>
-      \1>
+    >
+      >
         <Table>
           <TableHeader>
-            \1>
-              \1>
+            >
+              >
                 Patient (MRN)
               </TableHead>
-              \1>
+              >
                 Location
               </TableHead>
-              \1>
+              >
                 Alert Type
               </TableHead>
-              \1>
+              >
                 Activated
               </TableHead>
-              \1>
+              >
                 Details
               </TableHead>
-              \1>
+              >
                 Status
               </TableHead>
-              \1>
+              >
                 Actions
               </TableHead>
             </TableRow>
@@ -183,36 +183,36 @@ export default const _ERCriticalAlerts = () {
                   className="border-b dark:border-gray-700 last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-700/50"
                 >
                   <TableCell>
-                    \1>
+                    >
                       {alert.patient_name}
                     </div>
-                    \1>
+                    >
                       {alert.mrn}
                     </div>
                   </TableCell>
-                  \1>
+                  >
                     {alert.location}
                   </TableCell>
                   <TableCell>
-                    \1>
+                    >
                       <AlertTriangle className="h-4 w-4 mr-1 text-red-600 dark:text-red-400" />
                       {alert.alert_type}
                     </div>
                   </TableCell>
-                  \1>
+                  >
                     {new Date(alert.activation_timestamp).toLocaleTimeString()}
                   </TableCell>
-                  \1>
+                  >
                     {alert.details || "N/A"}
                   </TableCell>
                   <TableCell>
                     {/* FIX: Ensure the variant returned by getAlertBadgeVariant is valid */}
-                    \1>
+                    >
                       {alert.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    \1>
+                    >
                       {alert.status === "Active" && (
                         <Button>
                           variant="outline"

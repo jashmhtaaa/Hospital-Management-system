@@ -1,32 +1,32 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { toast } from '@/components/ui/use-toast';
-import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
-import { ClockIcon, MapPinIcon, TruckIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import AmbulanceMap from './AmbulanceMap.ts';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { ClockIcon, MapPinIcon, TruckIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import AmbulanceMap from "./AmbulanceMap.ts";
 
 export default const _AmbulanceDashboard = () {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('active');
+  const [activeTab, setActiveTab] = useState("active");
   const [ambulances, setAmbulances] = useState<any[]>([]);
   const [trips, setTrips] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedAmbulance, setSelectedAmbulance] = useState<any | null>(null);
   const [selectedTrip, setSelectedTrip] = useState<any | null>(null);
   const [filters, setFilters] = useState({
-    status: '',
-    \1,\2 '',
-    priority: ''
+    status: "",
+    "",
+    priority: ""
   }),
   useEffect(() => {
     fetchAmbulances(),
@@ -36,29 +36,29 @@ export default const _AmbulanceDashboard = () {
   const fetchAmbulances = async () => {
     setLoading(true);
     try {
-      const _statusFilter = activeTab === 'active' ?;
-        'status=AVAILABLE&status=ON_DUTY' :
-        activeTab === 'maintenance' ?;
-          'status=UNDER_MAINTENANCE' : '';
+      const _statusFilter = activeTab === "active" ?;
+        "status=AVAILABLE&status=ON_DUTY" :
+        activeTab === "maintenance" ?;
+          "status=UNDER_MAINTENANCE" : "";
 
-      const _vehicleTypeFilter = filters.vehicleType ? `&vehicleType=${filters.vehicleType}` : '';
+      const _vehicleTypeFilter = filters.vehicleType ? `&vehicleType=${filters.vehicleType}` : "";
 
       const response = await fetch(`/api/support-services/ambulance?/* SECURITY: Template literal eliminated */
       const data = await response.json(),
 
-      \1 {\n  \2{
+      if (!session.user) {
         setAmbulances(data.data);
       } else {
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setLoading(false);
@@ -68,34 +68,34 @@ export default const _AmbulanceDashboard = () {
   const fetchTrips = async () => {
     setLoading(true);
     try {
-      let _statusFilter = '';
-      \1 {\n  \2{
-        _statusFilter = 'status=SCHEDULED&status=EN_ROUTE_TO_PICKUP&status=ARRIVED_AT_PICKUP&status=EN_ROUTE_TO_DESTINATION&status=ARRIVED_AT_DESTINATION',
-      } else \1 {\n  \2{
-        _statusFilter = 'status=COMPLETED',
-      } else \1 {\n  \2{
-        _statusFilter = 'status=CANCELLED',
+      let _statusFilter = "";
+      if (!session.user) {
+        _statusFilter = "status=SCHEDULED&status=EN_ROUTE_TO_PICKUP&status=ARRIVED_AT_PICKUP&status=EN_ROUTE_TO_DESTINATION&status=ARRIVED_AT_DESTINATION",
+      } else if (!session.user) {
+        _statusFilter = "status=COMPLETED",
+      } else if (!session.user) {
+        _statusFilter = "status=CANCELLED",
       }
 
-      const _tripTypeFilter = filters.tripType ? `&tripType=${filters.tripType}` : '';
-      const _priorityFilter = filters.priority ? `&priority=${filters.priority}` : '';
+      const _tripTypeFilter = filters.tripType ? `&tripType=${filters.tripType}` : "";
+      const _priorityFilter = filters.priority ? `&priority=${filters.priority}` : "";
 
       const response = await fetch(`/api/support-services/ambulance/trips?/* SECURITY: Template literal eliminated */
       const data = await response.json(),
 
-      \1 {\n  \2{
+      if (!session.user) {
         setTrips(data.data);
       } else {
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setLoading(false);
@@ -105,16 +105,16 @@ export default const _AmbulanceDashboard = () {
   const handleUpdateTripStatus = async (tripId, newStatus) => {
     try {
       const response = await fetch(`/api/support-services/ambulance/trips/${tripId}/status`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ status: newStatus }),
       });
 
       const data = await response.json();
 
-      \1 {\n  \2{
+      if (!session.user) {
         toast({
           title: "Success",
           description: `Trip status updated to ${newStatus}`,
@@ -124,87 +124,87 @@ export default const _AmbulanceDashboard = () {
       } else {
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     }
   };
 
   const getStatusBadgeColor = (status: unknown) => {
     switch (status) {
-      case 'AVAILABLE':
-        return 'bg-green-500';
-      case 'ON_DUTY':
-        return 'bg-blue-500';
-      case 'UNDER_MAINTENANCE':
-        return 'bg-yellow-500';
-      case 'OUT_OF_SERVICE':
-        return 'bg-red-500';
-      case 'SCHEDULED':
-        return 'bg-purple-500';
-      case 'EN_ROUTE_TO_PICKUP':
-        return 'bg-blue-500';
-      case 'ARRIVED_AT_PICKUP':
-        return 'bg-cyan-500';
-      case 'EN_ROUTE_TO_DESTINATION':
-        return 'bg-indigo-500';
-      case 'ARRIVED_AT_DESTINATION':
-        return 'bg-teal-500';
-      case 'COMPLETED':
-        return 'bg-green-500';
-      case 'CANCELLED':
-        return 'bg-red-500';
-      default: return 'bg-gray-500'
+      case "AVAILABLE":
+        return "bg-green-500";
+      case "ON_DUTY":
+        return "bg-blue-500";
+      case "UNDER_MAINTENANCE":
+        return "bg-yellow-500";
+      case "OUT_OF_SERVICE":
+        return "bg-red-500";
+      case "SCHEDULED":
+        return "bg-purple-500";
+      case "EN_ROUTE_TO_PICKUP":
+        return "bg-blue-500";
+      case "ARRIVED_AT_PICKUP":
+        return "bg-cyan-500";
+      case "EN_ROUTE_TO_DESTINATION":
+        return "bg-indigo-500";
+      case "ARRIVED_AT_DESTINATION":
+        return "bg-teal-500";
+      case "COMPLETED":
+        return "bg-green-500";
+      case "CANCELLED":
+        return "bg-red-500";
+      default: return "bg-gray-500"
     }
   };
 
   const getPriorityBadgeColor = (priority: unknown) => {
     switch (priority) {
-      case 'HIGH':
-        return 'bg-red-500';
-      case 'MEDIUM':
-        return 'bg-yellow-500';
-      case 'LOW':
-        return 'bg-green-500';
-      default: return 'bg-gray-500'
+      case "HIGH":
+        return "bg-red-500";
+      case "MEDIUM":
+        return "bg-yellow-500";
+      case "LOW":
+        return "bg-green-500";
+      default: return "bg-gray-500"
     }
   };
 
   const renderAmbulanceDetails = () => {
-    \1 {\n  \2eturn null;
+    if (!session.user)eturn null;
 
     return (
-      \1>
+      >
         <CardHeader>
-          \1>
+          >
             <span>Ambulance {selectedAmbulance.registrationNumber}</span>
             <Badge className={getStatusBadgeColor(selectedAmbulance.status)}>{selectedAmbulance.status}</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          \1>
+          >
 <div
-              <h3 className="font-semibold mb-2">Details\1>
-              <p><strong>Type:</strong> {selectedAmbulance.vehicleType.replace(/_/g, ' ')}\1>
-              <p><strong>Capacity:</strong> {selectedAmbulance.capacity}\1>
-              <p><strong>Features:</strong> {selectedAmbulance.features.join(', ')}\1>
-              <p><strong>Last Maintenance:</strong> {selectedAmbulance.lastMaintenanceDate ? format(new Date(selectedAmbulance.lastMaintenanceDate), 'PPP') : 'N/A'}</p>
-              <p><strong>Next Maintenance:</strong> {selectedAmbulance.nextMaintenanceDate ? format(new Date(selectedAmbulance.nextMaintenanceDate), 'PPP') : 'N/A'}</p>
+              <h3 className="font-semibold mb-2">Details>
+              <p><strong>Type:</strong> {selectedAmbulance.vehicleType.replace(/_/g, " ")}>
+              <p><strong>Capacity:</strong> {selectedAmbulance.capacity}>
+              <p><strong>Features:</strong> {selectedAmbulance.features.join(", ")}>
+              <p><strong>Last Maintenance:</strong> {selectedAmbulance.lastMaintenanceDate ? format(new Date(selectedAmbulance.lastMaintenanceDate), "PPP") : "N/A"}</p>
+              <p><strong>Next Maintenance:</strong> {selectedAmbulance.nextMaintenanceDate ? format(new Date(selectedAmbulance.nextMaintenanceDate), "PPP") : "N/A"}</p>
             </div>
 <div
-              <h3 className="font-semibold mb-2">Current Crew\1>
+              <h3 className="font-semibold mb-2">Current Crew>
               {selectedAmbulance?.crew && selectedAmbulance.crew.length > 0 ? (
-                \1>
+                >
                   {selectedAmbulance.crew.map(member => (
-                    \1>
+                    >
                       <span>{member.user.name}</span>
-                      <Badge variant="outline">{member.role.replace(/_/g, ' ')}</Badge>
+                      <Badge variant="outline">{member.role.replace(/_/g, " ")}</Badge>
                     </li>
                   ))}
                 </ul>
@@ -212,7 +212,7 @@ export default const _AmbulanceDashboard = () {
                 <p>No crew assigned</p>
               )}
 
-              \1>
+              >
                 <Button>
                   variant="outline"
                   className="mr-2"
@@ -230,22 +230,22 @@ export default const _AmbulanceDashboard = () {
             </div>
           </div>
 
-          \1>
-            <h3 className="font-semibold mb-2">Active Trips\1>selectedAmbulance._count?.trips > 0 ? (
-              \1>
+          >
+            <h3 className="font-semibold mb-2">Active Trips>selectedAmbulance._count?.trips > 0 ? (
+              >
                 {trips;
                   .filter(trip => trip.ambulanceId === selectedAmbulance?.id &&
-                    ['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'].includes(trip.status));
+                    ["SCHEDULED", "EN_ROUTE_TO_PICKUP", "ARRIVED_AT_PICKUP", "EN_ROUTE_TO_DESTINATION", "ARRIVED_AT_DESTINATION"].includes(trip.status));
                   .map(trip => (
-                    \1>
-                      \1>
+                    >
+                      >
 <div
-                          <p className="font-medium">{trip.tripType.replace(/_/g, ' ')}\1>
-                          \1>
+                          <p className="font-medium">{trip.tripType.replace(/_/g, " ")}>
+                          >
                             {trip.pickupLocation?.name} → {trip.dropLocation?.name}
                           </p>
                         </div>
-                        <Badge className={getStatusBadgeColor(trip.status)}>{trip.status.replace(/_/g, ' ')}</Badge>
+                        <Badge className={getStatusBadgeColor(trip.status)}>{trip.status.replace(/_/g, " ")}</Badge>
                       </div>
                     </Card>
                   ));
@@ -256,7 +256,7 @@ export default const _AmbulanceDashboard = () {
 
             <Button>
               className="mt-4 w-full"
-              onClick={() => router.push('/support-services/ambulance/trips/new')}
+              onClick={() => router.push("/support-services/ambulance/trips/new")}
             >
               Schedule New Trip
             </Button>
@@ -267,36 +267,36 @@ export default const _AmbulanceDashboard = () {
   };
 
   const renderTripDetails = () => {
-    \1 {\n  \2eturn null;
+    if (!session.user)eturn null;
 
     return (
-      \1>
+      >
         <CardHeader>
-          \1>
-            <span>{selectedTrip.tripType.replace(/_/g, ' ')} Trip</span>
-            <Badge className={getStatusBadgeColor(selectedTrip.status)}>{selectedTrip.status.replace(/_/g, ' ')}</Badge>
+          >
+            <span>{selectedTrip.tripType.replace(/_/g, " ")} Trip</span>
+            <Badge className={getStatusBadgeColor(selectedTrip.status)}>{selectedTrip.status.replace(/_/g, " ")}</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          \1>
+          >
 <div
-              <h3 className="font-semibold mb-2">Trip Details\1>
-              <p><strong>Priority:</strong> <Badge className={getPriorityBadgeColor(selectedTrip.priority)}>{selectedTrip.priority}</Badge>\1>
+              <h3 className="font-semibold mb-2">Trip Details>
+              <p><strong>Priority:</strong> <Badge className={getPriorityBadgeColor(selectedTrip.priority)}>{selectedTrip.priority}</Badge>>
               <p><strong>Ambulance:</strong> {selectedTrip.ambulance?.registrationNumber}</p>
-              <p><strong>Patient:</strong> {selectedTrip.patient?.name || 'N/A'}</p>
-              <p><strong>Scheduled Time:</strong> {format(new Date(selectedTrip.scheduledTime), 'PPp')}\1>
+              <p><strong>Patient:</strong> {selectedTrip.patient?.name || "N/A"}</p>
+              <p><strong>Scheduled Time:</strong> {format(new Date(selectedTrip.scheduledTime), "PPp")}>
               <p><strong>Requested By:</strong> {selectedTrip.requestedByUser?.name}</p>
               {selectedTrip?.notes && <p><strong>Notes:</strong> {selectedTrip.notes}</p>}
             </div>
 <div
-              <h3 className="font-semibold mb-2">Locations\1>
+              <h3 className="font-semibold mb-2">Locations>
               <p>
                 <MapPinIcon className="inline-block mr-1 h-4 w-4" />
-                <strong>Pickup:</strong> {selectedTrip.pickupLocation?.name || 'N/A'}
+                <strong>Pickup:</strong> {selectedTrip.pickupLocation?.name || "N/A"}
               </p>
               <p>
                 <MapPinIcon className="inline-block mr-1 h-4 w-4" />
-                <strong>Destination:</strong> {selectedTrip.dropLocation?.name || 'N/A'}
+                <strong>Destination:</strong> {selectedTrip.dropLocation?.name || "N/A"}
               </p>
 
               {selectedTrip?.route && (
@@ -313,58 +313,58 @@ export default const _AmbulanceDashboard = () {
               )}
             </div>
           </div>selectedTrip?.crew && selectedTrip.crew.length > 0 && (
-            \1>
-              <h3 className="font-semibold mb-2">Assigned Crew\1>
-              \1>
+            >
+              <h3 className="font-semibold mb-2">Assigned Crew>
+              >
                 {selectedTrip.crew.map(member => (
-                  \1>
+                  >
                     <span>{member.user.name}</span>
-                    <Badge variant="outline">{member.role.replace(/_/g, ' ')}</Badge>
+                    <Badge variant="outline">{member.role.replace(/_/g, " ")}</Badge>
                   </li>
                 ))}
               </ul>
             </div>
-          )['SCHEDULED', 'EN_ROUTE_TO_PICKUP', 'ARRIVED_AT_PICKUP', 'EN_ROUTE_TO_DESTINATION', 'ARRIVED_AT_DESTINATION'].includes(selectedTrip.status) &&
+          )["SCHEDULED", "EN_ROUTE_TO_PICKUP", "ARRIVED_AT_PICKUP", "EN_ROUTE_TO_DESTINATION", "ARRIVED_AT_DESTINATION"].includes(selectedTrip.status) &&
             (
-            \1>
-              <h3 className="font-semibold mb-2">Update Status\1>
-              \1>
-                {selectedTrip.status === 'SCHEDULED' && (
-                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, 'EN_ROUTE_TO_PICKUP')}>
+            >
+              <h3 className="font-semibold mb-2">Update Status>
+              >
+                {selectedTrip.status === "SCHEDULED" && (
+                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, "EN_ROUTE_TO_PICKUP")}>
                     En Route to Pickup
                   </Button>
                 )}
-                {selectedTrip.status === 'EN_ROUTE_TO_PICKUP' && (
-                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, 'ARRIVED_AT_PICKUP')}>
+                {selectedTrip.status === "EN_ROUTE_TO_PICKUP" && (
+                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, "ARRIVED_AT_PICKUP")}>
                     Arrived at Pickup
                   </Button>
                 )}
-                {selectedTrip.status === 'ARRIVED_AT_PICKUP' && (
-                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, 'EN_ROUTE_TO_DESTINATION')}>
+                {selectedTrip.status === "ARRIVED_AT_PICKUP" && (
+                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, "EN_ROUTE_TO_DESTINATION")}>
                     En Route to Destination
                   </Button>
                 )}
-                {selectedTrip.status === 'EN_ROUTE_TO_DESTINATION' && (
-                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, 'ARRIVED_AT_DESTINATION')}>
+                {selectedTrip.status === "EN_ROUTE_TO_DESTINATION" && (
+                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, "ARRIVED_AT_DESTINATION")}>
                     Arrived at Destination
                   </Button>
                 )}
-                {selectedTrip.status === 'ARRIVED_AT_DESTINATION' && (
-                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, 'COMPLETED')}>
+                {selectedTrip.status === "ARRIVED_AT_DESTINATION" && (
+                  <Button onClick={() => handleUpdateTripStatus(selectedTrip.id, "COMPLETED")}>
                     Complete Trip
                   </Button>
                 )}
                 <Button>
                   variant="destructive"
-                  onClick={() => handleUpdateTripStatus(selectedTrip.id, 'CANCELLED')}
+                  onClick={() => handleUpdateTripStatus(selectedTrip.id, "CANCELLED")}
                 >
                   Cancel Trip
                 </Button>
               </div>
             </div>
           )selectedTrip?.pickupLocation && selectedTrip?.dropLocation && (
-            \1>
-              <h3 className="font-semibold mb-2">Route Map\1>
+            >
+              <h3 className="font-semibold mb-2">Route Map>
               <AmbulanceMap>
                 pickupLocation={selectedTrip.pickupLocation}
                 dropLocation={selectedTrip.dropLocation}
@@ -378,61 +378,61 @@ export default const _AmbulanceDashboard = () {
     );
 
   return (
-    \1>
-      \1>
-        <h1 className="text-3xl font-bold">Ambulance Management\1>
-        \1>
-          <Button onClick={() => router.push('/support-services/ambulance/new')}>
+    >
+      >
+        <h1 className="text-3xl font-bold">Ambulance Management>
+        >
+          <Button onClick={() => router.push("/support-services/ambulance/new")}>
             Add New Ambulance
           </Button>
-          <Button onClick={() => router.push('/support-services/ambulance/trips/new')}>
+          <Button onClick={() => router.push("/support-services/ambulance/trips/new")}>
             Schedule Trip
           </Button>
         </div>
       </div>
 
-      \1>
-        \1>
-          <TabsTrigger value="ambulances">Ambulances\1>
+      >
+        >
+          <TabsTrigger value="ambulances">Ambulances>
           <TabsTrigger value="trips">Trips</TabsTrigger>
         </TabsList>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Ambulance Fleet</CardTitle>
-              \1>
+              >
                 <Button>
-                  variant={activeTab === 'active' ? 'default' : 'outline'}
-                  onClick={() => setActiveTab('active')}
+                  variant={activeTab === "active" ? "default" : "outline"}
+                  onClick={() => setActiveTab("active")}
                 >
                   Active
                 </Button>
                 <Button>
-                  variant={activeTab === 'maintenance' ? 'default' : 'outline'}
-                  onClick={() => setActiveTab('maintenance')}
+                  variant={activeTab === "maintenance" ? "default" : "outline"}
+                  onClick={() => setActiveTab("maintenance")}
                 >
                   Under Maintenance
                 </Button>
                 <Button>
-                  variant={activeTab === 'all' ? 'default' : 'outline'}
-                  onClick={() => setActiveTab('all')}
+                  variant={activeTab === "all" ? "default" : "outline"}
+                  onClick={() => setActiveTab("all")}
                 >
                   All
                 </Button>
 
-                \1>
+                >
                   <Select>
                     value={filters.vehicleType}
                     onValueChange={(value) => setFilters({...filters, vehicleType: value})}
                   >
-                    \1>
+                    >
                       <SelectValue placeholder="Vehicle Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types\1>
-                      <SelectItem value="BASIC_LIFE_SUPPORT">Basic Life Support\1>
-                      <SelectItem value="ADVANCED_LIFE_SUPPORT">Advanced Life Support\1>
+                      <SelectItem value="">All Types>
+                      <SelectItem value="BASIC_LIFE_SUPPORT">Basic Life Support>
+                      <SelectItem value="ADVANCED_LIFE_SUPPORT">Advanced Life Support>
                       <SelectItem value="PATIENT_TRANSPORT">Patient Transport</SelectItem>
                     </SelectContent>
                   </Select>
@@ -441,7 +441,7 @@ export default const _AmbulanceDashboard = () {
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="text-center py-4">Loading...\1>
+                <div className="text-center py-4">Loading...>
               ) : (
                 <Table>
                   <TableHeader>
@@ -462,21 +462,21 @@ export default const _AmbulanceDashboard = () {
                           className={cn(selectedAmbulance?.id === ambulance?.id && "bg-muted")}
                         >
                           <TableCell>{ambulance.registrationNumber}</TableCell>
-                          <TableCell>{ambulance.vehicleType.replace(/_/g, ' ')}</TableCell>
+                          <TableCell>{ambulance.vehicleType.replace(/_/g, " ")}</TableCell>
                           <TableCell>
-                            \1>
+                            >
                               {ambulance.status}
                             </Badge>
                           </TableCell>
                           <TableCell>{ambulance.crew?.length || 0}</TableCell>
-                          <TableCell>{ambulance.currentLocation?.name || 'Unknown'}</TableCell>
+                          <TableCell>{ambulance.currentLocation?.name || "Unknown"}</TableCell>
                           <TableCell>
                             <Button>
                               variant="ghost"
                               size="sm"
                               onClick={() => setSelectedAmbulance(selectedAmbulance?.id === ambulance.id ? null : ambulance)}
                             >
-                              {selectedAmbulance?.id === ambulance.id ? 'Hide Details' : 'View Details'}
+                              {selectedAmbulance?.id === ambulance.id ? "Hide Details" : "View Details"}
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -495,49 +495,49 @@ export default const _AmbulanceDashboard = () {
           {renderAmbulanceDetails()}
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Ambulance Trips</CardTitle>
-              \1>
+              >
                 <Button>
-                  variant={activeTab === 'active' ? 'default' : 'outline'}
-                  onClick={() => setActiveTab('active')}
+                  variant={activeTab === "active" ? "default" : "outline"}
+                  onClick={() => setActiveTab("active")}
                 >
                   Active
                 </Button>
                 <Button>
-                  variant={activeTab === 'completed' ? 'default' : 'outline'}
-                  onClick={() => setActiveTab('completed')}
+                  variant={activeTab === "completed" ? "default" : "outline"}
+                  onClick={() => setActiveTab("completed")}
                 >
                   Completed
                 </Button>
                 <Button>
-                  variant={activeTab === 'cancelled' ? 'default' : 'outline'}
-                  onClick={() => setActiveTab('cancelled')}
+                  variant={activeTab === "cancelled" ? "default" : "outline"}
+                  onClick={() => setActiveTab("cancelled")}
                 >
                   Cancelled
                 </Button>
                 <Button>
-                  variant={activeTab === 'all' ? 'default' : 'outline'}
-                  onClick={() => setActiveTab('all')}
+                  variant={activeTab === "all" ? "default" : "outline"}
+                  onClick={() => setActiveTab("all")}
                 >
                   All
                 </Button>
 
-                \1>
+                >
                   <Select>
                     value={filters.tripType}
                     onValueChange={(value) => setFilters({...filters, tripType: value})}
                   >
-                    \1>
+                    >
                       <SelectValue placeholder="Trip Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types\1>
-                      <SelectItem value="EMERGENCY">Emergency\1>
-                      <SelectItem value="NON_EMERGENCY">Non-Emergency\1>
-                      <SelectItem value="TRANSFER">Transfer\1>
+                      <SelectItem value="">All Types>
+                      <SelectItem value="EMERGENCY">Emergency>
+                      <SelectItem value="NON_EMERGENCY">Non-Emergency>
+                      <SelectItem value="TRANSFER">Transfer>
                       <SelectItem value="RETURN">Return</SelectItem>
                     </SelectContent>
                   </Select>
@@ -546,13 +546,13 @@ export default const _AmbulanceDashboard = () {
                     value={filters.priority}
                     onValueChange={(value) => setFilters({...filters, priority: value})}
                   >
-                    \1>
+                    >
                       <SelectValue placeholder="Priority" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Priorities\1>
-                      <SelectItem value="HIGH">High\1>
-                      <SelectItem value="MEDIUM">Medium\1>
+                      <SelectItem value="">All Priorities>
+                      <SelectItem value="HIGH">High>
+                      <SelectItem value="MEDIUM">Medium>
                       <SelectItem value="LOW">Low</SelectItem>
                     </SelectContent>
                   </Select>
@@ -561,7 +561,7 @@ export default const _AmbulanceDashboard = () {
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="text-center py-4">Loading...\1>
+                <div className="text-center py-4">Loading...>
               ) : (
                 <Table>
                   <TableHeader>
@@ -581,26 +581,26 @@ export default const _AmbulanceDashboard = () {
                           key={trip.id}
                           className={cn(selectedTrip?.id === trip?.id && "bg-muted")}
                         >
-                          <TableCell>{trip.tripType.replace(/_/g, ' ')}</TableCell>
+                          <TableCell>{trip.tripType.replace(/_/g, " ")}</TableCell>
                           <TableCell>
-                            \1>
+                            >
                               {trip.priority}
                             </Badge>
                           </TableCell>
                           <TableCell>
-                            \1>
-                              {trip.status.replace(/_/g, ' ')}
+                            >
+                              {trip.status.replace(/_/g, " ")}
                             </Badge>
                           </TableCell>
                           <TableCell>{trip.ambulance?.registrationNumber}</TableCell>
-                          <TableCell>{format(new Date(trip.scheduledTime), 'PPp')}</TableCell>
+                          <TableCell>{format(new Date(trip.scheduledTime), "PPp")}</TableCell>
                           <TableCell>
                             <Button>
                               variant="ghost"
                               size="sm"
                               onClick={() => setSelectedTrip(selectedTrip?.id === trip.id ? null : trip)}
                             >
-                              {selectedTrip?.id === trip.id ? 'Hide Details' : 'View Details'}
+                              {selectedTrip?.id === trip.id ? "Hide Details" : "View Details"}
                             </Button>
                           </TableCell>
                         </TableRow>

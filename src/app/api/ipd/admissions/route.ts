@@ -27,11 +27,11 @@ export const GET = async (request: NextRequest) => {
     // Populate filters from searchParams
     for (const [key, value] of searchParams.entries()) {
       // Ensure only valid filter keys are added
-      \1 {\n  \2
+      if (!session.user)
       ) {
         const filterKey = key as keyof AdmissionFilters;
-        \1 {\n  \2{
-          \1 {\n  \2ilters[filterKey] = value;else 
+        if (!session.user) {
+          if (!session.user)ilters[filterKey] = value;else 
         } else {
           filters[filterKey] = value;
         }
@@ -39,9 +39,9 @@ export const GET = async (request: NextRequest) => {
     }
 
     // If an ID is provided, attempt to fetch a single admission
-    \1 {\n  \2{
+    if (!session.user) {
       const id = Number.parseInt(admissionId);
-      \1 {\n  \2| id <= 0) {
+      if (!session.user)| id <= 0) {
         return NextResponse.json(
           { error: "Invalid admission ID provided" },
           { status: 400 }
@@ -49,7 +49,7 @@ export const GET = async (request: NextRequest) => {
       } else {
         // Simulate fetching a single admission by ID
         const admission = await getAdmissionByIdFromDB(id);
-        \1 {\n  \2{
+        if (!session.user) {
           return NextResponse.json(
             { error: "Admission not found" },
             { status: 404 }
@@ -86,7 +86,7 @@ export const POST = async (request: NextRequest) => {
 
     // FIX: Update validation based on CreateAdmissionData fields (patient_id is required)
     // Assuming other fields like diagnosis, attending_doctor_id might also be required by CreateAdmissionData
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields
         { status: 400 }
@@ -123,7 +123,7 @@ export const PUT = async (request: NextRequest) => {
     const idString = path.split("/").pop();
     const id = idString ? Number.parseInt(idString) : 0;
 
-    \1 {\n  \2| id <= 0) {
+    if (!session.user)| id <= 0) {
       return NextResponse.json(
         { error: "Invalid or missing admission ID in URL path" },
         { status: 400 }
@@ -136,7 +136,7 @@ export const PUT = async (request: NextRequest) => {
     // Simulate updating the admission in the database
     const updatedAdmission = await updateAdmissionInDB(id, updateData);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Admission not found or update failed" },
         { status: 404 }

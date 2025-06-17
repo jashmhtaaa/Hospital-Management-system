@@ -1,12 +1,12 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { biomedicalService } from '@/lib/hr/biomedical-service';
+import { biomedicalService } from "@/lib/hr/biomedical-service";
 // Schema for biomedical equipment creation
 const biomedicalSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  equipmentType: z.enum(['DIAGNOSTIC', 'THERAPEUTIC', 'MONITORING', 'LABORATORY', 'SURGICAL', 'LIFE_SUPPORT', 'OTHER'], {
+  equipmentType: z.enum(["DIAGNOSTIC", "THERAPEUTIC", "MONITORING", "LABORATORY", "SURGICAL", "LIFE_SUPPORT", "OTHER"], {
     errorMap: () => ({ message: "Invalid equipment type" }),
   }),
   serialNumber: z.string().optional(),
@@ -22,17 +22,17 @@ const biomedicalSchema = z.object({
   location: z.string().optional(),
   departmentId: z.string().optional(),
   assignedToId: z.string().optional(),
-  status: z.enum(['AVAILABLE', 'IN_USE', 'UNDER_MAINTENANCE', 'DISPOSED', 'LOST'], {
+  status: z.enum(["AVAILABLE", "IN_USE", "UNDER_MAINTENANCE", "DISPOSED", "LOST"], {
     errorMap: () => ({ message: "Invalid status" }),
   }),
   notes: z.string().optional(),
   tags: z.array(z.string()).optional();
   // Biomedical specific fields
   deviceIdentifier: z.string().optional(),
-  regulatoryClass: z.enum(['CLASS_I', 'CLASS_II', 'CLASS_III'], {
+  regulatoryClass: z.enum(["CLASS_I", "CLASS_II", "CLASS_III"], {
     errorMap: () => ({ message: "Invalid regulatory class" }),
   }).optional(),
-  riskLevel: z.enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], {
+  riskLevel: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"], {
     errorMap: () => ({ message: "Invalid risk level" }),
   }).optional(),
   lastCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
@@ -58,7 +58,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = biomedicalSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -71,8 +71,8 @@ export const _POST = async (request: NextRequest) => {
     const biomedicalData = {
       ...data,
       purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
-      \1,\2 data.lastCalibrationDate ? new Date(data.lastCalibrationDate) : undefined,
-      \1,\2 data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined
+      data.lastCalibrationDate ? new Date(data.lastCalibrationDate) : undefined,
+      data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined
     };
 
     // Create biomedical equipment
@@ -94,17 +94,17 @@ export const _GET = async (request: NextRequest) => {
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters
-    const skip = Number.parseInt(searchParams.get('skip') || '0');
-    const take = Number.parseInt(searchParams.get('take') || '10');
+    const skip = Number.parseInt(searchParams.get("skip") || "0");
+    const take = Number.parseInt(searchParams.get("take") || "10");
 
     // Parse filter parameters
-    const search = searchParams.get('search') || undefined;
-    const equipmentType = searchParams.get('equipmentType') as any || undefined;
-    const status = searchParams.get('status') as any || undefined;
-    const departmentId = searchParams.get('departmentId') || undefined;
-    const regulatoryClass = searchParams.get('regulatoryClass') as any || undefined;
-    const riskLevel = searchParams.get('riskLevel') as any || undefined;
-    const calibrationDue = searchParams.get('calibrationDue') === 'true';
+    const search = searchParams.get("search") || undefined;
+    const equipmentType = searchParams.get("equipmentType") as any || undefined;
+    const status = searchParams.get("status") as any || undefined;
+    const departmentId = searchParams.get("departmentId") || undefined;
+    const regulatoryClass = searchParams.get("regulatoryClass") as any || undefined;
+    const riskLevel = searchParams.get("riskLevel") as any || undefined;
+    const calibrationDue = searchParams.get("calibrationDue") === "true";
 
     // Get biomedical equipment
     const result = await biomedicalService.listBiomedicalEquipment({

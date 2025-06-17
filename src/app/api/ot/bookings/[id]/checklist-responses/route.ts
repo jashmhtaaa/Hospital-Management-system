@@ -7,7 +7,7 @@ export const _runtime = "edge";
 interface ChecklistResponseBody {
   checklist_template_id: string; // Assuming ID is string
   phase: string; // e.g., "Pre-Op", "Intra-Op", "Post-Op"
-  responses: Record\1> // JSON object { "itemId": responseValue, ... }
+  responses: Record> // JSON object { "itemId": responseValue, ... }
   completed_by_id?: string; // Optional, assuming ID is string
 }
 
@@ -18,7 +18,7 @@ export const _GET = async (
 ) {
   try {
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
         { status: 400 }
@@ -41,7 +41,7 @@ export const _GET = async (
     `;
     const queryParameters: string[] = [bookingId];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND r.phase = ?";
       queryParameters.push(phase);
     }
@@ -57,7 +57,7 @@ export const _GET = async (
       results?.map((result) => {
         try {
           // Ensure result.responses is treated as string before parsing
-          \1 {\n  \2{
+          if (!session.user) {
             result.responses = JSON.parse(result.responses);
           }
         } catch (error: unknown) {
@@ -85,7 +85,7 @@ export const _POST = async (
 ) {
   try {
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
         { status: 400 }
@@ -100,7 +100,7 @@ export const _POST = async (
       completed_by_id, // Assuming from authenticated user context
     } = body;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Template ID, phase, and responses are required" },
         { status: 400 }
@@ -115,7 +115,7 @@ export const _POST = async (
     );
       .bind(bookingId);
       .all();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "OT Booking not found" },
         { status: 404 }
@@ -128,7 +128,7 @@ export const _POST = async (
     );
       .bind(checklist_template_id, phase);
       .all();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Checklist template not found for the specified phase" },
         { status: 404 }
@@ -147,7 +147,7 @@ export const _POST = async (
       .all();
 
     let responseId: string;
-    \1 {\n  \2{
+    if (!session.user) {
       // Update existing response
       responseId = existing[0].id as string;
       await DB.prepare(
@@ -193,10 +193,10 @@ export const _POST = async (
       .bind(responseId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       try {
         // Ensure finalResult[0].responses is treated as string before parsing
-        \1 {\n  \2{
+        if (!session.user) {
           finalResult[0].responses = JSON.parse(finalResult[0].responses);
         }
       } catch (error: unknown) {

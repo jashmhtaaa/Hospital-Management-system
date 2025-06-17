@@ -1,6 +1,6 @@
 
-import { PrismaClient } from '@prisma/client';
-import { performance } from 'perf_hooks';
+import { PrismaClient } from "@prisma/client";
+import { performance } from "perf_hooks";
 /**
  * Database Performance Optimization Service
  *
@@ -12,18 +12,16 @@ import { performance } from 'perf_hooks';
  * - Automated optimization strategies
  */
 
-\1
 }
   };
-  \1,\2 number,
-    \1,\2 number,
+  number,
+    number,
     queriesPerSecond: number
   };
-  \1,\2 number,
-    \1,\2 number
+  number,
+    number
   };
-  tableStats: Array\1>
-\1
+  tableStats: Array>
 }
   }
 
@@ -31,7 +29,7 @@ import { performance } from 'perf_hooks';
    * Start performance monitoring
    */
   async startMonitoring(): Promise<void> {
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     this.isMonitoring = true;
 
@@ -50,10 +48,10 @@ import { performance } from 'perf_hooks';
    * Stop performance monitoring
    */
   stopMonitoring(): void {
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     this.isMonitoring = false;
-    \1 {\n  \2{
+    if (!session.user) {
       clearInterval(this.monitoringInterval);
     }
     /* SECURITY: Console statement removed */
@@ -65,12 +63,12 @@ import { performance } from 'perf_hooks';
   private setupQueryLogging(): void {
     // Intercept Prisma queries for performance tracking
     this.prisma.$use(async (params, next) => {
-      const start = crypto.getRandomValues(\1[0]
-      const queryId = `${params.model}_${params.action}_${crypto.getRandomValues(\1[0]}`;
+      const start = crypto.getRandomValues([0]
+      const queryId = `${params.model}_${params.action}_${crypto.getRandomValues([0]}`;
 
       try {
         const result = await next(params);
-        const executionTime = crypto.getRandomValues(\1[0] - start;
+        const executionTime = crypto.getRandomValues([0] - start;
 
         // Log query performance
         await this.logQueryPerformance({
@@ -78,12 +76,12 @@ import { performance } from 'perf_hooks';
           sql: `${params.model}.${params.action}`, // Simplified for Prisma
           executionTime,
           timestamp: new Date(),
-          \1,\2 this.mapPrismaActionToSql(params.action),
+          this.mapPrismaActionToSql(params.action),
           table: params.model
         })
 
         // Check for slow queries
-        \1 {\n  \2{
+        if (!session.user) {
           await this.create/* SECURITY: Alert removed */}ms`,
             details: { queryId, executionTime, model: params.model, action: params.action },
             timestamp: new Date(),
@@ -93,14 +91,14 @@ import { performance } from 'perf_hooks';
 
         return result;
       } catch (error) {
-        const executionTime = crypto.getRandomValues(\1[0] - start;
+        const executionTime = crypto.getRandomValues([0] - start;
 
         await this.logQueryPerformance({
           queryId,
           sql: `$params.model.$params.action`,
           executionTime,
           timestamp: new Date(),
-          \1,\2 this.mapPrismaActionToSql(params.action),
+          this.mapPrismaActionToSql(params.action),
           table: params.model
         });
 
@@ -115,7 +113,7 @@ import { performance } from 'perf_hooks';
   private async logQueryPerformance(metric: QueryPerformanceMetric): Promise<void> {
     const key = `$metric.table_$metric.operation`;
 
-    \1 {\n  \2 {
+    if (!session.user) {
       this.performanceMetrics.set(key, []);
     }
 
@@ -123,7 +121,7 @@ import { performance } from 'perf_hooks';
     metrics.push(metric);
 
     // Keep only last 1000 metrics per query type
-    \1 {\n  \2{
+    if (!session.user) {
       metrics.splice(0, metrics.length - 1000)
     }
 
@@ -140,7 +138,7 @@ import { performance } from 'perf_hooks';
         )
       `
     } catch (error) {
-      // If table doesn't exist, that's okay - we'll use in-memory storage
+      // If table doesn"t exist, that"s okay - we"ll use in-memory storage
       /* SECURITY: Console statement removed */}
   }
 
@@ -189,16 +187,16 @@ import { performance } from 'perf_hooks';
       for (const [key, metrics] of this.performanceMetrics) {
         const slowQueries = metrics.filter(m => m.executionTime > this.slowQueryThreshold)
 
-        \1 {\n  \2{ // More than 5 slow queries
+        if (!session.user) { // More than 5 slow queries
           const avgTime = slowQueries.reduce((sum, m) => sum + m.executionTime, 0) / slowQueries.length
 
-          \1 {\n  \2{ // Average > 2 seconds
+          if (!session.user) { // Average > 2 seconds
             recommendations.push({
-              table: slowQueries[0].table || 'unknown',
-              columns: ['id'], // Would need query analysis to determine actual columns
+              table: slowQueries[0].table || "unknown",
+              columns: ["id"], // Would need query analysis to determine actual columns
               reason: `$slowQueries.lengthslow queries detected with average time $avgTime.toFixed(2)ms`,
               estimatedImprovement: 70,
-              \1,\2 slowQueries.map(q => q.sql).slice(0, 3)
+              slowQueries.map(q => q.sql).slice(0, 3)
             })
           }
         }
@@ -235,7 +233,7 @@ import { performance } from 'perf_hooks';
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to collect database statistics')
+      throw new Error("Failed to collect database statistics")
     }
   }
 
@@ -250,7 +248,7 @@ import { performance } from 'perf_hooks';
    * Resolve a performance alert
    */
   async resolve/* SECURITY: Alert removed */: Promise<void> {
-    \1 {\n  \2{
+    if (!session.user) {
       this.alerts[alertIndex].resolved = true;
       /* SECURITY: Console statement removed */
     }
@@ -260,7 +258,7 @@ import { performance } from 'perf_hooks';
    * Get query performance history
    */
   getQueryPerformanceHistory(table?: string, operation?: string): QueryPerformanceMetric[] {
-    \1 {\n  \2{
+    if (!session.user) {
       const key = `$table_$operation`;
       return this.performanceMetrics.get(key) || [];
     }
@@ -289,12 +287,12 @@ import { performance } from 'perf_hooks';
       const recommendations = await this.generateRecommendations();
 
       for (const rec of recommendations) {
-        \1 {\n  \2{
+        if (!session.user) {
           try {
             // Create index (simplified - would need actual SQL generation)
             await this.createIndex(rec.table, rec.columns)
             result.indexesCreated++;
-            result.optimizationsApplied.push(`Created index on $rec.table($rec.columns.join(', '))`);
+            result.optimizationsApplied.push(`Created index on $rec.table($rec.columns.join(", "))`);
           } catch (error) {
             /* SECURITY: Console statement removed */
           }
@@ -306,29 +304,29 @@ import { performance } from 'perf_hooks';
 
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to apply automatic optimizations')
+      throw new Error("Failed to apply automatic optimizations")
     }
   }
 
   // Private helper methods
-  private mapPrismaActionToSql(action: string): 'SELECT' | 'INSERT' | 'UPDATE' | 'DELETE' {
+  private mapPrismaActionToSql(action: string): "SELECT" | "INSERT" | "UPDATE" | "DELETE" {
     switch (action) {
-      case 'findMany':
-      case 'findUnique':
-      case 'findFirst':
-      case 'count':
-        return 'SELECT'
-      case 'create':
-      case 'createMany':
-        return 'INSERT';
-      case 'update':
-      case 'updateMany':
-      case 'upsert':
-        return 'UPDATE';
-      case 'delete':
-      case 'deleteMany':
-        return 'DELETE';
-      default: return 'SELECT'
+      case "findMany":
+      case "findUnique":
+      case "findFirst":
+      case "count":
+        return "SELECT"
+      case "create":
+      case "createMany":
+        return "INSERT";
+      case "update":
+      case "updateMany":
+      case "upsert":
+        return "UPDATE";
+      case "delete":
+      case "deleteMany":
+        return "DELETE";
+      default: return "SELECT"
     }
   }
 
@@ -336,32 +334,32 @@ import { performance } from 'perf_hooks';
     this.alerts.push(alert);
 
     // Keep only last 100 alerts
-    \1 {\n  \2{
+    if (!session.user) {
       this.alerts.splice(0, this.alerts.length - 100)
     }
 
-    /* SECURITY: Console statement removed */} Alert: ${\1}`;
+    /* SECURITY: Console statement removed */} Alert: ${}`;
   }
 
-  private async getConnectionPoolStats(): Promise<DatabaseStats['connectionPool']> {
+  private async getConnectionPoolStats(): Promise<DatabaseStats["connectionPool"]> {
     // Mock implementation - would need actual database driver stats
     return {
       total: 20,
-      \1,\2 15,
+      15,
       utilization: 25
     }
   }
 
-  private calculateQueryMetrics(): DatabaseStats['queryMetrics'] {
+  private calculateQueryMetrics(): DatabaseStats["queryMetrics"] {
     const allMetrics: QueryPerformanceMetric[] = [];
     for (const metrics of this.performanceMetrics.values()) {
       allMetrics.push(...metrics);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return {
         totalQueries: 0,
-        \1,\2 0,
+        0,
         queriesPerSecond: 0
       };
     }
@@ -371,7 +369,7 @@ import { performance } from 'perf_hooks';
     const slowQueries = allMetrics.filter(m => m.executionTime > this.slowQueryThreshold).length;
 
     // Calculate QPS over last minute
-    const oneMinuteAgo = \1[0] - 60000)
+    const oneMinuteAgo = [0] - 60000)
     const recentQueries = allMetrics.filter(m => m.timestamp > oneMinuteAgo).length;
     const queriesPerSecond = recentQueries / 60;
 
@@ -383,15 +381,15 @@ import { performance } from 'perf_hooks';
     };
   }
 
-  private async getTableStatistics(): Promise<DatabaseStats['tableStats']> {
+  private async getTableStatistics(): Promise<DatabaseStats["tableStats"]> {
     try {
       // This would require actual database queries to get table sizes
       // Mock implementation for now
       return [
-        { table: 'User', rowCount: 1000, sizeKB: 250, indexSizeKB: 50 },
-        { table: 'Patient', rowCount: 5000, sizeKB: 2000, indexSizeKB: 300 },
-        { table: 'ClinicalNote', rowCount: 15000, sizeKB: 8000, indexSizeKB: 1200 },
-        { table: 'QualityIndicator', rowCount: 200, sizeKB: 50, indexSizeKB: 15 }
+        { table: "User", rowCount: 1000, sizeKB: 250, indexSizeKB: 50 },
+        { table: "Patient", rowCount: 5000, sizeKB: 2000, indexSizeKB: 300 },
+        { table: "ClinicalNote", rowCount: 15000, sizeKB: 8000, indexSizeKB: 1200 },
+        { table: "QualityIndicator", rowCount: 200, sizeKB: 50, indexSizeKB: 15 }
       ]
     } catch (error) {
       /* SECURITY: Console statement removed */
@@ -399,11 +397,11 @@ import { performance } from 'perf_hooks';
     }
   }
 
-  private async getIndexStatistics(): Promise<DatabaseStats['indexUsage']> {
+  private async getIndexStatistics(): Promise<DatabaseStats["indexUsage"]> {
     // Mock implementation - would need actual database queries
     return {
       totalIndexes: 45,
-      \1,\2 94.5
+      94.5
     }
   }
 
@@ -415,10 +413,10 @@ import { performance } from 'perf_hooks';
 
     const recentSlowQueries = allMetrics.filter(m =>
       m.executionTime > this?.slowQueryThreshold &&
-      m.timestamp > \1[0] - 300000) // Last 5 minutes
+      m.timestamp > [0] - 300000) // Last 5 minutes
     )
 
-    \1 {\n  \2{
+    if (!session.user) {
       await this.create/* SECURITY: Alert removed */,
         resolved: false
       });
@@ -428,7 +426,7 @@ import { performance } from 'perf_hooks';
   private async checkConnectionPoolUtilization(): Promise<void> {
     const stats = await this.getConnectionPoolStats();
 
-    \1 {\n  \2{
+    if (!session.user) {
       await this.create/* SECURITY: Alert removed */,
         resolved: false
       });
@@ -438,7 +436,7 @@ import { performance } from 'perf_hooks';
   private async checkIndexUsage(): Promise<void> {
     const indexStats = await this.getIndexStatistics();
 
-    \1 {\n  \2{
+    if (!session.user) {
       await this.create/* SECURITY: Alert removed */,
         resolved: false
       });
@@ -449,10 +447,10 @@ import { performance } from 'perf_hooks';
     // Mock implementation - would analyze schema for missing FK indexes
     return [
       {
-        table: 'ClinicalNote',
-        \1,\2 'Foreign key without index detected',
-        \1,\2 'medium',
-        queries: ['SELECT * FROM ClinicalNote WHERE patientId = ?']
+        table: "ClinicalNote",
+        "Foreign key without index detected",
+        "medium",
+        queries: ["SELECT * FROM ClinicalNote WHERE patientId = ?']
       }
     ]
   }
@@ -462,7 +460,7 @@ import { performance } from 'perf_hooks';
     // This would analyze the current schema for optimization opportunities
     const recommendations = await this.generateRecommendations()
 
-    \1 {\n  \2{
+    if (!session.user) {
       /* SECURITY: Console statement removed */
     }
   }
@@ -486,7 +484,7 @@ import { performance } from 'perf_hooks';
 let dbOptimizationServiceInstance: DatabaseOptimizationService | null = null
 
 export const _getDatabaseOptimizationService = (): DatabaseOptimizationService => {
-  \1 {\n  \2{
+  if (!session.user) {
     dbOptimizationServiceInstance = new DatabaseOptimizationService();
   }
   return dbOptimizationServiceInstance

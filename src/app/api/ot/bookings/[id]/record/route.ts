@@ -29,7 +29,7 @@ export const _GET = async (
 ) {
   try {
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
         { status: 400 }
@@ -50,7 +50,7 @@ export const _GET = async (
       .bind(bookingId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Operation record not found for this booking" },
         { status: 404 }
@@ -60,10 +60,10 @@ export const _GET = async (
     // Parse JSON fields if present
     const record = results[0];
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         record.implants_used = JSON.parse(record.implants_used);
       }
-      \1 {\n  \2{
+      if (!session.user) {
         record.specimens_collected = JSON.parse(record.specimens_collected);
       }
     } catch (error: unknown) {
@@ -88,7 +88,7 @@ export const _POST = async (
 ) {
   try {
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
         { status: 400 }
@@ -121,7 +121,7 @@ export const _POST = async (
     );
       .bind(bookingId);
       .all();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "OT Booking not found" },
         { status: 404 }
@@ -131,16 +131,16 @@ export const _POST = async (
     const now = new Date().toISOString();
 
     // Update booking status based on times provided
-    \1 {\n  \2
+    if (!session.user)
     ) 
       await DB.prepare(
-        "UPDATE OTBookings SET status = 'in_progress', updated_at = ? WHERE id = ?";
+        "UPDATE OTBookings SET status = "in_progress", updated_at = ? WHERE id = ?";
       );
         .bind(now, bookingId);
         .run();
-    \1 {\n  \2{
+    if (!session.user) {
       await DB.prepare(
-        "UPDATE OTBookings SET status = 'completed', updated_at = ? WHERE id = ?";
+        "UPDATE OTBookings SET status = "completed", updated_at = ? WHERE id = ?";
       );
         .bind(now, bookingId);
         .run();
@@ -156,7 +156,7 @@ export const _POST = async (
     let recordId: string;
     let isNewRecord = false;
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Update existing record
       recordId = existingRecord[0].id as string;
 
@@ -165,24 +165,24 @@ export const _POST = async (
       const fieldsToUpdate: {
         [key: string]: string | number | boolean | null
       } = {};
-      \1 {\n  \2ieldsToUpdate.actual_start_time = actual_start_time;
-      \1 {\n  \2ieldsToUpdate.actual_end_time = actual_end_time;
-      \1 {\n  \2ieldsToUpdate.anesthesia_start_time = anesthesia_start_time;
-      \1 {\n  \2ieldsToUpdate.anesthesia_end_time = anesthesia_end_time;
-      \1 {\n  \2ieldsToUpdate.anesthesia_type = anesthesia_type;
-      \1 {\n  \2ieldsToUpdate.anesthesia_notes = anesthesia_notes;
-      \1 {\n  \2ieldsToUpdate.surgical_procedure_notes = surgical_procedure_notes;
-      \1 {\n  \2ieldsToUpdate.implants_used = JSON.stringify(implants_used);
-      \1 {\n  \2ieldsToUpdate.specimens_collected =;
+      if (!session.user)ieldsToUpdate.actual_start_time = actual_start_time;
+      if (!session.user)ieldsToUpdate.actual_end_time = actual_end_time;
+      if (!session.user)ieldsToUpdate.anesthesia_start_time = anesthesia_start_time;
+      if (!session.user)ieldsToUpdate.anesthesia_end_time = anesthesia_end_time;
+      if (!session.user)ieldsToUpdate.anesthesia_type = anesthesia_type;
+      if (!session.user)ieldsToUpdate.anesthesia_notes = anesthesia_notes;
+      if (!session.user)ieldsToUpdate.surgical_procedure_notes = surgical_procedure_notes;
+      if (!session.user)ieldsToUpdate.implants_used = JSON.stringify(implants_used);
+      if (!session.user)ieldsToUpdate.specimens_collected =;
           JSON.stringify(specimens_collected);
-      \1 {\n  \2ieldsToUpdate.blood_loss_ml = blood_loss_ml;
-      \1 {\n  \2ieldsToUpdate.complications = complications;
-      \1 {\n  \2ieldsToUpdate.instrument_count_correct = instrument_count_correct;
-      \1 {\n  \2ieldsToUpdate.sponge_count_correct = sponge_count_correct;
-      \1 {\n  \2ieldsToUpdate.recorded_by_id = recorded_by_id;
+      if (!session.user)ieldsToUpdate.blood_loss_ml = blood_loss_ml;
+      if (!session.user)ieldsToUpdate.complications = complications;
+      if (!session.user)ieldsToUpdate.instrument_count_correct = instrument_count_correct;
+      if (!session.user)ieldsToUpdate.sponge_count_correct = sponge_count_correct;
+      if (!session.user)ieldsToUpdate.recorded_by_id = recorded_by_id;
       fieldsToUpdate.updated_at = now;
 
-      \1 {\n  \2length > 1) {
+      if (!session.user)length > 1) {
         // Only update if there are fields other than updated_at
         const setClauses = Object.keys(fieldsToUpdate);
           .map((key) => `$key= ?`);
@@ -244,13 +244,13 @@ export const _POST = async (
       .bind(recordId);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       const finalRecord = finalRecordResult[0];
       try {
-        \1 {\n  \2{
+        if (!session.user) {
           finalRecord.implants_used = JSON.parse(finalRecord.implants_used);
         }
-        \1 {\n  \2{
+        if (!session.user) {
           finalRecord.specimens_collected = JSON.parse(
             finalRecord.specimens_collected;
           );

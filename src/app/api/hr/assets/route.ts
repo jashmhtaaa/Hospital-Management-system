@@ -1,12 +1,12 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { assetService } from '@/lib/hr/asset-service';
+import { assetService } from "@/lib/hr/asset-service";
 // Schema for asset creation
 const assetSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  assetType: z.enum(['EQUIPMENT', 'FURNITURE', 'IT', 'VEHICLE', 'BUILDING', 'OTHER'], {
+  assetType: z.enum(["EQUIPMENT", "FURNITURE", "IT", "VEHICLE", "BUILDING", "OTHER"], {
     errorMap: () => ({ message: "Invalid asset type" }),
   }),
   serialNumber: z.string().optional(),
@@ -22,7 +22,7 @@ const assetSchema = z.object({
   location: z.string().optional(),
   departmentId: z.string().optional(),
   assignedToId: z.string().optional(),
-  status: z.enum(['AVAILABLE', 'IN_USE', 'UNDER_MAINTENANCE', 'DISPOSED', 'LOST'], {
+  status: z.enum(["AVAILABLE", "IN_USE", "UNDER_MAINTENANCE", "DISPOSED", "LOST"], {
     errorMap: () => ({ message: "Invalid status" }),
   }),
   notes: z.string().optional(),
@@ -37,7 +37,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = assetSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -72,21 +72,21 @@ export const _GET = async (request: NextRequest) => {
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters
-    const skip = Number.parseInt(searchParams.get('skip') || '0');
-    const take = Number.parseInt(searchParams.get('take') || '10');
+    const skip = Number.parseInt(searchParams.get("skip") || "0");
+    const take = Number.parseInt(searchParams.get("take") || "10");
 
     // Parse filter parameters
-    const search = searchParams.get('search') || undefined;
-    const assetType = searchParams.get('assetType') as any || undefined;
-    const status = searchParams.get('status') as any || undefined;
-    const departmentId = searchParams.get('departmentId') || undefined;
-    const assignedToId = searchParams.get('assignedToId') || undefined;
-    const location = searchParams.get('location') || undefined;
-    const purchaseDateStart = searchParams.get('purchaseDateStart');
-      ? \1;
+    const search = searchParams.get("search") || undefined;
+    const assetType = searchParams.get("assetType") as any || undefined;
+    const status = searchParams.get("status") as any || undefined;
+    const departmentId = searchParams.get("departmentId") || undefined;
+    const assignedToId = searchParams.get("assignedToId") || undefined;
+    const location = searchParams.get("location") || undefined;
+    const purchaseDateStart = searchParams.get("purchaseDateStart");
+      ? ;
       : undefined;
-    const purchaseDateEnd = searchParams.get('purchaseDateEnd');
-      ? \1;
+    const purchaseDateEnd = searchParams.get("purchaseDateEnd");
+      ? ;
       : undefined;
 
     // Get assets

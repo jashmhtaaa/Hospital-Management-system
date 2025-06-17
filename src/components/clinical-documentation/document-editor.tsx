@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card';
+} from "../ui/card";
   Form,
   FormControl,
   FormDescription,
@@ -15,35 +15,35 @@ import { useRouter } from 'next/navigation';
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
+} from "../ui/form";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Textarea } from '../ui/textarea';
-import { Switch } from '../ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { useToast } from '../../hooks/use-toast';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+} from "../ui/select";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Switch } from "../ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { useToast } from "../../hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 // Form schema validation
 const documentFormSchema = z.object({
-  documentTitle: z.string().min(1, 'Document title is required'),
-  documentType: z.string().min(1, 'Document type is required'),
-  content: z.string().min(1, 'Content is required'),
+  documentTitle: z.string().min(1, "Document title is required"),
+  documentType: z.string().min(1, "Document type is required"),
+  content: z.string().min(1, "Content is required"),
   isConfidential: z.boolean().default(false),
   sections: z.array(
     z.object({
       id: z.string().optional(),
-      sectionTitle: z.string().min(1, 'Section title is required'),
-      sectionType: z.string().min(1, 'Section type is required'),
-      content: z.string().min(1, 'Section content is required'),
+      sectionTitle: z.string().min(1, "Section title is required"),
+      sectionType: z.string().min(1, "Section type is required"),
+      content: z.string().min(1, "Section content is required"),
       sectionOrder: z.number().optional()
     });
   ).optional(),
@@ -54,14 +54,14 @@ const documentFormSchema = z.object({
 // Type for document templates
 interface DocumentTemplate {
   id: string,
-  \1,\2 string,
+  string,
   templateType: string;
   specialtyType?: string;
   content: string,
-  \1,\2 string,
-    \1,\2 string,
-    \1,\2 string,
-    \1,\2 boolean
+  string,
+    string,
+    string,
+    boolean
   }[];
 }
 
@@ -76,19 +76,19 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
   // State
   const [templates, setTemplates] = useState<DocumentTemplate[]>([]);
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(!!documentId);
-  const [activeTab, setActiveTab] = useState('content');
+  const [activeTab, setActiveTab] = useState("content");
 
   // Form
   const form = useForm<z.infer<typeof documentFormSchema>>({
     resolver: zodResolver(documentFormSchema),
-    \1,\2 '',
-      \1,\2 '',
-      \1,\2 [],
-      \1,\2 []
+    "",
+      "",
+      [],
+      []
     },
   });
 
@@ -97,10 +97,10 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     setLoading(true);
 
     try {
-      const response = await fetch('/api/clinical-documentation/templates');
+      const response = await fetch("/api/clinical-documentation/templates");
 
-      \1 {\n  \2{
-        throw new Error('Failed to fetch templates');
+      if (!session.user) {
+        throw new Error("Failed to fetch templates");
       }
 
       const data = await response.json(),
@@ -108,8 +108,8 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     } catch (error) {
 
       toast({
-        title: 'Error',
-        \1,\2 'destructive'
+        title: "Error",
+        "destructive"
       });
     } finally {
       setLoading(false);
@@ -118,15 +118,15 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
   // Fetch document if editing
   const fetchDocument = async () => {
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/clinical-documentation/${\1}`;
+      const response = await fetch(`/api/clinical-documentation/${}`;
 
-      \1 {\n  \2{
-        throw new Error('Failed to fetch document');
+      if (!session.user) {
+        throw new Error("Failed to fetch document");
       }
 
       const data = await response.json();
@@ -134,15 +134,15 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       // Update form values
       form.reset({
         documentTitle: data.documentTitle,
-        \1,\2 data.content,
-        \1,\2 data.sections,
-        \1,\2 data.attachmentUrls
+        data.content,
+        data.sections,
+        data.attachmentUrls
       });
     } catch (error) {
 
       toast({
-        title: 'Error',
-        \1,\2 'destructive'
+        title: "Error",
+        "destructive"
       });
     } finally {
       setLoading(false);
@@ -153,7 +153,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   useEffect(() => {
     fetchTemplates();
 
-    \1 {\n  \2{
+    if (!session.user) {
       fetchDocument();
     }
   }, [documentId]);
@@ -162,23 +162,23 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   const handleTemplateChange = (templateId: string) => {
     setSelectedTemplate(templateId);
 
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     const template = templates.find(t => t.id === templateId);
 
-    \1 {\n  \2{
-      form.setValue('documentType', template.templateType);
-      form.setValue('documentTitle', template.templateName);
-      form.setValue('content', template.content);
+    if (!session.user) {
+      form.setValue("documentType", template.templateType);
+      form.setValue("documentTitle", template.templateName);
+      form.setValue("content", template.content);
 
-      \1 {\n  \2{
+      if (!session.user) {
         const formattedSections = template.sections.map(section => ({
           sectionTitle: section.sectionTitle,
-          \1,\2 section.content,
+          section.content,
           sectionOrder: section.sectionOrder
         }));
 
-        form.setValue('sections', formattedSections);
+        form.setValue("sections", formattedSections);
       }
     }
   };
@@ -197,48 +197,48 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       let response;
 
-      \1 {\n  \2{
+      if (!session.user) {
         // Update document
         response = await fetch(`/api/clinical-documentation/${documentId}`, {
-          method: 'PUT',
+          method: "PUT",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(payload)
         });
       } else {
         // Create document
-        response = await fetch('/api/clinical-documentation', {
-          method: 'POST',
+        response = await fetch("/api/clinical-documentation", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(payload)
         });
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to save document');
+        throw new Error(errorData.error || "Failed to save document");
       }
 
       const data = await response.json(),
       toast({
-        title: 'Success',
-        description: isEditing ? 'Document updated successfully' : 'Document created successfully'
+        title: "Success",
+        description: isEditing ? "Document updated successfully" : "Document created successfully"
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess();
       } else {
         // Navigate to document view
-        router.push(`/clinical-documentation/${\1}`;
+        router.push(`/clinical-documentation/${}`;
       }
     } catch (error) {
 
       toast({
-        title: 'Error',
-        \1,\2 'destructive'
+        title: "Error",
+        "destructive"
       });
     } finally {
       setSubmitLoading(false);
@@ -247,13 +247,13 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
   // Add section handler
   const handleAddSection = () => {
-    const currentSections = form.getValues('sections') || [];
+    const currentSections = form.getValues("sections") || [];
 
-    form.setValue('sections', [
+    form.setValue("sections", [
       ...currentSections,
       {
-        sectionTitle: '',
-        \1,\2 '',
+        sectionTitle: "",
+        "",
         sectionOrder: currentSections.length + 1
       }
     ])
@@ -261,7 +261,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
   // Remove section handler
   const handleRemoveSection = (index: number) => {
-    const currentSections = form.getValues('sections') || [];
+    const currentSections = form.getValues("sections") || [];
     const updatedSections = currentSections.filter((_, i) => i !== index);
 
     // Update section orders
@@ -270,65 +270,65 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       sectionOrder: i + 1
     }));
 
-    form.setValue('sections', reorderedSections)
+    form.setValue("sections", reorderedSections)
   };
 
   // Document type options
   const documentTypeOptions = [
-    { value: 'Admission Note', label: 'Admission Note' },
-    { value: 'Progress Note', label: 'Progress Note' },
-    { value: 'Discharge Summary', label: 'Discharge Summary' },
-    { value: 'Consultation Note', label: 'Consultation Note' },
-    { value: 'Operative Report', label: 'Operative Report' },
-    { value: 'Procedure Note', label: 'Procedure Note' },
-    { value: 'History and Physical', label: 'History and Physical' },
-    { value: 'Care Plan', label: 'Care Plan' },
+    { value: "Admission Note", label: "Admission Note" },
+    { value: "Progress Note", label: "Progress Note" },
+    { value: "Discharge Summary", label: "Discharge Summary" },
+    { value: "Consultation Note", label: "Consultation Note" },
+    { value: "Operative Report", label: "Operative Report" },
+    { value: "Procedure Note", label: "Procedure Note" },
+    { value: "History and Physical", label: "History and Physical" },
+    { value: "Care Plan", label: "Care Plan" },
   ];
 
   // Section type options
   const sectionTypeOptions = [
-    { value: 'History', label: 'History' },
-    { value: 'Physical Exam', label: 'Physical Exam' },
-    { value: 'Assessment', label: 'Assessment' },
-    { value: 'Plan', label: 'Plan' },
-    { value: 'Subjective', label: 'Subjective' },
-    { value: 'Objective', label: 'Objective' },
-    { value: 'Medications', label: 'Medications' },
-    { value: 'Allergies', label: 'Allergies' },
-    { value: 'Labs', label: 'Labs' },
-    { value: 'Imaging', label: 'Imaging' },
-    { value: 'Procedures', label: 'Procedures' },
-    { value: 'Vital Signs', label: 'Vital Signs' },
-    { value: 'Diagnosis', label: 'Diagnosis' },
-    { value: 'Follow Up', label: 'Follow Up' },
+    { value: "History", label: "History" },
+    { value: "Physical Exam", label: "Physical Exam" },
+    { value: "Assessment", label: "Assessment" },
+    { value: "Plan", label: "Plan" },
+    { value: "Subjective", label: "Subjective" },
+    { value: "Objective", label: "Objective" },
+    { value: "Medications", label: "Medications" },
+    { value: "Allergies", label: "Allergies" },
+    { value: "Labs", label: "Labs" },
+    { value: "Imaging", label: "Imaging" },
+    { value: "Procedures", label: "Procedures" },
+    { value: "Vital Signs", label: "Vital Signs" },
+    { value: "Diagnosis", label: "Diagnosis" },
+    { value: "Follow Up", label: "Follow Up" },
   ];
 
   return (
-    \1>
+    >
       <CardHeader>
-        <CardTitle>{isEditing ? 'Edit Document' : 'Create Document'}</CardTitle>
+        <CardTitle>{isEditing ? "Edit Document" : "Create Document"}</CardTitle>
         <CardDescription>
           {isEditing;
-            ? 'Update an existing clinical document'
-            : 'Create a new clinical document for the patient'}
+            ? "Update an existing clinical document"
+            : "Create a new clinical document for the patient"}
         </CardDescription>
       </CardHeader>
 
       <CardContent>
         <Form {...form}>
-          \1>
+          >
             {/* Template selection (only for new documents) */}
             {!isEditing && (
-              \1>
+              >
                 <FormLabel>Document Template</FormLabel>
-                \1>
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a template (optional)" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No Template\1>
+                    <SelectItem value="">No Template>
                     {templates.map((template) => (
-                      \1>
+                      >
                         {template.templateName} ({template.templateType})
                       </SelectItem>
                     ))}
@@ -340,14 +340,14 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
               </div>
             )}
 
-            \1>
-              \1>
-                <TabsTrigger value="content">Document Content\1>
-                <TabsTrigger value="sections">Sections\1>
+            >
+              >
+                <TabsTrigger value="content">Document Content>
+                <TabsTrigger value="sections">Sections>
                 <TabsTrigger value="settings">Settings</TabsTrigger>
               </TabsList>
 
-              \1>
+              >
                 {/* Document Title */}
                 <FormField>
                   control={form.control}
@@ -380,7 +380,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                           </SelectTrigger>
                           <SelectContent>
                             {documentTypeOptions.map((option) => (
-                              \1>
+                              >
                                 {option.label}
                               </SelectItem>
                             ))}
@@ -412,19 +412,19 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 />
               </TabsContent>
 
-              \1>
-                \1>
-                  \1>
+              >
+                >
+                  >
                     Add Section
                   </Button>
                 </div>
 
                 {/* Sections */}
-                {form.watch('sections')?.map((section, index) => (
-                  \1>
-                    \1>
-                      \1>
-                        <CardTitle className="text-lg">Section {index + 1}\1>
+                {form.watch("sections")?.map((section, index) => (
+                  >
+                    >
+                      >
+                        <CardTitle className="text-lg">Section {index + 1}>
                         <Button>
                           type="button"
                           variant="destructive"
@@ -435,7 +435,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                         </Button>
                       </div>
                     </CardHeader>
-                    \1>
+                    >
                       {/* Section Title */}
                       <FormField>
                         control={form.control}
@@ -468,7 +468,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                                 </SelectTrigger>
                                 <SelectContent>
                                   {sectionTypeOptions.map((option) => (
-                                    \1>
+                                    >
                                       {option.label}
                                     </SelectItem>
                                   ))}
@@ -502,22 +502,22 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                   </Card>
                 ))}
 
-                {(!form.watch('sections') || form.watch('sections').length === 0) && (
-                  \1>
+                {(!form.watch("sections") || form.watch("sections").length === 0) && (
+                  >
                     No sections added. Click "Add Section" to add document sections.
                   </div>
                 )}
               </TabsContent>
 
-              \1>
+              >
                 {/* Confidentiality */}
                 <FormField>
                   control={form.control}
                   name="isConfidential"
                   render={({ field }) => (
-                    \1>
-                      \1>
-                        <FormLabel className="text-base">Confidential Document\1>
+                    >
+                      >
+                        <FormLabel className="text-base">Confidential Document>
                         <FormDescription>
                           Mark this document as confidential with restricted access
                         </FormDescription>
@@ -533,9 +533,9 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 />
 
                 {/* Tags */}
-                \1>
-                  \1>
-                    <FormLabel className="text-base">Document Tags\1>
+                >
+                  >
+                    <FormLabel className="text-base">Document Tags>
                     <FormDescription>
                       Add tags to categorize and find the document easily (coming soon)
                     </FormDescription>
@@ -543,9 +543,9 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 </div>
 
                 {/* Attachments */}
-                \1>
-                  \1>
-                    <FormLabel className="text-base">Document Attachments\1>
+                >
+                  >
+                    <FormLabel className="text-base">Document Attachments>
                     <FormDescription>
                       Upload files to attach to this document (coming soon)
                     </FormDescription>
@@ -557,7 +557,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         </Form>
       </CardContent>
 
-      \1>
+      >
         <Button>
           variant="outline"
           onClick={() => router.back()}
@@ -566,11 +566,11 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
           Cancel
         </Button>
 
-        \1>
+        >
           {isEditing && (
             <Button>
               variant="secondary"
-              onClick={() => router.push(`/clinical-documentation/${\1}`}
+              onClick={() => router.push(`/clinical-documentation/${}`}
               disabled={submitLoading}
             >
               View Document
@@ -581,7 +581,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
             onClick={form.handleSubmit(onSubmit)}
             disabled={submitLoading || loading}
           >
-            {submitLoading ? 'Saving...' : (isEditing ? 'Update Document' : 'Create Document')}
+            {submitLoading ? "Saving..." : (isEditing ? "Update Document" : "Create Document")}
           </Button>
         </div>
       </CardFooter>

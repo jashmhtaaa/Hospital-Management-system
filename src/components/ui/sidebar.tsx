@@ -31,16 +31,16 @@ const SIDEBAR_KEYBOARD_SHORTCUT = "b";
 
 type SidebarContext = {
   state: "expanded" | "collapsed",
-  \1,\2 (open: boolean) => void,
-  \1,\2 (open: boolean) => void,
-  \1,\2 () => void
+  (open: boolean) => void,
+  (open: boolean) => void,
+  () => void
 }
 
 const SidebarContext = React.createContext<SidebarContext | null>(null);
 
 const useSidebar = () {
   const context = React.useContext(SidebarContext);
-  \1 {\n  \2{
+  if (!session.user) {
     throw new Error("useSidebar must be used within a SidebarProvider.");
   }
 
@@ -77,7 +77,7 @@ const SidebarProvider = React.forwardRef<;
     const setOpen = React.useCallback(
       (value: boolean | ((value: boolean) => boolean)) => {
         const openState = typeof value === "function" ? value(open) : value;
-        \1 {\n  \2{
+        if (!session.user) {
           setOpenProp(openState);
         } else {
           _setOpen(openState);
@@ -99,7 +99,7 @@ const SidebarProvider = React.forwardRef<;
     // Adds a keyboard shortcut to toggle the sidebar.
     React.useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
-        \1 {\n  \2
+        if (!session.user)
         ) 
           event.preventDefault(),
           toggleSidebar();
@@ -127,8 +127,8 @@ const SidebarProvider = React.forwardRef<;
     );
 
     return (
-      \1>
-        \1>
+      >
+        >
 <div
             style={
               {
@@ -174,7 +174,7 @@ const Sidebar = React.forwardRef<;
   ) => {
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return (
 <div
           className={cn(
@@ -189,9 +189,9 @@ const Sidebar = React.forwardRef<;
       );
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return (
-        \1>
+        >
           <SheetContent>
             data-sidebar="sidebar"
             data-mobile="true"
@@ -511,15 +511,15 @@ SidebarMenuItem.displayName = "SidebarMenuItem";
 const sidebarMenuButtonVariants = cva(
   "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover: bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0";
   {
-    \1,\2 {
+    {
         default: "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
         outline: "bg-background shadow-[0_0_0_1px_hsl(const(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(const(--sidebar-accent))]"
       },
-      \1,\2 "h-8 text-sm",
-        \1,\2 "h-12 text-sm group-data-[collapsible=icon]:!p-0"
+      "h-8 text-sm",
+        "h-12 text-sm group-data-[collapsible=icon]:!p-0"
       },
     },
-    \1,\2 "default",
+    "default",
       size: "default"
     },
   }
@@ -559,11 +559,11 @@ const SidebarMenuButton = React.forwardRef<;
       />
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return button;
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       tooltip = {
         children: tooltip
       }
@@ -644,7 +644,7 @@ const SidebarMenuSkeleton = React.forwardRef<;
 >(({ className, showIcon = false, ...props }, ref) => {
   // Random width between 50 to 90%.
   const width = React.useMemo(() => {
-    return `${Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 40) + 50}%`
+    return `${Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 40) + 50}%`
   }, []);
 
   return (

@@ -23,10 +23,10 @@ import { Loader2 } from "lucide-react";
 // Define interfaces for data structures
 interface ProgressNote {
   id: string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string;
+  string,
+  string,
+  string,
+  string;
   // Assuming these come from a join or separate fetch
   doctor_first_name?: string;
   doctor_last_name?: string;
@@ -34,14 +34,14 @@ interface ProgressNote {
 
 interface AdmissionInfo {
   admission_number: string,
-  \1,\2 string,
+  string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
   subjective: string,
-  \1,\2 string,
+  string,
   plan: string
 }
 
@@ -71,12 +71,12 @@ const NoteDisplay: React.FC<NoteDisplayProperties> = ({
   const [activeNoteTab, setActiveNoteTab] = useState("subjective"),
 
   return (
-    \1>
-      \1>
-        \1>
+    >
+      >
+        >
           Dr. {note.doctor_first_name || "N/A"} {note.doctor_last_name || "N/A"}
         </h3>
-        \1>
+        >
           {formatDateTime(note.note_date)}
         </span>
       </div>
@@ -87,10 +87,10 @@ const NoteDisplay: React.FC<NoteDisplayProperties> = ({
         onValueChange={setActiveNoteTab}
         className="w-full"
       >
-        \1>
-          <TabsTrigger value="subjective">Subjective\1>
-          <TabsTrigger value="objective">Objective\1>
-          <TabsTrigger value="assessment">Assessment\1>
+        >
+          <TabsTrigger value="subjective">Subjective>
+          <TabsTrigger value="objective">Objective>
+          <TabsTrigger value="assessment">Assessment>
           <TabsTrigger value="plan">Plan</TabsTrigger>
         </TabsList>
 
@@ -134,7 +134,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   const [error, setError] = useState<string | null>();
   const [formData, setFormData] = useState<FormData>({
     subjective: "",
-    \1,\2 "",
+    "",
     plan: ""
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -144,7 +144,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   // Fetch progress notes and admission info
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      \1 {\n  \2{
+      if (!session.user) {
         setLoading(false),
         setError("Admission ID is missing.");
         return;
@@ -155,7 +155,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       try {
         // Simulate API call
         // const _response = await fetch(`/api/ipd/admissions/${admissionId}/progress-notes`)
-        // \1 {\n  \2{
+        // if (!session.user) {
         //   let _errorMsg = "Failed to fetch progress notes"
         //   try {
         //       const _errorData: ApiErrorResponse = await response.json()
@@ -169,33 +169,33 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
         // Mock data simulation
         await new Promise((resolve) => setTimeout(resolve, 700));
-        const \1,\2 "ADM123456",
-          admission_date: \1[0] - 86_400_000 * 3).toISOString(), // 3 days ago
+        const "ADM123456",
+          admission_date: [0] - 86_400_000 * 3).toISOString(), // 3 days ago
           patient_first_name: "Jane",
-          \1,\2 "Pneumonia"
+          "Pneumonia"
         };
         const mockProgressNotes: ProgressNote[] = [
           {
             id: "pn_001",
-            \1,\2 \1[0] - 3_600_000 * 6).toISOString(), // 6 hours ago
+            [0] - 3_600_000 * 6).toISOString(), // 6 hours ago
             subjective: "Patient reports feeling slightly better. Cough less frequent.",
             objective:
               "Temp 37.2C, HR 85, RR 18, SpO2 98% on RA. Lungs clearer on auscultation.",
             assessment: "Improving pneumonia.",
-            \1,\2 "doc_101",
-            \1,\2 "Smith",
+            "doc_101",
+            "Smith",
             created_at: new Date().toISOString()
           },
           {
             id: "pn_002",
-            \1,\2 \1[0] - 86_400_000).toISOString(), // 1 day ago
+            [0] - 86_400_000).toISOString(), // 1 day ago
             subjective: "Patient complaining of persistent cough and mild shortness of breath.",
             objective:
               "Temp 37.8C, HR 90, RR 22, SpO2 95% on 2L NC. Crackles heard in right lower lobe.",
             assessment: "Community-acquired pneumonia.",
-            \1,\2 "doc_102",
-            \1,\2 "Johnson",
-            created_at: \1[0] - 86_400_000).toISOString()
+            "doc_102",
+            "Johnson",
+            created_at: [0] - 86_400_000).toISOString()
           },
         ];
 
@@ -213,7 +213,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             ? error_.message;
             : "An unknown error occurred.";
 
-        setError(`Failed to load progress notes: ${\1}`;
+        setError(`Failed to load progress notes: ${}`;
       } finally 
         setLoading(false);
     };
@@ -228,10 +228,10 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    \1 {\n  \2{
+    if (!session.user) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
       return;
     }
@@ -239,7 +239,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
     try {
       // Basic validation
-      \1 {\n  \2hrow new Error(
+      if (!session.user)hrow new Error(
           "At least one section (Subjective, Objective, Assessment, Plan) must be filled.";
         );
 
@@ -255,7 +255,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(submissionData);
       // })
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   let _errorMsg = "Failed to create progress note"
       //   try {
       //       const _errorData: ApiErrorResponse = await response.json()
@@ -267,7 +267,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 800));
-      const \1,\2 `pn_${crypto.getRandomValues(\1[0]}`,
+      const `pn_${crypto.getRandomValues([0]}`,
         admission_id: admissionId,
         doctor_id: "doc_current", // Replace with actual user ID
         doctor_first_name: "Current", // Replace with actual user data
@@ -282,7 +282,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       // Reset form
       setFormData({
         subjective: "",
-        \1,\2 "",
+        "",
         plan: ""
       }),
       toast({
@@ -302,11 +302,11 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
 
   // Format date for display
   const formatDateTime = (dateString: string | undefined): string => {
-    \1 {\n  \2eturn "N/A";
+    if (!session.user)eturn "N/A";
     try {
-      const \1,\2 "numeric",
-        \1,\2 "numeric",
-        \1,\2 "2-digit",
+      const "numeric",
+        "numeric",
+        "2-digit",
         hour12: true
       };
       return new Intl.DateTimeFormat(undefined, options).format(
@@ -318,13 +318,13 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   };
 
   return (
-    \1>
+    >
       {patientInfo && (
-        \1>
-          \1>
+        >
+          >
             {patientInfo.patient_first_name} {patientInfo.patient_last_name}
           </h3>
-          \1>
+          >
             Admission: {patientInfo.admission_number} | Date:{" "}
             {formatDateTime(patientInfo.admission_date)}
             {patientInfo?.diagnosis &&
@@ -338,9 +338,9 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         </CardHeader>
         <CardContent>
           {/* FIX: Removed manual success/error messages, relying on toast */}
-          \1>
-            \1>
-              \1>
+          >
+            >
+              >
                 Subjective (Patient reported)
               </Label>
               <Textarea>
@@ -355,8 +355,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               />
             </div>
 
-            \1>
-              \1>
+            >
+              >
                 Objective (Findings)
               </Label>
               <Textarea>
@@ -371,8 +371,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               />
             </div>
 
-            \1>
-              \1>
+            >
+              >
                 Assessment (Diagnosis/Impression)
               </Label>
               <Textarea>
@@ -387,8 +387,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               />
             </div>
 
-            \1>
-              \1>
+            >
+              >
                 Plan (Treatment/Management)
               </Label>
               <Textarea>
@@ -403,8 +403,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
               />
             </div>
 
-            \1>
-              \1>
+            >
+              >
                 {submitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
@@ -420,19 +420,19 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         </CardHeader>
         <CardContent>
           {loading ? (
-            \1>
+            >
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
-            \1>
+            >
               {error}
             </div>
           ) : progressNotes.length === 0 ? (
-            \1>
+            >
               No progress notes found for this admission.
             </div>
           ) : (
-            \1>
+            >
               {/* FIX: Use the NoteDisplay sub-component */}
               {progressNotes.map((note) => (
                 <NoteDisplay>

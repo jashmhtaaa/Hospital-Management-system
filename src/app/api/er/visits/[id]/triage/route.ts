@@ -5,7 +5,7 @@ import { type NextRequest, NextResponse } from "next/server";
 interface TriageInput {
   triage_nurse_id: string | number,
   esi_level: number; // Emergency Severity Index (1-5)
-  vital_signs: Record\1> // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
+  vital_signs: Record> // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
   assessment_notes?: string | null; // FIX: Allow null
   triage_timestamp?: string; // Optional, defaults to now
 }
@@ -13,8 +13,8 @@ interface TriageInput {
 // Define interface for triage data (including generated fields)
 interface Triage {
   id: string,
-  \1,\2 string | number,
-  \1,\2 Record\1> // Should be an object
+  string | number,
+  Record> // Should be an object
   assessment_notes?: string | null; // FIX: Allow null,
   triage_timestamp: string; // ISO 8601 date string
 }
@@ -74,7 +74,7 @@ export const _POST = async (
     const triageId = uuidv4();
 
     // Basic validation
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         {
           error: "Missing required fields (triage_nurse_id, esi_level, vital_signs)",
         },
@@ -82,7 +82,7 @@ export const _POST = async (
       );
 
     // Validate ESI level
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Invalid ESI level (must be 1-5)" },
         { status: 400 }
@@ -108,12 +108,12 @@ export const _POST = async (
     */
 
     // Optionally update the visit status if it was just triaged
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     // FIX: Ensure newTriage matches the Triage interface (vital_signs should be object)
-    const \1,\2 triageId,
-      \1,\2 triageData.triage_nurse_id,
-      \1,\2 triageData.vital_signs, // Assign the object directly
+    const triageId,
+      triageData.triage_nurse_id,
+      triageData.vital_signs, // Assign the object directly
       assessment_notes: triageData.assessment_notes ?? undefined, // Use nullish coalescing
       triage_timestamp: triageData.triage_timestamp || new Date().toISOString()
     };

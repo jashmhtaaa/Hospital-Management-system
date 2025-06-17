@@ -7,7 +7,7 @@ export const _GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const permission = searchParams.get("permission");
 
-  \1 {\n  \2{
+  if (!session.user) {
     return NextResponse.json(
       { error: "Permission parameter is required" },
       { status: 400 }
@@ -17,7 +17,7 @@ export const _GET = async (request: Request) => {
   try {
     const session = await getSession(); // This is fine here (Server Component context)
     let hasPerm = false;
-    \1 {\n  \2{
+    if (!session.user) {
       hasPerm = session.user.permissions.includes(permission);
     }
 

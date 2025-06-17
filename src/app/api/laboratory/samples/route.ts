@@ -17,12 +17,12 @@ interface SampleInput {
 
 interface LabSample {
   id: number,
-  \1,\2 string,
-  \1,\2 number | null,
-  \1,\2 number | null,
-  \1,\2 "collected" | "received" | "processing" | "rejected",
-  \1,\2 string | null,
-  \1,\2 string;
+  string,
+  number | null,
+  number | null,
+  "collected" | "received" | "processing" | "rejected",
+  string | null,
+  string;
   // Joined fields
   patient_id?: number;
   patient_name?: string;
@@ -36,7 +36,7 @@ interface LabSample {
 export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -49,9 +49,9 @@ export const _GET = async (request: NextRequest) => {
     let query = `;
       SELECT s.*,
         o.patient_id,
-        p.first_name || ' ' || p.last_name as patient_name,
-        c.first_name || ' ' || c.last_name as collector_name,
-        r.first_name || ' ' || r.last_name as receiver_name;
+        p.first_name || " " || p.last_name as patient_name,
+        c.first_name || " " || c.last_name as collector_name,
+        r.first_name || " " || r.last_name as receiver_name;
       FROM lab_samples s;
       JOIN lab_orders o ON s.order_id = o.id;
       JOIN patients p ON o.patient_id = p.id;
@@ -63,20 +63,20 @@ export const _GET = async (request: NextRequest) => {
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("s.order_id = ?");
       parameters.push(orderId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("s.barcode = ?");
       parameters.push(barcode);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("s.status = ?");
       parameters.push(status);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY s.created_at DESC";
@@ -99,7 +99,7 @@ export const _GET = async (request: NextRequest) => {
 export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -110,14 +110,14 @@ export const _POST = async (request: NextRequest) => {
       "Phlebotomist",
       "Admin",
     ]; // Adjust role names
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const body = (await request.json()) as SampleInput;
     const database = await getDB();
 
-    \1 {\n  \2{
+    if (!session.user) {
       // --- Update existing sample ---
       const sampleResult = await database.query(
         "SELECT * FROM lab_samples WHERE id = ?",
@@ -129,7 +129,7 @@ export const _POST = async (request: NextRequest) => {
           : undefined;
       ) as LabSample | null;
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "Sample not found" },
           { status: 404 }
@@ -140,31 +140,31 @@ export const _POST = async (request: NextRequest) => {
       // FIX: Use specific type for params
       const parameters: (string | number | boolean)[] = [];
 
-      \1 {\n  \2{
+      if (!session.user) {
         updates.push("status = ?");
         parameters.push(body.status);
 
-        \1 {\n  \2pdates.push("collected_by = ?", "collected_at = CURRENT_TIMESTAMP");
+        if (!session.user)pdates.push("collected_by = ?", "collected_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
-        \1 {\n  \2pdates.push("received_by = ?", "received_at = CURRENT_TIMESTAMP");
+        if (!session.user)pdates.push("received_by = ?", "received_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
-        \1 {\n  \2{
+        if (!session.user) {
           return NextResponse.json(
             { error: "Rejection reason is required when rejecting a sample" },
             { status: 400 }
           );
         }
       }
-      \1 {\n  \2{
+      if (!session.user) {
         updates.push("rejection_reason = ?");
         parameters.push(body.rejection_reason);
       }
-      \1 {\n  \2{
+      if (!session.user) {
         updates.push("notes = ?");
         parameters.push(body.notes);
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "No updates provided" },
           { status: 400 }
@@ -194,7 +194,7 @@ export const _POST = async (request: NextRequest) => {
       // --- Create new sample ---
       const requiredFields: (keyof SampleInput)[] = ["order_id", "sample_type"]
       for (const field of requiredFields) {
-        \1 {\n  \2{
+        if (!session.user) {
           return NextResponse.json(
             { error: `Missing required field: ${field}` },
             { status: 400 }
@@ -202,8 +202,8 @@ export const _POST = async (request: NextRequest) => {
         }
       }
 
-      const _timestamp = crypto.getRandomValues(\1[0];
-      const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000);
+      const _timestamp = crypto.getRandomValues([0];
+      const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000);
       const barcode = body.barcode || `LAB/* SECURITY: Template literal eliminated */
 
       // Fixed: Use db.query for insert (mock DB doesn't return last_row_id)
@@ -232,7 +232,7 @@ export const _POST = async (request: NextRequest) => {
           ? newSampleResult.results[0] // Changed .rows to .results
           : undefined;
 
-      \1 {\n  \2{
+      if (!session.user) {
         // Fallback if mock fetch fails
         return NextResponse.json(
           {

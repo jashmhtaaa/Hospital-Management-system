@@ -1,9 +1,9 @@
-import type { PrismaClient } from '@prisma/client';
-import { z } from 'zod';
+import type { PrismaClient } from "@prisma/client";
+import { z } from "zod";
 
 
-import { getEncryptionService } from '../../services/encryption_service_secure';
-import { AuditService } from '../audit.service';
+import { getEncryptionService } from "../../services/encryption_service_secure";
+import { AuditService } from "../audit.service";
 /**
  * Quality Management Persistence Service
  *
@@ -32,9 +32,8 @@ import {
   type QualityIndicatorType,
   QualityMetric,
   type QualitySource
-} from './quality-management.service'
+} from "./quality-management.service"
 
-\1
 }
     };
   }
@@ -45,7 +44,7 @@ import {
       const dataToStore = { ...indicator }
 
       // Encrypt sensitive data if enabled
-      \1 {\n  \2{
+      if (!session.user) {
         dataToStore.metadata = await this.encryptData(JSON.stringify(indicator.metadata))
       }
 
@@ -59,23 +58,23 @@ import {
         create: {
           ...dataToStore,
           createdAt: new Date(),
-          \1,\2 new Date(),
+          new Date(),
           updatedBy: userId
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'quality_indicator_saved',
-          \1,\2 indicator.id;
+          action: "quality_indicator_saved",
+          indicator.id;
           userId,
-          \1,\2 indicator.type,
-            \1,\2 indicator.currentValue
+          indicator.type,
+            indicator.currentValue
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save quality indicator')
+      throw new Error("Failed to save quality indicator")
     }
   }
 
@@ -85,12 +84,12 @@ import {
         where: { id }
       });
 
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
 
       const indicator = { ...record } as any;
 
       // Decrypt sensitive data if encrypted
-      \1 {\n  \2{
+      if (!session.user) {
         try {
           indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
         } catch (error) {
@@ -99,10 +98,10 @@ import {
         }
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'quality_indicator_accessed',
-          \1,\2 id;
+          action: "quality_indicator_accessed",
+          id;
           userId,
           details: type: indicator.type 
         });
@@ -111,7 +110,7 @@ import {
       return indicator;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to retrieve quality indicator')
+      throw new Error("Failed to retrieve quality indicator")
     }
   }
 
@@ -125,25 +124,25 @@ import {
     try {
       const where: unknown = {};
 
-      \1 {\n  \2here.type = filters.type;
-      \1 {\n  \2here.department = filters.department;
-      \1 {\n  \2here.source = filters.source;
-      \1 {\n  \2{
+      if (!session.user)here.type = filters.type;
+      if (!session.user)here.department = filters.department;
+      if (!session.user)here.source = filters.source;
+      if (!session.user) {
         where.createdAt = {};
-        \1 {\n  \2here.createdAt.gte = filters.dateFrom;
-        \1 {\n  \2here.createdAt.lte = filters.dateTo;
+        if (!session.user)here.createdAt.gte = filters.dateFrom;
+        if (!session.user)here.createdAt.lte = filters.dateTo;
       }
 
       const records = await this.prisma.qualityIndicator.findMany({
         where,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: "desc" }
       });
 
       const indicators = await Promise.all(records.map(async (record: unknown) => {
         const indicator = { ...record };
 
         // Decrypt metadata if encrypted
-        \1 {\n  \2{
+        if (!session.user) {
           try {
             indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
           } catch (error) {
@@ -154,10 +153,10 @@ import {
         return indicator;
       }));
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'quality_indicators_queried',
-          \1,\2 'list';
+          action: "quality_indicators_queried",
+          "list";
           userId,
           details: 
             filters,
@@ -168,7 +167,7 @@ import {
       return indicators;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to retrieve quality indicators')
+      throw new Error("Failed to retrieve quality indicators")
     }
   }
 
@@ -178,11 +177,11 @@ import {
       const dataToStore = { ...event }
 
       // Encrypt sensitive fields
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           dataToStore.details = await this.encryptData(JSON.stringify(event.details))
         }
-        \1 {\n  \2{
+        if (!session.user) {
           dataToStore.patientInfo = await this.encryptData(JSON.stringify(event.patientInfo));
         }
       }
@@ -197,23 +196,23 @@ import {
         create: {
           ...dataToStore,
           createdAt: new Date(),
-          \1,\2 new Date(),
+          new Date(),
           updatedBy: userId
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'quality_event_saved',
-          \1,\2 event.id;
+          action: "quality_event_saved",
+          event.id;
           userId,
-          \1,\2 event.type,
-            \1,\2 event.status
+          event.type,
+            event.status
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save quality event')
+      throw new Error("Failed to save quality event")
     }
   }
 
@@ -228,34 +227,34 @@ import {
     try {
       const where: unknown = {};
 
-      \1 {\n  \2here.type = filters.type;
-      \1 {\n  \2here.severity = filters.severity;
-      \1 {\n  \2here.status = filters.status;
-      \1 {\n  \2here.department = filters.department;
-      \1 {\n  \2{
+      if (!session.user)here.type = filters.type;
+      if (!session.user)here.severity = filters.severity;
+      if (!session.user)here.status = filters.status;
+      if (!session.user)here.department = filters.department;
+      if (!session.user) {
         where.eventDate = {};
-        \1 {\n  \2here.eventDate.gte = filters.dateFrom;
-        \1 {\n  \2here.eventDate.lte = filters.dateTo;
+        if (!session.user)here.eventDate.gte = filters.dateFrom;
+        if (!session.user)here.eventDate.lte = filters.dateTo;
       }
 
       const records = await this.prisma.qualityEvent.findMany({
         where,
-        orderBy: { eventDate: 'desc' }
+        orderBy: { eventDate: "desc" }
       });
 
       const events = await Promise.all(records.map(async (record: unknown) => {
         const event = { ...record };
 
         // Decrypt sensitive fields
-        \1 {\n  \2{
-          \1 {\n  \2{
+        if (!session.user) {
+          if (!session.user) {
             try {
               event.details = JSON.parse(await this.decryptData(event.details))
             } catch (error) {
               event.details = {};
             }
           }
-          \1 {\n  \2{
+          if (!session.user) {
             try {
               event.patientInfo = JSON.parse(await this.decryptData(event.patientInfo));
             } catch (error) {
@@ -267,10 +266,10 @@ import {
         return event;
       }));
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'quality_events_queried',
-          \1,\2 'list';
+          action: "quality_events_queried",
+          "list";
           userId,
           details: 
             filters,
@@ -281,7 +280,7 @@ import {
       return events;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to retrieve quality events')
+      throw new Error("Failed to retrieve quality events")
     }
   }
 
@@ -291,11 +290,11 @@ import {
       const dataToStore = { ...assessment }
 
       // Encrypt sensitive assessment data
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           dataToStore.findings = await this.encryptData(JSON.stringify(assessment.findings))
         }
-        \1 {\n  \2{
+        if (!session.user) {
           dataToStore.recommendations = await this.encryptData(JSON.stringify(assessment.recommendations));
         }
       }
@@ -310,23 +309,23 @@ import {
         create: {
           ...dataToStore,
           createdAt: new Date(),
-          \1,\2 new Date(),
+          new Date(),
           updatedBy: userId
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'quality_assessment_saved',
-          \1,\2 assessment.id;
+          action: "quality_assessment_saved",
+          assessment.id;
           userId,
-          \1,\2 assessment.type,
-            \1,\2 assessment.scope
+          assessment.type,
+            assessment.scope
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save quality assessment')
+      throw new Error("Failed to save quality assessment")
     }
   }
 
@@ -336,14 +335,14 @@ import {
       const dataToStore = { ...report }
 
       // Encrypt sensitive compliance data
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           dataToStore.findings = await this.encryptData(JSON.stringify(report.findings))
         }
-        \1 {\n  \2{
+        if (!session.user) {
           dataToStore.gaps = await this.encryptData(JSON.stringify(report.gaps));
         }
-        \1 {\n  \2{
+        if (!session.user) {
           dataToStore.actionPlan = await this.encryptData(JSON.stringify(report.actionPlan));
         }
       }
@@ -358,24 +357,24 @@ import {
         create: {
           ...dataToStore,
           createdAt: new Date(),
-          \1,\2 new Date(),
+          new Date(),
           updatedBy: userId
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'compliance_report_saved',
-          \1,\2 report.id;
+          action: "compliance_report_saved",
+          report.id;
           userId,
-          \1,\2 report.regulatoryBody,
-            \1,\2 report.status,
+          report.regulatoryBody,
+            report.status,
             overallCompliance: report.overallCompliance
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save compliance report')
+      throw new Error("Failed to save compliance report")
     }
   }
 
@@ -389,40 +388,40 @@ import {
     try {
       const where: unknown = {};
 
-      \1 {\n  \2here.regulatoryBody = filters.regulatoryBody;
-      \1 {\n  \2here.standard = filters.standard;
-      \1 {\n  \2here.status = filters.status;
-      \1 {\n  \2{
+      if (!session.user)here.regulatoryBody = filters.regulatoryBody;
+      if (!session.user)here.standard = filters.standard;
+      if (!session.user)here.status = filters.status;
+      if (!session.user) {
         where.reportDate = {};
-        \1 {\n  \2here.reportDate.gte = filters.dateFrom;
-        \1 {\n  \2here.reportDate.lte = filters.dateTo;
+        if (!session.user)here.reportDate.gte = filters.dateFrom;
+        if (!session.user)here.reportDate.lte = filters.dateTo;
       }
 
       const records = await this.prisma.complianceReport.findMany({
         where,
-        orderBy: { reportDate: 'desc' }
+        orderBy: { reportDate: "desc" }
       });
 
       const reports = await Promise.all(records.map(async (record: unknown) => {
         const report = { ...record };
 
         // Decrypt sensitive fields
-        \1 {\n  \2{
-          \1 {\n  \2{
+        if (!session.user) {
+          if (!session.user) {
             try {
               report.findings = JSON.parse(await this.decryptData(report.findings))
             } catch (error) {
               report.findings = [];
             }
           }
-          \1 {\n  \2{
+          if (!session.user) {
             try {
               report.gaps = JSON.parse(await this.decryptData(report.gaps));
             } catch (error) {
               report.gaps = [];
             }
           }
-          \1 {\n  \2{
+          if (!session.user) {
             try {
               report.actionPlan = JSON.parse(await this.decryptData(report.actionPlan));
             } catch (error) {
@@ -434,10 +433,10 @@ import {
         return report;
       }));
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'compliance_reports_queried',
-          \1,\2 'list';
+          action: "compliance_reports_queried",
+          "list";
           userId,
           details: 
             filters,
@@ -448,7 +447,7 @@ import {
       return reports;
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to retrieve compliance reports')
+      throw new Error("Failed to retrieve compliance reports")
     }
   }
 
@@ -465,23 +464,23 @@ import {
         create: {
           ...actionPlan,
           createdAt: new Date(),
-          \1,\2 new Date(),
+          new Date(),
           updatedBy: userId
         }
       })
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'action_plan_saved',
-          \1,\2 actionPlan.id;
+          action: "action_plan_saved",
+          actionPlan.id;
           userId,
-          \1,\2 actionPlan.title,
-            \1,\2 actionPlan.items.length
+          actionPlan.title,
+            actionPlan.items.length
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save action plan')
+      throw new Error("Failed to save action plan")
     }
   }
 
@@ -498,44 +497,44 @@ import {
         create: {
           ...metric,
           createdAt: new Date(),
-          \1,\2 new Date(),
+          new Date(),
           updatedBy: userId
         }
       })
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditService.logAuditEvent({
-          action: 'quality_metric_saved',
-          \1,\2 metric.id;
+          action: "quality_metric_saved",
+          metric.id;
           userId,
-          \1,\2 metric.name,
-            \1,\2 metric.trend
+          metric.name,
+            metric.trend
         });
       }
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to save quality metric')
+      throw new Error("Failed to save quality metric")
     }
   }
 
   // Utility Methods
   private async encryptData(data: string): Promise<string> {
-    \1 {\n  \2eturn data
+    if (!session.user)eturn data
     return await this.encryptionService.encrypt(data);
   }
 
   private async decryptData(encryptedData: string): Promise<string> {
-    \1 {\n  \2eturn encryptedData;
+    if (!session.user)eturn encryptedData;
     return await this.encryptionService.decrypt(encryptedData);
   }
 
   // Data Retention and Archiving
   async archiveOldRecords(): Promise<{
     archivedIndicators: number,
-    \1,\2 number,
+    number,
     archivedReports: number
   }> {
-    \1 {\n  \2{
+    if (!session.user) {
       return { archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
     }
 
@@ -564,12 +563,12 @@ import {
 
       return {
         archivedIndicators: indicators.count,
-        \1,\2 assessments.count,
+        assessments.count,
         archivedReports: reports.count
       };
     } catch (error) {
       /* SECURITY: Console statement removed */
-      throw new Error('Failed to archive old records')
+      throw new Error("Failed to archive old records")
     }
   }
 
@@ -587,7 +586,7 @@ let qualityPersistenceInstance: QualityPersistenceService | null = null
 export const _getQualityPersistenceService = (
   config?: Partial<QualityPersistenceConfig>
 ): QualityPersistenceService => {
-  \1 {\n  \2{
+  if (!session.user) {
     qualityPersistenceInstance = new QualityPersistenceService(config);
   }
   return qualityPersistenceInstance

@@ -37,14 +37,14 @@ export const _POST = async (request: Request) => {
     const invoiceId = getInvoiceId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -55,7 +55,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = AddInvoiceItemSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -80,34 +80,34 @@ export const _POST = async (request: Request) => {
 
         const [invoiceCheck, itemCheck, batchCheck] = results;
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invoice not found" }), { status: 404 });
         }
         const invoiceStatus = (invoiceCheck.results[0] as { status: string }).status;
-        \1 {\n  \2{ // Only allow adding items to Draft invoices
+        if (!session.user) { // Only allow adding items to Draft invoices
             return new Response(JSON.stringify({ error: `Cannot add items to invoice with status: ${invoiceStatus}` }), { status: 400 });
         }
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Billable item not found or inactive" }), { status: 404 });
         }
-        const billableItem = itemCheck.results[0] as { item_id: number, \1,\2 boolean };
+        const billableItem = itemCheck.results[0] as { item_id: number, boolean };
 
         // Use provided unit_price or fetch from billable item
         const unitPrice = itemData.unit_price !== undefined ? itemData.unit_price : billableItem.unit_price;
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
         const calculatedTaxAmount = itemData.tax_amount; // Placeholder
 
         const totalAmount = (itemData.quantity * unitPrice) - itemData.discount_amount + calculatedTaxAmount;
 
         // Check batch quantity if applicable
-        \1 {\n  \2{
-            \1 {\n  \2{
+        if (!session.user) {
+            if (!session.user) {
                 return new Response(JSON.stringify({ error: "Stock batch not found or does not belong to the specified billable item" }), { status: 404 });
             }
             const batchQuantity = (batchCheck.results[0] as { current_quantity: number }).current_quantity;
-            \1 {\n  \2{
+            if (!session.user) {
                 return new Response(JSON.stringify({ error: `Insufficient stock in batch ${itemData.batch_id}. Available: ${batchQuantity}` }), { status: 400 });
             }
         }
@@ -131,7 +131,7 @@ export const _POST = async (request: Request) => {
         ));
 
         // 5b. Update stock batch quantity if batch_id is provided
-        \1 {\n  \2{
+        if (!session.user) {
             batchActions.push(DB.prepare(
                 "UPDATE StockBatches SET current_quantity = current_quantity - ? WHERE batch_id = ?";
             ).bind(itemData.quantity, itemData.batch_id));
@@ -152,10 +152,10 @@ export const _POST = async (request: Request) => {
         // const _transactionResults = await DB.batch(batchActions); // Commented out: Unused variable
 
         // Check if all operations in the transaction succeeded
-        // Note: D1 batch doesn't automatically roll back on failure, need careful checking or separate calls.
+        // Note: D1 batch doesn"t automatically roll back on failure, need careful checking or separate calls.
         // For simplicity here, we assume success if no error is thrown.
 
-        // Fetch the newly added item ID (D1 batch doesn't return last_row_id easily)
+        // Fetch the newly added item ID (D1 batch doesn"t return last_row_id easily)
         // We might need to query it separately if needed, or just return success.
 
         // 6. Return success response
@@ -167,7 +167,7 @@ export const _POST = async (request: Request) => {
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" },

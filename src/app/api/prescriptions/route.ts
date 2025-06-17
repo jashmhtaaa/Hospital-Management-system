@@ -34,7 +34,7 @@ const prescriptionCreateSchema = z.object({
 // GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination)
 export const _GET = async (request: NextRequest) => {
     const session = await getSession()
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
@@ -72,31 +72,31 @@ export const _GET = async (request: NextRequest) => {
         let countQuery = `SELECT COUNT(*) as total FROM Prescriptions WHERE 1=1`;
         const countParameters: (string | number)[] = [];
 
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND pr.patient_id = ?";
             queryParameters.push(Number.parseInt(patientIdFilter));
             countQuery += " AND patient_id = ?";
             countParameters.push(Number.parseInt(patientIdFilter));
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND pr.doctor_id = ?";
             queryParameters.push(Number.parseInt(doctorIdFilter));
             countQuery += " AND doctor_id = ?";
             countParameters.push(Number.parseInt(doctorIdFilter));
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND pr.consultation_id = ?";
             queryParameters.push(Number.parseInt(consultationIdFilter));
             countQuery += " AND consultation_id = ?";
             countParameters.push(Number.parseInt(consultationIdFilter));
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND DATE(pr.prescription_date) >= ?";
             queryParameters.push(dateFromFilter);
             countQuery += " AND DATE(prescription_date) >= ?";
             countParameters.push(dateFromFilter);
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND DATE(pr.prescription_date) <= ?";
             queryParameters.push(dateToFilter);
             countQuery += " AND DATE(prescription_date) <= ?";
@@ -131,7 +131,7 @@ export const _GET = async (request: NextRequest) => {
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(
@@ -144,11 +144,11 @@ export const _GET = async (request: NextRequest) => {
 // POST /api/prescriptions - Create a new prescription
 export const _POST = async (request: NextRequest) => {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     // Add role check if needed (e.g., only doctors)
-    \1 {\n  \2{
+    if (!session.user) {
          return NextResponse.json({ message: "Forbidden" }, { status: 403 })
     }
 
@@ -156,7 +156,7 @@ export const _POST = async (request: NextRequest) => {
         const body = await request.json();
         const validationResult = prescriptionCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
@@ -186,7 +186,7 @@ export const _POST = async (request: NextRequest) => {
 
         const insertResult = await insertPrescriptionStmt.run() as D1ResultWithMeta; // Use D1ResultWithMeta
 
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to create prescription record");
         }
@@ -219,7 +219,7 @@ export const _POST = async (request: NextRequest) => {
 
         // Check if all item inserts were successful
         const allItemsInserted = itemInsertResults.every((res) => res.success);
-        \1 {\n  \2{
+        if (!session.user) {
 
             // Attempt to rollback/delete the main prescription record
             await DB.prepare("DELETE FROM Prescriptions WHERE prescription_id = ?").bind(newPrescriptionId).run();
@@ -235,7 +235,7 @@ export const _POST = async (request: NextRequest) => {
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(

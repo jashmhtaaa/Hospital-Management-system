@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { salaryService } from '@/lib/hr/salary-service';
+import { salaryService } from "@/lib/hr/salary-service";
 // Schema for salary structure creation
 const salaryStructureSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -10,10 +10,10 @@ const salaryStructureSchema = z.object({
   components: z.array(
     z.object({
       name: z.string().min(1, "Component name is required"),
-      type: z.enum(['EARNING', 'DEDUCTION', 'TAX'], {
+      type: z.enum(["EARNING", "DEDUCTION", "TAX"], {
         errorMap: () => ({ message: "Type must be EARNING, DEDUCTION, or TAX" }),
       }),
-      calculationType: z.enum(['FIXED', 'PERCENTAGE', 'FORMULA'], {
+      calculationType: z.enum(["FIXED", "PERCENTAGE", "FORMULA"], {
         errorMap: () => ({ message: "Calculation type must be FIXED, PERCENTAGE, or FORMULA" }),
       }),
       value: z.number(),
@@ -32,7 +32,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = salaryStructureSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }

@@ -25,20 +25,20 @@ export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const specialty = searchParams.get("specialty");
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database
     let query =;
       "SELECT id, name, description, specialty, estimated_duration_minutes, updated_at FROM SurgeryTypes";
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " WHERE specialty = ?";
       parameters.push(specialty);
     }
 
     query += " ORDER BY name ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
@@ -68,7 +68,7 @@ export const _POST = async (request: NextRequest) => {
       required_equipment,
     } = body;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Surgery type name is required" },
         { status: 400 }
@@ -104,16 +104,16 @@ export const _POST = async (request: NextRequest) => {
       .bind(id);
       .all();
 
-    \1 {\n  \2{
+    if (!session.user) {
       const newSurgeryType = results[0];
       // Parse JSON fields before returning
       try {
-        \1 {\n  \2{
+        if (!session.user) {
           newSurgeryType.required_staff = JSON.parse(
             newSurgeryType.required_staff;
           );
         }
-        \1 {\n  \2{
+        if (!session.user) {
           newSurgeryType.required_equipment = JSON.parse(
             newSurgeryType.required_equipment;
           );
@@ -143,7 +143,7 @@ export const _POST = async (request: NextRequest) => {
     // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage
       return NextResponse.json(
         { message: "Surgery type name must be unique", details: errorMessage },

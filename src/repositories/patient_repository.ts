@@ -8,7 +8,6 @@ import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"
 // Research notes: (General TypeScript/Node.js data access patterns)
 
 // Basic Patient interface (could be expanded from a models/entities directory)
-\1
 }
   constructor(private db: IDatabaseAdapter) {}
 
@@ -19,10 +18,10 @@ import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"
       RETURNING id, name, date_of_birth, created_at, updated_at;
     `;
     // Ensure dateOfBirth is in a format suitable for DB (e.g., YYYY-MM-DD string or ISO string)
-    const dobForDb = patientData.dateOfBirth instanceof Date ? patientData.dateOfBirth.toISOString().split('T')[0] : patientData.dateOfBirth
+    const dobForDb = patientData.dateOfBirth instanceof Date ? patientData.dateOfBirth.toISOString().split("T")[0] : patientData.dateOfBirth
     const values = [patientData.name, dobForDb /*, ... */];
 
-    let result: QueryResult\1>
+    let result: QueryResult>
     try {
       result = await this.db.execute(queryText, values);
     } catch (dbError: unknown) {
@@ -31,7 +30,7 @@ import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"
       throw new Error("Failed to create patient due to a database issue.");
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Ensure date fields are converted back to Date objects if they are strings from DB
       const dbPatient = result.rows[0];
       return {
@@ -52,7 +51,7 @@ import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"
     const queryText = "SELECT id, name, date_of_birth, created_at, updated_at FROM patients WHERE id = $1";
     try {
       const result = await this.db.execute(queryText, [id]);
-      \1 {\n  \2{
+      if (!session.user) {
         const dbPatient = result.rows[0];
         return {
           ...dbPatient,

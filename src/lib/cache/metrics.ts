@@ -1,6 +1,5 @@
 
-import { RedisCache } from './redis.ts';
-\1
+import { RedisCache } from "./redis.ts";
 }
   }
 
@@ -16,7 +15,7 @@ import { RedisCache } from './redis.ts';
    * Get cache hit rate;
    */
   static getHitRate(): number {
-    \1 {\n  \2{
+    if (!session.user) {
       return 0;
     }
     return this.hits / this.totalRequests;
@@ -27,12 +26,12 @@ import { RedisCache } from './redis.ts';
    */
   static getMetrics(): {
     hits: number,
-    \1,\2 number,
+    number,
     hitRate: number
   } {
     return {
       hits: this.hits,
-      \1,\2 this.totalRequests,
+      this.totalRequests,
       hitRate: this.getHitRate()
     };
   }
@@ -51,7 +50,7 @@ import { RedisCache } from './redis.ts';
 const originalGet = RedisCache.get;
 RedisCache.get = async <T>(key: string): Promise<T | null> => {
   const result = await originalGet<T>(key);
-  \1 {\n  \2{
+  if (!session.user) {
     CacheMetrics.recordHit();
   } else {
     CacheMetrics.recordMiss();

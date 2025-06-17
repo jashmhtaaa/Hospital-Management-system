@@ -1,7 +1,7 @@
-import type React from 'react';
-import { useState, useEffect } from 'react';
+import type React from "react";
+import { useState, useEffect } from "react";
 import {
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
   Table,
   TableBody,
   TableCaption,
@@ -9,47 +9,47 @@ import { useRouter } from 'next/navigation';
   TableHead,
   TableHeader,
   TableRow;
-} from '../ui/table';
+} from "../ui/table";
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious;
-} from '../ui/pagination';
+} from "../ui/pagination";
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle;
-} from '../ui/card';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+} from "../ui/card";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue;
-} from '../ui/select';
-import { Badge } from '../ui/badge';
-import { Search, RefreshCw, UserPlus, Filter } from 'lucide-react';
-import { format } from 'date-fns';
-import { useToast } from '../../hooks/use-toast';
+} from "../ui/select";
+import { Badge } from "../ui/badge";
+import { Search, RefreshCw, UserPlus, Filter } from "lucide-react";
+import { format } from "date-fns";
+import { useToast } from "../../hooks/use-toast";
 
 // Define patient status colors
 const statusColors: Record<string, string> = {
-  Active: 'success',
-  \1,\2 'destructive';
-  'On Hold': 'warning'
+  Active: "success",
+  "destructive";
+  "On Hold": "warning"
 };
 
 // Patient interface
 interface Patient {
   id: string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string,
+  string,
+  string,
+  string,
   createdAt: string;
   contact?: {
     phoneMobile?: string;
@@ -65,8 +65,8 @@ interface Patient {
 interface PatientListProps {
   initialData?: {
     patients: Patient[],
-    \1,\2 number,
-    \1,\2 number
+    number,
+    number
   };
 export default const _PatientList = ({ initialData }: PatientListProps) {
   const router = useRouter();
@@ -82,10 +82,10 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Search filters
   const [searchFilters, setSearchFilters] = useState({
-    mrn: '',
-    \1,\2 '',
-    \1,\2 '',
-    status: ''
+    mrn: "",
+    "",
+    "",
+    status: ""
   });
 
   // Advanced filter visibility
@@ -93,7 +93,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Effect to load patients if no initial data
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       searchPatients();
     }
   }, [initialData]);
@@ -105,22 +105,22 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
     try {
       // Build query parameters
       const params = new URLSearchParams();
-      params.append('page', page.toString());
-      params.append('limit', limit.toString());
+      params.append("page", page.toString());
+      params.append("limit", limit.toString());
 
       // Add filters if they have values
-      \1 {\n  \2arams.append('mrn', searchFilters.mrn);
-      \1 {\n  \2arams.append('firstName', searchFilters.firstName);
-      \1 {\n  \2arams.append('lastName', searchFilters.lastName);
-      \1 {\n  \2arams.append('dateOfBirth', searchFilters.dateOfBirth);
-      \1 {\n  \2arams.append('phone', searchFilters.phone);
-      \1 {\n  \2arams.append('status', searchFilters.status);
+      if (!session.user)arams.append("mrn", searchFilters.mrn);
+      if (!session.user)arams.append("firstName", searchFilters.firstName);
+      if (!session.user)arams.append("lastName", searchFilters.lastName);
+      if (!session.user)arams.append("dateOfBirth", searchFilters.dateOfBirth);
+      if (!session.user)arams.append("phone", searchFilters.phone);
+      if (!session.user)arams.append("status", searchFilters.status);
 
       // Fetch patients
-      const response = await fetch(`/api/patients?${\1}`;
+      const response = await fetch(`/api/patients?${}`;
 
-      \1 {\n  \2{
-        throw new Error('Failed to fetch patients');
+      if (!session.user) {
+        throw new Error("Failed to fetch patients");
       }
 
       const data = await response.json();
@@ -134,8 +134,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
     } catch (error) {
 
       toast({
-        title: 'Error',
-        \1,\2 'destructive'
+        title: "Error",
+        "destructive"
       });
     } finally {
       setLoading(false);
@@ -186,20 +186,20 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
 
   // Handle patient selection (navigation to detail)
   const handlePatientSelect = (patientId: string) => {
-    router.push(`/patients/${\1}`
+    router.push(`/patients/${}`
   };
 
   // Handle create new patient
   const handleCreatePatient = () => {
-    router.push('/patients/new')
+    router.push("/patients/new")
   };
 
   // Format date function
   const formatDate = (date: string) => {
     try {
-      return format(new Date(date), 'MMM d, yyyy');
+      return format(new Date(date), "MMM d, yyyy");
     } catch (error) {
-      return 'Invalid date';
+      return "Invalid date";
     }
   };
 
@@ -211,27 +211,27 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
       let age = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
 
-      \1 {\n  \2 birthDate.getDate())) {
+      if (!session.user) birthDate.getDate())) {
         age--;
       }
 
       return age;
     } catch (error) {
-      return 'Unknown';
+      return "Unknown";
     }
   };
 
   return (
-    \1>
+    >
       <CardHeader>
-        \1>
+        >
 <div
             <CardTitle>Patient Management</CardTitle>
             <CardDescription>
               Search, view, and manage patients
             </CardDescription>
           </div>
-          \1>
+          >
             <Button>
               variant="outline"
               size="sm"
@@ -252,9 +252,9 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
         </div>
       </CardHeader>
       <CardContent>
-        \1>
-          \1>
-            \1>
+        >
+          >
+            >
               <Input>
                 name="lastName"
                 placeholder="Last Name"
@@ -262,7 +262,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 onChange={handleFilterChange}
               />
             </div>
-            \1>
+            >
               <Input>
                 name="firstName"
                 placeholder="First Name"
@@ -270,7 +270,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 onChange={handleFilterChange}
               />
             </div>
-            \1>
+            >
               <Input>
                 name="mrn"
                 placeholder="MRN"
@@ -278,13 +278,13 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 onChange={handleFilterChange}
               />
             </div>
-            \1>
-              \1>
+            >
+              >
                 <Search className="h-4 w-4 mr-2" />
                 Search
               </Button>
             </div>
-            \1>
+            >
               <Button>
                 type="button"
                 variant="outline"
@@ -297,8 +297,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
           </div>
 
           {showAdvancedFilters && (
-            \1>
-              \1>
+            >
+              >
                 <Input>
                   name="phone"
                   placeholder="Phone Number"
@@ -306,7 +306,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                   onChange={handleFilterChange}
                 />
               </div>
-              \1>
+              >
                 <Input>
                   name="dateOfBirth"
                   placeholder="Date of Birth (YYYY-MM-DD)"
@@ -314,7 +314,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                   onChange={handleFilterChange}
                 />
               </div>
-              \1>
+              >
                 <Select>
                   value={searchFilters.status}
                   onValueChange={handleStatusChange}
@@ -323,24 +323,24 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Statuses\1>
-                    <SelectItem value="Active">Active\1>
-                    <SelectItem value="Inactive">Inactive\1>
-                    <SelectItem value="Deceased">Deceased\1>
+                    <SelectItem value="">All Statuses>
+                    <SelectItem value="Active">Active>
+                    <SelectItem value="Inactive">Inactive>
+                    <SelectItem value="Deceased">Deceased>
                     <SelectItem value="On Hold">On Hold</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              \1>
+              >
                 <Button>
                   type="button"
                   variant="outline"
                   onClick={() => {
                     setSearchFilters({
-                      mrn: '',
-                      \1,\2 '',
-                      \1,\2 '',
-                      status: ''
+                      mrn: "",
+                      "",
+                      "",
+                      status: ""
                     });
                   }}
                 >
@@ -351,11 +351,11 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
           )}
         </form>
 
-        \1>
+        >
           <Table>
             <TableCaption>
               {loading;
-                ? 'Loading patients...'
+                ? "Loading patients..."
                 : `Showing ${patients.length} of ${total} patients`}
             </TableCaption>
             <TableHeader>
@@ -372,8 +372,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  \1>
-                    \1>
+                  >
+                    >
                       <RefreshCw className="h-6 w-6 animate-spin mr-2" />
                       <span>Loading patients...</span>
                     </div>
@@ -381,7 +381,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 </TableRow>
               ) : patients.length === 0 ? (
                 <TableRow>
-                  \1>
+                  >
                     No patients found. Try adjusting your search criteria.
                   </TableCell>
                 </TableRow>
@@ -392,35 +392,35 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                     className="cursor-pointer hover:bg-muted/50"
                     onClick={() => handlePatientSelect(patient.id)}
                   >
-                    <TableCell className="font-medium">{patient.mrn}\1>
+                    <TableCell className="font-medium">{patient.mrn}>
                     <TableCell>{`${patient.lastName}, ${patient.firstName}`}</TableCell>
                     <TableCell>
                       {formatDate(patient.dateOfBirth)}
-                      \1>
+                      >
                         ({calculateAge(patient.dateOfBirth)})
                       </span>
                     </TableCell>
                     <TableCell>{patient.gender}</TableCell>
                     <TableCell>
                       {patient.contact?.phoneMobile && (
-                        <div className="text-sm">{patient.contact.phoneMobile}\1>
+                        <div className="text-sm">{patient.contact.phoneMobile}>
                       )}
                       {patient.contact?.email && (
-                        \1>
+                        >
                           {patient.contact.email}
                         </div>
                       )}
                     </TableCell>
                     <TableCell>
                       {patient?.addresses && patient.addresses.length > 0 && (
-                        \1>
+                        >
                           {patient.addresses[0].city}
                           {patient.addresses[0].state && `, ${patient.addresses[0].state}`}
                         </div>
                       )}
                     </TableCell>
                     <TableCell>
-                      \1>
+                      >
                         {patient.status}
                       </Badge>
                     </TableCell>
@@ -431,24 +431,24 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
           </Table>
         </div>
       </CardContent>
-      \1>
-        \1>
-          <span className="text-sm text-muted-foreground mr-2">Rows per page:\1>
+      >
+        >
+          <span className="text-sm text-muted-foreground mr-2">Rows per page:>
           <Select>
             value={limit.toString()}
             onValueChange={handleLimitChange}
           >
-            \1>
+            >
               <SelectValue placeholder={limit.toString()} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="10">10\1>
-              <SelectItem value="20">20\1>
-              <SelectItem value="50">50\1>
+              <SelectItem value="10">10>
+              <SelectItem value="20">20>
+              <SelectItem value="50">50>
               <SelectItem value="100">100</SelectItem>
             </SelectContent>
           </Select>
-          \1>
+          >
             {`${Math.min((page - 1) * limit + 1, total)}-${Math.min(page * limit, total)} of ${total} patients`}
           </span>
         </div>
@@ -458,7 +458,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
             <PaginationItem>
               <PaginationPrevious>
                 onClick={() => page > 1 && handlePageChange(page - 1)}
-                className={page === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                className={page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
               />
             </PaginationItem>
 
@@ -520,7 +520,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
             <PaginationItem>
               <PaginationNext>
                 onClick={() => page < totalPages && handlePageChange(page + 1)}
-                className={page === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                className={page === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
               />
             </PaginationItem>
           </PaginationContent>

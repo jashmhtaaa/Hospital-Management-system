@@ -4,7 +4,7 @@ import {
 }
 
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
   Card,
   CardHeader,
@@ -59,32 +59,32 @@ const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
       onValueChange={setActiveDetailTab}
       className="w-full"
     >
-      \1>
+      >
         {" "}
         {/* Responsive grid */}
-        <TabsTrigger value="progress-notes">Progress Notes\1>
-        <TabsTrigger value="nursing-notes">Nursing Notes\1>
-        <TabsTrigger value="vital-signs">Vital Signs\1>
-        <TabsTrigger value="medications">Medications\1>
+        <TabsTrigger value="progress-notes">Progress Notes>
+        <TabsTrigger value="nursing-notes">Nursing Notes>
+        <TabsTrigger value="vital-signs">Vital Signs>
+        <TabsTrigger value="medications">Medications>
         <TabsTrigger value="discharge">Discharge</TabsTrigger>
       </TabsList>
-      \1>
+      >
         {/* FIX: Pass admissionId as string */}
         <PatientProgressNotes admissionId={admissionIdString} />
       </TabsContent>
-      \1>
+      >
         {/* FIX: Pass admissionId as string */}
         <NursingNotes admissionId={admissionIdString} />
       </TabsContent>
-      \1>
+      >
         {/* FIX: Pass admissionId as string */}
         <VitalSigns admissionId={admissionIdString} />
       </TabsContent>
-      \1>
+      >
         {/* FIX: Pass admissionId as string */}
         <MedicationAdministration admissionId={admissionIdString} />
       </TabsContent>
-      \1>
+      >
         {/* FIX: Pass admissionId as string */}
         <DischargeSummary admissionId={admissionIdString} />
       </TabsContent>
@@ -111,30 +111,30 @@ const IPDPage = () => {
   };
 
   return (
-    \1>
+    >
       {/* Title might be provided by layout, remove if redundant */}
       {/* <h1 className="text-2xl font-bold">Inpatient Department (IPD)</h1> */}
 
-      \1>
-        \1>
+      >
+        >
           {" "}
           {/* Responsive grid */}
-          <TabsTrigger value="dashboard">Dashboard\1>
-          <TabsTrigger value="new-admission">New Admission\1>
+          <TabsTrigger value="dashboard">Dashboard>
+          <TabsTrigger value="new-admission">New Admission>
           {/* Only show Patient Details tab when an admission is selected */}
           {selectedAdmission && (
-            <TabsTrigger value="patient-details">Patient Details\1>
+            <TabsTrigger value="patient-details">Patient Details>
           )}
         </TabsList>
 
         {/* Dashboard Tab */}
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Bed Management</CardTitle>
             </CardHeader>
             <CardContent>
-              {/* Assuming BedManagementDashboard doesn't need props */}
+              {/* Assuming BedManagementDashboard doesn"t need props */}
               <BedManagementDashboard />
             </CardContent>
           </Card>
@@ -151,16 +151,16 @@ const IPDPage = () => {
         </TabsContent>
 
         {/* New Admission Tab */}
-        \1>
-          {/* Assuming AdmissionForm doesn't need props or handles its own state */}
+        >
+          {/* Assuming AdmissionForm doesn"t need props or handles its own state */}
           <AdmissionForm />
         </TabsContent>
 
         {/* Patient Details Tab - Conditionally Rendered */}
         {selectedAdmission && (
-          \1>
+          >
             <Card>
-              \1>
+              >
                 {/* FIX: Add check for selectedAdmission before accessing properties */}
                 <CardTitle>
                   Details for Admission ID: {selectedAdmission.admissionId}

@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { payrollService } from '@/lib/hr/payroll-service';
+import { payrollService } from "@/lib/hr/payroll-service";
 // Schema for payroll period creation
 const payrollPeriodSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -26,7 +26,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = payrollPeriodSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -41,7 +41,7 @@ export const _POST = async (request: NextRequest) => {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
       paymentDate: new Date(paymentDate),
-      status: 'DRAFT';
+      status: "DRAFT";
       notes,
     });
 
@@ -61,13 +61,13 @@ export const _GET = async (request: NextRequest) => {
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters
-    const skip = Number.parseInt(searchParams.get('skip') || '0');
-    const take = Number.parseInt(searchParams.get('take') || '10');
+    const skip = Number.parseInt(searchParams.get("skip") || "0");
+    const take = Number.parseInt(searchParams.get("take") || "10");
 
     // Parse filter parameters
-    const status = searchParams.get('status') as any || undefined;
-    const startDate = searchParams.get('startDate') ? \1 : undefined;
-    const endDate = searchParams.get('endDate') ? \1 : undefined;
+    const status = searchParams.get("status") as any || undefined;
+    const startDate = searchParams.get("startDate") ? : undefined;
+    const endDate = searchParams.get("endDate") ? : undefined;
 
     // Get payroll periods
     const result = await payrollService.listPayrollPeriods({

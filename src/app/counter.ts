@@ -1,7 +1,7 @@
 }
 
-'use server';
-// import { getCloudflareContext } from '@opennextjs/cloudflare'
+"use server";
+// import { getCloudflareContext } from "@opennextjs/cloudflare"
 
 /**
  * Increment counter and log access
@@ -17,46 +17,44 @@
  */
 export const _incrementAndLog = async () => {
   // const cf = await getCloudflareContext()
-\1
-  // Get current count from cookie or start at 0
-\1;
+// Get current count from cookie or start at 0
+;
   // Increment count
   currentCount += 1;
 
   // Store updated count in cookie (expires in 1 year)
-  cookieStore.set('page_views', currentCount.toString(), {
-    expires: \1[0] + 365 * 24 * 60 * 60 * 1000),
-    path: '/'
+  cookieStore.set("page_views", currentCount.toString(), {
+    expires: [0] + 365 * 24 * 60 * 60 * 1000),
+    path: "/"
   })
 
   // Log this access in memory (will be lost on restart)
-\1
-  // Keep only the 5 most recent accesses
+// Keep only the 5 most recent accesses
   while (recentAccessList.length > 5) {
     recentAccessList.pop();
   }
 
   // Store recent access list in cookie
-  cookieStore.set('recent_access', JSON.stringify(recentAccessList), {
-    expires: \1[0] + 7 * 24 * 60 * 60 * 1000), // 1 week
-    path: '/'
+  cookieStore.set("recent_access", JSON.stringify(recentAccessList), {
+    expires: [0] + 7 * 24 * 60 * 60 * 1000), // 1 week
+    path: "/"
   });
 
   // Database operation example (commented out):
   // const { results: countResults } = await cf.env.DB.prepare(
-  //   'INSERT INTO counters (name, value) VALUES (?, 1) ON CONFLICT (name) DO UPDATE SET value = value + 1 RETURNING value'
+  //   "INSERT INTO counters (name, value) VALUES (?, 1) ON CONFLICT (name) DO UPDATE SET value = value + 1 RETURNING value"
   // )
-  //   .bind('page_views')
+  //   .bind("page_views")
   //   .all()
 
-  // await cf.env.DB.prepare('INSERT INTO access_logs (ip, path, accessed_at) VALUES (?, ?, datetime())')
+  // await cf.env.DB.prepare("INSERT INTO access_logs (ip, path, accessed_at) VALUES (?, ?, datetime())")
   //   .bind(
-  //     headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown',
-  //     headersList.get('x-forwarded-host') || '/'
+  //     headersList.get("x-forwarded-for") || headersList.get("x-real-ip") || "unknown",
+  //     headersList.get("x-forwarded-host") || "/"
   //   )
   //   .run()
 
-  // const { results: logs } = await cf.env.DB.prepare('SELECT * FROM access_logs ORDER BY accessed_at DESC LIMIT 5').all()
+  // const { results: logs } = await cf.env.DB.prepare("SELECT * FROM access_logs ORDER BY accessed_at DESC LIMIT 5").all()
 
   return {
     count: currentCount,
@@ -73,10 +71,10 @@ export const _incrementAndLog = async () => {
  * 3. For local development, you can use wrangler to simulate the database;
  */
 export const _getStats = async () => {
-\1;
+;
   // Get current count from cookie or default to 0
-\1;
+;
   // Get recent access list from cookie or default to empty array
-\1;
+;
     recentAccess: recentAccessList
   }

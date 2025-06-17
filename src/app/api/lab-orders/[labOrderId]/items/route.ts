@@ -34,11 +34,11 @@ export const _POST = async (request: Request) => {
     const labOrderId = getLabOrderId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Lab Order ID" }), { status: 400 });
     }
 
@@ -48,7 +48,7 @@ export const _POST = async (request: Request) => {
         const itemsArraySchema = z.array(AddLabOrderItemSchema).min(1);
         const validation = itemsArraySchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
         }
 
@@ -58,7 +58,7 @@ export const _POST = async (request: Request) => {
 
         // 2. Get Doctor ID from session user
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
         }
         const doctorId = doctorProfile.doctor_id;
@@ -68,10 +68,10 @@ export const _POST = async (request: Request) => {
                                    .bind(labOrderId);
                                    .first<lab_order_id: number, doctor_id: number >();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
         }
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Forbidden: Cannot add items to another doctor's lab order" }), { status: 403 });        }
 
         // 4. Validate all billable items (tests) exist and get their names/details
@@ -79,10 +79,10 @@ export const _POST = async (request: Request) => {
         const billableCheckQuery = `SELECT item_id, item_name, default_sample_type FROM BillableItems WHERE item_id IN (${billableItemIds.map(() => "?").join(",")}) AND is_active = TRUE AND category = ?`; // Assuming category distinguishes lab tests
         const billableResults = await DB.prepare(billableCheckQuery).bind(...billableItemIds, "Laboratory").all<{ item_id: number, item_name: string, default_sample_type: string | null }>();
 
-        const foundBillableItems = \1;
+        const foundBillableItems = ;
 
         const missingItems = billableItemIds.filter(id => !foundBillableItems.has(id));
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: `Billable lab test item(s) not found, inactive, or not in Laboratory category: ${missingItems.join(", ")}` }), { status: 404 });
         }
 
@@ -110,7 +110,7 @@ export const _POST = async (request: Request) => {
         const _insertResults = await DB.batch(batchActions);
 
         // Basic check for success (optional: check insertResults)
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
         // 7. Return success response
         return new Response(JSON.stringify({ message: `${itemsData.length} test(s) added to lab order successfully` }), {

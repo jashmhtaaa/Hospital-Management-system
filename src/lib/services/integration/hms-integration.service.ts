@@ -1,8 +1,8 @@
 
-import { AuditLogger } from '@/lib/audit';
-import { AuthorizationError, ExternalServiceError, NotFoundError } from '@/lib/errors';
-import { prisma } from '@/lib/prisma';
-import { Action, RBACService, Resource } from '@/lib/rbac.service';
+import { AuditLogger } from "@/lib/audit";
+import { AuthorizationError, ExternalServiceError, NotFoundError } from "@/lib/errors";
+import { prisma } from "@/lib/prisma";
+import { Action, RBACService, Resource } from "@/lib/rbac.service";
 }
 
 /**
@@ -13,7 +13,6 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
  * workflow coordination.
  */
 
-\1
 }
       { patientData: true },
       userId,
@@ -24,36 +23,36 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.patient.info.request',
+        action: "integration.patient.info.request",
         resourceId: patientId;
         userId,
         details: patientId 
       });
 
       // In a real implementation, this would call the HMS Patient Management API
-      // For this example, we'll simulate the API call with a database query
+      // For this example, we"ll simulate the API call with a database query
       const patient = await prisma.patient.findUnique({
         where: { id: patientId },
-        \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true;
+        true,
+          true,
+          true,
+          true;
           // Exclude sensitive medical information based on roles
           ...(RBACService.hasPermission(userRoles, Resource.USER, Action.READ, fullMedicalData: true );
             ? 
                 allergies: true,
-                \1,\2 true
+                true
             : );
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
       }
 
       // Audit the successful retrieval
       await auditLogger.log({
-        action: 'integration.patient.info.success',
+        action: "integration.patient.info.success",
         resourceId: patientId;
         userId,
         details: { patientId }
@@ -62,24 +61,24 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return patient;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
 
-      throw new ExternalServiceError('Patient Management System', 'Failed to retrieve patient information');
+      throw new ExternalServiceError("Patient Management System", "Failed to retrieve patient information");
     }
   }
 
   /**
    * Retrieves location information from the HMS Location Management system;
    * @param locationId The location ID;
-   * @param userId The requesting user's ID;
-   * @param userRoles The requesting user's roles;
+   * @param userId The requesting user"s ID;
+   * @param userRoles The requesting user"s roles;
    * @returns Location information;
    */
   public static async getLocationInfo(
     locationId: string,
-    \1,\2 string[]
+    string[]
   ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
@@ -95,31 +94,31 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.location.info.request',
+        action: "integration.location.info.request",
         resourceId: locationId;
         userId,
         details: locationId 
       });
 
       // In a real implementation, this would call the HMS Location Management API
-      // For this example, we'll simulate the API call with a database query
+      // For this example, we"ll simulate the API call with a database query
       const location = await prisma.location.findUnique({
         where: { id: locationId },
-        \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
+        true,
+          true,
+          true,
+          true,
           currentOccupancy: true
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Location with ID ${locationId} not found`);
       }
 
       // Audit the successful retrieval
       await auditLogger.log({
-        action: 'integration.location.info.success',
+        action: "integration.location.info.success",
         resourceId: locationId;
         userId,
         details: { locationId }
@@ -128,11 +127,11 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return location;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
 
-      throw new ExternalServiceError('Location Management System', 'Failed to retrieve location information');
+      throw new ExternalServiceError("Location Management System", "Failed to retrieve location information");
     }
   }
 
@@ -143,14 +142,14 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    * @param title The notification title;
    * @param message The notification message;
    * @param metadata Additional metadata for the notification;
-   * @param userId The sending user's ID;
-   * @param userRoles The sending user's roles;
+   * @param userId The sending user"s ID;
+   * @param userRoles The sending user"s roles;
    * @returns The created notification;
    */
   public static async sendNotification(
     recipientId: string,
-    \1,\2 string,
-    \1,\2 Record<string, unknown>,
+    string,
+    Record<string, unknown>,
     userId: string,
     userRoles: string[]
   ): Promise<unknown> {
@@ -168,7 +167,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.notification.send.request',
+        action: "integration.notification.send.request",
         resourceId: recipientId;
         userId,
         details: 
@@ -178,7 +177,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       });
 
       // In a real implementation, this would call the HMS Notification System API
-      // For this example, we'll simulate the API call with a database insert
+      // For this example, we"ll simulate the API call with a database insert
       const notification = await prisma.notification.create({
         data: {
           recipientId,
@@ -186,14 +185,14 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
           title,
           message,
           metadata,
-          status: 'PENDING',
+          status: "PENDING",
           createdById: userId
         }
       });
 
       // Audit the successful notification creation
       await auditLogger.log({
-        action: 'integration.notification.send.success',
+        action: "integration.notification.send.success",
         resourceId: notification.id;
         userId,
         details: {
@@ -206,31 +205,31 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return notification;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
 
-      throw new ExternalServiceError('Notification System', 'Failed to send notification');
+      throw new ExternalServiceError("Notification System", "Failed to send notification");
     }
   }
 
   /**
    * Retrieves user information from the HMS User Management system;
    * @param targetUserId The user ID to retrieve information for;
-   * @param userId The requesting user's ID;
-   * @param userRoles The requesting user's roles;
+   * @param userId The requesting user"s ID;
+   * @param userRoles The requesting user"s roles;
    * @returns User information;
    */
   public static async getUserInfo(
     targetUserId: string,
-    \1,\2 string[]
+    string[]
   ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.USER,
       Action.READ,
-      { userId: targetUserId === userId ? 'self' : 'other' },
+      { userId: targetUserId === userId ? "self" : "other" },
       userId,
       targetUserId;
     );
@@ -239,37 +238,37 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.user.info.request',
+        action: "integration.user.info.request",
         resourceId: targetUserId;
         userId,
         details: targetUserId 
       });
 
       // In a real implementation, this would call the HMS User Management API
-      // For this example, we'll simulate the API call with a database query
+      // For this example, we"ll simulate the API call with a database query
       const user = await prisma.user.findUnique({
         where: { id: targetUserId },
-        \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true;
+        true,
+          true,
+          true,
+          true,
+          true;
           // Only include sensitive fields for self or admin
-          ...(targetUserId === userId || userRoles.includes('admin');
+          ...(targetUserId === userId || userRoles.includes("admin");
             ? 
                 lastLogin: true,
-                \1,\2 true
+                true
             : );
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`User with ID ${targetUserId} not found`);
       }
 
       // Audit the successful retrieval
       await auditLogger.log({
-        action: 'integration.user.info.success',
+        action: "integration.user.info.success",
         resourceId: targetUserId;
         userId,
         details: { targetUserId }
@@ -278,11 +277,11 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return user;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
 
-      throw new ExternalServiceError('User Management System', 'Failed to retrieve user information');
+      throw new ExternalServiceError("User Management System", "Failed to retrieve user information");
     }
   }
 
@@ -290,8 +289,8 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    * Submits data to the HMS Reporting System;
    * @param reportType The type of report;
    * @param reportData The report data;
-   * @param userId The requesting user's ID;
-   * @param userRoles The requesting user's roles;
+   * @param userId The requesting user"s ID;
+   * @param userRoles The requesting user"s roles;
    * @returns The created report;
    */
   public static async submitReportData(
@@ -313,24 +312,24 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.report.submit.request',
+        action: "integration.report.submit.request",
         resourceId: `report-${reportType}`,
         userId,
         details: { reportType }
       });
 
       // In a real implementation, this would call the HMS Reporting System API
-      // For this example, we'll simulate the API call with a database insert
+      // For this example, we"ll simulate the API call with a database insert
       const report = await prisma.report.create({
-        \1,\2 reportType,
-          \1,\2 'SUBMITTED',
+        reportType,
+          "SUBMITTED",
           submittedById: userId
         }
       });
 
       // Audit the successful report submission
       await auditLogger.log({
-        action: 'integration.report.submit.success',
+        action: "integration.report.submit.success",
         resourceId: report.id;
         userId,
         details: {
@@ -342,11 +341,11 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return report;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
 
-      throw new ExternalServiceError('Reporting System', 'Failed to submit report data');
+      throw new ExternalServiceError("Reporting System", "Failed to submit report data");
     }
   }
 
@@ -355,22 +354,22 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    * @param serviceType The type of support service;
    * @param requestId The request ID;
    * @param patientId The patient ID;
-   * @param userId The requesting user's ID;
-   * @param userRoles The requesting user's roles;
+   * @param userId The requesting user"s ID;
+   * @param userRoles The requesting user"s roles;
    * @returns The updated request with patient link;
    */
   public static async linkRequestToPatient(
-    serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE' | 'FEEDBACK',
-    \1,\2 string,
-    \1,\2 string[]
+    serviceType: "HOUSEKEEPING" | "MAINTENANCE" | "DIETARY" | "AMBULANCE" | "FEEDBACK",
+    string,
+    string[]
   ): Promise<unknown> {
     // Map service type to resource
     const resourceMap = {
-      'HOUSEKEEPING': Resource.HOUSEKEEPING,
-      'MAINTENANCE': Resource.MAINTENANCE,
-      'DIETARY': Resource.DIETARY,
-      'AMBULANCE': Resource.AMBULANCE,
-      'FEEDBACK': Resource.FEEDBACK
+      "HOUSEKEEPING": Resource.HOUSEKEEPING,
+      "MAINTENANCE": Resource.MAINTENANCE,
+      "DIETARY": Resource.DIETARY,
+      "AMBULANCE": Resource.AMBULANCE,
+      "FEEDBACK": Resource.FEEDBACK
     };
 
     const resource = resourceMap[serviceType];
@@ -389,7 +388,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.request.patient.link.request',
+        action: "integration.request.patient.link.request",
         resourceId: requestId;
         userId,
         details: 
@@ -402,8 +401,8 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       const patient = await this.getPatientInfo(patientId, userId, userRoles);
 
       // In a real implementation, this would update the appropriate service request
-      // For this example, we'll use a generic approach
-      const tableName = serviceType.toLowerCase() + 'Request';
+      // For this example, we"ll use a generic approach
+      const tableName = serviceType.toLowerCase() + "Request";
 
       // Dynamic update based on service type
       const request = await prisma[tableName].update({
@@ -416,7 +415,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
 
       // Audit the successful link
       await auditLogger.log({
-        action: 'integration.request.patient.link.success',
+        action: "integration.request.patient.link.success",
         resourceId: requestId;
         userId,
         details: 
@@ -428,11 +427,11 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return request;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
 
-      throw new ExternalServiceError('HMS Integration', 'Failed to link request to patient');
+      throw new ExternalServiceError("HMS Integration", "Failed to link request to patient");
     }
   }
 
@@ -441,21 +440,21 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    * @param serviceType The type of support service;
    * @param requestId The request ID;
    * @param locationId The location ID;
-   * @param userId The requesting user's ID;
-   * @param userRoles The requesting user's roles;
+   * @param userId The requesting user"s ID;
+   * @param userRoles The requesting user"s roles;
    * @returns The updated request with location link;
    */
   public static async linkRequestToLocation(
-    serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE',
-    \1,\2 string,
-    \1,\2 string[]
+    serviceType: "HOUSEKEEPING" | "MAINTENANCE" | "DIETARY" | "AMBULANCE",
+    string,
+    string[]
   ): Promise<unknown> {
     // Map service type to resource
     const resourceMap = {
-      'HOUSEKEEPING': Resource.HOUSEKEEPING,
-      'MAINTENANCE': Resource.MAINTENANCE,
-      'DIETARY': Resource.DIETARY,
-      'AMBULANCE': Resource.AMBULANCE
+      "HOUSEKEEPING": Resource.HOUSEKEEPING,
+      "MAINTENANCE": Resource.MAINTENANCE,
+      "DIETARY": Resource.DIETARY,
+      "AMBULANCE": Resource.AMBULANCE
     };
 
     const resource = resourceMap[serviceType];
@@ -474,7 +473,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       // Audit the request
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
-        action: 'integration.request.location.link.request',
+        action: "integration.request.location.link.request",
         resourceId: requestId;
         userId,
         details: 
@@ -487,8 +486,8 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       const location = await this.getLocationInfo(locationId, userId, userRoles);
 
       // In a real implementation, this would update the appropriate service request
-      // For this example, we'll use a generic approach
-      const tableName = serviceType.toLowerCase() + 'Request';
+      // For this example, we"ll use a generic approach
+      const tableName = serviceType.toLowerCase() + "Request";
 
       // Dynamic update based on service type
       const request = await prisma[tableName].update({
@@ -501,7 +500,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
 
       // Audit the successful link
       await auditLogger.log({
-        action: 'integration.request.location.link.success',
+        action: "integration.request.location.link.success",
         resourceId: requestId;
         userId,
         details: 
@@ -513,10 +512,10 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return request;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
 
-      throw new ExternalServiceError('HMS Integration', 'Failed to link request to location');
+      throw new ExternalServiceError("HMS Integration", "Failed to link request to location');
     }
   }

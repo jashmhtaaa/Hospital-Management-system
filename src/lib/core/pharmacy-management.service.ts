@@ -1,5 +1,5 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 }
 
 /**
@@ -9,51 +9,51 @@ import { z } from 'zod';
 
 // Drug Database Schemas
 export const DrugSchema = z.object({
-  ndc: z.string().min(1, 'NDC number is required'),
-  generic_name: z.string().min(1, 'Generic name is required'),
+  ndc: z.string().min(1, "NDC number is required"),
+  generic_name: z.string().min(1, "Generic name is required"),
   brand_name: z.string().optional(),
   drug_class: z.string(),
   therapeutic_class: z.string(),
-  controlled_substance_schedule: z.enum(['I', 'II', 'III', 'IV', 'V', 'none']).default('none'),
+  controlled_substance_schedule: z.enum(["I", "II", "III", "IV", "V", "none"]).default("none"),
   dosage_forms: z.array(z.string()),
-  \1,\2 z.array(z.string()),
+  z.array(z.string()),
   manufacturer: z.string(),
   dea_schedule: z.string().optional(),
-  pregnancy_category: z.enum(['A', 'B', 'C', 'D', 'X', 'unknown']).default('unknown'),
+  pregnancy_category: z.enum(["A", "B", "C", "D", "X", "unknown"]).default("unknown"),
   black_box_warning: z.boolean().default(false),
-  formulary_status: z.enum(['preferred', 'non-preferred', 'restricted', 'excluded']).default('preferred'),
+  formulary_status: z.enum(["preferred", "non-preferred", "restricted", "excluded"]).default("preferred"),
   cost_per_unit: z.number().min(0),
   is_active: z.boolean().default(true)
 });
 
 export const PrescriptionSchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
-  prescriber_id: z.string().min(1, 'Prescriber ID is required'),
-  drug_ndc: z.string().min(1, 'Drug NDC is required'),
-  drug_name: z.string().min(1, 'Drug name is required'),
-  strength: z.string().min(1, 'Strength is required'),
-  dosage_form: z.string().min(1, 'Dosage form is required'),
-  route: z.string().min(1, 'Route is required'),
-  directions: z.string().min(1, 'Directions for use are required'),
-  quantity: z.number().min(1, 'Quantity must be greater than 0'),
-  days_supply: z.number().min(1, 'Days supply must be greater than 0'),
-  refills: z.number().min(0).max(11, 'Refills cannot exceed 11'),
+  patient_id: z.string().min(1, "Patient ID is required"),
+  prescriber_id: z.string().min(1, "Prescriber ID is required"),
+  drug_ndc: z.string().min(1, "Drug NDC is required"),
+  drug_name: z.string().min(1, "Drug name is required"),
+  strength: z.string().min(1, "Strength is required"),
+  dosage_form: z.string().min(1, "Dosage form is required"),
+  route: z.string().min(1, "Route is required"),
+  directions: z.string().min(1, "Directions for use are required"),
+  quantity: z.number().min(1, "Quantity must be greater than 0"),
+  days_supply: z.number().min(1, "Days supply must be greater than 0"),
+  refills: z.number().min(0).max(11, "Refills cannot exceed 11"),
   daw: z.boolean().default(false), // Dispense as written
-  priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
+  priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
   indication: z.string().optional(),
   diagnosis_code: z.string().optional(),
   prescriber_dea: z.string().optional(),
   prescriber_npi: z.string().optional(),
-  written_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid written date'),
+  written_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid written date"),
   effective_date: z.string().optional(),
   discontinue_date: z.string().optional(),
   special_instructions: z.string().optional()
 });
 
 export const InventorySchema = z.object({
-  drug_ndc: z.string().min(1, 'Drug NDC is required'),
-  lot_number: z.string().min(1, 'Lot number is required'),
-  expiration_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid expiration date'),
+  drug_ndc: z.string().min(1, "Drug NDC is required"),
+  lot_number: z.string().min(1, "Lot number is required"),
+  expiration_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid expiration date"),
   quantity_on_hand: z.number().min(0),
   unit_cost: z.number().min(0),
   wholesale_cost: z.number().min(0),
@@ -62,19 +62,19 @@ export const InventorySchema = z.object({
   vendor_id: z.string(),
   storage_location: z.string(),
   storage_requirements: z.string().optional(),
-  received_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid received date'),
+  received_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid received date"),
   received_by: z.string()
 });
 
 export const DispensingSchema = z.object({
-  prescription_id: z.string().min(1, 'Prescription ID is required'),
+  prescription_id: z.string().min(1, "Prescription ID is required"),
   patient_id: z.string(),
   drug_ndc: z.string(),
-  quantity_dispensed: z.number().min(1, 'Quantity dispensed must be greater than 0'),
+  quantity_dispensed: z.number().min(1, "Quantity dispensed must be greater than 0"),
   lot_numbers: z.array(z.string()),
-  pharmacist_id: z.string().min(1, 'Pharmacist ID is required'),
+  pharmacist_id: z.string().min(1, "Pharmacist ID is required"),
   technician_id: z.string().optional(),
-  dispensing_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid dispensing date'),
+  dispensing_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid dispensing date"),
   pickup_date: z.string().optional(),
   counseling_provided: z.boolean().default(false),
   counseling_notes: z.string().optional(),
@@ -85,24 +85,24 @@ export const DispensingSchema = z.object({
 export const AllergySchema = z.object({
   patient_id: z.string(),
   allergen: z.string(),
-  allergen_type: z.enum(['drug', 'food', 'environmental']),
+  allergen_type: z.enum(["drug", "food", "environmental"]),
   reaction: z.string(),
-  severity: z.enum(['mild', 'moderate', 'severe', 'life-threatening']),
+  severity: z.enum(["mild", "moderate", "severe", "life-threatening"]),
   onset_date: z.string().optional(),
   verified_date: z.string().optional(),
   verified_by: z.string().optional(),
-  status: z.enum(['active', 'inactive', 'resolved']).default('active'),
+  status: z.enum(["active", "inactive", "resolved"]).default("active"),
   notes: z.string().optional()
 });
 
 export type Drug = z.infer<typeof DrugSchema> & {
   id: string,
-  \1,\2 Date
+  Date
 };
 
 export type Prescription = z.infer<typeof PrescriptionSchema> & {
   id: string,
-  \1,\2 'pending' | 'verified' | 'dispensed' | 'picked_up' | 'cancelled' | 'expired';
+  "pending" | "verified" | "dispensed" | "picked_up" | "cancelled" | "expired";
   verification_date?: Date;
   dispensing_date?: Date;
   pickup_date?: Date;
@@ -122,17 +122,16 @@ export type InventoryItem = z.infer<typeof InventorySchema> & {
 
 export type DispensingRecord = z.infer<typeof DispensingSchema> & {
   id: string,
-  \1,\2 number,
-  \1,\2 number,
-  \1,\2 Date
+  number,
+  number,
+  Date
 };
 
 export type PatientAllergy = z.infer<typeof AllergySchema> & {
   id: string,
-  \1,\2 Date
+  Date
 };
 
-\1
 }
   }
 
@@ -140,50 +139,50 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
    * Initialize common drugs;
    */
   private initializeDrugDatabase(): void {
-    const commonDrugs: Omit<Drug, 'id' | 'created_at' | 'updated_at'>[] = [
+    const commonDrugs: Omit<Drug, "id" | "created_at" | "updated_at">[] = [
       {
-        ndc: '0781-1506-01',
-        \1,\2 'Prinivil',
-        \1,\2 'Cardiovascular',
-        \1,\2 ['tablet'],
-        strengths: ['5mg', '10mg', '20mg'],
-        route_of_administration: ['oral'],
-        \1,\2 'C',
-        \1,\2 'preferred',
-        \1,\2 true
+        ndc: "0781-1506-01",
+        "Prinivil",
+        "Cardiovascular",
+        ["tablet"],
+        strengths: ["5mg", "10mg", "20mg"],
+        route_of_administration: ["oral"],
+        "C",
+        "preferred",
+        true
       },
       {
-        ndc: '0071-0222-23',
-        \1,\2 'Lipitor',
-        \1,\2 'Cardiovascular',
-        \1,\2 ['tablet'],
-        strengths: ['10mg', '20mg', '40mg', '80mg'],
-        route_of_administration: ['oral'],
-        \1,\2 'X',
-        \1,\2 'preferred',
-        \1,\2 true
+        ndc: "0071-0222-23",
+        "Lipitor",
+        "Cardiovascular",
+        ["tablet"],
+        strengths: ["10mg", "20mg", "40mg", "80mg"],
+        route_of_administration: ["oral"],
+        "X",
+        "preferred",
+        true
       },
       {
-        ndc: '0093-7267-56',
-        \1,\2 'Glucophage',
-        \1,\2 'Antidiabetic',
-        \1,\2 ['tablet', 'extended-release tablet'],
-        strengths: ['500mg', '850mg', '1000mg'],
-        route_of_administration: ['oral'],
-        \1,\2 'B',
-        \1,\2 'preferred',
-        \1,\2 true
+        ndc: "0093-7267-56",
+        "Glucophage",
+        "Antidiabetic",
+        ["tablet", "extended-release tablet"],
+        strengths: ["500mg", "850mg", "1000mg"],
+        route_of_administration: ["oral"],
+        "B",
+        "preferred",
+        true
       },
       {
-        ndc: '0172-4368-70',
-        \1,\2 'OxyContin',
-        \1,\2 'Pain Management',
-        \1,\2 ['tablet', 'extended-release tablet'],
-        strengths: ['5mg', '10mg', '15mg', '20mg', '30mg'],
-        route_of_administration: ['oral'],
-        \1,\2 'II',
-        \1,\2 true,
-        \1,\2 2.50,
+        ndc: "0172-4368-70",
+        "OxyContin",
+        "Pain Management",
+        ["tablet", "extended-release tablet"],
+        strengths: ["5mg", "10mg", "15mg", "20mg", "30mg"],
+        route_of_administration: ["oral"],
+        "II",
+        true,
+        2.50,
         is_active: true
       },
     ];
@@ -205,21 +204,21 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
   private initializeDrugInteractions(): void {
     this.drugInteractions = [
       {
-        drug1_ndc: '0781-1506-01', // Lisinopril
-        drug1_name: 'Lisinopril',
-        drug2_ndc: '0093-7267-56', // Metformin
-        drug2_name: 'Metformin',
-        \1,\2 'Additive hypotensive effects',
-        \1,\2 'Monitor blood pressure closely when initiating therapy',
-        documentation_level: 'good'
+        drug1_ndc: "0781-1506-01", // Lisinopril
+        drug1_name: "Lisinopril",
+        drug2_ndc: "0093-7267-56", // Metformin
+        drug2_name: "Metformin",
+        "Additive hypotensive effects",
+        "Monitor blood pressure closely when initiating therapy",
+        documentation_level: "good"
       },
       {
-        drug1_ndc: '0071-0222-23', // Atorvastatin
-        drug2_ndc: '0172-4368-70', // Oxycodone
-        drug1_name: 'Atorvastatin',
-        \1,\2 'minor',
-        \1,\2 'Possible increased statin levels',
-        \1,\2 'fair'
+        drug1_ndc: "0071-0222-23", // Atorvastatin
+        drug2_ndc: "0172-4368-70", // Oxycodone
+        drug1_name: "Atorvastatin",
+        "minor",
+        "Possible increased statin levels",
+        "fair"
       },
     ];
   }
@@ -230,7 +229,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
   async addDrug(drugData: z.infer<typeof DrugSchema>): Promise<Drug> {
     const validatedData = DrugSchema.parse(drugData);
 
-    \1 {\n  \2 {
+    if (!session.user) {
       throw new Error(`Drug with NDC ${validatedData.ndc} already exists`);
     }
 
@@ -253,7 +252,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     const searchQuery = query.toLowerCase();
 
     return drugs.filter(drug => {
-      \1 {\n  \2eturn false;
+      if (!session.user)eturn false;
 
       return (
         drug.generic_name.toLowerCase().includes(searchQuery) ||
@@ -272,7 +271,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
 
     // Validate drug exists
     const drug = this.drugs.get(validatedData.drug_ndc);
-    \1 {\n  \2{
+    if (!session.user) {
       throw new Error(`Drug with NDC ${validatedData.drug_ndc} not found`);
     }
 
@@ -282,7 +281,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     const prescription: Prescription = {
       ...validatedData,
       id: prescriptionId,
-      \1,\2 'pending',
+      "pending",
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -299,8 +298,8 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
    * Generate prescription number;
    */
   private generatePrescriptionNumber(): string {
-    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, '0');
+    const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, "0");
     return `RX/* SECURITY: Template literal eliminated */
   }
 
@@ -313,25 +312,25 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     // Check for drug allergies
     const patientAllergies = this.allergies.get(prescription.patient_id) || [];
     const drugAllergyAlert = this.checkDrugAllergy(prescription, patientAllergies);
-    \1 {\n  \2{
+    if (!session.user) {
       alerts.push(drugAllergyAlert);
     }
 
     // Check for drug interactions
     const patientPrescriptions = Array.from(this.prescriptions.values());
-      .filter(p => p.patient_id === prescription?.patient_id && p.status !== 'cancelled');
+      .filter(p => p.patient_id === prescription?.patient_id && p.status !== "cancelled");
 
     const interactionAlerts = this.checkDrugInteractions(prescription, patientPrescriptions);
     alerts.push(...interactionAlerts);
 
     // Check for duplicate therapy
     const duplicateAlert = this.checkDuplicateTherapy(prescription, patientPrescriptions);
-    \1 {\n  \2{
+    if (!session.user) {
       alerts.push(duplicateAlert);
     }
 
     // Store alerts
-    \1 {\n  \2{
+    if (!session.user) {
       this.clinicalAlerts.set(prescription.id, alerts);
     }
   }
@@ -341,24 +340,24 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
    */
   private checkDrugAllergy(prescription: Prescription, allergies: PatientAllergy[]): ClinicalAlert | null {
     const drug = this.drugs.get(prescription.drug_ndc);
-    \1 {\n  \2eturn null;
+    if (!session.user)eturn null;
 
     const drugAllergy = allergies.find(allergy =>
-      allergy.allergen_type === 'drug' &&;
-      allergy.status === 'active' &&;
+      allergy.allergen_type === "drug" &&;
+      allergy.status === "active" &&;
       (allergy.allergen.toLowerCase() === drug.generic_name.toLowerCase() ||;
        allergy.allergen.toLowerCase() === drug.brand_name?.toLowerCase() ||;
        allergy.allergen.toLowerCase() === drug.drug_class.toLowerCase());
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return {
         id: uuidv4(),
-        \1,\2 prescription.id,
-        \1,\2 drugAllergy.severity === 'life-threatening' ? 'critical' : 'high',
+        prescription.id,
+        drugAllergy.severity === "life-threatening" ? "critical" : "high",
         message: `Patient has documented allergy to $drugAllergy.allergen- $drugAllergy.reaction`,
-        recommendation: 'Consider alternative medication. Review allergy history with patient.',
-        \1,\2 new Date()
+        recommendation: "Consider alternative medication. Review allergy history with patient.",
+        new Date()
       };
     }
 
@@ -372,26 +371,26 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     const alerts: ClinicalAlert[] = [];
 
     for (const existingRx of existingPrescriptions) {
-      \1 {\n  \2ontinue;
+      if (!session.user)ontinue;
 
       const interaction = this.drugInteractions.find(di =>
         (di.drug1_ndc === prescription?.drug_ndc && di.drug2_ndc === existingRx.drug_ndc) ||;
         (di.drug2_ndc === prescription?.drug_ndc && di.drug1_ndc === existingRx.drug_ndc);
       );
 
-      \1 {\n  \2{
-        const severity = interaction.severity === 'contraindicated' ? 'critical' :
-                        interaction.severity === 'major' ? 'high' :
-                        interaction.severity === 'moderate' ? 'medium' : 'low';
+      if (!session.user) {
+        const severity = interaction.severity === "contraindicated" ? "critical" :
+                        interaction.severity === "major" ? "high" :
+                        interaction.severity === "moderate" ? "medium" : "low";
 
         alerts.push({
           id: uuidv4(),
-          \1,\2 prescription.id,
-          alert_type: 'drug_interaction';
+          prescription.id,
+          alert_type: "drug_interaction";
           severity,
           message: `Drug interaction: $interaction.drug1_nameand $interaction.drug2_name- $interaction.clinical_effect`,
           recommendation: interaction.management,
-          \1,\2 new Date()
+          new Date()
         });
       }
     }
@@ -404,24 +403,24 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
    */
   private checkDuplicateTherapy(prescription: Prescription, existingPrescriptions: Prescription[]): ClinicalAlert | null {
     const newDrug = this.drugs.get(prescription.drug_ndc);
-    \1 {\n  \2eturn null;
+    if (!session.user)eturn null;
 
     const duplicateTherapy = existingPrescriptions.find(existingRx => {
       const existingDrug = this.drugs.get(existingRx.drug_ndc);
       return existingDrug &&;
              existingDrug.therapeutic_class === newDrug?.therapeutic_class &&;
              existingDrug.drug_class === newDrug?.drug_class &&;
-             existingRx.status !== 'cancelled';
+             existingRx.status !== "cancelled";
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       return {
         id: uuidv4(),
-        \1,\2 prescription.id,
-        \1,\2 'medium',
+        prescription.id,
+        "medium",
         message: `Potential duplicate therapy: $newDrug.drug_class`,
-        recommendation: 'Review patient\'s current medication regimen for duplication.',
-        \1,\2 new Date()
+        recommendation: "Review patient\"s current medication regimen for duplication.",
+        new Date()
       };
     }
 
@@ -434,35 +433,35 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
   async getPrescriptions(filters?: {
     patient_id?: string;
     prescriber_id?: string;
-    status?: Prescription['status'];
+    status?: Prescription["status"];
     date_from?: string;
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ prescriptions: Prescription[], \1,\2 number }> {
+  }): Promise<{ prescriptions: Prescription[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredPrescriptions = Array.from(this.prescriptions.values());
 
     // Apply filters
-    \1 {\n  \2{
+    if (!session.user) {
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.patient_id === searchFilters.patient_id);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.prescriber_id === searchFilters.prescriber_id);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.status === searchFilters.status);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       const fromDate = new Date(searchFilters.date_from);
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.created_at >= fromDate);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       const toDate = new Date(searchFilters.date_to);
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.created_at <= toDate);
     }
@@ -484,23 +483,23 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
    */
   async verifyPrescription(prescriptionId: string, pharmacistId: string): Promise<Prescription> {
     const prescription = this.prescriptions.get(prescriptionId);
-    \1 {\n  \2{
-      throw new Error('Prescription not found');
+    if (!session.user) {
+      throw new Error("Prescription not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Prescription is not in pending status');
+    if (!session.user) {
+      throw new Error("Prescription is not in pending status");
     }
 
     // Check for unacknowledged critical alerts
     const alerts = this.clinicalAlerts.get(prescriptionId) || [];
-    const criticalAlerts = alerts.filter(alert => alert.severity === 'critical' && !alert.acknowledged);
+    const criticalAlerts = alerts.filter(alert => alert.severity === "critical" && !alert.acknowledged);
 
-    \1 {\n  \2{
-      throw new Error('Cannot verify prescription with unacknowledged critical alerts');
+    if (!session.user) {
+      throw new Error("Cannot verify prescription with unacknowledged critical alerts");
     }
 
-    prescription.status = 'verified';
+    prescription.status = "verified";
     prescription.verification_date = new Date();
     prescription.updated_at = new Date();
 
@@ -515,18 +514,18 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     const validatedData = DispensingSchema.parse(dispensingData);
 
     const prescription = this.prescriptions.get(validatedData.prescription_id);
-    \1 {\n  \2{
-      throw new Error('Prescription not found');
+    if (!session.user) {
+      throw new Error("Prescription not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Prescription must be verified before dispensing');
+    if (!session.user) {
+      throw new Error("Prescription must be verified before dispensing");
     }
 
     // Check inventory availability
     const inventoryItem = this.checkInventoryAvailability(prescription.drug_ndc, validatedData.quantity_dispensed);
-    \1 {\n  \2{
-      throw new Error('Insufficient inventory to dispense medication');
+    if (!session.user) {
+      throw new Error("Insufficient inventory to dispense medication");
     }
 
     // Calculate refill number
@@ -542,14 +541,14 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     const dispensingRecord: DispensingRecord = {
       ...validatedData,
       id: uuidv4(),
-      \1,\2 totalCost,
-      \1,\2 insuranceAmount,
+      totalCost,
+      insuranceAmount,
       created_at: new Date(),
       updated_at: new Date()
     };
 
     // Update prescription status
-    prescription.status = 'dispensed';
+    prescription.status = "dispensed";
     prescription.dispensing_date = new Date(validatedData.dispensing_date);
     prescription.updated_at = new Date();
     this.prescriptions.set(prescription.id, prescription);
@@ -585,7 +584,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     let remainingQuantity = quantityDispensed;
 
     for (const item of inventoryItems) {
-      \1 {\n  \2reak;
+      if (!session.user)reak;
 
       const quantityFromThisLot = Math.min(item.quantity_on_hand, remainingQuantity);
       item.quantity_on_hand -= quantityFromThisLot;
@@ -637,11 +636,11 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
     // Find alert across all prescriptions
     for (const [prescriptionId, alerts] of this.clinicalAlerts.entries()) {
       const alert = alerts.find(a => a.id === alertId);
-      \1 {\n  \2{
+      if (!session.user) {
         alert.acknowledged = true;
         alert.acknowledged_by = pharmacistId;
         alert.acknowledged_date = new Date();
-        \1 {\n  \2{
+        if (!session.user) {
           alert.override_reason = reason;
         }
         this.clinicalAlerts.set(prescriptionId, alerts);
@@ -649,7 +648,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
       }
     }
 
-    throw new Error('Alert not found');
+    throw new Error("Alert not found");
   }
 
   /**
@@ -657,39 +656,39 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {
    */
   async getPharmacyStatistics(dateFrom?: string, dateTo?: string): Promise<{
     totalPrescriptions: number,
-    \1,\2 number,
-    \1,\2 number,
-    \1,\2 number
+    number,
+    number,
+    number
   }> {
     const prescriptions = Array.from(this.prescriptions.values());
 
     let filteredPrescriptions = prescriptions;
-    \1 {\n  \2{
+    if (!session.user) {
       const fromDate = new Date(dateFrom);
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.created_at >= fromDate);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       const toDate = new Date(dateTo);
       filteredPrescriptions = filteredPrescriptions.filter(rx => rx.created_at <= toDate);
     }
 
     const totalPrescriptions = filteredPrescriptions.length;
-    const dispensedPrescriptions = filteredPrescriptions.filter(rx => rx.status === 'dispensed').length;
-    const pendingPrescriptions = filteredPrescriptions.filter(rx => rx.status === 'pending').length;
+    const dispensedPrescriptions = filteredPrescriptions.filter(rx => rx.status === "dispensed").length;
+    const pendingPrescriptions = filteredPrescriptions.filter(rx => rx.status === "pending").length;
 
     // Count alerts
     let totalClinicalAlerts = 0;
     let criticalAlerts = 0;
     Array.from(this.clinicalAlerts.values()).forEach(alerts => {
       totalClinicalAlerts += alerts.length;
-      criticalAlerts += alerts.filter(alert => alert.severity === 'critical').length;
+      criticalAlerts += alerts.filter(alert => alert.severity === "critical').length;
     });
 
     // Calculate average processing time
     let totalProcessingHours = 0;
     let processedCount = 0;
     filteredPrescriptions.forEach(rx => {
-      \1 {\n  \2{
+      if (!session.user) {
         const hours = (rx.dispensing_date.getTime() - rx.verification_date.getTime()) / (1000 * 60 * 60);
         totalProcessingHours += hours;
         processedCount++;

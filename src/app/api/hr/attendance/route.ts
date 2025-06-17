@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { attendanceService } from '@/lib/hr/attendance-service';
+import { attendanceService } from "@/lib/hr/attendance-service";
 // Schema for check-in request
 const checkInSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
@@ -24,7 +24,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = checkInSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -35,9 +35,9 @@ export const _POST = async (request: NextRequest) => {
 
     // Verify biometric data if provided
     let biometricVerified = false;
-    \1 {\n  \2{
+    if (!session.user) {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "Biometric verification failed" },
           { status: 401 }
@@ -70,17 +70,17 @@ export const _GET = async (request: NextRequest) => {
     const searchParams = request.nextUrl.searchParams;
 
     // Parse pagination parameters
-    const skip = Number.parseInt(searchParams.get('skip') || '0');
-    const take = Number.parseInt(searchParams.get('take') || '10');
+    const skip = Number.parseInt(searchParams.get("skip") || "0");
+    const take = Number.parseInt(searchParams.get("take") || "10");
 
     // Parse filter parameters
-    const date = searchParams.get('date') ? \1 : undefined;
-    const startDate = searchParams.get('startDate') ? \1 : undefined;
-    const endDate = searchParams.get('endDate') ? \1 : undefined;
-    const departmentId = searchParams.get('departmentId') || undefined;
-    const status = searchParams.get('status') as any || undefined;
-    const biometricVerified = searchParams.get('biometricVerified');
-      ? searchParams.get('biometricVerified') === 'true';
+    const date = searchParams.get("date") ? : undefined;
+    const startDate = searchParams.get("startDate") ? : undefined;
+    const endDate = searchParams.get("endDate") ? : undefined;
+    const departmentId = searchParams.get("departmentId") || undefined;
+    const status = searchParams.get("status") as any || undefined;
+    const biometricVerified = searchParams.get("biometricVerified");
+      ? searchParams.get("biometricVerified") === "true";
       : undefined;
 
     // Get attendance records

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"; // Added useState, useEffect
 import {
-import { useRouter } from 'next/navigation'; // Added useRouter
+import { useRouter } from "next/navigation"; // Added useRouter
 }
 
 "use client";
@@ -33,7 +33,7 @@ const consultationFormSchema = z.object({ // Uncommented
   patientId: z.string().min(1, { message: "Please select a patient" }),
   chiefComplaint: z.string().min(3, { message: "Chief complaint is required" }),
   presentIllness: z.string().optional(),
-  \1,\2 z.string().optional(),
+  z.string().optional(),
     pulse: z.string().optional(),
     respiratoryRate: z.string().optional(),
     bloodPressure: z.string().optional(),
@@ -59,13 +59,13 @@ const consultationFormSchema = z.object({ // Uncommented
   notes: z.string().optional()
 });
 
-type ConsultationFormValues = z.infer\1> // Uncommented
+type ConsultationFormValues = z.infer> // Uncommented
 
 // Define necessary interfaces based on usage
 interface Patient {
   id: string,
-  \1,\2 number,
-  \1,\2 number;
+  number,
+  number;
   // Add other relevant patient fields if needed
 }
 
@@ -88,24 +88,24 @@ interface ApiErrorResponse {
 
 // Mock permission check function (replace with actual API call)
 const checkPermission = async (permission: string): Promise<boolean> => {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual API call to /api/session/check-permission
-  // Example: const response = await fetch(`/api/session/check-permission?permission=${\1}`
+  // Example: const response = await fetch(`/api/session/check-permission?permission=${}`
   // const data: PermissionApiResponse = await response.json()
   // return data.hasPermission ?? false
-  await \1; // Simulate network delay
+  await ; // Simulate network delay
   // For now, grant all permissions for testing
   return true
 };
 
 // Mock fetch patients function (replace with actual API call)
 const fetchPatientsQueue = async (): Promise<Patient[]> => {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual API call to /api/opd/queue or similar
-  // Example: const response = await fetch('/api/opd/queue')
+  // Example: const response = await fetch("/api/opd/queue")
   // const data: PatientsQueueApiResponse = await response.json()
   // return data
-  await \1; // Simulate network delay
+  await ; // Simulate network delay
   // Return mock data for testing
   return [
     { id: "pat1", name: "John Doe", age: 45, gender: "Male", tokenNumber: 101 },
@@ -128,12 +128,12 @@ export default const _OPDConsultationForm = () {
   // Initialize the form
   const form = useForm<ConsultationFormValues>({
     resolver: zodResolver(consultationFormSchema),
-    \1,\2 "",
-      \1,\2 "",
+    "",
+      "",
       vitalSigns: ,
       diagnosis: "",
-      \1,\2 [],
-      \1,\2 "",
+      [],
+      "",
       notes: ""
     },
   });
@@ -173,9 +173,9 @@ export default const _OPDConsultationForm = () {
         chiefComplaint: "", // Example reset
         // ... reset other fields
     });
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     // Optionally fetch patient history here
-    // \1 {\n  \2etchPatientHistory(patient.id)
+    // if (!session.user)etchPatientHistory(patient.id)
   };
 
   // Add medication field
@@ -199,7 +199,7 @@ export default const _OPDConsultationForm = () {
   // Form submission handler
   const onSubmit = async (data: ConsultationFormValues) => {
     setLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     try {
       const response = await fetch("/api/opd-visits", { // Updated API endpoint based on file structure
@@ -210,7 +210,7 @@ export default const _OPDConsultationForm = () {
         body: JSON.stringify(data)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const errorMessage = "Failed to save consultation";
         try {
           const errorData: ApiErrorResponse = await response.json(),
@@ -226,9 +226,9 @@ export default const _OPDConsultationForm = () {
       toast({ title: "Success", description: "Consultation saved successfully." })
 
       // Redirect to consultation details or reset form
-      \1 {\n  \2{
+      if (!session.user) {
         // Assuming the API returns the visit ID as consultationId
-        router.push(`/dashboard/opd-visits/${\1}`; // Adjusted route
+        router.push(`/dashboard/opd-visits/${}`; // Adjusted route
       } else {
         form.reset(),
         setSelectedPatient(null); // Clear selected patient
@@ -243,25 +243,25 @@ export default const _OPDConsultationForm = () {
     }
   };
 
-  \1 {\n  \2{
-    return <div className="flex justify-center p-4">Loading permissions...\1>
+  if (!session.user) {
+    return <div className="flex justify-center p-4">Loading permissions...>
   }
 
   return (
-\1>
+>
         <Select>
           onValueChange={handlePatientChange}
           value={form.watch("patientId")} // Use watch to reactively update Select value
         >
-          \1>
+          >
             <SelectValue placeholder="Select a patient from the queue" />
           </SelectTrigger>
           <SelectContent>
             {patients.length === 0 && !loadingPermissions ? (
-                <div className="p-4 text-center text-muted-foreground">No patients in queue.\1>
+                <div className="p-4 text-center text-muted-foreground">No patients in queue.>
             ) : (
                 patients.map((patient) => (
-                  \1>
+                  >
                     {patient.tokenNumber} - {patient.name} ({patient.age}/
                     {patient.gender})
                   </SelectItem>
@@ -271,31 +271,31 @@ export default const _OPDConsultationForm = () {
         </Select>
         {/* Display form validation error for patientId if needed */}
         {form.formState.errors?.patientId && (
-            <p className="text-sm font-medium text-destructive mt-2">{form.formState.errors.patientId.message}\1>
+            <p className="text-sm font-medium text-destructive mt-2">{form.formState.errors.patientId.message}>
         )}
       </div>
 
       {selectedPatient && (
         <Form {...form}>
           {/* Added key to reset form state when patient changes */}
-          \1>
-            \1>
-              \1>
-                <TabsTrigger value="consultation">Consultation\1>
-                \1>
+          >
+            >
+              >
+                <TabsTrigger value="consultation">Consultation>
+                >
                   Medications
                 </TabsTrigger>
-                \1>
+                >
                   Lab Tests
                 </TabsTrigger>
                 <TabsTrigger value="followUp">Follow Up</TabsTrigger>
               </TabsList>
 
               {/* Consultation Tab */}
-              \1>
+              >
                 <Card>
-                  \1>
-                    \1>
+                  >
+                    >
                       <FormField>
                         control={form.control}
                         name="chiefComplaint"
@@ -325,8 +325,8 @@ export default const _OPDConsultationForm = () {
                       />
 
                       {/* Vital Signs Section (Example) */}
-                      <h3 className="font-medium mt-4">Vital Signs\1>
-                      \1>
+                      <h3 className="font-medium mt-4">Vital Signs>
+                      >
                         <FormField>
                           control={form.control}
                           name="vitalSigns.temperature"
@@ -389,9 +389,9 @@ export default const _OPDConsultationForm = () {
               </TabsContent>
 
               {/* Medications Tab */}
-              \1>
+              >
                 <Card>
-                  \1>
+                  >
                     {(form.watch("medications") || []).map((_, index) => (
 <div
                         key={index} // Consider using a more stable key if available
@@ -406,7 +406,7 @@ export default const _OPDConsultationForm = () {
                         >
                           Remove
                         </Button>
-                        \1>
+                        >
                           Medication {index + 1}
                         </h4>
 
@@ -424,7 +424,7 @@ export default const _OPDConsultationForm = () {
                           )}
                         />
 
-                        \1>
+                        >
                           <FormField>
                             control={form.control}
                             name={`medications.${index}.dosage`}
@@ -453,7 +453,7 @@ export default const _OPDConsultationForm = () {
                           />
                         </div>
 
-                        \1>
+                        >
                           <FormField>
                             control={form.control}
                             name={`medications.${index}.duration`}
@@ -495,9 +495,9 @@ export default const _OPDConsultationForm = () {
               </TabsContent>
 
               {/* Lab Tests Tab */}
-              \1>
+              >
                 <Card>
-                  \1>
+                  >
                     {/* TODO: Implement Lab Test Selection UI */}
                     <p>Lab Test Ordering UI (Placeholder)</p>
                     {/* Example: Could use checkboxes or a multi-select component */}
@@ -507,9 +507,9 @@ export default const _OPDConsultationForm = () {
               </TabsContent>
 
               {/* Follow Up Tab */}
-              \1>
+              >
                 <Card>
-                  \1>
+                  >
                     <FormField>
                       control={form.control}
                       name="followUpDate"
@@ -542,8 +542,8 @@ export default const _OPDConsultationForm = () {
               </TabsContent>
             </Tabs>
 
-            \1>
-              \1>
+            >
+              >
                 {loading ? "Saving..." : "Save Consultation"}
               </Button>
             </div>

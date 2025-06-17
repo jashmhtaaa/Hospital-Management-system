@@ -1,60 +1,60 @@
 
-import { AuditLogger } from '@/lib/audit';
-import { EncryptionService } from '@/lib/encryption';
-import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
-import { prisma } from '@/lib/prisma';
-import { ContactService } from '../contact.service';
+import { AuditLogger } from "@/lib/audit";
+import { EncryptionService } from "@/lib/encryption";
+import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
+import { prisma } from "@/lib/prisma";
+import { ContactService } from "../contact.service";
 // Mock dependencies
-jest.mock('@/lib/prisma', () => ({
-  \1,\2 jest.fn(),
+jest.mock("@/lib/prisma", () => ({
+  jest.fn(),
     findUnique: jest.fn(),
     findMany: jest.fn(),
     count: jest.fn(),
     update: jest.fn(),
     delete: jest.fn()
   },
-  \1,\2 jest.fn(),
+  jest.fn(),
     findMany: jest.fn()
   },
-  \1,\2 jest.fn()
+  jest.fn()
   },
 }));
 
-jest.mock('@/lib/audit', () => ({
-  \1,\2 jest.fn().mockResolvedValue(undefined)
+jest.mock("@/lib/audit", () => ({
+  jest.fn().mockResolvedValue(undefined)
   })),
 }));
 
-jest.mock('@/lib/encryption', () => ({
-  \1,\2 jest.fn(data => `encrypted_${\1}`,
-    decryptField: jest.fn(data => data.replace('encrypted_', '')),
+jest.mock("@/lib/encryption", () => ({
+  jest.fn(data => `encrypted_${}`,
+    decryptField: jest.fn(data => data.replace("encrypted_", "")),
   },
 }));
 
-describe('ContactService', () => {
+describe("ContactService", () => {
   let service: ContactService;
-  const mockUserId = 'user-123';
+  const mockUserId = "user-123";
 
   beforeEach(() => {
     jest.clearAllMocks();
     service = new ContactService();
   });
 
-  describe('createContact', () => {
+  describe("createContact", () => {
     const mockContactData = {
-      name: 'John Doe',
-      \1,\2 '123-456-7890',
-      \1,\2 'ACTIVE'
+      name: "John Doe",
+      "123-456-7890",
+      "ACTIVE"
     };
 
     const mockCreatedContact = {
-      id: 'contact-123';
+      id: "contact-123";
       ...mockContactData,
       createdAt: new Date(),
       updatedAt: new Date()
     };
 
-    it('should create a contact successfully', async () => {
+    it("should create a contact successfully", async () => {
       // Arrange
       (prisma.contact.create as jest.Mock).mockResolvedValue(mockCreatedContact);
 
@@ -63,27 +63,27 @@ describe('ContactService', () => {
 
       // Assert
       expect(prisma.contact.create).toHaveBeenCalledWith({
-        \1,\2 mockContactData.name,
-          \1,\2 expect.stringContaining('encrypted_'),
-          \1,\2 mockContactData.status,
+        mockContactData.name,
+          expect.stringContaining("encrypted_"),
+          mockContactData.status,
           createdById: mockUserId
         }),
       });
 
       expect(result).toEqual(expect.objectContaining({
         id: mockCreatedContact.id,
-        \1,\2 mockCreatedContact.email
+        mockCreatedContact.email
       }));
 
       // Verify phone was encrypted
       expect(EncryptionService.encryptField).toHaveBeenCalledWith(mockContactData.phone);
     });
 
-    it('should throw ValidationError if contact data is invalid', async () => {
+    it("should throw ValidationError if contact data is invalid", async () => {
       // Arrange
       const invalidData = {
         ...mockContactData,
-        email: 'invalid-email', // Invalid email format
+        email: "invalid-email", // Invalid email format
       };
 
       // Act & Assert
@@ -92,9 +92,9 @@ describe('ContactService', () => {
         .toThrow(ValidationError);
     });
 
-    it('should throw DatabaseError if database operation fails', async () => {
+    it("should throw DatabaseError if database operation fails", async () => {
       // Arrange
-      (prisma.contact.create as jest.Mock).mockRejectedValue(\1;
+      (prisma.contact.create as jest.Mock).mockRejectedValue(;
 
       // Act & Assert
       await expect(service.createContact(mockContactData, mockUserId));
@@ -102,7 +102,7 @@ describe('ContactService', () => {
         .toThrow(DatabaseError);
     });
 
-    it('should log audit event after creating contact', async () => {
+    it("should log audit event after creating contact", async () => {
       // Arrange
       (prisma.contact.create as jest.Mock).mockResolvedValue(mockCreatedContact);
 
@@ -111,84 +111,84 @@ describe('ContactService', () => {
 
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
-        action: 'contact.create',
-        \1,\2 mockUserId,
+        action: "contact.create",
+        mockUserId,
         details: expect.any(Object)
       });
     });
   });
 
-  describe('getContactById', () => {
+  describe("getContactById", () => {
     const mockContact = {
-      id: 'contact-123',
-      \1,\2 'john.doe@example.com',
-      \1,\2 'WEBSITE',
-      \1,\2 new Date(),
+      id: "contact-123",
+      "john.doe@example.com",
+      "WEBSITE",
+      new Date(),
       updatedAt: new Date()
     };
 
-    it('should retrieve a contact by ID', async () => {
+    it("should retrieve a contact by ID", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
 
       // Act
-      const result = await service.getContactById('contact-123');
+      const result = await service.getContactById("contact-123");
 
       // Assert
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
-        where: { id: 'contact-123' },
+        where: { id: "contact-123" },
         include: expect.any(Object)
       });
 
       // Verify phone was decrypted
       expect(EncryptionService.decryptField).toHaveBeenCalledWith(mockContact.phone),
-      expect(result.phone).not.toContain('encrypted_');
+      expect(result.phone).not.toContain("encrypted_");
     });
 
-    it('should throw NotFoundError if contact does not exist', async () => {
+    it("should throw NotFoundError if contact does not exist", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.getContactById('non-existent-id'));
+      await expect(service.getContactById("non-existent-id"));
         .rejects;
         .toThrow(NotFoundError);
     });
 
-    it('should include FHIR representation when requested', async () => {
+    it("should include FHIR representation when requested", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
 
       // Act
-      const result = await service.getContactById('contact-123', true);
+      const result = await service.getContactById("contact-123", true);
 
       // Assert
-      expect(result).toHaveProperty('fhir'),
-      expect(result.fhir).toHaveProperty('resourceType', 'Person'),
-      expect(result.fhir).toHaveProperty('id', mockContact.id),
+      expect(result).toHaveProperty("fhir"),
+      expect(result.fhir).toHaveProperty("resourceType", "Person"),
+      expect(result.fhir).toHaveProperty("id", mockContact.id),
       expect(result.fhir.name[0].text).toBe(mockContact.name);
     });
   });
 
-  describe('getContacts', () => {
+  describe("getContacts", () => {
     const mockContacts = [
       {
-        id: 'contact-1',
-        \1,\2 'john.doe@example.com',
-        \1,\2 'WEBSITE',
-        \1,\2 new Date(),
+        id: "contact-1",
+        "john.doe@example.com",
+        "WEBSITE",
+        new Date(),
         updatedAt: new Date()
       },
       {
-        id: 'contact-2',
-        \1,\2 'jane.smith@example.com',
-        \1,\2 'REFERRAL',
-        \1,\2 new Date(),
+        id: "contact-2",
+        "jane.smith@example.com",
+        "REFERRAL",
+        new Date(),
         updatedAt: new Date()
       },
     ];
 
-    it('should retrieve contacts with pagination', async () => {
+    it("should retrieve contacts with pagination", async () => {
       // Arrange
       (prisma.contact.count as jest.Mock).mockResolvedValue(2);
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockContacts);
@@ -201,7 +201,7 @@ describe('ContactService', () => {
       expect(prisma.contact.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          \1,\2 'desc' ,
+          "desc" ,
         });
       );
 
@@ -209,15 +209,15 @@ describe('ContactService', () => {
         data: expect.arrayContaining([
           expect.objectContaining({
             id: mockContacts[0].id,
-            \1,\2 expect.not.stringContaining('encrypted_')
+            expect.not.stringContaining("encrypted_")
           }),
           expect.objectContaining({
             id: mockContacts[1].id,
-            \1,\2 expect.not.stringContaining('encrypted_')
+            expect.not.stringContaining("encrypted_")
           }),
         ]),
-        \1,\2 2,
-          \1,\2 10,
+        2,
+          10,
           totalPages: 1
         },
       });
@@ -226,12 +226,12 @@ describe('ContactService', () => {
       expect(EncryptionService.decryptField).toHaveBeenCalledTimes(2);
     });
 
-    it('should apply filters correctly', async () => {
+    it("should apply filters correctly", async () => {
       // Arrange
       const filters = {
-        status: 'ACTIVE',
-        \1,\2 'john',
-        \1,\2 5
+        status: "ACTIVE",
+        "john",
+        5
       };
 
       (prisma.contact.count as jest.Mock).mockResolvedValue(10);
@@ -242,17 +242,17 @@ describe('ContactService', () => {
 
       // Assert
       expect(prisma.contact.count).toHaveBeenCalledWith({
-        \1,\2 filters.status,
-          \1,\2 expect.arrayContaining([
-            { name: { contains: filters.search, mode: 'insensitive' } },
-            { email: { contains: filters.search, mode: 'insensitive' } },
+        filters.status,
+          expect.arrayContaining([
+            { name: { contains: filters.search, mode: "insensitive" } },
+            { email: { contains: filters.search, mode: "insensitive" } },
           ]),
         }),
       });
 
       expect(prisma.contact.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          \1,\2 filters.status,
+          filters.status,
             source: filters.source
           }),
           skip: 5, // (page-1) * limit
@@ -262,27 +262,27 @@ describe('ContactService', () => {
 
       expect(result.pagination).toEqual({
         total: 10,
-        \1,\2 5,
+        5,
         totalPages: 2
       });
     });
   });
 
-  describe('updateContact', () => {
+  describe("updateContact", () => {
     const mockContact = {
-      id: 'contact-123',
-      \1,\2 'john.doe@example.com',
-      \1,\2 'WEBSITE',
-      \1,\2 new Date(),
+      id: "contact-123",
+      "john.doe@example.com",
+      "WEBSITE",
+      new Date(),
       updatedAt: new Date()
     };
 
     const updateData = {
-      name: 'John Updated',
-      \1,\2 'INACTIVE'
+      name: "John Updated",
+      "INACTIVE"
     };
 
-    it('should update a contact successfully', async () => {
+    it("should update a contact successfully", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contact.update as jest.Mock).mockResolvedValue({
@@ -292,16 +292,16 @@ describe('ContactService', () => {
       });
 
       // Act
-      const result = await service.updateContact('contact-123', updateData, mockUserId);
+      const result = await service.updateContact("contact-123", updateData, mockUserId);
 
       // Assert
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
-        where: { id: 'contact-123' },
+        where: { id: "contact-123" },
       }),
       expect(prisma.contact.update).toHaveBeenCalledWith({
-        where: { id: 'contact-123' },
-        \1,\2 updateData.name,
-          phone: expect.stringContaining('encrypted_'),
+        where: { id: "contact-123" },
+        updateData.name,
+          phone: expect.stringContaining("encrypted_"),
           status: updateData.status,
           updatedById: mockUserId
         }),
@@ -314,17 +314,17 @@ describe('ContactService', () => {
       expect(result.phone).toBe(updateData.phone);
     });
 
-    it('should throw NotFoundError if contact does not exist', async () => {
+    it("should throw NotFoundError if contact does not exist", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.updateContact('non-existent-id', updateData, mockUserId));
+      await expect(service.updateContact("non-existent-id", updateData, mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
 
-    it('should log audit event after updating contact', async () => {
+    it("should log audit event after updating contact", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contact.update as jest.Mock).mockResolvedValue({
@@ -334,159 +334,159 @@ describe('ContactService', () => {
       });
 
       // Act
-      await service.updateContact('contact-123', updateData, mockUserId);
+      await service.updateContact("contact-123", updateData, mockUserId);
 
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
-        action: 'contact.update',
-        \1,\2 mockUserId,
-        \1,\2 Object.keys(updateData)),
+        action: "contact.update",
+        mockUserId,
+        Object.keys(updateData)),
       });
     });
   });
 
-  describe('addContactNote', () => {
+  describe("addContactNote", () => {
     const mockContact = {
-      id: 'contact-123',
-      name: 'John Doe'
+      id: "contact-123",
+      name: "John Doe"
     };
 
     const mockNote = {
-      id: 'note-123',
-      \1,\2 'This is a test note',
-      \1,\2 new Date()
+      id: "note-123",
+      "This is a test note",
+      new Date()
     };
 
-    it('should add a note to a contact successfully', async () => {
+    it("should add a note to a contact successfully", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contactNote.create as jest.Mock).mockResolvedValue(mockNote);
 
       // Act
       const result = await service.addContactNote(
-        'contact-123',
-        'This is a test note',
+        "contact-123",
+        "This is a test note",
         mockUserId;
       );
 
       // Assert
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
-        where: { id: 'contact-123' },
+        where: { id: "contact-123" },
       }),
       expect(prisma.contactNote.create).toHaveBeenCalledWith({
-        \1,\2 'contact-123',
-          \1,\2 mockUserId
+        "contact-123",
+          mockUserId
         },
       }),
       expect(result).toEqual(mockNote);
     });
 
-    it('should throw NotFoundError if contact does not exist', async () => {
+    it("should throw NotFoundError if contact does not exist", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.addContactNote('non-existent-id', 'Test note', mockUserId));
+      await expect(service.addContactNote("non-existent-id", "Test note", mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
 
-    it('should log audit event after adding note', async () => {
+    it("should log audit event after adding note", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       (prisma.contactNote.create as jest.Mock).mockResolvedValue(mockNote);
 
       // Act
-      await service.addContactNote('contact-123', 'This is a test note', mockUserId);
+      await service.addContactNote("contact-123", "This is a test note", mockUserId);
 
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
-        action: 'contact.note.add',
-        \1,\2 mockUserId,
-        \1,\2 mockNote.id),
+        action: "contact.note.add",
+        mockUserId,
+        mockNote.id),
       });
     });
   });
 
-  describe('linkContactToPatient', () => {
+  describe("linkContactToPatient", () => {
     const mockContact = {
-      id: 'contact-123',
-      \1,\2 null
+      id: "contact-123",
+      null
     };
 
     const mockPatient = {
-      id: 'patient-123',
-      name: 'John Doe'
+      id: "patient-123",
+      name: "John Doe"
     };
 
     const mockUpdatedContact = {
       ...mockContact,
-      patientId: 'patient-123'
+      patientId: "patient-123"
     };
 
-    it('should link a contact to a patient successfully', async () => {
+    it("should link a contact to a patient successfully", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
       // Mock patient service call
-      jest.spyOn(service as any, 'getPatientById').mockResolvedValue(mockPatient);
+      jest.spyOn(service as any, "getPatientById").mockResolvedValue(mockPatient);
       (prisma.contact.update as jest.Mock).mockResolvedValue(mockUpdatedContact);
 
       // Act
       const result = await service.linkContactToPatient(
-        'contact-123',
-        'patient-123',
+        "contact-123",
+        "patient-123",
         mockUserId;
       );
 
       // Assert
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
-        where: { id: 'contact-123' },
+        where: { id: "contact-123" },
       }),
-      expect(service['getPatientById']).toHaveBeenCalledWith('patient-123'),
+      expect(service["getPatientById"]).toHaveBeenCalledWith("patient-123"),
       expect(prisma.contact.update).toHaveBeenCalledWith({
-        where: { id: 'contact-123' },
-        \1,\2 'patient-123',
+        where: { id: "contact-123" },
+        "patient-123",
           updatedById: mockUserId
         },
       }),
       expect(result).toEqual(mockUpdatedContact);
     });
 
-    it('should throw NotFoundError if contact does not exist', async () => {
+    it("should throw NotFoundError if contact does not exist", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(null);
 
       // Act & Assert
-      await expect(service.linkContactToPatient('non-existent-id', 'patient-123', mockUserId));
+      await expect(service.linkContactToPatient("non-existent-id", "patient-123", mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
 
-    it('should throw NotFoundError if patient does not exist', async () => {
+    it("should throw NotFoundError if patient does not exist", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
-      jest.spyOn(service as any, 'getPatientById').mockRejectedValue(\1;
+      jest.spyOn(service as any, "getPatientById").mockRejectedValue(;
 
       // Act & Assert
-      await expect(service.linkContactToPatient('contact-123', 'non-existent-id', mockUserId));
+      await expect(service.linkContactToPatient("contact-123", "non-existent-id", mockUserId));
         .rejects;
         .toThrow(NotFoundError);
     });
 
-    it('should log audit event after linking patient', async () => {
+    it("should log audit event after linking patient", async () => {
       // Arrange
       (prisma.contact.findUnique as jest.Mock).mockResolvedValue(mockContact);
-      jest.spyOn(service as any, 'getPatientById').mockResolvedValue(mockPatient);
+      jest.spyOn(service as any, "getPatientById").mockResolvedValue(mockPatient);
       (prisma.contact.update as jest.Mock).mockResolvedValue(mockUpdatedContact);
 
       // Act
-      await service.linkContactToPatient('contact-123', 'patient-123', mockUserId);
+      await service.linkContactToPatient("contact-123", "patient-123", mockUserId);
 
       // Assert
       expect(AuditLogger.prototype.log).toHaveBeenCalledWith({
-        action: 'contact.patient.link',
-        \1,\2 mockUserId,
-        \1,\2 'patient-123'),
+        action: "contact.patient.link",
+        mockUserId,
+        "patient-123"),
       });
     });
   });

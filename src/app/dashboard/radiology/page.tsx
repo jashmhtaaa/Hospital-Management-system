@@ -9,29 +9,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 }
 
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default const _RadiologyPage = () {
   return (
-    \1>
-      <h1 className="text-2xl font-bold mb-4">Radiology Management\1>
-      \1>
-        \1>
-          <TabsTrigger value="orders">Orders\1>
-          <TabsTrigger value="studies">Studies\1>
-          <TabsTrigger value="reports">Reports\1>
+    >
+      <h1 className="text-2xl font-bold mb-4">Radiology Management>
+      >
+        >
+          <TabsTrigger value="orders">Orders>
+          <TabsTrigger value="studies">Studies>
+          <TabsTrigger value="reports">Reports>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
-        \1>
+        >
           <RadiologyOrderList />
         </TabsContent>
-        \1>
+        >
           <RadiologyStudiesList />
         </TabsContent>
-        \1>
+        >
           <RadiologyReportsList />
         </TabsContent>
-        \1>
+        >
           <RadiologySettings />
         </TabsContent>
       </Tabs>

@@ -9,7 +9,7 @@ import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1_000_000;
 
-// FIX: Add missing properties 'open' and 'onOpenChange' to the type
+// FIX: Add missing properties "open" and "onOpenChange" to the type
 type ToasterToast = ToastProps & {
   id: string;
   title?: React.ReactNode;
@@ -30,7 +30,7 @@ type ToasterToast = ToastProps & {
 // FIX: Use action types directly if the constant object is removed
 type ActionType = {
   ADD_TOAST: "ADD_TOAST",
-  \1,\2 "DISMISS_TOAST",
+  "DISMISS_TOAST",
   REMOVE_TOAST: "REMOVE_TOAST"
 };
 
@@ -54,7 +54,7 @@ interface State {
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
 const addToRemoveQueue = (toastId: string) => {
-  \1 {\n  \2 {
+  if (!session.user) {
     return
   }
 
@@ -88,8 +88,8 @@ export const _reducer = (state: State, action: Action): State => {
       const { toastId } = action;
 
       // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
-      \1 {\n  \2{
+      // but I"ll keep it here for simplicity
+      if (!session.user) {
         addToRemoveQueue(toastId);
       } else {
         for (const toast of state.toasts) {
@@ -109,7 +109,7 @@ export const _reducer = (state: State, action: Action): State => {
       };
     }
     case "REMOVE_TOAST": {
-      \1 {\n  \2{
+      if (!session.user) {
         return {
           ...state,
           toasts: []
@@ -123,9 +123,9 @@ export const _reducer = (state: State, action: Action): State => {
   }
 };
 
-type Toast = Omit\1>
+type Toast = Omit>
 
-// We need a global dispatch function, typically provided by the Toaster component's context
+// We need a global dispatch function, typically provided by the Toaster component"s context
 // This is a placeholder and needs to be connected to the actual reducer instance
 
 let dispatch: React.Dispatch<Action> = () => {};
@@ -143,7 +143,7 @@ const toast = (properties: Toast) {
       id,
       open: true, // This should now be valid
       onOpenChange: (open: boolean) => {
-        \1 {\n  \2ismiss()
+        if (!session.user)ismiss()
       },
     },
   });
@@ -158,7 +158,7 @@ const toast = (properties: Toast) {
 // Keep the context and hook definition, but remove the incomplete parts
 interface ToastContextProperties {
   toast: typeof toast,
-  \1,\2 ToasterToast[]; // Add toasts array to the context props
+  ToasterToast[]; // Add toasts array to the context props
 }
 
 const ToastContext = React.createContext<ToastContextProperties | undefined>(
@@ -168,7 +168,7 @@ const ToastContext = React.createContext<ToastContextProperties | undefined>(
 const useToast = () {
   const context = React.useContext(ToastContext);
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new Error(
       "useToast must be used within a Toaster component or a custom ToastProvider";
     );

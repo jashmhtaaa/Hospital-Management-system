@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { type NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { authOptions } from '@/lib/auth';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { ContactService } from '@/lib/services/support-services/marketing';
+import { authOptions } from "@/lib/auth";
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { ContactService } from "@/lib/services/support-services/marketing";
 const contactService = new ContactService();
 
 /**
@@ -21,15 +21,15 @@ export const GET = async (
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
-      const includeFHIR = searchParams.get('includeFHIR') === 'true';
+      const includeFHIR = searchParams.get("includeFHIR") === "true";
 
       const contact = await contactService.getContactById(params.id, includeFHIR);
 
       return NextResponse.json(contact);
     },
     {
-      requiredPermission: 'marketing.contacts.read',
-      auditAction: 'CONTACT_VIEW'
+      requiredPermission: "marketing.contacts.read",
+      auditAction: "CONTACT_VIEW"
     }
   );
 }
@@ -57,8 +57,8 @@ export const PUT = async (
       return NextResponse.json(contact);
     },
     {
-      requiredPermission: 'marketing.contacts.update',
-      auditAction: 'CONTACT_UPDATE'
+      requiredPermission: "marketing.contacts.update",
+      auditAction: "CONTACT_UPDATE"
     }
   );
 }
@@ -77,9 +77,9 @@ export const POST = async (
       const session = await getServerSession(authOptions);
       const { content } = await req.json();
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
-          { error: 'Note content is required' },
+          { error: "Note content is required" },
           { status: 400 }
         );
       }
@@ -93,7 +93,7 @@ export const POST = async (
       return NextResponse.json(note, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.contacts.update',
-      auditAction: 'CONTACT_NOTE_ADD'
+      requiredPermission: "marketing.contacts.update",
+      auditAction: "CONTACT_NOTE_ADD"
     }
   );

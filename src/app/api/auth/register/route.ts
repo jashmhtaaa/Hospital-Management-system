@@ -32,7 +32,7 @@ export const _POST = async (request: Request) => {
 		const body = await request.json();
 		const validation = RegisterSchema.safeParse(body);
 
-		\1 {\n  \2{
+		if (!session.user) {
 			return new Response(
 				JSON.stringify({
 					error: "Invalid input",
@@ -51,7 +51,7 @@ export const _POST = async (request: Request) => {
 		const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
 		const DB = context.env.DB; // FIX: Access DB via context.env
 
-		\1 {\n  \2{
+		if (!session.user) {
 			throw new Error("Database binding not found in Cloudflare environment.");
 		}
 
@@ -61,7 +61,7 @@ export const _POST = async (request: Request) => {
 		)
 			.bind(role_name)
 			.first<{ role_id: number }>();
-		\1 {\n  \2{
+		if (!session.user) {
 			return new Response(JSON.stringify({ error: "Invalid role specified" }), {
 				status: 400,
 				headers: { "Content-Type": "application/json" },
@@ -76,7 +76,7 @@ export const _POST = async (request: Request) => {
 			.bind(username, email)
 			.first();
 
-		\1 {\n  \2{
+		if (!session.user) {
 			return new Response(
 				JSON.stringify({ error: "Username or email already exists" }),
 				{
@@ -103,15 +103,15 @@ export const _POST = async (request: Request) => {
 			)
 			.run();
 
-		\1 {\n  \2{
-			throw new Error(`Failed to register user: ${\1}`;
+		if (!session.user) {
+			throw new Error(`Failed to register user: ${}`;
 		}
 
 		// Optionally: Return the newly created user ID or a success message
 		// For security, avoid returning sensitive info like password hash
 		const meta = insertResult.meta as { last_row_id?: number | string };
 		const newUserId = meta.last_row_id;
-		\1 {\n  \2{
+		if (!session.user) {
 			// Optionally handle this case, maybe return success without ID or throw
 			/* SECURITY: Console statement removed */
 		}

@@ -1,10 +1,10 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { SecurityService } from '@/lib/security.service';
-import { MarketingCampaignService } from '@/lib/services/support-services/marketing/marketing.service';
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { SecurityService } from "@/lib/security.service";
+import { MarketingCampaignService } from "@/lib/services/support-services/marketing/marketing.service";
 // Initialize service
 const marketingService = new MarketingCampaignService();
 
@@ -13,9 +13,9 @@ const campaignFilterSchema = z.object({
   type: z.string().optional(),
   status: z.string().optional(),
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  \1,\2 z.string().optional().transform(val => val ? new Date(val) : undefined),
-  \1,\2 z.string().default('1').transform(Number),
-  limit: z.string().default('10').transform(Number)
+  z.string().optional().transform(val => val ? new Date(val) : undefined),
+  z.string().default("1").transform(Number),
+  limit: z.string().default("10").transform(Number)
 });
 
 // Create campaign schema
@@ -23,8 +23,8 @@ const createCampaignSchema = z.object({
   name: z.string().min(3, "Campaign name must be at least 3 characters"),
   description: z.string().optional(),
   type: z.string(),
-  status: z.string().default('DRAFT'),
-  \1,\2 z.string().optional().transform(val => val ? new Date(val) : undefined),
+  status: z.string().default("DRAFT"),
+  z.string().optional().transform(val => val ? new Date(val) : undefined),
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
@@ -37,7 +37,7 @@ const updateCampaignSchema = z.object({
   description: z.string().optional(),
   type: z.string().optional(),
   status: z.string().optional(),
-  startDate: z.string().transform(val => \1.optional(),
+  startDate: z.string().transform(val => .optional(),
   endDate: z.string().transform(val => val ? new Date(val) : undefined).optional(),
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
@@ -63,8 +63,8 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing:read',
-      auditAction: 'MARKETING_CAMPAIGNS_VIEW'
+      requiredPermission: "marketing:read",
+      auditAction: "MARKETING_CAMPAIGNS_VIEW"
     }
   );
 }
@@ -84,8 +84,8 @@ export const _POST = async (request: NextRequest) => {
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
 
       // Get user ID from session
-      const session = req.headers.get('x-user-id');
-      const userId = session || 'system';
+      const session = req.headers.get("x-user-id");
+      const userId = session || "system";
 
       // Create campaign
       const campaign = await marketingService.createCampaign(
@@ -96,8 +96,8 @@ export const _POST = async (request: NextRequest) => {
       return NextResponse.json(campaign, { status: 201 });
     },
     {
-      requiredPermission: 'marketing:create',
-      auditAction: 'MARKETING_CAMPAIGN_CREATE'
+      requiredPermission: "marketing:create",
+      auditAction: "MARKETING_CAMPAIGN_CREATE"
     }
   );
 }
@@ -108,14 +108,14 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     request,
     async (req) => {
       // Get campaign by ID
-      const includeFHIR = req.nextUrl.searchParams.get('fhir') === 'true';
+      const includeFHIR = req.nextUrl.searchParams.get("fhir") === "true";
       const campaign = await marketingService.getCampaignById(params.id, includeFHIR);
 
       return NextResponse.json(campaign);
     },
     {
-      requiredPermission: 'marketing:read',
-      auditAction: 'MARKETING_CAMPAIGN_VIEW'
+      requiredPermission: "marketing:read",
+      auditAction: "MARKETING_CAMPAIGN_VIEW"
     }
   );
 }
@@ -135,8 +135,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
 
       // Get user ID from session
-      const session = req.headers.get('x-user-id');
-      const userId = session || 'system';
+      const session = req.headers.get("x-user-id");
+      const userId = session || "system";
 
       // Update campaign
       const campaign = await marketingService.updateCampaign(
@@ -148,8 +148,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(campaign);
     },
     {
-      requiredPermission: 'marketing:update',
-      auditAction: 'MARKETING_CAMPAIGN_UPDATE'
+      requiredPermission: "marketing:update",
+      auditAction: "MARKETING_CAMPAIGN_UPDATE"
     }
   );
 }
@@ -160,8 +160,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
     request,
     async (req) => {
       // Get user ID from session
-      const session = req.headers.get('x-user-id');
-      const userId = session || 'system';
+      const session = req.headers.get("x-user-id");
+      const userId = session || "system";
 
       // Delete campaign
       await marketingService.deleteCampaign(params.id, userId);
@@ -169,8 +169,8 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       return NextResponse.json({ success: true });
     },
     {
-      requiredPermission: 'marketing:delete',
-      auditAction: 'MARKETING_CAMPAIGN_DELETE'
+      requiredPermission: "marketing:delete",
+      auditAction: "MARKETING_CAMPAIGN_DELETE"
     }
   );
 }
@@ -186,8 +186,8 @@ export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params:
       return NextResponse.json(analytics);
     },
     {
-      requiredPermission: 'marketing:analytics',
-      auditAction: 'MARKETING_CAMPAIGN_ANALYTICS_VIEW'
+      requiredPermission: "marketing:analytics",
+      auditAction: "MARKETING_CAMPAIGN_ANALYTICS_VIEW"
     }
   );
 }
@@ -204,8 +204,8 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
       const sanitizedData = SecurityService.sanitizeObject(body);
 
       // Get user ID from session
-      const session = req.headers.get('x-user-id');
-      const userId = session || 'system';
+      const session = req.headers.get("x-user-id");
+      const userId = session || "system";
 
       // Add channel to campaign
       const channel = await marketingService.addCampaignChannel(
@@ -217,8 +217,8 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
       return NextResponse.json(channel, { status: 201 });
     },
     {
-      requiredPermission: 'marketing:update',
-      auditAction: 'MARKETING_CAMPAIGN_CHANNEL_ADD'
+      requiredPermission: "marketing:update",
+      auditAction: "MARKETING_CAMPAIGN_CHANNEL_ADD"
     }
   );
 }
@@ -229,8 +229,8 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
     request,
     async (req) => {
       // Get user ID from session
-      const session = req.headers.get('x-user-id');
-      const userId = session || 'system';
+      const session = req.headers.get("x-user-id");
+      const userId = session || "system";
 
       // Add segment to campaign
       const result = await marketingService.addCampaignSegment(
@@ -242,8 +242,8 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
       return NextResponse.json(result, { status: 201 });
     },
     {
-      requiredPermission: 'marketing:update',
-      auditAction: 'MARKETING_CAMPAIGN_SEGMENT_ADD'
+      requiredPermission: "marketing:update",
+      auditAction: "MARKETING_CAMPAIGN_SEGMENT_ADD"
     }
   );
 }
@@ -256,10 +256,10 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        status: searchParams.get('status') || undefined,
-        \1,\2 searchParams.get('segmentId') || undefined,
-        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
-        limit: parseInt(searchParams.get('limit') || '10')
+        status: searchParams.get("status") || undefined,
+        searchParams.get("segmentId") || undefined,
+        Number.parseInt(searchParams.get("page") || "1"),
+        limit: parseInt(searchParams.get("limit") || "10")
       };
 
       // Get marketing contacts with filters
@@ -268,8 +268,8 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing:read',
-      auditAction: 'MARKETING_CONTACTS_VIEW'
+      requiredPermission: "marketing:read",
+      auditAction: "MARKETING_CONTACTS_VIEW"
     }
   );
 }
@@ -281,8 +281,8 @@ export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {
     async (req) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
-      const fromDate = searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
-      const toDate = searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
+      const fromDate = searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined;
+      const toDate = searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined;
 
       // Get marketing overview analytics
       const result = await marketingService.getMarketingOverviewAnalytics(fromDate, toDate);
@@ -290,7 +290,7 @@ export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing:analytics',
-      auditAction: 'MARKETING_OVERVIEW_ANALYTICS_VIEW'
+      requiredPermission: "marketing:analytics",
+      auditAction: "MARKETING_OVERVIEW_ANALYTICS_VIEW"
     }
   );

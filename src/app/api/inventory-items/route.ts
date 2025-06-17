@@ -17,7 +17,7 @@ export const _GET = async (request: Request) => {
     const { searchParams } = new URL(request.url);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
@@ -42,13 +42,13 @@ export const _GET = async (request: Request) => {
         const queryParams: string[] = [];
 
         const category = searchParams.get("category");
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND ii.category = ?";
             queryParams.push(category);
         }
 
         const name = searchParams.get("name");
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND ii.item_name LIKE ?";
             queryParams.push(`%${name}%`);
         }
@@ -58,7 +58,7 @@ export const _GET = async (request: Request) => {
         // 3. Retrieve items
         const itemsResult = await DB.prepare(query).bind(...queryParams).all<InventoryItem & { current_stock: number }>();
 
-        \1 {\n  \2{
+        if (!session.user) {
             throw new Error("Failed to retrieve inventory items");
         }
 
@@ -94,7 +94,7 @@ export const _POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
@@ -105,7 +105,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = AddInventoryItemSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -119,11 +119,11 @@ export const _POST = async (request: Request) => {
         const { DB } = env;
 
         // 2. Optional: Check if billable_item_id exists and is valid if provided
-        \1 {\n  \2{
+        if (!session.user) {
             const billableItem = await DB.prepare("SELECT item_id FROM BillableItems WHERE item_id = ? AND is_active = TRUE");
                                         .bind(itemData.billable_item_id);
                                         .first();
-            \1 {\n  \2{
+            if (!session.user) {
                 return new Response(JSON.stringify({ error: "Invalid or inactive Billable Item ID provided" }), {
                     status: 400,
                     headers: { "Content-Type": "application/json" },
@@ -133,7 +133,7 @@ export const _POST = async (request: Request) => {
             const existingLink = await DB.prepare("SELECT inventory_item_id FROM InventoryItems WHERE billable_item_id = ?");
                                          .bind(itemData.billable_item_id);
                                          .first();
-            \1 {\n  \2{
+            if (!session.user) {
                  return new Response(JSON.stringify({ error: "Billable Item ID is already linked to another inventory item" }), {
                     status: 409, // Conflict
                     headers: { "Content-Type": "application/json" },
@@ -156,13 +156,13 @@ export const _POST = async (request: Request) => {
         );
         .run();
 
-        \1 {\n  \2{
+        if (!session.user) {
             throw new Error("Failed to add inventory item");
         }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newItemId = meta.last_row_id;
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to retrieve item ID after creation.");
         }

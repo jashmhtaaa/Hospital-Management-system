@@ -7,7 +7,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 "use client";
 
-// export const _dynamic = 'force-dynamic'
+// export const _dynamic = "force-dynamic"
 
   Table,
   TableBody,
@@ -37,14 +37,14 @@ export default const _AppointmentsPage = () {
       try {
         // Build query params for filtering
         const params = new URLSearchParams();
-        \1 {\n  \2{
+        if (!session.user) {
             params.append("startDate", dateFilter);
             params.append("endDate", dateFilter); // Filter for a single day for now
         }
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
-        const response = await fetch(`/api/appointments?${\1}`
-        \1 {\n  \2{
+        const response = await fetch(`/api/appointments?${}`
+        if (!session.user) {
           const errorData: { error?: string } = await response.json(); // Add type annotation
           throw new Error(errorData.error || "Failed to fetch appointments");
         }
@@ -55,7 +55,7 @@ export default const _AppointmentsPage = () {
         setError(message),
         toast({
           title: "Error Fetching Appointments",
-          \1,\2 "destructive"
+          "destructive"
         });
       } finally 
         setIsLoading(false);
@@ -71,10 +71,10 @@ export default const _AppointmentsPage = () {
 
   return (
     <DashboardLayout>
-      \1>
-        \1>
-          <h1 className="text-2xl font-semibold">Appointments\1>
-          \1>
+      >
+        >
+          <h1 className="text-2xl font-semibold">Appointments>
+          >
              <Button>
                 <PlusCircle className="mr-2 h-4 w-4" /> Book Appointment
              </Button>
@@ -82,8 +82,8 @@ export default const _AppointmentsPage = () {
         </div>
 
         {/* Filters: Date and Search */}
-        \1>
-            \1>
+        >
+            >
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input>
                     type="search"
@@ -94,7 +94,7 @@ export default const _AppointmentsPage = () {
                 />
             </div>
 <div
-                <Label htmlFor="date-filter">Date\1>
+                <Label htmlFor="date-filter">Date>
                 <Input>
                     id="date-filter"
                     type="date"
@@ -110,7 +110,7 @@ export default const _AppointmentsPage = () {
         {isLoading && <p>Loading appointments...</p>}
         {error && <p className="text-red-500">Error: {error}</p>}
         {!isLoading && !error && (
-          \1>
+          >
             <Table>
               <TableHeader>
                 <TableRow>
@@ -126,8 +126,8 @@ export default const _AppointmentsPage = () {
               <TableBody>
                 {filteredAppointments.length > 0 ? (
                   filteredAppointments.map((appt) => (
-                    \1>
-                      \1>
+                    >
+                      >
                         {format(new Date(appt.appointment_datetime), "HH:mm")}
                       </TableCell>
                       <TableCell>{appt.patient?.first_name} {appt.patient?.last_name}</TableCell>
@@ -140,7 +140,7 @@ export default const _AppointmentsPage = () {
                       </TableCell>
                       <TableCell>
                         {/* Add action buttons like View, Edit Status */}
-                        \1>
+                        >
                            <Button variant="outline" size="sm">View</Button>
                         </Link>
                       </TableCell>
@@ -148,7 +148,7 @@ export default const _AppointmentsPage = () {
                   ));
                 ) : (
                   <TableRow>
-                    \1>
+                    >
                       No appointments found for the selected date.
                     </TableCell>
                   </TableRow>

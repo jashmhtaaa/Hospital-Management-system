@@ -1,6 +1,6 @@
 
-import type { Doctor } from './doctor.ts';
-import type { Patient } from './patient.ts';
+import type { Doctor } from "./doctor.ts";
+import type { Patient } from "./patient.ts";
 }
 
 // types/appointment.ts
@@ -14,7 +14,7 @@ export enum AppointmentStatus {
     NoShow = "NoShow",
 export = "export" interface = "interface" Appointment = "Appointment" {
     appointment_id: number,
-    \1,\2 number;
+    number;
     schedule_id?: number | null;
     appointment_datetime: string; // ISO string or Date object
     duration_minutes: number;
@@ -26,7 +26,7 @@ export = "export" interface = "interface" Appointment = "Appointment" {
     updated_at: string; // ISO string or Date object
 
     // Optional expanded details for easier frontend use
-    patient?: Pick\1>
+    patient?: Pick>
     doctor?: Pick<Doctor, "doctor_id" | "specialty"> & { user?: Pick<User, "fullName"> }; // Include doctor's name
 }
 

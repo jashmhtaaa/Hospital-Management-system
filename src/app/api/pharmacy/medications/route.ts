@@ -5,7 +5,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getDB } from "@/lib/database"; // Assuming db returns a promise
 import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
 // Define interfaces for data structures
-// interface _Medication { // FIX: Prefixed unused interface - Removed as it's unused
+// interface _Medication { // FIX: Prefixed unused interface - Removed as it"s unused
 //   id: string
 //   item_code: string
 //   generic_name: string
@@ -56,16 +56,16 @@ export const GET = async (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type
     const session: IronSession<IronSessionData> = await getSession(),
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Role check (e.g., allow Pharmacy staff, Doctors, Admins)
-    // \1 {\n  \2 {
+    // if (!session.user) {
     //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     // }
 
     const { searchParams } = new URL(request.url)
-    const \1,\2 searchParams.get("search"),
+    const searchParams.get("search"),
       category: searchParams.get("category"),
       manufacturer: searchParams.get("manufacturer"),
       prescription_required: searchParams.has("prescription_required");
@@ -89,7 +89,7 @@ export const GET = async (request: NextRequest) => {
     `;
     const queryParameters: (string | number)[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += ` AND (
         m.generic_name LIKE ? OR;
         m.brand_name LIKE ? OR;
@@ -99,19 +99,19 @@ export const GET = async (request: NextRequest) => {
       const searchTerm = `%${filters.search}%`;
       queryParameters.push(searchTerm, searchTerm, searchTerm, searchTerm);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       query += ` AND mc.name = ?`;
       queryParameters.push(filters.category);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       query += ` AND mf.name = ?`;
       queryParameters.push(filters.manufacturer);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       query += ` AND m.prescription_required = ?`;
       queryParameters.push(filters.prescription_required ? 1 : 0);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       query += ` AND m.narcotic = ?`;
       queryParameters.push(filters.narcotic ? 1 : 0);
     }
@@ -143,7 +143,7 @@ export const POST = async (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type
     const session: IronSession<IronSessionData> = await getSession(),
-    \1 {\n  \2
+    if (!session.user)
     ) 
       return NextResponse.json(
         { error: "Unauthorized: Admin or Pharmacist role required" },
@@ -153,7 +153,7 @@ export const POST = async (request: NextRequest) => {
     const data = (await request.json()) as MedicationInput;
 
     // Basic validation
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         {
           error: "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)",
         },
@@ -168,7 +168,7 @@ export const POST = async (request: NextRequest) => {
       .prepare("SELECT id FROM Medications WHERE item_code = ?");
       .bind(data.item_code);
       .first();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Medication with this item code already exists" },
         { status: 409 }
@@ -202,10 +202,10 @@ export const POST = async (request: NextRequest) => {
       );
       .all(); // Use .all() for RETURNING clause
 
-    // FIX: Cast results to expected type to access 'id'
+    // FIX: Cast results to expected type to access "id'
     const newId = (results as Array<{ id: number | string }>)?.[0]?.id
 
-    \1 {\n  \2{
+    if (!session.user) {
       throw new Error("Failed to retrieve ID after medication creation.");
     }
 
@@ -221,7 +221,7 @@ export const POST = async (request: NextRequest) => {
       error instanceof Error ? error.message : "An unknown error occurred";
 
     // Handle potential unique constraint violation if check fails due to race condition
-    \1 {\n  \2&
+    if (!session.user)&
       message.includes("item_code");
     ) {
       return NextResponse.json(

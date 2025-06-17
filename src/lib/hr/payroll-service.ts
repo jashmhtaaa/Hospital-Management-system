@@ -1,24 +1,23 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 
-import { salaryService } from './salary-service.ts';
+import { salaryService } from "./salary-service.ts";
 const prisma = new PrismaClient();
 
 /**
  * Service for managing payroll processing and calculations;
  */
-\1
 }
   }) {
     const { name, startDate, endDate, paymentDate, status, notes } = data;
 
     // Validate dates
-    \1 {\n  \2{
-      throw new Error('Start date must be before end date');
+    if (!session.user) {
+      throw new Error("Start date must be before end date");
     }
 
-    \1 {\n  \2{
-      throw new Error('Payment date must be after end date');
+    if (!session.user) {
+      throw new Error("Payment date must be after end date");
     }
 
     // Create payroll period
@@ -40,10 +39,10 @@ const prisma = new PrismaClient();
   async getPayrollPeriod(id: string) {
     return prisma.payrollPeriod.findUnique({
       where: { id },
-      \1,\2 {
-          \1,\2 {
-              \1,\2 true,
-                \1,\2 true,
+      {
+          {
+              true,
+                true,
                 department: true
               },
             },
@@ -65,22 +64,22 @@ const prisma = new PrismaClient();
   }: {
     skip?: number;
     take?: number;
-    status?: 'DRAFT' | 'PROCESSING' | 'APPROVED' | 'PAID';
+    status?: "DRAFT" | "PROCESSING" | "APPROVED" | "PAID";
     startDate?: Date;
     endDate?: Date;
   }) {
     const where: unknown = {};
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.status = status;
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.startDate = {};
-      \1 {\n  \2{
+      if (!session.user) {
         where.startDate.gte = startDate;
       }
-      \1 {\n  \2{
+      if (!session.user) {
         where.endDate = {};
         where.endDate.lte = endDate;
       }
@@ -91,9 +90,9 @@ const prisma = new PrismaClient();
         where,
         skip,
         take,
-        orderBy: { startDate: 'desc' },
-        \1,\2 {
-            \1,\2 true
+        orderBy: { startDate: "desc" },
+        {
+            true
             },
           },
         },
@@ -117,29 +116,29 @@ const prisma = new PrismaClient();
     startDate?: Date;
     endDate?: Date;
     paymentDate?: Date;
-    status?: 'DRAFT' | 'PROCESSING' | 'APPROVED' | 'PAID';
+    status?: "DRAFT" | "PROCESSING" | "APPROVED" | "PAID";
     notes?: string;
   }) {
     // Validate status transition
-    \1 {\n  \2{
+    if (!session.user) {
       const currentPeriod = await prisma.payrollPeriod.findUnique({
         where: { id },
       });
 
-      \1 {\n  \2{
-        throw new Error('Payroll period not found');
+      if (!session.user) {
+        throw new Error("Payroll period not found");
       }
 
       // Validate status transitions
       const validTransitions = {
-        'DRAFT': ['PROCESSING'],
-        'PROCESSING': ['DRAFT', 'APPROVED'],
-        'APPROVED': ['PROCESSING', 'PAID'],
-        'PAID': [],
+        "DRAFT": ["PROCESSING"],
+        "PROCESSING": ["DRAFT", "APPROVED"],
+        "APPROVED": ["PROCESSING", "PAID"],
+        "PAID": [],
       };
 
-      \1 {\n  \2 {
-        throw new Error(`Invalid status transition from ${currentPeriod.status} to ${\1}`;
+      if (!session.user) {
+        throw new Error(`Invalid status transition from ${currentPeriod.status} to ${}`;
       }
     }
 
@@ -158,26 +157,26 @@ const prisma = new PrismaClient();
       where: { id: payrollPeriodId },
     });
 
-    \1 {\n  \2{
-      throw new Error('Payroll period not found');
+    if (!session.user) {
+      throw new Error("Payroll period not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Payroll entries can only be generated for periods in DRAFT status');
+    if (!session.user) {
+      throw new Error("Payroll entries can only be generated for periods in DRAFT status");
     }
 
     // Get active employees
-    const \1,\2 true
+    const true
     };
 
-    \1 {\n  \2{
+    if (!session.user) {
       whereClause.departmentId = departmentId;
     }
 
     const employees = await prisma.employee.findMany({
       where: whereClause,
-      \1,\2 true,
-        \1,\2 true,
+      true,
+        true,
         employeeId: true
       },
     });
@@ -195,8 +194,8 @@ const prisma = new PrismaClient();
 
         // Get attendance for the period
         const attendance = await prisma.attendance.findMany({
-          \1,\2 employee.id,
-            \1,\2 payrollPeriod.startDate,
+          employee.id,
+            payrollPeriod.startDate,
               lte: payrollPeriod.endDate
             },
           },
@@ -204,11 +203,11 @@ const prisma = new PrismaClient();
 
         // Calculate attendance metrics
         const workingDays = this.getWorkingDaysInPeriod(payrollPeriod.startDate, payrollPeriod.endDate);
-        const presentDays = attendance.filter(a => a.status === 'PRESENT').length;
-        const lateDays = attendance.filter(a => a.status === 'LATE').length;
-        const absentDays = attendance.filter(a => a.status === 'ABSENT').length;
-        const halfDays = attendance.filter(a => a.status === 'HALF_DAY').length;
-        const leaveDays = attendance.filter(a => a.status === 'ON_LEAVE').length;
+        const presentDays = attendance.filter(a => a.status === "PRESENT").length;
+        const lateDays = attendance.filter(a => a.status === "LATE").length;
+        const absentDays = attendance.filter(a => a.status === "ABSENT").length;
+        const halfDays = attendance.filter(a => a.status === "HALF_DAY").length;
+        const leaveDays = attendance.filter(a => a.status === "ON_LEAVE").length;
 
         // Calculate attendance-based deductions
         const attendanceDeduction = this.calculateAttendanceDeduction(
@@ -226,7 +225,7 @@ const prisma = new PrismaClient();
           data: {
             payrollPeriodId,
             employeeId: employee.id,
-            \1,\2 salaryCalculation.grossSalary,
+            salaryCalculation.grossSalary,
             deductions: attendanceDeduction;
             netSalary,
             workingDays,
@@ -235,7 +234,7 @@ const prisma = new PrismaClient();
             halfDays,
             lateDays,
             leaveDays,
-            status: 'PENDING',
+            status: "PENDING",
             componentBreakdown: salaryCalculation.componentBreakdown
           },
         });
@@ -249,7 +248,7 @@ const prisma = new PrismaClient();
 
     // Update payroll period status
     await prisma.payrollPeriod.update({id: payrollPeriodId ,
-      \1,\2 'PROCESSING',
+      "PROCESSING",
     });
 
     return {
@@ -265,9 +264,9 @@ const prisma = new PrismaClient();
   async getPayrollEntry(id: string) {
     return prisma.payrollEntry.findUnique({
       where: { id },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
+      {
+          true,
+            true,
             department: true
           },
         },
@@ -284,7 +283,7 @@ const prisma = new PrismaClient();
     grossSalary?: number;
     deductions?: number;
     netSalary?: number;
-    status?: 'PENDING' | 'APPROVED' | 'REJECTED' | 'PAID';
+    status?: "PENDING" | "APPROVED" | "REJECTED" | "PAID";
     notes?: string;
   }) {
     return prisma.payrollEntry.update({
@@ -300,38 +299,38 @@ const prisma = new PrismaClient();
     // Get payroll period
     const payrollPeriod = await prisma.payrollPeriod.findUnique({
       where: { id: payrollPeriodId },
-      \1,\2 true
+      true
       },
     });
 
-    \1 {\n  \2{
-      throw new Error('Payroll period not found');
+    if (!session.user) {
+      throw new Error("Payroll period not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Only payroll periods in PROCESSING status can be approved');
+    if (!session.user) {
+      throw new Error("Only payroll periods in PROCESSING status can be approved");
     }
 
     // Update all entries to APPROVED
     await prisma.payrollEntry.updateMany({
       where: {
         payrollPeriodId,
-        status: 'PENDING'
+        status: "PENDING"
       },
-      \1,\2 'APPROVED'
+      "APPROVED"
       },
     });
 
     // Update payroll period status
     await prisma.payrollPeriod.update({
       where: { id: payrollPeriodId },
-      \1,\2 'APPROVED'
+      "APPROVED"
       },
     });
 
     return {
       payrollPeriodId,
-      entriesApproved: payrollPeriod.payrollEntries.filter(e => e.status === 'PENDING').length,
+      entriesApproved: payrollPeriod.payrollEntries.filter(e => e.status === "PENDING").length,
       totalEntries: payrollPeriod.payrollEntries.length
     };
   }
@@ -339,29 +338,29 @@ const prisma = new PrismaClient();
   /**
    * Mark payroll period as paid;
    */
-  async markPayrollPeriodAsPaid(payrollPeriodId: string, paymentDate: Date = \1 {
+  async markPayrollPeriodAsPaid(payrollPeriodId: string, paymentDate: Date = if (condition) {
     // Get payroll period
     const payrollPeriod = await prisma.payrollPeriod.findUnique({
       where: { id: payrollPeriodId },
-      \1,\2 true
+      true
       },
     });
 
-    \1 {\n  \2{
-      throw new Error('Payroll period not found');
+    if (!session.user) {
+      throw new Error("Payroll period not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Only approved payroll periods can be marked as paid');
+    if (!session.user) {
+      throw new Error("Only approved payroll periods can be marked as paid");
     }
 
     // Update all approved entries to PAID
     await prisma.payrollEntry.updateMany({
       where: {
         payrollPeriodId,
-        status: 'APPROVED'
+        status: "APPROVED"
       },
-      \1,\2 'PAID';
+      "PAID";
         paymentDate,
       },
     });
@@ -369,14 +368,14 @@ const prisma = new PrismaClient();
     // Update payroll period status
     await prisma.payrollPeriod.update({
       where: { id: payrollPeriodId },
-      \1,\2 'PAID';
+      "PAID";
         paymentDate,
       },
     });
 
     return {
       payrollPeriodId,
-      entriesPaid: payrollPeriod.payrollEntries.filter(e => e.status === 'APPROVED').length,
+      entriesPaid: payrollPeriod.payrollEntries.filter(e => e.status === "APPROVED").length,
       totalEntries: payrollPeriod.payrollEntries.length;
       paymentDate,
     };
@@ -391,8 +390,8 @@ const prisma = new PrismaClient();
       where: { id: payrollPeriodId },
     });
 
-    \1 {\n  \2{
-      throw new Error('Payroll period not found');
+    if (!session.user) {
+      throw new Error("Payroll period not found");
     }
 
     // Get all entries for the period
@@ -400,8 +399,8 @@ const prisma = new PrismaClient();
       where: {
         payrollPeriodId,
       },
-      \1,\2 {
-          \1,\2 true
+      {
+          true
           },
         },
       },
@@ -411,16 +410,16 @@ const prisma = new PrismaClient();
     const departmentSummary = {};
 
     for (const entry of entries) {
-      const departmentId = entry.employee.department?.id || 'unassigned';
-      const departmentName = entry.employee.department?.name || 'Unassigned';
+      const departmentId = entry.employee.department?.id || "unassigned";
+      const departmentName = entry.employee.department?.name || "Unassigned";
 
-      \1 {\n  \2{
+      if (!session.user) {
         departmentSummary[departmentId] = {
           departmentId,
           departmentName,
           employeeCount: 0,
-          \1,\2 0,
-          \1,\2 0
+          0,
+          0
         };
       }
 
@@ -434,9 +433,9 @@ const prisma = new PrismaClient();
     return {
       payrollPeriodId,
       periodName: payrollPeriod.name,
-      \1,\2 payrollPeriod.endDate,
-      \1,\2 Object.values(departmentSummary),
-      \1,\2 entries.reduce((sum, entry) => sum + entry.baseSalary, 0),
+      payrollPeriod.endDate,
+      Object.values(departmentSummary),
+      entries.reduce((sum, entry) => sum + entry.baseSalary, 0),
       totalGrossSalary: entries.reduce((sum, entry) => sum + entry.grossSalary, 0),
       totalDeductions: entries.reduce((sum, entry) => sum + entry.deductions, 0),
       totalNetSalary: entries.reduce((sum, entry) => sum + entry.netSalary, 0),
@@ -457,7 +456,7 @@ const prisma = new PrismaClient();
     while (currentDate <= end) {
       // Check if it's a weekday (Monday-Friday)
       const dayOfWeek = currentDate.getDay()
-      \1 {\n  \2{
+      if (!session.user) {
         workingDays++;
       }
 
@@ -474,7 +473,7 @@ const prisma = new PrismaClient();
    */
   private calculateAttendanceDeduction(
     baseSalary: number,
-    \1,\2 number,
+    number,
     halfDays: number;
   ): number {
     // Calculate daily rate

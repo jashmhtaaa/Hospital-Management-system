@@ -1,16 +1,16 @@
 import {
-import { NextRequest } from 'next/server';
-import { z } from 'zod';
+import { NextRequest } from "next/server";
+import { z } from "zod";
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   checkPermission,
   createSuccessResponse;
-} from '@/lib/core/middleware';
-import { ValidationError, NotFoundError } from '@/lib/core/errors';
-import { logger } from '@/lib/core/logging';
-import { convertToFHIRCoverage } from '@/lib/core/fhir';
+} from "@/lib/core/middleware";
+import { ValidationError, NotFoundError } from "@/lib/core/errors";
+import { logger } from "@/lib/core/logging";
+import { convertToFHIRCoverage } from "@/lib/core/fhir";
 
 // Schema for insurance policy update
 const updatePolicySchema = z.object({
@@ -19,27 +19,27 @@ const updatePolicySchema = z.object({
   groupNumber: z.string().optional(),
   groupName: z.string().optional(),
   subscriberId: z.string().uuid().optional(),
-  relationship: z.enum(['self', 'spouse', 'child', 'other']).optional(),
+  relationship: z.enum(["self", "spouse", "child", "other"]).optional(),
   startDate: z.coerce.date().optional(),
   endDate: z.coerce.date().optional(),
-  coverageType: z.enum(['primary', 'secondary', 'tertiary']).optional(),
-  planType: z.enum(['HMO', 'PPO', 'EPO', 'POS', 'HDHP', 'other']).optional(),
+  coverageType: z.enum(["primary", "secondary", "tertiary"]).optional(),
+  planType: z.enum(["HMO", "PPO", "EPO", "POS", "HDHP", "other"]).optional(),
   copayAmount: z.number().optional(),
   coinsurancePercentage: z.number().optional(),
   deductibleAmount: z.number().optional(),
   deductibleMet: z.number().optional(),
   outOfPocketMax: z.number().optional(),
   outOfPocketMet: z.number().optional(),
-  status: z.enum(['active', 'inactive', 'expired']).optional(),
+  status: z.enum(["active", "inactive", "expired"]).optional(),
   notes: z.string().optional()
 });
 
 // Schema for policy verification
 const verifyPolicySchema = z.object({
-  verificationMethod: z.enum(['phone', 'portal', 'api', 'fax', 'email']),
+  verificationMethod: z.enum(["phone", "portal", "api", "fax", "email"]),
   verificationReference: z.string().optional(),
   verifiedBy: z.string(),
-  eligibilityStatus: z.enum(['eligible', 'ineligible', 'pending']),
+  eligibilityStatus: z.enum(["eligible", "ineligible", "pending"]),
   coverageDetails: z.string().optional(),
   notes: z.string().optional()
 });
@@ -47,41 +47,41 @@ const verifyPolicySchema = z.object({
 // GET handler for retrieving a specific insurance policy
 export const _GET = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Check permissions
-  await checkPermission(permissionService, 'read', 'insurancePolicy')(req);
+  await checkPermission(permissionService, "read", "insurancePolicy")(req);
 
   // Get format from query parameters
   const url = new URL(req.url);
-  const format = url.searchParams.get('format') || 'json';
+  const format = url.searchParams.get("format") || "json";
 
   // Retrieve policy from database
   const policy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
-    \1,\2 {
-        \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true
+    {
+        true,
+          true,
+          true,
+          true,
+          true
         },
       },
-      \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
+      true,
+          true,
+          true,
+          true,
           email: true,
       },
       insuranceProvider: true,
-      \1,\2 'desc',
+      "desc",
       },
     },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
 
   // Convert to FHIR format if requested
-  \1 {\n  \2{
+  if (!session.user) {
     const fhirCoverage = convertToFHIRCoverage(policy);
     return createSuccessResponse(fhirCoverage);
   }
@@ -96,35 +96,35 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   const data = await validateBody(updatePolicySchema)(req);
 
   // Check permissions
-  await checkPermission(permissionService, 'update', 'insurancePolicy')(req);
+  await checkPermission(permissionService, "update", "insurancePolicy")(req);
 
   // Retrieve existing policy
   const existingPolicy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
 
   // Check if insurance provider exists if provided
-  \1 {\n  \2{
+  if (!session.user) {
     const provider = await prisma.insuranceProvider.findUnique({
       where: { id: data.insuranceProviderId },
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
     }
   }
 
   // Check if subscriber exists if provided
-  \1 {\n  \2{
+  if (!session.user) {
     const subscriber = await prisma.patient.findUnique({
       where: { id: data.subscriberId },
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);
     }
   }
@@ -132,47 +132,47 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
   // Determine policy status if dates are updated
   let status = data.status || existingPolicy.status;
 
-  \1 {\n  \2{
+  if (!session.user) {
     const today = new Date();
     const startDate = data.startDate || existingPolicy.startDate;
     const endDate = data.endDate || existingPolicy.endDate;
 
-    \1 {\n  \2 {
-      status = 'active',
-    } else \1 {\n  \2{
-      status = 'expired',
+    if (!session.user) {
+      status = "active",
+    } else if (!session.user) {
+      status = "expired",
     }
   }
 
   // Update policy in database
   const updatedPolicy = await prisma.insurancePolicy.update({
     where: { id: params.id },
-    \1,\2 data.insuranceProviderId,
-      \1,\2 data.groupNumber,
-      \1,\2 data.subscriberId,
-      \1,\2 data.startDate,
-      \1,\2 data.coverageType,
-      \1,\2 data.copayAmount,
-      \1,\2 data.deductibleAmount,
-      \1,\2 data.outOfPocketMax,
+    data.insuranceProviderId,
+      data.groupNumber,
+      data.subscriberId,
+      data.startDate,
+      data.coverageType,
+      data.copayAmount,
+      data.deductibleAmount,
+      data.outOfPocketMax,
       outOfPocketMet: data.outOfPocketMet;
       status,
       notes: data.notes
     },
-    \1,\2 {
-        \1,\2 true,
-          \1,\2 true,
+    {
+        true,
+          true,
           mrn: true
         },
       },
-      \1,\2 true,
-          \1,\2 true,
+      true,
+          true,
       },
       insuranceProvider: true
     },
   });
 
-  logger.info('Insurance policy updated', { policyId: updatedPolicy.id });
+  logger.info("Insurance policy updated", { policyId: updatedPolicy.id });
 
   return createSuccessResponse(updatedPolicy);
 });
@@ -180,16 +180,16 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
 // DELETE handler for deleting an insurance policy
 export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Check permissions
-  await checkPermission(permissionService, 'delete', 'insurancePolicy')(req);
+  await checkPermission(permissionService, "delete", "insurancePolicy")(req);
 
   // Retrieve existing policy
   const existingPolicy = await prisma.insurancePolicy.findUnique({
     where: { id: params.id },
-    \1,\2 true
+    true
     },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
 
@@ -198,10 +198,10 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
     where: { insurancePolicyId: params.id },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new ValidationError(
-      'Cannot delete policy that is used in claims',
-      'POLICY_IN_USE',
+      "Cannot delete policy that is used in claims",
+      "POLICY_IN_USE",
       { claimsCount }
     );
   }
@@ -219,19 +219,19 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
     });
   });
 
-  logger.info('Insurance policy deleted', { policyId: params.id });
+  logger.info("Insurance policy deleted", { policyId: params.id });
 
-  return createSuccessResponse({ success: true, message: 'Insurance policy deleted successfully' });
+  return createSuccessResponse({ success: true, message: "Insurance policy deleted successfully" });
 });
 
 // PATCH handler for policy operations (verify)
 export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Get operation from query parameters
   const url = new URL(req.url);
-  const operation = url.searchParams.get('operation');
+  const operation = url.searchParams.get("operation");
 
-  \1 {\n  \2{
-    throw new ValidationError('Operation parameter is required', 'MISSING_OPERATION');
+  if (!session.user) {
+    throw new ValidationError("Operation parameter is required", "MISSING_OPERATION");
   }
 
   // Retrieve existing policy
@@ -239,23 +239,23 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
     where: { id: params.id },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
   }
 
   // Handle different operations
   switch (operation) {
-    case 'verify':
+    case "verify":
       return verifyPolicy(req, params.id, existingPolicy),
     default:
-      throw new ValidationError(`Unknown operation: ${operation}`, 'INVALID_OPERATION'),
+      throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION"),
   }
 });
 
 // Helper function to verify a policy
 async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: unknown) {
   // Check permissions
-  await checkPermission(permissionService, 'verify', 'insurancePolicy')(req);
+  await checkPermission(permissionService, "verify", "insurancePolicy")(req);
 
   // Validate request body
   const data = await validateBody(verifyPolicySchema)(req);
@@ -265,34 +265,34 @@ async const verifyPolicy = (req: NextRequest, policyId: string, existingPolicy: 
     data: {
       policyId,
       verificationMethod: data.verificationMethod,
-      \1,\2 data.verifiedBy,
+      data.verifiedBy,
       verifiedAt: new Date(),
       eligibilityStatus: data.eligibilityStatus,
-      \1,\2 data.notes
+      data.notes
     },
   });
 
   // Update policy with latest verification
   const updatedPolicy = await prisma.insurancePolicy.update({
     where: { id: policyId },
-    \1,\2 verification.id,
-      \1,\2 verification.eligibilityStatus
+    verification.id,
+      verification.eligibilityStatus
     },
-    \1,\2 true,
-          \1,\2 true,
+    true,
+          true,
           mrn: true,,
-      \1,\2 true,
-          \1,\2 true,,
+      true,
+          true,,
       insuranceProvider: true,
-      \1,\2 'desc',
+      "desc",
         take: 5,
     },
   });
 
-  logger.info('Insurance policy verified', {
+  logger.info("Insurance policy verified", {
     policyId,
     verificationId: verification.id,
-    \1,\2 data.verificationMethod
+    data.verificationMethod
   });
 
   return createSuccessResponse(updatedPolicy);

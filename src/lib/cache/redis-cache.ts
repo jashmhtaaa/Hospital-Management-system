@@ -1,7 +1,7 @@
-import Redis from 'ioredis';
+import Redis from "ioredis";
 
 
-import { cache } from '../cache';
+import { cache } from "../cache";
 }
 
 /**
@@ -15,33 +15,33 @@ interface CacheConfig {
   port: number;
   password?: string;
   db: number,
-  \1,\2 number,
-  \1,\2 number,
+  number,
+  number,
   maxRetriesPerRequest: number
 }
 
 // Cache key patterns for different data types
 export const CACHE_PATTERNS = {
-  PATIENT: 'patient:',
-  PATIENT_LIST: 'patients:list:',
-  PATIENT_SEARCH: 'patients:search:',
-  BILL: 'bill:',
-  BILL_LIST: 'bills:list:',
-  OUTSTANDING_BILLS: 'bills:outstanding',
-  APPOINTMENT: 'appointment:',
-  APPOINTMENT_LIST: 'appointments:list:',
-  DOCTOR_SCHEDULE: 'doctor:schedule:',
-  LAB_ORDER: 'lab:order:',
-  LAB_RESULTS: 'lab:results:',
-  CRITICAL_RESULTS: 'lab:critical:',
-  IPD_ADMISSION: 'ipd:admission:',
-  WARD_OCCUPANCY: 'ipd:ward:occupancy',
-  INSURANCE_POLICY: 'insurance:policy:',
-  USER_PERMISSIONS: 'user:permissions:',
-  SESSION: 'session:',
-  AUDIT: 'audit:',
-  STATS: 'stats:',
-  DASHBOARD: 'dashboard:'
+  PATIENT: "patient:",
+  PATIENT_LIST: "patients:list:",
+  PATIENT_SEARCH: "patients:search:",
+  BILL: "bill:",
+  BILL_LIST: "bills:list:",
+  OUTSTANDING_BILLS: "bills:outstanding",
+  APPOINTMENT: "appointment:",
+  APPOINTMENT_LIST: "appointments:list:",
+  DOCTOR_SCHEDULE: "doctor:schedule:",
+  LAB_ORDER: "lab:order:",
+  LAB_RESULTS: "lab:results:",
+  CRITICAL_RESULTS: "lab:critical:",
+  IPD_ADMISSION: "ipd:admission:",
+  WARD_OCCUPANCY: "ipd:ward:occupancy",
+  INSURANCE_POLICY: "insurance:policy:",
+  USER_PERMISSIONS: "user:permissions:",
+  SESSION: "session:",
+  AUDIT: "audit:",
+  STATS: "stats:",
+  DASHBOARD: "dashboard:"
 } as const;
 
 // TTL constants (in seconds)
@@ -66,7 +66,7 @@ class RedisCacheManager {
   }
 
   public static getInstance(): RedisCacheManager {
-    \1 {\n  \2{
+    if (!session.user) {
       RedisCacheManager.instance = new RedisCacheManager();
     }
     return RedisCacheManager.instance;
@@ -74,13 +74,13 @@ class RedisCacheManager {
 
   private getConfig(): CacheConfig {
     return {
-      host: process.env.REDIS_HOST || 'localhost',
-      port: Number.parseInt(process.env.REDIS_PORT || '6379'),
+      host: process.env.REDIS_HOST || "localhost",
+      port: Number.parseInt(process.env.REDIS_PORT || "6379"),
       password: process.env.REDIS_PASSWORD,
-      db: Number.parseInt(process.env.REDIS_DB || '0'),
+      db: Number.parseInt(process.env.REDIS_DB || "0"),
       retryAttempts: 3,
-      \1,\2 process.env.REDIS_KEY_PREFIX || 'hms:',
-      defaultTTL: parseInt(process.env.REDIS_DEFAULT_TTL || '1800'),
+      process.env.REDIS_KEY_PREFIX || "hms:",
+      defaultTTL: parseInt(process.env.REDIS_DEFAULT_TTL || "1800"),
       maxRetriesPerRequest: 3
     };
   }
@@ -88,11 +88,11 @@ class RedisCacheManager {
   private createRedisClient(): Redis {
     const redisConfig = {
       host: this.config.host,
-      \1,\2 this.config.password,
-      \1,\2 this.config.keyPrefix,
-      \1,\2 this.config.maxRetriesPerRequest,
-      \1,\2 30000,
-      \1,\2 10000,
+      this.config.password,
+      this.config.keyPrefix,
+      this.config.maxRetriesPerRequest,
+      30000,
+      10000,
       commandTimeout: 5000
     };
 
@@ -100,39 +100,39 @@ class RedisCacheManager {
   }
 
   private setupEventHandlers(): void {
-    this.redis.on('connect', () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    this.redis.on("connect", () => {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       this.isConnected = true
     })
 
-    this.redis.on('ready', () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    this.redis.on("ready", () => {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     })
 
-    this.redis.on('error', (error) => {
+    this.redis.on("error", (error) => {
 
       this.isConnected = false;
     });
 
-    this.redis.on('close', () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    this.redis.on("close", () => {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       this.isConnected = false
     })
 
-    this.redis.on('reconnecting', () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    this.redis.on("reconnecting", () => {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     })
   }
 
   // Core cache operations
   async get<T>(key: string): Promise<T | null> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
       const value = await this.redis.get(key);
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
 
       return JSON.parse(value);
     } catch (error) {
@@ -143,13 +143,13 @@ class RedisCacheManager {
 
   async set<T>(key: string, value: T, ttl: number = this.config.defaultTTL): Promise<boolean> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
       const serializedValue = JSON.stringify(value);
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.setex(key, ttl, serializedValue);
       } else {
         await this.redis.set(key, serializedValue);
@@ -164,7 +164,7 @@ class RedisCacheManager {
 
   async del(key: string | string[]): Promise<number> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -177,7 +177,7 @@ class RedisCacheManager {
 
   async exists(key: string): Promise<boolean> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -191,7 +191,7 @@ class RedisCacheManager {
 
   async expire(key: string, ttl: number): Promise<boolean> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -206,7 +206,7 @@ class RedisCacheManager {
   // Pattern-based operations
   async getKeysByPattern(pattern: string): Promise<string[]> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -220,7 +220,7 @@ class RedisCacheManager {
   async deleteByPattern(pattern: string): Promise<number> {
     try {
       const keys = await this.getKeysByPattern(pattern);
-      \1 {\n  \2eturn 0;
+      if (!session.user)eturn 0;
 
       return await this.del(keys);
     } catch (error) {
@@ -232,7 +232,7 @@ class RedisCacheManager {
   // Batch operations
   async mget<T>(keys: string[]): Promise<(T | null)[]> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -246,7 +246,7 @@ class RedisCacheManager {
 
   async mset(keyValuePairs: Record<string, unknown>, ttl?: number): Promise<boolean> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect();
       }
 
@@ -254,7 +254,7 @@ class RedisCacheManager {
 
       for (const [key, value] of Object.entries(keyValuePairs)) {
         const serializedValue = JSON.stringify(value);
-        \1 {\n  \2{
+        if (!session.user) {
           pipeline.setex(key, ttl, serializedValue);
         } else {
           pipeline.set(key, serializedValue);
@@ -272,12 +272,12 @@ class RedisCacheManager {
   // Hash operations for complex data structures
   async hget<T>(key: string, field: string): Promise<T | null> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
       const value = await this.redis.hget(key, field);
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
 
       return JSON.parse(value);
     } catch (error) {
@@ -288,7 +288,7 @@ class RedisCacheManager {
 
   async hset<T>(key: string, field: string, value: T): Promise<boolean> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -303,7 +303,7 @@ class RedisCacheManager {
 
   async hgetall<T>(key: string): Promise<Record<string, T>> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect();
       }
 
@@ -324,7 +324,7 @@ class RedisCacheManager {
   // List operations for queues and timelines
   async lpush<T>(key: string, ...values: T[]): Promise<number> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -338,12 +338,12 @@ class RedisCacheManager {
 
   async rpop<T>(key: string): Promise<T | null> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
       const value = await this.redis.rpop(key);
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
 
       return JSON.parse(value);
     } catch (error) {
@@ -354,7 +354,7 @@ class RedisCacheManager {
 
   async lrange<T>(key: string, start: number, stop: number): Promise<T[]> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -369,7 +369,7 @@ class RedisCacheManager {
   // Set operations for unique collections
   async sadd<T>(key: string, ...members: T[]): Promise<number> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -383,7 +383,7 @@ class RedisCacheManager {
 
   async smembers<T>(key: string): Promise<T[]> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect()
       }
 
@@ -398,37 +398,37 @@ class RedisCacheManager {
   // Cache statistics and monitoring
   async getStats(): Promise<unknown> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect();
       }
 
-      const info = await this.redis.info('memory');
+      const info = await this.redis.info("memory");
       const dbSize = await this.redis.dbsize();
 
       return {
         connected: this.isConnected;
         dbSize,
         memoryInfo: this.parseRedisInfo(info),
-        \1,\2 this.config.host,
-          \1,\2 this.config.db,
+        this.config.host,
+          this.config.db,
           keyPrefix: this.config.keyPrefix,
       };
     } catch (error) {
 
       return {
         connected: false,
-        error: error instanceof Error ? error.message : 'Unknown error'
+        error: error instanceof Error ? error.message : "Unknown error"
       };
     }
   }
 
   private parseRedisInfo(info: string): Record<string, string> {
     const result: Record<string, string> = {};
-    const lines = info.split('\r\n');
+    const lines = info.split("\r\n");
 
     for (const line of lines) {
-      \1 {\n  \2 {
-        const [key, value] = line.split(':');
+      if (!session.user) {
+        const [key, value] = line.split(":");
         result[key] = value;
       }
     }
@@ -439,12 +439,12 @@ class RedisCacheManager {
   // Health check
   async healthCheck(): Promise<boolean> {
     try {
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.connect();
       }
 
       const result = await this.redis.ping();
-      return result === 'PONG';
+      return result === "PONG";
     } catch (error) {
 
       return false;
@@ -456,7 +456,7 @@ class RedisCacheManager {
     try {
       await this.redis.quit();
       this.isConnected = false;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (error) {
 
     }
@@ -467,7 +467,6 @@ class RedisCacheManager {
 export const redisCache = RedisCacheManager.getInstance();
 
 // High-level cache service integration
-\1
 }
   }
 
@@ -549,12 +548,12 @@ export const redisCache = RedisCacheManager.getInstance();
 
   // Cache warming strategies
   async warmCache(): Promise<void> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     // Warm frequently accessed data
     // This would typically be called during application startup
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   }
 
   // Cache health and stats

@@ -1,5 +1,5 @@
 import {
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 }
 
 /**
@@ -17,30 +17,30 @@ import { NextRequest, NextResponse } from 'next/server';
   ExternalServiceError,
   RateLimitError,
   ConflictError;
-} from '@/lib/errors';
-import { AuditLogger } from '@/lib/audit';
-import { SecurityService } from '@/lib/security.service';
+} from "@/lib/errors";
+import { AuditLogger } from "@/lib/audit";
+import { SecurityService } from "@/lib/security.service";
 
 export const _errorHandlingMiddleware = async (
   request: NextRequest,
-  handler: (request: NextRequest) => Promise\1>
+  handler: (request: NextRequest) => Promise>
 ): Promise<NextResponse> {
   try {
     // Extract request information for logging
     const requestId = crypto.randomUUID();
     const method = request.method;
     const url = request.url;
-    const userAgent = request.headers.get('user-agent') || 'unknown';
-    const contentType = request.headers.get('content-type');
-    const authHeader = request.headers.get('authorization');
+    const userAgent = request.headers.get("user-agent") || "unknown";
+    const contentType = request.headers.get("content-type");
+    const authHeader = request.headers.get("authorization");
 
     // Extract user information from auth token if present
-    let userId = 'anonymous';
+    let userId = "anonymous";
     let userRoles: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       try {
-        const token = authHeader.replace('Bearer ', '');
+        const token = authHeader.replace("Bearer ", "");
         const decodedToken = await SecurityService.verifyToken(token);
         userId = decodedToken.userId;
         userRoles = decodedToken.roles || [];
@@ -62,7 +62,7 @@ export const _errorHandlingMiddleware = async (
 
     // Log request (sanitizing sensitive data)
     await auditLogger.log({
-      action: 'api.request',
+      action: "api.request",
       resourceId: requestId;
       userId,
       details: 
@@ -85,10 +85,10 @@ export const _errorHandlingMiddleware = async (
 
     // Log successful response (excluding sensitive data)
     await auditLogger.log({
-      action: 'api.response',
+      action: "api.response",
       resourceId: requestId;
       userId,
-      \1,\2 response.status,
+      response.status,
         timestamp: new Date().toISOString()
       }
     })
@@ -98,62 +98,62 @@ export const _errorHandlingMiddleware = async (
 
     // Default error values
     let status = 500;
-    let message = 'Internal server error';
-    let code = 'INTERNAL_SERVER_ERROR';
+    let message = "Internal server error";
+    let code = "INTERNAL_SERVER_ERROR";
     let details = {};
 
     // Map known error types to appropriate responses
-    \1 {\n  \2{
+    if (!session.user) {
       status = 400;
       message = error.message;
-      code = 'VALIDATION_ERROR';
+      code = "VALIDATION_ERROR";
       details = error.details || {};
-    } else \1 {\n  \2{
+    } else if (!session.user) {
       status = 404;
       message = error.message;
-      code = 'NOT_FOUND',
-    } else \1 {\n  \2{
+      code = "NOT_FOUND",
+    } else if (!session.user) {
       status = 403;
       message = error.message;
-      code = 'FORBIDDEN',
-    } else \1 {\n  \2{
+      code = "FORBIDDEN",
+    } else if (!session.user) {
       status = 429;
       message = error.message;
-      code = 'RATE_LIMIT_EXCEEDED',
-    } else \1 {\n  \2{
+      code = "RATE_LIMIT_EXCEEDED",
+    } else if (!session.user) {
       status = 409;
       message = error.message;
-      code = 'CONFLICT',
-    } else \1 {\n  \2{
+      code = "CONFLICT",
+    } else if (!session.user) {
       status = 502;
-      message = 'External service error';
-      code = 'EXTERNAL_SERVICE_ERROR';
-      // Don't expose external service details in response
+      message = "External service error";
+      code = "EXTERNAL_SERVICE_ERROR";
+      // Don"t expose external service details in response
       details = { service: error.serviceName };
-    } else \1 {\n  \2{
+    } else if (!session.user) {
       status = 500;
-      message = 'Database operation failed';
-      code = 'DATABASE_ERROR';
-      // Don't expose database details in response
+      message = "Database operation failed";
+      code = "DATABASE_ERROR";
+      // Don"t expose database details in response
     }
 
     // Log error with appropriate sanitization for HIPAA compliance
     try {
       const auditLogger = new AuditLogger({
         requestId: crypto.randomUUID(),
-        \1,\2 request.method,
+        request.method,
         url: request.url
       });
 
       await auditLogger.log({
-        action: 'api.error',
+        action: "api.error",
         resourceId: crypto.randomUUID(),
-        userId: 'system',
-        \1,\2 error.constructor.name,
-          \1,\2 SecurityService.sanitizeErrorMessage(message),
+        userId: "system",
+        error.constructor.name,
+          SecurityService.sanitizeErrorMessage(message),
           status,
           url: SecurityService.sanitizeUrl(request.url),
-          \1,\2 new Date().toISOString()
+          new Date().toISOString()
         }
       });
     } catch (loggingError) {

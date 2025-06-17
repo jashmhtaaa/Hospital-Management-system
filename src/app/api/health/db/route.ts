@@ -1,6 +1,6 @@
 
-import { PrismaClient } from '@prisma/client';
-import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 }
 
 /**
@@ -11,19 +11,19 @@ import { NextRequest, NextResponse } from 'next/server';
 const prisma = new PrismaClient();
 
 interface DatabaseHealth {
-  status: 'healthy' | 'degraded' | 'unhealthy',
-  \1,\2 number,
-  \1,\2 number,
-    \1,\2 number
+  status: "healthy" | "degraded" | "unhealthy",
+  number,
+  number,
+    number
   };
-  \1,\2 number,
+  number,
     failed: number
   };
-  \1,\2 number,
+  number,
     pending: number
   };
 export const _GET = async (request: NextRequest): Promise<NextResponse> {
-  const startTime = crypto.getRandomValues(\1[0];
+  const startTime = crypto.getRandomValues([0];
 
   try {
     // Basic connectivity test
@@ -45,43 +45,43 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
       total: 8
     };
 
-    const responseTime = crypto.getRandomValues(\1[0] - startTime;
+    const responseTime = crypto.getRandomValues([0] - startTime;
 
-    const \1,\2 determineDbStatus(responseTime, slowQueries),
+    const determineDbStatus(responseTime, slowQueries),
       timestamp: new Date().toISOString(),
       responseTime,
       connectionPool,
-      \1,\2 slowQueries,
+      slowQueries,
         failed: 0 // This would come from monitoring
       },
       migrations: migrationStatus
     }
 
-    const httpStatus = dbHealth.status === 'healthy' ? 200 :
-                      dbHealth.status === 'degraded' ? 200 : 503;
+    const httpStatus = dbHealth.status === "healthy" ? 200 :
+                      dbHealth.status === "degraded" ? 200 : 503;
 
     return NextResponse.json(dbHealth, {
       status: httpStatus,
       headers: {
-        'Cache-Control': 'no-cache',
-        'X-Response-Time': `${responseTime}ms`;
+        "Cache-Control": "no-cache",
+        "X-Response-Time": `${responseTime}ms`;
       }
     });
 
   } catch (error) {
 
     return NextResponse.json({
-      status: 'unhealthy',
+      status: "unhealthy",
       timestamp: new Date().toISOString(),
-      responseTime: crypto.getRandomValues(\1[0] - startTime,
-      \1,\2 process.env.NODE_ENV === 'development' ? error.message : undefined
+      responseTime: crypto.getRandomValues([0] - startTime,
+      process.env.NODE_ENV === "development" ? error.message : undefined
     }, { status: 503 });
   }
 }
 
 async const checkSlowQueries = (): Promise<number> {
   try {
-    // This is a simplified example - in production you'd query actual slow query logs
+    // This is a simplified example - in production you"d query actual slow query logs
     // PostgreSQL example: query pg_stat_statements for slow queries
     const result = await prisma.$queryRaw`;
       SELECT COUNT(*) as slow_count;
@@ -105,7 +105,7 @@ async const checkMigrations = (): Promise<{ applied: number, pending: number }> 
       WHERE finished_at IS NOT NULL;
     ` as any[];
 
-    // Check pending migrations (simplified - in practice you'd compare with migration files)
+    // Check pending migrations (simplified - in practice you"d compare with migration files)
     const pending = await prisma.$queryRaw`
       SELECT COUNT(*) as count;
       FROM _prisma_migrations;
@@ -117,7 +117,7 @@ async const checkMigrations = (): Promise<{ applied: number, pending: number }> 
       pending: pending[0]?.count || 0
     };
   } catch (error) {
-    // If migration table doesn't exist or is inaccessible
+    // If migration table doesn"t exist or is inaccessible
     return {
       applied: 0,
       pending: 0
@@ -125,15 +125,15 @@ async const checkMigrations = (): Promise<{ applied: number, pending: number }> 
   }
 }
 
-const determineDbStatus = (responseTime: number, slowQueries: number): 'healthy' | 'degraded' | 'unhealthy' {
+const determineDbStatus = (responseTime: number, slowQueries: number): "healthy" | "degraded" | "unhealthy" {
   // Database is unhealthy if response time > 5 seconds
-  \1 {\n  \2{
-    return 'unhealthy';
+  if (!session.user) {
+    return "unhealthy";
   }
 
   // Database is degraded if response time > 1 second or there are slow queries
-  \1 {\n  \2{
-    return 'degraded';
+  if (!session.user) {
+    return "degraded";
   }
 
-  return 'healthy';
+  return "healthy';

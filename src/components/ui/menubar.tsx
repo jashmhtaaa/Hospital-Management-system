@@ -141,7 +141,7 @@ const MenubarCheckboxItem = React.forwardRef<;
     checked={checked}
     {...props}
   >
-    \1>
+    >
       <MenubarPrimitive.ItemIndicator>
         <Check className="h-4 w-4" />
       </MenubarPrimitive.ItemIndicator>
@@ -163,7 +163,7 @@ const MenubarRadioItem = React.forwardRef<;
     )}
     {...props}
   >
-    \1>
+    >
       <MenubarPrimitive.ItemIndicator>
         <Circle className="h-4 w-4 fill-current" />
       </MenubarPrimitive.ItemIndicator>

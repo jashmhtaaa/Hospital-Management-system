@@ -1,6 +1,6 @@
 
-import { AuditLogger } from '@/lib/audit';
-import { AuthorizationError } from '@/lib/errors';
+import { AuditLogger } from "@/lib/audit";
+import { AuthorizationError } from "@/lib/errors";
 }
 
 /**
@@ -12,53 +12,53 @@ import { AuthorizationError } from '@/lib/errors';
 
 // Define role hierarchy and permissions
 export enum Role {
-  ADMIN = 'admin',
-  MANAGER = 'manager',
-  STAFF = 'staff',
-  HOUSEKEEPING = 'housekeeping',
-  MAINTENANCE = 'maintenance',
-  DIETARY = 'dietary',
-  AMBULANCE = 'ambulance',
-  MARKETING = 'marketing',
-  FEEDBACK = 'feedback',
-  PATIENT = 'patient',
-  GUEST = 'guest',
+  ADMIN = "admin",
+  MANAGER = "manager",
+  STAFF = "staff",
+  HOUSEKEEPING = "housekeeping",
+  MAINTENANCE = "maintenance",
+  DIETARY = "dietary",
+  AMBULANCE = "ambulance",
+  MARKETING = "marketing",
+  FEEDBACK = "feedback",
+  PATIENT = "patient",
+  GUEST = "guest",
 }
 
 // Define resource types
 export enum Resource {
-  HOUSEKEEPING = 'housekeeping',
-  MAINTENANCE = 'maintenance',
-  DIETARY = 'dietary',
-  AMBULANCE = 'ambulance',
-  MARKETING = 'marketing',
-  FEEDBACK = 'feedback',
-  CAMPAIGN = 'campaign',
-  CONTACT = 'contact',
-  SEGMENT = 'segment',
-  TEMPLATE = 'template',
-  ANALYTICS = 'analytics',
-  USER = 'user',
-  SYSTEM = 'system',
+  HOUSEKEEPING = "housekeeping",
+  MAINTENANCE = "maintenance",
+  DIETARY = "dietary",
+  AMBULANCE = "ambulance",
+  MARKETING = "marketing",
+  FEEDBACK = "feedback",
+  CAMPAIGN = "campaign",
+  CONTACT = "contact",
+  SEGMENT = "segment",
+  TEMPLATE = "template",
+  ANALYTICS = "analytics",
+  USER = "user",
+  SYSTEM = "system",
 }
 
 // Define action types
 export enum Action {
-  CREATE = 'create',
-  READ = 'read',
-  UPDATE = 'update',
-  DELETE = 'delete',
-  EXECUTE = 'execute',
-  APPROVE = 'approve',
-  ASSIGN = 'assign',
-  REPORT = 'report',
+  CREATE = "create",
+  READ = "read",
+  UPDATE = "update",
+  DELETE = "delete",
+  EXECUTE = "execute",
+  APPROVE = "approve",
+  ASSIGN = "assign",
+  REPORT = "report",
 }
 
 // Permission definition type
 interface Permission {
   resource: Resource,
   action: Action;
-  constraints?: Record\1>
+  constraints?: Record>
 }
 
 // Role definition with permissions
@@ -66,7 +66,6 @@ interface RoleDefinition {
   name: Role;
   inherits?: Role[];
   permissions: Permission[]
-\1
 }
     },
     {
@@ -81,7 +80,7 @@ interface RoleDefinition {
     },
     {
       name: Role.HOUSEKEEPING,
-      \1,\2 [
+      [
         // Housekeeping staff can manage housekeeping requests
         { resource: Resource.HOUSEKEEPING, action: Action.UPDATE },
         { resource: Resource.HOUSEKEEPING, action: Action.ASSIGN },
@@ -89,7 +88,7 @@ interface RoleDefinition {
     },
     {
       name: Role.MAINTENANCE,
-      \1,\2 [
+      [
         // Maintenance staff can manage maintenance requests
         { resource: Resource.MAINTENANCE, action: Action.UPDATE },
         { resource: Resource.MAINTENANCE, action: Action.ASSIGN },
@@ -97,7 +96,7 @@ interface RoleDefinition {
     },
     {
       name: Role.DIETARY,
-      \1,\2 [
+      [
         // Dietary staff can manage dietary requests
         { resource: Resource.DIETARY, action: Action.UPDATE },
         { resource: Resource.DIETARY, action: Action.ASSIGN },
@@ -105,7 +104,7 @@ interface RoleDefinition {
     },
     {
       name: Role.AMBULANCE,
-      \1,\2 [
+      [
         // Ambulance staff can manage ambulance requests
         { resource: Resource.AMBULANCE, action: Action.UPDATE },
         { resource: Resource.AMBULANCE, action: Action.ASSIGN },
@@ -113,7 +112,7 @@ interface RoleDefinition {
     },
     {
       name: Role.MARKETING,
-      \1,\2 [
+      [
         // Marketing staff can manage marketing campaigns
         { resource: Resource.MARKETING, action: Action.READ },
         { resource: Resource.MARKETING, action: Action.CREATE },
@@ -140,7 +139,7 @@ interface RoleDefinition {
     },
     {
       name: Role.FEEDBACK,
-      \1,\2 [
+      [
         // Feedback staff can manage feedback
         { resource: Resource.FEEDBACK, action: Action.READ },
         { resource: Resource.FEEDBACK, action: Action.UPDATE },
@@ -161,7 +160,7 @@ interface RoleDefinition {
 
   /**
    * Checks if a user has permission to perform an action on a resource;
-   * @param userRoles The user's roles;
+   * @param userRoles The user"s roles;
    * @param resource The resource being accessed;
    * @param action The action being performed;
    * @param constraints Optional constraints for the permission check;
@@ -169,11 +168,11 @@ interface RoleDefinition {
    */
   public static hasPermission(
     userRoles: string[],
-    \1,\2 Action;
+    Action;
     constraints?: Record<string, unknown>
   ): boolean {
     // Admin role has access to everything
-    \1 {\n  \2 {
+    if (!session.user) {
       return true;
     }
 
@@ -181,7 +180,7 @@ interface RoleDefinition {
     for (const userRole of userRoles) {
       // Get the role definition
       const roleDef = this.roleDefinitions.find(r => r.name === userRole);
-      \1 {\n  \2ontinue;
+      if (!session.user)ontinue;
 
       // Check direct permissions
       const hasDirectPermission = this.checkDirectPermission(
@@ -191,15 +190,15 @@ interface RoleDefinition {
         constraints;
       );
 
-      \1 {\n  \2{
+      if (!session.user) {
         return true;
       }
 
       // Check inherited permissions
-      \1 {\n  \2{
+      if (!session.user) {
         for (const inheritedRole of roleDef.inherits) {
           const inheritedRoleDef = this.roleDefinitions.find(r => r.name === inheritedRole);
-          \1 {\n  \2ontinue;
+          if (!session.user)ontinue;
 
           const hasInheritedPermission = this.checkDirectPermission(
             inheritedRoleDef,
@@ -208,7 +207,7 @@ interface RoleDefinition {
             constraints;
           );
 
-          \1 {\n  \2{
+          if (!session.user) {
             return true;
           }
         }
@@ -228,7 +227,7 @@ interface RoleDefinition {
    */
   private static checkDirectPermission(
     roleDef: RoleDefinition,
-    \1,\2 Action;
+    Action;
     constraints?: Record<string, unknown>
   ): boolean {
     // Check for system-level permission (full access)
@@ -236,7 +235,7 @@ interface RoleDefinition {
       p => p.resource === Resource?.SYSTEM && p.action === Action.EXECUTE
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return true;
     }
 
@@ -248,7 +247,7 @@ interface RoleDefinition {
 
       // If no constraints are defined in the permission, or no constraints are provided
       // for the check, then we only need to match resource and action
-      \1 {\n  \2{
+      if (!session.user) {
         return resourceMatches && actionMatches;
       }
 
@@ -263,40 +262,40 @@ interface RoleDefinition {
 
   /**
    * Enforces permission check and throws if not authorized;
-   * @param userRoles The user's roles;
+   * @param userRoles The user"s roles;
    * @param resource The resource being accessed;
    * @param action The action being performed;
    * @param constraints Optional constraints for the permission check;
-   * @param userId The user's ID for audit logging;
+   * @param userId The user"s ID for audit logging;
    * @param resourceId The resource ID for audit logging;
-   * @throws AuthorizationError if the user doesn't have permission;
+   * @throws AuthorizationError if the user doesn"t have permission;
    */
   public static enforcePermission(
     userRoles: string[],
-    \1,\2 Action;
+    Action;
     constraints?: Record<string, unknown>,
     userId?: string,
     resourceId?: string;
   ): void {
     const hasPermission = this.hasPermission(userRoles, resource, action, constraints);
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Log the authorization failure
-      \1 {\n  \2{
+      if (!session.user) {
         const auditLogger = new AuditLogger({
           userId,
           userRoles;
         });
 
         auditLogger.log({
-          action: 'authorization.denied',
-          resourceId: resourceId || 'unknown';
+          action: "authorization.denied",
+          resourceId: resourceId || "unknown";
           userId,
           details: 
             resource,
             action,
             constraints;,
-          severity: 'warning'
+          severity: "warning"
         }).catch(err => );
       }
 
@@ -329,7 +328,7 @@ interface RoleDefinition {
    */
   private static addPermissionsForRole(roleName: string, permissions: Permission[]): void {
     const roleDef = this.roleDefinitions.find(r => r.name === roleName);
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     // Add direct permissions
     for (const permission of roleDef.permissions) {
@@ -340,13 +339,13 @@ interface RoleDefinition {
         JSON.stringify(p.constraints) === JSON.stringify(permission.constraints);
       );
 
-      \1 {\n  \2{
+      if (!session.user) {
         permissions.push(permission);
       }
     }
 
     // Add inherited permissions
-    \1 {\n  \2{
+    if (!session.user) {
       for (const inheritedRole of roleDef.inherits) {
         this.addPermissionsForRole(inheritedRole, permissions);
       }

@@ -28,7 +28,7 @@ export const GET = async () => {
   } catch (error) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(

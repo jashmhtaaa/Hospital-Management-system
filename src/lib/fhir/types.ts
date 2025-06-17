@@ -7,11 +7,10 @@
  */
 
 // Base FHIR Types
-\1
 }
   };
   request?: {
-    method: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
+    method: "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string;
     ifNoneMatch?: string;
     ifModifiedSince?: string;

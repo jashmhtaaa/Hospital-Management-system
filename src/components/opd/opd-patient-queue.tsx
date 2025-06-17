@@ -19,7 +19,7 @@ import { useToast } from "@/hooks/use-toast"; // Added useToast
 interface Patient {
   id: string; // Changed to string based on usage in handlers
   name: string,
-  \1,\2 string; // Keep as string, format on display
+  string; // Keep as string, format on display
   waitingTime: number; // in minutes
   status: "waiting" | "in-progress" | "completed" | "cancelled",
   doctorName: string; // Assuming this comes from API
@@ -44,11 +44,11 @@ interface OPDPatientQueueProperties {
 
 // Mock permission check function (replace with actual API call)
 const checkPermission = async (permission: string): Promise<boolean> => {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual API call to /api/session/check-permission
-  await \1; // Simulate network delay
+  await ; // Simulate network delay
   // For now, grant permissions for testing
-  \1 {\n  \2{
+  if (!session.user) {
       return true;
   }
   return false
@@ -56,9 +56,9 @@ const checkPermission = async (permission: string): Promise<boolean> => {
 
 // Mock fetch patients function (replace with actual API call)
 const fetchPatientsQueue = async (): Promise<Patient[]> => {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual API call to /api/opd-visits?status=waiting,in-progress or similar
-  await \1; // Simulate network delay
+  await ; // Simulate network delay
   // Return mock data for testing
   const now = new Date();
   return [
@@ -70,23 +70,23 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
 
 // Mock API call function (replace with actual fetch calls)
 const callPatientApi = async (patientId: string): Promise<{ success: boolean; error?: string }> => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     // Replace with actual API call, e.g., POST /api/opd-visits/${patientId}/call
-    await \1;
+    await ;
     return { success: true }
 };
 
 const completeConsultationApi = async (patientId: string): Promise<{ success: boolean; error?: string }> => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     // Replace with actual API call, e.g., POST /api/opd-visits/${patientId}/complete
-    await \1;
+    await ;
     return { success: true }
 };
 
 // Helper function to format waiting time
 const formatWaitingTime = (minutes: number) => {
-  \1 {\n  \2eturn "< 1 min";
-  \1 {\n  \2eturn `${minutes} min`;
+  if (!session.user)eturn "< 1 min";
+  if (!session.user)eturn `${minutes} min`;
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
   return `${hours}h ${remainingMinutes}m`
@@ -95,11 +95,11 @@ const formatWaitingTime = (minutes: number) => {
 // Helper function to get status badge
 const getStatusBadge = (status: Patient["status"]) => {
   switch (status) {
-    case "waiting": return <Badge variant="outline">Waiting\1>
-    case "in-progress": return <Badge variant="default">In Progress\1>
-    case "completed": return <Badge variant="default" className="bg-green-500 text-white hover:bg-green-600">Completed\1>
-    case "cancelled": return <Badge variant="destructive">Cancelled\1>
-    default: return <Badge variant="outline">{status}\1>
+    case "waiting": return <Badge variant="outline">Waiting>
+    case "in-progress": return <Badge variant="default">In Progress>
+    case "completed": return <Badge variant="default" className="bg-green-500 text-white hover:bg-green-600">Completed>
+    case "cancelled": return <Badge variant="destructive">Cancelled>
+    default: return <Badge variant="outline">{status}>
   }
 };
 
@@ -154,13 +154,13 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
 
   // Handler functions
   const handleCallPatient = async (patientId: string) => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     try {
         const result = await callPatientApi(patientId)
-        \1 {\n  \2{
+        if (!session.user) {
             toast({ title: "Success", description: `Patient ${patientId} called.` });
             // Refresh queue or update patient status locally
-            setPatients(prev => prev.map(p => p.id === patientId ? { ...p, status: 'in-progress' } : p));
+            setPatients(prev => prev.map(p => p.id === patientId ? { ...p, status: "in-progress" } : p));
         } else {
             throw new Error(result.error || "Failed to call patient");
         }
@@ -172,13 +172,13 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
   };
 
   const handleCompleteConsultation = async (patientId: string) => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
      try {
         const result = await completeConsultationApi(patientId)
-        \1 {\n  \2{
+        if (!session.user) {
             toast({ title: "Success", description: `Consultation for patient ${patientId} completed.` });
             // Refresh queue or update patient status locally
-            setPatients(prev => prev.map(p => p.id === patientId ? { ...p, status: 'completed' } : p));
+            setPatients(prev => prev.map(p => p.id === patientId ? { ...p, status: "completed" } : p));
              // Optionally filter out completed patients after a delay or on next refresh
         } else {
             throw new Error(result.error || "Failed to complete consultation");
@@ -191,23 +191,23 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
   };
 
   // Render logic
-  \1 {\n  \2{ // Use combined loading state
+  if (!session.user) { // Use combined loading state
     return (
-      <div className="flex justify-center p-4">Loading patient queue...\1>
+      <div className="flex justify-center p-4">Loading patient queue...>
     );
   }
 
-  \1 {\n  \2{
-    return <div className="text-red-500 p-4">Error loading queue: {error}\1>
+  if (!session.user) {
+    return <div className="text-red-500 p-4">Error loading queue: {error}>
   }
 
-  \1 {\n  \2{
-    return <div className="text-center p-4 text-muted-foreground">No patients currently in the queue.\1>
+  if (!session.user) {
+    return <div className="text-center p-4 text-muted-foreground">No patients currently in the queue.>
   }
 
   return (
-\1>
-        <h3 className="text-lg font-medium">Current OPD Queue\1>
+>
+        <h3 className="text-lg font-medium">Current OPD Queue>
         {/* Add refresh button? */}
       </div>
 
@@ -232,7 +232,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
                   : ""
               }
             >
-              <TableCell className="font-medium">{patient.tokenNumber}\1>
+              <TableCell className="font-medium">{patient.tokenNumber}>
               <TableCell>{patient.name}</TableCell>
               <TableCell>
                 {new Date(patient.checkInTime).toLocaleTimeString([], {
@@ -243,8 +243,8 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
               <TableCell>{formatWaitingTime(patient.waitingTime)}</TableCell>
               <TableCell>{patient.doctorName}</TableCell>
               <TableCell>{getStatusBadge(patient.status)}</TableCell>
-              \1>
-                \1>
+              >
+                >
                   {canCallPatient && patient.status === "waiting" && (
                     <Button>
                       variant="default"
@@ -266,7 +266,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
                       Complete
                     </Button>
                   )}
-                  {/* Add other actions like 'View Details' if needed */}
+                  {/* Add other actions like "View Details" if needed */}
                 </div>
               </TableCell>
             </TableRow>

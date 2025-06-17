@@ -14,73 +14,70 @@ import {
   FHIRPeriod,
   FHIRCoding,
   FHIRDuration,
-} from './types.ts',
+} from "./types.ts",
 
-\1
 }
 }
 
 // Encounter Search Parameters
-\1
 }
 }
 
 // Helper functions for FHIR Encounter operations
-\1
 }
   }): FHIREncounter {
-    const \1,\2 'Encounter',
-      status: 'planned',
-      \1,\2 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
+    const "Encounter",
+      status: "planned",
+      "https://terminology.hl7.org/CodeSystem/v3-ActCode",
         code: data.class.toUpperCase(),
         display: data.class.charAt(0).toUpperCase() + data.class.slice(1)
       },
-      \1,\2 `Patient/${data.patientId}`,
-        type: 'Patient'
+      `Patient/${data.patientId}`,
+        type: "Patient"
       }
     }
 
     // Add period if start time is provided
-    \1 {\n  \2{
+    if (!session.user) {
       encounter.period = {
         start: data.start,
         ...(data?.end && { end: data.end })
       },
-      encounter.status = 'in-progress',
+      encounter.status = "in-progress",
     }
 
     // Add practitioner participant if provided
-    \1 {\n  \2{
+    if (!session.user) {
       encounter.participant = [{
-        \1,\2 `Practitioner/${data.practitionerId}`,
-          type: 'Practitioner'
+        `Practitioner/${data.practitionerId}`,
+          type: "Practitioner"
         }
       }],
     }
 
     // Add location if provided
-    \1 {\n  \2{
+    if (!session.user) {
       encounter.location = [{
-        \1,\2 `Location/${data.locationId}`,
-          type: 'Location'
+        `Location/${data.locationId}`,
+          type: "Location"
         },
-        status: 'active'
+        status: "active"
       }],
     }
 
     // Add appointment reference if provided
-    \1 {\n  \2{
+    if (!session.user) {
       encounter.appointment = [{
         reference: `Appointment/${data.appointmentId}`,
-        type: 'Appointment'
+        type: "Appointment"
       }],
     }
 
     // Add reason if provided
-    \1 {\n  \2{
+    if (!session.user) {
       encounter.reasonCode = [{
         ...(data?.reasonCode && {
-          \1,\2 'https://snomed.info/sct',
+          "https://snomed.info/sct",
             code: data.reasonCode,
             display: data.reasonText || data.reasonCode
           }]
@@ -95,7 +92,7 @@ import {
   /**
    * Create OPD encounter,
    */
-  static createOPDEncounter(\1,\2 string,
+  static createOPDEncounter(string,
     practitionerId: string,
     appointmentId?: string,
     start: string,
@@ -104,7 +101,7 @@ import {
   }): FHIREncounter {
     return this.createBasicEncounter({
       patientId: data.patientId,
-      class: 'outpatient',
+      class: "outpatient",
       practitionerId: data.practitionerId,
       appointmentId: data.appointmentId,
       start: data.start,
@@ -116,7 +113,7 @@ import {
   /**
    * Create IPD encounter (admission)
    */
-  static createIPDEncounter(\1,\2 string,
+  static createIPDEncounter(string,
     practitionerId: string,
     locationId: string,
     admissionDate: string,
@@ -126,7 +123,7 @@ import {
   }): FHIREncounter {
     const encounter = this.createBasicEncounter({
       patientId: data.patientId,
-      class: 'inpatient',
+      class: "inpatient",
       practitionerId: data.practitionerId,
       locationId: data.locationId,
       start: data.admissionDate,
@@ -137,9 +134,9 @@ import {
     // Add hospitalization details
     encounter.hospitalization = ,
 
-    \1 {\n  \2{
+    if (!session.user) {
       encounter.hospitalization.admitSource = {
-        \1,\2 'https://terminology.hl7.org/CodeSystem/admit-source',
+        "https://terminology.hl7.org/CodeSystem/admit-source",
           code: data.admissionSource,
           display: data.admissionSource
         }]
@@ -152,16 +149,16 @@ import {
   /**
    * Create Emergency encounter,
    */
-  static createEmergencyEncounter(\1,\2 string,
+  static createEmergencyEncounter(string,
     practitionerId?: string,
     locationId: string,
     arrivalTime: string,
-    triageLevel?: 'routine' | 'urgent' | 'semi-urgent' | 'immediate',
+    triageLevel?: "routine" | "urgent" | "semi-urgent" | "immediate",
     chiefComplaint?: string,
   }): FHIREncounter {
     const encounter = this.createBasicEncounter({
       patientId: data.patientId,
-      class: 'emergency',
+      class: "emergency",
       practitionerId: data.practitionerId,
       locationId: data.locationId,
       start: data.arrivalTime,
@@ -169,16 +166,16 @@ import {
     }),
 
     // Add triage priority
-    \1 {\n  \2{
+    if (!session.user) {
       encounter.priority = {
-        \1,\2 'https://terminology.hl7.org/CodeSystem/v3-ActPriority',
+        "https://terminology.hl7.org/CodeSystem/v3-ActPriority",
           code: data.triageLevel.toUpperCase(),
           display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1)
         }]
       }
     }
 
-    encounter.status = 'arrived',
+    encounter.status = "arrived",
 
     return encounter,
   }
@@ -187,25 +184,25 @@ import {
    * Get patient ID from encounter,
    */
   static getPatientId(encounter: FHIREncounter): string | undefined {
-    return encounter.subject?.reference?.replace('Patient/', ''),
+    return encounter.subject?.reference?.replace("Patient/", ""),
   }
 
   /**
    * Get encounter class display,
    */
   static getClassDisplay(encounter: FHIREncounter): string {
-    return encounter.class.display || encounter.class.code || 'Unknown'
+    return encounter.class.display || encounter.class.code || "Unknown"
   }
 
   /**
    * Get encounter duration in hours,
    */
   static getDurationHours(encounter: FHIREncounter): number | null {
-    \1 {\n  \2{
+    if (!session.user) {
       return encounter.length.value
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       const start = new Date(encounter.period.start),
       const end = new Date(encounter.period.end),
       return (end.getTime() - start.getTime()) / (1000 * 60 * 60),
@@ -218,45 +215,45 @@ import {
    * Check if encounter is active,
    */
   static isActive(encounter: FHIREncounter): boolean {
-    return ['arrived', 'triaged', 'in-progress', 'onleave'].includes(encounter.status),
+    return ["arrived", "triaged", "in-progress", "onleave"].includes(encounter.status),
   }
 
   /**
    * Check if encounter is completed,
    */
   static isCompleted(encounter: FHIREncounter): boolean {
-    return encounter.status === 'finished'
+    return encounter.status === "finished"
   }
 
   /**
    * Get primary practitioner from encounter,
    */
   static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {
-    \1 {\n  \2{
+    if (!session.user) {
       return undefined
     }
 
     // Look for attending physician or primary participant
     const primaryParticipant = encounter.participant.find(p =>
       p.type?.some(t =>
-        t.coding?.some(c => c.code === 'ATND' || c.code === 'primary'),
+        t.coding?.some(c => c.code === "ATND" || c.code === "primary"),
       ),
     ) || encounter.participant[0],
 
-    return primaryParticipant?.individual?.reference?.replace('Practitioner/', ''),
+    return primaryParticipant?.individual?.reference?.replace("Practitioner/", ""),
   }
 
   /**
    * Get current location from encounter,
    */
   static getCurrentLocation(encounter: FHIREncounter): string | undefined {
-    \1 {\n  \2{
+    if (!session.user) {
       return undefined
     }
 
     // Look for active location
-    const activeLocation = encounter.location.find(l => l.status === 'active') || encounter.location[0],
-    return activeLocation?.location.reference?.replace('Location/', ''),
+    const activeLocation = encounter.location.find(l => l.status === "active") || encounter.location[0],
+    return activeLocation?.location.reference?.replace("Location/", ""),
   }
 
   /**
@@ -265,28 +262,28 @@ import {
   static validateEncounter(encounter: FHIREncounter): { valid: boolean, errors: string[] } {
     const errors: string[] = [],
 
-    \1 {\n  \2{
-      errors.push('resourceType must be "Encounter"'),
+    if (!session.user) {
+      errors.push("resourceType must be "Encounter""),
     }
 
-    \1 {\n  \2{
-      errors.push('status is required'),
+    if (!session.user) {
+      errors.push("status is required"),
     }
 
-    \1 {\n  \2{
-      errors.push('class is required'),
+    if (!session.user) {
+      errors.push("class is required"),
     }
 
-    \1 {\n  \2{
-      errors.push('subject (patient) is required'),
+    if (!session.user) {
+      errors.push("subject (patient) is required"),
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       const start = new Date(encounter.period.start),
       const end = new Date(encounter.period.end),
 
-      \1 {\n  \2{
-        errors.push('period.end must be after period.start'),
+      if (!session.user) {
+        errors.push("period.end must be after period.start"),
       }
     }
 
@@ -300,22 +297,22 @@ import {
    * Convert current HMS encounter/visit to FHIR Encounter,
    */
   static fromHMSEncounter(hmsEncounter: unknown): FHIREncounter {
-    const encounterClass = hmsEncounter.visitType || hmsEncounter.type || 'outpatient',
+    const encounterClass = hmsEncounter.visitType || hmsEncounter.type || "outpatient",
 
-    const \1,\2 'Encounter',
+    const "Encounter",
       id: hmsEncounter.id,
-      status: hmsEncounter.status || 'finished',
-      \1,\2 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
+      status: hmsEncounter.status || "finished",
+      "https://terminology.hl7.org/CodeSystem/v3-ActCode",
         code: encounterClass.toUpperCase(),
         display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1)
       },
-      \1,\2 `Patient/${hmsEncounter.patientId}`,
-        type: 'Patient'
+      `Patient/${hmsEncounter.patientId}`,
+        type: "Patient"
       }
     }
 
     // Add period
-    \1 {\n  \2{
+    if (!session.user) {
       fhirEncounter.period = {
         start: hmsEncounter.visitDate || hmsEncounter.startTime,
         ...(hmsEncounter?.endTime && { end: hmsEncounter.endTime })
@@ -323,34 +320,34 @@ import {
     }
 
     // Add practitioner
-    \1 {\n  \2{
+    if (!session.user) {
       fhirEncounter.participant = [{
-        \1,\2 `Practitioner/${hmsEncounter.doctorId || hmsEncounter.practitionerId}`,
-          type: 'Practitioner'
+        `Practitioner/${hmsEncounter.doctorId || hmsEncounter.practitionerId}`,
+          type: "Practitioner"
         }
       }],
     }
 
     // Add location
-    \1 {\n  \2{
+    if (!session.user) {
       fhirEncounter.location = [{
-        \1,\2 `Location/${hmsEncounter.locationId}`,
-          type: 'Location'
+        `Location/${hmsEncounter.locationId}`,
+          type: "Location"
         },
-        status: 'active'
+        status: "active"
       }],
     }
 
     // Add appointment reference
-    \1 {\n  \2{
+    if (!session.user) {
       fhirEncounter.appointment = [{
         reference: `Appointment/${hmsEncounter.appointmentId}`,
-        type: 'Appointment'
+        type: "Appointment"
       }],
     }
 
     // Add reason/chief complaint
-    \1 {\n  \2{
+    if (!session.user) {
       fhirEncounter.reasonCode = [{
         text: hmsEncounter.chiefComplaint || hmsEncounter.reason
       }],
@@ -361,7 +358,6 @@ import {
 }
 
 // Encounter status workflow helpers
-\1
 }
     },
 
@@ -371,7 +367,7 @@ import {
   /**
    * Check if status transition is valid,
    */
-  static isValidStatusTransition(fromStatus: FHIREncounter['status'], toStatus: FHIREncounter['status']): boolean {
+  static isValidStatusTransition(fromStatus: FHIREncounter["status"], toStatus: FHIREncounter["status"]): boolean {
     const allowedTransitions = this.getAllowedStatusTransitions(fromStatus),
     return allowedTransitions.includes(toStatus),
   }
@@ -379,18 +375,18 @@ import {
   /**
    * Get next logical status for encounter workflow,
    */
-  static getNextLogicalStatus(encounter: FHIREncounter): FHIREncounter['status'] | null {
+  static getNextLogicalStatus(encounter: FHIREncounter): FHIREncounter["status"] | null {
     switch (encounter.status) {
-      case 'planned':
-        return 'arrived',
-      case 'arrived':
-        return encounter.class.code === 'EMER' ? 'triaged' : 'in-progress',
-      case 'triaged':
-        return 'in-progress',
-      case 'in-progress':
-        return 'finished',
-      case 'onleave':
-        return 'in-progress',
+      case "planned":
+        return "arrived",
+      case "arrived":
+        return encounter.class.code === "EMER" ? "triaged" : "in-progress",
+      case "triaged":
+        return "in-progress",
+      case "in-progress":
+        return "finished",
+      case "onleave":
+        return "in-progress",
       default: return null
     }
   }

@@ -25,7 +25,7 @@ interface Surgery {
   scheduled_start_time: string; // ISO string or Date object
   scheduled_end_time: string; // ISO string or Date object
   status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
-  \1,\2 string,
+  string,
   surgeon_name: string
 }
 
@@ -45,10 +45,10 @@ export default const _OTPatientSurgeries = ({
         setLoading(true),
         setError(undefined);
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
         // const _response = await fetch(`/api/ot/bookings?patientId=${patientId}&status=upcoming`); // Example: Fetch only upcoming
-        // \1 {\n  \2{
-        //   throw new Error(`Failed to fetch patient surgeries: ${\1}`
+        // if (!session.user) {
+        //   throw new Error(`Failed to fetch patient surgeries: ${}`
         // }
         // const _data: { results: Surgery[] } | Surgery[] = await response.json()
         // const _fetchedSurgeries = Array.isArray(data) ? _data : data.results || []
@@ -60,8 +60,8 @@ export default const _OTPatientSurgeries = ({
             id: "booking-1",
             scheduled_start_time: "2025-05-02T09:00:00Z",
             scheduled_end_time: "2025-05-02T11:30:00Z",
-            \1,\2 "Appendectomy",
-            \1,\2 "Dr. Alice Brown"
+            "Appendectomy",
+            "Dr. Alice Brown"
           },
           {
             id: "booking-2",
@@ -69,7 +69,7 @@ export default const _OTPatientSurgeries = ({
             scheduled_end_time: "2025-04-28T16:00:00Z",
             status: "completed", // Example of a past surgery
             surgery_name: "Wound Debridement",
-            \1,\2 "Dr. Bob White"
+            "Dr. Bob White"
           },
         ];
         // Example: Filter mock data to show only upcoming/scheduled
@@ -96,7 +96,7 @@ export default const _OTPatientSurgeries = ({
       }
     };
 
-    \1 {\n  \2{
+    if (!session.user) {
       fetchPatientSurgeries();
     }
   }, [patientId]);
@@ -109,30 +109,30 @@ export default const _OTPatientSurgeries = ({
       }
       case "confirmed": {
         return (
-          \1>
+          >
             Confirmed
           </Badge>
         );
       }
       case "in_progress": {
         return (
-          \1>
+          >
             In Progress
           </Badge>
         );
       }
       case "completed": {
         return (
-          \1>
+          >
             Completed
           </Badge>
         );
       }
       case "cancelled": {
-        return <Badge variant="destructive">Cancelled\1>
+        return <Badge variant="destructive">Cancelled>
       }
       default: {
-        return <Badge>{status}\1>
+        return <Badge>{status}>
       } // Fallback for unexpected statuses
     }
   };
@@ -142,7 +142,7 @@ export default const _OTPatientSurgeries = ({
       const date = new Date(dateString);
       return date.toLocaleDateString("en-US", {
         year: "numeric",
-        \1,\2 "numeric"
+        "numeric"
       });
     } catch 
       return "Invalid Date";
@@ -153,7 +153,7 @@ export default const _OTPatientSurgeries = ({
       const date = new Date(dateString);
       return date.toLocaleTimeString("en-US", {
         hour: "2-digit",
-        \1,\2 true
+        true
       });
     } catch {
       return "Invalid Time";
@@ -163,30 +163,30 @@ export default const _OTPatientSurgeries = ({
   return (
     <Card>
       <CardHeader>
-        \1>
+        >
           <Calendar className="mr-2 h-5 w-5 text-primary" />
           Upcoming Surgeries & Procedures
         </CardTitle>
       </CardHeader>
       <CardContent>
         {loading && (
-          \1>
+          >
             <Loader2 className="h-6 w-6 animate-spin text-primary" />
             <span className="ml-2">Loading surgeries...</span>
           </div>
         )}
         {error && (
-          \1>
+          >
             Error loading surgeries: {error}
           </div>
         )}
         {!loading && !error && surgeries.length === 0 && (
-          \1>
+          >
             No upcoming surgeries scheduled for this patient.
           </div>
         )}
         {!loading && !error && surgeries.length > 0 && (
-          \1>
+          >
             <Table>
               <TableHeader>
                 <TableRow>
@@ -201,28 +201,28 @@ export default const _OTPatientSurgeries = ({
               <TableBody>
                 {/* FIX: Explicitly type the surgery parameter */}
                 {surgeries.map((surgery: Surgery) => (
-                  \1>
+                  >
                     <TableCell>
-                      \1>
+                      >
                         {formatDate(surgery.scheduled_start_time)}
                       </div>
-                      \1>
+                      >
                         {formatTime(surgery.scheduled_start_time)} -{" "}
                         {formatTime(surgery.scheduled_end_time)}
                       </div>
                     </TableCell>
-                    \1>
+                    >
                       {surgery.surgery_name}
                     </TableCell>
                     <TableCell>{surgery.theatre_name}</TableCell>
                     <TableCell>{surgery.surgeon_name}</TableCell>
                     <TableCell>{getStatusBadge(surgery.status)}</TableCell>
-                    \1>
+                    >
                       <Link>
                         href={`/dashboard/ot/bookings/${surgery.id}`}
                         passHref;
                       >
-                        \1>
+                        >
                           View <ArrowRight className="ml-1 h-4 w-4" />
                         </Button>
                       </Link>
@@ -234,9 +234,9 @@ export default const _OTPatientSurgeries = ({
           </div>
         )}
         {/* Link to view all surgeries (past and future) */}
-        \1>
-          \1>
-            \1>
+        >
+          >
+            >
               View Full OT Schedule
             </Button>
           </Link>

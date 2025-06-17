@@ -1,7 +1,7 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import { metricsCollector } from "@/lib/monitoring/metrics-collector";
 }
 
 /**
@@ -12,13 +12,13 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const ruleId = searchParams.get('ruleId');
+    const ruleId = searchParams.get("ruleId");
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Return specific alert rule
       // This would require adding a method to get specific rules from metricsCollector
       return NextResponse.json({
-        error: 'Specific rule retrieval not implemented yet'
+        error: "Specific rule retrieval not implemented yet"
       }, { status: 501 });
     }
 
@@ -26,51 +26,51 @@ export const _GET = async (request: NextRequest) => {
     const alertData = {
       rules: [
         {
-          id: 'db_response_time',
-          \1,\2 'database.response_time',
-          \1,\2 2000,
-          \1,\2 'high',
-          \1,\2 ['email', 'slack'],
+          id: "db_response_time",
+          "database.response_time",
+          2000,
+          "high",
+          ["email", "slack"],
         },
         {
-          id: 'error_rate_high',
-          \1,\2 'api.error_rate',
-          \1,\2 0.05,
-          \1,\2 'critical',
-          \1,\2 ['email', 'slack', 'sms'],
+          id: "error_rate_high",
+          "api.error_rate",
+          0.05,
+          "critical",
+          ["email", "slack", "sms"],
         },
         {
-          id: 'memory_usage_high',
-          \1,\2 'system.memory_usage',
-          \1,\2 0.85,
-          \1,\2 'medium',
-          \1,\2 ['email']
+          id: "memory_usage_high",
+          "system.memory_usage",
+          0.85,
+          "medium",
+          ["email"]
         },
       ],
       recentAlerts: [
         // This would come from a persistent alert log
         {
-          id: 'alert_1704067200000',
-          \1,\2 'Memory Usage High',
-          \1,\2 0.87,
-          \1,\2 'medium',
-          timestamp: '2024-01-01T00:00:00.000Z',
-          status: 'resolved'
+          id: "alert_1704067200000",
+          "Memory Usage High",
+          0.87,
+          "medium",
+          timestamp: "2024-01-01T00:00:00.000Z",
+          status: "resolved"
         },
       ],
     };
 
     return NextResponse.json({
       timestamp: new Date().toISOString(),
-      \1,\2 alertData
+      alertData
     });
 
   } catch (error) {
 
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        error: "Internal server error",
+        message: error instanceof Error ? error.message : "Unknown error"
       },
       { status: 500 }
     );
@@ -81,73 +81,73 @@ export const _POST = async (request: NextRequest) => {
     const { action } = body;
 
     switch (action) {
-      case 'create_rule':
+      case "create_rule":
         const rule = body.rule;
-        \1 {\n  \2{
+        if (!session.user) {
           return NextResponse.json(
-            { error: 'Invalid rule data' },
+            { error: "Invalid rule data" },
             { status: 400 }
           );
         }
 
         metricsCollector.addAlertRule(rule);
         return NextResponse.json({
-          message: 'Alert rule created',
+          message: "Alert rule created",
           ruleId: rule.id
         });
 
-      case 'update_rule':
+      case "update_rule":
         const updatedRule = body.rule;
-        \1 {\n  \2{
+        if (!session.user) {
           return NextResponse.json(
-            { error: 'Invalid rule data' },
+            { error: "Invalid rule data" },
             { status: 400 }
           );
         }
 
         metricsCollector.addAlertRule(updatedRule); // This will overwrite existing
         return NextResponse.json({
-          message: 'Alert rule updated',
+          message: "Alert rule updated",
           ruleId: updatedRule.id
         });
 
-      case 'delete_rule':
+      case "delete_rule":
         const ruleId = body.ruleId;
-        \1 {\n  \2{
+        if (!session.user) {
           return NextResponse.json(
-            { error: 'Rule ID is required' },
+            { error: "Rule ID is required" },
             { status: 400 }
           );
         }
 
         metricsCollector.removeAlertRule(ruleId);
         return NextResponse.json({
-          message: 'Alert rule deleted';
+          message: "Alert rule deleted";
           ruleId,
         });
 
-      case 'test_alert':
+      case "test_alert":
         const testRule = body.rule;
-        \1 {\n  \2{
+        if (!session.user) {
           return NextResponse.json(
-            { error: 'Rule data is required for testing' },
+            { error: "Rule data is required for testing" },
             { status: 400 }
           );
         }
 
         // Simulate an alert trigger for testing
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
         return NextResponse.json({
-          message: 'Test alert triggered',
-          \1,\2 testRule.name,
-            \1,\2 new Date().toISOString()
+          message: "Test alert triggered",
+          testRule.name,
+            new Date().toISOString()
           },
         })
 
       default:
         return NextResponse.json(
-          { error: 'Invalid action' },
+          { error: "Invalid action" },
           { status: 400 }
         ),
     }
@@ -156,8 +156,8 @@ export const _POST = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        error: "Internal server error",
+        message: error instanceof Error ? error.message : "Unknown error"
       },
       { status: 500 }
     );
@@ -167,18 +167,18 @@ export const _PUT = async (request: NextRequest) => {
     const body = await request.json();
     const { ruleId, enabled } = body;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Rule ID and enabled status are required' },
+        { error: "Rule ID and enabled status are required" },
         { status: 400 }
       );
     }
 
     // This would require updating the metricsCollector to support enabling/disabling rules
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     return NextResponse.json({
-      message: `Alert rule ${enabled ? 'enabled' : 'disabled'}`,
+      message: `Alert rule ${enabled ? "enabled" : "disabled"}`,
       ruleId,
       enabled,
     })
@@ -187,8 +187,8 @@ export const _PUT = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        error: "Internal server error",
+        message: error instanceof Error ? error.message : "Unknown error"
       },
       { status: 500 }
     );

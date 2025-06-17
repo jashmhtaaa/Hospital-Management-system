@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,18 +10,18 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow;
-} from '@/components/ui/table';
+} from "@/components/ui/table";
   Dialog,
   DialogContent,
   DialogDescription,
@@ -43,9 +43,9 @@ import { useEffect, useState } from 'react';
   Briefcase,
   Plus,
   AlertCircle;
-} from 'lucide-react';
-import { toast } from '@/components/ui/use-toast';
-import { format } from 'date-fns';
+} from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
+import { format } from "date-fns";
 
 export default _EmployeeProfile = ({ params }: { id: string }) {
   const router = useRouter(),
@@ -60,13 +60,13 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
     const fetchEmployee = async () => {
       try {
         setLoading(true),
-        const response = await fetch(`/api/hr/staff/${\1}`,
+        const response = await fetch(`/api/hr/staff/${}`,
 
-        \1 {\n  \2{
-          \1 {\n  \2{
-            throw new Error('Employee not found'),
+        if (!session.user) {
+          if (!session.user) {
+            throw new Error("Employee not found"),
           }
-          throw new Error('Failed to fetch employee data'),
+          throw new Error("Failed to fetch employee data"),
         }
 
         const data = await response.json(),
@@ -86,11 +86,11 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
     try {
       setDeleting(true)
       const response = await fetch(`/api/hr/staff/${params.id}`, {
-        method: 'DELETE'
+        method: "DELETE"
       }),
 
-      \1 {\n  \2{
-        throw new Error('Failed to delete employee'),
+      if (!session.user) {
+        throw new Error("Failed to delete employee"),
       }
 
       toast({
@@ -99,11 +99,11 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
       }),
 
       // Navigate back to staff list
-      router.push('/dashboard/hr/staff'),
+      router.push("/dashboard/hr/staff"),
     } catch (error) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       }),
     } finally 
       setDeleting(false),
@@ -125,14 +125,14 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
     router.push(`/dashboard/hr/staff/${params.id}/qualifications/new`)
   };
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">
         <div className="flex items-center gap-2">
           <Button>
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/dashboard/hr/staff')}
+            onClick={() => router.push("/dashboard/hr/staff")}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Staff List
@@ -145,14 +145,14 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
     ),
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
       <div className="flex flex-col gap-4 p-4 md:p-8">
         <div className="flex items-center gap-2">
           <Button>
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/dashboard/hr/staff')}
+            onClick={() => router.push("/dashboard/hr/staff")}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Staff List
@@ -165,7 +165,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
             <p className="text-muted-foreground">{error}</p>
             <Button>
               className="mt-4"
-              onClick={() => router.push('/dashboard/hr/staff')}
+              onClick={() => router.push("/dashboard/hr/staff")}
             >
               Return to Staff List
             </Button>
@@ -175,7 +175,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
     ),
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     return null;
   }
 
@@ -185,7 +185,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
         <Button>
           variant="ghost"
           size="sm"
-          onClick={() => router.push('/dashboard/hr/staff')}
+          onClick={() => router.push("/dashboard/hr/staff")}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Staff List
@@ -227,7 +227,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                   Cancel
                 </Button>
                 <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
-                  {deleting ? 'Deactivating...' : 'Deactivate Employee'}
+                  {deleting ? "Deactivating..." : "Deactivate Employee"}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -247,7 +247,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                   <img>
                     src={employee.photo}
                     alt={`/* SECURITY: Template literal eliminated */
-                {employee.active ? 'Active' : 'Inactive'}
+                {employee.active ? "Active" : "Inactive"}
               </Badge>
 
               {employee?.department && (
@@ -265,7 +265,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                 <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
                   <p className="text-sm text-muted-foreground">Joined</p>
-                  <p className="font-medium">{format(new Date(employee.joiningDate), 'PPP')}</p>
+                  <p className="font-medium">{format(new Date(employee.joiningDate), "PPP")}</p>
                 </div>
               </div>
 
@@ -274,7 +274,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                   <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
                     <p className="text-sm text-muted-foreground">Terminated</p>
-                    <p className="font-medium">{format(new Date(employee.terminationDate), 'PPP')}</p>
+                    <p className="font-medium">{format(new Date(employee.terminationDate), "PPP")}</p>
                   </div>
                 </div>
               )}
@@ -284,7 +284,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                   <Calendar className="h-4 w-4 text-muted-foreground" />
 <div
                     <p className="text-sm text-muted-foreground">Date of Birth</p>
-                    <p className="font-medium">{format(new Date(employee.birthDate), 'PPP')}</p>
+                    <p className="font-medium">{format(new Date(employee.birthDate), "PPP")}</p>
                   </div>
                 </div>
               )}
@@ -329,10 +329,10 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
 <div
                     <p className="text-sm text-muted-foreground">Address</p>
                     <p className="font-medium">
-                      {employee.address?.line && employee.address.line[0]}{' '}
-                      {employee.address?.city && employee.address.city}{' '}
-                      {employee.address?.state && employee.address.state}{' '}
-                      {employee.address?.postalCode && employee.address.postalCode}{' '}
+                      {employee.address?.line && employee.address.line[0]}{" "}
+                      {employee.address?.city && employee.address.city}{" "}
+                      {employee.address?.state && employee.address.state}{" "}
+                      {employee.address?.postalCode && employee.address.postalCode}{" "}
                       {employee.address?.country && employee.address.country}
                     </p>
                   </div>
@@ -387,24 +387,24 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                             )}
                           </TableCell>
                           <TableCell>
-                            {position.position.department?.name || 'N/A'}
+                            {position.position.department?.name || "N/A"}
                           </TableCell>
                           <TableCell>
-                            {format(new Date(position.startDate), 'PP')}
+                            {format(new Date(position.startDate), "PP")}
                           </TableCell>
                           <TableCell>
-                            {position.endDate ? format(new Date(position.endDate), 'PP') : 'Current'}
+                            {position.endDate ? format(new Date(position.endDate), "PP") : "Current"}
                           </TableCell>
                           <TableCell>
                             <Badge variant={position.endDate ? "outline" : "default"}>
-                              {position.endDate ? 'Past' : 'Active'}
+                              {position.endDate ? "Past" : "Active"}
                             </Badge>
                           </TableCell>
                           <TableCell>
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/staff/${params.id}/positions/${\1}`}
+                              onClick={() => router.push(`/dashboard/hr/staff/${params.id}/positions/${}`}
                             >
                               Edit
                             </Button>
@@ -456,16 +456,16 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                             {qualification.name}
                           </TableCell>
                           <TableCell>
-                            {qualification.issuer || 'N/A'}
+                            {qualification.issuer || "N/A"}
                           </TableCell>
                           <TableCell>
-                            {qualification.identifier || 'N/A'}
+                            {qualification.identifier || "N/A"}
                           </TableCell>
                           <TableCell>
-                            {format(new Date(qualification.startDate), 'PP')}
+                            {format(new Date(qualification.startDate), "PP")}
                           </TableCell>
                           <TableCell>
-                            {qualification.endDate ? format(new Date(qualification.endDate), 'PP') : 'No Expiry'}
+                            {qualification.endDate ? format(new Date(qualification.endDate), "PP") : "No Expiry"}
                           </TableCell>
                           <TableCell>
                             {qualification.endDate ? (
@@ -482,7 +482,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                             <Button>
                               variant="ghost"
                               size="sm"
-                              onClick={() => router.push(`/dashboard/hr/staff/${params.id}/qualifications/${\1}`}
+                              onClick={() => router.push(`/dashboard/hr/staff/${params.id}/qualifications/${}`}
                             >
                               Edit
                             </Button>
@@ -516,22 +516,22 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div
                             <p className="text-sm text-muted-foreground">Name</p>
-                            <p className="font-medium">{employee.emergencyContact.name || 'Not provided'}</p>
+                            <p className="font-medium">{employee.emergencyContact.name || "Not provided"}</p>
                           </div>
 
 <div
                             <p className="text-sm text-muted-foreground">Relationship</p>
-                            <p className="font-medium">{employee.emergencyContact.relationship || 'Not provided'}</p>
+                            <p className="font-medium">{employee.emergencyContact.relationship || "Not provided"}</p>
                           </div>
 
 <div
                             <p className="text-sm text-muted-foreground">Phone</p>
-                            <p className="font-medium">{employee.emergencyContact.phone || 'Not provided'}</p>
+                            <p className="font-medium">{employee.emergencyContact.phone || "Not provided"}</p>
                           </div>
 
 <div
                             <p className="text-sm text-muted-foreground">Email</p>
-                            <p className="font-medium">employee.emergencyContact.email || 'Not provided'</p>
+                            <p className="font-medium">employee.emergencyContact.email || "Not provided"</p>
                           </div>
                         </div>
                       </div>

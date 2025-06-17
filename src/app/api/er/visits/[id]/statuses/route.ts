@@ -26,23 +26,23 @@ export const _GET = async (
     const results = [
       {
         id: "log_uuid_1",
-        \1,\2 \1[0] - 60 * 60 * 1000).toISOString(), // 1 hour ago
+        [0] - 60 * 60 * 1000).toISOString(), // 1 hour ago
         status: "Triage",
-        \1,\2 "clerk_789",
+        "clerk_789",
         notes: "Patient registered."
       },
       {
         id: "log_uuid_2",
-        \1,\2 \1[0] - 45 * 60 * 1000).toISOString(), // 45 mins ago
+        [0] - 45 * 60 * 1000).toISOString(), // 45 mins ago
         status: "Assessment",
-        \1,\2 "nurse_456",
+        "nurse_456",
         notes: "Triage completed, ESI 3.",
       },
       {
         id: "log_uuid_3",
-        \1,\2 \1[0] - 15 * 60 * 1000).toISOString(), // 15 mins ago
+        [0] - 15 * 60 * 1000).toISOString(), // 15 mins ago
         status: "Treatment",
-        \1,\2 "nurse_456",
+        "nurse_456",
         notes: "Moved to treatment room."
       },
     ];

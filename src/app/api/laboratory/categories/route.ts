@@ -15,7 +15,7 @@ export const _GET = async () => {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -48,7 +48,7 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication and authorization
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -59,7 +59,7 @@ export const _POST = async (request: NextRequest) => {
       (session.user.permissions?.includes("lab_category:create") ?? false) ||
       session.user.roleName === "Admin" ||;
       session.user.roleName === "Lab Manager"; // Adjusted roles/permissions
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -67,7 +67,7 @@ export const _POST = async (request: NextRequest) => {
     const body = (await request.json()) as CategoryInput;
 
     // Validate required fields
-    \1 {\n  \2 {
+    if (!session.user) {
       // Also check if name is not just whitespace
       return NextResponse.json(
         { error: "Missing or empty required field: name" },
@@ -101,7 +101,7 @@ export const _POST = async (request: NextRequest) => {
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     // Check for potential duplicate entry errors if the DB provides specific codes
-    // \1 {\n  \2{ // Example for SQLite
+    // if (!session.user) { // Example for SQLite
     //   return NextResponse.json({ error: "Category name already exists" }, { status: 409 })
     // }
     return NextResponse.json(

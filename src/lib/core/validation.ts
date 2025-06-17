@@ -1,5 +1,5 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 }
 
 /**
@@ -17,7 +17,7 @@ export const paginationSchema = z.object({
 
 export const _sortSchema = z.object({
   field: z.string(),
-  direction: z.enum(['asc', 'desc']).default('asc'),
+  direction: z.enum(["asc", "desc"]).default("asc"),
 });
 
 export const dateRangeSchema = z.object({
@@ -46,60 +46,60 @@ export const _npiSchema = z.string().regex(/^[0-9]{10}$/);
 
 // Billing validation schemas
 export const _invoiceStatusSchema = z.enum([
-  'draft',
-  'pending',
-  'verified',
-  'approved',
-  'sent',
-  'partial',
-  'paid',
-  'overdue',
-  'cancelled',
-  'refunded',
+  "draft",
+  "pending",
+  "verified",
+  "approved",
+  "sent",
+  "partial",
+  "paid",
+  "overdue",
+  "cancelled",
+  "refunded",
 ]);
 
 export const _paymentMethodSchema = z.enum([
-  'cash',
-  'check',
-  'credit_card',
-  'debit_card',
-  'bank_transfer',
-  'online_payment',
-  'insurance',
-  'mobile_payment',
+  "cash",
+  "check",
+  "credit_card",
+  "debit_card",
+  "bank_transfer",
+  "online_payment",
+  "insurance",
+  "mobile_payment",
 ]);
 
 export const _paymentStatusSchema = z.enum([
-  'pending',
-  'processing',
-  'completed',
-  'failed',
-  'refunded',
-  'partially_refunded',
-  'cancelled',
+  "pending",
+  "processing",
+  "completed",
+  "failed",
+  "refunded",
+  "partially_refunded",
+  "cancelled",
 ]);
 
 // Insurance validation schemas
 export const _insuranceVerificationStatusSchema = z.enum([
-  'pending',
-  'verified',
-  'inactive',
-  'expired',
-  'not_found',
-  'error',
+  "pending",
+  "verified",
+  "inactive",
+  "expired",
+  "not_found",
+  "error",
 ]);
 
 export const _claimStatusSchema = z.enum([
-  'draft',
-  'pending',
-  'submitted',
-  'in_progress',
-  'additional_info_needed',
-  'approved',
-  'partially_approved',
-  'denied',
-  'appealed',
-  'closed',
+  "draft",
+  "pending",
+  "submitted",
+  "in_progress",
+  "additional_info_needed",
+  "approved",
+  "partially_approved",
+  "denied",
+  "appealed",
+  "closed",
 ]);
 
 // Validation utility functions
@@ -124,6 +124,6 @@ export const _validatePercentage = (percentage: number | string): number {
 // Validation error formatter
 export const _formatZodError = (error: z.ZodError) {
   return error.errors.map(err => ({
-    path: err.path.join('.'),
+    path: err.path.join("."),
     message: err.message
   }));

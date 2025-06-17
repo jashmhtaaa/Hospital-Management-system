@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 // Define interface for Pre-Authorization data
 interface PreAuthorization {
   _id: number | string,
-  \1,\2 string;
+  string;
   estimated_cost?: number | undefined;
   request_date: string; // ISO string
   status: string; // e.g., "Pending", "Approved", "Rejected", "More Info Required"
@@ -24,24 +24,24 @@ interface PreAuthorization {
 const mockPreAuths: PreAuthorization[] = [
   {
     _id: 1,
-    \1,\2 "Appendectomy",
-    \1,\2 \1[0] - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
+    "Appendectomy",
+    [0] - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago
     status: "Approved", // e.g., "Pending", "Approved", "Rejected", "More Info Required"
     authorization_number: "AUTH12345",
-    \1,\2 \1[0] + 25 * 24 * 60 * 60 * 1000).toISOString(), // Expires in 25 days
+    [0] + 25 * 24 * 60 * 60 * 1000).toISOString(), // Expires in 25 days
     notes: "Approved with co-pay.",
-    created_at: \1[0] - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: \1[0] - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago
+    created_at: [0] - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: [0] - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago
   },
   {
     _id: 2,
-    \1,\2 "MRI Brain",
-    \1,\2 \1[0] - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+    "MRI Brain",
+    [0] - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
     status: "Pending",
-    \1,\2 undefined,
-    \1,\2 "Awaiting review.",
-    created_at: \1[0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: \1[0] - 2 * 24 * 60 * 60 * 1000).toISOString()
+    undefined,
+    "Awaiting review.",
+    created_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString()
   },
 ];
 let nextPreAuthId = 3;
@@ -86,15 +86,15 @@ async const getPreAuthorizationsFromDB = (
   let filteredPreAuths = [...mockPreAuths];
 
   // FIX: Check filters.status before using (TS18049)
-  \1 {\n  \2{
+  if (!session.user) {
     filteredPreAuths = filteredPreAuths.filter(
       (pa) => pa.status.toLowerCase() === filters.status!.toLowerCase()
     );
   }
   // FIX: Check filters.patient_insurance_id before parsing (TS2345)
-  \1 {\n  \2{
+  if (!session.user) {
        const patientInsuranceId = Number.parseInt(filters.patient_insurance_id)
-    \1 {\n  \2 {
+    if (!session.user) {
       filteredPreAuths = filteredPreAuths.filter(
         (pa) => pa.patient_insurance_id === patientInsuranceId;
       );
@@ -102,12 +102,12 @@ async const getPreAuthorizationsFromDB = (
   }
 
   // Add date filtering if needed
-  \1 {\n  \2{
+  if (!session.user) {
     filteredPreAuths = filteredPreAuths.filter(
       (pa) => new Date(pa.request_date) >= new Date(filters.date_from!);
     );
   }
-  \1 {\n  \2{
+  if (!session.user) {
     filteredPreAuths = filteredPreAuths.filter(
       (pa) => new Date(pa.request_date) <= new Date(filters.date_to!);
     );
@@ -121,9 +121,9 @@ async const getPreAuthorizationsFromDB = (
 
 // Helper function to simulate DB interaction (GET by ID) - Belongs in [id]/route.ts
 // async function getPreAuthorizationByIdFromDB(_id: number): unknown { // Unused function
-//   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 //   const _preAuth = mockPreAuths.find(pa => pa._id === id)
-//   \1 {\n  \2{
+//   if (!session.user) {
 //     throw new Error("Pre-authorization request not found")
 //   }
 //   return preAuth
@@ -134,19 +134,19 @@ async const createPreAuthorizationInDB = (
   data: PreAuthorizationInput
 ): Promise<PreAuthorization> {
   // Added return type
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   const now = new Date().toISOString()
   // FIX: Ensure created object matches PreAuthorization interface
-  const \1,\2 nextPreAuthId++,
-    \1,\2 data.requested_procedure,
+  const nextPreAuthId++,
+    data.requested_procedure,
     estimated_cost: data.estimated_cost ?? undefined, // Use nullish coalescing for optional number
     request_date: data.request_date || now,
-    \1,\2 undefined,
-    \1,\2 undefined,
+    undefined,
+    undefined,
     notes: data.notes || undefined, // Use null for optional string
     referring_doctor_id: data.referring_doctor_id || undefined,
-    \1,\2 undefined,
-    \1,\2 now
+    undefined,
+    now
   };
   mockPreAuths.push(newPreAuth);
   return newPreAuth;
@@ -154,9 +154,9 @@ async const createPreAuthorizationInDB = (
 
 // Helper function to simulate DB interaction (PUT) - Belongs in [id]/route.ts
 // async function updatePreAuthorizationInDB(_id: number, data: PreAuthorizationUpdateInput): unknown { // Unused function
-//   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 //   const _preAuthIndex = mockPreAuths.findIndex(pa => pa._id === id)
-//   \1 {\n  \2{
+//   if (!session.user) {
 //     throw new Error("Pre-authorization request not found")
 //   }
 //   const now = new Date().toISOString()
@@ -178,8 +178,8 @@ async const createPreAuthorizationInDB = (
 export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const \1,\2 searchParams.get("status") ?? undefined,
-      \1,\2 searchParams.get("date_from") ?? undefined,
+    const searchParams.get("status") ?? undefined,
+      searchParams.get("date_from") ?? undefined,
       date_to: searchParams.get("date_to") ?? undefined
     };
 
@@ -188,7 +188,7 @@ export const GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(
@@ -212,7 +212,7 @@ export const POST = async (request: NextRequest) => {
     const preAuthData = body as PreAuthorizationInput;
 
     // Basic validation (add more comprehensive validation)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           error: "Missing required fields (patient_insurance_id, requested_procedure)",
@@ -228,7 +228,7 @@ export const POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(

@@ -25,7 +25,7 @@ export const _GET = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -35,7 +35,7 @@ export const _GET = async (request: NextRequest) => {
     const gender = searchParams.get("gender");
 
     // Validate required parameters
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Test ID is required" },
         { status: 400 }
@@ -58,7 +58,7 @@ export const _GET = async (request: NextRequest) => {
 
     const parameters: unknown[] = [testId];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND (r.gender = ? OR r.gender IS NULL)";
       parameters.push(gender);
     }
@@ -84,12 +84,12 @@ export const _POST = async (request: NextRequest) => {
     const session = await getSession();
 
     // Check authentication and authorization
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can create reference ranges
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -97,7 +97,7 @@ export const _POST = async (request: NextRequest) => {
     const body = await request.json() as ReferenceRangeCreateBody;
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Test ID is required" },
         { status: 400 }
@@ -105,7 +105,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate that either numeric values or text value is provided
-    \1 {\n  \2|;
+    if (!session.user)|;
       (body?.text_value && (body.value_low !== undefined || body.value_high !== undefined));
     ) 
       return NextResponse.json(
@@ -119,7 +119,7 @@ export const _POST = async (request: NextRequest) => {
       [body.test_id]
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Test not found" },
         { status: 404 }
@@ -127,7 +127,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Check for overlapping ranges
-    \1 {\n  \2{
+    if (!session.user) {
       const overlapCheckQuery = `;
         SELECT id FROM lab_test_reference_ranges;
         WHERE test_id = ?;
@@ -158,7 +158,7 @@ export const _POST = async (request: NextRequest) => {
 
       const overlapResult = await DB.query(overlapCheckQuery, overlapCheckParams);
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "Reference range overlaps with existing ranges" },
           { status: 400 }
@@ -209,7 +209,7 @@ export const _POST = async (request: NextRequest) => {
     const rangeResult = await DB.query(fetchQuery, [rangeId]);
     const range = rangeResult.results?.[0];
 
-    \1 {\n  \2{
+    if (!session.user) {
       throw new Error("Failed to retrieve created reference range");
     }
 
@@ -234,12 +234,12 @@ export const _PUT = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can update reference ranges
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -251,7 +251,7 @@ export const _PUT = async (
       [rangeId]
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Reference range not found" },
         { status: 404 }
@@ -261,10 +261,10 @@ export const _PUT = async (
     const _existingRange = checkResult.results[0];
 
     // Parse request body
-    const body = await request.json() as Partial\1>
+    const body = await request.json() as Partial>
 
     // Validate that either numeric values or text value is provided if both are included in the update
-    \1 {\n  \2{
+    if (!session.user) {
       // Get current values for fields not included in the update
       const currentResult = await DB.query(
         "SELECT value_low, value_high, text_value FROM lab_test_reference_ranges WHERE id = ?",
@@ -277,7 +277,7 @@ export const _PUT = async (
       const updatedValueHigh = body.value_high !== undefined ? body.value_high : current.value_high;
       const updatedTextValue = body.text_value !== undefined ? body.text_value : current.text_value;
 
-      \1 {\n  \2|;
+      if (!session.user)|;
         (updatedTextValue && (updatedValueLow !== null || updatedValueHigh !== null));
       ) 
         return NextResponse.json(
@@ -287,7 +287,7 @@ export const _PUT = async (
     }
 
     // Check for overlapping ranges if age or gender criteria are being updated
-    \1 {\n  \2{
+    if (!session.user) {
       // Get current values for fields not included in the update
       const currentResult = await DB.query(
         "SELECT test_id, gender, age_low, age_high FROM lab_test_reference_ranges WHERE id = ?",
@@ -332,7 +332,7 @@ export const _PUT = async (
 
       const overlapResult = await DB.query(overlapCheckQuery, overlapCheckParams);
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "Reference range overlaps with existing ranges" },
           { status: 400 }
@@ -345,14 +345,14 @@ export const _PUT = async (
     const updateFields: string[] = [];
     const updateParameters: unknown[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Check if test exists
       const testCheckResult = await DB.query(
         "SELECT id FROM lab_tests WHERE id = ?",
         [body.test_id]
       );
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "Test not found" },
           { status: 404 }
@@ -363,63 +363,63 @@ export const _PUT = async (
       updateParameters.push(body.test_id);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("gender = ?");
       updateParameters.push(body.gender || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("age_low = ?");
       updateParameters.push(body.age_low || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("age_high = ?");
       updateParameters.push(body.age_high || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("value_low = ?");
       updateParameters.push(body.value_low || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("value_high = ?");
       updateParameters.push(body.value_high || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("text_value = ?");
       updateParameters.push(body.text_value || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("unit = ?");
       updateParameters.push(body.unit || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("interpretation = ?");
       updateParameters.push(body.interpretation || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("is_critical = ?");
       updateParameters.push(body.is_critical ? 1 : 0);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("critical_low = ?");
       updateParameters.push(body.critical_low || null);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       updateFields.push("critical_high = ?");
       updateParameters.push(body.critical_high || null);
     }
 
     // Only proceed if there are fields to update
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "No fields to update" },
         { status: 400 }
@@ -449,7 +449,7 @@ export const _PUT = async (
     const rangeResult = await DB.query(fetchQuery, [rangeId]);
     const range = rangeResult.results?.[0];
 
-    \1 {\n  \2{
+    if (!session.user) {
       throw new Error("Failed to retrieve updated reference range");
     }
 
@@ -474,12 +474,12 @@ export const DELETE = async (
     const session = await getSession();
 
     // Check authentication and authorization
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Only lab managers and admins can delete reference ranges
-    \1 {\n  \2 {
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -491,7 +491,7 @@ export const DELETE = async (
       [rangeId]
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Reference range not found" },
         { status: 404 }

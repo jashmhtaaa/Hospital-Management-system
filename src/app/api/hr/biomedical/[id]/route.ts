@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { biomedicalService } from '@/lib/hr/biomedical-service';
+import { biomedicalService } from "@/lib/hr/biomedical-service";
 // GET handler for retrieving a specific biomedical equipment
 export const _GET = async (
   request: NextRequest;
@@ -11,7 +11,7 @@ export const _GET = async (
   try {
     const equipment = await biomedicalService.getBiomedicalEquipment(params.id);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Biomedical equipment not found" },
         { status: 404 }
@@ -31,7 +31,7 @@ export const _GET = async (
 // Schema for biomedical equipment update
 const biomedicalUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
-  equipmentType: z.enum(['DIAGNOSTIC', 'THERAPEUTIC', 'MONITORING', 'LABORATORY', 'SURGICAL', 'LIFE_SUPPORT', 'OTHER'], {
+  equipmentType: z.enum(["DIAGNOSTIC", "THERAPEUTIC", "MONITORING", "LABORATORY", "SURGICAL", "LIFE_SUPPORT", "OTHER"], {
     errorMap: () => ({ message: "Invalid equipment type" }),
   }).optional(),
   serialNumber: z.string().optional(),
@@ -47,17 +47,17 @@ const biomedicalUpdateSchema = z.object({
   location: z.string().optional(),
   departmentId: z.string().optional().nullable(),
   assignedToId: z.string().optional().nullable(),
-  status: z.enum(['AVAILABLE', 'IN_USE', 'UNDER_MAINTENANCE', 'DISPOSED', 'LOST'], {
+  status: z.enum(["AVAILABLE", "IN_USE", "UNDER_MAINTENANCE", "DISPOSED", "LOST"], {
     errorMap: () => ({ message: "Invalid status" }),
   }).optional(),
   notes: z.string().optional(),
   tags: z.array(z.string()).optional();
   // Biomedical specific fields
   deviceIdentifier: z.string().optional(),
-  regulatoryClass: z.enum(['CLASS_I', 'CLASS_II', 'CLASS_III'], {
+  regulatoryClass: z.enum(["CLASS_I", "CLASS_II", "CLASS_III"], {
     errorMap: () => ({ message: "Invalid regulatory class" }),
   }).optional(),
-  riskLevel: z.enum(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], {
+  riskLevel: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"], {
     errorMap: () => ({ message: "Invalid risk level" }),
   }).optional(),
   lastCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
@@ -86,7 +86,7 @@ export const _PUT = async (
 
     // Validate request data
     const validationResult = biomedicalUpdateSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -99,8 +99,8 @@ export const _PUT = async (
     const biomedicalData = {
       ...data,
       purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
-      \1,\2 data.lastCalibrationDate ? new Date(data.lastCalibrationDate) : undefined,
-      \1,\2 data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined
+      data.lastCalibrationDate ? new Date(data.lastCalibrationDate) : undefined,
+      data.lastSterilizationDate ? new Date(data.lastSterilizationDate) : undefined
     };
 
     // Update biomedical equipment

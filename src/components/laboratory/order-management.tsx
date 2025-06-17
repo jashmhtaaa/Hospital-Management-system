@@ -25,20 +25,20 @@ const { RangePicker } = DatePicker;
 // Define interfaces for data types
 interface Patient {
   id: string,
-  \1,\2 string
+  string
 }
 
 interface OrderItem {
   id: string,
-  \1,\2 "pending" | "in_progress" | "completed" | "canceled",
+  "pending" | "in_progress" | "completed" | "canceled",
   price: number
 }
 
 interface Order {
   id: string,
-  \1,\2 string | null,
-  \1,\2 string,
-  \1,\2 "pending" | "collected" | "processing" | "completed" | "canceled";
+  string | null,
+  string,
+  "pending" | "collected" | "processing" | "completed" | "canceled";
   notes?: string;
 }
 
@@ -63,7 +63,7 @@ interface ApiErrorResponse {
 // FIX: Update FilterState to use Dayjs
 interface FilterState {
   patientId: string,
-  \1,\2 string | null,
+  string | null,
   dateRange: [Dayjs, Dayjs] | null
 }
 
@@ -72,7 +72,7 @@ const OrderManagement: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [filters, setFilters] = useState<FilterState>({
     patientId: "",
-    \1,\2 null,
+    null,
     dateRange: null
   });
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -88,7 +88,7 @@ const OrderManagement: React.FC = () => {
     try {
       setLoading(true);
       const response = await fetch("/api/patients"); // Assuming this endpoint exists
-      \1 {\n  \2{
+      if (!session.user) {
         const errorMessage = "Failed to fetch patients";
         try {
           // FIX: Type errorData
@@ -109,7 +109,7 @@ const OrderManagement: React.FC = () => {
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       message.error("Failed to load patients"),
-      setError(`Failed to load patients: ${\1}`;
+      setError(`Failed to load patients: ${}`;
     } finally {
       setLoading(false);
     }
@@ -120,7 +120,7 @@ const OrderManagement: React.FC = () => {
     try {
       setLoading(true);
       const response = await fetch("/api/laboratory/tests");
-      \1 {\n  \2{
+      if (!session.user) {
         const errorMessage = "Failed to fetch tests";
         try {
           // FIX: Type errorData
@@ -140,7 +140,7 @@ const OrderManagement: React.FC = () => {
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       message.error("Failed to load tests"),
-      setError(`Failed to load tests: ${\1}`;
+      setError(`Failed to load tests: ${}`;
     } finally {
       setLoading(false);
     }
@@ -154,17 +154,17 @@ const OrderManagement: React.FC = () => {
       let url = "/api/laboratory/orders";
       const parameters = new URLSearchParams();
 
-      \1 {\n  \2{
+      if (!session.user) {
         parameters.append("patientId", filters.patientId);
       }
-      \1 {\n  \2{
+      if (!session.user) {
         parameters.append("status", filters.status);
       }
-      \1 {\n  \2{
+      if (!session.user) {
         parameters.append("source", filters.source);
       }
       // FIX: Use Dayjs for date range and convert to ISO string
-      \1 {\n  \2{
+      if (!session.user) {
         parameters.append(
           "startDate",
           filters.dateRange[0].startOf("day").toISOString();
@@ -175,12 +175,12 @@ const OrderManagement: React.FC = () => {
         );
       }
 
-      \1 {\n  \2 {
+      if (!session.user) {
         url += `?${parameters.toString()}`;
       }
 
       const response = await fetch(url);
-      \1 {\n  \2{
+      if (!session.user) {
         const errorMessage = "Failed to fetch orders";
         try {
           // FIX: Type errorData
@@ -197,11 +197,11 @@ const OrderManagement: React.FC = () => {
     } catch (error_: unknown) {
       // FIX: Use unknown
       // FIX: Prefix unused variable
-      // const _messageText = err instanceof Error ? err.message : 'An unknown error occurred'; // FIX: Commented out unused variable
+      // const _messageText = err instanceof Error ? err.message : "An unknown error occurred"; // FIX: Commented out unused variable
 
       message.error("Failed to load laboratory orders"),
       setError(
-        `Failed to load laboratory orders: ${\1}`; // FIX: Use error directly
+        `Failed to load laboratory orders: ${}`; // FIX: Use error directly
     } finally {
       setLoading(false)
     }
@@ -213,7 +213,7 @@ const OrderManagement: React.FC = () => {
     setLoadingOrderItems(true);
     try {
       const response = await fetch(`/api/laboratory/orders/${orderId}/items`);
-      \1 {\n  \2{
+      if (!session.user) {
         const errorMessage = "Failed to fetch order items";
         try {
           // FIX: Type errorData
@@ -256,7 +256,7 @@ const OrderManagement: React.FC = () => {
   // FIX: Replace any with unknown
   const handleFilterChange = (key: keyof FilterState, value: unknown): void => {
     // Ensure dateRange is correctly typed when setting state
-    \1 {\n  \2{
+    if (!session.user) {
       setFilters((previous) => ({
         ...previous,
         [key]: value as [Dayjs, Dayjs] | null,
@@ -272,7 +272,7 @@ const OrderManagement: React.FC = () => {
   const resetFilters = (): void => {
     setFilters({
       patientId: "",
-      \1,\2 null,
+      null,
       dateRange: null
     })
   };
@@ -288,54 +288,54 @@ const OrderManagement: React.FC = () => {
   const columns = [
     {
       title: "Order ID",
-      \1,\2 "id",
+      "id",
       width: "10%"
     },
     {
       title: "Patient Name",
-      \1,\2 "patient_name",
+      "patient_name",
       width: "20%"
     },
     {
       title: "Ordering Doctor",
-      \1,\2 "doctor_name",
-      \1,\2 (name: string | null) => name || "N/A"
+      "doctor_name",
+      (name: string | null) => name || "N/A"
     },
     {
       title: "Order Date",
-      \1,\2 "order_date",
-      \1,\2 (date: string) => dayjs(date).format("YYYY-MM-DD HH:mm"), // FIX: Use dayjs
+      "order_date",
+      (date: string) => dayjs(date).format("YYYY-MM-DD HH:mm"), // FIX: Use dayjs
     },
     {
       title: "Source",
-      \1,\2 "source",
-      \1,\2 (source: string) => source.toUpperCase()
+      "source",
+      (source: string) => source.toUpperCase()
     },
     {
       title: "Priority",
-      \1,\2 "priority",
-      \1,\2 (priority: string) => {
+      "priority",
+      (priority: string) => {
         let color = "blue"
-        \1 {\n  \2olor = "orange";
-        \1 {\n  \2olor = "red";
-        return <Tag color={color}>{priority.toUpperCase()}\1>
+        if (!session.user)olor = "orange";
+        if (!session.user)olor = "red";
+        return <Tag color={color}>{priority.toUpperCase()}>
       },
     },
     {
       title: "Status",
-      \1,\2 "status",
-      \1,\2 (status: string) => {
+      "status",
+      (status: string) => {
         let color = "default";
-        \1 {\n  \2olor = "processing";
-        \1 {\n  \2olor = "warning";
-        \1 {\n  \2olor = "success";
-        \1 {\n  \2olor = "error";
-        return <Tag color={color}>{status.toUpperCase()}\1>
+        if (!session.user)olor = "processing";
+        if (!session.user)olor = "warning";
+        if (!session.user)olor = "success";
+        if (!session.user)olor = "error";
+        return <Tag color={color}>{status.toUpperCase()}>
       },
     },
     {
       title: "Actions",
-      \1,\2 "10%";
+      "10%";
       // FIX: Replace any with unknown for unused first argument,
       render: (_: unknown, record: Order) => (
         <Button>
@@ -353,34 +353,34 @@ const OrderManagement: React.FC = () => {
   const orderItemColumns = [
     {
       title: "Test/Panel",
-      \1,\2 "name"
+      "name"
     },
     {
       title: "Status",
-      \1,\2 "status",
+      "status",
       render: (status: string) => {
         let color = "default";
-        \1 {\n  \2olor = "default";
-        \1 {\n  \2olor = "processing";
-        \1 {\n  \2olor = "success";
-        \1 {\n  \2olor = "error";
-        return <Tag color={color}>{status.toUpperCase()}\1>
+        if (!session.user)olor = "default";
+        if (!session.user)olor = "processing";
+        if (!session.user)olor = "success";
+        if (!session.user)olor = "error";
+        return <Tag color={color}>{status.toUpperCase()}>
       },
     },
     {
       title: "Price",
-      \1,\2 "price",
+      "price",
       render: (price: number) => `₹${price.toFixed(2)}`,
     },
   ];
 
   return (
-    \1>
-      \1>
+    >
+      >
 <div className="filter-container"
           style={{
             marginBottom: 16,
-            \1,\2 "wrap",
+            "wrap",
             gap: 16
           }}
         >
@@ -420,10 +420,10 @@ const OrderManagement: React.FC = () => {
               handleFilterChange("status", value)
             }
           >
-            <Option value="pending">Pending\1>
-            <Option value="collected">Collected\1>
-            <Option value="processing">Processing\1>
-            <Option value="completed">Completed\1>
+            <Option value="pending">Pending>
+            <Option value="collected">Collected>
+            <Option value="processing">Processing>
+            <Option value="completed">Completed>
             <Option value="canceled">Canceled</Option>
           </Select>
 
@@ -436,9 +436,9 @@ const OrderManagement: React.FC = () => {
               handleFilterChange("source", value)
             }
           >
-            <Option value="opd">OPD\1>
-            <Option value="ipd">IPD\1>
-            <Option value="er">ER\1>
+            <Option value="opd">OPD>
+            <Option value="ipd">IPD>
+            <Option value="er">ER>
             <Option value="external">External</Option>
           </Select>
 
@@ -459,15 +459,15 @@ const OrderManagement: React.FC = () => {
 <div
             style={{
               marginBottom: 16,
-              \1,\2 "8px",
-              \1,\2 "4px"
+              "8px",
+              "4px"
             }}
           >
             {error}
           </div>
         )}
 
-        \1>
+        >
           <Table>
             columns={columns}
             dataSource={orders}
@@ -532,8 +532,8 @@ const OrderManagement: React.FC = () => {
             <p>
               <strong>Notes:</strong> {viewingOrder.notes || "N/A"}
             </p>
-            <h4>Order Items:\1>
-            \1>
+            <h4>Order Items:>
+            >
               {orderItems.length > 0 ? (
                 <Table>
                   dataSource={orderItems}

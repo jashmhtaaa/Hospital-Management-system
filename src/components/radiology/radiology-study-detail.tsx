@@ -17,8 +17,8 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, ArrowLeft, FileText } from "lucide-react";
 import CreateRadiologyReportModal, {
   type ReportFormData as ModalReportFormData,
-} from './create-radiology-report-modal.ts'; // Import the form data type
-// import RadiologyReportsList from './RadiologyReportsList.ts'; // Assuming this exists
+} from "./create-radiology-report-modal.ts"; // Import the form data type
+// import RadiologyReportsList from "./RadiologyReportsList.ts"; // Assuming this exists
 
 // Define interfaces
 interface StudyDetails {
@@ -62,7 +62,7 @@ interface StudyDetails {
 
   // FIX: Wrap fetchStudyDetails in useCallback
   const fetchStudyDetails = useCallback(async (): Promise<void> => {
-    \1 {\n  \2{
+    if (!session.user) {
       setError("Study ID is missing."),
       setLoading(false);
       return;
@@ -71,9 +71,9 @@ interface StudyDetails {
     setError(undefined);
     try {
       // Simulate API call
-      // const response = await fetch(`/api/radiology/studies/${\1}`
-      // \1 {\n  \2{
-      //   \1 {\n  \2{
+      // const response = await fetch(`/api/radiology/studies/${}`
+      // if (!session.user) {
+      //   if (!session.user) {
       //     setError("Radiology study not found.")
       //   } else {
       //     const errorData = await response.json().catch(() => ({}))
@@ -86,16 +86,16 @@ interface StudyDetails {
 
       // Mock Data
       await new Promise((resolve) => setTimeout(resolve, 500));
-      \1 {\n  \2{
+      if (!session.user) {
         // Example ID
-        const \1,\2 studyId,
-          \1,\2 "John Doe",
-          \1,\2 "Chest X-Ray, 2 Views",
+        const studyId,
+          "John Doe",
+          "Chest X-Ray, 2 Views",
           accession_number: "ACC123456",
-          study_datetime: \1[0] - 86_400_000).toISOString(), // Yesterday
+          study_datetime: [0] - 86_400_000).toISOString(), // Yesterday
           status: "acquired",
-          \1,\2 "Tech Sarah",
-          \1,\2 "PA and Lateral views",
+          "Tech Sarah",
+          "PA and Lateral views",
           number_of_images: 2
         };
         setStudy(mockStudy);
@@ -106,7 +106,7 @@ interface StudyDetails {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      setError(`Failed to load study details: ${\1}`,
+      setError(`Failed to load study details: ${}`,
       setStudy(undefined);
     } finally {
       setLoading(false);
@@ -114,7 +114,7 @@ interface StudyDetails {
   }, [studyId]); // Add studyId dependency
 
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       fetchStudyDetails();
     }
     // FIX: Add fetchStudyDetails to dependency array
@@ -124,7 +124,7 @@ interface StudyDetails {
   const handleCreateReport = async (
     formData: ModalReportFormData;
   ): Promise<void> => {
-    \1 {\n  \2{
+    if (!session.user) {
       /* SECURITY: Console statement removed */
       return
     }
@@ -142,7 +142,7 @@ interface StudyDetails {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData), // Use the formData directly
       });
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = "Failed to create radiology report";
         try {
           const errorData: { error?: string } = await response.json();
@@ -154,7 +154,7 @@ interface StudyDetails {
         throw new Error(errorMessage)
       }
 
-      // await \1; // Simulate delay
+      // await ; // Simulate delay
 
       /* SECURITY: Console statement removed */.");
       setShowCreateReportModal(false);
@@ -170,19 +170,19 @@ interface StudyDetails {
 
   // Add handleDeleteStudy if needed
   // const handleDeleteStudy = async (): Promise<void> => {
-  //   \1 {\n  \2eturn
+  //   if (!session.user)eturn
   //   try {
   //     // API call to delete
-  //     router.push('/dashboard/radiology/studies'); // Redirect after delete
+  //     router.push("/dashboard/radiology/studies"); // Redirect after delete
   //   } catch (err) { /* ... */ }
   // }
 
   const getStatusBadge = (status: string | undefined): ReactNode => {
-    \1 {\n  \2eturn <Badge className="bg-gray-100">Unknown\1>
+    if (!session.user)eturn <Badge className="bg-gray-100">Unknown>
 
     const statusStyles: { [key: string]: string } = {
       scheduled: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      \1,\2 "bg-purple-100 text-purple-800 border-purple-200",
+      "bg-purple-100 text-purple-800 border-purple-200",
       verified: "bg-green-100 text-green-800 border-green-200"
     };
     const displayText =;
@@ -198,52 +198,52 @@ interface StudyDetails {
     )
   };
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
       </div>
     );
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         {error}
       </div>
     );
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     // This case might be covered by error state if fetch fails, but good to have
    : return (
-      \1>
+      >
         Study details could not be loaded or found.
       </div>
     ),
   }
 
  : return (
-    \1>
+    >
       <Button variant="outline" onClick={() => router.back()} className="mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Studies
       </Button>
 
       <Card>
         <CardHeader>
-          \1>
+          >
 <div
-              <CardTitle className="text-xl">Radiology Study Details\1>
+              <CardTitle className="text-xl">Radiology Study Details>
               <CardDescription>Study ID: {study.id}</CardDescription>
             </div>
-            \1>
+            >
               {/* <Button variant="outline" size="icon" title="Edit Study"><Edit className="h-4 w-4" /></Button> */}
               {/* <Button variant="destructive" size="icon" onClick={handleDeleteStudy} title="Delete Study"><Trash2 className="h-4 w-4" /></Button> */}
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          \1>
+          >
 <div
               <strong>Patient:</strong> {study.patient_name || "N/A"} (ID:{" "}
               {study.patient_id?.slice(0, 8) || "N/A"})
@@ -252,12 +252,12 @@ interface StudyDetails {
               <strong>Procedure:</strong> {study.procedure_name || "N/A"}
             </div>
 <div
-              <strong>Order ID:\1>
+              <strong>Order ID:>
               <Button>
                 variant="link"
                 className="p-0 h-auto ml-1 text-sm"
                 onClick={() =>
-                  router.push(`/dashboard/radiology/orders/${\1}`;
+                  router.push(`/dashboard/radiology/orders/${}`;
                 }
               >
                 {study.order_id}
@@ -281,10 +281,10 @@ interface StudyDetails {
 <div
               <strong>Technician:</strong> {study.technician_name || "N/A"}
             </div>
-            \1>
+            >
               <strong>Protocol:</strong> {study.protocol || "N/A"}
             </div>
-            \1>
+            >
               <strong>Series Description:</strong>{" "}
               {study.series_description || "N/A"}
             </div>
@@ -299,7 +299,7 @@ interface StudyDetails {
       {/* Section for Associated Reports */}
       <Card>
         <CardHeader>
-          \1>
+          >
             <CardTitle>Associated Reports</CardTitle>
             {(study.status === "acquired" || study.status === "reported") && (
               <Button onClick={() => setShowCreateReportModal(true)}>
@@ -310,7 +310,7 @@ interface StudyDetails {
         </CardHeader>
         <CardContent>
           {/* TODO: Embed RadiologyReportsList filtered by study.id */}
-          \1>
+          >
             Report list component to be integrated here, filtered for Study ID:{" "}
             {study.id}
           </p>

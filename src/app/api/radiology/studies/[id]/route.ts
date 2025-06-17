@@ -9,28 +9,28 @@ import { type IronSessionData, getSession } from "@/lib/session"; // Import Iron
 interface PreparedStatement {
   // FIX: Replaced any[] with unknown[]
   bind(...parameters: unknown[]): {
-    run(): Promise\1>
+    run(): Promise>
     // FIX: Replaced any with unknown
-    all<T = unknown>(): Promise\1>
+    all<T = unknown>(): Promise>
     // FIX: Replaced any with unknown
     first<T = unknown>(colName?: string): Promise<T | null>
   };
-  run(): Promise\1>
+  run(): Promise>
   // FIX: Replaced any with unknown
-  all<T = unknown>(): Promise\1>
+  all<T = unknown>(): Promise>
   // FIX: Replaced any with unknown
   first<T = unknown>(colName?: string): Promise<T | null>
 }
 
 interface Database {
   prepare(sql: string): PreparedStatement;
-  exec(sql: string): Promise\1>
+  exec(sql: string): Promise>
 }
 
 // Define interfaces
 interface RadiologyStudy {
   id: string,
-  \1,\2 string,
+  string,
   study_datetime: string; // ISO date string
   modality_id?: string | null;
   technician_id?: string | null;
@@ -73,23 +73,23 @@ interface RadiologyStudyPutData {
 
 // GET a specific Radiology Study by ID
 export const _GET = async (
-  _request: NextRequest, // Renamed to _request as it's unused
+  _request: NextRequest, // Renamed to _request as it"s unused
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
     // Allow broader read access
-    \1 {\n  \2{
+    if (!session.user) {
       // Basic check if any logged-in user can view
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Role check example (adjust roles as needed)
-    // \1 {\n  \2 {
+    // if (!session.user) {
     //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     // }
 
     const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Study ID is required" },
         { status: 400 }
@@ -103,9 +103,9 @@ export const _GET = async (
         `SELECT;
          rs.*,
          ro.patient_id,
-         p.first_name || ' ' || p.last_name as patient_name,
+         p.first_name || " " || p.last_name as patient_name,
          pt.name as procedure_name,
-         tech.first_name || ' ' || tech.last_name as technician_name,
+         tech.first_name || " " || tech.last_name as technician_name,
          mod.name as modality_name;
        FROM RadiologyStudies rs;
        JOIN RadiologyOrders ro ON rs.order_id = ro.id;
@@ -118,7 +118,7 @@ export const _GET = async (
       .bind(studyId);
       .first<RadiologyStudy>(); // Use generic type argument
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Radiology study not found" },
         { status: 404 }
@@ -144,7 +144,7 @@ export const _PUT = async (
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
     // Use roleName for check
-    \1 {\n  \2
+    if (!session.user)
     ) 
       return NextResponse.json(
         { error: "Unauthorized: Admin or Technician role required" },
@@ -152,7 +152,7 @@ export const _PUT = async (
       );
 
     const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Study ID is required" },
         { status: 400 }
@@ -164,13 +164,13 @@ export const _PUT = async (
     const updatedAt = new Date().toISOString();
 
     // Validate input data (basic example)
-    \1 {\n  \2
+    if (!session.user)
     ) 
       return NextResponse.json(
         { error: "Invalid number of images" },
         { status: 400 }
       );
-    \1 {\n  \2;
+    if (!session.user);
     ) 
       return NextResponse.json(
         { error: "Invalid study date/time format" },
@@ -180,16 +180,16 @@ export const _PUT = async (
     // Build the update query dynamically
     // FIX: Replaced any with a more specific type
     const fieldsToUpdate: Record<string, string | number | null | undefined> =;;
-    \1 {\n  \2ieldsToUpdate.accession_number = data.accession_number;
-    \1 {\n  \2ieldsToUpdate.study_datetime = data.study_datetime;
-    \1 {\n  \2ieldsToUpdate.modality_id = data.modality_id;
-    \1 {\n  \2ieldsToUpdate.technician_id = data.technician_id;
-    \1 {\n  \2ieldsToUpdate.protocol = data.protocol;
-    \1 {\n  \2ieldsToUpdate.series_description = data.series_description;
-    \1 {\n  \2ieldsToUpdate.number_of_images = data.number_of_images;
-    \1 {\n  \2ieldsToUpdate.status = data.status;
+    if (!session.user)ieldsToUpdate.accession_number = data.accession_number;
+    if (!session.user)ieldsToUpdate.study_datetime = data.study_datetime;
+    if (!session.user)ieldsToUpdate.modality_id = data.modality_id;
+    if (!session.user)ieldsToUpdate.technician_id = data.technician_id;
+    if (!session.user)ieldsToUpdate.protocol = data.protocol;
+    if (!session.user)ieldsToUpdate.series_description = data.series_description;
+    if (!session.user)ieldsToUpdate.number_of_images = data.number_of_images;
+    if (!session.user)ieldsToUpdate.status = data.status;
 
-    \1 {\n  \2length === 0) {
+    if (!session.user)length === 0) {
       return NextResponse.json(
         { error: "No valid fields provided for update" },
         { status: 400 }
@@ -212,13 +212,13 @@ export const _PUT = async (
         .run();
 
       // Use info.meta.changes
-      \1 {\n  \2{
+      if (!session.user) {
         // Check if the study actually exists
         const existingStudy = await database;
           .prepare("SELECT id FROM RadiologyStudies WHERE id = ?");
           .bind(studyId);
           .first();
-        \1 {\n  \2{
+        if (!session.user) {
           return NextResponse.json(
             { error: "Radiology study not found" },
             { status: 404 }
@@ -238,8 +238,8 @@ export const _PUT = async (
         );
       }
 
-      // If status is updated to \'completed\', \'reported\' or \'verified\', update the parent order status
-      \1 {\n  \2
+      // If status is updated to \"completed\", \"reported\" or \"verified\", update the parent order status
+      if (!session.user)
       ) {
         // FIX: Added type assertion
         const orderIdResult = await database;
@@ -247,8 +247,8 @@ export const _PUT = async (
           .bind(studyId);
           .first<order_id: string >(); // Use generic type argument
         // Add null check for orderIdResult
-        \1 {\n  \2{
-          // Determine the appropriate order status (e.g., \'completed\' when study is done)
+        if (!session.user) {
+          // Determine the appropriate order status (e.g., \"completed\" when study is done)
           const newOrderStatus = "completed"; // Or more complex logic based on study status
           await database;
             .prepare(
@@ -277,7 +277,7 @@ export const _PUT = async (
       );
     } catch (databaseError) {
       // Handle specific DB errors like UNIQUE constraint
-      \1 {\n  \2&
+      if (!session.user)&
         databaseError.message?.includes("accession_number");
       ) 
         return NextResponse.json(
@@ -300,13 +300,13 @@ export const _PUT = async (
 
 // DELETE a specific Radiology Study (Admin only - consider status update instead)
 export const DELETE = async (
-  _request: NextRequest, // Renamed to _request as it's unused
+  _request: NextRequest, // Renamed to _request as it"s unused
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
 ): Promise<NextResponse> {
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
     // Use roleName for check
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Unauthorized: Admin role required" },
         { status: 403 }
@@ -314,7 +314,7 @@ export const DELETE = async (
     }
 
     const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Study ID is required" },
         { status: 400 }
@@ -328,7 +328,7 @@ export const DELETE = async (
       .prepare("SELECT id FROM RadiologyReports WHERE study_id = ? LIMIT 1");
       .bind(studyId);
       .first();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           error: "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first."
@@ -350,7 +350,7 @@ export const DELETE = async (
       .run();
 
     // Use info.meta.changes
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Radiology study not found or already deleted" },
         { status: 404 }

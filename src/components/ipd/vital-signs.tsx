@@ -25,7 +25,7 @@ import { Loader2 } from "lucide-react";
 // Define interfaces for data structures
 interface VitalSignRecord {
   id: string,
-  \1,\2 string;
+  string;
   temperature?: number | string | null;
   pulse?: number | string | null;
   respiratory_rate?: number | string | null;
@@ -41,16 +41,16 @@ interface VitalSignRecord {
 
 interface AdmissionInfo {
   admission_number: string,
-  \1,\2 string,
+  string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
   temperature: string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string
+  string,
+  string,
+  string
 }
 
 // FIX: Define type for API success response (new record)
@@ -59,9 +59,9 @@ type NewVitalSignResponse = VitalSignRecord
 // FIX: Define type for submission data
 interface VitalSignSubmissionData {
   record_time: string,
-  \1,\2 number | null,
-  \1,\2 string | null,
-  \1,\2 number | null,
+  number | null,
+  string | null,
+  number | null,
   notes: string | null;
   // recorded_by_user_id will be added on the server or from session
 }
@@ -76,9 +76,9 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   const [error, setError] = useState<string | null>();
   const [formData, setFormData] = useState<FormData>({
     temperature: "",
-    \1,\2 "",
-    \1,\2 "",
-    \1,\2 ""
+    "",
+    "",
+    ""
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
@@ -87,7 +87,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   // Fetch vital signs and admission info
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
-      \1 {\n  \2{
+      if (!session.user) {
         setLoading(false),
         setError("Admission ID is missing.");
         return;
@@ -98,7 +98,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       try {
         // Simulate API call
         // const _response = await fetch(`/api/ipd/admissions/${admissionId}/vital-signs`)
-        // \1 {\n  \2{
+        // if (!session.user) {
         //   let _errorMsg = "Failed to fetch vital signs"
         //   try {
         //       const _errorData: ApiErrorResponse = await response.json()
@@ -112,30 +112,30 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
         // Mock data simulation
         await new Promise((resolve) => setTimeout(resolve, 600));
-        const \1,\2 "ADM123456",
-          admission_date: \1[0] - 86_400_000 * 3).toISOString(), // 3 days ago
+        const "ADM123456",
+          admission_date: [0] - 86_400_000 * 3).toISOString(), // 3 days ago
           patient_first_name: "Jane",
-          \1,\2 "Pneumonia"
+          "Pneumonia"
         };
         const mockVitalSigns: VitalSignRecord[] = [
           {
             id: "vs_001",
-            \1,\2 \1[0] - 3_600_000 * 4).toISOString(), // 4 hours ago
+            [0] - 3_600_000 * 4).toISOString(), // 4 hours ago
             temperature: 37.8,
-            \1,\2 18,
-            \1,\2 97,
-            \1,\2 "nurse_01",
-            \1,\2 "Joy",
+            18,
+            97,
+            "nurse_01",
+            "Joy",
             notes: "Patient comfortable"
           },
           {
             id: "vs_002",
-            \1,\2 \1[0] - 3_600_000 * 8).toISOString(), // 8 hours ago
+            [0] - 3_600_000 * 8).toISOString(), // 8 hours ago
             temperature: 38.1,
-            \1,\2 20,
-            \1,\2 96,
-            \1,\2 "nurse_02",
-            \1,\2 "Mike"
+            20,
+            96,
+            "nurse_02",
+            "Mike"
           },
         ];
 
@@ -154,7 +154,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
             ? error_.message;
             : "An unknown error occurred.";
 
-        setError(`Failed to load vital signs: ${\1}`;
+        setError(`Failed to load vital signs: ${}`;
       } finally 
         setLoading(false);
     };
@@ -169,10 +169,10 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    \1 {\n  \2{
+    if (!session.user) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
       return;
     }
@@ -181,7 +181,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
     try {
       // Prepare data, converting empty strings to null and numbers where appropriate
       // FIX: Use the defined submission data type
-      const \1,\2 new Date().toISOString(),
+      const new Date().toISOString(),
         temperature: formData.temperature;
           ? Number.parseFloat(formData.temperature);
           : null,
@@ -201,7 +201,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
       // Basic validation
       // FIX: Check for null and range for pain_level
-      \1 {\n  \2
+      if (!session.user)
       ) {
         throw new Error("Pain level must be a number between 0 and 10.");
       }
@@ -213,7 +213,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(submissionData);
       // })
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   let _errorMsg = "Failed to record vital signs"
       //   try {
       //       const _errorData: ApiErrorResponse = await response.json()
@@ -225,7 +225,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
       // Mock response
       await new Promise((resolve) => setTimeout(resolve, 800));
-      const \1,\2 `vs_${crypto.getRandomValues(\1[0]}`,
+      const `vs_${crypto.getRandomValues([0]}`,
         admission_id: admissionId,
         recorded_by_user_id: "nurse_current", // Replace with actual user ID
         recorded_by_first_name: "Current", // Replace with actual user data
@@ -239,9 +239,9 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       // Reset form
       setFormData({
         temperature: "",
-        \1,\2 "",
-        \1,\2 "",
-        \1,\2 ""
+        "",
+        "",
+        ""
       }),
       toast({
         title: "Success",
@@ -260,12 +260,12 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 
   // Format date for display
   const formatDateTime = (dateString: string | undefined): string => {
-    \1 {\n  \2eturn "N/A";
+    if (!session.user)eturn "N/A";
     try {
       const options: Intl.DateTimeFormatOptions = {
         // year: "numeric",
-        \1,\2 "numeric",
-        \1,\2 "2-digit",
+        "numeric",
+        "2-digit",
         hour12: true
       }
       return new Intl.DateTimeFormat(undefined, options).format(
@@ -277,13 +277,13 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   };
 
   return (
-    \1>
+    >
       {patientInfo && (
-        \1>
-          \1>
+        >
+          >
             {patientInfo.patient_first_name} {patientInfo.patient_last_name}
           </h3>
-          \1>
+          >
             Admission: {patientInfo.admission_number} | Date:{" "}
             {formatDateTime(patientInfo.admission_date)}
             {patientInfo?.diagnosis &&
@@ -297,10 +297,10 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         </CardHeader>
         <CardContent>
           {/* FIX: Removed manual success/error messages, relying on toast */}
-          \1>
-            \1>
-              \1>
-                <Label htmlFor="temperature">Temperature (°C)\1>
+          >
+            >
+              >
+                <Label htmlFor="temperature">Temperature (°C)>
                 <Input>
                   id="temperature"
                   name="temperature"
@@ -313,8 +313,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
                 />
               </div>
 
-              \1>
-                <Label htmlFor="pulse">Pulse (bpm)\1>
+              >
+                <Label htmlFor="pulse">Pulse (bpm)>
                 <Input>
                   id="pulse"
                   name="pulse"
@@ -326,8 +326,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
                 />
               </div>
 
-              \1>
-                <Label htmlFor="respiratory_rate">Resp. Rate (bpm)\1>
+              >
+                <Label htmlFor="respiratory_rate">Resp. Rate (bpm)>
                 <Input>
                   id="respiratory_rate"
                   name="respiratory_rate"
@@ -339,8 +339,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
                 />
               </div>
 
-              \1>
-                <Label htmlFor="blood_pressure">Blood Pressure (mmHg)\1>
+              >
+                <Label htmlFor="blood_pressure">Blood Pressure (mmHg)>
                 <Input>
                   id="blood_pressure"
                   name="blood_pressure"
@@ -352,8 +352,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
                 />
               </div>
 
-              \1>
-                <Label htmlFor="oxygen_saturation">Oxygen Saturation (%)\1>
+              >
+                <Label htmlFor="oxygen_saturation">Oxygen Saturation (%)>
                 <Input>
                   id="oxygen_saturation"
                   name="oxygen_saturation"
@@ -368,8 +368,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
                 />
               </div>
 
-              \1>
-                <Label htmlFor="pain_level">Pain Level (0-10)\1>
+              >
+                <Label htmlFor="pain_level">Pain Level (0-10)>
                 <Input>
                   id="pain_level"
                   name="pain_level"
@@ -384,8 +384,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               </div>
             </div>
 
-            \1>
-              <Label htmlFor="notes">Notes\1>
+            >
+              <Label htmlFor="notes">Notes>
               <Input>
                 id="notes"
                 name="notes"
@@ -397,8 +397,8 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               />
             </div>
 
-            \1>
-              \1>
+            >
+              >
                 {submitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
@@ -414,58 +414,58 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         </CardHeader>
         <CardContent>
           {loading ? (
-            \1>
+            >
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
-            \1>
+            >
               {error}
             </div>
           ) : vitalSigns.length === 0 ? (
-            \1>
+            >
               No vital signs recorded for this admission yet.
             </div>
           ) : (
-            \1>
+            >
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Time</TableHead>
-                    <TableHead className="text-center">Temp (°C)\1>
-                    <TableHead className="text-center">Pulse\1>
-                    <TableHead className="text-center">Resp Rate\1>
-                    <TableHead className="text-center">BP\1>
-                    <TableHead className="text-center">SpO2 (%)\1>
-                    <TableHead className="text-center">Pain\1>
+                    <TableHead className="text-center">Temp (°C)>
+                    <TableHead className="text-center">Pulse>
+                    <TableHead className="text-center">Resp Rate>
+                    <TableHead className="text-center">BP>
+                    <TableHead className="text-center">SpO2 (%)>
+                    <TableHead className="text-center">Pain>
                     <TableHead>Recorded By</TableHead>
                     <TableHead>Notes</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {vitalSigns.map((record) => (
-                    \1>
-                      \1>
+                    >
+                      >
                         {formatDateTime(record.record_time)}
                       </TableCell>
-                      \1>
+                      >
                         {record.temperature ?? "-"}
                       </TableCell>
-                      \1>
+                      >
                         {record.pulse ?? "-"}
                       </TableCell>
-                      \1>
+                      >
                         {record.respiratory_rate ?? "-"}
                       </TableCell>
-                      \1>
+                      >
                         {record.blood_pressure ?? "-"}
                       </TableCell>
-                      \1>
+                      >
                         {record.oxygen_saturation ?? "-"}
                       </TableCell>
-                      \1>
+                      >
                         {record.pain_level ?? "-"}
                       </TableCell>
-                      \1>
+                      >
                         {record.recorded_by_first_name}{" "}
                         {record.recorded_by_last_name?.charAt(0)}.
                       </TableCell>

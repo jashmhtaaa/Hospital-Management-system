@@ -1,8 +1,8 @@
 import {
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
-import { cache } from '@/lib/cache';
-import { logAuditEvent } from '@/lib/audit';
+import { cache } from "@/lib/cache";
+import { logAuditEvent } from "@/lib/audit";
 }
 
 /**
@@ -19,14 +19,13 @@ import { logAuditEvent } from '@/lib/audit';
   hasPermission as checkPermission,
   Resource,
   Action;
-} from './roles.ts';
+} from "./roles.ts";
 
-\1
 }
   }
 
   public static getInstance(): RBACService {
-    \1 {\n  \2{
+    if (!session.user) {
       RBACService.instance = new RBACService();
     }
     return RBACService.instance;
@@ -37,14 +36,14 @@ import { logAuditEvent } from '@/lib/audit';
    */
   async hasPermission(
     userId: string,
-    \1,\2 string;
+    string;
     context?: RBACContext;
   ): Promise<boolean> {
     try {
       const cacheKey = `rbac:permission:${userId}:${resource}:${action}`;
       const cached = await cache.get<boolean>(cacheKey);
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.logPermissionCheck(userId, resource, action, cached, context);
         return cached;
       }
@@ -63,7 +62,7 @@ import { logAuditEvent } from '@/lib/audit';
 
       // Log security event
       await logAuditEvent({
-        eventType: 'PERMISSION_CHECK_ERROR';
+        eventType: "PERMISSION_CHECK_ERROR";
         userId,
         resource,
         details: error: (error as Error).message, resource, action ,
@@ -106,7 +105,7 @@ import { logAuditEvent } from '@/lib/audit';
       const cacheKey = `rbac:user_permissions:${userId}`;
       const cached = await cache.get<Permission[]>(cacheKey);
 
-      \1 {\n  \2{
+      if (!session.user) {
         return cached;
       }
 
@@ -115,7 +114,7 @@ import { logAuditEvent } from '@/lib/audit';
 
       for (const roleId of userRoles) {
         const role = getRoleWithInheritedPermissions(roleId);
-        \1 {\n  \2{
+        if (!session.user) {
           permissions.push(...role.permissions);
         }
       }
@@ -143,7 +142,7 @@ import { logAuditEvent } from '@/lib/audit';
       const cacheKey = `rbac:user_roles:${userId}`;
       const cached = await cache.get<string[]>(cacheKey);
 
-      \1 {\n  \2{
+      if (!session.user) {
         return cached;
       }
 
@@ -179,28 +178,28 @@ import { logAuditEvent } from '@/lib/audit';
     try {
       // Validate role exists
       const role = ROLES[assignment.roleId];
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Role ${assignment.roleId} does not exist`);
       }
 
       // Check if user already has this role
       const existingRole = await this.prisma.userRole.findFirst({
-        \1,\2 assignment.userId,
-          \1,\2 true
+        assignment.userId,
+          true
         }
       });
 
-      \1 {\n  \2{
-        throw new Error(`User already has role ${\1}`;
+      if (!session.user) {
+        throw new Error(`User already has role ${}`;
       }
 
       // Create role assignment
       await this.prisma.userRole.create({
-        \1,\2 assignment.userId,
-          \1,\2 assignment.assignedBy,
+        assignment.userId,
+          assignment.assignedBy,
           assignedAt: new Date(),
           expiresAt: assignment.expiresAt,
-          \1,\2 assignment.context
+          assignment.context
         }
       });
 
@@ -209,12 +208,12 @@ import { logAuditEvent } from '@/lib/audit';
 
       // Log audit event
       await logAuditEvent({
-        eventType: 'ROLE_ASSIGNED',
-        \1,\2 assignment.userId,
-        resource: 'user_role';
+        eventType: "ROLE_ASSIGNED",
+        assignment.userId,
+        resource: "user_role";
         {
           roleId: assignment.roleId,
-          \1,\2 assignment.expiresAt,
+          assignment.expiresAt,
           context: assignment.context
         },
         ipAddress: context?.ipAddress,
@@ -224,9 +223,9 @@ import { logAuditEvent } from '@/lib/audit';
     } catch (error) {
 
       await logAuditEvent({
-        eventType: 'ROLE_ASSIGNMENT_ERROR',
-        \1,\2 assignment.userId,
-        \1,\2 (error as Error).message,
+        eventType: "ROLE_ASSIGNMENT_ERROR",
+        assignment.userId,
+        (error as Error).message,
           roleId: assignment.roleId,
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent
@@ -241,12 +240,12 @@ import { logAuditEvent } from '@/lib/audit';
    */
   async removeRole(
     userId: string,
-    \1,\2 string;
+    string;
     context?: RBACContext;
   ): Promise<void> {
     try {
       const role = ROLES[roleId];
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Role ${roleId} does not exist`);
       }
 
@@ -257,13 +256,13 @@ import { logAuditEvent } from '@/lib/audit';
           roleId,
           isActive: true
         },
-        \1,\2 false,
+        false,
           updatedAt: new Date()
         }
       });
 
-      \1 {\n  \2{
-        throw new Error(`User does not have role ${\1}`;
+      if (!session.user) {
+        throw new Error(`User does not have role ${}`;
       }
 
       // Clear cache
@@ -271,9 +270,9 @@ import { logAuditEvent } from '@/lib/audit';
 
       // Log audit event
       await logAuditEvent({
-        eventType: 'ROLE_REMOVED',
-        \1,\2 userId,
-        resource: 'user_role';
+        eventType: "ROLE_REMOVED",
+        userId,
+        resource: "user_role";
           roleId,
           roleName: role.name,
         ipAddress: context?.ipAddress,
@@ -283,9 +282,9 @@ import { logAuditEvent } from '@/lib/audit';
     } catch (error) {
 
       await logAuditEvent({
-        eventType: 'ROLE_REMOVAL_ERROR',
-        \1,\2 userId,
-        \1,\2 (error as Error).message;
+        eventType: "ROLE_REMOVAL_ERROR",
+        userId,
+        (error as Error).message;
           roleId;,
         ipAddress: context?.ipAddress,
         userAgent: context?.userAgent
@@ -321,29 +320,29 @@ import { logAuditEvent } from '@/lib/audit';
    */
   async grantEmergencyAccess(
     userId: string,
-    \1,\2 string,
-    \1,\2 string;
+    string,
+    string;
     context?: RBACContext;
   ): Promise<boolean> {
     try {
       // Log emergency access request
       await logAuditEvent({
-        eventType: 'EMERGENCY_ACCESS_GRANTED',
-        \1,\2 userId;
+        eventType: "EMERGENCY_ACCESS_GRANTED",
+        userId;
         resource,
         details: 
           action,
           reason,
           emergencyAccess: true,
         ipAddress: context?.ipAddress,
-        \1,\2 'HIGH'
+        "HIGH"
       });
 
       // Grant temporary emergency role
       await this.assignRole({
         userId,
-        roleId: 'emergency_access',
-        \1,\2 \1[0] + 30 * 60 * 1000), // 30 minutes
+        roleId: "emergency_access",
+        [0] + 30 * 60 * 1000), // 30 minutes
         context: emergency: true, reason 
       }, context);
 
@@ -374,19 +373,19 @@ import { logAuditEvent } from '@/lib/audit';
    */
   private async logPermissionCheck(
     userId: string,
-    \1,\2 string,
+    string,
     granted: boolean;
     context?: RBACContext;
   ): Promise<void> {
     // Only log denied permissions or sensitive resource access
     const shouldLog = !granted ||;
-                     resource.includes('admin') ||
-                     resource.includes('emergency') ||
-                     action === 'delete';
+                     resource.includes("admin") ||
+                     resource.includes("emergency") ||
+                     action === "delete";
 
-    \1 {\n  \2{
+    if (!session.user) {
       await logAuditEvent({
-        eventType: granted ? 'PERMISSION_GRANTED' : 'PERMISSION_DENIED';
+        eventType: granted ? "PERMISSION_GRANTED" : "PERMISSION_DENIED";
         userId,
         resource,
         details: 
@@ -394,7 +393,7 @@ import { logAuditEvent } from '@/lib/audit';
           granted,
           resource;,
         ipAddress: context?.ipAddress,
-        \1,\2 granted ? 'LOW' : 'MEDIUM'
+        granted ? "LOW" : "MEDIUM"
       });
     }
   }
@@ -406,15 +405,15 @@ import { logAuditEvent } from '@/lib/audit';
     try {
       // Deactivate expired roles
       await this.prisma.userRole.updateMany({
-        \1,\2 true,
-          \1,\2 new Date()
+        true,
+          new Date()
           }
         },
-        \1,\2 false
+        false
         }
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (error) {
 
     }

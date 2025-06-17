@@ -1,9 +1,9 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { validateInteractionOverrideRequest } from '../../../../../lib/validation/pharmacy-validation';
+import { auditLog } from "../../../../../lib/audit";
+import { errorHandler } from "../../../../../lib/error-handler";
+import { validateInteractionOverrideRequest } from "../../../../../lib/validation/pharmacy-validation";
 }
 
 /**
@@ -17,7 +17,7 @@ import { validateInteractionOverrideRequest } from '../../../../../lib/validatio
 const interactionOverrideRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByInteractionId: (interactionId: string) => Promise.resolve([]),
-  save: (override: unknown) => Promise.resolve(override.id || 'new-id'),
+  save: (override: unknown) => Promise.resolve(override.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
@@ -33,34 +33,34 @@ export const POST = async (
   try {
     // Get interaction ID from params
     const { id } = params;
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Interaction ID is required' }, { status: 400 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Interaction ID is required" }, { status: 400 });
     }
 
     // Validate request
     const data = await req.json();
     const validationResult = validateInteractionOverrideRequest(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
+        { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Create override record
     const override = {
       id: crypto.randomUUID(),
-      \1,\2 data.reason,
-      \1,\2 userId,
+      data.reason,
+      userId,
       overriddenAt: new Date(),
       patientId: data.patientId,
       prescriptionId: data.prescriptionId
@@ -70,10 +70,10 @@ export const POST = async (
     const overrideId = await interactionOverrideRepository.save(override);
 
     // Audit logging (critical for controlled substances and high-risk medications)
-    await auditLog('DRUG_INTERACTION', {
-      action: 'OVERRIDE',
-      \1,\2 id,
-      \1,\2 data.patientId,
+    await auditLog("DRUG_INTERACTION", {
+      action: "OVERRIDE",
+      id,
+      data.patientId,
       details: 
         overrideId,
         reason: data.reason,
@@ -84,12 +84,12 @@ export const POST = async (
     return NextResponse.json(
       {
         id: overrideId,
-        message: 'Interaction override recorded successfully'
+        message: "Interaction override recorded successfully"
       },
       { status: 201 }
     );
   } catch (error) {
-    return errorHandler(error, 'Error recording interaction override');
+    return errorHandler(error, "Error recording interaction override");
   }
 }
 
@@ -100,35 +100,35 @@ export const POST = async (
 export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
     const url = new URL(req.url);
-    const patientId = url.searchParams.get('patientId');
-    const prescriptionId = url.searchParams.get('prescriptionId');
-    const interactionId = url.searchParams.get('interactionId');
-    const startDate = url.searchParams.get('startDate');
-    const endDate = url.searchParams.get('endDate');
-    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
+    const patientId = url.searchParams.get("patientId");
+    const prescriptionId = url.searchParams.get("prescriptionId");
+    const interactionId = url.searchParams.get("interactionId");
+    const startDate = url.searchParams.get("startDate");
+    const endDate = url.searchParams.get("endDate");
+    const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
+    const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria
     const filter: unknown = {};
-    \1 {\n  \2ilter.patientId = patientId;
-    \1 {\n  \2ilter.prescriptionId = prescriptionId;
-    \1 {\n  \2ilter.interactionId = interactionId;
+    if (!session.user)ilter.patientId = patientId;
+    if (!session.user)ilter.prescriptionId = prescriptionId;
+    if (!session.user)ilter.interactionId = interactionId;
 
     // Add date range if provided
-    \1 {\n  \2{
+    if (!session.user) {
       filter.overriddenAt = {};
-      \1 {\n  \2ilter.overriddenAt.gte = new Date(startDate);
-      \1 {\n  \2ilter.overriddenAt.lte = new Date(endDate);
+      if (!session.user)ilter.overriddenAt.gte = new Date(startDate);
+      if (!session.user)ilter.overriddenAt.lte = new Date(endDate);
     }
 
     // Get overrides (mock implementation)
@@ -136,9 +136,9 @@ export const GET = async (req: NextRequest) => {
     const total = 0; // In production, get total count
 
     // Audit logging
-    await auditLog('DRUG_INTERACTION', {
-      action: 'LIST_OVERRIDES',
-      \1,\2 userId,
+    await auditLog("DRUG_INTERACTION", {
+      action: "LIST_OVERRIDES",
+      userId,
       details: 
         filter,
         page,
@@ -157,5 +157,5 @@ export const GET = async (req: NextRequest) => {
       }
     }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error retrieving interaction overrides');
+    return errorHandler(error, "Error retrieving interaction overrides");
   }

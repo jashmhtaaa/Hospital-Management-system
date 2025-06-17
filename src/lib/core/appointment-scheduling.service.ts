@@ -1,5 +1,5 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 }
 
 /**
@@ -9,19 +9,19 @@ import { z } from 'zod';
 
 // Appointment Scheduling Schemas
 export const AppointmentSchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
-  provider_id: z.string().min(1, 'Provider ID is required'),
-  appointment_type: z.enum(['consultation', 'follow_up', 'procedure', 'surgery', 'diagnostic', 'therapy', 'vaccine', 'lab_work']),
-  specialty: z.string().min(1, 'Specialty is required'),
-  department: z.string().min(1, 'Department is required'),
-  scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid appointment date'),
-  scheduled_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format (HH:MM)'),
+  patient_id: z.string().min(1, "Patient ID is required"),
+  provider_id: z.string().min(1, "Provider ID is required"),
+  appointment_type: z.enum(["consultation", "follow_up", "procedure", "surgery", "diagnostic", "therapy", "vaccine", "lab_work"]),
+  specialty: z.string().min(1, "Specialty is required"),
+  department: z.string().min(1, "Department is required"),
+  scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid appointment date"),
+  scheduled_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format (HH:MM)"),
   duration_minutes: z.number().min(15).max(480), // 15 minutes to 8 hours
-  location: z.string().min(1, 'Location is required'),
+  location: z.string().min(1, "Location is required"),
   room_number: z.string().optional(),
-  reason_for_visit: z.string().min(1, 'Reason for visit is required'),
+  reason_for_visit: z.string().min(1, "Reason for visit is required"),
   chief_complaint: z.string().optional(),
-  priority: z.enum(['routine', 'urgent', 'stat']).default('routine'),
+  priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
   is_telemedicine: z.boolean().default(false),
   telemedicine_platform: z.string().optional(),
   telemedicine_link: z.string().optional(),
@@ -31,7 +31,7 @@ export const AppointmentSchema = z.object({
   copay_amount: z.number().min(0).optional(),
   insurance_authorization_required: z.boolean().default(false),
   authorization_number: z.string().optional(),
-  \1,\2 z.enum(['weekly', 'biweekly', 'monthly', 'quarterly']),
+  z.enum(["weekly", "biweekly", "monthly", "quarterly"]),
     end_date: z.string().optional(),
     occurrences: z.number().optional()
   }).optional(),
@@ -39,10 +39,10 @@ export const AppointmentSchema = z.object({
 });
 
 export const ProviderScheduleSchema = z.object({
-  provider_id: z.string().min(1, 'Provider ID is required'),
-  date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid date'),
-  start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
-  end_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
+  provider_id: z.string().min(1, "Provider ID is required"),
+  date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid date"),
+  start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
+  end_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
   location: z.string(),
   room_number: z.string().optional(),
   appointment_types: z.array(z.string()).default([]),
@@ -56,20 +56,20 @@ export const ProviderScheduleSchema = z.object({
 
 export const AppointmentReminderSchema = z.object({
   appointment_id: z.string(),
-  reminder_type: z.enum(['email', 'sms', 'phone', 'portal']),
-  reminder_time: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid reminder time'),
+  reminder_type: z.enum(["email", "sms", "phone", "portal"]),
+  reminder_time: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid reminder time"),
   message: z.string(),
   sent: z.boolean().default(false),
   sent_at: z.string().optional(),
-  delivery_status: z.enum(['pending', 'sent', 'delivered', 'failed']).default('pending'),
+  delivery_status: z.enum(["pending", "sent", "delivered", "failed"]).default("pending"),
 });
 
 export const WaitlistEntrySchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
+  patient_id: z.string().min(1, "Patient ID is required"),
   provider_id: z.string().optional(),
   appointment_type: z.string(),
   specialty: z.string(),
-  \1,\2 z.array(z.string()),
+  z.array(z.string()),
   max_travel_distance: z.number().optional(),
   priority_score: z.number().min(1).max(10).default(5),
   notes: z.string().optional()
@@ -77,8 +77,8 @@ export const WaitlistEntrySchema = z.object({
 
 export type Appointment = z.infer<typeof AppointmentSchema> & {
   id: string,
-  \1,\2 'scheduled' | 'confirmed' | 'checked_in' | 'in_progress' | 'completed' | 'cancelled' | 'no_show' | 'rescheduled',
-  confirmation_status: 'not_sent' | 'sent' | 'confirmed' | 'declined';
+  "scheduled" | "confirmed" | "checked_in" | "in_progress" | "completed" | "cancelled" | "no_show" | "rescheduled",
+  confirmation_status: "not_sent" | "sent" | "confirmed" | "declined";
   check_in_time?: Date;
   check_out_time?: Date;
   actual_start_time?: Date;
@@ -98,30 +98,27 @@ export type Appointment = z.infer<typeof AppointmentSchema> & {
 
 export type ProviderSchedule = z.infer<typeof ProviderScheduleSchema> & {
   id: string,
-  \1,\2 Date,
+  Date,
   updated_at: Date
 };
 
 export type AppointmentReminder = z.infer<typeof AppointmentReminderSchema> & {
   id: string,
-  \1,\2 Date
+  Date
 };
 
 export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
   id: string,
-  \1,\2 'active' | 'contacted' | 'scheduled' | 'expired' | 'cancelled';
+  "active" | "contacted" | "scheduled" | "expired" | "cancelled";
   last_contact_date?: Date;
   contact_attempts: number,
-  \1,\2 Date
+  Date
 };
 
-\1
 }
   }[];
-\1
 }
-  \1,\2 { type: string, count: number }[];
-\1
+  { type: string, count: number }[];
 }
   }
 
@@ -133,8 +130,8 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     // Check for conflicts
     const conflictResult = await this.checkConflicts(validatedData);
-    \1 {\n  \2{
-      throw new Error(`Scheduling conflict: $conflictResult.conflicts.map(c => c.message).join(', ')`);
+    if (!session.user) {
+      throw new Error(`Scheduling conflict: $conflictResult.conflicts.map(c => c.message).join(", ")`);
     }
 
     const appointmentId = uuidv4();
@@ -143,15 +140,15 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     const appointment: Appointment = {
       ...validatedData,
       id: appointmentId,
-      \1,\2 'scheduled',
-      \1,\2 new Date(),
+      "scheduled",
+      new Date(),
       updated_at: new Date()
     };
 
     this.appointments.set(appointmentId, appointment);
 
     // Handle recurring appointments
-    \1 {\n  \2{
+    if (!session.user) {
       await this.createRecurringAppointments(appointment, validatedData.recurring_pattern);
     }
 
@@ -168,38 +165,38 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    * Check for scheduling conflicts;
    */
   async checkConflicts(appointmentData: z.infer<typeof AppointmentSchema>): Promise<ConflictResult> {
-    const conflicts: ConflictResult['conflicts'] = [];
+    const conflicts: ConflictResult["conflicts"] = [];
 
     const appointmentStart = new Date(`/* SECURITY: Template literal eliminated */
     const appointmentEnd = new Date(appointmentStart.getTime() + appointmentData.duration_minutes * 60000);
 
     // Check provider availability
     const providerSchedule = await this.getProviderSchedule(appointmentData.provider_id, appointmentData.scheduled_date);
-    \1 {\n  \2{
+    if (!session.user) {
       conflicts.push({
-        type: 'provider_unavailable',
+        type: "provider_unavailable",
         message: `Provider is not available on ${appointmentData.scheduled_date} at ${appointmentData.scheduled_time}`,
       });
     }
 
-    // Check if appointment is within provider's working hours
-    \1 {\n  \2{
+    // Check if appointment is within provider"s working hours
+    if (!session.user) {
       const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */
       const scheduleEnd = new Date(`/* SECURITY: Template literal eliminated */
 
-      \1 {\n  \2{
+      if (!session.user) {
         conflicts.push({
-          type: 'outside_hours',
-          message: `Appointment time is outside provider's working hours (${providerSchedule.start_time} - ${providerSchedule.end_time})`,
+          type: "outside_hours",
+          message: `Appointment time is outside provider"s working hours (${providerSchedule.start_time} - ${providerSchedule.end_time})`,
         });
       }
 
       // Check for break times
-      \1 {\n  \2{
-        const breakStart = \1 {
+      if (!session.user) {
+        const breakStart = if (condition) {
           conflicts.push({
-            type: 'provider_unavailable',
-            message: `Appointment conflicts with provider's break time (${providerSchedule.break_start} - ${providerSchedule.break_end})`,
+            type: "provider_unavailable",
+            message: `Appointment conflicts with provider"s break time (${providerSchedule.break_start} - ${providerSchedule.break_end})`,
           });
         }
       }
@@ -212,16 +209,16 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     );
 
     for (const existing of existingAppointments) {
-      \1 {\n  \2ontinue;
+      if (!session.user)ontinue;
 
       const existingStart = new Date(`/* SECURITY: Template literal eliminated */
       const existingEnd = new Date(existingStart.getTime() + existing.duration_minutes * 60000);
 
-      \1 {\n  \2|
+      if (!session.user)|
           (appointmentEnd > existingStart && appointmentEnd <= existingEnd) ||;
           (appointmentStart <= existingStart && appointmentEnd >= existingEnd)) {
         conflicts.push({
-          type: 'provider_unavailable',
+          type: "provider_unavailable",
           message: `Provider has conflicting appointment from ${existing.scheduled_time}`,
           conflicting_appointment: existing
         });
@@ -235,15 +232,15 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     );
 
     for (const existing of patientAppointments) {
-      \1 {\n  \2ontinue;
+      if (!session.user)ontinue;
 
       const existingStart = new Date(`/* SECURITY: Template literal eliminated */
       const existingEnd = new Date(existingStart.getTime() + existing.duration_minutes * 60000);
 
-      \1 {\n  \2|
+      if (!session.user)|
           (appointmentEnd > existingStart && appointmentEnd <= existingEnd)) {
         conflicts.push({
-          type: 'patient_double_booked',
+          type: "patient_double_booked",
           message: `Patient has conflicting appointment at ${existing.scheduled_time}`,
           conflicting_appointment: existing
         });
@@ -251,22 +248,22 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     }
 
     // Check room conflicts
-    \1 {\n  \2{
+    if (!session.user) {
       const roomAppointments = this.getAppointmentsByRoom(
         appointmentData.room_number,
         appointmentData.scheduled_date;
       );
 
       for (const existing of roomAppointments) {
-        \1 {\n  \2ontinue;
+        if (!session.user)ontinue;
 
         const existingStart = new Date(`/* SECURITY: Template literal eliminated */
         const existingEnd = new Date(existingStart.getTime() + existing.duration_minutes * 60000);
 
-        \1 {\n  \2|
+        if (!session.user)|
             (appointmentEnd > existingStart && appointmentEnd <= existingEnd)) {
           conflicts.push({
-            type: 'room_conflict',
+            type: "room_conflict",
             message: `Room ${appointmentData.room_number} is occupied at ${existing.scheduled_time}`,
             conflicting_appointment: existing
           });
@@ -326,7 +323,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    */
   private async createRecurringAppointments(
     parentAppointment: Appointment,
-    pattern: NonNullable\1>
+    pattern: NonNullable>
   ): Promise<void> {
     const childAppointments: string[] = [];
     let currentDate = new Date(parentAppointment.scheduled_date);
@@ -338,22 +335,22 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     while (occurrenceCount < maxOccurrences) {
       // Calculate next occurrence
       switch (pattern.frequency) {
-        case 'weekly':
-          currentDate.setDate(currentDate.getDate() + 7);\1\n    }\n    case 'biweekly':
-          currentDate.setDate(currentDate.getDate() + 14);\1\n    }\n    case 'monthly':
-          currentDate.setMonth(currentDate.getMonth() + 1);\1\n    }\n    case 'quarterly':
+        case "weekly":
+          currentDate.setDate(currentDate.getDate() + 7);\n    }\n    case "biweekly":
+          currentDate.setDate(currentDate.getDate() + 14);\n    }\n    case "monthly":
+          currentDate.setMonth(currentDate.getMonth() + 1);\n    }\n    case "quarterly":
           currentDate.setMonth(currentDate.getMonth() + 3);
           break;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         break;
       }
 
       // Create child appointment
       const childAppointmentData = {
         ...parentAppointment,
-        scheduled_date: currentDate.toISOString().split('T')[0],
+        scheduled_date: currentDate.toISOString().split("T")[0],
         recurring_pattern: undefined, // Prevent infinite recursion
       };
 
@@ -363,7 +360,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
         occurrenceCount++;
       } catch (error) {
         // Log conflict but continue with other occurrences
-        // Debug logging removed.split('T')[0]}: ${\1}`
+        // Debug logging removed.split("T")[0]}: ${}`
       }
     }
 
@@ -381,7 +378,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     durationMinutes: number = 30;
   ): Promise<AvailableSlot[]> {
     const availableSlots: AvailableSlot[] = [];
-    const searchDate = date || new Date().toISOString().split('T')[0];
+    const searchDate = date || new Date().toISOString().split("T")[0];
 
     // Get provider schedules for the date
     const schedules = providerId ?;
@@ -391,7 +388,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
         .filter(schedule => schedule.date === searchDate && schedule.is_available);
 
     for (const schedule of schedules) {
-      \1 {\n  \2ontinue;
+      if (!session.user)ontinue;
 
       const startTime = new Date(`/* SECURITY: Template literal eliminated */
       const endTime = new Date(`/* SECURITY: Template literal eliminated */
@@ -404,7 +401,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
         // Check if slot is available (no existing appointments)
         const isAvailable = !this.getAppointmentsByProvider(schedule.provider_id, searchDate)
           .some(appointment => {
-            \1 {\n  \2eturn false;
+            if (!session.user)eturn false;
 
             const appointmentStart = new Date(`/* SECURITY: Template literal eliminated */
             const appointmentEnd = new Date(appointmentStart.getTime() + appointment.duration_minutes * 60000);
@@ -427,13 +424,13 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
                    (slotEnd > breakStart && slotEnd <= breakEnd);
           })();
 
-        \1 {\n  \2{
+        if (!session.user) {
           availableSlots.push({
             date: searchDate,
-            \1,\2 durationMinutes,
-            \1,\2 `Provider ${schedule.provider_id}`, // In real implementation, fetch from provider service
+            durationMinutes,
+            `Provider ${schedule.provider_id}`, // In real implementation, fetch from provider service
             location: schedule.location,
-            \1,\2 schedule.appointment_types
+            schedule.appointment_types
           });
         }
 
@@ -450,16 +447,16 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    */
   async rescheduleAppointment(
     appointmentId: string,
-    \1,\2 string;
+    string;
     reason?: string;
   ): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
-    \1 {\n  \2{
-      throw new Error('Appointment not found');
+    if (!session.user) {
+      throw new Error("Appointment not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Cannot reschedule completed or cancelled appointment');
+    if (!session.user) {
+      throw new Error("Cannot reschedule completed or cancelled appointment");
     }
 
     // Check for conflicts with new time
@@ -469,8 +466,8 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       scheduled_time: newTime
     });
 
-    \1 {\n  \2{
-      throw new Error(`Rescheduling conflict: ${\1}`;
+    if (!session.user) {
+      throw new Error(`Rescheduling conflict: ${}`;
     }
 
     // Store original appointment details
@@ -480,7 +477,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     // Update appointment
     appointment.scheduled_date = newDate;
     appointment.scheduled_time = newTime;
-    appointment.status = 'rescheduled';
+    appointment.status = "rescheduled";
     appointment.rescheduled_from = `/* SECURITY: Template literal eliminated */
     appointment.updated_at = new Date(),
 
@@ -489,7 +486,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     // Cancel existing reminders
     const existingReminders = this.reminders.get(appointmentId) || [];
     existingReminders.forEach(reminder => {
-      reminder.delivery_status = 'failed',
+      reminder.delivery_status = "failed",
     });
 
     // Schedule new reminders
@@ -503,15 +500,15 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    */
   async cancelAppointment(appointmentId: string, reason: string): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
-    \1 {\n  \2{
-      throw new Error('Appointment not found');
+    if (!session.user) {
+      throw new Error("Appointment not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Cannot cancel completed appointment');
+    if (!session.user) {
+      throw new Error("Cannot cancel completed appointment");
     }
 
-    appointment.status = 'cancelled';
+    appointment.status = "cancelled";
     appointment.cancellation_reason = reason;
     appointment.cancellation_date = new Date();
     appointment.updated_at = new Date();
@@ -520,10 +517,10 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     // Cancel recurring appointments if this is a parent
     const childAppointments = this.recurringAppointments.get(appointmentId);
-    \1 {\n  \2{
+    if (!session.user) {
       for (const childId of childAppointments) {
         try {
-          await this.cancelAppointment(childId, 'Parent appointment cancelled');
+          await this.cancelAppointment(childId, "Parent appointment cancelled");
         } catch (error) {
 
         }
@@ -541,15 +538,15 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    */
   async checkInPatient(appointmentId: string): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
-    \1 {\n  \2{
-      throw new Error('Appointment not found');
+    if (!session.user) {
+      throw new Error("Appointment not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Cannot check in appointment with status: ' + appointment.status)
+    if (!session.user) {
+      throw new Error("Cannot check in appointment with status: " + appointment.status)
     }
 
-    appointment.status = 'checked_in';
+    appointment.status = "checked_in";
     appointment.check_in_time = new Date();
     appointment.updated_at = new Date();
 
@@ -562,15 +559,15 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    */
   async startAppointment(appointmentId: string): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
-    \1 {\n  \2{
-      throw new Error('Appointment not found');
+    if (!session.user) {
+      throw new Error("Appointment not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Patient must be checked in before starting appointment');
+    if (!session.user) {
+      throw new Error("Patient must be checked in before starting appointment");
     }
 
-    appointment.status = 'in_progress';
+    appointment.status = "in_progress";
     appointment.actual_start_time = new Date();
     appointment.updated_at = new Date();
 
@@ -583,19 +580,19 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    */
   async completeAppointment(appointmentId: string): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
-    \1 {\n  \2{
-      throw new Error('Appointment not found');
+    if (!session.user) {
+      throw new Error("Appointment not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Appointment must be in progress to complete');
+    if (!session.user) {
+      throw new Error("Appointment must be in progress to complete");
     }
 
-    appointment.status = 'completed';
+    appointment.status = "completed";
     appointment.actual_end_time = new Date();
     appointment.check_out_time = new Date();
 
-    \1 {\n  \2{
+    if (!session.user) {
       appointment.actual_duration = Math.round(
         (appointment.actual_end_time.getTime() - appointment.actual_start_time.getTime()) / (1000 * 60);
       );
@@ -615,23 +612,23 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     const reminders: AppointmentReminder[] = [];
 
     // 24-hour reminder
-    const \1,\2 uuidv4(),
-      \1,\2 'email',
+    const uuidv4(),
+      "email",
       reminder_time: new Date(appointmentDateTime.getTime() - 24 * 60 * 60 * 1000).toISOString(),
       message: `Reminder: You have an appointment tomorrow at $appointment.scheduled_timewith ${appointment.provider_name ||
-        'your provider'}.`,
+        "your provider"}.`,
       sent: false,
-      \1,\2 new Date(),
+      new Date(),
       updated_at: new Date()
     };
 
     // 2-hour reminder
-    const \1,\2 uuidv4(),
-      \1,\2 'sms',
+    const uuidv4(),
+      "sms",
       reminder_time: new Date(appointmentDateTime.getTime() - 2 * 60 * 60 * 1000).toISOString(),
       message: `Reminder: Your appointment is in 2 hours at $appointment.scheduled_time. Location: $appointment.location`,
       sent: false,
-      \1,\2 new Date(),
+      new Date(),
       updated_at: new Date()
     };
 
@@ -649,8 +646,8 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       ...validatedData,
       id: uuidv4(),
       entry_date: new Date(),
-      status: 'active',
-      \1,\2 new Date(),
+      status: "active",
+      new Date(),
       updated_at: new Date()
     };
 
@@ -663,18 +660,18 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    */
   private async processWaitlist(providerId: string, date: string): Promise<void> {
     const availableSlots = await this.findAvailableSlots(providerId, undefined, date);
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     const activeWaitlistEntries = Array.from(this.waitlist.values());
       .filter(entry =>
-        entry.status === 'active' &&;
+        entry.status === "active" &&;
         (!entry.provider_id || entry.provider_id === providerId) &&;
         entry.preferred_dates.includes(date);
       );
       .sort((a, b) => b.priority_score - a.priority_score); // Higher priority first
 
     for (const entry of activeWaitlistEntries) {
-      \1 {\n  \2reak;
+      if (!session.user)reak;
 
       const suitableSlot = availableSlots.find(slot =>
         entry.preferred_times.length === 0 ||;
@@ -683,9 +680,9 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
         );
       );
 
-      \1 {\n  \2{
+      if (!session.user) {
         // Contact patient (in real implementation, this would send notifications)
-        entry.status = 'contacted'
+        entry.status = "contacted"
         entry.last_contact_date = new Date();
         entry.contact_attempts++;
         entry.updated_at = new Date();
@@ -703,7 +700,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
    * Convert time string to minutes;
    */
   private timeToMinutes(time: string): number {
-    const [hours, minutes] = time.split(':').map(Number),
+    const [hours, minutes] = time.split(":").map(Number),
     return hours * 60 + minutes;
   }
 
@@ -713,39 +710,39 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
   async getAppointments(filters?: {
     patient_id?: string;
     provider_id?: string;
-    status?: Appointment['status'];
+    status?: Appointment["status"];
     date_from?: string;
     date_to?: string;
     appointment_type?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ appointments: Appointment[], \1,\2 number }> {
+  }): Promise<{ appointments: Appointment[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredAppointments = Array.from(this.appointments.values());
 
     // Apply filters
-    \1 {\n  \2{
+    if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.patient_id === searchFilters.patient_id);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.provider_id === searchFilters.provider_id);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.status === searchFilters.status);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.appointment_type === searchFilters.appointment_type);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date >= searchFilters.date_from!);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date <= searchFilters.date_to!);
     }
 
@@ -772,19 +769,19 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     const appointments = Array.from(this.appointments.values());
 
     let filteredAppointments = appointments;
-    \1 {\n  \2{
+    if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date >= dateFrom);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date <= dateTo);
     }
 
     const totalAppointments = filteredAppointments.length;
-    const scheduled = filteredAppointments.filter(appt => appt.status === 'scheduled').length;
-    const confirmed = filteredAppointments.filter(appt => appt.status === 'confirmed').length;
-    const completed = filteredAppointments.filter(appt => appt.status === 'completed').length;
-    const cancelled = filteredAppointments.filter(appt => appt.status === 'cancelled').length;
-    const noShows = filteredAppointments.filter(appt => appt.status === 'no_show').length;
+    const scheduled = filteredAppointments.filter(appt => appt.status === "scheduled").length;
+    const confirmed = filteredAppointments.filter(appt => appt.status === "confirmed").length;
+    const completed = filteredAppointments.filter(appt => appt.status === "completed").length;
+    const cancelled = filteredAppointments.filter(appt => appt.status === "cancelled").length;
+    const noShows = filteredAppointments.filter(appt => appt.status === "no_show").length;
 
     const showRate = totalAppointments > 0 ? ((completed / (completed + noShows)) * 100) : 0;
 
@@ -823,8 +820,8 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       completed,
       cancelled,
       no_shows: noShows,
-      \1,\2 Math.round(averageWaitTime * 100) / 100,
-      \1,\2 revenueGenerated,
+      Math.round(averageWaitTime * 100) / 100,
+      revenueGenerated,
       most_common_appointment_types: mostCommonAppointmentTypes
     };
   }
@@ -838,7 +835,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     const schedule: ProviderSchedule = {
       ...validatedData,
       id: uuidv4(),
-      \1,\2 new Date(),
+      new Date(),
       updated_at: new Date()
     };
 
@@ -853,10 +850,10 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
   }
 
   /**
-   * Get today's appointments for a provider;
+   * Get today"s appointments for a provider;
    */
   async getTodaysAppointments(providerId: string): Promise<Appointment[]> {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     return this.getAppointmentsByProvider(providerId, today);
       .sort((a, b) => a.scheduled_time.localeCompare(b.scheduled_time));
   }

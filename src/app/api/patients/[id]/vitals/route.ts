@@ -30,12 +30,12 @@ export const _GET = async (
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const { id: patientId } = await params;
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json(
             { message: "Patient ID is required" },
             { status: 400 }
@@ -62,7 +62,7 @@ export const _GET = async (
             "SELECT patient_id FROM Patients WHERE patient_id = ?";
         ).bind(patientId).first<patient_id: number >();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Patient not found" },
                 { status: 404 }
@@ -81,19 +81,19 @@ export const _GET = async (
         let countQuery = `SELECT COUNT(*) as total FROM PatientVitals WHERE patient_id = ?`;
         const countParameters: (string | number)[] = [Number.parseInt(patientId)];
 
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND pv.visit_id = ?";
             queryParameters.push(Number.parseInt(visitIdFilter));
             countQuery += " AND visit_id = ?";
             countParameters.push(Number.parseInt(visitIdFilter));
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND DATE(pv.record_datetime) >= ?";
             queryParameters.push(dateFromFilter);
             countQuery += " AND DATE(record_datetime) >= ?";
             countParameters.push(dateFromFilter);
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND DATE(pv.record_datetime) <= ?";
             queryParameters.push(dateToFilter);
             countQuery += " AND DATE(record_datetime) <= ?";
@@ -124,7 +124,7 @@ export const _GET = async (
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(
@@ -140,15 +140,15 @@ export const _POST = async (
     { params }: { params: Promise<{ id: string }> }
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    \1 {\n  \2{ // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
     const { id: patientId } = await params;
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json(
             { message: "Patient ID is required" },
             { status: 400 }
@@ -160,7 +160,7 @@ export const _POST = async (
             "SELECT patient_id FROM Patients WHERE patient_id = ?";
         ).bind(patientId).first<{ patient_id: number }>();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Patient not found" },
                 { status: 404 }
@@ -170,7 +170,7 @@ export const _POST = async (
         const body = await request.json();
         const validationResult = vitalCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
@@ -182,7 +182,7 @@ export const _POST = async (
         const userId = session.user.userId; // session.user is now guaranteed to be defined
 
         let bmi: number | undefined | null = vitalData.bmi;
-        \1 {\n  \2{
+        if (!session.user) {
             const heightM = vitalData.height_cm / 100;
             bmi = parseFloat((vitalData.weight_kg / (heightM * heightM)).toFixed(2));
         }
@@ -214,7 +214,7 @@ export const _POST = async (
 
         const insertResult = await insertStmt.run() as D1ResultWithMeta;
 
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to record patient vitals");
         }
@@ -229,7 +229,7 @@ export const _POST = async (
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {

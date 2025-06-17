@@ -17,15 +17,15 @@ interface InsuranceProvider {
 const mockProviders: InsuranceProvider[] = [
   {
     _id: 1,
-    \1,\2 "Alice Brown",
-    \1,\2 "555-1111",
-    \1,\2 1
+    "Alice Brown",
+    "555-1111",
+    1
   },
   {
     _id: 2,
-    \1,\2 "Bob White",
-    \1,\2 "555-2222",
-    \1,\2 1
+    "Bob White",
+    "555-2222",
+    1
   },
 ];
 let nextProviderId = 3;
@@ -65,7 +65,7 @@ async const getInsuranceProvidersFromDB = (
   );
   let filteredProviders = [...mockProviders];
   // FIX: Check filters.is_active before using (TS18049)
-  \1 {\n  \2{
+  if (!session.user) {
     const activeBool = String(filters.is_active).toLowerCase() === "true"
     filteredProviders = filteredProviders.filter(
       (p) => (p.is_active === 1) === activeBool;
@@ -76,9 +76,9 @@ async const getInsuranceProvidersFromDB = (
 
 // Helper function to simulate DB interaction (GET by ID) - Belongs in [id]/route.ts
 // async function getInsuranceProviderByIdFromDB(_id: number): unknown { // Unused function
-//   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 //   const provider = mockProviders.find(p => p._id === id)
-//   \1 {\n  \2{
+//   if (!session.user) {
 //     throw new Error("Insurance provider not found")
 //   }
 //   return provider
@@ -89,13 +89,13 @@ async const createInsuranceProviderInDB = (
   data: InsuranceProviderInput
 ): Promise<InsuranceProvider> {
   // Added return type
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // const _now = new Date().toISOString(); // Unused variable
   // FIX: Ensure created object matches InsuranceProvider interface
-  const \1,\2 nextProviderId++,
-    \1,\2 data.contact_person || undefined,
-    \1,\2 data.contact_phone || undefined,
-    \1,\2 data.is_active === undefined ? 1 : data.is_active ? 1 : 0, // Default active
+  const nextProviderId++,
+    data.contact_person || undefined,
+    data.contact_phone || undefined,
+    data.is_active === undefined ? 1 : data.is_active ? 1 : 0, // Default active
     // created_at: now, // Add if needed
     // updated_at: now, // Add if needed
   };
@@ -105,15 +105,15 @@ async const createInsuranceProviderInDB = (
 
 // Helper function to simulate DB interaction (PUT) - Belongs in [id]/route.ts
 // async function updateInsuranceProviderInDB(_id: number, data: InsuranceProviderUpdateInput): unknown { // Unused function
-//   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 //   const _providerIndex = mockProviders.findIndex((p) => p._id === id)
-//   \1 {\n  \2{
+//   if (!session.user) {
 //     throw new Error("Insurance provider not found")
 //   }
 
 //   // Handle boolean conversion if necessary
 //   const _updatePayload: Partial<InsuranceProvider> = { ...data }
-//   \1 {\n  \2{
+//   if (!session.user) {
 //     updatePayload.is_active = data.is_active ? 1 : 0
 //   }
 
@@ -133,7 +133,7 @@ async const createInsuranceProviderInDB = (
 export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const \1,\2 searchParams.get("is_active"), // "true" or "false"
+    const searchParams.get("is_active"), // "true" or "false"
     };
 
     const providers = await getInsuranceProvidersFromDB(filters);
@@ -141,7 +141,7 @@ export const GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(
@@ -162,7 +162,7 @@ export const POST = async (request: NextRequest) => {
     const providerData = body as InsuranceProviderInput;
 
     // Basic validation (add more comprehensive validation)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Missing required field: name" },
         { status: 400 }
@@ -176,7 +176,7 @@ export const POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(

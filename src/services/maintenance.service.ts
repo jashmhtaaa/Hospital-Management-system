@@ -1,27 +1,27 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 // Create enums to match Prisma schema
 export enum MaintenanceRequestStatus {
-  PENDING = 'PENDING',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED',
-\1\n\nexport \2 MaintenanceRequestPriority {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  URGENT = 'URGENT',
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
+\n\nexport MaintenanceRequestPriority {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  URGENT = "URGENT",
 }
 
 // Validation schemas
 export const createMaintenanceRequestSchema = z.object({
   equipmentId: z.string().optional(),
-  description: z.string().min(1, 'Description is required'),
-  reportedBy: z.string().min(1, 'Reporter ID is required'),
+  description: z.string().min(1, "Description is required"),
+  reportedBy: z.string().min(1, "Reporter ID is required"),
   assignedToId: z.string().optional().nullable(),
   status: z.nativeEnum(MaintenanceRequestStatus).default(MaintenanceRequestStatus.PENDING),
   priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM),
-  requestedAt: z.date().default(() => \1,  completedAt: z.date().optional().nullable(),
+  requestedAt: z.date().default(() => ,  completedAt: z.date().optional().nullable(),
   notes: z.string().optional()
 });
 
@@ -29,23 +29,22 @@ export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.par
   id: z.string()
 });
 
-export type CreateMaintenanceRequestInput = z.infer\1>
-export type UpdateMaintenanceRequestInput = z.infer\1>
+export type CreateMaintenanceRequestInput = z.infer>
+export type UpdateMaintenanceRequestInput = z.infer>
 
 // Import prisma client
-import { prisma } from '../lib/prisma';
+import { prisma } from "../lib/prisma";
 
 /**
  * Service class for managing maintenance requests;
  */
-\1
 }
       });
 
       return request;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -66,20 +65,20 @@ import { prisma } from '../lib/prisma';
     try {
       const where: unknown = {};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.priority = filters.priority;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.equipmentId = filters.equipmentId;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.reportedBy = filters.reportedBy;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.assignedToId = filters.assignedToId;
         }
       }
@@ -87,11 +86,11 @@ import { prisma } from '../lib/prisma';
       const requests = await prisma.maintenanceRequest.findMany({
         where,
         orderBy: [
-          { priority: 'desc' },
-          { requestedAt: 'asc' },
+          { priority: "desc" },
+          { requestedAt: "asc" },
         ],
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -113,8 +112,8 @@ import { prisma } from '../lib/prisma';
     try {
       const request = await prisma.maintenanceRequest.findUnique({
         where: { id },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -145,8 +144,8 @@ import { prisma } from '../lib/prisma';
       const request = await prisma.maintenanceRequest.update({
         where: { id },
         data: updateData,
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -155,8 +154,8 @@ import { prisma } from '../lib/prisma';
 
       return request;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -189,11 +188,11 @@ import { prisma } from '../lib/prisma';
     try {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
-        \1,\2 userId,
+        userId,
           status: MaintenanceRequestStatus.IN_PROGRESS
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -215,11 +214,11 @@ import { prisma } from '../lib/prisma';
     try {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
-        \1,\2 MaintenanceRequestStatus.COMPLETED,
+        MaintenanceRequestStatus.COMPLETED,
           completedAt: new Date()
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -241,10 +240,10 @@ import { prisma } from '../lib/prisma';
     try {
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
-        \1,\2 MaintenanceRequestStatus.CANCELLED
+        MaintenanceRequestStatus.CANCELLED
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },

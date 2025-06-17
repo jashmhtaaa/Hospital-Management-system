@@ -1,8 +1,8 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { attendanceService } from '@/lib/hr/attendance-service';
+import { attendanceService } from "@/lib/hr/attendance-service";
 // Schema for check-out request
 const checkOutSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
@@ -24,7 +24,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = checkOutSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -35,9 +35,9 @@ export const _POST = async (request: NextRequest) => {
 
     // Verify biometric data if provided
     let biometricVerified = false;
-    \1 {\n  \2{
+    if (!session.user) {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: "Biometric verification failed" },
           { status: 401 }

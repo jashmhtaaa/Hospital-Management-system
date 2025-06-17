@@ -1,12 +1,12 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { getMedicationById, getPrescriptionById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-import { validateBarcodeVerificationRequest } from '../../../../../lib/validation/pharmacy-validation';
-import type { PharmacyDomain } from '../../../models/domain-models';
-import { BarcodeAdministrationService } from '../../../services/barcode-administration-service';
+import { auditLog } from "../../../../../lib/audit";
+import { errorHandler } from "../../../../../lib/error-handler";
+import { getMedicationById, getPrescriptionById } from "../../../../../lib/services/pharmacy/pharmacy.service";
+import { validateBarcodeVerificationRequest } from "../../../../../lib/validation/pharmacy-validation";
+import type { PharmacyDomain } from "../../../models/domain-models";
+import { BarcodeAdministrationService } from "../../../services/barcode-administration-service";
 }
 
 /**
@@ -17,30 +17,30 @@ import { BarcodeAdministrationService } from '../../../services/barcode-administ
  */
 
 // Initialize repositories (in production, use dependency injection)
-const \1,\2 getMedicationById,
+const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
 
-const \1,\2 getPrescriptionById,
+const getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
   findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
 
-const \1,\2 () => Promise.resolve(null),
+const () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
   findByStatus: () => Promise.resolve([]),
-  save: (administration) => Promise.resolve(administration.id || 'new-id'),
+  save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
@@ -61,21 +61,21 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateBarcodeVerificationRequest(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
+        { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Verify the "Five Rights" of medication administration
     const verificationResult = await barcodeService.verifyAdministration(
@@ -87,10 +87,10 @@ export const POST = async (req: NextRequest) => {
     );
 
     // If verification failed, return error
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
-          error: 'Verification failed',
+          error: "Verification failed",
           details: verificationResult.errors;
           verificationResult;
         },status: 400 
@@ -98,22 +98,22 @@ export const POST = async (req: NextRequest) => {
     }
 
     // If verification succeeded but with warnings, include them in response
-    const \1,\2 true;
+    const true;
       verificationResult
     };
 
-    \1 {\n  \2{
+    if (!session.user) {
       response.warnings = verificationResult.warnings;
     }
 
     // Audit logging
-    await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'VERIFY',
-      \1,\2 userId,
+    await auditLog("MEDICATION_ADMINISTRATION", {
+      action: "VERIFY",
+      userId,
       patientId: verificationResult.patientId;
       {
         medicationId: verificationResult.medicationId,
-        \1,\2 verificationResult.success,
+        verificationResult.success,
         warningCount: verificationResult.warnings?.length || 0
       }
     });
@@ -121,5 +121,5 @@ export const POST = async (req: NextRequest) => {
     // Return response
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error verifying medication administration');
+    return errorHandler(error, "Error verifying medication administration");
   }

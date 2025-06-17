@@ -17,20 +17,20 @@ interface OccupancyResult {
 // Define structure for recent admissions row
 interface RecentAdmission {
   id: number | string,
-  \1,\2 string; // Assuming ISO string or similar
+  string; // Assuming ISO string or similar
   status: string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string,
+  string,
+  string,
+  string,
   doctor_last_name: string
 }
 
-// FIX: Renamed request to _request as it's unused
+// FIX: Renamed request to _request as it"s unused
 export const _GET = async (/* _request: unknown */) => { // Removed unused parameter
   try {
     const session = await getSession();
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -40,7 +40,7 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
     // FIX: Removed generic type argument from db.query
     // FIX: Use type assertion on the result results
     const activeAdmissionsResult = await database.query(`;
-      SELECT COUNT(*) as count FROM admissions WHERE status = 'active';
+      SELECT COUNT(*) as count FROM admissions WHERE status = "active";
     `);
     const activeAdmissionsCount = Number.parseInt(
       String(
@@ -54,7 +54,7 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
     // FIX: Removed generic type argument from db.query
     // FIX: Use type assertion on the result results
     const availableBedsResult = await database.query(`;
-      SELECT COUNT(*) as count FROM beds WHERE status = 'available';
+      SELECT COUNT(*) as count FROM beds WHERE status = "available";
     `);
     const availableBedsCount = Number.parseInt(
       String(
@@ -68,7 +68,7 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
     // FIX: Use type assertion on the result results
     const bedOccupancyResult = await database.query(`;
       SELECT;
-        (SELECT COUNT(*) FROM beds WHERE status = 'occupied') as occupied,
+        (SELECT COUNT(*) FROM beds WHERE status = "occupied') as occupied,
         (SELECT COUNT(*) FROM beds) as total;
     `);
 
@@ -76,7 +76,7 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
     const occupancyRow = bedOccupancyResult.results?.[0] as // Changed .rows to .results
       | OccupancyResult;
       | undefined;
-    \1 {\n  \2{
+    if (!session.user) {
       const occupied = Number.parseInt(String(occupancyRow.occupied ?? 0), 10);
       const total = Number.parseInt(String(occupancyRow.total ?? 0), 10);
       occupancyRate = total > 0 ? Math.round((occupied / total) * 100) : 0;
@@ -105,13 +105,13 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
 
     return NextResponse.json({
       activeAdmissions: activeAdmissionsCount,
-      \1,\2 occupancyRate,
+      occupancyRate,
       recentAdmissions: recentAdmissions, // Use the correctly typed variable
     });
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(

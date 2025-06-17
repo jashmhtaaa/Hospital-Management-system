@@ -1,14 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 
-import { getEncryptionService } from '../../services/encryption_service_secure';
+import { getEncryptionService } from "../../services/encryption_service_secure";
 /**
  * Electronic Health Records Repository
  * Provides persistent storage for EHR data with encryption support
  */
 
 // Types for EHR entities
-\1
 }
   };
 
@@ -24,24 +23,23 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
   updated_at?: Date;
   created_by: string;
   updated_by?: string;
-  status: 'draft' | 'final' | 'amended' | 'corrected',
+  status: "draft" | "final" | "amended" | "corrected",
   version: number
-\1
 }
   }[];
 
   // Activities
-  \1,\2 string,
+  string,
     title: string
     description?: string,
-    status: 'not_started' | 'scheduled' | 'in_progress' | 'on_hold' | 'completed' | 'cancelled';
+    status: "not_started" | "scheduled" | "in_progress" | "on_hold" | "completed" | "cancelled";
     scheduled_date?: Date;
-    category: 'medication' | 'procedure' | 'encounter' | 'observation' | 'other'
+    category: "medication" | "procedure" | "encounter" | "observation" | "other"
   }[];
 
   // Care team
-  \1,\2 string,
-    \1,\2 Date;
+  string,
+    Date;
     period_end?: Date;
   }[];
 
@@ -56,7 +54,6 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
   updated_by?: string;
   period_start: Date;
   period_end?: Date;
-\1
 }
   }[];
 
@@ -67,7 +64,6 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
   updated_by?: string;
   published_date?: Date;
   review_date?: Date;
-\1
 }
   }
 
@@ -84,8 +80,8 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
         data: {
           ...encryptedNote,
           vital_signs: note.vital_signs ? JSON.stringify(note.vital_signs) : null,
-          \1,\2 note.snomed_codes ? JSON.stringify(note.snomed_codes) : null,
-          \1,\2 new Date(),
+          note.snomed_codes ? JSON.stringify(note.snomed_codes) : null,
+          new Date(),
           updated_at: new Date(),
           version: 1
         }
@@ -93,7 +89,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 
       return this.decryptClinicalNote(created);
     } catch (error) {
-      throw new Error(`Failed to create clinical note: ${\1}`;
+      throw new Error(`Failed to create clinical note: ${}`;
     }
   }
 
@@ -103,10 +99,10 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
         where: { id }
       });
 
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
       return this.decryptClinicalNote(note);
     } catch (error) {
-      throw new Error(`Failed to get clinical note: ${\1}`;
+      throw new Error(`Failed to get clinical note: ${}`;
     }
   }
 
@@ -114,12 +110,12 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
     try {
       const notes = await this.prisma.clinicalNote.findMany({
         where: { patient_id: patientId },
-        orderBy: { created_at: 'desc' }
+        orderBy: { created_at: "desc" }
       });
 
       return Promise.all(notes.map(note => this.decryptClinicalNote(note)));
     } catch (error) {
-      throw new Error(`Failed to get clinical notes for patient: ${\1}`;
+      throw new Error(`Failed to get clinical notes for patient: ${}`;
     }
   }
 
@@ -136,15 +132,15 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
         data: {
           ...encryptedUpdates,
           vital_signs: updates.vital_signs ? JSON.stringify(updates.vital_signs) : undefined,
-          \1,\2 updates.snomed_codes ? JSON.stringify(updates.snomed_codes) : undefined,
-          \1,\2 new Date(),
+          updates.snomed_codes ? JSON.stringify(updates.snomed_codes) : undefined,
+          new Date(),
           version: increment: 1 
         }
       });
 
       return this.decryptClinicalNote(updated);
     } catch (error) {
-      throw new Error(`Failed to update clinical note: ${\1}`;
+      throw new Error(`Failed to update clinical note: ${}`;
     }
   }
 
@@ -154,7 +150,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
         where: { id }
       });
     } catch (error) {
-      throw new Error(`Failed to delete clinical note: ${\1}`;
+      throw new Error(`Failed to delete clinical note: ${}`;
     }
   }
 
@@ -167,7 +163,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
           goals: JSON.stringify(carePlan.goals),
           activities: JSON.stringify(carePlan.activities),
           care_team: JSON.stringify(carePlan.care_team),
-          \1,\2 carePlan.snomed_codes ? JSON.stringify(carePlan.snomed_codes) : null,
+          carePlan.snomed_codes ? JSON.stringify(carePlan.snomed_codes) : null,
           created_at: new Date(),
           updated_at: new Date()
         }
@@ -175,7 +171,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 
       return this.deserializeCarePlan(created);
     } catch (error) {
-      throw new Error(`Failed to create care plan: ${\1}`;
+      throw new Error(`Failed to create care plan: ${}`;
     }
   }
 
@@ -185,10 +181,10 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
         where: { id }
       });
 
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
       return this.deserializeCarePlan(carePlan);
     } catch (error) {
-      throw new Error(`Failed to get care plan: ${\1}`;
+      throw new Error(`Failed to get care plan: ${}`;
     }
   }
 
@@ -196,12 +192,12 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
     try {
       const carePlans = await this.prisma.carePlan.findMany({
         where: { patient_id: patientId },
-        orderBy: { created_at: 'desc' }
+        orderBy: { created_at: "desc" }
       });
 
       return carePlans.map(cp => this.deserializeCarePlan(cp));
     } catch (error) {
-      throw new Error(`Failed to get care plans for patient: ${\1}`;
+      throw new Error(`Failed to get care plans for patient: ${}`;
     }
   }
 
@@ -224,7 +220,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 
       return this.decryptProblemListItem(created);
     } catch (error) {
-      throw new Error(`Failed to create problem list item: ${\1}`;
+      throw new Error(`Failed to create problem list item: ${}`;
     }
   }
 
@@ -232,12 +228,12 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
     try {
       const items = await this.prisma.problemListItem.findMany({
         where: { patient_id: patientId },
-        orderBy: { created_at: 'desc' }
+        orderBy: { created_at: "desc" }
       });
 
       return Promise.all(items.map(item => this.decryptProblemListItem(item)));
     } catch (error) {
-      throw new Error(`Failed to get problem list for patient: ${\1}`;
+      throw new Error(`Failed to get problem list for patient: ${}`;
     }
   }
 
@@ -248,7 +244,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
         data: {
           ...guideline,
           icd10_codes: guideline.icd10_codes ? JSON.stringify(guideline.icd10_codes) : null,
-          \1,\2 JSON.stringify(guideline.decision_support_rules),
+          JSON.stringify(guideline.decision_support_rules),
           created_at: new Date(),
           updated_at: new Date()
         }
@@ -256,7 +252,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 
       return this.deserializeClinicalGuideline(created);
     } catch (error) {
-      throw new Error(`Failed to create clinical guideline: ${\1}`;
+      throw new Error(`Failed to create clinical guideline: ${}`;
     }
   }
 
@@ -267,18 +263,18 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
     try {
       const where: unknown = {};
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.status = filters.status;
       }
 
       const guidelines = await this.prisma.clinicalGuideline.findMany({
         where,
-        orderBy: { created_at: 'desc' }
+        orderBy: { created_at: "desc" }
       });
 
       return guidelines.map(g => this.deserializeClinicalGuideline(g));
     } catch (error) {
-      throw new Error(`Failed to get clinical guidelines: ${\1}`;
+      throw new Error(`Failed to get clinical guidelines: ${}`;
     }
   }
 
@@ -289,7 +285,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
     return {
       ...decrypted,
       vital_signs: note.vital_signs ? JSON.parse(note.vital_signs) : undefined,
-      \1,\2 note.snomed_codes ? JSON.parse(note.snomed_codes) : undefined,
+      note.snomed_codes ? JSON.parse(note.snomed_codes) : undefined,
       cpt_codes: note.cpt_codes ? JSON.parse(note.cpt_codes) : undefined
     };
   }
@@ -304,7 +300,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
       goals: JSON.parse(carePlan.goals),
       activities: JSON.parse(carePlan.activities),
       care_team: JSON.parse(carePlan.care_team),
-      \1,\2 carePlan.snomed_codes ? JSON.parse(carePlan.snomed_codes) : undefined
+      carePlan.snomed_codes ? JSON.parse(carePlan.snomed_codes) : undefined
     };
   }
 
@@ -312,7 +308,7 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
     return {
       ...guideline,
       icd10_codes: guideline.icd10_codes ? JSON.parse(guideline.icd10_codes) : undefined,
-      \1,\2 JSON.parse(guideline.decision_support_rules)
+      JSON.parse(guideline.decision_support_rules)
     };
   }
 

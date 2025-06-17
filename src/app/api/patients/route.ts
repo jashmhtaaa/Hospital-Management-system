@@ -48,7 +48,7 @@ async const generateMRN = (db: D1Database): Promise<string> {
 // GET /api/patients - Fetch list of patients (with filtering/pagination/search)
 export const _GET = async (request: NextRequest) => {
     const session = await getSession()
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
@@ -78,7 +78,7 @@ export const _GET = async (request: NextRequest) => {
         let countQuery = `SELECT COUNT(*) as total FROM Patients WHERE 1=1`;
         const countParameters: (string | number)[] = [];
 
-        \1 {\n  \2{
+        if (!session.user) {
             const likeTerm = `%${searchTerm}%`;
             query += " AND (mrn LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR contact_number LIKE ? OR email LIKE ?)";
             queryParameters.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
@@ -111,7 +111,7 @@ export const _GET = async (request: NextRequest) => {
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(
@@ -124,7 +124,7 @@ export const _GET = async (request: NextRequest) => {
 // POST /api/patients - Create a new patient (internal use, registration is separate)
 export const _POST = async (request: NextRequest) => {
     const session = await getSession()
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     // Add role check if needed
@@ -133,7 +133,7 @@ export const _POST = async (request: NextRequest) => {
         const body = await request.json();
         const validationResult = patientCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
@@ -186,7 +186,7 @@ export const _POST = async (request: NextRequest) => {
 
         const insertResult = await insertStmt.run() as D1ResultWithMeta; // Use D1ResultWithMeta
 
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to create patient record");
         }
@@ -197,7 +197,7 @@ export const _POST = async (request: NextRequest) => {
         const fetchNewQuery = `SELECT * FROM Patients WHERE patient_id = ?`;
         const newPatient = await DB.prepare(fetchNewQuery).bind(newPatientId).first<Patient>();
 
-        \1 {\n  \2{
+        if (!session.user) {
             // This shouldn't happen if insert succeeded, but handle defensively
 
             throw new Error("Failed to retrieve newly created patient data");
@@ -208,7 +208,7 @@ export const _POST = async (request: NextRequest) => {
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(

@@ -1,5 +1,5 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 }
 
 /**
@@ -9,31 +9,31 @@ import { z } from 'zod';
 
 // Operating Theatre Schemas
 export const SurgicalProcedureSchema = z.object({
-  patient_id: z.string().min(1, 'Patient ID is required'),
-  surgeon_id: z.string().min(1, 'Primary surgeon is required'),
+  patient_id: z.string().min(1, "Patient ID is required"),
+  surgeon_id: z.string().min(1, "Primary surgeon is required"),
   anesthesiologist_id: z.string().optional(),
-  procedure_name: z.string().min(1, 'Procedure name is required'),
-  cpt_codes: z.array(z.string()).min(1, 'At least one CPT code is required'),
-  icd10_diagnosis_codes: z.array(z.string()).min(1, 'At least one diagnosis code is required'),
-  procedure_type: z.enum(['elective', 'urgent', 'emergent', 'trauma']),
-  surgical_specialty: z.string().min(1, 'Surgical specialty is required'),
+  procedure_name: z.string().min(1, "Procedure name is required"),
+  cpt_codes: z.array(z.string()).min(1, "At least one CPT code is required"),
+  icd10_diagnosis_codes: z.array(z.string()).min(1, "At least one diagnosis code is required"),
+  procedure_type: z.enum(["elective", "urgent", "emergent", "trauma"]),
+  surgical_specialty: z.string().min(1, "Surgical specialty is required"),
   estimated_duration: z.number().min(30).max(720), // 30 minutes to 12 hours
-  complexity_level: z.enum(['low', 'moderate', 'high', 'complex']),
-  urgency: z.enum(['routine', 'urgent', 'stat', 'emergent']).default('routine'),
-  scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid scheduled date'),
-  scheduled_start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
+  complexity_level: z.enum(["low", "moderate", "high", "complex"]),
+  urgency: z.enum(["routine", "urgent", "stat", "emergent"]).default("routine"),
+  scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid scheduled date"),
+  scheduled_start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
   or_room_preference: z.string().optional(),
-  anesthesia_type: z.enum(['general', 'regional', 'local', 'sedation', 'none']),
+  anesthesia_type: z.enum(["general", "regional", "local", "sedation", "none"]),
   position: z.string().optional(),
   special_equipment: z.array(z.string()).default([]),
   special_instructions: z.string().optional(),
   preop_requirements: z.array(z.string()).default([]),
-  postop_destination: z.enum(['pacu', 'icu', 'ward', 'discharge']),
+  postop_destination: z.enum(["pacu", "icu", "ward", "discharge"]),
   blood_type_crossmatch: z.boolean().default(false),
   units_blood_crossmatched: z.number().optional(),
   consent_obtained: z.boolean().default(false),
   consent_date: z.string().optional(),
-  laterality: z.enum(['left', 'right', 'bilateral', 'n_a']).default('n_a'),
+  laterality: z.enum(["left", "right", "bilateral", "n_a"]).default("n_a"),
   site_marking_required: z.boolean().default(false),
   site_marked: z.boolean().default(false),
   timeout_performed: z.boolean().default(false),
@@ -43,27 +43,27 @@ export const SurgicalProcedureSchema = z.object({
 });
 
 export const ORScheduleSchema = z.object({
-  or_room_id: z.string().min(1, 'OR room ID is required'),
-  date: z.string().refine((date) => !isNaN(Date.parse(date)), 'Invalid date'),
-  start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
-  end_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
+  or_room_id: z.string().min(1, "OR room ID is required"),
+  date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid date"),
+  start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
+  end_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
   turnover_time: z.number().min(15).max(60).default(30), // minutes
   room_setup_time: z.number().min(15).max(60).default(30), // minutes
   cleanup_time: z.number().min(15).max(60).default(30), // minutes
-  block_type: z.enum(['scheduled', 'emergency', 'add_on', 'blocked']),
+  block_type: z.enum(["scheduled", "emergency", "add_on", "blocked"]),
   assigned_surgeon: z.string().optional(),
   assigned_team: z.array(z.string()).default([]),
   notes: z.string().optional()
 });
 
 export const SurgicalTeamSchema = z.object({
-  surgery_id: z.string().min(1, 'Surgery ID is required'),
-  primary_surgeon: z.string().min(1, 'Primary surgeon is required'),
+  surgery_id: z.string().min(1, "Surgery ID is required"),
+  primary_surgeon: z.string().min(1, "Primary surgeon is required"),
   assistant_surgeons: z.array(z.string()).default([]),
   anesthesiologist: z.string().optional(),
   anesthesia_resident: z.string().optional(),
-  circulating_nurse: z.string().min(1, 'Circulating nurse is required'),
-  scrub_nurse: z.string().min(1, 'Scrub nurse is required'),
+  circulating_nurse: z.string().min(1, "Circulating nurse is required"),
+  scrub_nurse: z.string().min(1, "Scrub nurse is required"),
   anesthesia_technician: z.string().optional(),
   surgical_technician: z.string().optional(),
   residents: z.array(z.string()).default([]),
@@ -72,15 +72,15 @@ export const SurgicalTeamSchema = z.object({
 });
 
 export const SurgicalInstrumentSchema = z.object({
-  instrument_name: z.string().min(1, 'Instrument name is required'),
-  instrument_id: z.string().min(1, 'Instrument ID is required'),
-  category: z.enum(['cutting', 'grasping', 'hemostatic', 'retractor', 'suction', 'electrocautery', 'specialized']),
+  instrument_name: z.string().min(1, "Instrument name is required"),
+  instrument_id: z.string().min(1, "Instrument ID is required"),
+  category: z.enum(["cutting", "grasping", "hemostatic", "retractor", "suction", "electrocautery", "specialized"]),
   manufacturer: z.string().optional(),
   model: z.string().optional(),
   serial_number: z.string().optional(),
-  sterilization_status: z.enum(['sterile', 'dirty', 'cleaning', 'sterilizing', 'out_of_service']),
+  sterilization_status: z.enum(["sterile", "dirty", "cleaning", "sterilizing", "out_of_service"]),
   last_sterilized: z.string().optional(),
-  sterilization_method: z.enum(['steam', 'ethylene_oxide', 'plasma', 'radiation']).optional(),
+  sterilization_method: z.enum(["steam", "ethylene_oxide", "plasma", "radiation"]).optional(),
   expiry_date: z.string().optional(),
   maintenance_due: z.string().optional(),
   location: z.string().optional(),
@@ -92,32 +92,32 @@ export const SurgicalInstrumentSchema = z.object({
 });
 
 export const AnesthesiaRecordSchema = z.object({
-  surgery_id: z.string().min(1, 'Surgery ID is required'),
-  anesthesiologist_id: z.string().min(1, 'Anesthesiologist ID is required'),
-  anesthesia_type: z.enum(['general', 'regional', 'local', 'sedation', 'combination']),
-  asa_classification: z.enum(['I', 'II', 'III', 'IV', 'V', 'VI']),
+  surgery_id: z.string().min(1, "Surgery ID is required"),
+  anesthesiologist_id: z.string().min(1, "Anesthesiologist ID is required"),
+  anesthesia_type: z.enum(["general", "regional", "local", "sedation", "combination"]),
+  asa_classification: z.enum(["I", "II", "III", "IV", "V", "VI"]),
   preop_assessment: z.string(),
   allergies: z.array(z.string()).default([]),
   medications: z.array(z.string()).default([]),
   fasting_status: z.string(),
   airway_assessment: z.string(),
-  \1,\2 z.string(),
+  z.string(),
     dose: z.string(),
     time: z.string()
   })).default([]),
-  \1,\2 z.string(),
+  z.string(),
     concentration: z.string(),
     duration: z.string()
   })).default([]),
-  \1,\2 z.string(),
+  z.string(),
     dose: z.string(),
     time: z.string()
   })).default([]),
-  \1,\2 z.string(),
+  z.string(),
     dose: z.string(),
     time: z.string()
   })).default([]),
-  \1,\2 z.string(),
+  z.string(),
     event: z.string(),
     intervention: z.string().optional()
   })).default([]),
@@ -131,7 +131,7 @@ export const AnesthesiaRecordSchema = z.object({
 
 export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
   id: string,
-  \1,\2 'scheduled' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled' | 'postponed';
+  "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled" | "postponed";
   actual_start_time?: Date;
   actual_end_time?: Date;
   actual_duration?: number;
@@ -150,47 +150,43 @@ export type SurgicalProcedure = z.infer<typeof SurgicalProcedureSchema> & {
 
 export type ORSchedule = z.infer<typeof ORScheduleSchema> & {
   id: string,
-  \1,\2 Date,
+  Date,
   updated_at: Date
 };
 
 export type SurgicalTeam = z.infer<typeof SurgicalTeamSchema> & {
   id: string,
-  \1,\2 Date,
+  Date,
   updated_at: Date
 };
 
 export type SurgicalInstrument = z.infer<typeof SurgicalInstrumentSchema> & {
   id: string,
-  \1,\2 Date,
+  Date,
   updated_at: Date;
   last_used?: Date;
   next_maintenance?: Date;
-  condition: 'excellent' | 'good' | 'fair' | 'poor' | 'out_of_service'
+  condition: "excellent" | "good" | "fair" | "poor" | "out_of_service"
 };
 
 export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
   id: string,
-  \1,\2 Date;
+  Date;
   signed_at?: Date;
   signed_by?: string
 };
 
-\1
 }
   };
   upcoming_cases: SurgicalProcedure[]
-\1
 }
   }[];
-  \1,\2 string,
-    \1,\2 number,
+  string,
+    number,
     average_turnover: number
   }[];
-\1
 }
   }[];
-\1
 }
   }
 
@@ -199,21 +195,21 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    */
   private initializeORRooms(): void {
     const rooms = [
-      { id: 'OR-01', name: 'OR 1', type: 'general', capacity: 8, equipment: ['laparoscopic_tower', 'c_arm'] },
-      { id: 'OR-02', name: 'OR 2', type: 'general', capacity: 8, equipment: ['microscope'] },
-      { id: 'OR-03', name: 'OR 3', type: 'cardiac', capacity: 10, equipment: ['heart_lung_machine', 'tee'] },
-      { id: 'OR-04', name: 'OR 4', type: 'neuro', capacity: 8, equipment: ['neuro_microscope', 'neuro_monitoring'] },
-      { id: 'OR-05', name: 'OR 5', type: 'orthopedic', capacity: 8, equipment: ['c_arm', 'traction_table'] },
-      { id: 'OR-06', name: 'OR 6', type: 'general', capacity: 8, equipment: ['laparoscopic_tower'] },
-      { id: 'OR-07', name: 'OR 7', type: 'trauma', capacity: 12, equipment: ['c_arm', 'rapid_infuser'] },
-      { id: 'OR-08', name: 'OR 8', type: 'general', capacity: 8, equipment: [] },
+      { id: "OR-01", name: "OR 1", type: "general", capacity: 8, equipment: ["laparoscopic_tower", "c_arm"] },
+      { id: "OR-02", name: "OR 2", type: "general", capacity: 8, equipment: ["microscope"] },
+      { id: "OR-03", name: "OR 3", type: "cardiac", capacity: 10, equipment: ["heart_lung_machine", "tee"] },
+      { id: "OR-04", name: "OR 4", type: "neuro", capacity: 8, equipment: ["neuro_microscope", "neuro_monitoring"] },
+      { id: "OR-05", name: "OR 5", type: "orthopedic", capacity: 8, equipment: ["c_arm", "traction_table"] },
+      { id: "OR-06", name: "OR 6", type: "general", capacity: 8, equipment: ["laparoscopic_tower"] },
+      { id: "OR-07", name: "OR 7", type: "trauma", capacity: 12, equipment: ["c_arm", "rapid_infuser"] },
+      { id: "OR-08", name: "OR 8", type: "general", capacity: 8, equipment: [] },
     ];
 
     rooms.forEach(room => {
       this.orRooms.set(room.id, {
         ...room,
-        status: 'available',
-        \1,\2 new Date(),
+        status: "available",
+        new Date(),
         maintenance_due: null
       });
       this.orSchedules.set(room.id, []);
@@ -224,42 +220,42 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    * Initialize surgical instruments;
    */
   private initializeSurgicalInstruments(): void {
-    const instruments: Omit<SurgicalInstrument, 'id' | 'created_at' | 'updated_at'>[] = [
+    const instruments: Omit<SurgicalInstrument, "id" | "created_at" | "updated_at">[] = [
       {
-        instrument_name: 'Mayo Scissors',
-        \1,\2 'cutting',
-        \1,\2 'sterile',
-        \1,\2 150.00,
-        \1,\2 1000,
-        \1,\2 true,
-        \1,\2 'good'
+        instrument_name: "Mayo Scissors",
+        "cutting",
+        "sterile",
+        150.00,
+        1000,
+        true,
+        "good"
       },
       {
-        instrument_name: 'DeBakey Forceps',
-        \1,\2 'grasping',
-        \1,\2 'sterile',
-        \1,\2 120.00,
-        \1,\2 800,
-        \1,\2 true,
-        \1,\2 'excellent'
+        instrument_name: "DeBakey Forceps",
+        "grasping",
+        "sterile",
+        120.00,
+        800,
+        true,
+        "excellent"
       },
       {
-        instrument_name: 'Bovie Electrocautery',
-        \1,\2 'electrocautery',
-        \1,\2 'sterile',
-        \1,\2 25.00,
-        \1,\2 true,
-        \1,\2 true,
-        condition: 'excellent'
+        instrument_name: "Bovie Electrocautery",
+        "electrocautery",
+        "sterile",
+        25.00,
+        true,
+        true,
+        condition: "excellent"
       },
       {
-        instrument_name: 'Weitlaner Retractor',
-        \1,\2 'retractor',
-        \1,\2 'sterile',
-        \1,\2 200.00,
-        \1,\2 500,
-        \1,\2 true,
-        \1,\2 'good'
+        instrument_name: "Weitlaner Retractor",
+        "retractor",
+        "sterile",
+        200.00,
+        500,
+        true,
+        "good"
       },
     ];
 
@@ -294,15 +290,15 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     const procedure: SurgicalProcedure = {
       ...validatedData,
       id: procedureId,
-      \1,\2 'scheduled',
-      \1,\2 new Date(),
+      "scheduled",
+      new Date(),
       updated_at: new Date()
     };
 
     this.surgicalProcedures.set(procedureId, procedure);
 
     // Schedule OR room
-    \1 {\n  \2{
+    if (!session.user) {
       await this.scheduleORRoom(orRoom, validatedData.scheduled_date, validatedData.scheduled_start_time, validatedData.estimated_duration, procedureId);
     }
 
@@ -313,8 +309,8 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    * Generate case number;
    */
   private generateCaseNumber(): string {
-    const _timestamp = crypto.getRandomValues(\1[0].toString().slice(-6);
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
     return `CASE/* SECURITY: Template literal eliminated */
   }
 
@@ -323,14 +319,14 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    */
   private async findAvailableORRoom(
     date: string,
-    \1,\2 number;
+    number;
     preference?: string;
   ): Promise<string | undefined> {
     const scheduledDateTime = new Date(`/* SECURITY: Template literal eliminated */
     const endTime = new Date(scheduledDateTime.getTime() + duration * 60000);
 
     // Check preferred room first
-    \1 {\n  \2 {
+    if (!session.user) {
       const roomSchedule = this.orSchedules.get(preference) || [];
       const isAvailable = !roomSchedule.some(schedule => {
         const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */
@@ -341,7 +337,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
                (scheduledDateTime <= scheduleStart && endTime >= scheduleEnd);
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         return preference;
       }
     }
@@ -358,7 +354,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
                (scheduledDateTime <= scheduleStart && endTime >= scheduleEnd);
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         return roomId;
       }
     }
@@ -371,19 +367,19 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    */
   private async scheduleORRoom(
     roomId: string,
-    \1,\2 string,
-    \1,\2 string;
+    string,
+    string;
   ): Promise<void> {
     const endTime = new Date(`/* SECURITY: Template literal eliminated */
     endTime.setMinutes(endTime.getMinutes() + duration);
 
-    const \1,\2 uuidv4(),
+    const uuidv4(),
       or_room_id: roomId;
       date,
       start_time: startTime,
       end_time: endTime.toTimeString().slice(0, 5),
-      block_type: 'scheduled',
-      \1,\2 85, // Estimated
+      block_type: "scheduled",
+      85, // Estimated
       created_at: new Date(),
       updated_at: new Date()
     };
@@ -411,7 +407,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     const team: SurgicalTeam = {
       ...validatedData,
       id: teamId,
-      \1,\2 new Date(),
+      new Date(),
       updated_at: new Date()
     };
 
@@ -424,31 +420,31 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    */
   async startSurgicalProcedure(procedureId: string): Promise<SurgicalProcedure> {
     const procedure = this.surgicalProcedures.get(procedureId);
-    \1 {\n  \2{
-      throw new Error('Surgical procedure not found');
+    if (!session.user) {
+      throw new Error("Surgical procedure not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Procedure is not ready to start');
+    if (!session.user) {
+      throw new Error("Procedure is not ready to start");
     }
 
     // Verify safety checklist
     const checklists = this.safetyChecklists.get(procedureId) || [];
-    const timeoutCompleted = checklists.some(c => c.checklist_type === 'time_out' && c.completed);
+    const timeoutCompleted = checklists.some(c => c.checklist_type === "time_out" && c.completed);
 
-    \1 {\n  \2{
-      throw new Error('Timeout checklist must be completed before starting procedure');
+    if (!session.user) {
+      throw new Error("Timeout checklist must be completed before starting procedure");
     }
 
-    procedure.status = 'in_progress';
+    procedure.status = "in_progress";
     procedure.actual_start_time = new Date();
     procedure.updated_at = new Date();
 
     // Update OR room status
-    \1 {\n  \2{
+    if (!session.user) {
       const room = this.orRooms.get(procedure.or_room_assigned);
-      \1 {\n  \2{
-        room.status = 'occupied';
+      if (!session.user) {
+        room.status = "occupied";
         room.current_case = procedureId;
         this.orRooms.set(procedure.or_room_assigned, room);
       }
@@ -470,19 +466,19 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     }
   ): Promise<SurgicalProcedure> {
     const procedure = this.surgicalProcedures.get(procedureId);
-    \1 {\n  \2{
-      throw new Error('Surgical procedure not found');
+    if (!session.user) {
+      throw new Error("Surgical procedure not found");
     }
 
-    \1 {\n  \2{
-      throw new Error('Procedure must be in progress to complete');
+    if (!session.user) {
+      throw new Error("Procedure must be in progress to complete");
     }
 
     const now = new Date();
-    procedure.status = 'completed';
+    procedure.status = "completed";
     procedure.actual_end_time = now;
 
-    \1 {\n  \2{
+    if (!session.user) {
       procedure.actual_duration = Math.round(
         (now.getTime() - procedure.actual_start_time.getTime()) / (1000 * 60);
       );
@@ -493,10 +489,10 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     procedure.updated_at = now;
 
     // Update OR room status
-    \1 {\n  \2{
+    if (!session.user) {
       const room = this.orRooms.get(procedure.or_room_assigned);
-      \1 {\n  \2{
-        room.status = 'cleaning';
+      if (!session.user) {
+        room.status = "cleaning";
         room.current_case = null;
         this.orRooms.set(procedure.or_room_assigned, room);
       }
@@ -511,10 +507,10 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    */
   async performInstrumentCount(
     surgeryId: string,
-    \1,\2 string;
+    string;
       opening_count?: number;
       closing_count?: number;
-      location: InstrumentCount['location'],
+      location: InstrumentCount["location"],
       counted_by: string
     }[]
   ): Promise<InstrumentCount[]> {
@@ -523,8 +519,8 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 
       return {
         instrument_id: data.instrument_id,
-        \1,\2 data.opening_count || 0,
-        \1,\2 data.opening_count !== undefined && data.closing_count !== undefined ?;
+        data.opening_count || 0,
+        data.opening_count !== undefined && data.closing_count !== undefined ?;
           data.opening_count !== data.closing_count : false,
         counted_by: data.counted_by,
         count_time: new Date(),
@@ -541,12 +537,12 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    */
   async completeSafetyChecklist(
     surgeryId: string,
-    \1,\2 string,
+    string,
     items: { item: string, checked: boolean; notes?: string }[]
   ): Promise<SafetyChecklist> {
-    const \1,\2 surgeryId,
-      \1,\2 items.every(item => item.checked),
-      \1,\2 new Date(),
+    const surgeryId,
+      items.every(item => item.checked),
+      new Date(),
       items,
     };
 
@@ -581,8 +577,8 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
    */
   async signAnesthesiaRecord(recordId: string, anesthesiologistId: string): Promise<AnesthesiaRecord> {
     const record = this.anesthesiaRecords.get(recordId);
-    \1 {\n  \2{
-      throw new Error('Anesthesia record not found');
+    if (!session.user) {
+      throw new Error("Anesthesia record not found");
     }
 
     record.signed_at = new Date();
@@ -600,23 +596,23 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     const rooms = Array.from(this.orRooms.values());
     const procedures = Array.from(this.surgicalProcedures.values());
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     const todaysProcedures = procedures.filter(p => p.scheduled_date === today);
 
     const totalRooms = rooms.length;
-    const activeRooms = rooms.filter(room => room.status !== 'maintenance').length;
-    const scheduledCases = todaysProcedures.filter(p => p.status === 'scheduled').length;
-    const inProgressCases = todaysProcedures.filter(p => p.status === 'in_progress').length;
-    const completedCases = todaysProcedures.filter(p => p.status === 'completed').length;
-    const cancelledCases = todaysProcedures.filter(p => p.status === 'cancelled').length;
+    const activeRooms = rooms.filter(room => room.status !== "maintenance").length;
+    const scheduledCases = todaysProcedures.filter(p => p.status === "scheduled").length;
+    const inProgressCases = todaysProcedures.filter(p => p.status === "in_progress").length;
+    const completedCases = todaysProcedures.filter(p => p.status === "completed").length;
+    const cancelledCases = todaysProcedures.filter(p => p.status === "cancelled").length;
 
     const utilizationRate = activeRooms > 0 ? (inProgressCases / activeRooms) * 100 : 0;
 
     // Calculate average turnover time
     const _completedToday = procedures.filter(p =>
-      p.status === 'completed' &&;
+      p.status === "completed" &&;
       p?.actual_end_time &&
-      p.actual_end_time.toISOString().split('T')[0] === today;
+      p.actual_end_time.toISOString().split("T")[0] === today;
     );
 
     const averageTurnoverTime = 30; // Simplified - would calculate from actual room turnover data
@@ -631,17 +627,17 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     const nextFourHours = new Date(now.getTime() + 4 * 60 * 60 * 1000);
 
     const upcomingCases = procedures.filter(p => {
-      \1 {\n  \2eturn false;
+      if (!session.user)eturn false;
       const scheduledTime = new Date(`/* SECURITY: Template literal eliminated */
       return scheduledTime >= now && scheduledTime <= nextFourHours
     }).slice(0, 10);
 
     return {
       total_rooms: totalRooms,
-      \1,\2 scheduledCases,
-      \1,\2 completedCases,
-      \1,\2 Math.round(utilizationRate * 100) / 100,
-      \1,\2 roomsByStatus,
+      scheduledCases,
+      completedCases,
+      Math.round(utilizationRate * 100) / 100,
+      roomsByStatus,
       upcoming_cases: upcomingCases
     };
   }
@@ -653,10 +649,10 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     const procedures = Array.from(this.surgicalProcedures.values());
 
     let filteredProcedures = procedures;
-    \1 {\n  \2{
+    if (!session.user) {
       filteredProcedures = filteredProcedures.filter(p => p.scheduled_date >= dateFrom);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       filteredProcedures = filteredProcedures.filter(p => p.scheduled_date <= dateTo);
     }
 
@@ -676,8 +672,8 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 
     // Calculate rates
     const totalScheduled = filteredProcedures.length;
-    const cancelled = filteredProcedures.filter(p => p.status === 'cancelled').length;
-    const postponed = filteredProcedures.filter(p => p.status === 'postponed').length;
+    const cancelled = filteredProcedures.filter(p => p.status === "cancelled").length;
+    const postponed = filteredProcedures.filter(p => p.status === "postponed").length;
     const withComplications = filteredProcedures.filter(p => p?.complications && p.complications.length > 0).length;
 
     const cancellationRate = totalScheduled > 0 ? (cancelled / totalScheduled) * 100 : 0;
@@ -686,7 +682,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 
     // Calculate on-time start rate
     const onTimeStarts = completedCases.filter(p => {
-      \1 {\n  \2eturn false;
+      if (!session.user)eturn false;
       const scheduledStart = new Date(`/* SECURITY: Template literal eliminated */
       const actualStart = p.actual_start_time;
       const delayMinutes = (actualStart.getTime() - scheduledStart.getTime()) / (1000 * 60);
@@ -698,25 +694,25 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
     // Surgeon productivity
     const surgeonStats = new Map<string, any>();
     filteredProcedures.forEach(p => {
-      \1 {\n  \2eturn;
+      if (!session.user)eturn;
 
       const current = surgeonStats.get(p.surgeon_id) || {
         surgeon_id: p.surgeon_id,
-        \1,\2 0,
-        \1,\2 0
+        0,
+        0
       };
 
       current.cases_performed++;
-      \1 {\n  \2{
+      if (!session.user) {
         current.total_duration += p.actual_duration;
       }
-      \1 {\n  \2{
+      if (!session.user) {
         current.complications++;
       }
-      \1 {\n  \2{
+      if (!session.user) {
         const scheduledStart = new Date(`/* SECURITY: Template literal eliminated */
         const delayMinutes = (p.actual_start_time.getTime() - scheduledStart.getTime()) / (1000 * 60),
-        \1 {\n  \2{
+        if (!session.user) {
           current.on_time_starts++;
         }
       }
@@ -726,23 +722,23 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 
     const surgeonProductivity = Array.from(surgeonStats.values()).map(stats => ({
       surgeon_id: stats.surgeon_id,
-      \1,\2 stats.cases_performed > 0 ? stats.total_duration / stats.cases_performed : 0,
-      \1,\2 stats.cases_performed > 0 ? (stats.on_time_starts / stats.cases_performed) * 100 : 0
+      stats.cases_performed > 0 ? stats.total_duration / stats.cases_performed : 0,
+      stats.cases_performed > 0 ? (stats.on_time_starts / stats.cases_performed) * 100 : 0
     }));
 
     // Room efficiency
     const roomStats = new Map<string, any>();
     filteredProcedures.forEach(p => {
-      \1 {\n  \2eturn;
+      if (!session.user)eturn;
 
       const current = roomStats.get(p.or_room_assigned) || {
         room_id: p.or_room_assigned,
-        \1,\2 0,
+        0,
         total_turnover: 0
       };
 
       current.cases_performed++;
-      \1 {\n  \2{
+      if (!session.user) {
         current.total_duration += p.actual_duration;
         current.total_turnover += 30; // Simplified turnover time
       }
@@ -759,15 +755,15 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
 
     return {
       daily_volume: dailyVolume,
-      \1,\2 Math.round(averageCaseDuration * 100) / 100,
+      Math.round(averageCaseDuration * 100) / 100,
       average_turnover_time: 30, // Simplified
       first_case_start_delay: 12, // Simplified
       cancellation_rate: Math.round(cancellationRate * 100) / 100,
-      \1,\2 Math.round(complicationRate * 100) / 100,
-      \1,\2 surgeonProductivity.map(s => ({
+      Math.round(complicationRate * 100) / 100,
+      surgeonProductivity.map(s => ({
         ...s,
         average_duration: Math.round(s.average_duration * 100) / 100,
-        \1,\2 Math.round(s.on_time_rate * 100) / 100
+        Math.round(s.on_time_rate * 100) / 100
       })),
       room_efficiency: roomEfficiency.map(r => ({
         ...r,
@@ -783,23 +779,23 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
   async getSurgicalProcedures(filters?: {
     patient_id?: string;
     surgeon_id?: string;
-    status?: SurgicalProcedure['status'];
-    procedure_type?: SurgicalProcedure['procedure_type'];
+    status?: SurgicalProcedure["status"];
+    procedure_type?: SurgicalProcedure["procedure_type"];
     date_from?: string;
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ procedures: SurgicalProcedure[], \1,\2 number }> {
+  }): Promise<{ procedures: SurgicalProcedure[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredProcedures = Array.from(this.surgicalProcedures.values());
 
     // Apply filters
     Object.entries(searchFilters).forEach(([key, value]) => {
-      \1 {\n  \2{
+      if (!session.user) {
         filteredProcedures = filteredProcedures.filter(procedure => {
           const procedureValue = (procedure as any)[key];
-          \1 {\n  \2 {
+          if (!session.user) {
             return procedureValue >= value;
           }
           return procedureValue === value;
@@ -837,11 +833,11 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {
   async getSurgicalInstruments(category?: string, available?: boolean): Promise<SurgicalInstrument[]> {
     let instruments = Array.from(this.instruments.values());
 
-    \1 {\n  \2{
+    if (!session.user) {
       instruments = instruments.filter(instrument => instrument.category === category);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       instruments = instruments.filter(instrument => instrument.available === available);
     }
 

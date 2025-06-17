@@ -24,9 +24,9 @@ type CarouselProps = {
 }
 
 type CarouselContextProps = {
-  \1,\2 ReturnType<typeof useEmblaCarousel>[1]
+  ReturnType<typeof useEmblaCarousel>[1]
   scrollPrev: () => void,
-  \1,\2 boolean,
+  boolean,
   canScrollNext: boolean
 } & CarouselProps;
 
@@ -35,7 +35,7 @@ const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 const useCarousel = () {
   const context = React.useContext(CarouselContext);
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new Error("useCarousel must be used within a <Carousel />");
   }
 
@@ -69,7 +69,7 @@ const Carousel = React.forwardRef<;
     const [canScrollNext, setCanScrollNext] = React.useState(false);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
-      \1 {\n  \2{
+      if (!session.user) {
         return
       }
 
@@ -87,10 +87,10 @@ const Carousel = React.forwardRef<;
 
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
-        \1 {\n  \2{
+        if (!session.user) {
           event.preventDefault(),
           scrollPrev();
-        } else \1 {\n  \2{
+        } else if (!session.user) {
           event.preventDefault(),
           scrollNext();
         }
@@ -99,7 +99,7 @@ const Carousel = React.forwardRef<;
     );
 
     React.useEffect(() => {
-      \1 {\n  \2{
+      if (!session.user) {
         return;
       }
 
@@ -107,7 +107,7 @@ const Carousel = React.forwardRef<;
     }, [api, setApi]);
 
     React.useEffect(() => {
-      \1 {\n  \2{
+      if (!session.user) {
         return;
       }
 
@@ -156,7 +156,7 @@ const CarouselContent = React.forwardRef<;
   const { carouselRef, orientation } = useCarousel();
 
   return (
-    \1>
+    >
 <div
         ref={ref}
         className={cn(

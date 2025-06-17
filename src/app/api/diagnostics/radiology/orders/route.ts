@@ -1,13 +1,13 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '@/lib/audit';
-import { CacheInvalidation } from '@/lib/cache/invalidation';
-import { RedisCache } from '@/lib/cache/redis';
-import { DB } from '@/lib/database';
-import { decryptSensitiveData, encryptSensitiveData } from '@/lib/encryption';
-import { notifyUsers } from '@/lib/notifications';
-import { getSession } from '@/lib/session';
+import { auditLog } from "@/lib/audit";
+import { CacheInvalidation } from "@/lib/cache/invalidation";
+import { RedisCache } from "@/lib/cache/redis";
+import { DB } from "@/lib/database";
+import { decryptSensitiveData, encryptSensitiveData } from "@/lib/encryption";
+import { notifyUsers } from "@/lib/notifications";
+import { getSession } from "@/lib/session";
 /**
  * GET /api/diagnostics/radiology/orders;
  * Get radiology orders with optional filtering;
@@ -16,31 +16,31 @@ export const GET = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Parse query parameters
     const { searchParams } = new URL(request.url);
-    const patientId = searchParams.get('patientId');
-    const status = searchParams.get('status');
-    const priority = searchParams.get('priority');
-    const modality = searchParams.get('modality');
-    const orderedAfter = searchParams.get('orderedAfter');
-    const orderedBefore = searchParams.get('orderedBefore');
-    const search = searchParams.get('search');
-    const page = Number.parseInt(searchParams.get('page') || '1');
-    const pageSize = Number.parseInt(searchParams.get('pageSize') || '20');
+    const patientId = searchParams.get("patientId");
+    const status = searchParams.get("status");
+    const priority = searchParams.get("priority");
+    const modality = searchParams.get("modality");
+    const orderedAfter = searchParams.get("orderedAfter");
+    const orderedBefore = searchParams.get("orderedBefore");
+    const search = searchParams.get("search");
+    const page = Number.parseInt(searchParams.get("page") || "1");
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Cache key
     const cacheKey = `diagnostic:radiology:orders:${patientId ||;
-      ''}:${status ||
-      ''}:${priority ||
-      ''}:${modality ||
-      ''}:${orderedAfter ||
-      ''}:${orderedBefore ||
-      ''}:${search ||
-      ''}:${page}:${pageSize}`;
+      ""}:${status ||
+      ""}:${priority ||
+      ""}:${modality ||
+      ""}:${orderedAfter ||
+      ""}:${orderedBefore ||
+      ""}:${search ||
+      ""}:${page}:${pageSize}`;
 
     // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
@@ -65,45 +65,45 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add filters
-        \1 {\n  \2{
-          query += ' AND ro.patient_id = ?';
+        if (!session.user) {
+          query += " AND ro.patient_id = ?";
           params.push(patientId);
         }
 
-        \1 {\n  \2{
-          query += ' AND ro.status = ?';
+        if (!session.user) {
+          query += " AND ro.status = ?";
           params.push(status);
         }
 
-        \1 {\n  \2{
-          query += ' AND ro.priority = ?';
+        if (!session.user) {
+          query += " AND ro.priority = ?";
           params.push(priority);
         }
 
-        \1 {\n  \2{
-          query += ' AND ro.modality = ?';
+        if (!session.user) {
+          query += " AND ro.modality = ?";
           params.push(modality);
         }
 
-        \1 {\n  \2{
-          query += ' AND ro.ordered_at >= ?';
+        if (!session.user) {
+          query += " AND ro.ordered_at >= ?";
           params.push(orderedAfter);
         }
 
-        \1 {\n  \2{
-          query += ' AND ro.ordered_at <= ?';
+        if (!session.user) {
+          query += " AND ro.ordered_at <= ?";
           params.push(orderedBefore);
         }
 
-        \1 {\n  \2{
-          query += ' AND (ro.accession_number LIKE ? OR ro.order_number LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ?)';
+        if (!session.user) {
+          query += " AND (ro.accession_number LIKE ? OR ro.order_number LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ?)";
           const searchTerm = `%${search}%`;
           params.push(searchTerm, searchTerm, searchTerm, searchTerm);
         }
 
         // Add pagination
         const offset = (page - 1) * pageSize;
-        query += ' ORDER BY ro.ordered_at DESC LIMIT ? OFFSET ?';
+        query += " ORDER BY ro.ordered_at DESC LIMIT ? OFFSET ?";
         params.push(pageSize, offset);
 
         // Execute query
@@ -115,7 +115,7 @@ export const GET = async (request: NextRequest) => {
           FROM radiology_orders ro;
           JOIN patients p ON ro.patient_id = p.id;
           WHERE 1=1;
-          /* SECURITY: Template literal eliminated */ " ", p.last_name) LIKE ?)' : ''}
+          /* SECURITY: Template literal eliminated */ " ", p.last_name) LIKE ?)" : ""}
         `;
 
         const countParams = params.slice(0, -2);
@@ -139,7 +139,7 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'radiology_orders',
+          "radiology_orders",
           details: patientId, status, priority, modality, page, pageSize 
         });
 
@@ -160,8 +160,8 @@ export const GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch radiology orders',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to fetch radiology orders",
+      details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }
 }
@@ -174,13 +174,13 @@ export const POST = async (request: NextRequest) => {
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Parse request body
@@ -208,34 +208,34 @@ export const POST = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({
-        error: 'Patient ID, modality, procedure code, and procedure name are required'
+        error: "Patient ID, modality, procedure code, and procedure name are required"
       }, { status: 400 });
     }
 
     // Check if patient exists
-    const patientCheck = await DB.query('SELECT id FROM patients WHERE id = ?', [patientId]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+    const patientCheck = await DB.query("SELECT id FROM patients WHERE id = ?", [patientId]);
+    if (!session.user) {
+      return NextResponse.json({ error: "Patient not found" }, { status: 404 });
     }
 
     // Check if protocol exists if provided
-    \1 {\n  \2{
-      const protocolCheck = await DB.query('SELECT id FROM radiology_protocols WHERE id = ?', [protocolId]);
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Protocol not found' }, { status: 404 });
+    if (!session.user) {
+      const protocolCheck = await DB.query("SELECT id FROM radiology_protocols WHERE id = ?", [protocolId]);
+      if (!session.user) {
+        return NextResponse.json({ error: "Protocol not found" }, { status: 404 });
       }
     }
 
     // Check if radiologist exists if provided
-    \1 {\n  \2{
+    if (!session.user) {
       const radiologistCheck = await DB.query(
-        'SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)',
-        [radiologistId, 'radiologist']
+        "SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)",
+        [radiologistId, "radiologist"]
       );
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Radiologist not found' }, { status: 404 });
+      if (!session.user) {
+        return NextResponse.json({ error: "Radiologist not found" }, { status: 404 });
       }
     }
 
@@ -269,7 +269,7 @@ export const POST = async (request: NextRequest) => {
       modality,
       procedureCode,
       procedureName,
-      priority || 'routine',
+      priority || "routine",
       encryptedClinicalInfo,
       transportMode || null,
       laterality || null,
@@ -277,14 +277,14 @@ export const POST = async (request: NextRequest) => {
       contrastRequired || false,
       contrastAllergy || false,
       encryptedAllergyDetails,
-      pregnancyStatus || 'not_applicable',
+      pregnancyStatus || "not_applicable",
       protocolId || null,
       radiologistId || null,
       scheduledDate || null,
       scheduledTime || null,
       patientPreparation || null,
       specialInstructions || null,
-      'ordered',
+      "ordered",
       session.user.id,
       session.user.id,
       session.user.id;
@@ -295,14 +295,14 @@ export const POST = async (request: NextRequest) => {
     // Log creation
     await auditLog({
       userId: session.user.id,
-      \1,\2 'radiology_orders',
+      "radiology_orders",
       resourceId: result.insertId;
         orderNumber,
         accessionNumber,
         patientId,
         modality,
         procedureCode,
-        priority: priority || 'routine'
+        priority: priority || "routine"
     });
 
     // Create order tracking entry
@@ -312,43 +312,43 @@ export const POST = async (request: NextRequest) => {
       ) VALUES (?, ?, ?, ?, NOW())`,
       [
         result.insertId,
-        'ordered',
-        'Order created',
+        "ordered",
+        "Order created",
         session.user.id;
       ]
     );
 
     // Notify radiologist if assigned
-    \1 {\n  \2{
+    if (!session.user) {
       await notifyUsers({
         userIds: [radiologistId],
-        \1,\2 `You have been assigned to radiology order ${orderNumber}`,
-        type: 'radiology_order',
-        \1,\2 'radiology_orders',
-        priority: priority === 'stat' ? 'high' : 'medium'
+        `You have been assigned to radiology order ${orderNumber}`,
+        type: "radiology_order",
+        "radiology_orders",
+        priority: priority === "stat" ? "high" : "medium"
       });
     } else {
       // Notify radiology department
       const radiologyStaff = await DB.query(
-        'SELECT id FROM users WHERE role_id IN (SELECT id FROM roles WHERE name IN (?, ?))',
-        ['radiologist', 'radiology_technician']
+        "SELECT id FROM users WHERE role_id IN (SELECT id FROM roles WHERE name IN (?, ?))",
+        ["radiologist", "radiology_technician"]
       );
 
       const staffIds = radiologyStaff.results.map(user => user.id);
 
-      \1 {\n  \2{
+      if (!session.user) {
         await notifyUsers({
           userIds: staffIds,
-          \1,\2 `A new ${priority || 'routine'} radiology order has been created`,
-          type: 'radiology_order',
-          \1,\2 'radiology_orders',
-          priority: priority === 'stat' ? 'high' : 'medium'
+          `A new ${priority || "routine"} radiology order has been created`,
+          type: "radiology_order",
+          "radiology_orders",
+          priority: priority === "stat" ? "high" : "medium"
         });
       }
     }
 
     // Invalidate cache
-    await CacheInvalidation.invalidatePattern('diagnostic:radiology:orders:*');
+    await CacheInvalidation.invalidatePattern("diagnostic:radiology:orders:*");
 
     // Get the created order
     const createdOrder = await DB.query(
@@ -381,8 +381,8 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to create radiology order',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to create radiology order",
+      details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }
 }
@@ -395,13 +395,13 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
     // Parse request body
@@ -440,9 +440,9 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     } = body;
 
     // Check if order exists
-    const existingCheck = await DB.query('SELECT * FROM radiology_orders WHERE id = ?', [id]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Radiology order not found' }, { status: 404 });
+    const existingCheck = await DB.query("SELECT * FROM radiology_orders WHERE id = ?", [id]);
+    if (!session.user) {
+      return NextResponse.json({ error: "Radiology order not found" }, { status: 404 });
     }
 
     const existingOrder = existingCheck.results[0];
@@ -451,41 +451,41 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const isOrderer = existingOrder.ordered_by === session.user.id;
     const isRadiologist = existingOrder.radiologist_id === session.user.id;
     const isTechnician = existingOrder.technician_id === session.user.id;
-    const isAdmin = ['admin', 'radiology_manager'].includes(session.user.roleName);
-    const isRadiologyStaff = ['radiologist', 'radiology_technician'].includes(session.user.roleName);
+    const isAdmin = ["admin", "radiology_manager"].includes(session.user.roleName);
+    const isRadiologyStaff = ["radiologist", "radiology_technician"].includes(session.user.roleName);
 
     // Only certain roles can update orders
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Check if protocol exists if provided
-    \1 {\n  \2{
-      const protocolCheck = await DB.query('SELECT id FROM radiology_protocols WHERE id = ?', [protocolId]);
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Protocol not found' }, { status: 404 });
+    if (!session.user) {
+      const protocolCheck = await DB.query("SELECT id FROM radiology_protocols WHERE id = ?", [protocolId]);
+      if (!session.user) {
+        return NextResponse.json({ error: "Protocol not found" }, { status: 404 });
       }
     }
 
     // Check if radiologist exists if provided
-    \1 {\n  \2{
+    if (!session.user) {
       const radiologistCheck = await DB.query(
-        'SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)',
-        [radiologistId, 'radiologist']
+        "SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)",
+        [radiologistId, "radiologist"]
       );
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Radiologist not found' }, { status: 404 });
+      if (!session.user) {
+        return NextResponse.json({ error: "Radiologist not found" }, { status: 404 });
       }
     }
 
     // Check if technician exists if provided
-    \1 {\n  \2{
+    if (!session.user) {
       const technicianCheck = await DB.query(
-        'SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)',
-        [technicianId, 'radiology_technician']
+        "SELECT id FROM users WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE name = ?)",
+        [technicianId, "radiology_technician"]
       );
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Technician not found' }, { status: 404 });
+      if (!session.user) {
+        return NextResponse.json({ error: "Technician not found" }, { status: 404 });
       }
     }
 
@@ -496,230 +496,230 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const _oldStatus = existingOrder.status;
     let trackingNote = null;
 
-    // Only orderer or admin can change these fields if order is still in 'ordered' status
-    \1 {\n  \2& existingOrder.status === 'ordered') {
-      \1 {\n  \2{
-        updateFields.push('modality = ?');
+    // Only orderer or admin can change these fields if order is still in "ordered" status
+    if (!session.user)& existingOrder.status === "ordered") {
+      if (!session.user) {
+        updateFields.push("modality = ?");
         updateParams.push(modality);
       }
 
-      \1 {\n  \2{
-        updateFields.push('procedure_code = ?');
+      if (!session.user) {
+        updateFields.push("procedure_code = ?");
         updateParams.push(procedureCode);
       }
 
-      \1 {\n  \2{
-        updateFields.push('procedure_name = ?');
+      if (!session.user) {
+        updateFields.push("procedure_name = ?");
         updateParams.push(procedureName);
       }
 
-      \1 {\n  \2{
-        updateFields.push('priority = ?');
+      if (!session.user) {
+        updateFields.push("priority = ?");
         updateParams.push(priority);
       }
 
-      \1 {\n  \2{
-        updateFields.push('clinical_information = ?');
+      if (!session.user) {
+        updateFields.push("clinical_information = ?");
         updateParams.push(clinicalInformation ? encryptSensitiveData(clinicalInformation) : null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('transport_mode = ?');
+      if (!session.user) {
+        updateFields.push("transport_mode = ?");
         updateParams.push(transportMode || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('laterality = ?');
+      if (!session.user) {
+        updateFields.push("laterality = ?");
         updateParams.push(laterality || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('body_part = ?');
+      if (!session.user) {
+        updateFields.push("body_part = ?");
         updateParams.push(bodyPart || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_required = ?');
+      if (!session.user) {
+        updateFields.push("contrast_required = ?");
         updateParams.push(contrastRequired);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_allergy = ?');
+      if (!session.user) {
+        updateFields.push("contrast_allergy = ?");
         updateParams.push(contrastAllergy);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_allergy_details = ?');
+      if (!session.user) {
+        updateFields.push("contrast_allergy_details = ?");
         updateParams.push(contrastAllergyDetails ? encryptSensitiveData(contrastAllergyDetails) : null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('pregnancy_status = ?');
+      if (!session.user) {
+        updateFields.push("pregnancy_status = ?");
         updateParams.push(pregnancyStatus);
       }
 
-      \1 {\n  \2{
-        updateFields.push('patient_preparation = ?');
+      if (!session.user) {
+        updateFields.push("patient_preparation = ?");
         updateParams.push(patientPreparation || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('special_instructions = ?');
+      if (!session.user) {
+        updateFields.push("special_instructions = ?");
         updateParams.push(specialInstructions || null);
       }
     }
 
     // Radiology staff or admin can change these fields
-    \1 {\n  \2{
-      \1 {\n  \2{
-        updateFields.push('protocol_id = ?');
+    if (!session.user) {
+      if (!session.user) {
+        updateFields.push("protocol_id = ?");
         updateParams.push(protocolId || null);
-        trackingNote = 'Protocol updated',
+        trackingNote = "Protocol updated",
       }
 
-      \1 {\n  \2{
-        updateFields.push('radiologist_id = ?');
+      if (!session.user) {
+        updateFields.push("radiologist_id = ?");
         updateParams.push(radiologistId || null);
-        trackingNote = 'Radiologist assignment updated',
+        trackingNote = "Radiologist assignment updated",
       }
 
-      \1 {\n  \2{
-        updateFields.push('technician_id = ?');
+      if (!session.user) {
+        updateFields.push("technician_id = ?");
         updateParams.push(technicianId || null);
-        trackingNote = 'Technician assignment updated',
+        trackingNote = "Technician assignment updated",
       }
 
-      \1 {\n  \2{
-        updateFields.push('scheduled_date = ?');
+      if (!session.user) {
+        updateFields.push("scheduled_date = ?");
         updateParams.push(scheduledDate || null);
-        trackingNote = 'Scheduling updated',
+        trackingNote = "Scheduling updated",
       }
 
-      \1 {\n  \2{
-        updateFields.push('scheduled_time = ?');
+      if (!session.user) {
+        updateFields.push("scheduled_time = ?");
         updateParams.push(scheduledTime || null);
-        \1 {\n  \2rackingNote = 'Scheduling updated',
+        if (!session.user)rackingNote = "Scheduling updated",
       }
     }
 
     // Status changes
-    \1 {\n  \2{
+    if (!session.user) {
       // Validate status transitions
       const validTransitions: Record<string, string[]> = {
-        'ordered': ['scheduled', 'cancelled', 'in_progress'],
-        'scheduled': ['in_progress', 'cancelled'],
-        'in_progress': ['completed', 'cancelled'],
-        'completed': [],
-        'cancelled': []
+        "ordered": ["scheduled", "cancelled", "in_progress"],
+        "scheduled": ["in_progress", "cancelled"],
+        "in_progress": ["completed", "cancelled"],
+        "completed": [],
+        "cancelled": []
       };
 
-      \1 {\n  \2 {
+      if (!session.user) {
         return NextResponse.json({
           error: `Invalid status transition from ${existingOrder.status} to ${status}`;
         }, status: 400 );
       }
 
-      updateFields.push('status = ?');
+      updateFields.push("status = ?");
       updateParams.push(status);
       statusChanged = true;
 
       // Set tracking note based on status change
       switch (status) {
-        case 'scheduled':
-          \1 {\n  \2{
-            return NextResponse.json({ error: 'Scheduled date is required' }, { status: 400 });
+        case "scheduled":
+          if (!session.user) {
+            return NextResponse.json({ error: "Scheduled date is required" }, { status: 400 });
           }
-          trackingNote = 'Order scheduled';\1\n    }\n    case 'in_progress':
-          trackingNote = 'Procedure in progress';\1\n    }\n    case 'completed':
-          updateFields.push('completed_date = ?'),
-          updateParams.push(completedDate || new Date().toISOString().split('T')[0]);
-          trackingNote = 'Procedure completed';\1\n    }\n    case 'cancelled':
-          \1 {\n  \2{
-            return NextResponse.json({ error: 'Cancellation reason is required' }, { status: 400 });
+          trackingNote = "Order scheduled";\n    }\n    case "in_progress":
+          trackingNote = "Procedure in progress";\n    }\n    case "completed":
+          updateFields.push("completed_date = ?"),
+          updateParams.push(completedDate || new Date().toISOString().split("T")[0]);
+          trackingNote = "Procedure completed";\n    }\n    case "cancelled":
+          if (!session.user) {
+            return NextResponse.json({ error: "Cancellation reason is required" }, { status: 400 });
           }
-          updateFields.push('cancellation_reason = ?');
+          updateFields.push("cancellation_reason = ?");
           updateParams.push(cancellationReason);
           trackingNote = `Order cancelled: ${cancellationReason}`;
           break;
       }
     } else {
       // Handle cancellation reason update without status change
-      \1 {\n  \2{
-        updateFields.push('cancellation_reason = ?');
+      if (!session.user) {
+        updateFields.push("cancellation_reason = ?");
         updateParams.push(cancellationReason || null);
         trackingNote = `Cancellation reason updated: ${cancellationReason}`;
       }
 
       // Handle completed date update without status change
-      \1 {\n  \2{
-        updateFields.push('completed_date = ?');
+      if (!session.user) {
+        updateFields.push("completed_date = ?");
         updateParams.push(completedDate || null);
-        trackingNote = 'Completion date updated',
+        trackingNote = "Completion date updated",
       }
     }
 
     // Radiation dose and contrast information (only for in_progress or completed)
-    \1 {\n  \2|
-        (status && ['in_progress', 'completed'].includes(status))) {
+    if (!session.user)|
+        (status && ["in_progress", "completed"].includes(status))) {
 
-      \1 {\n  \2{
-        updateFields.push('radiation_dose = ?')
+      if (!session.user) {
+        updateFields.push("radiation_dose = ?")
         updateParams.push(radiationDose || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('radiation_dose_unit = ?');
+      if (!session.user) {
+        updateFields.push("radiation_dose_unit = ?");
         updateParams.push(radiationDoseUnit || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_type = ?');
+      if (!session.user) {
+        updateFields.push("contrast_type = ?");
         updateParams.push(contrastType || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_volume = ?');
+      if (!session.user) {
+        updateFields.push("contrast_volume = ?");
         updateParams.push(contrastVolume || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_volume_unit = ?');
+      if (!session.user) {
+        updateFields.push("contrast_volume_unit = ?");
         updateParams.push(contrastVolumeUnit || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_administration_route = ?');
+      if (!session.user) {
+        updateFields.push("contrast_administration_route = ?");
         updateParams.push(contrastAdministrationRoute || null);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_reaction = ?');
+      if (!session.user) {
+        updateFields.push("contrast_reaction = ?");
         updateParams.push(contrastReaction || false);
       }
 
-      \1 {\n  \2{
-        updateFields.push('contrast_reaction_details = ?');
+      if (!session.user) {
+        updateFields.push("contrast_reaction_details = ?");
         updateParams.push(contrastReactionDetails ? encryptSensitiveData(contrastReactionDetails) : null);
       }
     }
 
-    updateFields.push('updated_by = ?');
+    updateFields.push("updated_by = ?");
     updateParams.push(session.user.id);
 
-    updateFields.push('updated_at = NOW()');
+    updateFields.push("updated_at = NOW()");
 
     // Add ID to params
     updateParams.push(id);
 
     // Execute update
-    \1 {\n  \2{
-      const query = `UPDATE radiology_orders SET ${updateFields.join(', ')} WHERE id = ?`;
+    if (!session.user) {
+      const query = `UPDATE radiology_orders SET ${updateFields.join(", ")} WHERE id = ?`;
       await DB.query(query, updateParams);
 
       // Log update
       await auditLog({
         userId: session.user.id,
-        \1,\2 'radiology_orders',
+        "radiology_orders",
         resourceId: id;
           ...body,
           statusChanged,
@@ -728,7 +728,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       });
 
       // Create tracking entry if status changed or tracking note exists
-      \1 {\n  \2{
+      if (!session.user) {
         await DB.query(
           `INSERT INTO radiology_order_tracking (
             order_id, status, notes, performed_by, created_at;
@@ -743,68 +743,68 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
 
       // Send notifications for status changes
-      \1 {\n  \2{
+      if (!session.user) {
         // Notify orderer
-        \1 {\n  \2{
+        if (!session.user) {
           await notifyUsers({
             userIds: [existingOrder.ordered_by],
-            \1,\2 `Order ${existingOrder.order_number} status changed to ${status}`,
-            type: 'radiology_order_update',
-            \1,\2 'radiology_orders',
-            priority: 'medium'
+            `Order ${existingOrder.order_number} status changed to ${status}`,
+            type: "radiology_order_update",
+            "radiology_orders",
+            priority: "medium"
           });
         }
 
         // Notify radiologist if assigned
-        \1 {\n  \2{
+        if (!session.user) {
           await notifyUsers({
             userIds: [existingOrder.radiologist_id],
-            \1,\2 `Order ${existingOrder.order_number} status changed to ${status}`,
-            type: 'radiology_order_update',
-            \1,\2 'radiology_orders',
-            priority: 'medium'
+            `Order ${existingOrder.order_number} status changed to ${status}`,
+            type: "radiology_order_update",
+            "radiology_orders",
+            priority: "medium"
           });
         }
 
         // Notify technician if assigned
-        \1 {\n  \2{
+        if (!session.user) {
           await notifyUsers({
             userIds: [existingOrder.technician_id],
-            \1,\2 `Order ${existingOrder.order_number} status changed to ${status}`,
-            type: 'radiology_order_update',
-            \1,\2 'radiology_orders',
-            priority: 'medium'
+            `Order ${existingOrder.order_number} status changed to ${status}`,
+            type: "radiology_order_update",
+            "radiology_orders",
+            priority: "medium"
           });
         }
       }
 
       // Send notifications for assignment changes
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           await notifyUsers({
             userIds: [radiologistId],
-            \1,\2 `You have been assigned to radiology order ${existingOrder.order_number}`,
-            type: 'radiology_order',
-            \1,\2 'radiology_orders',
-            priority: existingOrder.priority === 'stat' ? 'high' : 'medium'
+            `You have been assigned to radiology order ${existingOrder.order_number}`,
+            type: "radiology_order",
+            "radiology_orders",
+            priority: existingOrder.priority === "stat" ? "high" : "medium"
           });
         }
       }
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           await notifyUsers({
             userIds: [technicianId],
-            \1,\2 `You have been assigned to radiology order ${existingOrder.order_number}`,
-            type: 'radiology_order',
-            \1,\2 'radiology_orders',
-            priority: existingOrder.priority === 'stat' ? 'high' : 'medium'
+            `You have been assigned to radiology order ${existingOrder.order_number}`,
+            type: "radiology_order",
+            "radiology_orders",
+            priority: existingOrder.priority === "stat" ? "high" : "medium"
           });
         }
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: radiology: orders:*')
+      await CacheInvalidation.invalidatePattern("diagnostic: radiology: orders:*")
     }
 
     // Get the updated order
@@ -840,8 +840,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to update radiology order',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to update radiology order",
+      details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }
 }
@@ -854,13 +854,13 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
     // Cache key
@@ -871,9 +871,9 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
       cacheKey,
       async () => {
         // Check if order exists
-        const orderCheck = await DB.query('SELECT id FROM radiology_orders WHERE id = ?', [id]);
-        \1 {\n  \2{
-          throw new Error('Radiology order not found');
+        const orderCheck = await DB.query("SELECT id FROM radiology_orders WHERE id = ?", [id]);
+        if (!session.user) {
+          throw new Error("Radiology order not found");
         }
 
         // Get tracking history
@@ -890,7 +890,7 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'radiology_order_tracking',
+          "radiology_order_tracking",
           details: orderId: id 
         });
 
@@ -903,7 +903,7 @@ export const _GET_TRACKING = async (request: NextRequest, { params }: { params: 
   } catch (error) {
 
     return NextResponse.json({
-      error: 'Failed to fetch order tracking',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      error: "Failed to fetch order tracking",
+      details: error instanceof Error ? error.message : "Unknown error'
     }, { status: 500 });
   }

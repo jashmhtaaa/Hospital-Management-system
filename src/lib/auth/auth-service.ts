@@ -1,24 +1,20 @@
-import type { UserRole } from '@prisma/client';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import type { UserRole } from "@prisma/client";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 
-import { logger } from '@/lib/logger';
-import { prisma } from '@/lib/prisma';
+import { logger } from "@/lib/logger";
+import { prisma } from "@/lib/prisma";
 // src/lib/auth/auth-service.ts
-\1
 }
 }
 
-\1
 }
 }
 
-\1
 }
 }
 
-\1
 }
   }> {
     const { email, password } = credentials;
@@ -26,21 +22,21 @@ import { prisma } from '@/lib/prisma';
     // Find user with permissions
     const user = await prisma.user.findUnique({
       where: { email, isActive: true },
-      \1,\2 true,
+      true,
         department: true
       }
     });
 
-    \1 {\n  \2{
-      logger.warn('Login attempt with invalid email', { email });
-      throw new Error('Invalid credentials');
+    if (!session.user) {
+      logger.warn("Login attempt with invalid email", { email });
+      throw new Error("Invalid credentials");
     }
 
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password);
-    \1 {\n  \2{
-      logger.warn('Login attempt with invalid password', { email });
-      throw new Error('Invalid credentials');
+    if (!session.user) {
+      logger.warn("Login attempt with invalid password", { email });
+      throw new Error("Invalid credentials");
     }
 
     // Update last login
@@ -50,8 +46,8 @@ import { prisma } from '@/lib/prisma';
     });
 
     // Generate tokens
-    const \1,\2 user.id,
-      \1,\2 user.role,
+    const user.id,
+      user.role,
       permissions: user.permissions.map(p => `$p.resource:$p.action`)
     };
 
@@ -60,14 +56,14 @@ import { prisma } from '@/lib/prisma';
 
     // Create session
     await prisma.userSession.create({
-      \1,\2 user.id,
+      user.id,
         sessionToken: accessToken;
         refreshToken,
-        expiresAt: \1[0] + 24 * 60 * 60 * 1000) // 24 hours
+        expiresAt: [0] + 24 * 60 * 60 * 1000) // 24 hours
       }
     });
 
-    logger.info('User logged in successfully', { userId: user.id, email });
+    logger.info("User logged in successfully", { userId: user.id, email });
 
     return { user: authUser, accessToken, refreshToken };
   }
@@ -80,8 +76,8 @@ import { prisma } from '@/lib/prisma';
       where: { email }
     });
 
-    \1 {\n  \2{
-      throw new Error('User already exists');
+    if (!session.user) {
+      throw new Error("User already exists");
     }
 
     // Hash password
@@ -96,15 +92,15 @@ import { prisma } from '@/lib/prisma';
         lastName,
         role
       },
-      \1,\2 true
+      true
       }
     });
 
-    logger.info('User registered successfully', { userId: user.id, email });
+    logger.info("User registered successfully", { userId: user.id, email });
 
     return {
       id: user.id,
-      \1,\2 user.role,
+      user.role,
       permissions: user.permissions.map(p => `$p.resource:$p.action`)
     };
   }
@@ -116,24 +112,24 @@ import { prisma } from '@/lib/prisma';
       // Check if session is still valid
       const session = await prisma.userSession.findUnique({
         where: { sessionToken: token, isActive: true },
-        \1,\2 {
-            \1,\2 true
+        {
+            true
             }
           }
         }
       });
 
-      \1 {\n  \2 {
+      if (!session.user) {
         return null;
       }
 
       return {
         id: session.user.id,
-        \1,\2 session.user.role,
+        session.user.role,
         permissions: session.user.permissions.map(p => `$p.resource:$p.action`)
       };
     } catch (error) {
-      logger.error('Token verification failed', { error });
+      logger.error("Token verification failed", { error });
       return null;
     }
   }
@@ -149,7 +145,7 @@ import { prisma } from '@/lib/prisma';
     return jwt.sign(
       {
         userId: user.id,
-        \1,\2 user.role,
+        user.role,
         permissions: user.permissions
       },
       this.JWT_SECRET,

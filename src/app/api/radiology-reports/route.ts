@@ -18,7 +18,7 @@ interface RadiologyReportPostData {
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyReportListItem {
   id: string,
-  \1,\2 string,
+  string,
   status: string;
   accession_number?: string;
   radiologist_name?: string;
@@ -36,11 +36,11 @@ export const _GET = async (request: NextRequest) => {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
     // Check session and user existence first
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Role check example (adjust roles as needed)
-    // \1 {\n  \2 {
+    // if (!session.user) {
     //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     // }
 
@@ -58,9 +58,9 @@ export const _GET = async (request: NextRequest) => {
     let query = `SELECT;
                    rr.id, rr.study_id, rr.report_datetime, rr.status,
                    rs.accession_number,
-                   rad.first_name || ' ' || rad.last_name as radiologist_name,
+                   rad.first_name || " " || rad.last_name as radiologist_name,
                    ro.patient_id,
-                   p.first_name || ' ' || p.last_name as patient_name,
+                   p.first_name || " " || p.last_name as patient_name,
                    pt.name as procedure_name;
                  FROM RadiologyReports rr;
                  JOIN RadiologyStudies rs ON rr.study_id = rs.id;
@@ -71,24 +71,24 @@ export const _GET = async (request: NextRequest) => {
     const parameters: string[] = [];
     const conditions: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("rr.study_id = ?");
       parameters.push(studyId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("ro.patient_id = ?");
       parameters.push(patientId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("rr.radiologist_id = ?");
       parameters.push(radiologistId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("rr.status = ?");
       parameters.push(status);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY rr.report_datetime DESC";
@@ -117,13 +117,13 @@ export const _POST = async (request: NextRequest) => {
     // Use IronSession<IronSessionData>
     const session: IronSession<IronSessionData> = await getSession()
     // Check session and user existence first
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Use the user directly from session
     const currentUser = session.user;
     // Use roleName for check
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         { error: "Forbidden: Admin or Radiologist role required" },
         { status: 403 }
       );
@@ -139,7 +139,7 @@ export const _POST = async (request: NextRequest) => {
       status,
     } = (await request.json()) as RadiologyReportPostData;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         {
           error: "Missing required fields (study_id, radiologist_id, impression)",
@@ -154,7 +154,7 @@ export const _POST = async (request: NextRequest) => {
       .prepare("SELECT id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
       .first<id: string >();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Associated radiology study not found" },
         { status: 404 }
@@ -162,8 +162,8 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Check if a report already exists for this study (optional, depends on workflow - allow addendums?)
-    // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != 'addendum'").bind(study_id).first()
-    // \1 {\n  \2{
+    // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != "addendum"").bind(study_id).first()
+    // if (!session.user) {
     //     return NextResponse.json({ error: "A report already exists for this study. Create an addendum instead?" }, { status: 409 })
     // }
 
@@ -189,7 +189,7 @@ export const _POST = async (request: NextRequest) => {
       );
       .run();
 
-    // Update the associated study status to 'reported'
+    // Update the associated study status to "reported"
     await database
       .prepare(
         "UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -197,13 +197,13 @@ export const _POST = async (request: NextRequest) => {
       .bind("reported", now, study_id, "reported") // Avoid unnecessary updates
       .run();
 
-    // Potentially update the order status to 'completed'
+    // Potentially update the order status to "completed"
     // Use direct type argument for .first() and check result directly
     const orderIdResult = await database;
       .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
       .first<order_id: string >();
-    \1 {\n  \2{
+    if (!session.user) {
       await database;
         .prepare(
           "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -228,7 +228,7 @@ export const _POST = async (request: NextRequest) => {
       error instanceof Error ? error.message : "An unknown error occurred";
 
     // Provide more specific error details if possible
-    \1 {\n  \2
+    if (!session.user)
     ) 
       return NextResponse.json(
         {
@@ -248,10 +248,10 @@ export const _POST = async (request: NextRequest) => {
 interface CreatedRadiologyReportQueryResultRow {
   id: number | string; // Assuming ID can be number or string
   order_id: number | string,
-  \1,\2 string,
-  \1,\2 string | null,
-  \1,\2 string; // e.g., 'preliminary', 'final', 'amended'
+  string,
+  string | null,
+  string; // e.g., "preliminary", "final", "amended"
   generated_by: number | string | null,
-  \1,\2 string | null,
-  \1,\2 string,
+  string | null,
+  string,
   updated_at: string

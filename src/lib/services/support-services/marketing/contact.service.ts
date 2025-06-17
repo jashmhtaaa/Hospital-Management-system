@@ -1,37 +1,36 @@
 
-import { AuditLogger } from '@/lib/audit';
-import { decryptData, encryptData } from '@/lib/encryption';
-import { DatabaseError, NotFoundError, ValidationError } from '@/lib/errors';
-import { FhirResourceGenerator } from '@/lib/fhir';
-import { Contact, ContactNote, ContactStatus } from '@/lib/models/marketing';
-import { NotificationService } from '@/lib/notifications';
-import { prisma } from '@/lib/prisma';
+import { AuditLogger } from "@/lib/audit";
+import { decryptData, encryptData } from "@/lib/encryption";
+import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
+import { FhirResourceGenerator } from "@/lib/fhir";
+import { Contact, ContactNote, ContactStatus } from "@/lib/models/marketing";
+import { NotificationService } from "@/lib/notifications";
+import { prisma } from "@/lib/prisma";
 /**
  * Service for managing marketing contacts and related operations;
  */
-\1
 }
       };
 
       // Create contact in database
       const contact = await prisma.contact.create({
-        \1,\2 encryptedData.firstName,
-          \1,\2 encryptedData.email,
-          \1,\2 encryptedData.address,
-          \1,\2 encryptedData.gender,
-          \1,\2 encryptedData.organization,
-          \1,\2 encryptedData.status || ContactStatus.ACTIVE,
-          \1,\2 encryptedData.preferences,
+        encryptedData.firstName,
+          encryptedData.email,
+          encryptedData.address,
+          encryptedData.gender,
+          encryptedData.organization,
+          encryptedData.status || ContactStatus.ACTIVE,
+          encryptedData.preferences,
           patientId: encryptedData.patientId
         },
       });
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.create',
+        action: "contact.create",
         resourceId: contact.id;
         userId,
-        \1,\2 contact.source,
+        contact.source,
           hasPatientRecord: !!contact.patientId
         }
       });
@@ -39,10 +38,10 @@ import { prisma } from '@/lib/prisma';
       // Decrypt sensitive data before returning
       return this.decryptContactData(contact);
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to create contact', error);
+      throw new DatabaseError("Failed to create contact", error);
     }
   }
 
@@ -53,32 +52,32 @@ import { prisma } from '@/lib/prisma';
     try {
       const contact = await prisma.contact.findUnique({
         where: { id },
-        \1,\2 {
-            \1,\2 'desc'
+        {
+            "desc"
             },
             take: 10,
-            \1,\2 {
-                \1,\2 true,
+            {
+                true,
                   name: true
                 }
               }
             }
           },
           patient: includeFHIR ? true : false,
-          \1,\2 {
+          {
               isActive: true
             },
-            \1,\2 true
+            true
             }
           },
-          \1,\2 5,
-            \1,\2 'desc'
+          5,
+            "desc"
             }
           }
         }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
@@ -87,16 +86,16 @@ import { prisma } from '@/lib/prisma';
 
       // Generate FHIR representation if requested
       const result: unknown = decryptedContact;
-      \1 {\n  \2{
+      if (!session.user) {
         result.fhir = this.generateContactFHIR(decryptedContact);
       }
 
       return result;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to retrieve contact', error);
+      throw new DatabaseError("Failed to retrieve contact", error);
     }
   }
 
@@ -111,7 +110,7 @@ import { prisma } from '@/lib/prisma';
     hasPatient?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[], pagination: total: number, \1,\2 number, totalPages: number }> {
+  }): Promise<{ data: Contact[], pagination: total: number, number, totalPages: number }> {
     try {
       const {
         status,
@@ -126,33 +125,33 @@ import { prisma } from '@/lib/prisma';
       // Build where clause based on filters
       const where: unknown = {};
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.status = status;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.source = source;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.patientId = hasPatient ? { not: null } : null;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.OR = [
-          { firstName: { contains: search, mode: 'insensitive' } },
-          { lastName: { contains: search, mode: 'insensitive' } },
-          { email: { contains: search, mode: 'insensitive' } },
-          { phone: { contains: search, mode: 'insensitive' } },
-          { organization: { contains: search, mode: 'insensitive' } }
+          { firstName: { contains: search, mode: "insensitive" } },
+          { lastName: { contains: search, mode: "insensitive" } },
+          { email: { contains: search, mode: "insensitive" } },
+          { phone: { contains: search, mode: "insensitive" } },
+          { organization: { contains: search, mode: "insensitive" } }
         ];
       }
 
       // Handle segment filter
       let segmentFilter = {};
-      \1 {\n  \2{
+      if (!session.user) {
         segmentFilter = {
-          \1,\2 {
+          {
               segmentId,
               isActive: true
             }
@@ -167,19 +166,19 @@ import { prisma } from '@/lib/prisma';
       // Get contacts with pagination
       const contacts = await prisma.contact.findMany({
         where,
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true
+        {
+            true,
+              true
             }
           },
-          \1,\2 true,
-              \1,\2 true
+          true,
+              true
           }
         },
         skip: (page - 1) * limit,
         take: limit;
         {
-          createdAt: 'desc'
+          createdAt: "desc"
         }
       });
 
@@ -196,7 +195,7 @@ import { prisma } from '@/lib/prisma';
         }
       };
     } catch (error) {
-      throw new DatabaseError('Failed to retrieve contacts', error);
+      throw new DatabaseError("Failed to retrieve contacts", error);
     }
   }
 
@@ -210,22 +209,22 @@ import { prisma } from '@/lib/prisma';
         where: { id }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
       // Encrypt sensitive data if provided
       const updateData: unknown = { ...data };
 
-      \1 {\n  \2{
+      if (!session.user) {
         updateData.email = encryptData(data.email);
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         updateData.phone = encryptData(data.phone);
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         updateData.address = encryptData(JSON.stringify(data.address));
       }
 
@@ -237,19 +236,19 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.update',
+        action: "contact.update",
         resourceId: id;
         userId,
-        \1,\2 Object.keys(data)
+        Object.keys(data)
       });
 
       // Decrypt sensitive data before returning
       return this.decryptContactData(updatedContact);
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to update contact', error);
+      throw new DatabaseError("Failed to update contact", error);
     }
   }
 
@@ -263,7 +262,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: contactId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -274,8 +273,8 @@ import { prisma } from '@/lib/prisma';
           content,
           createdById: userId
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             }
           }
@@ -284,18 +283,18 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.note.add',
+        action: "contact.note.add",
         resourceId: contactId;
         userId,
-        \1,\2 note.id
+        note.id
       });
 
       return note;
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to add contact note', error);
+      throw new DatabaseError("Failed to add contact note", error);
     }
   }
 
@@ -309,7 +308,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: contactId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
@@ -318,7 +317,7 @@ import { prisma } from '@/lib/prisma';
         where: { id: patientId }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
       }
 
@@ -328,9 +327,9 @@ import { prisma } from '@/lib/prisma';
         data: {
           patientId
         },
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true
+        {
+            true,
+              true
             }
           }
         }
@@ -338,7 +337,7 @@ import { prisma } from '@/lib/prisma';
 
       // Log audit event
       await this.auditLogger.log({
-        action: 'contact.link.patient',
+        action: "contact.link.patient",
         resourceId: contactId;
         userId,
         details: {
@@ -349,10 +348,10 @@ import { prisma } from '@/lib/prisma';
       // Decrypt sensitive data before returning
       return this.decryptContactData(updatedContact);
     } catch (error) {
-      \1 {\n  \2{
+      if (!session.user) {
         throw error;
       }
-      throw new DatabaseError('Failed to link contact to patient', error);
+      throw new DatabaseError("Failed to link contact to patient", error);
     }
   }
 
@@ -362,65 +361,65 @@ import { prisma } from '@/lib/prisma';
    */
   private generateContactFHIR(contact: Contact): unknown {
     // If contact is linked to a patient, use Patient resource
-    \1 {\n  \2{
+    if (!session.user) {
       return {
-        resourceType: 'Patient',
+        resourceType: "Patient",
         id: `patient-${contact.patientId}`,
         identifier: [
           {
-            system: 'urn:oid:2.16.840.1.113883.2.4.6.3',
+            system: "urn:oid:2.16.840.1.113883.2.4.6.3",
             value: contact.patientId
           }
         ],
         name: [
           {
-            use: 'official',
-            \1,\2 [contact.firstName || '']
+            use: "official",
+            [contact.firstName || ""]
           }
         ],
         telecom: [
           {
-            system: 'email',
-            \1,\2 'home'
+            system: "email",
+            "home"
           },
           {
-            system: 'phone',
-            \1,\2 'mobile'
+            system: "phone",
+            "mobile"
           }
         ],
-        gender: contact.gender?.toLowerCase() || 'unknown',
-        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined
+        gender: contact.gender?.toLowerCase() || "unknown",
+        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined
       };
     }
 
     // Otherwise use RelatedPerson resource
     return {
-      resourceType: 'RelatedPerson',
+      resourceType: "RelatedPerson",
       id: `contact-${contact.id}`,
       identifier: [
         {
-          system: 'urn:oid:2.16.840.1.113883.2.4.6.3',
+          system: "urn:oid:2.16.840.1.113883.2.4.6.3",
           value: contact.id
         }
       ],
       name: [
         {
-          use: 'official',
-          \1,\2 [contact.firstName || '']
+          use: "official",
+          [contact.firstName || ""]
         }
       ],
       telecom: [
         {
-          system: 'email',
-          \1,\2 'home'
+          system: "email",
+          "home"
         },
         {
-          system: 'phone',
-          \1,\2 'mobile'
+          system: "phone",
+          "mobile"
         }
       ],
-      gender: contact.gender?.toLowerCase() || 'unknown',
-      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split('T')[0] : undefined
+      gender: contact.gender?.toLowerCase() || "unknown",
+      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined
     };
   }
 
@@ -431,27 +430,27 @@ import { prisma } from '@/lib/prisma';
     const errors: string[] = [];
 
     // Email or phone is required
-    \1 {\n  \2{
-      errors.push('Either email or phone is required');
+    if (!session.user) {
+      errors.push("Either email or phone is required");
     }
 
     // Validate email format if provided
-    \1 {\n  \2 {
-      errors.push('Invalid email format');
+    if (!session.user) {
+      errors.push("Invalid email format");
     }
 
     // Validate phone format if provided
-    \1 {\n  \2 {
-      errors.push('Invalid phone format');
+    if (!session.user) {
+      errors.push("Invalid phone format");
     }
 
     // Check for valid status
-    \1 {\n  \2includes(data.status as ContactStatus)) {
-      errors.push(`Invalid status: ${\1}`;
+    if (!session.user)includes(data.status as ContactStatus)) {
+      errors.push(`Invalid status: ${}`;
     }
 
-    \1 {\n  \2{
-      throw new ValidationError('Contact validation failed', errors);
+    if (!session.user) {
+      throw new ValidationError("Contact validation failed", errors);
     }
   }
 
@@ -479,15 +478,15 @@ import { prisma } from '@/lib/prisma';
     try {
       const decryptedContact = { ...contact };
 
-      \1 {\n  \2{
+      if (!session.user) {
         decryptedContact.email = decryptData(contact.email);
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         decryptedContact.phone = decryptData(contact.phone);
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         decryptedContact.address = JSON.parse(decryptData(contact.address));
       }
 

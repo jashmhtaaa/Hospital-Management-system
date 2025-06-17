@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { type NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { authOptions } from '@/lib/auth';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { SegmentService } from '@/lib/services/support-services/marketing';
+import { authOptions } from "@/lib/auth";
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { SegmentService } from "@/lib/services/support-services/marketing";
 const segmentService = new SegmentService();
 
 /**
@@ -21,9 +21,9 @@ export const POST = async (
       const session = await getServerSession(authOptions);
       const { contactId } = await req.json();
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
-          { error: 'Contact ID is required' },
+          { error: "Contact ID is required" },
           { status: 400 }
         );
       }
@@ -37,8 +37,8 @@ export const POST = async (
       return NextResponse.json(member, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.segments.update',
-      auditAction: 'SEGMENT_MEMBER_ADD'
+      requiredPermission: "marketing.segments.update",
+      auditAction: "SEGMENT_MEMBER_ADD"
     }
   );
 }
@@ -65,7 +65,7 @@ export const DELETE = async (
       return NextResponse.json(member);
     },
     {
-      requiredPermission: 'marketing.segments.update',
-      auditAction: 'SEGMENT_MEMBER_REMOVE'
+      requiredPermission: "marketing.segments.update",
+      auditAction: "SEGMENT_MEMBER_REMOVE"
     }
   );

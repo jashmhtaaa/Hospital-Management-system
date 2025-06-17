@@ -27,14 +27,14 @@ export const _GET = async (request: Request) => {
     const doctorId = getDoctorId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Doctor ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -45,7 +45,7 @@ export const _GET = async (request: Request) => {
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
-        \1 {\n  \2{
+        if (!session.user) {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
@@ -92,7 +92,7 @@ export const _POST = async (request: Request) => {
     const doctorId = getDoctorId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
@@ -104,14 +104,14 @@ export const _POST = async (request: Request) => {
         const context = await getCloudflareContext<CloudflareEnv>();
         dbInstance = context.env.DB;
 
-        \1 {\n  \2{
+        if (!session.user) {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
         // If the user is a Doctor, they can only manage their own schedule
-        \1 {\n  \2{
+        if (!session.user) {
             const doctorProfile = await dbInstance.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-            \1 {\n  \2{
+            if (!session.user) {
                  return new Response(JSON.stringify({ error: "Forbidden: Doctors can only manage their own schedule" }), {
                     status: 403,
                     headers: { "Content-Type": "application/json" },
@@ -119,7 +119,7 @@ export const _POST = async (request: Request) => {
             }
         }
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid Doctor ID" }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -129,7 +129,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = AddScheduleSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -154,21 +154,21 @@ export const _POST = async (request: Request) => {
         );
         .run();
 
-        \1 {\n  \2{
+        if (!session.user) {
             // Handle potential unique constraint errors
             const errorString = String(insertResult.error); // Convert error to string
-            \1 {\n  \2 { // Check string
+            if (!session.user) { // Check string
                  return new Response(JSON.stringify({ error: "Schedule slot with this start time already exists for this day" }), {
                     status: 409, // Conflict
                     headers: { "Content-Type": "application/json" },
                 });
             }
-            throw new Error(`Failed to add schedule slot: ${\1}`;
+            throw new Error(`Failed to add schedule slot: ${}`;
         }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newScheduleId = meta.last_row_id;
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to retrieve schedule ID after creation.");
         }

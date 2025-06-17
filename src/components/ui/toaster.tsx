@@ -19,8 +19,8 @@ export const _Toaster = () => {
   return (
     <ToastProvider>
       {toasts.map(({ id, title, description, action, ...props }) => (
-          \1>
-            \1>
+          >
+            >
               {title && <ToastTitle>{title}</ToastTitle>}
               {description && (
                 <ToastDescription>{description}</ToastDescription>

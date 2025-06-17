@@ -46,7 +46,7 @@ export default const _LoginPage = () {
       // Add type assertion for the response data
       const data = await response.json() as LoginApiResponse;
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(data.error || "Login failed");
       }
 
@@ -56,7 +56,7 @@ export default const _LoginPage = () {
         description: `Welcome back, ${data.user?.username || "user"}!`, // Use optional chaining
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       // For now, redirect to a placeholder dashboard
       router.push("/dashboard")
 
@@ -65,7 +65,7 @@ export default const _LoginPage = () {
       setError(message),
       toast({
         title: "Login Failed",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsLoading(false);
@@ -73,23 +73,23 @@ export default const _LoginPage = () {
   };
 
   return (
-    \1>
-      \1>
-        \1>
+    >
+      >
+        >
           <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={150} height={50} className="mb-4" />
-          \1>
+          >
             Login
           </h2>
         </div>
-        \1>
+        >
           {error && (
-            \1>
+            >
               {error}
             </div>
           )}
-          \1>
+          >
 <div
-              <Label htmlFor="identifier">Username or Email\1>
+              <Label htmlFor="identifier">Username or Email>
               <Input>
                 id="identifier"
                 name="identifier"
@@ -103,8 +103,8 @@ export default const _LoginPage = () {
                 disabled={isLoading}
               />
             </div>
-            \1>
-              <Label htmlFor="password">Password\1>
+            >
+              <Label htmlFor="password">Password>
               <Input>
                 id="password"
                 name="password"
@@ -122,7 +122,7 @@ export default const _LoginPage = () {
 
           {/* Add Forgot password link if needed */}
 
-\1>
+>
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </div>

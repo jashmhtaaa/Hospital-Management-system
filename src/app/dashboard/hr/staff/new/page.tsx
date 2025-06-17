@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle;
-} from '@/components/ui/card';
+} from "@/components/ui/card";
   Form,
   FormControl,
   FormDescription,
@@ -24,18 +24,18 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue;
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { format } from 'date-fns';
-import { CalendarIcon, Save, ArrowLeft } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { toast } from '@/components/ui/use-toast';
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { CalendarIcon, Save, ArrowLeft } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { toast } from "@/components/ui/use-toast";
 
 // Form schema for employee creation
 const employeeFormSchema = z.object({
@@ -43,10 +43,10 @@ const employeeFormSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   middleName: z.string().optional(),
-  gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
+  gender: z.enum(["MALE", "FEMALE", "OTHER", "UNKNOWN"]).optional(),
   birthDate: z.date().optional(),
-  \1,\2 z.string().optional(),
-  \1,\2 z.array(z.string()).optional(),
+  z.string().optional(),
+  z.array(z.string()).optional(),
     city: z.string().optional(),
     state: z.string().optional(),
     postalCode: z.string().optional(),
@@ -56,7 +56,7 @@ const employeeFormSchema = z.object({
   departmentId: z.string().optional(),
   userId: z.string().optional(),
   photo: z.string().optional(),
-  \1,\2 z.string().optional(),
+  z.string().optional(),
     relationship: z.string().optional(),
     phone: z.string().optional(),
     email: z.string().optional()
@@ -72,18 +72,18 @@ export default const _NewEmployee = () {
   // Initialize form
   const form = useForm({
     resolver: zodResolver(employeeFormSchema),
-    \1,\2 '',
-      \1,\2 '',
-      \1,\2 undefined,
-      \1,\2 '',
-      \1,\2 [''],
-        \1,\2 '',
-        \1,\2 '',
+    "",
+      "",
+      undefined,
+      "",
+      [""],
+        "",
+        "",
       joiningDate: new Date(),
-      \1,\2 '',
-      \1,\2 '',
-        \1,\2 '',
-        email: '',
+      "",
+      "",
+        "",
+        email: "",
     },
   });
 
@@ -91,8 +91,8 @@ export default const _NewEmployee = () {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await fetch('/api/hr/departments');
-        \1 {\n  \2{
+        const response = await fetch("/api/hr/departments");
+        if (!session.user) {
           const data = await response.json(),
           setDepartments(data.departments || []);
         }
@@ -103,8 +103,8 @@ export default const _NewEmployee = () {
 
     const fetchUsers = async () => {
       try {
-        const response = await fetch('/api/users');
-        \1 {\n  \2{
+        const response = await fetch("/api/users");
+        if (!session.user) {
           const data = await response.json(),
           setUsers(data.users || []);
         }
@@ -125,21 +125,21 @@ export default const _NewEmployee = () {
       // Format dates for API
       const formattedData = {
         ...data,
-        birthDate: data.birthDate ? format(data.birthDate, 'yyyy-MM-dd') : undefined,
-        joiningDate: format(data.joiningDate, 'yyyy-MM-dd'),
+        birthDate: data.birthDate ? format(data.birthDate, "yyyy-MM-dd") : undefined,
+        joiningDate: format(data.joiningDate, "yyyy-MM-dd"),
       };
 
-      const response = await fetch('/api/hr/staff', {
-        method: 'POST',
+      const response = await fetch("/api/hr/staff", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formattedData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create employee');
+        throw new Error(errorData.error || "Failed to create employee");
       }
 
       const _newEmployee = await response.json(),
@@ -149,11 +149,11 @@ export default const _NewEmployee = () {
       });
 
       // Navigate back to staff list
-      router.push('/dashboard/hr/staff');
+      router.push("/dashboard/hr/staff");
     } catch (error) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setLoading(false);
@@ -161,21 +161,21 @@ export default const _NewEmployee = () {
   };
 
   return (
-    \1>
-      \1>
+    >
+      >
         <Button>
           variant="ghost"
           size="sm"
-          onClick={() => router.push('/dashboard/hr/staff')}
+          onClick={() => router.push("/dashboard/hr/staff")}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Staff List
         </Button>
       </div>
 
-      \1>
-        <h1 className="text-3xl font-bold">Add New Employee\1>
-        \1>
+      >
+        <h1 className="text-3xl font-bold">Add New Employee>
+        >
           Create a new employee record in the system
         </p>
       </div>
@@ -189,8 +189,8 @@ export default const _NewEmployee = () {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            \1>
-              \1>
+            >
+              >
                 {/* Basic Information */}
                 <FormField>
                   control={form.control}
@@ -225,9 +225,9 @@ export default const _NewEmployee = () {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="">None\1>
+                          <SelectItem value="">None>
                           {users.map((user) => (
-                            \1>
+                            >
                               {user.name} ({user.email})
                             </SelectItem>
                           ))}
@@ -299,9 +299,9 @@ export default const _NewEmployee = () {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="MALE">Male\1>
-                          <SelectItem value="FEMALE">Female\1>
-                          <SelectItem value="OTHER">Other\1>
+                          <SelectItem value="MALE">Male>
+                          <SelectItem value="FEMALE">Female>
+                          <SelectItem value="OTHER">Other>
                           <SelectItem value="UNKNOWN">Prefer not to say</SelectItem>
                         </SelectContent>
                       </Select>
@@ -314,7 +314,7 @@ export default const _NewEmployee = () {
                   control={form.control}
                   name="birthDate"
                   render={({ field }) => (
-                    \1>
+                    >
                       <FormLabel>Date of Birth</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -332,7 +332,7 @@ export default const _NewEmployee = () {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        \1>
+                        >
                           <Calendar>
                             mode="single"
                             selected={field.value}
@@ -353,7 +353,7 @@ export default const _NewEmployee = () {
                   control={form.control}
                   name="joiningDate"
                   render={({ field }) => (
-                    \1>
+                    >
                       <FormLabel>Joining Date*</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -371,7 +371,7 @@ export default const _NewEmployee = () {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        \1>
+                        >
                           <Calendar>
                             mode="single"
                             selected={field.value}
@@ -404,9 +404,9 @@ export default const _NewEmployee = () {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="">None\1>
+                          <SelectItem value="">None>
                           {departments.map((dept) => (
-                            \1>
+                            >
                               {dept.name}
                             </SelectItem>
                           ))}
@@ -420,14 +420,14 @@ export default const _NewEmployee = () {
 
               <Separator />
 
-              \1>
-                <h3 className="text-lg font-medium">Contact Information\1>
-                \1>
-                  Employee's contact details
+              >
+                <h3 className="text-lg font-medium">Contact Information>
+                >
+                  Employee"s contact details
                 </p>
               </div>
 
-              \1>
+              >
                 <FormField>
                   control={form.control}
                   name="email"
@@ -529,14 +529,14 @@ export default const _NewEmployee = () {
 
               <Separator />
 
-              \1>
-                <h3 className="text-lg font-medium">Emergency Contact\1>
-                \1>
+              >
+                <h3 className="text-lg font-medium">Emergency Contact>
+                >
                   Person to contact in case of emergency
                 </p>
               </div>
 
-              \1>
+              >
                 <FormField>
                   control={form.control}
                   name="emergencyContact.name"
@@ -594,16 +594,16 @@ export default const _NewEmployee = () {
                 />
               </div>
 
-              \1>
+              >
                 <Button>
                   type="button"
                   variant="outline"
-                  onClick={() => router.push('/dashboard/hr/staff')}
+                  onClick={() => router.push("/dashboard/hr/staff")}
                 >
                   Cancel
                 </Button>
-                \1>
-                  {loading ? 'Saving...' : 'Save Employee'}
+                >
+                  {loading ? "Saving..." : "Save Employee'}
                   {!loading && <Save className="ml-2 h-4 w-4" />}
                 </Button>
               </div>

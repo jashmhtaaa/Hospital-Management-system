@@ -1,18 +1,18 @@
 import {
-import { NextRequest } from 'next/server';
-import { z } from 'zod';
+import { NextRequest } from "next/server";
+import { z } from "zod";
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   validateQuery,
   checkPermission,
   createSuccessResponse,
   createPaginatedResponse;
-} from '@/lib/core/middleware';
-import { NotFoundError } from '@/lib/core/errors';
-import { logger } from '@/lib/core/logging';
-import { convertToFHIRCoverage } from '@/lib/core/fhir';
+} from "@/lib/core/middleware";
+import { NotFoundError } from "@/lib/core/errors";
+import { logger } from "@/lib/core/logging";
+import { convertToFHIRCoverage } from "@/lib/core/fhir";
 
 // Schema for insurance policy creation
 const createPolicySchema = z.object({
@@ -22,11 +22,11 @@ const createPolicySchema = z.object({
   groupNumber: z.string().optional(),
   groupName: z.string().optional(),
   subscriberId: z.string().uuid().optional(),
-  relationship: z.enum(['self', 'spouse', 'child', 'other']).default('self'),
+  relationship: z.enum(["self", "spouse", "child", "other"]).default("self"),
   startDate: z.coerce.date(),
   endDate: z.coerce.date().optional(),
-  coverageType: z.enum(['primary', 'secondary', 'tertiary']).default('primary'),
-  planType: z.enum(['HMO', 'PPO', 'EPO', 'POS', 'HDHP', 'other']),
+  coverageType: z.enum(["primary", "secondary", "tertiary"]).default("primary"),
+  planType: z.enum(["HMO", "PPO", "EPO", "POS", "HDHP", "other"]),
   copayAmount: z.number().optional(),
   coinsurancePercentage: z.number().optional(),
   deductibleAmount: z.number().optional(),
@@ -42,12 +42,12 @@ const policyQuerySchema = z.object({
   pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
   patientId: z.string().uuid().optional(),
   insuranceProviderId: z.string().uuid().optional(),
-  status: z.enum(['active', 'inactive', 'expired']).optional(),
-  coverageType: z.enum(['primary', 'secondary', 'tertiary']).optional(),
-  planType: z.enum(['HMO', 'PPO', 'EPO', 'POS', 'HDHP', 'other']).optional(),
-  sortBy: z.enum(['startDate', 'endDate', 'createdAt']).optional().default('startDate'),
-  sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
-  format: z.enum(['json', 'fhir']).optional().default('json'),
+  status: z.enum(["active", "inactive", "expired"]).optional(),
+  coverageType: z.enum(["primary", "secondary", "tertiary"]).optional(),
+  planType: z.enum(["HMO", "PPO", "EPO", "POS", "HDHP", "other"]).optional(),
+  sortBy: z.enum(["startDate", "endDate", "createdAt"]).optional().default("startDate"),
+  sortOrder: z.enum(["asc", "desc"]).optional().default("desc"),
+  format: z.enum(["json", "fhir"]).optional().default("json"),
 });
 
 // GET handler for retrieving all insurance policies with filtering and pagination
@@ -56,40 +56,40 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   const query = validateQuery(policyQuerySchema)(req);
 
   // Check permissions
-  await checkPermission(permissionService, 'read', 'insurancePolicy')(req);
+  await checkPermission(permissionService, "read", "insurancePolicy")(req);
 
   // Build filter conditions
   const where: unknown = {};
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.patientId = query.patientId;
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.insuranceProviderId = query.insuranceProviderId;
   }
 
-  \1 {\n  \2{
-    \1 {\n  \2{
+  if (!session.user) {
+    if (!session.user) {
       const today = new Date();
       where.startDate = { lte: today };
       where.OR = [
         { endDate: null },
         { endDate: { gte: today } }
       ];
-    } else \1 {\n  \2{
+    } else if (!session.user) {
       const today = new Date();
       where.endDate = { lt: today };
-    } else \1 {\n  \2{
-      where.status = 'inactive',
+    } else if (!session.user) {
+      where.status = "inactive",
     }
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.coverageType = query.coverageType;
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.planType = query.planType;
   }
 
@@ -101,16 +101,16 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      \1,\2 {
-        \1,\2 {
+      {
+        {
             id: true,
-            \1,\2 true,
-            \1,\2 true
+            true,
+            true
           },
         },
-        \1,\2 {
+        {
             id: true,
-            \1,\2 true
+            true
           },
         },
         insuranceProvider: true
@@ -120,7 +120,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   ]);
 
   // Convert to FHIR format if requested
-  \1 {\n  \2{
+  if (!session.user) {
     const fhirCoverages = policies.map(policy => convertToFHIRCoverage(policy));
     return createPaginatedResponse(fhirCoverages, query.page, query.pageSize, total);
   }
@@ -135,14 +135,14 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   const data = await validateBody(createPolicySchema)(req);
 
   // Check permissions
-  await checkPermission(permissionService, 'create', 'insurancePolicy')(req);
+  await checkPermission(permissionService, "create", "insurancePolicy")(req);
 
   // Check if patient exists
   const patient = await prisma.patient.findUnique({
     where: { id: data.patientId },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Patient with ID ${data.patientId} not found`);
   }
 
@@ -151,65 +151,65 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     where: { id: data.insuranceProviderId },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
   }
 
   // Check if subscriber exists if provided
-  \1 {\n  \2{
+  if (!session.user) {
     const subscriber = await prisma.patient.findUnique({
       where: { id: data.subscriberId },
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);
     }
   } else {
     // If subscriber is not provided, use patient as subscriber
     data.subscriberId = data.patientId;
-    data.relationship = 'self',
+    data.relationship = "self",
   }
 
   // Determine policy status
   const today = new Date();
-  let status = 'inactive';
+  let status = "inactive";
 
-  \1 {\n  \2 {
-    status = 'active',
-  } else \1 {\n  \2{
-    status = 'expired',
+  if (!session.user) {
+    status = "active",
+  } else if (!session.user) {
+    status = "expired",
   }
 
   // Create policy in database
   const policy = await prisma.insurancePolicy.create({
-    \1,\2 data.patientId,
-      \1,\2 data.policyNumber,
-      \1,\2 data.groupName,
-      \1,\2 data.relationship,
-      \1,\2 data.endDate,
-      \1,\2 data.planType,
-      \1,\2 data.coinsurancePercentage,
-      \1,\2 data.deductibleMet,
-      \1,\2 data.outOfPocketMet;
+    data.patientId,
+      data.policyNumber,
+      data.groupName,
+      data.relationship,
+      data.endDate,
+      data.planType,
+      data.coinsurancePercentage,
+      data.deductibleMet,
+      data.outOfPocketMet;
       status,
       notes: data.notes
     },
-    \1,\2 {
-        \1,\2 true,
-          \1,\2 true,
+    {
+        true,
+          true,
           mrn: true
         },
       },
-      \1,\2 true,
-          \1,\2 true,
+      true,
+          true,
       },
       insuranceProvider: true
     },
   });
 
-  logger.info('Insurance policy created', {
+  logger.info("Insurance policy created", {
     policyId: policy.id,
-    \1,\2 policy.patientId,
+    policy.patientId,
     providerId: policy.insuranceProviderId
   });
 

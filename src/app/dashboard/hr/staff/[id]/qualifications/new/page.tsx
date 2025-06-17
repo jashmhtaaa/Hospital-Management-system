@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle;
-} from '@/components/ui/card';
+} from "@/components/ui/card";
   Form,
   FormControl,
   FormDescription,
@@ -19,16 +19,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { format } from 'date-fns';
-import { CalendarIcon, Save, ArrowLeft } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { toast } from '@/components/ui/use-toast';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { CalendarIcon, Save, ArrowLeft } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { toast } from "@/components/ui/use-toast";
 
 // Form schema for qualification
 const qualificationSchema = z.object({
@@ -49,10 +49,10 @@ export default const _AddQualification = ({ params }: { id: string }) {
   // Initialize form
   const form = useForm({
     resolver: zodResolver(qualificationSchema),
-    \1,\2 '',
-      \1,\2 '',
-      \1,\2 new Date(),
-      \1,\2 ''
+    "",
+      "",
+      new Date(),
+      ""
     },
   });
 
@@ -60,8 +60,8 @@ export default const _AddQualification = ({ params }: { id: string }) {
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        const response = await fetch(`/api/hr/staff/${\1}`;
-        \1 {\n  \2{
+        const response = await fetch(`/api/hr/staff/${}`;
+        if (!session.user) {
           const data = await response.json(),
           setEmployee(data);
         }
@@ -69,7 +69,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
         toast({
           title: "Error",
-          \1,\2 "destructive"
+          "destructive"
         });
       }
     };
@@ -85,21 +85,21 @@ export default const _AddQualification = ({ params }: { id: string }) {
       // Format dates for API
       const formattedData = {
         ...data,
-        startDate: format(data.startDate, 'yyyy-MM-dd'),
-        endDate: data.endDate ? format(data.endDate, 'yyyy-MM-dd') : undefined,
+        startDate: format(data.startDate, "yyyy-MM-dd"),
+        endDate: data.endDate ? format(data.endDate, "yyyy-MM-dd") : undefined,
       };
 
       const response = await fetch(`/api/hr/staff/${params.id}/qualifications`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formattedData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to add qualification');
+        throw new Error(errorData.error || "Failed to add qualification");
       }
 
       toast({
@@ -108,11 +108,11 @@ export default const _AddQualification = ({ params }: { id: string }) {
       });
 
       // Navigate back to employee profile
-      router.push(`/dashboard/hr/staff/${\1}`;
+      router.push(`/dashboard/hr/staff/${}`;
     } catch (error) {
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setLoading(false);
@@ -120,23 +120,23 @@ export default const _AddQualification = ({ params }: { id: string }) {
   };
 
   return (
-    \1>
-      \1>
+    >
+      >
         <Button>
           variant="ghost"
           size="sm"
-          onClick={() => router.push(`/dashboard/hr/staff/${\1}`}
+          onClick={() => router.push(`/dashboard/hr/staff/${}`}
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Employee Profile
         </Button>
       </div>
 
-      \1>
-        <h1 className="text-3xl font-bold">Add Qualification\1>
-        \1>
+      >
+        <h1 className="text-3xl font-bold">Add Qualification>
+        >
           {employee ? `Add a qualification for /* SECURITY: Template literal eliminated */
-              \1>
+              >
                 <FormField>
                   control={form.control}
                   name="name"
@@ -209,7 +209,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
                   control={form.control}
                   name="startDate"
                   render={({ field }) => (
-                    \1>
+                    >
                       <FormLabel>Issue Date*</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -227,7 +227,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        \1>
+                        >
                           <Calendar>
                             mode="single"
                             selected={field.value}
@@ -248,7 +248,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
                   control={form.control}
                   name="endDate"
                   render={({ field }) => (
-                    \1>
+                    >
                       <FormLabel>Expiry Date</FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -266,7 +266,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        \1>
+                        >
                           <Calendar>
                             mode="single"
                             selected={field.value}
@@ -305,12 +305,12 @@ export default const _AddQualification = ({ params }: { id: string }) {
                 <Button>
                   type="button"
                   variant="outline"
-                  onClick={() => router.push(`/dashboard/hr/staff/${\1}`}
+                  onClick={() => router.push(`/dashboard/hr/staff/${}`}
                 >
                   Cancel
                 </Button>
-                \1>
-                  {loading ? 'Saving...' : 'Add Qualification'}
+                >
+                  {loading ? "Saving..." : "Add Qualification"}
                   {!loading && <Save className="ml-2 h-4 w-4" />}
                 </Button>
               </div>

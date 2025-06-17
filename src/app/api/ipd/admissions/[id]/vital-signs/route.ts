@@ -24,7 +24,7 @@ export const _GET = async (
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -48,7 +48,7 @@ export const _GET = async (
         ? admissionResult.results[0] // Changed .rows to .results
         : undefined;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Admission not found" },
         { status: 404 }
@@ -63,7 +63,7 @@ export const _GET = async (
     const canViewVitals =;
       session.user.permissions?.includes("vital_signs:view") ?? false;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -103,7 +103,7 @@ export const _POST = async (
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -114,7 +114,7 @@ export const _POST = async (
     const canCreateVitals =;
       session.user.permissions?.includes("vital_signs:create") ?? false;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -123,7 +123,7 @@ export const _POST = async (
     const data = (await request.json()) as VitalSignsInput;
 
     // Basic validation (using typed data)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "At least one vital sign must be provided" },
         { status: 400 }
@@ -143,14 +143,14 @@ export const _POST = async (
         ? (admissionResult.results[0] as { id: string, status: string }) // Changed .rows to .results
         : undefined;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Admission not found" },
         { status: 404 }
       );
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Cannot add vital signs to a non-active admission" },
         { status: 409 }

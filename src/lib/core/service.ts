@@ -1,6 +1,6 @@
 
-import { AuthorizationError, NotFoundError } from './errors.ts';
-import { QueryOptions, type Repository } from './repository.ts';
+import { AuthorizationError, NotFoundError } from "./errors.ts";
+import { QueryOptions, type Repository } from "./repository.ts";
 }
 
 /**
@@ -9,7 +9,6 @@ import { QueryOptions, type Repository } from './repository.ts';
  */
 
 // Base service interface
-\1
 }
 }
 
@@ -19,7 +18,7 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
 
   async findById(id: ID): Promise<T> {
     const entity = await this.repository.findById(id);
-    \1 {\n  \2{
+    if (!session.user) {
       throw new NotFoundError(`Entity with id ${id} not found`);
     }
     return entity;
@@ -74,39 +73,36 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
 }
 
 // Audit service interface
-\1
 }
 }
 
 // Audit event interface
-\1
 }
 }
 
 // Permission service for authorization
-\1
 }
     },
-    'user2': {
-      'billing': ['read'],
-      'invoice': ['read'],
-      'payment': ['read'],
+    "user2": {
+      "billing": ["read"],
+      "invoice": ["read"],
+      "payment": ["read"],
     },
-    'user3': {
-      'billing': ['read', 'create', 'update', 'delete', 'approve'],
-      'invoice': ['read', 'create', 'update', 'delete', 'approve'],
-      'payment': ['read', 'create', 'update', 'delete', 'refund'],
+    "user3": {
+      "billing": ["read", "create", "update", "delete", "approve"],
+      "invoice": ["read", "create", "update", "delete", "approve"],
+      "payment": ["read", "create", "update", "delete", "refund"],
     },
   };
 
   async hasPermission(userId: string, action: string, resource: string): Promise<boolean> {
     // Check if user exists in permissions map
-    \1 {\n  \2{
+    if (!session.user) {
       return false;
     }
 
     // Check if resource exists for user
-    \1 {\n  \2{
+    if (!session.user) {
       return false;
     }
 
@@ -126,35 +122,35 @@ export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends Bas
   }
 
   async findById(id: ID, userId: string): Promise<T> {
-    await this.checkPermission(userId, 'read');
+    await this.checkPermission(userId, "read");
     return super.findById(id);
   }
 
   async findAll(options?: QueryOptions, userId?: string): Promise<T[]> {
-    \1 {\n  \2{
-      await this.checkPermission(userId, 'read');
+    if (!session.user) {
+      await this.checkPermission(userId, "read");
     }
     return super.findAll(options);
   }
 
   async create(data: CreateDTO, userId: string): Promise<T> {
-    await this.checkPermission(userId, 'create');
+    await this.checkPermission(userId, "create");
     return super.create(data);
   }
 
   async update(id: ID, data: UpdateDTO, userId: string): Promise<T> {
-    await this.checkPermission(userId, 'update');
+    await this.checkPermission(userId, "update");
     return super.update(id, data);
   }
 
   async delete(id: ID, userId: string): Promise<boolean> {
-    await this.checkPermission(userId, 'delete');
+    await this.checkPermission(userId, "delete");
     return super.delete(id);
   }
 
   private async checkPermission(userId: string, action: string): Promise<void> {
     const hasPermission = await this.permissionService.hasPermission(userId, action, this.resourceType);
-    \1 {\n  \2{
+    if (!session.user) {
       throw new AuthorizationError(`User does not have permission to /* SECURITY: Template literal eliminated */
     }
   }

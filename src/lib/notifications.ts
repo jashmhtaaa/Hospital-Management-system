@@ -1,4 +1,4 @@
-import { DB } from './database';
+import { DB } from "./database";
 
 /**
  * Notifications module for HMS Diagnostics
@@ -11,14 +11,13 @@ import { DB } from './database';
  * Database result interface
  */
 interface DBResult {
-  \1,\2 number;
+  number;
   affectedRows: number;
 }
 
 /**
  * Notification type definition
  */
-\1
 }
 }
 
@@ -31,11 +30,11 @@ interface DBResult {
  */
 export const _notifyUsers = async (
   userIds: number[],
-  notification: Omit\1>
+  notification: Omit>
 ): Promise<number[]> {
 export const notifyUsers = async (
   userIds: number[],
-  notification: Omit<Notification, 'userId'>
+  notification: Omit<Notification, "userId">
 ): Promise<number[]> => {
   try {
     const db = DB();
@@ -130,11 +129,11 @@ export const getUserNotifications = async (
 
     const params: unknown[] = [userId];
 
-    \1 {\n  \2{
-      query += ' AND read = false';
+    if (!session.user) {
+      query += " AND read = false";
     }
 
-    query += ' ORDER BY created_at DESC LIMIT ?';
+    query += " ORDER BY created_at DESC LIMIT ?";
     params.push(limit);
 
     const result = await db.query(query, params) as DBResult;

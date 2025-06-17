@@ -9,51 +9,51 @@ import { prisma } from "@/lib/prisma";
  * Authentication integration for HR & Asset Management module;
  * This connects the HR module with the central HMS authentication system;
  */
-export const \1,\2 PrismaAdapter(prisma),
-  \1,\2 "jwt"
+export const PrismaAdapter(prisma),
+  "jwt"
   },
-  \1,\2 "/login"
+  "/login"
   },
   providers: [
     CredentialsProvider({
       name: "Credentials",
-      \1,\2 { label: "Email", type: "email" },
+      { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        \1 {\n  \2{
+        if (!session.user) {
           return null;
         }
 
         const user = await prisma.user.findUnique({
-          \1,\2 credentials.email
+          credentials.email
           },
-          \1,\2 true,
+          true,
             roles: true
           }
         });
 
-        \1 {\n  \2{
+        if (!session.user) {
           return null;
         }
 
         const passwordValid = await compare(credentials.password, user.password);
 
-        \1 {\n  \2{
+        if (!session.user) {
           return null;
         }
 
         return {
           id: user.id,
-          \1,\2 user.name,
-          \1,\2 user.roles.map(role => role.name)
+          user.name,
+          user.roles.map(role => role.name)
         };
       }
     });
   ],
   callbacks: {
     async session({ session, token }) 
-      \1 {\n  \2{
+      if (!session.user) {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
@@ -62,7 +62,7 @@ export const \1,\2 PrismaAdapter(prisma),
       }
       return session;,
     async jwt(token, user ) 
-      \1 {\n  \2{
+      if (!session.user) {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;

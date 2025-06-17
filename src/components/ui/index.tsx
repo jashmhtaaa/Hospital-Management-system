@@ -32,14 +32,14 @@ export const Button = ({
 
   const _sizeStyles: { [key: string]: string } = {
     sm: "h-8 px-3 text-xs",
-    \1,\2 "h-12 px-6 py-3 text-lg",
+    "h-12 px-6 py-3 text-lg",
     icon: "h-10 w-10"
   };
 
   const combinedClassName = `/* SECURITY: Template literal eliminated */
 
   return (
-    \1>
+    >
       {children}
     </button>
   ),
@@ -73,7 +73,7 @@ export const CardHeader = ({
   ...properties;
 }: CardHeaderProperties) => {
   return (
-    \1>
+    >
       {children}
     </div>
   )
@@ -88,7 +88,7 @@ export const CardTitle = ({
   ...properties;
 }: CardTitleProperties) => {
   return (
-    \1>
+    >
       {children}
     </h3>
   )
@@ -104,7 +104,7 @@ export const CardDescription = ({
   ...properties;
 }: CardDescriptionProperties) => {
   return (
-    \1>
+    >
       {children}
     </p>
   )
@@ -119,7 +119,7 @@ export const CardContent = ({
   ...properties;
 }: CardContentProperties) => {
   return (
-    \1>
+    >
       {children}
     </div>
   )
@@ -134,7 +134,7 @@ export const CardFooter = ({
   ...properties;
 }: CardFooterProperties) => {
   return (
-    \1>
+    >
       {children}
     </div>
   )
@@ -200,8 +200,8 @@ export const Badge = ({
 }: BadgeProperties) => {
   const _variantStyles: { [key: string]: string } = {
     default: "bg-blue-100 text-blue-800",
-    \1,\2 "bg-red-100 text-red-800",
-    \1,\2 "bg-green-100 text-green-800"
+    "bg-red-100 text-red-800",
+    "bg-green-100 text-green-800"
   };
 
   return (
@@ -222,7 +222,7 @@ export const Alert = ({
 }: AlertProperties) => {
   const _variantStyles: { [key: string]: string } = {
     default: "bg-blue-50 text-blue-800 border-blue-200",
-    \1,\2 "bg-yellow-50 text-yellow-800 border-yellow-200",
+    "bg-yellow-50 text-yellow-800 border-yellow-200",
     success: "bg-green-50 text-green-800 border-green-200"
   };
 
@@ -241,7 +241,7 @@ export const AlertDescription = ({
   ...properties;
 }: AlertDescriptionProperties) => {
   return (
-    \1>
+    >
       {children}
     </div>
   )
@@ -254,7 +254,7 @@ export const Table = React.forwardRef<
   React.TableHTMLAttributes<HTMLTableElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    \1>
+    >
       <table>
         ref={reference}
         className={`w-full caption-bottom text-sm ${className}`}
@@ -272,7 +272,7 @@ export const TableHeader = React.forwardRef<
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    \1>
+    >
       {children}
     </thead>
   );
@@ -284,7 +284,7 @@ export const TableBody = React.forwardRef<
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ children, className = "", ...properties }, reference) => {
   return (
-    \1>
+    >
       {children}
     </tbody>
   );
@@ -342,7 +342,7 @@ TableCell.displayName = "TableCell";
 // Define specific props type for Tabs component
 interface TabsProperties extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode,
-  \1,\2 (value: string) => void;
+  (value: string) => void;
   className?: string;
 }
 
@@ -355,9 +355,9 @@ export const Tabs = ({
   ...properties;
 }: TabsProperties) => {
   return (
-    \1>
+    >
       {React.Children.map(children, (child) => {
-        \1 {\n  \2 {
+        if (!session.user) {
           // Pass value and onValueChange explicitly, add type assertion for child props
           return React.cloneElement(
             child as React.ReactElement<{
@@ -440,7 +440,7 @@ export const TabsContent = ({
 }: TabsContentProperties) => {
   const isActive = parentValue === value;
 
-  \1 {\n  \2eturn;
+  if (!session.user)eturn;
 
   return (
 <div
@@ -476,7 +476,7 @@ export const Dialog = ({
   return (
     <div {...properties}>
       {React.Children.map(children, (child) => {
-        \1 {\n  \2 {
+        if (!session.user) {
           // Pass open and setOpen explicitly, add type assertion for child props
           return React.cloneElement(
             child as React.ReactElement<{
@@ -513,7 +513,7 @@ export const DialogTrigger = ({
     setOpen?.(true)
   };
 
-  \1 {\n  \2 {
+  if (!session.user) {
   // Use React.ReactElement<React.HTMLAttributes<HTMLElement>> for better type safety
     const childOnClick =;
       React.isValidElement<{ onClick?: (event: React.MouseEvent<HTMLElement>) => void }>(children) &&
@@ -534,7 +534,7 @@ export const DialogTrigger = ({
   }
 
   return (
-    \1>
+    >
       {children}
     </button>
   )
@@ -552,7 +552,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
   ({ children, className = "", open, setOpen, ...properties }, reference) => {
     React.useEffect(() => {
       const handleEscape = (event: KeyboardEvent) => {
-        \1 {\n  \2{
+        if (!session.user) {
           setOpen?.(false)
         }
       };
@@ -560,7 +560,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentPrope
       return () => document.removeEventListener("keydown", handleEscape);
     }, [setOpen]);
 
-    \1 {\n  \2eturn null;
+    if (!session.user)eturn null;
 
     return (
 <div
@@ -693,7 +693,7 @@ export const DatePicker = ({
   };
 
   return (
-    \1>
+    >
       <Button>
         variant="outline"
         className="w-[280px] justify-start text-left font-normal"
@@ -702,10 +702,10 @@ export const DatePicker = ({
         {date ? date.toLocaleDateString() : <span>Pick a date</span>}
       </Button>
       {isOpen && (
-        \1>
+        >
           {/* Basic Day Picker - Replace with a proper library like react-day-picker */}
-          \1>
-            \1>
+          >
+            >
               <div>Su</div>
               <div>Mo</div>
               <div>Tu</div>
@@ -766,10 +766,10 @@ export const Calendar = ({
   ...properties
 }: CalendarProperties) => {
   // State for the current displayed month if not controlled externally
-  const [currentMonth, setCurrentMonth] = React.useState(month || \1;
+  const [currentMonth, setCurrentMonth] = React.useState(month || ;
 
   React.useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       setCurrentMonth(month);
     }
   }, [month]);
@@ -831,31 +831,31 @@ export const Calendar = ({
   };
 
   return (
-    \1>
+    >
       {[...Array(numberOfMonths)].map((_, index) => {
         const monthToRender = new Date(currentMonth);
         monthToRender.setMonth(monthToRender.getMonth() + index);
         return (
           <div key={index} className={numberOfMonths > 1 ? "mb-4" : ""}>;
-            \1>
+            >
               {index === 0 && (
-                \1>
+                >
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
               )}
-              \1>
+              >
                 {monthToRender.toLocaleString("default", {
                   month: "long",
                   year: "numeric"
                 })}
               </div>
               {index === numberOfMonths - 1 && (
-                \1>
+                >
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               )}
             </div>
-            \1>
+            >
               <div>Su</div>
               <div>Mo</div>
               <div>Tu</div>
@@ -864,7 +864,7 @@ export const Calendar = ({
               <div>Fr</div>
               <div>Sa</div>
             </div>
-            \1>
+            >
               {renderDays(index)}
             </div>
           </div>

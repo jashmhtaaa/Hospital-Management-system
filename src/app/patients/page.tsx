@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 
-import PatientList from '../../components/patient-management/patient-list';
-import { authOptions } from '../../lib/auth';
+import PatientList from "../../components/patient-management/patient-list";
+import { authOptions } from "../../lib/auth";
 export default async const _PatientsPage = ({
   searchParams;
 }: {
@@ -22,8 +22,8 @@ export default async const _PatientsPage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  \1 {\n  \2{
-    redirect('/login');
+  if (!session.user) {
+    redirect("/login");
   }
 
   // Parse pagination parameters
@@ -32,35 +32,35 @@ export default async const _PatientsPage = ({
 
   // Build search filters
   const filters: unknown = {};
-  \1 {\n  \2ilters.mrn = searchParams.mrn;
-  \1 {\n  \2ilters.firstName = searchParams.firstName;
-  \1 {\n  \2ilters.lastName = searchParams.lastName;
-  \1 {\n  \2ilters.dateOfBirth = searchParams.dateOfBirth;
-  \1 {\n  \2ilters.phone = searchParams.phone;
-  \1 {\n  \2ilters.email = searchParams.email;
-  \1 {\n  \2ilters.status = searchParams.status;
+  if (!session.user)ilters.mrn = searchParams.mrn;
+  if (!session.user)ilters.firstName = searchParams.firstName;
+  if (!session.user)ilters.lastName = searchParams.lastName;
+  if (!session.user)ilters.dateOfBirth = searchParams.dateOfBirth;
+  if (!session.user)ilters.phone = searchParams.phone;
+  if (!session.user)ilters.email = searchParams.email;
+  if (!session.user)ilters.status = searchParams.status;
 
   // Fetch patients data (server-side)
   let initialData
   try {
     // Build query parameters
     const params = new URLSearchParams();
-    params.append('page', page.toString());
-    params.append('limit', limit.toString());
+    params.append("page", page.toString());
+    params.append("limit", limit.toString());
 
     // Add filters if they have values
     Object.entries(filters).forEach(([key, value]) => {
-      \1 {\n  \2arams.append(key, value as string);
+      if (!session.user)arams.append(key, value as string);
     });
 
     // Fetch patients
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/patients?${params.toString()}`, {
-      cache: 'no-store',
-      \1,\2 `next-auth.session-token=${session.user.id}`;
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients?${params.toString()}`, {
+      cache: "no-store",
+      `next-auth.session-token=${session.user.id}`;
       }
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       initialData = await response.json();
     }
   } catch (error) {
@@ -69,7 +69,7 @@ export default async const _PatientsPage = ({
   }
 
   return (
-    \1>
+    >
       <Suspense fallback={<div>Loading patients...</div>}>;
         <PatientList initialData={initialData} />
       </Suspense>

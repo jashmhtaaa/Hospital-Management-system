@@ -28,14 +28,14 @@ export const _GET = async (request: Request) => {
     const inventoryItemId = getItemId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Inventory Item ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -47,14 +47,14 @@ export const _GET = async (request: Request) => {
         // const { env } = context; // Removed destructuring
         const DB = context.env.DB; // FIX: Access DB via context.env
 
-        \1 {\n  \2{ throw new Error("Database binding not found."); } // Add null check
+        if (!session.user) { throw new Error("Database binding not found."); } // Add null check
 
         // 2. Retrieve batches for the item
         const batchesResult = await DB.prepare(
             "SELECT * FROM StockBatches WHERE inventory_item_id = ? ORDER BY received_date DESC, expiry_date ASC";
         ).bind(inventoryItemId).all<StockBatch>();
 
-        \1 {\n  \2{
+        if (!session.user) {
             throw new Error("Failed to retrieve stock batches");
         }
 
@@ -93,14 +93,14 @@ export const _POST = async (request: Request) => {
     const inventoryItemId = getItemId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Inventory Item ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -111,7 +111,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = AddStockBatchSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -124,13 +124,13 @@ export const _POST = async (request: Request) => {
         // const { env } = context; // Removed destructuring
         const DB = context.env.DB; // FIX: Access DB via context.env
 
-        \1 {\n  \2{ throw new Error("Database binding not found."); } // Add null check
+        if (!session.user) { throw new Error("Database binding not found."); } // Add null check
 
         // 2. Verify the inventory item exists and is active
         const itemCheck = await DB.prepare("SELECT inventory_item_id FROM InventoryItems WHERE inventory_item_id = ? AND is_active = TRUE");
                                 .bind(inventoryItemId);
                                 .first();
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Inventory item not found or is inactive" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -156,13 +156,13 @@ export const _POST = async (request: Request) => {
         );
         .run();
 
-        \1 {\n  \2{
+        if (!session.user) {
             throw new Error("Failed to add stock batch");
         }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newBatchId = meta.last_row_id;
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to retrieve batch ID after creation.");
         }

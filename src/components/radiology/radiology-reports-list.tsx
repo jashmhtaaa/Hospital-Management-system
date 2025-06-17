@@ -41,7 +41,7 @@ export default const _RadiologyReportsList = () {
     setLoading(true);
     try {
       const response = await fetch("/api/radiology/reports");
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error("Failed to fetch radiology reports");
       }
       const data: RadiologyReport[] = await response.json(); // FIX: Assume API returns RadiologyReport[]
@@ -57,19 +57,19 @@ export default const _RadiologyReportsList = () {
 
   // FIX: Type the parameter
   const handleViewReport = (reportId: string) => {
-    router.push(`/dashboard/radiology/reports/${\1}`
+    router.push(`/dashboard/radiology/reports/${}`
   };
 
   // FIX: Type the parameter
   const getStatusBadge = (status: string) => {
     const statusStyles: { [key: string]: string } = {
       // FIX: Add index signature,
-      \1,\2 "bg-green-100 text-green-800",
+      "bg-green-100 text-green-800",
       addendum: "bg-blue-100 text-blue-800"
     }
 
     return (
-      \1>
+      >
         {status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ")}
       </Badge>
     )
@@ -77,23 +77,23 @@ export default const _RadiologyReportsList = () {
 
   return (
     <Card>
-      \1>
-        \1>
+      >
+        >
           <h2 className="text-xl font-semibold">Radiology Reports</h2>
         </div>
 
         {loading ? (
-          \1>
+          >
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
-          <div className="text-center text-red-500 p-4">{error}\1>
+          <div className="text-center text-red-500 p-4">{error}>
         ) : reports.length === 0 ? (
-          \1>
+          >
             No radiology reports found.
           </div>
         ) : (
-          \1>
+          >
             <Table>
               <TableHeader>
                 <TableRow>
@@ -108,7 +108,7 @@ export default const _RadiologyReportsList = () {
               </TableHeader>
               <TableBody>
                 {reports.map((report) => (
-                  \1>
+                  >
                     <TableCell>{report.patient_name}</TableCell>
                     <TableCell>{report.procedure_name}</TableCell>
                     <TableCell>{report.accession_number || "N/A"}</TableCell>
@@ -117,7 +117,7 @@ export default const _RadiologyReportsList = () {
                       {new Date(report.report_datetime).toLocaleString()}
                     </TableCell>
                     <TableCell>{getStatusBadge(report.status)}</TableCell>
-                    \1>
+                    >
                       <Button>
                         variant="outline"
                         size="sm"

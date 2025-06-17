@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 
-import { DocumentViewer } from '../../../components/clinical-documentation/document-viewer';
-import { authOptions } from '../../../lib/auth';
+import { DocumentViewer } from "../../../components/clinical-documentation/document-viewer";
+import { authOptions } from "../../../lib/auth";
 export default async const _DocumentViewPage = ({
   params;
 }: {id: string 
@@ -13,12 +13,12 @@ export default async const _DocumentViewPage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  \1 {\n  \2{
-    redirect('/login');
+  if (!session.user) {
+    redirect("/login");
   }
 
   return (
-    \1>
+    >
       <Suspense fallback={<div>Loading document...</div>}>;
         <DocumentViewer documentId={params.id} />
       </Suspense>

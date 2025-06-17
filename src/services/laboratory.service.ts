@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import * as z from 'zod';
+import { PrismaClient } from "@prisma/client";
+import * as z from "zod";
 
 
-import { NotificationService } from '../lib/notifications';
-import { AuditService } from './audit_log_service.ts';
-import { EncryptionService } from './encryption_service.ts';
+import { NotificationService } from "../lib/notifications";
+import { AuditService } from "./audit_log_service.ts";
+import { EncryptionService } from "./encryption_service.ts";
 const prisma = new PrismaClient();
 
 // Define schema for lab test
@@ -41,7 +41,7 @@ const LabOrderSchema = z.object({
   encounterId: z.string().optional(),
   orderingProviderId: z.string().min(1, "Ordering provider ID is required"),
   orderingProviderName: z.string().min(1, "Ordering provider name is required"),
-  orderDateTime: z.date().default(() => \1,
+  orderDateTime: z.date().default(() => ,
   priority: z.string().default("Routine"),
   collectionType: z.string().default("Lab Draw"),
   clinicalInfo: z.string().optional(),
@@ -59,7 +59,7 @@ const LabOrderSchema = z.object({
   notes: z.string().optional(),
   isRecurring: z.boolean().default(false),
   recurringPattern: z.string().optional(),
-  \1,\2 z.string().optional(),
+  z.string().optional(),
     profileId: z.string().optional(),
     status: z.string().default("Ordered"),
     priority: z.string().default("Routine"),
@@ -106,7 +106,7 @@ const LabResultSchema = z.object({
   interpretation: z.string().optional(),
   status: z.string().default("Preliminary"),
   performedBy: z.string().min(1, "Performed by is required"),
-  performedDateTime: z.date().default(() => \1,
+  performedDateTime: z.date().default(() => ,
   verifiedBy: z.string().optional(),
   verifiedDateTime: z.date().optional(),
   reportedDateTime: z.date().optional(),
@@ -130,7 +130,6 @@ const LabResultSchema = z.object({
 /**
  * Service class for laboratory management;
  */
-\1
 }
   }
 
@@ -141,22 +140,22 @@ const LabResultSchema = z.object({
     // Get current date for prefix
     const currentDate = new Date();
     const _year = currentDate.getFullYear().toString().slice(-2);
-    const _month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const _day = currentDate.getDate().toString().padStart(2, '0');
+    const _month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const _day = currentDate.getDate().toString().padStart(2, "0");
 
     // Get count of orders for the day to generate a sequential number
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const orderCount = await prisma.labOrder.count({
-      \1,\2 {
+      {
           gte: today
         }
       }
     });
 
     // Generate sequential number with padding
-    const _sequentialNumber = (orderCount + 1).toString().padStart(4, '0');
+    const _sequentialNumber = (orderCount + 1).toString().padStart(4, "0");
 
     // Combine to create Order Number: LAB-YYMMDD-XXXX
     const orderNumber = `LAB-/* SECURITY: Template literal eliminated */
@@ -171,22 +170,22 @@ const LabResultSchema = z.object({
     // Get current date for prefix
     const currentDate = new Date();
     const _year = currentDate.getFullYear().toString().slice(-2);
-    const _month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const _day = currentDate.getDate().toString().padStart(2, '0');
+    const _month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+    const _day = currentDate.getDate().toString().padStart(2, "0");
 
     // Get count of samples for the day to generate a sequential number
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     const sampleCount = await prisma.labSample.count({
-      \1,\2 {
+      {
           gte: today
         }
       }
     });
 
     // Generate sequential number with padding
-    const _sequentialNumber = (sampleCount + 1).toString().padStart(4, '0');
+    const _sequentialNumber = (sampleCount + 1).toString().padStart(4, "0");
 
     // Combine to create Sample ID: TYPE-YYMMDD-XXXX
     const sampleId = `$sampleTypeCode-/* SECURITY: Template literal eliminated */
@@ -207,7 +206,7 @@ const LabResultSchema = z.object({
         where: { testCode: validatedTest.testCode }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error(`Test with code ${validatedTest.testCode} already exists`);
       }
 
@@ -221,8 +220,8 @@ const LabResultSchema = z.object({
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create',
-        resourceType: 'LabTest',        resourceId: test.id,
+        action: "Create",
+        resourceType: "LabTest",        resourceId: test.id,
         description: `Created lab test: ${test.testName} (${test.testCode})`,
         performedBy: userId
       });
@@ -242,26 +241,26 @@ const LabResultSchema = z.object({
       // Get test with parameters
       const test = await prisma.labTest.findUnique({
         where: { id: testId },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               criticalRanges: true
             }
           },
-          \1,\2 {
+          {
               sampleType: true
             }
           }
         }
       });
 
-      \1 {\n  \2{
-        throw new Error('Lab test not found');
+      if (!session.user) {
+        throw new Error("Lab test not found");
       }
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View',
-        resourceType: 'LabTest',        resourceId: testId,
+        action: "View",
+        resourceType: "LabTest",        resourceId: testId,
         description: `Viewed lab test: ${test.testName} (${test.testCode})`,
         performedBy: userId
       });
@@ -286,17 +285,17 @@ const LabResultSchema = z.object({
         where: { id: testId }
       });
 
-      \1 {\n  \2{
-        throw new Error('Lab test not found');
+      if (!session.user) {
+        throw new Error("Lab test not found");
       }
 
       // If changing test code, check if new code already exists
-      \1 {\n  \2{
+      if (!session.user) {
         const duplicateTest = await prisma.labTest.findUnique({
           where: { testCode: validatedTest.testCode }
         });
 
-        \1 {\n  \2{
+        if (!session.user) {
           throw new Error(`Test with code ${validatedTest.testCode} already exists`);
         }
       }
@@ -312,8 +311,8 @@ const LabResultSchema = z.object({
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Update',
-        resourceType: 'LabTest',        resourceId: testId,
+        action: "Update",
+        resourceType: "LabTest",        resourceId: testId,
         description: `Updated lab test: ${test.testName} (${test.testCode})`,
         performedBy: userId
       });
@@ -335,8 +334,8 @@ const LabResultSchema = z.object({
 
       // Check if at least one of testId or profileId is provided for each item
       validatedOrder.orderItems.forEach(item => {
-        \1 {\n  \2{
-          throw new Error('Each order item must have either a test or profile specified');
+        if (!session.user) {
+          throw new Error("Each order item must have either a test or profile specified");
         }
       });
 
@@ -367,9 +366,9 @@ const LabResultSchema = z.object({
         // Create order items
         for (const item of validatedOrder.orderItems) {
           await tx.labOrderItem.create({
-            \1,\2 newOrder.id,
+            newOrder.id,
               testId: item.testId,              profileId: item.profileId,
-              status: item.status || 'Ordered',              priority: item.priority || validatedOrder.priority,
+              status: item.status || "Ordered",              priority: item.priority || validatedOrder.priority,
               scheduledDateTime: item.scheduledDateTime,              performingLabId: item.performingLabId,
               referralLabId: item.referralLabId,              billable: item.billable,
               notes: item.notes
@@ -382,20 +381,20 @@ const LabResultSchema = z.object({
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create',
-        resourceType: 'LabOrder',        resourceId: order.id,
+        action: "Create",
+        resourceType: "LabOrder",        resourceId: order.id,
         description: `Created lab order: ${order.orderNumber} for patient ${order.patientId}`,
         performedBy: userId
       });
 
       // Send notification to lab department
       await this.notificationService.sendNotification({
-        type: 'LabOrderCreated',
-        title: 'New Lab Order',        message: `New lab order ${order.orderNumber} created for patient ${order.patientId}`,
-        priority: order.priority === 'STAT' ? 'high' : 'medium',
-        recipientRoles: ['Lab Technician', 'Lab Manager'],
+        type: "LabOrderCreated",
+        title: "New Lab Order",        message: `New lab order ${order.orderNumber} created for patient ${order.patientId}`,
+        priority: order.priority === "STAT" ? "high" : "medium",
+        recipientRoles: ["Lab Technician", "Lab Manager"],
         recipientIds: [],
-        relatedResourceType: 'LabOrder',        relatedResourceId: order.id
+        relatedResourceType: "LabOrder",        relatedResourceId: order.id
       });
 
       return order;
@@ -413,30 +412,30 @@ const LabResultSchema = z.object({
       // Get order with items, samples, and results
       const order = await prisma.labOrder.findUnique({
         where: { id: orderId },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               profile: true
             }
           },
-          \1,\2 {
+          {
               sampleType: true
             }
           },
-          \1,\2 {
+          {
               parameter: true
             }
           }
         }
       });
 
-      \1 {\n  \2{
-        throw new Error('Lab order not found');
+      if (!session.user) {
+        throw new Error("Lab order not found");
       }
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View',
-        resourceType: 'LabOrder',        resourceId: orderId,
+        action: "View",
+        resourceType: "LabOrder",        resourceId: orderId,
         description: `Viewed lab order: ${order.orderNumber}`,
         performedBy: userId
       });
@@ -458,50 +457,50 @@ const LabResultSchema = z.object({
         where: { id: orderId }
       });
 
-      \1 {\n  \2{
-        throw new Error('Lab order not found');
+      if (!session.user) {
+        throw new Error("Lab order not found");
       }
 
       // Validate status
-      const validStatuses = ['Ordered', 'Collected', 'In Process', 'Completed', 'Cancelled'];
-      \1 {\n  \2 {
-        throw new Error(`Invalid status: ${statusData.status}. Must be one of: ${\1}`;
+      const validStatuses = ["Ordered", "Collected", "In Process", "Completed", "Cancelled"];
+      if (!session.user) {
+        throw new Error(`Invalid status: ${statusData.status}. Must be one of: ${}`;
       }
 
       // Update order status
       const order = await prisma.labOrder.update({
         where: { id: orderId },
-        \1,\2 statusData.status,
+        statusData.status,
           notes: statusData.notes ? `/* SECURITY: Template literal eliminated */
         }
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Update',
-        resourceType: 'LabOrder',        resourceId: orderId,
+        action: "Update",
+        resourceType: "LabOrder",        resourceId: orderId,
         description: `Updated lab order status: ${order.orderNumber} to ${statusData.status}`,
         performedBy: userId
       });
 
       // Send notification for status change
-      \1 {\n  \2{
+      if (!session.user) {
         await this.notificationService.sendNotification({
-          type: 'LabOrderCompleted',
-          title: 'Lab Order Completed',          message: `Lab order ${order.orderNumber} has been completed`,
-          priority: 'medium',
-          recipientRoles: ['Physician', 'Nurse'],
+          type: "LabOrderCompleted",
+          title: "Lab Order Completed",          message: `Lab order ${order.orderNumber} has been completed`,
+          priority: "medium",
+          recipientRoles: ["Physician", "Nurse"],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder',          relatedResourceId: order.id
+          relatedResourceType: "LabOrder",          relatedResourceId: order.id
         });
-      } else \1 {\n  \2{
+      } else if (!session.user) {
         await this.notificationService.sendNotification({
-          type: 'LabOrderCancelled',
-          title: 'Lab Order Cancelled',          message: `Lab order ${order.orderNumber} has been cancelled`,
-          priority: 'medium',
-          recipientRoles: ['Physician', 'Nurse'],
+          type: "LabOrderCancelled",
+          title: "Lab Order Cancelled",          message: `Lab order ${order.orderNumber} has been cancelled`,
+          priority: "medium",
+          recipientRoles: ["Physician", "Nurse"],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder',          relatedResourceId: order.id
+          relatedResourceType: "LabOrder",          relatedResourceId: order.id
         });
       }
 
@@ -523,12 +522,12 @@ const LabResultSchema = z.object({
       // Check if order exists
       const order = await prisma.labOrder.findUnique({
         where: { id: validatedSample.orderId },
-        \1,\2 true
+        true
         }
       });
 
-      \1 {\n  \2{
-        throw new Error('Lab order not found');
+      if (!session.user) {
+        throw new Error("Lab order not found");
       }
 
       // Get sample type
@@ -536,8 +535,8 @@ const LabResultSchema = z.object({
         where: { id: validatedSample.sampleTypeId }
       });
 
-      \1 {\n  \2{
-        throw new Error('Sample type not found');
+      if (!session.user) {
+        throw new Error("Sample type not found");
       }
 
       // Generate sample ID
@@ -560,22 +559,22 @@ const LabResultSchema = z.object({
         }
       });
 
-      // If sample is collected, update order status if it's still in 'Ordered' status
-      \1 {\n  \2{
+      // If sample is collected, update order status if it"s still in "Ordered" status
+      if (!session.user) {
         await prisma.labOrder.update({
           where: { id: order.id },
-          \1,\2 'Collected',
+          "Collected",
             collectionDateTime: validatedSample.collectionDateTime,            collectedBy: validatedSample.collectedBy,
             collectionSite: validatedSample.collectionSite
           }
         });
       }
 
-      // If sample is received, update order status if it's in 'Collected' status
-      \1 {\n  \2{
+      // If sample is received, update order status if it"s in "Collected" status
+      if (!session.user) {
         await prisma.labOrder.update({
           where: { id: order.id },
-          \1,\2 'In Process',
+          "In Process",
             specimenReceivedDateTime: validatedSample.receivedDateTime,            receivedBy: validatedSample.receivedBy
           }
         });
@@ -583,8 +582,8 @@ const LabResultSchema = z.object({
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create',
-        resourceType: 'LabSample',        resourceId: sample.id,
+        action: "Create",
+        resourceType: "LabSample",        resourceId: sample.id,
         description: `Registered lab sample: ${sample.sampleId} for order ${order.orderNumber}`,
         performedBy: userId
       });
@@ -609,30 +608,30 @@ const LabResultSchema = z.object({
         where: { id: validatedResult.orderId }
       });
 
-      \1 {\n  \2{
-        throw new Error('Lab order not found');
+      if (!session.user) {
+        throw new Error("Lab order not found");
       }
 
       // Check if parameter exists
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: validatedResult.parameterId },
-        \1,\2 true,
+        true,
           referenceRanges: true,          test: true
         }
       });
 
-      \1 {\n  \2{
-        throw new Error('Test parameter not found');
+      if (!session.user) {
+        throw new Error("Test parameter not found");
       }
 
       // Check if sample exists if provided
-      \1 {\n  \2{
+      if (!session.user) {
         const sample = await prisma.labSample.findUnique({
           where: { id: validatedResult.sampleId }
         });
 
-        \1 {\n  \2{
-          throw new Error('Lab sample not found');
+        if (!session.user) {
+          throw new Error("Lab sample not found");
         }
       }
 
@@ -641,33 +640,33 @@ const LabResultSchema = z.object({
       let flags = validatedResult.flags;
       let referenceRange = validatedResult.referenceRange;
 
-      \1 {\n  \2{
+      if (!session.user) {
         // Simplistic approach - in a real system would check age, gender, etc.
         const criticalRange = parameter.criticalRanges[0]
 
-        \1 {\n  \2 {
+        if (!session.user) {
           isCritical = true;
-          flags = flags || 'CL'; // Critical Low
-        } else \1 {\n  \2 {
+          flags = flags || "CL"; // Critical Low
+        } else if (!session.user) {
           isCritical = true;
-          flags = flags || 'CH'; // Critical High
+          flags = flags || "CH"; // Critical High
         }
       }
 
       // If numeric result provided, check reference ranges
-      \1 {\n  \2{
+      if (!session.user) {
         // Simplistic approach - in a real system would check age, gender, etc.
         const refRange = parameter.referenceRanges[0]
 
-        \1 {\n  \2{
+        if (!session.user) {
           referenceRange = referenceRange || `${refRange.lowerLimit}-${refRange.upperLimit}`;
 
-          \1 {\n  \2 {
-            flags = flags || 'L'; // Low
-          } else \1 {\n  \2 {
-            flags = flags || 'H'; // High
+          if (!session.user) {
+            flags = flags || "L"; // Low
+          } else if (!session.user) {
+            flags = flags || "H"; // High
           }
-        } else \1 {\n  \2{
+        } else if (!session.user) {
           referenceRange = referenceRange || refRange.textualRange;
         }
       }
@@ -701,34 +700,34 @@ const LabResultSchema = z.object({
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Create',
-        resourceType: 'LabResult',        resourceId: result.id,
+        action: "Create",
+        resourceType: "LabResult",        resourceId: result.id,
         description: `Entered lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
         performedBy: userId
       });
 
       // Send notification for critical result
-      \1 {\n  \2{
+      if (!session.user) {
         await this.notificationService.sendNotification({
-          type: 'CriticalLabResult',
-          title: 'Critical Lab Result',          message: `Critical lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
-          priority: 'high',
-          recipientRoles: ['Physician', 'Nurse'],
+          type: "CriticalLabResult",
+          title: "Critical Lab Result",          message: `Critical lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
+          priority: "high",
+          recipientRoles: ["Physician", "Nurse"],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabResult',          relatedResourceId: result.id
+          relatedResourceType: "LabResult",          relatedResourceId: result.id
         });
       }
 
       // Check if all required results are entered and update order status if needed
       const allOrderItems = await prisma.labOrderItem.findMany({
         where: { orderId: order.id },
-        \1,\2 {
-            \1,\2 true
+        {
+            true
             }
           },
-          \1,\2 {
-              \1,\2 {
-                  \1,\2 {
+          {
+              {
+                  {
                       testParameters: true
                     }
                   }
@@ -743,18 +742,18 @@ const LabResultSchema = z.object({
       const requiredParameters: string[] = [];
 
       for (const item of allOrderItems) {
-        \1 {\n  \2{
+        if (!session.user) {
           // Add test parameters
           item.test.testParameters.forEach(param => {
-            \1 {\n  \2{
+            if (!session.user) {
               requiredParameters.push(param.id);
             }
           });
-        } else \1 {\n  \2{
+        } else if (!session.user) {
           // Add parameters from all tests in the profile
           item.profile.testItems.forEach(profileItem => {
             profileItem.test.testParameters.forEach(param => {
-              \1 {\n  \2{
+              if (!session.user) {
                 requiredParameters.push(param.id);
               }
             });
@@ -764,7 +763,7 @@ const LabResultSchema = z.object({
 
       // Get all entered results for this order
       const results = await prisma.labResult.findMany({
-        where: { orderId: order.id, status: { not: 'Cancelled' } }
+        where: { orderId: order.id, status: { not: "Cancelled" } }
       });
 
       const enteredParameters = results.map(r => r.parameterId);
@@ -772,21 +771,21 @@ const LabResultSchema = z.object({
       // Check if all required parameters have results
       const allResultsEntered = requiredParameters.every(param => enteredParameters.includes(param));
 
-      // Update order status if all results are entered and status is 'In Process'
-      \1 {\n  \2{
+      // Update order status if all results are entered and status is "In Process"
+      if (!session.user) {
         await prisma.labOrder.update({
           where: { id: order.id },
-          data: { status: 'Completed' }
+          data: { status: "Completed" }
         })
 
         // Send notification for completed order
         await this.notificationService.sendNotification({
-          type: 'LabOrderCompleted',
-          title: 'Lab Order Completed',          message: `All results for lab order ${order.orderNumber} have been entered`,
-          priority: 'medium',
-          recipientRoles: ['Physician', 'Nurse'],
+          type: "LabOrderCompleted",
+          title: "Lab Order Completed",          message: `All results for lab order ${order.orderNumber} have been entered`,
+          priority: "medium",
+          recipientRoles: ["Physician", "Nurse"],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: 'LabOrder',          relatedResourceId: order.id
+          relatedResourceType: "LabOrder",          relatedResourceId: order.id
         });
       }
 
@@ -805,22 +804,22 @@ const LabResultSchema = z.object({
       // Check if result exists
       const existingResult = await prisma.labResult.findUnique({
         where: { id: resultId },
-        \1,\2 {
-            \1,\2 true
+        {
+            true
             }
           },
           order: true
         }
       });
 
-      \1 {\n  \2{
-        throw new Error('Lab result not found');
+      if (!session.user) {
+        throw new Error("Lab result not found");
       }
 
       // Update result status to Final and set verification info
       const result = await prisma.labResult.update({
         where: { id: resultId },
-        \1,\2 'Final',
+        "Final",
           verifiedBy: verificationData.verifiedBy,          verifiedDateTime: new Date(),
           notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */
         }
@@ -828,8 +827,8 @@ const LabResultSchema = z.object({
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Update',
-        resourceType: 'LabResult',        resourceId: resultId,
+        action: "Update",
+        resourceType: "LabResult",        resourceId: resultId,
         description: `Verified lab result for ${existingResult.parameter.test.testName} - ${existingResult.parameter.parameterName} on order ${existingResult.order.orderNumber}`,
         performedBy: userId
       });
@@ -849,38 +848,38 @@ const LabResultSchema = z.object({
       // Build where clause based on search parameters
       const where: unknown = {};
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.orderNumber = {
           contains: searchParams.orderNumber
         };
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.patientId = searchParams.patientId;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.orderingProviderId = searchParams.orderingProviderId;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.status = searchParams.status;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.priority = searchParams.priority;
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         where.orderDateTime = {
           gte: new Date(searchParams.startDate),
           lte: new Date(searchParams.endDate)
         };
-      } else \1 {\n  \2{
+      } else if (!session.user) {
         where.orderDateTime = {
           gte: new Date(searchParams.startDate)
         };
-      } else \1 {\n  \2{
+      } else if (!session.user) {
         where.orderDateTime = {
           lte: new Date(searchParams.endDate)
         };
@@ -894,12 +893,12 @@ const LabResultSchema = z.object({
       const [orders, total] = await Promise.all([
         prisma.labOrder.findMany({
           where,
-          \1,\2 {
-              \1,\2 true,
+          {
+              true,
                 profile: true
               }
             },
-            \1,\2 {
+            {
                 samples: true,
                 results: true
               }
@@ -907,15 +906,15 @@ const LabResultSchema = z.object({
           },
           skip,
           take,
-          orderBy: { orderDateTime: 'desc' }
+          orderBy: { orderDateTime: "desc" }
         }),
         prisma.labOrder.count({ where })
       ]);
 
       // Log audit
       await this.auditService.logAction({
-        action: 'Search',
-        resourceType: 'LabOrder',        description: 'Performed lab order search',
+        action: "Search",
+        resourceType: "LabOrder",        description: "Performed lab order search",
         performedBy: userId
       });
 
@@ -938,36 +937,36 @@ const LabResultSchema = z.object({
     try {
       // Get all results for the patient
       const results = await prisma.labResult.findMany({
-        \1,\2 {
+        {
             patientId: patientId
           },
-          status: { in: ['Final', 'Preliminary'] }
+          status: { in: ["Final", "Preliminary"] }
         },
-        \1,\2 {
-            \1,\2 true
+        {
+            true
             }
           },
-          \1,\2 {
+          {
               orderNumber: true,
               orderDateTime: true,              orderingProviderName: true
             }
           }
         },
         orderBy: [
-          { performedDateTime: 'desc' }
+          { performedDateTime: "desc" }
         ],
         take: options.limit
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View',
-        resourceType: 'LabResult',        description: `Viewed lab results for patient ${patientId}`,
+        action: "View",
+        resourceType: "LabResult",        description: `Viewed lab results for patient ${patientId}`,
         performedBy: userId
       });
 
       // If not grouping by test, return the flat list
-      \1 {\n  \2{
+      if (!session.user) {
         return results;
       }
 
@@ -976,7 +975,7 @@ const LabResultSchema = z.object({
         const testId = result.parameter.testId;
         const testName = result.parameter.test.testName;
 
-        \1 {\n  \2{
+        if (!session.user) {
           acc[testId] = {
             testId,
             testName,
@@ -986,7 +985,7 @@ const LabResultSchema = z.object({
         }
 
         // Update latest date if this result is newer
-        \1 {\n  \2 \1 {
+        if (!session.user) if (condition) {
           acc[testId].latestDate = result.performedDateTime;
         }
 
@@ -1021,7 +1020,7 @@ const LabResultSchema = z.object({
     try {
       // Calculate start date based on months option
       let startDate;
-      \1 {\n  \2{
+      if (!session.user) {
         startDate = new Date();
         startDate.setMonth(startDate.getMonth() - options.months);
       }
@@ -1029,13 +1028,13 @@ const LabResultSchema = z.object({
       // Get parameter details
       const parameter = await prisma.labTestParameter.findUnique({
         where: { id: parameterId },
-        \1,\2 true,
+        true,
           referenceRanges: true
         }
       });
 
-      \1 {\n  \2{
-        throw new Error('Test parameter not found');
+      if (!session.user) {
+        throw new Error("Test parameter not found");
       }
 
       // Get results for the specific parameter
@@ -1045,28 +1044,28 @@ const LabResultSchema = z.object({
           order: {
             patientId
           },
-          status: { in: ['Final', 'Preliminary'] },
-          \1,\2 startDate
+          status: { in: ["Final", "Preliminary"] },
+          startDate
           } : undefined;
         },
-        \1,\2 true,
+        true,
               orderDateTime: true,
-        orderBy: performedDateTime: 'asc' 
+        orderBy: performedDateTime: "asc" 
       });
 
       // Log audit
       await this.auditService.logAction({
-        action: 'View',
-        resourceType: 'LabResult',        description: `Viewed result trend for patient ${patientId}, test parameter ${parameter.parameterName}`,
+        action: "View",
+        resourceType: "LabResult",        description: `Viewed result trend for patient ${patientId}, test parameter ${parameter.parameterName}`,
         performedBy: userId
       });
 
       // Extract reference ranges
       let referenceRanges = null;
-      \1 {\n  \2{
+      if (!session.user) {
         // In a real system, would select the appropriate range based on patient demographics
         const refRange = parameter.referenceRanges[0];
-        \1 {\n  \2{
+        if (!session.user) {
           referenceRanges = {
             lower: Number.parseFloat(refRange.lowerLimit),
             upper: Number.parseFloat(refRange.upperLimit)
@@ -1076,12 +1075,12 @@ const LabResultSchema = z.object({
 
       // Format the response
       return {
-        \1,\2 parameter.id,
+        parameter.id,
           name: parameter.parameterName,          units: parameter.units,
           testName: parameter.test.testName,          testCode: parameter.test.testCode
         },
         referenceRanges,
-        \1,\2 result.id,
+        result.id,
           resultValue: result.resultValue,          resultValueNumeric: result.resultValueNumeric,
           units: result.units,          flags: result.flags,
           isCritical: result.isCritical,          performedDateTime: result.performedDateTime,

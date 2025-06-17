@@ -1,12 +1,12 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { biometricService } from '@/lib/hr/biometric-service';
+import { biometricService } from "@/lib/hr/biometric-service";
 // Schema for biometric template registration
 const biometricTemplateSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
-  templateType: z.enum(['FINGERPRINT', 'FACIAL', 'IRIS'], {
+  templateType: z.enum(["FINGERPRINT", "FACIAL", "IRIS"], {
     errorMap: () => ({ message: "Template type must be FINGERPRINT, FACIAL, or IRIS" }),
   }),
   templateData: z.string().min(1, "Template data is required"),
@@ -22,7 +22,7 @@ export const _POST = async (request: NextRequest) => {
 
     // Validate request data
     const validationResult = biometricTemplateSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -46,9 +46,9 @@ export const _POST = async (request: NextRequest) => {
 export const _GET = async (request: NextRequest) => {
   try {
     const searchParams = request.nextUrl.searchParams;
-    const employeeId = searchParams.get('employeeId');
+    const employeeId = searchParams.get("employeeId");
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Employee ID is required" },
         { status: 400 }

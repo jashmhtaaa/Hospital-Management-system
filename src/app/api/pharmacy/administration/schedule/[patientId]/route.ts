@@ -1,44 +1,44 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../../../lib/audit';
-import { errorHandler } from '../../../../../../lib/error-handler';
-import { getMedicationById, getPrescriptionById } from '../../../../../../lib/services/pharmacy/pharmacy.service';
-import type { PharmacyDomain } from '../../../../models/domain-models';
+import { auditLog } from "../../../../../../lib/audit";
+import { errorHandler } from "../../../../../../lib/error-handler";
+import { getMedicationById, getPrescriptionById } from "../../../../../../lib/services/pharmacy/pharmacy.service";
+import type { PharmacyDomain } from "../../../../models/domain-models";
 }
 
 /**
  * Patient Medication Schedule API;
  *
- * This file implements the API endpoint for retrieving a patient's medication;
+ * This file implements the API endpoint for retrieving a patient"s medication;
  * administration schedule with comprehensive timing and status information.
  */
 
 // Initialize repositories (in production, use dependency injection)
-const \1,\2 getMedicationById,
+const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
 
-const \1,\2 getPrescriptionById,
+const getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
   findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
 
-const \1,\2 () => Promise.resolve(null),
+const () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
   findByStatus: () => Promise.resolve([]),
-  save: (administration) => Promise.resolve(administration.id || 'new-id'),
+  save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
@@ -53,29 +53,29 @@ export const GET = async (
 ) => {
   try {
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get patient ID from params
     const { patientId } = params;
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Patient ID is required" }, { status: 400 });
     }
 
     // Get query parameters
     const url = new URL(req.url);
-    const startDate = url.searchParams.get('startDate');
-      ? new Date(url.searchParams.get('startDate') as string);
+    const startDate = url.searchParams.get("startDate");
+      ? new Date(url.searchParams.get("startDate") as string);
       : new Date(),
-    const endDate = url.searchParams.get('endDate');
-      ? new Date(url.searchParams.get('endDate') as string);
+    const endDate = url.searchParams.get("endDate");
+      ? new Date(url.searchParams.get("endDate") as string);
       : new Date(startDate.getTime() + 24 * 60 * 60 * 1000); // Default to 24 hours from start
-    const includeCompleted = url.searchParams.get('includeCompleted') === 'true';
+    const includeCompleted = url.searchParams.get("includeCompleted") === "true";
 
     // Get active prescriptions for patient
     const prescriptions = await prescriptionRepository.findByPatientId(patientId);
@@ -86,7 +86,7 @@ export const GET = async (
 
     for (const prescription of activePrescriptions) {
       const medication = await medicationRepository.findById(prescription.medicationId);
-      \1 {\n  \2ontinue;
+      if (!session.user)ontinue;
 
       // Parse frequency to generate schedule times
       const frequency = prescription.dosage.frequency;
@@ -109,26 +109,26 @@ export const GET = async (
         });
 
         // Skip completed administrations if not requested
-        \1 {\n  \2{
+        if (!session.user) {
           continue;
         }
 
         // Determine status
-        let status = 'scheduled';
-        \1 {\n  \2{
+        let status = "scheduled";
+        if (!session.user) {
           status = matchingAdministration.status;
-        } else \1 {\n  \2 {
-          status = 'overdue',
+        } else if (!session.user) {
+          status = "overdue",
         }
 
         schedule.push({
           prescriptionId: prescription.id,
-          \1,\2 medication.name,
-          \1,\2 prescription.dosage.unit,
-          \1,\2 scheduleTime;
+          medication.name,
+          prescription.dosage.unit,
+          scheduleTime;
           status,
           administrationId: matchingAdministration?.id,
-          \1,\2 matchingAdministration?.administeredBy,
+          matchingAdministration?.administeredBy,
           notes: matchingAdministration?.notes
         });
       }
@@ -138,10 +138,10 @@ export const GET = async (
     schedule.sort((a, b) => a.scheduledTime.getTime() - b.scheduledTime.getTime());
 
     // Audit logging
-    await auditLog('MEDICATION_ADMINISTRATION', {
-      action: 'SCHEDULE_VIEW',
-      \1,\2 userId,
-      \1,\2 schedule.length,
+    await auditLog("MEDICATION_ADMINISTRATION", {
+      action: "SCHEDULE_VIEW",
+      userId,
+      schedule.length,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString()
     });
@@ -149,7 +149,7 @@ export const GET = async (
     // Return response
     return NextResponse.json({ schedule }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error retrieving medication administration schedule');
+    return errorHandler(error, "Error retrieving medication administration schedule");
   }
 }
 
@@ -160,93 +160,93 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
   const times: Date[] = [];
 
   // Parse frequency
-  \1 {\n  \2 {
+  if (!session.user) {
     // Once daily - default to 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(time);
     }
-  } else \1 {\n  \2| frequency.includes('BID')) {
+  } else if (!session.user)| frequency.includes("BID")) {
     // Twice daily - 9 AM and 5 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(morning);
     }
 
     const evening = new Date(start);
     evening.setHours(17, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(evening);
     }
-  } else \1 {\n  \2| frequency.includes('TID')) {
+  } else if (!session.user)| frequency.includes("TID")) {
     // Three times daily - 9 AM, 1 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(morning);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(13, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(evening);
     }
-  } else \1 {\n  \2| frequency.includes('QID')) {
+  } else if (!session.user)| frequency.includes("QID")) {
     // Four times daily - 9 AM, 1 PM, 5 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(morning);
     }
 
     const noon = new Date(start);
     noon.setHours(13, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(noon);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(17, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(evening);
     }
-  } else \1 {\n  \2& frequency.includes('hours')) {
+  } else if (!session.user)& frequency.includes("hours")) {
     // Every X hours
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
-    \1 {\n  \2{
+    if (!session.user) {
       const hours = Number.parseInt(match[1], 10);
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
 
       while (time < end) {
-        \1 {\n  \2{
-          times.push(\1;
+        if (!session.user) {
+          times.push(;
         }
         time.setHours(time.getHours() + hours);
       }
     }
-  } else \1 {\n  \2| frequency.includes('as needed')) {
+  } else if (!session.user)| frequency.includes("as needed')) {
     // PRN - no scheduled times
   } else {
     // Default to once daily at 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+    if (!session.user) {
       times.push(time);
     }
   }

@@ -162,7 +162,7 @@ describe("Notifications Module", () => {
 					resource_type: "LabResult",
 					resource_id: 123,
 					priority: "medium",
-					metadata: '{"testId": 456}',
+					metadata: "{"testId": 456}",
 					created_at: "2023-01-01T12:00:00Z",
 					read: false,
 				},

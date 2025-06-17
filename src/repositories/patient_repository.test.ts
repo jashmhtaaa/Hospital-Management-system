@@ -2,13 +2,13 @@ import type { QueryResult } from "pg";
 
 
 import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts";
-import { type IPatientRepository, type Patient, type PatientInputData, PatientRepository } from './patient_repository.ts';
+import { type IPatientRepository, type Patient, type PatientInputData, PatientRepository } from "./patient_repository.ts";
 }
 
 // ARCH-3: Unit Tests for PatientRepository
 
 // Mock the IDatabaseAdapter
-const \1,\2 jest.fn(),
+const jest.fn(),
   disconnect: jest.fn(),
   execute: jest.fn(),
   beginTransaction: jest.fn(),
@@ -25,29 +25,29 @@ describe("PatientRepository", () => {
   });
 
   describe("create", () => {
-    const \1,\2 "John Doe",
+    const "John Doe",
       dateOfBirth: new Date("1990-01-01T00:00:00.000Z"), // Use ISO string for consistency in test setup
     };
     const expectedDobForDb = "1990-01-01"; // The format the repository converts to
 
     const createdPatientDbRow = {
       id: "generated-uuid",
-      \1,\2 "1990-01-01", // DB returns string
+      "1990-01-01", // DB returns string
       created_at: new Date().toISOString(), // DB returns string
       updated_at: new Date().toISOString(), // DB returns string
     };
 
-    const \1,\2 "generated-uuid",
-      \1,\2 new Date("1990-01-01"), // Converted back to Date object
+    const "generated-uuid",
+      new Date("1990-01-01"), // Converted back to Date object
       createdAt: new Date(createdPatientDbRow.created_at),
       updatedAt: new Date(createdPatientDbRow.updated_at)
     };
 
     it("should create a patient and return the created patient data", async () => {
-      // Mock the execute function to return a structure that matches the repository's mapping logic
+      // Mock the execute function to return a structure that matches the repository"s mapping logic
       mockDbAdapter.execute.mockResolvedValueOnce({
-        \1,\2 createdPatientExpected.id,
-          \1,\2 createdPatientDbRow.date_of_birth, // as string from DB
+        createdPatientExpected.id,
+          createdPatientDbRow.date_of_birth, // as string from DB
           created_at: createdPatientDbRow.created_at, // as string from DB
           updated_at: createdPatientDbRow.updated_at, // as string from DB
         }]
@@ -62,14 +62,14 @@ describe("PatientRepository", () => {
       // Compare parts of the result due to date object precision issues in direct toEqual
       expect(result.id).toEqual(createdPatientExpected.id),
       expect(result.name).toEqual(createdPatientExpected.name),
-      expect(result.dateOfBirth.toISOString().split('T')[0]).toEqual(expectedDobForDb);
+      expect(result.dateOfBirth.toISOString().split("T")[0]).toEqual(expectedDobForDb);
       // For createdAt and updatedAt, checking they are Date objects is often sufficient for unit tests
       expect(result.createdAt).toBeInstanceOf(Date),
       expect(result.updatedAt).toBeInstanceOf(Date);
     });
 
     it("should throw an error if database execution fails during create", async () => {
-      mockDbAdapter.execute.mockRejectedValueOnce(\1;
+      mockDbAdapter.execute.mockRejectedValueOnce(;
 
       // Expect the more specific error message from the repository
       await expect(patientRepository.create(patientInput)).rejects.toThrow("Failed to create patient due to a database issue."),
@@ -88,12 +88,12 @@ describe("PatientRepository", () => {
     const patientId = "test-patient-id";
     const mockPatientDbRow = {
       id: patientId,
-      \1,\2 "1985-05-15",
+      "1985-05-15",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString()
     };
-    const \1,\2 patientId,
-      \1,\2 new Date("1985-05-15"),
+    const patientId,
+      new Date("1985-05-15"),
       createdAt: new Date(mockPatientDbRow.created_at),
       updatedAt: new Date(mockPatientDbRow.updated_at)
     };
@@ -110,10 +110,10 @@ describe("PatientRepository", () => {
         [patientId]
       );
       expect(result).not.toBeNull();
-      \1 {\n  \2{
+      if (!session.user) {
         expect(result.id).toEqual(mockPatientExpected.id),
         expect(result.name).toEqual(mockPatientExpected.name),
-        expect(result.dateOfBirth.toISOString().split('T')[0]).toEqual("1985-05-15"),
+        expect(result.dateOfBirth.toISOString().split("T')[0]).toEqual("1985-05-15"),
         expect(result.createdAt).toBeInstanceOf(Date),
         expect(result.updatedAt).toBeInstanceOf(Date);
       }
@@ -128,7 +128,7 @@ describe("PatientRepository", () => {
     });
 
     it("should throw an error if database execution fails during findById", async () => {
-      mockDbAdapter.execute.mockRejectedValueOnce(\1;
+      mockDbAdapter.execute.mockRejectedValueOnce(;
 
       await expect(patientRepository.findById(patientId)).rejects.toThrow("Failed to find patient by ID."),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);

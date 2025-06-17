@@ -1,7 +1,6 @@
 
 import type { D1Database, D1PreparedStatement, D1Result } from "@cloudflare/workers-types";
 // Define a more specific type for D1Result that includes expected meta properties
-\1
 }
   };
 }

@@ -2,13 +2,13 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { getCurrentUser } from "@/lib/auth";
 // src/app/api/auth/me/route.ts
-// import { getRequestContext } from '@cloudflare/next-on-pages'
+// import { getRequestContext } from "@cloudflare/next-on-pages"
 
 export const _GET = async (request: NextRequest) => {
   try {
     const user = await getCurrentUser(request);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
@@ -25,16 +25,16 @@ export const _GET = async (request: NextRequest) => {
 
     const userDetails = {
       first_name: user.name?.split(" ")[0] || "Test",
-      \1,\2 user.email,
+      user.email,
       role: userRole, // Use the adjusted role
       last_login: new Date().toISOString()
     };
 
     // Return user information
     return NextResponse.json({
-      \1,\2 user.id,
-        \1,\2 `/* \1,\2 userDetails.first_name,
-        \1,\2 userDetails.role, // This now uses the corrected role from userDetails
+      user.id,
+        `/* userDetails.first_name,
+        userDetails.role, // This now uses the corrected role from userDetails
         lastLogin: userDetails.last_login,
         permissions: user.permissions || []
       },

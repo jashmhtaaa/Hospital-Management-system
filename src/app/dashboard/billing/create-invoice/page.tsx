@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 "use client";
 
-// export const _dynamic = 'force-dynamic'; // Removed this line
+// export const _dynamic = "force-dynamic"; // Removed this line
 
   Card,
   CardContent,
@@ -49,14 +49,14 @@ interface Patient {
   id: number,
   name: string; // Combined first/last or display name
   mrn: string;
-  first_name?: string; // Optional if 'name' is primary display
-  last_name?: string; // Optional if 'name' is primary display
+  first_name?: string; // Optional if "name" is primary display
+  last_name?: string; // Optional if "name" is primary display
 }
 
 interface ServiceItem {
   id: number,
-  \1,\2 string,
-  \1,\2 number
+  string,
+  number
 }
 
 interface InvoiceItem extends ServiceItem {
@@ -110,7 +110,7 @@ export default const _CreateInvoicePage = () {
       const response = await fetch(
         `/api/patients?search=/* SECURITY: Safe parameter encoding */`;
       );
-      \1 {\n  \2hrow new Error("Failed to fetch patients");
+      if (!session.user)hrow new Error("Failed to fetch patients");
       // FIX: Cast response JSON to defined type
       const data = (await response.json()) as PatientsApiResponse;
       // Ensure data.patients is an array before setting state
@@ -134,7 +134,7 @@ export default const _CreateInvoicePage = () {
       const response = await fetch(
         `/api/billing/service-items?search=/* SECURITY: Safe parameter encoding */`;
       );
-      \1 {\n  \2hrow new Error("Failed to fetch service items");
+      if (!session.user)hrow new Error("Failed to fetch service items");
       // FIX: Cast response JSON to defined type
       const data = (await response.json()) as ServiceItemsApiResponse;
       // Ensure data.serviceItems is an array before setting state
@@ -157,7 +157,7 @@ export default const _CreateInvoicePage = () {
   // Debounce search for patients
   useEffect(() => {
     const handler = setTimeout(() => {
-      \1 {\n  \2 {
+      if (!session.user) {
         // Only search if term is not empty
         fetchPatients(patientSearchTerm);
       } else {
@@ -170,7 +170,7 @@ export default const _CreateInvoicePage = () {
   // Debounce search for service items
   useEffect(() => {
     const handler = setTimeout(() => {
-      \1 {\n  \2 {
+      if (!session.user) {
         // Only search if term is not empty
         fetchServiceItems(serviceSearchTerm);
       } else {
@@ -182,13 +182,13 @@ export default const _CreateInvoicePage = () {
 
   // Add item to invoice
   const addInvoiceItem = (item: ServiceItem) => {
-    // The check `\1 {\n  \2eturn;` was already here, handling the null case.
-    \1 {\n  \2eturn;
+    // The check `if (!session.user)eturn;` was already here, handling the null case.
+    if (!session.user)eturn;
     const existingItemIndex = invoiceItems.findIndex(
       (invItem) => invItem.id === item.id;
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Add new item
       setInvoiceItems([
         ...invoiceItems,
@@ -211,7 +211,7 @@ export default const _CreateInvoicePage = () {
   // Update item quantity
   const updateItemQuantity = (itemId: number, quantity: number) => {
     const updatedItems = invoiceItems.map((item) => {
-      \1 {\n  \2{
+      if (!session.user) {
         const newQuantity = Math.max(1, quantity); // Ensure quantity is at least 1
         return {
           ...item,
@@ -237,7 +237,7 @@ export default const _CreateInvoicePage = () {
 
   // Handle Invoice Submission
   const handleCreateInvoice = async () => {
-    \1 {\n  \2{
+    if (!session.user) {
       setError("Please select a patient and add at least one item.");
       return;
     }
@@ -248,11 +248,11 @@ export default const _CreateInvoicePage = () {
     try {
       const invoiceData = {
         patient_id: selectedPatient.id,
-        \1,\2 item.id,
+        item.id,
           item_name: item.item_name, // Consider if description should be different
           description: item.item_name, // Using item_name as description for now
           quantity: item.quantity,
-          \1,\2 item.subtotal
+          item.subtotal
         })),
         total_amount: invoiceTotal,
         status: "pending", // Assuming a default status
@@ -264,7 +264,7 @@ export default const _CreateInvoicePage = () {
         body: JSON.stringify(invoiceData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = "Failed to create invoice";
         try {
           // FIX: Cast error response JSON to defined type
@@ -281,7 +281,7 @@ export default const _CreateInvoicePage = () {
       }
 
       const _result = await response.json(); // Assuming success response has data, define interface if needed
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       // Consider showing a success toast message here
       router.push("/dashboard/billing/invoices"); // Redirect to invoices list
     } catch (error_) {
@@ -301,17 +301,17 @@ export default const _CreateInvoicePage = () {
     <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 space-y-6">
       {" "}
       {/* Added lg:px-8 */}
-      \1>
+      >
         {" "}
         {/* Added mb-4 */}
-        <h1 className="text-2xl font-semibold">Create New Invoice\1>
+        <h1 className="text-2xl font-semibold">Create New Invoice>
         <Button variant="outline" onClick={() => router.back()}>
           Back to Billing
         </Button>{" "}
         {/* Changed Cancel text */}
       </div>
       {error && (
-        \1>
+        >
           {" "}
           {/* Added bg-red-50 */}
           Error: {error}
@@ -323,7 +323,7 @@ export default const _CreateInvoicePage = () {
           <CardTitle>Patient Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <Label htmlFor="patient-search">Select Patient\1>
+          <Label htmlFor="patient-search">Select Patient>
           <Popover>
             open={isPatientPopoverOpen}
             onOpenChange={setIsPatientPopoverOpen}
@@ -353,8 +353,8 @@ export default const _CreateInvoicePage = () {
                 )}
               </Button>
             </PopoverTrigger>
-            \1>
-              \1>
+            >
+              >
                 {" "}
                 {/* Disable default filtering, handled by API */}
                 <CommandInput>
@@ -364,7 +364,7 @@ export default const _CreateInvoicePage = () {
                 />
                 <CommandList>
                   {loadingPatients && (
-                    \1>
+                    >
                       Loading patients...
                     </div>
                   )}{" "}
@@ -383,7 +383,7 @@ export default const _CreateInvoicePage = () {
                       <CommandEmpty>Type to search for patients.</CommandEmpty>
                     )}
                   {!loadingPatients && patients.length > 0 && (
-                    \1>
+                    >
                       {" "}
                       {/* Added heading */}
                       {patients.map((patient) => (
@@ -419,15 +419,15 @@ export default const _CreateInvoicePage = () {
         <CardHeader>
           <CardTitle>Invoice Items</CardTitle>
         </CardHeader>
-        \1>
+        >
           {/* Add Service Item */}
-          \1>
+          >
             {" "}
             {/* Responsive layout */}
-            \1>
+            >
               {" "}
               {/* Full width on small screens */}
-              <Label htmlFor="service-search">Add Service/Item\1>
+              <Label htmlFor="service-search">Add Service/Item>
               <Popover>
                 open={isServicePopoverOpen}
                 onOpenChange={setIsServicePopoverOpen}
@@ -445,8 +445,8 @@ export default const _CreateInvoicePage = () {
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
-                \1>
-                  \1>
+                >
+                  >
                     <CommandInput>
                       placeholder="Search service by name or code..."
                       value={serviceSearchTerm}
@@ -454,7 +454,7 @@ export default const _CreateInvoicePage = () {
                     />
                     <CommandList>
                       {loadingServices && (
-                        \1>
+                        >
                           Loading services...
                         </div>
                       )}
@@ -472,7 +472,7 @@ export default const _CreateInvoicePage = () {
                           <CommandEmpty>Type to search for services.</CommandEmpty>
                         )}
                       {!loadingServices && serviceItems.length > 0 && (
-                        \1>
+                        >
                           {serviceItems.map((service) => (
                             <CommandItem>
                               key={service.id}
@@ -499,27 +499,27 @@ export default const _CreateInvoicePage = () {
 
           {/* Added Items Table */}
           {invoiceItems.length > 0 && (
-            \1>
+            >
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Item Name</TableHead>
                     <TableHead>Category</TableHead>
-                    <TableHead className="text-right">Unit Price\1>
-                    <TableHead className="w-24 text-center">Quantity\1>
-                    <TableHead className="text-right">Subtotal\1>
+                    <TableHead className="text-right">Unit Price>
+                    <TableHead className="w-24 text-center">Quantity>
+                    <TableHead className="text-right">Subtotal>
                     <TableHead className="w-16"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {invoiceItems.map((item) => (
-                    \1>
+                    >
                       <TableCell>{item.item_name}</TableCell>
                       <TableCell>{item.category}</TableCell>
-                      \1>
+                      >
                         {item.unit_price.toFixed(2)}
                       </TableCell>
-                      \1>
+                      >
                         <Input>
                           type="number"
                           value={item.quantity}
@@ -530,7 +530,7 @@ export default const _CreateInvoicePage = () {
                           min="1"
                         />
                       </TableCell>
-                      \1>
+                      >
                         {item.subtotal.toFixed(2)}
                       </TableCell>
                       <TableCell>
@@ -549,8 +549,8 @@ export default const _CreateInvoicePage = () {
             </div>
           )}
         </CardContent>
-        \1>
-          \1>
+        >
+          >
             Total: {invoiceTotal.toFixed(2)}
           </div>
           <Button>

@@ -16,7 +16,7 @@ interface ProcedureTypeInput {
 export const _GET = async (request: NextRequest) => {
   const session = await getSession();
   // Allow broader access for viewing procedure types
-  \1 {\n  \2;
+  if (!session.user);
   ) 
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
 
@@ -43,7 +43,7 @@ export const _GET = async (request: NextRequest) => {
 // POST a new Radiology Procedure Type (Admin only)
 export const _POST = async (request: NextRequest) => {
   const session = await getSession()
-  \1 {\n  \2) {
+  if (!session.user)) {
     // Use await, pass request, add optional chaining
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
@@ -53,7 +53,7 @@ export const _POST = async (request: NextRequest) => {
     const { name, description, modality_type } =;
       (await request.json()) as ProcedureTypeInput; // Cast to ProcedureTypeInput
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Missing required field: name" },
         { status: 400 }
@@ -66,7 +66,7 @@ export const _POST = async (request: NextRequest) => {
     );
       .bind(name);
       .first();
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Procedure type with this name already exists" },
         { status: 409 }
@@ -91,7 +91,7 @@ export const _POST = async (request: NextRequest) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     // Handle potential unique constraint violation if check fails due to race condition
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage instead of e.message
       return NextResponse.json(
         { error: "Procedure type with this name already exists" },

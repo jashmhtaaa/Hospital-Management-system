@@ -45,7 +45,7 @@ const radiologyOrderFormSchema = z.object({
   clinicalNotes: z.string().optional()
 });
 
-type RadiologyOrderFormValues = z.infer\1>
+type RadiologyOrderFormValues = z.infer>
 
 interface ERRadiologyOrderModalProperties {
   isOpen: boolean,
@@ -79,16 +79,16 @@ export default const _ERRadiologyOrderModal = ({
 
   const form = useForm<RadiologyOrderFormValues>({
     resolver: zodResolver(radiologyOrderFormSchema),
-    \1,\2 visitData?.id || "",
-      \1,\2 visitData?.assignedDoctorId || "", // Pre-fill if available
+    visitData?.id || "",
+      visitData?.assignedDoctorId || "", // Pre-fill if available
       procedureTypeId: "",
-      \1,\2 ""
+      ""
     },
   });
 
   // Update form when visitData changes
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       form.setValue("visitId", visitData.id);
       form.setValue("patientName", visitData.patientName);
       form.setValue("orderingDoctorId", visitData.assignedDoctorId || "");
@@ -97,22 +97,22 @@ export default const _ERRadiologyOrderModal = ({
 
   async const onSubmit = (data: RadiologyOrderFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     try {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       const response = await fetch("/api/radiology/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        \1,\2 visitData?.id, // Assuming visit ID links to patient in backend
+        visitData?.id, // Assuming visit ID links to patient in backend
           visit_id: data.visitId,
-          \1,\2 data.procedureTypeId,
-          \1,\2 data.clinicalNotes || undefined,
+          data.procedureTypeId,
+          data.clinicalNotes || undefined,
           order_source: "ER", // Indicate order source
         }),
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = "Failed to create radiology order";
         try {
           const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData
@@ -125,7 +125,7 @@ export default const _ERRadiologyOrderModal = ({
 
       const newOrder: { id: string } = await response.json(); // FIX: Add basic type for newOrder
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       // This might require another API call or be handled by backend logic
 
       toast({
@@ -133,7 +133,7 @@ export default const _ERRadiologyOrderModal = ({
         description: `STAT order ${newOrder.id} placed successfully.`,
       }),
 
-      \1 {\n  \2{
+      if (!session.user) {
         onSuccess(); // Trigger potential refresh of tracking board
       }
       form.reset({
@@ -158,8 +158,8 @@ export default const _ERRadiologyOrderModal = ({
   }
 
   return (
-    \1>
-      \1>
+    >
+      >
         <DialogHeader>
           <DialogTitle>Place STAT Radiology Order</DialogTitle>
           <DialogDescription>
@@ -168,7 +168,7 @@ export default const _ERRadiologyOrderModal = ({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          \1>
+          >
             {/* Hidden or disabled fields for context */}
             <FormField>
               control={form.control}
@@ -212,7 +212,7 @@ export default const _ERRadiologyOrderModal = ({
                     </FormControl>
                     <SelectContent>
                       {availableProcedureTypes.map((proc) => (
-                        \1>
+                        >
                           {proc.name}
                         </SelectItem>
                       ))}
@@ -251,7 +251,7 @@ export default const _ERRadiologyOrderModal = ({
               >
                 Cancel
               </Button>
-              \1>
+              >
                 {isLoading ? "Placing Order..." : "Place STAT Order"}
               </Button>
             </DialogFooter>

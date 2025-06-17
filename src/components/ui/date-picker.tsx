@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { format } from 'date-fns';
-import * as React from 'react';
+import { format } from "date-fns";
+import * as React from "react";
 
 /**
  * Date Picker Component;
@@ -26,25 +26,25 @@ export const DatePicker = ({
   };
 
   return (
-    \1>
+    >
 <div
-        className={`flex items-center border rounded-md p-2 ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'cursor-pointer'}`}
+        className={`flex items-center border rounded-md p-2 ${disabled ? "bg-gray-100 cursor-not-allowed" : "cursor-pointer"}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
       >
         <CalendarIcon className="mr-2 h-4 w-4" />
 <span
-          {date ? format(date, 'PPP') : placeholder}
+          {date ? format(date, "PPP") : placeholder}
         </span>
       </div>
 
       {isOpen && (
-        \1>
-          \1>
+        >
+          >
             {/* In a real implementation, this would be a full calendar component */}
-            \1>
+            >
               Calendar UI would render here
             </div>
-            \1>
+            >
               <button>
                 className="px-3 py-1 bg-gray-200 rounded-md"
                 onClick={() => setIsOpen(false)}
@@ -53,7 +53,7 @@ export const DatePicker = ({
               </button>
               <button>
                 className="px-3 py-1 bg-blue-500 text-white rounded-md"
-                onClick={() => handleSelect(\1}
+                onClick={() => handleSelect(}
               >
                 Today
               </button>

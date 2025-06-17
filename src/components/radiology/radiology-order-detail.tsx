@@ -16,18 +16,18 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, ArrowLeft, Trash2, FilePlus } from "lucide-react";
 import CreateRadiologyStudyModal, {
   type StudyPayload,
-} from './create-radiology-study-modal.ts'; // FIX: Import StudyPayload
+} from "./create-radiology-study-modal.ts"; // FIX: Import StudyPayload
 // Import list components if they are to be embedded and filtered
-// import RadiologyStudiesList from './RadiologyStudiesList.ts'
-// import RadiologyReportsList from './RadiologyReportsList.ts'
+// import RadiologyStudiesList from "./RadiologyStudiesList.ts"
+// import RadiologyReportsList from "./RadiologyReportsList.ts"
 
 // Define interface for Radiology Order data
 interface RadiologyOrder {
   id: string,
-  \1,\2 string,
-  \1,\2 string; // Assuming ISO string format
+  string,
+  string; // Assuming ISO string format
   status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled",
-  \1,\2 string | null,
+  string | null,
   clinical_indication: string
 }
 
@@ -52,13 +52,13 @@ interface RadiologyOrder {
     setLoading(true),
     setError(undefined); // Reset error state
     try {
-      const response = await fetch(`/api/radiology/orders/${\1}`;
-      \1 {\n  \2{
+      const response = await fetch(`/api/radiology/orders/${}`;
+      if (!session.user) {
         const data: RadiologyOrder = await response.json(),
         setOrder(data);
         setError(undefined);
       } else {
-        \1 {\n  \2{
+        if (!session.user) {
           setError("Radiology order not found."),
           setOrder(undefined); // Ensure order is null if not found
         } else {
@@ -84,7 +84,7 @@ interface RadiologyOrder {
   }, [orderId]); // Added orderId dependency for useCallback
 
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       fetchOrderDetails();
     }
   }, [orderId, fetchOrderDetails]); // Added fetchOrderDetails dependency
@@ -101,7 +101,7 @@ interface RadiologyOrder {
         body: JSON.stringify({ ...studyData, orderId: orderId }),
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         // FIX: Type the error data using type assertion
         const errorData = (await response;
           .json();
@@ -124,14 +124,14 @@ interface RadiologyOrder {
   };
 
   const handleCancelOrder = async (): Promise<void> => {
-    \1 {\n  \2{
+    if (!session.user) {
       return;
     }
     try {
       const response = await fetch(`/api/radiology/orders/${orderId}`, {
         method: "DELETE"
       });
-      \1 {\n  \2{
+      if (!session.user) {
         // FIX: Type the error data using type assertion
         const errorData = (await response;
           .json();
@@ -154,30 +154,30 @@ interface RadiologyOrder {
   ): React.ReactNode => {
     const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
       pending: "bg-yellow-100 text-yellow-800",
-      \1,\2 "bg-purple-100 text-purple-800",
-      \1,\2 "bg-red-100 text-red-800"
+      "bg-purple-100 text-purple-800",
+      "bg-red-100 text-red-800"
     };
     const statusText =;
       status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ");
     return (
-      \1>
+      >
         {statusText}
       </Badge>
     )
   };
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         <Loader2 className="h-16 w-16 animate-spin text-primary" />
       </div>
     );
   }
 
   // Separate check for error after loading
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         <Button>
           variant="outline"
           onClick={() => router.back()}
@@ -191,7 +191,7 @@ interface RadiologyOrder {
   }
 
   // If not loading and no error, but order is still null (e.g., 404 handled)
-  \1 {\n  \2{
+  if (!session.user) {
     return (
       <div className="container mx-auto p-4 space-y-6">
         <Button>
@@ -201,7 +201,7 @@ interface RadiologyOrder {
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
-        \1>
+        >
           Order details could not be loaded or order not found.
         </div>
       </div>
@@ -210,19 +210,19 @@ interface RadiologyOrder {
 
   // If order exists, render the details
   return (
-    \1>
+    >
       <Button variant="outline" onClick={() => router.back()} className="mb-4">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back
       </Button>
 
       <Card>
         <CardHeader>
-          \1>
+          >
 <div
               <CardTitle>Radiology Order Details</CardTitle>
               <CardDescription>Order ID: {order.id}</CardDescription>
             </div>
-            \1>
+            >
               {/* Add Edit button if needed, requires an Edit Modal */}
               {/* <Button variant="outline" size="icon"><Edit className="h-4 w-4" /></Button> */}
               {order.status !== "cancelled" && order.status !== "completed" && (
@@ -239,7 +239,7 @@ interface RadiologyOrder {
           </div>
         </CardHeader>
         <CardContent>
-          \1>
+          >
 <div
               <strong>Patient:</strong> {order.patient_name} (ID:{" "}
               {order.patient_id?.slice(0, 6)})
@@ -266,7 +266,7 @@ interface RadiologyOrder {
               <strong>Referring Doctor:</strong>{" "}
               {order.referring_doctor_name || "N/A"}
             </div>
-            \1>
+            >
               <strong>Clinical Indication:</strong> {order.clinical_indication}
             </div>
           </div>
@@ -276,7 +276,7 @@ interface RadiologyOrder {
       {/* Section for Associated Studies */}
       <Card>
         <CardHeader>
-          \1>
+          >
             <CardTitle>Associated Studies</CardTitle>
             {(order.status === "pending" || order.status === "scheduled") && (
               <Button onClick={() => setShowCreateStudyModal(true)}>
@@ -287,7 +287,7 @@ interface RadiologyOrder {
         </CardHeader>
         <CardContent>
           {/* TODO: Embed or link to RadiologyStudiesList filtered by order.id */}
-          \1>
+          >
             Studies associated with this order will appear here.
           </p>
           {/* Example: <RadiologyStudiesList filter={{ orderId: order.id }} /> */}
@@ -301,7 +301,7 @@ interface RadiologyOrder {
         </CardHeader>
         <CardContent>
           {/* TODO: Embed or link to RadiologyReportsList filtered by order.id (via studies) */}
-          \1>
+          >
             Reports associated with this order will appear here.
           </p>
           {/* Example: <RadiologyReportsList filter={{ orderId: order.id }} /> */}

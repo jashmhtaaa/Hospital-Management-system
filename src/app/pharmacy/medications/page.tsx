@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 }
 
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
   useTable,
   useSortBy,
@@ -69,7 +69,7 @@ type MedicationTableInstance = TableInstance<Medication> &
 
 // Extend ColumnInstance type to include sorting props for type safety in headers
 type MedicationColumnInstance = ColumnInstance<Medication> &
-  UseSortByColumnProps\1>
+  UseSortByColumnProps>
 
 // Medications List Component
 export default const _MedicationsListPage = () {
@@ -84,7 +84,7 @@ export default const _MedicationsListPage = () {
       setError(undefined);
       try {
         const response = await fetch("/api/pharmacy/medications");
-        \1 {\n  \2{
+        if (!session.user) {
           const errorMessage = "Failed to fetch medications";
           try {
             const errorData: ApiErrorResponse = await response.json(),
@@ -116,14 +116,14 @@ export default const _MedicationsListPage = () {
       },
       {
         Header: "Medication",
-        \1,\2 (
+        (
           { row }: CellProps<Medication> // Type the row
         ) => (
-\1>
+>
               {row.original.generic_name}
             </div>
             {row.original?.brand_name && (
-              \1>
+              >
                 {row.original.brand_name}
               </div>
             )}
@@ -132,29 +132,29 @@ export default const _MedicationsListPage = () {
       },
       {
         Header: "Form & Strength",
-        \1,\2 (
+        (
           { row }: CellProps<Medication> // Type the row
         ) => (
 <div
             <div>{row.original.dosage_form}</div>
-            \1>row.original.strength
+            >row.original.strength
             </div>
           </div>
         ),
       },
       {
         Header: "Category",
-        \1,\2 ({ value }: CellProps<Medication, string | null | undefined>) =>
+        ({ value }: CellProps<Medication, string | null | undefined>) =>
           value || "-", // Type the value
       },
       {
         Header: "Manufacturer",
-        \1,\2 ({ value }: CellProps<Medication, string | null | undefined>) =>
+        ({ value }: CellProps<Medication, string | null | undefined>) =>
           value || "-", // Type the value
       },
       {
         Header: "Stock",
-        \1,\2 ({
+        ({
           value,
           row,
         }: CellProps<Medication, number | null | undefined>) => {
@@ -173,7 +173,7 @@ export default const _MedicationsListPage = () {
       },
       {
         Header: "Prescription",
-        \1,\2 (
+        (
           { value }: CellProps<Medication, boolean> // Type the value
         ) => (
 <span
@@ -185,14 +185,14 @@ export default const _MedicationsListPage = () {
       },
       {
         Header: "Actions",
-        \1,\2 true, // Actions column usually not sortable
+        true, // Actions column usually not sortable
         Cell: (row : CellProps<Medication> // Type the row
         ) => (
           <Button>
             variant="ghost"
             size="sm"
             onClick=() =>
-              router.push(`/dashboard/pharmacy/medications/${\1}`;
+              router.push(`/dashboard/pharmacy/medications/${}`;
             className="text-teal-600 hover:text-teal-800 dark:text-teal-400 dark:hover:text-teal-300"
           >
             View/Edit
@@ -254,22 +254,22 @@ export default const _MedicationsListPage = () {
     setTableGlobalFilter(value); // Update table state
   };
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
-        \1>
+      >
+        >
           <Skeleton className="h-8 w-1/4" />
           <Skeleton className="h-10 w-36" />
         </div>
         <Skeleton className="h-10 w-full mb-4" />
-        \1>
+        >
           <Skeleton className="h-96 w-full" />
         </div>
       </div>
     );
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
       <div className="container mx-auto px-4 py-8 text-red-600 dark: text-red-400 p-4 bg-red-50 dark:bg-red-900/30 rounded-md">,
         Error: {error}
@@ -278,9 +278,9 @@ export default const _MedicationsListPage = () {
   }
 
   return (
-    \1>
-      \1>
-        \1>
+    >
+      >
+        >
           Medications Catalog
         </h1>
         <Button>
@@ -291,7 +291,7 @@ export default const _MedicationsListPage = () {
         </Button>
       </div>
 
-      \1>
+      >
         <Input>
           value={globalFilter || ""}
           onChange={handleGlobalFilterChange}
@@ -300,18 +300,18 @@ export default const _MedicationsListPage = () {
         />
       </div>
 
-      \1>
-        \1>
+      >
+        >
           <table>
             {...getTableProps()}
             className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
           >
-            \1>
+            >
               {" "}
               {headerGroups.map((headerGroup: HeaderGroup<Medication>) => {
                 // Type headerGroup
                 return (
-                  \1>
+                  >
                     {/* Correctly type and cast column */}
                     {headerGroup.headers.map(
                       (column: ColumnInstance<Medication>) => {
@@ -321,7 +321,7 @@ export default const _MedicationsListPage = () {
                             key={typedColumn.id}
                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider cursor-pointer select-none"
                           >
-                            \1>
+                            >
                               {column.render("Header")}
                               {/* Add sorting indicator */}
                               {typedColumn?.canSort && (
@@ -380,9 +380,9 @@ export default const _MedicationsListPage = () {
 
         {/* Pagination Controls */}
         {pageOptions.length > 1 && (
-          \1>
-            \1>
-              \1>
+          >
+            >
+              >
                 Page{" "}
                 <strong>
                   {pageIndex + 1} of {pageOptions.length}
@@ -396,13 +396,13 @@ export default const _MedicationsListPage = () {
                 className="p-1 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
               >
                 {[10, 20, 30, 40, 50].map((size) => (
-                  \1>
+                  >
                     Show {size}
                   </option>
                 ))}
               </select>
             </div>
-            \1>
+            >
               <Button>
                 onClick={() => gotoPage(0)}
                 disabled={!canPreviousPage}

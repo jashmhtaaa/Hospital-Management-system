@@ -5,7 +5,7 @@ import {
 
 "use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
   Table,
   TableBody,
@@ -39,11 +39,11 @@ import { Edit, PlusCircle, Search } from "lucide-react";
 // --- INTERFACES ---
 interface ServiceItem {
   id: number,
-  \1,\2 string;
+  string;
   description?: string;
   category: string,
-  \1,\2 boolean,
-  \1,\2 boolean
+  boolean,
+  boolean
 }
 
 // FIX: Define interface for API response
@@ -61,7 +61,7 @@ interface ErrorResponse {
 // FIX: Define props type for ServiceItemForm
 interface ServiceItemFormProperties {
   item: ServiceItem | null; // Item being edited, or null for new item
-  \1,\2 () => void; // Function to handle cancellation
+  () => void; // Function to handle cancellation
 }
 
 // --- ServiceItemForm Component ---
@@ -73,9 +73,9 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
   const [formData, setFormData] = useState<Partial<ServiceItem>>(
     item || {
       item_code: "",
-      \1,\2 "",
-      \1,\2 0,
-      \1,\2 true,
+      "",
+      0,
+      true,
       is_active: true
     }
   )
@@ -83,28 +83,28 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 
   // Update form data based on item prop when it changes (for editing)
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       setFormData(item)
     } else {
       // Reset form for creating new item
       setFormData({
         item_code: "",
-        \1,\2 "",
-        \1,\2 0,
-        \1,\2 true,
+        "",
+        0,
+        true,
         is_active: true
       });
     }
   }, [item]);
 
   const handleChange = (
-    event: React.ChangeEvent\1>
+    event: React.ChangeEvent>
   ) => {
     const { name, value, type } = event.target;
-    \1 {\n  \2{
+    if (!session.user) {
       const { checked } = event.target as HTMLInputElement;
       setFormData((previous) => ({ ...previous, [name]: checked }));
-    } else \1 {\n  \2{
+    } else if (!session.user) {
       setFormData((previous) => ({
         ...previous,
         [name]: Number.parseFloat(value) || 0,
@@ -134,12 +134,12 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
   };
 
   return (
-    \1>
-      \1>
+    >
+      >
         {" "}
         {/* Responsive grid */}
 <div
-          <Label htmlFor="item_code">Item Code\1>
+          <Label htmlFor="item_code">Item Code>
           <Input>
             id="item_code"
             name="item_code"
@@ -149,7 +149,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           />
         </div>
 <div
-          <Label htmlFor="item_name">Item Name\1>
+          <Label htmlFor="item_name">Item Name>
           <Input>
             id="item_name"
             name="item_name"
@@ -160,7 +160,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         </div>
       </div>
 <div
-        <Label htmlFor="description">Description\1>
+        <Label htmlFor="description">Description>
         <Input>
           id="description"
           name="description"
@@ -168,33 +168,33 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           onChange={handleChange}
         />
       </div>
-      \1>
+      >
         {" "}
         {/* Responsive grid */}
 <div
-          <Label htmlFor="category">Category\1>
+          <Label htmlFor="category">Category>
           <Select>
             name="category"
             value={formData.category || ""}
             onValueChange={(value) => handleSelectChange("category", value)}
             required;
           >
-            \1>
+            >
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Consultation">Consultation\1>
-              <SelectItem value="Laboratory">Laboratory\1>
-              <SelectItem value="Radiology">Radiology\1>
-              <SelectItem value="Procedure">Procedure\1>
-              <SelectItem value="Medication">Medication\1>
-              <SelectItem value="Room Charges">Room Charges\1>
+              <SelectItem value="Consultation">Consultation>
+              <SelectItem value="Laboratory">Laboratory>
+              <SelectItem value="Radiology">Radiology>
+              <SelectItem value="Procedure">Procedure>
+              <SelectItem value="Medication">Medication>
+              <SelectItem value="Room Charges">Room Charges>
               <SelectItem value="Other">Other</SelectItem>
             </SelectContent>
           </Select>
         </div>
 <div
-          <Label htmlFor="unit_price">Unit Price (₹)\1>
+          <Label htmlFor="unit_price">Unit Price (₹)>
           <Input>
             id="unit_price"
             name="unit_price"
@@ -207,10 +207,10 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           />
         </div>
       </div>
-      \1>
+      >
         {" "}
         {/* Responsive flex wrap */}
-        \1>
+        >
           <Checkbox>
             id="is_taxable"
             name="is_taxable"
@@ -221,7 +221,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           />
           <Label htmlFor="is_taxable">Taxable</Label>
         </div>
-        \1>
+        >
           <Checkbox>
             id="is_discountable"
             name="is_discountable"
@@ -232,7 +232,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           />
           <Label htmlFor="is_discountable">Discountable</Label>
         </div>
-        \1>
+        >
           <Checkbox>
             id="is_active"
             name="is_active"
@@ -244,15 +244,15 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
           <Label htmlFor="is_active">Active</Label>
         </div>
       </div>
-      \1>
+      >
         {" "}
         {/* Added margin top */}
         <DialogClose asChild>
-          \1>
+          >
             Cancel
           </Button>
         </DialogClose>
-        \1>
+        >
           {isSubmitting ? "Saving..." : item ? "Save Changes" : "Create Item"}
         </Button>
       </DialogFooter>
@@ -274,8 +274,8 @@ export default const _ServiceItemsPage = () {
     setError(null); // Clear previous errors before fetching
     try {
       const response = await fetch("/api/billing/service-items");
-      \1 {\n  \2{
-        throw \1 as ServiceItemsApiResponse;
+      if (!session.user) {
+        throw as ServiceItemsApiResponse;
       // FIX: Ensure data.serviceItems is an array
       setServiceItems(
         Array.isArray(data?.serviceItems) ? data.serviceItems : []
@@ -309,7 +309,7 @@ export default const _ServiceItemsPage = () {
         body: JSON.stringify(formData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         let errorMessage = `Failed to ${editingItem ? "update" : "create"} service item`;
         try {
           // FIX: Cast error response JSON to defined type
@@ -363,22 +363,22 @@ export default const _ServiceItemsPage = () {
   });
 
   return (
-    \1>
+    >
       {" "}
       {/* Added lg:px-8 */}
-      \1>
+      >
         {" "}
         {/* Responsive layout */}
-        <h1 className="text-2xl font-semibold">Service Items Management\1>
-        \1>
+        <h1 className="text-2xl font-semibold">Service Items Management>
+        >
           <DialogTrigger asChild>
-            \1>
+            >
               {" "}
               {/* Full width on small screens */}
               <PlusCircle className="mr-2 h-4 w-4" /> Add New Service Item
             </Button>
           </DialogTrigger>
-          \1>
+          >
             <DialogHeader>
               <DialogTitle>
                 {editingItem ? "Edit Service Item" : "Create New Service Item"}
@@ -396,8 +396,8 @@ export default const _ServiceItemsPage = () {
           </DialogContent>
         </Dialog>
       </div>
-      \1>
-        \1>
+      >
+        >
           {" "}
           {/* Adjusted max-width */}
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -411,13 +411,13 @@ export default const _ServiceItemsPage = () {
         </div>
       </div>
       {error && (
-        \1>
+        >
           {" "}
           {/* Adjusted colors */}
           Error: {error}
         </div>
       )}
-      \1>
+      >
         {" "}
         {/* Added overflow-x-auto */}
         <Table>
@@ -428,7 +428,7 @@ export default const _ServiceItemsPage = () {
               <TableHead className="min-w-[200px]">Name</TableHead>{" "}
               {/* Added min-width */}
               <TableHead>Category</TableHead>
-              <TableHead className="text-right">Price (₹)\1>
+              <TableHead className="text-right">Price (₹)>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -437,7 +437,7 @@ export default const _ServiceItemsPage = () {
             {isLoading ? (
               // Skeleton Loader Rows
               (Array.from({ length: 5 }).map((_, index) => (
-                \1>
+                >
                   <TableCell>
                     <Skeleton className="h-4 w-20" />
                   </TableCell>
@@ -447,14 +447,14 @@ export default const _ServiceItemsPage = () {
                   <TableCell>
                     <Skeleton className="h-4 w-24" />
                   </TableCell>
-                  \1>
+                  >
                     <Skeleton className="h-4 w-16 ml-auto" />
                   </TableCell>
                   <TableCell>
                     <Skeleton className="h-6 w-16 rounded-full" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for badge */}
-                  \1>
+                  >
                     <Skeleton className="h-8 w-10 ml-auto rounded" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for button */}
@@ -463,23 +463,23 @@ export default const _ServiceItemsPage = () {
             ) : filteredItems.length > 0 ? (
               // Service Item Data Rows
               (filteredItems.map((item) => (
-                \1>
-                  \1>
+                >
+                  >
                     {item.item_code}
                   </TableCell>
-                  \1>
+                  >
                     {item.item_name}
                   </TableCell>
                   <TableCell>{item.category}</TableCell>
-                  \1>
+                  >
                     {item.unit_price.toFixed(2)}
                   </TableCell>
                   <TableCell>
-                    \1>
+                    >
                       {item.is_active ? "Active" : "Inactive"}
                     </Badge>
                   </TableCell>
-                  \1>
+                  >
                     <Button>
                       variant="ghost"
                       size="icon"

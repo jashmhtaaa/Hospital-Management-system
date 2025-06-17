@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 }
 
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 import OTBookingList from "@/components/ot/ot-booking-list";
 import OTBookingModal from "@/components/ot/ot-booking-modal";
@@ -26,13 +26,13 @@ export default const _OTDashboardPage = () {
 
   const handleSave = useCallback(async (data: unknown) => {
     // In a real app, this might involve re-fetching data or updating state
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     setRefreshKey((previous) => previous + 1); // Increment key to trigger re-render/re-fetch in lists
   }, []);
 
   return (
-    \1>
-      \1>
+    >
+      >
         <h1 className="text-3xl font-bold">Operation Theatre Management</h1>
       </div>
 
@@ -42,22 +42,22 @@ export default const _OTDashboardPage = () {
         onValueChange={setActiveTab}
         className="w-full"
       >
-        \1>
-          <TabsTrigger value="dashboard">Dashboard\1>
-          <TabsTrigger value="bookings">Bookings\1>
-          <TabsTrigger value="theatres">Theatres\1>
-          <TabsTrigger value="surgery-types">Surgery Types\1>
+        >
+          <TabsTrigger value="dashboard">Dashboard>
+          <TabsTrigger value="bookings">Bookings>
+          <TabsTrigger value="theatres">Theatres>
+          <TabsTrigger value="surgery-types">Surgery Types>
           <TabsTrigger value="checklists">Checklists</TabsTrigger>
         </TabsList>
 
-        \1>
+        >
           {/* Pass refreshKey if stats need refreshing */}
           <OTDashboardStats key={`stats-${refreshKey}`} />
         </TabsContent>
 
-        \1>
-          \1>
-            <h2 className="text-2xl font-semibold">OT Bookings\1>
+        >
+          >
+            <h2 className="text-2xl font-semibold">OT Bookings>
             <OTBookingModal>
               trigger={
                 <Button>
@@ -72,9 +72,9 @@ export default const _OTDashboardPage = () {
           <OTBookingList key={`bookings-${refreshKey}`} />
         </TabsContent>
 
-        \1>
-          \1>
-            <h2 className="text-2xl font-semibold">Operation Theatres\1>
+        >
+          >
+            <h2 className="text-2xl font-semibold">Operation Theatres>
             <OTTheatreModal>
               trigger={
                 <Button>
@@ -89,9 +89,9 @@ export default const _OTDashboardPage = () {
           <OTTheatreList key={`theatres-${refreshKey}`} />
         </TabsContent>
 
-        \1>
-          \1>
-            <h2 className="text-2xl font-semibold">Surgery Types\1>
+        >
+          >
+            <h2 className="text-2xl font-semibold">Surgery Types>
             <OTSurgeryTypeModal>
               trigger={
                 <Button>
@@ -106,9 +106,9 @@ export default const _OTDashboardPage = () {
           <OTSurgeryTypeList key={`surgery-types-${refreshKey}`} />
         </TabsContent>
 
-        \1>
-          \1>
-            <h2 className="text-2xl font-semibold">Checklist Templates\1>
+        >
+          >
+            <h2 className="text-2xl font-semibold">Checklist Templates>
             <OTChecklistTemplateModal>
               trigger={
                 <Button>

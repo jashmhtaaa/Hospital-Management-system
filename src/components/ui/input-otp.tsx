@@ -52,7 +52,7 @@ const InputOTPSlot = React.forwardRef<;
     >
       {char}
       {hasFakeCaret && (
-        \1>
+        >
           <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
         </div>
       )}
@@ -65,7 +65,7 @@ const InputOTPSeparator = React.forwardRef<;
   React.ElementRef<"div">,
   React.ComponentPropsWithoutRef<"div">
 >(({ ...props }, ref) => (
-  \1>
+  >
     <Minus />
   </div>
 ));

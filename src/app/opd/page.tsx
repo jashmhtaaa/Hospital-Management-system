@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // OPD Dashboard Page
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // import { hasPermission } from "@/lib/session"; // Direct permission check might be better done server-side or via dedicated hook
 
@@ -48,7 +48,7 @@ export default const _OPDDashboard = () {
         ]);
 
         // Check responses before parsing JSON
-        \1 {\n  \2{
+        if (!session.user) {
           const failedResponse = createResponse.ok ? statsResponse : createResponse;
           throw new Error(
             `Failed to fetch permissions: ${failedResponse.statusText} (${failedResponse.status})`;
@@ -91,28 +91,28 @@ export default const _OPDDashboard = () {
     router.push("/dashboard/opd/appointments/new")
   };
 
-  // Use optional chaining for selectedDate in case it's undefined initially
+  // Use optional chaining for selectedDate in case it"s undefined initially
   const formattedDate = selectedDate;
     ? selectedDate.toLocaleDateString();
     : "Selected Date";
 
   return (
-    \1>
+    >
       {/* Title might be provided by layout, remove if redundant */}
       {/* <h1 className="text-2xl font-bold mb-6">OPD Management</h1> */}
       {permissionError && (
-        \1>
-          \1>
-            <p className="font-semibold">Permission Error\1>
+        >
+          >
+            <p className="font-semibold">Permission Error>
             <p className="text-sm">{permissionError}</p>
           </CardContent>
         </Card>
       )}
-      \1>
+      >
         {" "}
         {/* Adjusted grid for responsiveness */}
         {/* Left sidebar with calendar and quick actions */}
-        \1>
+        >
           {" "}
           {/* Use space-y for consistent spacing */}
           <Card>
@@ -131,14 +131,14 @@ export default const _OPDDashboard = () {
               {loadingPermissions ? (
                 <Skeleton className="h-10 w-full mt-4" />
               ) : permissions.canCreateAppointment ? (
-                \1>
+                >
                   New Appointment
                 </Button>
               ) : undefined}
             </CardContent>
           </Card>
           {loadingPermissions ? (
-            \1>
+            >
               <CardHeader>
                 <Skeleton className="h-6 w-3/4" />
               </CardHeader>
@@ -147,17 +147,17 @@ export default const _OPDDashboard = () {
               </CardContent>
             </Card>
           ) : permissions.canViewStatistics ? (
-            \1>
+            >
               {" "}
               {/* Ensure consistent margin */}
               <CardHeader>
                 <CardTitle>Today&apos;s Summary</CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Pass selectedDate only if it's defined */}
+                {/* Pass selectedDate only if it"s defined */}
                 {selectedDate && <OPDStatistics date={selectedDate} />}
                 {!selectedDate && (
-                  \1>
+                  >
                     Select a date to view summary.
                   </p>
                 )}
@@ -166,7 +166,7 @@ export default const _OPDDashboard = () {
           ) : undefined}
         </div>
         {/* Main content area */}
-        \1>
+        >
           {" "}
           {/* Adjusted grid span */}
           <Tabs>
@@ -174,13 +174,13 @@ export default const _OPDDashboard = () {
             onValueChange={setActiveTab}
             defaultValue="appointments"
           >
-            \1>
-              <TabsTrigger value="appointments">Appointments\1>
-              <TabsTrigger value="queue">Patient Queue\1>
+            >
+              <TabsTrigger value="appointments">Appointments>
+              <TabsTrigger value="queue">Patient Queue>
               <TabsTrigger value="consultation">Consultation</TabsTrigger>
             </TabsList>
 
-            \1>
+            >
               <Card>
                 <CardHeader>
                   {/* Ensure selectedDate is defined before using methods */}
@@ -190,7 +190,7 @@ export default const _OPDDashboard = () {
                   {selectedDate ? (
                     <OPDAppointmentList date={selectedDate} />
                   ) : (
-                    \1>
+                    >
                       Select a date to view appointments.
                     </p>
                   )}
@@ -198,7 +198,7 @@ export default const _OPDDashboard = () {
               </Card>
             </TabsContent>
 
-            \1>
+            >
               <Card>
                 <CardHeader>
                   <CardTitle>Patient Queue for {formattedDate}</CardTitle>
@@ -207,7 +207,7 @@ export default const _OPDDashboard = () {
                   {selectedDate ? (
                     <OPDPatientQueue date={selectedDate} />
                   ) : (
-                    \1>
+                    >
                       Select a date to view the queue.
                     </p>
                   )}
@@ -215,7 +215,7 @@ export default const _OPDDashboard = () {
               </Card>
             </TabsContent>
 
-            \1>
+            >
               <Card>
                 <CardHeader>
                   <CardTitle>Patient Consultation</CardTitle>

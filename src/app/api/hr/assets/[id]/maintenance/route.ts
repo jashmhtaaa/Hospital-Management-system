@@ -1,11 +1,11 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { assetService } from '@/lib/hr/asset-service';
+import { assetService } from "@/lib/hr/asset-service";
 // Schema for maintenance record
 const maintenanceSchema = z.object({
-  maintenanceType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'CALIBRATION', 'INSPECTION'], {
+  maintenanceType: z.enum(["PREVENTIVE", "CORRECTIVE", "CALIBRATION", "INSPECTION"], {
     errorMap: () => ({ message: "Invalid maintenance type" }),
   }),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
@@ -30,7 +30,7 @@ export const _POST = async (
 
     // Validate request data
     const validationResult = maintenanceSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -42,9 +42,9 @@ export const _POST = async (
     // Convert date strings to Date objects
     const maintenanceData = {
       assetId: params.id,
-      \1,\2 new Date(data.date),
-      \1,\2 data.cost,
-      \1,\2 data.nextMaintenanceDate ? new Date(data.nextMaintenanceDate) : undefined
+      new Date(data.date),
+      data.cost,
+      data.nextMaintenanceDate ? new Date(data.nextMaintenanceDate) : undefined
     };
 
     // Record maintenance
@@ -68,7 +68,7 @@ export const _GET = async (
   try {
     const asset = await assetService.getAsset(params.id);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Asset not found" },
         { status: 404 }

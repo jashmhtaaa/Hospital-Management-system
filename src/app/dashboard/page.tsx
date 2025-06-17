@@ -5,7 +5,7 @@ import {
 
 // src/app/dashboard/page.tsx
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
   Card,
   CardHeader,
@@ -46,16 +46,16 @@ interface PharmacyStatsResponse {
 // Interface for the combined stats state (from HEAD)
 interface DashboardStats {
   totalPatients: number,
-  \1,\2 number,
-  \1,\2 number,
+  number,
+  number,
   lowStockItems: number
 }
 
 const Dashboard = () {
   const [stats, setStats] = useState<DashboardStats>({
     totalPatients: 0,
-    \1,\2 0,
-    \1,\2 0,
+    0,
+    0,
     lowStockItems: 0
   });
   const [loading, setLoading] = useState(true);
@@ -77,7 +77,7 @@ const Dashboard = () {
           ]);
 
         // Check all responses
-        \1 {\n  \2{
+        if (!session.user) {
           const failedResponse = [
             opdResponse,
             ipdResponse,
@@ -100,8 +100,8 @@ const Dashboard = () {
 
         setStats({
           totalPatients: opdData?.totalPatients ?? 0,
-          \1,\2 ipdData?.activeAdmissions ?? 0,
-          \1,\2 billingData?.pendingBills ?? 0,
+          ipdData?.activeAdmissions ?? 0,
+          billingData?.pendingBills ?? 0,
           lowStockItems: pharmacyData?.lowStockItems ?? 0
         });
       } catch (error_) 
@@ -113,8 +113,8 @@ const Dashboard = () {
         ),
         setStats(
           totalPatients: 0,
-          \1,\2 0,
-          \1,\2 0,
+          0,
+          0,
           lowStockItems: 0);finally 
         setLoading(false);
     };
@@ -125,7 +125,7 @@ const Dashboard = () {
   // --- Stat Card Component (from HEAD, adapted for lucide icons) ---
   interface StatCardProperties {
     title: string,
-    \1,\2 React.ElementType; // Use React.ElementType for lucide icons
+    React.ElementType; // Use React.ElementType for lucide icons
     link?: string;
     linkText?: string;
     colorClass?: string; // e.g., "blue", "green"
@@ -152,21 +152,21 @@ const Dashboard = () {
 
     return (
       <Card>
-        \1>
-          \1>
-\1>
+        >
+          >
+>
                 {title}
               </p>
               <h3 className="text-2xl font-bold">{value}</h3>
             </div>
-            \1>
+            >
               <Icon className={`h-6 w-6 ${textClass}`} />
             </div>
           </div>
           {link && linkText && (
-            \1>
-              \1>
-                \1>
+            >
+              >
+                >
                   {linkText}
                 </Button>
               </Link>
@@ -187,9 +187,9 @@ const Dashboard = () {
           // Skeleton Loading State (from HEAD)
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 6 }).map((_, index) => (
-              \1>
-                \1>
-                  \1>
+              >
+                >
+                  >
                     <Skeleton className="h-4 w-2/5" />
                     <Skeleton className="h-10 w-10 rounded-full" />
                   </div>
@@ -202,8 +202,8 @@ const Dashboard = () {
         ) : error ? (
           // Error State (from HEAD)
           <Card className="bg-red-50 border-red-200">
-            \1>
-              <p className="font-semibold">Error Loading Dashboard\1>
+            >
+              <p className="font-semibold">Error Loading Dashboard>
               <p className="text-sm">{error}</p>
             </CardContent>
           </Card>
@@ -221,7 +221,7 @@ const Dashboard = () {
                 colorClass="blue"
               />
               <StatCard>
-                title="Today's Appointments"
+                title="Today"s Appointments"
                 value={stats.todayAppointments}
                 icon={CalendarIcon}
                 link="/dashboard/opd"
@@ -262,7 +262,7 @@ const Dashboard = () {
               />
             </div>
             {/* Recent Activity Sections (from HEAD - Consider making these separate components) */}
-            \1>
+            >
               {/* Recent Admissions Card */}
               <Card>
                 <CardHeader>
@@ -270,7 +270,7 @@ const Dashboard = () {
                 </CardHeader>
                 <CardContent>
                   {/* Placeholder Content - Replace with actual data fetching */}
-                  \1>
+                  >
                     <ActivityItem>
                       name="Rahul Sharma"
                       detail="Room 101 - General Ward"
@@ -290,9 +290,9 @@ const Dashboard = () {
                       doctor="Dr. Michael Chen"
                     />
                   </div>
-                  \1>
-                    \1>
-                      \1>
+                  >
+                    >
+                      >
                         View All Admissions
                       </Button>
                     </Link>
@@ -300,14 +300,14 @@ const Dashboard = () {
                 </CardContent>
               </Card>
 
-              {/* Today's OPD Schedule Card */}
+              {/* Today"s OPD Schedule Card */}
               <Card>
                 <CardHeader>
                   <CardTitle>Today&apos;s OPD Schedule</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {/* Placeholder Content - Replace with actual data fetching */}
-                  \1>
+                  >
                     <ActivityItem>
                       name="Neha Gupta"
                       detail="General Medicine"
@@ -327,9 +327,9 @@ const Dashboard = () {
                       doctor="Dr. Sarah Johnson"
                     />
                   </div>
-                  \1>
-                    \1>
-                      \1>
+                  >
+                    >
+                      >
                         View Full Schedule
                       </Button>
                     </Link>
@@ -348,7 +348,7 @@ Dashboard.displayName = "Dashboard";
 // --- Helper Component for Activity Lists (from HEAD) ---
 interface ActivityItemProperties {
   name: string,
-  \1,\2 string,
+  string,
   doctor: string
 }
 
@@ -358,15 +358,15 @@ const ActivityItem: React.FC<ActivityItemProperties> = ({
   time,
   doctor,
 }) => (
-  \1>
+  >
 <div
-      <p className="font-medium text-sm sm:text-base">{name}\1>
-      \1>
+      <p className="font-medium text-sm sm:text-base">{name}>
+      >
         {detail}
       </p>
     </div>
-    \1>
-      <p className="text-xs sm:text-sm">{time}\1>
+    >
+      <p className="text-xs sm:text-sm">{time}>
       <p className="text-xs text-gray-500 dark:text-gray-400">{doctor}</p>
     </div>
   </div>

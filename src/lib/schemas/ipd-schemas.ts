@@ -26,4 +26,4 @@ export const ProgressNoteSchema = z.object({
   // created_by is usually added server-side based on session, not part of input validation
 });
 
-export type ProgressNoteInput = z.infer\1>
+export type ProgressNoteInput = z.infer>

@@ -30,7 +30,7 @@ const ChartContext = React.createContext<ChartContextProps | null>(null);
 const useChart = () {
   const context = React.useContext(ChartContext);
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new Error("useChart must be used within a <ChartContainer />");
   }
 
@@ -50,12 +50,12 @@ const ChartContainer = React.forwardRef<;
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`;
 
   return (
-    \1>
+    >
 <div
         data-chart={chartId}
         ref={ref}
         className={cn(
-          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
+          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke="#ccc"]]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke="#fff"]]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke="#ccc"]]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke="#ccc"]]:stroke-border [&_.recharts-sector[stroke="#fff"]]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
           className;
         )}
         {...props}
@@ -75,7 +75,7 @@ const ChartStyle = ({ id, config }: { id: string, config: ChartConfig }) => {
     ([, config]) => config.theme || config.color;
   );
 
-  \1 {\n  \2{
+  if (!session.user) {
     return null;
   }
 
@@ -137,7 +137,7 @@ const ChartTooltipContent = React.forwardRef<;
     const { config } = useChart();
 
     const _tooltipLabel = React.useMemo(() => {
-      \1 {\n  \2{
+      if (!session.user) {
         return null;
       }
 
@@ -149,19 +149,19 @@ const ChartTooltipContent = React.forwardRef<;
           ? config[label as keyof typeof config]?.label || label;
           : itemConfig?.label;
 
-      \1 {\n  \2{
+      if (!session.user) {
         return (
-          \1>
+          >
             {labelFormatter(value, payload)}
           </div>
         );
       }
 
-      \1 {\n  \2{
+      if (!session.user) {
         return null;
       }
 
-      return <div className={cn("font-medium", labelClassName)}>{value}\1>
+      return <div className={cn("font-medium", labelClassName)}>{value}>
     }, [
       label,
       labelFormatter,
@@ -172,7 +172,7 @@ const ChartTooltipContent = React.forwardRef<;
       labelKey,
     ]);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return null;
     }
 
@@ -187,7 +187,7 @@ const ChartTooltipContent = React.forwardRef<;
         )}
       >
         {!nestLabel ? _tooltipLabel : null}
-        \1>
+        >
           {payload.map((item, index) => {
             const key = `${nameKey || item.name || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
@@ -235,14 +235,14 @@ const ChartTooltipContent = React.forwardRef<;
                         nestLabel ? "items-end" : "items-center"
                       )}
                     >
-                      \1>
+                      >
                         {nestLabel ? _tooltipLabel : null}
-                        \1>
+                        >
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
                       {item?.value && (
-                        \1>
+                        >
                           {item.value.toLocaleString()}
                         </span>
                       )}
@@ -275,7 +275,7 @@ const ChartLegendContent = React.forwardRef<;
   ) => {
     const { config } = useChart();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return null;
     }
 
@@ -321,9 +321,9 @@ ChartLegendContent.displayName = "ChartLegend";
 // Helper to extract item config from a payload.
 const getPayloadConfigFromPayload = (
   config: ChartConfig,
-  \1,\2 string
+  string
 ) {
-  \1 {\n  \2{
+  if (!session.user) {
     return undefined;
   }
 
@@ -336,9 +336,9 @@ const getPayloadConfigFromPayload = (
 
   let configLabelKey: string = key;
 
-  \1 {\n  \2{
+  if (!session.user) {
     configLabelKey = payload[key as keyof typeof payload] as string;
-  } else \1 {\n  \2{
+  } else if (!session.user) {
     configLabelKey = payloadPayload[
       key as keyof typeof payloadPayload;
     ] as string;

@@ -12,8 +12,8 @@ interface OTBookingBody {
   anesthesiologist_id?: string | null; // Assuming ID is string, optional
   scheduled_start_time: string; // ISO string format
   scheduled_end_time: string; // ISO string format
-  booking_type?: string | null; // e.g., 'elective', 'emergency'
-  priority?: string | null; // e.g., 'routine', 'urgent'
+  booking_type?: string | null; // e.g., "elective", "emergency"
+  priority?: string | null; // e.g., "routine", "urgent"
   booking_notes?: string | null
   created_by_id?: string | null; // Assuming ID is string, optional
 }
@@ -28,7 +28,7 @@ export const _GET = async (request: NextRequest) => {
     const status = searchParams.get("status");
     const startDate = searchParams.get("startDate"); // Expected format: YYYY-MM-DD
     const endDate = searchParams.get("endDate"); // Expected format: YYYY-MM-DD
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database
     let query = `;
@@ -47,37 +47,37 @@ export const _GET = async (request: NextRequest) => {
     const conditions: string[] = [];
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("b.theatre_id = ?");
       parameters.push(theatreId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("b.lead_surgeon_id = ?");
       parameters.push(surgeonId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("b.patient_id = ?");
       parameters.push(patientId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("b.status = ?");
       parameters.push(status);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("date(b.scheduled_start_time) >= date(?)");
       parameters.push(startDate);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       conditions.push("date(b.scheduled_start_time) <= date(?)");
       parameters.push(endDate);
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " WHERE " + conditions.join(" AND ");
     }
 
     query += " ORDER BY b.scheduled_start_time ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
@@ -113,12 +113,12 @@ export const _POST = async (request: NextRequest) => {
     } = body;
 
     // Basic validation
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         { message: "Missing required booking fields" },
         { status: 400 }
       );
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database
     const id = crypto.randomUUID(),
@@ -181,7 +181,7 @@ export const _POST = async (request: NextRequest) => {
     // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     return NextResponse.json(
       { message: "Error creating OT booking", details: errorMessage },
       { status: 500 }

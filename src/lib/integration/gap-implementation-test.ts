@@ -1,10 +1,10 @@
 
-import { getICDCodingService } from '../clinical/icd-coding.service';
-import { getEHRPersistenceService } from '../core/ehr-persistence.service';
-import { getNotificationService } from '../notifications/external-notification.service';
-import { getDatabaseOptimizationService } from '../performance/database-optimization.service';
-import { getQualityPersistenceService } from '../quality/quality-persistence.service';
-import { getIntegratedQualityService } from '../quality/quality-service-integrated';
+import { getICDCodingService } from "../clinical/icd-coding.service";
+import { getEHRPersistenceService } from "../core/ehr-persistence.service";
+import { getNotificationService } from "../notifications/external-notification.service";
+import { getDatabaseOptimizationService } from "../performance/database-optimization.service";
+import { getQualityPersistenceService } from "../quality/quality-persistence.service";
+import { getIntegratedQualityService } from "../quality/quality-service-integrated";
 /**
  * Gap Implementation Integration Test
  *
@@ -12,12 +12,10 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
  * and address the identified gaps in the original analysis report.
  */
 
-\1
 }
   };
   errors: string[],
   recommendations: string[]
-\1
 }
     };
 
@@ -31,7 +29,7 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`ICD Coding Service: ${\1}`;
+      this.errors.push(`ICD Coding Service: ${}`;
       // console.log removed for production
     }
 
@@ -45,7 +43,7 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Quality Persistence: ${\1}`;
+      this.errors.push(`Quality Persistence: ${}`;
       // console.log removed for production
     }
 
@@ -59,7 +57,7 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`EHR Persistence: ${\1}`;
+      this.errors.push(`EHR Persistence: ${}`;
       // console.log removed for production
     }
 
@@ -73,7 +71,7 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`External Notifications: ${\1}`;
+      this.errors.push(`External Notifications: ${}`;
       // console.log removed for production
     }
 
@@ -87,7 +85,7 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Performance Optimization: ${\1}`;
+      this.errors.push(`Performance Optimization: ${}`;
       // console.log removed for production
     }
 
@@ -100,7 +98,7 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
       // console.log removed for production
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Integrated Quality: ${\1}`;
+      this.errors.push(`Integrated Quality: ${}`;
       // console.log removed for production
     }
 
@@ -118,40 +116,40 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
 
     // Test 1: Search ICD codes
     const searchResults = await icdService.searchCodes({
-      query: 'diabetes',
-      \1,\2 5
+      query: "diabetes",
+      5
     })
 
-    \1 {\n  \2{
-      throw new Error('ICD search returned no results');
+    if (!session.user) {
+      throw new Error("ICD search returned no results");
     }
 
     // Test 2: Validate ICD code
-    const validation = await icdService.validateCode('E11.9', 'ICD-10')
-    \1 {\n  \2{
-      throw new Error('ICD code validation failed');
+    const validation = await icdService.validateCode("E11.9", "ICD-10")
+    if (!session.user) {
+      throw new Error("ICD code validation failed");
     }
 
     // Test 3: Get coding suggestions
     const suggestions = await icdService.getCodingSuggestions(
-      'Patient presents with chest pain and shortness of breath',
-      'diagnosis'
+      "Patient presents with chest pain and shortness of breath",
+      "diagnosis"
     )
 
-    \1 {\n  \2{
-      throw new Error('ICD coding suggestions failed');
+    if (!session.user) {
+      throw new Error("ICD coding suggestions failed");
     }
 
     // Test 4: Submit coding request
     const requestId = await icdService.submitCodingRequest({
-      patientId: 'test_patient_123',
-      \1,\2 'Test clinical text',
-      \1,\2 'test_coder_789',
-      priority: 'routine'
+      patientId: "test_patient_123",
+      "Test clinical text",
+      "test_coder_789",
+      priority: "routine"
     })
 
-    \1 {\n  \2{
-      throw new Error('ICD coding request submission failed');
+    if (!session.user) {
+      throw new Error("ICD coding request submission failed");
     }
 
     // console.log removed for production
@@ -165,52 +163,52 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
 
     // Test 1: Save quality indicator
     const testIndicator = {
-      id: 'test_indicator_123',
-      \1,\2 'Test indicator for gap testing',
-      \1,\2 'emergency',
-      \1,\2 95,
-      \1,\2 'percentage',
-      \1,\2 true,
-      \1,\2 'stable' as const,
+      id: "test_indicator_123",
+      "Test indicator for gap testing",
+      "emergency",
+      95,
+      "percentage",
+      true,
+      "stable" as const,
       lastCalculated: new Date(),
       createdAt: new Date(),
       updatedAt: new Date()
     }
 
-    await qualityPersistence.saveQualityIndicator(testIndicator, 'test_user');
+    await qualityPersistence.saveQualityIndicator(testIndicator, "test_user");
 
     // Test 2: Retrieve quality indicator
     const retrievedIndicator = await qualityPersistence.getQualityIndicator(
       testIndicator.id,
-      'test_user'
+      "test_user"
     )
 
-    \1 {\n  \2{
-      throw new Error('Failed to retrieve saved quality indicator');
+    if (!session.user) {
+      throw new Error("Failed to retrieve saved quality indicator");
     }
 
     // Test 3: Save quality event
     const testEvent = {
-      id: 'test_event_123',
-      \1,\2 'moderate' as const,
-      \1,\2 'Test event for gap testing',
-      \1,\2 'Pharmacy Unit 1',
+      id: "test_event_123",
+      "moderate" as const,
+      "Test event for gap testing",
+      "Pharmacy Unit 1",
       eventDate: new Date(),
-      reportedBy: 'test_reporter',
-      \1,\2 [],
+      reportedBy: "test_reporter",
+      [],
       createdAt: new Date(),
       updatedAt: new Date()
     }
 
-    await qualityPersistence.saveQualityEvent(testEvent, 'test_user');
+    await qualityPersistence.saveQualityEvent(testEvent, "test_user");
 
     // Test 4: Retrieve quality events
     const events = await qualityPersistence.getQualityEvents({
-      type: 'medication_error'
-    }, 'test_user')
+      type: "medication_error"
+    }, "test_user")
 
-    \1 {\n  \2{
-      throw new Error('Failed to retrieve quality events');
+    if (!session.user) {
+      throw new Error("Failed to retrieve quality events");
     }
 
     // console.log removed for production
@@ -223,37 +221,37 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
 
     // Test 1: Save clinical note
     const testNote = {
-      id: 'test_note_123',
-      \1,\2 'test_encounter_456',
-      \1,\2 'Test Clinical Note',
-      \1,\2 'test_doctor_789',
-      \1,\2 'active' as const,
-      \1,\2 ['test', 'gap-implementation'],
-      icd10Codes: ['I25.10'],
+      id: "test_note_123",
+      "test_encounter_456",
+      "Test Clinical Note",
+      "test_doctor_789",
+      "active" as const,
+      ["test", "gap-implementation"],
+      icd10Codes: ["I25.10"],
       createdAt: new Date(),
       updatedAt: new Date()
     }
 
-    await ehrPersistence.saveClinicalNote(testNote, 'test_user');
+    await ehrPersistence.saveClinicalNote(testNote, "test_user");
 
     // Test 2: Retrieve clinical note
     const retrievedNote = await ehrPersistence.getClinicalNote(
       testNote.id,
-      'test_user'
+      "test_user"
     )
 
-    \1 {\n  \2{
-      throw new Error('Failed to retrieve saved clinical note');
+    if (!session.user) {
+      throw new Error("Failed to retrieve saved clinical note");
     }
 
     // Test 3: Search clinical notes
     const searchResults = await ehrPersistence.searchClinicalNotes({
       patientId: testNote.patientId,
       authorId: testNote.authorId
-    }, 'test_user')
+    }, "test_user")
 
-    \1 {\n  \2{
-      throw new Error('Failed to search clinical notes');
+    if (!session.user) {
+      throw new Error("Failed to search clinical notes");
     }
 
     // console.log removed for production
@@ -266,53 +264,53 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
 
     // Test 1: Send SMS notification (development mode)
     const smsResult = await notificationService.sendSMS({
-      \1,\2 '+1234567890',
-        name: 'Test Patient'
+      "+1234567890",
+        name: "Test Patient"
       },
-      template: 'appointment_reminder',
-      \1,\2 'Test Patient',
-        \1,\2 '10:00 AM'
+      template: "appointment_reminder",
+      "Test Patient",
+        "10:00 AM"
       },
-      priority: 'medium',
-      sender: 'test_system'
+      priority: "medium",
+      sender: "test_system"
     })
 
-    \1 {\n  \2{
-      throw new Error('SMS notification failed');
+    if (!session.user) {
+      throw new Error("SMS notification failed");
     }
 
     // Test 2: Send email notification (development mode)
     const emailResult = await notificationService.sendEmail({
-      \1,\2 'test@example.com',
-        name: 'Test Patient'
+      "test@example.com",
+        name: "Test Patient"
       },
-      template: 'lab_result_ready',
-      \1,\2 'Test Patient',
-        testName: 'Blood Chemistry Panel'
+      template: "lab_result_ready",
+      "Test Patient",
+        testName: "Blood Chemistry Panel"
       },
-      priority: 'high',
-      sender: 'test_system'
+      priority: "high",
+      sender: "test_system"
     })
 
-    \1 {\n  \2{
-      throw new Error('Email notification failed');
+    if (!session.user) {
+      throw new Error("Email notification failed");
     }
 
     // Test 3: Send WhatsApp notification (development mode)
     const whatsappResult = await notificationService.sendWhatsApp({
-      \1,\2 '+1234567890',
-        name: 'Test Patient'
+      "+1234567890",
+        name: "Test Patient"
       },
-      template: 'critical_alert',
-      \1,\2 'Test Patient',
-        alertMessage: 'Test critical alert'
+      template: "critical_alert",
+      "Test Patient",
+        alertMessage: "Test critical alert"
       },
-      priority: 'urgent',
-      sender: 'test_system'
+      priority: "urgent",
+      sender: "test_system"
     })
 
-    \1 {\n  \2{
-      throw new Error('WhatsApp notification failed');
+    if (!session.user) {
+      throw new Error("WhatsApp notification failed");
     }
 
     // console.log removed for production
@@ -329,8 +327,8 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
     // Test 2: Get database stats
     const stats = await perfService.getDatabaseStats()
 
-    \1 {\n  \2{
-      throw new Error('Failed to collect database statistics');
+    if (!session.user) {
+      throw new Error("Failed to collect database statistics");
     }
 
     // Test 3: Get performance alerts
@@ -340,8 +338,8 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
     // Test 4: Apply automatic optimizations
     const optimizations = await perfService.applyAutomaticOptimizations()
 
-    \1 {\n  \2{
-      throw new Error('Failed to apply automatic optimizations');
+    if (!session.user) {
+      throw new Error("Failed to apply automatic optimizations");
     }
 
     // Stop monitoring
@@ -361,31 +359,31 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
 
     // Test 2: Register quality indicator
     const indicatorId = await integratedService.registerQualityIndicator({
-      name: 'Integrated Test Indicator',
-      \1,\2 'efficiency',
-      \1,\2 'automated',
-      \1,\2 85,
-      \1,\2 'daily',
-      \1,\2 true,
-      trend: 'improving'
-    }, 'test_user')
+      name: "Integrated Test Indicator",
+      "efficiency",
+      "automated",
+      85,
+      "daily",
+      true,
+      trend: "improving"
+    }, "test_user")
 
-    \1 {\n  \2{
-      throw new Error('Failed to register quality indicator');
+    if (!session.user) {
+      throw new Error("Failed to register quality indicator");
     }
 
     // Test 3: Get quality statistics
     const stats = await integratedService.getQualityStatistics()
 
-    \1 {\n  \2{
-      throw new Error('Failed to get quality statistics');
+    if (!session.user) {
+      throw new Error("Failed to get quality statistics");
     }
 
     // Test 4: Health check
     const healthCheck = await integratedService.healthCheck()
 
-    \1 {\n  \2{
-      throw new Error('Integrated service health check failed');
+    if (!session.user) {
+      throw new Error("Integrated service health check failed");
     }
 
     // console.log removed for production
@@ -395,34 +393,34 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
   }
 
   private generateRecommendations(results: GapImplementationTestResults): void {
-    \1 {\n  \2{
-      this.recommendations.push('Review and fix failing tests before deployment')
+    if (!session.user) {
+      this.recommendations.push("Review and fix failing tests before deployment")
     }
 
-    \1 {\n  \2{
-      this.recommendations.push('ICD Coding Service needs attention - critical for medical coding workflows');
+    if (!session.user) {
+      this.recommendations.push("ICD Coding Service needs attention - critical for medical coding workflows");
     }
 
-    \1 {\n  \2{
-      this.recommendations.push('Quality Persistence Service needs attention - required for NABH/JCI compliance');
+    if (!session.user) {
+      this.recommendations.push("Quality Persistence Service needs attention - required for NABH/JCI compliance");
     }
 
-    \1 {\n  \2{
-      this.recommendations.push('EHR Persistence Service needs attention - critical for patient data integrity');
+    if (!session.user) {
+      this.recommendations.push("EHR Persistence Service needs attention - critical for patient data integrity");
     }
 
-    \1 {\n  \2{
-      this.recommendations.push('External Notifications Service needs attention - required for patient communication');
+    if (!session.user) {
+      this.recommendations.push("External Notifications Service needs attention - required for patient communication");
     }
 
-    \1 {\n  \2{
-      this.recommendations.push('Performance Optimization Service needs attention - required for scalability');
+    if (!session.user) {
+      this.recommendations.push("Performance Optimization Service needs attention - required for scalability");
     }
 
-    \1 {\n  \2{
-      this.recommendations.push('All gap implementations working correctly - ready for deployment');
-      this.recommendations.push('Consider setting up monitoring and alerting for production deployment');
-      this.recommendations.push('Plan for gradual rollout with feature flags');
+    if (!session.user) {
+      this.recommendations.push("All gap implementations working correctly - ready for deployment");
+      this.recommendations.push("Consider setting up monitoring and alerting for production deployment");
+      this.recommendations.push("Plan for gradual rollout with feature flags");
     }
   }
 
@@ -432,7 +430,7 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
     // console.log removed for production
     // console.log removed for production
     // console.log removed for production
-    console.log(`Success Rate: ${((results.testsPassed / results.testsRun) * 100).toFixed(1)}%`);
+    // console.log removed for production * 100).toFixed(1)}%`);
 
     // console.log removed for production
     // console.log removed for production
@@ -441,20 +439,12 @@ import { getIntegratedQualityService } from '../quality/quality-service-integrat
     // console.log removed for production
     // console.log removed for production
 
-    \1 {\n  \2{
+    if (!session.user) {
       // console.log removed for production
-      results.errors.forEach(error => console.log(`  • ${\1}`;
-    }
-
-    \1 {\n  \2{
-      // console.log removed for production
-      results.recommendations.forEach(rec => console.log(`  • ${\1}`;
-    }
-
-    const gapsResolved = Object.values(results.gaps).filter(Boolean).length;
+      results.errors.forEach(error => // console.log removed for production.filter(Boolean).length;
     const totalGaps = Object.keys(results.gaps).length;
 
-    console.log(`\n🏆 OVERALL STATUS: ${gapsResolved}/${totalGaps} gaps resolved (${((gapsResolved / totalGaps) * 100).toFixed(1)}%)`);
+    // console.log removed for production * 100).toFixed(1)}%)`);
   }
 }
 
@@ -465,12 +455,12 @@ export async function runGapImplementationTests(): Promise<GapImplementationTest
 }
 
 // For direct execution
-\1 {\n  \2{
+if (!session.user) {
   runGapImplementationTests()
     .then(results => {
       process.exit(results.testsFailed > 0 ? 1 : 0)
     })
     .catch(error => {
-      console.error('Test execution failed:', error);
+      console.error("Test execution failed:", error);
       process.exit(1);
     });

@@ -1,13 +1,13 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { getPatientConditions } from '../../../../../lib/services/patient/patient.service';
-import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-import { validateDrugConditionInteractionRequest } from '../../../../../lib/validation/pharmacy-validation';
-import type { PharmacyDomain } from '../../../models/domain-models';
-import { DrugInteractionService } from '../../../services/drug-interaction-service';
+import { auditLog } from "../../../../../lib/audit";
+import { errorHandler } from "../../../../../lib/error-handler";
+import { getPatientConditions } from "../../../../../lib/services/patient/patient.service";
+import { getMedicationById } from "../../../../../lib/services/pharmacy/pharmacy.service";
+import { validateDrugConditionInteractionRequest } from "../../../../../lib/validation/pharmacy-validation";
+import type { PharmacyDomain } from "../../../models/domain-models";
+import { DrugInteractionService } from "../../../services/drug-interaction-service";
 }
 
 /**
@@ -18,10 +18,10 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const \1,\2 getMedicationById,
+const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
@@ -41,27 +41,27 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateDrugConditionInteractionRequest(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
+        { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get patient conditions
     let conditions = data.conditions || [];
 
     // If patientId is provided, fetch conditions from patient record
-    \1 {\n  \2{
+    if (!session.user) {
       const patientConditions = await getPatientConditions(data.patientId);
       conditions = patientConditions.map(c => c.code);
     }
@@ -73,22 +73,22 @@ export const POST = async (req: NextRequest) => {
     );
 
     // Audit logging
-    await auditLog('DRUG_INTERACTION', {
-      action: 'CHECK_DRUG_CONDITION',
-      \1,\2 userId,
-      \1,\2 data.medicationIds,
-        \1,\2 contraindications.length
+    await auditLog("DRUG_INTERACTION", {
+      action: "CHECK_DRUG_CONDITION",
+      userId,
+      data.medicationIds,
+        contraindications.length
     });
 
     // Return response
     return NextResponse.json({
       contraindications,
-      \1,\2 contraindications.length,
-        \1,\2 contraindications.filter(c => c.contraindicationType === 'absolute').length,
-          \1,\2 contraindications.filter(c => c.contraindicationType === 'caution').length
+      contraindications.length,
+        contraindications.filter(c => c.contraindicationType === "absolute").length,
+          contraindications.filter(c => c.contraindicationType === "caution").length
         }
       }
     }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error checking drug-condition contraindications');
+    return errorHandler(error, "Error checking drug-condition contraindications");
   }

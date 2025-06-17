@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { type NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { authOptions } from '@/lib/auth';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { SegmentService } from '@/lib/services/support-services/marketing';
+import { authOptions } from "@/lib/auth";
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { SegmentService } from "@/lib/services/support-services/marketing";
 const segmentService = new SegmentService();
 
 /**
@@ -20,15 +20,15 @@ export const GET = async (request: NextRequest) => {
 
       // Parse query parameters
       const filters = {
-        isActive: searchParams.has('isActive');
-          ? searchParams.get('isActive') === 'true';
+        isActive: searchParams.has("isActive");
+          ? searchParams.get("isActive") === "true";
           : undefined,
-        search: searchParams.get('search') || undefined,
-        page: searchParams.has('page');
-          ? parseInt(searchParams.get('page') || '1', 10);
+        search: searchParams.get("search") || undefined,
+        page: searchParams.has("page");
+          ? parseInt(searchParams.get("page") || "1", 10);
           : 1,
-        limit: searchParams.has('limit');
-          ? parseInt(searchParams.get('limit') || '10', 10);
+        limit: searchParams.has("limit");
+          ? parseInt(searchParams.get("limit") || "10", 10);
           : 10,
       };
 
@@ -37,8 +37,8 @@ export const GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'marketing.segments.read',
-      auditAction: 'SEGMENTS_LIST'
+      requiredPermission: "marketing.segments.read",
+      auditAction: "SEGMENTS_LIST"
     }
   );
 }
@@ -62,7 +62,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json(segment, { status: 201 });
     },
     {
-      requiredPermission: 'marketing.segments.create',
-      auditAction: 'SEGMENT_CREATE'
+      requiredPermission: "marketing.segments.create",
+      auditAction: "SEGMENT_CREATE"
     }
   );

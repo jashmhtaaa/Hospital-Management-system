@@ -1,27 +1,27 @@
 import {
-import { NextRequest } from 'next/server';
-import { z } from 'zod';
+import { NextRequest } from "next/server";
+import { z } from "zod";
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   validateQuery,
   checkPermission,
   createSuccessResponse,
   createPaginatedResponse;
-} from '@/lib/core/middleware';
-import { ValidationError, NotFoundError, BusinessLogicError } from '@/lib/core/errors';
+} from "@/lib/core/middleware";
+import { ValidationError, NotFoundError, BusinessLogicError } from "@/lib/core/errors";
   moneySchema,
   paymentMethodSchema,
   paymentStatusSchema;
-} from '@/lib/core/validation';
-import { logger } from '@/lib/core/logging';
+} from "@/lib/core/validation";
+import { logger } from "@/lib/core/logging";
 
 // Schema for payment creation
 const createPaymentSchema = z.object({
   invoiceId: z.string().uuid(),
-  \1,\2 paymentMethodSchema,
-  \1,\2 z.string().optional(),
+  paymentMethodSchema,
+  z.string().optional(),
   notes: z.string().optional(),
   paidBy: z.string().optional(),
   receiptRequired: z.boolean().default(true)
@@ -39,8 +39,8 @@ const paymentQuerySchema = z.object({
   endDate: z.string().optional(),
   minAmount: z.coerce.number().optional(),
   maxAmount: z.coerce.number().optional(),
-  sortBy: z.enum(['createdAt', 'paymentDate', 'amount']).optional().default('paymentDate'),
-  sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
+  sortBy: z.enum(["createdAt", "paymentDate", "amount"]).optional().default("paymentDate"),
+  sortOrder: z.enum(["asc", "desc"]).optional().default("desc"),
 });
 
 // GET handler for retrieving all payments with filtering and pagination
@@ -49,36 +49,36 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   const query = validateQuery(paymentQuerySchema)(req);
 
   // Check permissions
-  await checkPermission(permissionService, 'read', 'payment')(req);
+  await checkPermission(permissionService, "read", "payment")(req);
 
   // Build filter conditions
   const where: unknown = {};
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.invoiceId = query.invoiceId;
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.invoice = {
       patientId: query.patientId
     };
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.paymentMethod = query.paymentMethod;
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.status = query.status;
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     try {
       const startDate = new Date(query.startDate);
       const endDate = new Date(query.endDate);
 
-      \1 {\n  \2{
-        throw new ValidationError('Start date must be before end date', 'INVALID_DATE_RANGE');
+      if (!session.user) {
+        throw new ValidationError("Start date must be before end date", "INVALID_DATE_RANGE");
       }
 
       where.paymentDate = {
@@ -86,18 +86,18 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         lte: endDate
       };
     } catch (error) {
-      throw new ValidationError('Invalid date range', 'INVALID_DATE_RANGE');
+      throw new ValidationError("Invalid date range", "INVALID_DATE_RANGE");
     }
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.amount = {
       ...(where.amount || {}),
       gte: query.minAmount
     };
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.amount = {
       ...(where.amount || {}),
       lte: query.maxAmount
@@ -112,13 +112,13 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      \1,\2 {
-        \1,\2 {
+      {
+        {
             id: true,
-            \1,\2 true,
-            \1,\2 {
+            true,
+            {
                 id: true,
-                \1,\2 true,
+                true,
                 mrn: true
               },
             },
@@ -138,35 +138,35 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   const data = await validateBody(createPaymentSchema)(req);
 
   // Check permissions
-  await checkPermission(permissionService, 'create', 'payment')(req);
+  await checkPermission(permissionService, "create", "payment")(req);
 
   // Retrieve invoice
   const invoice = await prisma.bill.findUnique({
     where: { id: data.invoiceId },
   });
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
   }
 
   // Check if invoice is in a valid state for payment
-  \1 {\n  \2 {
+  if (!session.user) {
     throw new BusinessLogicError(
-      'Payment can only be made for approved, partially paid, or overdue invoices',
-      'INVALID_INVOICE_STATUS',
+      "Payment can only be made for approved, partially paid, or overdue invoices",
+      "INVALID_INVOICE_STATUS",
       { currentStatus: invoice.status }
     );
   }
 
   // Check if payment amount is valid
-  \1 {\n  \2{
-    throw new ValidationError('Payment amount must be greater than zero', 'INVALID_PAYMENT_AMOUNT');
+  if (!session.user) {
+    throw new ValidationError("Payment amount must be greater than zero", "INVALID_PAYMENT_AMOUNT");
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     throw new ValidationError(
-      'Payment amount cannot exceed outstanding amount',
-      'PAYMENT_EXCEEDS_OUTSTANDING',
+      "Payment amount cannot exceed outstanding amount",
+      "PAYMENT_EXCEEDS_OUTSTANDING",
       {
         paymentAmount: data.amount,
         outstandingAmount: invoice.outstandingAmount
@@ -176,18 +176,18 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   // Generate payment reference number if not provided
   const referenceNumber = data.referenceNumber ||;
-    `PAY-${new Date().getFullYear()}-${Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000000).toString().padStart(6, '0')}`;
+    `PAY-${new Date().getFullYear()}-${Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000000).toString().padStart(6, "0")}`;
 
   // Create payment in database
   const payment = await prisma.$transaction(async (prisma) => {
     // Create payment record
     const newPayment = await prisma.payment.create({
-      \1,\2 data.invoiceId,
-        \1,\2 data.paymentMethod,
+      data.invoiceId,
+        data.paymentMethod,
         paymentDate: data.paymentDate;
         referenceNumber,
         notes: data.notes,
-        \1,\2 'completed'
+        "completed"
       },
     });
 
@@ -197,31 +197,31 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
     // Determine new invoice status
     let newStatus = invoice.status;
-    \1 {\n  \2{
-      newStatus = 'paid',
-    } else \1 {\n  \2{
-      newStatus = 'partial',
+    if (!session.user) {
+      newStatus = "paid",
+    } else if (!session.user) {
+      newStatus = "partial",
     }
 
     await prisma.bill.update({
       where: { id: data.invoiceId },
-      \1,\2 newPaidAmount,
-        \1,\2 newStatus
+      newPaidAmount,
+        newStatus
       },
     });
 
     return newPayment;
   });
 
-  logger.info('Payment created', {
+  logger.info("Payment created", {
     paymentId: payment.id,
-    \1,\2 data.amount,
+    data.amount,
     method: data.paymentMethod
   });
 
   // Generate receipt if required
   let receiptUrl = null;
-  \1 {\n  \2{
+  if (!session.user) {
     // In a real implementation, this would generate a receipt
     // For now, we'll just simulate it
     receiptUrl = `/api/billing/receipts/${payment.id}`;

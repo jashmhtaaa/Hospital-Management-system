@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
+import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 
-import { DocumentEditor } from '../../../components/clinical-documentation/document-editor';
-import { authOptions } from '../../../lib/auth';
+import { DocumentEditor } from "../../../components/clinical-documentation/document-editor";
+import { authOptions } from "../../../lib/auth";
 const prisma = new PrismaClient();
 
 export default async const _DocumentCreatePage = ({
@@ -16,8 +16,8 @@ export default async const _DocumentCreatePage = ({
   const session = await getServerSession(authOptions);
 
   // Redirect to login if not authenticated
-  \1 {\n  \2{
-    redirect('/login');
+  if (!session.user) {
+    redirect("/login");
   }
 
   // Get patientId and encounterId from search params
@@ -25,8 +25,8 @@ export default async const _DocumentCreatePage = ({
   const encounterId = searchParams.encounterId;
 
   // Redirect if no patientId
-  \1 {\n  \2{
-    redirect('/clinical-documentation');
+  if (!session.user) {
+    redirect("/clinical-documentation");
   }
 
   // Check if patient exists (would use real check in production)
@@ -34,8 +34,8 @@ export default async const _DocumentCreatePage = ({
   //   where: { id: patientId }
   // })
 
-  // \1 {\n  \2{
-  //   redirect('/patients')
+  // if (!session.user) {
+  //   redirect("/patients")
   // }
 
   return (

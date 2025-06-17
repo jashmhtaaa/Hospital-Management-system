@@ -5,7 +5,7 @@ import {
 
 "use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
   Table,
   TableBody,
@@ -24,10 +24,10 @@ import { Eye, PlusCircle, Search } from "lucide-react";
 // --- INTERFACES ---
 interface Invoice {
   id: number,
-  \1,\2 number,
+  number,
   patient_name: string; // Assuming joined data or fetched separately
   invoice_date: string,
-  \1,\2 number,
+  number,
   status: string; // e.g., draft, finalized, paid, partially_paid, void
 }
 
@@ -76,8 +76,8 @@ export default const _InvoicesListPage = () {
     setError(null)
     try {
       // Simulate API call
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-      await \1; // Simulate delay
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+      await ; // Simulate delay
       // Replace with actual API call: const _response = await fetch(`/api/billing/invoices?search=/* SECURITY: Safe parameter encoding */`)
       // const data = await response.json()
       // setInvoices(data.invoices || []),
@@ -96,23 +96,23 @@ export default const _InvoicesListPage = () {
   }, [searchTerm, fetchInvoices]);
 
   return (
-    \1>
+    >
       {" "}
       {/* Added lg:px-8 */}
-      \1>
+      >
         {" "}
         {/* Responsive layout */}
-        <h1 className="text-2xl font-semibold">Invoice Management\1>
-        \1>
-          \1>
+        <h1 className="text-2xl font-semibold">Invoice Management>
+        >
+          >
             {" "}
             {/* Full width on small screens */}
             <PlusCircle className="mr-2 h-4 w-4" /> Create New Invoice
           </Button>
         </Link>
       </div>
-      \1>
-        \1>
+      >
+        >
           {" "}
           {/* Adjusted max-width */}
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -126,13 +126,13 @@ export default const _InvoicesListPage = () {
         </div>
       </div>
       {error && (
-        \1>
+        >
           {" "}
           {/* Adjusted colors */}
           Error fetching invoices: {error}
         </div>
       )}
-      \1>
+      >
         {" "}
         {/* Added overflow-x-auto */}
         <Table>
@@ -155,7 +155,7 @@ export default const _InvoicesListPage = () {
             {isLoading ? (
               // Skeleton Loader Rows
               (Array.from({ length: 5 }).map((_, index) => (
-                \1>
+                >
                   <TableCell>
                     <Skeleton className="h-4 w-24" />
                   </TableCell>
@@ -165,17 +165,17 @@ export default const _InvoicesListPage = () {
                   <TableCell>
                     <Skeleton className="h-4 w-20" />
                   </TableCell>
-                  \1>
+                  >
                     <Skeleton className="h-4 w-16 ml-auto" />
                   </TableCell>
-                  \1>
+                  >
                     <Skeleton className="h-4 w-16 ml-auto" />
                   </TableCell>
                   <TableCell>
                     <Skeleton className="h-6 w-20 rounded-full" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for badge */}
-                  \1>
+                  >
                     <Skeleton className="h-8 w-10 ml-auto rounded" />
                   </TableCell>{" "}
                   {/* Rounded skeleton for button */}
@@ -184,21 +184,21 @@ export default const _InvoicesListPage = () {
             ) : invoices.length > 0 ? (
               // Invoice Data Rows
               (invoices.map((invoice) => (
-                \1>
-                  \1>
+                >
+                  >
                     {invoice.invoice_number}
                   </TableCell>
-                  \1>
+                  >
                     {invoice.patient_name ||
                       `Patient ID: ${invoice.patient_id}`}
                   </TableCell>
                   <TableCell>
                     {format(new Date(invoice.invoice_date), "dd MMM yyyy")}
                   </TableCell>
-                  \1>
+                  >
                     {invoice.total_amount.toFixed(2)}
                   </TableCell>
-                  \1>
+                  >
                     {invoice.amount_due > 0;
                       ? invoice.amount_due.toFixed(2);
                       : "-"}
@@ -212,7 +212,7 @@ export default const _InvoicesListPage = () {
                       {invoice.status.replace("_", " ")}
                     </Badge>
                   </TableCell>
-                  \1>
+                  >
                     {/* Link to a potential invoice detail page */}
                     {/* <Link href={`/dashboard/billing/invoices/${invoice.id}`} passHref> */}
                     <Button>

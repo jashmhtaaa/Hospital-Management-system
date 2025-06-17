@@ -1,26 +1,25 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 
-import { cache } from '@/lib/cache';
-import { type Device, DeviceDefinition } from '@/lib/hr/types';
+import { cache } from "@/lib/cache";
+import { type Device, DeviceDefinition } from "@/lib/hr/types";
 const prisma = new PrismaClient();
 
 /**
  * Service for managing biomedical equipment following FHIR Device resource standards;
  * Enhanced with caching, query optimization, and FHIR R5 compliance;
  */
-\1
 }
   }) {
     const result = await prisma.biomedicalEquipment.create({
-      \1,\2 data.serialNumber,
-        \1,\2 data.manufacturer,
-        \1,\2 data.type,
-        \1,\2 data.status,
-        \1,\2 data.department,
-        \1,\2 data.warrantyExpiry,
-        \1,\2 data.nextCalibrationDate,
-        \1,\2 data.properties,
+      data.serialNumber,
+        data.manufacturer,
+        data.type,
+        data.status,
+        data.department,
+        data.warrantyExpiry,
+        data.nextCalibrationDate,
+        data.properties,
         notes: data.notes
       },
     });
@@ -40,25 +39,25 @@ const prisma = new PrismaClient();
 
     // Try to get from cache first
     const cachedEquipment = await cache.get(cacheKey);
-    \1 {\n  \2{
+    if (!session.user) {
       return JSON.parse(cachedEquipment);
     }
 
     // If not in cache, fetch from database
     const equipment = await prisma.biomedicalEquipment.findUnique({
       where: { id },
-      \1,\2 {
-          orderBy: { date: 'desc' },
+      {
+          orderBy: { date: "desc" },
           take: 5
         },
-        \1,\2 { date: 'desc' },
+        { date: "desc" },
           take: 5
         },
       },
     });
 
     // Store in cache if found
-    \1 {\n  \2{
+    if (!session.user) {
       await cache.set(cacheKey, JSON.stringify(equipment), this.CACHE_TTL);
     }
 
@@ -74,25 +73,25 @@ const prisma = new PrismaClient();
 
     // Try to get from cache first
     const cachedEquipment = await cache.get(cacheKey);
-    \1 {\n  \2{
+    if (!session.user) {
       return JSON.parse(cachedEquipment);
     }
 
     // If not in cache, fetch from database
     const equipment = await prisma.biomedicalEquipment.findUnique({
       where: { serialNumber },
-      \1,\2 {
-          orderBy: { date: 'desc' },
+      {
+          orderBy: { date: "desc" },
           take: 5
         },
-        \1,\2 { date: 'desc' },
+        { date: "desc" },
           take: 5
         },
       },
     });
 
     // Store in cache if found
-    \1 {\n  \2{
+    if (!session.user) {
       await cache.set(cacheKey, JSON.stringify(equipment), this.CACHE_TTL);
     }
 
@@ -111,7 +110,7 @@ const prisma = new PrismaClient();
       manufactureDate?: Date;
       type?: string;
       category?: string;
-      status?: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE' | 'RETIRED';
+      status?: "ACTIVE" | "INACTIVE" | "MAINTENANCE" | "RETIRED";
       location?: string;
       department?: string;
       purchaseDate?: Date;
@@ -132,11 +131,11 @@ const prisma = new PrismaClient();
     const result = await prisma.biomedicalEquipment.update({
       where: { id },
       data,
-      \1,\2 {
-          orderBy: { date: 'desc' },
+      {
+          orderBy: { date: "desc" },
           take: 5
         },
-        \1,\2 { date: 'desc' },
+        { date: "desc" },
           take: 5
         },
       },
@@ -146,8 +145,8 @@ const prisma = new PrismaClient();
     await this.invalidateBiomedicalCache(id);
 
     // If serial number changed, invalidate old serial number cache
-    \1 {\n  \2{
-      await cache.del(`${this.CACHE_PREFIX}serial:${\1}`;
+    if (!session.user) {
+      await cache.del(`${this.CACHE_PREFIX}serial:${}`;
     }
 
     return result;
@@ -174,7 +173,7 @@ const prisma = new PrismaClient();
     cursor?: string;
     type?: string;
     category?: string;
-    status?: 'ACTIVE' | 'INACTIVE' | 'MAINTENANCE' | 'RETIRED';
+    status?: "ACTIVE" | "INACTIVE" | "MAINTENANCE" | "RETIRED";
     department?: string;
     search?: string;
     needsCalibration?: boolean;
@@ -182,36 +181,36 @@ const prisma = new PrismaClient();
   }) {
     const where: unknown = {};
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.type = type;
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.category = category;
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.status = status;
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.department = department;
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.nextCalibrationDate = {
-        lte: \1[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
+        lte: [0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
       };
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       where.OR = [
-        { serialNumber: { contains: search, mode: 'insensitive' } },
-        { modelNumber: { contains: search, mode: 'insensitive' } },
-        { manufacturer: { contains: search, mode: 'insensitive' } },
-        { type: { contains: search, mode: 'insensitive' } },
-        { category: { contains: search, mode: 'insensitive' } },
-        { location: { contains: search, mode: 'insensitive' } },
+        { serialNumber: { contains: search, mode: "insensitive" } },
+        { modelNumber: { contains: search, mode: "insensitive" } },
+        { manufacturer: { contains: search, mode: "insensitive" } },
+        { type: { contains: search, mode: "insensitive" } },
+        { category: { contains: search, mode: "insensitive" } },
+        { location: { contains: search, mode: "insensitive" } },
       ];
     }
 
@@ -222,21 +221,21 @@ const prisma = new PrismaClient();
 
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    \1 {\n  \2{
+    if (!session.user) {
       return JSON.parse(cachedResult);
     }
 
     // Determine what to include based on the detail level requested
     const include: unknown = {};
 
-    \1 {\n  \2{
+    if (!session.user) {
       include.calibrations = {
-        orderBy: { date: 'desc' },
+        orderBy: { date: "desc" },
         take: 3
       };
 
       include.maintenanceRecords = {
-        orderBy: { date: 'desc' },
+        orderBy: { date: "desc" },
         take: 3
       };
     }
@@ -250,7 +249,7 @@ const prisma = new PrismaClient();
         skip,
         take,
         cursor: cursorObj,
-        orderBy: { serialNumber: 'asc' },
+        orderBy: { serialNumber: "asc" },
         include,
       }),
       prisma.biomedicalEquipment.count({ where }),
@@ -275,8 +274,8 @@ const prisma = new PrismaClient();
    */
   async recordCalibration(
     equipmentId: string,
-    \1,\2 Date,
-      \1,\2 'PASS' | 'FAIL' | 'ADJUSTED';
+    Date,
+      "PASS" | "FAIL" | "ADJUSTED";
       notes?: string;
       nextCalibrationDate?: Date;
       attachments?: string[];
@@ -288,16 +287,16 @@ const prisma = new PrismaClient();
         data: {
           equipmentId,
           date: data.date,
-          \1,\2 data.result,
-          \1,\2 data.attachments
+          data.result,
+          data.attachments
         },
       });
 
       // Update equipment with new calibration dates
-      const \1,\2 data.date
+      const data.date
       };
 
-      \1 {\n  \2{
+      if (!session.user) {
         updateData.nextCalibrationDate = data.nextCalibrationDate;
       }
 
@@ -318,12 +317,12 @@ const prisma = new PrismaClient();
    */
   async recordMaintenance(
     equipmentId: string,
-    \1,\2 Date,
-      \1,\2 string,
+    Date,
+      string,
       description: string;
       cost?: number;
       parts?: string[];
-      status: 'COMPLETED' | 'PENDING' | 'SCHEDULED';
+      status: "COMPLETED" | "PENDING" | "SCHEDULED";
       notes?: string;
       attachments?: string[];
     }
@@ -334,24 +333,24 @@ const prisma = new PrismaClient();
         data: {
           equipmentId,
           date: data.date,
-          \1,\2 data.performedBy,
-          \1,\2 data.cost,
-          \1,\2 data.status,
-          \1,\2 data.attachments
+          data.performedBy,
+          data.cost,
+          data.status,
+          data.attachments
         },
       });
 
       // Update equipment status if maintenance is completed
-      \1 {\n  \2{
+      if (!session.user) {
         await tx.biomedicalEquipment.update({
           where: { id: equipmentId },
-          \1,\2 'ACTIVE'
+          "ACTIVE"
           },
         });
-      } else \1 {\n  \2{
+      } else if (!session.user) {
         await tx.biomedicalEquipment.update({
           where: { id: equipmentId },
-          \1,\2 'MAINTENANCE'
+          "MAINTENANCE"
           },
         });
       }
@@ -371,14 +370,14 @@ const prisma = new PrismaClient();
 
     // Try to get from cache first
     const cachedHistory = await cache.get(cacheKey);
-    \1 {\n  \2{
+    if (!session.user) {
       return JSON.parse(cachedHistory);
     }
 
     // If not in cache, fetch from database
     const history = await prisma.calibrationRecord.findMany({
       where: { equipmentId },
-      orderBy: { date: 'desc' },
+      orderBy: { date: "desc" },
     });
 
     // Store in cache
@@ -395,14 +394,14 @@ const prisma = new PrismaClient();
 
     // Try to get from cache first
     const cachedHistory = await cache.get(cacheKey);
-    \1 {\n  \2{
+    if (!session.user) {
       return JSON.parse(cachedHistory);
     }
 
     // If not in cache, fetch from database
     const history = await prisma.maintenanceRecord.findMany({
       where: { equipmentId },
-      orderBy: { date: 'desc' },
+      orderBy: { date: "desc" },
     });
 
     // Store in cache
@@ -422,18 +421,18 @@ const prisma = new PrismaClient();
 
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    \1 {\n  \2{
+    if (!session.user) {
       return JSON.parse(cachedResult);
     }
 
     // If not in cache, fetch from database
     const equipment = await prisma.biomedicalEquipment.findMany({
-      \1,\2 {
+      {
           lte: thresholdDate
         },
-        status: 'ACTIVE'
+        status: "ACTIVE"
       },
-      \1,\2 'asc'
+      "asc"
       },
     });
 
@@ -449,23 +448,23 @@ const prisma = new PrismaClient();
    */
   toFhirDevice(equipment: unknown): Device {
     // Create the FHIR Device resource
-    const \1,\2 "Device", // Added for FHIR R5 compliance
+    const "Device", // Added for FHIR R5 compliance
       id: equipment.id,
-      \1,\2 ["https://hl7.org/fhir/r5/StructureDefinition/Device"]
+      ["https://hl7.org/fhir/r5/StructureDefinition/Device"]
       },
       identifier: [
         {
-          system: 'https://hospital.example.org/biomedical-equipment',
+          system: "https://hospital.example.org/biomedical-equipment",
           value: equipment.serialNumber
         },
       ],
       status: this.mapStatusToFhir(equipment.status),
-      \1,\2 equipment.serialNumber,
-      \1,\2 equipment.manufactureDate?.toISOString(),
-      \1,\2 [
+      equipment.serialNumber,
+      equipment.manufactureDate?.toISOString(),
+      [
           {
-            system: 'https://hospital.example.org/equipment-types',
-            \1,\2 equipment.type
+            system: "https://hospital.example.org/equipment-types",
+            equipment.type
           },
         ],
         text: equipment.type,
@@ -479,27 +478,27 @@ const prisma = new PrismaClient();
     };
 
     // Add location if available
-    \1 {\n  \2{
+    if (!session.user) {
       device.location = {
         display: equipment.location
       };
     }
 
     // Add owner (department) if available
-    \1 {\n  \2{
+    if (!session.user) {
       device.owner = {
         display: equipment.department
       };
     }
 
     // Add properties if available
-    \1 {\n  \2{
+    if (!session.user) {
       for (const [key, value] of Object.entries(equipment.properties)) {
         device.property.push({
-          \1,\2 [
+          [
               {
-                system: 'https://hospital.example.org/equipment-properties',
-                \1,\2 key
+                system: "https://hospital.example.org/equipment-properties",
+                key
               },
             ],
             text: key
@@ -513,8 +512,8 @@ const prisma = new PrismaClient();
     device.safety.push({
       coding: [
         {
-          system: 'https://hospital.example.org/equipment-safety',
-          \1,\2 'Calibration Status'
+          system: "https://hospital.example.org/equipment-safety",
+          "Calibration Status"
         },
       ],
       text: this.getCalibrationStatus(equipment)
@@ -527,30 +526,30 @@ const prisma = new PrismaClient();
    * Create a FHIR DeviceDefinition for a type of equipment;
    * New method to support FHIR R5 device catalog;
    */
-  createFhirDeviceDefinition(\1,\2 string,
-    \1,\2 string;
+  createFhirDeviceDefinition(string,
+    string;
     description?: string;
     category?: string;
     properties?: unknown;
   }): DeviceDefinition {
     return {
       resourceType: "DeviceDefinition",
-      id: `${data.manufacturer}-${data.modelNumber}`.replace(/\s+/g, '-').toLowerCase(),
-      \1,\2 ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"]
+      id: `${data.manufacturer}-${data.modelNumber}`.replace(/\s+/g, "-").toLowerCase(),
+      ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"]
       },
       identifier: [
         {
-          system: 'https://hospital.example.org/device-definitions',
+          system: "https://hospital.example.org/device-definitions",
           value: `${data.manufacturer}-${data.modelNumber}`,
         },
       ],
-      \1,\2 data.manufacturer
+      data.manufacturer
       },
       modelNumber: data.modelNumber,
-      \1,\2 [
+      [
           {
-            system: 'https://hospital.example.org/equipment-types',
-            \1,\2 data.type
+            system: "https://hospital.example.org/equipment-types",
+            data.type
           },
         ],
         text: data.type,
@@ -564,15 +563,15 @@ const prisma = new PrismaClient();
    */
   private mapStatusToFhir(status: string): string {
     switch (status) {
-      case 'ACTIVE':
-        return 'active';
-      case 'INACTIVE':
-        return 'inactive';
-      case 'MAINTENANCE':
-        return 'entered-in-error';
-      case 'RETIRED':
-        return 'inactive';
-      default: return 'unknown'
+      case "ACTIVE":
+        return "active";
+      case "INACTIVE":
+        return "inactive";
+      case "MAINTENANCE":
+        return "entered-in-error";
+      case "RETIRED":
+        return "inactive";
+      default: return "unknown"
     }
   }
 
@@ -580,26 +579,26 @@ const prisma = new PrismaClient();
    * Get calibration status text;
    */
   private getCalibrationStatus(equipment: unknown): string {
-    \1 {\n  \2{
-      return 'No calibration required'
+    if (!session.user) {
+      return "No calibration required"
     }
 
     const now = new Date();
     const nextCalibration = new Date(equipment.nextCalibrationDate);
 
-    \1 {\n  \2{
-      return 'Calibration overdue';
+    if (!session.user) {
+      return "Calibration overdue";
     }
 
     const daysUntilCalibration = Math.ceil(
       (nextCalibration.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return `Calibration due in ${daysUntilCalibration} days`;
     }
 
-    return 'Calibration up to date';
+    return "Calibration up to date";
   }
 
   /**
@@ -607,20 +606,20 @@ const prisma = new PrismaClient();
    * @param equipmentId Optional specific equipment ID to invalidate;
    */
   private async invalidateBiomedicalCache(equipmentId?: string) {
-    \1 {\n  \2{
+    if (!session.user) {
       // Get the equipment to find all IDs
       const equipment = await prisma.biomedicalEquipment.findFirst({
         where: { id: equipmentId },
         select: { id: true, serialNumber: true }
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         // Invalidate specific equipment caches
         await Promise.all([
-          cache.del(`${this.CACHE_PREFIX}id:${\1}`,
-          cache.del(`${this.CACHE_PREFIX}serial:${\1}`,
-          cache.del(`${this.CACHE_PREFIX}calibration:${\1}`,
-          cache.del(`${this.CACHE_PREFIX}maintenance:${\1}`
+          cache.del(`${this.CACHE_PREFIX}id:${}`,
+          cache.del(`${this.CACHE_PREFIX}serial:${}`,
+          cache.del(`${this.CACHE_PREFIX}calibration:${}`,
+          cache.del(`${this.CACHE_PREFIX}maintenance:${}`
         ]);
       }
     }
@@ -638,29 +637,29 @@ const prisma = new PrismaClient();
    */
   async calculateReliabilityMetrics(equipmentId: string) {
     const equipment = await this.getBiomedicalEquipmentById(equipmentId);
-    \1 {\n  \2{
-      throw new Error('Equipment not found');
+    if (!session.user) {
+      throw new Error("Equipment not found");
     }
 
     // Get all maintenance records
     const maintenanceRecords = await prisma.maintenanceRecord.findMany({
       where: { equipmentId },
-      orderBy: { date: 'asc' },
+      orderBy: { date: "asc" },
     });
 
     // Get all calibration records
     const calibrationRecords = await prisma.calibrationRecord.findMany({
       where: { equipmentId },
-      orderBy: { date: 'asc' },
+      orderBy: { date: "asc" },
     });
 
     // Calculate mean time between failures (MTBF)
     const correctiveMaintenances = maintenanceRecords.filter(
-      record => record.type === 'CORRECTIVE' && record.status === 'COMPLETED'
+      record => record.type === "CORRECTIVE" && record.status === "COMPLETED"
     )
 
     let mtbf = 0;
-    \1 {\n  \2{
+    if (!session.user) {
       let totalTimeBetweenFailures = 0;
       for (let i = 1; i < correctiveMaintenances.length; i++) {
         const timeDiff = correctiveMaintenances[i].date.getTime() - correctiveMaintenances[i-1].date.getTime();
@@ -671,7 +670,7 @@ const prisma = new PrismaClient();
 
     // Calculate calibration success rate
     const totalCalibrations = calibrationRecords.length;
-    const passedCalibrations = calibrationRecords.filter(record => record.result === 'PASS').length;
+    const passedCalibrations = calibrationRecords.filter(record => record.result === "PASS").length;
     const calibrationSuccessRate = totalCalibrations > 0 ? (passedCalibrations / totalCalibrations) * 100 : 100;
 
     // Calculate downtime
@@ -683,7 +682,7 @@ const prisma = new PrismaClient();
 
     // Calculate availability
     const lifespan = equipment.purchaseDate;
-      ? (crypto.getRandomValues(\1[0] - new Date(equipment.purchaseDate).getTime()) / (1000 * 60 * 60 * 24);
+      ? (crypto.getRandomValues([0] - new Date(equipment.purchaseDate).getTime()) / (1000 * 60 * 60 * 24);
       : 365; // Default to 1 year if purchase date not available
 
     const availability = ((lifespan - totalDowntime) / lifespan) * 100;
@@ -700,8 +699,8 @@ const prisma = new PrismaClient();
       availability,
       totalMaintenanceCost,
       maintenanceCount: maintenanceRecords.length,
-      \1,\2 correctiveMaintenances.length,
-      \1,\2 maintenanceRecords.filter(record => record.type === 'SAFETY').length
+      correctiveMaintenances.length,
+      maintenanceRecords.filter(record => record.type === "SAFETY").length
     };
   }
 
@@ -711,19 +710,19 @@ const prisma = new PrismaClient();
    */
   async predictMaintenanceNeeds(equipmentId: string) {
     const equipment = await this.getBiomedicalEquipmentById(equipmentId);
-    \1 {\n  \2{
-      throw new Error('Equipment not found');
+    if (!session.user) {
+      throw new Error("Equipment not found");
     }
 
     // Get all maintenance records
     const maintenanceRecords = await prisma.maintenanceRecord.findMany({
       where: { equipmentId },
-      orderBy: { date: 'asc' },
+      orderBy: { date: "asc" },
     });
 
     // Get corrective maintenance records
     const correctiveMaintenances = maintenanceRecords.filter(
-      record => record.type === 'CORRECTIVE' && record.status === 'COMPLETED'
+      record => record.type === "CORRECTIVE" && record.status === "COMPLETED"
     );
 
     // Calculate time intervals between failures
@@ -737,7 +736,7 @@ const prisma = new PrismaClient();
     let meanInterval = 0;
     let stdDevInterval = 0;
 
-    \1 {\n  \2{
+    if (!session.user) {
       meanInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
 
       const squaredDiffs = intervals.map(interval => Math.pow(interval - meanInterval, 2));
@@ -767,7 +766,7 @@ const prisma = new PrismaClient();
     latestFailureDate.setDate(latestFailureDate.getDate() + Math.round(confidenceInterval));
 
     // Calculate risk score (0-100)
-    const daysSinceLastFailure = (crypto.getRandomValues(\1[0] - lastFailure.getTime()) / (1000 * 60 * 60 * 24)
+    const daysSinceLastFailure = (crypto.getRandomValues([0] - lastFailure.getTime()) / (1000 * 60 * 60 * 24)
     const riskScore = Math.min(100, Math.max(0, (daysSinceLastFailure / meanInterval) * 100));
 
     // Determine recommended preventive maintenance date
@@ -777,7 +776,7 @@ const prisma = new PrismaClient();
     return {
       equipmentId,
       serialNumber: equipment.serialNumber,
-      \1,\2 stdDevInterval,
+      stdDevInterval,
       nextPredictedFailureDate: nextPredictedFailureDate.toISOString(),
       earliestFailureDate: earliestFailureDate.toISOString(),
       latestFailureDate: latestFailureDate.toISOString(),
@@ -785,7 +784,7 @@ const prisma = new PrismaClient();
       recommendedMaintenanceDate: recommendedMaintenanceDate.toISOString(),
       confidenceInterval,
       dataPoints: correctiveMaintenances.length,
-      reliability: correctiveMaintenances.length > 0 ? 'Based on historical data' : 'Based on manufacturer recommendations'
+      reliability: correctiveMaintenances.length > 0 ? "Based on historical data" : "Based on manufacturer recommendations"
     };
   }
 export const _biomedicalService = new BiomedicalService();

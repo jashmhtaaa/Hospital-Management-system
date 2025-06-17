@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -10,30 +10,30 @@ import {
   CardFooter,
   CardHeader,
   CardTitle;
-} from '@/components/ui/card';
+} from "@/components/ui/card";
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow;
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue;
-} from '@/components/ui/select';
+} from "@/components/ui/select";
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious;
-} from '@/components/ui/pagination';
-import { Badge } from '@/components/ui/badge';
+} from "@/components/ui/pagination";
+import { Badge } from "@/components/ui/badge";
   Search,
   Plus,
   Filter,
@@ -41,21 +41,21 @@ import { Badge } from '@/components/ui/badge';
   Users,
   Building2,
   Briefcase;
-} from 'lucide-react';
+} from "lucide-react";
 
 export default const _StaffManagement = () {
   const router = useRouter();
   const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any | null>(null);
-  const [search, setSearch] = useState('');
-  const [departmentFilter, setDepartmentFilter] = useState('');
-  const [positionFilter, setPositionFilter] = useState('');
+  const [search, setSearch] = useState("");
+  const [departmentFilter, setDepartmentFilter] = useState("");
+  const [positionFilter, setPositionFilter] = useState("");
   const [departments, setDepartments] = useState<any[]>([]);
   const [positions, setPositions] = useState<any[]>([]);
   const [pagination, setPagination] = useState({
     skip: 0,
-    \1,\2 0
+    0
   });
 
   // Fetch employees
@@ -68,14 +68,14 @@ export default const _StaffManagement = () {
           take: pagination.take.toString()
         });
 
-        \1 {\n  \2ueryParams.append('search', search);
-        \1 {\n  \2ueryParams.append('departmentId', departmentFilter);
-        \1 {\n  \2ueryParams.append('positionId', positionFilter);
+        if (!session.user)ueryParams.append("search", search);
+        if (!session.user)ueryParams.append("departmentId", departmentFilter);
+        if (!session.user)ueryParams.append("positionId", positionFilter);
 
-        const response = await fetch(`/api/hr/staff?${\1}`;
+        const response = await fetch(`/api/hr/staff?${}`;
 
-        \1 {\n  \2{
-          throw new Error('Failed to fetch employees');
+        if (!session.user) {
+          throw new Error("Failed to fetch employees");
         }
 
         const data = await response.json(),
@@ -99,15 +99,15 @@ export default const _StaffManagement = () {
     const fetchFilters = async () => {
       try {
         // Fetch departments
-        const deptResponse = await fetch('/api/hr/departments');
-        \1 {\n  \2{
+        const deptResponse = await fetch("/api/hr/departments");
+        if (!session.user) {
           const deptData = await deptResponse.json(),
           setDepartments(deptData.departments || []);
         }
 
         // Fetch positions
-        const posResponse = await fetch('/api/hr/positions');
-        \1 {\n  \2{
+        const posResponse = await fetch("/api/hr/positions");
+        if (!session.user) {
           const posData = await posResponse.json(),
           setPositions(posData.positions || []);
         }
@@ -121,7 +121,7 @@ export default const _StaffManagement = () {
 
   // Handle pagination
   const handlePreviousPage = () => {
-    \1 {\n  \2{
+    if (!session.user) {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip - prev.take
@@ -130,7 +130,7 @@ export default const _StaffManagement = () {
   };
 
   const handleNextPage = () => {
-    \1 {\n  \2{
+    if (!session.user) {
       setPagination(prev => ({
         ...prev,
         skip: prev.skip + prev.take
@@ -150,27 +150,27 @@ export default const _StaffManagement = () {
 
   // Navigate to employee details
   const handleViewEmployee = (id: unknown) => {
-    router.push(`/dashboard/hr/staff/${\1}`
+    router.push(`/dashboard/hr/staff/${}`
   };
 
   // Navigate to add employee form
   const handleAddEmployee = () => {
-    router.push('/dashboard/hr/staff/new')
+    router.push("/dashboard/hr/staff/new")
   };
 
   return (
-    \1>
-      \1>
-        <h1 className="text-3xl font-bold">Staff Management\1>
-        \1>
+    >
+      >
+        <h1 className="text-3xl font-bold">Staff Management>
+        >
           Manage employee profiles, departments, and roles
         </p>
       </div>
 
-      \1>
-        \1>
-          \1>
-            \1>
+      >
+        >
+          >
+            >
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input>
                 type="search"
@@ -180,42 +180,42 @@ export default const _StaffManagement = () {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            \1>
+            >
               Search
             </Button>
           </form>
         </div>
 
-        \1>
-          \1>
-            \1>
+        >
+          >
+            >
               <SelectValue placeholder="Filter by Department" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Departments\1>
+              <SelectItem value="">All Departments>
               {departments.map((dept) => (
-                \1>
+                >
                   {dept.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
-          \1>
-            \1>
+          >
+            >
               <SelectValue placeholder="Filter by Position" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Positions\1>
+              <SelectItem value="">All Positions>
               {positions.map((pos) => (
-                \1>
+                >
                   {pos.title}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
 
-          \1>
+          >
             <UserPlus className="mr-2 h-4 w-4" />
             Add Employee
           </Button>
@@ -223,35 +223,35 @@ export default const _StaffManagement = () {
       </div>
 
       <Card>
-        \1>
-          \1>
+        >
+          >
             <CardTitle>Employee Directory</CardTitle>
-            \1>
-              <Button variant="outline" size="sm" onClick={() => router.push('/dashboard/hr/departments')}>
+            >
+              <Button variant="outline" size="sm" onClick={() => router.push("/dashboard/hr/departments")}>
                 <Building2 className="mr-2 h-4 w-4" />
                 Departments
               </Button>
-              <Button variant="outline" size="sm" onClick={() => router.push('/dashboard/hr/positions')}>
+              <Button variant="outline" size="sm" onClick={() => router.push("/dashboard/hr/positions")}>
                 <Briefcase className="mr-2 h-4 w-4" />
                 Positions
               </Button>
             </div>
           </div>
           <CardDescription>
-            {loading ? 'Loading employees...' : `Showing ${employees.length} of ${pagination.total} employees`}
+            {loading ? "Loading employees..." : `Showing ${employees.length} of ${pagination.total} employees`}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {error ? (
-            \1>
+            >
               Error: {error}
             </div>
           ) : loading ? (
-            \1>
+            >
               Loading...
             </div>
           ) : employees.length === 0 ? (
-            \1>
+            >
               No employees found. Try adjusting your filters or add a new employee.
             </div>
           ) : (
@@ -268,23 +268,23 @@ export default const _StaffManagement = () {
               </TableHeader>
               <TableBody>
                 {employees.map((employee) => (
-                  \1>
+                  >
                     <TableCell>{employee.employeeId}</TableCell>
                     <TableCell>
                       {employee.firstName} {employee.lastName}
                     </TableCell>
                     <TableCell>
-                      {employee.department?.name || 'Not Assigned'}
+                      {employee.department?.name || "Not Assigned"}
                     </TableCell>
                     <TableCell>
                       {employee.positions?.length > 0;
                         ? employee.positions.find(p => p.isPrimary)?.position.title ||
                           employee.positions[0].position.title;
-                        : 'Not Assigned'}
+                        : "Not Assigned"}
                     </TableCell>
                     <TableCell>
-                      \1>
-                        {employee.active ? 'Active' : 'Inactive'}
+                      >
+                        {employee.active ? "Active" : "Inactive"}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -308,18 +308,18 @@ export default const _StaffManagement = () {
               <PaginationItem>
                 <PaginationPrevious>
                   onClick={handlePreviousPage}
-                  className={pagination.skip === 0 ? 'pointer-events-none opacity-50' : ''}
+                  className={pagination.skip === 0 ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
               <PaginationItem>
-                \1>
+                >
                   Page {Math.floor(pagination.skip / pagination.take) + 1} of {Math.ceil(pagination.total / pagination.take)}
                 </span>
               </PaginationItem>
               <PaginationItem>
                 <PaginationNext>
                   onClick={handleNextPage}
-                  className={pagination.skip + pagination.take >= pagination.total ? 'pointer-events-none opacity-50' : ''}
+                  className={pagination.skip + pagination.take >= pagination.total ? "pointer-events-none opacity-50" : ""}
                 />
               </PaginationItem>
             </PaginationContent>

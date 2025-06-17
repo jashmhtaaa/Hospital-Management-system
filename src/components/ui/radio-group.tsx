@@ -36,7 +36,7 @@ const RadioGroupItem = React.forwardRef<;
       )}
       {...props}
     >
-      \1>
+      >
         <Circle className="h-3.5 w-3.5 fill-primary" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>

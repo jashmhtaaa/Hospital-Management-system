@@ -39,7 +39,7 @@ async const generateInvoiceNumber = (db: D1Database): Promise<string> {
 export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession()
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
@@ -72,25 +72,25 @@ export const _GET = async (request: NextRequest) => {
     let countQuery = `SELECT COUNT(*) as total FROM Invoices WHERE 1=1`;
     const countParameters: (string | number)[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND i.status = ?";
       queryParameters.push(statusFilter);
       countQuery += " AND status = ?";
       countParameters.push(statusFilter);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND i.patient_id = ?";
       queryParameters.push(Number.parseInt(patientIdFilter));
       countQuery += " AND patient_id = ?";
       countParameters.push(Number.parseInt(patientIdFilter));
     }
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND i.issue_date >= ?";
       queryParameters.push(dateFromFilter);
       countQuery += " AND issue_date >= ?";
       countParameters.push(dateFromFilter);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       query += " AND i.issue_date <= ?";
       queryParameters.push(dateToFilter);
       countQuery += " AND issue_date <= ?";
@@ -121,7 +121,7 @@ export const _GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(
@@ -134,10 +134,10 @@ export const _GET = async (request: NextRequest) => {
 // POST /api/invoices - Create a new invoice
 export const _POST = async (request: NextRequest) => {
     const session = await getSession();
-    \1 {\n  \2{
+    if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    \1 {\n  \2{ // Ensure user exists if logged in
+    if (!session.user) { // Ensure user exists if logged in
         return NextResponse.json({ message: "User not found in session" }, { status: 500 });
     }
 
@@ -145,7 +145,7 @@ export const _POST = async (request: NextRequest) => {
         const body = await request.json();
         const validationResult = invoiceCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return NextResponse.json(
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
@@ -180,7 +180,7 @@ export const _POST = async (request: NextRequest) => {
         );
         const insertResult = await insertInvoiceStmt.run() as D1ResultWithMeta;
 
-        \1 {\n  \2{
+        if (!session.user) {
 
             throw new Error("Failed to create invoice record");
         }
@@ -205,7 +205,7 @@ export const _POST = async (request: NextRequest) => {
         const itemInsertResults = await (DB as D1Database).batch(itemInsertStmts);
 
         const allItemsInserted = itemInsertResults.every((res: D1Result) => res.success);
-        \1 {\n  \2{
+        if (!session.user) {
 
             await (DB as D1Database).prepare("DELETE FROM Invoices WHERE id = ?").bind(newInvoiceId).run();
             throw new Error("Failed to create invoice items");
@@ -219,7 +219,7 @@ export const _POST = async (request: NextRequest) => {
     } catch (error: unknown) {
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+        if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json(

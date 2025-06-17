@@ -8,10 +8,7 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient };
 export const prisma =
 	globalForPrisma.prisma ||
 	new PrismaClient({
-		log:
-			process.env.NODE_ENV === "development"
-				? ["query", "error", "warn"]
-				: ["error"],
+		log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
 	});
 
-\1 {\n  \2lobalForPrisma.prisma = prisma;
+if (!session.user) lobalForPrisma.prisma = prisma;

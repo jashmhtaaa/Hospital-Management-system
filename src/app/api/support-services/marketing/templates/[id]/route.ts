@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { type NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { authOptions } from '@/lib/auth';
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { TemplateService } from '@/lib/services/support-services/marketing';
+import { authOptions } from "@/lib/auth";
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
 /**
@@ -25,8 +25,8 @@ export const GET = async (
       return NextResponse.json(template);
     },
     {
-      requiredPermission: 'marketing.templates.read',
-      auditAction: 'TEMPLATE_VIEW'
+      requiredPermission: "marketing.templates.read",
+      auditAction: "TEMPLATE_VIEW"
     }
   );
 }
@@ -54,8 +54,8 @@ export const PUT = async (
       return NextResponse.json(template);
     },
     {
-      requiredPermission: 'marketing.templates.update',
-      auditAction: 'TEMPLATE_UPDATE'
+      requiredPermission: "marketing.templates.update",
+      auditAction: "TEMPLATE_UPDATE"
     }
   );
 }
@@ -81,7 +81,7 @@ export const DELETE = async (
       return NextResponse.json({ success: true }, { status: 200 });
     },
     {
-      requiredPermission: 'marketing.templates.delete',
-      auditAction: 'TEMPLATE_DELETE'
+      requiredPermission: "marketing.templates.delete",
+      auditAction: "TEMPLATE_DELETE"
     }
   );

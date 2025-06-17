@@ -1,11 +1,10 @@
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 /**
  * Service for managing salary structures and payroll components;
  */
-\1
 }
     }[];
   }) {
@@ -16,15 +15,15 @@ const prisma = new PrismaClient();
       data: {
         name,
         description,
-        \1,\2 components.map(component => ({
+        components.map(component => ({
             name: component.name,
-            \1,\2 component.calculationType,
-            \1,\2 component.formula,
-            \1,\2 component.isBase || false
+            component.calculationType,
+            component.formula,
+            component.isBase || false
           })),
         },
       },
-      \1,\2 true
+      true
       },
     });
   }
@@ -35,7 +34,7 @@ const prisma = new PrismaClient();
   async getSalaryStructure(id: string) {
     return prisma.salaryStructure.findUnique({
       where: { id },
-      \1,\2 true
+      true
       },
     });
   }
@@ -45,8 +44,8 @@ const prisma = new PrismaClient();
    */
   async listSalaryStructures() {
     return prisma.salaryStructure.findMany({
-      \1,\2 true,
-        \1,\2 {
+      true,
+        {
             employees: true
           },
         },
@@ -71,8 +70,8 @@ const prisma = new PrismaClient();
   /**
    * Add a component to a salary structure;
    */
-  async addSalaryComponent(structureId: string, \1,\2 string,
-    \1,\2 'FIXED' | 'PERCENTAGE' | 'FORMULA',
+  async addSalaryComponent(structureId: string, string,
+    "FIXED" | "PERCENTAGE" | "FORMULA",
     value: number;
     formula?: string;
     taxable: boolean;
@@ -91,8 +90,8 @@ const prisma = new PrismaClient();
    */
   async updateSalaryComponent(id: string, data: {
     name?: string;
-    type?: 'EARNING' | 'DEDUCTION' | 'TAX';
-    calculationType?: 'FIXED' | 'PERCENTAGE' | 'FORMULA';
+    type?: "EARNING" | "DEDUCTION" | "TAX";
+    calculationType?: "FIXED" | "PERCENTAGE" | "FORMULA";
     value?: number;
     formula?: string;
     taxable?: boolean;
@@ -117,8 +116,8 @@ const prisma = new PrismaClient();
   /**
    * Assign a salary structure to an employee;
    */
-  async assignSalaryStructure(\1,\2 string,
-    \1,\2 number,
+  async assignSalaryStructure(string,
+    number,
     effectiveDate: Date;
     endDate?: Date;
     notes?: string;
@@ -130,8 +129,8 @@ const prisma = new PrismaClient();
       where: { id: employeeId },
     });
 
-    \1 {\n  \2{
-      throw new Error('Employee not found');
+    if (!session.user) {
+      throw new Error("Employee not found");
     }
 
     // Check if salary structure exists
@@ -139,12 +138,12 @@ const prisma = new PrismaClient();
       where: { id: salaryStructureId },
     });
 
-    \1 {\n  \2{
-      throw new Error('Salary structure not found');
+    if (!session.user) {
+      throw new Error("Salary structure not found");
     }
 
-    // If there's an existing active assignment, end it
-    \1 {\n  \2{
+    // If there"s an existing active assignment, end it
+    if (!session.user) {
       const existingAssignment = await prisma.employeeSalary.findFirst({
         where: {
           employeeId,
@@ -152,13 +151,13 @@ const prisma = new PrismaClient();
         },
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         await prisma.employeeSalary.update({
           where: { id: existingAssignment.id },
-          \1,\2 new Date(effectiveDate),
+          new Date(effectiveDate),
             notes: existingAssignment.notes;
               ? `$existingAssignment.notes; Automatically ended due to new assignment.`
-              : 'Automatically ended due to new assignment.',
+              : "Automatically ended due to new assignment.",
           },
         });
       }
@@ -174,12 +173,12 @@ const prisma = new PrismaClient();
         endDate,
         notes,
       },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true
+      {
+          true,
+            true
           },
         },
-        \1,\2 {
+        {
             components: true
           },
         },
@@ -188,7 +187,7 @@ const prisma = new PrismaClient();
   }
 
   /**
-   * Get employee's current salary structure;
+   * Get employee"s current salary structure;
    */
   async getEmployeeSalary(employeeId: string) {
     return prisma.employeeSalary.findFirst({
@@ -196,8 +195,8 @@ const prisma = new PrismaClient();
         employeeId,
         endDate: null
       },
-      \1,\2 {
-          \1,\2 true
+      {
+          true
           },
         },
       },
@@ -205,44 +204,44 @@ const prisma = new PrismaClient();
   }
 
   /**
-   * Get employee's salary history;
+   * Get employee"s salary history;
    */
   async getEmployeeSalaryHistory(employeeId: string) {
     return prisma.employeeSalary.findMany({
       where: {
         employeeId,
       },
-      \1,\2 'desc'
+      "desc"
       },
-      \1,\2 true
+      true
       },
     });
   }
 
   /**
-   * Calculate employee's gross salary;
+   * Calculate employee"s gross salary;
    */
-  async calculateGrossSalary(employeeId: string, date: Date = \1 {
-    // Get employee's salary structure for the given date
+  async calculateGrossSalary(employeeId: string, date: Date = if (condition) {
+    // Get employee"s salary structure for the given date
     const employeeSalary = await prisma.employeeSalary.findFirst({
       where: {
         employeeId,
-        \1,\2 date
+        date
         },
         OR: [
           { endDate: null },
           { endDate: { gte: date } },
         ],
       },
-      \1,\2 {
-          \1,\2 true
+      {
+          true
           },
         },
       },
     });
 
-    \1 {\n  \2{
-      throw new Error('No salary structure assigned for the given date');
+    if (!session.user) {
+      throw new Error("No salary structure assigned for the given date");
     }
 
     const { baseSalary, salaryStructure } = employeeSalary;
@@ -252,22 +251,22 @@ const prisma = new PrismaClient();
     const componentBreakdown = [];
 
     for (const component of salaryStructure.components) {
-      \1 {\n  \2ontinue;
+      if (!session.user)ontinue;
 
       let componentValue = 0;
 
       switch (component.calculationType) {
-        case 'FIXED':
-          componentValue = component.value;\1\n    }\n    case 'PERCENTAGE':
-          componentValue = baseSalary * (component.value / 100),\1\n    }\n    case 'FORMULA':
+        case "FIXED":
+          componentValue = component.value;\n    }\n    case "PERCENTAGE":
+          componentValue = baseSalary * (component.value / 100),\n    }\n    case "FORMULA":
           // In a real implementation, this would evaluate the formula
-          // For simplicity, we'll just use the value as a percentage of base salary
+          // For simplicity, we"ll just use the value as a percentage of base salary
           componentValue = baseSalary * (component.value / 100),
           break;
       }
 
-      // Add to gross salary if it's an earning, subtract if it's a deduction or tax
-      \1 {\n  \2{
+      // Add to gross salary if it"s an earning, subtract if it"s a deduction or tax
+      if (!session.user) {
         grossSalary += componentValue;
       } else {
         grossSalary -= componentValue;
@@ -275,7 +274,7 @@ const prisma = new PrismaClient();
 
       componentBreakdown.push({
         componentId: component.id,
-        \1,\2 component.type,
+        component.type,
         value: componentValue
       });
     }

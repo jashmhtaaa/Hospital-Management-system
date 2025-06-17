@@ -1,10 +1,10 @@
-import { getServerSession } from 'next-auth';
-import { type NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from "next-auth";
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { authOptions } from '../../../../lib/auth';
-import { BadRequestError, NotFoundError, UnauthorizedError } from '../../../../lib/core/errors';
-import { clinicalDocumentationService } from '../../../../services/clinical-documentation.service';
+import { authOptions } from "../../../../lib/auth";
+import { BadRequestError, NotFoundError, UnauthorizedError } from "../../../../lib/core/errors";
+import { clinicalDocumentationService } from "../../../../services/clinical-documentation.service";
 /**
  * GET /api/clinical-documentation/[id]
  *
@@ -17,8 +17,8 @@ export const GET = async (
   try {
     // Get session
     const session = await getServerSession(authOptions);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get document
@@ -30,19 +30,19 @@ export const GET = async (
     return NextResponse.json(document);
   } catch (error) {
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 401 });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 404 });
     }
 
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
 
@@ -58,8 +58,8 @@ export const PUT = async (
   try {
     // Get session
     const session = await getServerSession(authOptions);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Parse request body
@@ -75,17 +75,17 @@ export const PUT = async (
     return NextResponse.json(document);
   } catch (error) {
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 401 });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: error.message }, { status: 404 });
     }
 
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }

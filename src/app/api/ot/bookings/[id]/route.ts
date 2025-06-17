@@ -25,14 +25,14 @@ export const _GET = async (
     // Mock data for development
     const booking = {
       id: bookingId,
-      \1,\2 "doctor_456",
-      \1,\2 new Date().toISOString(),
-      \1,\2 "scheduled",
-      \1,\2 \1[0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: \1[0] - 3 * 24 * 60 * 60 * 1000).toISOString()
+      "doctor_456",
+      new Date().toISOString(),
+      "scheduled",
+      [0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      updated_at: [0] - 3 * 24 * 60 * 60 * 1000).toISOString()
     };
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "OT Booking not found" },
         { status: 404 }
@@ -64,7 +64,7 @@ export const _PUT = async (
     const updateData = await _request.json();
 
     // Validate required fields
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "No update data provided" },
         { status: 400 }
@@ -133,9 +133,9 @@ export const _DELETE = async (
     // Option 1: Hard delete (if allowed)
     // const _info = await DB.prepare("DELETE FROM OTBookings WHERE id = ?").bind(bookingId).run()
 
-    // Option 2: Soft delete (update status to \'cancelled\')
+    // Option 2: Soft delete (update status to \"cancelled\")
     // Mock implementation for development
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     // Return success response
     return NextResponse.json(

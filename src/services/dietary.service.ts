@@ -1,32 +1,32 @@
 
-import { z } from 'zod';
+import { z } from "zod";
 // Create enums to match Prisma schema
 export enum DietType {
-  REGULAR = 'REGULAR',
-  VEGETARIAN = 'VEGETARIAN',
-  VEGAN = 'VEGAN',
-  GLUTEN_FREE = 'GLUTEN_FREE',
-  DIABETIC = 'DIABETIC',
-  LOW_SODIUM = 'LOW_SODIUM',
-  LIQUID = 'LIQUID',
-  SOFT = 'SOFT',
-  NPO = 'NPO',
-  CUSTOM = 'CUSTOM',
-\1\n\nexport \2 DietOrderStatus {
-  ACTIVE = 'ACTIVE',
-  COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED',
+  REGULAR = "REGULAR",
+  VEGETARIAN = "VEGETARIAN",
+  VEGAN = "VEGAN",
+  GLUTEN_FREE = "GLUTEN_FREE",
+  DIABETIC = "DIABETIC",
+  LOW_SODIUM = "LOW_SODIUM",
+  LIQUID = "LIQUID",
+  SOFT = "SOFT",
+  NPO = "NPO",
+  CUSTOM = "CUSTOM",
+\n\nexport DietOrderStatus {
+  ACTIVE = "ACTIVE",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
 }
 
 // Validation schemas
 export const createDietOrderSchema = z.object({
-  patientId: z.string().min(1, 'Patient ID is required'),
+  patientId: z.string().min(1, "Patient ID is required"),
   dietType: z.nativeEnum(DietType),
   instructions: z.string().optional(),
-  startDate: z.date().default(() => \1,
+  startDate: z.date().default(() => ,
   endDate: z.date().optional().nullable(),
   status: z.nativeEnum(DietOrderStatus).default(DietOrderStatus.ACTIVE),
-  createdBy: z.string().min(1, 'Creator ID is required'),
+  createdBy: z.string().min(1, "Creator ID is required"),
   notes: z.string().optional()
 });
 
@@ -34,23 +34,22 @@ export const updateDietOrderSchema = createDietOrderSchema.partial().extend({
   id: z.string()
 });
 
-export type CreateDietOrderInput = z.infer\1>
-export type UpdateDietOrderInput = z.infer\1>
+export type CreateDietOrderInput = z.infer>
+export type UpdateDietOrderInput = z.infer>
 
 // Import prisma client
-import { prisma } from '../lib/prisma';
+import { prisma } from "../lib/prisma";
 
 /**
  * Service class for managing dietary orders;
  */
-\1
 }
       });
 
       return order;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -70,17 +69,17 @@ import { prisma } from '../lib/prisma';
     try {
       const where: unknown = {};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.dietType = filters.dietType;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           where.patientId = filters.patientId;
         }
-        \1 {\n  \2{
+        if (!session.user) {
           // Find orders active on the specified date
           where.startDate = { lte: filters.activeOn };
           where.OR = [
@@ -93,10 +92,10 @@ import { prisma } from '../lib/prisma';
       const orders = await prisma.dietOrder.findMany({
         where,
         orderBy: [
-          { startDate: 'desc' },
+          { startDate: "desc" },
         ],
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -118,8 +117,8 @@ import { prisma } from '../lib/prisma';
     try {
       const order = await prisma.dietOrder.findUnique({
         where: { id },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -150,8 +149,8 @@ import { prisma } from '../lib/prisma';
       const order = await prisma.dietOrder.update({
         where: { id },
         data: updateData,
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -160,8 +159,8 @@ import { prisma } from '../lib/prisma';
 
       return order;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -193,11 +192,11 @@ import { prisma } from '../lib/prisma';
     try {
       const order = await prisma.dietOrder.update({
         where: { id },
-        \1,\2 DietOrderStatus.CANCELLED,
+        DietOrderStatus.CANCELLED,
           endDate: new Date()
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -219,11 +218,11 @@ import { prisma } from '../lib/prisma';
     try {
       const order = await prisma.dietOrder.update({
         where: { id },
-        \1,\2 DietOrderStatus.COMPLETED,
+        DietOrderStatus.COMPLETED,
           endDate: new Date()
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },
@@ -244,15 +243,15 @@ import { prisma } from '../lib/prisma';
   async getActiveOrdersForDate(date: Date) {
     try {
       const orders = await prisma.dietOrder.findMany({
-        \1,\2 { lte: date },
+        { lte: date },
           OR: [
             { endDate: null },
             { endDate: { gte: date } },
           ],
           status: DietOrderStatus.ACTIVE
         },
-        \1,\2 {
-            \1,\2 true,
+        {
+            true,
               name: true
             },
           },

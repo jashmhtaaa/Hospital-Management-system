@@ -11,16 +11,16 @@ import { type OPDVisit, OPDVisitStatus, type OPDVisitType } from "@/types/opd";
 // Define the expected shape of the database query result
 interface OPDVisitQueryResult {
   opd_visit_id: number,
-  \1,\2 number | null,
+  number | null,
   visit_datetime: string; // Assuming ISO string format
   visit_type: string; // Should ideally be an enum
   doctor_id: number,
-  \1,\2 OPDVisitStatus; // Use the existing enum
+  OPDVisitStatus; // Use the existing enum
   notes: string | null,
-  \1,\2 string; // Assuming ISO string format
+  string; // Assuming ISO string format
   updated_at: string; // Assuming ISO string format
   patient_first_name: string,
-  \1,\2 string
+  string
 }
 
 // Define roles allowed to view/manage OPD visits (adjust as needed)
@@ -43,14 +43,14 @@ export const _GET = async (request: Request) => {
     const visitId = getVisitId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Visit ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -74,7 +74,7 @@ export const _GET = async (request: Request) => {
              WHERE ov.opd_visit_id = ?`;
         ).bind(visitId).first<OPDVisitQueryResult>(); // Use the defined interface
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
@@ -82,18 +82,18 @@ export const _GET = async (request: Request) => {
         }
 
         // 3. Format the response
-        const \1,\2 visitResult.opd_visit_id,
-            \1,\2 visitResult.appointment_id,
-            \1,\2 visitResult.visit_type as OPDVisitType, // Cast to enum
+        const visitResult.opd_visit_id,
+            visitResult.appointment_id,
+            visitResult.visit_type as OPDVisitType, // Cast to enum
             doctor_id: visitResult.doctor_id,
-            \1,\2 visitResult.status,
-            \1,\2 visitResult.created_by_user_id,
-            \1,\2 visitResult.updated_at,
-            \1,\2 visitResult.patient_id,
-                \1,\2 visitResult.patient_last_name,
-            \1,\2 visitResult.doctor_id, // No longer need non-null assertion
+            visitResult.status,
+            visitResult.created_by_user_id,
+            visitResult.updated_at,
+            visitResult.patient_id,
+                visitResult.patient_last_name,
+            visitResult.doctor_id, // No longer need non-null assertion
                 user: fullName: visitResult.doctor_full_name 
-            // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+            // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
         }
 
         // 4. Return the detailed visit
@@ -125,14 +125,14 @@ export const _PUT = async (request: Request) => {
     const visitId = getVisitId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Visit ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -143,7 +143,7 @@ export const _PUT = async (request: Request) => {
         const body = await request.json();
         const validation = UpdateVisitSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -153,7 +153,7 @@ export const _PUT = async (request: Request) => {
         const updateData = validation.data;
 
         // Check if there's anything to update
-        \1 {\n  \2length === 0) {
+        if (!session.user)length === 0) {
              return new Response(JSON.stringify({ message: "No update data provided" }), {
                 status: 200, // Or 304 Not Modified
                 headers: { "Content-Type": "application/json" },
@@ -167,21 +167,21 @@ export const _PUT = async (request: Request) => {
         const visitCheck = await DB.prepare("SELECT opd_visit_id FROM OPDVisits WHERE opd_visit_id = ?");
                                    .bind(visitId);
                                    .first<opd_visit_id: number >();
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
                 status: 404,
                 headers: { "Content-Type": "application/json" },
             });
         }
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
         // 3. Build update query
         let query = "UPDATE OPDVisits SET updated_at = CURRENT_TIMESTAMP";
         const queryParams: (string | null | number)[] = [];
 
         Object.entries(updateData).forEach(([key, value]) => {
-            \1 {\n  \2{ // Allow null values to be set
+            if (!session.user) { // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
             }
@@ -193,7 +193,7 @@ export const _PUT = async (request: Request) => {
         // 4. Execute update
         const updateResult = await DB.prepare(query).bind(...queryParams).run();
 
-        \1 {\n  \2{
+        if (!session.user) {
             throw new Error("Failed to update OPD visit");
         }
 

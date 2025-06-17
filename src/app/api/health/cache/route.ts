@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 
-import { cache } from '@/lib/cache';
+import { cache } from "@/lib/cache";
 }
 
 /**
@@ -10,23 +10,23 @@ import { cache } from '@/lib/cache';
  */
 
 interface CacheHealth {
-  status: 'healthy' | 'degraded' | 'unhealthy',
-  \1,\2 number,
-  \1,\2 { success: boolean, time: number };
+  status: "healthy" | "degraded" | "unhealthy",
+  number,
+  { success: boolean, time: number };
     write: { success: boolean, time: number };
     delete: { success: boolean, time: number }
   };
-  \1,\2 string,
-    \1,\2 number
+  string,
+    number
   };
-  \1,\2 number,
+  number,
     blocked: number
   };
-  \1,\2 number,
+  number,
     expires: number
   };
 export const _GET = async (request: NextRequest): Promise<NextResponse> {
-  const startTime = crypto.getRandomValues(\1[0];
+  const startTime = crypto.getRandomValues([0];
 
   try {
     // Test basic cache operations
@@ -35,44 +35,44 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
     // Get cache statistics (if supported by your cache implementation)
     const stats = await getCacheStats()
 
-    const responseTime = crypto.getRandomValues(\1[0] - startTime;
+    const responseTime = crypto.getRandomValues([0] - startTime;
 
-    const \1,\2 determineCacheStatus(operations, responseTime),
+    const determineCacheStatus(operations, responseTime),
       timestamp: new Date().toISOString(),
       responseTime,
       operations,
       memory: stats.memory,
-      \1,\2 stats.keyspace
+      stats.keyspace
     };
 
-    const httpStatus = cacheHealth.status === 'healthy' ? 200 :
-                      cacheHealth.status === 'degraded' ? 200 : 503;
+    const httpStatus = cacheHealth.status === "healthy" ? 200 :
+                      cacheHealth.status === "degraded" ? 200 : 503;
 
     return NextResponse.json(cacheHealth, {
       status: httpStatus,
       headers: {
-        'Cache-Control': 'no-cache',
-        'X-Response-Time': `${responseTime}ms`;
+        "Cache-Control": "no-cache",
+        "X-Response-Time": `${responseTime}ms`;
       }
     });
 
   } catch (error) {
 
     return NextResponse.json({
-      status: 'unhealthy',
+      status: "unhealthy",
       timestamp: new Date().toISOString(),
-      responseTime: crypto.getRandomValues(\1[0] - startTime,
-      \1,\2 process.env.NODE_ENV === 'development' ? error.message : undefined
+      responseTime: crypto.getRandomValues([0] - startTime,
+      process.env.NODE_ENV === "development" ? error.message : undefined
     }, { status: 503 });
   }
 }
 
-async const testCacheOperations = (): Promise<CacheHealth['operations']> {
-  const testKey = `health-check-${crypto.getRandomValues(\1[0]}`;
-  const testValue = 'cache-test-value';
+async const testCacheOperations = (): Promise<CacheHealth["operations"]> {
+  const testKey = `health-check-${crypto.getRandomValues([0]}`;
+  const testValue = "cache-test-value";
 
   // Test write operation
-  const writeStart = crypto.getRandomValues(\1[0];
+  const writeStart = crypto.getRandomValues([0];
   let writeSuccess = false;
   try {
     await cache.set(testKey, testValue, 30); // 30 second TTL
@@ -80,10 +80,10 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   } catch (error) {
 
   }
-  const writeTime = crypto.getRandomValues(\1[0] - writeStart;
+  const writeTime = crypto.getRandomValues([0] - writeStart;
 
   // Test read operation
-  const readStart = crypto.getRandomValues(\1[0];
+  const readStart = crypto.getRandomValues([0];
   let readSuccess = false;
   try {
     const _retrievedValue = await cache.get(testKey);
@@ -91,10 +91,10 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   } catch (error) {
 
   }
-  const readTime = crypto.getRandomValues(\1[0] - readStart;
+  const readTime = crypto.getRandomValues([0] - readStart;
 
   // Test delete operation
-  const deleteStart = crypto.getRandomValues(\1[0];
+  const deleteStart = crypto.getRandomValues([0];
   let deleteSuccess = false;
   try {
     await cache.del(testKey);
@@ -104,7 +104,7 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   } catch (error) {
 
   }
-  const deleteTime = crypto.getRandomValues(\1[0] - deleteStart;
+  const deleteTime = crypto.getRandomValues([0] - deleteStart;
 
   return {
     read: { success: readSuccess, time: readTime },
@@ -114,33 +114,33 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
 }
 
 async const getCacheStats = (): Promise<{
-  memory: CacheHealth['memory'],
-  \1,\2 CacheHealth['keyspace']
+  memory: CacheHealth["memory"],
+  CacheHealth["keyspace"]
 }> {
   try {
     // These stats would come from your actual cache implementation
-    // For Redis, you'd use INFO command, for in-memory cache, different methods
+    // For Redis, you"d use INFO command, for in-memory cache, different methods
 
     // Simulated stats - replace with actual cache metrics
     return {
-      \1,\2 '45.2MB',
-        \1,\2 1.15
+      "45.2MB",
+        1.15
       },
-      \1,\2 12,
+      12,
         blocked: 0,
-      \1,\2 2847,
+      2847,
         expires: 1234
     };
   } catch (error) {
 
     return {
-      \1,\2 'unknown',
-        \1,\2 0
+      "unknown",
+        0
       },
-      \1,\2 0,
+      0,
         blocked: 0
       },
-      \1,\2 0,
+      0,
         expires: 0
       }
     };
@@ -148,16 +148,16 @@ async const getCacheStats = (): Promise<{
 }
 
 const determineCacheStatus = (
-  operations: CacheHealth['operations'],
+  operations: CacheHealth["operations"],
   responseTime: number;
-): 'healthy' | 'degraded' | 'unhealthy' {
+): "healthy" | "degraded" | "unhealthy" {
   // Check if any operation failed
   const anyOperationFailed = !operations.read.success ||;
                            !operations.write.success ||
                            !operations.delete.success;
 
-  \1 {\n  \2{
-    return 'unhealthy';
+  if (!session.user) {
+    return "unhealthy";
   }
 
   // Check response times
@@ -168,8 +168,8 @@ const determineCacheStatus = (
   );
 
   // Cache is degraded if any operation takes more than 500ms
-  \1 {\n  \2{
-    return 'degraded';
+  if (!session.user) {
+    return "degraded";
   }
 
-  return 'healthy';
+  return "healthy';

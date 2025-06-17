@@ -1,7 +1,7 @@
 
 import type { IPatientRepository, Patient, PatientInputData } from "../repositories/patient_repository.ts";
-import type { IAuditLogService } from './audit_log_service.ts'; // Import AuditLogService interface
-import type { IEncryptionService } from './encryption_service.ts';
+import type { IAuditLogService } from "./audit_log_service.ts"; // Import AuditLogService interface
+import type { IEncryptionService } from "./encryption_service.ts";
 }
 
 // ARCH-2: Implement Service Layer Abstraction (Initial Services)
@@ -9,7 +9,6 @@ import type { IEncryptionService } from './encryption_service.ts';
 // SEC-3: Implement Comprehensive Audit Logging (Initial Service & Integration)
 // Research notes: research_notes_service_layer_typescript_docs.md, research_notes_service_layer_clean_architecture.md, research_notes_encryption_service.md, research_notes_audit_logging.md
 
-\1
 }
   ) {}
 
@@ -28,7 +27,7 @@ import type { IEncryptionService } from './encryption_service.ts';
       const encryptedPatientData: PatientInputData = {
         ...patientInputData,
         name: this.encryptionService.encrypt(patientInputData.name),
-        dateOfBirth: typeof patientInputData.dateOfBirth === 'string',          ? this.encryptionService.encrypt(patientInputData.dateOfBirth);
+        dateOfBirth: typeof patientInputData.dateOfBirth === "string",          ? this.encryptionService.encrypt(patientInputData.dateOfBirth);
           : this.encryptionService.encrypt(patientInputData.dateOfBirth.toISOString()),
       };
 
@@ -67,7 +66,7 @@ import type { IEncryptionService } from './encryption_service.ts';
     try {
       const patientFromRepo = await this.patientRepository.findById(id);
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.auditLogService.logEvent(
           performingUserId,
           "PATIENT_RECORD_VIEW_ATTEMPT",
@@ -83,7 +82,7 @@ import type { IEncryptionService } from './encryption_service.ts';
       const decryptedPatient: Patient = {
         ...patientFromRepo,
         name: this.encryptionService.decrypt(patientFromRepo.name),
-        dateOfBirth: \1)
+        dateOfBirth: )
       };
 
       await this.auditLogService.logEvent(

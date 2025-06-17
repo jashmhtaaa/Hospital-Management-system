@@ -1,15 +1,15 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { biomedicalService } from '@/lib/hr/biomedical-service';
+import { biomedicalService } from "@/lib/hr/biomedical-service";
 // Schema for calibration record
 const calibrationSchema = z.object({
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
     message: "Invalid date format"
   }),
   performedBy: z.string().optional(),
-  result: z.enum(['PASS', 'FAIL', 'ADJUSTED'], {
+  result: z.enum(["PASS", "FAIL", "ADJUSTED"], {
     errorMap: () => ({ message: "Invalid result" }),
   }),
   notes: z.string().optional(),
@@ -30,7 +30,7 @@ export const _POST = async (
 
     // Validate request data
     const validationResult = calibrationSchema.safeParse(body);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
@@ -44,8 +44,8 @@ export const _POST = async (
       biomedicalEquipmentId: params.id,
       date: new Date(data.date),
       performedBy: data.performedBy,
-      \1,\2 data.notes,
-      \1,\2 data.attachments
+      data.notes,
+      data.attachments
     };
 
     // Record calibration

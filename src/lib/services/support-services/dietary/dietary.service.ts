@@ -1,11 +1,10 @@
-import { DietaryRequest, Meal, MealPlan, NutritionalProfile } from '@prisma/client';
+import { DietaryRequest, Meal, MealPlan, NutritionalProfile } from "@prisma/client";
 
 
-import { createAuditLog } from '@/lib/audit-logging';
-import { toFHIRDietaryRequest } from '@/lib/models/dietary';
-import { prisma } from '@/lib/prisma';
-import type { NotificationService } from '@/lib/services/notification.service';
-\1
+import { createAuditLog } from "@/lib/audit-logging";
+import { toFHIRDietaryRequest } from "@/lib/models/dietary";
+import { prisma } from "@/lib/prisma";
+import type { NotificationService } from "@/lib/services/notification.service";
 }
   }
 
@@ -17,43 +16,43 @@ import type { NotificationService } from '@/lib/services/notification.service';
     const skip = (page - 1) * limit;
 
     const where: unknown = {};
-    \1 {\n  \2here.status = status;
-    \1 {\n  \2here.patientId = patientId;
-    \1 {\n  \2here.requestType = requestType;
+    if (!session.user)here.status = status;
+    if (!session.user)here.patientId = patientId;
+    if (!session.user)here.requestType = requestType;
 
     // Date range filter for startDate
-    \1 {\n  \2{
+    if (!session.user) {
       where.startDate = {};
-      \1 {\n  \2here.startDate.gte = startDate;
-      \1 {\n  \2here.startDate.lte = endDate;
+      if (!session.user)here.startDate.gte = startDate;
+      if (!session.user)here.startDate.lte = endDate;
     }
 
     const [requests, total] = await Promise.all([
       prisma.dietaryRequest.findMany({
         where,
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true,
+        {
+            true,
+              true,
               gender: true
             }
           },
-          \1,\2 {
+          {
               id: true,
-              \1,\2 true
+              true
             }
           },
-          \1,\2 {
+          {
               id: true,
-              \1,\2 true
+              true
             }
           },
-          \1,\2 5,
-            orderBy: { date: 'desc' }
+          5,
+            orderBy: { date: "desc" }
           }
         },
         skip,
         take: limit,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: "desc" }
       }),
       prisma.dietaryRequest.count(where )
     ]);
@@ -92,8 +91,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
       where: { id: patientId }
     });
 
-    \1 {\n  \2{
-      throw new Error('Patient not found');
+    if (!session.user) {
+      throw new Error("Patient not found");
     }
 
     // Create the dietary request
@@ -101,7 +100,7 @@ import type { NotificationService } from '@/lib/services/notification.service';
       data: {
         patientId,
         requestType,
-        status: 'PENDING';
+        status: "PENDING";
         startDate,
         endDate,
         mealPreferences,
@@ -110,29 +109,29 @@ import type { NotificationService } from '@/lib/services/notification.service';
         specialInstructions,
         requestedById: requestedBy
       },
-      \1,\2 true,
-            \1,\2 true,
+      true,
+            true,
             gender: true,
-        \1,\2 true,
-            \1,\2 true
+        true,
+            true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE',
-      \1,\2 request.id,
-      \1,\2 `Created ${requestType} dietary request for patient ${patient.name}`;
+      action: "CREATE",
+      request.id,
+      `Created ${requestType} dietary request for patient ${patient.name}`;
     });
 
     // Send notification to dietary staff
     await this.notificationService.sendNotification({
-      type: 'DIETARY_REQUEST',
-      \1,\2 `A new ${requestType} request has been created for patient ${patient.name}`,
-      recipientRoles: ['DIETARY_MANAGER', 'NUTRITIONIST'],
+      type: "DIETARY_REQUEST",
+      `A new ${requestType} request has been created for patient ${patient.name}`,
+      recipientRoles: ["DIETARY_MANAGER", "NUTRITIONIST"],
       entityId: request.id,
-      \1,\2 request.id,
-        \1,\2 requestType
+      request.id,
+        requestType
       }
     });
 
@@ -145,29 +144,29 @@ import type { NotificationService } from '@/lib/services/notification.service';
   async getDietaryRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const request = await prisma.dietaryRequest.findUnique({
       where: { id },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
+      {
+          true,
+            true,
             gender: true
           }
         },
-        \1,\2 true,
-            \1,\2 true
+        true,
+            true
         },
-        \1,\2 true,
-            \1,\2 true
+        true,
+            true
         },
-        \1,\2 true,
-          orderBy: date: 'asc' 
+        true,
+          orderBy: date: "asc" 
         }
       }
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       return null;
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return {
         data: request,
         fhir: toFHIRDietaryRequest(request)
@@ -183,33 +182,33 @@ import type { NotificationService } from '@/lib/services/notification.service';
   async updateDietaryRequest(id: string, data: Partial<DietaryRequest>, userId: string): Promise<DietaryRequest> {
     const request = await prisma.dietaryRequest.findUnique({
       where: { id },
-      \1,\2 true
+      true
       }
     });
 
-    \1 {\n  \2{
-      throw new Error('Dietary request not found');
+    if (!session.user) {
+      throw new Error("Dietary request not found");
     }
 
     // If status is changing to APPROVED, set approvedById
-    \1 {\n  \2{
+    if (!session.user) {
       data.approvedById = userId;
     }
 
     const updatedRequest = await prisma.dietaryRequest.update({
       where: { id },
       data,
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true,
+      {
+          true,
+            true,
             gender: true
           }
         },
-        \1,\2 true,
-            \1,\2 true
+        true,
+            true
         },
-        \1,\2 true,
-            \1,\2 true
+        true,
+            true
         },
         mealPlans: true
       }
@@ -217,20 +216,20 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE',
-      \1,\2 id;
+      action: "UPDATE",
+      id;
       userId,
       details: `Updated dietary request for patient /* SECURITY: Template literal eliminated */
 
     // Send notification if status changed
-    \1 {\n  \2{
+    if (!session.user) {
       await this.notificationService.sendNotification({
-        type: 'DIETARY_STATUS_CHANGE',
-        \1,\2 `Request for patient ${request.patient.name} is now ${data.status}`,
-        recipientRoles: ['DIETARY_MANAGER'],
-        \1,\2 request.id,
-        \1,\2 request.id,
-          \1,\2 data.status
+        type: "DIETARY_STATUS_CHANGE",
+        `Request for patient ${request.patient.name} is now ${data.status}`,
+        recipientRoles: ["DIETARY_MANAGER"],
+        request.id,
+        request.id,
+          data.status
       });
     }
 
@@ -243,12 +242,12 @@ import type { NotificationService } from '@/lib/services/notification.service';
   async createMealPlan(requestId: string, data: unknown, userId: string): Promise<MealPlan> {
     const request = await prisma.dietaryRequest.findUnique({
       where: { id: requestId },
-      \1,\2 true
+      true
       }
     });
 
-    \1 {\n  \2{
-      throw new Error('Dietary request not found');
+    if (!session.user) {
+      throw new Error("Dietary request not found");
     }
 
     // Check if meal plan already exists for this date
@@ -259,8 +258,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
       }
     });
 
-    \1 {\n  \2{
-      throw new Error(`A meal plan already exists for ${\1}`;
+    if (!session.user) {
+      throw new Error(`A meal plan already exists for ${}`;
     }
 
     // Create the meal plan
@@ -268,22 +267,22 @@ import type { NotificationService } from '@/lib/services/notification.service';
       data: {
         requestId,
         date: new Date(data.date),
-        \1,\2 data.notes,
+        data.notes,
         nutritionalSummary: data.nutritionalSummary || ,
         createdById: userId
       },
-      \1,\2 true,
-        \1,\2 true,
-            \1,\2 true
+      true,
+        true,
+            true
       }
     });
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE',
-      \1,\2 mealPlan.id;
+      action: "CREATE",
+      mealPlan.id;
       userId,
-      details: `Created meal plan for patient ${request.patient.name} on ${new Date(data.date).toISOString().split('T')[0]}`;
+      details: `Created meal plan for patient ${request.patient.name} on ${new Date(data.date).toISOString().split("T")[0]}`;
     });
 
     return mealPlan;
@@ -295,15 +294,15 @@ import type { NotificationService } from '@/lib/services/notification.service';
   async addMealToMealPlan(mealPlanId: string, data: unknown, userId: string): Promise<Meal> {
     const mealPlan = await prisma.mealPlan.findUnique({
       where: { id: mealPlanId },
-      \1,\2 {
-          \1,\2 true
+      {
+          true
           }
         }
       }
     });
 
-    \1 {\n  \2{
-      throw new Error('Meal plan not found');
+    if (!session.user) {
+      throw new Error("Meal plan not found");
     }
 
     // Check if meal of this type already exists
@@ -314,7 +313,7 @@ import type { NotificationService } from '@/lib/services/notification.service';
       }
     });
 
-    \1 {\n  \2{
+    if (!session.user) {
       throw new Error(`A ${data.mealType} meal already exists for this meal plan`);
     }
 
@@ -323,23 +322,23 @@ import type { NotificationService } from '@/lib/services/notification.service';
       data: {
         mealPlanId,
         mealType: data.mealType,
-        \1,\2 data.protein,
-        \1,\2 data.fat,
-        \1,\2 data.deliveryTime ? new Date(data.deliveryTime) : undefined,
+        data.protein,
+        data.fat,
+        data.deliveryTime ? new Date(data.deliveryTime) : undefined,
         notes: data.notes
       }
     });
 
     // Add menu items if provided
-    \1 {\n  \2& data.menuItems.length > 0) {
+    if (!session.user)& data.menuItems.length > 0) {
       for (const item of data.menuItems) {
         await prisma.menuItem.create({
-          \1,\2 meal.id,
-            \1,\2 item.description,
-            \1,\2 item.ingredients || [],
-            \1,\2 item.protein,
-            \1,\2 item.fat,
-            \1,\2 item.dietaryFlags || []
+          meal.id,
+            item.description,
+            item.ingredients || [],
+            item.protein,
+            item.fat,
+            item.dietaryFlags || []
           }
         });
       }
@@ -350,8 +349,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE',
-      \1,\2 meal.id;
+      action: "CREATE",
+      meal.id;
       userId,
       details: `Added ${data.mealType} meal to meal plan for patient ${mealPlan.request.patient.name}`;
     });
@@ -359,9 +358,9 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Return the meal with menu items
     return prisma.meal.findUnique({
       where: { id: meal.id },
-      \1,\2 true
+      true
       }
-    }) as Promise\1>
+    }) as Promise>
   }
 
   /**
@@ -371,7 +370,7 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Get all meals for this meal plan
     const meals = await prisma.meal.findMany({
       where: { mealPlanId },
-      \1,\2 true
+      true
       }
     });
 
@@ -393,15 +392,15 @@ import type { NotificationService } from '@/lib/services/notification.service';
     for (const meal of meals) {
       mealSummary[meal.mealType] = {
         calories: meal.calories || 0,
-        \1,\2 meal.carbohydrates || 0,
-        \1,\2 meal.menuItems.length
+        meal.carbohydrates || 0,
+        meal.menuItems.length
       };
     }
 
     // Update meal plan
     await prisma.mealPlan.update({
       where: { id: mealPlanId },
-      \1,\2 {
+      {
           totalCalories,
           totalProtein,
           totalCarbohydrates,
@@ -418,31 +417,31 @@ import type { NotificationService } from '@/lib/services/notification.service';
   async updateMealPlan(id: string, data: Partial<MealPlan>, userId: string): Promise<MealPlan> {
     const mealPlan = await prisma.mealPlan.findUnique({
       where: { id },
-      \1,\2 {
-          \1,\2 true
+      {
+          true
           }
         }
       }
     });
 
-    \1 {\n  \2{
-      throw new Error('Meal plan not found');
+    if (!session.user) {
+      throw new Error("Meal plan not found");
     }
 
     const updatedMealPlan = await prisma.mealPlan.update({
       where: { id },
       data,
-      \1,\2 {
-          \1,\2 true
+      {
+          true
           }
         },
-        \1,\2 {
+        {
             menuItems: true
           }
         },
-        \1,\2 {
+        {
             id: true,
-            \1,\2 true
+            true
           }
         }
       }
@@ -450,20 +449,20 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE',
-      \1,\2 id;
+      action: "UPDATE",
+      id;
       userId,
       details: `Updated meal plan for patient /* SECURITY: Template literal eliminated */
 
     // Send notification if status changed to PREPARED
-    \1 {\n  \2{
+    if (!session.user) {
       await this.notificationService.sendNotification({
-        type: 'MEAL_PLAN_PREPARED',
-        \1,\2 `Meal plan for patient ${mealPlan.request.patient.name} on ${mealPlan.date.toISOString().split('T')[0]} is ready for delivery`,
-        recipientRoles: ['DIETARY_STAFF', 'NURSE'],
+        type: "MEAL_PLAN_PREPARED",
+        `Meal plan for patient ${mealPlan.request.patient.name} on ${mealPlan.date.toISOString().split("T")[0]} is ready for delivery`,
+        recipientRoles: ["DIETARY_STAFF", "NURSE"],
         entityId: mealPlan.id,
-        \1,\2 mealPlan.id,
-          \1,\2 mealPlan.request.patientId
+        mealPlan.id,
+          mealPlan.request.patientId
       });
     }
 
@@ -476,9 +475,9 @@ import type { NotificationService } from '@/lib/services/notification.service';
   async updateMeal(id: string, data: Partial<Meal>, userId: string): Promise<Meal> {
     const meal = await prisma.meal.findUnique({
       where: { id },
-      \1,\2 {
-          \1,\2 {
-              \1,\2 true
+      {
+          {
+              true
               }
             }
           }
@@ -486,16 +485,16 @@ import type { NotificationService } from '@/lib/services/notification.service';
       }
     });
 
-    \1 {\n  \2{
-      throw new Error('Meal not found');
+    if (!session.user) {
+      throw new Error("Meal not found");
     }
 
     const updatedMeal = await prisma.meal.update({
       where: { id },
       data,
-      \1,\2 true,
-        \1,\2 {
-            \1,\2 {
+      true,
+        {
+            {
                 patient: true
               }
             }
@@ -505,38 +504,38 @@ import type { NotificationService } from '@/lib/services/notification.service';
     });
 
     // Update meal plan nutritional summary if nutritional values changed
-    \1 {\n  \2{
+    if (!session.user) {
       await this.updateMealPlanNutritionalSummary(meal.mealPlanId);
     }
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE',
-      \1,\2 id;
+      action: "UPDATE",
+      id;
       userId,
       details: `Updated $meal.mealTypemeal for patient /* SECURITY: Template literal eliminated */
 
     // If meal status changed to DELIVERED, update meal plan status if all meals are delivered
-    \1 {\n  \2{
+    if (!session.user) {
       const allMeals = await prisma.meal.findMany({
         where: { mealPlanId: meal.mealPlanId }
       });
 
-      const allDelivered = allMeals.every(m => m.id === id ? true : m.status === 'DELIVERED');
+      const allDelivered = allMeals.every(m => m.id === id ? true : m.status === "DELIVERED");
 
-      \1 {\n  \2{
+      if (!session.user) {
         await prisma.mealPlan.update({
           where: { id: meal.mealPlanId },
-          data: { status: 'DELIVERED' }
+          data: { status: "DELIVERED" }
         });
 
         // Send notification that all meals are delivered
         await this.notificationService.sendNotification({
-          type: 'MEALS_DELIVERED',
-          \1,\2 `All meals for patient ${meal.mealPlan.request.patient.name} on ${meal.mealPlan.date.toISOString().split('T')[0]} have been delivered`,
-          recipientRoles: ['NURSE'],
-          \1,\2 meal.mealPlanId,
-            \1,\2 meal.mealPlan.request.patientId
+          type: "MEALS_DELIVERED",
+          `All meals for patient ${meal.mealPlan.request.patient.name} on ${meal.mealPlan.date.toISOString().split("T")[0]} have been delivered`,
+          recipientRoles: ["NURSE"],
+          meal.mealPlanId,
+            meal.mealPlan.request.patientId
         });
       }
     }
@@ -551,43 +550,43 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Check if profile exists
     const profile = await prisma.nutritionalProfile.findUnique({
       where: { patientId },
-      \1,\2 true,
-        \1,\2 {
+      true,
+        {
             id: true,
-            \1,\2 true
+            true
           }
         }
       }
     });
 
     // If not, create a new one
-    \1 {\n  \2{
+    if (!session.user) {
       // Validate patient exists
       const patient = await prisma.patient.findUnique({
         where: { id: patientId }
       });
 
-      \1 {\n  \2{
-        throw new Error('Patient not found');
+      if (!session.user) {
+        throw new Error("Patient not found");
       }
 
       profile = await prisma.nutritionalProfile.create({
         data: {
           patientId,
           dietaryPreferences: [],
-          \1,\2 [],
-          \1,\2 userId
+          [],
+          userId
         },
-        \1,\2 true,
-          \1,\2 true,
-              \1,\2 true
+        true,
+          true,
+              true
         }
       });
 
       // Create audit log
       await createAuditLog({
-        action: 'CREATE',
-        \1,\2 profile.id;
+        action: "CREATE",
+        profile.id;
         userId,
         details: `Created nutritional profile for patient ${patient.name}`;
       });
@@ -602,22 +601,22 @@ import type { NotificationService } from '@/lib/services/notification.service';
   async updateNutritionalProfile(id: string, data: Partial<NutritionalProfile>, userId: string): Promise<NutritionalProfile> {
     const profile = await prisma.nutritionalProfile.findUnique({
       where: { id },
-      \1,\2 true
+      true
       }
     });
 
-    \1 {\n  \2{
-      throw new Error('Nutritional profile not found');
+    if (!session.user) {
+      throw new Error("Nutritional profile not found");
     }
 
     // Calculate BMI if height and weight are provided
-    \1 {\n  \2{
+    if (!session.user) {
       const heightInMeters = data.height / 100;
       data.bmi = parseFloat((data.weight / (heightInMeters * heightInMeters)).toFixed(1));
-    } else \1 {\n  \2{
+    } else if (!session.user) {
       const heightInMeters = data.height / 100;
       data.bmi = parseFloat((profile.weight / (heightInMeters * heightInMeters)).toFixed(1));
-    } else \1 {\n  \2{
+    } else if (!session.user) {
       const heightInMeters = profile.height / 100;
       data.bmi = parseFloat((data.weight / (heightInMeters * heightInMeters)).toFixed(1));
     }
@@ -628,10 +627,10 @@ import type { NotificationService } from '@/lib/services/notification.service';
     const updatedProfile = await prisma.nutritionalProfile.update({
       where: { id },
       data,
-      \1,\2 true,
-        \1,\2 {
+      true,
+        {
             id: true,
-            \1,\2 true
+            true
           }
         }
       }
@@ -639,8 +638,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE',
-      \1,\2 id;
+      action: "UPDATE",
+      id;
       userId,
       details: `Updated nutritional profile for patient ${profile.patient.name}`;
     });
@@ -656,22 +655,22 @@ import type { NotificationService } from '@/lib/services/notification.service';
     const skip = (page - 1) * limit;
 
     const where: unknown = {};
-    \1 {\n  \2here.mealType = mealType;
-    \1 {\n  \2here.category = category;
-    \1 {\n  \2here.isActive = isActive;
+    if (!session.user)here.mealType = mealType;
+    if (!session.user)here.category = category;
+    if (!session.user)here.isActive = isActive;
 
     const [templates, total] = await Promise.all([
       prisma.menuTemplate.findMany({
         where,
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true
+        {
+            true,
+              true
             }
           }
         },
         skip,
         take: limit,
-        orderBy: { name: 'asc' }
+        orderBy: { name: "asc" }
       }),
       prisma.menuTemplate.count({ where })
     ]);
@@ -692,14 +691,14 @@ import type { NotificationService } from '@/lib/services/notification.service';
    */
   async createMenuTemplate(data: unknown, userId: string): Promise<unknown> {
     const template = await prisma.menuTemplate.create({
-      \1,\2 data.name,
-        \1,\2 data.mealType,
-        \1,\2 data.items || [],
-        \1,\2 userId
+      data.name,
+        data.mealType,
+        data.items || [],
+        userId
       },
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true
+      {
+          true,
+            true
           }
         }
       }
@@ -707,8 +706,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Create audit log
     await createAuditLog({
-      action: 'CREATE',
-      \1,\2 template.id;
+      action: "CREATE",
+      template.id;
       userId,
       details: `Created menu template: ${template.name}`;
     });
@@ -724,8 +723,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
     const skip = (page - 1) * limit;
 
     const where: unknown = {};
-    \1 {\n  \2here.category = category;
-    \1 {\n  \2{
+    if (!session.user)here.category = category;
+    if (!session.user) {
       where.currentStock = {
         lte: prisma.dietaryInventory.fields.minimumStock
       };
@@ -736,7 +735,7 @@ import type { NotificationService } from '@/lib/services/notification.service';
         where,
         skip,
         take: limit,
-        orderBy: { itemName: 'asc' }
+        orderBy: { itemName: "asc" }
       }),
       prisma.dietaryInventory.count({ where })
     ]);
@@ -760,12 +759,12 @@ import type { NotificationService } from '@/lib/services/notification.service';
       where: { id }
     });
 
-    \1 {\n  \2{
-      throw new Error('Inventory item not found');
+    if (!session.user) {
+      throw new Error("Inventory item not found");
     }
 
     // If restocking, update lastRestocked date
-    \1 {\n  \2{
+    if (!session.user) {
       data.lastRestocked = new Date();
     }
 
@@ -776,21 +775,21 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Create audit log
     await createAuditLog({
-      action: 'UPDATE',
-      \1,\2 id;
+      action: "UPDATE",
+      id;
       userId,
       details: `Updated inventory for ${item.itemName}, stock: ${item.currentStock} → ${data.currentStock ||
         item.currentStock}`;
     });
 
     // Check if item is low on stock after update
-    \1 {\n  \2{
+    if (!session.user) {
       await this.notificationService.sendNotification({
-        type: 'DIETARY_INVENTORY_LOW',
-        \1,\2 `${updatedItem.itemName} is running low (/* \1,\2 ['DIETARY_MANAGER', 'INVENTORY_MANAGER'],
+        type: "DIETARY_INVENTORY_LOW",
+        `${updatedItem.itemName} is running low (/* ["DIETARY_MANAGER", "INVENTORY_MANAGER"],
         entityId: updatedItem.id,
-        \1,\2 updatedItem.id,
-          \1,\2 updatedItem.minimumStock
+        updatedItem.id,
+          updatedItem.minimumStock
         }
       });
     }
@@ -801,16 +800,16 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Get dietary analytics;
    */
-  async getDietaryAnalytics(period: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY') {
+  async getDietaryAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {
     // Get date range based on period
     const now = new Date();
     let startDate: Date;
 
     switch (period) {
-      case 'DAILY':
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\1\n    }\n    case 'WEEKLY':
-        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\1\n    }\n    case 'MONTHLY':
-        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\1\n    }\n    case 'YEARLY':
+      case "DAILY":
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\n    }\n    case "WEEKLY":
+        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\n    }\n    case "MONTHLY":
+        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\n    }\n    case "YEARLY":
         startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years
         break;
       default:
@@ -819,8 +818,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Get request counts by status
     const requestsByStatus = await prisma.dietaryRequest.groupBy({
-      by: ['status'],
-      \1,\2 {
+      by: ["status"],
+      {
           gte: startDate
         }
       },
@@ -829,8 +828,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Get request counts by type
     const requestsByType = await prisma.dietaryRequest.groupBy({
-      by: ['requestType'],
-      \1,\2 {
+      by: ["requestType"],
+      {
           gte: startDate
         }
       },
@@ -839,8 +838,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Get meal counts by type
     const mealsByType = await prisma.meal.groupBy({
-      by: ['mealType'],
-      \1,\2 {
+      by: ["mealType"],
+      {
           gte: startDate
         }
       },
@@ -849,13 +848,13 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Get average nutritional values
     const mealPlans = await prisma.mealPlan.findMany({
-      \1,\2 {
+      {
           gte: startDate
         },
-        \1,\2 null
+        null
         }
       },
-      \1,\2 true
+      true
       }
     });
 
@@ -867,9 +866,9 @@ import type { NotificationService } from '@/lib/services/notification.service';
     let count = 0;
 
     for (const plan of mealPlans) {
-      \1 {\n  \2{
+      if (!session.user) {
         const summary = plan.nutritionalSummary as any;
-        \1 {\n  \2{
+        if (!session.user) {
           totalCalories += summary.totalCalories;
           totalProtein += summary.totalProtein || 0;
           totalCarbs += summary.totalCarbohydrates || 0;
@@ -888,7 +887,7 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Get most common dietary restrictions
     const profiles = await prisma.nutritionalProfile.findMany({
-      \1,\2 true,
+      true,
         allergies: true
       }
     });

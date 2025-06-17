@@ -26,19 +26,19 @@ const ListLabOrdersQuerySchema = z.object({
 // Define the expected structure based on the SELECT query
 interface LabOrderQueryResultRow {
     lab_order_id: number,
-    \1,\2 number,
-    \1,\2 string,
-    \1,\2 string | null,
-    \1,\2 string; // Assuming this is part of lo.*
+    number,
+    string,
+    string | null,
+    string; // Assuming this is part of lo.*
     patient_first_name: string,
-    \1,\2 string | null
+    string | null
 export const _GET = async (request: Request) => {
     // Get cookies and create session
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
@@ -47,7 +47,7 @@ export const _GET = async (request: Request) => {
         const queryParams = Object.fromEntries(url.searchParams.entries());
         const validation = ListLabOrdersQuerySchema.safeParse(queryParams);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid query parameters", details: validation.error.errors }), { status: 400 });
         }
 
@@ -72,20 +72,20 @@ export const _GET = async (request: Request) => {
         const queryParamsList: (string | number)[] = [];
 
         // Apply filters and authorization
-        \1 {\n  \2{
+        if (!session.user) {
             // Authorization check for Patients
-            \1 {\n  \2{
+            if (!session.user) {
                 const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-                \1 {\n  \2{
+                if (!session.user) {
                     return new Response(JSON.stringify({ error: "Forbidden: You can only view your own lab orders" }), { status: 403 });
                 }
             }
             query += " AND lo.patient_id = ?";
             queryParamsList.push(filters.patientId);
-        } else \1 {\n  \2{
+        } else if (!session.user) {
              // If no patientId filter, patient sees only their own
              const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-             \1 {\n  \2{
+             if (!session.user) {
                  query += " AND lo.patient_id = ?";
                  queryParamsList.push(patientProfile.patient_id);
              } else {
@@ -93,38 +93,38 @@ export const _GET = async (request: Request) => {
              }
         }
 
-        \1 {\n  \2{
+        if (!session.user) {
             // Authorization check for Doctors
-            \1 {\n  \2{
+            if (!session.user) {
                 const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-                \1 {\n  \2{
+                if (!session.user) {
                     return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 });
                 }
             }
             query += " AND lo.doctor_id = ?";
             queryParamsList.push(filters.doctorId);
-        } else \1 {\n  \2{
+        } else if (!session.user) {
              // If no doctorId filter, doctor sees only their own
              const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-             \1 {\n  \2{
+             if (!session.user) {
                  query += " AND lo.doctor_id = ?";
                  queryParamsList.push(userDoctorProfile.doctor_id);
              }
         }
 
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND lo.consultation_id = ?";
             queryParamsList.push(filters.consultationId);
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND lo.status = ?";
             queryParamsList.push(filters.status);
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND DATE(lo.order_datetime) >= ?";
             queryParamsList.push(filters.dateFrom);
         }
-        \1 {\n  \2{
+        if (!session.user) {
             query += " AND DATE(lo.order_datetime) <= ?";
             queryParamsList.push(filters.dateTo);
         }
@@ -135,14 +135,14 @@ export const _GET = async (request: Request) => {
         // 3. Execute Query - Provide row type to .all()
         const results = await DB.prepare(query).bind(...queryParamsList).all<LabOrderQueryResultRow>()
 
-        // 4. Format Response (basic details for list view) - Type 'row' in map
-        const labOrders = results.results?.map((\1,\2 row.lab_order_id,
-            \1,\2 row.patient_id,
-            \1,\2 row.order_datetime,
-            \1,\2 row.notes,
-            \1,\2 row.patient_id,
-                \1,\2 row.patient_last_name,
-            \1,\2 row.doctor_full_name as any // Use 'as any' or define Doctor type properly
+        // 4. Format Response (basic details for list view) - Type "row" in map
+        const labOrders = results.results?.map((row.lab_order_id,
+            row.patient_id,
+            row.order_datetime,
+            row.notes,
+            row.patient_id,
+                row.patient_last_name,
+            row.doctor_full_name as any // Use "as any" or define Doctor type properly
         })) || [];
 
         return new Response(JSON.stringify(labOrders), { status: 200 });
@@ -168,7 +168,7 @@ export const _POST = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
@@ -176,7 +176,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = CreateLabOrderSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
         }
 
@@ -188,7 +188,7 @@ export const _POST = async (request: Request) => {
 
         // 2. Get Doctor ID from session user
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
         }
         const doctorId = doctorProfile.doctor_id;
@@ -198,11 +198,11 @@ export const _POST = async (request: Request) => {
                                    .bind(orderData.consultation_id);
                                    .first<consultation_id: number, patient_id: number, doctor_id: number >();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
         }
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Forbidden: Cannot create lab order for another doctor's consultation" }), { status: 403 });
+        if (!session.user) {
+            return new Response(JSON.stringify({ error: "Forbidden: Cannot create lab order for another doctor"s consultation" }), { status: 403 });
         }
         const patientId = consultCheck.patient_id;
 
@@ -220,7 +220,7 @@ export const _POST = async (request: Request) => {
         ).run();
 
         // Check success and last_row_id existence and type
-        \1 {\n  \2last_row_id !== 'number') {
+        if (!session.user)last_row_id !== "number') {
 
             throw new Error("Failed to create lab order or retrieve ID");
         }

@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 // FIX: Define interface for the user info API response
 interface UserInfo {
   userId: number,
-  \1,\2 string,
+  string,
   roleName: string;
   // Add other fields if available
 }
@@ -63,11 +63,11 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
       setIsLoadingUser(true);
       try {
         const response = await fetch("/api/auth/me");
-        \1 {\n  \2{
+        if (!session.user) {
           // FIX: Cast response JSON to defined type
           const data = (await response.json()) as UserInfoApiResponse;
           // FIX: Safely access user data
-          \1 {\n  \2{
+          if (!session.user) {
             setUserName(data.user.username),
             setUserRole(data.user.roleName);
           } else {
@@ -76,7 +76,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
           }
         } else {
           // If not authenticated (e.g., 401 Unauthorized), redirect to login
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
           router.push("/login")
         }
       } catch (error) {
@@ -92,30 +92,30 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
     // Determine active module from URL on initial load and route changes
     const updateActiveModule = () => {
       const path = globalThis.location.pathname;
-      \1 {\n  \2 {
+      if (!session.user) {
         setActiveModule("opd");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         setActiveModule("ipd");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         setActiveModule("patients");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         setActiveModule("billing");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         setActiveModule("pharmacy");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         setActiveModule("laboratory");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         // Added Radiology
         setActiveModule("radiology");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         // Added OT
         setActiveModule("ot");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         // Added ER
         setActiveModule("er");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         setActiveModule("reports");
-      } else \1 {\n  \2 {
+      } else if (!session.user) {
         setActiveModule("settings");
       } else {
         setActiveModule("dashboard");
@@ -130,34 +130,34 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
 
   const handleModuleClick = (module: string) => {
     // Navigate to the corresponding dashboard sub-route
-    router.push(`/dashboard/${\1}`,
+    router.push(`/dashboard/${}`,
     setActiveModule(module); // Update state immediately for responsiveness
   };
 
   // Render skeleton or loading state while fetching user info
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         {/* FIX: Use Skeleton components for better loading state */}
-        \1>
+        >
           {/* Skeleton Sidebar */}
-          \1>
-            \1>
+          >
+            >
               <Skeleton className="h-10 w-10 rounded-md bg-gray-200" />
-              \1>
+              >
                 <Skeleton className="h-4 w-20 bg-gray-200" />
                 <Skeleton className="h-3 w-32 bg-gray-200" />
               </div>
             </div>
-            \1>
+            >
               {Array.from({ length: 10 }).map((_, index) => (
                 <Skeleton key={index} className="h-10 w-full bg-gray-200" />
               ))}
             </div>
-            \1>
-              \1>
+            >
+              >
                 <Skeleton className="h-10 w-10 rounded-full bg-gray-200" />
-                \1>
+                >
                   <Skeleton className="h-4 w-24 bg-gray-200" />
                   <Skeleton className="h-3 w-16 bg-gray-200" />
                 </div>
@@ -166,9 +166,9 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
             </div>
           </div>
           {/* Skeleton Main Content */}
-          \1>
+          >
             <Skeleton className="h-16 w-full border-b border-gray-200 bg-white" />
-            \1>
+            >
               <Skeleton className="h-full w-full bg-gray-200" />
             </div>
           </div>
@@ -179,7 +179,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
 
   // If user info failed to load (e.g., not authenticated), this component might unmount
   // due to redirection, but this check adds robustness.
-  \1 {\n  \2{
+  if (!session.user) {
     return; // Or a message indicating redirection
   }
 
@@ -188,72 +188,72 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
   const navItems = [
     {
       id: "dashboard",
-      \1,\2 <HomeIcon className="h-5 w-5 mr-2" />
+      <HomeIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "opd",
-      \1,\2 <CalendarIcon className="h-5 w-5 mr-2" />
+      <CalendarIcon className="h-5 w-5 mr-2" />
     },
     { id: "ipd", label: "IPD", icon: <BedIcon className="h-5 w-5 mr-2" /> },
     {
       id: "er",
-      \1,\2 <AlertTriangleIcon className="h-5 w-5 mr-2" />
+      <AlertTriangleIcon className="h-5 w-5 mr-2" />
     }, // Added ER
     { id: "ot", label: "OT", icon: <ScissorsIcon className="h-5 w-5 mr-2" /> }, // Added OT
     {
       id: "patients",
-      \1,\2 <UsersIcon className="h-5 w-5 mr-2" />
+      <UsersIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "billing",
-      \1,\2 <CreditCardIcon className="h-5 w-5 mr-2" />
+      <CreditCardIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "pharmacy",
-      \1,\2 <PillIcon className="h-5 w-5 mr-2" />
+      <PillIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "laboratory",
-      \1,\2 <FlaskConicalIcon className="h-5 w-5 mr-2" />
+      <FlaskConicalIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "radiology",
-      \1,\2 <RadioIcon className="h-5 w-5 mr-2" />
+      <RadioIcon className="h-5 w-5 mr-2" />
     }, // Added Radiology
     {
       id: "reports",
-      \1,\2 <BarChartIcon className="h-5 w-5 mr-2" />
+      <BarChartIcon className="h-5 w-5 mr-2" />
     },
     {
       id: "settings",
-      \1,\2 <SettingsIcon className="h-5 w-5 mr-2" />
+      <SettingsIcon className="h-5 w-5 mr-2" />
     },
   ];
 
   return (
-    \1>
+    >
       {" "}
       {/* Responsive layout */}
       {/* Sidebar */}
-      \1>
+      >
         {" "}
         {/* Fixed width on larger screens */}
         {/* Logo and Hospital Name */}
-        \1>
+        >
           {/* Replace with actual logo if available */}
-          \1>
+          >
             <HospitalIcon className="h-6 w-6 text-white" />
           </div>
 <div
-            <h1 className="text-lg font-bold text-teal-700">HMS\1>
+            <h1 className="text-lg font-bold text-teal-700">HMS>
             <p className="text-xs text-gray-500">Hospital Management</p>
           </div>
         </div>
         {/* Navigation */}
-        \1>
-          \1>
+        >
+          >
             {navItems.map((item) => (
-              // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+              // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
               (<li key={item.id}>
                 <Button>
                   variant={activeModule === item.id ? "secondary" : "ghost"} // Use secondary for active
@@ -268,57 +268,57 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
           </ul>
         </nav>
         {/* User Info and Logout */}
-        \1>
-          \1>
-            \1>
+        >
+          >
+            >
               {/* Placeholder Avatar */}
-              \1>
+              >
                 {userName ? userName.charAt(0).toUpperCase() : "?"}
               </div>
             </div>
-            \1>
+            >
               {" "}
               {/* Prevent long names/roles from breaking layout */}
-              <p className="font-medium text-sm truncate">{userName}\1>
+              <p className="font-medium text-sm truncate">{userName}>
               <p className="text-xs text-gray-500 truncate">{userRole}</p>
             </div>
           </div>
-          \1>
+          >
             <LogOutIcon className="h-5 w-5 mr-2" />
             Logout
           </Button>
         </div>
       </div>
-      \1>
+      >
         {/* Header Bar (Optional) */}
-        \1>
+        >
           {/* Can add breadcrumbs or module-specific actions here */}
-          \1>
+          >
             {/* Find the label corresponding to the active module */}
             {navItems.find((item) => item.id === activeModule)?.label ||
               "Dashboard"}
           </h1>
 
           {/* Global Search / Notifications (Optional) */}
-          \1>
+          >
             {/* <Input>
               type="search"
               placeholder="Global Search..."
               className="w-64 mr-4 hidden sm:block" // Hide on small screens
             /> */}
-            \1>
+            >
               <BellIcon className="h-5 w-5" />
             </Button>
           </div>
         </header>
 
         {/* Page Content */}
-        \1>
+        >
           {children}
         </main>
 
         {/* Footer (Optional) */}
-        {/* \1>
+        {/* >
           © {new Date().getFullYear()} Your Hospital Name. All rights reserved.
         </footer> */}
       </div>

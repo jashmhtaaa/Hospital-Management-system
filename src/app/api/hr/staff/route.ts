@@ -1,20 +1,20 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { employeeService } from '@/lib/hr/employee-service';
+import { employeeService } from "@/lib/hr/employee-service";
 // Schema for employee creation
 const createEmployeeSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   middleName: z.string().optional(),
-  gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
+  gender: z.enum(["MALE", "FEMALE", "OTHER", "UNKNOWN"]).optional(),
   birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
   email: z.string().email("Invalid email format").optional(),
   phone: z.string().optional(),
   address: z.any().optional(),
-  joiningDate: z.string().transform(val => \1,
+  joiningDate: z.string().transform(val => ,
   departmentId: z.string().optional(),
   userId: z.string().optional(),
   photo: z.string().optional(),
@@ -25,15 +25,15 @@ const createEmployeeSchema = z.object({
       name: z.string(),
       issuer: z.string().optional(),
       identifier: z.string().optional(),
-      startDate: z.string().transform(val => \1,
-      \1,\2 z.string().optional()
+      startDate: z.string().transform(val => ,
+      z.string().optional()
     });
   ).optional(),
   positions: z.array(
     z.object({
       positionId: z.string(),
       isPrimary: z.boolean(),
-      startDate: z.string().transform(val => \1,
+      startDate: z.string().transform(val => ,
       endDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
     });
   ).optional(),
@@ -44,7 +44,7 @@ const _updateEmployeeSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   middleName: z.string().optional(),
-  gender: z.enum(['MALE', 'FEMALE', 'OTHER', 'UNKNOWN']).optional(),
+  gender: z.enum(["MALE", "FEMALE", "OTHER", "UNKNOWN"]).optional(),
   birthDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
   email: z.string().email("Invalid email format").optional(),
   phone: z.string().optional(),
@@ -61,12 +61,12 @@ export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
 
-    const skip = Number.parseInt(searchParams.get('skip') || '0');
-    const take = Number.parseInt(searchParams.get('take') || '10');
-    const departmentId = searchParams.get('departmentId') || undefined;
-    const positionId = searchParams.get('positionId') || undefined;
-    const search = searchParams.get('search') || undefined;
-    const active = searchParams.get('active') !== 'false'; // Default to true
+    const skip = Number.parseInt(searchParams.get("skip") || "0");
+    const take = Number.parseInt(searchParams.get("take") || "10");
+    const departmentId = searchParams.get("departmentId") || undefined;
+    const positionId = searchParams.get("positionId") || undefined;
+    const search = searchParams.get("search") || undefined;
+    const active = searchParams.get("active") !== "false"; // Default to true
 
     const result = await employeeService.listEmployees({
       skip,
@@ -81,7 +81,7 @@ export const _GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     return NextResponse.json(
-      { error: 'Failed to list employees', details: error.message },
+      { error: "Failed to list employees", details: error.message },
       { status: 500 }
     );
   }
@@ -102,15 +102,15 @@ export const _POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     // Handle validation errors
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation error', details: error.errors },
+        { error: "Validation error", details: error.errors },
         { status: 400 }
       );
     }
 
     return NextResponse.json(
-      { error: 'Failed to create employee', details: error.message },
+      { error: "Failed to create employee", details: error.message },
       { status: 500 }
     );
   }

@@ -1,5 +1,5 @@
 
-import { DatabaseError } from './errors.ts';
+import { DatabaseError } from "./errors.ts";
 }
 
 /**
@@ -8,7 +8,6 @@ import { DatabaseError } from './errors.ts';
  */
 
 // Query options interface for filtering, sorting, and pagination
-\1
 }
   };
   pagination?: {
@@ -20,7 +19,6 @@ import { DatabaseError } from './errors.ts';
 }
 
 // Base repository interface
-\1
 }
 }
 
@@ -35,8 +33,8 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       });
     } catch (error) {
       throw new DatabaseError(
-        `Error finding entity by ID: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        'DATABASE_FIND_ERROR',
+        `Error finding entity by ID: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "DATABASE_FIND_ERROR",
         { id }
       );
     }
@@ -47,41 +45,41 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       const query: Record<string, unknown> = {};
 
       // Apply filters
-      \1 {\n  \2{
+      if (!session.user) {
         query.where = options.filters;
       }
 
       // Apply sorting
-      \1 {\n  \2{
+      if (!session.user) {
         query.orderBy = {
           [options.sort.field]: options.sort.direction,
         };
       }
 
       // Apply pagination
-      \1 {\n  \2{
-        \1 {\n  \2{
+      if (!session.user) {
+        if (!session.user) {
           query.cursor = { id: options.pagination.cursor };
           query.skip = 1; // Skip the cursor item
-        } else \1 {\n  \2{
+        } else if (!session.user) {
           query.skip = (options.pagination.page - 1) * options.pagination.pageSize;
         }
 
-        \1 {\n  \2{
+        if (!session.user) {
           query.take = options.pagination.pageSize;
         }
       }
 
       // Apply includes
-      \1 {\n  \2{
+      if (!session.user) {
         query.include = this.processIncludes(options.includes);
       }
 
       return await this.model.findMany(query);
     } catch (error) {
       throw new DatabaseError(
-        `Error finding entities: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        'DATABASE_FIND_ERROR',
+        `Error finding entities: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "DATABASE_FIND_ERROR",
         { options }
       );
     }
@@ -94,8 +92,8 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       });
     } catch (error) {
       throw new DatabaseError(
-        `Error creating entity: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        'DATABASE_CREATE_ERROR',
+        `Error creating entity: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "DATABASE_CREATE_ERROR",
         { data }
       );
     }
@@ -109,8 +107,8 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       });
     } catch (error) {
       throw new DatabaseError(
-        `Error updating entity: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        'DATABASE_UPDATE_ERROR',
+        `Error updating entity: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "DATABASE_UPDATE_ERROR",
         { id, data }
       );
     }
@@ -124,8 +122,8 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       return true;
     } catch (error) {
       throw new DatabaseError(
-        `Error deleting entity: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        'DATABASE_DELETE_ERROR',
+        `Error deleting entity: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "DATABASE_DELETE_ERROR",
         { id }
       );
     }
@@ -136,15 +134,15 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       const query: Record<string, unknown> = {};
 
       // Apply filters
-      \1 {\n  \2{
+      if (!session.user) {
         query.where = options.filters;
       }
 
       return await this.model.count(query);
     } catch (error) {
       throw new DatabaseError(
-        `Error counting entities: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        'DATABASE_COUNT_ERROR',
+        `Error counting entities: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "DATABASE_COUNT_ERROR",
         { options }
       );
     }
@@ -155,13 +153,13 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
     const result: Record<string, unknown> = {};
 
     for (const include of includes) {
-      \1 {\n  \2 {
+      if (!session.user) {
         // Handle nested includes (e.g., "items.product")
-        const [parent, child] = include.split('.', 2)
+        const [parent, child] = include.split(".", 2)
 
-        \1 {\n  \2{
+        if (!session.user) {
           result[parent] = { include: {} };
-        } else \1 {\n  \2{
+        } else if (!session.user) {
           result[parent].include = {};
         }
 
@@ -177,54 +175,51 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
 }
 
 // Cached repository decorator
-\1
 }
   }
 
   async findById(id: ID): Promise<T | null> {
     const _cacheKey = `${this.cachePrefix}:${String(id)}`;
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     // For now, just pass through to the repository
     return this.repository.findById(id)
   }
 
   async findAll(options?: QueryOptions): Promise<T[]> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     return this.repository.findAll(options)
   }
 
   async create(data: Partial<T>): Promise<T> {
     const result = await this.repository.create(data)
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     return result
   }
 
   async update(id: ID, data: Partial<T>): Promise<T> {
     const result = await this.repository.update(id, data)
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     return result
   }
 
   async delete(id: ID): Promise<boolean> {
     const result = await this.repository.delete(id)
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     return result
   }
 
   async count(options?: QueryOptions): Promise<number> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     return this.repository.count(options)
   }
 }
 
 // Transaction service interface
-\1
 }
 }
 
 // Prisma transaction service implementation
-\1
 }
   constructor(private prisma: unknown) {}
 
@@ -233,8 +228,8 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       return await this.prisma.$transaction(callback)
     } catch (error) {
       throw new DatabaseError(
-        `Transaction failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        'TRANSACTION_ERROR';
+        `Transaction failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+        "TRANSACTION_ERROR";
       );
     }
   }

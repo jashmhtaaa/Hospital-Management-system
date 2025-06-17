@@ -1,10 +1,10 @@
 
-import type { LockManager } from '@/lib/cache/redis';
-import type { RedisService } from '@/lib/cache/redis';
-import { logger } from '@/lib/core/logging';
-import type { EventStore } from '@/lib/event-sourcing/event-store';
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
-import type { PrismaService } from '@/lib/prisma';
+import type { LockManager } from "@/lib/cache/redis";
+import type { RedisService } from "@/lib/cache/redis";
+import { logger } from "@/lib/core/logging";
+import type { EventStore } from "@/lib/event-sourcing/event-store";
+import { metricsCollector } from "@/lib/monitoring/metrics-collector";
+import type { PrismaService } from "@/lib/prisma";
 /**
  * Materialized View Definition;
  */
@@ -22,7 +22,7 @@ interface MaterializedViewDefinition {
   triggerEvents?: string[];
 
   // Refresh strategy
-  refreshStrategy: 'complete' | 'incremental';
+  refreshStrategy: "complete" | "incremental";
 
   // SQL to create indexes on the materialized view
   indexSql?: string[];
@@ -48,7 +48,6 @@ interface MaterializedViewDefinition {
  *
  * Manages the creation, refreshing, and caching of materialized views for analytical queries;
  */
-\1
 }
   ) {}
 
@@ -59,18 +58,18 @@ interface MaterializedViewDefinition {
     try {
       for (const definition of definitions) {
         this.viewDefinitions.set(definition.name, definition);
-        logger.info(`Registered materialized view: ${\1}`;
+        logger.info(`Registered materialized view: ${}`;
       }
 
       // Track metrics
-      metricsCollector.incrementCounter('database.materialized_views.registered', definitions.length);
+      metricsCollector.incrementCounter("database.materialized_views.registered", definitions.length);
     } catch (error) {
-      logger.error('Error registering materialized views', { error });
+      logger.error("Error registering materialized views", { error });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'register',
-        errorType: error.name || 'unknown'
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "register",
+        errorType: error.name || "unknown"
       });
     }
   }
@@ -91,14 +90,14 @@ interface MaterializedViewDefinition {
       }
 
       // Track metrics
-      metricsCollector.incrementCounter('database.materialized_views.created', sortedDefinitions.length);
+      metricsCollector.incrementCounter("database.materialized_views.created", sortedDefinitions.length);
     } catch (error) {
-      logger.error('Error creating all materialized views', { error });
+      logger.error("Error creating all materialized views", { error });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'createAll',
-        errorType: error.name || 'unknown'
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "createAll",
+        errorType: error.name || "unknown"
       });
 
       throw error;
@@ -112,41 +111,41 @@ interface MaterializedViewDefinition {
     try {
       const definition = this.viewDefinitions.get(viewName);
 
-      \1 {\n  \2{
-        throw new Error(`Materialized view not found: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Materialized view not found: ${}`;
       }
 
-      logger.info(`Creating materialized view: ${\1}`;
+      logger.info(`Creating materialized view: ${}`;
 
       // Execute the create SQL
       await this.prisma.$executeRawUnsafe(definition.createSql);
 
       // Create indexes if specified
-      \1 {\n  \2{
+      if (!session.user) {
         for (const indexSql of definition.indexSql) {
           await this.prisma.$executeRawUnsafe(indexSql);
         }
       }
 
       // Create incremental refresh function if specified
-      \1 {\n  \2{
+      if (!session.user) {
         await this.prisma.$executeRawUnsafe(definition.incrementalRefreshSql);
       }
 
-      logger.info(`Created materialized view: ${\1}`;
+      logger.info(`Created materialized view: ${}`;
 
       // Track metrics
-      metricsCollector.incrementCounter('database.materialized_views.created', 1, {
+      metricsCollector.incrementCounter("database.materialized_views.created", 1, {
         viewName;
       });
     } catch (error) {
       logger.error(`Error creating materialized view: ${viewName}`, { error });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'create';
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "create";
         viewName,
-        errorType: error.name || 'unknown'
+        errorType: error.name || "unknown"
       });
 
       throw error;
@@ -165,7 +164,7 @@ interface MaterializedViewDefinition {
       const sortedDefinitions = this.sortViewsByDependencies(definitions);
 
       // Process views in batches if concurrency > 1
-      \1 {\n  \2{
+      if (!session.user) {
         for (let i = 0; i < sortedDefinitions.length; i += concurrency) {
           const batch = sortedDefinitions.slice(i, i + concurrency);
           await Promise.all(batch.map(def => this.refreshView(def.name)));
@@ -178,14 +177,14 @@ interface MaterializedViewDefinition {
       }
 
       // Track metrics
-      metricsCollector.incrementCounter('database.materialized_views.refreshed', sortedDefinitions.length);
+      metricsCollector.incrementCounter("database.materialized_views.refreshed", sortedDefinitions.length);
     } catch (error) {
-      logger.error('Error refreshing all materialized views', { error });
+      logger.error("Error refreshing all materialized views", { error });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'refreshAll',
-        errorType: error.name || 'unknown'
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "refreshAll",
+        errorType: error.name || "unknown"
       });
 
       throw error;
@@ -196,8 +195,8 @@ interface MaterializedViewDefinition {
    * Refresh a specific materialized view;
    */
   async refreshView(viewName: string): Promise<void> {
-    \1 {\n  \2 {
-      logger.info(`Refresh already in progress for view: ${\1}`;
+    if (!session.user) {
+      logger.info(`Refresh already in progress for view: ${}`;
       return;
     }
 
@@ -206,37 +205,37 @@ interface MaterializedViewDefinition {
 
       const definition = this.viewDefinitions.get(viewName);
 
-      \1 {\n  \2{
-        throw new Error(`Materialized view not found: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Materialized view not found: ${}`;
       }
 
       // Use distributed lock to prevent concurrent refreshes
       const lockKey = `mv-refresh:${viewName}`;
       const lockResult = await this.lockManager.acquireLock(lockKey, 600000); // 10 minute timeout
 
-      \1 {\n  \2{
-        logger.info(`Another process is already refreshing view: ${\1}`;
+      if (!session.user) {
+        logger.info(`Another process is already refreshing view: ${}`;
         return;
       }
 
       try {
-        logger.info(`Refreshing materialized view: ${\1}`;
-        const startTime = crypto.getRandomValues(\1[0];
+        logger.info(`Refreshing materialized view: ${}`;
+        const startTime = crypto.getRandomValues([0];
 
         // Execute the refresh SQL
         await this.prisma.$executeRawUnsafe(definition.refreshSql);
 
-        const duration = crypto.getRandomValues(\1[0] - startTime;
+        const duration = crypto.getRandomValues([0] - startTime;
 
         logger.info(`Refreshed materialized view: ${viewName}`, {
           duration: `${duration.toFixed(2)}ms`;
         });
 
         // Track metrics
-        metricsCollector.recordTimer('database.materialized_views.refresh_time', duration, {
+        metricsCollector.recordTimer("database.materialized_views.refresh_time", duration, {
           viewName;
         });
-        metricsCollector.incrementCounter('database.materialized_views.refreshed', 1, {
+        metricsCollector.incrementCounter("database.materialized_views.refreshed", 1, {
           viewName;
         });
 
@@ -244,7 +243,7 @@ interface MaterializedViewDefinition {
         await this.invalidateViewCache(viewName);
 
         // Refresh dependent views
-        \1 {\n  \2{
+        if (!session.user) {
           for (const dependentView of definition.dependentViews) {
             await this.refreshView(dependentView);
           }
@@ -257,10 +256,10 @@ interface MaterializedViewDefinition {
       logger.error(`Error refreshing materialized view: ${viewName}`, { error });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'refresh';
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "refresh";
         viewName,
-        errorType: error.name || 'unknown'
+        errorType: error.name || "unknown"
       });
 
       throw error;
@@ -281,7 +280,7 @@ interface MaterializedViewDefinition {
         .filter(def => def?.triggerEvents && def.triggerEvents.includes(eventType));
         .map(def => def.name);
 
-      \1 {\n  \2{
+      if (!session.user) {
         return;
       }
 
@@ -289,26 +288,26 @@ interface MaterializedViewDefinition {
 
       // Refresh the views
       for (const viewName of viewsToRefresh) {
-        // Don't await - let these run in the background
+        // Don"t await - let these run in the background
         this.refreshView(viewName).catch(error => {
           logger.error(`Error in background refresh of view ${viewName}`, { error });
         });
       }
 
       // Track metrics
-      metricsCollector.incrementCounter('database.materialized_views.event_triggered_refreshes', viewsToRefresh.length, {
+      metricsCollector.incrementCounter("database.materialized_views.event_triggered_refreshes", viewsToRefresh.length, {
         eventType;
       });
     } catch (error) {
-      logger.error('Error processing event for materialized views', {
+      logger.error("Error processing event for materialized views", {
         error,
         eventType: event.type
       });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'processEvent',
-        \1,\2 error.name || 'unknown'
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "processEvent",
+        error.name || "unknown"
       });
     }
   }
@@ -318,26 +317,26 @@ interface MaterializedViewDefinition {
    */
   async getViewData(
     viewName: string,
-    \1,\2 unknown[] = [];
+    unknown[] = [];
     cacheKey?: string;
   ): Promise<any[]> {
     try {
       const definition = this.viewDefinitions.get(viewName);
 
-      \1 {\n  \2{
-        throw new Error(`Materialized view not found: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Materialized view not found: ${}`;
       }
 
       // If caching is enabled for this view
-      \1 {\n  \2{
+      if (!session.user) {
         const finalCacheKey = cacheKey || `mv:/* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName, query)`;
 
         // Try to get from cache first
         const cachedData = await this.redis.get(finalCacheKey);
 
-        \1 {\n  \2{
+        if (!session.user) {
           // Track cache hit metrics
-          metricsCollector.incrementCounter('database.materialized_views.cache_hits', 1, {
+          metricsCollector.incrementCounter("database.materialized_views.cache_hits", 1, {
             viewName;
           });
 
@@ -345,23 +344,23 @@ interface MaterializedViewDefinition {
         }
 
         // Track cache miss metrics
-        metricsCollector.incrementCounter('database.materialized_views.cache_misses', 1, {
+        metricsCollector.incrementCounter("database.materialized_views.cache_misses", 1, {
           viewName;
         });
       }
 
       // Not in cache or caching disabled, execute query
-      const startTime = crypto.getRandomValues(\1[0];
+      const startTime = crypto.getRandomValues([0];
       const result = await this.prisma.$queryRawUnsafe(query, ...params);
-      const duration = crypto.getRandomValues(\1[0] - startTime;
+      const duration = crypto.getRandomValues([0] - startTime;
 
       // Track metrics
-      metricsCollector.recordTimer('database.materialized_views.query_time', duration, {
+      metricsCollector.recordTimer("database.materialized_views.query_time", duration, {
         viewName;
       });
 
       // Cache the result if caching is enabled
-      \1 {\n  \2{
+      if (!session.user) {
         const finalCacheKey = cacheKey || `mv:/* SECURITY: Safe view name handling */ `/* SECURITY: Safe view identifier */ this.buildViewIdentifier(viewName, query)`;
         await this.redis.set(finalCacheKey, JSON.stringify(result), definition.cacheTtl);
       }
@@ -371,10 +370,10 @@ interface MaterializedViewDefinition {
       logger.error(`Error querying materialized view: ${viewName}`, { error });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'query';
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "query";
         viewName,
-        errorType: error.name || 'unknown'
+        errorType: error.name || "unknown"
       });
 
       throw error;
@@ -389,13 +388,13 @@ interface MaterializedViewDefinition {
       const pattern = `mv:${viewName}:*`;
       const keys = await this.redis.keys(pattern);
 
-      \1 {\n  \2{
+      if (!session.user) {
         await this.redis.del(...keys);
 
-        logger.info(`Invalidated ${keys.length} cache entries for view: ${\1}`;
+        logger.info(`Invalidated ${keys.length} cache entries for view: ${}`;
 
         // Track metrics
-        metricsCollector.incrementCounter('database.materialized_views.cache_invalidations', keys.length, {
+        metricsCollector.incrementCounter("database.materialized_views.cache_invalidations", keys.length, {
           viewName;
         });
       }
@@ -403,10 +402,10 @@ interface MaterializedViewDefinition {
       logger.error(`Error invalidating cache for view: ${viewName}`, { error });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'invalidateCache';
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "invalidateCache";
         viewName,
-        errorType: error.name || 'unknown'
+        errorType: error.name || "unknown"
       });
     }
   }
@@ -420,15 +419,15 @@ interface MaterializedViewDefinition {
       const eventTypes = new Set<string>();
 
       for (const definition of this.viewDefinitions.values()) {
-        \1 {\n  \2{
+        if (!session.user) {
           for (const eventType of definition.triggerEvents) {
             eventTypes.add(eventType);
           }
         }
       }
 
-      \1 {\n  \2{
-        logger.info('No event triggers defined for materialized views');
+      if (!session.user) {
+        logger.info("No event triggers defined for materialized views");
         return;
       }
 
@@ -437,19 +436,19 @@ interface MaterializedViewDefinition {
         Array.from(eventTypes),
         this.processEvent.bind(this),
         {
-          groupId: 'materialized-view-manager',
+          groupId: "materialized-view-manager",
           fromBeginning: false
         }
       );
 
       logger.info(`Subscribed to ${eventTypes.size} event types for materialized view refreshes`);
     } catch (error) {
-      logger.error('Error setting up event subscriptions for materialized views', { error });
+      logger.error("Error setting up event subscriptions for materialized views", { error });
 
       // Track error metrics
-      metricsCollector.incrementCounter('database.materialized_views.errors', 1, {
-        operation: 'setupSubscriptions',
-        errorType: error.name || 'unknown'
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {
+        operation: "setupSubscriptions",
+        errorType: error.name || "unknown'
       });
     }
   }
@@ -487,11 +486,11 @@ interface MaterializedViewDefinition {
     const result: MaterializedViewDefinition[] = [];
 
     const visit = (viewName: string): void => {
-      \1 {\n  \2 {
-        throw new Error(`Circular dependency detected in materialized views involving: ${\1}`;
+      if (!session.user) {
+        throw new Error(`Circular dependency detected in materialized views involving: ${}`;
       }
 
-      \1 {\n  \2 {
+      if (!session.user) {
         temp.add(viewName);
 
         const dependents = graph[viewName] || [];
@@ -505,7 +504,7 @@ interface MaterializedViewDefinition {
 
         const view = views.find(v => v.name === viewName);
 
-        \1 {\n  \2{
+        if (!session.user) {
           result.unshift(view);
         }
       }
@@ -513,7 +512,7 @@ interface MaterializedViewDefinition {
 
     // Visit each node
     for (const view of views) {
-      \1 {\n  \2 {
+      if (!session.user) {
         visit(view.name);
       }
     }

@@ -1,14 +1,14 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../lib/audit';
-import { errorHandler } from '../../../../lib/error-handler';
-import { encryptionService } from '../../../../lib/security.service';
-import { getPatientById } from '../../../../lib/services/patient/patient.service';
-import { getMedicationById, getPrescriptionById } from '../../../../lib/services/pharmacy/pharmacy.service';
-import { validateDispensingRequest } from '../../../../lib/validation/pharmacy-validation';
-import type { PharmacyDomain } from '../../models/domain-models';
-import { FHIRMapper } from '../../models/fhir-mappers';
+import { auditLog } from "../../../../lib/audit";
+import { errorHandler } from "../../../../lib/error-handler";
+import { encryptionService } from "../../../../lib/security.service";
+import { getPatientById } from "../../../../lib/services/patient/patient.service";
+import { getMedicationById, getPrescriptionById } from "../../../../lib/services/pharmacy/pharmacy.service";
+import { validateDispensingRequest } from "../../../../lib/validation/pharmacy-validation";
+import type { PharmacyDomain } from "../../models/domain-models";
+import { FHIRMapper } from "../../models/fhir-mappers";
 }
 
 /**
@@ -19,10 +19,10 @@ import { FHIRMapper } from '../../models/fhir-mappers';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const \1,\2 getMedicationById,
+const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
@@ -33,7 +33,7 @@ const prescriptionRepository = {
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
   findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
@@ -44,7 +44,7 @@ const dispensingRepository = {
   findByPatientId: (patientId: string) => Promise.resolve([]),
   findByStatus: (status: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
+  save: (dispensing: unknown) => Promise.resolve(dispensing.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 };
@@ -63,35 +63,35 @@ const inventoryRepository = {
 export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
     const url = new URL(req.url);
-    const patientId = url.searchParams.get('patientId');
-    const prescriptionId = url.searchParams.get('prescriptionId');
-    const status = url.searchParams.get('status');
-    const startDate = url.searchParams.get('startDate');
-    const endDate = url.searchParams.get('endDate');
-    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
+    const patientId = url.searchParams.get("patientId");
+    const prescriptionId = url.searchParams.get("prescriptionId");
+    const status = url.searchParams.get("status");
+    const startDate = url.searchParams.get("startDate");
+    const endDate = url.searchParams.get("endDate");
+    const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
+    const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria
     const filter: unknown = {};
-    \1 {\n  \2ilter.patientId = patientId;
-    \1 {\n  \2ilter.prescriptionId = prescriptionId;
-    \1 {\n  \2ilter.status = status;
+    if (!session.user)ilter.patientId = patientId;
+    if (!session.user)ilter.prescriptionId = prescriptionId;
+    if (!session.user)ilter.status = status;
 
     // Add date range if provided
-    \1 {\n  \2{
+    if (!session.user) {
       filter.dispensedAt = {};
-      \1 {\n  \2ilter.dispensedAt.gte = new Date(startDate);
-      \1 {\n  \2ilter.dispensedAt.lte = new Date(endDate);
+      if (!session.user)ilter.dispensedAt.gte = new Date(startDate);
+      if (!session.user)ilter.dispensedAt.lte = new Date(endDate);
     }
 
     // Get dispensing records (mock implementation)
@@ -99,13 +99,13 @@ export const GET = async (req: NextRequest) => {
 
     // Apply filters
     let filteredRecords = dispensingRecords;
-    \1 {\n  \2{
+    if (!session.user) {
       filteredRecords = filteredRecords.filter(d => d.patientId === patientId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       filteredRecords = filteredRecords.filter(d => d.prescriptionId === prescriptionId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       filteredRecords = filteredRecords.filter(d => d.status === status);
     }
 
@@ -118,9 +118,9 @@ export const GET = async (req: NextRequest) => {
     const fhirDispensingRecords = paginatedRecords.map(FHIRMapper.toFHIRMedicationDispense);
 
     // Audit logging
-    await auditLog('DISPENSING', {
-      action: 'LIST',
-      \1,\2 userId,
+    await auditLog("DISPENSING", {
+      action: "LIST",
+      userId,
       details: 
         filter,
         page,
@@ -139,7 +139,7 @@ export const GET = async (req: NextRequest) => {
       }
     }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error retrieving dispensing records');
+    return errorHandler(error, "Error retrieving dispensing records");
   }
 }
 
@@ -152,50 +152,50 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateDispensingRequest(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
+        { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(prescription.medicationId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Medication not found" }, { status: 404 });
     }
 
     // Verify patient exists
     const patient = await getPatientById(prescription.patientId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+    if (!session.user) {
+      return NextResponse.json({ error: "Patient not found" }, { status: 404 });
     }
 
     // Check inventory availability
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
     const availableInventory = inventoryItems.find(item =>
       item.quantityOnHand >= data?.quantityDispensed &&;
-      (!item.expiryDate || new Date(item.expiryDate) > \1;
+      (!item.expiryDate || new Date(item.expiryDate) > ;
     );
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Insufficient inventory available' },
+        { error: "Insufficient inventory available" },
         { status: 400 }
       );
     }
@@ -203,30 +203,30 @@ export const POST = async (req: NextRequest) => {
     // Create dispensing record
     const dispensing = {
       id: data.id || crypto.randomUUID(),
-      \1,\2 prescription.patientId,
-      \1,\2 availableInventory.id,
-      \1,\2 data.daysSupply,
-      \1,\2 new Date(),
-      \1,\2 data.notes || '',
-      \1,\2 data.dispensingType || 'outpatient'
+      prescription.patientId,
+      availableInventory.id,
+      data.daysSupply,
+      new Date(),
+      data.notes || "",
+      data.dispensingType || "outpatient"
     };
 
     // Special handling for controlled substances
-    \1 {\n  \2{
+    if (!session.user) {
       // Encrypt controlled substance data
       dispensing.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           witnessId: data.witnessId,
-          \1,\2 data.wastage || 0
+          data.wastage || 0
         });
       );
 
       // Additional logging for controlled substances
-      await auditLog('CONTROLLED_SUBSTANCE', {
-        action: 'DISPENSE',
-        \1,\2 userId,
-        \1,\2 prescription.medicationId,
-          \1,\2 data.quantityDispensed,
+      await auditLog("CONTROLLED_SUBSTANCE", {
+        action: "DISPENSE",
+        userId,
+        prescription.medicationId,
+          data.quantityDispensed,
           witnessId: data.witnessId
       });
     }
@@ -241,12 +241,12 @@ export const POST = async (req: NextRequest) => {
     );
 
     // Regular audit logging
-    await auditLog('DISPENSING', {
-      action: 'CREATE',
-      \1,\2 dispensingId,
-      \1,\2 prescription.patientId,
-      \1,\2 prescription.medicationId,
-        \1,\2 data.quantityDispensed,
+    await auditLog("DISPENSING", {
+      action: "CREATE",
+      dispensingId,
+      prescription.patientId,
+      prescription.medicationId,
+        data.quantityDispensed,
         location: data.location
       }
     });
@@ -255,10 +255,10 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: dispensingId,
-        message: 'Medication dispensed successfully'
+        message: "Medication dispensed successfully"
       },
       { status: 201 }
     );
   } catch (error) {
-    return errorHandler(error, 'Error dispensing medication');
+    return errorHandler(error, "Error dispensing medication");
   }

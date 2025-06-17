@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card';
+} from "../ui/card";
   Dialog,
   DialogContent,
   DialogDescription,
@@ -15,31 +15,31 @@ import { useRouter } from 'next/navigation';
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
+} from "../ui/dialog";
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '../ui/accordion';
+} from "../ui/accordion";
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '../ui/tabs';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { Textarea } from '../ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Label } from '../ui/label';
-import { Checkbox } from '../ui/checkbox';
-import { useToast } from '../../hooks/use-toast';
-import { format } from 'date-fns';
+} from "../ui/tabs";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { Textarea } from "../ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Label } from "../ui/label";
+import { Checkbox } from "../ui/checkbox";
+import { useToast } from "../../hooks/use-toast";
+import { format } from "date-fns";
 
 interface DocumentSection {
   id: string,
-  \1,\2 string,
-  \1,\2 number,
-  \1,\2 string,
+  string,
+  number,
+  string,
   authoredDate: string;
   updatedById?: string;
   updatedDate?: string;
@@ -49,8 +49,8 @@ interface DocumentSection {
 
 interface DocumentSignature {
   id: string,
-  \1,\2 string,
-  \1,\2 string,
+  string,
+  string,
   signatureType: string;
   attestation?: string;
   ipAddress?: string;
@@ -61,10 +61,10 @@ interface DocumentSignature {
 
 interface DocumentAmendment {
   id: string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string,
-  \1,\2 string;
+  string,
+  string,
+  string,
+  string;
   finalizedDate?: string;
   finalizedById?: string;
   createdAt: string,
@@ -73,20 +73,20 @@ interface DocumentAmendment {
 
 interface Document {
   id: string,
-  \1,\2 string;
+  string;
   encounterId?: string;
   documentType: string,
-  \1,\2 string,
-  \1,\2 string;
+  string,
+  string;
   finalizedDate?: string;
   finalizedById?: string;
   version: number,
   content: string;
   templateId?: string;
   isConfidential: boolean,
-  \1,\2 string[],
-  \1,\2 string,
-  \1,\2 DocumentSignature[],
+  string[],
+  string,
+  DocumentSignature[],
   amendments: DocumentAmendment[]
 }
 
@@ -99,18 +99,18 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   // State
   const [document, setDocument] = useState<Document | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('content');
+  const [activeTab, setActiveTab] = useState("content");
   const [signatureDialogOpen, setSignatureDialogOpen] = useState(false);
   const [amendmentDialogOpen, setAmendmentDialogOpen] = useState(false);
   const [signatureData, setSignatureData] = useState({
-    signerRole: '',
-    \1,\2 '',
-    \1,\2 false
+    signerRole: "",
+    "",
+    false
   });
   const [amendmentData, setAmendmentData] = useState({
-    amendmentType: 'Addendum',
-    \1,\2 '',
-    status: 'Draft'
+    amendmentType: "Addendum",
+    "",
+    status: "Draft"
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -119,10 +119,10 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/clinical-documentation/${\1}`;
+      const response = await fetch(`/api/clinical-documentation/${}`;
 
-      \1 {\n  \2{
-        throw new Error('Failed to fetch document');
+      if (!session.user) {
+        throw new Error("Failed to fetch document");
       }
 
       const data = await response.json(),
@@ -130,8 +130,8 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     } catch (error) {
 
       toast({
-        title: 'Error',
-        \1,\2 'destructive'
+        title: "Error",
+        "destructive"
       });
     } finally {
       setLoading(false);
@@ -149,29 +149,29 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
     try {
       const response = await fetch(`/api/clinical-documentation/${documentId}/sign`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(signatureData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to sign document');
+        throw new Error(errorData.error || "Failed to sign document");
       }
 
       toast({
-        title: 'Success',
-        description: 'Document signed successfully'
+        title: "Success",
+        description: "Document signed successfully"
       });
 
       // Close dialog and reset form
       setSignatureDialogOpen(false),
       setSignatureData({
-        signerRole: '',
-        \1,\2 '',
-        \1,\2 false
+        signerRole: "",
+        "",
+        false
       });
 
       // Refresh document
@@ -179,8 +179,8 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     } catch (error) {
 
       toast({
-        title: 'Error',
-        \1,\2 'destructive'
+        title: "Error",
+        "destructive"
       });
     } finally {
       setSubmitting(false);
@@ -193,29 +193,29 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
     try {
       const response = await fetch(`/api/clinical-documentation/${documentId}/amend`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(amendmentData)
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create amendment');
+        throw new Error(errorData.error || "Failed to create amendment");
       }
 
       toast({
-        title: 'Success',
-        description: 'Amendment created successfully'
+        title: "Success",
+        description: "Amendment created successfully"
       });
 
       // Close dialog and reset form
       setAmendmentDialogOpen(false),
       setAmendmentData({
-        amendmentType: 'Addendum',
-        \1,\2 '',
-        status: 'Draft'
+        amendmentType: "Addendum",
+        "",
+        status: "Draft"
       });
 
       // Refresh document
@@ -223,8 +223,8 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     } catch (error) {
 
       toast({
-        title: 'Error',
-        \1,\2 'destructive'
+        title: "Error",
+        "destructive"
       });
     } finally {
       setSubmitting(false);
@@ -234,17 +234,17 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   // Get status badge variant
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
-      case 'Draft':
-        return 'secondary';
-      case 'Preliminary':
-        return 'warning';
-      case 'Final':
-        return 'success';
-      case 'Amended':
-        return 'info';
-      case 'Canceled':
-        return 'destructive';
-      default: return 'default'
+      case "Draft":
+        return "secondary";
+      case "Preliminary":
+        return "warning";
+      case "Final":
+        return "success";
+      case "Amended":
+        return "info";
+      case "Canceled":
+        return "destructive";
+      default: return "default"
     }
   };
 
@@ -255,18 +255,18 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
   // Helper function to format date
   const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'MMM dd, yyyy h: mm a')
+    return format(new Date(dateString), "MMM dd, yyyy h: mm a")
   };
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         <CardHeader>
           <CardTitle>Loading Document...</CardTitle>
         </CardHeader>
-        \1>
-          \1>
-            <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4">\1>
+        >
+          >
+            <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4">>
             <p>Loading document details...</p>
           </div>
         </CardContent>
@@ -274,9 +274,9 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
     );
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     return (
-      \1>
+      >
         <CardHeader>
           <CardTitle>Document Not Found</CardTitle>
         </CardHeader>
@@ -284,7 +284,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
           <p>The requested document could not be found.</p>
         </CardContent>
         <CardFooter>
-          <Button onClick={() => router.push('/clinical-documentation')}>
+          <Button onClick={() => router.push("/clinical-documentation")}>
             Back to Documents
           </Button>
         </CardFooter>
@@ -293,26 +293,26 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   }
 
   return (
-    \1>
+    >
       <CardHeader>
-        \1>
+        >
 <div
             <CardTitle>{document.documentTitle}</CardTitle>
-            \1>
+            >
               {document.documentType} - {document.documentNumber}
             </CardDescription>
           </div>
-          \1>
-            \1>
+          >
+            >
               {document.status}
             </Badge>
 
             {document?.isConfidential && (
-              <Badge variant="destructive">Confidential\1>
+              <Badge variant="destructive">Confidential>
             )}
 
             {document.tags.map((tag, index) => (
-              \1>
+              >
                 {tag}
               </Badge>
             ))}
@@ -321,39 +321,39 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       </CardHeader>
 
       <CardContent>
-        \1>
-          \1>
-            <TabsTrigger value="content">Document Content\1>
-            <TabsTrigger value="sections">Sections ({document.sections.length})\1>
-            <TabsTrigger value="metadata">Metadata\1>
-            <TabsTrigger value="signatures">Signatures ({document.signatures.length})\1>
+        >
+          >
+            <TabsTrigger value="content">Document Content>
+            <TabsTrigger value="sections">Sections ({document.sections.length})>
+            <TabsTrigger value="metadata">Metadata>
+            <TabsTrigger value="signatures">Signatures ({document.signatures.length})>
             <TabsTrigger value="amendments">Amendments ({document.amendments.length})</TabsTrigger>
           </TabsList>
 
-          \1>
-            \1>
+          >
+            >
               {document.content}
             </div>
           </TabsContent>
 
-          \1>
+          >
             {document.sections.length > 0 ? (
-              \1>
+              >
                 {document.sections;
                   .sort((a, b) => a.sectionOrder - b.sectionOrder);
                   .map((section) => (
-                    \1>
+                    >
                       <AccordionTrigger>
-                        \1>
+                        >
                           <span>{section.sectionTitle}</span>
                           <Badge variant="outline">{section.sectionType}</Badge>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>
-                        \1>
+                        >
                           {section.content}
                         </div>
-                        \1>
+                        >
                           <p>Created by {section.authorId} on {formatDate(section.authoredDate)}</p>
                           {section?.updatedById && (
                             <p>Updated by {section.updatedById} on {formatDate(section.updatedDate ||
@@ -365,18 +365,18 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                   ))}
               </Accordion>
             ) : (
-              \1>
+              >
                 This document does not have any sections.
               </div>
             )}
           </TabsContent>
 
-          \1>
-            \1>
-              \1>
-                \1>
-                  <h3 className="text-lg font-medium mb-2">Document Information\1>
-                  \1>
+          >
+            >
+              >
+                >
+                  <h3 className="text-lg font-medium mb-2">Document Information>
+                  >
 <div
                       <span className="font-medium">Document Number:</span> {document.documentNumber}
                     </div>
@@ -390,14 +390,14 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       <span className="font-medium">Version:</span> {document.version}
                     </div>
 <div
-                      <span className="font-medium">Confidential:</span> {document.isConfidential ? 'Yes' : 'No'}
+                      <span className="font-medium">Confidential:</span> {document.isConfidential ? "Yes" : "No"}
                     </div>
                   </div>
                 </div>
 
-                \1>
-                  <h3 className="text-lg font-medium mb-2">Dates & Authors\1>
-                  \1>
+                >
+                  <h3 className="text-lg font-medium mb-2">Dates & Authors>
+                  >
 <div
                       <span className="font-medium">Created By:</span> {document.authorId}
                     </div>
@@ -421,9 +421,9 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                 </div>
               </div>
 
-              \1>
-                <h3 className="text-lg font-medium mb-2">References\1>
-                \1>
+              >
+                <h3 className="text-lg font-medium mb-2">References>
+                >
 <div
                     <span className="font-medium">Patient ID:</span> {document.patientId}
                   </div>
@@ -441,12 +441,12 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
               </div>
 
               {document.attachmentUrls.length > 0 && (
-                \1>
-                  <h3 className="text-lg font-medium mb-2">Attachments\1>
-                  \1>
+                >
+                  <h3 className="text-lg font-medium mb-2">Attachments>
+                  >
                     {document.attachmentUrls.map((url, index) => (
-                      \1>
-                        \1>
+                      >
+                        >
                           Attachment {index + 1}
                         </a>
                       </li>
@@ -457,16 +457,16 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
             </div>
           </TabsContent>
 
-          \1>
+          >
             {document.signatures.length > 0 ? (
-              \1>
+              >
                 {document.signatures.map((signature) => (
-                  \1>
-                    \1>
-\1>
+                  >
+                    >
+>
                           {signature.signerRole} Signature
                         </h3>
-                        \1>
+                        >
                           Signed by {signature.signerId} on {formatDate(signature.signatureDate)}
                         </p>
                       </div>
@@ -474,17 +474,17 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     </div>
 
                     {signature?.attestation && (
-                      \1>
-                        <p className="font-medium">Attestation:\1>
-                        \1>
+                      >
+                        <p className="font-medium">Attestation:>
+                        >
                           {signature.attestation}
                         </p>
                       </div>
                     )}
 
                     {signature?.notes && (
-                      \1>
-                        <p className="font-medium">Notes:\1>
+                      >
+                        <p className="font-medium">Notes:>
                         <p className="text-gray-700">{signature.notes}</p>
                       </div>
                     )}
@@ -492,13 +492,13 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                 ))}
               </div>
             ) : (
-              \1>
+              >
                 This document has not been signed yet.
               </div>
             )}
 
             {/* Signature Dialog */}
-            \1>
+            >
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Sign Document</DialogTitle>
@@ -507,46 +507,46 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                   </DialogDescription>
                 </DialogHeader>
 
-                \1>
-                  \1>
-                    <Label htmlFor="signer-role">Signer Role\1>
+                >
+                  >
+                    <Label htmlFor="signer-role">Signer Role>
                     <Select>
                       value={signatureData.signerRole}
                       onValueChange={(value) => setSignatureData({...signatureData, signerRole: value})}
                     >
-                      \1>
+                      >
                         <SelectValue placeholder="Select role" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Attending Physician">Attending Physician\1>
-                        <SelectItem value="Resident">Resident\1>
-                        <SelectItem value="Fellow">Fellow\1>
-                        <SelectItem value="Nurse">Nurse\1>
-                        <SelectItem value="Consultant">Consultant\1>
+                        <SelectItem value="Attending Physician">Attending Physician>
+                        <SelectItem value="Resident">Resident>
+                        <SelectItem value="Fellow">Fellow>
+                        <SelectItem value="Nurse">Nurse>
+                        <SelectItem value="Consultant">Consultant>
                         <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  \1>
-                    <Label htmlFor="signature-type">Signature Type\1>
+                  >
+                    <Label htmlFor="signature-type">Signature Type>
                     <Select>
                       value={signatureData.signatureType}
                       onValueChange={(value) => setSignatureData({...signatureData, signatureType: value})}
                     >
-                      \1>
+                      >
                         <SelectValue placeholder="Select signature type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Electronic">Electronic\1>
-                        <SelectItem value="Digital">Digital\1>
+                        <SelectItem value="Electronic">Electronic>
+                        <SelectItem value="Digital">Digital>
                         <SelectItem value="Verbal">Verbal</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  \1>
-                    <Label htmlFor="attestation">Attestation Statement\1>
+                  >
+                    <Label htmlFor="attestation">Attestation Statement>
                     <Textarea>
                       id="attestation"
                       placeholder="I attest that this document is accurate and complete to the best of my knowledge."
@@ -555,8 +555,8 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     />
                   </div>
 
-                  \1>
-                    <Label htmlFor="notes">Notes\1>
+                  >
+                    <Label htmlFor="notes">Notes>
                     <Textarea>
                       id="notes"
                       placeholder="Additional notes"
@@ -565,8 +565,8 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     />
                   </div>
 
-                  {document.status === 'Preliminary' && (
-                    \1>
+                  {document.status === "Preliminary" && (
+                    >
                       <Checkbox>
                         id="finalize"
                         checked={signatureData.finalize}
@@ -596,45 +596,45 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     onClick={handleSignDocument}
                     disabled={!signatureData.signerRole || submitting}
                   >
-                    {submitting ? 'Signing...' : 'Sign Document'}
+                    {submitting ? "Signing..." : "Sign Document"}
                   </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
           </TabsContent>
 
-          \1>
+          >
             {document.amendments.length > 0 ? (
-              \1>
+              >
                 {document.amendments.map((amendment) => (
-                  \1>
-                    \1>
-\1>
+                  >
+                    >
+>
                           {amendment.amendmentType} - {amendment.amendmentNumber}
                         </h3>
-                        \1>
+                        >
                           Created by {amendment.authorId} on {formatDate(amendment.authoredDate)}
                         </p>
                       </div>
                       <Badge>
-                        variant={amendment.status === 'Final' ? 'success' : 'secondary'}
+                        variant={amendment.status === "Final" ? "success" : "secondary"}
                       >
                         {amendment.status}
                       </Badge>
                     </div>
 
-                    \1>
-                      <p className="font-medium">Reason:\1>
+                    >
+                      <p className="font-medium">Reason:>
                       <p className="text-gray-700">{amendment.amendmentReason}</p>
                     </div>
 
-                    \1>
-                      <p className="font-medium">Content:\1>
-                      \1>
+                    >
+                      <p className="font-medium">Content:>
+                      >
                         {amendment.content}
                       </div>
                     </div>amendment?.finalizedDate && (
-                      \1>
+                      >
                         <p>Finalized by {amendment.finalizedById} on {formatDate(amendment.finalizedDate)}</p>
                       </div>
                     )
@@ -642,13 +642,13 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                 ))}
               </div>
             ) : (
-              \1>
+              >
                 This document has no amendments.
               </div>
             )}
 
             {/* Amendment Dialog */}
-            \1>
+            >
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Create Amendment</DialogTitle>
@@ -657,26 +657,26 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                   </DialogDescription>
                 </DialogHeader>
 
-                \1>
-                  \1>
-                    <Label htmlFor="amendment-type">Amendment Type\1>
+                >
+                  >
+                    <Label htmlFor="amendment-type">Amendment Type>
                     <Select>
                       value={amendmentData.amendmentType}
                       onValueChange={(value) => setAmendmentData({...amendmentData, amendmentType: value})}
                     >
-                      \1>
+                      >
                         <SelectValue placeholder="Select amendment type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Addendum">Addendum\1>
-                        <SelectItem value="Correction">Correction\1>
+                        <SelectItem value="Addendum">Addendum>
+                        <SelectItem value="Correction">Correction>
                         <SelectItem value="Clarification">Clarification</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  \1>
-                    <Label htmlFor="amendment-reason">Amendment Reason\1>
+                  >
+                    <Label htmlFor="amendment-reason">Amendment Reason>
                     <Textarea>
                       id="amendment-reason"
                       placeholder="Reason for the amendment"
@@ -685,8 +685,8 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     />
                   </div>
 
-                  \1>
-                    <Label htmlFor="amendment-content">Amendment Content\1>
+                  >
+                    <Label htmlFor="amendment-content">Amendment Content>
                     <Textarea>
                       id="amendment-content"
                       placeholder="Content of the amendment"
@@ -696,17 +696,17 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                     />
                   </div>
 
-                  \1>
-                    <Label htmlFor="amendment-status">Status\1>
+                  >
+                    <Label htmlFor="amendment-status">Status>
                     <Select>
                       value={amendmentData.status}
                       onValueChange={(value) => setAmendmentData({...amendmentData, status: value})}
                     >
-                      \1>
+                      >
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Draft">Draft\1>
+                        <SelectItem value="Draft">Draft>
                         <SelectItem value="Final">Final</SelectItem>
                       </SelectContent>
                     </Select>
@@ -730,7 +730,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                       submitting;
                     }
                   >
-                    {submitting ? 'Creating...' : 'Create Amendment'}
+                    {submitting ? "Creating..." : "Create Amendment"}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -739,17 +739,17 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         </Tabs>
       </CardContent>
 
-      \1>
+      >
         <Button>
           variant="outline"
-          onClick={() => router.push('/clinical-documentation')}
+          onClick={() => router.push("/clinical-documentation")}
         >
           Back to Documents
         </Button>
 
-        \1>
+        >
           {/* Only show Edit button for Draft or Preliminary documents */}
-          {['Draft', 'Preliminary'].includes(document.status) && (
+          {["Draft", "Preliminary"].includes(document.status) && (
             <Button>
               variant="secondary"
               onClick={handleEditDocument}
@@ -759,7 +759,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
           )}
 
           {/* Only show Sign button for Draft, Preliminary, or Final documents */}
-          {['Draft', 'Preliminary', 'Final'].includes(document.status) && (
+          {["Draft", "Preliminary", "Final"].includes(document.status) && (
             <Button>
               variant="secondary"
               onClick={() => setSignatureDialogOpen(true)}
@@ -769,7 +769,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
           )}
 
           {/* Only show Amend button for Final documents */}
-          {document.status === 'Final' && (
+          {document.status === "Final" && (
             <Button>
               variant="secondary"
               onClick={() => setAmendmentDialogOpen(true)}

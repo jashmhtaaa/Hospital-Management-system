@@ -18,7 +18,6 @@ const PG_CONFIG = {
  * @interface IDatabaseAdapter;
  * Defines the contract for database adapters.
  */
-\1
 }
 }
 
@@ -27,7 +26,6 @@ const PG_CONFIG = {
  * Implements the IDatabaseAdapter for PostgreSQL.
  * Handles connection pooling, query execution, and transaction management.
  */
-\1
 }
     });
   }
@@ -39,7 +37,7 @@ const PG_CONFIG = {
   async connect(): Promise<void> {
     try {
       const client = await this.pool.connect();
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       client.release()
     } catch (error) {
 
@@ -53,7 +51,7 @@ const PG_CONFIG = {
   async disconnect(): Promise<void> {
     try {
       await this.pool.end();
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (error) {
 
       throw error
@@ -151,18 +149,18 @@ async const testAdapter = () {
     //     name VARCHAR(100) NOT NULL
     //   )`
     // )
-    // // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     // Example: Insert data
     // const _insertResult = await adapter.execute(
     //   "INSERT INTO test_items (name) VALUES ($1) RETURNING *",
     //   ["Test Item 1"]
     // )
-    // // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     // Example: Select data
     // const _selectResult = await adapter.execute("SELECT * FROM test_items")
-    // // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     // Example: Transaction
     const client = await adapter.beginTransaction(),
@@ -171,15 +169,15 @@ async const testAdapter = () {
       //   "INSERT INTO test_items (name) VALUES ($1) RETURNING *",
       //   ["Transaction Item"]
       // )
-      // // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       // Simulating an error to test rollback
       // throw new Error("Simulated error during transaction")
       await adapter.commitTransaction(client);
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     } catch (txError) {
 
       await adapter.rollbackTransaction(client); // Rollback is handled by commitTransaction on error, but can be called explicitly
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     }
 
   } catch (error) {

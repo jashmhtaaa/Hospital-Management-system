@@ -1,9 +1,9 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { AppError, ValidationError } from './errors.ts';
-import { logger } from './logging.ts';
+import { AppError, ValidationError } from "./errors.ts";
+import { logger } from "./logging.ts";
 }
 
 /**
@@ -22,10 +22,10 @@ export function validateRequestBody<T>(schema: z.ZodType<T>) {
       const body = await req.json();
       return schema.parse(body);
     } catch (error) {
-      \1 {\n  \2{
-        throw new ValidationError('Invalid request body', error.errors);
+      if (!session.user) {
+        throw new ValidationError("Invalid request body", error.errors);
       }
-      throw new ValidationError('Could not parse request body');
+      throw new ValidationError("Could not parse request body");
     }
   };
 }
@@ -47,10 +47,10 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
 
       return schema.parse(queryParams);
     } catch (error) {
-      \1 {\n  \2{
-        throw new ValidationError('Invalid query parameters', error.errors);
+      if (!session.user) {
+        throw new ValidationError("Invalid query parameters", error.errors);
       }
-      throw new ValidationError('Could not parse query parameters');
+      throw new ValidationError("Could not parse query parameters");
     }
   };
 }
@@ -61,33 +61,33 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
  * @returns Wrapped handler with error handling;
  */
 export const _withErrorHandling = (
-  handler: (req: NextRequest, ...args: unknown[]) => Promise\1>
+  handler: (req: NextRequest, ...args: unknown[]) => Promise>
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     try {
       return await handler(req, ...args);
     } catch (error) {
-      logger.error('API error', {
+      logger.error("API error", {
         path: req.nextUrl.pathname,
         method: req.method;
         error;
       });
 
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           {
             error: error.message,
-            \1,\2 error.details
+            error.details
           },status: error.statusCode 
         );
       }
 
-      // For unexpected errors, don't expose details in production
-      const isProd = process.env.NODE_ENV === 'production';
+      // For unexpected errors, don"t expose details in production
+      const isProd = process.env.NODE_ENV === "production";
       return NextResponse.json(
         {
-          error: 'Internal server error',
-          \1,\2 isProd ? undefined : String(error)
+          error: "Internal server error",
+          isProd ? undefined : String(error)
         },
         { status: 500 }
       );
@@ -101,16 +101,16 @@ export const _withErrorHandling = (
  * @returns Wrapped handler with authentication check;
  */
 export const _withAuth = (
-  handler: (req: NextRequest, ...args: unknown[]) => Promise\1>
+  handler: (req: NextRequest, ...args: unknown[]) => Promise>
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     // In a real implementation, this would check session/token
-    // For now, we'll assume authentication is handled by Next.js middleware
-    const session = req.headers.get('x-session');
+    // For now, we"ll assume authentication is handled by Next.js middleware
+    const session = req.headers.get("x-session");
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Unauthorized', code: 'UNAUTHORIZED' },
+        { error: "Unauthorized", code: "UNAUTHORIZED" },
         { status: 401 }
       );
     }
@@ -127,16 +127,16 @@ export const _withAuth = (
  */
 export const _withPermissions = (
   permissions: string[],
-  handler: (req: NextRequest, ...args: unknown[]) => Promise\1>
+  handler: (req: NextRequest, ...args: unknown[]) => Promise>
 ) {
   return async (req: NextRequest, ...args: unknown[]) => {
     // In a real implementation, this would check user permissions
-    // For now, we'll assume a simple role-based check
-    const userRole = req.headers.get('x-user-role');
+    // For now, we"ll assume a simple role-based check
+    const userRole = req.headers.get("x-user-role");
 
-    \1 {\n  \2) {
+    if (!session.user)) {
       return NextResponse.json(
-        { error: 'Forbidden', code: 'FORBIDDEN' },
+        { error: "Forbidden", code: "FORBIDDEN' },
         { status: 403 }
       );
     }

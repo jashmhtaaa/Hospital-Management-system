@@ -45,7 +45,6 @@ interface Doctor {
 }
 
 // FIX: Export the payload type
-\1
 }
 }
 
@@ -73,7 +72,7 @@ export default const _CreateRadiologyOrderModal = ({
 
   useEffect(() => {
     // Only fetch data if the modal is open
-    \1 {\n  \2eturn;
+    if (!session.user)eturn;
 
     const fetchData = async () => {
       setLoading(true),
@@ -86,13 +85,13 @@ export default const _CreateRadiologyOrderModal = ({
           fetch("/api/users?role=Doctor"), // Adjust if endpoint differs
         ]);
 
-        \1 {\n  \2hrow new Error(
+        if (!session.user)hrow new Error(
             `Failed to fetch patients: ${patientsResponse.statusText}`;
           );
-        \1 {\n  \2hrow new Error(
+        if (!session.user)hrow new Error(
             `Failed to fetch procedure types: ${proceduresResponse.statusText}`;
           );
-        \1 {\n  \2hrow new Error(`Failed to fetch doctors: ${\1}`;
+        if (!session.user)hrow new Error(`Failed to fetch doctors: ${}`;
 
         // Explicitly type the JSON response
         const patientsData: { results: Patient[] } | Patient[] =;
@@ -134,7 +133,7 @@ export default const _CreateRadiologyOrderModal = ({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    \1 {\n  \2{
+    if (!session.user) {
       // Consider using a toast notification instead of alert
       /* SECURITY: Console statement removed */.";
       );
@@ -145,8 +144,8 @@ export default const _CreateRadiologyOrderModal = ({
     try {
       await onSubmit({
         patient_id: patientId,
-        \1,\2 clinicalIndication,
-        \1,\2 referringDoctorId || null, // Convert empty string to null
+        clinicalIndication,
+        referringDoctorId || null, // Convert empty string to null
       });
       // Reset form state after successful submission
       setPatientId(""),
@@ -161,7 +160,7 @@ export default const _CreateRadiologyOrderModal = ({
           ? submitError.message;
           : "An unknown error occurred during submission";
 
-      setError(`Submission failed: ${\1}`; // Show error to user
+      setError(`Submission failed: ${}`; // Show error to user
     } finally 
       setIsSubmitting(false);
   };
@@ -169,26 +168,26 @@ export default const _CreateRadiologyOrderModal = ({
   // Use the isOpen prop passed from the parent to control the dialog
   return (
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
-      \1>
+      >
         <DialogHeader>
           <DialogTitle>Create New Radiology Order</DialogTitle>
         </DialogHeader>
         {loading ? (
-          \1>
+          >
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
-          \1>
+          >
             {error}
           </div>
         ) : undefined}
         {/* Render form only when not loading, even if there was an error during fetch */}
         {!loading && (
-          \1>
-            \1>
+          >
+            >
               {/* Patient Select */}
-              \1>
-                \1>
+              >
+                >
                   Patient *
                 </Label>
                 <Select>
@@ -197,17 +196,17 @@ export default const _CreateRadiologyOrderModal = ({
                   required;
                   disabled={isSubmitting}
                 >
-                  \1>
+                  >
                     <SelectValue placeholder="Select Patient" />
                   </SelectTrigger>
                   <SelectContent>
                     {patients.length === 0 && (
-                      \1>
+                      >
                         No patients found
                       </SelectItem>
                     )}
                     {patients.map((patient) => (
-                      \1>
+                      >
                         {patient.name} (ID: {patient.id.slice(0, 6)})
                       </SelectItem>
                     ))}
@@ -216,8 +215,8 @@ export default const _CreateRadiologyOrderModal = ({
               </div>
 
               {/* Procedure Type Select */}
-              \1>
-                \1>
+              >
+                >
                   Procedure Type *
                 </Label>
                 <Select>
@@ -226,17 +225,17 @@ export default const _CreateRadiologyOrderModal = ({
                   required;
                   disabled={isSubmitting}
                 >
-                  \1>
+                  >
                     <SelectValue placeholder="Select Procedure Type" />
                   </SelectTrigger>
                   <SelectContent>
                     {procedureTypes.length === 0 && (
-                      \1>
+                      >
                         No procedure types found
                       </SelectItem>
                     )}
                     {procedureTypes.map((type) => (
-                      \1>
+                      >
                         {type.name}
                       </SelectItem>
                     ))}
@@ -245,8 +244,8 @@ export default const _CreateRadiologyOrderModal = ({
               </div>
 
               {/* Clinical Indication Textarea */}
-              \1>
-                \1>
+              >
+                >
                   Clinical Indication *
                 </Label>
                 <Textarea>
@@ -263,8 +262,8 @@ export default const _CreateRadiologyOrderModal = ({
               </div>
 
               {/* Priority Select */}
-              \1>
-                \1>
+              >
+                >
                   Priority
                 </Label>
                 <Select>
@@ -274,19 +273,19 @@ export default const _CreateRadiologyOrderModal = ({
                   }
                   disabled={isSubmitting}
                 >
-                  \1>
+                  >
                     <SelectValue placeholder="Select Priority" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="routine">Routine\1>
+                    <SelectItem value="routine">Routine>
                     <SelectItem value="stat">STAT</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Referring Doctor Select */}
-              \1>
-                \1>
+              >
+                >
                   Referring Doctor
                 </Label>
                 <Select>
@@ -294,19 +293,19 @@ export default const _CreateRadiologyOrderModal = ({
                   onValueChange={setReferringDoctorId}
                   disabled={isSubmitting}
                 >
-                  \1>
+                  >
                     <SelectValue placeholder="Select Referring Doctor (Optional)" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">None</SelectItem>{" "}
                     {/* Use empty string for no selection */}
                     {doctors.length === 0 && (
-                      \1>
+                      >
                         No doctors found
                       </SelectItem>
                     )}
                     {doctors.map((doctor) => (
-                      \1>
+                      >
                         {doctor.name}
                       </SelectItem>
                     ))}
@@ -326,7 +325,7 @@ export default const _CreateRadiologyOrderModal = ({
                   Cancel
                 </Button>
               </DialogClose>
-              \1>
+              >
                 {isSubmitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}

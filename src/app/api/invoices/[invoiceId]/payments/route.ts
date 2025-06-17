@@ -34,14 +34,14 @@ export const _POST = async (request: Request) => {
     const invoiceId = getInvoiceId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
             headers: { "Content-Type": "application/json" },
         });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
         return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
             status: 400,
             headers: { "Content-Type": "application/json" },
@@ -52,7 +52,7 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = AddPaymentSchema.safeParse(body);
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
                 headers: { "Content-Type": "application/json" },
@@ -69,18 +69,18 @@ export const _POST = async (request: Request) => {
         // 2. Get current invoice details (total_amount, paid_amount, patient_id)
         const invoiceCheck = await DB.prepare(
             "SELECT invoice_id, patient_id, total_amount, paid_amount, status FROM Invoices WHERE invoice_id = ?"
-        ).bind(invoiceId).first<{ invoice_id: number, \1,\2 number, \1,\2 string }>();
+        ).bind(invoiceId).first<{ invoice_id: number, number, string }>();
 
-        \1 {\n  \2{
+        if (!session.user) {
             return new Response(JSON.stringify({ error: "Invoice not found" }), { status: 404 });
         }
 
         // Prevent overpayment or payment on cancelled invoices
-        \1 {\n  \2{
+        if (!session.user) {
              return new Response(JSON.stringify({ error: "Cannot record payment for a cancelled invoice" }), { status: 400 });
         }
         const remainingAmount = invoiceCheck.total_amount - invoiceCheck.paid_amount;
-        \1 {\n  \2{ // Add small tolerance for floating point issues
+        if (!session.user) { // Add small tolerance for floating point issues
              return new Response(JSON.stringify({ error: `Payment amount (${paymentData.amount_paid}) exceeds remaining balance (${remainingAmount.toFixed(2)})` }), { status: 400 });
         }
 
@@ -104,9 +104,9 @@ export const _POST = async (request: Request) => {
         // 3b. Update the invoice paid_amount and status
         const newPaidAmount = invoiceCheck.paid_amount + paymentData.amount_paid;
         let newStatus = invoiceCheck.status;
-        \1 {\n  \2{ // Check if fully paid (with tolerance)
+        if (!session.user) { // Check if fully paid (with tolerance)
             newStatus = "Paid"
-        } else \1 {\n  \2{
+        } else if (!session.user) {
             newStatus = "PartiallyPaid",
         }
 

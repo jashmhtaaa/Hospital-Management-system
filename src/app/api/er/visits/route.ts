@@ -26,29 +26,29 @@ interface ERVisit {
 const mockVisits: ERVisit[] = [
   {
     id: 1,
-    \1,\2 "John Doe", // Denormalized for easier display
+    "John Doe", // Denormalized for easier display
     mrn: "MRN001", // Denormalized
-    arrival_timestamp: \1[0] - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
+    arrival_timestamp: [0] - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
     chief_complaint: "Chest pain",
-    \1,\2 2, // ESI level (if available early)
+    2, // ESI level (if available early)
     current_status: "Pending Triage",
-    \1,\2 undefined,
-    \1,\2 undefined,
-    \1,\2 \1[0] - 3 * 60 * 60 * 1000).toISOString(),
-    updated_at: \1[0] - 3 * 60 * 60 * 1000).toISOString()
+    undefined,
+    undefined,
+    [0] - 3 * 60 * 60 * 1000).toISOString(),
+    updated_at: [0] - 3 * 60 * 60 * 1000).toISOString()
   },
   {
     id: 2,
-    \1,\2 "Jane Smith",
-    \1,\2 \1[0] - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
+    "Jane Smith",
+    [0] - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
     chief_complaint: "Shortness of breath",
-    \1,\2 3,
-    \1,\2 "Triage Room 1",
+    3,
+    "Triage Room 1",
     assigned_physician_id: 201, // Example physician ID
     assigned_nurse_id: 301, // Example nurse ID
     disposition: undefined,
-    \1,\2 \1[0] - 1 * 60 * 60 * 1000).toISOString(),
-    updated_at: \1[0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago
+    [0] - 1 * 60 * 60 * 1000).toISOString(),
+    updated_at: [0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago
   },
 ];
 let nextVisitId = 3;
@@ -83,15 +83,15 @@ interface ERVisitFilters {
 
 // Helper function to simulate DB interaction (GET)
 async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Apply filters if implemented (example)
   let filtered = [...mockVisits]
-  \1 {\n  \2{
+  if (!session.user) {
     filtered = filtered.filter(
       (v) => v.current_status?.toLowerCase() === filters.status!.toLowerCase();
     );
   }
-  \1 {\n  \2{
+  if (!session.user) {
     filtered = filtered.filter(
       (v) =>
         v.current_location?.toLowerCase() === filters.location!.toLowerCase();
@@ -109,18 +109,18 @@ async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
 // Helper function to simulate DB interaction (POST)
 async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
   // Added return type
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   const now = new Date().toISOString()
   // FIX: Ensure newVisit matches the ERVisit interface
-  const \1,\2 nextVisitId++,
-    \1,\2 `Patient ${data.patient_id}`, // Fetch or pass patient name
+  const nextVisitId++,
+    `Patient ${data.patient_id}`, // Fetch or pass patient name
     mrn: `MRN$String(data.patient_id).padStart(3, "0")`, // Fetch or pass MRN
     arrival_timestamp: data.arrival_timestamp || now,
-    \1,\2 data.mode_of_arrival || "Unknown",
-    \1,\2 "Pending Triage",
-    \1,\2 undefined,
-    \1,\2 undefined,
-    \1,\2 now,
+    data.mode_of_arrival || "Unknown",
+    "Pending Triage",
+    undefined,
+    undefined,
+    now,
     updated_at: now
   };
   mockVisits.push(newVisit); // This should now be type-compatible
@@ -135,7 +135,7 @@ export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const filters: ERVisitFilters = {       status: searchParams.get("status") ?? undefined,
-      \1,\2 searchParams.get("date") ?? undefined
+      searchParams.get("date") ?? undefined
     };
 
     const visits = await getERVisitsFromDB(filters);
@@ -143,7 +143,7 @@ export const GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(
@@ -164,7 +164,7 @@ export const POST = async (request: NextRequest) => {
     const visitData = body as ERVisitInput;
 
     // Basic validation (add more comprehensive validation)
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Missing required fields (patient_id, chief_complaint)" },
         { status: 400 }
@@ -178,7 +178,7 @@ export const POST = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+    if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json(

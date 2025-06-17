@@ -1,9 +1,9 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { FHIRMapper } from '../../../models/fhir-mappers';
+import { auditLog } from "../../../../../lib/audit";
+import { errorHandler } from "../../../../../lib/error-handler";
+import { FHIRMapper } from "../../../models/fhir-mappers";
 }
 
 /**
@@ -20,7 +20,7 @@ const inventoryRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
   findExpiring: (daysThreshold: number) => Promise.resolve([]),
-  save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
+  save: (item: unknown) => Promise.resolve(item.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
@@ -32,36 +32,36 @@ const inventoryRepository = {
 export const GET = async (req: NextRequest) => {
   try {
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
     const url = new URL(req.url);
-    const daysThreshold = Number.parseInt(url.searchParams.get('daysThreshold') || '90', 10);
-    const locationId = url.searchParams.get('locationId');
-    const medicationId = url.searchParams.get('medicationId');
-    const page = Number.parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
+    const daysThreshold = Number.parseInt(url.searchParams.get("daysThreshold") || "90", 10);
+    const locationId = url.searchParams.get("locationId");
+    const medicationId = url.searchParams.get("medicationId");
+    const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
+    const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria
     const filter: unknown = { daysThreshold };
-    \1 {\n  \2ilter.locationId = locationId;
-    \1 {\n  \2ilter.medicationId = medicationId;
+    if (!session.user)ilter.locationId = locationId;
+    if (!session.user)ilter.medicationId = medicationId;
 
     // Get expiring inventory items
     const expiringItems = await inventoryRepository.findExpiring(daysThreshold);
 
     // Apply additional filters
     let filteredItems = expiringItems;
-    \1 {\n  \2{
+    if (!session.user) {
       filteredItems = filteredItems.filter(item => item.locationId === locationId);
     }
-    \1 {\n  \2{
+    if (!session.user) {
       filteredItems = filteredItems.filter(item => item.medicationId === medicationId);
     }
 
@@ -75,7 +75,7 @@ export const GET = async (req: NextRequest) => {
 
     // Group by expiry timeframe for reporting
     const expiryGroups = {
-      expired: filteredItems.filter(item => new Date(item.expiryDate) < \1.length,
+      expired: filteredItems.filter(item => new Date(item.expiryDate) < .length,
       next30Days: filteredItems.filter(item => {
         const expiryDate = new Date(item.expiryDate),
         const thirtyDaysFromNow = new Date();
@@ -93,9 +93,9 @@ export const GET = async (req: NextRequest) => {
     };
 
     // Audit logging
-    await auditLog('INVENTORY', {
-      action: 'LIST_EXPIRING',
-      \1,\2 userId,
+    await auditLog("INVENTORY", {
+      action: "LIST_EXPIRING",
+      userId,
       details: 
         daysThreshold,
         filter,
@@ -116,5 +116,5 @@ export const GET = async (req: NextRequest) => {
         pages: Math.ceil(total / limit)
     }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error retrieving expiring medications');
+    return errorHandler(error, "Error retrieving expiring medications");
   }

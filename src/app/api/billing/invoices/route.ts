@@ -1,32 +1,32 @@
 import {
-import { NextRequest } from 'next/server';
-import { z } from 'zod';
+import { NextRequest } from "next/server";
+import { z } from "zod";
 
-import { prisma } from '@/lib/prisma';
+import { prisma } from "@/lib/prisma";
   withErrorHandling,
   validateBody,
   validateQuery,
   checkPermission,
   createSuccessResponse,
   createPaginatedResponse;
-} from '@/lib/core/middleware';
-import { ValidationError } from '@/lib/core/errors';
+} from "@/lib/core/middleware";
+import { ValidationError } from "@/lib/core/errors";
   idSchema,
   invoiceStatusSchema,
   moneySchema,
   dateRangeSchema;
-} from '@/lib/core/validation';
-import { convertToFHIRInvoice } from '@/lib/core/fhir';
-import { logger } from '@/lib/core/logging';
+} from "@/lib/core/validation";
+import { convertToFHIRInvoice } from "@/lib/core/fhir";
+import { logger } from "@/lib/core/logging";
 
 // Schema for invoice creation
 const createInvoiceSchema = z.object({
   patientId: z.string().uuid(),
   visitId: z.string().uuid().optional(),
-  visitType: z.enum(['OPD', 'IPD', 'ER', 'OTHER']),
-  billType: z.enum(['Regular', 'Package', 'Consolidated']),
+  visitType: z.enum(["OPD", "IPD", "ER", "OTHER"]),
+  billType: z.enum(["Regular", "Package", "Consolidated"]),
   packageId: z.string().uuid().optional(),
-  \1,\2 z.string().uuid(),
+  z.string().uuid(),
     quantity: z.number().int().positive(),
     unitPrice: moneySchema,
     discount: moneySchema.optional(),
@@ -49,9 +49,9 @@ const invoiceQuerySchema = z.object({
   endDate: z.string().optional(),
   minAmount: z.coerce.number().optional(),
   maxAmount: z.coerce.number().optional(),
-  sortBy: z.enum(['createdAt', 'billDate', 'totalAmount', 'status']).optional().default('createdAt'),
-  sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
-  format: z.enum(['json', 'fhir']).optional().default('json'),
+  sortBy: z.enum(["createdAt", "billDate", "totalAmount", "status"]).optional().default("createdAt"),
+  sortOrder: z.enum(["asc", "desc"]).optional().default("desc"),
+  format: z.enum(["json", "fhir"]).optional().default("json"),
 });
 
 // GET handler for retrieving all invoices with filtering and pagination
@@ -60,20 +60,20 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   const query = validateQuery(invoiceQuerySchema)(req);
 
   // Check permissions
-  await checkPermission(permissionService, 'read', 'invoice')(req);
+  await checkPermission(permissionService, "read", "invoice")(req);
 
   // Build filter conditions
   const where: unknown = {};
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.patientId = query.patientId;
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.status = query.status;
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     try {
       const { startDate, endDate } = dateRangeSchema.parse({
         startDate: new Date(query.startDate),
@@ -85,18 +85,18 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         lte: endDate
       };
     } catch (error) {
-      throw new ValidationError('Invalid date range', 'INVALID_DATE_RANGE');
+      throw new ValidationError("Invalid date range", "INVALID_DATE_RANGE");
     }
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.totalAmount = {
       ...(where.totalAmount || {}),
       gte: query.minAmount
     };
   }
 
-  \1 {\n  \2{
+  if (!session.user) {
     where.totalAmount = {
       ...(where.totalAmount || {}),
       lte: query.maxAmount
@@ -111,10 +111,10 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      \1,\2 {
-        \1,\2 {
+      {
+        {
             id: true,
-            \1,\2 true,
+            true,
             mrn: true
           },
         },
@@ -125,7 +125,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   ]);
 
   // Convert to FHIR format if requested
-  \1 {\n  \2{
+  if (!session.user) {
     const fhirInvoices = invoices.map(invoice => convertToFHIRInvoice(invoice));
     return createPaginatedResponse(fhirInvoices, query.page, query.pageSize, total);
   }
@@ -140,7 +140,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   const data = await validateBody(createInvoiceSchema)(req);
 
   // Check permissions
-  await checkPermission(permissionService, 'create', 'invoice')(req);
+  await checkPermission(permissionService, "create", "invoice")(req);
 
   // Calculate totals
   let totalAmount = 0;
@@ -156,9 +156,9 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
     return {
       serviceItemId: item.serviceItemId,
-      \1,\2 item.unitPrice,
-      \1,\2 itemDiscount,
-      \1,\2 item.description
+      item.unitPrice,
+      itemDiscount,
+      item.description
     };
   });
 
@@ -168,31 +168,31 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   // Generate invoice number
   const invoiceCount = await prisma.bill.count();
-  const invoiceNumber = `INV-${new Date().getFullYear()}-${(invoiceCount + 1).toString().padStart(6, '0')}`;
+  const invoiceNumber = `INV-${new Date().getFullYear()}-${(invoiceCount + 1).toString().padStart(6, "0")}`;
 
   // Create invoice in database
   const invoice = await prisma.bill.create({
-    \1,\2 invoiceNumber,
-      \1,\2 data.visitId,
-      \1,\2 new Date(),
-      \1,\2 data.packageId;
+    invoiceNumber,
+      data.visitId,
+      new Date(),
+      data.packageId;
       totalAmount,
       discountAmount,
       discountReason: data.discountReason,
-      \1,\2 totalAmount,
-      \1,\2 'draft',
-      createdBy: 'system', // In a real app, this would be the authenticated user ID
-      \1,\2 billItems
+      totalAmount,
+      "draft",
+      createdBy: "system", // In a real app, this would be the authenticated user ID
+      billItems
       },
     },
-    \1,\2 true,
-      \1,\2 true,
-          \1,\2 true,
+    true,
+      true,
+          true,
           mrn: true,,
     },
   });
 
-  logger.info('Invoice created', { invoiceId: invoice.id, invoiceNumber });
+  logger.info("Invoice created", { invoiceId: invoice.id, invoiceNumber });
 
   return createSuccessResponse(invoice);
 });

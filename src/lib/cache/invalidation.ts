@@ -1,7 +1,6 @@
 
-import { config } from '@/config';
-import { RedisCache } from './redis.ts';
-\1
+import { config } from "@/config";
+import { RedisCache } from "./redis.ts";
 }
     await RedisCache.deletePattern(`${config.cache.prefix.test}list:*`);
 
@@ -72,11 +71,11 @@ import { RedisCache } from './redis.ts';
 
     // Invalidate each related panel
     for (const panelId of relatedPanelIds) {
-      await RedisCache.delete(`diagnostic:lab:panel:${\1}`;
+      await RedisCache.delete(`diagnostic:lab:panel:${}`;
     }
 
     // Invalidate panel lists
-    await RedisCache.deletePattern('diagnostic: lab: panel:list:*')
+    await RedisCache.deletePattern("diagnostic: lab: panel:list:*")
   }
 
   /**

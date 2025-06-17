@@ -18,7 +18,7 @@ export const _POST = async (request: Request) => {
     const body = await request.json();
     const validation = LoginSchema.safeParse(body);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -30,7 +30,7 @@ export const _POST = async (request: Request) => {
     const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
     const DB = context.env.DB; // FIX: Access DB via context.env
 
-    \1 {\n  \2{
+    if (!session.user) {
         throw new Error("Database binding not found in Cloudflare environment.");
     }
 
@@ -45,12 +45,12 @@ export const _POST = async (request: Request) => {
       // Define the expected result type more accurately
       .first<
           userId: number,
-          \1,\2 string,
-          \1,\2 string | null,
-          \1,\2 boolean,
+          string,
+          string | null,
+          boolean,
           roleName: string>();
 
-    \1 {\n  \2{
+    if (!session.user) {
       return new Response(JSON.stringify({ error: "Invalid credentials or user inactive" }), {
         status: 401, // Unauthorized
         headers: { "Content-Type": "application/json" },
@@ -60,7 +60,7 @@ export const _POST = async (request: Request) => {
     // 2. Compare password
     const isPasswordValid = await comparePassword(password, userResult.password_hash);
 
-    \1 {\n  \2{
+    if (!session.user) {
       return new Response(JSON.stringify({ error: "Invalid credentials" }), {
         status: 401, // Unauthorized
         headers: { "Content-Type": "application/json" },
@@ -73,9 +73,9 @@ export const _POST = async (request: Request) => {
 
     // Prepare user data for session (exclude sensitive info)
     // Initialize permissions as empty array for now
-    const \1,\2 userResult.userId,
-        \1,\2 userResult.email,
-        \1,\2 userResult.roleId,
+    const userResult.userId,
+        userResult.email,
+        userResult.roleId,
         roleName: userResult.roleName, // Include roleName from query
         isActive: userResult.isActive,
         permissions: [], // Initialize permissions as empty array

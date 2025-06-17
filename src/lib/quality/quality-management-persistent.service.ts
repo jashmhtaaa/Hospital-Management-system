@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-import { z } from 'zod';
+import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
 
 
-import { getEncryptionService } from '../../services/encryption_service_secure';
+import { getEncryptionService } from "../../services/encryption_service_secure";
 /**
  * Quality Management Service - Persistent Implementation
  * Comprehensive quality management system for NABH/JCI compliance
@@ -11,29 +11,29 @@ import { getEncryptionService } from '../../services/encryption_service_secure';
 
 // Quality Indicator Schema
 export const QualityIndicatorSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  category: z.enum(['clinical', 'patient_safety', 'operational', 'financial']),
-  source: z.enum(['jcaho_core_measures', 'nabh', 'jci', 'internal']),
-  dataSource: z.enum(['manual', 'automated', 'integrated']).default('manual'),
-  numeratorDefinition: z.string().min(1, 'Numerator definition is required'),
-  denominatorDefinition: z.string().min(1, 'Denominator definition is required'),
+  category: z.enum(["clinical", "patient_safety", "operational", "financial"]),
+  source: z.enum(["jcaho_core_measures", "nabh", "jci", "internal"]),
+  dataSource: z.enum(["manual", "automated", "integrated"]).default("manual"),
+  numeratorDefinition: z.string().min(1, "Numerator definition is required"),
+  denominatorDefinition: z.string().min(1, "Denominator definition is required"),
   targetValue: z.number().optional(),
-  targetOperator: z.enum(['>=', '<=', '=', '>', '<']).optional(),
-  frequency: z.enum(['daily', 'weekly', 'monthly', 'quarterly', 'annually']),
-  reportingLevel: z.enum(['department', 'hospital', 'system']),
-  status: z.enum(['active', 'inactive', 'retired']).default('active'),
+  targetOperator: z.enum([">=", "<=", "=", ">", "<"]).optional(),
+  frequency: z.enum(["daily", "weekly", "monthly", "quarterly", "annually"]),
+  reportingLevel: z.enum(["department", "hospital", "system"]),
+  status: z.enum(["active", "inactive", "retired"]).default("active"),
   stratificationCriteria: z.record(z.any()).optional(),
   createdBy: z.string()
 })
 
 // Quality Event Schema
 export const QualityEventSchema = z.object({
-  eventType: z.enum(['incident', 'near_miss', 'adverse_event', 'sentinel_event']),
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().min(1, 'Description is required'),
-  severity: z.enum(['low', 'medium', 'high', 'critical']),
-  status: z.enum(['open', 'investigating', 'resolved', 'closed']).default('open'),
+  eventType: z.enum(["incident", "near_miss", "adverse_event", "sentinel_event"]),
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  severity: z.enum(["low", "medium", "high", "critical"]),
+  status: z.enum(["open", "investigating", "resolved", "closed"]).default("open"),
   patientId: z.string().optional(),
   departmentId: z.string().optional(),
   locationId: z.string().optional(),
@@ -52,10 +52,10 @@ export const QualityEventSchema = z.object({
 
 // Quality Assessment Schema
 export const QualityAssessmentSchema = z.object({
-  type: z.enum(['nabh', 'jci', 'internal_audit', 'peer_review']),
-  title: z.string().min(1, 'Title is required'),
+  type: z.enum(["nabh", "jci", "internal_audit", "peer_review"]),
+  title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  scope: z.enum(['department', 'hospital', 'service_line']),
+  scope: z.enum(["department", "hospital", "service_line"]),
   standardVersion: z.string().optional(),
   assessmentDate: z.date(),
   dueDate: z.date().optional(),
@@ -67,7 +67,7 @@ export const QualityAssessmentSchema = z.object({
   findings: z.array(z.record(z.any())).optional(),
   recommendations: z.array(z.record(z.any())).optional(),
   certificationBody: z.string().optional(),
-  certificationStatus: z.enum(['pending', 'achieved', 'expired', 'suspended']).optional(),
+  certificationStatus: z.enum(["pending", "achieved", "expired", "suspended"]).optional(),
   certificationDate: z.date().optional(),
   expiryDate: z.date().optional(),
   createdBy: z.string()
@@ -75,13 +75,13 @@ export const QualityAssessmentSchema = z.object({
 
 // Compliance Report Schema
 export const ComplianceReportSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  reportType: z.enum(['nabh', 'jci', 'regulatory', 'internal']),
-  regulatoryBody: z.string().min(1, 'Regulatory body is required'),
-  standard: z.string().min(1, 'Standard is required'),
-  reportingPeriod: z.string().min(1, 'Reporting period is required'),
+  title: z.string().min(1, "Title is required"),
+  reportType: z.enum(["nabh", "jci", "regulatory", "internal"]),
+  regulatoryBody: z.string().min(1, "Regulatory body is required"),
+  standard: z.string().min(1, "Standard is required"),
+  reportingPeriod: z.string().min(1, "Reporting period is required"),
   overallCompliance: z.number().min(0).max(100),
-  status: z.enum(['compliant', 'non_compliant', 'conditional']),
+  status: z.enum(["compliant", "non_compliant", "conditional"]),
   requirements: z.array(z.record(z.any())).default([]),
   findings: z.array(z.record(z.any())).optional(),
   gaps: z.array(z.record(z.any())).optional(),
@@ -89,17 +89,17 @@ export const ComplianceReportSchema = z.object({
   actionPlanId: z.string().optional(),
   submissionDate: z.date().optional(),
   submittedBy: z.string().optional(),
-  approvalStatus: z.enum(['draft', 'submitted', 'approved', 'rejected']).default('draft'),
+  approvalStatus: z.enum(["draft", "submitted", "approved", "rejected"]).default("draft"),
   createdBy: z.string()
 })
 
 // Action Plan Schema
 export const ActionPlanSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
+  title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  type: z.enum(['corrective', 'preventive', 'improvement']),
-  priority: z.enum(['low', 'medium', 'high', 'critical']),
-  status: z.enum(['planning', 'approved', 'in_progress', 'completed', 'cancelled']).default('planning'),
+  type: z.enum(["corrective", "preventive", "improvement"]),
+  priority: z.enum(["low", "medium", "high", "critical"]),
+  status: z.enum(["planning", "approved", "in_progress", "completed", "cancelled"]).default("planning"),
   departmentId: z.string().optional(),
   impactedAreas: z.array(z.string()).optional(),
   targetDate: z.date(),
@@ -115,9 +115,9 @@ export const ActionPlanSchema = z.object({
 // Action Item Schema
 export const ActionItemSchema = z.object({
   actionPlanId: z.string(),
-  title: z.string().min(1, 'Title is required'),
+  title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  status: z.enum(['not_started', 'in_progress', 'completed', 'cancelled', 'on_hold']).default('not_started'),
+  status: z.enum(["not_started", "in_progress", "completed", "cancelled", "on_hold"]).default("not_started"),
   assignedTo: z.string(),
   estimatedHours: z.number().optional(),
   actualHours: z.number().optional(),
@@ -135,7 +135,6 @@ export type ComplianceReport = z.infer<typeof ComplianceReportSchema> & { id?: s
 export type ActionPlan = z.infer<typeof ActionPlanSchema> & { id?: string };
 export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
-\1
 }
 }
 
@@ -143,7 +142,6 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
  * Persistent Quality Management Service
  * Replaces in-memory storage with database persistence
  */
-\1
 }
   }
 
@@ -166,7 +164,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: indicator.id
       };
     } catch (error) {
-      throw new Error(`Failed to create quality indicator: ${\1}`;
+      throw new Error(`Failed to create quality indicator: ${}`;
     }
   }
 
@@ -176,10 +174,10 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         where: { id }
       });
 
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
       return this.deserializeQualityIndicator(indicator);
     } catch (error) {
-      throw new Error(`Failed to get quality indicator: ${\1}`;
+      throw new Error(`Failed to get quality indicator: ${}`;
     }
   }
 
@@ -190,18 +188,18 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   }): Promise<QualityIndicator[]> {
     try {
       const where: unknown = {};
-      \1 {\n  \2here.category = filters.category;
-      \1 {\n  \2here.source = filters.source;
-      \1 {\n  \2here.status = filters.status;
+      if (!session.user)here.category = filters.category;
+      if (!session.user)here.source = filters.source;
+      if (!session.user)here.status = filters.status;
 
       const indicators = await this.prisma.qualityIndicator.findMany({
         where,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: "desc" }
       });
 
       return Promise.all(indicators.map(indicator => this.deserializeQualityIndicator(indicator)));
     } catch (error) {
-      throw new Error(`Failed to get quality indicators: ${\1}`;
+      throw new Error(`Failed to get quality indicators: ${}`;
     }
   }
 
@@ -221,7 +219,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
       return this.deserializeQualityIndicator(updated);
     } catch (error) {
-      throw new Error(`Failed to update quality indicator: ${\1}`;
+      throw new Error(`Failed to update quality indicator: ${}`;
     }
   }
 
@@ -248,7 +246,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: event.id
       };
     } catch (error) {
-      throw new Error(`Failed to create quality event: ${\1}`;
+      throw new Error(`Failed to create quality event: ${}`;
     }
   }
 
@@ -258,10 +256,10 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         where: { id }
       });
 
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
       return this.deserializeQualityEvent(event);
     } catch (error) {
-      throw new Error(`Failed to get quality event: ${\1}`;
+      throw new Error(`Failed to get quality event: ${}`;
     }
   }
 
@@ -275,24 +273,24 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   }): Promise<QualityEvent[]> {
     try {
       const where: unknown = {};
-      \1 {\n  \2here.eventType = filters.eventType;
-      \1 {\n  \2here.severity = filters.severity;
-      \1 {\n  \2here.status = filters.status;
-      \1 {\n  \2here.departmentId = filters.departmentId;
-      \1 {\n  \2{
+      if (!session.user)here.eventType = filters.eventType;
+      if (!session.user)here.severity = filters.severity;
+      if (!session.user)here.status = filters.status;
+      if (!session.user)here.departmentId = filters.departmentId;
+      if (!session.user) {
         where.eventDateTime = {};
-        \1 {\n  \2here.eventDateTime.gte = filters.dateFrom;
-        \1 {\n  \2here.eventDateTime.lte = filters.dateTo;
+        if (!session.user)here.eventDateTime.gte = filters.dateFrom;
+        if (!session.user)here.eventDateTime.lte = filters.dateTo;
       }
 
       const events = await this.prisma.qualityEvent.findMany({
         where,
-        orderBy: { eventDateTime: 'desc' }
+        orderBy: { eventDateTime: "desc" }
       });
 
       return Promise.all(events.map(event => this.deserializeQualityEvent(event)));
     } catch (error) {
-      throw new Error(`Failed to get quality events: ${\1}`;
+      throw new Error(`Failed to get quality events: ${}`;
     }
   }
 
@@ -306,8 +304,8 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         data: {
           ...encryptedData,
           assessors: JSON.stringify(validated.assessors),
-          \1,\2 validated.recommendations ? JSON.stringify(validated.recommendations) : null,
-          status: 'planned'
+          validated.recommendations ? JSON.stringify(validated.recommendations) : null,
+          status: "planned"
         }
       });
 
@@ -316,7 +314,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: assessment.id
       };
     } catch (error) {
-      throw new Error(`Failed to create quality assessment: ${\1}`;
+      throw new Error(`Failed to create quality assessment: ${}`;
     }
   }
 
@@ -324,15 +322,15 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     try {
       const assessment = await this.prisma.qualityAssessment.findUnique({
         where: { id },
-        \1,\2 true,
-          \1,\2 true
+        true,
+          true
         }
       });
 
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
       return this.deserializeQualityAssessment(assessment);
     } catch (error) {
-      throw new Error(`Failed to get quality assessment: ${\1}`;
+      throw new Error(`Failed to get quality assessment: ${}`;
     }
   }
 
@@ -343,21 +341,21 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   }): Promise<QualityAssessment[]> {
     try {
       const where: unknown = {};
-      \1 {\n  \2here.type = filters.type;
-      \1 {\n  \2here.status = filters.status;
-      \1 {\n  \2here.certificationStatus = filters.certificationStatus;
+      if (!session.user)here.type = filters.type;
+      if (!session.user)here.status = filters.status;
+      if (!session.user)here.certificationStatus = filters.certificationStatus;
 
       const assessments = await this.prisma.qualityAssessment.findMany({
         where,
-        \1,\2 true,
-          \1,\2 true
+        true,
+          true
         },
-        orderBy: assessmentDate: 'desc' 
+        orderBy: assessmentDate: "desc" 
       });
 
       return Promise.all(assessments.map(assessment => this.deserializeQualityAssessment(assessment)));
     } catch (error) {
-      throw new Error(`Failed to get quality assessments: ${\1}`;
+      throw new Error(`Failed to get quality assessments: ${}`;
     }
   }
 
@@ -370,22 +368,22 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
       // Calculate variance from target if target is provided
       let varianceFromTarget: number | undefined
-      \1 {\n  \2{
+      if (!session.user) {
         varianceFromTarget = rate - data.targetValue;
       }
 
       const metrics = await this.prisma.qualityMetrics.create({
-        \1,\2 data.indicatorId,
-          \1,\2 data.periodType,
-          \1,\2 data.denominatorValue;
+        data.indicatorId,
+          data.periodType,
+          data.denominatorValue;
           rate,
           targetValue: data.targetValue;
           varianceFromTarget,
           stratificationData: data.stratificationData ?
             JSON.stringify(data.stratificationData) : null,
           dataQualityScore: data.dataQualityScore,
-          \1,\2 data.dataSource,
-          \1,\2 data.enteredBy,
+          data.dataSource,
+          data.enteredBy,
           verifiedBy: data.verifiedBy
         }
       });
@@ -397,7 +395,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         varianceFromTarget,
       };
     } catch (error) {
-      throw new Error(`Failed to record quality metrics: ${\1}`;
+      throw new Error(`Failed to record quality metrics: ${}`;
     }
   }
 
@@ -408,33 +406,33 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   }): Promise<QualityMetrics[]> {
     try {
       const where: unknown = { indicatorId };
-      \1 {\n  \2here.periodType = filters.periodType;
-      \1 {\n  \2{
+      if (!session.user)here.periodType = filters.periodType;
+      if (!session.user) {
         where.measurementPeriod = {};
-        \1 {\n  \2here.measurementPeriod.gte = filters.dateFrom;
-        \1 {\n  \2here.measurementPeriod.lte = filters.dateTo;
+        if (!session.user)here.measurementPeriod.gte = filters.dateFrom;
+        if (!session.user)here.measurementPeriod.lte = filters.dateTo;
       }
 
       const metrics = await this.prisma.qualityMetrics.findMany({
         where,
-        orderBy: { measurementPeriod: 'desc' }
+        orderBy: { measurementPeriod: "desc" }
       });
 
       return metrics.map(metric => ({
         id: metric.id,
-        \1,\2 metric.measurementPeriod,
-        \1,\2 metric.numeratorValue,
-        \1,\2 metric.rate || undefined,
-        \1,\2 metric.varianceFromTarget || undefined,
+        metric.measurementPeriod,
+        metric.numeratorValue,
+        metric.rate || undefined,
+        metric.varianceFromTarget || undefined,
         stratificationData: metric.stratificationData ?
           JSON.parse(metric.stratificationData) : undefined,
         dataQualityScore: metric.dataQualityScore || undefined,
-        \1,\2 metric.dataSource as any,
-        \1,\2 metric.enteredBy,
+        metric.dataSource as any,
+        metric.enteredBy,
         verifiedBy: metric.verifiedBy || undefined
       }));
     } catch (error) {
-      throw new Error(`Failed to get quality metrics: ${\1}`;
+      throw new Error(`Failed to get quality metrics: ${}`;
     }
   }
 
@@ -448,7 +446,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         data: {
           ...encryptedData,
           requirements: JSON.stringify(validated.requirements),
-          \1,\2 validated.gaps ? JSON.stringify(validated.gaps) : null
+          validated.gaps ? JSON.stringify(validated.gaps) : null
         }
       });
 
@@ -457,7 +455,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: report.id
       };
     } catch (error) {
-      throw new Error(`Failed to create compliance report: ${\1}`;
+      throw new Error(`Failed to create compliance report: ${}`;
     }
   }
 
@@ -467,10 +465,10 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         where: { id }
       });
 
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
       return this.deserializeComplianceReport(report);
     } catch (error) {
-      throw new Error(`Failed to get compliance report: ${\1}`;
+      throw new Error(`Failed to get compliance report: ${}`;
     }
   }
 
@@ -495,7 +493,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: actionPlan.id
       };
     } catch (error) {
-      throw new Error(`Failed to create action plan: ${\1}`;
+      throw new Error(`Failed to create action plan: ${}`;
     }
   }
 
@@ -503,14 +501,14 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     try {
       const actionPlan = await this.prisma.actionPlan.findUnique({
         where: { id },
-        \1,\2 true
+        true
         }
       });
 
-      \1 {\n  \2eturn null;
+      if (!session.user)eturn null;
       return this.deserializeActionPlan(actionPlan);
     } catch (error) {
-      throw new Error(`Failed to get action plan: ${\1}`;
+      throw new Error(`Failed to get action plan: ${}`;
     }
   }
 
@@ -535,7 +533,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: actionItem.id
       };
     } catch (error) {
-      throw new Error(`Failed to create action item: ${\1}`;
+      throw new Error(`Failed to create action item: ${}`;
     }
   }
 
@@ -551,13 +549,13 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
             JSON.stringify(updates.dependencies) : undefined,
           blockers: updates.blockers ?
             JSON.stringify(updates.blockers) : undefined,
-          completedDate: updates.status === 'completed' ? new Date() : undefined
+          completedDate: updates.status === "completed" ? new Date() : undefined
         }
       });
 
       return this.deserializeActionItem(updated);
     } catch (error) {
-      throw new Error(`Failed to update action item: ${\1}`;
+      throw new Error(`Failed to update action item: ${}`;
     }
   }
 
@@ -565,27 +563,27 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   async getQualityDashboardData(indicatorIds: string[], dateRange: { from: Date, to: Date }) {
     try {
       const metrics = await this.prisma.qualityMetrics.findMany({
-        \1,\2 { in: indicatorIds },
-          \1,\2 dateRange.from,
+        { in: indicatorIds },
+          dateRange.from,
             lte: dateRange.to
           }
         },
-        \1,\2 true
+        true
         },
-        orderBy: { measurementPeriod: 'asc' }
+        orderBy: { measurementPeriod: "asc" }
       });
 
       return metrics.map(metric => ({
-        \1,\2 metric.indicator.id,
-          \1,\2 metric.indicator.category,
+        metric.indicator.id,
+          metric.indicator.category,
           targetValue: metric.indicator.targetValue
         },
         measurementPeriod: metric.measurementPeriod,
-        \1,\2 metric.targetValue,
+        metric.targetValue,
         varianceFromTarget: metric.varianceFromTarget
       }));
     } catch (error) {
-      throw new Error(`Failed to get dashboard data: ${\1}`;
+      throw new Error(`Failed to get dashboard data: ${}`;
     }
   }
 
@@ -620,7 +618,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     return {
       ...decrypted,
       assessors: JSON.parse(assessment.assessors),
-      \1,\2 assessment.recommendations ? JSON.parse(assessment.recommendations) : undefined
+      assessment.recommendations ? JSON.parse(assessment.recommendations) : undefined
     };
   }
 
@@ -630,7 +628,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
     return {
       ...decrypted,
       requirements: JSON.parse(report.requirements),
-      \1,\2 report.gaps ? JSON.parse(report.gaps) : undefined
+      report.gaps ? JSON.parse(report.gaps) : undefined
     };
   }
 
@@ -668,7 +666,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 let qualityServiceInstance: PersistentQualityManagementService | null = null
 
 export const _getQualityManagementService = (prismaClient?: PrismaClient): PersistentQualityManagementService => {
-  \1 {\n  \2{
+  if (!session.user) {
     qualityServiceInstance = new PersistentQualityManagementService(prismaClient);
   }
   return qualityServiceInstance

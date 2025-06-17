@@ -1,16 +1,16 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 
-import { withErrorHandling } from '@/lib/middleware/error-handling.middleware';
-import { SecurityService } from '@/lib/security.service';
-import { FeedbackService } from '@/lib/services/support-services/feedback/feedback.service';
+import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
+import { SecurityService } from "@/lib/security.service";
+import { FeedbackService } from "@/lib/services/support-services/feedback/feedback.service";
 // Initialize service
 const feedbackService = new FeedbackService();
 
 // Validation schemas
 const createFeedbackSchema = z.object({
-  type: z.enum(['GENERAL', 'SERVICE', 'STAFF', 'FACILITY', 'CARE', 'OTHER']),
+  type: z.enum(["GENERAL", "SERVICE", "STAFF", "FACILITY", "CARE", "OTHER"]),
   subject: z.string().min(3).max(100),
   description: z.string().min(10).max(2000),
   rating: z.number().min(1).max(5).optional(),
@@ -24,10 +24,10 @@ const createFeedbackSchema = z.object({
 });
 
 const createComplaintSchema = z.object({
-  category: z.enum(['CARE_QUALITY', 'STAFF_BEHAVIOR', 'BILLING', 'FACILITY', 'SAFETY', 'PRIVACY', 'OTHER']),
+  category: z.enum(["CARE_QUALITY", "STAFF_BEHAVIOR", "BILLING", "FACILITY", "SAFETY", "PRIVACY", "OTHER"]),
   subject: z.string().min(3).max(100),
   description: z.string().min(10).max(2000),
-  severity: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
+  severity: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
   submittedById: z.string().uuid().optional(),
   patientId: z.string().uuid().optional(),
   departmentId: z.string().uuid().optional(),
@@ -39,19 +39,19 @@ const createComplaintSchema = z.object({
 });
 
 const updateFeedbackSchema = z.object({
-  status: z.enum(['NEW', 'UNDER_REVIEW', 'ACKNOWLEDGED', 'RESOLVED', 'CLOSED']).optional(),
+  status: z.enum(["NEW", "UNDER_REVIEW", "ACKNOWLEDGED", "RESOLVED", "CLOSED"]).optional(),
   response: z.string().max(2000).optional(),
   assignedToId: z.string().uuid().optional(),
   internalNotes: z.string().max(1000).optional()
 });
 
 const updateComplaintSchema = z.object({
-  status: z.enum(['NEW', 'UNDER_INVESTIGATION', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']).optional(),
+  status: z.enum(["NEW", "UNDER_INVESTIGATION", "IN_PROGRESS", "RESOLVED", "CLOSED"]).optional(),
   response: z.string().max(2000).optional(),
   assignedToId: z.string().uuid().optional(),
   internalNotes: z.string().max(1000).optional(),
   resolutionDetails: z.string().max(2000).optional(),
-  escalationLevel: z.enum(['DEPARTMENT', 'MANAGEMENT', 'EXECUTIVE', 'EXTERNAL']).optional(),
+  escalationLevel: z.enum(["DEPARTMENT", "MANAGEMENT", "EXECUTIVE", "EXTERNAL"]).optional(),
 });
 
 // GET /api/support-services/feedback
@@ -62,12 +62,12 @@ export const _GET = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        type: searchParams.get('type') || undefined,
-        \1,\2 searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
-        \1,\2 searchParams.get('departmentId') || undefined,
-        \1,\2 searchParams.get('patientId') || undefined,
-        \1,\2 searchParams.get('maxRating') ? Number.parseInt(searchParams.get('maxRating')!) : undefined,
-        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
+        type: searchParams.get("type") || undefined,
+        searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
+        searchParams.get("departmentId") || undefined,
+        searchParams.get("patientId") || undefined,
+        searchParams.get("maxRating") ? Number.parseInt(searchParams.get("maxRating")!) : undefined,
+        Number.parseInt(searchParams.get("limit") || "10")
       };
 
       // Get feedback with filters
@@ -76,8 +76,8 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'feedback:read',
-      auditAction: 'FEEDBACK_VIEW'
+      requiredPermission: "feedback:read",
+      auditAction: "FEEDBACK_VIEW"
     }
   );
 }
@@ -102,7 +102,7 @@ export const _POST = async (request: NextRequest) => {
     {
       // Allow anonymous feedback submission
       skipAuth: true,
-      auditAction: 'FEEDBACK_CREATE'
+      auditAction: "FEEDBACK_CREATE"
     }
   );
 }
@@ -113,14 +113,14 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     request,
     async (req) => {
       // Get feedback by ID
-      const includeFHIR = req.nextUrl.searchParams.get('fhir') === 'true';
+      const includeFHIR = req.nextUrl.searchParams.get("fhir") === "true";
       const result = await feedbackService.getFeedbackById(params.id, includeFHIR);
 
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'feedback:read',
-      auditAction: 'FEEDBACK_DETAIL_VIEW'
+      requiredPermission: "feedback:read",
+      auditAction: "FEEDBACK_DETAIL_VIEW"
     }
   );
 }
@@ -143,8 +143,8 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'feedback:update',
-      auditAction: 'FEEDBACK_UPDATE'
+      requiredPermission: "feedback:update",
+      auditAction: "FEEDBACK_UPDATE"
     }
   );
 }
@@ -157,12 +157,12 @@ export const _GET_COMPLAINTS = async (request: NextRequest) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
       const filters = {
-        category: searchParams.get('category') || undefined,
-        \1,\2 searchParams.get('severity') || undefined,
-        \1,\2 searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined,
-        \1,\2 searchParams.get('staffId') || undefined,
-        \1,\2 searchParams.get('escalationLevel') || undefined,
-        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
+        category: searchParams.get("category") || undefined,
+        searchParams.get("severity") || undefined,
+        searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
+        searchParams.get("staffId") || undefined,
+        searchParams.get("escalationLevel") || undefined,
+        Number.parseInt(searchParams.get("limit") || "10")
       };
 
       // Get complaints with filters
@@ -171,8 +171,8 @@ export const _GET_COMPLAINTS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'complaints:read',
-      auditAction: 'COMPLAINTS_VIEW'
+      requiredPermission: "complaints:read",
+      auditAction: "COMPLAINTS_VIEW"
     }
   );
 }
@@ -197,7 +197,7 @@ export const _POST_COMPLAINT = async (request: NextRequest) => {
     {
       // Allow anonymous complaint submission
       skipAuth: true,
-      auditAction: 'COMPLAINT_CREATE'
+      auditAction: "COMPLAINT_CREATE"
     }
   );
 }
@@ -208,14 +208,14 @@ export const _GET_COMPLAINT_BY_ID = async (request: NextRequest, { params }: { p
     request,
     async (req) => {
       // Get complaint by ID
-      const includeFHIR = req.nextUrl.searchParams.get('fhir') === 'true';
+      const includeFHIR = req.nextUrl.searchParams.get("fhir") === "true";
       const result = await feedbackService.getComplaintById(params.id, includeFHIR);
 
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'complaints:read',
-      auditAction: 'COMPLAINT_DETAIL_VIEW'
+      requiredPermission: "complaints:read",
+      auditAction: "COMPLAINT_DETAIL_VIEW"
     }
   );
 }
@@ -238,8 +238,8 @@ export const _PATCH_COMPLAINT = async (request: NextRequest, { params }: { param
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'complaints:update',
-      auditAction: 'COMPLAINT_UPDATE'
+      requiredPermission: "complaints:update",
+      auditAction: "COMPLAINT_UPDATE"
     }
   );
 }
@@ -253,23 +253,23 @@ export const _ESCALATE_COMPLAINT = async (request: NextRequest, { params }: { pa
       const body = await req.json();
       const { escalationLevel, reason, escalatedById } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Escalation level is required' }, { status: 400 });
+      if (!session.user) {
+        return NextResponse.json({ error: "Escalation level is required" }, { status: 400 });
       }
 
       // Escalate complaint
       const result = await feedbackService.escalateComplaint(
         params.id,
         escalationLevel,
-        SecurityService.sanitizeInput(reason || ''),
+        SecurityService.sanitizeInput(reason || ""),
         escalatedById;
       );
 
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'complaints:escalate',
-      auditAction: 'COMPLAINT_ESCALATE'
+      requiredPermission: "complaints:escalate",
+      auditAction: "COMPLAINT_ESCALATE"
     }
   );
 }
@@ -281,9 +281,9 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
     async (req) => {
       // Parse query parameters
       const searchParams = req.nextUrl.searchParams;
-      const fromDate = searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined;
-      const toDate = searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined;
-      const departmentId = searchParams.get('departmentId') || undefined;
+      const fromDate = searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined;
+      const toDate = searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined;
+      const departmentId = searchParams.get("departmentId") || undefined;
 
       // Get feedback analytics
       const result = await feedbackService.getFeedbackAnalytics(fromDate, toDate, departmentId);
@@ -291,7 +291,7 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       return NextResponse.json(result);
     },
     {
-      requiredPermission: 'feedback:analytics',
-      auditAction: 'FEEDBACK_ANALYTICS_VIEW'
+      requiredPermission: "feedback:analytics",
+      auditAction: "FEEDBACK_ANALYTICS_VIEW"
     }
   );

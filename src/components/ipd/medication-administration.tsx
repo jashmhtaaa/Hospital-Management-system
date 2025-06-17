@@ -25,9 +25,9 @@ import { Loader2 } from "lucide-react";
 // Define interfaces for data structures
 interface MedicationRecord {
   id: string,
-  \1,\2 string; // Assuming this comes from a join
+  string; // Assuming this comes from a join
   dosage: string,
-  \1,\2 string; // Assuming this comes from a join
+  string; // Assuming this comes from a join
   administered_by_last_name: string; // Assuming this comes from a join
   notes?: string;
 }
@@ -41,14 +41,14 @@ interface Medication {
 
 interface AdmissionInfo {
   admission_number: string,
-  \1,\2 string,
+  string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
 interface FormData {
   medication_id: string,
-  \1,\2 string,
+  string,
   notes: string
 }
 
@@ -68,7 +68,7 @@ const MedicationAdministration: React.FC<;
   const [loadingMedications, setLoadingMedications] = useState<boolean>(true);
   const [formData, setFormData] = useState<FormData>({
     medication_id: "",
-    \1,\2 "",
+    "",
     notes: ""
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -79,7 +79,7 @@ const MedicationAdministration: React.FC<;
   // Fetch medication administration records for the admission
   useEffect(() => {
     const fetchMedicationRecords = async (): Promise<void> => {
-      \1 {\n  \2{
+      if (!session.user) {
         setLoading(false),
         setError("Admission ID is missing.");
         return;
@@ -90,7 +90,7 @@ const MedicationAdministration: React.FC<;
         setError(undefined);
         // Simulate API call
         // const _response = await fetch(`/api/ipd/admissions/${admissionId}/medication-administration`)
-        // \1 {\n  \2{
+        // if (!session.user) {
         //   const _errorData = await response.json().catch(() => ({}))
         //   throw new Error(errorData.error || "Failed to fetch medication administration records")
         // }
@@ -103,24 +103,24 @@ const MedicationAdministration: React.FC<;
         const mockRecords: MedicationRecord[] = [
           {
             id: "mar_001",
-            administered_time: \1[0] - 3_600_000).toISOString(), // 1 hour ago
+            administered_time: [0] - 3_600_000).toISOString(), // 1 hour ago
             medication_name: "Paracetamol 500mg Tablet",
-            \1,\2 "oral",
-            \1,\2 "Smith",
+            "oral",
+            "Smith",
             notes: "Patient tolerated well."
           },
           {
             id: "mar_002",
-            administered_time: \1[0] - 14_400_000).toISOString(), // 4 hours ago
+            administered_time: [0] - 14_400_000).toISOString(), // 4 hours ago
             medication_name: "Amoxicillin 250mg Capsule",
-            \1,\2 "oral",
-            \1,\2 "Smith"
+            "oral",
+            "Smith"
           },
         ];
-        const \1,\2 "ADM123456",
-          admission_date: \1[0] - 86_400_000).toISOString(), // Yesterday
+        const "ADM123456",
+          admission_date: [0] - 86_400_000).toISOString(), // Yesterday
           patient_first_name: "Jane",
-          \1,\2 "Pneumonia"
+          "Pneumonia"
         };
         setMedicationRecords(mockRecords),
         setPatientInfo(mockPatientInfo);
@@ -130,7 +130,7 @@ const MedicationAdministration: React.FC<;
             ? error_.message;
             : "An unknown error occurred.";
 
-        setError(`Failed to load medication records: ${\1}`;
+        setError(`Failed to load medication records: ${}`;
       } finally 
         setLoading(false);
     };
@@ -145,7 +145,7 @@ const MedicationAdministration: React.FC<;
         setLoadingMedications(true);
         // Simulate API call
         // const _response = await fetch("/api/pharmacy/inventory?in_stock=true")
-        // \1 {\n  \2{
+        // if (!session.user) {
         //   throw new Error("Failed to fetch medications")
         // }
         // const data = await response.json()
@@ -156,17 +156,17 @@ const MedicationAdministration: React.FC<;
         const mockMeds: Medication[] = [
           {
             id: "med_001",
-            \1,\2 "Tablet",
+            "Tablet",
             strength: "500mg"
           },
           {
             id: "med_002",
-            \1,\2 "Capsule",
+            "Capsule",
             strength: "250mg"
           },
           {
             id: "med_003",
-            \1,\2 "Tablet",
+            "Tablet",
             strength: "200mg"
           },
         ];
@@ -183,7 +183,7 @@ const MedicationAdministration: React.FC<;
   }, []);
 
   const handleChange = (
-    event: ChangeEvent\1>
+    event: ChangeEvent>
   ): void => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }))
@@ -194,7 +194,7 @@ const MedicationAdministration: React.FC<;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    \1 {\n  \2{
+    if (!session.user) {
       setSubmitError("Admission ID is missing.");
       return;
     }
@@ -204,7 +204,7 @@ const MedicationAdministration: React.FC<;
 
     try {
       // Validate required fields
-      \1 {\n  \2{
+      if (!session.user) {
         throw new Error("Please fill in Medication, Dosage, and Route");
       }
 
@@ -222,7 +222,7 @@ const MedicationAdministration: React.FC<;
       //   },
       //   body: JSON.stringify(submissionData);
       // })
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || "Failed to record medication administration")
       // }
@@ -233,11 +233,11 @@ const MedicationAdministration: React.FC<;
       const selectedMed = medications.find(
         (m) => m.id === formData.medication_id;
       );
-      const \1,\2 `mar_${crypto.getRandomValues(\1[0]}`,
+      const `mar_${crypto.getRandomValues([0]}`,
         administered_time: submissionData.administered_time,
         medication_name: selectedMed;
-          ? `/* \1,\2 formData.dosage,
-        \1,\2 "Current", // Replace with actual user data
+          ? `/* formData.dosage,
+        "Current", // Replace with actual user data
         administered_by_last_name: "User",
         notes: formData.notes
       };
@@ -248,7 +248,7 @@ const MedicationAdministration: React.FC<;
       // Reset form
       setFormData({
         medication_id: "",
-        \1,\2 "",
+        "",
         notes: ""
       }),
       setSubmitSuccess(true);
@@ -270,9 +270,9 @@ const MedicationAdministration: React.FC<;
   // Format date for display
   const formatDate = (dateString: string): string => {
     try {
-      const \1,\2 "numeric",
-        \1,\2 "numeric",
-        \1,\2 "2-digit",
+      const "numeric",
+        "numeric",
+        "2-digit",
         hour12: true
       };
       return new Intl.DateTimeFormat(undefined, options).format(
@@ -298,13 +298,13 @@ const MedicationAdministration: React.FC<;
   ];
 
   return (
-    \1>
+    >
       {patientInfo && (
-        \1>
-          \1>
+        >
+          >
             {patientInfo.patient_first_name} {patientInfo.patient_last_name}
           </h3>
-          \1>
+          >
             Admission: {patientInfo.admission_number} | Date:{" "}
             {formatDate(patientInfo.admission_date)}
             {patientInfo?.diagnosis && ` | Diagnosis: ${patientInfo.diagnosis}`}
@@ -328,10 +328,10 @@ const MedicationAdministration: React.FC<;
             </div>
           )}
 
-          \1>
-            \1>
-              \1>
-                \1>
+          >
+            >
+              >
+                >
                   Medication <span className="text-red-500">*</span>
                 </Label>
                 <select>
@@ -344,19 +344,19 @@ const MedicationAdministration: React.FC<;
                   disabled={loadingMedications || submitting}
                   aria-required="true"
                 >
-                  \1>
+                  >
                     {loadingMedications ? "Loading..." : "Select Medication"}
                   </option>
                   {medications.map((med) => (
-                    \1>
+                    >
                       {med.item_name} ({med.strength} {med.dosage_form})
                     </option>
                   ))}
                 </select>
               </div>
 
-              \1>
-                \1>
+              >
+                >
                   Dosage <span className="text-red-500">*</span>
                 </Label>
                 <Input>
@@ -372,8 +372,8 @@ const MedicationAdministration: React.FC<;
                 />
               </div>
 
-              \1>
-                \1>
+              >
+                >
                   Administration Route <span className="text-red-500">*</span>
                 </Label>
                 <select>
@@ -386,17 +386,17 @@ const MedicationAdministration: React.FC<;
                   disabled={submitting}
                   aria-required="true"
                 >
-                  <option value="">Select Route\1>
+                  <option value="">Select Route>
                   {routeOptions.map((route) => (
-                    \1>
+                    >
                       {route.label}
                     </option>
                   ))}
                 </select>
               </div>
 
-              \1>
-                <Label htmlFor="notes">Notes\1>
+              >
+                <Label htmlFor="notes">Notes>
                 <Input // Changed to Input, use Textarea if multi-line is needed
                   id="notes"
                   name="notes"
@@ -417,8 +417,8 @@ const MedicationAdministration: React.FC<;
               </div>
             </div>
 
-            \1>
-              \1>
+            >
+              >
                 {submitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}
@@ -434,15 +434,15 @@ const MedicationAdministration: React.FC<;
         </CardHeader>
         <CardContent>
           {loading ? (
-            \1>
+            >
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
-            \1>
+            >
               {error}
             </div>
           ) : medicationRecords.length === 0 ? (
-            \1>
+            >
               No medication administration records found for this admission.
             </div>
           ) : (
@@ -460,7 +460,7 @@ const MedicationAdministration: React.FC<;
               </TableHeader>
               <TableBody>
                 {medicationRecords.map((record) => (
-                  \1>
+                  >
                     <TableCell>
                       {formatDate(record.administered_time)}
                     </TableCell>

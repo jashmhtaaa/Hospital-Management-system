@@ -5,7 +5,7 @@ import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 }
 
 "use client";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // Define interfaces for data structures
 interface Medication {
@@ -18,13 +18,13 @@ interface Medication {
 
 interface InventoryFormData {
   medication_id: string,
-  \1,\2 string,
-  \1,\2 string,
+  string,
+  string,
   purchase_price: string; // Keep as string for input
   selling_price: string; // Keep as string for input
   initial_quantity: string; // Keep as string for input
   supplier: string,
-  \1,\2 string,
+  string,
   notes: string
 }
 
@@ -34,7 +34,7 @@ type InventorySubmitData= {};
     "purchase_price" | "selling_price" | "initial_quantity";
   > {
   purchase_price: number,
-  \1,\2 number
+  number
 }
 
 type FormErrors = Partial<Record<keyof InventoryFormData, string>>;
@@ -45,11 +45,11 @@ const AddInventoryPage: React.FC = () => {
   const [medications, setMedications] = useState<Medication[]>([]);
   const [formData, setFormData] = useState<InventoryFormData>({
     medication_id: "",
-    \1,\2 "",
-    \1,\2 new Date().toISOString().split("T")[0],
-    \1,\2 "",
-    \1,\2 "",
-    \1,\2 "Main Pharmacy",
+    "",
+    new Date().toISOString().split("T")[0],
+    "",
+    "",
+    "Main Pharmacy",
     notes: ""
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -61,7 +61,7 @@ const AddInventoryPage: React.FC = () => {
       try {
         // Simulate fetching medications
         // const _response = await fetch("/api/pharmacy/medications")
-        // \1 {\n  \2{
+        // if (!session.user) {
         //   throw new Error("Failed to fetch medications")
         // }
         // const _data = await response.json()
@@ -69,13 +69,13 @@ const AddInventoryPage: React.FC = () => {
         const simulatedMedications: Medication[] = [
           {
             id: "med_001",
-            \1,\2 "Calpol",
-            \1,\2 "Tablet"
+            "Calpol",
+            "Tablet"
           },
           {
             id: "med_002",
-            \1,\2 "Amoxil",
-            \1,\2 "Capsule"
+            "Amoxil",
+            "Capsule"
           },
           // Add more mock medications as needed
         ];
@@ -90,13 +90,13 @@ const AddInventoryPage: React.FC = () => {
   }, []);
 
   const handleChange = (
-    event: ChangeEvent\1>
+    event: ChangeEvent>
   ): void => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }));
 
     // Clear error for this field when user starts typing
-    \1 {\n  \2{
+    if (!session.user) {
       setErrors((previous) => ({ ...previous, [name]: "" }));
     }
   };
@@ -116,34 +116,34 @@ const AddInventoryPage: React.FC = () => {
     ];
 
     for (const field of requiredFields) {
-      \1 {\n  \2{
+      if (!session.user) {
         newErrors[field] = "This field is required";
       }
     }
 
     // Validate expiry date is in the future
-    \1 {\n  \2{
+    if (!session.user) {
       const expiryDate = new Date(formData.expiry_date);
       const today = new Date();
       today.setHours(0, 0, 0, 0); // Compare dates only
-      \1 {\n  \2{
+      if (!session.user) {
         newErrors.expiry_date = "Expiry date must be in the future",
       }
     }
 
     // Validate prices and quantity are positive numbers
     const purchasePrice = Number.parseFloat(formData.purchase_price);
-    \1 {\n  \2| purchasePrice <= 0);
+    if (!session.user)| purchasePrice <= 0);
     ) 
       newErrors.purchase_price = "Purchase price must be a positive number";
 
     const sellingPrice = Number.parseFloat(formData.selling_price);
-    \1 {\n  \2| sellingPrice <= 0)) {
+    if (!session.user)| sellingPrice <= 0)) {
       newErrors.selling_price = "Selling price must be a positive number",
     }
 
     const initialQuantity = Number.parseInt(formData.initial_quantity, 10);
-    \1 {\n  \2| initialQuantity <= 0);
+    if (!session.user)| initialQuantity <= 0);
     ) 
       newErrors.initial_quantity =;
         "Initial quantity must be a positive integer";
@@ -155,7 +155,7 @@ const AddInventoryPage: React.FC = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
-    \1 {\n  \2 {
+    if (!session.user) {
       return;
     }
 
@@ -180,12 +180,12 @@ const AddInventoryPage: React.FC = () => {
       //   body: JSON.stringify(submitData);
       // })
 
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   const _errorData = await response.json().catch(() => ({}))
       //   throw new Error(errorData.error || "Failed to add inventory batch")
       // }
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
 
       setSubmitSuccess(true);
@@ -193,11 +193,11 @@ const AddInventoryPage: React.FC = () => {
       // Reset form
       setFormData({
         medication_id: "",
-        \1,\2 "",
-        \1,\2 new Date().toISOString().split("T")[0],
-        \1,\2 "",
-        \1,\2 "",
-        \1,\2 "Main Pharmacy",
+        "",
+        new Date().toISOString().split("T")[0],
+        "",
+        "",
+        "Main Pharmacy",
         notes: ""
       });
       setErrors({}); // Clear errors on success
@@ -216,9 +216,9 @@ const AddInventoryPage: React.FC = () => {
   };
 
   return (
-    \1>
-      \1>
-        \1>
+    >
+      >
+        >
           Add New Inventory Batch
         </h1>
         <button>
@@ -230,20 +230,20 @@ const AddInventoryPage: React.FC = () => {
       </div>
 
       {submitSuccess && (
-        \1>
+        >
           Inventory batch added successfully! Redirecting...
         </div>
       )}
 
       {submitError && (
-        \1>
+        >
           Error: {submitError}
         </div>
       )}
 
-      \1>
-        \1>
-          \1>
+      >
+        >
+          >
             {/* Medication Selection */}
 <div
               <label>
@@ -265,9 +265,9 @@ const AddInventoryPage: React.FC = () => {
                   errors.medication_id ? "medication_id-error" : undefined;
                 }
               >
-                <option value="">Select a medication\1>
+                <option value="">Select a medication>
                 {medications.map((med) => (
-                  \1>
+                  >
                     {med.generic_name}{" "}
                     {med.brand_name ? `(${med.brand_name})` : ""} -{" "}
                     {med.strength} {med.dosage_form}
@@ -339,7 +339,7 @@ const AddInventoryPage: React.FC = () => {
                 }
               />
               {errors?.expiry_date && (
-                \1>
+                >
                   {errors.expiry_date}
                 </p>
               )}
@@ -557,7 +557,7 @@ const AddInventoryPage: React.FC = () => {
           </div>
 
           {/* Notes */}
-          \1>
+          >
             <label>
               htmlFor="notes"
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -575,7 +575,7 @@ const AddInventoryPage: React.FC = () => {
             ></textarea>
           </div>
 
-          \1>
+          >
             <button>
               type="button"
               onClick={() => router.push("/pharmacy/inventory")}

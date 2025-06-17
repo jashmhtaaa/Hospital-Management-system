@@ -16,20 +16,20 @@ export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const DB = process.env.DB as unknown as D1Database
     let query =;
       "SELECT id, name, location, specialty, status, updated_at FROM OperationTheatres";
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       query += " WHERE status = ?";
       parameters.push(status);
     }
 
     query += " ORDER BY name ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
@@ -52,7 +52,7 @@ export const _POST = async (request: NextRequest) => {
     const body = (await request.json()) as TheatreCreateBody;
     const { name, location, specialty, equipment } = body;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { message: "Theatre name is required" },
         { status: 400 }
@@ -95,13 +95,13 @@ export const _POST = async (request: NextRequest) => {
             specialty,
             equipment,
             status: "available",
-            \1,\2 now,status: 201 
+            now,status: 201 
         ),
   } catch (error: unknown) {
     // FIX: Remove explicit any
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
+    if (!session.user) {
       // FIX: Check errorMessage
       return NextResponse.json(
         {

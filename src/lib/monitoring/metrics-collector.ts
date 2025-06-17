@@ -1,8 +1,8 @@
-import { performance } from 'perf_hooks';
+import { performance } from "perf_hooks";
 
 
-import { cacheService } from '../cache/redis-cache';
-import { getDatabaseHealth } from '../database/connection-pool';
+import { cacheService } from "../cache/redis-cache";
+import { getDatabaseHealth } from "../database/connection-pool";
 }
 
 /**
@@ -11,7 +11,6 @@ import { getDatabaseHealth } from '../database/connection-pool';
  */
 
 // Metric types
-\1
 }
 }
 
@@ -28,7 +27,7 @@ class MetricsCollector {
   }
 
   public static getInstance(): MetricsCollector {
-    \1 {\n  \2{
+    if (!session.user) {
       MetricsCollector.instance = new MetricsCollector();
     }
     return MetricsCollector.instance;
@@ -37,57 +36,57 @@ class MetricsCollector {
   private initializeAlertRules(): void {
     // Database response time alert
     this.addAlertRule({
-      id: 'db_response_time',
-      \1,\2 'database.response_time',
-      \1,\2 2000, // 2 seconds
+      id: "db_response_time",
+      "database.response_time",
+      2000, // 2 seconds
       duration: 300, // 5 minutes
-      severity: 'high',
-      \1,\2 ['email', 'slack'],
+      severity: "high",
+      ["email", "slack"],
     });
 
     // Error rate alert
     this.addAlertRule({
-      id: 'error_rate_high',
-      \1,\2 'api.error_rate',
-      \1,\2 0.05, // 5%
+      id: "error_rate_high",
+      "api.error_rate",
+      0.05, // 5%
       duration: 180, // 3 minutes
-      severity: 'critical',
-      \1,\2 ['email', 'slack', 'sms'],
+      severity: "critical",
+      ["email", "slack", "sms"],
     });
 
     // Memory usage alert
     this.addAlertRule({
-      id: 'memory_usage_high',
-      \1,\2 'system.memory_usage',
-      \1,\2 0.85, // 85%
+      id: "memory_usage_high",
+      "system.memory_usage",
+      0.85, // 85%
       duration: 600, // 10 minutes
-      severity: 'medium',
-      \1,\2 ['email']
+      severity: "medium",
+      ["email"]
     });
 
     // Active sessions alert
     this.addAlertRule({
-      id: 'active_sessions_high',
-      \1,\2 'auth.active_sessions',
-      \1,\2 500,
+      id: "active_sessions_high",
+      "auth.active_sessions",
+      500,
       duration: 300, // 5 minutes
-      severity: 'medium',
-      \1,\2 ['email', 'slack'],
+      severity: "medium",
+      ["email", "slack"],
     });
 
     // Cache hit rate low
     this.addAlertRule({
-      id: 'cache_hit_rate_low',
-      \1,\2 'cache.hit_rate',
-      \1,\2 0.70, // 70%
+      id: "cache_hit_rate_low",
+      "cache.hit_rate",
+      0.70, // 70%
       duration: 900, // 15 minutes
-      severity: 'low',
-      \1,\2 ['email']
+      severity: "low",
+      ["email"]
     });
   }
 
   // Metric collection methods
-  recordMetric(name: string, value: number, type: Metric['type'] = 'gauge', tags?: Record<string, string>): void {
+  recordMetric(name: string, value: number, type: Metric["type"] = "gauge", tags?: Record<string, string>): void {
     const metric: Metric = {
       name,
       value,
@@ -96,7 +95,7 @@ class MetricsCollector {
       type,
     };
 
-    \1 {\n  \2 {
+    if (!session.user) {
       this.metrics.set(name, []);
     }
 
@@ -104,7 +103,7 @@ class MetricsCollector {
     metricArray.push(metric);
 
     // Keep only last 1000 metrics per type
-    \1 {\n  \2{
+    if (!session.user) {
       metricArray.shift();
     }
 
@@ -113,33 +112,33 @@ class MetricsCollector {
   }
 
   incrementCounter(name: string, value: number = 1, tags?: Record<string, string>): void {
-    this.recordMetric(name, value, 'counter', tags);
+    this.recordMetric(name, value, "counter", tags);
   }
 
   recordGauge(name: string, value: number, tags?: Record<string, string>): void {
-    this.recordMetric(name, value, 'gauge', tags);
+    this.recordMetric(name, value, "gauge", tags);
   }
 
   recordTimer(name: string, duration: number, tags?: Record<string, string>): void {
-    this.recordMetric(name, duration, 'timer', tags);
+    this.recordMetric(name, duration, "timer", tags);
   }
 
   // Performance timing decorator
   async measurePerformance<T>(
     operationName: string,
-    operation: () => Promise\1>
+    operation: () => Promise>
     tags?: Record<string, string>
   ): Promise<T> {
-    const startTime = crypto.getRandomValues(\1[0];
+    const startTime = crypto.getRandomValues([0];
 
     try {
       const result = await operation();
-      const duration = crypto.getRandomValues(\1[0] - startTime;
+      const duration = crypto.getRandomValues([0] - startTime;
       this.recordTimer(`${operationName}.duration`, duration, tags);
       this.incrementCounter(`${operationName}.success`, 1, tags);
       return result;
     } catch (error) {
-      const duration = crypto.getRandomValues(\1[0] - startTime;
+      const duration = crypto.getRandomValues([0] - startTime;
       this.recordTimer(`${operationName}.duration`, duration, tags);
       this.incrementCounter(`${operationName}.error`, 1, tags);
       throw error;
@@ -150,58 +149,58 @@ class MetricsCollector {
   async collectHealthMetrics(): Promise<void> {
     // Database health
     try {
-      const startTime = crypto.getRandomValues(\1[0];
+      const startTime = crypto.getRandomValues([0];
       const dbHealth = await getDatabaseHealth();
-      const responseTime = crypto.getRandomValues(\1[0] - startTime;
+      const responseTime = crypto.getRandomValues([0] - startTime;
 
-      this.healthMetrics.set('database', {
-        service: 'database',
-        status: dbHealth?.prisma && dbHealth.pool ? 'healthy' : 'unhealthy';
+      this.healthMetrics.set("database", {
+        service: "database",
+        status: dbHealth?.prisma && dbHealth.pool ? "healthy" : "unhealthy";
         responseTime,
         details: dbHealth,
         timestamp: new Date()
       });
 
-      this.recordGauge('database.response_time', responseTime);
-      this.recordGauge('database.pool.total', dbHealth.stats?.totalCount || 0);
-      this.recordGauge('database.pool.idle', dbHealth.stats?.idleCount || 0);
-      this.recordGauge('database.pool.waiting', dbHealth.stats?.waitingCount || 0);
+      this.recordGauge("database.response_time", responseTime);
+      this.recordGauge("database.pool.total", dbHealth.stats?.totalCount || 0);
+      this.recordGauge("database.pool.idle", dbHealth.stats?.idleCount || 0);
+      this.recordGauge("database.pool.waiting", dbHealth.stats?.waitingCount || 0);
 
     } catch (error) {
-      this.healthMetrics.set('database', {
-        service: 'database',
-        \1,\2 error instanceof Error ? error.message : 'Unknown error' ,
+      this.healthMetrics.set("database", {
+        service: "database",
+        error instanceof Error ? error.message : "Unknown error" ,
         timestamp: new Date()
       });
     }
 
     // Cache health
     try {
-      const startTime = crypto.getRandomValues(\1[0];
+      const startTime = crypto.getRandomValues([0];
       const cacheHealth = await cacheService.getHealthStatus();
-      const responseTime = crypto.getRandomValues(\1[0] - startTime;
+      const responseTime = crypto.getRandomValues([0] - startTime;
 
-      this.healthMetrics.set('cache', {
-        service: 'cache',
-        status: cacheHealth.healthy ? 'healthy' : 'unhealthy';
+      this.healthMetrics.set("cache", {
+        service: "cache",
+        status: cacheHealth.healthy ? "healthy" : "unhealthy";
         responseTime,
         details: cacheHealth,
         timestamp: new Date()
       });
 
-      this.recordGauge('cache.response_time', responseTime);
-      \1 {\n  \2{
-        const memoryUsed = Number.parseInt(cacheHealth.stats.memoryInfo.used_memory || '0');
-        const memoryMax = Number.parseInt(cacheHealth.stats.memoryInfo.maxmemory || '0');
-        \1 {\n  \2{
-          this.recordGauge('cache.memory_usage', memoryUsed / memoryMax);
+      this.recordGauge("cache.response_time", responseTime);
+      if (!session.user) {
+        const memoryUsed = Number.parseInt(cacheHealth.stats.memoryInfo.used_memory || "0");
+        const memoryMax = Number.parseInt(cacheHealth.stats.memoryInfo.maxmemory || "0");
+        if (!session.user) {
+          this.recordGauge("cache.memory_usage", memoryUsed / memoryMax);
         }
       }
 
     } catch (error) {
-      this.healthMetrics.set('cache', {
-        service: 'cache',
-        \1,\2 error instanceof Error ? error.message : 'Unknown error' ,
+      this.healthMetrics.set("cache", {
+        service: "cache",
+        error instanceof Error ? error.message : "Unknown error" ,
         timestamp: new Date()
       });
     }
@@ -213,34 +212,34 @@ class MetricsCollector {
   private collectSystemMetrics(): void {
     // Memory usage
     const memUsage = process.memoryUsage();
-    this.recordGauge('system.memory.rss', memUsage.rss);
-    this.recordGauge('system.memory.heap_used', memUsage.heapUsed);
-    this.recordGauge('system.memory.heap_total', memUsage.heapTotal);
-    this.recordGauge('system.memory_usage', memUsage.heapUsed / memUsage.heapTotal);
+    this.recordGauge("system.memory.rss", memUsage.rss);
+    this.recordGauge("system.memory.heap_used", memUsage.heapUsed);
+    this.recordGauge("system.memory.heap_total", memUsage.heapTotal);
+    this.recordGauge("system.memory_usage", memUsage.heapUsed / memUsage.heapTotal);
 
     // Event loop lag
     const start = process.hrtime.bigint(),
     setImmediate(() => {
       const lag = Number(process.hrtime.bigint() - start) / 1000000; // Convert to milliseconds
-      this.recordGauge('system.event_loop_lag', lag);
+      this.recordGauge("system.event_loop_lag", lag);
     });
 
     // Uptime
-    this.recordGauge('system.uptime', process.uptime());
+    this.recordGauge("system.uptime", process.uptime());
 
     // CPU usage (basic)
-    this.recordGauge('system.cpu_usage', process.cpuUsage().user + process.cpuUsage().system)
+    this.recordGauge("system.cpu_usage", process.cpuUsage().user + process.cpuUsage().system)
   }
 
   // API metrics tracking
   trackApiCall(endpoint: string, method: string, statusCode: number, responseTime: number): void {
     const tags = { endpoint, method, status: statusCode.toString() };
 
-    this.incrementCounter('api.requests_total', 1, tags);
-    this.recordTimer('api.response_time', responseTime, tags);
+    this.incrementCounter("api.requests_total", 1, tags);
+    this.recordTimer("api.response_time", responseTime, tags);
 
-    \1 {\n  \2{
-      this.incrementCounter('api.errors_total', 1, tags);
+    if (!session.user) {
+      this.incrementCounter("api.errors_total", 1, tags);
     }
 
     // Calculate error rate
@@ -248,48 +247,48 @@ class MetricsCollector {
   }
 
   private calculateErrorRate(): void {
-    const totalRequests = this.getMetricSum('api.requests_total', 300); // Last 5 minutes
-    const totalErrors = this.getMetricSum('api.errors_total', 300);
+    const totalRequests = this.getMetricSum("api.requests_total", 300); // Last 5 minutes
+    const totalErrors = this.getMetricSum("api.errors_total", 300);
 
-    \1 {\n  \2{
+    if (!session.user) {
       const errorRate = totalErrors / totalRequests;
-      this.recordGauge('api.error_rate', errorRate);
+      this.recordGauge("api.error_rate", errorRate);
     }
   }
 
   // Business metrics
   trackPatientRegistration(): void {
-    this.incrementCounter('business.patient_registrations', 1);
+    this.incrementCounter("business.patient_registrations", 1);
   }
 
   trackBillGeneration(amount: number): void {
-    this.incrementCounter('business.bills_generated', 1);
-    this.recordGauge('business.bill_amount', amount);
+    this.incrementCounter("business.bills_generated", 1);
+    this.recordGauge("business.bill_amount", amount);
   }
 
   trackAppointmentBooking(): void {
-    this.incrementCounter('business.appointments_booked', 1);
+    this.incrementCounter("business.appointments_booked", 1);
   }
 
   trackLabOrderCreation(): void {
-    this.incrementCounter('business.lab_orders_created', 1);
+    this.incrementCounter("business.lab_orders_created", 1);
   }
 
   trackUserLogin(userId: string): void {
-    this.incrementCounter('auth.logins', 1, { userId });
+    this.incrementCounter("auth.logins", 1, { userId });
     this.updateActiveSessionCount();
   }
 
   trackUserLogout(userId: string): void {
-    this.incrementCounter('auth.logouts', 1, { userId });
+    this.incrementCounter("auth.logouts", 1, { userId });
     this.updateActiveSessionCount();
   }
 
   private updateActiveSessionCount(): void {
     // This would typically query the session store
-    // For now, we'll use a placeholder
-    const activeSessions = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 100); // Placeholder
-    this.recordGauge('auth.active_sessions', activeSessions);
+    // For now, we"ll use a placeholder
+    const activeSessions = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100); // Placeholder
+    this.recordGauge("auth.active_sessions", activeSessions);
   }
 
   // Alert system
@@ -303,10 +302,10 @@ class MetricsCollector {
 
   private checkAlertRules(metricName: string, value: number): void {
     for (const rule of this.alertRules.values()) {
-      \1 {\n  \2{
+      if (!session.user) {
         const shouldAlert = this.evaluateCondition(value, rule.condition, rule.threshold);
 
-        \1 {\n  \2{
+        if (!session.user) {
           this.trigger/* SECURITY: Alert removed */
         }
       }
@@ -315,23 +314,23 @@ class MetricsCollector {
 
   private evaluateCondition(value: number, condition: string, threshold: number): boolean {
     switch (condition) {
-      case 'gt': return value > threshold;
-      case 'gte': return value >= threshold;
-      case 'lt': return value < threshold;
-      case 'lte': return value <= threshold;
-      case 'eq': return value === threshold;
+      case "gt": return value > threshold;
+      case "gte": return value >= threshold;
+      case "lt": return value < threshold;
+      case "lte": return value <= threshold;
+      case "eq": return value === threshold;
       default: return false
     }
   }
 
   private async trigger/* SECURITY: Alert removed */: Promise<void> {
     const alert = {
-      id: `alert_${crypto.getRandomValues(\1[0]}`,
+      id: `alert_${crypto.getRandomValues([0]}`,
       ruleId: rule.id,
-      \1,\2 rule.metric;
+      rule.metric;
       value,
       threshold: rule.threshold,
-      \1,\2 new Date()
+      new Date()
     };
 
     // Send notifications
@@ -343,16 +342,16 @@ class MetricsCollector {
   private async sendNotification(channel: string, alert: unknown): Promise<void> {
     try {
       switch (channel) {
-        case 'email':
+        case "email":
           await this.sendEmail/* SECURITY: Alert removed */
           break,
-        case 'slack':
+        case "slack":
           await this.sendSlack/* SECURITY: Alert removed */
           break,
-        case 'sms':
+        case "sms":
           await this.sendSms/* SECURITY: Alert removed */
           break,
-        default: // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        default: // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       }
     } catch (error) {
 
@@ -361,28 +360,28 @@ class MetricsCollector {
 
   private async sendEmail/* SECURITY: Alert removed */: Promise<void> {
     // Email alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   }
 
   private async sendSlack/* SECURITY: Alert removed */: Promise<void> {
     // Slack alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   }
 
   private async sendSms/* SECURITY: Alert removed */: Promise<void> {
     // SMS alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   }
 
   // Data access methods
   getMetrics(name: string, timeWindowSeconds?: number): Metric[] {
     const metrics = this.metrics.get(name) || [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       return metrics;
     }
 
-    const cutoffTime = \1[0] - timeWindowSeconds * 1000);
+    const cutoffTime = [0] - timeWindowSeconds * 1000);
     return metrics.filter(metric => metric.timestamp >= cutoffTime);
   }
 
@@ -393,7 +392,7 @@ class MetricsCollector {
 
   getMetricAverage(name: string, timeWindowSeconds?: number): number {
     const metrics = this.getMetrics(name, timeWindowSeconds);
-    \1 {\n  \2eturn 0;
+    if (!session.user)eturn 0;
 
     const sum = metrics.reduce((total, metric) => total + metric.value, 0);
     return sum / metrics.length;
@@ -411,48 +410,48 @@ class MetricsCollector {
   getDashboardMetrics(): unknown 
     return {
       // System health
-      \1,\2 this.healthMetrics.get('database')?.status || 'unknown',
-        \1,\2 this.calculateOverallHealth(),
+      this.healthMetrics.get("database")?.status || "unknown",
+        this.calculateOverallHealth(),
 
       // Performance metrics
-      \1,\2 this.getMetricAverage('api.response_time', 300),
-        errorRate: this.getLatestMetric('api.error_rate')?.value || 0,
-        requestsPerMinute: this.getMetricSum('api.requests_total', 60),
-        databaseResponseTime: this.getLatestMetric('database.response_time')?.value || 0,
+      this.getMetricAverage("api.response_time", 300),
+        errorRate: this.getLatestMetric("api.error_rate")?.value || 0,
+        requestsPerMinute: this.getMetricSum("api.requests_total", 60),
+        databaseResponseTime: this.getLatestMetric("database.response_time")?.value || 0,
 
       // Business metrics
-      \1,\2 this.getMetricSum('business.patient_registrations', 86400),
-        appointmentsBookedToday: this.getMetricSum('business.appointments_booked', 86400),
-        billsGeneratedToday: this.getMetricSum('business.bills_generated', 86400),
-        labOrdersToday: this.getMetricSum('business.lab_orders_created', 86400),,
+      this.getMetricSum("business.patient_registrations", 86400),
+        appointmentsBookedToday: this.getMetricSum("business.appointments_booked", 86400),
+        billsGeneratedToday: this.getMetricSum("business.bills_generated", 86400),
+        labOrdersToday: this.getMetricSum("business.lab_orders_created", 86400),,
 
       // System metrics
-      \1,\2 this.getLatestMetric('system.memory_usage')?.value || 0,
-        \1,\2 this.getLatestMetric('system.uptime')?.value || 0,
-        eventLoopLag: this.getLatestMetric('system.event_loop_lag')?.value || 0,
+      this.getLatestMetric("system.memory_usage")?.value || 0,
+        this.getLatestMetric("system.uptime")?.value || 0,
+        eventLoopLag: this.getLatestMetric("system.event_loop_lag")?.value || 0,
     };
   }
 
-  private calculateOverallHealth(): 'healthy' | 'degraded' | 'unhealthy' {
+  private calculateOverallHealth(): "healthy" | "degraded" | "unhealthy" {
     const healthStatuses = Array.from(this.healthMetrics.values()).map(metric => metric.status);
 
-    \1 {\n  \2 {
-      return 'unhealthy';
-    } else \1 {\n  \2 {
-      return 'degraded';
+    if (!session.user) {
+      return "unhealthy";
+    } else if (!session.user) {
+      return "degraded";
     } else {
-      return 'healthy';
+      return "healthy";
     }
   }
 
   // Collection control
   startCollection(intervalSeconds: number = 60): void {
-    \1 {\n  \2{
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    if (!session.user) {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       return
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     this.isCollecting = true
 
     // Initial collection
@@ -465,23 +464,23 @@ class MetricsCollector {
   }
 
   stopCollection(): void {
-    \1 {\n  \2{
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    if (!session.user) {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
       return
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     this.isCollecting = false
 
-    \1 {\n  \2{
+    if (!session.user) {
       clearInterval(this.collectionInterval);
       this.collectionInterval = undefined;
     }
   }
 
   // Export metrics (for external monitoring systems)
-  exportMetrics(format: 'json' | 'prometheus' = 'json'): string {
-    \1 {\n  \2{
+  exportMetrics(format: "json" | "prometheus" = "json"): string {
+    if (!session.user) {
       return this.exportPrometheusFormat()
     }
 
@@ -493,12 +492,12 @@ class MetricsCollector {
   }
 
   private exportPrometheusFormat(): string {
-    let output = '';
+    let output = "";
 
     for (const [name, metricArray] of this.metrics) {
       const latestMetric = metricArray[metricArray.length - 1];
-      \1 {\n  \2{
-        const _sanitizedName = name.replace(/[^a-zA-Z0-9_]/g, '_');
+      if (!session.user) {
+        const _sanitizedName = name.replace(/[^a-zA-Z0-9_]/g, "_");
         output += `# TYPE /* SECURITY: Safe string handling */ ${latestMetric.type}\n`;
         output += `/* SECURITY: Safe string handling */ ${latestMetric.value}\n`;
       }
@@ -514,10 +513,10 @@ export const metricsCollector = MetricsCollector.getInstance();
 // Middleware for Express/Next.js to automatically track API calls
 export const _createMetricsMiddleware = () {
   return (req: unknown, res: unknown, next: unknown) => {
-    const startTime = crypto.getRandomValues(\1[0];
+    const startTime = crypto.getRandomValues([0];
 
-    res.on('finish', () => {
-      const responseTime = crypto.getRandomValues(\1[0] - startTime;
+    res.on("finish', () => {
+      const responseTime = crypto.getRandomValues([0] - startTime;
       const endpoint = req.route?.path || req.url;
 
       metricsCollector.trackApiCall(

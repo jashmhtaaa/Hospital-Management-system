@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from "react";
+import Link from "next/link";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Users,
   ClipboardCheck,
@@ -12,110 +12,110 @@ import {
   Boxes,
   Stethoscope,
   BarChart;
-} from 'lucide-react';
+} from "lucide-react";
 
 export default const _HRDashboard = () {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState("overview");
 
   return (
-    \1>
-      \1>
-        <h1 className="text-3xl font-bold">Human Resources & Asset Management\1>
-        \1>
+    >
+      >
+        <h1 className="text-3xl font-bold">Human Resources & Asset Management>
+        >
           Manage staff, attendance, payroll, assets, and biomedical equipment
         </p>
       </div>
 
-      \1>
-        \1>
-          <TabsTrigger value="overview">Overview\1>
-          <TabsTrigger value="staff">Staff\1>
-          <TabsTrigger value="attendance">Attendance\1>
-          <TabsTrigger value="payroll">Payroll\1>
-          <TabsTrigger value="assets">Assets\1>
+      >
+        >
+          <TabsTrigger value="overview">Overview>
+          <TabsTrigger value="staff">Staff>
+          <TabsTrigger value="attendance">Attendance>
+          <TabsTrigger value="payroll">Payroll>
+          <TabsTrigger value="assets">Assets>
           <TabsTrigger value="biomedical">Biomedical</TabsTrigger>
         </TabsList>
 
-        \1>
-          \1>
-            \1>
-              \1>
-                \1>
-                  <CardTitle className="text-sm font-medium">Staff Management\1>
+        >
+          >
+            >
+              >
+                >
+                  <CardTitle className="text-sm font-medium">Staff Management>
                   <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">124\1>
+                  <div className="text-2xl font-bold">124>
                   <p className="text-xs text-muted-foreground">Active employees</p>
                 </CardContent>
               </Card>
             </Link>
 
-            \1>
-              \1>
-                \1>
-                  <CardTitle className="text-sm font-medium">Attendance\1>
+            >
+              >
+                >
+                  <CardTitle className="text-sm font-medium">Attendance>
                   <ClipboardCheck className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">98%\1>
+                  <div className="text-2xl font-bold">98%>
                   <p className="text-xs text-muted-foreground">Current attendance rate</p>
                 </CardContent>
               </Card>
             </Link>
 
-            \1>
-              \1>
-                \1>
-                  <CardTitle className="text-sm font-medium">Payroll\1>
+            >
+              >
+                >
+                  <CardTitle className="text-sm font-medium">Payroll>
                   <DollarSign className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">May 30\1>
+                  <div className="text-2xl font-bold">May 30>
                   <p className="text-xs text-muted-foreground">Next payroll date</p>
                 </CardContent>
               </Card>
             </Link>
 
-            \1>
-              \1>
-                \1>
-                  <CardTitle className="text-sm font-medium">Assets\1>
+            >
+              >
+                >
+                  <CardTitle className="text-sm font-medium">Assets>
                   <Boxes className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">1,284\1>
+                  <div className="text-2xl font-bold">1,284>
                   <p className="text-xs text-muted-foreground">Total assets tracked</p>
                 </CardContent>
               </Card>
             </Link>
 
-            \1>
-              \1>
-                \1>
-                  <CardTitle className="text-sm font-medium">Biomedical Equipment\1>
+            >
+              >
+                >
+                  <CardTitle className="text-sm font-medium">Biomedical Equipment>
                   <Stethoscope className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">328\1>
+                  <div className="text-2xl font-bold">328>
                   <p className="text-xs text-muted-foreground">Medical devices</p>
                 </CardContent>
               </Card>
             </Link>
 
-            \1>
-              \1>
-                <CardTitle className="text-sm font-medium">Analytics\1>
+            >
+              >
+                <CardTitle className="text-sm font-medium">Analytics>
                 <BarChart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">Reports\1>
+                <div className="text-2xl font-bold">Reports>
                 <p className="text-xs text-muted-foreground">HR & Asset analytics</p>
               </CardContent>
             </Card>
           </div>
 
-          \1>
+          >
             <Card>
               <CardHeader>
                 <CardTitle>Recent Activities</CardTitle>
@@ -138,7 +138,7 @@ export default const _HRDashboard = () {
           </div>
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Staff Management</CardTitle>
@@ -150,7 +150,7 @@ export default const _HRDashboard = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Attendance Management</CardTitle>
@@ -162,7 +162,7 @@ export default const _HRDashboard = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Payroll Processing</CardTitle>
@@ -174,7 +174,7 @@ export default const _HRDashboard = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Asset Management</CardTitle>
@@ -186,7 +186,7 @@ export default const _HRDashboard = () {
           </Card>
         </TabsContent>
 
-        \1>
+        >
           <Card>
             <CardHeader>
               <CardTitle>Biomedical Equipment</CardTitle>

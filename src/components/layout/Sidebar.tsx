@@ -33,21 +33,21 @@ export const _Sidebar = () => {
   const pathname = usePathname();
 
   const handleLogout = async () => {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     // Redirect to login page after logout
     // router.push("/login")
   };
 
   return (
-    \1>
-      \1>
-        \1>
+    >
+      >
+        >
           <Image src="/images/shlokam_logo.jpg" alt="Shlokam Logo" width={100} height={30} />
           {/* <span className="">Shlokam HMS</span> */}
         </Link>
       </div>
-      \1>
+      >
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -66,9 +66,9 @@ export const _Sidebar = () => {
           );
         })}
       </nav>
-      \1>
+      >
          {/* Optional: Add user profile section here */}
-         \1>
+         >
             <LogOut className="h-4 w-4" />
             Logout
          </Button>

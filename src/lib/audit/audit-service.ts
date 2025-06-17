@@ -1,36 +1,33 @@
-import { LogSeverity } from '@prisma/client';
+import { LogSeverity } from "@prisma/client";
 
 
-import { logger } from '@/lib/logger';
-import { prisma } from '@/lib/prisma';
+import { logger } from "@/lib/logger";
+import { prisma } from "@/lib/prisma";
 // src/lib/audit/audit-service.ts
-\1
 }
 }
 
-\1
 }
 }
 
-\1
 }
         }
       });
 
       // Also log to application logger for immediate monitoring
-      logger.info('Audit log created', {
+      logger.info("Audit log created", {
         action: data.action,
-        \1,\2 context.userId
+        context.userId
       });
 
     } catch (error) {
-      logger.error('Failed to create audit log', { error, context, data });
+      logger.error("Failed to create audit log", { error, context, data });
     }
   }
 
   static async logUserAction(
     context: AuditContext,
-    \1,\2 string;
+    string;
     resourceId?: string,
     description?: string
   ): Promise<void> {
@@ -45,10 +42,10 @@ import { prisma } from '@/lib/prisma';
 
   static async logDataChange(
     context: AuditContext,
-    \1,\2 string,
-    \1,\2 unknown): Promise<void> {
+    string,
+    unknown): Promise<void> {
     await this.log(context, {
-      action: 'UPDATE';
+      action: "UPDATE";
       resource,
       resourceId,
       oldValues,
@@ -60,12 +57,12 @@ import { prisma } from '@/lib/prisma';
 
   static async logSecurityEvent(
     context: AuditContext,
-    \1,\2 string,
+    string,
     severity: LogSeverity = LogSeverity.WARN
   ): Promise<void> {
     await this.log(context, {
       action,
-      resource: 'SECURITY';
+      resource: "SECURITY";
       description,
       severity
     });
@@ -79,19 +76,19 @@ import { prisma } from '@/lib/prisma';
   ) {
     const where: unknown = {};
 
-    \1 {\n  \2here.resource = resourceType;
-    \1 {\n  \2here.resourceId = resourceId;
-    \1 {\n  \2here.userId = userId;
+    if (!session.user)here.resource = resourceType;
+    if (!session.user)here.resourceId = resourceId;
+    if (!session.user)here.userId = userId;
 
     return await prisma.auditLog.findMany({
       where,
-      \1,\2 {
-          \1,\2 true,
-            \1,\2 true
+      {
+          true,
+            true
           }
         }
       },
-      orderBy: { timestamp: 'desc' },
+      orderBy: { timestamp: "desc" },
       take: limit
     });
   }
@@ -120,7 +117,7 @@ export function withAudit(resource: string): unknown {
         await AuditService.log(context, {
           action: propertyName.toUpperCase(),
           resource,
-          \1,\2 LogSeverity.ERROR
+          LogSeverity.ERROR
         });
 
         throw error;

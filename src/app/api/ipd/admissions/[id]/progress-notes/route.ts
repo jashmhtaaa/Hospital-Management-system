@@ -7,7 +7,7 @@ import { getSession } from "@/lib/session";
 interface ProgressNoteInput {
   note_date?: string; // Optional, defaults to now
   subjective: string,
-  \1,\2 string,
+  string,
   plan: string
 }
 
@@ -20,7 +20,7 @@ export const _GET = async (
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -44,7 +44,7 @@ export const _GET = async (
         ? (admissionResult.results[0] as { id: string, primary_doctor_id: number }) // Changed .rows to .results
         : undefined;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Admission not found" },
         { status: 404 }
@@ -63,17 +63,17 @@ export const _GET = async (
 
     let forbidden = false;
     // Check if user is not the primary doctor and doesn-	 have view_all permission
-    \1 {\n  \2orbidden = true;
+    if (!session.user)orbidden = true;
     // More restrictive check: Only allow if user is Doctor, Nurse, Admin, or has specific view permission
-    \1 {\n  \2{
+    if (!session.user) {
       forbidden = true;
     }
     // Ensure primary doctor can always view their own patient-	s notes
-    \1 {\n  \2{
+    if (!session.user) {
       forbidden = false;
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -113,7 +113,7 @@ export const _POST = async (
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -125,7 +125,7 @@ export const _POST = async (
     const canCreateAll =;
       session.user.permissions?.includes("progress_notes:create_all") ?? false;
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Must be doctor or have general create permission
       return NextResponse.json(
         {
@@ -147,7 +147,7 @@ export const _POST = async (
       "plan",
     ]
     for (const field of requiredFields) {
-      \1 {\n  \2{
+      if (!session.user) {
         return NextResponse.json(
           { error: `Missing required field: ${field}` },
           { status: 400 }
@@ -167,18 +167,18 @@ export const _POST = async (
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results
         ? (admissionResult.results[0] as { // Changed .rows to .results
             id: string,
-            \1,\2 number
+            number
           });
         : undefined;
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Admission not found" },
         { status: 404 }
       );
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
         { error: "Cannot add progress notes to a non-active admission" },
         { status: 409 }
@@ -187,7 +187,7 @@ export const _POST = async (
 
     // If user is a doctor, check if they are the primary doctor for this admission or have override permission
     // Ensure userId exists on session.user before comparison
-    \1 {\n  \2eturn NextResponse.json(
+    if (!session.user)eturn NextResponse.json(
         {
           error: "You are not authorized to add progress notes for this patient"
         },

@@ -1,14 +1,14 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { auditLog } from '../../../../../lib/audit';
-import { errorHandler } from '../../../../../lib/error-handler';
-import { getPatientLabResults } from '../../../../../lib/services/laboratory/laboratory.service';
-import { getPatientAllergies, getPatientConditions } from '../../../../../lib/services/patient/patient.service';
-import { getMedicationById } from '../../../../../lib/services/pharmacy/pharmacy.service';
-import { validateBatchInteractionCheckRequest } from '../../../../../lib/validation/pharmacy-validation';
-import type { PharmacyDomain } from '../../../models/domain-models';
-import { DrugInteractionService } from '../../../services/drug-interaction-service';
+import { auditLog } from "../../../../../lib/audit";
+import { errorHandler } from "../../../../../lib/error-handler";
+import { getPatientLabResults } from "../../../../../lib/services/laboratory/laboratory.service";
+import { getPatientAllergies, getPatientConditions } from "../../../../../lib/services/patient/patient.service";
+import { getMedicationById } from "../../../../../lib/services/pharmacy/pharmacy.service";
+import { validateBatchInteractionCheckRequest } from "../../../../../lib/validation/pharmacy-validation";
+import type { PharmacyDomain } from "../../../models/domain-models";
+import { DrugInteractionService } from "../../../services/drug-interaction-service";
 }
 
 /**
@@ -19,10 +19,10 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const \1,\2 getMedicationById,
+const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
-  save: () => Promise.resolve(''),
+  save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true)
 }
@@ -42,47 +42,47 @@ export const POST = async (req: NextRequest) => {
     // Validate request
     const data = await req.json();
     const validationResult = validateBatchInteractionCheckRequest(data);
-    \1 {\n  \2{
+    if (!session.user) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
+        { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
     // Check authorization
-    const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const authHeader = req.headers.get("authorization");
+    if (!session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example)
-    const userId = 'current-user-id'; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token
 
     // Get patient data if patientId is provided
     let allergies = data.allergies || [];
     let conditions = data.conditions || [];
     let labResults = data.labResults || [];
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Fetch patient allergies if not provided
-      \1 {\n  \2{
+      if (!session.user) {
         const patientAllergies = await getPatientAllergies(data.patientId);
         allergies = patientAllergies.map(a => a.allergen);
       }
 
       // Fetch patient conditions if not provided
-      \1 {\n  \2{
+      if (!session.user) {
         const patientConditions = await getPatientConditions(data.patientId);
         conditions = patientConditions.map(c => c.code);
       }
 
       // Fetch patient lab results if not provided
-      \1 {\n  \2{
+      if (!session.user) {
         const patientLabResults = await getPatientLabResults(data.patientId);
         labResults = patientLabResults.map(lr => ({
           code: lr.code,
-          \1,\2 lr.unit,
-          \1,\2 lr.abnormalFlag
+          lr.unit,
+          lr.abnormalFlag
         }));
       }
     }
@@ -97,26 +97,26 @@ export const POST = async (req: NextRequest) => {
     });
 
     // Audit logging
-    await auditLog('DRUG_INTERACTION', {
-      action: 'BATCH_CHECK',
-      \1,\2 userId,
+    await auditLog("DRUG_INTERACTION", {
+      action: "BATCH_CHECK",
+      userId,
       patientId: data.patientId;
       {
         medicationCount: data.medicationIds.length,
-        \1,\2 conditions.length,
-        \1,\2 results.totalInteractionCount
+        conditions.length,
+        results.totalInteractionCount
       }
     });
 
     // Return response
     return NextResponse.json({
       results,
-      \1,\2 data.medicationIds.length,
-        \1,\2 conditions.length,
-        \1,\2 results.totalInteractionCount,
+      data.medicationIds.length,
+        conditions.length,
+        results.totalInteractionCount,
         criticalInteractionCount: results.criticalInteractionCount
       }
     }, { status: 200 });
   } catch (error) {
-    return errorHandler(error, 'Error performing batch interaction check');
+    return errorHandler(error, "Error performing batch interaction check");
   }

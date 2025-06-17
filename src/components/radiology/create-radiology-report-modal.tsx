@@ -27,7 +27,6 @@ import { useSession } from "next-auth/react";
 import { toast } from "@/components/ui/use-toast"; // Import toast for notifications
 
 // Define the type for the form data submitted
-\1
 }
 }
 
@@ -42,7 +41,7 @@ interface Radiologist {
 // Define the type for the component props
 interface CreateRadiologyReportModalProperties {
   isOpen: boolean,
-  \1,\2 (\1,\2 string;
+  (string;
   patientName?: string; // Optional but helpful context
   procedureName?: string; // Optional but helpful context
 }
@@ -81,16 +80,16 @@ export default const _CreateRadiologyReportModal = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
-    \1 {\n  \2eturn; // Only fetch when modal is open
+    if (!session.user)eturn; // Only fetch when modal is open
 
     const fetchRadiologists = async () => {
       setLoading(true),
       setError(undefined);
       try {
         const response = await fetch("/api/users?role=Radiologist"); // Ensure this API endpoint exists and returns Radiologist[]
-        \1 {\n  \2{
+        if (!session.user) {
           throw new Error(
-            `Failed to fetch radiologists: ${\1}`;
+            `Failed to fetch radiologists: ${}`;
         }
         // Explicitly type the expected response structure
         const data: { results: Radiologist[] } | Radiologist[] =;
@@ -101,7 +100,7 @@ export default const _CreateRadiologyReportModal = ({
         setRadiologists(fetchedRadiologists);
 
         // Pre-select current user if they are a radiologist and found in the list
-        \1 {\n  \2> rad.id === currentUser.id);
+        if (!session.user)> rad.id === currentUser.id);
         ) 
           setRadiologistId(currentUser.id);
       } catch (error_) {
@@ -120,10 +119,10 @@ export default const _CreateRadiologyReportModal = ({
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    \1 {\n  \2{
+    if (!session.user) {
       toast({
         title: "Missing Information",
-        \1,\2 "destructive"
+        "destructive"
       });
       return;
     }
@@ -132,8 +131,8 @@ export default const _CreateRadiologyReportModal = ({
     try {
       await onSubmit({
         study_id: studyId,
-        \1,\2 findings || null,
-        \1,\2 recommendations || null,
+        findings || null,
+        recommendations || null,
         status: status
       });
       // Reset form on successful submission (optional, parent might handle closing)
@@ -141,7 +140,7 @@ export default const _CreateRadiologyReportModal = ({
       setImpression("")
       setRecommendations(""),
       setStatus("preliminary");
-      // Keep radiologist selected if it's the current user?
+      // Keep radiologist selected if it"s the current user?
       // setRadiologistId("")
       // onClose(); // Let parent decide whether to close
     } catch (submitError) {
@@ -150,10 +149,10 @@ export default const _CreateRadiologyReportModal = ({
           ? submitError.message;
           : "An unknown error occurred during submission";
 
-      setError(`Submission failed: ${\1}`,
+      setError(`Submission failed: ${}`,
       toast({
         title: "Submission Failed",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsSubmitting(false);
@@ -163,33 +162,33 @@ export default const _CreateRadiologyReportModal = ({
   return (
     // Control dialog open state with isOpen prop
     <Dialog open={isOpen} onOpenChange={(openState) => !openState && onClose()}>
-      \1>
+      >
         <DialogHeader>
           <DialogTitle>Create Radiology Report</DialogTitle>
           {/* Optionally display patient/procedure info */}
           {(patientName || procedureName) && (
-            \1>
+            >
               For {patientName || "patient"} - {procedureName || "procedure"}
             </p>
           )}
         </DialogHeader>
         {loading ? (
-          \1>
+          >
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : error ? (
-          \1>
+          >
             {error}
           </div>
         ) : undefined}
 
         {/* Render form only when not loading */}
         {!loading && (
-          \1>
-            \1>
+          >
+            >
               {/* Radiologist Select */}
-              \1>
-                \1>
+              >
+                >
                   Radiologist *
                 </Label>
                 <Select>
@@ -203,18 +202,18 @@ export default const _CreateRadiologyReportModal = ({
                       radiologists.some((rad) => rad.id === currentUser.id));
                   }
                 >
-                  \1>
+                  >
                     <SelectValue placeholder="Select Radiologist" />
                   </SelectTrigger>
                   <SelectContent>
                     {radiologists.length === 0 && (
-                      \1>
+                      >
                         No radiologists found
                       </SelectItem>
                     )}
-                    {/* Explicitly type 'rad' parameter */}
+                    {/* Explicitly type "rad' parameter */}
                     {radiologists.map((rad: Radiologist) => (
-                      \1>
+                      >
                         {rad.name}
                       </SelectItem>
                     ))}
@@ -223,8 +222,8 @@ export default const _CreateRadiologyReportModal = ({
               </div>
 
               {/* Findings Textarea */}
-              \1>
-                \1>
+              >
+                >
                   Findings
                 </Label>
                 <Textarea>
@@ -240,8 +239,8 @@ export default const _CreateRadiologyReportModal = ({
               </div>
 
               {/* Impression Textarea */}
-              \1>
-                \1>
+              >
+                >
                   Impression *
                 </Label>
                 <Textarea>
@@ -258,8 +257,8 @@ export default const _CreateRadiologyReportModal = ({
               </div>
 
               {/* Recommendations Textarea */}
-              \1>
-                \1>
+              >
+                >
                   Recommendations
                 </Label>
                 <Textarea>
@@ -275,8 +274,8 @@ export default const _CreateRadiologyReportModal = ({
               </div>
 
               {/* Status Select */}
-              \1>
-                \1>
+              >
+                >
                   Status
                 </Label>
                 <Select>
@@ -286,12 +285,12 @@ export default const _CreateRadiologyReportModal = ({
                   ) => setStatus(value)}
                   disabled={isSubmitting}
                 >
-                  \1>
+                  >
                     <SelectValue placeholder="Select Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="preliminary">Preliminary\1>
-                    <SelectItem value="final">Final\1>
+                    <SelectItem value="preliminary">Preliminary>
+                    <SelectItem value="final">Final>
                     <SelectItem value="addendum">Addendum</SelectItem>{" "}
                     {/* Added Addendum status */}
                   </SelectContent>
@@ -309,7 +308,7 @@ export default const _CreateRadiologyReportModal = ({
                   Cancel
                 </Button>
               </DialogClose>
-              \1>
+              >
                 {isSubmitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : undefined}

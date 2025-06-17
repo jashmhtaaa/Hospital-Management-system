@@ -1,7 +1,7 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from "next/server";
 
 
-import { metricsCollector } from '@/lib/monitoring/metrics-collector';
+import { metricsCollector } from "@/lib/monitoring/metrics-collector";
 }
 
 /**
@@ -12,17 +12,17 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
 export const _GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
-    const format = searchParams.get('format') || 'json';
-    const metric = searchParams.get('metric');
-    const timeWindow = searchParams.get('window');
+    const format = searchParams.get("format") || "json";
+    const metric = searchParams.get("metric");
+    const timeWindow = searchParams.get("window");
 
     // Check authentication/authorization here if needed
     // const _user = await getCurrentUser(request)
-    // \1 {\n  \2 {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // if (!session.user) {
+    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     // }
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Return specific metric
       const timeWindowSeconds = timeWindow ? Number.parseInt(timeWindow) : undefined;
       const metrics = metricsCollector.getMetrics(metric, timeWindowSeconds);
@@ -30,17 +30,17 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json({
         metric,
         timeWindow: timeWindowSeconds,
-        \1,\2 metrics.length
+        metrics.length
       });
     }
 
-    \1 {\n  \2{
+    if (!session.user) {
       // Return Prometheus format
-      const prometheusData = metricsCollector.exportMetrics('prometheus');
+      const prometheusData = metricsCollector.exportMetrics("prometheus");
 
       return new NextResponse(prometheusData, {
         headers: {
-          'Content-Type': 'text/plain; charset=utf-8',
+          "Content-Type": "text/plain; charset=utf-8",
         },
       });
     }
@@ -50,15 +50,15 @@ export const _GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       timestamp: new Date().toISOString(),
-      \1,\2 dashboardMetrics
+      dashboardMetrics
     });
 
   } catch (error) {
 
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        error: "Internal server error",
+        message: error instanceof Error ? error.message : "Unknown error"
       },
       { status: 500 }
     );
@@ -69,23 +69,23 @@ export const _POST = async (request: NextRequest) => {
     const { action } = body;
 
     switch (action) {
-      case 'start_collection':
+      case "start_collection":
         const interval = body.interval || 60;
         metricsCollector.startCollection(interval);
-        return NextResponse.json({ message: 'Metrics collection started' });
+        return NextResponse.json({ message: "Metrics collection started" });
 
-      case 'stop_collection':
+      case "stop_collection":
         metricsCollector.stopCollection(),
-        return NextResponse.json({ message: 'Metrics collection stopped' });
+        return NextResponse.json({ message: "Metrics collection stopped" });
 
-      case 'record_metric':
+      case "record_metric":
         const { name, value, type, tags } = body;
         metricsCollector.recordMetric(name, value, type, tags);
-        return NextResponse.json({ message: 'Metric recorded' });
+        return NextResponse.json({ message: "Metric recorded" });
 
       default:
         return NextResponse.json(
-          { error: 'Invalid action' },
+          { error: "Invalid action" },
           { status: 400 }
         ),
     }
@@ -94,8 +94,8 @@ export const _POST = async (request: NextRequest) => {
 
     return NextResponse.json(
       {
-        error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        error: "Internal server error",
+        message: error instanceof Error ? error.message : "Unknown error"
       },
       { status: 500 }
     );

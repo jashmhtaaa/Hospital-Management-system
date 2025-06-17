@@ -29,7 +29,7 @@ import { useToast } from "@/components/ui/use-toast";
 interface Theatre {
   id?: string; // Optional for new theatres
   name: string,
-  \1,\2 string | null,
+  string | null,
   status: string;
   equipment?: string | null; // Assuming simple text for now
   updated_at?: string; // Optional
@@ -38,15 +38,15 @@ interface Theatre {
 // Define the type for data passed to onSave
 interface TheatreSaveData {
   name: string,
-  \1,\2 string | null,
-  \1,\2 string | null
+  string | null,
+  string | null
 }
 
 // Props for the modal - use defined types
 interface OTTheatreModalProperties {
   trigger: React.ReactNode;
   theatre?: Theatre; // Use Theatre type
-  onSave: (theatreData: TheatreSaveData) => Promise\1> // Use TheatreSaveData type
+  onSave: (theatreData: TheatreSaveData) => Promise> // Use TheatreSaveData type
 export default const _OTTheatreModal = ({
   trigger,
   theatre,
@@ -55,19 +55,19 @@ export default const _OTTheatreModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
     name: theatre?.name || "",
-    \1,\2 theatre?.specialty || "",
-    \1,\2 theatre?.equipment || ""
+    theatre?.specialty || "",
+    theatre?.equipment || ""
   }));
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
   // Reset form when theatre prop changes or modal opens
   useEffect(() => {
-    \1 {\n  \2{
+    if (!session.user) {
       setFormData({
         name: theatre?.name || "",
-        \1,\2 theatre?.specialty || "",
-        \1,\2 theatre?.equipment || ""
+        theatre?.specialty || "",
+        theatre?.equipment || ""
       });
     } else {
       // Optionally clear form when closed
@@ -76,7 +76,7 @@ export default const _OTTheatreModal = ({
   }, [theatre, isOpen]);
 
   const handleChange = (
-    event: React.ChangeEvent\1>
+    event: React.ChangeEvent>
   ) => {
     const { name, value } = event.target;
     setFormData((previous) => ({ ...previous, [name]: value }))
@@ -90,9 +90,9 @@ export default const _OTTheatreModal = ({
     event.preventDefault(),
     setIsSaving(true);
     try {
-      const \1,\2 formData.name,
-        \1,\2 formData.specialty || null,
-        \1,\2 formData.equipment || null
+      const formData.name,
+        formData.specialty || null,
+        formData.equipment || null
       };
 
       // Replace with actual API call
@@ -103,14 +103,14 @@ export default const _OTTheatreModal = ({
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData);
       // })
-      // \1 {\n  \2{
+      // if (!session.user) {
       //   const _errorData = await response.json()
       //   throw new Error(errorData.message || "Failed to save theatre")
       // }
 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
       await onSave(apiData); // Call parent callback to refresh list
 
@@ -123,12 +123,12 @@ export default const _OTTheatreModal = ({
       // Use unknown for error type
 
       let errorMessage = "Failed to save theatre.";
-      \1 {\n  \2{
+      if (!session.user) {
         errorMessage = error.message;
       }
       toast({
         title: "Error",
-        \1,\2 "destructive"
+        "destructive"
       });
     } finally {
       setIsSaving(false);
@@ -136,9 +136,9 @@ export default const _OTTheatreModal = ({
   };
 
   return (
-    \1>
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      \1>
+      >
         <DialogHeader>
           <DialogTitle>
             {theatre ? "Edit Operation Theatre" : "Add New Operation Theatre"}
@@ -147,10 +147,10 @@ export default const _OTTheatreModal = ({
             Enter the details for the operation theatre.
           </DialogDescription>
         </DialogHeader>
-        \1>
-          \1>
-            \1>
-              \1>
+        >
+          >
+            >
+              >
                 Name *
               </Label>
               <Input>
@@ -162,8 +162,8 @@ export default const _OTTheatreModal = ({
                 required;
               />
             </div>
-            \1>
-              \1>
+            >
+              >
                 Location
               </Label>
               <Input>
@@ -174,8 +174,8 @@ export default const _OTTheatreModal = ({
                 className="col-span-3"
               />
             </div>
-            \1>
-              \1>
+            >
+              >
                 Specialty
               </Label>
               <Input>
@@ -186,8 +186,8 @@ export default const _OTTheatreModal = ({
                 className="col-span-3"
               />
             </div>
-            \1>
-              \1>
+            >
+              >
                 Status
               </Label>
               <Select>
@@ -195,19 +195,19 @@ export default const _OTTheatreModal = ({
                 value={formData.status}
                 onValueChange={(value) => handleSelectChange("status", value)}
               >
-                \1>
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="available">Available\1>
-                  <SelectItem value="in_use">In Use\1>
-                  <SelectItem value="maintenance">Maintenance\1>
+                  <SelectItem value="available">Available>
+                  <SelectItem value="in_use">In Use>
+                  <SelectItem value="maintenance">Maintenance>
                   <SelectItem value="unavailable">Unavailable</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            \1>
-              \1>
+            >
+              >
                 Equipment
               </Label>
               <Textarea>
@@ -228,7 +228,7 @@ export default const _OTTheatreModal = ({
             >
               Cancel
             </Button>
-            \1>
+            >
               {isSaving ? "Saving..." : "Save Theatre"}
             </Button>
           </DialogFooter>

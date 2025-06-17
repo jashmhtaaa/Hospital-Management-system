@@ -20,7 +20,7 @@ const createTripRequestSchema = z.object({
   contactName: z.string().min(2).max(100).optional(),
   contactPhone: z.string().min(5).max(20).optional(),
   medicalEquipmentNeeded: z.array(z.string()).optional(),
-  specialInstructions: z.string().max(500).optional()
+  specialInstructions: z.string().max(500).optional();
 });
 
 const updateTripRequestSchema = z.object({
@@ -35,7 +35,7 @@ const updateTripRequestSchema = z.object({
   contactName: z.string().min(2).max(100).optional(),
   contactPhone: z.string().min(5).max(20).optional(),
   medicalEquipmentNeeded: z.array(z.string()).optional(),
-  specialInstructions: z.string().max(500).optional()
+  specialInstructions: z.string().max(500).optional();
 });
 
 // GET /api/support-services/ambulance/trips
@@ -50,7 +50,7 @@ export const _GET = async (request: NextRequest) => {
         searchParams.get("requestType") || undefined,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10")
+        limit: parseInt(searchParams.get("limit") || "10");
       };
 
       // Get ambulance trips with filters
@@ -218,7 +218,7 @@ export const _GET_VEHICLES = async (request: NextRequest) => {
       const filters = {
         status: searchParams.get("status") || undefined,
         searchParams.get("available") === "true",
-        Number.parseInt(searchParams.get("limit") || "10")
+        Number.parseInt(searchParams.get("limit") || "10");
       };
 
       // Get ambulance vehicles with filters
@@ -243,7 +243,7 @@ export const _GET_CREWS = async (request: NextRequest) => {
       const filters = {
         status: searchParams.get("status") || undefined,
         searchParams.get("available") === "true",
-        Number.parseInt(searchParams.get("limit") || "10")
+        Number.parseInt(searchParams.get("limit") || "10");
       };
 
       // Get ambulance crews with filters
@@ -278,3 +278,5 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       auditAction: "AMBULANCE_ANALYTICS_VIEW"
     }
   );
+
+}

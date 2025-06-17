@@ -12,3 +12,6 @@ import DashboardClientLayout from "./dashboard-client-layout.ts"; // Import the 
   children: React.ReactNode
 }) {
   return <DashboardClientLayout>{children}>
+
+}
+}

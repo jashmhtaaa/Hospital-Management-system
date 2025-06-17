@@ -135,3 +135,5 @@ export default const _RadiologyReportsList = () {
       </CardContent>
     </Card>
   );
+
+}

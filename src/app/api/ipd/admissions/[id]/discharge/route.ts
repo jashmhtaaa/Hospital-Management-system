@@ -89,3 +89,5 @@ export const _GET = async (
 
 // POST /api/ipd/admissions/[id]/discharge - Create discharge summary
 
+
+}

@@ -6,12 +6,12 @@
 /**
  * Increment counter and log access
  *
- * Database connection instructions:
+ * Database connection instructions: any
  * 1. Uncomment the import { getCloudflareContext } line;
  * 2. Uncomment the const cf = await getCloudflareContext() line;
  * 3. Uncomment the database operation code;
  * 4. Make sure D1 database binding is configured in wrangler.toml;
- * 5. Required database tables:
+ * 5. Required database tables: any
  *    - counters table: name(TEXT), value(INTEGER)
  *    - access_logs table: ip(TEXT), path(TEXT), accessed_at(DATETIME)
  */
@@ -40,7 +40,7 @@ export const _incrementAndLog = async () => {
     path: "/"
   });
 
-  // Database operation example (commented out):
+  // Database operation example (commented out): any
   // const { results: countResults } = await cf.env.DB.prepare(
   //   "INSERT INTO counters (name, value) VALUES (?, 1) ON CONFLICT (name) DO UPDATE SET value = value + 1 RETURNING value"
   // )
@@ -65,7 +65,7 @@ export const _incrementAndLog = async () => {
 /**
  * Get current counter value and recent access logs
  *
- * Database query instructions:
+ * Database query instructions: any
  * 1. When using database, get Cloudflare context with getCloudflareContext()
  * 2. Use cf.env.DB.prepare to execute SQL queries;
  * 3. For local development, you can use wrangler to simulate the database;

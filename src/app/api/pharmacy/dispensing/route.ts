@@ -18,13 +18,13 @@ import { FHIRMapper } from "../../models/fhir-mappers";
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
-// Initialize repositories (in production, use dependency injection)
+// Initialize repositories (in production, use dependency injection);
 const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository = {
@@ -35,7 +35,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const dispensingRepository = {
@@ -46,14 +46,14 @@ const dispensingRepository = {
   findAll: () => Promise.resolve([]),
   save: (dispensing: unknown) => Promise.resolve(dispensing.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const inventoryRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true)
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
 };
 
 /**
@@ -68,7 +68,7 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
@@ -94,8 +94,8 @@ export const GET = async (req: NextRequest) => {
       if (!session.user)ilter.dispensedAt.lte = new Date(endDate);
     }
 
-    // Get dispensing records (mock implementation)
-    const dispensingRecords = await dispensingRepository.findAll()
+    // Get dispensing records (mock implementation);
+    const dispensingRecords = await dispensingRepository.findAll();
 
     // Apply filters
     let filteredRecords = dispensingRecords;
@@ -121,7 +121,7 @@ export const GET = async (req: NextRequest) => {
     await auditLog("DISPENSING", {
       action: "LIST",
       userId,
-      details: 
+      details: any
         filter,
         page,
         limit,
@@ -135,7 +135,7 @@ export const GET = async (req: NextRequest) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -165,7 +165,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Verify prescription exists
@@ -188,7 +188,7 @@ export const POST = async (req: NextRequest) => {
 
     // Check inventory availability
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
-    const availableInventory = inventoryItems.find(item =>
+    const availableInventory = inventoryItems.find(item => {}
       item.quantityOnHand >= data?.quantityDispensed &&;
       (!item.expiryDate || new Date(item.expiryDate) > ;
     );

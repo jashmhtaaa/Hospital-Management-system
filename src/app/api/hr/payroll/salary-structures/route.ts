@@ -65,3 +65,5 @@ export const _GET = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+
+}

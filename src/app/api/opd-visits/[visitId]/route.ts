@@ -23,7 +23,7 @@ interface OPDVisitQueryResult {
   string
 }
 
-// Define roles allowed to view/manage OPD visits (adjust as needed)
+// Define roles allowed to view/manage OPD visits (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Nurse"]
 const ALLOWED_ROLES_UPDATE = ["Admin", "Receptionist", "Doctor", "Nurse"]; // Adjust based on which fields can be updated by whom
 
@@ -112,12 +112,12 @@ export const _GET = async (request: Request) => {
     }
 }
 
-// PUT handler for updating an OPD visit (e.g., status, notes)
+// PUT handler for updating an OPD visit (e.g., status, notes);
 const UpdateVisitSchema = z.object({
     status: z.nativeEnum(OPDVisitStatus).optional(),
     notes: z.string().optional().nullable();
-    // Add other updatable fields if necessary (e.g., doctor_id, department - requires careful consideration)
-})
+    // Add other updatable fields if necessary (e.g., doctor_id, department - requires careful consideration);
+});
 
 export const _PUT = async (request: Request) => {
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions);

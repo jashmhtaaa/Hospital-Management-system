@@ -39,7 +39,7 @@ interface AppointmentFilters {
 async const getAppointmentsFromDB = (filters: AppointmentFilters) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 query when DB is configured
-  // const { env } = getRequestContext()
+  // const { env } = getRequestContext();
   // const { results } = await env.DB.prepare(
   //   "SELECT a.*, p.name as patient_name, d.name as doctor_name " +
   //   "FROM appointments a " +
@@ -53,7 +53,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
   //   filters.endDate || [0] + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
   //   filters.status || null,
   //   filters.status || null
-  // ).all()
+  // ).all();
   // return results
 
   // Return mock data for now
@@ -130,7 +130,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
     // Apply search filter
     if (!session.user) {
       const searchTerm = filters.search.toLowerCase();
-      return (
+      return () {}
         appointment.patient_name.toLowerCase().includes(searchTerm) ||
         appointment.doctor_name.toLowerCase().includes(searchTerm) ||
         appointment.appointment_number.toLowerCase().includes(searchTerm) ||
@@ -146,7 +146,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
 async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 insert query when DB is configured
-  // const { env } = getRequestContext()
+  // const { env } = getRequestContext();
   // const _info = await env.DB.prepare(
   //   "INSERT INTO appointments (patient_id, doctor_id, department, appointment_date, appointment_type, status, reason, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
   // ).bind(
@@ -158,7 +158,7 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
   //   "scheduled",
   //   appointmentData.reason,
   //   appointmentData.notes
-  // ).run()
+  // ).run();
   // return { id: info.meta.last_row_id, ...appointmentData }
 
   // Return mock success response
@@ -172,7 +172,7 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
     appointment_number: appointmentNumber;
     ...appointmentData,
     status: "scheduled",
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString();
   };
 }
 
@@ -180,14 +180,14 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
 async const getAppointmentByIdFromDB = (id: number) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 query when DB is configured
-  // const { env } = getRequestContext()
+  // const { env } = getRequestContext();
   // const { results } = await env.DB.prepare(
   //   "SELECT a.*, p.name as patient_name, d.name as doctor_name " +
   //   "FROM appointments a " +
   //   "JOIN patients p ON a.patient_id = p.id " +
   //   "JOIN doctors d ON a.doctor_id = d.id " +
   //   "WHERE a.id = ?"
-  // ).bind(id).all()
+  // ).bind(id).all();
   // return results[0]
 
   // Return mock data for now
@@ -232,21 +232,21 @@ async const updateAppointmentInDB = (
 ) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 update query when DB is configured
-  // const { env } = getRequestContext()
-  // const _updateFields = Object.entries(updateData)
-  //   .map(([key, _]) => `${key} = ?`)
-  //   .join(", ")
-  // const _updateValues = Object.values(updateData)
+  // const { env } = getRequestContext();
+  // const _updateFields = Object.entries(updateData);
+  //   .map(([key, _]) => `${key} = ?`);
+  //   .join(", ");
+  // const _updateValues = Object.values(updateData);
   // await env.DB.prepare(
   //   `UPDATE appointments SET ${updateFields} WHERE id = ?`
-  // ).bind(...updateValues, id).run()
+  // ).bind(...updateValues, id).run();
   // return { id, ...updateData }
 
   // Return mock success response
   return {
     id,
     ...updateData,
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString();
   };
 }
 
@@ -315,7 +315,7 @@ export const POST = async (request: NextRequest) => {
   try {
     const appointmentData = (await request.json()) as AppointmentCreateBody;
 
-    // Basic validation (add more comprehensive validation)
+    // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json(
         {

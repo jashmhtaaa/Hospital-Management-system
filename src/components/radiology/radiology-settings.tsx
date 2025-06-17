@@ -309,3 +309,5 @@ export default const _RadiologySettings = () {
       )}
     </Card>
   );
+
+}

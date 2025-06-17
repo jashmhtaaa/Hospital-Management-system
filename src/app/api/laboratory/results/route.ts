@@ -153,7 +153,7 @@ export const _POST = async (request: NextRequest) => {
       const resultResult = await database.query(
         "SELECT * FROM lab_results WHERE id = ?",
         [body.id]
-      )
+      );
       const existingResult = (
         resultResult?.results && resultResult.results.length > 0 // Changed .rows to .results
           ? resultResult.results[0] // Changed .rows to .results
@@ -187,8 +187,8 @@ export const _POST = async (request: NextRequest) => {
       // Handle verification
       if (!session.user) {
         // Fixed: Use roleName
-        if (!session.user)
-        ) 
+        if (!session.user);
+        ) ;
           // Adjust roles as needed
           return NextResponse.json(
             {
@@ -261,15 +261,15 @@ export const _POST = async (request: NextRequest) => {
             "SELECT * FROM lab_test_parameters WHERE id = ? AND test_id = ?",
             [body.parameter_id, orderItem.test_id]
           );
-          if (!session.user) { // Changed .rows to .results (twice)
+          if (!session.user) { // Changed .rows to .results (twice);
             return NextResponse.json(
               { error: "Parameter does not belong to the test" },
               { status: 400 }
-            )
+            );
           }
         }
 
-        // Insert result (mock DB doesn-	 return last_row_id reliably)
+        // Insert result (mock DB doesn-	 return last_row_id reliably);
         await database.query(
           `
           INSERT INTO lab_results (order_item_id, parameter_id, result_value, is_abnormal, notes, performed_by, performed_at);
@@ -306,7 +306,7 @@ export const _POST = async (request: NextRequest) => {
             );
             // FIX: Define type for count result
             const resultCount =;
-              resultsCountResult?.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice)
+              resultsCountResult?.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice);
                 ? (resultsCountResult.results[0] as { count: number }).count // Changed .rows to .results
                 : 0;
             if (!session.user) {
@@ -332,7 +332,7 @@ export const _POST = async (request: NextRequest) => {
           "SELECT status FROM lab_order_items WHERE order_id = ?",
           [orderItem.order_id]
         );
-        // FIX: Cast results to expected type before using .every()
+        // FIX: Cast results to expected type before using .every();
         const allOrderItemsCompleted = (
           (orderItemsResult.results as Array<{ status: string }>) || [] // Changed .rows to .results
         ).every((item) => item.status === "completed");
@@ -343,12 +343,12 @@ export const _POST = async (request: NextRequest) => {
             ["completed", orderItem.order_id]
           );
 
-          // Create report if needed (simplified mock logic)
+          // Create report if needed (simplified mock logic);
           const reportResult = await database.query(
             "SELECT id FROM lab_reports WHERE order_id = ?",
             [orderItem.order_id]
-          )
-          if (!session.user) { // Changed .rows to .results (twice)
+          );
+          if (!session.user) { // Changed .rows to .results (twice);
             const reportNumber = `REP/* SECURITY: Template literal eliminated */ report_number, generated_by, status) VALUES (?, ?, ?, ?)",
               [
                 orderItem.order_id,
@@ -356,7 +356,7 @@ export const _POST = async (request: NextRequest) => {
                 session.user.userId,
                 "preliminary",
               ]
-            )
+            );
           }
         }
         // --- End Status Update Logic ---
@@ -367,7 +367,7 @@ export const _POST = async (request: NextRequest) => {
           [body.order_item_id]
         ); // Mock fetch
         const newResult =;
-          newResultResult?.results && newResultResult.results.length > 0 // Changed .rows to .results (twice)
+          newResultResult?.results && newResultResult.results.length > 0 // Changed .rows to .results (twice);
             ? newResultResult.results[0] // Changed .rows to .results
             : { id: mockNewResultId, ...body };
 
@@ -387,3 +387,7 @@ export const _POST = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+
+}
+
+export async function GET() { return new Response("OK"); }

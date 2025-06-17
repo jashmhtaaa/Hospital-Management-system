@@ -147,3 +147,7 @@ export const _POST = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+
+}
+
+export async function GET() { return new Response("OK"); }

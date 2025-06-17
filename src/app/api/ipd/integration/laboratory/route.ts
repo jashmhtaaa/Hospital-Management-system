@@ -187,3 +187,5 @@ export const getLabResultDetails = async (req: NextRequest) => {
   } catch (error) {
     return handleApiError(error);
   }
+
+}

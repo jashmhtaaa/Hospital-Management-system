@@ -22,10 +22,10 @@ interface ChecklistTemplateUpdateBody {
 // GET /api/ot/checklist-templates/[id] - Get details of a specific checklist template
 export const _GET = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Template ID is required" },
@@ -75,10 +75,10 @@ export const _GET = async (
 // PUT /api/ot/checklist-templates/[id] - Update an existing checklist template
 export const _PUT = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Template ID is required" },
@@ -115,14 +115,14 @@ export const _PUT = async (
       // Add more robust validation for items structure if needed
       if (!session.user)|
         !items.every(
-          (item) =>
+          (item) => {}
             typeof item === "object" &&
             item !== undefined &&;
             item?.id &&
             item?.text &&
             item.type;
         );
-      ) 
+      ) ;
         return NextResponse.json(
           {
             message: "Invalid items format. Each item must have id, text, and type.",
@@ -211,10 +211,10 @@ export const _PUT = async (
 // DELETE /api/ot/checklist-templates/[id] - Delete a checklist template
 export const DELETE = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Template ID is required" },
@@ -262,3 +262,5 @@ export const DELETE = async (
       { status: 500 }
     );
   }
+
+}

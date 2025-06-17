@@ -122,9 +122,9 @@ export const _POST = async (request: NextRequest) => {
       const sampleResult = await database.query(
         "SELECT * FROM lab_samples WHERE id = ?",
         [body.id]
-      )
+      );
       const existingSample = (
-        sampleResult?.results && sampleResult.results.length > 0 // Changed .rows to .results (twice)
+        sampleResult?.results && sampleResult.results.length > 0 // Changed .rows to .results (twice);
           ? sampleResult.results[0] // Changed .rows to .results
           : undefined;
       ) as LabSample | null;
@@ -185,7 +185,7 @@ export const _POST = async (request: NextRequest) => {
         [body.id]
       ),
       const updatedSample =;
-        updatedSampleResult?.results && updatedSampleResult.results.length > 0 // Changed .rows to .results (twice)
+        updatedSampleResult?.results && updatedSampleResult.results.length > 0 // Changed .rows to .results (twice);
           ? updatedSampleResult.results[0] // Changed .rows to .results
           : undefined;
 
@@ -206,7 +206,7 @@ export const _POST = async (request: NextRequest) => {
       const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000);
       const barcode = body.barcode || `LAB/* SECURITY: Template literal eliminated */
 
-      // Fixed: Use db.query for insert (mock DB doesn't return last_row_id)
+      // Fixed: Use db.query for insert (mock DB doesn't return last_row_id);
       await database.query(
         `
         INSERT INTO lab_samples (order_id, barcode, sample_type, collected_by, collected_at, status, notes, created_at, updated_at),
@@ -222,13 +222,13 @@ export const _POST = async (request: NextRequest) => {
         ]
       );
 
-      // Fetch the created sample (mock fetch by barcode)
+      // Fetch the created sample (mock fetch by barcode);
       const newSampleResult = await database.query(
         "SELECT * FROM lab_samples WHERE barcode = ? ORDER BY created_at DESC LIMIT 1",
         [barcode]
-      )
+      );
       const newSample =;
-        newSampleResult?.results && newSampleResult.results.length > 0 // Changed .rows to .results (twice)
+        newSampleResult?.results && newSampleResult.results.length > 0 // Changed .rows to .results (twice);
           ? newSampleResult.results[0] // Changed .rows to .results
           : undefined;
 
@@ -254,3 +254,7 @@ export const _POST = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+
+}
+
+export async function GET() { return new Response("OK"); }

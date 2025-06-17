@@ -57,7 +57,7 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
       migrations: migrationStatus
     }
 
-    const httpStatus = dbHealth.status === "healthy" ? 200 :
+    const httpStatus = dbHealth.status === "healthy" ? 200 : any
                       dbHealth.status === "degraded" ? 200 : 503;
 
     return NextResponse.json(dbHealth, {

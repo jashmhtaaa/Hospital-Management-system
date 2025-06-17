@@ -52,3 +52,5 @@ export const GET = async (request: NextRequest) => {
       auditAction: "CAMPAIGN_ANALYTICS_COMPARATIVE"
     }
   );
+
+}

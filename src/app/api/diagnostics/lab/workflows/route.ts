@@ -154,7 +154,7 @@ export const _GET = async (request: NextRequest) => {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize)
+        totalPages: Math.ceil(totalCount / pageSize);
       }
     });
   } catch (error: unknown) {
@@ -740,3 +740,5 @@ export const DELETE = async (
       { status: 500 }
     );
   }
+
+}

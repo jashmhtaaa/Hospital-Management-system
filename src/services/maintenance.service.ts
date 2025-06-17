@@ -22,11 +22,11 @@ export const createMaintenanceRequestSchema = z.object({
   status: z.nativeEnum(MaintenanceRequestStatus).default(MaintenanceRequestStatus.PENDING),
   priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM),
   requestedAt: z.date().default(() => ,  completedAt: z.date().optional().nullable(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({
-  id: z.string()
+  id: z.string();
 });
 
 export type CreateMaintenanceRequestInput = z.infer>
@@ -215,7 +215,7 @@ import { prisma } from "../lib/prisma";
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
         MaintenanceRequestStatus.COMPLETED,
-          completedAt: new Date()
+          completedAt: new Date();
         },
         {
             true,

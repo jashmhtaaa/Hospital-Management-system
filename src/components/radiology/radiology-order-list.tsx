@@ -226,3 +226,5 @@ export default const _RadiologyOrderList = () {
       />
     </Card>
   );
+
+}

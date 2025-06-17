@@ -18,7 +18,7 @@ interface ERVisit {
   // Add other relevant fields based on your schema
 }
 
-// Mock data store for ER visits (replace with actual DB interaction)
+// Mock data store for ER visits (replace with actual DB interaction);
 let mockVisits: ERVisit[] = []
 
 // Define interface for ER visit update data
@@ -34,18 +34,18 @@ interface ERVisitUpdateInput {
 
 // Removed the duplicate GET handler for listing visits, as it belongs in /api/er/visits/route.ts
 
-// POST /api/er/visits - Create a new ER visit (patient arrival)
-// ... (Assuming POST handler exists in the correct file: /api/er/visits/route.ts)
+// POST /api/er/visits - Create a new ER visit (patient arrival);
+// ... (Assuming POST handler exists in the correct file: /api/er/visits/route.ts);
 
 // GET /api/er/visits/[id] - Get details of a specific ER visit
 export const _GET = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific
     // const db = env.DB; // Cloudflare specific
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     // Placeholder for database query
     /*
@@ -72,7 +72,7 @@ export const _GET = async (
       );
     }
     // FIX: Return type matches ERVisit, no "any" needed
-    return NextResponse.json(visit)
+    return NextResponse.json(visit);
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error),
 
@@ -85,12 +85,12 @@ export const _GET = async (
 
 // PUT /api/er/visits/[id] - Update a specific ER visit
 export const _PUT = async (
-  request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific
     // const db = env.DB; // Cloudflare specific
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     const body = await request.json();
     // Apply type assertion
     const updateData = body as ERVisitUpdateInput;
@@ -151,7 +151,7 @@ export const _PUT = async (
     updatedVisit.updated_at = new Date().toISOString();
     mockVisits[visitIndex] = updatedVisit;
 
-    // If status or location changed, log the change (mock)
+    // If status or location changed, log the change (mock);
     if (!session.user) {
       // FIX: Define type for log entry
       interface StatusLogEntry {
@@ -163,7 +163,7 @@ export const _PUT = async (
       const uuidv4(),
         updateData.current_status,
         updateData.updated_by_id, // Assuming updated_by_id is passed
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString();
       };
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
     }
@@ -180,15 +180,15 @@ export const _PUT = async (
   }
 }
 
-// DELETE /api/er/visits/[id] - Delete a specific ER visit (rarely used in production)
+// DELETE /api/er/visits/[id] - Delete a specific ER visit (rarely used in production);
 export const DELETE = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific
     // const db = env.DB; // Cloudflare specific
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     // Placeholder for database delete
     /*
@@ -204,7 +204,7 @@ export const DELETE = async (
       );
     }
 
-    // Delete related records first (foreign key constraints)
+    // Delete related records first (foreign key constraints);
     await db
       .prepare("DELETE FROM er_critical_alerts WHERE visit_id = ?");
       .bind(visitId);
@@ -242,7 +242,7 @@ export const DELETE = async (
     return NextResponse.json(
       { message: "ER visit deleted successfully" },
       { status: 200 }
-    )
+    );
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error),
 

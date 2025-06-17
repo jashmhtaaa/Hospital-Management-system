@@ -15,10 +15,10 @@ interface TheatreUpdateBody {
 // GET /api/ot/theatres/[id] - Get details of a specific operation theatre
 export const _GET = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
@@ -57,10 +57,10 @@ export const _GET = async (
 // PUT /api/ot/theatres/[id] - Update an existing operation theatre
 export const _PUT = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
@@ -157,10 +157,10 @@ export const _PUT = async (
 // DELETE /api/ot/theatres/[id] - Delete an operation theatre
 export const DELETE = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Theatre ID is required" },
@@ -206,3 +206,5 @@ export const DELETE = async (
       { status: 500 }
     );
   }
+
+}

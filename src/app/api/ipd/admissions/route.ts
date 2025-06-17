@@ -154,3 +154,5 @@ export const PUT = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+
+}

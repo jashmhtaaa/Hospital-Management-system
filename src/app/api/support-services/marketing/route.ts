@@ -15,7 +15,7 @@ const campaignFilterSchema = z.object({
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().default("1").transform(Number),
-  limit: z.string().default("10").transform(Number)
+  limit: z.string().default("10").transform(Number);
 });
 
 // Create campaign schema
@@ -28,7 +28,7 @@ const createCampaignSchema = z.object({
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  kpis: z.any().optional();
 });
 
 // Update campaign schema
@@ -42,7 +42,7 @@ const updateCampaignSchema = z.object({
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  kpis: z.any().optional();
 });
 
 // GET /api/support-services/marketing/campaigns
@@ -259,7 +259,7 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
         status: searchParams.get("status") || undefined,
         searchParams.get("segmentId") || undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10")
+        limit: parseInt(searchParams.get("limit") || "10");
       };
 
       // Get marketing contacts with filters
@@ -294,3 +294,5 @@ export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {
       auditAction: "MARKETING_OVERVIEW_ANALYTICS_VIEW"
     }
   );
+
+}

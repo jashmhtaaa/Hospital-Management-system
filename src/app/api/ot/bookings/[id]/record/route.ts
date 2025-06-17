@@ -25,10 +25,10 @@ interface OTRecordBody {
 // GET /api/ot/bookings/[id]/record - Get operation record for a booking
 export const _GET = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
@@ -84,10 +84,10 @@ export const _GET = async (
 // POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking
 export const _POST = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
@@ -131,8 +131,8 @@ export const _POST = async (
     const now = new Date().toISOString();
 
     // Update booking status based on times provided
-    if (!session.user)
-    ) 
+    if (!session.user);
+    ) ;
       await DB.prepare(
         "UPDATE OTBookings SET status = "in_progress", updated_at = ? WHERE id = ?";
       );
@@ -277,3 +277,5 @@ export const _POST = async (
       { status: 500 }
     );
   }
+
+}

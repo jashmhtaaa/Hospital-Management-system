@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-
 import { biometricService } from "@/lib/hr/biometric-service";
 // Schema for biometric verification
 const biometricVerificationSchema = z.object({
@@ -32,9 +31,9 @@ export const _POST = async (request: NextRequest) => {
 
     return NextResponse.json(result);
   } catch (error) {
-
     return NextResponse.json(
       { error: "Failed to verify biometric data", details: error.message },
       { status: 500 }
     );
   }
+};

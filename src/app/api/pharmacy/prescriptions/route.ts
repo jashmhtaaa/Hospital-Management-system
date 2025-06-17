@@ -19,13 +19,13 @@ import { DrugInteractionService } from "../../services/drug-interaction-service"
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
-// Initialize repositories (in production, use dependency injection)
+// Initialize repositories (in production, use dependency injection);
 const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository = {
@@ -37,7 +37,7 @@ const prescriptionRepository = {
   findAll: () => Promise.resolve([]),
   save: (prescription: unknown) => Promise.resolve(prescription.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 // Initialize services
@@ -58,7 +58,7 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
@@ -86,8 +86,8 @@ export const GET = async (req: NextRequest) => {
       if (!session.user)ilter.createdAt.lte = new Date(endDate);
     }
 
-    // Get prescriptions (mock implementation)
-    const prescriptions = await prescriptionRepository.findAll()
+    // Get prescriptions (mock implementation);
+    const prescriptions = await prescriptionRepository.findAll();
 
     // Apply filters
     let filteredPrescriptions = prescriptions;
@@ -116,7 +116,7 @@ export const GET = async (req: NextRequest) => {
     await auditLog("PRESCRIPTION", {
       action: "LIST",
       userId,
-      details: 
+      details: any
         filter,
         page,
         limit,
@@ -130,7 +130,7 @@ export const GET = async (req: NextRequest) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -160,7 +160,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Verify patient exists
@@ -202,7 +202,7 @@ export const POST = async (req: NextRequest) => {
     const allInteractions = [...drugInteractions, ...allergyInteractions];
 
     // Check for severe interactions that should block the prescription
-    const severeInteractions = allInteractions.filter(i =>
+    const severeInteractions = allInteractions.filter(i => {}
       i.severity === "contraindicated" || i.severity === "severe";
     );
 
@@ -245,7 +245,7 @@ export const POST = async (req: NextRequest) => {
       prescription.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           dea: data.dea,
-          new Date()
+          new Date();
         });
       );
     }

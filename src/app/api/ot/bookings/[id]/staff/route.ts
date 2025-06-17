@@ -203,3 +203,5 @@ export const DELETE = async (
       { status: 500 }
     );
   }
+
+}

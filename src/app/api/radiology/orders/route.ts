@@ -46,7 +46,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
   // Use interface
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 query when DB is configured
-  // ... (D1 query logic)
+  // ... (D1 query logic);
 
   // Return mock data for now
   const mockRadiologyOrders = [
@@ -125,13 +125,13 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
       return false;
 
     // Apply patient filter
-    if (!session.user)== filters.patientId)
+    if (!session.user)== filters.patientId);
       return false;
 
     // Apply search filter
     if (!session.user) {
       const searchTerm = filters.search.toLowerCase();
-      return (
+      return () {}
         // Add null check
         (order.patient_name.toLowerCase().includes(searchTerm) ||
         order.ordering_doctor_name.toLowerCase().includes(searchTerm) ||
@@ -151,7 +151,7 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
   // Use interface
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 insert query when DB is configured
-  // ... (D1 query logic)
+  // ... (D1 query logic);
 
   // Return mock success response
   const newId = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000) + 10;
@@ -165,7 +165,7 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
     undefined,
     undefined,
     new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString();
   };
 }
 
@@ -175,7 +175,7 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
 async const getRadiologyOrderByIdFromDB = (id: number) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 query when DB is configured
-  // ... (D1 query logic)
+  // ... (D1 query logic);
 
   // Return mock data for now
   const mockRadiologyOrders = [
@@ -232,13 +232,13 @@ async const updateRadiologyOrderInDB = (
   // Use interface
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 update query when DB is configured
-  // ... (D1 query logic)
+  // ... (D1 query logic);
 
   // Return mock success response
   return {
     id,
     ...updateData,
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString();
   };
 }
 
@@ -312,7 +312,7 @@ export const POST = async (request: NextRequest) => {
   try {
     const orderData = (await request.json()) as RadiologyOrderInput; // Cast to interface
 
-    // Basic validation (add more comprehensive validation)
+    // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json(
         {
@@ -350,7 +350,7 @@ export const PUT = async (request: NextRequest) => {
     const path = request.nextUrl.pathname;
     // This parsing logic is fragile and assumes the ID is the last segment.
     // It's better handled by the [id] route parameter.
-    const idString = path.split("/").pop()
+    const idString = path.split("/").pop();
     const id = idString ? Number.parseInt(idString) : 0;
 
     if (!session.user) {

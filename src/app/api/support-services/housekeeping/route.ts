@@ -208,3 +208,5 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       auditAction: "HOUSEKEEPING_ANALYTICS_VIEW"
     }
   );
+
+}

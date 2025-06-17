@@ -5,7 +5,7 @@ import { getDB } from "@/lib/database";
 import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
 // import { checkUserRole } from "@/lib/auth"
 
-// Define Database interface (can be moved to a shared types file)
+// Define Database interface (can be moved to a shared types file);
 interface PreparedStatement {
   // FIX: Replaced any[] with unknown[]
   bind(...parameters: unknown[]): {
@@ -37,7 +37,7 @@ interface RadiologyStudy {
   protocol?: string | null;
   series_description?: string | null;
   number_of_images?: number | null;
-  status:
+  status: any
     | "scheduled";
     | "in_progress";
     | "completed";
@@ -62,7 +62,7 @@ interface RadiologyStudyPutData {
   protocol?: string | null;
   series_description?: string | null;
   number_of_images?: number | null;
-  status?:
+  status?: any
     | "scheduled";
     | "in_progress";
     | "completed";
@@ -74,7 +74,7 @@ interface RadiologyStudyPutData {
 // GET a specific Radiology Study by ID
 export const _GET = async (
   _request: NextRequest, // Renamed to _request as it"s unused
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
@@ -83,12 +83,12 @@ export const _GET = async (
       // Basic check if any logged-in user can view
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    // Role check example (adjust roles as needed)
+    // Role check example (adjust roles as needed);
     // if (!session.user) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     // }
 
-    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { error: "Study ID is required" },
@@ -136,22 +136,22 @@ export const _GET = async (
   }
 }
 
-// PUT (update) a specific Radiology Study (Technician or Admin)
+// PUT (update) a specific Radiology Study (Technician or Admin);
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
     // Use roleName for check
-    if (!session.user)
-    ) 
+    if (!session.user);
+    ) ;
       return NextResponse.json(
         { error: "Unauthorized: Admin or Technician role required" },
         { status: 403 }
       );
 
-    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { error: "Study ID is required" },
@@ -163,15 +163,15 @@ export const _PUT = async (
     const data = (await request.json()) as RadiologyStudyPutData;
     const updatedAt = new Date().toISOString();
 
-    // Validate input data (basic example)
-    if (!session.user)
-    ) 
+    // Validate input data (basic example);
+    if (!session.user);
+    ) ;
       return NextResponse.json(
         { error: "Invalid number of images" },
         { status: 400 }
       );
     if (!session.user);
-    ) 
+    ) ;
       return NextResponse.json(
         { error: "Invalid study date/time format" },
         { status: 400 }
@@ -239,7 +239,7 @@ export const _PUT = async (
       }
 
       // If status is updated to \"completed\", \"reported\" or \"verified\", update the parent order status
-      if (!session.user)
+      if (!session.user);
       ) {
         // FIX: Added type assertion
         const orderIdResult = await database;
@@ -248,7 +248,7 @@ export const _PUT = async (
           .first<order_id: string >(); // Use generic type argument
         // Add null check for orderIdResult
         if (!session.user) {
-          // Determine the appropriate order status (e.g., \"completed\" when study is done)
+          // Determine the appropriate order status (e.g., \"completed\" when study is done);
           const newOrderStatus = "completed"; // Or more complex logic based on study status
           await database;
             .prepare(
@@ -279,7 +279,7 @@ export const _PUT = async (
       // Handle specific DB errors like UNIQUE constraint
       if (!session.user)&
         databaseError.message?.includes("accession_number");
-      ) 
+      ) ;
         return NextResponse.json(
           { error: "Accession number already exists" },
           { status: 409 }
@@ -298,10 +298,10 @@ export const _PUT = async (
   }
 }
 
-// DELETE a specific Radiology Study (Admin only - consider status update instead)
+// DELETE a specific Radiology Study (Admin only - consider status update instead);
 export const DELETE = async (
   _request: NextRequest, // Renamed to _request as it"s unused
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
@@ -313,7 +313,7 @@ export const DELETE = async (
       );
     }
 
-    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { error: "Study ID is required" },
@@ -337,13 +337,13 @@ export const DELETE = async (
       );
     }
 
-    // Option 1: Soft delete (recommended)
-    // const _cancelledAt = new Date().toISOString()
-    // const info = await db.prepare("UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ?")
-    //                   .bind("cancelled", cancelledAt, studyId)
-    //                   .run()
+    // Option 1: Soft delete (recommended);
+    // const _cancelledAt = new Date().toISOString();
+    // const info = await db.prepare("UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ?");
+    //                   .bind("cancelled", cancelledAt, studyId);
+    //                   .run();
 
-    // Option 2: Hard delete (use with caution)
+    // Option 2: Hard delete (use with caution);
     const info = await database
       .prepare("DELETE FROM RadiologyStudies WHERE id = ?");
       .bind(studyId);
@@ -371,3 +371,5 @@ export const DELETE = async (
       { status: 500 }
     );
   }
+
+}

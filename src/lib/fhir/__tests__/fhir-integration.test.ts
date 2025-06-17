@@ -17,3 +17,6 @@ describe("FHIR R4 Integration Tests", () => {
 
   describe("FHIR Patient Resource Tests", () => {
     test("should create a valid FHIR Patient from HMS data", () => {
+
+}
+}

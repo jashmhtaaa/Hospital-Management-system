@@ -45,7 +45,7 @@ const prisma = new PrismaClient();
             document.id,
               sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
-              authorId: userId,              authoredDate: new Date()
+              authorId: userId,              authoredDate: new Date();
             }
           });
         }
@@ -154,7 +154,7 @@ const prisma = new PrismaClient();
         data.documentTitle || undefined,
           content: data.content || undefined,          status: data.status || undefined,
           isConfidential: data.isConfidential !== undefined ? data.isConfidential : undefined,          attachmentUrls: data.attachmentUrls || undefined,
-          tags: data.tags || undefined,          updatedAt: new Date()
+          tags: data.tags || undefined,          updatedAt: new Date();
         }
       });
 
@@ -174,7 +174,7 @@ const prisma = new PrismaClient();
                 sectionType: section.sectionType || undefined,                sectionOrder: section.sectionOrder || undefined,
                 content: section.content || undefined,                updatedById: userId,
                 updatedDate: new Date(),
-                updatedAt: new Date()
+                updatedAt: new Date();
               }
             });
           } else {
@@ -184,7 +184,7 @@ const prisma = new PrismaClient();
                 sectionTitle: section.sectionTitle,                sectionType: section.sectionType,
                 sectionOrder: section.sectionOrder || (existingSections.length + 1),
                 content: section.content,
-                authorId: userId,                authoredDate: new Date()
+                authorId: userId,                authoredDate: new Date();
               }
             });
           }
@@ -413,7 +413,7 @@ const prisma = new PrismaClient();
         total,
         page,
         pageSize,
-        totalPages: Math.ceil(total / pageSize)
+        totalPages: Math.ceil(total / pageSize);
       }
     };
   }
@@ -470,7 +470,7 @@ const prisma = new PrismaClient();
         total,
         page,
         pageSize,
-        totalPages: Math.ceil(total / pageSize)
+        totalPages: Math.ceil(total / pageSize);
       }
     };
   }

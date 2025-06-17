@@ -20,7 +20,7 @@ interface LabOrderInput {
 }
 
 interface LabOrderUpdateInput {
-  status?:
+  status?: any
     | "pending";
     | "sample_collected";
     | "processing";
@@ -33,12 +33,12 @@ interface LabOrderUpdateInput {
   result_entry_at?: string | null;
   result_verified_at?: string | null;
   notes?: string;
-  // Allow updating tests statuses or adding results (more complex)
+  // Allow updating tests statuses or adding results (more complex);
   // tests?: { test_id: number | string, status: string }[];
   // results?: { test_id: number | string, result_value: string; ... }[];
 }
 
-// Interface representing a full Lab Order object (based on mock data)
+// Interface representing a full Lab Order object (based on mock data);
 interface LabOrder {
   id: number,
   number | string;
@@ -185,7 +185,7 @@ async const updateLabOrderInDB = (
 
 export const _GET = async (request: NextRequest) => {
   try {
-    const session = await getSession()
+    const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -270,14 +270,14 @@ export const _POST = async (request: NextRequest) => {
   }
 export const _PUT = async (
   request: NextRequest;params : params: Promise<{ id: string }> 
-) 
+) ;
   try {
-    const session = await getSession()
+    const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id } = await params; // FIX: Await params and destructure id (Next.js 15+);
     const numericId = Number.parseInt(id),
     if (!session.user)| numericId <= 0) {
       return NextResponse.json(
@@ -307,3 +307,5 @@ export const _PUT = async (
       { status: 500 }
     );
   }
+
+}

@@ -33,7 +33,7 @@ const createPolicySchema = z.object({
   deductibleMet: z.number().optional(),
   outOfPocketMax: z.number().optional(),
   outOfPocketMet: z.number().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Schema for insurance policy query parameters

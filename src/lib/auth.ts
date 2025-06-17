@@ -320,7 +320,7 @@ export const _requireAuth = (handler: Function) {
     // Add user to request context
     (request as any).user = authResult.user;
 
-    return handler(request, context)
+    return handler(request, context);
   };
 }
 
@@ -344,7 +344,7 @@ export const _requireRole = (requiredRole: string) {
       // Add user to request context
       (request as any).user = authResult.user;
 
-      return handler(request, context)
+      return handler(request, context);
     };
 }
 
@@ -368,5 +368,5 @@ export const _requirePermission = (permission: string) {
       // Add user to request context
       (request as any).user = authResult.user;
 
-      return handler(request, context)
+      return handler(request, context);
     };

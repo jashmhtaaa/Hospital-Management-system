@@ -7,7 +7,7 @@ import { z } from "zod";
 import { type IronSessionData, sessionOptions } from "@/lib/session";
 import type { Consultation } from "@/types/opd";
 // app/api/consultations/route.ts
-// Define roles allowed to view/create consultations (adjust as needed)
+// Define roles allowed to view/create consultations (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"]
 const ALLOWED_ROLES_CREATE = ["Doctor"];
 
@@ -20,7 +20,7 @@ const ListConsultationsQuerySchema = z.object({
     dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     limit: z.coerce.number().int().positive().optional().default(50),
-    offset: z.coerce.number().int().nonnegative().optional().default(0)
+    offset: z.coerce.number().int().nonnegative().optional().default(0);
 });
 
 // Define type for the query result row
@@ -154,7 +154,7 @@ const CreateConsultationSchema = z.object({
     diagnosis: z.string().optional().nullable(),
     treatment_plan: z.string().optional().nullable(),
     follow_up_instructions: z.string().optional().nullable(),
-    notes: z.string().optional().nullable()
+    notes: z.string().optional().nullable();
 }).refine(data => data.opd_visit_id || data.admission_id, {
     message: "Consultation must be linked to either an OPD Visit or an Admission.",
     path: ["opd_visit_id", "admission_id"],
@@ -263,3 +263,7 @@ export const _POST = async (request: Request) => {
             headers: { "Content-Type": "application/json" },
         });
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

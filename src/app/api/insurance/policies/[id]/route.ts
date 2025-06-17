@@ -31,7 +31,7 @@ const updatePolicySchema = z.object({
   outOfPocketMax: z.number().optional(),
   outOfPocketMet: z.number().optional(),
   status: z.enum(["active", "inactive", "expired"]).optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Schema for policy verification
@@ -41,7 +41,7 @@ const verifyPolicySchema = z.object({
   verifiedBy: z.string(),
   eligibilityStatus: z.enum(["eligible", "ineligible", "pending"]),
   coverageDetails: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // GET handler for retrieving a specific insurance policy
@@ -224,7 +224,7 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
   return createSuccessResponse({ success: true, message: "Insurance policy deleted successfully" });
 });
 
-// PATCH handler for policy operations (verify)
+// PATCH handler for policy operations (verify);
 export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Get operation from query parameters
   const url = new URL(req.url);
@@ -245,9 +245,9 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
 
   // Handle different operations
   switch (operation) {
-    case "verify":
+    case "verify": any
       return verifyPolicy(req, params.id, existingPolicy),
-    default:
+    default: any
       throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION"),
   }
 });

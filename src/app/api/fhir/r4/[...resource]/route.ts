@@ -58,13 +58,13 @@ export const GET = async (request: NextRequest, { params }: RouteParams) => {
     let searchResult;
 
     switch (resourceType) {
-      case "Patient":
-        searchResult = await fhirService.searchPatients(searchParams),\n    }\n    case "Appointment":
-        searchResult = await fhirService.searchAppointments(searchParams),\n    }\n    case "Encounter":
+      case "Patient": any
+        searchResult = await fhirService.searchPatients(searchParams),\n    }\n    case "Appointment": any
+        searchResult = await fhirService.searchAppointments(searchParams),\n    }\n    case "Encounter": any
         searchResult = await fhirService.searchEncounters(searchParams),
         break;
-      default:
-        searchResult = await fhirService.searchResources(resourceType, searchParams)
+      default: any
+        searchResult = await fhirService.searchResources(resourceType, searchParams);
     }
 
     if (!session.user) {
@@ -122,13 +122,13 @@ export const POST = async (request: NextRequest, { params }: RouteParams) => {
     let result;
 
     switch (resourceType) {
-      case "Patient":
-        result = await fhirService.createPatient(body as FHIRPatient),\n    }\n    case "Appointment":
-        result = await fhirService.createAppointment(body as FHIRAppointment),\n    }\n    case "Encounter":
-        result = await fhirService.createEncounter(body as FHIREncounter),\n    }\n    case "MedicationRequest":
+      case "Patient": any
+        result = await fhirService.createPatient(body as FHIRPatient),\n    }\n    case "Appointment": any
+        result = await fhirService.createAppointment(body as FHIRAppointment),\n    }\n    case "Encounter": any
+        result = await fhirService.createEncounter(body as FHIREncounter),\n    }\n    case "MedicationRequest": any
         result = await fhirService.createMedicationRequest(body as FHIRMedicationRequest),
         break;
-      default: result = await fhirService.createResource(body)
+      default: result = await fhirService.createResource(body);
     }
 
     if (!session.user) {
@@ -215,13 +215,13 @@ export const PUT = async (request: NextRequest, { params }: RouteParams) => {
     let result;
 
     switch (resourceType) {
-      case "Patient":
-        result = await fhirService.updatePatient(resourceId, body as FHIRPatient),\n    }\n    case "Appointment":
-        result = await fhirService.updateAppointment(resourceId, body as FHIRAppointment),\n    }\n    case "Encounter":
+      case "Patient": any
+        result = await fhirService.updatePatient(resourceId, body as FHIRPatient),\n    }\n    case "Appointment": any
+        result = await fhirService.updateAppointment(resourceId, body as FHIRAppointment),\n    }\n    case "Encounter": any
         result = await fhirService.updateEncounter(resourceId, body as FHIREncounter),
         break;
-      default:
-        result = await fhirService.updateResource(resourceType, resourceId, body)
+      default: any
+        result = await fhirService.updateResource(resourceType, resourceId, body);
     }
 
     if (!session.user) {
@@ -317,7 +317,7 @@ export const DELETE = async (request: NextRequest, { params }: RouteParams) => {
 }
 
 /**
- * PATCH /fhir/r4/{resourceType}/{id} - Partial update (JSON Patch)
+ * PATCH /fhir/r4/{resourceType}/{id} - Partial update (JSON Patch);
  */
 export const PATCH = async (request: NextRequest, { params }: RouteParams) => {
   try {

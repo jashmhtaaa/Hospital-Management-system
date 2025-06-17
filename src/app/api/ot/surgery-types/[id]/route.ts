@@ -3,7 +3,7 @@ import type { D1Database } from "@cloudflare/workers-types";
 import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
-// Interface for required staff/equipment (example)
+// Interface for required staff/equipment (example);
 interface RequiredResource {
   role?: string; // For staff
   name?: string; // For equipment
@@ -23,10 +23,10 @@ interface SurgeryTypeUpdateBody {
 // GET /api/ot/surgery-types/[id] - Get details of a specific surgery type
 export const _GET = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Surgery Type ID is required" },
@@ -77,10 +77,10 @@ export const _GET = async (
 // PUT /api/ot/surgery-types/[id] - Update an existing surgery type
 export const _PUT = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Surgery Type ID is required" },
@@ -201,10 +201,10 @@ export const _PUT = async (
 // DELETE /api/ot/surgery-types/[id] - Delete a surgery type
 export const DELETE = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Surgery Type ID is required" },
@@ -250,3 +250,5 @@ export const DELETE = async (
       { status: 500 }
     );
   }
+
+}

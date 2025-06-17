@@ -69,3 +69,5 @@ export const DELETE = async (
       auditAction: "SEGMENT_MEMBER_REMOVE"
     }
   );
+
+}

@@ -73,3 +73,6 @@ import { logger } from "@/lib/logger";
     };
   }
 }
+
+
+export async function GET() { return new Response("OK"); }

@@ -15,13 +15,13 @@ import { BarcodeAdministrationService } from "../../services/barcode-administrat
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
-// Initialize repositories (in production, use dependency injection)
+// Initialize repositories (in production, use dependency injection);
 const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 }
 
 const getPrescriptionById,
@@ -31,7 +31,7 @@ const getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const () => Promise.resolve(null),
@@ -41,7 +41,7 @@ const () => Promise.resolve(null),
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 // Initialize services
@@ -73,7 +73,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Create administration record
@@ -224,7 +224,7 @@ export const recordMissedDose = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Create missed dose record
@@ -455,7 +455,7 @@ export const recordPRNAdministration = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Verify prescription is PRN
@@ -533,7 +533,7 @@ export const recordPatientEducation = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Create education record
@@ -592,7 +592,7 @@ export const recordAdverseReaction = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Create reaction record
@@ -814,7 +814,7 @@ export const generateAdministrationReports = async (req: NextRequest) => {
         endDate,
         wardId,
         totalMissedDoses: 70,
-        missedDosesByReason: 
+        missedDosesByReason: any
           "patient-refused": 30,
           "patient-unavailable": 15,
           "medication-unavailable": 10,
@@ -835,7 +835,7 @@ export const generateAdministrationReports = async (req: NextRequest) => {
         120,
         60,
           60,
-        administrationsByWard: 
+        administrationsByWard: any
           "Ward A": 50,
           "Ward B": 40,
           "Ward C": 30;

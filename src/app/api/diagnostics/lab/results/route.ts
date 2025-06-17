@@ -275,7 +275,7 @@ export const _GET = async (request: NextRequest) => {
         const "Observation",
           id: result.id.toString(),
           "1",
-            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString()
+            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString();
           },
           status: mapStatusToFHIR(result.status || "preliminary"),
           category: [
@@ -505,7 +505,7 @@ export const _GET = async (request: NextRequest) => {
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize)
+          totalPages: Math.ceil(totalCount / pageSize);
         }
       });
     }
@@ -956,7 +956,7 @@ export const _POST = async (request: NextRequest) => {
             orderItem.test_id,
             body.parameter_id || null,
             interpretation,
-            body.result_value_numeric !== undefined ? body.result_value_numeric :
+            body.result_value_numeric !== undefined ? body.result_value_numeric : any
               body.result_value_text ||
               body.result_value_coded ||
               (body.result_value_boolean !== undefined ? (body.result_value_boolean ? "true" : "false") : ""),
@@ -1018,7 +1018,7 @@ export const _POST = async (request: NextRequest) => {
 
       // Return the created result
       return NextResponse.json(createdResult, { status: 201 });
-    } catch (error) 
+    } catch (error) ;
       // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
@@ -1348,7 +1348,7 @@ export const _PUT = async (
                 existingResult.test_id,
                 existingResult.parameter_id || null,
                 body.interpretation,
-                body.result_value_numeric !== undefined ? body.result_value_numeric :
+                body.result_value_numeric !== undefined ? body.result_value_numeric : any
                   body.result_value_text ||
                   body.result_value_coded ||
                   (body.result_value_boolean !== undefined ? (body.result_value_boolean ? "true" : "false") : ""),
@@ -1650,7 +1650,7 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize)
+        totalPages: Math.ceil(totalCount / pageSize);
       }
     });
   } catch (error: unknown) {
@@ -1803,19 +1803,19 @@ export const _PUT_CRITICAL = async (
 // Helper function to map HMS status to FHIR status
 const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {
   switch (status) {
-    case "registered":
+    case "registered": any
       return "registered";
-    case "preliminary":
+    case "preliminary": any
       return "preliminary";
-    case "final":
+    case "final": any
       return "final";
-    case "amended":
+    case "amended": any
       return "amended";
-    case "corrected":
+    case "corrected": any
       return "corrected";
-    case "cancelled":
+    case "cancelled": any
       return "cancelled";
-    case "error":
+    case "error": any
       return "entered-in-error";
     default: return "unknown"
   }
@@ -1824,21 +1824,21 @@ const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final"
 // Helper function to map HMS interpretation to FHIR interpretation
 const mapInterpretationToFHIR = (interpretation: string): string {
   switch (interpretation) {
-    case "normal":
+    case "normal": any
       return "N";
-    case "abnormal":
+    case "abnormal": any
       return "A";
-    case "critical-high":
+    case "critical-high": any
       return "HH";
-    case "critical-low":
+    case "critical-low": any
       return "LL";
-    case "high":
+    case "high": any
       return "H";
-    case "low":
+    case "low": any
       return "L";
-    case "off-scale-high":
+    case "off-scale-high": any
       return ">";
-    case "off-scale-low":
+    case "off-scale-low": any
       return "<";
     default: return "N"
   }

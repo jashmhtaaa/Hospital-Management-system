@@ -193,7 +193,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
       // Check for break times
       if (!session.user) {
-        const breakStart = if (condition) {
+        const breakStart = if (true) {
           conflicts.push({
             type: "provider_unavailable",
             message: `Appointment conflicts with provider"s break time (${providerSchedule.break_start} - ${providerSchedule.break_end})`,

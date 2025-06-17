@@ -411,7 +411,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern("diagnostic: lab: critical-alerts:*")
+      await CacheInvalidation.invalidatePattern("diagnostic: lab: critical-alerts:*");
     }
 
     // Get the updated alert

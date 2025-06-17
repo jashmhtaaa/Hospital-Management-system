@@ -55,17 +55,17 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   // Generate report based on type
   let reportData;
   switch (query.reportType) {
-    case "revenue":
-      reportData = await generateRevenueReport(startDate, endDate, query.groupBy, query.departmentId),\n    }\n    case "expenses":
-      reportData = await generateExpensesReport(startDate, endDate, query.groupBy, query.departmentId),\n    }\n    case "profit_loss":
-      reportData = await generateProfitLossReport(startDate, endDate, query.groupBy),\n    }\n    case "accounts_receivable":
-      reportData = await generateAccountsReceivableReport(startDate, endDate),\n    }\n    case "insurance_claims":
-      reportData = await generateInsuranceClaimsReport(startDate, endDate, query.insuranceProviderId),\n    }\n    case "payment_collection":
-      reportData = await generatePaymentCollectionReport(startDate, endDate, query.groupBy),\n    }\n    case "department_revenue":
-      reportData = await generateDepartmentRevenueReport(startDate, endDate),\n    }\n    case "service_revenue":
+    case "revenue": any
+      reportData = await generateRevenueReport(startDate, endDate, query.groupBy, query.departmentId),\n    }\n    case "expenses": any
+      reportData = await generateExpensesReport(startDate, endDate, query.groupBy, query.departmentId),\n    }\n    case "profit_loss": any
+      reportData = await generateProfitLossReport(startDate, endDate, query.groupBy),\n    }\n    case "accounts_receivable": any
+      reportData = await generateAccountsReceivableReport(startDate, endDate),\n    }\n    case "insurance_claims": any
+      reportData = await generateInsuranceClaimsReport(startDate, endDate, query.insuranceProviderId),\n    }\n    case "payment_collection": any
+      reportData = await generatePaymentCollectionReport(startDate, endDate, query.groupBy),\n    }\n    case "department_revenue": any
+      reportData = await generateDepartmentRevenueReport(startDate, endDate),\n    }\n    case "service_revenue": any
       reportData = await generateServiceRevenueReport(startDate, endDate),
       break;
-    default:
+    default: any
       throw new ValidationError(`Unsupported report type: ${query.reportType}`, "UNSUPPORTED_REPORT_TYPE"),
   }
 
@@ -102,23 +102,23 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
   // Group by time period
   let _groupByFormat: unknown;
   switch (groupBy) {
-    case "day":
+    case "day": any
       _groupByFormat = {
         _type: "day",
         day: { date: "$billDate" }
-      };\n    }\n    case "week":
+      };\n    }\n    case "week": any
       _groupByFormat = {
         _type: "week",
         week: { date: "$billDate" }
-      };\n    }\n    case "month":
+      };\n    }\n    case "month": any
       _groupByFormat = {
         _type: "month",
         month: { date: "$billDate" }
-      };\n    }\n    case "quarter":
+      };\n    }\n    case "quarter": any
       _groupByFormat = {
         _type: "quarter",
         quarter: { date: "$billDate" }
-      };\n    }\n    case "year":
+      };\n    }\n    case "year": any
       _groupByFormat = {
         _type: "year",
         year: { date: "$billDate" }
@@ -387,7 +387,7 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
       totalPaidRevenue,
       totalOutstandingRevenue,
       totalPatients,
-      averageRevenuePerPatient: Math.round(totalRevenue / totalPatients)
+      averageRevenuePerPatient: Math.round(totalRevenue / totalPatients);
     },
     departmentBreakdown: departmentData
   };
@@ -465,7 +465,7 @@ async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {
     summary: {
       totalRevenue,
       totalServiceCount,
-      averageRevenuePerService: Math.round(totalRevenue / totalServiceCount)
+      averageRevenuePerService: Math.round(totalRevenue / totalServiceCount);
     },
     serviceBreakdown: serviceData
   };

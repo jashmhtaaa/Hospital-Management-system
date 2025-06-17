@@ -44,3 +44,5 @@ export default const _DashboardLayout = ({ children }: DashboardLayoutProps) {
       </div>
     </div>
   );
+
+}

@@ -104,7 +104,7 @@ export const _POST = async (
       .run();
     */
 
-    // FIX: Explicitly type newAlert to match interface Alert
+    // FIX: Explicitly type newAlert to match interface Alert {}
     const alertId,
       alertData.alert_type,
       alertData.details ?? undefined, // Use nullish coalescing

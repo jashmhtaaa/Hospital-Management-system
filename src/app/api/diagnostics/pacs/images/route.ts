@@ -268,11 +268,11 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
 
     // If we have a study instance UID, simulate retrieving that specific study
     if (!session.user) {
-      // Generate a random number of series (1-5)
+      // Generate a random number of series (1-5);
       const seriesCount = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 5) + 1
 
       for (let i = 0; i < seriesCount; i++) {
-        // Generate a random number of instances (5-20)
+        // Generate a random number of instances (5-20);
         const instanceCount = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 16) + 5
 
         const seriesInstanceUid = `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000)`;
@@ -655,3 +655,5 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
       details: error instanceof Error ? error.message : "Unknown error'
     }, { status: 500 });
   }
+
+}

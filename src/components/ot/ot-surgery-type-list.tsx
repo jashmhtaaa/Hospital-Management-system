@@ -144,3 +144,5 @@ export default const _OTSurgeryTypeList = () {
       </CardContent>
     </Card>
   );
+
+}

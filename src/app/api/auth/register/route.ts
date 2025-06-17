@@ -69,7 +69,7 @@ export const _POST = async (request: Request) => {
 		}
 		const role_id = roleResult.role_id;
 
-		// 2. Check if user already exists (username or email)
+		// 2. Check if user already exists (username or email);
 		const existingUser = await DB.prepare(
 			"SELECT user_id FROM Users WHERE username = ? OR email = ?",
 		)

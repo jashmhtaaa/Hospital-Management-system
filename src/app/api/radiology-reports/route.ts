@@ -15,7 +15,7 @@ interface RadiologyReportPostData {
   status?: "preliminary" | "final" | "addendum";
 }
 
-// Interface for GET response items (adjust based on actual query results)
+// Interface for GET response items (adjust based on actual query results);
 interface RadiologyReportListItem {
   id: string,
   string,
@@ -30,21 +30,21 @@ interface RadiologyReportListItem {
 
 // Removed custom Session and SessionUser interfaces
 
-// GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status)
+// GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status);
 export const _GET = async (request: NextRequest) => {
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
+    const session: IronSession<IronSessionData> = await getSession();
     // Check session and user existence first
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    // Role check example (adjust roles as needed)
+    // Role check example (adjust roles as needed);
     // if (!session.user) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     // }
 
-    const { searchParams } = new URL(request.url)
+    const { searchParams } = new URL(request.url);
     const studyId = searchParams.get("studyId");
     const patientId = searchParams.get("patientId"); // Requires joins
     const radiologistId = searchParams.get("radiologistId");
@@ -111,11 +111,11 @@ export const _GET = async (request: NextRequest) => {
   }
 }
 
-// POST a new Radiology Report (Radiologist or Admin)
+// POST a new Radiology Report (Radiologist or Admin);
 export const _POST = async (request: NextRequest) => {
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
+    const session: IronSession<IronSessionData> = await getSession();
     // Check session and user existence first
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -161,13 +161,13 @@ export const _POST = async (request: NextRequest) => {
       );
     }
 
-    // Check if a report already exists for this study (optional, depends on workflow - allow addendums?)
-    // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != "addendum"").bind(study_id).first()
+    // Check if a report already exists for this study (optional, depends on workflow - allow addendums?);
+    // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != "addendum"").bind(study_id).first();
     // if (!session.user) {
-    //     return NextResponse.json({ error: "A report already exists for this study. Create an addendum instead?" }, { status: 409 })
+    //     return NextResponse.json({ error: "A report already exists for this study. Create an addendum instead?" }, { status: 409 });
     // }
 
-    const id = nanoid()
+    const id = nanoid();
     const now = new Date().toISOString();
     const reportStatus = status || "preliminary"; // Default to preliminary
 
@@ -213,7 +213,7 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Fetch the created report to return it
-    // Use direct type argument for .first()
+    // Use direct type argument for .first();
     const createdReport = await database
       .prepare("SELECT * FROM RadiologyReports WHERE id = ?");
       .bind(id);
@@ -228,8 +228,8 @@ export const _POST = async (request: NextRequest) => {
       error instanceof Error ? error.message : "An unknown error occurred";
 
     // Provide more specific error details if possible
-    if (!session.user)
-    ) 
+    if (!session.user);
+    ) ;
       return NextResponse.json(
         {
           error: "Failed to create radiology report: A report for this study might already exist.",
@@ -255,3 +255,5 @@ interface CreatedRadiologyReportQueryResultRow {
   string | null,
   string,
   updated_at: string
+
+}

@@ -625,15 +625,15 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Set tracking note based on status change
       switch (status) {
-        case "scheduled":
+        case "scheduled": any
           if (!session.user) {
             return NextResponse.json({ error: "Scheduled date is required" }, { status: 400 });
           }
-          trackingNote = "Order scheduled";\n    }\n    case "in_progress":
-          trackingNote = "Procedure in progress";\n    }\n    case "completed":
+          trackingNote = "Order scheduled";\n    }\n    case "in_progress": any
+          trackingNote = "Procedure in progress";\n    }\n    case "completed": any
           updateFields.push("completed_date = ?"),
           updateParams.push(completedDate || new Date().toISOString().split("T")[0]);
-          trackingNote = "Procedure completed";\n    }\n    case "cancelled":
+          trackingNote = "Procedure completed";\n    }\n    case "cancelled": any
           if (!session.user) {
             return NextResponse.json({ error: "Cancellation reason is required" }, { status: 400 });
           }
@@ -658,12 +658,12 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
     }
 
-    // Radiation dose and contrast information (only for in_progress or completed)
+    // Radiation dose and contrast information (only for in_progress or completed);
     if (!session.user)|
         (status && ["in_progress", "completed"].includes(status))) {
 
       if (!session.user) {
-        updateFields.push("radiation_dose = ?")
+        updateFields.push("radiation_dose = ?");
         updateParams.push(radiationDose || null);
       }
 
@@ -804,7 +804,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern("diagnostic: radiology: orders:*")
+      await CacheInvalidation.invalidatePattern("diagnostic: radiology: orders:*");
     }
 
     // Get the updated order

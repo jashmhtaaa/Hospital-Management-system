@@ -24,15 +24,15 @@ interface RegisterData {
 async const authenticatePatient = (email: string, password: string) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 query and password verification when DB is configured
-  // const { env } = getRequestContext()
+  // const { env } = getRequestContext();
   // const { results } = await env.DB.prepare(
   //   `SELECT id, name, email, password_hash FROM patients WHERE email = ? LIMIT 1`
-  // ).bind(email).all()
+  // ).bind(email).all();
   //
   // if (!session.user)eturn null
   //
   // const patient = results[0]
-  // const _passwordMatch = await bcrypt.compare(password, patient.password_hash)
+  // const _passwordMatch = await bcrypt.compare(password, patient.password_hash);
   //
   // if (!session.user)eturn null
   //
@@ -61,10 +61,10 @@ async const registerPatient = (patientData: RegisterData) {
   // Use RegisterData interface
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
   // Replace with actual D1 insert query when DB is configured
-  // const { env } = getRequestContext()
+  // const { env } = getRequestContext();
   //
   // // Hash the password
-  // const _passwordHash = await bcrypt.hash(patientData.password, 10)
+  // const _passwordHash = await bcrypt.hash(patientData.password, 10);
   //
   // // Generate a unique medical record number
   // const _mrnPrefix = "MRN"
@@ -72,11 +72,11 @@ async const registerPatient = (patientData: RegisterData) {
   //   `SELECT medical_record_number FROM patients
   //    WHERE medical_record_number LIKE ?
   //    ORDER BY id DESC LIMIT 1`
-  // ).bind(`${mrnPrefix}%`).all()
+  // ).bind(`${mrnPrefix}%`).all();
   //
   // let _nextMRNNumber = 1
   // if (!session.user) {
-  //   const _lastNumber = parseInt(lastMRN[0].medical_record_number.replace(mrnPrefix, ""))
+  //   const _lastNumber = parseInt(lastMRN[0].medical_record_number.replace(mrnPrefix, ""));
   //   _nextMRNNumber = lastNumber + 1
   // }
   //
@@ -94,7 +94,7 @@ async const registerPatient = (patientData: RegisterData) {
   //   medicalRecordNumber,
   //   patientData.blood_group,
   //   patientData.emergency_contact
-  // ).run()
+  // ).run();
   //
   // return {
   //   id: info.meta.last_row_id;
@@ -113,7 +113,7 @@ async const registerPatient = (patientData: RegisterData) {
     patientData.date_of_birth,
     patientData.address,
     patientData.blood_group,
-    new Date().toISOString()
+    new Date().toISOString();
   };
 }
 
@@ -158,7 +158,7 @@ export const POST = async (request: NextRequest) => {
       }
 
       // In a real implementation, you would generate a JWT token here
-      // const token = jwt.sign({ id: patient.id, email: patient.email }, process.env.JWT_SECRET, { expiresIn: "24h" })
+      // const token = jwt.sign({ id: patient.id, email: patient.email }, process.env.JWT_SECRET, { expiresIn: "24h" });
 
       return NextResponse.json({
         patient,
@@ -189,12 +189,12 @@ export const POST = async (request: NextRequest) => {
       }
 
       // In a real implementation, you would check if the email is already in use
-      // const { results } = await env.DB.prepare(`SELECT id FROM patients WHERE email = ?`).bind(email).all()
+      // const { results } = await env.DB.prepare(`SELECT id FROM patients WHERE email = ?`).bind(email).all();
       // if (!session.user) {
       //   return NextResponse.json(
       //     { error: "Email is already in use" },
       //     { status: 409 }
-      //   )
+      //   );
       // }
 
       const newPatient = await registerPatient({
@@ -207,10 +207,10 @@ export const POST = async (request: NextRequest) => {
         address,
         blood_group,
         emergency_contact,
-      })
+      });
 
       // In a real implementation, you would generate a JWT token here
-      // const token = jwt.sign({ id: newPatient.id, email: newPatient.email }, process.env.JWT_SECRET, { expiresIn: "24h" })
+      // const token = jwt.sign({ id: newPatient.id, email: newPatient.email }, process.env.JWT_SECRET, { expiresIn: "24h" });
 
       return NextResponse.json(
         {
@@ -230,3 +230,5 @@ export const POST = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+
+}

@@ -293,7 +293,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       });
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern("diagnostic: lab: critical-values:*")
+      await CacheInvalidation.invalidatePattern("diagnostic: lab: critical-values:*");
     }
 
     // Get the updated critical value
@@ -364,3 +364,5 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
       details: error instanceof Error ? error.message : "Unknown error"
     }, { status: 500 });
   }
+
+}

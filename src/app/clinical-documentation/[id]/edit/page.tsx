@@ -43,3 +43,5 @@ export default async const _DocumentEditPage = ({
       </Suspense>
     </div>
   );
+
+}

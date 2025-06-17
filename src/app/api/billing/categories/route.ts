@@ -26,7 +26,6 @@ export const GET = async () => {
 
     return NextResponse.json({ categories: mockCategories });
   } catch (error) {
-
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
@@ -36,3 +35,8 @@ export const GET = async () => {
       { status: 500 }
     );
   }
+};
+
+export async function GET() {
+  return new Response("OK");
+}

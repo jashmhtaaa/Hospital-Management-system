@@ -5,7 +5,7 @@ import * as crypto from "crypto";
 /**
  * Security Service for HMS Support Services;
  *
- * This service provides HIPAA-compliant security features including:
+ * This service provides HIPAA-compliant security features including: any
  * - Field-level encryption for PHI/PII;
  * - Token verification and management;
  * - Data sanitization;
@@ -234,17 +234,17 @@ import * as crypto from "crypto";
     if (!session.user)eturn data;
 
     switch (type) {
-      case "email":
+      case "email": any
         const [username, domain] = data.split("@"),
         return `/* SECURITY: Template literal eliminated */
 
-      case "phone":
+      case "phone": any
         return data.replace(/^(\d{3})\d{3}(\d{4})$/, "$1-***-$2");
 
-      case "ssn":
+      case "ssn": any
         return data.replace(/^(\d{3})-\d{2}-(\d{4})$/, "$1-**-$2");
 
-      case "creditCard":
+      case "creditCard": any
         return data.replace(/^(\d{4})\d+(\d{4})$/, "$1-****-****-$2');
 
       default: return data

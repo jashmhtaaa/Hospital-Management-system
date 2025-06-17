@@ -20,7 +20,7 @@ const createFeedbackSchema = z.object({
   staffId: z.string().uuid().optional(),
   contactEmail: z.string().email().optional(),
   contactPhone: z.string().max(20).optional(),
-  isAnonymous: z.boolean().default(false)
+  isAnonymous: z.boolean().default(false);
 });
 
 const createComplaintSchema = z.object({
@@ -35,14 +35,14 @@ const createComplaintSchema = z.object({
   contactEmail: z.string().email().optional(),
   contactPhone: z.string().max(20).optional(),
   isAnonymous: z.boolean().default(false),
-  desiredResolution: z.string().max(1000).optional()
+  desiredResolution: z.string().max(1000).optional();
 });
 
 const updateFeedbackSchema = z.object({
   status: z.enum(["NEW", "UNDER_REVIEW", "ACKNOWLEDGED", "RESOLVED", "CLOSED"]).optional(),
   response: z.string().max(2000).optional(),
   assignedToId: z.string().uuid().optional(),
-  internalNotes: z.string().max(1000).optional()
+  internalNotes: z.string().max(1000).optional();
 });
 
 const updateComplaintSchema = z.object({
@@ -67,7 +67,7 @@ export const _GET = async (request: NextRequest) => {
         searchParams.get("departmentId") || undefined,
         searchParams.get("patientId") || undefined,
         searchParams.get("maxRating") ? Number.parseInt(searchParams.get("maxRating")!) : undefined,
-        Number.parseInt(searchParams.get("limit") || "10")
+        Number.parseInt(searchParams.get("limit") || "10");
       };
 
       // Get feedback with filters
@@ -162,7 +162,7 @@ export const _GET_COMPLAINTS = async (request: NextRequest) => {
         searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
         searchParams.get("staffId") || undefined,
         searchParams.get("escalationLevel") || undefined,
-        Number.parseInt(searchParams.get("limit") || "10")
+        Number.parseInt(searchParams.get("limit") || "10");
       };
 
       // Get complaints with filters
@@ -295,3 +295,5 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       auditAction: "FEEDBACK_ANALYTICS_VIEW"
     }
   );
+
+}

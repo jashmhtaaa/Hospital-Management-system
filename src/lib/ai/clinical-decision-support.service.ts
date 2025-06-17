@@ -555,7 +555,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   }
 
   private checkAllergyMatch(medication: string, allergen: string): boolean {
-    // Simplified allergy matching - in production, this would use drug class mappings
+    // Simplified allergy matching - in production, this would use drug class mappings {}
     return medication.toLowerCase().includes(allergen.toLowerCase()) ||;
            allergen.toLowerCase().includes(medication.toLowerCase());
   }

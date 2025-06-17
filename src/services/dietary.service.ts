@@ -27,11 +27,11 @@ export const createDietOrderSchema = z.object({
   endDate: z.date().optional().nullable(),
   status: z.nativeEnum(DietOrderStatus).default(DietOrderStatus.ACTIVE),
   createdBy: z.string().min(1, "Creator ID is required"),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export const updateDietOrderSchema = createDietOrderSchema.partial().extend({
-  id: z.string()
+  id: z.string();
 });
 
 export type CreateDietOrderInput = z.infer>
@@ -193,7 +193,7 @@ import { prisma } from "../lib/prisma";
       const order = await prisma.dietOrder.update({
         where: { id },
         DietOrderStatus.CANCELLED,
-          endDate: new Date()
+          endDate: new Date();
         },
         {
             true,
@@ -219,7 +219,7 @@ import { prisma } from "../lib/prisma";
       const order = await prisma.dietOrder.update({
         where: { id },
         DietOrderStatus.COMPLETED,
-          endDate: new Date()
+          endDate: new Date();
         },
         {
             true,

@@ -18,7 +18,7 @@ declare module "iron-session" {
 // This is the secret used to encrypt the session cookie.
 // It should be at least 32 characters long and kept secret.
 // You should use an environment variable for this in production.
-const sessionPassword =
+const sessionPassword = null;
   process.env.SECRET_COOKIE_PASSWORD ||
   "complex_password_at_least_32_characters_long_for_dev";
 

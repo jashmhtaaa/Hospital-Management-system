@@ -7,7 +7,7 @@ import { z } from "zod";
 import { type IronSessionData, sessionOptions } from "@/lib/session";
 import { type Appointment, AppointmentStatus } from "@/types/appointment";
 // app/api/appointments/route.ts
-// Define roles allowed to view/book appointments (adjust as needed)
+// Define roles allowed to view/book appointments (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Patient"]
 const ALLOWED_ROLES_BOOK = ["Admin", "Receptionist", "Patient"]; // Doctors usually don't book for patients
 
@@ -62,8 +62,8 @@ export const _GET = async (request: Request) => {
         `;
         const queryParams: (string | number)[] = [];
 
-        // Filter by patient_id (if user is Patient, restrict to their own)
-        const patientId = searchParams.get("patientId")
+        // Filter by patient_id (if user is Patient, restrict to their own);
+        const patientId = searchParams.get("patientId");
         if (!session.user) {
             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
             if (!session.user) {
@@ -79,8 +79,8 @@ export const _GET = async (request: Request) => {
             queryParams.push(Number.parseInt(patientId, 10));
         }
 
-        // Filter by doctor_id (if user is Doctor, restrict to their own)
-        const doctorId = searchParams.get("doctorId")
+        // Filter by doctor_id (if user is Doctor, restrict to their own);
+        const doctorId = searchParams.get("doctorId");
          if (!session.user) {
             const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
             if (!session.user) {
@@ -131,17 +131,17 @@ export const _GET = async (request: Request) => {
             reason: appt.reason,
             notes: appt.notes,
             createdAt: appt.created_at,
-            patient: {
+            patient: {,
                 id: appt.patient_id,
                 firstName: appt.patient_first_name,
                 lastName: appt.patient_last_name,
             },
-            doctor: {
+            doctor: {,
                 id: appt.doctor_id,
                 name: appt.doctor_name,
                 specialty: appt.doctor_specialty
             },
-            user: {
+            user: {,
                 userId: 0, // Placeholder
                 username: "", // Placeholder
                 email: "" // Placeholder
@@ -171,7 +171,7 @@ const BookAppointmentSchema = z.object({
     appointment_datetime: z.string().datetime({ message: "Invalid ISO 8601 datetime string" }),
     duration_minutes: z.number().int().positive().optional().default(15),
     reason: z.string().optional(),
-    status: z.nativeEnum(AppointmentStatus).optional().default(AppointmentStatus.Scheduled)
+    status: z.nativeEnum(AppointmentStatus).optional().default(AppointmentStatus.Scheduled);
 });
 
 export const _POST = async (request: Request) => {
@@ -259,3 +259,7 @@ export const _POST = async (request: Request) => {
             headers: { "Content-Type": "application/json" },
         });
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

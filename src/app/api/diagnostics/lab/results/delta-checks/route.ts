@@ -318,7 +318,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       });
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern("diagnostic: lab: delta-checks:*")
+      await CacheInvalidation.invalidatePattern("diagnostic: lab: delta-checks:*");
     }
 
     // Get the updated delta check
@@ -458,7 +458,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
     const previousResultsResult = await DB.query(previousResultsQuery, [
       testId,
       patientId,
-      resultDate || new Date().toISOString()
+      resultDate || new Date().toISOString();
     ]);
     const previousResults = previousResultsResult.results;
 
@@ -504,7 +504,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
 
       const absoluteDelta = Math.abs(currentValue - previousValue);
       const percentDelta = previousValue !== 0 ?;
-        Math.abs((currentValue - previousValue) / previousValue * 100) :
+        Math.abs((currentValue - previousValue) / previousValue * 100) : any
         100; // If previous value was 0, consider it a 100% change
 
       // Check if delta exceeds thresholds
@@ -538,7 +538,7 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
     await auditLog({
       userId: session.user.id,
       "laboratory_delta_checks",
-      details: 
+      details: any
         testId,
         patientId,
         resultValue,

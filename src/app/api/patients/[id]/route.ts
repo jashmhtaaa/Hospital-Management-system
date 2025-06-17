@@ -30,7 +30,7 @@ const patientUpdateSchema = z.object({
     allergies: z.string().optional().nullable(),
     medical_history_summary: z.string().optional().nullable(),
     insurance_provider: z.string().optional().nullable(),
-    insurance_policy_number: z.string().optional().nullable()
+    insurance_policy_number: z.string().optional().nullable();
 }).partial();
 
 // GET /api/patients/[id] - Fetch a specific patient by ID
@@ -179,12 +179,12 @@ export const _PUT = async (
     }
 }
 
-// DELETE /api/patients/[id] - Delete a patient (use with caution!)
+// DELETE /api/patients/[id] - Delete a patient (use with caution!);
 export const DELETE = async (
     _request: NextRequest;
     { params }: { params: Promise<{ id: string }> }
 ) => {
-    const session = await getSession()
+    const session = await getSession();
     if (!session.user) { // Added !session.user check
         return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
@@ -227,3 +227,7 @@ export const DELETE = async (
             { status: 500 }
         );
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

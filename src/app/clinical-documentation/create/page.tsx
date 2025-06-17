@@ -48,3 +48,5 @@ export default async const _DocumentCreatePage = ({
       </Suspense>
     </div>
   );
+
+}

@@ -87,7 +87,7 @@ export const _GET = async () => {
 // and export the D1 binding obtained from the Cloudflare environment context,
 // rather than trying to import it directly.
 
-// Example refactor for @/lib/db.ts (conceptual):
+// Example refactor for @/lib/db.ts (conceptual): any
 /*
 import { D1Database } from "@cloudflare/workers-types"
 
@@ -108,7 +108,7 @@ export const _getDb = (): D1Database {
   return dbInstance;
 }
 
-// Usage in API route:
+// Usage in API route: any
 // import { initializeDb, getDb } from "@/lib/db"
 // import { NextRequest } from "next/server"
 //

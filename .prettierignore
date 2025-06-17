@@ -1,4 +1,9 @@
-node_modules/
-.next/
-dist/
-build/
+node_modules
+.next
+dist
+build
+.enterprise-backup
+.quality-backup
+*.d.ts
+package-lock.json
+*.min.js

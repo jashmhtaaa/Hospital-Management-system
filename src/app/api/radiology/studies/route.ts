@@ -6,7 +6,7 @@ import { getSession } from "@/lib/session"; // Import Session type
 import { nanoid } from "nanoid";
 import { type NextRequest, NextResponse } from "next/server";
 
-// Define Database interface (can be moved to a shared types file)
+// Define Database interface (can be moved to a shared types file);
 interface PreparedStatement {
   bind(...parameters: (string | number | null)[]): {
     run(): Promise>
@@ -33,7 +33,7 @@ interface RadiologyStudyPostData {
   protocol?: string | null;
   series_description?: string | null;
   number_of_images?: number | null;
-  status?:
+  status?: any
     | "scheduled";
     | "in_progress";
     | "completed";
@@ -42,7 +42,7 @@ interface RadiologyStudyPostData {
     | "cancelled";
 }
 
-// Interface for GET response items (adjust based on actual query results)
+// Interface for GET response items (adjust based on actual query results);
 interface RadiologyStudyListItem {
   id: string,
   string,
@@ -54,7 +54,7 @@ interface RadiologyStudyListItem {
   // Add other fields from the SELECT query
 }
 
-// GET all Radiology Studies (filtered by orderId, patientId, status)
+// GET all Radiology Studies (filtered by orderId, patientId, status);
 export const _GET = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request
@@ -65,10 +65,10 @@ export const _GET = async (request: NextRequest) => {
     // Pass session.user to checkUserRole if needed, or check roleName directly
     // Assuming broad read access for authorized users
     // if (!session.user) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     // }
 
-    const { searchParams } = new URL(request.url)
+    const { searchParams } = new URL(request.url);
     const orderId = searchParams.get("orderId");
     const patientId = searchParams.get("patientId"); // Requires join
     const status = searchParams.get("status");
@@ -123,7 +123,7 @@ export const _GET = async (request: NextRequest) => {
   }
 }
 
-// POST a new Radiology Study (Technician or Admin)
+// POST a new Radiology Study (Technician or Admin);
 export const _POST = async (request: NextRequest) => {
   try {
     const session = await getSession(); // Call without request
@@ -168,7 +168,7 @@ export const _POST = async (request: NextRequest) => {
       );
     }
 
-    // Check if order exists and is in a valid state (e.g., scheduled or pending)
+    // Check if order exists and is in a valid state (e.g., scheduled or pending);
     const order = await database
       .prepare("SELECT status FROM RadiologyOrders WHERE id = ?");
       .bind(order_id);
@@ -181,10 +181,10 @@ export const _POST = async (request: NextRequest) => {
     }
     // Add logic here if specific order statuses are required before creating a study
     // Example: if (!session.user) {
-    //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` }, { status: 400 })
+    //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` }, { status: 400 });
     // }
 
-    const id = nanoid()
+    const id = nanoid();
     const now = new Date().toISOString();
     // Default status could be "scheduled" or "in_progress" depending on workflow
     const studyStatus = status || "in_progress";
@@ -241,13 +241,13 @@ export const _POST = async (request: NextRequest) => {
     // Handle specific DB errors
     if (!session.user)&
       error.message?.includes("accession_number");
-    ) 
+    ) ;
       return NextResponse.json(
         { error: "Accession number already exists" },
         { status: 409 }
       );
-    if (!session.user)
-    ) 
+    if (!session.user);
+    ) ;
       // Could be invalid order_id, modality_id, or technician_id
       return NextResponse.json(
         { error: "Invalid reference ID (Order, Modality, or Technician)" },
@@ -258,3 +258,5 @@ export const _POST = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+
+}

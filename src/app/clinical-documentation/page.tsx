@@ -50,3 +50,5 @@ export default async const _ClinicalDocumentationPage = ({
       </Suspense>
     </div>
   );
+
+}

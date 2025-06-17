@@ -15,7 +15,7 @@ const prescriptionItemSchema = z.object({
     duration: z.string().min(1),
     route: z.string().optional().nullable(),
     instructions: z.string().optional().nullable(),
-    quantity_prescribed: z.number().positive().optional().nullable()
+    quantity_prescribed: z.number().positive().optional().nullable();
 });
 
 const prescriptionCreateSchema = z.object({
@@ -31,9 +31,9 @@ const prescriptionCreateSchema = z.object({
 
 // type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>
 
-// GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination)
+// GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination);
 export const _GET = async (request: NextRequest) => {
-    const session = await getSession()
+    const session = await getSession();
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
@@ -115,7 +115,7 @@ export const _GET = async (request: NextRequest) => {
         const results = prescriptionsResult.results || [];
         const total = countResult?.total || 0;
 
-        // Optionally fetch items for each prescription (consider performance implications)
+        // Optionally fetch items for each prescription (consider performance implications);
         // This might be better done in the GET /api/prescriptions/[id] endpoint
 
         return NextResponse.json({
@@ -124,7 +124,7 @@ export const _GET = async (request: NextRequest) => {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit)
+                totalPages: Math.ceil(total / limit);
             },
         });
 
@@ -147,9 +147,9 @@ export const _POST = async (request: NextRequest) => {
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    // Add role check if needed (e.g., only doctors)
+    // Add role check if needed (e.g., only doctors);
     if (!session.user) {
-         return NextResponse.json({ message: "Forbidden" }, { status: 403 })
+         return NextResponse.json({ message: "Forbidden" }, { status: 403 });
     }
 
     try {
@@ -194,7 +194,7 @@ export const _POST = async (request: NextRequest) => {
         const newPrescriptionId = insertResult.meta.last_row_id;
 
         // 2. Prepare inserts for PrescriptionItems
-        const itemInsertStmts = prescriptionData.items.map((item) =>
+        const itemInsertStmts = prescriptionData.items.map((item) => {}
             DB.prepare(
                 `INSERT INTO PrescriptionItems (
                     prescription_id, inventory_item_id, drug_name, dosage, frequency, duration,
@@ -243,3 +243,7 @@ export const _POST = async (request: NextRequest) => {
             { status: 500 }
         );
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

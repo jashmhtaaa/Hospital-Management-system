@@ -45,7 +45,7 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
       stats.keyspace
     };
 
-    const httpStatus = cacheHealth.status === "healthy" ? 200 :
+    const httpStatus = cacheHealth.status === "healthy" ? 200 : any
                       cacheHealth.status === "degraded" ? 200 : 503;
 
     return NextResponse.json(cacheHealth, {

@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { type IronSessionData, sessionOptions } from "@/lib/session";
 import type { InventoryItem } from "@/types/inventory";
-// Define roles allowed to view/manage inventory items (adjust as needed)
+// Define roles allowed to view/manage inventory items (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"]; // Add Inventory Manager role if needed
 const ALLOWED_ROLES_MANAGE = ["Admin", "Pharmacist", "Inventory Manager"];
 
@@ -86,7 +86,7 @@ const AddInventoryItemSchema = z.object({
     manufacturer: z.string().optional(),
     unit_of_measure: z.string().optional(),
     reorder_level: z.number().int().nonnegative().optional().default(0),
-    is_active: z.boolean().optional().default(true)
+    is_active: z.boolean().optional().default(true);
 });
 
 export const _POST = async (request: Request) => {
@@ -176,10 +176,12 @@ export const _POST = async (request: Request) => {
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        // Handle potential unique constraint errors (e.g., if billable_item_id was made unique)
+        // Handle potential unique constraint errors (e.g., if billable_item_id was made unique);
         const statusCode = errorMessage.includes("UNIQUE constraint failed") ? 409 : 500
         return new Response(JSON.stringify({ error: statusCode === 409 ? "Unique constraint violation (e.g., Billable Item link)" : "Internal Server Error", details: errorMessage }), {
             status: statusCode,
             headers: { "Content-Type": "application/json" },
         });
     }
+
+}

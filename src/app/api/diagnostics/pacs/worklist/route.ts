@@ -483,11 +483,11 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         );
 
         // Invalidate order cache
-        await CacheInvalidation.invalidatePattern("diagnostic: radiology: orders:*")
+        await CacheInvalidation.invalidatePattern("diagnostic: radiology: orders:*");
       }
 
       // Invalidate worklist cache
-      await CacheInvalidation.invalidatePattern("diagnostic: pacs: worklist:*")
+      await CacheInvalidation.invalidatePattern("diagnostic: pacs: worklist:*");
     }
 
     // Get the updated worklist entry

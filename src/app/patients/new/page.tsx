@@ -28,3 +28,5 @@ export default async const _NewPatientPage = () {
       </Suspense>
     </div>
   );
+
+}

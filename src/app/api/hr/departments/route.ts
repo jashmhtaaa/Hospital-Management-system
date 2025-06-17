@@ -1,14 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-
 import { departmentService } from "@/lib/hr/department-service";
 // Schema for department creation
 const createDepartmentSchema = z.object({
   name: z.string().min(1, "Department name is required"),
   code: z.string().min(1, "Department code is required"),
   description: z.string().optional(),
-  parentId: z.string().optional()
+  parentId: z.string().optional(),
 });
 
 // Schema for department update
@@ -16,7 +15,7 @@ const _updateDepartmentSchema = z.object({
   name: z.string().optional(),
   code: z.string().optional(),
   description: z.string().optional(),
-  parentId: z.string().optional()
+  parentId: z.string().optional(),
 });
 
 // GET /api/hr/departments
@@ -44,13 +43,12 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json(result);
     }
   } catch (error: unknown) {
-
     return NextResponse.json(
       { error: "Failed to list departments", details: error.message },
       { status: 500 }
     );
   }
-}
+};
 
 // POST /api/hr/departments
 export const _POST = async (request: NextRequest) => {
@@ -65,7 +63,6 @@ export const _POST = async (request: NextRequest) => {
 
     return NextResponse.json(department, { status: 201 });
   } catch (error: unknown) {
-
     // Handle validation errors
     if (!session.user) {
       return NextResponse.json(
@@ -87,3 +84,4 @@ export const _POST = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+};

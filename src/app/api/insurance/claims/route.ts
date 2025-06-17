@@ -24,7 +24,7 @@ const createClaimSchema = z.object({
   insurancePolicyId: z.string().uuid(),
   icd10CodeSchema,
     description: z.string(),
-    primary: z.boolean().default(false)
+    primary: z.boolean().default(false);
   })).min(1),
   z.string().uuid(),
     serviceDate: z.coerce.date(),
@@ -32,10 +32,10 @@ const createClaimSchema = z.object({
     unitPrice: z.number().positive(),
     quantity: z.number().int().positive(),
     totalPrice: z.number().positive(),
-    notes: z.string().optional()
+    notes: z.string().optional();
   })).min(1),
   preAuthorizationNumber: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Schema for claim query parameters

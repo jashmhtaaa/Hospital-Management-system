@@ -15,7 +15,7 @@ const campaignFilterSchema = z.object({
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().default("1").transform(Number),
-  limit: z.string().default("10").transform(Number)
+  limit: z.string().default("10").transform(Number);
 });
 
 // Create campaign schema
@@ -28,7 +28,7 @@ const createCampaignSchema = z.object({
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  kpis: z.any().optional();
 });
 
 // Update campaign schema
@@ -42,7 +42,7 @@ const updateCampaignSchema = z.object({
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  kpis: z.any().optional();
 });
 
 // GET /api/support-services/marketing/campaigns
@@ -305,3 +305,5 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
       { status: error.status || 500 }
     );
   }
+
+}

@@ -9,3 +9,5 @@ import type { MedicationAdministrationRecord } from "./pharmacy.ts";
 
 // Specific response for fetching administration records
 }
+
+export async function GET() { return new Response("OK"); }

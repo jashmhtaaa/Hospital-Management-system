@@ -182,7 +182,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
             new Date() // Only active overrides
             }
           }
-        })
+        });
 
         if (!session.user) {
           isOverridden = true;
@@ -270,7 +270,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
       });
 
       // Check for direct allergen match
-      const directMatch = allergies.find(allergy =>
+      const directMatch = allergies.find(allergy => {}
         allergy.allergen.toLowerCase() === medication.name.toLowerCase();
       );
 
@@ -294,7 +294,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
 
       // Check for class-based allergen match
       for (const allergy of allergies) {
-        const allergyClass = this.allergyClasses.find(cls =>
+        const allergyClass = this.allergyClasses.find(cls => {}
           cls.name.toLowerCase() === allergy.allergen.toLowerCase();
         );
 
@@ -376,7 +376,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
 
       // Check for condition interactions
       for (const condition of conditions) {
-        const interaction = this.conditionInteractions.find(int =>
+        const interaction = this.conditionInteractions.find(int => {}
           int.medicationName.toLowerCase() === medication.name.toLowerCase() &&;
           int.conditionCode === condition.code;
         );
@@ -449,7 +449,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
         throw new Error("Medication not found");
       }
 
-      // Get patient lab results (recent abnormal results)
+      // Get patient lab results (recent abnormal results);
       const labResults = await this.prisma.labResult.findMany({
         where: {
           patientId,
@@ -460,11 +460,11 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
         },
         "desc"
         }
-      })
+      });
 
       // Check for lab interactions
       for (const labResult of labResults) {
-        const interaction = this.labInteractions.find(int =>
+        const interaction = this.labInteractions.find(int => {}
           int.medicationName.toLowerCase() === medication.name.toLowerCase() &&;
           int.labCode === labResult?.code &&;
           int.abnormalFlag === labResult.abnormalFlag;
@@ -545,7 +545,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
           providerId,
           reason,
           expiresAt,
-          createdAt: new Date()
+          createdAt: new Date();
         }
       });
 

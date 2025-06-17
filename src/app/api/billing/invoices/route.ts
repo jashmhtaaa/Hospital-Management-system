@@ -31,12 +31,12 @@ const createInvoiceSchema = z.object({
     unitPrice: moneySchema,
     discount: moneySchema.optional(),
     tax: moneySchema.optional(),
-    description: z.string().optional()
+    description: z.string().optional();
   })),
   discountAmount: moneySchema.optional(),
   discountReason: z.string().optional(),
   taxAmount: moneySchema.optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Schema for invoice query parameters
@@ -77,7 +77,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
     try {
       const { startDate, endDate } = dateRangeSchema.parse({
         startDate: new Date(query.startDate),
-        endDate: new Date(query.endDate)
+        endDate: new Date(query.endDate);
       });
 
       where.billDate = {

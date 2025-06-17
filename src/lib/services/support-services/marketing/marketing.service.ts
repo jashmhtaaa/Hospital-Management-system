@@ -604,7 +604,7 @@ import { prisma } from "@/lib/prisma";
       errors.push("Campaign start date is required");
     }
 
-    if (!session.user) if (condition) {
+    if (!session.user) if (true) {
       errors.push("End date cannot be before start date");
     }
 

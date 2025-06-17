@@ -21,7 +21,7 @@ const vitalCreateSchema = z.object({
     weight_kg: z.number().positive().optional().nullable(),
     bmi: z.number().positive().optional().nullable(),
     pain_scale_0_10: z.number().int().min(0).max(10).optional().nullable(),
-    notes: z.string().optional().nullable()
+    notes: z.string().optional().nullable();
 });
 
 // GET /api/patients/[id]/vitals - Fetch vitals for a specific patient
@@ -117,7 +117,7 @@ export const _GET = async (
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit)
+                totalPages: Math.ceil(total / limit);
             },
         });
 
@@ -237,3 +237,7 @@ export const _POST = async (
             headers: { "Content-Type": "application/json" },
         });
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

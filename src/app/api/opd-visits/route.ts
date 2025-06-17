@@ -19,12 +19,12 @@ const opdVisitCreateSchema = z.object({
     physical_examination: z.string().optional().nullable(),
     diagnosis: z.string().optional().nullable(),
     treatment_plan: z.string().optional().nullable(),
-    follow_up_instructions: z.string().optional().nullable()
+    follow_up_instructions: z.string().optional().nullable();
 });
 
-// GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination)
+// GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination);
 export const _GET = async (request: NextRequest) => {
-    const session = await getSession()
+    const session = await getSession();
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
@@ -110,7 +110,7 @@ export const _GET = async (request: NextRequest) => {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit)
+                totalPages: Math.ceil(total / limit);
             },
         });
 
@@ -127,9 +127,9 @@ export const _GET = async (request: NextRequest) => {
     }
 }
 
-// POST /api/opd-visits - Create a new OPD visit (Consultation record)
+// POST /api/opd-visits - Create a new OPD visit (Consultation record);
 export const _POST = async (request: NextRequest) => {
-    const session = await getSession()
+    const session = await getSession();
     if (!session.user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
@@ -199,3 +199,7 @@ export const _POST = async (request: NextRequest) => {
             { status: 500 }
         );
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

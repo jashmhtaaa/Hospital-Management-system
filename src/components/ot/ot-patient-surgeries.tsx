@@ -244,3 +244,5 @@ export default const _OTPatientSurgeries = ({
       </CardContent>
     </Card>
   );
+
+}

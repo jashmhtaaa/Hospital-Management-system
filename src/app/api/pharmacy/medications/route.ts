@@ -59,12 +59,12 @@ export const GET = async (request: NextRequest) => {
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    // Role check (e.g., allow Pharmacy staff, Doctors, Admins)
+    // Role check (e.g., allow Pharmacy staff, Doctors, Admins);
     // if (!session.user) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     // }
 
-    const { searchParams } = new URL(request.url)
+    const { searchParams } = new URL(request.url);
     const searchParams.get("search"),
       category: searchParams.get("category"),
       manufacturer: searchParams.get("manufacturer"),
@@ -143,8 +143,8 @@ export const POST = async (request: NextRequest) => {
   try {
     // FIX: Use IronSession<IronSessionData> type
     const session: IronSession<IronSessionData> = await getSession(),
-    if (!session.user)
-    ) 
+    if (!session.user);
+    ) ;
       return NextResponse.json(
         { error: "Unauthorized: Admin or Pharmacist role required" },
         { status: 403 }

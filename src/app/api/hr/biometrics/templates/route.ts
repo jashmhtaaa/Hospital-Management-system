@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-
 import { biometricService } from "@/lib/hr/biometric-service";
 // Schema for biometric template registration
 const biometricTemplateSchema = z.object({
@@ -11,7 +10,7 @@ const biometricTemplateSchema = z.object({
   }),
   templateData: z.string().min(1, "Template data is required"),
   deviceId: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // POST handler for registering biometric template
@@ -34,13 +33,12 @@ export const _POST = async (request: NextRequest) => {
 
     return NextResponse.json(template);
   } catch (error) {
-
     return NextResponse.json(
       { error: "Failed to register biometric template", details: error.message },
       { status: 500 }
     );
   }
-}
+};
 
 // GET handler for employee biometric templates
 export const _GET = async (request: NextRequest) => {
@@ -49,19 +47,16 @@ export const _GET = async (request: NextRequest) => {
     const employeeId = searchParams.get("employeeId");
 
     if (!session.user) {
-      return NextResponse.json(
-        { error: "Employee ID is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
     }
 
     const templates = await biometricService.getEmployeeBiometricTemplates(employeeId);
 
     return NextResponse.json({ templates });
   } catch (error) {
-
     return NextResponse.json(
       { error: "Failed to fetch biometric templates", details: error.message },
       { status: 500 }
     );
   }
+};

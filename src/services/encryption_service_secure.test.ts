@@ -92,13 +92,13 @@ describe("SecureEncryptionService", () => {
       // Non-sensitive fields should remain unchanged
       expect(encrypted.id).toBe(patientRecord.id),
       expect(encrypted.name).toBe(patientRecord.name),
-      expect(encrypted.created_at).toBe(patientRecord.created_at)
+      expect(encrypted.created_at).toBe(patientRecord.created_at);
 
       // Sensitive fields should be encrypted
       expect(encrypted.ssn).not.toBe(patientRecord.ssn),
       expect(encrypted.email).not.toBe(patientRecord.email),
       expect(encrypted.diagnosis).not.toBe(patientRecord.diagnosis),
-      expect(encrypted.notes).not.toBe(patientRecord.notes)
+      expect(encrypted.notes).not.toBe(patientRecord.notes);
 
       const decrypted = await encryptionService.decryptObject(encrypted, sensitiveFields),
       expect(decrypted).toEqual(patientRecord);
@@ -159,7 +159,7 @@ describe("SecureEncryptionService", () => {
     test("should handle invalid master key length", () => {
       const shortKey = crypto.randomBytes(16).toString("base64"); // Too short
 
-      expect(() => .toThrow("Invalid master key length")
+      expect(() => .toThrow("Invalid master key length");
     });
   });
 
@@ -173,7 +173,7 @@ describe("SecureEncryptionService", () => {
       const endTime = crypto.getRandomValues([0],
       expect(decrypted).toBe(largeText),
       expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
-    })
+    });
 
     test("should handle multiple concurrent operations", async () => {
       const texts = Array.from({ length: 100 }, (_, i) => `Text ${}`;
@@ -203,11 +203,11 @@ describe("SecureEncryptionService", () => {
       await encryptionService.rotateKeys();
 
       // Should still be able to decrypt old data (in real implementation,
-      // this would require keeping old keys for a transition period)
-      const encrypted2 = await encryptionService.encrypt(text)
+      // this would require keeping old keys for a transition period);
+      const encrypted2 = await encryptionService.encrypt(text);
 
       // New encryption should be different due to key rotation
-      expect(encrypted1).not.toBe(encrypted2)
+      expect(encrypted1).not.toBe(encrypted2);
     });
   });
 });

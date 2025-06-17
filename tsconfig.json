@@ -1,26 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2023",
+    "target": "ES2022",
     "lib": [
       "dom",
       "dom.iterable",
-      "ES2023"
+      "es6"
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "exactOptionalPropertyTypes": false,
-    "noUncheckedIndexedAccess": false,
-    "forceConsistentCasingInFileNames": true,
+    "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -36,15 +26,6 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
-      ],
-      "@/types/*": [
-        "./types/*"
       ]
     }
   },
@@ -55,9 +36,6 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    ".next"
+    "node_modules"
   ]
 }

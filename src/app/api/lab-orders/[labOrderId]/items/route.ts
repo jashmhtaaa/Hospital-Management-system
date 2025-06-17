@@ -130,3 +130,6 @@ export const _POST = async (request: Request) => {
 
 // PUT/DELETE handlers for items would typically be in /api/lab-orders/[labOrderId]/items/[itemId]/route.ts
 
+
+
+export async function GET() { return new Response("OK"); }

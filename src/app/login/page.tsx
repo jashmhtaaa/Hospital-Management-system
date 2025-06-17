@@ -130,3 +130,5 @@ export default const _LoginPage = () {
       </div>
     </div>
   );
+
+}

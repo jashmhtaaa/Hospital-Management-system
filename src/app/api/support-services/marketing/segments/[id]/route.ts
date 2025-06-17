@@ -61,3 +61,5 @@ export const PUT = async (
       auditAction: "SEGMENT_UPDATE"
     }
   );
+
+}

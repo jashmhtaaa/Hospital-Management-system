@@ -166,3 +166,5 @@ export default const _OTTheatreList = () {
       </CardContent>
     </Card>
   );
+
+}

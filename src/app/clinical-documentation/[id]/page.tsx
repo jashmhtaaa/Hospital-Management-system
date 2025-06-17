@@ -24,3 +24,5 @@ export default async const _DocumentViewPage = ({
       </Suspense>
     </div>
   );
+
+}

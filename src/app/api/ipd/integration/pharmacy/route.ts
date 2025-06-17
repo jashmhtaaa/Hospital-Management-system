@@ -158,3 +158,5 @@ export const getMedicationHistory = async (req: NextRequest) => {
   } catch (error) {
     return handleApiError(error);
   }
+
+}

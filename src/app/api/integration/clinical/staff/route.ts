@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-
 import { integrationService } from "@/lib/hr/integration-service";
 /**
  * API route for clinical module integration;
@@ -12,12 +11,12 @@ export const _GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      data: employees
+      data: employees,
     });
   } catch (error) {
-
     return NextResponse.json(
       { error: "Failed to fetch employees", details: error.message },
       { status: 500 }
     );
   }
+};

@@ -28,7 +28,7 @@ const AdmissionSchema = z.object({
   insurance_approval_status: z;
     .enum(["Pending", "Approved", "Rejected"]);
     .optional(),
-  insurance_approval_number: z.string().optional()
+  insurance_approval_number: z.string().optional();
 });
 
 export async function GET(request: NextRequest): unknown {
@@ -81,7 +81,7 @@ export async function GET(request: NextRequest): unknown {
     const whereClause =;
       conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
-    // Query to get admissions with patient and doctor names (using mock db.query)
+    // Query to get admissions with patient and doctor names (using mock db.query);
     // Assuming db.query exists and returns { rows: [...] } based on db.ts mock
     const query = `;
       SELECT;
@@ -141,7 +141,7 @@ export async function GET(request: NextRequest): unknown {
 export async function POST(request: NextRequest): unknown {
   try {
     // Use production IPD service instead of mock
-    const ipdService = new IPDProductionService()
+    const ipdService = new IPDProductionService();
 
     // Get DB instance from Cloudflare context
     const { env } = await getCloudflareContext();
@@ -155,7 +155,7 @@ export async function POST(request: NextRequest): unknown {
       return new Response(
         JSON.stringify({
           error: "Invalid input data",
-          details: validationResult.error.format()
+          details: validationResult.error.format();
         }),
         {
           status: 400,
@@ -166,7 +166,7 @@ export async function POST(request: NextRequest): unknown {
 
     const admissionData = validationResult.data;
 
-    // Mock checks (replace with actual DB queries later)
+    // Mock checks (replace with actual DB queries later);
     // Assuming db.query exists and returns { rows: [...] } based on db.ts mock
     const patientCheckResult = await database.prepare(
       "SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE";
@@ -226,7 +226,7 @@ export async function POST(request: NextRequest): unknown {
         ward: data.ward_id,
         data.bed_id,
         assignedBy: "1" // TODO: Get from authenticated user context
-      })
+      });
 
       return new Response(
         JSON.stringify({
@@ -265,3 +265,5 @@ export async function POST(request: NextRequest): unknown {
       }
     );
   }
+
+}

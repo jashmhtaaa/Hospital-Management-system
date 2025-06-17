@@ -7,7 +7,7 @@ import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Im
 // import { InvoiceItem } from "@/types/billing"
 import { z } from "zod";
 
-// Define roles allowed to manage invoice items (adjust as needed)
+// Define roles allowed to manage invoice items (adjust as needed);
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"]
 
 // Helper function to get invoice ID from URL
@@ -68,9 +68,9 @@ export const _POST = async (request: Request) => {
         const { env } = context;
         const { DB } = env;
 
-        // Use a transaction to ensure atomicity (add item, update invoice total)
+        // Use a transaction to ensure atomicity (add item, update invoice total);
         const results = await DB.batch([
-            // 2. Check if invoice exists and is in a modifiable state (e.g., Draft)
+            // 2. Check if invoice exists and is in a modifiable state (e.g., Draft);
             DB.prepare("SELECT status FROM Invoices WHERE invoice_id = ?").bind(invoiceId),
             // 3. Check if billable item exists and is active
             DB.prepare("SELECT item_id, unit_price, is_taxable FROM BillableItems WHERE item_id = ? AND is_active = TRUE").bind(itemData.billable_item_id),
@@ -137,7 +137,7 @@ export const _POST = async (request: Request) => {
             ).bind(itemData.quantity, itemData.batch_id));
         }
 
-        // 5c. Update the invoice totals (total_amount, tax_amount, discount_amount)
+        // 5c. Update the invoice totals (total_amount, tax_amount, discount_amount);
         // Note: This recalculates the entire invoice total. More complex logic might sum incrementally.
         batchActions.push(DB.prepare(
             `UPDATE Invoices
@@ -155,7 +155,7 @@ export const _POST = async (request: Request) => {
         // Note: D1 batch doesn"t automatically roll back on failure, need careful checking or separate calls.
         // For simplicity here, we assume success if no error is thrown.
 
-        // Fetch the newly added item ID (D1 batch doesn"t return last_row_id easily)
+        // Fetch the newly added item ID (D1 batch doesn"t return last_row_id easily);
         // We might need to query it separately if needed, or just return success.
 
         // 6. Return success response
@@ -171,12 +171,12 @@ export const _POST = async (request: Request) => {
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
             headers: { "Content-Type": "application/json" },
-        })
+        });
     }
 }
 
-// Note: DELETE for removing an item would follow a similar pattern:
-// - Check invoice status (Draft)
+// Note: DELETE for removing an item would follow a similar pattern: any
+// - Check invoice status (Draft);
 // - Find the InvoiceItem
 // - If batch_id exists, *increase* StockBatches.current_quantity
 // - Delete the InvoiceItem record

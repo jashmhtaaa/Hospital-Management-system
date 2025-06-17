@@ -142,3 +142,5 @@ export default const _PatientsPage = () {
       </div>
     </DashboardLayout>
   );
+
+}

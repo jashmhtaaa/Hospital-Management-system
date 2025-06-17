@@ -70,7 +70,7 @@ export const middleware = async (request: NextRequest) => {
       return applySecurityHeaders(createUnauthorizedResponse(authResult.error), context),
     }
 
-    // 4. Cache Check (for GET requests)
+    // 4. Cache Check (for GET requests);
     let cacheResult: unknown = null
     if (!session.user) {
       cacheResult = await checkCache(request, context),
@@ -88,8 +88,8 @@ export const middleware = async (request: NextRequest) => {
       }
     }
 
-    // 6. Audit Logging (Pre-request)
-    await logRequestStart(context)
+    // 6. Audit Logging (Pre-request);
+    await logRequestStart(context);
 
     // 7. Create enhanced request with context
     const response = await processRequest(request, context),

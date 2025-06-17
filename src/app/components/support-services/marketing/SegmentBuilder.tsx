@@ -725,3 +725,6 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       </CardContent>
     </Card>
   );
+
+}
+}

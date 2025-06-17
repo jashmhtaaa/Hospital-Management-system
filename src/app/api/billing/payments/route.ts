@@ -24,7 +24,7 @@ const createPaymentSchema = z.object({
   z.string().optional(),
   notes: z.string().optional(),
   paidBy: z.string().optional(),
-  receiptRequired: z.boolean().default(true)
+  receiptRequired: z.boolean().default(true);
 });
 
 // Schema for payment query parameters
@@ -232,3 +232,6 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     receiptUrl,
   });
 });
+
+
+export async function GET() { return new Response("OK"); }

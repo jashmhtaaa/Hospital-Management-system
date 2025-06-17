@@ -45,3 +45,6 @@ const Logo: React.FC<LogoProperties> = ({
 };
 
 export default Logo;
+
+}
+}

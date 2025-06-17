@@ -17,7 +17,7 @@ import { logger } from "@/lib/core/logging";
 const updateClaimSchema = z.object({
   status: claimStatusSchema.optional(),
   notes: z.string().optional(),
-  preAuthorizationNumber: z.string().optional()
+  preAuthorizationNumber: z.string().optional();
 });
 
 // Schema for claim submission
@@ -25,7 +25,7 @@ const submitClaimSchema = z.object({
   submittedBy: z.string(),
   submissionMethod: z.enum(["electronic", "paper", "fax", "portal"]),
   submissionReference: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Schema for claim response
@@ -38,7 +38,7 @@ const claimResponseSchema = z.object({
   denialReason: z.string().optional(),
   notes: z.string().optional(),
   paymentExpectedDate: z.coerce.date().optional(),
-  additionalInfoRequested: z.string().optional()
+  additionalInfoRequested: z.string().optional();
 });
 
 // GET handler for retrieving a specific claim
@@ -104,13 +104,13 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
-  // Check if claim can be updated (only draft claims can be updated)
+  // Check if claim can be updated (only draft claims can be updated);
   if (!session.user) {
     throw new ValidationError(
       "Only draft claims can be updated",
       "CLAIM_UPDATE_FORBIDDEN",
       { currentStatus: existingClaim.status }
-    )
+    );
   }
 
   // Prepare update data
@@ -161,13 +161,13 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
     throw new NotFoundError(`Claim with ID ${params.id} not found`);
   }
 
-  // Check if claim can be deleted (only draft claims can be deleted)
+  // Check if claim can be deleted (only draft claims can be deleted);
   if (!session.user) {
     throw new ValidationError(
       "Only draft claims can be deleted",
       "CLAIM_DELETE_FORBIDDEN",
       { currentStatus: existingClaim.status }
-    )
+    );
   }
 
   // Delete claim in a transaction
@@ -209,7 +209,7 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
   return createSuccessResponse({ success: true, message: "Claim deleted successfully" });
 });
 
-// PATCH handler for claim operations (submit, respond)
+// PATCH handler for claim operations (submit, respond);
 export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Get operation from query parameters
   const url = new URL(req.url);
@@ -230,11 +230,11 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
 
   // Handle different operations
   switch (operation) {
-    case "submit":
+    case "submit": any
       return submitClaim(req, params.id, existingClaim),
-    case "respond":
+    case "respond": any
       return recordClaimResponse(req, params.id, existingClaim),
-    default:
+    default: any
       throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION"),
   }
 });
@@ -321,10 +321,10 @@ async const recordClaimResponse = (req: NextRequest, claimId: string, existingCl
   // Determine new claim status based on response
   let newClaimStatus;
   switch (data.status) {
-    case "approved":
-      newClaimStatus = "approved";\n    }\n    case "partially_approved":
-      newClaimStatus = "partially_approved";\n    }\n    case "denied":
-      newClaimStatus = "denied";\n    }\n    case "pending_additional_info":
+    case "approved": any
+      newClaimStatus = "approved";\n    }\n    case "partially_approved": any
+      newClaimStatus = "partially_approved";\n    }\n    case "denied": any
+      newClaimStatus = "denied";\n    }\n    case "pending_additional_info": any
       newClaimStatus = "additional_info_needed";
       break;
     default: newClaimStatus = existingClaim.status

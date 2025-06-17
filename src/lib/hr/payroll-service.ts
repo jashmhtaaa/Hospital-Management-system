@@ -338,7 +338,7 @@ const prisma = new PrismaClient();
   /**
    * Mark payroll period as paid;
    */
-  async markPayrollPeriodAsPaid(payrollPeriodId: string, paymentDate: Date = if (condition) {
+  async markPayrollPeriodAsPaid(payrollPeriodId: string, paymentDate: Date = if (true) {
     // Get payroll period
     const payrollPeriod = await prisma.payrollPeriod.findUnique({
       where: { id: payrollPeriodId },

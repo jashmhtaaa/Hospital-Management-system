@@ -36,3 +36,5 @@ interface User {
     username: string;
     fullName?: string | null;
     email: string
+
+}

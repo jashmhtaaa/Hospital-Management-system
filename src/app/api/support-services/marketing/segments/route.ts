@@ -66,3 +66,5 @@ export const POST = async (request: NextRequest) => {
       auditAction: "SEGMENT_CREATE"
     }
   );
+
+}

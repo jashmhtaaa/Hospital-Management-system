@@ -32,3 +32,5 @@ export const POST = async (
       auditAction: "SEGMENT_CRITERIA_APPLY"
     }
   );
+
+}

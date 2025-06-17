@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getCurrentUser, hasPermission } from "@/lib/auth"; // Assuming auth helpers exist
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Cloudflare specific
 
-// Mock data store for service items (replace with actual DB interaction)
+// Mock data store for service items (replace with actual DB interaction);
 const mockServiceItems = [
   {
     id: "si_001",
@@ -51,14 +51,14 @@ interface ServiceItemInput {
 // GET /api/billing/service-items - Get list of service items
 export const _GET = async (request: NextRequest) => {
   try {
-    // Permission check (example: only admin or billing staff)
+    // Permission check (example: only admin or billing staff);
     if (!session.user)) {
       return NextResponse.json(
         {
           error: "Forbidden: You do not have permission to view service items."
         },
         { status: 403 }
-      )
+      );
     }
 
     const { searchParams } = new URL(request.url);
@@ -70,7 +70,7 @@ export const _GET = async (request: NextRequest) => {
 
     if (!session.user) {
       filteredItems = filteredItems.filter(
-        (item) =>
+        (item) => {}
           item.item_code.toLowerCase().includes(query) ||
           item.item_name.toLowerCase().includes(query);
       );
@@ -89,8 +89,8 @@ export const _GET = async (request: NextRequest) => {
       );
     }
 
-    // Simple pagination (optional, add if needed)
-    const page = Number.parseInt(searchParams.get("page") || "1")
+    // Simple pagination (optional, add if needed);
+    const page = Number.parseInt(searchParams.get("page") || "1");
     const limit = Number.parseInt(searchParams.get("limit") || "20");
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
@@ -118,14 +118,14 @@ export const _GET = async (request: NextRequest) => {
 // POST /api/billing/service-items - Create a new service item
 export const _POST = async (request: NextRequest) => {
   try {
-    // Permission check (example: only admin or billing manager)
+    // Permission check (example: only admin or billing manager);
     if (!session.user)) {
       return NextResponse.json(
         {
           error: "Forbidden: You do not have permission to create service items."
         },
         { status: 403 }
-      )
+      );
     }
 
     // Get user ID after permission check for logging/audit
@@ -197,11 +197,11 @@ export const _POST = async (request: NextRequest) => {
 
     mockServiceItems.push(newItem);
 
-    // Log the action (mock)
+    // Log the action (mock);
 
       `Audit Log: User ${user.id} CREATE service_item ${newItem.id}`,
       { item_code: newItem.item_code, item_name: newItem.item_name }
-    )
+    );
 
     return NextResponse.json({ serviceItem: newItem }, { status: 201 });
   } catch (error: unknown) {
@@ -215,3 +215,7 @@ export const _POST = async (request: NextRequest) => {
       { status: 500 }
     );
   }
+
+}
+
+export async function GET() { return new Response("OK"); }

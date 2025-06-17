@@ -14,10 +14,10 @@ interface ChecklistResponseBody {
 // GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking
 export const _GET = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
@@ -81,10 +81,10 @@ export const _GET = async (
 // POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking
 export const _POST = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { message: "Booking ID is required" },
@@ -205,7 +205,7 @@ export const _POST = async (
       }
       return NextResponse.json(finalResult[0], {
         status: existing && existing.length > 0 ? 200 : 201
-      })
+      });
     } else {
       return NextResponse.json(
         { message: "Checklist response saved, but failed to fetch details" },
@@ -220,3 +220,5 @@ export const _POST = async (
       { status: 500 }
     );
   }
+
+}

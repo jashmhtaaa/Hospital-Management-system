@@ -67,3 +67,5 @@ export const POST = async (request: NextRequest) => {
       auditAction: "CONTACT_CREATE"
     }
   );
+
+}

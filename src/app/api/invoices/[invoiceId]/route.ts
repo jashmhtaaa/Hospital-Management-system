@@ -8,7 +8,7 @@ import { type Invoice, InvoiceItem, InvoiceStatus, type ItemType, Payment } from
 // app/api/invoices/[invoiceId]/route.ts
 // Removed unused D1Result import
 
-// Define roles allowed to view/manage invoices (adjust as needed)
+// Define roles allowed to view/manage invoices (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Billing Staff", "Patient"]
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"];
 
@@ -93,9 +93,9 @@ export const _GET = async (request: Request) => {
             });
         }
 
-        // 3. Authorization check for Patients (can only view their own invoices)
+        // 3. Authorization check for Patients (can only view their own invoices);
         if (!session.user) {
-            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>()
+            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
             if (!session.user) {
                  return new Response(JSON.stringify({ error: "Forbidden: You can only view your own invoices" }), {
                     status: 403,
@@ -155,7 +155,7 @@ export const _GET = async (request: Request) => {
     }
 }
 
-// PUT handler for updating an invoice (e.g., status, notes, due date)
+// PUT handler for updating an invoice (e.g., status, notes, due date);
 const UpdateInvoiceSchema = z.object({
     due_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable(),
     status: z.nativeEnum(InvoiceStatus).optional(),
@@ -220,7 +220,7 @@ export const _PUT = async (request: Request) => {
             });
         }
 
-        // Optional: Add logic to prevent certain status transitions (e.g., cannot change from Paid)
+        // Optional: Add logic to prevent certain status transitions (e.g., cannot change from Paid);
         // if (!session.user) { ... }
 
         // 3. Build update query

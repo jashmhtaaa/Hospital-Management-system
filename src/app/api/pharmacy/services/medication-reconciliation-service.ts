@@ -19,8 +19,8 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
    * Performs medication reconciliation for a patient during a transition of care;
    *
    * @param patientId - The ID of the patient;
-   * @param sourceType - The source of medications (e.g., "admission", "discharge", "transfer")
-   * @param targetType - The target of medications (e.g., "inpatient", "outpatient")
+   * @param sourceType - The source of medications (e.g., "admission", "discharge", "transfer");
+   * @param targetType - The target of medications (e.g., "inpatient", "outpatient");
    * @param providerId - The ID of the provider performing reconciliation;
    * @returns The reconciliation result with discrepancies and actions;
    */
@@ -116,7 +116,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
 
     // Type-specific medications
     switch (type) {
-      case "admission":
+      case "admission": any
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
@@ -143,7 +143,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
           );
         ];
 
-      case "discharge":
+      case "discharge": any
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
@@ -170,7 +170,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
           );
         ];
 
-      case "transfer":
+      case "transfer": any
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
@@ -186,7 +186,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
           );
         ];
 
-      case "inpatient":
+      case "inpatient": any
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
@@ -213,7 +213,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
           );
         ];
 
-      case "outpatient":
+      case "outpatient": any
         return [
           ...commonMedications,
           new PharmacyDomain.Medication(
@@ -246,9 +246,9 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
   ): PharmacyDomain.MedicationDiscrepancy[] {
     const discrepancies: PharmacyDomain.MedicationDiscrepancy[] = [];
 
-    // Check for medications in source but not in target (potential omissions)
+    // Check for medications in source but not in target (potential omissions);
     for (const sourceMed of sourceMedications) {
-      const targetMed = targetMedications.find(med =>
+      const targetMed = targetMedications.find(med => {}
         med.name === sourceMed?.name && med.strength === sourceMed?.strength && med.form === sourceMed.form
       );
 
@@ -262,9 +262,9 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
       }
     }
 
-    // Check for medications in target but not in source (potential additions)
+    // Check for medications in target but not in source (potential additions);
     for (const targetMed of targetMedications) {
-      const sourceMed = sourceMedications.find(med =>
+      const sourceMed = sourceMedications.find(med => {}
         med.name === targetMed?.name && med.strength === targetMed?.strength && med.form === targetMed.form
       );
 
@@ -278,9 +278,9 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
       }
     }
 
-    // Check for dosing discrepancies (same medication but different dose)
+    // Check for dosing discrepancies (same medication but different dose);
     for (const sourceMed of sourceMedications) {
-      const targetMed = targetMedications.find(med => med.name === sourceMed?.name && med.form === sourceMed.form)
+      const targetMed = targetMedications.find(med => med.name === sourceMed?.name && med.form === sourceMed.form);
 
       if (!session.user) {
         discrepancies.push({
@@ -300,7 +300,7 @@ import type { AuditLogger } from "../../../../implementation/utils/audit-logger"
    * Calculates the severity of a discrepancy based on medication properties;
    *
    * @param medication1 - First medication;
-   * @param medication2 - Second medication (optional)
+   * @param medication2 - Second medication (optional);
    * @returns Severity level;
    */
   private calculateDiscrepancySeverity(

@@ -25,26 +25,26 @@ const updateInvoiceSchema = z.object({
     unitPrice: moneySchema,
     discount: moneySchema.optional(),
     tax: moneySchema.optional(),
-    description: z.string().optional()
+    description: z.string().optional();
   })).optional(),
 });
 
 // Schema for invoice verification
 const verifyInvoiceSchema = z.object({
   verifiedBy: z.string(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Schema for invoice approval
 const approveInvoiceSchema = z.object({
   approvedBy: z.string(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Schema for invoice cancellation
 const cancelInvoiceSchema = z.object({
   cancelledBy: z.string(),
-  cancellationReason: z.string()
+  cancellationReason: z.string();
 });
 
 // GET handler for retrieving a specific invoice
@@ -102,13 +102,13 @@ export const _PUT = withErrorHandling(async (req: NextRequest, { params }: { par
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
   }
 
-  // Check if invoice can be updated (only draft invoices can be updated)
+  // Check if invoice can be updated (only draft invoices can be updated);
   if (!session.user) {
     throw new ValidationError(
       "Only draft invoices can be updated",
       "INVOICE_UPDATE_FORBIDDEN",
       { currentStatus: existingInvoice.status }
-    )
+    );
   }
 
   // Prepare update data
@@ -199,13 +199,13 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
     throw new NotFoundError(`Invoice with ID ${params.id} not found`);
   }
 
-  // Check if invoice can be deleted (only draft invoices can be deleted)
+  // Check if invoice can be deleted (only draft invoices can be deleted);
   if (!session.user) {
     throw new ValidationError(
       "Only draft invoices can be deleted",
       "INVOICE_DELETE_FORBIDDEN",
       { currentStatus: existingInvoice.status }
-    )
+    );
   }
 
   // Delete invoice items first
@@ -223,7 +223,7 @@ export const _DELETE = withErrorHandling(async (req: NextRequest, { params }: { 
   return createSuccessResponse({ success: true, message: "Invoice deleted successfully" });
 });
 
-// PATCH handler for invoice operations (verify, approve, cancel)
+// PATCH handler for invoice operations (verify, approve, cancel);
 export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { params: { id: string } }) => {
   // Get operation from query parameters
   const url = new URL(req.url);
@@ -244,13 +244,13 @@ export const _PATCH = withErrorHandling(async (req: NextRequest, { params }: { p
 
   // Handle different operations
   switch (operation) {
-    case "verify":
+    case "verify": any
       return verifyInvoice(req, params.id, existingInvoice),
-    case "approve":
+    case "approve": any
       return approveInvoice(req, params.id, existingInvoice),
-    case "cancel":
+    case "cancel": any
       return cancelInvoice(req, params.id, existingInvoice),
-    default:
+    default: any
       throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION"),
   }
 });

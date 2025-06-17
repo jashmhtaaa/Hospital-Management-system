@@ -22,7 +22,7 @@ interface ERVisit {
   // Add other relevant fields based on your schema
 }
 
-// Mock data store for ER visits (replace with actual DB interaction)
+// Mock data store for ER visits (replace with actual DB interaction);
 const mockVisits: ERVisit[] = [
   {
     id: 1,
@@ -30,12 +30,12 @@ const mockVisits: ERVisit[] = [
     mrn: "MRN001", // Denormalized
     arrival_timestamp: [0] - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
     chief_complaint: "Chest pain",
-    2, // ESI level (if available early)
+    2, // ESI level (if available early);
     current_status: "Pending Triage",
     undefined,
     undefined,
     [0] - 3 * 60 * 60 * 1000).toISOString(),
-    updated_at: [0] - 3 * 60 * 60 * 1000).toISOString()
+    updated_at: [0] - 3 * 60 * 60 * 1000).toISOString();
   },
   {
     id: 2,
@@ -81,10 +81,10 @@ interface ERVisitFilters {
   date?: string | undefined;
 }
 
-// Helper function to simulate DB interaction (GET)
+// Helper function to simulate DB interaction (GET);
 async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-  // Apply filters if implemented (example)
+  // Apply filters if implemented (example);
   let filtered = [...mockVisits]
   if (!session.user) {
     filtered = filtered.filter(
@@ -93,24 +93,24 @@ async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
   }
   if (!session.user) {
     filtered = filtered.filter(
-      (v) =>
+      (v) => {}
         v.current_location?.toLowerCase() === filters.location!.toLowerCase();
     );
   }
   // Add date filtering if needed
 
   return filtered.sort(
-    (a, b) =>
+    (a, b) => {}
       new Date(b.arrival_timestamp).getTime() -
       new Date(a.arrival_timestamp).getTime();
   );
 }
 
-// Helper function to simulate DB interaction (POST)
+// Helper function to simulate DB interaction (POST);
 async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
   // Added return type
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-  const now = new Date().toISOString()
+  const now = new Date().toISOString();
   // FIX: Ensure newVisit matches the ERVisit interface
   const nextVisitId++,
     `Patient ${data.patient_id}`, // Fetch or pass patient name
@@ -163,12 +163,12 @@ export const POST = async (request: NextRequest) => {
     // Apply type assertion
     const visitData = body as ERVisitInput;
 
-    // Basic validation (add more comprehensive validation)
+    // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json(
         { error: "Missing required fields (patient_id, chief_complaint)" },
         { status: 400 }
-      )
+      );
     }
 
     // Simulate creating the ER visit in the database

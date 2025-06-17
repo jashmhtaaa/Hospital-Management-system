@@ -7,7 +7,7 @@ import { z } from "zod";
 import { type IronSessionData, sessionOptions } from "@/lib/session";
 import type { Consultation } from "@/types/opd";
 // app/api/consultations/[consultationId]/route.ts
-// Define roles allowed to view/update consultations (adjust as needed)
+// Define roles allowed to view/update consultations (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"]
 const ALLOWED_ROLES_UPDATE = ["Doctor"]; // Only the doctor who created it?
 
@@ -114,7 +114,7 @@ const UpdateConsultationSchema = z.object({
     diagnosis: z.string().optional().nullable(),
     treatment_plan: z.string().optional().nullable(),
     follow_up_instructions: z.string().optional().nullable(),
-    notes: z.string().optional().nullable()
+    notes: z.string().optional().nullable();
 });
 
 export const _PUT = async (request: Request) => {

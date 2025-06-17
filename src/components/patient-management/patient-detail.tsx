@@ -484,3 +484,6 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
       </div>
     </div>
   );
+
+}
+}

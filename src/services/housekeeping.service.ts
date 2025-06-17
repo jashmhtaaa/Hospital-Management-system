@@ -22,11 +22,11 @@ export const createHousekeepingTaskSchema = z.object({
   status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING),
   priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM),
   requestedAt: z.date().default(() => ,  completedAt: z.date().optional().nullable(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial().extend({
-  id: z.string()
+  id: z.string();
 });
 
 export type CreateHousekeepingTaskInput = z.infer>
@@ -211,7 +211,7 @@ import { prisma } from "../lib/prisma";
       const task = await prisma.housekeepingTask.update({
         where: { id: taskId },
         HousekeepingTaskStatus.COMPLETED,
-          completedAt: new Date()
+          completedAt: new Date();
         },
         {
             true,

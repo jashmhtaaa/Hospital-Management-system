@@ -1,19 +1,18 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-
 import { attendanceService } from "@/lib/hr/attendance-service";
 // Schema for check-out request
 const checkOutSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format",
   }),
   checkOutTime: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid time format"
+    message: "Invalid time format",
   }),
   biometricData: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // POST handler for check-out
@@ -38,10 +37,7 @@ export const _POST = async (request: NextRequest) => {
     if (!session.user) {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
       if (!session.user) {
-        return NextResponse.json(
-          { error: "Biometric verification failed" },
-          { status: 401 }
-        );
+        return NextResponse.json({ error: "Biometric verification failed" }, { status: 401 });
       }
     }
 
@@ -56,9 +52,9 @@ export const _POST = async (request: NextRequest) => {
 
     return NextResponse.json(attendance);
   } catch (error) {
-
     return NextResponse.json(
       { error: "Failed to record check-out", details: error.message },
       { status: 500 }
     );
   }
+};

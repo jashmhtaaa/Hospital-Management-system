@@ -41,7 +41,7 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
     // In production, this would write to a secure audit log store.
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
 
-    // Example of logging to a database (if dbAdapter was injected and a table exists):
+    // Example of logging to a database (if dbAdapter was injected and a table exists): any
     /*
     if (!session.user) {
       const queryText = `
@@ -68,7 +68,7 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
   }
 }
 
-// Example Usage (for testing - remove or comment out for production):
+// Example Usage (for testing - remove or comment out for production): any
 /*
 async const testAuditLogService = () {
   const auditService = new AuditLogService()

@@ -12,7 +12,7 @@ import type { FHIRBundle } from "@/lib/fhir/types";
  */
 
 /**
- * POST /fhir/r4 - Process FHIR Bundle (batch or transaction)
+ * POST /fhir/r4 - Process FHIR Bundle (batch or transaction);
  */
 export const POST = async (request: NextRequest) => {
   try {

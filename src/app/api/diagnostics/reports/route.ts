@@ -871,7 +871,7 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
     return NextResponse.json({
       success: true,
       session.user.id,
-      acknowledgedAt: new Date().toISOString()
+      acknowledgedAt: new Date().toISOString();
     });
   } catch (error) {
 

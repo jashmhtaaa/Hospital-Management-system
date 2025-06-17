@@ -7,7 +7,7 @@ import { z } from "zod";
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData
 import { DoctorSchedule } from "@/types/schedule";
 // app/api/doctors/[id]/schedules/route.ts
-// Define roles allowed to view/manage schedules (adjust as needed)
+// Define roles allowed to view/manage schedules (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor"]
 const ALLOWED_ROLES_MANAGE = ["Admin", "Doctor"]; // Only Admin or the Doctor themselves can manage schedule
 
@@ -79,7 +79,7 @@ const AddScheduleSchema = z.object({
     start_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH: MM format"),
     end_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "End time must be in HH: MM format"),
     slot_duration_minutes: z.number().int().positive().optional().default(15),
-    is_available: z.boolean().optional().default(true)
+    is_available: z.boolean().optional().default(true);
 }).refine(data => data.start_time < data.end_time, {
     message: "End time must be after start time",
     path: ["end_time"]
@@ -138,7 +138,7 @@ export const _POST = async (request: Request) => {
 
         const scheduleData = validation.data;
 
-        // 2. Check for overlapping schedules (basic check, more complex overlap logic might be needed)
+        // 2. Check for overlapping schedules (basic check, more complex overlap logic might be needed);
 
         // 3. Insert new schedule slot
         const insertResult = await dbInstance.prepare(
@@ -187,3 +187,7 @@ export const _POST = async (request: Request) => {
             headers: { "Content-Type": "application/json" },
         });
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

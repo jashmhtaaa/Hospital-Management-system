@@ -388,9 +388,9 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     }
 
     if (!session.user) {
-      // Only lab staff can change status (except collectors can mark as collected)
+      // Only lab staff can change status (except collectors can mark as collected);
       if (!session.user) {
-        return NextResponse.json({ error: "Forbidden: Cannot change specimen status" }, { status: 403 })
+        return NextResponse.json({ error: "Forbidden: Cannot change specimen status" }, { status: 403 });
       }
 
       updateFields.push("status = ?");
@@ -399,19 +399,19 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
       // Set tracking note based on status change
       switch (status) {
-        case "received":
+        case "received": any
           trackingNote = "Specimen received in laboratory";
           updateFields.push("received_by = ?");
           updateFields.push("received_at = NOW()");
-          updateParams.push(session.user.id);\n    }\n    case "processing":
-          trackingNote = "Specimen processing started";\n    }\n    case "completed":
-          trackingNote = "Specimen processing completed";\n    }\n    case "rejected":
+          updateParams.push(session.user.id);\n    }\n    case "processing": any
+          trackingNote = "Specimen processing started";\n    }\n    case "completed": any
+          trackingNote = "Specimen processing completed";\n    }\n    case "rejected": any
           if (!session.user) {
             return NextResponse.json({ error: "Rejection reason is required" }, { status: 400 });
           }
           trackingNote = `Specimen rejected: ${rejectionReason}`;
           updateFields.push("rejection_reason = ?");
-          updateParams.push(rejectionReason);\n    }\n    case "stored":
+          updateParams.push(rejectionReason);\n    }\n    case "stored": any
           if (!session.user) {
             return NextResponse.json({ error: "Storage location is required" }, { status: 400 });
           }
@@ -419,7 +419,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
           updateFields.push("storage_location = ?");
           updateParams.push(storageLocation);
           break;
-        default:
+        default: any
           trackingNote = `Specimen status changed to ${status}`;
       }
     } else {
@@ -488,7 +488,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern("diagnostic: lab: specimens:*")
+      await CacheInvalidation.invalidatePattern("diagnostic: lab: specimens:*");
     }
 
     // Get the updated specimen
@@ -783,8 +783,8 @@ export const _POST_BARCODE = async (request: NextRequest) => {
       await CacheInvalidation.invalidatePattern(`diagnostic:lab:specimen:${specimenId}:*`);
     }
 
-    // Generate barcode image (base64)
-    const barcodeImage = await generateBarcodeImage(barcodeId, specimen.specimen_id)
+    // Generate barcode image (base64);
+    const barcodeImage = await generateBarcodeImage(barcodeId, specimen.specimen_id);
 
     // Log access
     await auditLog({

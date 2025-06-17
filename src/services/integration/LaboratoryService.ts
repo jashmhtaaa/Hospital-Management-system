@@ -15,19 +15,19 @@ export const LabOrderSchema = z.object({
     testCode: z.string().min(1),
     specimenType: z.string().min(1),
     priority: z.enum(["STAT", "URGENT", "ROUTINE"]).optional(),
-    orderNotes: z.string().optional()
+    orderNotes: z.string().optional();
   })).min(1),
 });
 
 export const LabCancelSchema = z.object({
   orderId: z.string().uuid(),
-  reason: z.string().min(1)
+  reason: z.string().min(1);
 });
 
 export const LabResultNotificationSchema = z.object({
   orderId: z.string().uuid(),
   notifyUserId: z.string().uuid().optional(),
-  criticalResult: z.boolean().optional()
+  criticalResult: z.boolean().optional();
 });
 
 /**
@@ -64,7 +64,7 @@ export const LabResultNotificationSchema = z.object({
           test.orderNotes,
           new Date(),
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date();
         },
       });
 
@@ -118,7 +118,7 @@ export const LabResultNotificationSchema = z.object({
       "CANCELLED",
         userId,
         cancelledAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date();
       },
     });
 
@@ -185,7 +185,7 @@ export const LabResultNotificationSchema = z.object({
         where: { id: data.orderId },
         "RESULTED",
           resultedAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date();
         },
       });
     }

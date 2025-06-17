@@ -200,3 +200,5 @@ export default const _HRDashboard = () {
       </Tabs>
     </div>
   );
+
+}

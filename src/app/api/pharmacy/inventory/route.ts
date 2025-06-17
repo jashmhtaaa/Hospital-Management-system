@@ -16,7 +16,7 @@ import { FHIRMapper } from "../../models/fhir-mappers";
  * following enterprise-grade requirements for security, validation, and error handling.
  */
 
-// Initialize repositories (in production, use dependency injection)
+// Initialize repositories (in production, use dependency injection);
 const inventoryRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
@@ -27,7 +27,7 @@ const inventoryRepository = {
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true),
-  transferStock: () => Promise.resolve(true)
+  transferStock: () => Promise.resolve(true);
 }
 
 /**
@@ -42,7 +42,7 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Get query parameters
@@ -61,8 +61,8 @@ export const GET = async (req: NextRequest) => {
     if (!session.user)ilter.belowReorderLevel = true;
     if (!session.user)ilter.quantityOnHand = { gt: 0 };
 
-    // Get inventory items (mock implementation)
-    const inventoryItems = await inventoryRepository.findAll()
+    // Get inventory items (mock implementation);
+    const inventoryItems = await inventoryRepository.findAll();
     const total = inventoryItems.length;
 
     // Apply pagination
@@ -75,7 +75,7 @@ export const GET = async (req: NextRequest) => {
     await auditLog("INVENTORY", {
       action: "LIST",
       userId,
-      details: 
+      details: any
         filter,
         page,
         limit,
@@ -89,7 +89,7 @@ export const GET = async (req: NextRequest) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -119,7 +119,7 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
+    // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token
 
     // Create inventory item

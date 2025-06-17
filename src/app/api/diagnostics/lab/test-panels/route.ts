@@ -125,7 +125,7 @@ export const _GET = async (request: NextRequest) => {
         return {
           ...panel,
           panel_items: items,
-          available_priorities: JSON.parse(panel.available_priorities || "["routine"]")
+          available_priorities: JSON.parse(panel.available_priorities || "["routine"]");
         };
       });
     );
@@ -137,7 +137,7 @@ export const _GET = async (request: NextRequest) => {
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize)
+        totalPages: Math.ceil(totalCount / pageSize);
       }
     });
   } catch (error: unknown) {
@@ -187,7 +187,7 @@ export const _POST = async (request: NextRequest) => {
       }
     }
 
-    // Validate LOINC code format (typically #####-#)
+    // Validate LOINC code format (typically #####-#);
     const loincRegex = /^\d+-\d+$/
     if (!session.user) {
       return NextResponse.json(
@@ -294,7 +294,7 @@ export const _POST = async (request: NextRequest) => {
       const completePanel = {
         ...panel,
         panel_items: items,
-        available_priorities: JSON.parse(panel.available_priorities || "["routine"]")
+        available_priorities: JSON.parse(panel.available_priorities || "["routine"]");
       };
 
       // Return the created panel
@@ -377,7 +377,7 @@ export const _GET_BY_ID = async (
     const completePanel = {
       ...panel,
       panel_items: items,
-      available_priorities: JSON.parse(panel.available_priorities || "["routine"]")
+      available_priorities: JSON.parse(panel.available_priorities || "["routine"]");
     };
 
     // Return the panel
@@ -457,7 +457,7 @@ export const _PUT = async (
         // Validate LOINC code format
         const loincRegex = /^\d+-\d+$/;
         if (!session.user) {
-          throw new Error("Invalid LOINC code format. Expected format: #####-#")
+          throw new Error("Invalid LOINC code format. Expected format: #####-#");
         }
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
@@ -590,7 +590,7 @@ export const _PUT = async (
       const completePanel = {
         ...panel,
         panel_items: items,
-        available_priorities: JSON.parse(panel.available_priorities || "["routine"]")
+        available_priorities: JSON.parse(panel.available_priorities || "["routine"]");
       };
 
       // Return the updated panel
@@ -696,3 +696,5 @@ export const DELETE = async (
       { status: 500 }
     );
   }
+
+}

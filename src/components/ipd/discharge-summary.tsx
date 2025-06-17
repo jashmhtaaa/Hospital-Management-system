@@ -15,3 +15,5 @@ export default const _DischargeSummary = ({ admissionId }: DischargeSummaryPrope
       <p>Discharge Summary for Admission ID: {admissionId}</p>
     </div>
   );
+
+}

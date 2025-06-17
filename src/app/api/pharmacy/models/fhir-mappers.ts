@@ -247,8 +247,8 @@ export const _medicationToFHIR = (medication: Medication): FHIRMedication {
  * @returns Domain medication model;
  */
 export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {
-  const ndcCoding = fhirMedication.code.coding.find(c => c.system === "https://hl7.org/fhir/sid/ndc")
-  const formCoding = fhirMedication.form?.coding.find(c => c.system === "https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm")
+  const ndcCoding = fhirMedication.code.coding.find(c => c.system === "https://hl7.org/fhir/sid/ndc");
+  const formCoding = fhirMedication.form?.coding.find(c => c.system === "https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm");
 
   return {
     id: fhirMedication.id,
@@ -440,7 +440,7 @@ export const _medicationDispenseToFHIR = (
     resourceType: "MedicationDispense",
     {
       versionId: "1",
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString();
     },
     status: dispense.status,
     `Medication/$dispense.medicationId`,
@@ -497,7 +497,7 @@ export const _fhirToMedicationDispense = (fhirDispense: FHIRMedicationDispense):
 
   // Parse dates
   const dispenseDate = fhirDispense.whenHandedOver ?;
-    new Date(fhirDispense.whenHandedOver) :
+    new Date(fhirDispense.whenHandedOver) : any
     new Date(fhirDispense.whenPrepared || new Date().toISOString());
 
   // Extract notes
@@ -536,7 +536,7 @@ export const _medicationAdministrationToFHIR = (
     resourceType: "MedicationAdministration",
     {
       versionId: "1",
-      lastUpdated: new Date().toISOString()
+      lastUpdated: new Date().toISOString();
     },
     status: administration.status,
     `Medication/$administration.medicationId`,

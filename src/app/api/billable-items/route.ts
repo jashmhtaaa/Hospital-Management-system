@@ -164,3 +164,7 @@ export const _POST = async (request: Request) => {
             headers: { "Content-Type": "application/json" },
         });
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

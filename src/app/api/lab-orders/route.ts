@@ -7,7 +7,7 @@ import { z } from "zod";
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // Import IronSessionData
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/lab-orders/route.ts
-// Define roles allowed to view/create lab orders (adjust as needed)
+// Define roles allowed to view/create lab orders (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "LabTechnician", "Patient"]; // Patient can view own
 const ALLOWED_ROLES_CREATE = ["Doctor"];
 
@@ -20,7 +20,7 @@ const ListLabOrdersQuerySchema = z.object({
     dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     limit: z.coerce.number().int().positive().optional().default(50),
-    offset: z.coerce.number().int().nonnegative().optional().default(0)
+    offset: z.coerce.number().int().nonnegative().optional().default(0);
 });
 
 // Define the expected structure based on the SELECT query
@@ -132,8 +132,8 @@ export const _GET = async (request: Request) => {
         query += " ORDER BY lo.order_datetime DESC LIMIT ? OFFSET ?";
         queryParamsList.push(filters.limit, filters.offset);
 
-        // 3. Execute Query - Provide row type to .all()
-        const results = await DB.prepare(query).bind(...queryParamsList).all<LabOrderQueryResultRow>()
+        // 3. Execute Query - Provide row type to .all();
+        const results = await DB.prepare(query).bind(...queryParamsList).all<LabOrderQueryResultRow>();
 
         // 4. Format Response (basic details for list view) - Type "row" in map
         const labOrders = results.results?.map((row.lab_order_id,
@@ -154,7 +154,7 @@ export const _GET = async (request: Request) => {
     }
 }
 
-// POST handler for creating a new lab order (shell only, items added separately)
+// POST handler for creating a new lab order (shell only, items added separately);
 const CreateLabOrderSchema = z.object({
     consultation_id: z.number().int().positive(),
     order_datetime: z.string().datetime().optional(), // Defaults to now
@@ -241,3 +241,7 @@ export const _POST = async (request: Request) => {
             headers: { "Content-Type": "application/json" },
         });
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

@@ -35,11 +35,11 @@ export const createBloodDonationSchema = z.object({
   donationDate: z.date().default(() => ,
   expirationDate: z.date(),
   status: z.nativeEnum(BloodDonationStatus).default(BloodDonationStatus.PENDING),
-  notes: z.string().optional().nullable()
+  notes: z.string().optional().nullable();
 });
 
 export const updateBloodDonationSchema = createBloodDonationSchema.partial().extend({
-  id: z.string()
+  id: z.string();
 });
 
 // Validation schemas for BloodRequest
@@ -52,11 +52,11 @@ export const createBloodRequestSchema = z.object({
   requestDate: z.date().default(() => ,  requiredBy: z.date().optional().nullable(),
   status: z.nativeEnum(BloodRequestStatus).default(BloodRequestStatus.PENDING),
   fulfilledDate: z.date().optional().nullable(),
-  notes: z.string().optional().nullable()
+  notes: z.string().optional().nullable();
 });
 
 export const updateBloodRequestSchema = createBloodRequestSchema.partial().extend({
-  id: z.string()
+  id: z.string();
 });
 
 export type CreateBloodDonationInput = z.infer>
@@ -87,14 +87,14 @@ import { prisma } from "../lib/prisma";
               validatedData.bloodType
               },
               inventory.quantity + validatedData.quantity,
-                lastUpdated: new Date()
+                lastUpdated: new Date();
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
               validatedData.bloodType,
-                quantity: validatedData.quantity,                lastUpdated: new Date()
+                quantity: validatedData.quantity,                lastUpdated: new Date();
               },
             });
           }
@@ -242,7 +242,7 @@ import { prisma } from "../lib/prisma";
                   bloodType,
                 },
                 inventory.quantity + quantity,
-                  lastUpdated: new Date()
+                  lastUpdated: new Date();
                 },
               });
             } else {
@@ -251,7 +251,7 @@ import { prisma } from "../lib/prisma";
                 data: {
                   bloodType,
                   quantity,
-                  lastUpdated: new Date()
+                  lastUpdated: new Date();
                 },
               });
             }
@@ -276,7 +276,7 @@ import { prisma } from "../lib/prisma";
                   bloodType,
                 },
                 Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn"t go below 0
-                  lastUpdated: new Date()
+                  lastUpdated: new Date();
                 },
               });
             }
@@ -332,7 +332,7 @@ import { prisma } from "../lib/prisma";
               currentDonation.bloodType
               },
               Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn"t go below 0
-                lastUpdated: new Date()
+                lastUpdated: new Date();
               },
             });
           }
@@ -503,7 +503,7 @@ import { prisma } from "../lib/prisma";
               bloodType,
             },
             inventory.quantity - quantity,
-              lastUpdated: new Date()
+              lastUpdated: new Date();
             },
           });
         }
@@ -524,14 +524,14 @@ import { prisma } from "../lib/prisma";
               currentRequest.bloodType
               },
               inventory.quantity + currentRequest.quantity,
-                lastUpdated: new Date()
+                lastUpdated: new Date();
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
               currentRequest.bloodType,
-                quantity: currentRequest.quantity,                lastUpdated: new Date()
+                quantity: currentRequest.quantity,                lastUpdated: new Date();
               },
             });
           }
@@ -592,14 +592,14 @@ import { prisma } from "../lib/prisma";
               currentRequest.bloodType
               },
               inventory.quantity + currentRequest.quantity,
-                lastUpdated: new Date()
+                lastUpdated: new Date();
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
               currentRequest.bloodType,
-                quantity: currentRequest.quantity,                lastUpdated: new Date()
+                quantity: currentRequest.quantity,                lastUpdated: new Date();
               },
             });
           }
@@ -699,7 +699,7 @@ import { prisma } from "../lib/prisma";
         const updatedRequest = await tx.bloodRequest.update({
           where: { id },
           BloodRequestStatus.FULFILLED,
-            fulfilledDate: new Date()
+            fulfilledDate: new Date();
           },
         });
 
@@ -708,7 +708,7 @@ import { prisma } from "../lib/prisma";
           request.bloodType
           },
           inventory.quantity - request.quantity,
-            lastUpdated: new Date()
+            lastUpdated: new Date();
           },
         });
 

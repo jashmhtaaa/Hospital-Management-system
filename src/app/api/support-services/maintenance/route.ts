@@ -30,7 +30,7 @@ const updateRequestSchema = z.object({
   assignedToId: z.string().uuid().optional(),
   estimatedDuration: z.number().min(1).optional(),
   z.string().uuid(),
-    quantity: z.number().min(1)
+    quantity: z.number().min(1);
   })).optional(),
 });
 
@@ -47,7 +47,7 @@ export const _GET = async (request: NextRequest) => {
         searchParams.get("departmentId") || undefined,
         searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10")
+        limit: parseInt(searchParams.get("limit") || "10");
       };
 
       // Get maintenance requests with filters
@@ -241,7 +241,7 @@ export const _GET_ASSETS = async (request: NextRequest) => {
         type: searchParams.get("type") || undefined,
         searchParams.get("locationId") || undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10")
+        limit: parseInt(searchParams.get("limit") || "10");
       };
 
       // Get maintenance assets with filters

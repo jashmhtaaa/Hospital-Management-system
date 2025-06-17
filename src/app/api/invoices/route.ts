@@ -23,22 +23,22 @@ const invoiceCreateSchema = z.object({
       billable_item_id: z.number(),
       description: z.string(),
       quantity: z.number().positive(),
-      unit_price: z.number().nonnegative()
+      unit_price: z.number().nonnegative();
     });
   ).min(1, "At least one invoice item is required"),
 });
 
-// Helper function to generate the next invoice number (example implementation)
+// Helper function to generate the next invoice number (example implementation);
 async const generateInvoiceNumber = (db: D1Database): Promise<string> {
-  const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{ maxId: number | null }>()
+  const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{ maxId: number | null }>();
   const nextId = (result?.maxId || 0) + 1;
   return `INV-${String(nextId).padStart(6, "0")}`;
 }
 
-// GET /api/invoices - Fetch list of invoices (with filtering/pagination)
+// GET /api/invoices - Fetch list of invoices (with filtering/pagination);
 export const _GET = async (request: NextRequest) => {
   try {
-    const session = await getSession()
+    const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
@@ -114,7 +114,7 @@ export const _GET = async (request: NextRequest) => {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit);
       },
     });
 
@@ -187,7 +187,7 @@ export const _POST = async (request: NextRequest) => {
 
         const newInvoiceId = insertResult.meta.last_row_id;
 
-        const itemInsertStmts: D1PreparedStatement[] = invoiceData.items.map((item) =>
+        const itemInsertStmts: D1PreparedStatement[] = invoiceData.items.map((item) => {}
             (DB as D1Database).prepare(
                 `INSERT INTO InvoiceItems (invoice_id, billable_item_id, description, quantity, unit_price, total_price, created_at),
                  VALUES (?, ?, ?, ?, ?, ?, ?)`
@@ -227,3 +227,7 @@ export const _POST = async (request: NextRequest) => {
             { status: 500 }
         );
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

@@ -18,7 +18,7 @@ const createDietaryRequestSchema = z.object({
   preferences: z.array(z.string()).optional(),
   z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
-  locationId: z.string().uuid()
+  locationId: z.string().uuid();
 });
 
 const updateDietaryRequestSchema = z.object({
@@ -30,7 +30,7 @@ const updateDietaryRequestSchema = z.object({
   scheduledTime: z.string().transform(val => .optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(["PENDING", "PREPARING", "READY", "DELIVERED", "COMPLETED", "CANCELLED"]).optional(),
-  locationId: z.string().uuid().optional()
+  locationId: z.string().uuid().optional();
 });
 
 // GET /api/support-services/dietary/requests
@@ -45,7 +45,7 @@ export const _GET = async (request: NextRequest) => {
         searchParams.get("mealType") || undefined,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         searchParams.get("locationId") || undefined,
-        Number.parseInt(searchParams.get("limit") || "10")
+        Number.parseInt(searchParams.get("limit") || "10");
       };
 
       // Get dietary requests with filters
@@ -211,7 +211,7 @@ export const _GET_MENUS = async (request: NextRequest) => {
       const filters = {
         dietType: searchParams.get("dietType") || undefined,
         searchParams.get("isActive") === "true",
-        Number.parseInt(searchParams.get("limit") || "10")
+        Number.parseInt(searchParams.get("limit") || "10");
       };
 
       // Get dietary menus with filters
@@ -246,3 +246,5 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
       auditAction: "DIETARY_ANALYTICS_VIEW"
     }
   );
+
+}

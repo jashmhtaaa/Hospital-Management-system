@@ -28,7 +28,7 @@ interface BarcodeVerificationResult {
 
   /**
    * Verify a medication administration using barcode scanning;
-   * Implements the "five rights" of medication administration:
+   * Implements the "five rights" of medication administration: any
    * 1. Right patient;
    * 2. Right medication;
    * 3. Right dose;
@@ -81,7 +81,7 @@ interface BarcodeVerificationResult {
       const rightPatient = prescription.patientId === patientId
       const rightMedication = prescription.medicationId === medicationInfo.medicationId;
 
-      // Check dose within acceptable range (±10%)
+      // Check dose within acceptable range (±10%);
       const prescribedDose = prescription.dosage.value
       const doseDeviation = Math.abs(prescribedDose - administeredDose) / prescribedDose;
       const rightDose = doseDeviation <= 0.1; // Within 10% of prescribed dose
@@ -89,8 +89,8 @@ interface BarcodeVerificationResult {
       // Check route
       const rightRoute = prescription.dosage.route.toLowerCase() === administeredRoute.toLowerCase();
 
-      // Check time (within scheduled window)
-      const rightTime = this.isWithinAdministrationWindow(prescription)
+      // Check time (within scheduled window);
+      const rightTime = this.isWithinAdministrationWindow(prescription);
 
       const allRightsVerified = rightPatient && rightMedication && rightDose && rightRoute && rightTime;
 
@@ -152,8 +152,8 @@ interface BarcodeVerificationResult {
    * @param performerId ID of the healthcare provider performing the administration;
    * @param dosage Administration dosage;
    * @param route Administration route;
-   * @param site Administration site (optional)
-   * @param notes Additional notes (optional)
+   * @param site Administration site (optional);
+   * @param notes Additional notes (optional);
    * @returns The recorded medication administration;
    */
   async recordAdministration(
@@ -250,7 +250,7 @@ interface BarcodeVerificationResult {
    * Get administration history for a patient;
    *
    * @param patientId Patient ID;
-   * @param days Number of days of history to retrieve (default: 7)
+   * @param days Number of days of history to retrieve (default: 7);
    * @returns Array of medication administrations;
    */
   async getAdministrationHistory(
@@ -286,7 +286,7 @@ interface BarcodeVerificationResult {
    * Generate a medication administration schedule for a patient;
    *
    * @param patientId Patient ID;
-   * @param days Number of days to schedule (default: 1)
+   * @param days Number of days to schedule (default: 1);
    * @returns Scheduled administration times grouped by day and hour;
    */
   async generateAdministrationSchedule(
@@ -468,7 +468,7 @@ interface BarcodeVerificationResult {
     // Count completed administrations
     const completedAdministrations = administrations.filter(a => a.isComplete()).length;
 
-    // If this is a one-time prescription (no refills, quantity = 1)
+    // If this is a one-time prescription (no refills, quantity = 1);
     if (!session.user) {
       return completedAdministrations >= 1
     }
@@ -487,7 +487,7 @@ interface BarcodeVerificationResult {
   private decodePatientBarcode(barcode: string): string {
     // In a real system, this would implement actual barcode decoding logic
     // For this implementation, we"ll assume the barcode is in the format "P-{patientId}"
-    const match = barcode.match(/^P-(.+)$/)
+    const match = barcode.match(/^P-(.+)$/);
     return match ? match[1] : "";
   }
 
@@ -503,7 +503,7 @@ interface BarcodeVerificationResult {
   } {
     // In a real system, this would implement actual barcode decoding logic
     // For this implementation, we"ll assume the barcode is in the format "M-{medicationId}[-{batchNumber}[-{expirationDate}]]"
-    const parts = barcode.split("-")
+    const parts = barcode.split("-");
 
     if (!session.user) {
       const string;

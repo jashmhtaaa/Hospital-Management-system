@@ -221,7 +221,7 @@ const prisma = new PrismaClient();
   /**
    * Calculate employee"s gross salary;
    */
-  async calculateGrossSalary(employeeId: string, date: Date = if (condition) {
+  async calculateGrossSalary(employeeId: string, date: Date = if (true) {
     // Get employee"s salary structure for the given date
     const employeeSalary = await prisma.employeeSalary.findFirst({
       where: {

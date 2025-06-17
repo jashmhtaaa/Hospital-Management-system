@@ -7,7 +7,7 @@ import { z } from "zod";
 import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData
 import { StockBatch } from "@/types/inventory";
 // app/api/inventory-items/[itemId]/batches/route.ts
-// Define roles allowed to view/manage stock batches (adjust as needed)
+// Define roles allowed to view/manage stock batches (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"]
 const ALLOWED_ROLES_MANAGE = ["Admin", "Pharmacist", "Inventory Manager"];
 
@@ -22,7 +22,7 @@ const getItemId = (pathname: string): number | null {
 
 // GET handler for listing batches for a specific inventory item
 export const _GET = async (request: Request) => {
-    const cookieStore = await cookies(); // FIX: Await cookies()
+    const cookieStore = await cookies(); // FIX: Await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const inventoryItemId = getItemId(url.pathname);
@@ -83,11 +83,11 @@ const AddStockBatchSchema = z.object({
     selling_price_per_unit: z.number().nonnegative("Selling price must be non-negative").optional().nullable(),
     supplier_id: z.number().int().positive().optional().nullable(), // Assuming Suppliers table exists later
     received_date: z.string().datetime({ message: "Invalid ISO 8601 datetime string for received date" }).optional(), // Default is CURRENT_TIMESTAMP in DB
-    notes: z.string().optional()
+    notes: z.string().optional();
 });
 
 export const _POST = async (request: Request) => {
-    const cookieStore = await cookies(); // FIX: Await cookies()
+    const cookieStore = await cookies(); // FIX: Await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const inventoryItemId = getItemId(url.pathname);
@@ -182,3 +182,7 @@ export const _POST = async (request: Request) => {
             headers: { "Content-Type": "application/json" },
         });
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

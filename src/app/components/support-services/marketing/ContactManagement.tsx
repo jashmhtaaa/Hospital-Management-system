@@ -838,3 +838,6 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       </CardContent>
     </Card>
   );
+
+}
+}

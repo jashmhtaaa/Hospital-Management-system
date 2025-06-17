@@ -41,7 +41,7 @@ const PatientSchema = z.object({
   deceasedReason: z.string().optional(),
   vip: z.boolean().default(false),
   confidential: z.boolean().default(false),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Define schema for contact information
@@ -55,7 +55,7 @@ const ContactSchema = z.object({
   smsOptIn: z.boolean().default(false),
   mailOptIn: z.boolean().default(true),
   doNotContact: z.boolean().default(false),
-  doNotContactReason: z.string().optional()
+  doNotContactReason: z.string().optional();
 });
 
 // Define schema for address
@@ -73,7 +73,7 @@ const AddressSchema = z.object({
   validTo: z.date().optional(),
   isBilling: z.boolean().default(false),
   isShipping: z.boolean().default(false),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Define schema for identification
@@ -86,7 +86,7 @@ const IdentificationSchema = z.object({
   expirationDate: z.date().optional(),
   isPrimary: z.boolean().default(false),
   documentImageUrl: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Define schema for emergency contact
@@ -108,7 +108,7 @@ const EmergencyContactSchema = z.object({
   country: z.string().optional(),
   isLegalGuardian: z.boolean().default(false),
   hasDecisionMaking: z.boolean().default(false),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Define schema for insurance
@@ -131,7 +131,7 @@ const InsuranceSchema = z.object({
   outOfPocketMet: z.number().optional(),
   cardFrontImageUrl: z.string().optional(),
   cardBackImageUrl: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 /**
@@ -251,7 +251,7 @@ const InsuranceSchema = z.object({
         action: "Create",
         resourceType: "Patient",        resourceId: patient.id,
         userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return patient;
@@ -303,7 +303,7 @@ const InsuranceSchema = z.object({
         action: "View",
         resourceType: "Patient",        resourceId: patientId,
         userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return patient;
@@ -366,7 +366,7 @@ const InsuranceSchema = z.object({
         action: "Update",
         resourceType: "Patient",        resourceId: patientId,
         userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return patient;
@@ -417,7 +417,7 @@ const InsuranceSchema = z.object({
         resourceType: "PatientAddress",        resourceId: address.id,
         description: `Added address for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return address;
@@ -479,7 +479,7 @@ const InsuranceSchema = z.object({
         resourceType: "PatientIdentification",        resourceId: identification.id,
         description: `Added identification for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return identification;
@@ -529,7 +529,7 @@ const InsuranceSchema = z.object({
         resourceType: "EmergencyContact",        resourceId: contact.id,
         description: `Added emergency contact for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return contact;
@@ -601,7 +601,7 @@ const InsuranceSchema = z.object({
         resourceType: "PatientInsurance",        resourceId: insurance.id,
         description: `Added insurance for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return insurance;
@@ -689,21 +689,21 @@ const InsuranceSchema = z.object({
           take,
           orderBy: { lastName: "asc" }
         }),
-        prisma.patient.count({ where })
+        prisma.patient.count({ where });
       ]);
 
       // Log audit
       await this.auditService.logAction({
         action: "Search",
         resourceType: "Patient",        description: "Performed patient search",
-        performedBy: userId,        performerRole: await this.authService.getUserRole(userId)
+        performedBy: userId,        performerRole: await this.authService.getUserRole(userId);
       });
 
       return {
         patients,
         total,
         page: searchParams.page || 1,
-        limit: take,        totalPages: Math.ceil(total / take)
+        limit: take,        totalPages: Math.ceil(total / take);
       };
     } catch (error) {
 
@@ -739,7 +739,7 @@ const InsuranceSchema = z.object({
         resourceType: "Patient",        resourceId: patientId,
         description: `Marked patient ${patientId} as deceased`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return patient;
@@ -750,12 +750,12 @@ const InsuranceSchema = z.object({
   }
 
   /**
-   * Merge patient records (for duplicate records)
+   * Merge patient records (for duplicate records);
    */
   async mergePatients(sourcePatientId: string, targetPatientId: string, userId: string): Promise<Patient> {
     try {
-      // Check if user has permission (requires admin or specific merge permission)
-      const hasPermission = await this.authService.hasPermission(userId, "merge", "patient")
+      // Check if user has permission (requires admin or specific merge permission);
+      const hasPermission = await this.authService.hasPermission(userId, "merge", "patient");
       if (!session.user) {
         throw new Error("Unauthorized to merge patient records");
       }
@@ -777,7 +777,7 @@ const InsuranceSchema = z.object({
           }),
           tx.patient.findUnique({
             where: { id: targetPatientId }
-          })
+          });
         ]);
 
         if (!session.user) {
@@ -871,7 +871,7 @@ const InsuranceSchema = z.object({
           }
         }
 
-        // Transfer clinical data (with updated patientId)
+        // Transfer clinical data (with updated patientId);
         // Allergies
         for (const allergy of sourcePatient.allergies) {
           await tx.patientAllergy.create({
@@ -945,7 +945,7 @@ const InsuranceSchema = z.object({
           resourceType: "Patient",          resourceId: targetPatientId,
           description: `Merged patient ${sourcePatientId} into patient ${targetPatientId}`,
           performedBy: userId,
-          performerRole: await this.authService.getUserRole(userId)
+          performerRole: await this.authService.getUserRole(userId);
         });
 
         return updatedTargetPatient;
@@ -990,7 +990,7 @@ const InsuranceSchema = z.object({
         resourceType: "PatientMPI",        resourceId: patientId,
         description: `Viewed MPI for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId);
       });
 
       return {

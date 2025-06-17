@@ -43,3 +43,5 @@ export default const _RootLayout = ({
       </body>
     </html>
   );
+
+}

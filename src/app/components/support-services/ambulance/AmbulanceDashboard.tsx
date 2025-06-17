@@ -621,3 +621,5 @@ export default const _AmbulanceDashboard = () {
       </Tabs>
     </div>
   );
+
+}

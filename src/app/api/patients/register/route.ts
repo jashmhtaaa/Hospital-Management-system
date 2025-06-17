@@ -33,7 +33,7 @@ const patientRegisterSchema = z.object({
     // Insurance details
     insurance_provider: z.string().optional().nullable(),
     insurance_policy_number: z.string().optional().nullable();
-    // User account details (if creating a linked user account)
+    // User account details (if creating a linked user account);
     create_user_account: z.boolean().optional().default(false),
     username: z.string().optional(), // Required if create_user_account is true
     password: z.string().optional(), // Required if create_user_account is true
@@ -50,10 +50,10 @@ const patientRegisterSchema = z.object({
 
 // type PatientRegisterBody = z.infer<typeof patientRegisterSchema>
 
-// Helper function to generate MRN (example)
+// Helper function to generate MRN (example);
 async const generateMRN = (db: D1Database): Promise<string> {
     // Simple example: Find max ID and increment. Needs robust implementation.
-    const result = await db.prepare("SELECT MAX(patient_id) as maxId FROM Patients").first<{ maxId: number | null }>()
+    const result = await db.prepare("SELECT MAX(patient_id) as maxId FROM Patients").first<{ maxId: number | null }>();
     const nextId = (result?.maxId || 0) + 1;
     return `MRN${String(nextId).padStart(8, "0")}`;
 }
@@ -80,13 +80,13 @@ export const _POST = async (request: NextRequest) => {
         // Generate MRN if not provided
         const mrn = patientData.mrn || await generateMRN(DB as D1Database);
 
-        // Check if MRN or email already exists (if they should be unique)
-        // Example check (adapt as needed):
-        // const _existingPatient = await DB.prepare("SELECT patient_id FROM Patients WHERE mrn = ? OR email = ?")
-        //     .bind(mrn, patientData.email)
-        //     .first()
+        // Check if MRN or email already exists (if they should be unique);
+        // Example check (adapt as needed): any
+        // const _existingPatient = await DB.prepare("SELECT patient_id FROM Patients WHERE mrn = ? OR email = ?");
+        //     .bind(mrn, patientData.email);
+        //     .first();
         // if (!session.user) {
-        //     return NextResponse.json({ message: "Patient with this MRN or Email already exists" }, { status: 409 })
+        //     return NextResponse.json({ message: "Patient with this MRN or Email already exists" }, { status: 409 });
         // }
 
         // Start transaction or use batch if creating user simultaneously
@@ -159,13 +159,13 @@ export const _POST = async (request: NextRequest) => {
             if (!session.user) {
 
                 // Rollback patient creation? Depends on desired atomicity.
-                await DB.prepare("DELETE FROM Patients WHERE patient_id = ?").bind(newPatientId).run()
+                await DB.prepare("DELETE FROM Patients WHERE patient_id = ?").bind(newPatientId).run();
                 throw new Error("Failed to create associated user account");
             }
             newUserId = userInsertResult.meta.last_row_id;
 
-            // Link patient to user (if needed, e.g., a patient_user_link table or user_id on Patients)
-            // Example: await DB.prepare("UPDATE Patients SET user_id = ? WHERE patient_id = ?").bind(newUserId, newPatientId).run()
+            // Link patient to user (if needed, e.g., a patient_user_link table or user_id on Patients);
+            // Example: await DB.prepare("UPDATE Patients SET user_id = ? WHERE patient_id = ?").bind(newUserId, newPatientId).run();
         }
 
         // Return success response
@@ -189,5 +189,9 @@ export const _POST = async (request: NextRequest) => {
         return NextResponse.json(
             { message: "Error registering patient", details: errorMessage },
             { status: 500 }
-        )
+        );
     }
+
+}
+
+export async function GET() { return new Response("OK"); }

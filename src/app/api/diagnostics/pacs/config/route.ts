@@ -335,17 +335,17 @@ async const testPacsConnection = (string,
       params.aetitle,
         params.port,
         "Successful',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString();
     };
 
-    // For a real implementation, you would handle connection failures like:
+    // For a real implementation, you would handle connection failures like: any
     /*
     return {
       success: false,
       {
         aetitle: params.aetitle,
         params.port,
-        new Date().toISOString()
+        new Date().toISOString();
       }
     }
     */
@@ -354,6 +354,6 @@ async const testPacsConnection = (string,
       success: false,
       params.aetitle,
         params.port,
-        new Date().toISOString()
+        new Date().toISOString();
     };
   }

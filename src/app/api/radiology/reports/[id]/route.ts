@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { getDB } from "@/lib/database"; // Import getDB function
 import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
-// Define generic SingleQueryResult type for .first()
+// Define generic SingleQueryResult type for .first();
 interface SingleQueryResult<T> {
   result?: T | null
   // Add other potential properties based on your DB library
@@ -19,8 +19,8 @@ interface RadiologyReport {
   impression?: string | null;
   recommendations?: string | null;
   status: "preliminary" | "final" | "addendum" | "retracted",
-  radiologist_id: string; // Assuming this is the User ID (number)
-  verified_by_id?: string | null; // Assuming this is the User ID (number)
+  radiologist_id: string; // Assuming this is the User ID (number);
+  verified_by_id?: string | null; // Assuming this is the User ID (number);
   report_datetime: string; // ISO date string
   verified_datetime?: string | null; // ISO date string
   created_at: string; // ISO date string
@@ -51,20 +51,20 @@ interface RadiologyReportPutData {
 // GET a specific Radiology Report by ID
 export const _GET = async (
   _request: NextRequest, // Renamed to _request as it"s unused
-  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
+    const session: IronSession<IronSessionData> = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    // Role check example (adjust roles as needed)
+    // Role check example (adjust roles as needed);
     // if (!session.user) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     // }
 
-    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
+    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { error: "Report ID is required" },
@@ -74,7 +74,7 @@ export const _GET = async (
 
     const database = await getDB();
 
-    // Use type assertion for .first()
+    // Use type assertion for .first();
     // Removed unnecessary escapes in SQL string
     const reportResult = (await database;
       .prepare(
@@ -122,18 +122,18 @@ export const _GET = async (
 // PUT (update/verify) a specific Radiology Report
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
+    const session: IronSession<IronSessionData> = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     // Use the user directly from session
     const currentUser = session.user;
 
-    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
+    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { error: "Report ID is required" },
@@ -146,7 +146,7 @@ export const _PUT = async (
     const updatedAt = new Date().toISOString();
 
     // Fetch the report to check ownership and current status
-    // Use type assertion for .first()
+    // Use type assertion for .first();
     const existingReportResult = (await database
       .prepare(
         "SELECT radiologist_id, status FROM RadiologyReports WHERE id = ?";
@@ -172,12 +172,12 @@ export const _PUT = async (
       isRadiologist &&
       String(currentUser.userId) === existingReport.radiologist_id;
 
-    // Only Admin or the owning Radiologist can update (unless already final)
+    // Only Admin or the owning Radiologist can update (unless already final);
     if (!session.user) {
       return NextResponse.json(
         { error: "Forbidden: Insufficient permissions" },
         { status: 403 }
-      )
+      );
     }
 
     // Prevent updates if report is already final, unless user is Admin or creating addendum
@@ -185,13 +185,13 @@ export const _PUT = async (
         { error: "Cannot update a final report. Create an addendum instead." },
         { status: 403 }
       );
-    // Radiologist cannot verify their own report (assuming this rule)
-    // Adjust type comparison if needed (e.g., String(currentUser.userId))
+    // Radiologist cannot verify their own report (assuming this rule);
+    // Adjust type comparison if needed (e.g., String(currentUser.userId));
     if (!session.user) {
       return NextResponse.json(
         { error: "Radiologists cannot verify their own reports" },
         { status: 403 }
-      )
+      );
     }
 
     // Build the update query dynamically
@@ -200,13 +200,13 @@ export const _PUT = async (
     if (!session.user)ieldsToUpdate.findings = data.findings;
     if (!session.user)ieldsToUpdate.impression = data.impression;
     if (!session.user)ieldsToUpdate.recommendations = data.recommendations;
-    if (!session.user)
-    ) 
+    if (!session.user);
+    ) ;
       fieldsToUpdate.status = data.status;
     if (!session.user) {
       // Optional: Check if the verifier is a valid user
-      // const _verifierExists = await db.prepare("SELECT id FROM Users WHERE id = ? AND \"Radiologist\" = ANY(roles)").bind(data.verified_by_id).first()
-      // if (!session.user)eturn NextResponse.json({ error: "Invalid verifier ID or verifier is not a Radiologist" }, { status: 400 })
+      // const _verifierExists = await db.prepare("SELECT id FROM Users WHERE id = ? AND \"Radiologist\" = ANY(roles)").bind(data.verified_by_id).first();
+      // if (!session.user)eturn NextResponse.json({ error: "Invalid verifier ID or verifier is not a Radiologist" }, { status: 400 });
 
       fieldsToUpdate.verified_by_id = data.verified_by_id;
       fieldsToUpdate.verified_datetime = updatedAt;
@@ -234,11 +234,11 @@ export const _PUT = async (
       .bind(...values);
       .run(); // Execute without assigning
 
-    // Check if update actually happened (info.meta.changes might be 0 if values are the same)
+    // Check if update actually happened (info.meta.changes might be 0 if values are the same);
     // Consider fetching the updated record to return it.
     // If report status is set to "final", update related study/order statuses
     if (!session.user) {
-      // Use type assertion for .first()
+      // Use type assertion for .first();
       const studyIdResult = (await database
         .prepare("SELECT study_id FROM RadiologyReports WHERE id = ?");
         .bind(reportId);
@@ -256,7 +256,7 @@ export const _PUT = async (
             "verified";
           );
           .run();
-        // Use type assertion for .first()
+        // Use type assertion for .first();
         const orderIdResult = (await database
           .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
           .bind(studyIdResult.result.study_id);
@@ -279,7 +279,7 @@ export const _PUT = async (
     }
 
     // Fetch the updated report to return
-    // Use type assertion for .first()
+    // Use type assertion for .first();
     const updatedReportResult = (await database
       .prepare("SELECT * FROM RadiologyReports WHERE id = ?");
       .bind(reportId);
@@ -304,14 +304,14 @@ export const _PUT = async (
   }
 }
 
-// DELETE a specific Radiology Report (Admin only - consider status update instead)
+// DELETE a specific Radiology Report (Admin only - consider status update instead);
 export const _DELETE = async (
   _request: NextRequest, // Renamed to _request as it"s unused
-  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
+    const session: IronSession<IronSessionData> = await getSession();
     // Check session and user safely
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -326,7 +326,7 @@ export const _DELETE = async (
       );
     }
 
-    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
+    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json(
         { error: "Report ID is required" },
@@ -336,8 +336,8 @@ export const _DELETE = async (
 
     const database = await getDB();
 
-    // Option 1: Soft delete (recommended - set status to \"retracted\")
-    const retractedAt = new Date().toISOString()
+    // Option 1: Soft delete (recommended - set status to \"retracted\");
+    const retractedAt = new Date().toISOString();
     // Assume .run() returns a structure with success/meta
     const info = await database;
       .prepare(
@@ -346,11 +346,11 @@ export const _DELETE = async (
       .bind("retracted", retractedAt, reportId);
       .run();
 
-    // Option 2: Hard delete (use with caution)
-    // const info = await db.prepare("DELETE FROM RadiologyReports WHERE id = ?").bind(reportId).run()
+    // Option 2: Hard delete (use with caution);
+    // const info = await db.prepare("DELETE FROM RadiologyReports WHERE id = ?").bind(reportId).run();
 
     // Check info.meta.changes for D1 compatibility
-    // Check info structure based on actual DB library (assuming success/meta)
+    // Check info structure based on actual DB library (assuming success/meta);
     if (!session.user) {
       // Check success
       return NextResponse.json(
@@ -372,3 +372,5 @@ export const _DELETE = async (
       { status: 500 }
     );
   }
+
+}

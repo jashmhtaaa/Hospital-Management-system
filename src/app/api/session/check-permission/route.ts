@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-
 import { getSession } from "@/lib/session"; // Keep original getSession for server-side use
 // src/app/api/session/check-permission/route.ts
 export const _GET = async (request: Request) => {
@@ -8,10 +7,7 @@ export const _GET = async (request: Request) => {
   const permission = searchParams.get("permission");
 
   if (!session.user) {
-    return NextResponse.json(
-      { error: "Permission parameter is required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Permission parameter is required" }, { status: 400 });
   }
 
   try {
@@ -23,9 +19,6 @@ export const _GET = async (request: Request) => {
 
     return NextResponse.json({ hasPermission: hasPerm });
   } catch (error: unknown) {
-
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
+};

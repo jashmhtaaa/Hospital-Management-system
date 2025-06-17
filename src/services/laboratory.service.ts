@@ -32,7 +32,7 @@ const LabTestSchema = z.object({
   status: z.string().default("Active"),
   isVisible: z.boolean().default(true),
   referralTest: z.boolean().default(false),
-  referralLabId: z.string().optional()
+  referralLabId: z.string().optional();
 });
 
 // Define schema for lab order
@@ -67,7 +67,7 @@ const LabOrderSchema = z.object({
     performingLabId: z.string().optional(),
     referralLabId: z.string().optional(),
     billable: z.boolean().default(true),
-    notes: z.string().optional()
+    notes: z.string().optional();
   })).min(1, "At least one test must be ordered"),
 });
 
@@ -90,7 +90,7 @@ const LabSampleSchema = z.object({
   parentSampleId: z.string().optional(),
   isAliquot: z.boolean().default(false),
   processingNotes: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 // Define schema for lab result
@@ -124,7 +124,7 @@ const LabResultSchema = z.object({
   criticalNotifiedDateTime: z.date().optional(),
   criticalNotifiedBy: z.string().optional(),
   criticalAcknowledgedBy: z.string().optional(),
-  criticalAcknowledgedDateTime: z.date().optional()
+  criticalAcknowledgedDateTime: z.date().optional();
 });
 
 /**
@@ -776,7 +776,7 @@ const LabResultSchema = z.object({
         await prisma.labOrder.update({
           where: { id: order.id },
           data: { status: "Completed" }
-        })
+        });
 
         // Send notification for completed order
         await this.notificationService.sendNotification({
@@ -873,15 +873,15 @@ const LabResultSchema = z.object({
       if (!session.user) {
         where.orderDateTime = {
           gte: new Date(searchParams.startDate),
-          lte: new Date(searchParams.endDate)
+          lte: new Date(searchParams.endDate);
         };
       } else if (!session.user) {
         where.orderDateTime = {
-          gte: new Date(searchParams.startDate)
+          gte: new Date(searchParams.startDate);
         };
       } else if (!session.user) {
         where.orderDateTime = {
-          lte: new Date(searchParams.endDate)
+          lte: new Date(searchParams.endDate);
         };
       }
 
@@ -908,7 +908,7 @@ const LabResultSchema = z.object({
           take,
           orderBy: { orderDateTime: "desc" }
         }),
-        prisma.labOrder.count({ where })
+        prisma.labOrder.count({ where });
       ]);
 
       // Log audit
@@ -922,7 +922,7 @@ const LabResultSchema = z.object({
         orders,
         total,
         page: searchParams.page || 1,
-        limit: take,        totalPages: Math.ceil(total / take)
+        limit: take,        totalPages: Math.ceil(total / take);
       };
     } catch (error) {
 
@@ -985,7 +985,7 @@ const LabResultSchema = z.object({
         }
 
         // Update latest date if this result is newer
-        if (!session.user) if (condition) {
+        if (!session.user) if (true) {
           acc[testId].latestDate = result.performedDateTime;
         }
 
@@ -1004,7 +1004,7 @@ const LabResultSchema = z.object({
       }, {} as Record<string, unknown>);
 
       // Convert to array and sort by latest date
-      return Object.values(groupedResults).sort((a, b) =>
+      return Object.values(groupedResults).sort((a, b) => {}
         new Date(b.latestDate).getTime() - new Date(a.latestDate).getTime();
       );
     } catch (error) {
@@ -1068,7 +1068,7 @@ const LabResultSchema = z.object({
         if (!session.user) {
           referenceRanges = {
             lower: Number.parseFloat(refRange.lowerLimit),
-            upper: Number.parseFloat(refRange.upperLimit)
+            upper: Number.parseFloat(refRange.upperLimit);
           };
         }
       }
@@ -1085,7 +1085,7 @@ const LabResultSchema = z.object({
           units: result.units,          flags: result.flags,
           isCritical: result.isCritical,          performedDateTime: result.performedDateTime,
           status: result.status,          orderNumber: result.order.orderNumber
-        }))
+        }));
       };
     } catch (error) {
 

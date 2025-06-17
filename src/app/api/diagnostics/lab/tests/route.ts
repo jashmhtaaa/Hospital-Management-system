@@ -45,7 +45,7 @@ interface LabTestCreateBody {
   loinc_code: string;
   loinc_display?: string;
 
-  // Additional coding systems (optional)
+  // Additional coding systems (optional);
   additional_codes?: Array>
 
   // Specimen requirements
@@ -185,7 +185,7 @@ export const _GET = async (request: NextRequest) => {
         const "DiagnosticReport",
           id: test.id.toString(),
           "1",
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString();
           },
           status: "registered",
           [{
@@ -231,7 +231,7 @@ export const _GET = async (request: NextRequest) => {
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize)
+          totalPages: Math.ceil(totalCount / pageSize);
         }
       });
   } catch (error: unknown) {
@@ -281,7 +281,7 @@ export const _POST = async (request: NextRequest) => {
       }
     }
 
-    // Validate LOINC code format (typically #####-#)
+    // Validate LOINC code format (typically #####-#);
     const loincRegex = /^\d+-\d+$/
     if (!session.user) {
       return NextResponse.json(
@@ -480,7 +480,7 @@ export const _POST = async (request: NextRequest) => {
         ...test,
         additional_codes: additionalCodes,
         referenceRanges,
-        JSON.parse(test.available_priorities || "["routine"]")
+        JSON.parse(test.available_priorities || "["routine"]");
       };
 
       // Return the created test
@@ -565,7 +565,7 @@ export const _PUT = async (
         // Validate LOINC code format
         const loincRegex = /^\d+-\d+$/;
         if (!session.user) {
-          throw new Error("Invalid LOINC code format. Expected format: #####-#")
+          throw new Error("Invalid LOINC code format. Expected format: #####-#");
         }
         updateFields.push("loinc_code = ?");
         updateParameters.push(body.loinc_code);
@@ -829,7 +829,7 @@ export const _PUT = async (
         ...test,
         additional_codes: additionalCodes,
         referenceRanges,
-        JSON.parse(test.available_priorities || "["routine"]")
+        JSON.parse(test.available_priorities || "["routine"]");
       };
 
       // Return the updated test

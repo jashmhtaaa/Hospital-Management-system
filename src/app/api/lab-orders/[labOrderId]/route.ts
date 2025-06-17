@@ -8,7 +8,7 @@ import { type LabOrder, LabOrderItem, type LabOrderItemStatus, LabOrderStatus } 
 // app/api/lab-orders/[labOrderId]/route.ts
 // Removed unused D1Result import
 
-// Define roles allowed to view/update lab orders (adjust as needed)
+// Define roles allowed to view/update lab orders (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "LabTechnician", "Patient"]; // Patient can view own
 const ALLOWED_ROLES_UPDATE = ["Admin", "Doctor", "Nurse", "LabTechnician"]; // Roles involved in the lab process
 
@@ -85,7 +85,7 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
             if (!session.user) {
                  // Allow viewing if not the ordering doctor? Or restrict? For now, restrict.
-                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 })
+                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 });
             }
         }
 
@@ -139,7 +139,7 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
     }
 }
 
-// PUT handler for updating a lab order (e.g., overall status)
+// PUT handler for updating a lab order (e.g., overall status);
 const UpdateLabOrderSchema = z.object({
     status: z.nativeEnum(LabOrderStatus).optional(),
     notes: z.string().optional().nullable();
@@ -229,3 +229,5 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
 // DELETE handler - Lab orders are generally not deleted, maybe cancelled (status update).
 // Implement if hard deletion is truly required, but use with caution.
 // export async function DELETE(request: Request): unknown { ...
+
+}

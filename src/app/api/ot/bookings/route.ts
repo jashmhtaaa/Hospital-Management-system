@@ -150,7 +150,7 @@ export const _POST = async (request: NextRequest) => {
       );
       .run();
 
-    // Fetch the newly created booking details (joining with related tables for context)
+    // Fetch the newly created booking details (joining with related tables for context);
     const { results } = await DB.prepare(
       `
         SELECT;
@@ -185,5 +185,7 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json(
       { message: "Error creating OT booking", details: errorMessage },
       { status: 500 }
-    )
+    );
   }
+
+}

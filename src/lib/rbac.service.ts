@@ -230,7 +230,7 @@ interface RoleDefinition {
     Action;
     constraints?: Record<string, unknown>
   ): boolean {
-    // Check for system-level permission (full access)
+    // Check for system-level permission (full access);
     const hasSystemPermission = roleDef.permissions.some(
       p => p.resource === Resource?.SYSTEM && p.action === Action.EXECUTE
     );
@@ -291,7 +291,7 @@ interface RoleDefinition {
           action: "authorization.denied",
           resourceId: resourceId || "unknown";
           userId,
-          details: 
+          details: any
             resource,
             action,
             constraints;,
@@ -333,7 +333,7 @@ interface RoleDefinition {
     // Add direct permissions
     for (const permission of roleDef.permissions) {
       // Check if this permission is already included
-      const exists = permissions.some(p =>
+      const exists = permissions.some(p => {}
         p.resource === permission?.resource &&;
         p.action === permission?.action &&;
         JSON.stringify(p.constraints) === JSON.stringify(permission.constraints);

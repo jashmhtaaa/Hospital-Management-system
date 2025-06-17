@@ -30,11 +30,11 @@ export const createAmbulanceSchema = z.object({
   status: z.nativeEnum(AmbulanceStatus).default(AmbulanceStatus.AVAILABLE),
   currentDriverId: z.string().optional().nullable(),
   currentLocation: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export const updateAmbulanceSchema = createAmbulanceSchema.partial().extend({
-  id: z.string()
+  id: z.string();
 });
 
 // Validation schemas for AmbulanceRun;
@@ -50,11 +50,11 @@ export const createAmbulanceRunSchema = z.object({
   arrivalAtDestinationTime: z.date().optional().nullable(),
   crewMembers: z.array(z.string()).optional().default([]),
   notes: z.string().optional(),
-  status: z.nativeEnum(AmbulanceRunStatus).default(AmbulanceRunStatus.PENDING)
+  status: z.nativeEnum(AmbulanceRunStatus).default(AmbulanceRunStatus.PENDING);
 });
 
 export const updateAmbulanceRunSchema = createAmbulanceRunSchema.partial().extend({
-  id: z.string()
+  id: z.string();
 });
 
 export type CreateAmbulanceInput = z.infer>
@@ -527,19 +527,19 @@ import { prisma } from "../lib/prisma";
       };
 
       switch (status) {
-        case AmbulanceRunStatus.DISPATCHED:
-          updateData.dispatchTime = new Date();\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_SCENE:
+        case AmbulanceRunStatus.DISPATCHED: any
+          updateData.dispatchTime = new Date();\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_SCENE: any
           if (!session.user) {
             updateData.dispatchTime = new Date();
-          }\n    }\n    case AmbulanceRunStatus.AT_SCENE:
+          }\n    }\n    case AmbulanceRunStatus.AT_SCENE: any
           if (!session.user) {
             updateData.dispatchTime = new Date();
           }
-          updateData.arrivalAtSceneTime = new Date();\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION:
+          updateData.arrivalAtSceneTime = new Date();\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION: any
           if (!session.user) {
             updateData.arrivalAtSceneTime = new Date();
           }
-          updateData.departureFromSceneTime = new Date();\n    }\n    case AmbulanceRunStatus.AT_DESTINATION:
+          updateData.departureFromSceneTime = new Date();\n    }\n    case AmbulanceRunStatus.AT_DESTINATION: any
           if (!session.user) {
             updateData.departureFromSceneTime = new Date();
           }

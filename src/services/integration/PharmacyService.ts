@@ -34,7 +34,7 @@ export const MedicationReconciliationSchema = z.object({
     startDate: z.date().optional(),
     endDate: z.date().optional(),
     instructions: z.string().optional(),
-    continuePrescription: z.boolean().optional()
+    continuePrescription: z.boolean().optional();
   })),
 });
 
@@ -43,14 +43,14 @@ export const MedicationAdministrationSchema = z.object({
   z.string().optional(),
     route: z.string().optional(),
     administeredAt: z.date().optional(),
-    notes: z.string().optional()
+    notes: z.string().optional();
   }),
   updateOrderStatus: z.enum(["ACTIVE", "COMPLETED", "DISCONTINUED"]).optional(),
 });
 
 export const MedicationDiscontinueSchema = z.object({
   orderId: z.string().uuid(),
-  reason: z.string().min(1)
+  reason: z.string().min(1);
 });
 
 /**
@@ -83,7 +83,7 @@ export const MedicationDiscontinueSchema = z.object({
     for (const medication of data.medications) {
       // Check if patient is allergic to this medication
       const isAllergic = patientAllergies.some(
-        (allergy: unknown) =>
+        (allergy: unknown) => {}
           allergy.allergen.toLowerCase() === medication.name.toLowerCase() ||;
           (allergy.allergenType === "MEDICATION" &&;
            allergy.allergen.toLowerCase().includes(medication.name.toLowerCase()));
@@ -116,7 +116,7 @@ export const MedicationDiscontinueSchema = z.object({
           medication.instructions,
           medication.priority || "ROUTINE",
           new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date();
         },
       });
 
@@ -170,7 +170,7 @@ export const MedicationDiscontinueSchema = z.object({
     const _updatedDischarge = await prisma.discharge.update({
       where: { id: data.dischargeId },
       data.medications,
-        new Date()
+        new Date();
       },
     });
 
@@ -181,7 +181,7 @@ export const MedicationDiscontinueSchema = z.object({
         "COMPLETED",
         new Date(),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date();
       },
     });
 
@@ -237,7 +237,7 @@ export const MedicationDiscontinueSchema = z.object({
         administeredBy: userId,
         "COMPLETED",
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date();
       },
     });
 
@@ -246,7 +246,7 @@ export const MedicationDiscontinueSchema = z.object({
       await prisma.medicationOrder.update({
         where: { id: order.id },
         data.updateOrderStatus,
-          updatedAt: new Date()
+          updatedAt: new Date();
         },
       });
     }
@@ -299,7 +299,7 @@ export const MedicationDiscontinueSchema = z.object({
       "DISCONTINUED",
         userId,
         discontinuedAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date();
       },
     });
 

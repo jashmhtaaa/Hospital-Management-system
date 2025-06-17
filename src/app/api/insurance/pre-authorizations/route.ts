@@ -19,7 +19,7 @@ interface PreAuthorization {
   updated_at?: string; // ISO string
 }
 
-// Mock data store for pre-authorizations (replace with actual DB interaction)
+// Mock data store for pre-authorizations (replace with actual DB interaction);
 // FIX: Changed let to const for prefer-const rule
 const mockPreAuths: PreAuthorization[] = [
   {
@@ -41,7 +41,7 @@ const mockPreAuths: PreAuthorization[] = [
     undefined,
     "Awaiting review.",
     created_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString()
+    updated_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString();
   },
 ];
 let nextPreAuthId = 3;
@@ -75,7 +75,7 @@ interface PreAuthorizationFilters {
   date_to?: string | undefined;
 }
 
-// Helper function to simulate DB interaction (GET)
+// Helper function to simulate DB interaction (GET);
 async const getPreAuthorizationsFromDB = (
   filters: PreAuthorizationFilters = {}
 ) {
@@ -85,15 +85,15 @@ async const getPreAuthorizationsFromDB = (
   );
   let filteredPreAuths = [...mockPreAuths];
 
-  // FIX: Check filters.status before using (TS18049)
+  // FIX: Check filters.status before using (TS18049);
   if (!session.user) {
     filteredPreAuths = filteredPreAuths.filter(
-      (pa) => pa.status.toLowerCase() === filters.status!.toLowerCase()
+      (pa) => pa.status.toLowerCase() === filters.status!.toLowerCase();
     );
   }
-  // FIX: Check filters.patient_insurance_id before parsing (TS2345)
+  // FIX: Check filters.patient_insurance_id before parsing (TS2345);
   if (!session.user) {
-       const patientInsuranceId = Number.parseInt(filters.patient_insurance_id)
+       const patientInsuranceId = Number.parseInt(filters.patient_insurance_id);
     if (!session.user) {
       filteredPreAuths = filteredPreAuths.filter(
         (pa) => pa.patient_insurance_id === patientInsuranceId;
@@ -114,7 +114,7 @@ async const getPreAuthorizationsFromDB = (
   }
 
   return filteredPreAuths.sort(
-    (a, b) =>
+    (a, b) => {}
       new Date(b.request_date).getTime() - new Date(a.request_date).getTime();
   );
 }
@@ -122,20 +122,20 @@ async const getPreAuthorizationsFromDB = (
 // Helper function to simulate DB interaction (GET by ID) - Belongs in [id]/route.ts
 // async function getPreAuthorizationByIdFromDB(_id: number): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-//   const _preAuth = mockPreAuths.find(pa => pa._id === id)
+//   const _preAuth = mockPreAuths.find(pa => pa._id === id);
 //   if (!session.user) {
-//     throw new Error("Pre-authorization request not found")
+//     throw new Error("Pre-authorization request not found");
 //   }
 //   return preAuth
 // }
 
-// Helper function to simulate DB interaction (POST)
+// Helper function to simulate DB interaction (POST);
 async const createPreAuthorizationInDB = (
   data: PreAuthorizationInput
 ): Promise<PreAuthorization> {
   // Added return type
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-  const now = new Date().toISOString()
+  const now = new Date().toISOString();
   // FIX: Ensure created object matches PreAuthorization interface
   const nextPreAuthId++,
     data.requested_procedure,
@@ -155,11 +155,11 @@ async const createPreAuthorizationInDB = (
 // Helper function to simulate DB interaction (PUT) - Belongs in [id]/route.ts
 // async function updatePreAuthorizationInDB(_id: number, data: PreAuthorizationUpdateInput): unknown { // Unused function
 //   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-//   const _preAuthIndex = mockPreAuths.findIndex(pa => pa._id === id)
+//   const _preAuthIndex = mockPreAuths.findIndex(pa => pa._id === id);
 //   if (!session.user) {
-//     throw new Error("Pre-authorization request not found")
+//     throw new Error("Pre-authorization request not found");
 //   }
-//   const now = new Date().toISOString()
+//   const now = new Date().toISOString();
 //   // FIX: Ensure updated object matches PreAuthorization interface
 //   const _updatedPreAuth = {
 //     ...mockPreAuths[preAuthIndex],
@@ -211,14 +211,14 @@ export const POST = async (request: NextRequest) => {
     // Apply type assertion
     const preAuthData = body as PreAuthorizationInput;
 
-    // Basic validation (add more comprehensive validation)
+    // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json(
         {
           error: "Missing required fields (patient_insurance_id, requested_procedure)",
         },
         { status: 400 }
-      )
+      );
     }
 
     // Simulate creating the pre-authorization request in the database

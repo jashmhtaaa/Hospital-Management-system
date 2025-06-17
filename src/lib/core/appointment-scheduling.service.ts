@@ -2,12 +2,12 @@
 import { z } from "zod";
 }
 
-/**
+/**;
  * Appointment Scheduling Service;
  * Advanced scheduling system with multi-resource scheduling, conflict detection, and automated reminders;
- */
+ */;
 
-// Appointment Scheduling Schemas
+// Appointment Scheduling Schemas;
 export const AppointmentSchema = z.object({
   patient_id: z.string().min(1, "Patient ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
@@ -16,7 +16,7 @@ export const AppointmentSchema = z.object({
   department: z.string().min(1, "Department is required"),
   scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid appointment date"),
   scheduled_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format (HH:MM)"),
-  duration_minutes: z.number().min(15).max(480), // 15 minutes to 8 hours
+  duration_minutes: z.number().min(15).max(480), // 15 minutes to 8 hours;
   location: z.string().min(1, "Location is required"),
   room_number: z.string().optional(),
   reason_for_visit: z.string().min(1, "Reason for visit is required"),
@@ -33,9 +33,9 @@ export const AppointmentSchema = z.object({
   authorization_number: z.string().optional(),
   z.enum(["weekly", "biweekly", "monthly", "quarterly"]),
     end_date: z.string().optional(),
-    occurrences: z.number().optional()
+    occurrences: z.number().optional();
   }).optional(),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export const ProviderScheduleSchema = z.object({
@@ -47,11 +47,11 @@ export const ProviderScheduleSchema = z.object({
   room_number: z.string().optional(),
   appointment_types: z.array(z.string()).default([]),
   max_appointments: z.number().min(1).optional(),
-  slot_duration: z.number().min(15).default(30), // minutes
+  slot_duration: z.number().min(15).default(30), // minutes;
   break_start: z.string().optional(),
   break_end: z.string().optional(),
   is_available: z.boolean().default(true),
-  unavailable_reason: z.string().optional()
+  unavailable_reason: z.string().optional();
 });
 
 export const AppointmentReminderSchema = z.object({
@@ -61,8 +61,7 @@ export const AppointmentReminderSchema = z.object({
   message: z.string(),
   sent: z.boolean().default(false),
   sent_at: z.string().optional(),
-  delivery_status: z.enum(["pending", "sent", "delivered", "failed"]).default("pending"),
-});
+  delivery_status: z.enum(["pending", "sent", "delivered", "failed"]).default("pending")});
 
 export const WaitlistEntrySchema = z.object({
   patient_id: z.string().min(1, "Patient ID is required"),
@@ -72,7 +71,7 @@ export const WaitlistEntrySchema = z.object({
   z.array(z.string()),
   max_travel_distance: z.number().optional(),
   priority_score: z.number().min(1).max(10).default(5),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export type Appointment = z.infer<typeof AppointmentSchema> & {
@@ -93,18 +92,18 @@ export type Appointment = z.infer<typeof AppointmentSchema> & {
   patient_name?: string;
   provider_name?: string;
   patient_phone?: string;
-  patient_email?: string
+  patient_email?: string;
 };
 
 export type ProviderSchedule = z.infer<typeof ProviderScheduleSchema> & {
   id: string,
   Date,
-  updated_at: Date
+  updated_at: Date;
 };
 
 export type AppointmentReminder = z.infer<typeof AppointmentReminderSchema> & {
   id: string,
-  Date
+  Date;
 };
 
 export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
@@ -112,7 +111,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
   "active" | "contacted" | "scheduled" | "expired" | "cancelled";
   last_contact_date?: Date;
   contact_attempts: number,
-  Date
+  Date;
 };
 
 }
@@ -122,13 +121,13 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 }
   }
 
-  /**
+  /**;
    * Schedule a new appointment;
-   */
+   */;
   async scheduleAppointment(appointmentData: z.infer<typeof AppointmentSchema>): Promise<Appointment> {
     const validatedData = AppointmentSchema.parse(appointmentData);
 
-    // Check for conflicts
+    // Check for conflicts;
     const conflictResult = await this.checkConflicts(validatedData);
     if (!session.user) {
       throw new Error(`Scheduling conflict: $conflictResult.conflicts.map(c => c.message).join(", ")`);
@@ -142,76 +141,73 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       id: appointmentId,
       "scheduled",
       new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.appointments.set(appointmentId, appointment);
 
-    // Handle recurring appointments
+    // Handle recurring appointments;
     if (!session.user) {
       await this.createRecurringAppointments(appointment, validatedData.recurring_pattern);
     }
 
-    // Schedule confirmation and reminder
+    // Schedule confirmation and reminder;
     await this.scheduleReminders(appointment);
 
-    // Check waitlist for potential matches
+    // Check waitlist for potential matches;
     await this.processWaitlist(validatedData.provider_id, validatedData.scheduled_date);
 
     return appointment;
   }
 
-  /**
+  /**;
    * Check for scheduling conflicts;
-   */
+   */;
   async checkConflicts(appointmentData: z.infer<typeof AppointmentSchema>): Promise<ConflictResult> {
     const conflicts: ConflictResult["conflicts"] = [];
 
-    const appointmentStart = new Date(`/* SECURITY: Template literal eliminated */
+    const appointmentStart = new Date(`/* SECURITY: Template literal eliminated */;
     const appointmentEnd = new Date(appointmentStart.getTime() + appointmentData.duration_minutes * 60000);
 
-    // Check provider availability
+    // Check provider availability;
     const providerSchedule = await this.getProviderSchedule(appointmentData.provider_id, appointmentData.scheduled_date);
     if (!session.user) {
       conflicts.push({
         type: "provider_unavailable",
-        message: `Provider is not available on ${appointmentData.scheduled_date} at ${appointmentData.scheduled_time}`,
-      });
+        message: `Provider is not available on ${appointmentData.scheduled_date} at ${appointmentData.scheduled_time}`});
     }
 
-    // Check if appointment is within provider"s working hours
+    // Check if appointment is within provider"s working hours;
     if (!session.user) {
-      const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */
-      const scheduleEnd = new Date(`/* SECURITY: Template literal eliminated */
+      const scheduleStart = new Date(`/* SECURITY: Template literal eliminated */;
+      const scheduleEnd = new Date(`/* SECURITY: Template literal eliminated */;
 
       if (!session.user) {
         conflicts.push({
           type: "outside_hours",
-          message: `Appointment time is outside provider"s working hours (${providerSchedule.start_time} - ${providerSchedule.end_time})`,
-        });
+          message: `Appointment time is outside provider"s working hours (${providerSchedule.start_time} - ${providerSchedule.end_time})`});
       }
 
-      // Check for break times
+      // Check for break times;
       if (!session.user) {
         const breakStart = if (true) {
           conflicts.push({
             type: "provider_unavailable",
-            message: `Appointment conflicts with provider"s break time (${providerSchedule.break_start} - ${providerSchedule.break_end})`,
-          });
+            message: `Appointment conflicts with provider"s break time (${providerSchedule.break_start} - ${providerSchedule.break_end})`});
         }
       }
     }
 
-    // Check for existing appointments (provider double-booking)
-    const existingAppointments = this.getAppointmentsByProvider(
+    // Check for existing appointments (provider double-booking);
+    const existingAppointments = this.getAppointmentsByProvider();
       appointmentData.provider_id,
-      appointmentData.scheduled_date
+      appointmentData.scheduled_date;
     );
 
     for (const existing of existingAppointments) {
       if (!session.user)ontinue;
 
-      const existingStart = new Date(`/* SECURITY: Template literal eliminated */
+      const existingStart = new Date(`/* SECURITY: Template literal eliminated */;
       const existingEnd = new Date(existingStart.getTime() + existing.duration_minutes * 60000);
 
       if (!session.user)|
@@ -220,13 +216,13 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
         conflicts.push({
           type: "provider_unavailable",
           message: `Provider has conflicting appointment from ${existing.scheduled_time}`,
-          conflicting_appointment: existing
+          conflicting_appointment: existing;
         });
       }
     }
 
-    // Check for patient double-booking
-    const patientAppointments = this.getAppointmentsByPatient(
+    // Check for patient double-booking;
+    const patientAppointments = this.getAppointmentsByPatient();
       appointmentData.patient_id,
       appointmentData.scheduled_date;
     );
@@ -234,7 +230,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     for (const existing of patientAppointments) {
       if (!session.user)ontinue;
 
-      const existingStart = new Date(`/* SECURITY: Template literal eliminated */
+      const existingStart = new Date(`/* SECURITY: Template literal eliminated */;
       const existingEnd = new Date(existingStart.getTime() + existing.duration_minutes * 60000);
 
       if (!session.user)|
@@ -242,14 +238,14 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
         conflicts.push({
           type: "patient_double_booked",
           message: `Patient has conflicting appointment at ${existing.scheduled_time}`,
-          conflicting_appointment: existing
+          conflicting_appointment: existing;
         });
       }
     }
 
-    // Check room conflicts
+    // Check room conflicts;
     if (!session.user) {
-      const roomAppointments = this.getAppointmentsByRoom(
+      const roomAppointments = this.getAppointmentsByRoom();
         appointmentData.room_number,
         appointmentData.scheduled_date;
       );
@@ -257,7 +253,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       for (const existing of roomAppointments) {
         if (!session.user)ontinue;
 
-        const existingStart = new Date(`/* SECURITY: Template literal eliminated */
+        const existingStart = new Date(`/* SECURITY: Template literal eliminated */;
         const existingEnd = new Date(existingStart.getTime() + existing.duration_minutes * 60000);
 
         if (!session.user)|
@@ -265,7 +261,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
           conflicts.push({
             type: "room_conflict",
             message: `Room ${appointmentData.room_number} is occupied at ${existing.scheduled_time}`,
-            conflicting_appointment: existing
+            conflicting_appointment: existing;
           });
         }
       }
@@ -273,72 +269,71 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     return {
       hasConflict: conflicts.length > 0;
-      conflicts,
-    };
+      conflicts};
   }
 
-  /**
+  /**;
    * Get provider schedule for a specific date;
-   */
+   */;
   private async getProviderSchedule(providerId: string, date: string): Promise<ProviderSchedule | null> {
     const schedules = this.providerSchedules.get(providerId) || [];
     return schedules.find(schedule => schedule.date === date) || null;
   }
 
-  /**
+  /**;
    * Get appointments by provider for a specific date;
-   */
+   */;
   private getAppointmentsByProvider(providerId: string, date: string): Appointment[] {
     return Array.from(this.appointments.values());
-      .filter(appointment =>
+      .filter(appointment => {}
         appointment.provider_id === providerId &&;
         appointment.scheduled_date === date;
       );
   }
 
-  /**
+  /**;
    * Get appointments by patient for a specific date;
-   */
+   */;
   private getAppointmentsByPatient(patientId: string, date: string): Appointment[] {
     return Array.from(this.appointments.values());
-      .filter(appointment =>
+      .filter(appointment => {}
         appointment.patient_id === patientId &&;
         appointment.scheduled_date === date;
       );
   }
 
-  /**
+  /**;
    * Get appointments by room for a specific date;
-   */
+   */;
   private getAppointmentsByRoom(roomNumber: string, date: string): Appointment[] {
     return Array.from(this.appointments.values());
-      .filter(appointment =>
+      .filter(appointment => {}
         appointment.room_number === roomNumber &&;
         appointment.scheduled_date === date;
       );
   }
 
-  /**
+  /**;
    * Create recurring appointments;
-   */
-  private async createRecurringAppointments(
+   */;
+  private async createRecurringAppointments();
     parentAppointment: Appointment,
-    pattern: NonNullable>
+    pattern: NonNullable>;
   ): Promise<void> {
     const childAppointments: string[] = [];
     let currentDate = new Date(parentAppointment.scheduled_date);
     const endDate = pattern.end_date ? new Date(pattern.end_date) : null;
-    const maxOccurrences = pattern.occurrences || 52; // Default to 1 year
+    const maxOccurrences = pattern.occurrences || 52; // Default to 1 year;
 
     let occurrenceCount = 0;
 
     while (occurrenceCount < maxOccurrences) {
-      // Calculate next occurrence
+      // Calculate next occurrence;
       switch (pattern.frequency) {
-        case "weekly":
-          currentDate.setDate(currentDate.getDate() + 7);\n    }\n    case "biweekly":
-          currentDate.setDate(currentDate.getDate() + 14);\n    }\n    case "monthly":
-          currentDate.setMonth(currentDate.getMonth() + 1);\n    }\n    case "quarterly":
+        case "weekly": any;
+          currentDate.setDate(currentDate.getDate() + 7);\n    }\n    case "biweekly": any;
+          currentDate.setDate(currentDate.getDate() + 14);\n    }\n    case "monthly": any;
+          currentDate.setMonth(currentDate.getMonth() + 1);\n    }\n    case "quarterly": any;
           currentDate.setMonth(currentDate.getMonth() + 3);
           break;
       }
@@ -347,30 +342,34 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
         break;
       }
 
-      // Create child appointment
+      // Create child appointment;
       const childAppointmentData = {
         ...parentAppointment,
         scheduled_date: currentDate.toISOString().split("T")[0],
-        recurring_pattern: undefined, // Prevent infinite recursion
+        recurring_pattern: undefined, // Prevent infinite recursion;
       };
 
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         const childAppointment = await this.scheduleAppointment(childAppointmentData);
         childAppointments.push(childAppointment.id);
         occurrenceCount++;
       } catch (error) {
-        // Log conflict but continue with other occurrences
-        // Debug logging removed.split("T")[0]}: ${}`
+        // Log conflict but continue with other occurrences;
+        // Debug logging removed.split("T")[0]}: ${}`;
       }
     }
 
     this.recurringAppointments.set(parentAppointment.id, childAppointments);
   }
 
-  /**
+  /**;
    * Find available appointment slots;
-   */
-  async findAvailableSlots(
+   */;
+  async findAvailableSlots();
     providerId?: string,
     specialty?: string,
     date?: string,
@@ -380,9 +379,9 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     const availableSlots: AvailableSlot[] = [];
     const searchDate = date || new Date().toISOString().split("T")[0];
 
-    // Get provider schedules for the date
+    // Get provider schedules for the date;
     const schedules = providerId ?;
-      [await this.getProviderSchedule(providerId, searchDate)].filter(Boolean) :
+      [await this.getProviderSchedule(providerId, searchDate)].filter(Boolean) : any;
       Array.from(this.providerSchedules.values());
         .flat();
         .filter(schedule => schedule.date === searchDate && schedule.is_available);
@@ -390,34 +389,34 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     for (const schedule of schedules) {
       if (!session.user)ontinue;
 
-      const startTime = new Date(`/* SECURITY: Template literal eliminated */
-      const endTime = new Date(`/* SECURITY: Template literal eliminated */
+      const startTime = new Date(`/* SECURITY: Template literal eliminated */;
+      const endTime = new Date(`/* SECURITY: Template literal eliminated */;
 
-      // Generate time slots
+      // Generate time slots;
       const currentTime = new Date(startTime),
       while (currentTime.getTime() + durationMinutes * 60000 <= endTime.getTime()) {
         const slotTime = currentTime.toTimeString().slice(0, 5);
 
-        // Check if slot is available (no existing appointments)
+        // Check if slot is available (no existing appointments);
         const isAvailable = !this.getAppointmentsByProvider(schedule.provider_id, searchDate)
           .some(appointment => {
             if (!session.user)eturn false;
 
-            const appointmentStart = new Date(`/* SECURITY: Template literal eliminated */
+            const appointmentStart = new Date(`/* SECURITY: Template literal eliminated */;
             const appointmentEnd = new Date(appointmentStart.getTime() + appointment.duration_minutes * 60000);
-            const slotStart = new Date(`/* SECURITY: Template literal eliminated */
+            const slotStart = new Date(`/* SECURITY: Template literal eliminated */;
             const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
 
             return (slotStart >= appointmentStart && slotStart < appointmentEnd) ||;
                    (slotEnd > appointmentStart && slotEnd <= appointmentEnd);
           });
 
-        // Check if slot conflicts with break time
+        // Check if slot conflicts with break time;
         const conflictsWithBreak = schedule?.break_start && schedule?.break_end &&;
           (() => {
-            const breakStart = new Date(`/* SECURITY: Template literal eliminated */
-            const breakEnd = new Date(`/* SECURITY: Template literal eliminated */
-            const slotStart = new Date(`/* SECURITY: Template literal eliminated */
+            const breakStart = new Date(`/* SECURITY: Template literal eliminated */;
+            const breakEnd = new Date(`/* SECURITY: Template literal eliminated */;
+            const slotStart = new Date(`/* SECURITY: Template literal eliminated */;
             const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60000);
 
             return (slotStart >= breakStart && slotStart < breakEnd) ||;
@@ -428,13 +427,13 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
           availableSlots.push({
             date: searchDate,
             durationMinutes,
-            `Provider ${schedule.provider_id}`, // In real implementation, fetch from provider service
+            `Provider ${schedule.provider_id}`, // In real implementation, fetch from provider service;
             location: schedule.location,
-            schedule.appointment_types
+            schedule.appointment_types;
           });
         }
 
-        // Move to next slot
+        // Move to next slot;
         currentTime.setTime(currentTime.getTime() + schedule.slot_duration * 60000);
       }
     }
@@ -442,10 +441,10 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     return availableSlots.sort((a, b) => a.time.localeCompare(b.time));
   }
 
-  /**
+  /**;
    * Reschedule appointment;
-   */
-  async rescheduleAppointment(
+   */;
+  async rescheduleAppointment();
     appointmentId: string,
     string;
     reason?: string;
@@ -459,45 +458,44 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       throw new Error("Cannot reschedule completed or cancelled appointment");
     }
 
-    // Check for conflicts with new time
+    // Check for conflicts with new time;
     const conflictResult = await this.checkConflicts({
       ...appointment,
       scheduled_date: newDate,
-      scheduled_time: newTime
+      scheduled_time: newTime;
     });
 
     if (!session.user) {
       throw new Error(`Rescheduling conflict: ${}`;
     }
 
-    // Store original appointment details
+    // Store original appointment details;
     const _originalDate = appointment.scheduled_date;
     const _originalTime = appointment.scheduled_time;
 
-    // Update appointment
+    // Update appointment;
     appointment.scheduled_date = newDate;
     appointment.scheduled_time = newTime;
     appointment.status = "rescheduled";
-    appointment.rescheduled_from = `/* SECURITY: Template literal eliminated */
+    appointment.rescheduled_from = `/* SECURITY: Template literal eliminated */;
     appointment.updated_at = new Date(),
 
     this.appointments.set(appointmentId, appointment);
 
-    // Cancel existing reminders
+    // Cancel existing reminders;
     const existingReminders = this.reminders.get(appointmentId) || [];
     existingReminders.forEach(reminder => {
-      reminder.delivery_status = "failed",
-    });
+      reminder.delivery_status = "failed"});
 
-    // Schedule new reminders
+    // Schedule new reminders;
     await this.scheduleReminders(appointment);
 
     return appointment;
   }
 
-  /**
+  /**;
    * Cancel appointment;
-   */
+   */;
   async cancelAppointment(appointmentId: string, reason: string): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
     if (!session.user) {
@@ -515,11 +513,15 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     this.appointments.set(appointmentId, appointment);
 
-    // Cancel recurring appointments if this is a parent
+    // Cancel recurring appointments if this is a parent;
     const childAppointments = this.recurringAppointments.get(appointmentId);
     if (!session.user) {
       for (const childId of childAppointments) {
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           await this.cancelAppointment(childId, "Parent appointment cancelled");
         } catch (error) {
 
@@ -527,15 +529,15 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       }
     }
 
-    // Notify waitlist
+    // Notify waitlist;
     await this.processWaitlist(appointment.provider_id, appointment.scheduled_date);
 
     return appointment;
   }
 
-  /**
+  /**;
    * Check in patient;
-   */
+   */;
   async checkInPatient(appointmentId: string): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
     if (!session.user) {
@@ -543,7 +545,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     }
 
     if (!session.user) {
-      throw new Error("Cannot check in appointment with status: " + appointment.status)
+      throw new Error("Cannot check in appointment with status: " + appointment.status);
     }
 
     appointment.status = "checked_in";
@@ -554,9 +556,9 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     return appointment;
   }
 
-  /**
+  /**;
    * Start appointment;
-   */
+   */;
   async startAppointment(appointmentId: string): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
     if (!session.user) {
@@ -575,9 +577,9 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     return appointment;
   }
 
-  /**
+  /**;
    * Complete appointment;
-   */
+   */;
   async completeAppointment(appointmentId: string): Promise<Appointment> {
     const appointment = this.appointments.get(appointmentId);
     if (!session.user) {
@@ -593,7 +595,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     appointment.check_out_time = new Date();
 
     if (!session.user) {
-      appointment.actual_duration = Math.round(
+      appointment.actual_duration = Math.round();
         (appointment.actual_end_time.getTime() - appointment.actual_start_time.getTime()) / (1000 * 60);
       );
     }
@@ -604,41 +606,41 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     return appointment;
   }
 
-  /**
+  /**;
    * Schedule reminders for appointment;
-   */
+   */;
   private async scheduleReminders(appointment: Appointment): Promise<void> {
-    const appointmentDateTime = new Date(`/* SECURITY: Template literal eliminated */
+    const appointmentDateTime = new Date(`/* SECURITY: Template literal eliminated */;
     const reminders: AppointmentReminder[] = [];
 
-    // 24-hour reminder
+    // 24-hour reminder;
     const uuidv4(),
       "email",
       reminder_time: new Date(appointmentDateTime.getTime() - 24 * 60 * 60 * 1000).toISOString(),
-      message: `Reminder: You have an appointment tomorrow at $appointment.scheduled_timewith ${appointment.provider_name ||
+      message: `Reminder: You have an appointment tomorrow at $appointment.scheduled_timewith ${appointment.provider_name ||;
         "your provider"}.`,
       sent: false,
       new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
-    // 2-hour reminder
+    // 2-hour reminder;
     const uuidv4(),
       "sms",
       reminder_time: new Date(appointmentDateTime.getTime() - 2 * 60 * 60 * 1000).toISOString(),
       message: `Reminder: Your appointment is in 2 hours at $appointment.scheduled_time. Location: $appointment.location`,
       sent: false,
       new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     reminders.push(reminder24h, reminder2h);
     this.reminders.set(appointment.id, reminders);
   }
 
-  /**
+  /**;
    * Add patient to waitlist;
-   */
+   */;
   async addToWaitlist(waitlistData: z.infer<typeof WaitlistEntrySchema>): Promise<WaitlistEntry> {
     const validatedData = WaitlistEntrySchema.parse(waitlistData);
 
@@ -648,65 +650,65 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       entry_date: new Date(),
       status: "active",
       new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.waitlist.set(waitlistEntry.id, waitlistEntry);
     return waitlistEntry;
   }
 
-  /**
+  /**;
    * Process waitlist when appointments become available;
-   */
+   */;
   private async processWaitlist(providerId: string, date: string): Promise<void> {
     const availableSlots = await this.findAvailableSlots(providerId, undefined, date);
     if (!session.user)eturn;
 
     const activeWaitlistEntries = Array.from(this.waitlist.values());
-      .filter(entry =>
+      .filter(entry => {}
         entry.status === "active" &&;
         (!entry.provider_id || entry.provider_id === providerId) &&;
         entry.preferred_dates.includes(date);
       );
-      .sort((a, b) => b.priority_score - a.priority_score); // Higher priority first
+      .sort((a, b) => b.priority_score - a.priority_score); // Higher priority first;
 
     for (const entry of activeWaitlistEntries) {
       if (!session.user)reak;
 
-      const suitableSlot = availableSlots.find(slot =>
+      const suitableSlot = availableSlots.find(slot => {}
         entry.preferred_times.length === 0 ||;
-        entry.preferred_times.some(preferredTime =>
+        entry.preferred_times.some(preferredTime => {}
           Math.abs(this.timeToMinutes(slot.time) - this.timeToMinutes(preferredTime)) <= 60;
         );
       );
 
       if (!session.user) {
-        // Contact patient (in real implementation, this would send notifications)
-        entry.status = "contacted"
+        // Contact patient (in real implementation, this would send notifications);
+        entry.status = "contacted";
         entry.last_contact_date = new Date();
         entry.contact_attempts++;
         entry.updated_at = new Date();
 
         this.waitlist.set(entry.id, entry);
 
-        // Remove slot from available slots
+        // Remove slot from available slots;
         const slotIndex = availableSlots.indexOf(suitableSlot);
         availableSlots.splice(slotIndex, 1);
       }
-    }
-  }
 
-  /**
+
+
+  /**;
    * Convert time string to minutes;
-   */
+   */;
   private timeToMinutes(time: string): number {
     const [hours, minutes] = time.split(":").map(Number),
     return hours * 60 + minutes;
-  }
 
-  /**
+
+  /**;
    * Get appointments with filters;
-   */
+   */;
   async getAppointments(filters?: {
     patient_id?: string;
     provider_id?: string;
@@ -721,60 +723,60 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     let filteredAppointments = Array.from(this.appointments.values());
 
-    // Apply filters
+    // Apply filters;
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.patient_id === searchFilters.patient_id);
-    }
+
 
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.provider_id === searchFilters.provider_id);
-    }
+
 
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.status === searchFilters.status);
-    }
+
 
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.appointment_type === searchFilters.appointment_type);
-    }
+
 
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date >= searchFilters.date_from!);
-    }
+
 
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date <= searchFilters.date_to!);
-    }
 
-    // Sort by appointment date and time
+
+    // Sort by appointment date and time;
     filteredAppointments.sort((a, b) => {
-      const dateTimeA = new Date(`/* SECURITY: Template literal eliminated */
-      const dateTimeB = new Date(`/* SECURITY: Template literal eliminated */
-      return dateTimeA.getTime() - dateTimeB.getTime()
+      const dateTimeA = new Date(`/* SECURITY: Template literal eliminated */;
+      const dateTimeB = new Date(`/* SECURITY: Template literal eliminated */;
+      return dateTimeA.getTime() - dateTimeB.getTime();
     });
 
-    // Pagination
+    // Pagination;
     const total = filteredAppointments.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
     const appointments = filteredAppointments.slice(startIndex, startIndex + limit);
 
     return { appointments, total, totalPages };
-  }
 
-  /**
+
+  /**;
    * Get appointment statistics;
-   */
+   */;
   async getAppointmentStats(dateFrom?: string, dateTo?: string): Promise<AppointmentStats> {
     const appointments = Array.from(this.appointments.values());
 
     let filteredAppointments = appointments;
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date >= dateFrom);
-    }
+
     if (!session.user) {
       filteredAppointments = filteredAppointments.filter(appt => appt.scheduled_date <= dateTo);
-    }
+
 
     const totalAppointments = filteredAppointments.length;
     const scheduled = filteredAppointments.filter(appt => appt.status === "scheduled").length;
@@ -785,8 +787,8 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
 
     const showRate = totalAppointments > 0 ? ((completed / (completed + noShows)) * 100) : 0;
 
-    // Calculate average wait time
-    const appointmentsWithWaitTime = filteredAppointments.filter(appt =>
+    // Calculate average wait time;
+    const appointmentsWithWaitTime = filteredAppointments.filter(appt => {}
       appt?.check_in_time && appt.actual_start_time;
     );
 
@@ -798,7 +800,7 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
     const averageWaitTime = appointmentsWithWaitTime.length > 0 ?;
       totalWaitTime / appointmentsWithWaitTime.length : 0;
 
-    // Most common appointment types
+    // Most common appointment types;
     const appointmentTypeCounts = filteredAppointments.reduce((acc, appt) => {
       acc[appt.appointment_type] = (acc[appt.appointment_type] || 0) + 1;
       return acc;
@@ -809,9 +811,9 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       .sort((a, b) => b.count - a.count);
       .slice(0, 5);
 
-    // Calculate provider utilization and revenue (simplified)
-    const providerUtilization = 85; // Simplified calculation
-    const revenueGenerated = completed * 150; // $150 average per appointment
+    // Calculate provider utilization and revenue (simplified);
+    const providerUtilization = 85; // Simplified calculation;
+    const revenueGenerated = completed * 150; // $150 average per appointment;
 
     return {
       total_appointments: totalAppointments;
@@ -822,13 +824,13 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       no_shows: noShows,
       Math.round(averageWaitTime * 100) / 100,
       revenueGenerated,
-      most_common_appointment_types: mostCommonAppointmentTypes
+      most_common_appointment_types: mostCommonAppointmentTypes;
     };
-  }
 
-  /**
+
+  /**;
    * Set provider schedule;
-   */
+   */;
   async setProviderSchedule(scheduleData: z.infer<typeof ProviderScheduleSchema>): Promise<ProviderSchedule> {
     const validatedData = ProviderScheduleSchema.parse(scheduleData);
 
@@ -836,28 +838,29 @@ export type WaitlistEntry = z.infer<typeof WaitlistEntrySchema> & {
       ...validatedData,
       id: uuidv4(),
       new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     const providerSchedules = this.providerSchedules.get(validatedData.provider_id) || [];
 
-    // Remove existing schedule for the same date
+    // Remove existing schedule for the same date;
     const filteredSchedules = providerSchedules.filter(s => s.date !== validatedData.date);
     filteredSchedules.push(schedule);
 
     this.providerSchedules.set(validatedData.provider_id, filteredSchedules);
     return schedule;
-  }
 
-  /**
+
+  /**;
    * Get today"s appointments for a provider;
-   */
+   */;
   async getTodaysAppointments(providerId: string): Promise<Appointment[]> {
     const today = new Date().toISOString().split("T")[0];
     return this.getAppointmentsByProvider(providerId, today);
       .sort((a, b) => a.scheduled_time.localeCompare(b.scheduled_time));
-  }
-}
 
-// Export singleton instance
+
+
+// Export singleton instance;
 export const _appointmentSchedulingService = new AppointmentSchedulingService();
+)))))))))))))

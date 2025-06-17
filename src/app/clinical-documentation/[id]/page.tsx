@@ -7,22 +7,22 @@ import { DocumentViewer } from "../../../components/clinical-documentation/docum
 import { authOptions } from "../../../lib/auth";
 export default async const _DocumentViewPage = ({
   params;
-}: {id: string 
+}: {id: string ;
 }) {
-  // Get session
+  // Get session;
   const session = await getServerSession(authOptions);
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated;
   if (!session.user) {
     redirect("/login");
   }
 
-  return (
-    >
+  return();
+    >;
       <Suspense fallback={<div>Loading document...</div>}>;
-        <DocumentViewer documentId={params.id} />
-      </Suspense>
-    </div>
+        <DocumentViewer documentId={params.id} />;
+      </Suspense>;
+    </div>;
   );
 
 }

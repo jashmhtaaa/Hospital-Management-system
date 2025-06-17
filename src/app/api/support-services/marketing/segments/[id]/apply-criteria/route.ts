@@ -7,20 +7,20 @@ import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { SegmentService } from "@/lib/services/support-services/marketing";
 const segmentService = new SegmentService();
 
-/**
+/**;
  * POST /api/support-services/marketing/segments/:id/apply-criteria;
  * Apply segment criteria to find matching contacts;
- */
-export const POST = async (
+ */;
+export const POST = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
 
-      const result = await segmentService.applySegmentCriteria(
+      const result = await segmentService.applySegmentCriteria();
         params.id,
         session?.user?.id as string;
       );
@@ -29,7 +29,7 @@ export const POST = async (
     },
     {
       requiredPermission: "marketing.segments.update",
-      auditAction: "SEGMENT_CRITERIA_APPLY"
+      auditAction: "SEGMENT_CRITERIA_APPLY";
     }
   );
 

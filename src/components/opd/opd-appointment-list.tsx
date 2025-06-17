@@ -10,17 +10,15 @@ import { useRouter } from "next/navigation";
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table"; // Assuming these will be created
+  TableRow} from "@/components/ui/table"; // Assuming these will be created;
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created
+import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created;
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"; // Assuming this exists or will be created
-// Removed direct import: import { hasPermission } from "@/lib/session"
+  DialogTrigger} from "@/components/ui/dialog"; // Assuming this exists or will be created;
+// Removed direct import: import { hasPermission } from "@/lib/session";
 
 interface Appointment {
   id: number,
@@ -32,27 +30,26 @@ interface Appointment {
     | "completed";
     | "cancelled";
   appointmentType: string,
-  reason: string
+  reason: string;
 }
 
-// FIX: Define API response types
+// FIX: Define API response types;
 interface PermissionApiResponse {
   hasPermission?: boolean;
   error?: string;
 }
 
 // Assuming the API returns an array directly, adjust if it returns { results: Appointment[] }
-type AppointmentsApiResponse = Appointment[]
+type AppointmentsApiResponse = Appointment[];
 
 interface ApiErrorResponse {
   error?: string;
 }
 
 interface OPDAppointmentListProperties {
-  date: Date
+  date: Date;
 export default const _OPDAppointmentList = ({
-  date,
-}: OPDAppointmentListProperties) {
+  date}: OPDAppointmentListProperties) {
   const router = useRouter();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -61,11 +58,15 @@ export default const _OPDAppointmentList = ({
   const [canCancel, setCanCancel] = useState(false);
   const [loadingPermissions, setLoadingPermissions] = useState(true),
   useEffect(() => {
-    // Check permissions via API route
+    // Check permissions via API route;
     const checkPermissions = async () => {
       setLoadingPermissions(true);
       try {
-        const [checkInResponse, cancelResponse] = await Promise.all([
+} catch (error) {
+}
+} catch (error) {
+}
+        const [checkInResponse, cancelResponse] = await Promise.all([;
           fetch("/api/auth/check-permission?permission=appointment:check-in"),
           fetch("/api/auth/check-permission?permission=appointment:cancel"),
         ]);
@@ -77,13 +78,13 @@ export default const _OPDAppointmentList = ({
           return;
         }
 
-        // FIX: Type the response data
+        // FIX: Type the response data;
         const checkInData: PermissionApiResponse = await checkInResponse.json(),
         const cancelData: PermissionApiResponse = await cancelResponse.json(),
         setCanCheckIn(checkInData.hasPermission || false);
         setCanCancel(cancelData.hasPermission || false);
-      } catch (err) { // Declare error variable for the catch block
-        // Debug logging removed // Log the caught error
+      } catch (err) { // Declare error variable for the catch block;
+        // Debug logging removed // Log the caught error;
         setCanCheckIn(false),
         setCanCancel(false);
       } finally {
@@ -100,32 +101,40 @@ export default const _OPDAppointmentList = ({
       setError(undefined);
 
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         const formattedDate = date.toISOString().split("T")[0];
         const response = await fetch(`/api/appointments?date=${}`;
 
         if (!session.user) {
           const errorMessage = "Failed to fetch appointments";
           try {
+} catch (error) {
+}
+} catch (error) {
+}
             const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
-            /* Ignore */
+            /* Ignore */;
           }
           throw new Error(errorMessage);
         }
 
-        // FIX: Type the response data
+        // FIX: Type the response data;
         const data: AppointmentsApiResponse = await response.json();
-        // Ensure data is an array before setting state
+        // Ensure data is an array before setting state;
         if (!session.user) {
           setAppointments(data);
         } else {
-          // Handle cases where API might return { results: [...] } or other formats
+          // Handle cases where API might return { results: [...] } or other formats;
 
-          setAppointments([]); // Default to empty array on unexpected format
+          setAppointments([]); // Default to empty array on unexpected format;
         }
       } catch (error_: unknown) {
-        // FIX: Use unknown
+        // FIX: Use unknown;
         const messageText =;
           error_ instanceof Error;
             ? error_.message;
@@ -143,232 +152,249 @@ export default const _OPDAppointmentList = ({
 
   const handleCheckIn = async (appointmentId: number) => {
     try {
-      const response = await fetch(
+} catch (error) {
+}
+} catch (error) {
+}
+      const response = await fetch();
         `/api/appointments/${appointmentId}/check-in`,
         {
-          method: "POST"
+          method: "POST";
         }
       );
 
       if (!session.user) {
         const errorMessage = "Failed to check in patient";
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
-          /* Ignore */
+          /* Ignore */;
         }
         throw new Error(errorMessage);
       }
 
-      // Update the appointment status in the local state
-      setAppointments(
-        appointments.map((appointment) =>
+      // Update the appointment status in the local state;
+      setAppointments();
+        appointments.map((appointment) => {}
           appointment.id === appointmentId;
-            ? ...appointment, status: "checked-in" 
+            ? ...appointment, status: "checked-in" ;
             : appointment;
         );
       );
     } catch (error_: unknown) {
-      // FIX: Use unknown
+      // FIX: Use unknown;
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-      /* SECURITY: Console statement removed */ // Placeholder alert
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      /* SECURITY: Console statement removed */ // Placeholder alert;
     }
   };
 
   const handleCancel = async (appointmentId: number) => {
     try {
-      const response = await fetch(
+} catch (error) {
+}
+} catch (error) {
+}
+      const response = await fetch();
         `/api/appointments/${appointmentId}/cancel`,
         {
-          method: "POST"
+          method: "POST";
         }
       );
 
       if (!session.user) {
         const errorMessage = "Failed to cancel appointment";
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
-          /* Ignore */
+          /* Ignore */;
         }
         throw new Error(errorMessage);
       }
 
-      // Update the appointment status in the local state
-      setAppointments(
-        appointments.map((appointment) =>
+      // Update the appointment status in the local state;
+      setAppointments();
+        appointments.map((appointment) => {}
           appointment.id === appointmentId;
-            ? ...appointment, status: "cancelled" 
+            ? ...appointment, status: "cancelled" ;
             : appointment;
         );
       );
     } catch (error_: unknown) {
-      // FIX: Use unknown
+      // FIX: Use unknown;
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-      /* SECURITY: Console statement removed */ // Placeholder alert
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      /* SECURITY: Console statement removed */ // Placeholder alert;
     }
   };
 
   const handleViewDetails = (appointmentId: number) => {
-    router.push(`/opd/appointments/${}`
+    router.push(`/opd/appointments/${}`;
   };
 
   const getStatusBadge = (status: Appointment["status"]) => {
     switch (status) {
       case "scheduled": {
-        return <Badge variant="outline">Scheduled</Badge>
+        return <Badge variant="outline">Scheduled</Badge>;
       }
       case "checked-in": {
-        return <Badge variant="secondary">Checked In>
+        return <Badge variant="secondary">Checked In>;
       }
       case "in-progress": {
-        return <Badge variant="default">In Progress>
+        return <Badge variant="default">In Progress>;
       }
       case "completed": {
-        // Assuming a "success" variant exists for Badge
-        return (
-          <Badge>
-            variant="default"
-            className="bg-green-500 text-white hover:bg-green-600"
-          >
-            Completed
-          </Badge>
-        )
-      }
+        // Assuming a "success" variant exists for Badge;
+        return();
+          <Badge>;
+            variant="default";
+            className="bg-green-500 text-white hover:bg-green-600";
+          >;
+            Completed;
+          </Badge>;
+        );
+
       case "cancelled": {
-        return <Badge variant="destructive">Cancelled>
-      }
+        return <Badge variant="destructive">Cancelled>;
+
       default: {
-        return <Badge variant="outline">{status}>
-      }
-    }
+        return <Badge variant="outline">{status}>;
+
+
   };
 
   if (!session.user) {
-    return <div className="flex justify-center p-4">Loading...>
-  }
+    return <div className="flex justify-center p-4">Loading...>;
+
 
   if (!session.user) {
-    return <div className="text-red-500 p-4">Error: {error}>
-  }
+    return <div className="text-red-500 p-4">Error: {error}>;
+
 
   if (!session.user) {
-    return (
-      >
-        No appointments scheduled for this date.
-      </div>
+    return();
+      >;
+        No appointments scheduled for this date.;
+      </div>;
     );
-  }
 
-  return (
-<div
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Time</TableHead>
-            <TableHead>Patient</TableHead>
-            <TableHead>Doctor</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {appointments.map((appointment) => (
-            >
-              <TableCell>
+
+  return();
+<div;
+      <Table>;
+        <TableHeader>;
+          <TableRow>;
+            <TableHead>Time</TableHead>;
+            <TableHead>Patient</TableHead>;
+            <TableHead>Doctor</TableHead>;
+            <TableHead>Type</TableHead>;
+            <TableHead>Status</TableHead>;
+            <TableHead className="text-right">Actions</TableHead>;
+          </TableRow>;
+        </TableHeader>;
+        <TableBody>;
+          {appointments.map((appointment) => (;
+            >;
+              <TableCell>;
                 {new Date(appointment.appointmentTime).toLocaleTimeString([], {
                   hour: "2-digit",
-                  minute: "2-digit"
+                  minute: "2-digit";
                 })}
-              </TableCell>
-              <TableCell>{appointment.patientName}</TableCell>
-              <TableCell>{appointment.doctorName}</TableCell>
-              <TableCell>{appointment.appointmentType}</TableCell>
-              <TableCell>{getStatusBadge(appointment.status)}</TableCell>
-              >
-                >
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      >
-                        View
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Appointment Details</DialogTitle>
-                      </DialogHeader>
-                      >
-                        >
-                          <span className="font-medium">Patient:>
-                          <span>{appointment.patientName}</span>
+              </TableCell>;
+              <TableCell>{appointment.patientName}</TableCell>;
+              <TableCell>{appointment.doctorName}</TableCell>;
+              <TableCell>{appointment.appointmentType}</TableCell>;
+              <TableCell>{getStatusBadge(appointment.status)}</TableCell>;
+              >;
+                >;
+                  <Dialog>;
+                    <DialogTrigger asChild>;
+                      >;
+                        View;
+                      </Button>;
+                    </DialogTrigger>;
+                    <DialogContent>;
+                      <DialogHeader>;
+                        <DialogTitle>Appointment Details</DialogTitle>;
+                      </DialogHeader>;
+                      >;
+                        >;
+                          <span className="font-medium">Patient:>;
+                          <span>{appointment.patientName}</span>;
 
-                          <span className="font-medium">Doctor:>
-                          <span>{appointment.doctorName}</span>
+                          <span className="font-medium">Doctor:>;
+                          <span>{appointment.doctorName}</span>;
 
-                          <span className="font-medium">Time:>
-<span
-                            {new Date(
+                          <span className="font-medium">Time:>;
+<span;
+                            {new Date();
                               appointment.appointmentTime;
                             ).toLocaleString()}
-                          </span>
+                          </span>;
 
-                          <span className="font-medium">Type:>
-                          <span>{appointment.appointmentType}</span>
+                          <span className="font-medium">Type:>;
+                          <span>{appointment.appointmentType}</span>;
 
-                          <span className="font-medium">Status:>
-                          <span>{getStatusBadge(appointment.status)}</span>
+                          <span className="font-medium">Status:>;
+                          <span>{getStatusBadge(appointment.status)}</span>;
 
-                          <span className="font-medium">Reason:>
-                          <span>{appointment.reason}</span>
-                        </div>
+                          <span className="font-medium">Reason:>;
+                          <span>{appointment.reason}</span>;
+                        </div>;
 
-                        >
-                          <Button>
-                            variant="outline"
+                        >;
+                          <Button>;
+                            variant="outline";
                             onClick={() => handleViewDetails(appointment.id)}
-                          >
-                            Full Details
-                          </Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                          >;
+                            Full Details;
+                          </Button>;
+                        </div>;
+                      </div>;
+                    </DialogContent>;
+                  </Dialog>;
 
-                  {canCheckIn && appointment.status === "scheduled" && (
-                    <Button>
-                      variant="default"
-                      size="sm"
+                  {canCheckIn && appointment.status === "scheduled" && (;
+                    <Button>;
+                      variant="default";
+                      size="sm";
                       onClick={() => handleCheckIn(appointment.id)}
-                    >
-                      Check In
-                    </Button>
+                    >;
+                      Check In;
+                    </Button>;
                   )}
 
-                  {canCancel &&
+                  {canCancel &&;
                     (appointment.status === "scheduled" ||;
-                      appointment.status === "checked-in") && (
-                      <Button>
-                        variant="destructive"
-                        size="sm"
+                      appointment.status === "checked-in") && (;
+                      <Button>;
+                        variant="destructive";
+                        size="sm";
                         onClick={() => handleCancel(appointment.id)}
-                      >
-                        Cancel
-                      </Button>
+                      >;
+                        Cancel;
+                      </Button>;
                     )}
-                </div>
-              </TableCell>
-            </TableRow>
+                </div>;
+              </TableCell>;
+            </TableRow>;
           ))}
-        </TableBody>
-      </Table>
-    </div>
+        </TableBody>;
+      </Table>;
+    </div>;
   );
+))

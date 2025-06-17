@@ -1,5 +1,1 @@
-}
-
-// types/schedule.ts
-
-}
+// types/schedule.ts;

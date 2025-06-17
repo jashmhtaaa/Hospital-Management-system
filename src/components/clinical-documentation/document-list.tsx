@@ -12,15 +12,13 @@ import { useRouter } from "next/navigation";
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+  SelectValue} from "../ui/select";
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
-} from "../ui/card";
+  CardTitle} from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Pagination } from "../ui/pagination";
@@ -33,43 +31,47 @@ interface Document {
   string,
   string,
   string,
-  boolean
+  boolean;
 }
 
 interface PaginationInfo {
   total: number,
   number,
-  totalPages: number
+  totalPages: number;
 }
 
 interface DocumentListProps {
-  patientId: string
+  patientId: string;
 export const _DocumentList = ({ patientId }: DocumentListProps) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  // State
+  // State;
   const [documents, setDocuments] = useState<Document[]>([]);
   const [pagination, setPagination] = useState<PaginationInfo>({
     total: 0,
     10,
-    totalPages: 0
+    totalPages: 0;
   });
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     documentType: "",
     null as Date | null,
-    dateTo: null as Date | null
+    dateTo: null as Date | null;
   });
 
-  // Fetch documents
+  // Fetch documents;
   const fetchDocuments = async () => {
     if (!session.user)eturn;
 
     setLoading(true);
 
     try {
-      // Build query parameters
+} catch (error) {
+}
+} catch (error) {
+}
+      // Build query parameters;
       const params = new URLSearchParams();
       params.append("patientId", patientId);
       params.append("page", pagination.page.toString());
@@ -91,7 +93,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
         params.append("dateTo", filters.dateTo.toISOString());
       }
 
-      // Fetch documents
+      // Fetch documents;
       const response = await fetch(`/api/clinical-documentation?${}`;
 
       if (!session.user) {
@@ -105,195 +107,196 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setLoading(false);
     }
   };
 
-  // Effect to fetch documents on initial load and when filters or pagination change
+  // Effect to fetch documents on initial load and when filters or pagination change;
   useEffect(() => {
     fetchDocuments();
   }, [patientId, pagination.page, pagination.pageSize, filters]);
 
-  // Handle filter changes
+  // Handle filter changes;
   const handleFilterChange = (name: string, value: unknown) => {
     setFilters(prev => ({ ...prev, [name]: value }));
-    setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page
+    setPagination(prev => ({ ...prev, page: 1 })); // Reset to first page;
   };
 
-  // Handle page change
+  // Handle page change;
   const handlePageChange = (page: number) => {
-    setPagination(prev => ({ ...prev, page }))
+    setPagination(prev => ({ ...prev, page }));
   };
 
-  // Handle document click
+  // Handle document click;
   const handleDocumentClick = (documentId: string) => {
-    router.push(`/clinical-documentation/${}`
+    router.push(`/clinical-documentation/${}`;
   };
 
-  // Handle create document
+  // Handle create document;
   const handleCreateDocument = () => {
-    router.push(`/clinical-documentation/create?patientId=${}`
+    router.push(`/clinical-documentation/create?patientId=${}`;
   };
 
-  // Get status badge variant
+  // Get status badge variant;
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
-      case "Draft":
+      case "Draft": any;
         return "secondary";
-      case "Preliminary":
+      case "Preliminary": any;
         return "warning";
-      case "Final":
+      case "Final": any;
         return "success";
-      case "Amended":
+      case "Amended": any;
         return "info";
-      case "Canceled":
+      case "Canceled": any;
         return "destructive";
-      default: return "default"
-    }
+      default: return "default";
+
   };
 
-  return (
-    >
-      <CardHeader>
-        <CardTitle>Clinical Documents</CardTitle>
-        <CardDescription>Manage patient clinical documentation</CardDescription>
-      </CardHeader>
+  return();
+    >;
+      <CardHeader>;
+        <CardTitle>Clinical Documents</CardTitle>;
+        <CardDescription>Manage patient clinical documentation</CardDescription>;
+      </CardHeader>;
 
-      <CardContent>
+      <CardContent>;
         {/* Filters */}
-        >
-          >
-            <Select>
+        >;
+          >;
+            <Select>;
               value={filters.documentType}
               onValueChange={(value) => handleFilterChange("documentType", value)}
-            >
-              >
-                <SelectValue placeholder="Document Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Types>
-                <SelectItem value="Admission Note">Admission Note>
-                <SelectItem value="Progress Note">Progress Note>
-                <SelectItem value="Discharge Summary">Discharge Summary>
-                <SelectItem value="Consultation Note">Consultation Note>
-                <SelectItem value="Operative Report">Operative Report>
-                <SelectItem value="Procedure Note">Procedure Note>
-                <SelectItem value="History and Physical">History and Physical</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+            >;
+              >;
+                <SelectValue placeholder="Document Type" />;
+              </SelectTrigger>;
+              <SelectContent>;
+                <SelectItem value="">All Types>;
+                <SelectItem value="Admission Note">Admission Note>;
+                <SelectItem value="Progress Note">Progress Note>;
+                <SelectItem value="Discharge Summary">Discharge Summary>;
+                <SelectItem value="Consultation Note">Consultation Note>;
+                <SelectItem value="Operative Report">Operative Report>;
+                <SelectItem value="Procedure Note">Procedure Note>;
+                <SelectItem value="History and Physical">History and Physical</SelectItem>;
+              </SelectContent>;
+            </Select>;
+          </div>;
 
-          >
-            <Select>
+          >;
+            <Select>;
               value={filters.status}
               onValueChange={(value) => handleFilterChange("status", value)}
-            >
-              >
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Statuses>
-                <SelectItem value="Draft">Draft>
-                <SelectItem value="Preliminary">Preliminary>
-                <SelectItem value="Final">Final>
-                <SelectItem value="Amended">Amended>
-                <SelectItem value="Canceled">Canceled</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+            >;
+              >;
+                <SelectValue placeholder="Status" />;
+              </SelectTrigger>;
+              <SelectContent>;
+                <SelectItem value="">All Statuses>;
+                <SelectItem value="Draft">Draft>;
+                <SelectItem value="Preliminary">Preliminary>;
+                <SelectItem value="Final">Final>;
+                <SelectItem value="Amended">Amended>;
+                <SelectItem value="Canceled">Canceled</SelectItem>;
+              </SelectContent>;
+            </Select>;
+          </div>;
 
-          >
-            <DatePicker>
-              placeholder="From Date"
+          >;
+            <DatePicker>;
+              placeholder="From Date";
               date={filters.dateFrom}
               onSelect={(date) => handleFilterChange("dateFrom", date)}
-            />
-          </div>
+            />;
+          </div>;
 
-          >
-            <DatePicker>
-              placeholder="To Date"
+          >;
+            <DatePicker>;
+              placeholder="To Date";
               date={filters.dateTo}
               onSelect={(date) => handleFilterChange("dateTo", date)}
-            />
-          </div>
-        </div>
+            />;
+          </div>;
+        </div>;
 
         {/* Documents Table */}
-        >
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Document Type</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Confidential</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading && (
-                <TableRow>
-                  >
-                    Loading documents...
-                  </TableCell>
-                </TableRow>
+        >;
+          <Table>;
+            <TableHeader>;
+              <TableRow>;
+                <TableHead>Document Type</TableHead>;
+                <TableHead>Title</TableHead>;
+                <TableHead>Date</TableHead>;
+                <TableHead>Status</TableHead>;
+                <TableHead>Confidential</TableHead>;
+              </TableRow>;
+            </TableHeader>;
+            <TableBody>;
+              {loading && (;
+                <TableRow>;
+                  >;
+                    Loading documents...;
+                  </TableCell>;
+                </TableRow>;
               )}
 
-              {!loading && documents.length === 0 && (
-                <TableRow>
-                  >
-                    No documents found
-                  </TableCell>
-                </TableRow>
+              {!loading && documents.length === 0 && (;
+                <TableRow>;
+                  >;
+                    No documents found;
+                  </TableCell>;
+                </TableRow>;
               )}
 
-              {!loading && documents.map((document) => (
-                <TableRow>
+              {!loading && documents.map((document) => (;
+                <TableRow>;
                   key={document.id}
-                  className="cursor-pointer hover:bg-gray-50"
+                  className="cursor-pointer hover:bg-gray-50";
                   onClick={() => handleDocumentClick(document.id)}
-                >
-                  <TableCell>{document.documentType}</TableCell>
-                  <TableCell>{document.documentTitle}</TableCell>
-                  <TableCell>{format(new Date(document.authoredDate), "MMM dd, yyyy")}</TableCell>
-                  <TableCell>
-                    >
+                >;
+                  <TableCell>{document.documentType}</TableCell>;
+                  <TableCell>{document.documentTitle}</TableCell>;
+                  <TableCell>{format(new Date(document.authoredDate), "MMM dd, yyyy")}</TableCell>;
+                  <TableCell>;
+                    >;
                       {document.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {document.isConfidential ? (
-                      <Badge variant="destructive">Confidential>
-                    ) : (
-                      <span>No</span>
+                    </Badge>;
+                  </TableCell>;
+                  <TableCell>;
+                    {document.isConfidential ? (;
+                      <Badge variant="destructive">Confidential>;
+                    ) : (;
+                      <span>No</span>;
                     )}
-                  </TableCell>
-                </TableRow>
+                  </TableCell>;
+                </TableRow>;
               ))}
-            </TableBody>
-          </Table>
-        </div>
+            </TableBody>;
+          </Table>;
+        </div>;
 
         {/* Pagination */}
-        {pagination.totalPages > 1 && (
-          >
-            <Pagination>
+        {pagination.totalPages > 1 && (;
+          >;
+            <Pagination>;
               currentPage={pagination.page}
               totalPages={pagination.totalPages}
               onPageChange={handlePageChange}
-            />
-          </div>
+            />;
+          </div>;
         )}
-      </CardContent>
+      </CardContent>;
 
-      >
-        >
-          Create Document
-        </Button>
-      </CardFooter>
-    </Card>
+      >;
+        >;
+          Create Document;
+        </Button>;
+      </CardFooter>;
+    </Card>;
   );
+)))

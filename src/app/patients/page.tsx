@@ -18,19 +18,19 @@ export default async const _PatientsPage = ({
     email?: string;
     status?: string;
 }) {
-  // Get session
+  // Get session;
   const session = await getServerSession(authOptions);
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated;
   if (!session.user) {
     redirect("/login");
   }
 
-  // Parse pagination parameters
+  // Parse pagination parameters;
   const page = searchParams.page ? Number.parseInt(searchParams.page) : 1;
   const limit = searchParams.limit ? Number.parseInt(searchParams.limit) : 10;
 
-  // Build search filters
+  // Build search filters;
   const filters: unknown = {};
   if (!session.user)ilters.mrn = searchParams.mrn;
   if (!session.user)ilters.firstName = searchParams.firstName;
@@ -40,20 +40,24 @@ export default async const _PatientsPage = ({
   if (!session.user)ilters.email = searchParams.email;
   if (!session.user)ilters.status = searchParams.status;
 
-  // Fetch patients data (server-side)
-  let initialData
+  // Fetch patients data (server-side);
+  let initialData;
   try {
-    // Build query parameters
+} catch (error) {
+}
+} catch (error) {
+}
+    // Build query parameters;
     const params = new URLSearchParams();
     params.append("page", page.toString());
     params.append("limit", limit.toString());
 
-    // Add filters if they have values
+    // Add filters if they have values;
     Object.entries(filters).forEach(([key, value]) => {
       if (!session.user)arams.append(key, value as string);
     });
 
-    // Fetch patients
+    // Fetch patients;
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients?${params.toString()}`, {
       cache: "no-store",
       `next-auth.session-token=${session.user.id}`;
@@ -65,13 +69,13 @@ export default async const _PatientsPage = ({
     }
   } catch (error) {
 
-    // Will let client-side handling take over
-  }
+    // Will let client-side handling take over;
 
-  return (
-    >
+
+  return();
+    >;
       <Suspense fallback={<div>Loading patients...</div>}>;
-        <PatientList initialData={initialData} />
-      </Suspense>
-    </div>
+        <PatientList initialData={initialData} />;
+      </Suspense>;
+    </div>;
   );

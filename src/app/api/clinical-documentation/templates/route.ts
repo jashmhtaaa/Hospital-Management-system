@@ -5,31 +5,34 @@ import { type NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../../../lib/auth";
 import { BadRequestError, NotFoundError, UnauthorizedError } from "../../../../lib/core/errors";
 import { clinicalDocumentationService } from "../../../../services/clinical-documentation.service";
-/**
+/**;
  * GET /api/clinical-documentation/templates;
- *
+ *;
  * Get document templates based on filters;
- */
+ */;
 export const GET = async (request: NextRequest) => {
   try {
-    // Get session
+} catch (error) {
+}
+} catch (error) {
+}
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get query parameters
+    // Get query parameters;
     const searchParams = request.nextUrl.searchParams;
 
-    // Build filters
+    // Build filters;
     const filters = {
       templateType: searchParams.get("templateType") || undefined,
       searchParams.has("page") ? Number.parseInt(searchParams.get("page") as string, 10) : 1,
-      pageSize: searchParams.has("pageSize") ? parseInt(searchParams.get("pageSize") as string, 10) : 20,
-    };
+      pageSize: searchParams.has("pageSize") ? parseInt(searchParams.get("pageSize") as string, 10) : 20};
 
-    // Get templates
-    const result = await clinicalDocumentationService.getDocumentTemplates(
+    // Get templates;
+    const result = await clinicalDocumentationService.getDocumentTemplates();
       filters,
       session.user.id;
     );
@@ -53,23 +56,27 @@ export const GET = async (request: NextRequest) => {
   }
 }
 
-/**
+/**;
  * POST /api/clinical-documentation/templates;
- *
+ *;
  * Create a new document template;
- */
+ */;
 export const POST = async (request: NextRequest) => {
   try {
-    // Get session
+} catch (error) {
+}
+} catch (error) {
+}
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user) {
       return NextResponse.json({ error: "Template name is required" }, { status: 400 });
     }
@@ -82,7 +89,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json({ error: "Content is required" }, { status: 400 });
     }
 
-    // Create template
+    // Create template;
     const template = await clinicalDocumentationService.createDocumentTemplate(body, session.user.id);
 
     return NextResponse.json(template, { status: 201 });
@@ -101,8 +108,8 @@ export const POST = async (request: NextRequest) => {
     }
 
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-  }
 
-}
+
+
 
 export async function GET() { return new Response("OK"); }

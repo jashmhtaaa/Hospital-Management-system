@@ -3,7 +3,7 @@ import { z } from "zod";
 
 
 import { employeeService } from "@/lib/hr/employee-service";
-// Schema for employee update
+// Schema for employee update;
 const updateEmployeeSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
@@ -17,19 +17,23 @@ const updateEmployeeSchema = z.object({
   photo: z.string().optional(),
   emergencyContact: z.any().optional(),
   active: z.boolean().optional(),
-  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
+  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
 });
 
-// GET /api/hr/staff/[id]
-export const _GET = async (
+// GET /api/hr/staff/[id];
+export const _GET = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
-    const employee = await employeeService.getEmployeeById(params.id)
+} catch (error) {
+}
+} catch (error) {
+}
+    const employee = await employeeService.getEmployeeById(params.id);
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Employee not found" },
         { status: 404 }
       );
@@ -38,80 +42,87 @@ export const _GET = async (
     return NextResponse.json(employee);
   } catch (error: unknown) {
 
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to fetch employee", details: error.message },
       { status: 500 }
     );
   }
 }
 
-// PUT /api/hr/staff/[id]
-export const _PUT = async (
+// PUT /api/hr/staff/[id];
+export const _PUT = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
-    const body = await request.json()
+} catch (error) {
+}
+} catch (error) {
+}
+    const body = await request.json();
 
-    // Validate request body
+    // Validate request body;
     const validatedData = updateEmployeeSchema.parse(body);
 
-    // Update employee
+    // Update employee;
     const employee = await employeeService.updateEmployee(params.id, validatedData);
 
     return NextResponse.json(employee);
   } catch (error: unknown) {
 
-    // Handle validation errors
+    // Handle validation errors;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Validation error", details: error.errors },
         { status: 400 }
       );
     }
 
-    // Handle not found errors
+    // Handle not found errors;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Employee not found" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to update employee", details: error.message },
       { status: 500 }
     );
   }
 }
 
-// DELETE /api/hr/staff/[id] - Soft delete by setting active to false
-export const _DELETE = async (
+// DELETE /api/hr/staff/[id] - Soft delete by setting active to false;
+export const _DELETE = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
-    // Soft delete by setting active to false and recording termination date
+} catch (error) {
+}
+} catch (error) {
+}
+    // Soft delete by setting active to false and recording termination date;
     const employee = await employeeService.updateEmployee(params.id, {
       active: false,
-      terminationDate: new Date()
+      terminationDate: new Date();
     });
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
 
-    // Handle not found errors
+    // Handle not found errors;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Employee not found" },
         { status: 404 }
       );
-    }
 
-    return NextResponse.json(
+
+    return NextResponse.json();
       { error: "Failed to delete employee", details: error.message },
       { status: 500 }
     );
-  }
 
-}
+

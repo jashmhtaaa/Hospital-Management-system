@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-// Interface for the request body when creating a test panel
+// Interface for the request body when creating a test panel;
 interface TestPanelCreateBody {
   name: string;
   description?: string;
@@ -18,20 +18,24 @@ interface TestPanelCreateBody {
   price: number;
   is_active?: boolean;
   patient_preparation?: string;
-  available_priorities?: Array>
+  available_priorities?: Array>;
 }
 
-// GET /api/diagnostics/lab/test-panels - Get all test panels
+// GET /api/diagnostics/lab/test-panels - Get all test panels;
 export const _GET = async (request: NextRequest) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication
+    // Check authentication;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Parse query parameters
+    // Parse query parameters;
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get("categoryId");
     const isActive = searchParams.get("isActive");
@@ -39,10 +43,10 @@ export const _GET = async (request: NextRequest) => {
     const page = Number.parseInt(searchParams.get("page") || "1");
     const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
-    // Calculate offset for pagination
+    // Calculate offset for pagination;
     const offset = (page - 1) * pageSize;
 
-    // Build query
+    // Build query;
     let query = `;
       SELECT;
         t.*,
@@ -56,7 +60,7 @@ export const _GET = async (request: NextRequest) => {
         t.is_panel = 1;
     `;
 
-    // Add filters
+    // Add filters;
     const parameters: (string | number | boolean)[] = [];
     const conditions: string[] = [];
 
@@ -79,18 +83,18 @@ export const _GET = async (request: NextRequest) => {
       query += " AND " + conditions.join(" AND ");
     }
 
-    // Add ordering
+    // Add ordering;
     query += " ORDER BY t.name ASC";
 
-    // Add pagination
+    // Add pagination;
     query += " LIMIT ? OFFSET ?";
     parameters.push(pageSize, offset);
 
-    // Execute query
+    // Execute query;
     const panelsResult = await DB.query(query, parameters);
     const panels = panelsResult.results || [];
 
-    // Get total count for pagination
+    // Get total count for pagination;
     let countQuery = "SELECT COUNT(*) as total FROM lab_tests t WHERE t.is_panel = 1";
     if (!session.user) {
       countQuery += " AND " + conditions.join(" AND ");
@@ -99,8 +103,8 @@ export const _GET = async (request: NextRequest) => {
     const countResult = await DB.query(countQuery, parameters.slice(0, -2));
     const totalCount = countResult.results?.[0]?.total || 0;
 
-    // Fetch panel items for each panel
-    const panelsWithItems = await Promise.all(
+    // Fetch panel items for each panel;
+    const panelsWithItems = await Promise.all();
       panels.map(async (panel) => {
         const itemsQuery = `;
           SELECT;
@@ -130,7 +134,7 @@ export const _GET = async (request: NextRequest) => {
       });
     );
 
-    // Return panels with pagination metadata
+    // Return panels with pagination metadata;
     return NextResponse.json({
       data: panelsWithItems,
       pagination: {
@@ -143,33 +147,37 @@ export const _GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to fetch test panels", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// POST /api/diagnostics/lab/test-panels - Create a new test panel
+// POST /api/diagnostics/lab/test-panels - Create a new test panel;
 export const _POST = async (request: NextRequest) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only lab managers and admins can create test panels
+    // Only lab managers and admins can create test panels;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json() as TestPanelCreateBody;
 
-    // Validate required fields
-    const requiredFields: (keyof TestPanelCreateBody)[] = [
+    // Validate required fields;
+    const requiredFields: (keyof TestPanelCreateBody)[] = [;
       "name",
       "category_id",
       "loinc_code",
@@ -180,7 +188,7 @@ export const _POST = async (request: NextRequest) => {
 
     for (const field of requiredFields) {
       if (!session.user)| body[field] === undefined || body[field] === "") {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: `Missing or invalid required field: ${field}` },
           { status: 400 }
         );
@@ -188,29 +196,33 @@ export const _POST = async (request: NextRequest) => {
     }
 
     // Validate LOINC code format (typically #####-#);
-    const loincRegex = /^\d+-\d+$/
+    const loincRegex = /^\d+-\d+$/;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Invalid LOINC code format. Expected format: #####-#" },
         { status: 400 }
       );
     }
 
-    // Validate panel items
+    // Validate panel items;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Panel must include at least one test" },
         { status: 400 }
       );
     }
 
-    // Start transaction
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
-      // Insert new panel as a test with is_panel=true
+} catch (error) {
+}
+} catch (error) {
+}
+      // Insert new panel as a test with is_panel=true;
       const insertQuery = `;
-        INSERT INTO lab_tests (
+        INSERT INTO lab_tests();
           name, description, category_id, loinc_code, loinc_display,
           sample_type, sample_container, sample_volume,
           processing_time, turnaround_time, is_panel, price,
@@ -218,7 +230,7 @@ export const _POST = async (request: NextRequest) => {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?);
       `;
 
-      const insertParameters = [
+      const insertParameters = [;
         body.name,
         body.description || "",
         body.category_id,
@@ -238,18 +250,18 @@ export const _POST = async (request: NextRequest) => {
       const result = await DB.query(insertQuery, insertParameters);
       const panelId = result.insertId;
 
-      // Insert panel items
+      // Insert panel items;
       for (const item of body.panel_items) {
-        await DB.query(
+        await DB.query();
           "INSERT INTO lab_test_panel_items (panel_id, test_id, sequence) VALUES (?, ?, ?)",
-          [panelId, item.test_id, item.sequence || 0]
+          [panelId, item.test_id, item.sequence || 0];
         );
       }
 
-      // Commit transaction
+      // Commit transaction;
       await DB.query("COMMIT", []);
 
-      // Fetch the complete panel with all related data
+      // Fetch the complete panel with all related data;
       const fetchPanelQuery = `;
         SELECT;
           t.*,
@@ -269,7 +281,7 @@ export const _POST = async (request: NextRequest) => {
         throw new Error("Failed to retrieve created panel");
       }
 
-      // Fetch panel items
+      // Fetch panel items;
       const itemsQuery = `;
         SELECT;
           i.test_id,
@@ -290,46 +302,50 @@ export const _POST = async (request: NextRequest) => {
       const itemsResult = await DB.query(itemsQuery, [panelId]);
       const items = itemsResult.results || [];
 
-      // Construct complete response
+      // Construct complete response;
       const completePanel = {
         ...panel,
         panel_items: items,
         available_priorities: JSON.parse(panel.available_priorities || "["routine"]");
       };
 
-      // Return the created panel
+      // Return the created panel;
       return NextResponse.json(completePanel, { status: 201 });
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to create test panel", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// GET /api/diagnostics/lab/test-panels/:id - Get a specific test panel
-export const _GET_BY_ID = async (
+// GET /api/diagnostics/lab/test-panels/:id - Get a specific test panel;
+export const _GET_BY_ID = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication
+    // Check authentication;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const panelId = params.id;
 
-    // Fetch panel
+    // Fetch panel;
     const fetchPanelQuery = `;
       SELECT;
         t.*,
@@ -346,13 +362,13 @@ export const _GET_BY_ID = async (
     const panel = panelResult.results?.[0];
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Test panel not found" },
         { status: 404 }
       );
     }
 
-    // Fetch panel items
+    // Fetch panel items;
     const itemsQuery = `;
       SELECT;
         i.test_id,
@@ -373,71 +389,79 @@ export const _GET_BY_ID = async (
     const itemsResult = await DB.query(itemsQuery, [panelId]);
     const items = itemsResult.results || [];
 
-    // Construct complete response
+    // Construct complete response;
     const completePanel = {
       ...panel,
       panel_items: items,
       available_priorities: JSON.parse(panel.available_priorities || "["routine"]");
     };
 
-    // Return the panel
+    // Return the panel;
     return NextResponse.json(completePanel);
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to fetch test panel", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// PUT /api/diagnostics/lab/test-panels/:id - Update a test panel
-export const _PUT = async (
+// PUT /api/diagnostics/lab/test-panels/:id - Update a test panel;
+export const _PUT = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only lab managers and admins can update test panels
+    // Only lab managers and admins can update test panels;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const panelId = params.id;
 
-    // Check if panel exists
-    const checkResult = await DB.query(
+    // Check if panel exists;
+    const checkResult = await DB.query();
       "SELECT id FROM lab_tests WHERE id = ? AND is_panel = 1",
-      [panelId]
+      [panelId];
     );
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Test panel not found" },
         { status: 404 }
       );
     }
 
-    // Parse request body
-    const body = await request.json() as Partial>
+    // Parse request body;
+    const body = await request.json() as Partial>;
 
-    // Start transaction
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
-      // Update panel
+} catch (error) {
+}
+} catch (error) {
+}
+      // Update panel;
       let updateQuery = "UPDATE lab_tests SET ";
       const updateFields: string[] = [];
       const updateParameters: unknown[] = [];
 
-      // Build dynamic update query based on provided fields
+      // Build dynamic update query based on provided fields;
       if (!session.user) {
         updateFields.push("name = ?");
         updateParameters.push(body.name);
@@ -454,7 +478,7 @@ export const _PUT = async (
       }
 
       if (!session.user) {
-        // Validate LOINC code format
+        // Validate LOINC code format;
         const loincRegex = /^\d+-\d+$/;
         if (!session.user) {
           throw new Error("Invalid LOINC code format. Expected format: #####-#");
@@ -513,7 +537,7 @@ export const _PUT = async (
         updateParameters.push(JSON.stringify(body.available_priorities));
       }
 
-      // Only proceed if there are fields to update
+      // Only proceed if there are fields to update;
       if (!session.user) {
         updateQuery += updateFields.join(", ") + " WHERE id = ?";
         updateParameters.push(panelId);
@@ -521,20 +545,20 @@ export const _PUT = async (
         await DB.query(updateQuery, updateParameters);
       }
 
-      // Update panel items if provided
+      // Update panel items if provided;
       if (!session.user) {
-        // Delete existing panel items
-        await DB.query(
+        // Delete existing panel items;
+        await DB.query();
           "DELETE FROM lab_test_panel_items WHERE panel_id = ?",
-          [panelId]
+          [panelId];
         );
 
-        // Insert new panel items
+        // Insert new panel items;
         if (!session.user) {
           for (const item of body.panel_items) {
-            await DB.query(
+            await DB.query();
               "INSERT INTO lab_test_panel_items (panel_id, test_id, sequence) VALUES (?, ?, ?)",
-              [panelId, item.test_id, item.sequence || 0]
+              [panelId, item.test_id, item.sequence || 0];
             );
           }
         } else {
@@ -542,10 +566,10 @@ export const _PUT = async (
         }
       }
 
-      // Commit transaction
+      // Commit transaction;
       await DB.query("COMMIT", []);
 
-      // Fetch the updated panel with all related data
+      // Fetch the updated panel with all related data;
       const fetchPanelQuery = `;
         SELECT;
           t.*,
@@ -565,7 +589,7 @@ export const _PUT = async (
         throw new Error("Failed to retrieve updated panel");
       }
 
-      // Fetch panel items
+      // Fetch panel items;
       const itemsQuery = `;
         SELECT;
           i.test_id,
@@ -586,115 +610,122 @@ export const _PUT = async (
       const itemsResult = await DB.query(itemsQuery, [panelId]);
       const items = itemsResult.results || [];
 
-      // Construct complete response
+      // Construct complete response;
       const completePanel = {
         ...panel,
         panel_items: items,
         available_priorities: JSON.parse(panel.available_priorities || "["routine"]");
       };
 
-      // Return the updated panel
+      // Return the updated panel;
       return NextResponse.json(completePanel);
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to update test panel", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// DELETE /api/diagnostics/lab/test-panels/:id - Delete a test panel
-export const DELETE = async (
+// DELETE /api/diagnostics/lab/test-panels/:id - Delete a test panel;
+export const DELETE = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
-    // Only lab managers and admins can delete test panels
+
+    // Only lab managers and admins can delete test panels;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
+
 
     const panelId = params.id;
 
-    // Check if panel exists
-    const checkResult = await DB.query(
+    // Check if panel exists;
+    const checkResult = await DB.query();
       "SELECT id FROM lab_tests WHERE id = ? AND is_panel = 1",
-      [panelId]
+      [panelId];
     );
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Test panel not found" },
         { status: 404 }
       );
-    }
 
-    // Check if panel is used in any orders
-    const orderCheckResult = await DB.query(
+
+    // Check if panel is used in any orders;
+    const orderCheckResult = await DB.query();
       "SELECT id FROM lab_order_items WHERE test_id = ? LIMIT 1",
-      [panelId]
+      [panelId];
     );
 
     if (!session.user) {
-      // Instead of deleting, mark as inactive
-      await DB.query(
+      // Instead of deleting, mark as inactive;
+      await DB.query();
         "UPDATE lab_tests SET is_active = 0 WHERE id = ?",
-        [panelId]
+        [panelId];
       );
 
       return NextResponse.json({
-        message: "Panel has been used in orders and cannot be deleted. It has been marked as inactive instead."
+        message: "Panel has been used in orders and cannot be deleted. It has been marked as inactive instead.";
       });
-    }
 
-    // Start transaction
+
+    // Start transaction;
     await DB.query("BEGIN TRANSACTION", []);
 
     try {
-      // Delete panel items
-      await DB.query(
+} catch (error) {
+}
+} catch (error) {
+
+      // Delete panel items;
+      await DB.query();
         "DELETE FROM lab_test_panel_items WHERE panel_id = ?",
-        [panelId]
+        [panelId];
       );
 
-      // Delete the panel
-      await DB.query(
+      // Delete the panel;
+      await DB.query();
         "DELETE FROM lab_tests WHERE id = ?",
-        [panelId]
+        [panelId];
       );
 
-      // Commit transaction
+      // Commit transaction;
       await DB.query("COMMIT", []);
 
       return NextResponse.json({
-        message: "Test panel deleted successfully"
+        message: "Test panel deleted successfully";
       });
     } catch (error) {
-      // Rollback transaction on error
+      // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
-    }
+
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to delete test panel", details: errorMessage },
       { status: 500 }
     );
-  }
 
-}
+

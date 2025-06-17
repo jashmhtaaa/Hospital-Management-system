@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 }
 
-// src/components/er/ERTriageForm.tsx
+// src/components/er/ERTriageForm.tsx;
 "use client";
 
   Form,
@@ -16,22 +16,20 @@ import { Button } from "@/components/ui/button";
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  FormMessage} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define the schema for the triage form using Zod
+// Define the schema for the triage form using Zod;
 const triageFormSchema = z.object({
-  visitId: z.string().min(1, { message: "Visit ID is required." }), // Need a way to select/link the visit
-  triageNurseId: z.string().min(1, { message: "Triage Nurse ID is required." }), // Should ideally come from logged-in user context
+  visitId: z.string().min(1, { message: "Visit ID is required." }), // Need a way to select/link the visit;
+  triageNurseId: z.string().min(1, { message: "Triage Nurse ID is required." }), // Should ideally come from logged-in user context;
   esiLevel: z.coerce;
     .number();
     .min(1);
@@ -42,24 +40,24 @@ const triageFormSchema = z.object({
   rr: z.coerce.number().optional(),
   temp: z.coerce.number().optional(),
   spo2: z.coerce.number().optional(),
-  assessmentNotes: z.string().optional()
+  assessmentNotes: z.string().optional();
 });
 
-type TriageFormValues = z.infer>
+type TriageFormValues = z.infer>;
 
-// FIX: Define type for API error response
+// FIX: Define type for API error response;
 interface ApiErrorResponse {
   error?: string;
 }
 
-// FIX: Define type for the Triage API success response
+// FIX: Define type for the Triage API success response;
 interface TriageResponse {
   visit_id: string,
   esi_level: number;
-  // Add other relevant fields returned by the API
+  // Add other relevant fields returned by the API;
 }
 
-// Mock user ID - replace with actual logged-in user context
+// Mock user ID - replace with actual logged-in user context;
 const MOCK_NURSE_ID = "nurse_456";
 
 export default const _ERTriageForm = () {
@@ -68,71 +66,76 @@ export default const _ERTriageForm = () {
 
   const form = useForm<TriageFormValues>({
     resolver: zodResolver(triageFormSchema),
-    "", // Needs a mechanism to set this (e.g., from tracking board selection)
+    "", // Needs a mechanism to set this (e.g., from tracking board selection);
       triageNurseId: MOCK_NURSE_ID,
       undefined,
       undefined,
       undefined,
-      ""
-    },
-  });
+      "";
+    }});
 
   async const onSubmit = (data: TriageFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
     const vitalSigns = {
       HR: data.hr,
-      BP:
-        data?.bpSystolic && data.bpDiastolic
-          ? `${data.bpSystolic}/${data.bpDiastolic}`
+      BP: null,
+        data?.bpSystolic && data.bpDiastolic;
+          ? `${data.bpSystolic}/${data.bpDiastolic}`;
           : undefined,
       RR: data.rr,
-      data.spo2
+      data.spo2;
     };
 
-    // Filter out undefined vital signs
-    const filteredVitalSigns = Object.fromEntries(
+    // Filter out undefined vital signs;
+    const filteredVitalSigns = Object.fromEntries();
       Object.entries(vitalSigns);
-        .filter(
-          ([, value]) => value !== undefined && value !== undefined && value !== ""
+        .filter();
+          ([, value]) => value !== undefined && value !== undefined && value !== "";
         );
         .map(([key, value]) => [key, value]);
     );
 
     try {
-      // Replace with actual API call: POST /api/er/visits/[id]/triage
+} catch (error) {
+}
+} catch (error) {
+}
+      // Replace with actual API call: POST /api/er/visits/[id]/triage;
       const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         data.triageNurseId,
           filteredVitalSigns,
-          assessment_notes: data.assessmentNotes
-        }),
-      });
+          assessment_notes: data.assessmentNotes;
+        })});
 
       if (!session.user) {
         const errorMessage = "Failed to submit triage assessment";
         try {
-          // FIX: Use defined type for errorData
+} catch (error) {
+}
+} catch (error) {
+
+          // FIX: Use defined type for errorData;
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
-          // Ignore if response is not JSON
-        }
-        throw new Error(errorMessage);
-      }
+          // Ignore if response is not JSON;
 
-      // FIX: Use defined type for result
+        throw new Error(errorMessage);
+
+
+      // FIX: Use defined type for result;
       const result: TriageResponse = await response.json(),
       toast({
         title: "Triage Assessment Submitted",
-        description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`,
-      });
+        description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`});
       form.reset(); // Reset form after successful submission
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     } catch (error: unknown) {
-      // FIX: Use unknown for catch block
+      // FIX: Use unknown for catch block;
 
       const message =;
         error instanceof Error;
@@ -140,201 +143,201 @@ export default const _ERTriageForm = () {
           : "An unexpected error occurred.";
       toast({
         title: "Submission Failed",
-        "destructive"
+        "destructive";
       });
     } finally {
       setIsLoading(false);
-    }
-  }
 
-  return (
-    <Form {...form}>
-      >
+
+
+  return();
+    <Form {...form}>;
+      >;
         {/* TODO: Add a way to select the patient/visit ID, e.g., a search input or linking from tracking board */}
-        <FormField>
+        <FormField>;
           control={form.control}
-          name="visitId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Visit ID</FormLabel>
-              <FormControl>
-                <Input>
-                  placeholder="Enter Visit ID (e.g., visit_4)"
+          name="visitId";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>Visit ID</FormLabel>;
+              <FormControl>;
+                <Input>;
+                  placeholder="Enter Visit ID (e.g., visit_4)";
                   {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Select the patient visit to triage.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+                />;
+              </FormControl>;
+              <FormDescription>;
+                Select the patient visit to triage.;
+              </FormDescription>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        <FormField>
+        <FormField>;
           control={form.control}
-          name="esiLevel"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>ESI Level</FormLabel>
+          name="esiLevel";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>ESI Level</FormLabel>;
               {/* FIX: Ensure value passed to Select is string or undefined */}
-              <Select>
+              <Select>;
                 onValueChange={field.onChange}
                 value={field.value?.toString()}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select ESI Level (1-5)" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {[1, 2, 3, 4, 5].map((level) => (
-                    >
+              >;
+                <FormControl>;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select ESI Level (1-5)" />;
+                  </SelectTrigger>;
+                </FormControl>;
+                <SelectContent>;
+                  {[1, 2, 3, 4, 5].map((level) => (;
+                    >;
                       {level}
-                    </SelectItem>
+                    </SelectItem>;
                   ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
+                </SelectContent>;
+              </Select>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        >
-          <FormField>
+        >;
+          <FormField>;
             control={form.control}
-            name="hr"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Heart Rate (bpm)</FormLabel>
-                <FormControl>
+            name="hr";
+            render={({ field }) => (;
+              <FormItem>;
+                <FormLabel>Heart Rate (bpm)</FormLabel>;
+                <FormControl>;
                   {/* FIX: Pass value as string or number, ensure onChange handles conversion if needed */}
-                  <Input>
-                    type="number"
-                    placeholder="e.g., 72"
+                  <Input>;
+                    type="number";
+                    placeholder="e.g., 72";
                     {...field}
                     value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+                  />;
+                </FormControl>;
+                <FormMessage />;
+              </FormItem>;
             )}
-          />
-          <FormField>
+          />;
+          <FormField>;
             control={form.control}
-            name="bpSystolic"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>BP Systolic (mmHg)</FormLabel>
-                <FormControl>
-                  <Input>
-                    type="number"
-                    placeholder="e.g., 120"
+            name="bpSystolic";
+            render={({ field }) => (;
+              <FormItem>;
+                <FormLabel>BP Systolic (mmHg)</FormLabel>;
+                <FormControl>;
+                  <Input>;
+                    type="number";
+                    placeholder="e.g., 120";
                     {...field}
                     value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+                  />;
+                </FormControl>;
+                <FormMessage />;
+              </FormItem>;
             )}
-          />
-          <FormField>
+          />;
+          <FormField>;
             control={form.control}
-            name="bpDiastolic"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>BP Diastolic (mmHg)</FormLabel>
-                <FormControl>
-                  <Input>
-                    type="number"
-                    placeholder="e.g., 80"
+            name="bpDiastolic";
+            render={({ field }) => (;
+              <FormItem>;
+                <FormLabel>BP Diastolic (mmHg)</FormLabel>;
+                <FormControl>;
+                  <Input>;
+                    type="number";
+                    placeholder="e.g., 80";
                     {...field}
                     value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+                  />;
+                </FormControl>;
+                <FormMessage />;
+              </FormItem>;
             )}
-          />
-          <FormField>
+          />;
+          <FormField>;
             control={form.control}
-            name="rr"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Resp Rate (br/min)</FormLabel>
-                <FormControl>
-                  <Input>
-                    type="number"
-                    placeholder="e.g., 16"
+            name="rr";
+            render={({ field }) => (;
+              <FormItem>;
+                <FormLabel>Resp Rate (br/min)</FormLabel>;
+                <FormControl>;
+                  <Input>;
+                    type="number";
+                    placeholder="e.g., 16";
                     {...field}
                     value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+                  />;
+                </FormControl>;
+                <FormMessage />;
+              </FormItem>;
             )}
-          />
-          <FormField>
+          />;
+          <FormField>;
             control={form.control}
-            name="temp"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Temperature (°C)</FormLabel>
-                <FormControl>
-                  <Input>
-                    type="number"
-                    step="0.1"
-                    placeholder="e.g., 36.6"
+            name="temp";
+            render={({ field }) => (;
+              <FormItem>;
+                <FormLabel>Temperature (°C)</FormLabel>;
+                <FormControl>;
+                  <Input>;
+                    type="number";
+                    step="0.1";
+                    placeholder="e.g., 36.6";
                     {...field}
                     value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+                  />;
+                </FormControl>;
+                <FormMessage />;
+              </FormItem>;
             )}
-          />
-          <FormField>
+          />;
+          <FormField>;
             control={form.control}
-            name="spo2"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>SpO2 (%)</FormLabel>
-                <FormControl>
-                  <Input>
-                    type="number"
-                    placeholder="e.g., 98"
+            name="spo2";
+            render={({ field }) => (;
+              <FormItem>;
+                <FormLabel>SpO2 (%)</FormLabel>;
+                <FormControl>;
+                  <Input>;
+                    type="number";
+                    placeholder="e.g., 98";
                     {...field}
                     value={field.value ?? ""}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+                  />;
+                </FormControl>;
+                <FormMessage />;
+              </FormItem>;
             )}
-          />
-        </div>
+          />;
+        </div>;
 
-        <FormField>
+        <FormField>;
           control={form.control}
-          name="assessmentNotes"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Assessment Notes</FormLabel>
-              <FormControl>
-                <Textarea>
-                  placeholder="Enter triage assessment notes..."
-                  className="resize-none"
+          name="assessmentNotes";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>Assessment Notes</FormLabel>;
+              <FormControl>;
+                <Textarea>;
+                  placeholder="Enter triage assessment notes...";
+                  className="resize-none";
                   {...field}
-                  value={field.value ?? ""} // Ensure value is not undefined
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+                  value={field.value ?? ""} // Ensure value is not undefined;
+                />;
+              </FormControl>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        >
+        >;
           {isLoading ? "Submitting..." : "Submit Triage Assessment"}
-        </Button>
-      </form>
-    </Form>
+        </Button>;
+      </form>;
+    </Form>;
   );

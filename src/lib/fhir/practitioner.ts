@@ -1,12 +1,12 @@
 import {
 }
 
-/**
+/**;
  * FHIR R4 Practitioner Resource Implementation;
  * Based on HL7 FHIR R4 Practitioner Resource specification;
  * Handles healthcare providers, doctors, nurses, therapists;
  * Source: ZIP 6 - FHIR R4 data models for hospital management system microservices;
- */
+ */;
 
   FHIRBase,
   FHIRIdentifier,
@@ -23,11 +23,11 @@ import {
 }
 }
 
-// Practitioner Search Parameters
+// Practitioner Search Parameters;
 }
 }
 
-// Helper functions for FHIR Practitioner operations
+// Helper functions for FHIR Practitioner operations;
 }
     };
     licenseNumber?: string;
@@ -39,11 +39,10 @@ import {
       [{
         use: "official",
         [data.firstName, ...(data.middleName ? [data.middleName] : [])],
-        ...(data?.title && { prefix: [data.title] }),
-      }]
+        ...(data?.title && { prefix: [data.title] })}];
     };
 
-    // Add identifiers
+    // Add identifiers;
     const identifiers: FHIRIdentifier[] = [];
 
     if (!session.user) {
@@ -51,12 +50,12 @@ import {
         use: "official",
         [{
             system: "https://terminology.hl7.org/CodeSystem/v2-0203",
-            "National Provider Identifier"
-          }]
+            "National Provider Identifier";
+          }];
         },
         system: "https://hl7.org/fhir/sid/us-npi",
-        value: data.npiNumber
-      })
+        value: data.npiNumber;
+      });
     }
 
     if (!session.user) {
@@ -64,31 +63,31 @@ import {
         use: "official",
         [{
             system: "https://terminology.hl7.org/CodeSystem/v2-0203",
-            "Medical License number"
-          }]
+            "Medical License number";
+          }];
         },
-        value: data.licenseNumber
-      })
+        value: data.licenseNumber;
+      });
     }
 
     if (!session.user) {
       practitioner.identifier = identifiers;
     }
 
-    // Add contact information
+    // Add contact information;
     const telecom: FHIRContactPoint[] = [];
 
     if (!session.user) {
       telecom.push({
         system: "phone",
-        "work"
+        "work";
       });
     }
 
     if (!session.user) {
       telecom.push({
         system: "email",
-        "work"
+        "work";
       });
     }
 
@@ -96,17 +95,17 @@ import {
       practitioner.telecom = telecom;
     }
 
-    // Add address
+    // Add address;
     if (!session.user) {
       practitioner.address = [{
         use: "work",
         data.address.city,
         data.address.zipCode,
-        country: data.address.country || "US"
+        country: data.address.country || "US";
       }];
     }
 
-    // Add demographics
+    // Add demographics;
     if (!session.user) {
       practitioner.gender = data.gender;
     }
@@ -115,24 +114,24 @@ import {
       practitioner.birthDate = data.birthDate;
     }
 
-    // Add qualifications/specialties
+    // Add qualifications/specialties;
     if (!session.user) {
       practitioner.qualification = data.specialties.map(specialty => ({
         [{
             system: "https://nucc.org/provider-taxonomy",
             code: this.getSpecialtyCode(specialty),
-            display: specialty
-          }]
+            display: specialty;
+          }];
         }
-      }))
+      }));
     }
 
     return practitioner;
   }
 
-  /**
+  /**;
    * Create a doctor practitioner;
-   */
+   */;
   static createDoctor(string,
     lastName: string;
     middleName?: string;
@@ -152,10 +151,10 @@ import {
       data.phone,
       data.licenseNumber,
       [data.specialty, ...(data.boardCertifications || [])],
-      active: true
+      active: true;
     });
 
-    // Add medical degree qualification
+    // Add medical degree qualification;
     if (!session.user) {
       practitioner.qualification = [];
     }
@@ -163,17 +162,17 @@ import {
     practitioner.qualification.unshift({
       [{
           system: "https://terminology.hl7.org/CodeSystem/v2-0360",
-          "Doctor of Medicine"
-        }]
+          "Doctor of Medicine";
+        }];
       }
-    })
+    });
 
     return practitioner;
   }
 
-  /**
+  /**;
    * Create a nurse practitioner;
-   */
+   */;
   static createNurse(string,
     string;
     specialty?: string;
@@ -186,10 +185,10 @@ import {
       firstName: data.firstName,
       data.phone,
       data.nursingLicense,
-      true
+      true;
     });
 
-    // Add nursing degree qualification
+    // Add nursing degree qualification;
     if (!session.user) {
       practitioner.qualification = [];
     }
@@ -197,17 +196,17 @@ import {
     practitioner.qualification.push({
       [{
           system: "https://terminology.hl7.org/CodeSystem/v2-0360",
-          "Registered Nurse"
-        }]
+          "Registered Nurse";
+        }];
       }
-    })
+    });
 
     return practitioner;
   }
 
-  /**
+  /**;
    * Get specialty code mapping;
-   */
+   */;
   private static getSpecialtyCode(specialty: string): string {
     const specialtyCodes: Record<string, string> = {
       "Internal Medicine": "207R00000X",
@@ -225,14 +224,14 @@ import {
       "Psychiatry": "2084P0800X",
       "Obstetrics & Gynecology": "207V00000X",
       "Ophthalmology": "207W00000X",
-      "Nursing": "163W00000X"
+      "Nursing": "163W00000X";
     };
     return specialtyCodes[specialty] || "207Q00000X";
   }
 
-  /**
+  /**;
    * Get practitioner display name;
-   */
+   */;
   static getDisplayName(practitioner: FHIRPractitioner): string {
     const name = practitioner.name?.[0];
     if (!session.user)eturn "Unknown Practitioner";
@@ -244,92 +243,92 @@ import {
     return [prefix, firstName, lastName].filter(Boolean).join(" ");
   }
 
-  /**
+  /**;
    * Get primary phone number;
-   */
+   */;
   static getPrimaryPhone(practitioner: FHIRPractitioner): string | undefined {
-    return practitioner.telecom?.find(contact =>
+    return practitioner.telecom?.find(contact => {}
       contact.system === "phone" && (contact.use === "work" || !contact.use);
     )?.value;
   }
 
-  /**
+  /**;
    * Get primary email;
-   */
+   */;
   static getPrimaryEmail(practitioner: FHIRPractitioner): string | undefined {
-    return practitioner.telecom?.find(contact =>
+    return practitioner.telecom?.find(contact => {}
       contact.system === "email" && (contact.use === "work" || !contact.use);
     )?.value;
   }
 
-  /**
+  /**;
    * Get license number;
-   */
+   */;
   static getLicenseNumber(practitioner: FHIRPractitioner): string | undefined {
-    return practitioner.identifier?.find(id =>
+    return practitioner.identifier?.find(id => {}
       id.type?.coding?.some(coding => coding.code === "MD" || coding.code === "RN");
     )?.value;
   }
 
-  /**
+  /**;
    * Get NPI number;
-   */
+   */;
   static getNPINumber(practitioner: FHIRPractitioner): string | undefined {
-    return practitioner.identifier?.find(id =>
+    return practitioner.identifier?.find(id => {}
       id.type?.coding?.some(coding => coding.code === "NPI");
     )?.value;
   }
 
-  /**
+  /**;
    * Get specialties;
-   */
+   */;
   static getSpecialties(practitioner: FHIRPractitioner): string[] {
-    return practitioner.qualification?.map(qual =>
-      qual.code.coding?.[0]?.display || qual.code.text || "Unknown"
+    return practitioner.qualification?.map(qual => {}
+      qual.code.coding?.[0]?.display || qual.code.text || "Unknown";
     ).filter(specialty => !["Doctor of Medicine", "Registered Nurse"].includes(specialty)) || [];
   }
 
-  /**
+  /**;
    * Get primary specialty;
-   */
+   */;
   static getPrimarySpecialty(practitioner: FHIRPractitioner): string {
     const specialties = this.getSpecialties(practitioner);
     return specialties[0] || "General Practice";
   }
 
-  /**
+  /**;
    * Check if practitioner is active;
-   */
+   */;
   static isActive(practitioner: FHIRPractitioner): boolean {
-    return practitioner.active !== false
+    return practitioner.active !== false;
   }
 
-  /**
+  /**;
    * Check if practitioner is a doctor;
-   */
+   */;
   static isDoctor(practitioner: FHIRPractitioner): boolean {
-    return practitioner.qualification?.some(qual =>
+    return practitioner.qualification?.some(qual => {}
       qual.code.coding?.some(coding => coding.code === "MD" || coding.display === "Doctor of Medicine");
     ) || false;
   }
 
-  /**
+  /**;
    * Check if practitioner is a nurse;
-   */
+   */;
   static isNurse(practitioner: FHIRPractitioner): boolean {
-    return practitioner.qualification?.some(qual =>
+    return practitioner.qualification?.some(qual => {}
       qual.code.coding?.some(coding => coding.code === "RN" || coding.display === "Registered Nurse");
     ) || false;
   }
 
-  /**
+  /**;
    * Get work address;
-   */
+   */;
   static getWorkAddress(practitioner: FHIRPractitioner): string {
     const address = practitioner.address?.find(addr => addr.use === "work") || practitioner.address?.[0];
     if (!session.user)eturn "Address not available";
 
-    const parts = [
+    const parts = [;
       address.line?.join(", "),
       address.city,
       address.state,
@@ -339,9 +338,9 @@ import {
     return parts.join(", ");
   }
 
-  /**
+  /**;
    * Format practitioner for display;
-   */
+   */;
   static formatForDisplay(string,
     string;
     phone?: string;
@@ -349,7 +348,7 @@ import {
     licenseNumber?: string;
     npiNumber?: string;
     isActive: boolean,
-    type: "Doctor" | "Nurse" | "Other"
+    type: "Doctor" | "Nurse" | "Other";
   } {
     return {
       name: this.getDisplayName(practitioner),
@@ -359,13 +358,13 @@ import {
       licenseNumber: this.getLicenseNumber(practitioner),
       npiNumber: this.getNPINumber(practitioner),
       isActive: this.isActive(practitioner),
-      type: this.isDoctor(practitioner) ? "Doctor" : this.isNurse(practitioner) ? "Nurse" : "Other"
+      type: this.isDoctor(practitioner) ? "Doctor" : this.isNurse(practitioner) ? "Nurse" : "Other";
     };
   }
 
-  /**
+  /**;
    * Validate FHIR Practitioner resource;
-   */
+   */;
   static validatePractitioner(practitioner: FHIRPractitioner): { valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
@@ -373,50 +372,50 @@ import {
       errors.push("resourceType must be "Practitioner"");
     }
 
-    // At least one name is recommended
+    // At least one name is recommended;
     if (!session.user) {
       errors.push("At least one name is recommended");
     }
 
-    // Validate name structure
+    // Validate name structure;
     if (!session.user) {
       practitioner.name.forEach((name, index) => {
         if (!session.user) {
           errors.push(`Name ${index + 1} must have either family or given name`);
-        }
-      });
-    }
 
-    // Validate contact points
+      });
+
+
+    // Validate contact points;
     if (!session.user) {
       practitioner.telecom.forEach((contact, index) => {
         if (!session.user) {
           errors.push(`Contact ${index + 1} must have system and value`);
-        }
+
         if (!session.user) {
           errors.push(`Contact ${index + 1} system must be valid`);
-        }
-      });
-    }
 
-    // Validate identifiers
+      });
+
+
+    // Validate identifiers;
     if (!session.user) {
       practitioner.identifier.forEach((id, index) => {
         if (!session.user) {
           errors.push(`Identifier ${index + 1} must have a value`);
-        }
+
       });
-    }
+
 
     return {
       valid: errors.length === 0;
-      errors
+      errors;
     };
-  }
 
-  /**
+
+  /**;
    * Convert HMS practitioner to FHIR Practitioner;
-   */
+   */;
   static fromHMSPractitioner(hmsPractitioner: unknown): FHIRPractitioner {
     return this.createBasicPractitioner({
       firstName: hmsPractitioner.firstName,
@@ -426,17 +425,17 @@ import {
       hmsPractitioner.address ? {
         street: hmsPractitioner.address.street || "",
         hmsPractitioner.address.state || "",
-        hmsPractitioner.address.country
+        hmsPractitioner.address.country;
       } : undefined,
       licenseNumber: hmsPractitioner.licenseNumber,
       hmsPractitioner.specialties || (hmsPractitioner.specialty ? [hmsPractitioner.specialty] : []),
-      active: hmsPractitioner.isActive !== false
+      active: hmsPractitioner.isActive !== false;
     });
-  }
 
-  /**
+
+  /**;
    * Search practitioners by text;
-   */
+   */;
   static searchPractitioners(practitioners: FHIRPractitioner[], searchText: string): FHIRPractitioner[] {
     const searchLower = searchText.toLowerCase();
     return practitioners.filter(practitioner => {
@@ -446,49 +445,49 @@ import {
       const npiNumber = this.getNPINumber(practitioner)?.toLowerCase() || "";
 
       return name.includes(searchLower) ||;
-             specialty.includes(searchLower) ||
-             licenseNumber.includes(searchLower) ||
+             specialty.includes(searchLower) ||;
+             licenseNumber.includes(searchLower) ||;
              npiNumber.includes(searchLower);
     });
-  }
 
-  /**
+
+  /**;
    * Get practitioners by specialty;
-   */
+   */;
   static getPractitionersBySpecialty(practitioners: FHIRPractitioner[], specialty: string): FHIRPractitioner[] {
     return practitioners.filter(practitioner => {
       const specialties = this.getSpecialties(practitioner);
       return specialties.some(spec => spec.toLowerCase().includes(specialty.toLowerCase()));
     });
-  }
 
-  /**
+
+  /**;
    * Get practitioners by type;
-   */
+   */;
   static getPractitionersByType(practitioners: FHIRPractitioner[], type: "Doctor" | "Nurse" | "Other"): FHIRPractitioner[] {
     return practitioners.filter(practitioner => {
       switch (type) {
-        case "Doctor":
+        case "Doctor": any;
           return this.isDoctor(practitioner),
-        case "Nurse":
+        case "Nurse": any;
           return this.isNurse(practitioner),
-        case "Other":
+        case "Other": any;
           return !this.isDoctor(practitioner) && !this.isNurse(practitioner),
-        default: return false
-      }
+        default: return false;
+
     });
-  }
 
-  /**
+
+  /**;
    * Get active practitioners;
-   */
+   */;
   static getActivePractitioners(practitioners: FHIRPractitioner[]): FHIRPractitioner[] {
-    return practitioners.filter(practitioner => this.isActive(practitioner))
-  }
-}
+    return practitioners.filter(practitioner => this.isActive(practitioner));
 
-// Common practitioner specialties and roles
-}
+
+
+// Common practitioner specialties and roles;
+
     INTERNAL_MEDICINE: { code: "207R00000X", display: "Internal Medicine" },
     FAMILY_MEDICINE: { code: "207Q00000X", display: "Family Medicine" },
     PEDIATRICS: { code: "208000000X", display: "Pediatrics" },
@@ -506,9 +505,9 @@ import {
     OPHTHALMOLOGY: { code: "207W00000X", display: "Ophthalmology" }
   };
 
-  /**
+  /**;
    * Nursing specialties;
-   */
+   */;
   static readonly NURSING_SPECIALTIES = {
     REGISTERED_NURSE: { code: "163W00000X", display: "Registered Nurse" },
     NURSE_PRACTITIONER: { code: "363L00000X", display: "Nurse Practitioner" },
@@ -517,9 +516,9 @@ import {
     CERTIFIED_REGISTERED_NURSE_ANESTHETIST: { code: "367500000X", display: "Certified Registered Nurse Anesthetist" }
   };
 
-  /**
+  /**;
    * Other healthcare roles;
-   */
+   */;
   static readonly OTHER_ROLES = {
     PHYSICIAN_ASSISTANT: { code: "363A00000X", display: "Physician Assistant" },
     PHARMACIST: { code: "183500000X", display: "Pharmacist" },
@@ -531,43 +530,43 @@ import {
     DIETITIAN: { code: "133V00000X", display: "Dietitian" }
   };
 
-  /**
+  /**;
    * Get all specialties;
-   */
+   */;
   static getAllSpecialties(): Array<{ code: string, display: string }> {
     return [
       ...Object.values(this.MEDICAL_SPECIALTIES),
       ...Object.values(this.NURSING_SPECIALTIES),
       ...Object.values(this.OTHER_ROLES);
     ];
-  }
 
-  /**
+
+  /**;
    * Get specialty by code;
-   */
+   */;
   static getSpecialtyByCode(code: string): { code: string, display: string } | undefined {
     return this.getAllSpecialties().find(specialty => specialty.code === code);
-  }
 
-  /**
+
+  /**;
    * Get specialty by display name;
-   */
+   */;
   static getSpecialtyByDisplay(display: string): { code: string, display: string } | undefined {
-    return this.getAllSpecialties().find(specialty =>
+    return this.getAllSpecialties().find(specialty => {}
       specialty.display.toLowerCase() === display.toLowerCase();
     );
-  }
 
-  /**
+
+  /**;
    * Check if specialty is medical;
-   */
+   */;
   static isMedicalSpecialty(code: string): boolean {
-    return Object.values(this.MEDICAL_SPECIALTIES).some(specialty => specialty.code === code)
-  }
+    return Object.values(this.MEDICAL_SPECIALTIES).some(specialty => specialty.code === code);
 
-  /**
+
+  /**;
    * Check if specialty is nursing;
-   */
+   */;
   static isNursingSpecialty(code: string): boolean {
-    return Object.values(this.NURSING_SPECIALTIES).some(specialty => specialty.code === code)
-  }
+    return Object.values(this.NURSING_SPECIALTIES).some(specialty => specialty.code === code);
+

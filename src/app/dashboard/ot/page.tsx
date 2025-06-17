@@ -15,113 +15,113 @@ import OTSurgeryTypeList from "@/components/ot/ot-surgery-type-list";
 import OTSurgeryTypeModal from "@/components/ot/ot-surgery-type-modal";
 import OTTheatreList from "@/components/ot/ot-theatre-list";
 import OTTheatreModal from "@/components/ot/ot-theatre-modal";
-// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 
 export default const _OTDashboardPage = () {
   const [activeTab, setActiveTab] = useState("dashboard");
-  // State to trigger list refreshes after modal saves
+  // State to trigger list refreshes after modal saves;
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleSave = useCallback(async (data: unknown) => {
-    // In a real app, this might involve re-fetching data or updating state
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-    setRefreshKey((previous) => previous + 1); // Increment key to trigger re-render/re-fetch in lists
+    // In a real app, this might involve re-fetching data or updating state;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    setRefreshKey((previous) => previous + 1); // Increment key to trigger re-render/re-fetch in lists;
   }, []);
 
-  return (
-    >
-      >
-        <h1 className="text-3xl font-bold">Operation Theatre Management</h1>
-      </div>
+  return();
+    >;
+      >;
+        <h1 className="text-3xl font-bold">Operation Theatre Management</h1>;
+      </div>;
 
-      <Tabs>
-        defaultValue="dashboard"
+      <Tabs>;
+        defaultValue="dashboard";
         value={activeTab}
         onValueChange={setActiveTab}
-        className="w-full"
-      >
-        >
-          <TabsTrigger value="dashboard">Dashboard>
-          <TabsTrigger value="bookings">Bookings>
-          <TabsTrigger value="theatres">Theatres>
-          <TabsTrigger value="surgery-types">Surgery Types>
-          <TabsTrigger value="checklists">Checklists</TabsTrigger>
-        </TabsList>
+        className="w-full";
+      >;
+        >;
+          <TabsTrigger value="dashboard">Dashboard>;
+          <TabsTrigger value="bookings">Bookings>;
+          <TabsTrigger value="theatres">Theatres>;
+          <TabsTrigger value="surgery-types">Surgery Types>;
+          <TabsTrigger value="checklists">Checklists</TabsTrigger>;
+        </TabsList>;
 
-        >
+        >;
           {/* Pass refreshKey if stats need refreshing */}
-          <OTDashboardStats key={`stats-${refreshKey}`} />
-        </TabsContent>
+          <OTDashboardStats key={`stats-${refreshKey}`} />;
+        </TabsContent>;
 
-        >
-          >
-            <h2 className="text-2xl font-semibold">OT Bookings>
-            <OTBookingModal>
+        >;
+          >;
+            <h2 className="text-2xl font-semibold">OT Bookings>;
+            <OTBookingModal>;
               trigger={
-                <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  New Booking
-                </Button>
+                <Button>;
+                  <PlusCircle className="mr-2 h-4 w-4" />;
+                  New Booking;
+                </Button>;
               }
               onSave={handleSave}
-            />
-          </div>
+            />;
+          </div>;
           {/* Pass refreshKey to OTBookingList to trigger re-fetch */}
-          <OTBookingList key={`bookings-${refreshKey}`} />
-        </TabsContent>
+          <OTBookingList key={`bookings-${refreshKey}`} />;
+        </TabsContent>;
 
-        >
-          >
-            <h2 className="text-2xl font-semibold">Operation Theatres>
-            <OTTheatreModal>
+        >;
+          >;
+            <h2 className="text-2xl font-semibold">Operation Theatres>;
+            <OTTheatreModal>;
               trigger={
-                <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Add Theatre
-                </Button>
+                <Button>;
+                  <PlusCircle className="mr-2 h-4 w-4" />;
+                  Add Theatre;
+                </Button>;
               }
               onSave={handleSave}
-            />
-          </div>
+            />;
+          </div>;
           {/* Pass refreshKey to OTTheatreList */}
-          <OTTheatreList key={`theatres-${refreshKey}`} />
-        </TabsContent>
+          <OTTheatreList key={`theatres-${refreshKey}`} />;
+        </TabsContent>;
 
-        >
-          >
-            <h2 className="text-2xl font-semibold">Surgery Types>
-            <OTSurgeryTypeModal>
+        >;
+          >;
+            <h2 className="text-2xl font-semibold">Surgery Types>;
+            <OTSurgeryTypeModal>;
               trigger={
-                <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Add Surgery Type
-                </Button>
+                <Button>;
+                  <PlusCircle className="mr-2 h-4 w-4" />;
+                  Add Surgery Type;
+                </Button>;
               }
               onSave={handleSave}
-            />
-          </div>
+            />;
+          </div>;
           {/* Pass refreshKey to OTSurgeryTypeList */}
-          <OTSurgeryTypeList key={`surgery-types-${refreshKey}`} />
-        </TabsContent>
+          <OTSurgeryTypeList key={`surgery-types-${refreshKey}`} />;
+        </TabsContent>;
 
-        >
-          >
-            <h2 className="text-2xl font-semibold">Checklist Templates>
-            <OTChecklistTemplateModal>
+        >;
+          >;
+            <h2 className="text-2xl font-semibold">Checklist Templates>;
+            <OTChecklistTemplateModal>;
               trigger={
-                <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Add Template
-                </Button>
+                <Button>;
+                  <PlusCircle className="mr-2 h-4 w-4" />;
+                  Add Template;
+                </Button>;
               }
               onSave={handleSave}
-            />
-          </div>
+            />;
+          </div>;
           {/* Pass refreshKey to OTChecklistTemplateList */}
-          <OTChecklistTemplateList key={`checklists-${refreshKey}`} />
-        </TabsContent>
-      </Tabs>
-    </div>
+          <OTChecklistTemplateList key={`checklists-${refreshKey}`} />;
+        </TabsContent>;
+      </Tabs>;
+    </div>;
   );

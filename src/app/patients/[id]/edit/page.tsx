@@ -8,25 +8,29 @@ import { authOptions } from "../../../../lib/auth";
 import { hasPermission } from "../../../../lib/rbac.service";
 export default async const _PatientEditPage = ({
   params;
-}: {id: string 
+}: {id: string ;
 }) {
-  // Get session
+  // Get session;
   const session = await getServerSession(authOptions);
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated;
   if (!session.user) {
     redirect("/login");
   }
 
-  // Check permission
+  // Check permission;
   const canEdit = await hasPermission(session.user.id, "update", "patient", params.id);
   if (!session.user) {
     redirect(`/patients/${}`;
   }
 
-  // Fetch patient data (server-side)
-  let patient
+  // Fetch patient data (server-side);
+  let patient;
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients/${params.id}`, {
       cache: "no-store",
       `next-auth.session-token=${session.user.id}`;
@@ -43,13 +47,14 @@ export default async const _PatientEditPage = ({
     patient = await response.json();
   } catch (error) {
 
-    // Will let client-side handling take over
-  }
+    // Will let client-side handling take over;
 
-  return (
-    >
+
+  return();
+    >;
       <Suspense fallback={<div>Loading patient form...</div>}>;
-        <PatientForm initialData={patient} isEditing={true} />
-      </Suspense>
-    </div>
+        <PatientForm initialData={patient} isEditing={true} />;
+      </Suspense>;
+    </div>;
   );
+)

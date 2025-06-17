@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 
 import { AuditService } from "@/lib/audit/audit-service";
 import { prisma } from "@/lib/prisma";
-// src/modules/patient-registration/services/patient-service.ts
+// src/modules/patient-registration/services/patient-service.ts;
 }
 }
 
@@ -15,30 +15,30 @@ import { prisma } from "@/lib/prisma";
       select: { mrn: true }
     });
 
-    const nextMrnNumber = lastPatient ?
+    const nextMrnNumber = lastPatient ?;
       Number.parseInt(lastPatient.mrn.substring(3)) + 1 : 1001;
     const mrn = `MRN${nextMrnNumber.toString().padStart(6, "0")}`;
 
     const patient = await prisma.patient.create({
       data: {
         ...data,
-        mrn
+        mrn;
       }
     });
 
-    // Audit log
+    // Audit log;
     if (!session.user) {
-      await AuditService.logUserAction(
+      await AuditService.logUserAction();
         { userId: createdBy },
         "CREATE",
         "PATIENT",
         patient.id,
-        "Patient created"
+        "Patient created";
       );
     }
 
     return patient;
-  }
+
 
   static async updatePatient(data: UpdatePatientData, updatedBy?: string) {
     const { id, ...updateData } = data;
@@ -49,70 +49,70 @@ import { prisma } from "@/lib/prisma";
 
     if (!session.user) {
       throw new Error("Patient not found");
-    }
+
 
     const patient = await prisma.patient.update({
       where: { id },
-      data: updateData
+      data: updateData;
     });
 
-    // Audit log
+    // Audit log;
     if (!session.user) {
-      await AuditService.logDataChange(
+      await AuditService.logDataChange();
         { userId: updatedBy },
         "PATIENT",
         patient.id,
         oldPatient,
-        patient
+        patient;
       );
-    }
+
 
     return patient;
-  }
+
 
   static async findPatientByMRN(mrn: string) {
     return await prisma.patient.findUnique({
       where: { mrn },
       true,
-        true
-      }
-    });
-  }
+        true;
 
-  static async searchPatients(
+    });
+
+
+  static async searchPatients();
     query: string,
-    number = 0
+    number = 0;
   ) {
     return await prisma.patient.findMany({
-      [
+      [;
           { firstName: { contains: query, mode: "insensitive" } },
           { lastName: { contains: query, mode: "insensitive" } },
           { mrn: { contains: query, mode: "insensitive" } },
           { phone: { contains: query } }
-        ]
+        ];
       },
       take: limit,
-      "desc" 
+      "desc" ;
     });
-  }
+
 
   static async getPatientStats() {
-    const [total, newToday, emergency] = await Promise.all([
+    const [total, newToday, emergency] = await Promise.all([;
       prisma.patient.count(),
       prisma.patient.count({
         {
-            gte: new Date(new Date().setHours(0, 0, 0, 0))
-          }
-        }
+            gte: new Date(new Date().setHours(0, 0, 0, 0));
+
+
       }),
       prisma.emergencyVisit.count({
         "ACTIVE",
-          new Date(new Date().setHours(0, 0, 0, 0))
-          }
-        }
-      })
+          new Date(new Date().setHours(0, 0, 0, 0));
+
+
+      });
     ]);
 
     return { total, newToday, emergency };
-  }
-}
+
+

@@ -1,79 +1,79 @@
 }
 
-/**
+/**;
  * Marketing CRM Module Models;
  * TypeScript interfaces corresponding to the Prisma schema for Marketing CRM;
- */
+ */;
 
-// Marketing Campaign Model
-}
-}
-
-// Campaign Channel Model
+// Marketing Campaign Model;
 }
 }
 
-// Marketing Message Model
+// Campaign Channel Model;
 }
 }
 
-// Message Interaction Model
+// Marketing Message Model;
 }
 }
 
-// Contact Model (for marketing purposes)
+// Message Interaction Model;
 }
 }
 
-// Contact Note Model
-}
-}
-
-// Marketing Activity Model
-}
+// Contact Model (for marketing purposes);
 }
 
-// Contact Segment Model
-}
-}
 
-// Segment Member Model
-}
-}
+// Contact Note Model;
 
-// Campaign Segment Model (Many-to-Many)
-}
-}
 
-// Lead Model
-}
-}
 
-// Lead Activity Model
-}
-}
+// Marketing Activity Model;
 
-// Campaign Analytics Model
-}
-}
 
-// Marketing Template Model
-}
-}
 
-// Marketing Event Model
-}
-}
+// Contact Segment Model;
 
-// Event Registration Model
-}
-}
 
-// User interface (partial, only for marketing relations)
-}
-}
 
-// Campaign Status enum
+// Segment Member Model;
+
+
+
+// Campaign Segment Model (Many-to-Many);
+
+
+
+// Lead Model;
+
+
+
+// Lead Activity Model;
+
+
+
+// Campaign Analytics Model;
+
+
+
+// Marketing Template Model;
+
+
+
+// Marketing Event Model;
+
+
+
+// Event Registration Model;
+
+
+
+// User interface (partial, only for marketing relations);
+
+
+
+// Campaign Status enum;
 export enum CampaignStatus {
   DRAFT = "DRAFT",
   SCHEDULED = "SCHEDULED",
@@ -81,9 +81,9 @@ export enum CampaignStatus {
   PAUSED = "PAUSED",
   COMPLETED = "COMPLETED",
   CANCELLED = "CANCELLED",
-}
 
-// Campaign Type enum
+
+// Campaign Type enum;
 export enum CampaignType {
   EMAIL = "EMAIL",
   SMS = "SMS",
@@ -92,9 +92,9 @@ export enum CampaignType {
   PRINT = "PRINT",
   DIGITAL_AD = "DIGITAL_AD",
   OTHER = "OTHER",
-}
 
-// Channel Type enum
+
+// Channel Type enum;
 export enum ChannelType {
   EMAIL = "EMAIL",
   SMS = "SMS",
@@ -103,43 +103,43 @@ export enum ChannelType {
   PRINT = "PRINT",
   DIGITAL_AD = "DIGITAL_AD",
   OTHER = "OTHER",
-}
 
-// Message Status enum
+
+// Message Status enum;
 export enum MessageStatus {
   DRAFT = "DRAFT",
   SCHEDULED = "SCHEDULED",
   SENT = "SENT",
   FAILED = "FAILED",
-}
 
-// Interaction Type enum
+
+// Interaction Type enum;
 export enum InteractionType {
   OPEN = "OPEN",
   CLICK = "CLICK",
   REPLY = "REPLY",
   UNSUBSCRIBE = "UNSUBSCRIBE",
   BOUNCE = "BOUNCE",
-}
 
-// Contact Status enum
+
+// Contact Status enum;
 export enum ContactStatus {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
   UNSUBSCRIBED = "UNSUBSCRIBED",
   BOUNCED = "BOUNCED",
-}
 
-// Lead Status enum
+
+// Lead Status enum;
 export enum LeadStatus {
   NEW = "NEW",
   CONTACTED = "CONTACTED",
   QUALIFIED = "QUALIFIED",
   CONVERTED = "CONVERTED",
   LOST = "LOST",
-}
 
-// Lead Source enum
+
+// Lead Source enum;
 export enum LeadSource {
   WEBSITE = "WEBSITE",
   REFERRAL = "REFERRAL",
@@ -147,9 +147,9 @@ export enum LeadSource {
   ADVERTISEMENT = "ADVERTISEMENT",
   SOCIAL_MEDIA = "SOCIAL_MEDIA",
   OTHER = "OTHER",
-}
 
-// Event Status enum
+
+// Event Status enum;
 export enum EventStatus {
   PLANNED = "PLANNED",
   OPEN = "OPEN",
@@ -157,9 +157,9 @@ export enum EventStatus {
   ONGOING = "ONGOING",
   COMPLETED = "COMPLETED",
   CANCELLED = "CANCELLED",
-}
 
-// Registration Status enum
+
+// Registration Status enum;
 export enum RegistrationStatus {
   REGISTERED = "REGISTERED",
   CONFIRMED = "CONFIRMED",

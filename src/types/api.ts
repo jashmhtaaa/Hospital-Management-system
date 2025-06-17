@@ -1,13 +1,11 @@
 import type { MedicationAdministrationRecord } from "./pharmacy.ts";
-}
 
-// src/types/api.ts
+// src/types/api.ts;
 
-// Generic error response
-}
-}
+// Generic error response;
 
-// Specific response for fetching administration records
-}
+// Specific response for fetching administration records;
 
-export async function GET() { return new Response("OK"); }
+export async function GET() {
+  return new Response("OK");
+}

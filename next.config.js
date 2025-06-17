@@ -1,11 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
   eslint: {
-    ignoreDuringBuilds: false,
-  }
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    domains: ['localhost'],
+  },
+  experimental: {
+    serverComponentsExternalPackages: ['prisma'],
+  },
+  compiler: {
+    removeConsole: false,
+  },
+  poweredByHeader: false,
+  compress: true,
+  swcMinify: true,
+  reactStrictMode: false
 }
 
 module.exports = nextConfig

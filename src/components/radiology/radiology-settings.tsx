@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,21 +12,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  TableRow} from "@/components/ui/table";
 import { Loader2, Plus } from "lucide-react";
 import CreateProcedureTypeModal, {
-  type ProcedureTypeFormData,
-} from "./create-procedure-type-modal.ts"; // Assuming modal exports form data type
-import CreateModalityModal, { type ModalityFormData } from "./create-modality-modal.ts"; // Assuming modal exports form data type
+  type ProcedureTypeFormData} from "./create-procedure-type-modal.ts"; // Assuming modal exports form data type;
+import CreateModalityModal, { type ModalityFormData } from "./create-modality-modal.ts"; // Assuming modal exports form data type;
 
-// Define interfaces
+// Define interfaces;
 interface ProcedureType {
   id: string,
   name: string;
   modality_type?: string | null;
   description?: string | null;
-  // Add other fields if available from API
+  // Add other fields if available from API;
 }
 
 interface Modality {
@@ -35,7 +32,7 @@ interface Modality {
   name: string;
   location?: string | null;
   description?: string | null;
-  // Add other fields if available from API
+  // Add other fields if available from API;
 export default const _RadiologySettings = () {
   const [procedureTypes, setProcedureTypes] = useState<ProcedureType[]>([]);
   const [modalities, setModalities] = useState<Modality[]>([]);
@@ -57,24 +54,32 @@ export default const _RadiologySettings = () {
     setLoadingProcedures(true),
     setErrorProcedures(undefined);
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/radiology/procedure-types");
       if (!session.user) {
         let errorMessage = `Failed to fetch procedure types (status: ${response.status})`;
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
-          /* Ignore if response is not JSON */
+          /* Ignore if response is not JSON */;
         }
         throw new Error(errorMessage);
       }
       const data: ProcedureType[] = await response.json(),
-      setProcedureTypes(data || []); // Ensure it"s always an array
-    } catch (err) { // Changed "error" to "err"
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use "err"
-      // Debug logging removed // Use "err"
+      setProcedureTypes(data || []); // Ensure it"s always an array;
+    } catch (err) { // Changed "error" to "err";
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use "err";
+      // Debug logging removed // Use "err";
       setErrorProcedures(`Failed to load procedure types: ${}`,
-      setProcedureTypes([]); // Clear on error
+      setProcedureTypes([]); // Clear on error;
     } finally {
       setLoadingProcedures(false);
     }
@@ -84,230 +89,252 @@ export default const _RadiologySettings = () {
     setLoadingModalities(true),
     setErrorModalities(undefined);
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/radiology/modalities");
       if (!session.user) {
         let errorMessage = `Failed to fetch modalities (status: ${response.status})`;
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
-          /* Ignore if response is not JSON */
+          /* Ignore if response is not JSON */;
         }
         throw new Error(errorMessage);
       }
       const data: Modality[] = await response.json(),
-      setModalities(data || []); // Ensure it"s always an array
-    } catch (err) { // Changed error to err
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use err
-      // Debug logging removed // Use err
+      setModalities(data || []); // Ensure it"s always an array;
+    } catch (err) { // Changed error to err;
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use err;
+      // Debug logging removed // Use err;
       setErrorModalities(`Failed to load modalities: ${}`,
-      setModalities([]); // Clear on error
+      setModalities([]); // Clear on error;
     } finally {
       setLoadingModalities(false);
     }
   };
 
-  const handleCreateProcedureType = async (
+  const handleCreateProcedureType = async();
     procedureData: ProcedureTypeFormData;
   ): Promise<void> => {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/radiology/procedure-types", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(procedureData)
+          "Content-Type": "application/json"},
+        body: JSON.stringify(procedureData);
       });
 
       if (!session.user) {
         let errorMessage = `Failed to create procedure type (status: ${response.status})`;
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
-          /* Ignore if response is not JSON */
-        }
+          /* Ignore if response is not JSON */;
+
         throw new Error(errorMessage);
-      }
+
 
       setShowCreateProcedureModal(false),
-      fetchProcedureTypes(); // Refresh the list
-      // Consider showing a success message
-    } catch (err) { // Changed error to err
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use err
-      // Debug logging removed // Use err
-      /* SECURITY: Console statement removed */ // Replace alert with a better notification system (e.g., toast)
-    }
+      fetchProcedureTypes(); // Refresh the list;
+      // Consider showing a success message;
+    } catch (err) { // Changed error to err;
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use err;
+      // Debug logging removed // Use err;
+      /* SECURITY: Console statement removed */ // Replace alert with a better notification system (e.g., toast);
+
   };
 
-  const handleCreateModality = async (
+  const handleCreateModality = async();
     modalityData: ModalityFormData;
   ): Promise<void> => {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const response = await fetch("/api/radiology/modalities", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(modalityData)
+          "Content-Type": "application/json"},
+        body: JSON.stringify(modalityData);
       });
 
       if (!session.user) {
         let errorMessage = `Failed to create modality (status: ${response.status})`;
         try {
+} catch (error) {
+}
+} catch (error) {
+
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
         } catch {
-          /* Ignore if response is not JSON */
-        }
+          /* Ignore if response is not JSON */;
+
         throw new Error(errorMessage);
-      }
+
 
       setShowCreateModalityModal(false),
-      fetchModalities(); // Refresh the list
-      // Consider showing a success message
-    } catch (err) { // Changed error to err
-      const message = err instanceof Error ? err.message : "Unknown error"; // Use err
-      // Debug logging removed // Use err
-      /* SECURITY: Console statement removed */ // Replace alert with a better notification system
-    }
+      fetchModalities(); // Refresh the list;
+      // Consider showing a success message;
+    } catch (err) { // Changed error to err;
+      const message = err instanceof Error ? err.message : "Unknown error"; // Use err;
+      // Debug logging removed // Use err;
+      /* SECURITY: Console statement removed */ // Replace alert with a better notification system;
+
   };
 
-  return (
-    <Card>
-      >
-        >
-          >
-            <TabsTrigger value="procedure-types">Procedure Types>
-            <TabsTrigger value="modalities">Modalities</TabsTrigger>
-          </TabsList>
+  return();
+    <Card>;
+      >;
+        >;
+          >;
+            <TabsTrigger value="procedure-types">Procedure Types>;
+            <TabsTrigger value="modalities">Modalities</TabsTrigger>;
+          </TabsList>;
 
-          >
-            >
-              >
-                Radiology Procedure Types
-              </h2>
-              <Button onClick={() => setShowCreateProcedureModal(true)}>
-                <Plus className="h-4 w-4 mr-2" /> Add Procedure Type
-              </Button>
-            </div>
+          >;
+            >;
+              >;
+                Radiology Procedure Types;
+              </h2>;
+              <Button onClick={() => setShowCreateProcedureModal(true)}>;
+                <Plus className="h-4 w-4 mr-2" /> Add Procedure Type;
+              </Button>;
+            </div>;
 
-            {loadingProcedures ? (
-              >
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
-            ) : errorProcedures ? (
-              >
+            {loadingProcedures ? (;
+              >;
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+              </div>;
+            ) : errorProcedures ? (;
+              >;
                 {errorProcedures}
-              </div>
-            ) : (
-              >
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Modality Type</TableHead>
-                      <TableHead>Description</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {procedureTypes.length === 0 ? (
-                      <TableRow>
-                        <TableCell>
+              </div>;
+            ) : (;
+              >;
+                <Table>;
+                  <TableHeader>;
+                    <TableRow>;
+                      <TableHead>Name</TableHead>;
+                      <TableHead>Modality Type</TableHead>;
+                      <TableHead>Description</TableHead>;
+                    </TableRow>;
+                  </TableHeader>;
+                  <TableBody>;
+                    {procedureTypes.length === 0 ? (;
+                      <TableRow>;
+                        <TableCell>;
                           colSpan={3}
-                          className="text-center h-24 text-muted-foreground"
-                        >
-                          No procedure types found.
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      procedureTypes.map((type) => (
-                        >
-                          >
+                          className="text-center h-24 text-muted-foreground";
+                        >;
+                          No procedure types found.;
+                        </TableCell>;
+                      </TableRow>;
+                    ) : (;
+                      procedureTypes.map((type) => (;
+                        >;
+                          >;
                             {type.name}
-                          </TableCell>
-                          <TableCell>{type.modality_type || "N/A"}</TableCell>
-                          <TableCell>{type.description || "N/A"}</TableCell>
-                        </TableRow>
+                          </TableCell>;
+                          <TableCell>{type.modality_type || "N/A"}</TableCell>;
+                          <TableCell>{type.description || "N/A"}</TableCell>;
+                        </TableRow>;
                       ));
                     )}
-                  </TableBody>
-                </Table>
-              </div>
+                  </TableBody>;
+                </Table>;
+              </div>;
             )}
-          </TabsContent>
+          </TabsContent>;
 
-          >
-            >
-              <h2 className="text-xl font-semibold">Radiology Modalities>
-              <Button onClick={() => setShowCreateModalityModal(true)}>
-                <Plus className="h-4 w-4 mr-2" /> Add Modality
-              </Button>
-            </div>
+          >;
+            >;
+              <h2 className="text-xl font-semibold">Radiology Modalities>;
+              <Button onClick={() => setShowCreateModalityModal(true)}>;
+                <Plus className="h-4 w-4 mr-2" /> Add Modality;
+              </Button>;
+            </div>;
 
-            {loadingModalities ? (
-              >
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
-            ) : errorModalities ? (
-              >
+            {loadingModalities ? (;
+              >;
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+              </div>;
+            ) : errorModalities ? (;
+              >;
                 {errorModalities}
-              </div>
-            ) : (
-              >
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Location</TableHead>
-                      <TableHead>Description</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {modalities.length === 0 ? (
-                      <TableRow>
-                        <TableCell>
+              </div>;
+            ) : (;
+              >;
+                <Table>;
+                  <TableHeader>;
+                    <TableRow>;
+                      <TableHead>Name</TableHead>;
+                      <TableHead>Location</TableHead>;
+                      <TableHead>Description</TableHead>;
+                    </TableRow>;
+                  </TableHeader>;
+                  <TableBody>;
+                    {modalities.length === 0 ? (;
+                      <TableRow>;
+                        <TableCell>;
                           colSpan={3}
-                          className="text-center h-24 text-muted-foreground"
-                        >
-                          No modalities found.
-                        </TableCell>
-                      </TableRow>
-                    ) : (
-                      modalities.map((modality) => (
-                        >
-                          >
+                          className="text-center h-24 text-muted-foreground";
+                        >;
+                          No modalities found.;
+                        </TableCell>;
+                      </TableRow>;
+                    ) : (;
+                      modalities.map((modality) => (;
+                        >;
+                          >;
                             {modality.name}
-                          </TableCell>
-                          <TableCell>{modality.location || "N/A"}</TableCell>
-                          <TableCell>{modality.description || "N/A"}</TableCell>
-                        </TableRow>
+                          </TableCell>;
+                          <TableCell>{modality.location || "N/A"}</TableCell>;
+                          <TableCell>{modality.description || "N/A"}</TableCell>;
+                        </TableRow>;
                       ));
                     )}
-                  </TableBody>
-                </Table>
-              </div>
+                  </TableBody>;
+                </Table>;
+              </div>;
             )}
-          </TabsContent>
-        </Tabs>
-      </CardContent>
+          </TabsContent>;
+        </Tabs>;
+      </CardContent>;
 
-      {showCreateProcedureModal && (
-        <CreateProcedureTypeModal>
-          isOpen={showCreateProcedureModal} // Pass isOpen prop if modal uses it
+      {showCreateProcedureModal && (;
+        <CreateProcedureTypeModal>;
+          isOpen={showCreateProcedureModal} // Pass isOpen prop if modal uses it;
           onClose={() => setShowCreateProcedureModal(false)}
           onSubmit={handleCreateProcedureType}
-        />
+        />;
       )}
 
-      {showCreateModalityModal && (
-        <CreateModalityModal>
-          isOpen={showCreateModalityModal} // Pass isOpen prop if modal uses it
+      {showCreateModalityModal && (;
+        <CreateModalityModal>;
+          isOpen={showCreateModalityModal} // Pass isOpen prop if modal uses it;
           onClose={() => setShowCreateModalityModal(false)}
           onSubmit={handleCreateModality}
-        />
+        />;
       )}
-    </Card>
+    </Card>;
   );
 
-}
+}))

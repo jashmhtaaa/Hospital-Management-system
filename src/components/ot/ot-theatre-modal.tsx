@@ -11,8 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,219 +19,220 @@ import { Label } from "@/components/ui/label";
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 
-// Define Theatre interface
+// Define Theatre interface;
 interface Theatre {
-  id?: string; // Optional for new theatres
+  id?: string; // Optional for new theatres;
   name: string,
   string | null,
   status: string;
-  equipment?: string | null; // Assuming simple text for now
-  updated_at?: string; // Optional
+  equipment?: string | null; // Assuming simple text for now;
+  updated_at?: string; // Optional;
 }
 
-// Define the type for data passed to onSave
+// Define the type for data passed to onSave;
 interface TheatreSaveData {
   name: string,
   string | null,
-  string | null
+  string | null;
 }
 
-// Props for the modal - use defined types
+// Props for the modal - use defined types;
 interface OTTheatreModalProperties {
   trigger: React.ReactNode;
-  theatre?: Theatre; // Use Theatre type
-  onSave: (theatreData: TheatreSaveData) => Promise> // Use TheatreSaveData type
+  theatre?: Theatre; // Use Theatre type;
+  onSave: (theatreData: TheatreSaveData) => Promise> // Use TheatreSaveData type;
 export default const _OTTheatreModal = ({
   trigger,
   theatre,
-  onSave,
-}: OTTheatreModalProperties) {
+  onSave}: OTTheatreModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
     name: theatre?.name || "",
     theatre?.specialty || "",
-    theatre?.equipment || ""
+    theatre?.equipment || "";
   }));
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when theatre prop changes or modal opens
+  // Reset form when theatre prop changes or modal opens;
   useEffect(() => {
     if (!session.user) {
       setFormData({
         name: theatre?.name || "",
         theatre?.specialty || "",
-        theatre?.equipment || ""
+        theatre?.equipment || "";
       });
     } else {
-      // Optionally clear form when closed
-      // setFormData({ name: "", ... })
+      // Optionally clear form when closed;
+      // setFormData({ name: "", ... });
     }
   }, [theatre, isOpen]);
 
-  const handleChange = (
-    event: React.ChangeEvent>
+  const handleChange = (;
+    event: React.ChangeEvent>;
   ) => {
     const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }))
+    setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((previous) => ({ ...previous, [name]: value }))
+    setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault(),
     setIsSaving(true);
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const formData.name,
         formData.specialty || null,
         formData.equipment || null
       };
 
-      // Replace with actual API call
-      // const _url = theatre?.id ? `/api/ot/theatres/${theatre.id}` : `/api/ot/theatres`
-      // const _method = theatre?.id ? "PUT" : "POST"
+      // Replace with actual API call;
+      // const _url = theatre?.id ? `/api/ot/theatres/${theatre.id}` : `/api/ot/theatres`;
+      // const _method = theatre?.id ? "PUT" : "POST";
       // const _response = await fetch(url, {
       //   _method: method;
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData);
-      // })
+      // });
       // if (!session.user) {
-      //   const _errorData = await response.json()
-      //   throw new Error(errorData.message || "Failed to save theatre")
+      //   const _errorData = await response.json();
+      //   throw new Error(errorData.message || "Failed to save theatre");
       // }
 
-      // Simulate API call
+      // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-      await onSave(apiData); // Call parent callback to refresh list
+      await onSave(apiData); // Call parent callback to refresh list;
 
       toast({
         title: "Success",
-        description: `Theatre ${theatre ? "updated" : "created"} successfully.`,
-      }),
+        description: `Theatre ${theatre ? "updated" : "created"} successfully.`}),
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type
+      // Use unknown for error type;
 
       let errorMessage = "Failed to save theatre.";
       if (!session.user) {
         errorMessage = error.message;
-      }
+
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setIsSaving(false);
-    }
+
   };
 
-  return (
-    >
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      >
-        <DialogHeader>
-          <DialogTitle>
+  return();
+    >;
+      <DialogTrigger asChild>{trigger}</DialogTrigger>;
+      >;
+        <DialogHeader>;
+          <DialogTitle>;
             {theatre ? "Edit Operation Theatre" : "Add New Operation Theatre"}
-          </DialogTitle>
-          <DialogDescription>
-            Enter the details for the operation theatre.
-          </DialogDescription>
-        </DialogHeader>
-        >
-          >
-            >
-              >
-                Name *
-              </Label>
-              <Input>
-                id="name"
-                name="name"
+          </DialogTitle>;
+          <DialogDescription>;
+            Enter the details for the operation theatre.;
+          </DialogDescription>;
+        </DialogHeader>;
+        >;
+          >;
+            >;
+              >;
+                Name *;
+              </Label>;
+              <Input>;
+                id="name";
+                name="name";
                 value={formData.name}
                 onChange={handleChange}
-                className="col-span-3"
+                className="col-span-3";
                 required;
-              />
-            </div>
-            >
-              >
-                Location
-              </Label>
-              <Input>
-                id="location"
-                name="location"
+              />;
+            </div>;
+            >;
+              >;
+                Location;
+              </Label>;
+              <Input>;
+                id="location";
+                name="location";
                 value={formData.location || ""}
                 onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            >
-              >
-                Specialty
-              </Label>
-              <Input>
-                id="specialty"
-                name="specialty"
+                className="col-span-3";
+              />;
+            </div>;
+            >;
+              >;
+                Specialty;
+              </Label>;
+              <Input>;
+                id="specialty";
+                name="specialty";
                 value={formData.specialty || ""}
                 onChange={handleChange}
-                className="col-span-3"
-              />
-            </div>
-            >
-              >
-                Status
-              </Label>
-              <Select>
-                name="status"
+                className="col-span-3";
+              />;
+            </div>;
+            >;
+              >;
+                Status;
+              </Label>;
+              <Select>;
+                name="status";
                 value={formData.status}
                 onValueChange={(value) => handleSelectChange("status", value)}
-              >
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="available">Available>
-                  <SelectItem value="in_use">In Use>
-                  <SelectItem value="maintenance">Maintenance>
-                  <SelectItem value="unavailable">Unavailable</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            >
-              >
-                Equipment
-              </Label>
-              <Textarea>
-                id="equipment"
-                name="equipment"
+              >;
+                >;
+                  <SelectValue />;
+                </SelectTrigger>;
+                <SelectContent>;
+                  <SelectItem value="available">Available>;
+                  <SelectItem value="in_use">In Use>;
+                  <SelectItem value="maintenance">Maintenance>;
+                  <SelectItem value="unavailable">Unavailable</SelectItem>;
+                </SelectContent>;
+              </Select>;
+            </div>;
+            >;
+              >;
+                Equipment;
+              </Label>;
+              <Textarea>;
+                id="equipment";
+                name="equipment";
                 value={formData.equipment || ""}
                 onChange={handleChange}
-                className="col-span-3"
-                placeholder="List key equipment available..."
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button>
-              type="button"
-              variant="outline"
+                className="col-span-3";
+                placeholder="List key equipment available...";
+              />;
+            </div>;
+          </div>;
+          <DialogFooter>;
+            <Button>;
+              type="button";
+              variant="outline";
               onClick={() => setIsOpen(false)}
-            >
-              Cancel
-            </Button>
-            >
+            >;
+              Cancel;
+            </Button>;
+            >;
               {isSaving ? "Saving..." : "Save Theatre"}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+            </Button>;
+          </DialogFooter>;
+        </form>;
+      </DialogContent>;
+    </Dialog>;
   );

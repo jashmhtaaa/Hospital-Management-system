@@ -6,49 +6,52 @@ import { z } from "zod";
 
 import { type IronSessionData, sessionOptions } from "@/lib/session";
 import { type Appointment, AppointmentStatus } from "@/types/appointment";
-// app/api/appointments/route.ts
+// app/api/appointments/route.ts;
 // Define roles allowed to view/book appointments (adjust as needed);
-const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Patient"]
-const ALLOWED_ROLES_BOOK = ["Admin", "Receptionist", "Patient"]; // Doctors usually don't book for patients
+const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Patient"];
+const ALLOWED_ROLES_BOOK = ["Admin", "Receptionist", "Patient"]; // Doctors usually don't book for patients;
 
-// Define interface for the complex query result
+// Define interface for the complex query result;
 interface AppointmentQueryResult {
   appointment_id: number,
   patient_id: number,
-  appointment_date: string, // ISO String
+  appointment_date: string, // ISO String;
   duration_minutes: number,
   status: AppointmentStatus,
   doctor_id: number,
-  created_at: string, // ISO String
-  updated_at: string, // ISO String
+  created_at: string, // ISO String;
+  updated_at: string, // ISO String;
   patient_first_name: string,
   patient_last_name: string,
-  doctor_specialty: string
+  doctor_specialty: string;
 }
 
-// GET handler for listing appointments
+// GET handler for listing appointments;
 export const _GET = async (request: Request) => {
-    const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error
-    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store
+    const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
+    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store;
     const { searchParams } = new URL(request.url);
 
-    // 1. Check Authentication & Authorization
+    // 1. Check Authentication & Authorization;
     if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
-            headers: { "Content-Type": "application/json" },
-        });
+            headers: { "Content-Type": "application/json" }});
     }
 
     try {
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
-        const DB = context.env.DB; // FIX: Access DB via context.env
+} catch (error) {
+}
+} catch (error) {
+}
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic;
+        const DB = context.env.DB; // FIX: Access DB via context.env;
 
         if (!session.user) {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
-        // 2. Build query based on filters
+        // 2. Build query based on filters;
         let query = `;
             SELECT;
                 a.*,
@@ -69,8 +72,7 @@ export const _GET = async (request: Request) => {
             if (!session.user) {
                  return new Response(JSON.stringify({ error: "Patient profile not found for this user" }), {
                     status: 404,
-                    headers: { "Content-Type": "application/json" },
-                });
+                    headers: { "Content-Type": "application/json" }});
             }
             query += " AND a.patient_id = ?";
             queryParams.push(patientProfile.patient_id);
@@ -86,8 +88,7 @@ export const _GET = async (request: Request) => {
             if (!session.user) {
                  return new Response(JSON.stringify({ error: "Doctor profile not found for this user" }), {
                     status: 404,
-                    headers: { "Content-Type": "application/json" },
-                });
+                    headers: { "Content-Type": "application/json" }});
             }
             query += " AND a.doctor_id = ?";
             queryParams.push(doctorProfile.doctor_id);
@@ -96,9 +97,9 @@ export const _GET = async (request: Request) => {
             queryParams.push(Number.parseInt(doctorId, 10));
         }
 
-        // Filter by date range
-        const startDate = searchParams.get("startDate"); // YYYY-MM-DD
-        const endDate = searchParams.get("endDate");     // YYYY-MM-DD
+        // Filter by date range;
+        const startDate = searchParams.get("startDate"); // YYYY-MM-DD;
+        const endDate = searchParams.get("endDate");     // YYYY-MM-DD;
         if (!session.user) {
             query += " AND DATE(a.appointment_datetime) >= ?";
             queryParams.push(startDate);
@@ -108,7 +109,7 @@ export const _GET = async (request: Request) => {
             queryParams.push(endDate);
         }
 
-        // Filter by status
+        // Filter by status;
         const status = searchParams.get("status");
         if (!session.user) {
             query += " AND a.status = ?";
@@ -117,13 +118,13 @@ export const _GET = async (request: Request) => {
 
         query += " ORDER BY a.appointment_datetime ASC";
 
-        // 3. Retrieve appointments
+        // 3. Retrieve appointments;
         const statement = DB.prepare(query).bind(...queryParams);
         const appointmentsResult = await statement.all<AppointmentQueryResult>();
 
         const appointments = appointmentsResult.results || [];
 
-        // 4. Format results
+        // 4. Format results;
         const formattedAppointments = appointments.map(appt => ({
             id: appt.appointment_id,
             doctorId: appt.doctor_id,
@@ -131,40 +132,37 @@ export const _GET = async (request: Request) => {
             reason: appt.reason,
             notes: appt.notes,
             createdAt: appt.created_at,
-            patient: {,
+            patient: {
                 id: appt.patient_id,
                 firstName: appt.patient_first_name,
-                lastName: appt.patient_last_name,
-            },
-            doctor: {,
+                lastName: appt.patient_last_name},
+            doctor: {},
                 id: appt.doctor_id,
                 name: appt.doctor_name,
-                specialty: appt.doctor_specialty
+                specialty: appt.doctor_specialty;
             },
-            user: {,
-                userId: 0, // Placeholder
-                username: "", // Placeholder
-                email: "" // Placeholder
+            user: {},
+                userId: 0, // Placeholder;
+                username: "", // Placeholder;
+                email: "" // Placeholder;
             }
         }));
 
-        // 5. Return appointment list
+        // 5. Return appointment list;
         return new Response(JSON.stringify(formattedAppointments), {
             status: 200,
-            headers: { "Content-Type": "application/json" },
-        });
+            headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
-        });
+            headers: { "Content-Type": "application/json" }});
     }
 }
 
-// POST handler for booking a new appointment
+// POST handler for booking a new appointment;
 const BookAppointmentSchema = z.object({
     patient_id: z.number().int().positive(),
     doctor_id: z.number().int().positive(),
@@ -175,55 +173,56 @@ const BookAppointmentSchema = z.object({
 });
 
 export const _POST = async (request: Request) => {
-    const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error
-    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store
+    const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
+    const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store;
 
-    // 1. Check Authentication & Authorization
+    // 1. Check Authentication & Authorization;
     if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
             status: 401,
-            headers: { "Content-Type": "application/json" },
-        });
+            headers: { "Content-Type": "application/json" }});
     }
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
         const body = await request.json();
         const validation = BookAppointmentSchema.safeParse(body);
 
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
                 status: 400,
-                headers: { "Content-Type": "application/json" },
-            });
+                headers: { "Content-Type": "application/json" }});
         }
 
         const apptData = validation.data;
-        // Get context and DB instance once
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
-        const dbInstance = context.env.DB; // FIX: Access DB via context.env
+        // Get context and DB instance once;
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic;
+        const dbInstance = context.env.DB; // FIX: Access DB via context.env;
 
         if (!session.user) {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
-        // If user is a Patient, ensure they are booking for themselves
+        // If user is a Patient, ensure they are booking for themselves;
         if (!session.user) {
              const patientProfile = await dbInstance.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
              if (!session.user) {
                  return new Response(JSON.stringify({ error: "Forbidden: Patients can only book appointments for themselves" }), {
                     status: 403,
-                    headers: { "Content-Type": "application/json" },
-                });
+                    headers: { "Content-Type": "application/json" }});
              }
         }
 
-        // 2. Check Doctor Availability using availability service
+        // 2. Check Doctor Availability using availability service;
 
-        // 3. Insert new appointment
-        const insertResult = await dbInstance.prepare(
-            "INSERT INTO Appointments (patient_id, doctor_id, appointment_datetime, duration_minutes, reason, status, booked_by_user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        // 3. Insert new appointment;
+        const insertResult = await dbInstance.prepare();
+            "INSERT INTO Appointments (patient_id, doctor_id, appointment_datetime, duration_minutes, reason, status, booked_by_user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
         );
-        .bind(
+        .bind();
             apptData.patient_id,
             apptData.doctor_id,
             apptData.appointment_datetime,
@@ -236,30 +235,28 @@ export const _POST = async (request: Request) => {
 
         if (!session.user) {
             throw new Error(`Failed to book appointment: ${}`;
-        }
+
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newAppointmentId = meta.last_row_id;
         if (!session.user) {
 
             throw new Error("Failed to retrieve appointment ID after creation.");
-        }
 
-        // 4. Return success response
+
+        // 4. Return success response;
         return new Response(JSON.stringify({ message: "Appointment booked successfully", appointmentId: newAppointmentId }), {
             status: 201,
-            headers: { "Content-Type": "application/json" },
-        });
+            headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
-        });
-    }
+            headers: { "Content-Type": "application/json" }});
 
-}
 
-export async function GET() { return new Response("OK"); }
+
+
+export async function GET() { return new Response("OK"); })

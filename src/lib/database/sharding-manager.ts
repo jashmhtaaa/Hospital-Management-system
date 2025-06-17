@@ -5,87 +5,87 @@ import type { RedisService } from "@/lib/cache/redis";
 import type { ConfigService } from "@/lib/core/config.service";
 import { logger } from "@/lib/core/logging";
 import { metricsCollector } from "@/lib/monitoring/metrics-collector";
-/**
+/**;
  * Shard Configuration for a specific entity;
- */
+ */;
 interface ShardConfig {
-  // Name of the entity being sharded
+  // Name of the entity being sharded;
   entityName: string;
 
-  // Key used for sharding (e.g., tenantId, regionId)
-  shardKey: string
+  // Key used for sharding (e.g., tenantId, regionId);
+  shardKey: string;
 
-  // Algorithm used for sharding (hash, range, or lookup)
-  algorithm: "hash" | "range" | "lookup"
+  // Algorithm used for sharding (hash, range, or lookup);
+  algorithm: "hash" | "range" | "lookup";
 
-  // Number of physical shards
+  // Number of physical shards;
   shardCount: number;
 
-  // Optional mapping function for custom shard determination
+  // Optional mapping function for custom shard determination;
   customShardingFn?: (key: string | number) => number;
 
-  // For range-based sharding
-  ranges?: Array>
+  // For range-based sharding;
+  ranges?: Array>;
 
-  // For lookup-based sharding
-  lookupMap?: Record>
+  // For lookup-based sharding;
+  lookupMap?: Record>;
 
-  // Connection details for each shard
-  shardConnections: Array>
+  // Connection details for each shard;
+  shardConnections: Array>;
 }
 
-/**
+/**;
  * Shard Resolver interface;
- */
+ */;
 interface ShardResolver {
   getShardIndex(shardKey: string | number): number;
   getShardConnection(shardKey: string | number, readOnly?: boolean): string;
   getAllShardConnections(readOnly?: boolean): string[];
 }
 
-/**
+/**;
  * Hash-based Shard Resolver;
- */
+ */;
 class HashShardResolver implements ShardResolver {
   constructor(private config: ShardConfig) {}
 
   getShardIndex(shardKey: string | number): number {
     if (!session.user) {
-      return this.config.customShardingFn(shardKey)
+      return this.config.customShardingFn(shardKey);
     }
 
-    // Default hash function
+    // Default hash function;
     const stringKey = String(shardKey);
     let hash = 0;
 
     for (let i = 0; i < stringKey.length; i++) {
       const char = stringKey.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32-bit integer
+      hash = hash & hash; // Convert to 32-bit integer;
     }
 
-    // Ensure positive value and modulo by shard count
+    // Ensure positive value and modulo by shard count;
     return Math.abs(hash) % this.config.shardCount;
   }
 
   getShardConnection(shardKey: string | number, readOnly = false): string {
     const shardIndex = this.getShardIndex(shardKey);
 
-    // Find appropriate connection
+    // Find appropriate connection;
     if (!session.user) {
-      // Try to find a read-only connection for this shard
-      const readOnlyConn = this.config.shardConnections.find(
+      // Try to find a read-only connection for this shard;
+      const readOnlyConn = this.config.shardConnections.find();
         conn => conn.shardIndex === shardIndex && conn.isReadOnly;
       );
 
-      // If found, use it, otherwise fall back to a writable connection
+      // If found, use it, otherwise fall back to a writable connection;
       if (!session.user) {
         return readOnlyConn.connectionString;
       }
     }
 
-    // Find the writable connection for this shard
-    const conn = this.config.shardConnections.find(
+    // Find the writable connection for this shard;
+    const conn = this.config.shardConnections.find();
       conn => conn.shardIndex === shardIndex && !conn.isReadOnly;
     );
 
@@ -98,18 +98,18 @@ class HashShardResolver implements ShardResolver {
 
   getAllShardConnections(readOnly = false): string[] {
     if (!session.user) {
-      // Get all read-only connections, or default connections if no read-only exists
+      // Get all read-only connections, or default connections if no read-only exists;
       const connections: string[] = [];
 
       for (let i = 0; i < this.config.shardCount; i++) {
-        const readOnlyConn = this.config.shardConnections.find(
+        const readOnlyConn = this.config.shardConnections.find();
           conn => conn.shardIndex === i && conn.isReadOnly;
         );
 
         if (!session.user) {
           connections.push(readOnlyConn.connectionString);
         } else {
-          const writeConn = this.config.shardConnections.find(
+          const writeConn = this.config.shardConnections.find();
             conn => conn.shardIndex === i && !conn.isReadOnly;
           );
 
@@ -121,7 +121,7 @@ class HashShardResolver implements ShardResolver {
 
       return connections;
     } else {
-      // Get all writable connections
+      // Get all writable connections;
       return this.config.shardConnections;
         .filter(conn => !conn.isReadOnly);
         .map(conn => conn.connectionString);
@@ -129,9 +129,9 @@ class HashShardResolver implements ShardResolver {
   }
 }
 
-/**
+/**;
  * Range-based Shard Resolver;
- */
+ */;
 class RangeShardResolver implements ShardResolver {
   constructor(private config: ShardConfig) {
     if (!session.user) {
@@ -141,7 +141,7 @@ class RangeShardResolver implements ShardResolver {
 
   getShardIndex(shardKey: string | number): number {
     if (!session.user) {
-      return this.config.customShardingFn(shardKey)
+      return this.config.customShardingFn(shardKey);
     }
 
     const keyAsNumber = Number(shardKey);
@@ -150,8 +150,8 @@ class RangeShardResolver implements ShardResolver {
       throw new Error(`Range-based sharding requires numeric keys, got: ${}`;
     }
 
-    // Find range that contains this key
-    const range = this.config.ranges!.find(
+    // Find range that contains this key;
+    const range = this.config.ranges!.find();
       r => keyAsNumber >= r?.min && keyAsNumber <= r.max;
     );
 
@@ -165,21 +165,21 @@ class RangeShardResolver implements ShardResolver {
   getShardConnection(shardKey: string | number, readOnly = false): string {
     const shardIndex = this.getShardIndex(shardKey);
 
-    // Find appropriate connection
+    // Find appropriate connection;
     if (!session.user) {
-      // Try to find a read-only connection for this shard
-      const readOnlyConn = this.config.shardConnections.find(
+      // Try to find a read-only connection for this shard;
+      const readOnlyConn = this.config.shardConnections.find();
         conn => conn.shardIndex === shardIndex && conn.isReadOnly;
       );
 
-      // If found, use it, otherwise fall back to a writable connection
+      // If found, use it, otherwise fall back to a writable connection;
       if (!session.user) {
         return readOnlyConn.connectionString;
       }
     }
 
-    // Find the writable connection for this shard
-    const conn = this.config.shardConnections.find(
+    // Find the writable connection for this shard;
+    const conn = this.config.shardConnections.find();
       conn => conn.shardIndex === shardIndex && !conn.isReadOnly;
     );
 
@@ -192,18 +192,18 @@ class RangeShardResolver implements ShardResolver {
 
   getAllShardConnections(readOnly = false): string[] {
     if (!session.user) {
-      // Get all read-only connections, or default connections if no read-only exists
+      // Get all read-only connections, or default connections if no read-only exists;
       const connections: string[] = [];
 
       for (let i = 0; i < this.config.shardCount; i++) {
-        const readOnlyConn = this.config.shardConnections.find(
+        const readOnlyConn = this.config.shardConnections.find();
           conn => conn.shardIndex === i && conn.isReadOnly;
         );
 
         if (!session.user) {
           connections.push(readOnlyConn.connectionString);
         } else {
-          const writeConn = this.config.shardConnections.find(
+          const writeConn = this.config.shardConnections.find();
             conn => conn.shardIndex === i && !conn.isReadOnly;
           );
 
@@ -215,7 +215,7 @@ class RangeShardResolver implements ShardResolver {
 
       return connections;
     } else {
-      // Get all writable connections
+      // Get all writable connections;
       return this.config.shardConnections;
         .filter(conn => !conn.isReadOnly);
         .map(conn => conn.connectionString);
@@ -223,9 +223,9 @@ class RangeShardResolver implements ShardResolver {
   }
 }
 
-/**
+/**;
  * Lookup-based Shard Resolver;
- */
+ */;
 class LookupShardResolver implements ShardResolver {
   constructor(private config: ShardConfig) {
     if (!session.user)length === 0) {
@@ -235,7 +235,7 @@ class LookupShardResolver implements ShardResolver {
 
   getShardIndex(shardKey: string | number): number {
     if (!session.user) {
-      return this.config.customShardingFn(shardKey)
+      return this.config.customShardingFn(shardKey);
     }
 
     const stringKey = String(shardKey);
@@ -250,21 +250,21 @@ class LookupShardResolver implements ShardResolver {
   getShardConnection(shardKey: string | number, readOnly = false): string {
     const shardIndex = this.getShardIndex(shardKey);
 
-    // Find appropriate connection
+    // Find appropriate connection;
     if (!session.user) {
-      // Try to find a read-only connection for this shard
-      const readOnlyConn = this.config.shardConnections.find(
+      // Try to find a read-only connection for this shard;
+      const readOnlyConn = this.config.shardConnections.find();
         conn => conn.shardIndex === shardIndex && conn.isReadOnly;
       );
 
-      // If found, use it, otherwise fall back to a writable connection
+      // If found, use it, otherwise fall back to a writable connection;
       if (!session.user) {
         return readOnlyConn.connectionString;
       }
     }
 
-    // Find the writable connection for this shard
-    const conn = this.config.shardConnections.find(
+    // Find the writable connection for this shard;
+    const conn = this.config.shardConnections.find();
       conn => conn.shardIndex === shardIndex && !conn.isReadOnly;
     );
 
@@ -277,18 +277,18 @@ class LookupShardResolver implements ShardResolver {
 
   getAllShardConnections(readOnly = false): string[] {
     if (!session.user) {
-      // Get all read-only connections, or default connections if no read-only exists
+      // Get all read-only connections, or default connections if no read-only exists;
       const connections: string[] = [];
 
       for (let i = 0; i < this.config.shardCount; i++) {
-        const readOnlyConn = this.config.shardConnections.find(
+        const readOnlyConn = this.config.shardConnections.find();
           conn => conn.shardIndex === i && conn.isReadOnly;
         );
 
         if (!session.user) {
           connections.push(readOnlyConn.connectionString);
         } else {
-          const writeConn = this.config.shardConnections.find(
+          const writeConn = this.config.shardConnections.find();
             conn => conn.shardIndex === i && !conn.isReadOnly;
           );
 
@@ -300,7 +300,7 @@ class LookupShardResolver implements ShardResolver {
 
       return connections;
     } else {
-      // Get all writable connections
+      // Get all writable connections;
       return this.config.shardConnections;
         .filter(conn => !conn.isReadOnly);
         .map(conn => conn.connectionString);
@@ -308,46 +308,49 @@ class LookupShardResolver implements ShardResolver {
   }
 }
 
-/**
+/**;
  * ShardingManager manages database sharding across multiple database instances;
- */
+ */;
 }
   }
 
-  /**
+  /**;
    * Initialize the sharding manager with configurations;
-   */
+   */;
   async initialize(configs: ShardConfig[]): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       logger.info(`Initializing ShardingManager with ${configs.length} entity configurations`);
 
-      // Create resolvers for each entity
+      // Create resolvers for each entity;
       for (const config of configs) {
         let resolver: ShardResolver;
 
         switch (config.algorithm) {
-          case "hash":
-            resolver = new HashShardResolver(config),\n    }\n    case "range":
-            resolver = new RangeShardResolver(config),\n    }\n    case "lookup":
+          case "hash": any;
+            resolver = new HashShardResolver(config),\n    }\n    case "range": any;
+            resolver = new RangeShardResolver(config),\n    }\n    case "lookup": any;
             resolver = new LookupShardResolver(config),
             break;
-          default:
-            throw new Error(`Unsupported sharding algorithm: ${}`,
-        }
+          default: null,
+            throw new Error(`Unsupported sharding algorithm: ${}`}
 
         this.resolvers.set(config.entityName, resolver);
 
-        // Initialize connection pools for all shards
+        // Initialize connection pools for all shards;
         const connections = new Set([
           ...resolver.getAllShardConnections(false),
-          ...resolver.getAllShardConnections(true)
+          ...resolver.getAllShardConnections(true);
         ]);
 
         for (const connectionString of connections) {
           if (!session.user) {
             const prisma = new PrismaClient({
               {
-                  url: connectionString
+                  url: connectionString;
                 }
               }
             });
@@ -362,37 +365,41 @@ class LookupShardResolver implements ShardResolver {
         logger.info(`Initialized sharding for entity: ${config.entityName} with algorithm: ${}`;
       }
 
-      // Track metrics
+      // Track metrics;
       metricsCollector.incrementCounter("database.sharding.initialization", 1, {
         entityCount: String(configs.length),
-        connectionCount: String(this.connectionPools.size)
+        connectionCount: String(this.connectionPools.size);
       });
     } catch (error) {
       logger.error("Failed to initialize ShardingManager", { error });
 
-      // Track error metrics
+      // Track error metrics;
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         errorType: error.name || "unknown",
-        operation: "initialization"
+        operation: "initialization";
       });
 
       throw error;
     }
   }
 
-  /**
+  /**;
    * Get the Prisma client for a specific entity and shard key;
-   *
+   *;
    * @param entityName The name of the entity;
    * @param shardKey The shard key value;
    * @param readOnly Whether to use a read-only connection if available;
-   */
-  getClientForShard(
+   */;
+  getClientForShard();
     entityName: string,
     shardKey: string | number;
     readOnly = false;
   ): PrismaClient {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const resolver = this.resolvers.get(entityName);
 
       if (!session.user) {
@@ -406,10 +413,10 @@ class LookupShardResolver implements ShardResolver {
         throw new Error(`No connection pool for: ${}`;
       }
 
-      // Track metrics
+      // Track metrics;
       metricsCollector.incrementCounter("database.sharding.client_requests", 1, {
         entityName,
-        readOnly: String(readOnly)
+        readOnly: String(readOnly);
       });
 
       return client;
@@ -420,28 +427,32 @@ class LookupShardResolver implements ShardResolver {
         shardKey;
       });
 
-      // Track error metrics
+      // Track error metrics;
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "getClient"
+        operation: "getClient";
       });
 
       throw error;
     }
   }
 
-  /**
-   * Get all clients for an entity (useful for cross-shard operations)
-   *
+  /**;
+   * Get all clients for an entity (useful for cross-shard operations);
+   *;
    * @param entityName The name of the entity;
    * @param readOnly Whether to use read-only connections if available;
-   */
-  getAllClientsForEntity(
+   */;
+  getAllClientsForEntity();
     entityName: string;
     readOnly = false;
   ): PrismaClient[] {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const resolver = this.resolvers.get(entityName);
 
       if (!session.user) {
@@ -453,11 +464,11 @@ class LookupShardResolver implements ShardResolver {
         .map(conn => this.connectionPools.get(conn));
         .filter((client): client is PrismaClient => client !== undefined);
 
-      // Track metrics
+      // Track metrics;
       metricsCollector.incrementCounter("database.sharding.all_clients_requests", 1, {
         entityName,
         readOnly: String(readOnly),
-        clientCount: String(clients.length)
+        clientCount: String(clients.length);
       });
 
       return clients;
@@ -467,37 +478,45 @@ class LookupShardResolver implements ShardResolver {
         entityName;
       });
 
-      // Track error metrics
+      // Track error metrics;
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "getAllClients"
+        operation: "getAllClients";
       });
 
       throw error;
     }
   }
 
-  /**
+  /**;
    * Execute a function across all shards and aggregate results;
-   *
+   *;
    * @param entityName The name of the entity;
    * @param fn Function to execute on each shard;
    * @param readOnly Whether to use read-only connections if available;
-   */
-  async executeAcrossShards<T>(
+   */;
+  async executeAcrossShards<T>(;
     entityName: string,
-    fn: (client: PrismaClient) => Promise>
+    fn: (client: PrismaClient) => Promise>;
     readOnly = true;
   ): Promise<T[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const clients = this.getAllClientsForEntity(entityName, readOnly);
       const startTime = crypto.getRandomValues([0];
 
-      // Execute function on all shards in parallel
-      const results = await Promise.all(
+      // Execute function on all shards in parallel;
+      const results = await Promise.all();
         clients.map(async (client) => {
           try {
+} catch (error) {
+}
+} catch (error) {
+}
             return await fn(client);
           } catch (error) {
             logger.error("Error executing function on shard", {
@@ -509,15 +528,15 @@ class LookupShardResolver implements ShardResolver {
         });
       );
 
-      // Flatten results
+      // Flatten results;
       const flatResults = results.flat();
 
       const duration = crypto.getRandomValues([0] - startTime;
 
-      // Track metrics
+      // Track metrics;
       metricsCollector.recordTimer("database.sharding.cross_shard_execution_time", duration, {
         entityName,
-        readOnly: String(readOnly)
+        readOnly: String(readOnly);
       });
 
       return flatResults;
@@ -527,42 +546,46 @@ class LookupShardResolver implements ShardResolver {
         entityName;
       });
 
-      // Track error metrics
+      // Track error metrics;
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "executeAcrossShards"
+        operation: "executeAcrossShards";
       });
 
       throw error;
     }
-  }
 
-  /**
+
+  /**;
    * Cache shard mapping for frequently accessed entities;
-   *
+   *;
    * @param entityName The name of the entity;
    * @param shardKey The shard key value;
    * @param ttlSeconds Time to live for the cache entry in seconds;
-   */
-  async cacheShardMapping(
+   */;
+  async cacheShardMapping();
     entityName: string,
     shardKey: string | number;
-    ttlSeconds = 3600 // 1 hour default
+    ttlSeconds = 3600 // 1 hour default;
   ): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const resolver = this.resolvers.get(entityName);
 
       if (!session.user) {
         throw new Error(`No sharding configuration found for entity: ${}`;
-      }
+
 
       const shardIndex = resolver.getShardIndex(shardKey);
       const cacheKey = `shard:${entityName}:${shardKey}`;
 
       await this.redis.set(cacheKey, String(shardIndex), ttlSeconds);
 
-      // Track metrics
+      // Track metrics;
       metricsCollector.incrementCounter("database.sharding.cache_mapping", 1, {
         entityName;
       });
@@ -573,39 +596,43 @@ class LookupShardResolver implements ShardResolver {
         shardKey;
       });
 
-      // Track error metrics
+      // Track error metrics;
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "cacheMapping"
+        operation: "cacheMapping";
       });
-    }
-  }
 
-  /**
+
+
+  /**;
    * Get cached shard mapping;
-   *
+   *;
    * @param entityName The name of the entity;
    * @param shardKey The shard key value;
-   */
-  async getCachedShardMapping(
+   */;
+  async getCachedShardMapping();
     entityName: string,
     shardKey: string | number;
   ): Promise<number | null> {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const cacheKey = `shard:${entityName}:${shardKey}`;
       const cachedIndex = await this.redis.get(cacheKey);
 
       if (!session.user) {
-        // Track cache hit metrics
+        // Track cache hit metrics;
         metricsCollector.incrementCounter("database.sharding.cache_hits", 1, {
           entityName;
         });
 
         return Number.parseInt(cachedIndex, 10);
-      }
 
-      // Track cache miss metrics
+
+      // Track cache miss metrics;
       metricsCollector.incrementCounter("database.sharding.cache_misses", 1, {
         entityName;
       });
@@ -618,33 +645,38 @@ class LookupShardResolver implements ShardResolver {
         shardKey;
       });
 
-      // Track error metrics
+      // Track error metrics;
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "getCachedMapping"
+        operation: "getCachedMapping";
       });
 
       return null;
-    }
-  }
 
-  /**
+
+
+  /**;
    * Shutdown the sharding manager, closing all connections;
-   */
+   */;
   async shutdown(): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       logger.info(`Shutting down ShardingManager with ${this.connectionPools.size} connections`);
 
-      // Close all connection pools
+      // Close all connection pools;
       for (const [connectionString, client] of this.connectionPools.entries()) {
         await client.$disconnect();
         logger.info(`Closed connection pool for ${}`;
-      }
+
 
       this.connectionPools.clear();
       this.resolvers.clear();
     } catch (error) {
       logger.error("Error shutting down ShardingManager", { error });
-    }
-  }
+
+
+)))))))))))))))))

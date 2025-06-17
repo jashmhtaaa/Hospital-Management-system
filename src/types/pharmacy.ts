@@ -1,5 +1,1 @@
-}
-
-// src/types/pharmacy.ts
-
-}
+// src/types/pharmacy.ts;

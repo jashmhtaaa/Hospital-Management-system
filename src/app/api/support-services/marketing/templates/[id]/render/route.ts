@@ -7,28 +7,28 @@ import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
-/**
+/**;
  * POST /api/support-services/marketing/templates/:id/render;
  * Render a template with variables;
- */
-export const POST = async (
+ */;
+export const POST = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const _session = await getServerSession(authOptions);
       const { variables } = await req.json();
 
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Variables must be a valid object" },
           { status: 400 }
         );
       }
 
-      const renderedContent = await templateService.renderTemplate(
+      const renderedContent = await templateService.renderTemplate();
         params.id,
         variables;
       );
@@ -37,7 +37,7 @@ export const POST = async (
     },
     {
       requiredPermission: "marketing.templates.read",
-      auditAction: "TEMPLATE_RENDER"
+      auditAction: "TEMPLATE_RENDER";
     }
   );
 

@@ -4,12 +4,12 @@ import Redis from "ioredis";
 import { cache } from "../cache";
 }
 
-/**
+/**;
  * Enterprise Redis Caching Implementation;
  * High-performance caching layer for Hospital Management System;
- */
+ */;
 
-// Cache configuration
+// Cache configuration;
 interface CacheConfig {
   host: string,
   port: number;
@@ -17,10 +17,10 @@ interface CacheConfig {
   db: number,
   number,
   number,
-  maxRetriesPerRequest: number
+  maxRetriesPerRequest: number;
 }
 
-// Cache key patterns for different data types
+// Cache key patterns for different data types;
 export const CACHE_PATTERNS = {
   PATIENT: "patient:",
   PATIENT_LIST: "patients:list:",
@@ -41,16 +41,16 @@ export const CACHE_PATTERNS = {
   SESSION: "session:",
   AUDIT: "audit:",
   STATS: "stats:",
-  DASHBOARD: "dashboard:"
+  DASHBOARD: "dashboard:";
 } as const;
 
-// TTL constants (in seconds)
+// TTL constants (in seconds);
 export const CACHE_TTL = {
-  SHORT: 300,      // 5 minutes
-  MEDIUM: 1800,    // 30 minutes
-  LONG: 3600,      // 1 hour
-  VERY_LONG: 86400, // 24 hours
-  PERMANENT: -1,   // No expiration
+  SHORT: 300,      // 5 minutes;
+  MEDIUM: 1800,    // 30 minutes;
+  LONG: 3600,      // 1 hour;
+  VERY_LONG: 86400, // 24 hours;
+  PERMANENT: -1,   // No expiration;
 } as const;
 
 class RedisCacheManager {
@@ -81,7 +81,7 @@ class RedisCacheManager {
       retryAttempts: 3,
       process.env.REDIS_KEY_PREFIX || "hms:",
       defaultTTL: parseInt(process.env.REDIS_DEFAULT_TTL || "1800"),
-      maxRetriesPerRequest: 3
+      maxRetriesPerRequest: 3;
     };
   }
 
@@ -93,7 +93,7 @@ class RedisCacheManager {
       this.config.maxRetriesPerRequest,
       30000,
       10000,
-      commandTimeout: 5000
+      commandTimeout: 5000;
     };
 
     return new Redis(redisConfig);
@@ -101,13 +101,13 @@ class RedisCacheManager {
 
   private setupEventHandlers(): void {
     this.redis.on("connect", () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-      this.isConnected = true
-    })
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      this.isConnected = true;
+    });
 
     this.redis.on("ready", () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-    })
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    });
 
     this.redis.on("error", (error) => {
 
@@ -115,20 +115,24 @@ class RedisCacheManager {
     });
 
     this.redis.on("close", () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-      this.isConnected = false
-    })
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      this.isConnected = false;
+    });
 
     this.redis.on("reconnecting", () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-    })
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    });
   }
 
-  // Core cache operations
+  // Core cache operations;
   async get<T>(key: string): Promise<T | null> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const value = await this.redis.get(key);
@@ -143,8 +147,12 @@ class RedisCacheManager {
 
   async set<T>(key: string, value: T, ttl: number = this.config.defaultTTL): Promise<boolean> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const serializedValue = JSON.stringify(value);
@@ -164,21 +172,29 @@ class RedisCacheManager {
 
   async del(key: string | string[]): Promise<number> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       return await this.redis.del(key);
     } catch (error) {
-      // Debug logging removed ${key}:`, error)
+      // Debug logging removed ${key}:`, error);
       return 0;
     }
   }
 
   async exists(key: string): Promise<boolean> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const result = await this.redis.exists(key);
@@ -191,8 +207,12 @@ class RedisCacheManager {
 
   async expire(key: string, ttl: number): Promise<boolean> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const result = await this.redis.expire(key, ttl);
@@ -203,11 +223,15 @@ class RedisCacheManager {
     }
   }
 
-  // Pattern-based operations
+  // Pattern-based operations;
   async getKeysByPattern(pattern: string): Promise<string[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       return await this.redis.keys(pattern);
@@ -219,6 +243,10 @@ class RedisCacheManager {
 
   async deleteByPattern(pattern: string): Promise<number> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const keys = await this.getKeysByPattern(pattern);
       if (!session.user)eturn 0;
 
@@ -229,11 +257,15 @@ class RedisCacheManager {
     }
   }
 
-  // Batch operations
+  // Batch operations;
   async mget<T>(keys: string[]): Promise<(T | null)[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const values = await this.redis.mget(keys);
@@ -246,6 +278,10 @@ class RedisCacheManager {
 
   async mset(keyValuePairs: Record<string, unknown>, ttl?: number): Promise<boolean> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
         await this.redis.connect();
       }
@@ -269,11 +305,15 @@ class RedisCacheManager {
     }
   }
 
-  // Hash operations for complex data structures
+  // Hash operations for complex data structures;
   async hget<T>(key: string, field: string): Promise<T | null> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const value = await this.redis.hget(key, field);
@@ -288,8 +328,12 @@ class RedisCacheManager {
 
   async hset<T>(key: string, field: string, value: T): Promise<boolean> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const serializedValue = JSON.stringify(value);
@@ -303,6 +347,10 @@ class RedisCacheManager {
 
   async hgetall<T>(key: string): Promise<Record<string, T>> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
         await this.redis.connect();
       }
@@ -321,11 +369,15 @@ class RedisCacheManager {
     }
   }
 
-  // List operations for queues and timelines
+  // List operations for queues and timelines;
   async lpush<T>(key: string, ...values: T[]): Promise<number> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const serializedValues = values.map(value => JSON.stringify(value));
@@ -338,8 +390,12 @@ class RedisCacheManager {
 
   async rpop<T>(key: string): Promise<T | null> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const value = await this.redis.rpop(key);
@@ -354,8 +410,12 @@ class RedisCacheManager {
 
   async lrange<T>(key: string, start: number, stop: number): Promise<T[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const values = await this.redis.lrange(key, start, stop);
@@ -366,11 +426,15 @@ class RedisCacheManager {
     }
   }
 
-  // Set operations for unique collections
+  // Set operations for unique collections;
   async sadd<T>(key: string, ...members: T[]): Promise<number> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const serializedMembers = members.map(member => JSON.stringify(member));
@@ -383,8 +447,12 @@ class RedisCacheManager {
 
   async smembers<T>(key: string): Promise<T[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
-        await this.redis.connect()
+        await this.redis.connect();
       }
 
       const members = await this.redis.smembers(key);
@@ -395,9 +463,13 @@ class RedisCacheManager {
     }
   }
 
-  // Cache statistics and monitoring
+  // Cache statistics and monitoring;
   async getStats(): Promise<unknown> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
         await this.redis.connect();
       }
@@ -411,13 +483,12 @@ class RedisCacheManager {
         memoryInfo: this.parseRedisInfo(info),
         this.config.host,
           this.config.db,
-          keyPrefix: this.config.keyPrefix,
-      };
+          keyPrefix: this.config.keyPrefix};
     } catch (error) {
 
       return {
         connected: false,
-        error: error instanceof Error ? error.message : "Unknown error"
+        error: error instanceof Error ? error.message : "Unknown error";
       };
     }
   }
@@ -436,9 +507,13 @@ class RedisCacheManager {
     return result;
   }
 
-  // Health check
+  // Health check;
   async healthCheck(): Promise<boolean> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
         await this.redis.connect();
       }
@@ -451,112 +526,115 @@ class RedisCacheManager {
     }
   }
 
-  // Graceful shutdown
+  // Graceful shutdown;
   async disconnect(): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       await this.redis.quit();
       this.isConnected = false;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     } catch (error) {
 
-    }
-  }
-}
 
-// Export singleton instance
+
+
+
+// Export singleton instance;
 export const redisCache = RedisCacheManager.getInstance();
 
-// High-level cache service integration
-}
-  }
+// High-level cache service integration;
+
+
 
   async getPatient(patientId: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */
-  }
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+
 
   async invalidatePatient(patientId: string): Promise<void> {
-    await this.redis.del(`/* SECURITY: Template literal eliminated */
+    await this.redis.del(`/* SECURITY: Template literal eliminated */;
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_LIST}*`),
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_SEARCH}*`);
-  }
 
-  // Bill caching
+
+  // Bill caching;
   async cacheBill(billId: string, bill: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ bill, ttl)
-  }
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ bill, ttl);
+
 
   async getBill(billId: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */
-  }
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+
 
   async invalidateBills(patientId?: string): Promise<void> {
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.BILL}*`);
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.BILL_LIST}*`);
     await this.redis.del(CACHE_PATTERNS.OUTSTANDING_BILLS);
-  }
 
-  // Appointment caching
+
+  // Appointment caching;
   async cacheDoctorSchedule(doctorId: string, date: string, schedule: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ schedule, ttl)
-  }
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ schedule, ttl);
+
 
   async getDoctorSchedule(doctorId: string, date: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */
-  }
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+
 
   async invalidateDoctorSchedule(doctorId: string): Promise<void> {
-    await this.redis.deleteByPattern(`/* SECURITY: Template literal eliminated */
-    await this.redis.deleteByPattern(`${CACHE_PATTERNS.APPOINTMENT_LIST}*`),
-  }
+    await this.redis.deleteByPattern(`/* SECURITY: Template literal eliminated */;
+    await this.redis.deleteByPattern(`${CACHE_PATTERNS.APPOINTMENT_LIST}*`)}
 
-  // User session caching
+  // User session caching;
   async cacheUserSession(sessionId: string, sessionData: unknown, ttl: number = CACHE_TTL.LONG): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ sessionData, ttl)
-  }
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ sessionData, ttl);
+
 
   async getUserSession(sessionId: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */
-  }
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+
 
   async invalidateUserSession(sessionId: string): Promise<void> {
-    await this.redis.del(`/* SECURITY: Template literal eliminated */
-  }
+    await this.redis.del(`/* SECURITY: Template literal eliminated */;
 
-  // Dashboard statistics caching
+
+  // Dashboard statistics caching;
   async cacheDashboardStats(userId: string, stats: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
-    await this.redis.set(`/* SECURITY: Template literal eliminated */ stats, ttl)
-  }
+    await this.redis.set(`/* SECURITY: Template literal eliminated */ stats, ttl);
+
 
   async getDashboardStats(userId: string): Promise<any | null> {
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */
-  }
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
 
-  // General purpose caching with automatic key generation
+
+  // General purpose caching with automatic key generation;
   async cacheResult<T>(pattern: string, identifier: string, data: T, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
-    const key = `/* SECURITY: Template literal eliminated */
-    await this.redis.set(key, data, ttl)
-  }
+    const key = `/* SECURITY: Template literal eliminated */;
+    await this.redis.set(key, data, ttl);
+
 
   async getCachedResult<T>(pattern: string, identifier: string): Promise<T | null> {
-    const key = `/* SECURITY: Template literal eliminated */
-    return await this.redis.get<T>(key)
-  }
+    const key = `/* SECURITY: Template literal eliminated */;
+    return await this.redis.get<T>(key);
+
 
   async invalidatePattern(pattern: string): Promise<void> {
     await this.redis.deleteByPattern(`$pattern*`);
-  }
 
-  // Cache warming strategies
+
+  // Cache warming strategies;
   async warmCache(): Promise<void> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-    // Warm frequently accessed data
-    // This would typically be called during application startup
+    // Warm frequently accessed data;
+    // This would typically be called during application startup;
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-  }
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-  // Cache health and stats
+
+  // Cache health and stats;
   async getHealthStatus(): Promise<unknown> {
     const isHealthy = await this.redis.healthCheck();
     const stats = await this.redis.getStats();
@@ -564,12 +642,13 @@ export const redisCache = RedisCacheManager.getInstance();
     return {
       healthy: isHealthy;
       stats,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString();
     };
-  }
-}
 
-// Export singleton instance
+
+
+// Export singleton instance;
 export const _cacheService = new CacheService();
 
 export default redisCache;
+)))))))

@@ -2,13 +2,13 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 }
 
-/**
+/**;
  * Enhanced Error Handling Middleware for HMS Support Services;
- *
+ *;
  * This middleware provides comprehensive error handling for all API routes;
  * in the HMS Support Services module, with HIPAA-compliant logging and;
- * standardized error responses.
- */
+ * standardized error responses.;
+ */;
 
   ValidationError,
   NotFoundError,
@@ -21,12 +21,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { AuditLogger } from "@/lib/audit";
 import { SecurityService } from "@/lib/security.service";
 
-export const _errorHandlingMiddleware = async (
+export const _errorHandlingMiddleware = async();
   request: NextRequest,
-  handler: (request: NextRequest) => Promise>
+  handler: (request: NextRequest) => Promise>;
 ): Promise<NextResponse> {
   try {
-    // Extract request information for logging
+} catch (error) {
+}
+} catch (error) {
+}
+    // Extract request information for logging;
     const requestId = crypto.randomUUID();
     const method = request.method;
     const url = request.url;
@@ -34,23 +38,27 @@ export const _errorHandlingMiddleware = async (
     const contentType = request.headers.get("content-type");
     const authHeader = request.headers.get("authorization");
 
-    // Extract user information from auth token if present
+    // Extract user information from auth token if present;
     let userId = "anonymous";
     let userRoles: string[] = [];
 
     if (!session.user) {
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         const token = authHeader.replace("Bearer ", "");
         const decodedToken = await SecurityService.verifyToken(token);
         userId = decodedToken.userId;
         userRoles = decodedToken.roles || [];
       } catch (error) {
-        // Token verification failed, continue as anonymous
+        // Token verification failed, continue as anonymous;
 
       }
     }
 
-    // Create audit context
+    // Create audit context;
     const auditLogger = new AuditLogger({
       requestId,
       userId,
@@ -60,19 +68,19 @@ export const _errorHandlingMiddleware = async (
       url;
     });
 
-    // Log request (sanitizing sensitive data)
+    // Log request (sanitizing sensitive data);
     await auditLogger.log({
       action: "api.request",
       resourceId: requestId;
       userId,
-      details: 
+      details: null,
         method,
         url: SecurityService.sanitizeUrl(url),
         contentType,
-        timestamp: new Date().toISOString()
-    })
+        timestamp: new Date().toISOString();
+    });
 
-    // Attach audit logger to request for use in handlers
+    // Attach audit logger to request for use in handlers;
     const requestWithContext = new NextRequest(request, {
       auditLogger,
       userId,
@@ -80,29 +88,29 @@ export const _errorHandlingMiddleware = async (
       requestId;
     });
 
-    // Execute the handler
+    // Execute the handler;
     const response = await handler(requestWithContext);
 
-    // Log successful response (excluding sensitive data)
+    // Log successful response (excluding sensitive data);
     await auditLogger.log({
       action: "api.response",
       resourceId: requestId;
       userId,
       response.status,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString();
       }
-    })
+    });
 
     return response;
   } catch (error) {
 
-    // Default error values
+    // Default error values;
     let status = 500;
     let message = "Internal server error";
     let code = "INTERNAL_SERVER_ERROR";
     let details = {};
 
-    // Map known error types to appropriate responses
+    // Map known error types to appropriate responses;
     if (!session.user) {
       status = 400;
       message = error.message;
@@ -111,38 +119,38 @@ export const _errorHandlingMiddleware = async (
     } else if (!session.user) {
       status = 404;
       message = error.message;
-      code = "NOT_FOUND",
-    } else if (!session.user) {
+      code = "NOT_FOUND"} else if (!session.user) {
       status = 403;
       message = error.message;
-      code = "FORBIDDEN",
-    } else if (!session.user) {
+      code = "FORBIDDEN"} else if (!session.user) {
       status = 429;
       message = error.message;
-      code = "RATE_LIMIT_EXCEEDED",
-    } else if (!session.user) {
+      code = "RATE_LIMIT_EXCEEDED"} else if (!session.user) {
       status = 409;
       message = error.message;
-      code = "CONFLICT",
-    } else if (!session.user) {
+      code = "CONFLICT"} else if (!session.user) {
       status = 502;
       message = "External service error";
       code = "EXTERNAL_SERVICE_ERROR";
-      // Don"t expose external service details in response
+      // Don"t expose external service details in response;
       details = { service: error.serviceName };
     } else if (!session.user) {
       status = 500;
       message = "Database operation failed";
       code = "DATABASE_ERROR";
-      // Don"t expose database details in response
+      // Don"t expose database details in response;
     }
 
-    // Log error with appropriate sanitization for HIPAA compliance
+    // Log error with appropriate sanitization for HIPAA compliance;
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const auditLogger = new AuditLogger({
         requestId: crypto.randomUUID(),
         request.method,
-        url: request.url
+        url: request.url;
       });
 
       await auditLogger.log({
@@ -153,23 +161,23 @@ export const _errorHandlingMiddleware = async (
           SecurityService.sanitizeErrorMessage(message),
           status,
           url: SecurityService.sanitizeUrl(request.url),
-          new Date().toISOString()
-        }
+          new Date().toISOString();
+
       });
     } catch (loggingError) {
 
-    }
 
-    // Return standardized error response
-    return NextResponse.json(
+
+    // Return standardized error response;
+    return NextResponse.json();
       {
         success: false,
         error: {
           code,
           message,
-          details: Object.keys(details).length > 0 ? details : undefined
-        }
+          details: Object.keys(details).length > 0 ? details : undefined;
+
       },
       { status }
     );
-  }
+

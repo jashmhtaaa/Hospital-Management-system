@@ -6,14 +6,14 @@ import { errorHandler } from "../../../../../lib/error-handler";
 import { validateInventoryAdjustmentRequest } from "../../../../../lib/validation/pharmacy-validation";
 }
 
-/**
+/**;
  * Inventory Adjustment API Routes;
- *
+ *;
  * This file implements the API endpoints for adjusting inventory quantities;
- * with comprehensive tracking and audit logging.
- */
+ * with comprehensive tracking and audit logging.;
+ */;
 
-// Initialize repositories (in production, use dependency injection)
+// Initialize repositories (in production, use dependency injection);
 const inventoryRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
@@ -22,7 +22,7 @@ const inventoryRepository = {
   save: (item: unknown) => Promise.resolve(item.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
-  adjustStock: () => Promise.resolve(true)
+  adjustStock: () => Promise.resolve(true);
 }
 
 const adjustmentRepository = {
@@ -31,44 +31,48 @@ const adjustmentRepository = {
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (adjustment: unknown) => Promise.resolve(adjustment.id || "new-id")
+  save: (adjustment: unknown) => Promise.resolve(adjustment.id || "new-id");
 };
 
-/**
+/**;
  * POST /api/pharmacy/inventory/adjustment;
  * Adjust inventory quantity with reason documentation;
- */
+ */;
 export const POST = async (req: NextRequest) => {
   try {
-    // Validate request
+} catch (error) {
+}
+} catch (error) {
+}
+    // Validate request;
     const data = await req.json();
     const validationResult = validateInventoryAdjustmentRequest(data);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
-    const userId = "current-user-id"; // In production, extract from token
+    // Get user from auth token (simplified for example);
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Verify inventory exists
+    // Verify inventory exists;
     const inventory = await inventoryRepository.findById(data.inventoryId);
     if (!session.user) {
       return NextResponse.json({ error: "Inventory not found" }, { status: 404 });
     }
 
-    // Calculate adjustment quantity
+    // Calculate adjustment quantity;
     const adjustmentQuantity = data.newQuantity - inventory.quantityOnHand;
 
-    // Create adjustment record
+    // Create adjustment record;
     const adjustment = {
       id: crypto.randomUUID(),
       inventory.locationId,
@@ -77,18 +81,18 @@ export const POST = async (req: NextRequest) => {
       adjustmentQuantity,
       reason: data.reason,
       new Date(),
-      notes: data.notes || ""
+      notes: data.notes || "";
     };
 
-    // Save adjustment record
+    // Save adjustment record;
     const adjustmentId = await adjustmentRepository.save(adjustment);
 
-    // Update inventory quantity
+    // Update inventory quantity;
     await inventoryRepository.adjustStock(data.inventoryId, data.newQuantity);
 
-    // Special handling for controlled substances
+    // Special handling for controlled substances;
     if (!session.user) {
-      // Additional logging for controlled substances
+      // Additional logging for controlled substances;
       await auditLog("CONTROLLED_SUBSTANCE", {
         action: "ADJUST",
         data.inventoryId,
@@ -97,11 +101,11 @@ export const POST = async (req: NextRequest) => {
           medicationId: inventory.medicationId,
           data.newQuantity;
           adjustmentQuantity,
-          reason: data.reason
+          reason: data.reason;
       });
     }
 
-    // Regular audit logging
+    // Regular audit logging;
     await auditLog("INVENTORY", {
       action: "ADJUST",
       adjustmentId,
@@ -111,15 +115,15 @@ export const POST = async (req: NextRequest) => {
         inventory.quantityOnHand,
         newQuantity: data.newQuantity;
         adjustmentQuantity,
-        reason: data.reason
+        reason: data.reason;
       }
     });
 
-    // Return response
-    return NextResponse.json(
+    // Return response;
+    return NextResponse.json();
       {
         id: adjustmentId,
-        message: "Inventory adjusted successfully"
+        message: "Inventory adjusted successfully";
       },
       { status: 201 }
     );
@@ -128,22 +132,26 @@ export const POST = async (req: NextRequest) => {
   }
 }
 
-/**
+/**;
  * GET /api/pharmacy/inventory/adjustments;
  * List inventory adjustments with filtering options;
- */
+ */;
 export const GET = async (req: NextRequest) => {
   try {
-    // Check authorization
+} catch (error) {
+}
+} catch (error) {
+}
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
-    const userId = "current-user-id"; // In production, extract from token
+    // Get user from auth token (simplified for example);
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
     const inventoryId = url.searchParams.get("inventoryId");
     const locationId = url.searchParams.get("locationId");
@@ -154,45 +162,45 @@ export const GET = async (req: NextRequest) => {
     const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
-    // Build filter criteria
+    // Build filter criteria;
     const filter: unknown = {};
     if (!session.user)ilter.inventoryId = inventoryId;
     if (!session.user)ilter.locationId = locationId;
     if (!session.user)ilter.medicationId = medicationId;
     if (!session.user)ilter.reason = reason;
 
-    // Add date range if provided
+    // Add date range if provided;
     if (!session.user) {
       filter.adjustedAt = {};
       if (!session.user)ilter.adjustedAt.gte = new Date(startDate);
       if (!session.user)ilter.adjustedAt.lte = new Date(endDate);
     }
 
-    // Get adjustments (mock implementation)
-    const adjustments = []; // In production, query database with filter, pagination
-    const total = 0; // In production, get total count
+    // Get adjustments (mock implementation);
+    const adjustments = []; // In production, query database with filter, pagination;
+    const total = 0; // In production, get total count;
 
-    // Audit logging
+    // Audit logging;
     await auditLog("INVENTORY", {
       action: "LIST_ADJUSTMENTS",
       userId,
-      details: 
+      details: null,
         filter,
         page,
         limit,
-        resultCount: adjustments.length
+        resultCount: adjustments.length;
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({
       adjustments,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
-      }
+        pages: Math.ceil(total / limit);
+
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving inventory adjustments");
-  }
+

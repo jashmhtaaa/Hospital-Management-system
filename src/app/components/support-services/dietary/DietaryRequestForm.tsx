@@ -10,8 +10,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  FormMessage} from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -20,8 +19,7 @@ import * as z from "zod";
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -33,26 +31,25 @@ import { format } from "date-fns";
 import { CalendarIcon, Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-// Define the form schema with Zod
+// Define the form schema with Zod;
 const formSchema = z.object({
-  "Please select a patient"
+  "Please select a patient";
   }),
-  "Please select a request type"
+  "Please select a request type";
   }),
-  "Start date is required"
+  "Start date is required";
   }),
   endDate: z.date().optional(),
   mealPreferences: z.array(z.string()).default([]),
   dietaryRestrictions: z.array(z.string()).default([]),
   allergies: z.array(z.string()).default([]),
-  specialInstructions: z.string().max(1000, { message: "Special instructions must not exceed 1000 characters" }).optional(),
-});
+  specialInstructions: z.string().max(1000, { message: "Special instructions must not exceed 1000 characters" }).optional()});
 
-type FormValues = z.infer>
+type FormValues = z.infer>;
 
 interface Patient {
   id: string,
-  name: string
+  name: string;
 }
 
 interface DietaryRequestFormProps {
@@ -61,8 +58,8 @@ interface DietaryRequestFormProps {
   isEditing?: boolean;
 }
 
-// Common dietary restrictions
-const commonDietaryRestrictions = [
+// Common dietary restrictions;
+const commonDietaryRestrictions = [;
   "Gluten-Free",
   "Dairy-Free",
   "Nut-Free",
@@ -75,8 +72,8 @@ const commonDietaryRestrictions = [
   "Halal";
 ];
 
-// Common meal preferences
-const commonMealPreferences = [
+// Common meal preferences;
+const commonMealPreferences = [;
   "No Spicy Food",
   "Soft Foods Only",
   "Pureed Foods",
@@ -87,8 +84,8 @@ const commonMealPreferences = [
   "Warm Foods";
 ];
 
-// Common allergies
-const commonAllergies = [
+// Common allergies;
+const commonAllergies = [;
   "Peanuts",
   "Tree Nuts",
   "Milk",
@@ -102,7 +99,7 @@ const commonAllergies = [
 
 export const _DietaryRequestForm = ({ onSuccess,
   initialData,
-  isEditing = false
+  isEditing = false;
 }: DietaryRequestFormProps) => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -112,19 +109,22 @@ export const _DietaryRequestForm = ({ onSuccess,
   const { toast } = useToast();
   const router = useRouter();
 
-  // Initialize the form with react-hook-form
+  // Initialize the form with react-hook-form;
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     [],
       [],
-      specialInstructions: ""
-    },
-  });
+      specialInstructions: "";
+    }});
 
-  // Fetch patients when component mounts
+  // Fetch patients when component mounts;
   useEffect(() => {
     const fetchPatients = async () => {
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         const response = await fetch("/api/patients");
         if (!session.user)hrow new Error("Failed to fetch patients");
         const data = await response.json(),
@@ -133,7 +133,7 @@ export const _DietaryRequestForm = ({ onSuccess,
 
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         });
       }
     };
@@ -141,12 +141,16 @@ export const _DietaryRequestForm = ({ onSuccess,
     fetchPatients();
   }, [toast]);
 
-  // Handle form submission
+  // Handle form submission;
   const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const url = isEditing;
-        ? `/api/support-services/dietary/$initialData.id`
+        ? `/api/support-services/dietary/$initialData.id`;
         : "/api/support-services/dietary";
 
       const method = isEditing ? "PUT" : "POST";
@@ -154,14 +158,12 @@ export const _DietaryRequestForm = ({ onSuccess,
       const response = await fetch(url, {
         method,
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"},
         body: JSON.stringify({
           ...values,
           startDate: values.startDate.toISOString(),
-          endDate: values.endDate ? values.endDate.toISOString() : undefined
-        }),
-      });
+          endDate: values.endDate ? values.endDate.toISOString() : undefined;
+        })});
 
       if (!session.user) {
         throw new Error("Failed to submit request");
@@ -170,9 +172,8 @@ export const _DietaryRequestForm = ({ onSuccess,
       toast({
         title: isEditing ? "Request Updated" : "Request Created",
         description: isEditing;
-          ? "The dietary request has been updated successfully."
-          : "Your dietary request has been submitted successfully.",
-      });
+          ? "The dietary request has been updated successfully.";
+          : "Your dietary request has been submitted successfully."});
 
       if (!session.user) {
         onSuccess();
@@ -184,247 +185,247 @@ export const _DietaryRequestForm = ({ onSuccess,
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Handle adding custom preference
+  // Handle adding custom preference;
   const addCustomPreference = () => {
     if (!session.user)== "") return;
 
     const currentPreferences = form.getValues("mealPreferences");
     if (!session.user) {
       form.setValue("mealPreferences", [...currentPreferences, customPreference]);
-    }
-    setCustomPreference("")
+
+    setCustomPreference("");
   };
 
-  // Handle adding custom restriction
+  // Handle adding custom restriction;
   const addCustomRestriction = () => {
     if (!session.user)== "") return;
 
     const currentRestrictions = form.getValues("dietaryRestrictions");
     if (!session.user) {
       form.setValue("dietaryRestrictions", [...currentRestrictions, customRestriction]);
-    }
-    setCustomRestriction("")
+
+    setCustomRestriction("");
   };
 
-  // Handle adding custom allergy
+  // Handle adding custom allergy;
   const addCustomAllergy = () => {
     if (!session.user)== "") return;
 
     const currentAllergies = form.getValues("allergies");
     if (!session.user) {
       form.setValue("allergies", [...currentAllergies, customAllergy]);
-    }
-    setCustomAllergy("")
+
+    setCustomAllergy("");
   };
 
-  // Handle removing preference
+  // Handle removing preference;
   const removePreference = (preference: string) => {
     const currentPreferences = form.getValues("mealPreferences");
     form.setValue("mealPreferences", currentPreferences.filter(p => p !== preference))
   };
 
-  // Handle removing restriction
+  // Handle removing restriction;
   const removeRestriction = (restriction: string) => {
     const currentRestrictions = form.getValues("dietaryRestrictions");
     form.setValue("dietaryRestrictions", currentRestrictions.filter(r => r !== restriction))
   };
 
-  // Handle removing allergy
+  // Handle removing allergy;
   const removeAllergy = (allergy: string) => {
     const currentAllergies = form.getValues("allergies");
     form.setValue("allergies", currentAllergies.filter(a => a !== allergy))
   };
 
-  return (
-    <Form {...form}>
-      >
-        <FormField>
+  return();
+    <Form {...form}>;
+      >;
+        <FormField>;
           control={form.control}
-          name="patientId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Patient</FormLabel>
-              <Select>
+          name="patientId";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>Patient</FormLabel>;
+              <Select>;
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a patient" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {patients.map((patient) => (
-                    >
+              >;
+                <FormControl>;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select a patient" />;
+                  </SelectTrigger>;
+                </FormControl>;
+                <SelectContent>;
+                  {patients.map((patient) => (;
+                    >;
                       {patient.name}
-                    </SelectItem>
+                    </SelectItem>;
                   ))}
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                Select the patient for this dietary request.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+                </SelectContent>;
+              </Select>;
+              <FormDescription>;
+                Select the patient for this dietary request.;
+              </FormDescription>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        <FormField>
+        <FormField>;
           control={form.control}
-          name="requestType"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Request Type</FormLabel>
-              <Select>
+          name="requestType";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>Request Type</FormLabel>;
+              <Select>;
                 onValueChange={field.onChange}
                 defaultValue={field.value}
                 disabled={isLoading}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select request type" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="REGULAR_MEAL">Regular Meal>
-                  <SelectItem value="SPECIAL_DIET">Special Diet>
-                  <SelectItem value="NUTRITIONAL_CONSULTATION">Nutritional Consultation</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                Select the type of dietary service needed.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+              >;
+                <FormControl>;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select request type" />;
+                  </SelectTrigger>;
+                </FormControl>;
+                <SelectContent>;
+                  <SelectItem value="REGULAR_MEAL">Regular Meal>;
+                  <SelectItem value="SPECIAL_DIET">Special Diet>;
+                  <SelectItem value="NUTRITIONAL_CONSULTATION">Nutritional Consultation</SelectItem>;
+                </SelectContent>;
+              </Select>;
+              <FormDescription>;
+                Select the type of dietary service needed.;
+              </FormDescription>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        >
-          <FormField>
+        >;
+          <FormField>;
             control={form.control}
-            name="startDate"
-            render={({ field }) => (
-              >
-                <FormLabel>Start Date</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button>
+            name="startDate";
+            render={({ field }) => (;
+              >;
+                <FormLabel>Start Date</FormLabel>;
+                <Popover>;
+                  <PopoverTrigger asChild>;
+                    <FormControl>;
+                      <Button>;
                         variant={"outline"}
-                        className={cn(
+                        className={cn();
                           "w-full pl-3 text-left font-normal",
                           !field?.value && "text-muted-foreground";
                         )}
                         disabled={isLoading}
-                      >
-                        {field.value ? (
+                      >;
+                        {field.value ? (;
                           format(field.value, "PPP");
-                        ) : (
-                          <span>Pick a date</span>
+                        ) : (;
+                          <span>Pick a date</span>;
                         )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  >
-                    <Calendar>
-                      mode="single"
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                      </Button>;
+                    </FormControl>;
+                  </PopoverTrigger>;
+                  >;
+                    <Calendar>;
+                      mode="single";
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => date < new Date()}
                       initialFocus;
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>
-                  When should this dietary plan start?
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
+                    />;
+                  </PopoverContent>;
+                </Popover>;
+                <FormDescription>;
+                  When should this dietary plan start?;
+                </FormDescription>;
+                <FormMessage />;
+              </FormItem>;
             )}
-          />
+          />;
 
-          <FormField>
+          <FormField>;
             control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              >
-                <FormLabel>End Date (Optional)</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button>
+            name="endDate";
+            render={({ field }) => (;
+              >;
+                <FormLabel>End Date (Optional)</FormLabel>;
+                <Popover>;
+                  <PopoverTrigger asChild>;
+                    <FormControl>;
+                      <Button>;
                         variant={"outline"}
-                        className={cn(
+                        className={cn();
                           "w-full pl-3 text-left font-normal",
                           !field?.value && "text-muted-foreground";
                         )}
                         disabled={isLoading}
-                      >
-                        {field.value ? (
+                      >;
+                        {field.value ? (;
                           format(field.value, "PPP");
-                        ) : (
-                          <span>Pick a date</span>
+                        ) : (;
+                          <span>Pick a date</span>;
                         )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  >
-                    <Calendar>
-                      mode="single"
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                      </Button>;
+                    </FormControl>;
+                  </PopoverTrigger>;
+                  >;
+                    <Calendar>;
+                      mode="single";
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => date < (form.getValues("startDate") || }
                       initialFocus;
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>
-                  When should this dietary plan end? (Leave blank for indefinite)
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
+                    />;
+                  </PopoverContent>;
+                </Popover>;
+                <FormDescription>;
+                  When should this dietary plan end? (Leave blank for indefinite);
+                </FormDescription>;
+                <FormMessage />;
+              </FormItem>;
             )}
-          />
-        </div>
+          />;
+        </div>;
 
-        <FormField>
+        <FormField>;
           control={form.control}
-          name="mealPreferences"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Meal Preferences</FormLabel>
-              >
-                >
-                  {field.value.map((preference) => (
-                    >
+          name="mealPreferences";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>Meal Preferences</FormLabel>;
+              >;
+                >;
+                  {field.value.map((preference) => (;
+                    >;
                       {preference}
-                      <Button>
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="h-4 w-4 p-0"
+                      <Button>;
+                        type="button";
+                        variant="ghost";
+                        size="sm";
+                        className="h-4 w-4 p-0";
                         onClick={() => removePreference(preference)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </Badge>
+                      >;
+                        <X className="h-3 w-3" />;
+                      </Button>;
+                    </Badge>;
                   ))}
-                </div>
+                </div>;
 
-                >
-                  {commonMealPreferences.map((preference) => (
-                    >
-                      <Checkbox>
+                >;
+                  {commonMealPreferences.map((preference) => (;
+                    >;
+                      <Checkbox>;
                         id={`preference-$preference`}
                         checked={field.value.includes(preference)}
                         onCheckedChange={(checked) => {
@@ -432,73 +433,73 @@ export const _DietaryRequestForm = ({ onSuccess,
                             form.setValue("mealPreferences", [...field.value, preference]);
                           } else {
                             removePreference(preference);
-                          }
-                        }}
-                      />
-                      <label>
-                        htmlFor={`preference-$preference`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {preference}
-                      </label>
-                    </div>
-                  ))}
-                </div>
 
-                >
-                  <Input>
-                    placeholder="Add custom preference"
+                        }}
+                      />;
+                      <label>;
+                        htmlFor={`preference-$preference`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+                      >;
+                        {preference}
+                      </label>;
+                    </div>;
+                  ))}
+                </div>;
+
+                >;
+                  <Input>;
+                    placeholder="Add custom preference";
                     value={customPreference}
                     onChange={(e) => setCustomPreference(e.target.value)}
-                    className="flex-1"
+                    className="flex-1";
                     disabled={isLoading}
-                  />
-                  <Button>
-                    type="button"
-                    size="sm"
+                  />;
+                  <Button>;
+                    type="button";
+                    size="sm";
                     onClick={addCustomPreference}
                     disabled={isLoading || !customPreference.trim()}
-                  >
-                    <Plus className="h-4 w-4 mr-1" /> Add
-                  </Button>
-                </div>
-              </div>
-              <FormDescription>
-                Select or add any meal preferences for the patient.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+                  >;
+                    <Plus className="h-4 w-4 mr-1" /> Add;
+                  </Button>;
+                </div>;
+              </div>;
+              <FormDescription>;
+                Select or add any meal preferences for the patient.;
+              </FormDescription>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        <FormField>
+        <FormField>;
           control={form.control}
-          name="dietaryRestrictions"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Dietary Restrictions</FormLabel>
-              >
-                >
-                  {field.value.map((restriction) => (
-                    >
+          name="dietaryRestrictions";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>Dietary Restrictions</FormLabel>;
+              >;
+                >;
+                  {field.value.map((restriction) => (;
+                    >;
                       {restriction}
-                      <Button>
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="h-4 w-4 p-0"
+                      <Button>;
+                        type="button";
+                        variant="ghost";
+                        size="sm";
+                        className="h-4 w-4 p-0";
                         onClick={() => removeRestriction(restriction)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </Badge>
+                      >;
+                        <X className="h-3 w-3" />;
+                      </Button>;
+                    </Badge>;
                   ))}
-                </div>
+                </div>;
 
-                >
-                  {commonDietaryRestrictions.map((restriction) => (
-                    >
-                      <Checkbox>
+                >;
+                  {commonDietaryRestrictions.map((restriction) => (;
+                    >;
+                      <Checkbox>;
                         id={`restriction-$restriction`}
                         checked={field.value.includes(restriction)}
                         onCheckedChange={(checked) => {
@@ -506,73 +507,73 @@ export const _DietaryRequestForm = ({ onSuccess,
                             form.setValue("dietaryRestrictions", [...field.value, restriction]);
                           } else {
                             removeRestriction(restriction);
-                          }
-                        }}
-                      />
-                      <label>
-                        htmlFor={`restriction-$restriction`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {restriction}
-                      </label>
-                    </div>
-                  ))}
-                </div>
 
-                >
-                  <Input>
-                    placeholder="Add custom restriction"
+                        }}
+                      />;
+                      <label>;
+                        htmlFor={`restriction-$restriction`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+                      >;
+                        {restriction}
+                      </label>;
+                    </div>;
+                  ))}
+                </div>;
+
+                >;
+                  <Input>;
+                    placeholder="Add custom restriction";
                     value={customRestriction}
                     onChange={(e) => setCustomRestriction(e.target.value)}
-                    className="flex-1"
+                    className="flex-1";
                     disabled={isLoading}
-                  />
-                  <Button>
-                    type="button"
-                    size="sm"
+                  />;
+                  <Button>;
+                    type="button";
+                    size="sm";
                     onClick={addCustomRestriction}
                     disabled={isLoading || !customRestriction.trim()}
-                  >
-                    <Plus className="h-4 w-4 mr-1" /> Add
-                  </Button>
-                </div>
-              </div>
-              <FormDescription>
-                Select or add any dietary restrictions for the patient.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+                  >;
+                    <Plus className="h-4 w-4 mr-1" /> Add;
+                  </Button>;
+                </div>;
+              </div>;
+              <FormDescription>;
+                Select or add any dietary restrictions for the patient.;
+              </FormDescription>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        <FormField>
+        <FormField>;
           control={form.control}
-          name="allergies"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Food Allergies</FormLabel>
-              >
-                >
-                  {field.value.map((allergy) => (
-                    >
+          name="allergies";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>Food Allergies</FormLabel>;
+              >;
+                >;
+                  {field.value.map((allergy) => (;
+                    >;
                       {allergy}
-                      <Button>
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="h-4 w-4 p-0"
+                      <Button>;
+                        type="button";
+                        variant="ghost";
+                        size="sm";
+                        className="h-4 w-4 p-0";
                         onClick={() => removeAllergy(allergy)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </Badge>
+                      >;
+                        <X className="h-3 w-3" />;
+                      </Button>;
+                    </Badge>;
                   ))}
-                </div>
+                </div>;
 
-                >
-                  {commonAllergies.map((allergy) => (
-                    >
-                      <Checkbox>
+                >;
+                  {commonAllergies.map((allergy) => (;
+                    >;
+                      <Checkbox>;
                         id={`allergy-$allergy`}
                         checked={field.value.includes(allergy)}
                         onCheckedChange={(checked) => {
@@ -580,80 +581,80 @@ export const _DietaryRequestForm = ({ onSuccess,
                             form.setValue("allergies", [...field.value, allergy]);
                           } else {
                             removeAllergy(allergy);
-                          }
-                        }}
-                      />
-                      <label>
-                        htmlFor={`allergy-$allergy`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {allergy}
-                      </label>
-                    </div>
-                  ))}
-                </div>
 
-                >
-                  <Input>
-                    placeholder="Add custom allergy"
+                        }}
+                      />;
+                      <label>;
+                        htmlFor={`allergy-$allergy`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
+                      >;
+                        {allergy}
+                      </label>;
+                    </div>;
+                  ))}
+                </div>;
+
+                >;
+                  <Input>;
+                    placeholder="Add custom allergy";
                     value={customAllergy}
                     onChange={(e) => setCustomAllergy(e.target.value)}
-                    className="flex-1"
+                    className="flex-1";
                     disabled={isLoading}
-                  />
-                  <Button>
-                    type="button"
-                    size="sm"
+                  />;
+                  <Button>;
+                    type="button";
+                    size="sm";
                     onClick={addCustomAllergy}
                     disabled={isLoading || !customAllergy.trim()}
-                  >
-                    <Plus className="h-4 w-4 mr-1" /> Add
-                  </Button>
-                </div>
-              </div>
-              <FormDescription>
-                Select or add any food allergies for the patient.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+                  >;
+                    <Plus className="h-4 w-4 mr-1" /> Add;
+                  </Button>;
+                </div>;
+              </div>;
+              <FormDescription>;
+                Select or add any food allergies for the patient.;
+              </FormDescription>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        <FormField>
+        <FormField>;
           control={form.control}
-          name="specialInstructions"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Special Instructions (Optional)</FormLabel>
-              <FormControl>
-                <Textarea>
-                  placeholder="Any additional information or special instructions"
-                  className="resize-none"
+          name="specialInstructions";
+          render={({ field }) => (;
+            <FormItem>;
+              <FormLabel>Special Instructions (Optional)</FormLabel>;
+              <FormControl>;
+                <Textarea>;
+                  placeholder="Any additional information or special instructions";
+                  className="resize-none";
                   {...field}
                   disabled={isLoading}
-                />
-              </FormControl>
-              <FormDescription>
-                Provide any additional details that might be helpful.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+                />;
+              </FormControl>;
+              <FormDescription>;
+                Provide any additional details that might be helpful.;
+              </FormDescription>;
+              <FormMessage />;
+            </FormItem>;
           )}
-        />
+        />;
 
-        >
-          <Button>
-            type="button"
-            variant="outline"
+        >;
+          <Button>;
+            type="button";
+            variant="outline";
             onClick={() => router.back()}
             disabled={isLoading}
-          >
-            Cancel
-          </Button>
-          >
+          >;
+            Cancel;
+          </Button>;
+          >;
             {isLoading ? "Submitting..." : isEditing ? "Update Request" : "Submit Request"}
-          </Button>
-        </div>
-      </form>
-    </Form>
+          </Button>;
+        </div>;
+      </form>;
+    </Form>;
   );

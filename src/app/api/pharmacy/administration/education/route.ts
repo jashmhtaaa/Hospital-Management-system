@@ -9,20 +9,20 @@ import { validateEducationRequest } from "../../../../../lib/validation/pharmacy
 import type { PharmacyDomain } from "../../../models/domain-models";
 }
 
-/**
+/**;
  * Patient Education API Routes;
- *
+ *;
  * This file implements the API endpoints for recording patient education related to medications;
- * with comprehensive documentation and tracking.
- */
+ * with comprehensive documentation and tracking.;
+ */;
 
-// Initialize repositories (in production, use dependency injection)
+// Initialize repositories (in production, use dependency injection);
 const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository = {
@@ -33,7 +33,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const educationRepository = {
@@ -42,41 +42,45 @@ const educationRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   save: (education: unknown) => Promise.resolve(education.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
-/**
+/**;
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
- */
+ */;
 export const POST = async (req: NextRequest) => {
   try {
-    // Validate request
+} catch (error) {
+}
+} catch (error) {
+}
+    // Validate request;
     const data = await req.json();
     const validationResult = validateEducationRequest(data);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
-    const userId = "current-user-id"; // In production, extract from token
+    // Get user from auth token (simplified for example);
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Verify patient exists
+    // Verify patient exists;
     const patient = await getPatientById(data.patientId);
     if (!session.user) {
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });
     }
 
-    // Verify medication exists if provided
+    // Verify medication exists if provided;
     if (!session.user) {
       const medication = await medicationRepository.findById(data.medicationId);
       if (!session.user) {
@@ -84,7 +88,7 @@ export const POST = async (req: NextRequest) => {
       }
     }
 
-    // Verify prescription exists if provided
+    // Verify prescription exists if provided;
     if (!session.user) {
       const prescription = await prescriptionRepository.findById(data.prescriptionId);
       if (!session.user) {
@@ -92,7 +96,7 @@ export const POST = async (req: NextRequest) => {
       }
     }
 
-    // Create education record
+    // Create education record;
     const education = {
       id: data.id || crypto.randomUUID(),
       data.medicationId,
@@ -102,27 +106,27 @@ export const POST = async (req: NextRequest) => {
       new Date(),
       data.followUpDate ? new Date(data.followUpDate) : null,
       data.interpreter || false,
-      interpreterName: data.interpreterName
+      interpreterName: data.interpreterName;
     };
 
-    // Save education record
+    // Save education record;
     const educationId = await educationRepository.save(education);
 
-    // Audit logging
+    // Audit logging;
     await auditLog("MEDICATION_EDUCATION", {
       action: "CREATE",
       educationId,
       data.patientId,
       data.medicationId,
         data.educationType,
-        topics: data.topics
+        topics: data.topics;
     });
 
-    // Return response
-    return NextResponse.json(
+    // Return response;
+    return NextResponse.json();
       {
         id: educationId,
-        message: "Patient education recorded successfully"
+        message: "Patient education recorded successfully";
       },
       { status: 201 }
     );
@@ -131,22 +135,26 @@ export const POST = async (req: NextRequest) => {
   }
 }
 
-/**
+/**;
  * GET /api/pharmacy/administration/education;
  * Get patient education records with filtering options;
- */
+ */;
 export const GET = async (req: NextRequest) => {
   try {
-    // Check authorization
+} catch (error) {
+}
+} catch (error) {
+}
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
-    const userId = "current-user-id"; // In production, extract from token
+    // Get user from auth token (simplified for example);
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
     const patientId = url.searchParams.get("patientId");
     const medicationId = url.searchParams.get("medicationId");
@@ -157,31 +165,31 @@ export const GET = async (req: NextRequest) => {
     const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
-    // Require at least patientId filter
+    // Require at least patientId filter;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Patient ID is required" },
         { status: 400 }
       );
     }
 
-    // Build filter criteria
+    // Build filter criteria;
     const filter: unknown = { patientId };
     if (!session.user)ilter.medicationId = medicationId;
     if (!session.user)ilter.prescriptionId = prescriptionId;
     if (!session.user)ilter.educationType = educationType;
 
-    // Add date range if provided
+    // Add date range if provided;
     if (!session.user) {
       filter.educatedAt = {};
       if (!session.user)ilter.educatedAt.gte = new Date(startDate);
       if (!session.user)ilter.educatedAt.lte = new Date(endDate);
     }
 
-    // Get education records (mock implementation)
-    const educationRecords = await educationRepository.findByPatientId(patientId)
+    // Get education records (mock implementation);
+    const educationRecords = await educationRepository.findByPatientId(patientId);
 
-    // Apply additional filters
+    // Apply additional filters;
     let filteredRecords = educationRecords;
     if (!session.user) {
       filteredRecords = filteredRecords.filter(e => e.medicationId === medicationId);
@@ -199,14 +207,14 @@ export const GET = async (req: NextRequest) => {
     if (!session.user) {
       const endDateTime = new Date(endDate).getTime();
       filteredRecords = filteredRecords.filter(e => new Date(e.educatedAt).getTime() <= endDateTime);
-    }
+
 
     const total = filteredRecords.length;
 
-    // Apply pagination
+    // Apply pagination;
     const paginatedRecords = filteredRecords.slice((page - 1) * limit, page * limit);
 
-    // Audit logging
+    // Audit logging;
     await auditLog("MEDICATION_EDUCATION", {
       action: "LIST",
       userId,
@@ -214,19 +222,19 @@ export const GET = async (req: NextRequest) => {
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length
+        resultCount: paginatedRecords.length;
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({
       educationRecords: paginatedRecords,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
-      }
+        pages: Math.ceil(total / limit);
+
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving patient education records");
-  }
+

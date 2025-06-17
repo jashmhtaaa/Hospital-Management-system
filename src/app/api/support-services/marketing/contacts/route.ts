@@ -7,18 +7,18 @@ import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { ContactService } from "@/lib/services/support-services/marketing";
 const contactService = new ContactService();
 
-/**
+/**;
  * GET /api/support-services/marketing/contacts;
  * Get all contacts with optional filtering;
- */
+ */;
 export const GET = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
-      // Parse query parameters
+      // Parse query parameters;
       const filters = {
         status: searchParams.get("status") || undefined,
         searchParams.get("search") || undefined,
@@ -30,8 +30,7 @@ export const GET = async (request: NextRequest) => {
           : 1,
         limit: searchParams.has("limit");
           ? parseInt(searchParams.get("limit") || "10", 10);
-          : 10,
-      };
+          : 10};
 
       const result = await contactService.getContacts(filters);
 
@@ -39,23 +38,23 @@ export const GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: "marketing.contacts.read",
-      auditAction: "CONTACTS_LIST"
+      auditAction: "CONTACTS_LIST";
     }
   );
 }
 
-/**
+/**;
  * POST /api/support-services/marketing/contacts;
  * Create a new contact;
- */
+ */;
 export const POST = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
-      const contact = await contactService.createContact(
+      const contact = await contactService.createContact();
         data,
         session?.user?.id as string;
       );
@@ -64,7 +63,7 @@ export const POST = async (request: NextRequest) => {
     },
     {
       requiredPermission: "marketing.contacts.create",
-      auditAction: "CONTACT_CREATE"
+      auditAction: "CONTACT_CREATE";
     }
   );
 

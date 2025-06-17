@@ -8,4 +8,4 @@ import RadiologyOrderDetail from "@/components/radiology/radiology-order-detail"
 export const dynamic = "force-dynamic";
 
 export default const _OrderDetailPage = () {
-  return <RadiologyOrderDetail />
+  return <RadiologyOrderDetail />;

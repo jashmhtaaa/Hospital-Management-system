@@ -4,9 +4,9 @@ import { z } from "zod";
 
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-import type { D1ResultWithMeta } from "@/types/cloudflare"; // Import the specific type
+import type { D1ResultWithMeta } from "@/types/cloudflare"; // Import the specific type;
 import { Prescription } from "@/types/opd";
-// Zod schema for creating a prescription
+// Zod schema for creating a prescription;
 const prescriptionItemSchema = z.object({
     inventory_item_id: z.number(),
     drug_name: z.string().min(1),
@@ -20,16 +20,15 @@ const prescriptionItemSchema = z.object({
 
 const prescriptionCreateSchema = z.object({
     patient_id: z.number(),
-    doctor_id: z.number(), // Or derive from session
+    doctor_id: z.number(), // Or derive from session;
     consultation_id: z.number().optional().nullable(),
     prescription_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid prescription date format"
+        message: "Invalid prescription date format";
     }),
     notes: z.string().optional().nullable(),
-    items: z.array(prescriptionItemSchema).min(1, "At least one medication item is required"),
-});
+    items: z.array(prescriptionItemSchema).min(1, "At least one medication item is required")});
 
-// type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>
+// type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>;
 
 // GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination);
 export const _GET = async (request: NextRequest) => {
@@ -39,6 +38,10 @@ export const _GET = async (request: NextRequest) => {
     }
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
         const { searchParams } = new URL(request.url);
         const page = Number.parseInt(searchParams.get("page") || "1");
         const limit = Number.parseInt(searchParams.get("limit") || "10");
@@ -51,7 +54,7 @@ export const _GET = async (request: NextRequest) => {
         const sortBy = searchParams.get("sort_by") || "prescription_date";
         const sortOrder = searchParams.get("sort_order") || "desc";
 
-        // Validate sort parameters
+        // Validate sort parameters;
         const validSortColumns = ["prescription_date", "created_at"];
         const validSortOrders = ["asc", "desc"];
         const _finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "prescription_date";
@@ -103,11 +106,11 @@ export const _GET = async (request: NextRequest) => {
             countParameters.push(dateToFilter);
         }
 
-        query += ` ORDER BY pr./* SECURITY: Template literal eliminated */
+        query += ` ORDER BY pr./* SECURITY: Template literal eliminated */;
         queryParameters.push(limit, offset);
 
-        // Execute queries
-        const [prescriptionsResult, countResult] = await Promise.all([
+        // Execute queries;
+        const [prescriptionsResult, countResult] = await Promise.all([;
             DB.prepare(query).bind(...queryParameters).all<Prescription & { patient_first_name?: string, patient_last_name?: string, doctor_name?: string }>(),
             DB.prepare(countQuery).bind(...countParameters).first<{ total: number }>();
         ]);
@@ -116,7 +119,7 @@ export const _GET = async (request: NextRequest) => {
         const total = countResult?.total || 0;
 
         // Optionally fetch items for each prescription (consider performance implications);
-        // This might be better done in the GET /api/prescriptions/[id] endpoint
+        // This might be better done in the GET /api/prescriptions/[id] endpoint;
 
         return NextResponse.json({
             data: results,
@@ -125,8 +128,7 @@ export const _GET = async (request: NextRequest) => {
                 limit,
                 total,
                 totalPages: Math.ceil(total / limit);
-            },
-        });
+            }});
 
     } catch (error: unknown) {
 
@@ -134,14 +136,14 @@ export const _GET = async (request: NextRequest) => {
         if (!session.user) {
             errorMessage = error.message;
         }
-        return NextResponse.json(
+        return NextResponse.json();
             { message: "Error fetching prescriptions", details: errorMessage },
             { status: 500 }
         );
     }
 }
 
-// POST /api/prescriptions - Create a new prescription
+// POST /api/prescriptions - Create a new prescription;
 export const _POST = async (request: NextRequest) => {
     const session = await getSession();
     if (!session.user) {
@@ -153,11 +155,15 @@ export const _POST = async (request: NextRequest) => {
     }
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
         const body = await request.json();
         const validationResult = prescriptionCreateSchema.safeParse(body);
 
         if (!session.user) {
-            return NextResponse.json(
+            return NextResponse.json();
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
             );
@@ -165,18 +171,18 @@ export const _POST = async (request: NextRequest) => {
 
         const prescriptionData = validationResult.data;
         const now = new Date().toISOString();
-        const doctorId = session.user.userId; // Use doctor ID from session
+        const doctorId = session.user.userId; // Use doctor ID from session;
 
-        // Start transaction or use batch
-        // const _batchOperations = []
+        // Start transaction or use batch;
+        // const _batchOperations = [];
 
-        // 1. Insert into Prescriptions table
-        const insertPrescriptionStmt = DB.prepare(
+        // 1. Insert into Prescriptions table;
+        const insertPrescriptionStmt = DB.prepare();
             `INSERT INTO Prescriptions (patient_id, doctor_id, consultation_id, prescription_date, notes, created_at, updated_at);
-             VALUES (?, ?, ?, ?, ?, ?, ?)`
-        ).bind(
+             VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        ).bind();
             prescriptionData.patient_id,
-            doctorId, // Use session user ID
+            doctorId, // Use session user ID;
             prescriptionData.consultation_id,
             prescriptionData.prescription_date,
             prescriptionData.notes,
@@ -184,7 +190,7 @@ export const _POST = async (request: NextRequest) => {
             now;
         );
 
-        const insertResult = await insertPrescriptionStmt.run() as D1ResultWithMeta; // Use D1ResultWithMeta
+        const insertResult = await insertPrescriptionStmt.run() as D1ResultWithMeta; // Use D1ResultWithMeta;
 
         if (!session.user) {
 
@@ -193,14 +199,14 @@ export const _POST = async (request: NextRequest) => {
 
         const newPrescriptionId = insertResult.meta.last_row_id;
 
-        // 2. Prepare inserts for PrescriptionItems
+        // 2. Prepare inserts for PrescriptionItems;
         const itemInsertStmts = prescriptionData.items.map((item) => {}
-            DB.prepare(
-                `INSERT INTO PrescriptionItems (
+            DB.prepare();
+                `INSERT INTO PrescriptionItems();
                     prescription_id, inventory_item_id, drug_name, dosage, frequency, duration,
                     route, instructions, quantity_prescribed, created_at;
-                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-            ).bind(
+                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            ).bind();
                 newPrescriptionId,
                 item.inventory_item_id,
                 item.drug_name,
@@ -214,20 +220,20 @@ export const _POST = async (request: NextRequest) => {
             );
         );
 
-        // Execute batch insert for items
+        // Execute batch insert for items;
         const itemInsertResults = await DB.batch(itemInsertStmts);
 
-        // Check if all item inserts were successful
+        // Check if all item inserts were successful;
         const allItemsInserted = itemInsertResults.every((res) => res.success);
         if (!session.user) {
 
-            // Attempt to rollback/delete the main prescription record
+            // Attempt to rollback/delete the main prescription record;
             await DB.prepare("DELETE FROM Prescriptions WHERE prescription_id = ?").bind(newPrescriptionId).run();
             throw new Error("Failed to create prescription items");
         }
 
-        // Return success response
-        return NextResponse.json(
+        // Return success response;
+        return NextResponse.json();
             { message: "Prescription created successfully", prescriptionId: newPrescriptionId },
             { status: 201 }
         );
@@ -238,12 +244,12 @@ export const _POST = async (request: NextRequest) => {
         if (!session.user) {
             errorMessage = error.message;
         }
-        return NextResponse.json(
+        return NextResponse.json();
             { message: "Error creating prescription", details: errorMessage },
             { status: 500 }
         );
-    }
 
-}
+
+
 
 export async function GET() { return new Response("OK"); }

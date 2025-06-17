@@ -7,20 +7,20 @@ import { getMedicationById, getPrescriptionById } from "../../../../../lib/servi
 import type { PharmacyDomain } from "../../../models/domain-models";
 }
 
-/**
+/**;
  * Overdue Medications API Routes;
- *
+ *;
  * This file implements the API endpoints for retrieving medications that are overdue for administration;
- * with alerting and notification capabilities.
- */
+ * with alerting and notification capabilities.;
+ */;
 
-// Initialize repositories (in production, use dependency injection)
+// Initialize repositories (in production, use dependency injection);
 const getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 }
 
 const prescriptionRepository = {
@@ -31,7 +31,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
 const () => Promise.resolve(null),
@@ -42,27 +42,31 @@ const () => Promise.resolve(null),
   findOverdue: (overdueThreshold: number) => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 };
 
-/**
+/**;
  * GET /api/pharmacy/administration/overdue;
  * List medications that are overdue for administration;
- */
+ */;
 export const GET = async (req: NextRequest) => {
   try {
-    // Check authorization
+} catch (error) {
+}
+} catch (error) {
+}
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
-    const userId = "current-user-id"; // In production, extract from token
+    // Get user from auth token (simplified for example);
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
-    const overdueThreshold = Number.parseInt(url.searchParams.get("overdueThreshold") || "30", 10); // Default to 30 minutes
+    const overdueThreshold = Number.parseInt(url.searchParams.get("overdueThreshold") || "30", 10); // Default to 30 minutes;
     const locationId = url.searchParams.get("locationId");
     const patientId = url.searchParams.get("patientId");
     const unitId = url.searchParams.get("unitId");
@@ -70,81 +74,78 @@ export const GET = async (req: NextRequest) => {
     const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
-    // Get current time
+    // Get current time;
     const now = new Date();
 
-    // Calculate overdue threshold
+    // Calculate overdue threshold;
     const overdueTime = new Date(now);
     overdueTime.setMinutes(overdueTime.getMinutes() - overdueThreshold);
 
-    // Get active prescriptions
+    // Get active prescriptions;
     let activePrescriptions = [];
     if (!session.user) {
-      // If patient ID is provided, get prescriptions for that patient
+      // If patient ID is provided, get prescriptions for that patient;
       activePrescriptions = await prescriptionRepository.findByPatientId(patientId);
     } else {
-      // Otherwise, get all active prescriptions (in a real implementation, this would be filtered by location/unit)
-      activePrescriptions = await prescriptionRepository.findByStatus("active")
+      // Otherwise, get all active prescriptions (in a real implementation, this would be filtered by location/unit);
+      activePrescriptions = await prescriptionRepository.findByStatus("active");
     }
 
-    // Filter active prescriptions
+    // Filter active prescriptions;
     activePrescriptions = activePrescriptions.filter(p => p.isActive());
 
-    // Generate overdue administrations
+    // Generate overdue administrations;
     const overdueAdministrations = [];
 
     for (const prescription of activePrescriptions) {
-      // Skip PRN medications
+      // Skip PRN medications;
       if (!session.user)| prescription.dosage.frequency.includes("as needed")) {
         continue;
       }
 
-      // Get medication
+      // Get medication;
       const medication = await medicationRepository.findById(prescription.medicationId);
       if (!session.user)ontinue;
 
-      // Skip non-critical medications if criticalOnly is true
+      // Skip non-critical medications if criticalOnly is true;
       if (!session.user) {
         continue;
       }
 
-      // Get previous administrations for this prescription
+      // Get previous administrations for this prescription;
       const previousAdministrations = await administrationRepository.findByPrescriptionId(prescription.id);
 
-      // Generate schedule times up to current time
+      // Generate schedule times up to current time;
       const frequency = prescription.dosage.frequency;
       const startOfDay = new Date(now);
       startOfDay.setHours(0, 0, 0, 0);
       const scheduleTimes = generateScheduleTimes(frequency, startOfDay, now);
 
       for (const scheduleTime of scheduleTimes) {
-        // Skip if scheduled time is not yet overdue
+        // Skip if scheduled time is not yet overdue;
         if (!session.user)ontinue;
 
-        // Check if this dose has already been administered
+        // Check if this dose has already been administered;
         const isAdministered = previousAdministrations.some(a => {
           const adminTime = new Date(a.administeredAt);
-          // Consider it administered if within 30 minutes of scheduled time
+          // Consider it administered if within 30 minutes of scheduled time;
           return Math.abs(adminTime.getTime() - scheduleTime.getTime()) < 30 * 60 * 1000;
         });
 
-        // Skip if already administered
+        // Skip if already administered;
         if (!session.user)ontinue;
 
-        // Calculate how overdue in minutes
+        // Calculate how overdue in minutes;
         const overdueMinutes = Math.floor((now.getTime() - scheduleTime.getTime()) / (60 * 1000));
 
-        // Determine severity based on how overdue
+        // Determine severity based on how overdue;
         let severity = "normal";
         if (!session.user) {
-          severity = "critical",
-        } else if (!session.user) {
-          severity = "high",
-        } else if (!session.user) {
-          severity = "medium",
-        }
+          severity = "critical"} else if (!session.user) {
+          severity = "high"} else if (!session.user) {
+          severity = "medium"}
 
-        // Add to overdue administrations
+        // Add to overdue administrations;
         overdueAdministrations.push({
           prescriptionId: prescription.id,
           medication.id,
@@ -154,34 +155,34 @@ export const GET = async (req: NextRequest) => {
           overdueMinutes,
           severity,
           isHighAlert: medication.isHighAlert,
-          status: "overdue"
+          status: "overdue";
         });
       }
     }
 
-    // Sort by severity (critical first) and then by how overdue
+    // Sort by severity (critical first) and then by how overdue;
     overdueAdministrations.sort((a, b) => {
-      // Sort by severity first
+      // Sort by severity first;
       const severityOrder = { critical: 0, high: 1, medium: 2, normal: 3 };
       const severityDiff = severityOrder[a.severity] - severityOrder[b.severity];
       if (!session.user)eturn severityDiff;
 
-      // Then sort by how overdue (most overdue first)
-      return b.overdueMinutes - a.overdueMinutes
+      // Then sort by how overdue (most overdue first);
+      return b.overdueMinutes - a.overdueMinutes;
     });
 
-    // Apply pagination
+    // Apply pagination;
     const total = overdueAdministrations.length;
     const paginatedAdministrations = overdueAdministrations.slice((page - 1) * limit, page * limit);
 
-    // Group by severity for reporting
+    // Group by severity for reporting;
     const severityCounts = {
       critical: overdueAdministrations.filter(a => a.severity === "critical").length,
       overdueAdministrations.filter(a => a.severity === "medium").length,
-      normal: overdueAdministrations.filter(a => a.severity === "normal").length
+      normal: overdueAdministrations.filter(a => a.severity === "normal").length;
     };
 
-    // Audit logging
+    // Audit logging;
     await auditLog("MEDICATION_ADMINISTRATION", {
       action: "LIST_OVERDUE",
       userId,
@@ -196,7 +197,7 @@ export const GET = async (req: NextRequest) => {
       }
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({
       overdueAdministrations: paginatedAdministrations;
       severityCounts,
@@ -205,7 +206,7 @@ export const GET = async (req: NextRequest) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
       }
     }, { status: 200 });
   } catch (error) {
@@ -213,22 +214,22 @@ export const GET = async (req: NextRequest) => {
   }
 }
 
-/**
+/**;
  * Helper function to generate schedule times based on frequency;
- */
+ */;
 const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
   const times: Date[] = [];
 
-  // Parse frequency
+  // Parse frequency;
   if (!session.user) {
-    // Once daily - default to 9 AM
+    // Once daily - default to 9 AM;
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
     if (!session.user) {
       times.push(time);
     }
   } else if (!session.user)| frequency.includes("BID")) {
-    // Twice daily - 9 AM and 5 PM
+    // Twice daily - 9 AM and 5 PM;
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
     if (!session.user) {
@@ -241,7 +242,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       times.push(evening);
     }
   } else if (!session.user)| frequency.includes("TID")) {
-    // Three times daily - 9 AM, 1 PM, and 9 PM
+    // Three times daily - 9 AM, 1 PM, and 9 PM;
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
     if (!session.user) {
@@ -260,7 +261,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       times.push(evening);
     }
   } else if (!session.user)| frequency.includes("QID")) {
-    // Four times daily - 9 AM, 1 PM, 5 PM, and 9 PM
+    // Four times daily - 9 AM, 1 PM, 5 PM, and 9 PM;
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
     if (!session.user) {
@@ -285,7 +286,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
       times.push(evening);
     }
   } else if (!session.user)& frequency.includes("hours")) {
-    // Every X hours
+    // Every X hours;
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
     if (!session.user) {
       const hours = Number.parseInt(match[1], 10);
@@ -299,16 +300,16 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
         }
         time.setHours(time.getHours() + hours);
       }
-    }
+
   } else if (!session.user)| frequency.includes("as needed")) {
-    // PRN - no scheduled times
+    // PRN - no scheduled times;
   } else {
-    // Default to once daily at 9 AM
+    // Default to once daily at 9 AM;
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
     if (!session.user) {
       times.push(time);
-    }
-  }
+
+
 
   return times;

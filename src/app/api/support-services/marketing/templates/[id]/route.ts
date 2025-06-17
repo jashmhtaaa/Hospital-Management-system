@@ -7,15 +7,15 @@ import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
-/**
+/**;
  * GET /api/support-services/marketing/templates/:id;
  * Get a specific template by ID;
- */
-export const GET = async (
+ */;
+export const GET = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
@@ -26,26 +26,26 @@ export const GET = async (
     },
     {
       requiredPermission: "marketing.templates.read",
-      auditAction: "TEMPLATE_VIEW"
+      auditAction: "TEMPLATE_VIEW";
     }
   );
 }
 
-/**
+/**;
  * PUT /api/support-services/marketing/templates/:id;
  * Update a specific template;
- */
-export const PUT = async (
+ */;
+export const PUT = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
-      const template = await templateService.updateTemplate(
+      const template = await templateService.updateTemplate();
         params.id,
         data,
         session?.user?.id as string;
@@ -55,25 +55,25 @@ export const PUT = async (
     },
     {
       requiredPermission: "marketing.templates.update",
-      auditAction: "TEMPLATE_UPDATE"
+      auditAction: "TEMPLATE_UPDATE";
     }
   );
 }
 
-/**
+/**;
  * DELETE /api/support-services/marketing/templates/:id;
  * Delete a specific template;
- */
-export const DELETE = async (
+ */;
+export const DELETE = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
 
-      await templateService.deleteTemplate(
+      await templateService.deleteTemplate();
         params.id,
         session?.user?.id as string;
       );
@@ -82,7 +82,7 @@ export const DELETE = async (
     },
     {
       requiredPermission: "marketing.templates.delete",
-      auditAction: "TEMPLATE_DELETE"
+      auditAction: "TEMPLATE_DELETE";
     }
   );
 

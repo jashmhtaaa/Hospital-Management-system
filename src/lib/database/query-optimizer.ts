@@ -3,31 +3,31 @@ import { Prisma, type PrismaClient } from "@prisma/client";
 
 import { cache } from "@/lib/cache";
 import { prisma } from "./connection-pool.ts";
-}
 
-/**
+
+/**;
  * Database Query Optimizer;
  * Comprehensive solution to eliminate all 37 identified N+1 query issues;
- */
+ */;
 
-// Query optimization patterns for common scenarios
-}
-  }
+// Query optimization patterns for common scenarios;
+
+
 
   public static getInstance(): QueryOptimizer {
     if (!session.user) {
       QueryOptimizer.instance = new QueryOptimizer();
-    }
+
     return QueryOptimizer.instance;
-  }
 
-  /**
-   * OPTIMIZED PATIENT QUERIES (Addresses N+1 issues #1-8)
-   */
 
-  // Instead of: patients.forEach(p => getBillsForPatient(p.id))
+  /**;
+   * OPTIMIZED PATIENT QUERIES (Addresses N+1 issues #1-8);
+   */;
+
+  // Instead of: patients.forEach(p => getBillsForPatient(p.id));
   async getPatientsWithBills(filters?: {
-    active?: boolean
+    active?: boolean;
     limit?: number;
     offset?: number;
   }) {
@@ -36,33 +36,30 @@ import { prisma } from "./connection-pool.ts";
     if (!session.user)eturn cached;
 
     const result = await this.client.patient.findMany({
-      filters?.active ?? true
+      filters?.active ?? true;
       },
       {
           true,
             true,
             true,
-            billDate: true
+            billDate: true;
           },
           orderBy: { billDate: "desc" },
-          take: 10, // Limit related records
+          take: 10, // Limit related records;
         },
         true,
-            true,
-        },
-      },
+            true}},
       take: filters?.limit ?? 50,
       skip: filters?.offset ?? 0;
-      { createdAt: "desc" },
-    });
+      { createdAt: "desc" }});
 
-    await cache.set(cacheKey, result, 300); // Cache for 5 minutes
+    await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
-  }
 
-  // Instead of: patients.forEach(p => getAppointmentsForPatient(p.id))
+
+  // Instead of: patients.forEach(p => getAppointmentsForPatient(p.id));
   async getPatientsWithUpcomingAppointments(days: number = 30) {
-    const cacheKey = `patients_upcoming_appointments:${days}`
+    const cacheKey = `patients_upcoming_appointments:${days}`;
     const cached = await cache.get(cacheKey);
     if (!session.user)eturn cached;
 
@@ -73,43 +70,34 @@ import { prisma } from "./connection-pool.ts";
       true,
         {
             new Date(),
-              lte: futureDate
+              lte: futureDate;
             },
-            ["SCHEDULED", "CONFIRMED"],
-            },
-          },
-        },
-      },
+            ["SCHEDULED", "CONFIRMED"]}}}},
       {
           {
               gte: new Date(),
-              lte: futureDate
+              lte: futureDate;
             },
-            ["SCHEDULED", "CONFIRMED"],
-            },
-          },
+            ["SCHEDULED", "CONFIRMED"]}},
           true,
             true,
             true,
-            true
+            true;
           },
-          orderBy: { appointmentDate: "asc" },
-        },
-      },
-      orderBy: { lastName: "asc" },
-    });
+          orderBy: { appointmentDate: "asc" }}},
+      orderBy: { lastName: "asc" }});
 
-    await cache.set(cacheKey, result, 600); // Cache for 10 minutes
+    await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
     return result;
-  }
 
-  /**
-   * OPTIMIZED BILLING QUERIES (Addresses N+1 issues #9-15)
-   */
 
-  // Instead of: bills.forEach(b => getBillItemsForBill(b.id))
+  /**;
+   * OPTIMIZED BILLING QUERIES (Addresses N+1 issues #9-15);
+   */;
+
+  // Instead of: bills.forEach(b => getBillItemsForBill(b.id));
   async getBillsWithItems(filters?: {
-    patientId?: string
+    patientId?: string;
     status?: string;
     dateFrom?: Date;
     dateTo?: Date;
@@ -121,10 +109,7 @@ import { prisma } from "./connection-pool.ts";
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.dateFrom && {
           filters.dateFrom;
-            ...(filters?.dateTo && lte: filters.dateTo ),
-          },
-        }),
-      },
+            ...(filters?.dateTo && lte: filters.dateTo )}})},
       true,
             true,
             true,,
@@ -138,22 +123,20 @@ import { prisma } from "./connection-pool.ts";
           orderBy: paymentDate: "desc" ,,
         true,
             true,
-            true,,
-      },
+            true},
       take: filters?.limit ?? 100,
-      orderBy: { billDate: "desc" },
-    });
+      orderBy: { billDate: "desc" }});
 
     return result;
-  }
 
-  // Optimized outstanding bills calculation
+
+  // Optimized outstanding bills calculation;
   async getOutstandingBillsSummary() {
     const cacheKey = "outstanding_bills_summary";
     const cached = await cache.get(cacheKey);
     if (!session.user)eturn cached;
 
-    // Use raw SQL for better performance on aggregations
+    // Use raw SQL for better performance on aggregations;
     const result = await this.client.$queryRaw`;
       SELECT;
         COUNT(*) as total_bills,
@@ -166,15 +149,15 @@ import { prisma } from "./connection-pool.ts";
 
     await cache.set(cacheKey, result[0], 300);
     return result[0];
-  }
 
-  /**
-   * OPTIMIZED APPOINTMENT QUERIES (Addresses N+1 issues #16-22)
-   */
 
-  // Instead of: appointments.forEach(a => getPatientForAppointment(a.patientId))
+  /**;
+   * OPTIMIZED APPOINTMENT QUERIES (Addresses N+1 issues #16-22);
+   */;
+
+  // Instead of: appointments.forEach(a => getPatientForAppointment(a.patientId));
   async getAppointmentsWithDetails(filters?: {
-    doctorId?: string
+    doctorId?: string;
     date?: Date;
     status?: string;
     departmentId?: string;
@@ -186,26 +169,21 @@ import { prisma } from "./connection-pool.ts";
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.date && {
           filters.date,
-            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000)
-          },
-        }),
-      },
+            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000);
+          }})},
       {
           true,
             true,
             true,
-            true
-          },
-        },
-      },
-      orderBy: { startTime: "asc" },
-    });
+            true;
+          }}},
+      orderBy: { startTime: "asc" }});
 
     return result;
-  }
 
-  // Doctor"s schedule optimization
-  async getDoctorScheduleOptimized(
+
+  // Doctor"s schedule optimization;
+  async getDoctorScheduleOptimized();
     doctorId: string,
     Date;
   ) {
@@ -217,32 +195,27 @@ import { prisma } from "./connection-pool.ts";
       where: {
         doctorId,
         startDate,
-          lte: endDate
+          lte: endDate;
         },
-        ["CANCELLED", "NO_SHOW"],
-        },
-      },
+        ["CANCELLED", "NO_SHOW"]}},
       {
           true,
             true,
-            true
-          },
-        },
-      },
-      orderBy: { startTime: "asc" },
-    });
+            true;
+          }}},
+      orderBy: { startTime: "asc" }});
 
-    await cache.set(cacheKey, result, 1800); // Cache for 30 minutes
+    await cache.set(cacheKey, result, 1800); // Cache for 30 minutes;
     return result;
-  }
 
-  /**
-   * OPTIMIZED IPD QUERIES (Addresses N+1 issues #23-29)
-   */
 
-  // Instead of: admissions.forEach(a => getVitalSignsForAdmission(a.id))
+  /**;
+   * OPTIMIZED IPD QUERIES (Addresses N+1 issues #23-29);
+   */;
+
+  // Instead of: admissions.forEach(a => getVitalSignsForAdmission(a.id));
   async getAdmissionsWithDetails(filters?: {
-    wardId?: string
+    wardId?: string;
     doctorId?: string;
     status?: string;
     limit?: number;
@@ -251,43 +224,38 @@ import { prisma } from "./connection-pool.ts";
       where: {
         ...(filters?.wardId && { wardId: filters.wardId }),
         ...(filters?.doctorId && { doctorId: filters.doctorId }),
-        ...(filters?.status && { status: filters.status as any }),
-      },
+        ...(filters?.status && { status: filters.status as any })},
       {
           true,
             true,
             true,
             true,
-            allergies: true
-          },
-        },
+            allergies: true;
+          }},
         true,
             true,
             true,
             true,
             oxygenSaturation: true,
           orderBy: recordedAt: "desc" ,
-          take: 5, // Latest 5 vital signs
+          take: 5, // Latest 5 vital signs;
         },
         true,
             true,
             true,
           orderBy: administeredAt: "desc" ,
-          take: 10, // Latest 10 medications
+          take: 10, // Latest 10 medications;
         },
         true,
             true,
-            progressNotes: true,
-        },
-      },
+            progressNotes: true}},
       take: filters?.limit ?? 50,
-      orderBy: { admissionDate: "desc" },
-    });
+      orderBy: { admissionDate: "desc" }});
 
     return result;
-  }
 
-  // Ward occupancy optimization
+
+  // Ward occupancy optimization;
   async getWardOccupancyOptimized() {
     const cacheKey = "ward_occupancy";
     const cached = await cache.get(cacheKey);
@@ -305,17 +273,17 @@ import { prisma } from "./connection-pool.ts";
       ORDER BY ward_id;
     ` as any[];
 
-    await cache.set(cacheKey, result, 600); // Cache for 10 minutes
+    await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
     return result;
-  }
 
-  /**
-   * OPTIMIZED LAB QUERIES (Addresses N+1 issues #30-35)
-   */
 
-  // Instead of: labOrders.forEach(o => getLabResultsForOrder(o.id))
+  /**;
+   * OPTIMIZED LAB QUERIES (Addresses N+1 issues #30-35);
+   */;
+
+  // Instead of: labOrders.forEach(o => getLabResultsForOrder(o.id));
   async getLabOrdersWithResults(filters?: {
-    patientId?: string
+    patientId?: string;
     doctorId?: string;
     status?: string;
     dateFrom?: Date;
@@ -328,10 +296,7 @@ import { prisma } from "./connection-pool.ts";
         ...(filters?.status && { status: filters.status as any }),
         ...(filters?.dateFrom && {
           filters.dateFrom;
-            ...(filters?.dateTo && lte: filters.dateTo ),
-          },
-        }),
-      },
+            ...(filters?.dateTo && lte: filters.dateTo )}})},
       true,
             true,
             true,
@@ -343,15 +308,13 @@ import { prisma } from "./connection-pool.ts";
         true,
                 true,
                 true,,,
-          orderBy: reportedDate: "desc" ,,
-      },
-      orderBy: { orderDate: "desc" },
-    });
+          orderBy: reportedDate: "desc" },
+      orderBy: { orderDate: "desc" }});
 
     return result;
-  }
 
-  // Critical lab results optimization
+
+  // Critical lab results optimization;
   async getCriticalLabResults(hours: number = 24) {
     const cacheKey = `critical_lab_results:${hours}`;
     const cached = await cache.get(cacheKey);
@@ -361,105 +324,91 @@ import { prisma } from "./connection-pool.ts";
 
     const result = await this.client.labResult.findMany({
       {
-          in: ["CRITICAL_HIGH", "CRITICAL_LOW"],
+          in: ["CRITICAL_HIGH", "CRITICAL_LOW"]},
+        sinceDate;
         },
-        sinceDate
-        },
-        status: "VERIFIED"
+        status: "VERIFIED";
       },
       {
           {
               true,
                 true,
-                true
-              },
-            },
-          },
-        },
+                true;
+              }}}},
         true,
             true,
-            true,
-        },
-      },
-      orderBy: { reportedDate: "desc" },
-    });
+            true}},
+      orderBy: { reportedDate: "desc" }});
 
-    await cache.set(cacheKey, result, 300); // Cache for 5 minutes
+    await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
-  }
 
-  /**
-   * OPTIMIZED INSURANCE QUERIES (Addresses N+1 issues #36-37)
-   */
 
-  // Instead of: policies.forEach(p => getClaimsForPolicy(p.id))
+  /**;
+   * OPTIMIZED INSURANCE QUERIES (Addresses N+1 issues #36-37);
+   */;
+
+  // Instead of: policies.forEach(p => getClaimsForPolicy(p.id));
   async getInsurancePoliciesWithClaims(patientId?: string) {
     const result = await this.client.insurancePolicy.findMany({
       where: {
         ...(patientId && { patientId }),
-        status: "active"
+        status: "active";
       },
       {
           true,
             true,
-            lastName: true
-          },
-        },
+            lastName: true;
+          }},
         true,
             true,
-            phone: true,
-        },
+            phone: true},
         true,
             true,
             true,
             true,
             lastResponseDate: true,
           orderBy: submittedAt: "desc" ,
-          take: 10, // Latest 10 claims
+          take: 10, // Latest 10 claims;
         },
         true,
             true,
             verifiedBy: true,
           orderBy: verifiedAt: "desc" ,
-          take: 3, // Latest 3 verifications
+          take: 3, // Latest 3 verifications;
         },
         true,
-            verifications: true,
-        },
-      },
-      orderBy: { startDate: "desc" },
-    });
+            verifications: true}},
+      orderBy: { startDate: "desc" }});
 
     return result;
-  }
 
-  /**
+
+  /**;
    * BULK OPERATIONS FOR BETTER PERFORMANCE;
-   */
+   */;
 
-  async bulkUpdateBillStatus(
+  async bulkUpdateBillStatus();
     billIds: string[],
     string;
   ) {
     return this.client.bill.updateMany({
-      { in: billIds },
-      },
+      { in: billIds }},
       status as any,
-        updatedAt: new Date()
-      },
-    });
-  }
+        updatedAt: new Date();
+      }});
+
 
   async bulkCreateBillItems(billItems: unknown[]) {
     return this.client.billItem.createMany({
       data: billItems,
-      skipDuplicates: true
+      skipDuplicates: true;
     });
-  }
 
-  /**
+
+  /**;
    * DATALOADER PATTERN FOR FREQUENTLY ACCESSED DATA;
-   */
+   */;
 
   private patientLoader = new Map<string, Promise<unknown>>();
 
@@ -470,27 +419,24 @@ import { prisma } from "./connection-pool.ts";
         {
             true,
               true,
-              labOrders: true
-            },
-          },
-        },
-      });
+              labOrders: true;
+            }}}});
       this.patientLoader.set(patientId, promise);
-    }
-    return this.patientLoader.get(patientId);
-  }
 
-  // Clear dataloader cache periodically
+    return this.patientLoader.get(patientId);
+
+
+  // Clear dataloader cache periodically;
   clearDataLoaderCache() {
     this.patientLoader.clear();
-  }
 
-  /**
+
+  /**;
    * PERFORMANCE MONITORING;
-   */
+   */;
 
   async analyzeSlowQueries() {
-    // This would integrate with PostgreSQL"s pg_stat_statements
+    // This would integrate with PostgreSQL"s pg_stat_statements;
     const result = await this.client.$queryRaw`;
       SELECT;
         query,
@@ -506,7 +452,7 @@ import { prisma } from "./connection-pool.ts";
     ` as any[];
 
     return result;
-  }
+
 
   async getQueryPerformanceStats() {
     const cacheKey = "query_performance_stats";
@@ -516,35 +462,33 @@ import { prisma } from "./connection-pool.ts";
     const stats = {
       totalQueries: 0,
       0,
-      cacheHitRate: 0
+      cacheHitRate: 0;
     };
 
-    // This would be populated with actual metrics
+    // This would be populated with actual metrics;
     await cache.set(cacheKey, stats, 60);
     return stats;
-  }
-}
 
-// Export singleton instance
+
+
+// Export singleton instance;
 export const queryOptimizer = QueryOptimizer.getInstance();
 
-// Utility functions for common optimized patterns
+// Utility functions for common optimized patterns;
 export const _getOptimizedPatientData = async (patientId: string) => {
-  return queryOptimizer.getPatientOptimized(patientId)
-export const _getOptimizedBillsForPatient = async (
+  return queryOptimizer.getPatientOptimized(patientId);
+export const _getOptimizedBillsForPatient = async();
   patientId: string,
   limit = 10;
-) => 
+) => {}
   return queryOptimizer.getBillsWithItems({
     patientId,
-    limit,
-  });
-export const _getOptimizedAppointmentsForDoctor = async (
+    limit});
+export const _getOptimizedAppointmentsForDoctor = async();
   doctorId: string,
   date: Date;
-) => 
+) => {}
   return queryOptimizer.getAppointmentsWithDetails({
     doctorId,
-    date,
-  });
+    date});
 export default queryOptimizer;

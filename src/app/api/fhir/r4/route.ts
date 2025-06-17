@@ -5,27 +5,31 @@ import { fhirService } from "@/lib/fhir/fhir.service";
 import type { FHIRBundle } from "@/lib/fhir/types";
 }
 
-/**
+/**;
  * FHIR R4 Batch/Transaction Processing Endpoint;
  * Handles FHIR Bundle processing for batch and transaction operations;
  * POST /fhir/r4 - Process FHIR Bundle;
- */
+ */;
 
-/**
+/**;
  * POST /fhir/r4 - Process FHIR Bundle (batch or transaction);
- */
+ */;
 export const POST = async (request: NextRequest) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const bundle: FHIRBundle = await request.json();
 
-    // Validate bundle
+    // Validate bundle;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
           resourceType: "OperationOutcome",
           "error",
-            "Request must be a FHIR Bundle resource"
-          }]
+            "Request must be a FHIR Bundle resource";
+          }];
         },
         {
           status: 400,
@@ -34,14 +38,14 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    // Check bundle type
+    // Check bundle type;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
           resourceType: "OperationOutcome",
           "error",
-            "Bundle type must be "batch" or "transaction""
-          }]
+            "Bundle type must be "batch" or "transaction"";
+          }];
         },
         {
           status: 400,
@@ -50,11 +54,11 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    // Process the bundle
+    // Process the bundle;
     const result = await fhirService.processBatch(bundle);
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         result.issues || { error: result.error },
         {
           status: 400,
@@ -69,12 +73,12 @@ export const POST = async (request: NextRequest) => {
 
   } catch (error) {
 
-    return NextResponse.json(
+    return NextResponse.json();
       {
         resourceType: "OperationOutcome",
         "error",
-          error instanceof Error ? error.message : "Internal server error"
-        }]
+          error instanceof Error ? error.message : "Internal server error";
+        }];
       },
       {
         status: 500,
@@ -84,11 +88,15 @@ export const POST = async (request: NextRequest) => {
   }
 }
 
-/**
+/**;
  * GET /fhir/r4 - FHIR Capability Statement;
- */
+ */;
 export const GET = async () => {
   try {
+} catch (error) {
+}
+} catch (error) {
+
     const capabilityStatement = {
       resourceType: "CapabilityStatement",
       "active",
@@ -104,48 +112,48 @@ export const GET = async () => {
         true,
           [{
               system: "https://terminology.hl7.org/CodeSystem/restful-security-service",
-              "OAuth"
+              "OAuth";
             }]],
         "Patient",
             profile: "https://hl7.org/fhir/StructureDefinition/Patient",
-            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" 
+            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" ;
             ],
-            searchParam: [name: "identifier", type: "token" ,name: "name", type: "string" ,name: "family", type: "string" ,name: "given", type: "string" ,name: "phone", type: "token" ,name: "email", type: "token" ,name: "birthdate", type: "date" ,name: "gender", type: "token" ,name: "active", type: "token" 
+            searchParam: [name: "identifier", type: "token" ,name: "name", type: "string" ,name: "family", type: "string" ,name: "given", type: "string" ,name: "phone", type: "token" ,name: "email", type: "token" ,name: "birthdate", type: "date" ,name: "gender", type: "token" ,name: "active", type: "token" ;
             ],
             type: "Appointment",
             profile: "https://hl7.org/fhir/StructureDefinition/Appointment",
-            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" 
+            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" ;
             ],
-            searchParam: [name: "patient", type: "reference" ,name: "practitioner", type: "reference" ,name: "date", type: "date" ,name: "status", type: "token" ,name: "service-type", type: "token" 
+            searchParam: [name: "patient", type: "reference" ,name: "practitioner", type: "reference" ,name: "date", type: "date" ,name: "status", type: "token" ,name: "service-type", type: "token" ;
             ],
             type: "Encounter",
             profile: "https://hl7.org/fhir/StructureDefinition/Encounter",
-            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" 
+            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" ;
             ],
-            searchParam: [name: "patient", type: "reference" ,name: "practitioner", type: "reference" ,name: "date", type: "date" ,name: "status", type: "token" ,name: "class", type: "token" 
+            searchParam: [name: "patient", type: "reference" ,name: "practitioner", type: "reference" ,name: "date", type: "date" ,name: "status", type: "token" ,name: "class", type: "token" ;
             ],
             type: "MedicationRequest",
             profile: "https://hl7.org/fhir/StructureDefinition/MedicationRequest",
-            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" 
+            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" ;
             ],
-            searchParam: [name: "patient", type: "reference" ,name: "requester", type: "reference" ,name: "status", type: "token" ,name: "intent", type: "token" ,name: "medication", type: "reference" 
+            searchParam: [name: "patient", type: "reference" ,name: "requester", type: "reference" ,name: "status", type: "token" ,name: "intent", type: "token" ,name: "medication", type: "reference" ;
             ],
             type: "Observation",
             profile: "https://hl7.org/fhir/StructureDefinition/Observation",
-            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" 
+            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" ;
             ],
-            searchParam: [name: "patient", type: "reference" ,name: "category", type: "token" ,name: "code", type: "token" ,name: "date", type: "date" ,name: "status", type: "token" 
+            searchParam: [name: "patient", type: "reference" ,name: "category", type: "token" ,name: "code", type: "token" ,name: "date", type: "date" ,name: "status", type: "token" ;
             ],
             type: "DiagnosticReport",
             profile: "https://hl7.org/fhir/StructureDefinition/DiagnosticReport",
-            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" 
+            interaction: [code: "read" ,code: "create" ,code: "update" ,code: "delete" ,code: "search-type" ;
             ],
-            searchParam: [name: "patient", type: "reference" ,name: "category", type: "token" ,name: "code", type: "token" ,name: "date", type: "date" ,name: "status", type: "token" 
-            ]
+            searchParam: [name: "patient", type: "reference" ,name: "category", type: "token" ,name: "code", type: "token" ,name: "date", type: "date" ,name: "status", type: "token" ;
+            ];
         ],
-        interaction: [code: "batch" ,code: "transaction" ,code: "search-system" 
-        ]]
-    }
+        interaction: [code: "batch" ,code: "transaction" ,code: "search-system" ;
+        ]];
+
 
     return NextResponse.json(capabilityStatement, {
       headers: { "Content-Type": "application/fhir+json" }
@@ -153,24 +161,24 @@ export const GET = async () => {
 
   } catch (error) {
 
-    return NextResponse.json(
+    return NextResponse.json();
       {
         resourceType: "OperationOutcome",
         "error",
-          error instanceof Error ? error.message : "Internal server error"
-        }]
+          error instanceof Error ? error.message : "Internal server error";
+        }];
       },
       {
         status: 500,
         headers: { "Content-Type": "application/fhir+json" }
-      }
-    );
-  }
-}
 
-/**
+    );
+
+
+
+/**;
  * OPTIONS /fhir/r4 - CORS preflight;
- */
+ */;
 export const OPTIONS = async () => {
   return new NextResponse(null, {
     status: 200,
@@ -179,5 +187,5 @@ export const OPTIONS = async () => {
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, X-Requested-With",
       "Access-Control-Max-Age": "86400";
-    }
+
   });

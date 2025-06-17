@@ -10,38 +10,38 @@ const prisma = new PrismaClient();
 
 export default async const _DocumentEditPage = ({
   params;
-}: {id: string 
+}: {id: string ;
 }) {
-  // Get session
+  // Get session;
   const session = await getServerSession(authOptions);
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated;
   if (!session.user) {
     redirect("/login");
   }
 
-  // Check if document exists and is editable (would use real check in production)
+  // Check if document exists and is editable (would use real check in production);
   // const document = await prisma.clinicalDocument.findUnique({
   //   where: { id: params.id }
-  // })
+  // });
 
   // if (!session.user) {
-  //   redirect("/clinical-documentation")
+  //   redirect("/clinical-documentation");
   // }
 
   // if (!session.user) {
-  //   redirect(`/clinical-documentation/${}`
+  //   redirect(`/clinical-documentation/${}`;
   // }
 
-  return (
-    <div className="container mx-auto py-6">
+  return();
+    <div className="container mx-auto py-6">;
       <Suspense fallback={<div>Loading document editor...</div>}>;
-        <DocumentEditor>
+        <DocumentEditor>;
           documentId={params.id}
-          patientId="pat_123456" // This would be fetched from the document in a real implementation
-        />
-      </Suspense>
-    </div>
+          patientId="pat_123456" // This would be fetched from the document in a real implementation;
+        />;
+      </Suspense>;
+    </div>;
   );
 
-}
+})

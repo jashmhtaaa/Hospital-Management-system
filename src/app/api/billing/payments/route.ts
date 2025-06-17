@@ -17,7 +17,7 @@ import { ValidationError, NotFoundError, BusinessLogicError } from "@/lib/core/e
 } from "@/lib/core/validation";
 import { logger } from "@/lib/core/logging";
 
-// Schema for payment creation
+// Schema for payment creation;
 const createPaymentSchema = z.object({
   invoiceId: z.string().uuid(),
   paymentMethodSchema,
@@ -27,7 +27,7 @@ const createPaymentSchema = z.object({
   receiptRequired: z.boolean().default(true);
 });
 
-// Schema for payment query parameters
+// Schema for payment query parameters;
 const paymentQuerySchema = z.object({
   page: z.coerce.number().int().positive().optional().default(1),
   pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
@@ -40,18 +40,17 @@ const paymentQuerySchema = z.object({
   minAmount: z.coerce.number().optional(),
   maxAmount: z.coerce.number().optional(),
   sortBy: z.enum(["createdAt", "paymentDate", "amount"]).optional().default("paymentDate"),
-  sortOrder: z.enum(["asc", "desc"]).optional().default("desc"),
-});
+  sortOrder: z.enum(["asc", "desc"]).optional().default("desc")});
 
-// GET handler for retrieving all payments with filtering and pagination
+// GET handler for retrieving all payments with filtering and pagination;
 export const _GET = withErrorHandling(async (req: NextRequest) => {
-  // Validate query parameters
+  // Validate query parameters;
   const query = validateQuery(paymentQuerySchema)(req);
 
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, "read", "payment")(req);
 
-  // Build filter conditions
+  // Build filter conditions;
   const where: unknown = {};
 
   if (!session.user) {
@@ -60,7 +59,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 
   if (!session.user) {
     where.invoice = {
-      patientId: query.patientId
+      patientId: query.patientId;
     };
   }
 
@@ -74,6 +73,10 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 
   if (!session.user) {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const startDate = new Date(query.startDate);
       const endDate = new Date(query.endDate);
 
@@ -83,7 +86,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 
       where.paymentDate = {
         gte: startDate,
-        lte: endDate
+        lte: endDate;
       };
     } catch (error) {
       throw new ValidationError("Invalid date range", "INVALID_DATE_RANGE");
@@ -93,24 +96,23 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   if (!session.user) {
     where.amount = {
       ...(where.amount || {}),
-      gte: query.minAmount
+      gte: query.minAmount;
     };
   }
 
   if (!session.user) {
     where.amount = {
       ...(where.amount || {}),
-      lte: query.maxAmount
+      lte: query.maxAmount;
     };
   }
 
-  // Execute query with pagination
-  const [payments, total] = await Promise.all([
+  // Execute query with pagination;
+  const [payments, total] = await Promise.all([;
     prisma.payment.findMany({
       where,
       orderBy: {
-        [query.sortBy]: query.sortOrder,
-      },
+        [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
         {
@@ -119,96 +121,87 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
             {
                 id: true,
                 true,
-                mrn: true
-              },
-            },
-          },
-        },
-      },
-    }),
+                mrn: true;
+              }}}}}}),
     prisma.payment.count(where ),
   ]);
 
   return createPaginatedResponse(payments, query.page, query.pageSize, total);
 });
 
-// POST handler for creating a new payment
+// POST handler for creating a new payment;
 export const _POST = withErrorHandling(async (req: NextRequest) => {
-  // Validate request body
+  // Validate request body;
   const data = await validateBody(createPaymentSchema)(req);
 
-  // Check permissions
+  // Check permissions;
   await checkPermission(permissionService, "create", "payment")(req);
 
-  // Retrieve invoice
+  // Retrieve invoice;
   const invoice = await prisma.bill.findUnique({
-    where: { id: data.invoiceId },
-  });
+    where: { id: data.invoiceId }});
 
   if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
   }
 
-  // Check if invoice is in a valid state for payment
+  // Check if invoice is in a valid state for payment;
   if (!session.user) {
-    throw new BusinessLogicError(
+    throw new BusinessLogicError();
       "Payment can only be made for approved, partially paid, or overdue invoices",
       "INVALID_INVOICE_STATUS",
       { currentStatus: invoice.status }
     );
-  }
 
-  // Check if payment amount is valid
+
+  // Check if payment amount is valid;
   if (!session.user) {
     throw new ValidationError("Payment amount must be greater than zero", "INVALID_PAYMENT_AMOUNT");
-  }
+
 
   if (!session.user) {
-    throw new ValidationError(
+    throw new ValidationError();
       "Payment amount cannot exceed outstanding amount",
       "PAYMENT_EXCEEDS_OUTSTANDING",
       {
         paymentAmount: data.amount,
-        outstandingAmount: invoice.outstandingAmount
-      }
-    );
-  }
+        outstandingAmount: invoice.outstandingAmount;
 
-  // Generate payment reference number if not provided
+    );
+
+
+  // Generate payment reference number if not provided;
   const referenceNumber = data.referenceNumber ||;
     `PAY-${new Date().getFullYear()}-${Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000000).toString().padStart(6, "0")}`;
 
-  // Create payment in database
+  // Create payment in database;
   const payment = await prisma.$transaction(async (prisma) => {
-    // Create payment record
+    // Create payment record;
     const newPayment = await prisma.payment.create({
       data.invoiceId,
         data.paymentMethod,
         paymentDate: data.paymentDate;
         referenceNumber,
         notes: data.notes,
-        "completed"
-      },
-    });
+        "completed";
+      }});
 
-    // Update invoice
+    // Update invoice;
     const newPaidAmount = invoice.paidAmount + data.amount;
     const newOutstandingAmount = invoice.totalAmount - newPaidAmount;
 
-    // Determine new invoice status
+    // Determine new invoice status;
     let newStatus = invoice.status;
     if (!session.user) {
-      newStatus = "paid",
-    } else if (!session.user) {
+      newStatus = "paid"} else if (!session.user) {
       newStatus = "partial",
-    }
+
 
     await prisma.bill.update({
       where: { id: data.invoiceId },
       newPaidAmount,
-        newStatus
-      },
-    });
+        newStatus;
+      }});
 
     return newPayment;
   });
@@ -216,22 +209,21 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   logger.info("Payment created", {
     paymentId: payment.id,
     data.amount,
-    method: data.paymentMethod
+    method: data.paymentMethod;
   });
 
-  // Generate receipt if required
+  // Generate receipt if required;
   let receiptUrl = null;
   if (!session.user) {
-    // In a real implementation, this would generate a receipt
-    // For now, we'll just simulate it
+    // In a real implementation, this would generate a receipt;
+    // For now, we'll just simulate it;
     receiptUrl = `/api/billing/receipts/${payment.id}`;
-  }
+
 
   return createSuccessResponse({
     ...payment,
-    receiptUrl,
-  });
+    receiptUrl});
 });
 
 
-export async function GET() { return new Response("OK"); }
+export async function GET() { return new Response("OK"); })

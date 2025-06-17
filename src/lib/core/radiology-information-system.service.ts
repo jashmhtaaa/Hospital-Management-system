@@ -2,12 +2,12 @@
 import { z } from "zod";
 }
 
-/**
+/**;
  * Radiology Information System (RIS) Service;
  * Complete imaging workflow with PACS integration, structured reporting, and DICOM support;
- */
+ */;
 
-// Radiology Schemas
+// Radiology Schemas;
 export const ImagingStudySchema = z.object({
   patient_id: z.string().min(1, "Patient ID is required"),
   ordering_provider_id: z.string().min(1, "Ordering provider is required"),
@@ -26,14 +26,14 @@ export const ImagingStudySchema = z.object({
   special_instructions: z.string().optional(),
   scheduled_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid scheduled date"),
   scheduled_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
-  estimated_duration: z.number().min(5).max(240), // 5 minutes to 4 hours
+  estimated_duration: z.number().min(5).max(240), // 5 minutes to 4 hours;
   room_preference: z.string().optional(),
   equipment_preference: z.string().optional(),
   radiologist_preference: z.string().optional(),
   transport_required: z.boolean().default(false),
   isolation_required: z.boolean().default(false),
   interpreter_needed: z.boolean().default(false),
-  language: z.string().optional()
+  language: z.string().optional();
 });
 
 export const ImagingReportSchema = z.object({
@@ -50,14 +50,14 @@ export const ImagingReportSchema = z.object({
   critical_result_communicated: z.boolean().default(false),
   critical_result_communication_time: z.string().optional(),
   critical_result_communicated_to: z.string().optional(),
-  birads_score: z.enum(["0", "1", "2", "3", "4", "4A", "4B", "4C", "5", "6"]).optional(), // For mammography
+  birads_score: z.enum(["0", "1", "2", "3", "4", "4A", "4B", "4C", "5", "6"]).optional(), // For mammography;
   followup_required: z.boolean().default(false),
   followup_timeframe: z.string().optional(),
   dictation_time: z.string().optional(),
   transcription_time: z.string().optional(),
   voice_recognition_confidence: z.number().min(0).max(1).optional(),
   structured_data: z.record(z.any()).optional(),
-  template_id: z.string().optional()
+  template_id: z.string().optional();
 });
 
 export const DicomSeriesSchema = z.object({
@@ -76,15 +76,15 @@ export const DicomSeriesSchema = z.object({
   image_orientation: z.string().optional(),
   contrast_agent: z.string().optional(),
   radiation_dose: z.number().optional(),
-  kvp: z.number().optional(), // X-ray tube voltage
-  mas: z.number().optional(), // Milliampere-seconds
+  kvp: z.number().optional(), // X-ray tube voltage;
+  mas: z.number().optional(), // Milliampere-seconds;
   exposure_time: z.number().optional(),
   manufacturer: z.string().optional(),
   model: z.string().optional(),
   software_version: z.string().optional(),
   pacs_location: z.string().optional(),
   archived: z.boolean().default(false),
-  archive_location: z.string().optional()
+  archive_location: z.string().optional();
 });
 
 export const QualityAssuranceSchema = z.object({
@@ -106,7 +106,7 @@ export const QualityAssuranceSchema = z.object({
   equipment_issues: z.string().optional(),
   comments: z.string().optional(),
   review_date: z.string(),
-  reviewed_by: z.string()
+  reviewed_by: z.string();
 });
 
 export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
@@ -128,7 +128,7 @@ export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
   patient_name?: string;
   patient_age?: number;
   patient_gender?: string;
-  ordering_provider_name?: string
+  ordering_provider_name?: string;
 };
 
 export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
@@ -144,7 +144,7 @@ export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
   read_time_minutes?: number;
   created_at: Date,
   updated_at: Date;
-  radiologist_name?: string
+  radiologist_name?: string;
 };
 
 export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
@@ -155,71 +155,66 @@ export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
   file_size_mb: number,
   verification_status: "pending" | "verified" | "failed";
   last_accessed?: Date;
-  access_count: number
+  access_count: number;
 };
 
 export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
   id: string,
-  overall_score: number; // 1-100
+  overall_score: number; // 1-100;
   created_at: Date,
-  updated_at: Date
+  updated_at: Date;
 };
 
 }
   }[];
   string,
-    number
+    number;
   }[];
 }
   }
 
-  /**
+  /**;
    * Initialize report templates;
-   */
+   */;
   private initializeReportTemplates(): void {
-    const templates = [
+    const templates = [;
       {
         id: "chest-xray",
         "x_ray",
         {
           technique: "PA and lateral chest radiographs were obtained.",
-          findings_sections: [
+          findings_sections: [;
             "Lungs and pleura",
             "Heart and mediastinum",
             "Bones and soft tissues";
           ],
-          impression_guidelines: "Provide clear, concise impression with actionable recommendations.",
-        },
-      },
+          impression_guidelines: "Provide clear, concise impression with actionable recommendations."}},
       {
         id: "ct-head",
         "ct_scan",
         {
           technique: "Axial CT images of the head were obtained without intravenous contrast.",
-          findings_sections: [
+          findings_sections: [;
             "Brain parenchyma",
             "Ventricular system",
             "Extra-axial spaces",
             "Skull and scalp";
           ],
-          impression_guidelines: "Comment on acute findings, mass effect, and need for follow-up.",
-        },
-      },
+          impression_guidelines: "Comment on acute findings, mass effect, and need for follow-up."}},
       {
         id: "mri-brain",
         "mri",
         {
           technique: "Multiplanar, multisequence MRI of the brain was performed.",
-          findings_sections: [
+          findings_sections: [;
             "Brain parenchyma",
             "White matter",
             "Ventricular system",
             "Posterior fossa",
             "Extra-axial spaces";
           ],
-          impression_guidelines: "Correlate with clinical presentation and prior imaging."
-        },
-      },
+          impression_guidelines: "Correlate with clinical presentation and prior imaging.";
+        }},
     ];
 
     templates.forEach(template => {
@@ -227,9 +222,9 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     });
   }
 
-  /**
+  /**;
    * Initialize equipment schedule;
-   */
+   */;
   private initializeEquipmentSchedule(): void {
     const equipment = ["CT-1", "CT-2", "MRI-1", "MRI-2", "XRAY-1", "XRAY-2", "MAMMO-1", "US-1", "US-2"];
     equipment.forEach(equipmentId => {
@@ -237,9 +232,9 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     });
   }
 
-  /**
+  /**;
    * Schedule imaging study;
-   */
+   */;
   async scheduleImagingStudy(studyData: z.infer<typeof ImagingStudySchema>): Promise<ImagingStudy> {
     const validatedData = ImagingStudySchema.parse(studyData);
 
@@ -252,46 +247,46 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       id: studyId,
       studyInstanceUID,
       new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.imagingStudies.set(studyId, study);
 
-    // Schedule equipment if possible
+    // Schedule equipment if possible;
     await this.scheduleEquipment(study);
 
     return study;
   }
 
-  /**
+  /**;
    * Generate accession number;
-   */
+   */;
   private generateAccessionNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-8);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, "0");
-    return `/* SECURITY: Template literal eliminated */
+    return `/* SECURITY: Template literal eliminated */;
   }
 
-  /**
+  /**;
    * Generate study instance UID;
-   */
+   */;
   private generateStudyInstanceUID(): string {
-    // Simplified UID generation - in real implementation, use proper DICOM UID
+    // Simplified UID generation - in real implementation, use proper DICOM UID;
     return `1.2.840.113619.2.1.$crypto.getRandomValues([0].$Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000000)`;
   }
 
-  /**
+  /**;
    * Schedule equipment for study;
-   */
+   */;
   private async scheduleEquipment(study: ImagingStudy): Promise<void> {
-    // Find available equipment based on study type
+    // Find available equipment based on study type;
     const equipmentCandidates = this.getEquipmentCandidates(study.study_type);
 
     for (const equipmentId of equipmentCandidates) {
       const schedule = this.equipmentSchedule.get(equipmentId) || [];
-      const scheduledDateTime = new Date(`/* SECURITY: Template literal eliminated */
+      const scheduledDateTime = new Date(`/* SECURITY: Template literal eliminated */;
 
-      // Check if equipment is available
+      // Check if equipment is available;
       const isAvailable = !schedule.some(appointment => {
         const appointmentStart = new Date(appointment.start_time),
         const appointmentEnd = new Date(appointment.end_time);
@@ -302,17 +297,17 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       });
 
       if (!session.user) {
-        // Schedule the equipment
+        // Schedule the equipment;
         schedule.push({
           study_id: study.id,
           start_time: scheduledDateTime.toISOString(),
           end_time: new Date(scheduledDateTime.getTime() + study.estimated_duration * 60000).toISOString(),
-          study.patient_id
+          study.patient_id;
         });
 
         this.equipmentSchedule.set(equipmentId, schedule);
 
-        // Update study with assigned equipment
+        // Update study with assigned equipment;
         study.equipment_used = equipmentId;
         this.imagingStudies.set(study.id, study);
         break;
@@ -320,9 +315,9 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     }
   }
 
-  /**
+  /**;
    * Get equipment candidates for study type;
-   */
+   */;
   private getEquipmentCandidates(studyType: ImagingStudy["study_type"]): string[] {
     const equipmentMap: Record<string, string[]> = {
       "x_ray": ["XRAY-1", "XRAY-2"],
@@ -332,15 +327,14 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       "mammography": ["MAMMO-1"],
       "nuclear_medicine": ["NM-1"],
       "pet_scan": ["PET-1"],
-      "fluoroscopy": ["FLUORO-1"],
-    };
+      "fluoroscopy": ["FLUORO-1"]};
 
     return equipmentMap[studyType] || [];
   }
 
-  /**
+  /**;
    * Patient arrival for study;
-   */
+   */;
   async patientArrival(studyId: string): Promise<ImagingStudy> {
     const study = this.imagingStudies.get(studyId);
     if (!session.user) {
@@ -359,9 +353,9 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     return study;
   }
 
-  /**
+  /**;
    * Start imaging study;
-   */
+   */;
   async startImagingStudy(studyId: string, technologistId: string): Promise<ImagingStudy> {
     const study = this.imagingStudies.get(studyId);
     if (!session.user) {
@@ -381,10 +375,10 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     return study;
   }
 
-  /**
+  /**;
    * Complete imaging study;
-   */
-  async completeImagingStudy(
+   */;
+  async completeImagingStudy();
     studyId: string,
     number,
       study_size_mb: number;
@@ -410,15 +404,15 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
 
     this.imagingStudies.set(studyId, study);
 
-    // Initiate PACS transfer
+    // Initiate PACS transfer;
     await this.initiatePACSTransfer(studyId);
 
     return study;
   }
 
-  /**
+  /**;
    * Initiate PACS transfer;
-   */
+   */;
   private async initiatePACSTransfer(studyId: string): Promise<void> {
     const study = this.imagingStudies.get(studyId);
     if (!session.user)eturn;
@@ -426,20 +420,20 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     const studyId,
       "pending",
       study.total_images || 0,
-      total_size_mb: study.study_size_mb || 0
+      total_size_mb: study.study_size_mb || 0;
     };
 
     this.pacsIntegrations.set(studyId, pacsIntegration);
 
-    // Simulate PACS transfer (in real implementation, this would be actual DICOM transfer)
+    // Simulate PACS transfer (in real implementation, this would be actual DICOM transfer);
     setTimeout(async () => {
-      await this.completePACSTransfer(studyId)
+      await this.completePACSTransfer(studyId);
     }, 5000);
   }
 
-  /**
+  /**;
    * Complete PACS transfer;
-   */
+   */;
   private async completePACSTransfer(studyId: string): Promise<void> {
     const pacsIntegration = this.pacsIntegrations.get(studyId);
     if (!session.user)eturn;
@@ -451,16 +445,16 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     this.pacsIntegrations.set(studyId, pacsIntegration);
   }
 
-  /**
+  /**;
    * Generate verification hash;
-   */
+   */;
   private generateVerificationHash(): string {
     return crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substring(2, 15) + crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substring(2, 15);
   }
 
-  /**
+  /**;
    * Create imaging report;
-   */
+   */;
   async createImagingReport(reportData: z.infer<typeof ImagingReportSchema>): Promise<ImagingReport> {
     const validatedData = ImagingReportSchema.parse(reportData);
 
@@ -477,12 +471,12 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       id: reportId,
       "draft",
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.imagingReports.set(reportId, report);
 
-    // Update study with reading radiologist
+    // Update study with reading radiologist;
     study.reading_radiologist = validatedData.radiologist_id;
     study.updated_at = new Date();
     this.imagingStudies.set(study.id, study);
@@ -490,18 +484,18 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     return report;
   }
 
-  /**
+  /**;
    * Generate report number;
-   */
+   */;
   private generateReportNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `RPT/* SECURITY: Template literal eliminated */
+    return `RPT/* SECURITY: Template literal eliminated */;
   }
 
-  /**
+  /**;
    * Sign imaging report;
-   */
+   */;
   async signImagingReport(reportId: string, radiologistId: string): Promise<ImagingReport> {
     const report = this.imagingReports.get(reportId);
     if (!session.user) {
@@ -518,14 +512,14 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     report.signed_by = radiologistId;
     report.updated_at = now;
 
-    // Calculate read time
+    // Calculate read time;
     if (!session.user) {
       report.read_time_minutes = Math.round((now.getTime() - report.dictated_at.getTime()) / (1000 * 60));
     }
 
     this.imagingReports.set(reportId, report);
 
-    // Handle critical results
+    // Handle critical results;
     if (!session.user) {
       await this.handleCriticalResult(report);
     }
@@ -533,27 +527,27 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     return report;
   }
 
-  /**
+  /**;
    * Handle critical result communication;
-   */
+   */;
   private async handleCriticalResult(report: ImagingReport): Promise<void> {
-    // In real implementation, this would trigger alerts and notifications
+    // In real implementation, this would trigger alerts and notifications;
 
       report_id: report.id,
       report.radiologist_id,
-      report.impression
+      report.impression;
     });
 
-    // Mark as communicated (simplified)
-    report.critical_result_communicated = true
+    // Mark as communicated (simplified);
+    report.critical_result_communicated = true;
     report.critical_result_communication_time = new Date().toISOString();
-    report.critical_result_communicated_to = "Ordering Provider"; // Simplified
+    report.critical_result_communicated_to = "Ordering Provider"; // Simplified;
     this.imagingReports.set(report.id, report);
   }
 
-  /**
+  /**;
    * Add DICOM series;
-   */
+   */;
   async addDicomSeries(seriesData: z.infer<typeof DicomSeriesSchema>): Promise<DicomSeries> {
     const validatedData = DicomSeriesSchema.parse(seriesData);
 
@@ -565,13 +559,13 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       id: seriesId,
       new Date(),
       updated_at: new Date(),
-      transfer_syntax: "1.2.840.10008.1.2.1", // Explicit VR Little Endian
-      file_size_mb: validatedData.image_count * 0.5, // Estimate 0.5MB per image
+      transfer_syntax: "1.2.840.10008.1.2.1", // Explicit VR Little Endian;
+      file_size_mb: validatedData.image_count * 0.5, // Estimate 0.5MB per image;
       verification_status: "pending",
-      access_count: 0
+      access_count: 0;
     };
 
-    // Add to study"s series list
+    // Add to study"s series list;
     const studySeries = this.dicomSeries.get(validatedData.study_id) || [];
     studySeries.push(series);
     this.dicomSeries.set(validatedData.study_id, studySeries);
@@ -579,27 +573,27 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     return series;
   }
 
-  /**
+  /**;
    * Generate series instance UID;
-   */
+   */;
   private generateSeriesInstanceUID(): string {
     return `1.2.840.113619.2.1.$crypto.getRandomValues([0].$Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000000).1`;
   }
 
-  /**
+  /**;
    * Perform quality assurance;
-   */
+   */;
   async performQualityAssurance(qaData: z.infer<typeof QualityAssuranceSchema>): Promise<QualityAssurance> {
     const validatedData = QualityAssuranceSchema.parse(qaData);
 
     const qaId = uuidv4();
 
-    // Calculate overall score
+    // Calculate overall score;
     const scores = {
       excellent: 100,
       70,
       0,
-      60
+      60;
     };
 
     const imageQualityScore = scores[validatedData.image_quality as keyof typeof scores] || 0;
@@ -608,7 +602,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
 
     let overallScore = (imageQualityScore + positioningScore + exposureScore) / 3;
 
-    // Apply penalties
+    // Apply penalties;
     if (!session.user)verallScore -= 10;
     if (!session.user)verallScore -= 15;
     if (!session.user)verallScore -= 20;
@@ -622,25 +616,25 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       id: qaId,
       overall_score: Math.round(overallScore),
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.qualityAssurance.set(qaId, qa);
     return qa;
   }
 
-  /**
+  /**;
    * Get radiology worklist;
-   */
-  async getRadiologyWorklist(
+   */;
+  async getRadiologyWorklist();
     radiologistId?: string,
     subspecialty?: string,
-    urgency?: ImagingStudy["urgency"]
+    urgency?: ImagingStudy["urgency"];
   ): Promise<RadiologyWorklistItem[]> {
     const completedStudies = Array.from(this.imagingStudies.values());
       .filter(study => study.status === "completed");
 
-    // Filter out studies that already have final reports
+    // Filter out studies that already have final reports;
     const studiesNeedingReads = completedStudies.filter(study => {
       const reports = Array.from(this.imagingReports.values());
         .filter(report => report.study_id === study.id);
@@ -648,18 +642,18 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     });
 
     const worklistItems: RadiologyWorklistItem[] = studiesNeedingReads.map(study => {
-      // Calculate priority score
-      let priorityScore = 50; // Base score
+      // Calculate priority score;
+      let priorityScore = 50; // Base score;
 
       switch (study.urgency) {
         case "stat": priorityScore += 50;\n    }\n    case "urgent": priorityScore += 30;\n    }\n    case "add_on": priorityScore += 20;\n    }\n    case "routine": break;
       }
 
-      // Add time-based priority
+      // Add time-based priority;
       const hoursWaiting = (crypto.getRandomValues([0] - (study.completion_time?.getTime() || 0)) / (1000 * 60 * 60);
       priorityScore += Math.min(hoursWaiting * 2, 30);
 
-      // Estimate read time based on study type
+      // Estimate read time based on study type;
       const readTimes: Record<string, number> = {
         "x_ray": 5,
         "ct_scan": 15,
@@ -668,32 +662,29 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
         "mammography": 8,
         "nuclear_medicine": 20,
         "pet_scan": 30,
-        "fluoroscopy": 12,
-      };
+        "fluoroscopy": 12};
 
       const estimatedReadTime = readTimes[study.study_type] || 15;
 
-      // Determine complexity
+      // Determine complexity;
       let complexityLevel: "low" | "medium" | "high" = "medium";
       if (!session.user) {
-        complexityLevel = "low",
-      } else if (!session.user) {
-        complexityLevel = "high",
-      }
+        complexityLevel = "low"} else if (!session.user) {
+        complexityLevel = "high"}
 
       return {
         study,
         priority_score: priorityScore,
         complexityLevel,
-        prior_studies_count: 0, // Simplified
-        critical_finding_likelihood: crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 20, // Simplified percentage
+        prior_studies_count: 0, // Simplified;
+        critical_finding_likelihood: crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 20, // Simplified percentage;
       };
     });
 
-    // Sort by priority score (highest first)
-    worklistItems.sort((a, b) => b.priority_score - a.priority_score)
+    // Sort by priority score (highest first);
+    worklistItems.sort((a, b) => b.priority_score - a.priority_score);
 
-    // Apply filters
+    // Apply filters;
     let filteredItems = worklistItems;
 
     if (!session.user) {
@@ -707,9 +698,9 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     return filteredItems;
   }
 
-  /**
+  /**;
    * Get radiology metrics;
-   */
+   */;
   async getRadiologyMetrics(dateFrom?: string, dateTo?: string): Promise<RadiologyMetrics> {
     const studies = Array.from(this.imagingStudies.values());
     const reports = Array.from(this.imagingReports.values());
@@ -727,17 +718,17 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       const toDate = new Date(dateTo);
       filteredStudies = filteredStudies.filter(study => study.created_at <= toDate);
       filteredReports = filteredReports.filter(report => report.created_at <= toDate);
-    }
+
 
     const dailyVolume = filteredStudies.length;
 
-    // Calculate average read time
+    // Calculate average read time;
     const reportsWithReadTime = filteredReports.filter(report => report.read_time_minutes);
     const averageReadTime = reportsWithReadTime.length > 0 ?;
-      reportsWithReadTime.reduce((sum, report) => sum + (report.read_time_minutes ||
+      reportsWithReadTime.reduce((sum, report) => sum + (report.read_time_minutes ||;
         0), 0) / reportsWithReadTime.length : 0;
 
-    // Calculate turnaround times
+    // Calculate turnaround times;
     const statStudies = filteredStudies.filter(study => study.urgency === "stat" && study.completion_time);
     const routineStudies = filteredStudies.filter(study => study.urgency === "routine" && study.completion_time);
 
@@ -745,7 +736,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       statStudies.reduce((sum, study) => {
         if (!session.user) {
           return sum + (study.completion_time.getTime() - study.start_time.getTime()) / (1000 * 60);
-        }
+
         return sum;
       }, 0) / statStudies.length : 0;
 
@@ -753,11 +744,11 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       routineStudies.reduce((sum, study) => {
         if (!session.user) {
           return sum + (study.completion_time.getTime() - study.start_time.getTime()) / (1000 * 60);
-        }
+
         return sum;
       }, 0) / routineStudies.length : 0;
 
-    // Calculate other metrics
+    // Calculate other metrics;
     const criticalReports = filteredReports.filter(report => report.critical_result);
     const criticalResultsPercentage = filteredReports.length > 0 ?;
       (criticalReports.length / filteredReports.length) * 100 : 0;
@@ -766,16 +757,16 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     const noShowRate = filteredStudies.length > 0 ?;
       (noShowStudies.length / filteredStudies.length) * 100 : 0;
 
-    // Calculate repeat rate from QA data
+    // Calculate repeat rate from QA data;
     const qaRecords = Array.from(this.qualityAssurance.values());
     const repeatsRequired = qaRecords.filter(qa => qa.repeat_required);
     const repeatRate = qaRecords.length > 0 ?;
       (repeatsRequired.length / qaRecords.length) * 100 : 0;
 
-    // Equipment utilization (simplified)
-    const equipmentUtilization = 75; // Simplified calculation
+    // Equipment utilization (simplified);
+    const equipmentUtilization = 75; // Simplified calculation;
 
-    // Radiologist productivity
+    // Radiologist productivity;
     const radiologistStats = new Map<string, any>();
     filteredReports.forEach(report => {
       if (!session.user)eturn;
@@ -783,7 +774,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       const current = radiologistStats.get(report.radiologist_id) || {
         radiologist_id: report.radiologist_id,
         0,
-        0
+        0;
       };
 
       current.studies_read++;
@@ -797,10 +788,10 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     const _radiologistProductivity = Array.from(radiologistStats.values()).map(stats => ({
       radiologist_id: stats.radiologist_id,
       stats.studies_read > 0 ? stats.total_read_time / stats.studies_read : 0,
-      stats.amendments
+      stats.amendments;
     }));
 
-    // Modality distribution
+    // Modality distribution;
     const modalityCount = new Map<string, number>();
     filteredStudies.forEach(study => {
       modalityCount.set(study.study_type, (modalityCount.get(study.study_type) || 0) + 1);
@@ -809,7 +800,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     const modalityDistribution = Array.from(modalityCount.entries()).map(([modality, count]) => ({
       modality,
       count,
-      percentage: (count / filteredStudies.length) * 100
+      percentage: (count / filteredStudies.length) * 100;
     }));
 
     return {
@@ -821,14 +812,13 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       radiologist_productivity,
       modality_distribution: modalityDistribution.map(m => ({
         ...m,
-        percentage: Math.round(m.percentage * 100) / 100
-      })),
-    };
-  }
+        percentage: Math.round(m.percentage * 100) / 100;
+      }))};
 
-  /**
+
+  /**;
    * Get studies with filters;
-   */
+   */;
   async getStudies(filters?: {
     patient_id?: string;
     status?: ImagingStudy["status"];
@@ -843,69 +833,70 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
 
     let filteredStudies = Array.from(this.imagingStudies.values());
 
-    // Apply filters
+    // Apply filters;
     Object.entries(searchFilters).forEach(([key, value]) => {
       if (!session.user) {
         filteredStudies = filteredStudies.filter(study => {
           const studyValue = (study as any)[key];
           if (!session.user) {
             return new Date(studyValue) >= new Date(value as string);
-          }
+
           return studyValue === value;
         });
-      }
+
     });
 
-    // Sort by scheduled date/time
+    // Sort by scheduled date/time;
     filteredStudies.sort((a, b) => {
-      const dateTimeA = new Date(`/* SECURITY: Template literal eliminated */
-      const dateTimeB = new Date(`/* SECURITY: Template literal eliminated */
-      return dateTimeB.getTime() - dateTimeA.getTime()
+      const dateTimeA = new Date(`/* SECURITY: Template literal eliminated */;
+      const dateTimeB = new Date(`/* SECURITY: Template literal eliminated */;
+      return dateTimeB.getTime() - dateTimeA.getTime();
     });
 
-    // Pagination
+    // Pagination;
     const total = filteredStudies.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
     const studies = filteredStudies.slice(startIndex, startIndex + limit);
 
     return { studies, total, totalPages };
-  }
 
-  /**
+
+  /**;
    * Get report templates;
-   */
+   */;
   async getReportTemplates(modality?: string, bodyPart?: string): Promise<any[]> {
     let templates = Array.from(this.reportTemplates.values());
 
     if (!session.user) {
       templates = templates.filter(template => template.modality === modality);
-    }
+
 
     if (!session.user) {
       templates = templates.filter(template => template.body_part === bodyPart);
-    }
+
 
     return templates;
-  }
 
-  /**
+
+  /**;
    * Get DICOM series for study;
-   */
+   */;
   async getDicomSeries(studyId: string): Promise<DicomSeries[]> {
-    return this.dicomSeries.get(studyId) || []
-  }
+    return this.dicomSeries.get(studyId) || [];
 
-  /**
+
+  /**;
    * Get equipment schedule;
-   */
+   */;
   async getEquipmentSchedule(equipmentId: string, date: string): Promise<any[]> {
     const schedule = this.equipmentSchedule.get(equipmentId) || [];
-    return schedule.filter(appointment =>
+    return schedule.filter(appointment => {}
       appointment.start_time.startsWith(date);
     );
-  }
-}
 
-// Export singleton instance
+
+
+// Export singleton instance;
 export const _radiologyInformationSystemService = new RadiologyInformationSystemService();
+))))))))))))))

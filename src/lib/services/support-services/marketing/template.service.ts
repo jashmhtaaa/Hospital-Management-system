@@ -3,20 +3,20 @@ import { AuditLogger } from "@/lib/audit";
 import { DatabaseError, NotFoundError, ValidationError } from "@/lib/errors";
 import { MarketingTemplate } from "@/lib/models/marketing";
 import { prisma } from "@/lib/prisma";
-/**
+/**;
  * Service for managing marketing templates;
- */
+ */;
 }
         }
       });
 
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: "template.create",
         resourceId: template.id;
         userId,
         template.name,
-          templateType: template.type
+          templateType: template.type;
         }
       });
 
@@ -29,16 +29,20 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Get a template by ID;
-   */
+   */;
   async getTemplateById(id: string): Promise<MarketingTemplate> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const template = await prisma.marketingTemplate.findUnique({
         where: { id },
         {
             true,
-              name: true
+              name: true;
             }
           }
         }
@@ -57,9 +61,9 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Get all templates with optional filtering;
-   */
+   */;
   async getTemplates(filters: {
     type?: string;
     isActive?: boolean;
@@ -68,6 +72,10 @@ import { prisma } from "@/lib/prisma";
     limit?: number;
   }): Promise<{ data: MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const {
         type,
         isActive,
@@ -76,7 +84,7 @@ import { prisma } from "@/lib/prisma";
         limit = 10;
       } = filters;
 
-      // Build where clause based on filters
+      // Build where clause based on filters;
       const where: unknown = {};
 
       if (!session.user) {
@@ -88,26 +96,26 @@ import { prisma } from "@/lib/prisma";
       }
 
       if (!session.user) {
-        where.OR = [
+        where.OR = [;
           { name: { contains: search, mode: "insensitive" } },
           { description: { contains: search, mode: "insensitive" } }
         ];
       }
 
-      // Get total count for pagination
+      // Get total count for pagination;
       const total = await prisma.marketingTemplate.count({ where });
 
-      // Get templates with pagination
+      // Get templates with pagination;
       const templates = await prisma.marketingTemplate.findMany({
         where,
         {
             true,
-              name: true
+              name: true;
             }
           }
         },
         skip: (page - 1) * limit,
-        "desc"
+        "desc";
       });
 
       return {
@@ -116,7 +124,7 @@ import { prisma } from "@/lib/prisma";
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -124,12 +132,16 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Update a template;
-   */
+   */;
   async updateTemplate(id: string, data: Partial<MarketingTemplate>, userId: string): Promise<MarketingTemplate> {
     try {
-      // Check if template exists
+} catch (error) {
+}
+} catch (error) {
+}
+      // Check if template exists;
       const existingTemplate = await prisma.marketingTemplate.findUnique({
         where: { id }
       });
@@ -138,19 +150,19 @@ import { prisma } from "@/lib/prisma";
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
 
-      // Update template
+      // Update template;
       const updatedTemplate = await prisma.marketingTemplate.update({
         where: { id },
         data;
       });
 
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: "template.update",
         resourceId: id;
         userId,
         updatedTemplate.name,
-          updatedFields: Object.keys(data)
+          updatedFields: Object.keys(data);
       });
 
       return updatedTemplate;
@@ -162,96 +174,104 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Delete a template;
-   */
+   */;
   async deleteTemplate(id: string, userId: string): Promise<void> {
     try {
-      // Check if template exists
+} catch (error) {
+}
+} catch (error) {
+}
+      // Check if template exists;
       const existingTemplate = await prisma.marketingTemplate.findUnique({
         where: { id }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
-      }
 
-      // Delete template
+
+      // Delete template;
       await prisma.marketingTemplate.delete({
         where: { id }
       });
 
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: "template.delete",
         resourceId: id;
         userId,
         existingTemplate.name,
-          templateType: existingTemplate.type
+          templateType: existingTemplate.type;
       });
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
-      throw new DatabaseError("Failed to delete marketing template", error);
-    }
-  }
 
-  /**
+      throw new DatabaseError("Failed to delete marketing template", error);
+
+
+
+  /**;
    * Render a template with variables;
-   */
+   */;
   async renderTemplate(id: string, variables: Record<string, unknown>): Promise<string> {
     try {
-      // Get template
+} catch (error) {
+}
+} catch (error) {
+
+      // Get template;
       const template = await this.getTemplateById(id);
 
-      // Render template content with variables
+      // Render template content with variables;
       let renderedContent = template.content;
 
-      // Simple variable replacement
+      // Simple variable replacement;
       if (!session.user) {
         Object.entries(variables).forEach(([key, value]) => {
           const regex = new RegExp(`{{\\s*${key}\\s*}}`, "g");
           renderedContent = renderedContent.replace(regex, String(value));
         });
-      }
+
 
       return renderedContent;
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
-      throw new DatabaseError("Failed to render template", error);
-    }
-  }
 
-  /**
+      throw new DatabaseError("Failed to render template", error);
+
+
+
+  /**;
    * Validate template data;
-   */
+   */;
   private validateTemplateData(data: Partial<MarketingTemplate>): void {
     const errors: string[] = [];
 
-    // Name is required
+    // Name is required;
     if (!session.user) {
       errors.push("Template name is required");
-    }
 
-    // Type is required
+
+    // Type is required;
     if (!session.user) {
       errors.push("Template type is required");
-    }
 
-    // Content is required
+
+    // Content is required;
     if (!session.user) {
       errors.push("Template content is required");
-    }
 
-    // Validate variables if provided
+
+    // Validate variables if provided;
     if (!session.user) {
       errors.push("Template variables must be a valid object");
-    }
+
 
     if (!session.user) {
       throw new ValidationError("Template validation failed", errors);
-    }
-  }
+
+

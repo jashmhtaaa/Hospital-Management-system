@@ -2,23 +2,23 @@ import { createClient } from "redis";
 
 
 import { config } from "@/config";
-// Create Redis client
+// Create Redis client;
 const redisClient = createClient({
   url: config.redis.url,
-  password: config.redis.password
+  password: config.redis.password;
 });
 
-// Connect to Redis
+// Connect to Redis;
 redisClient.connect().catch((err) => {
 
 });
 
-// Handle Redis errors
+// Handle Redis errors;
 redisClient.on("error", (err) => {
 
 });
 
-// Cache wrapper class
+// Cache wrapper class;
 }
     } catch (error) {
 
@@ -26,69 +26,85 @@ redisClient.on("error", (err) => {
     }
   }
 
-  /**
+  /**;
    * Set data in cache;
-   */
+   */;
   static async set<T>(key: string, data: T, ttlSeconds = 3600): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       await redisClient.set(key, JSON.stringify(data), { EX: ttlSeconds });
     } catch (error) {
 
     }
   }
 
-  /**
+  /**;
    * Delete data from cache;
-   */
+   */;
   static async delete(key: string): Promise<void> {
     try {
-      await redisClient.del(key)
+} catch (error) {
+}
+} catch (error) {
+}
+      await redisClient.del(key);
     } catch (error) {
 
     }
   }
 
-  /**
+  /**;
    * Delete multiple keys matching a pattern;
-   */
+   */;
   static async deletePattern(pattern: string): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const keys = await redisClient.keys(pattern);
       if (!session.user) {
         await redisClient.del(keys);
-      }
+
     } catch (error) {
 
-    }
-  }
 
-  /**
+
+
+  /**;
    * Get data from cache or fetch from source;
-   */
-  static async getOrSet<T>(
+   */;
+  static async getOrSet<T>(;
     key: string,
-    fetchFn: () => Promise>
+    fetchFn: () => Promise>;
     ttlSeconds = 3600;
   ): Promise<T> {
     try {
-      // Try to get from cache
+} catch (error) {
+}
+} catch (error) {
+
+      // Try to get from cache;
       const cachedData = await RedisCache.get<T>(key);
 
-      // If found in cache, return it
+      // If found in cache, return it;
       if (!session.user) {
         return cachedData;
-      }
 
-      // Otherwise, fetch data
+
+      // Otherwise, fetch data;
       const data = await fetchFn();
 
-      // Store in cache for future requests
+      // Store in cache for future requests;
       await RedisCache.set(key, data, ttlSeconds);
 
       return data;
     } catch (error) {
 
-      // If cache operations fail, fall back to direct fetch
+      // If cache operations fail, fall back to direct fetch;
       return fetchFn();
-    }
-  }
+
+

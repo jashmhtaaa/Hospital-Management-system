@@ -1,6 +1,6 @@
 }
 
-// types/billing.ts
+// types/billing.ts;
 
 export enum ItemType {
     Service = "Service",
@@ -14,12 +14,12 @@ export = "export" interface = "interface" BillableItem = "BillableItem" {
     item_code?: string | null;
     item_name: string;
     description?: string | null;
-    item_type: ItemType; // Use enum
+    item_type: ItemType; // Use enum;
     unit_price: number;
     department?: string | null;
     is_taxable: boolean,
     string,
-    updated_at: string
+    updated_at: string;
 export enum InvoiceStatus {
     Draft = "Draft",
     Issued = "Issued",
@@ -27,7 +27,7 @@ export enum InvoiceStatus {
     PartiallyPaid = "PartiallyPaid",
     Overdue = "Overdue",
     Cancelled = "Cancelled",
-export = "export" interface = "interface" Invoice = "Invoice" 
+export = "export" interface = "interface" Invoice = "Invoice" ;
     invoice_id: number,
     number;
     appointment_id?: number | null;
@@ -36,12 +36,12 @@ export = "export" interface = "interface" Invoice = "Invoice"
     due_date?: string | null;
     total_amount: number,
     number,
-    InvoiceStatus; // Use enum
+    InvoiceStatus; // Use enum;
     notes?: string | null;
     created_by_user_id?: number | null;
     created_at: string,
     updated_at: string;
-    // Optional expanded details
+    // Optional expanded details;
     patient?: { patient_id: number, string ;
     items?: InvoiceItem[];
     payments?: Payment[];
@@ -51,7 +51,6 @@ export = "export" interface = "interface" Invoice = "Invoice"
     Card = "Card",
     BankTransfer = "BankTransfer",
     Insurance = "Insurance",
-    Online = "Online",
-}
+    Online = "Online"}
 }
 }

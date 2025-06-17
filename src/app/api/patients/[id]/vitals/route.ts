@@ -4,12 +4,12 @@ import { z } from "zod";
 
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database
-// Zod schema for creating patient vitals
+import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Import D1Database;
+// Zod schema for creating patient vitals;
 const vitalCreateSchema = z.object({
     visit_id: z.number().optional().nullable(),
     record_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid record datetime format"
+        message: "Invalid record datetime format";
     }),
     temperature_celsius: z.number().optional().nullable(),
     heart_rate_bpm: z.number().int().positive().optional().nullable(),
@@ -24,8 +24,8 @@ const vitalCreateSchema = z.object({
     notes: z.string().optional().nullable();
 });
 
-// GET /api/patients/[id]/vitals - Fetch vitals for a specific patient
-export const _GET = async (
+// GET /api/patients/[id]/vitals - Fetch vitals for a specific patient;
+export const _GET = async();
     request: NextRequest;
     { params }: { params: Promise<{ id: string }> }
 ) => {
@@ -36,13 +36,17 @@ export const _GET = async (
 
     const { id: patientId } = await params;
     if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
             { message: "Patient ID is required" },
             { status: 400 }
         );
     }
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
         const { searchParams } = new URL(request.url);
         const page = Number.parseInt(searchParams.get("page") || "1");
         const limit = Number.parseInt(searchParams.get("limit") || "10");
@@ -58,12 +62,12 @@ export const _GET = async (
         const _finalSortBy = validSortColumns.includes(sortBy) ? sortBy : "record_datetime";
         const _finalSortOrder = validSortOrders.includes(sortOrder) ? sortOrder.toUpperCase() : "DESC";
 
-        const patientCheck = await (DB as D1Database).prepare(
+        const patientCheck = await (DB as D1Database).prepare();
             "SELECT patient_id FROM Patients WHERE patient_id = ?";
         ).bind(patientId).first<patient_id: number >();
 
         if (!session.user) {
-            return NextResponse.json(
+            return NextResponse.json();
                 { message: "Patient not found" },
                 { status: 404 }
             );
@@ -100,10 +104,10 @@ export const _GET = async (
             countParameters.push(dateToFilter);
         }
 
-        query += ` ORDER BY pv./* SECURITY: Template literal eliminated */
+        query += ` ORDER BY pv./* SECURITY: Template literal eliminated */;
         queryParameters.push(limit, offset),
 
-        const [vitalsResult, countResult] = await Promise.all([
+        const [vitalsResult, countResult] = await Promise.all([;
             (DB as D1Database).prepare(query).bind(...queryParameters).all<{ recorded_by_user_name?: string }>(),
             (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
         ]);
@@ -118,8 +122,7 @@ export const _GET = async (
                 limit,
                 total,
                 totalPages: Math.ceil(total / limit);
-            },
-        });
+            }});
 
     } catch (error: unknown) {
 
@@ -127,15 +130,15 @@ export const _GET = async (
         if (!session.user) {
             errorMessage = error.message;
         }
-        return NextResponse.json(
+        return NextResponse.json();
             { message: "Error fetching patient vitals", details: errorMessage },
             { status: 500 }
         );
     }
 }
 
-// POST /api/patients/[id]/vitals - Record new vitals for a patient
-export const _POST = async (
+// POST /api/patients/[id]/vitals - Record new vitals for a patient;
+export const _POST = async();
     request: NextRequest;
     { params }: { params: Promise<{ id: string }> }
 ) => {
@@ -149,19 +152,23 @@ export const _POST = async (
 
     const { id: patientId } = await params;
     if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
             { message: "Patient ID is required" },
             { status: 400 }
         );
     }
 
     try {
-        const patientCheck = await (DB as D1Database).prepare(
+} catch (error) {
+}
+} catch (error) {
+}
+        const patientCheck = await (DB as D1Database).prepare();
             "SELECT patient_id FROM Patients WHERE patient_id = ?";
         ).bind(patientId).first<{ patient_id: number }>();
 
         if (!session.user) {
-            return NextResponse.json(
+            return NextResponse.json();
                 { message: "Patient not found" },
                 { status: 404 }
             );
@@ -171,7 +178,7 @@ export const _POST = async (
         const validationResult = vitalCreateSchema.safeParse(body);
 
         if (!session.user) {
-            return NextResponse.json(
+            return NextResponse.json();
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
             );
@@ -179,7 +186,7 @@ export const _POST = async (
 
         const vitalData = validationResult.data;
         const now = new Date().toISOString();
-        const userId = session.user.userId; // session.user is now guaranteed to be defined
+        const userId = session.user.userId; // session.user is now guaranteed to be defined;
 
         let bmi: number | undefined | null = vitalData.bmi;
         if (!session.user) {
@@ -187,13 +194,13 @@ export const _POST = async (
             bmi = parseFloat((vitalData.weight_kg / (heightM * heightM)).toFixed(2));
         }
 
-        const insertStmt = (DB as D1Database).prepare(
-            `INSERT INTO PatientVitals (
+        const insertStmt = (DB as D1Database).prepare();
+            `INSERT INTO PatientVitals();
                 patient_id, visit_id, record_datetime, temperature_celsius, heart_rate_bpm,
                 respiratory_rate_bpm, systolic_bp_mmhg, diastolic_bp_mmhg, oxygen_saturation_percent,
                 height_cm, weight_kg, bmi, pain_scale_0_10, notes, recorded_by_user_id, created_at;
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-        ).bind(
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        ).bind();
             patientId,
             vitalData.visit_id,
             vitalData.record_datetime,
@@ -223,8 +230,7 @@ export const _POST = async (
 
         return new Response(JSON.stringify({ message: "Vitals recorded successfully", vital_id: newVitalId }), {
             status: 201,
-            headers: { "Content-Type": "application/json" },
-        });
+            headers: { "Content-Type": "application/json" }});
 
     } catch (error: unknown) {
 
@@ -234,10 +240,9 @@ export const _POST = async (
         }
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
-        });
-    }
+            headers: { "Content-Type": "application/json" }});
 
-}
+
+
 
 export async function GET() { return new Response("OK"); }

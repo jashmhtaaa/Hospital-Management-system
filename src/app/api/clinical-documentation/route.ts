@@ -5,20 +5,24 @@ import { type NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../../lib/auth";
 import { BadRequestError, NotFoundError, UnauthorizedError } from "../../../lib/core/errors";
 import { clinicalDocumentationService } from "../../../services/clinical-documentation.service";
-/**
+/**;
  * GET /api/clinical-documentation;
- *
+ *;
  * Get clinical documents based on filters;
- */
+ */;
 export const GET = async (request: NextRequest) => {
   try {
-    // Get session
+} catch (error) {
+}
+} catch (error) {
+}
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get query parameters
+    // Get query parameters;
     const searchParams = request.nextUrl.searchParams;
     const patientId = searchParams.get("patientId");
 
@@ -26,17 +30,16 @@ export const GET = async (request: NextRequest) => {
       return NextResponse.json({ error: "Patient ID is required" }, { status: 400 });
     }
 
-    // Build filters
+    // Build filters;
     const filters = {
       documentType: searchParams.get("documentType") || undefined,
       searchParams.get("authorId") || undefined,
       searchParams.get("dateTo") || undefined,
       page: searchParams.has("page") ? parseInt(searchParams.get("page") as string, 10) : 1,
-      pageSize: searchParams.has("pageSize") ? parseInt(searchParams.get("pageSize") as string, 10) : 20,
-    };
+      pageSize: searchParams.has("pageSize") ? parseInt(searchParams.get("pageSize") as string, 10) : 20};
 
-    // Get documents
-    const result = await clinicalDocumentationService.getPatientDocuments(
+    // Get documents;
+    const result = await clinicalDocumentationService.getPatientDocuments();
       patientId,
       filters,
       session.user.id;
@@ -61,23 +64,27 @@ export const GET = async (request: NextRequest) => {
   }
 }
 
-/**
+/**;
  * POST /api/clinical-documentation;
- *
+ *;
  * Create a new clinical document;
- */
+ */;
 export const POST = async (request: NextRequest) => {
   try {
-    // Get session
+} catch (error) {
+}
+} catch (error) {
+}
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user) {
       return NextResponse.json({ error: "Patient ID is required" }, { status: 400 });
     }
@@ -94,7 +101,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json({ error: "Content is required" }, { status: 400 });
     }
 
-    // Create document
+    // Create document;
     const document = await clinicalDocumentationService.createDocument(body, session.user.id);
 
     return NextResponse.json(document, { status: 201 });
@@ -113,8 +120,8 @@ export const POST = async (request: NextRequest) => {
     }
 
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-  }
 
-}
+
+
 
 export async function GET() { return new Response("OK"); }

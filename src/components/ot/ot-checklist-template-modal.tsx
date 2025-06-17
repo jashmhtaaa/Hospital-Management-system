@@ -11,8 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,95 +19,93 @@ import { Label } from "@/components/ui/label";
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue} from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import { PlusCircle, Trash2 } from "lucide-react";
 
-// Define ChecklistItem type
+// Define ChecklistItem type;
 interface ChecklistItem {
   id: string,
-  text: string
+  text: string;
 }
 
-// Define ChecklistTemplate type
+// Define ChecklistTemplate type;
 interface ChecklistTemplate {
-  id?: string; // Optional for new templates
+  id?: string; // Optional for new templates;
   name: string,
   ChecklistItem[];
-  updated_at?: string; // Optional, may not be present on new/unsaved
+  updated_at?: string; // Optional, may not be present on new/unsaved;
 }
 
-// Define the type for data passed to onSave
+// Define the type for data passed to onSave;
 interface ChecklistTemplateSaveData {
   name: string,
-  { id: string, text: string }[]; // Ensure ID is included if needed by backend
+  { id: string, text: string }[]; // Ensure ID is included if needed by backend;
 }
 
-// Props for the modal - use defined types
+// Props for the modal - use defined types;
 interface OTChecklistTemplateModalProperties {
   trigger: React.ReactNode;
-  template?: ChecklistTemplate; // Use ChecklistTemplate type
-  onSave: (templateData: ChecklistTemplateSaveData) => Promise> // Use specific save data type
+  template?: ChecklistTemplate; // Use ChecklistTemplate type;
+  onSave: (templateData: ChecklistTemplateSaveData) => Promise> // Use specific save data type;
 export default const _OTChecklistTemplateModal = ({
   trigger,
   template,
-  onSave,
-}: OTChecklistTemplateModalProperties) {
+  onSave}: OTChecklistTemplateModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
     name: template?.name || "",
-    phase: template?.phase || "pre-op"
+    phase: template?.phase || "pre-op";
   }));
-  const [items, setItems] = useState<ChecklistItem[]>(() =>
+  const [items, setItems] = useState<ChecklistItem[]>(() => {}
     template?.items && template.items.length > 0;
-      ? template.items.map((item) => (...item )) // Deep copy items
-      : [id: crypto.randomUUID(), text: "" ]
+      ? template.items.map((item) => (...item )) // Deep copy items;
+      : [id: crypto.randomUUID(), text: "" ];
   );
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
 
-  // Reset form when template prop changes or modal opens
+  // Reset form when template prop changes or modal opens;
   useEffect(() => {
     if (!session.user) {
       setFormData({
         name: template?.name || "",
-        phase: template?.phase || "pre-op"
+        phase: template?.phase || "pre-op";
       }),
-      setItems(
+      setItems();
         template?.items && template.items.length > 0;
-          ? template.items.map((item) => (...item )) // Deep copy items
-          : [id: crypto.randomUUID(), text: "" ]
+          ? template.items.map((item) => (...item )) // Deep copy items;
+          : [id: crypto.randomUUID(), text: "" ];
       );
     } else {
-      // Optionally clear form when closed
-      // setFormData({ name: "", phase: "pre-op" })
-      // setItems([{ id: crypto.randomUUID(), text: "" }])
+      // Optionally clear form when closed;
+      // setFormData({ name: "", phase: "pre-op" });
+      // setItems([{ id: crypto.randomUUID(), text: "" }]);
     }
   }, [template, isOpen]);
 
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData((previous) => ({ ...previous, [name]: value }))
+    setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData((previous) => ({ ...previous, [name]: value }))
+    setFormData((previous) => ({ ...previous, [name]: value }));
   };
 
   const handleItemChange = (index: number, value: string) => {
     const newItems = [...items];
     newItems[index].text = value;
-    setItems(newItems)
+    setItems(newItems);
   };
 
   const addItem = () => {
-    setItems([...items, { id: crypto.randomUUID(), text: "" }])
+    setItems([...items, { id: crypto.randomUUID(), text: "" }]);
   };
 
   const removeItem = (index: number) => {
     if (!session.user) {
-      // Keep at least one item
+      // Keep at least one item;
       const newItems = items.filter((_, index_) => index_ !== index);
       setItems(newItems);
     }
@@ -118,11 +115,15 @@ export default const _OTChecklistTemplateModal = ({
     event.preventDefault(),
     setIsSaving(true);
     try {
-      // Validate items are not empty
+} catch (error) {
+}
+} catch (error) {
+}
+      // Validate items are not empty;
       if (!session.user)> !item.text.trim())) {
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         }),
         setIsSaving(false);
         return;
@@ -130,35 +131,34 @@ export default const _OTChecklistTemplateModal = ({
 
       const apiData: ChecklistTemplateSaveData = {
         ...formData,
-        items: items.map((item) => ({ id: item.id, text: item.text.trim() })), // Ensure IDs and trimmed text are sent
+        items: items.map((item) => ({ id: item.id, text: item.text.trim() })), // Ensure IDs and trimmed text are sent;
       };
 
-      // Replace with actual API call
-      // const _url = template ? `/api/ot/checklist-templates/${template.id}` : `/api/ot/checklist-templates`
-      // const _method = template ? "PUT" : "POST"
+      // Replace with actual API call;
+      // const _url = template ? `/api/ot/checklist-templates/${template.id}` : `/api/ot/checklist-templates`;
+      // const _method = template ? "PUT" : "POST";
       // const _response = await fetch(url, {
       //   _method: method;
       //   headers: { "Content-Type": "application/json" },
       //   body: JSON.stringify(apiData);
-      // })
+      // });
       // if (!session.user) {
-      //   const _errorData = await response.json()
-      //   throw new Error(errorData.message || "Failed to save checklist template")
+      //   const _errorData = await response.json();
+      //   throw new Error(errorData.message || "Failed to save checklist template");
       // }
 
-      // Simulate API call
+      // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-      await onSave(apiData); // Call parent callback to refresh list
+      await onSave(apiData); // Call parent callback to refresh list;
 
       toast({
         title: "Success",
-        description: `Checklist Template ${template ? "updated" : "created"} successfully.`,
-      }),
+        description: `Checklist Template ${template ? "updated" : "created"} successfully.`}),
       setIsOpen(false);
     } catch (error: unknown) {
-      // Use unknown for error type
+      // Use unknown for error type;
 
       let errorMessage = "Failed to save checklist template.";
       if (!session.user) {
@@ -166,112 +166,112 @@ export default const _OTChecklistTemplateModal = ({
       }
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setIsSaving(false);
-    }
+
   };
 
-  return (
-    >
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      >
-        <DialogHeader>
-          <DialogTitle>
+  return();
+    >;
+      <DialogTrigger asChild>{trigger}</DialogTrigger>;
+      >;
+        <DialogHeader>;
+          <DialogTitle>;
             {template;
-              ? "Edit Checklist Template"
+              ? "Edit Checklist Template";
               : "Create New Checklist Template"}
-          </DialogTitle>
-          <DialogDescription>
-            Define the items for this checklist template.
-          </DialogDescription>
-        </DialogHeader>
-        >
-          >
-            >
-              >
-                Template Name *
-              </Label>
-              <Input>
-                id="name"
-                name="name"
+          </DialogTitle>;
+          <DialogDescription>;
+            Define the items for this checklist template.;
+          </DialogDescription>;
+        </DialogHeader>;
+        >;
+          >;
+            >;
+              >;
+                Template Name *;
+              </Label>;
+              <Input>;
+                id="name";
+                name="name";
                 value={formData.name}
                 onChange={handleFormChange}
-                className="col-span-3"
+                className="col-span-3";
                 required;
-              />
-            </div>
-            >
-              >
-                Phase *
-              </Label>
-              <Select>
-                name="phase"
+              />;
+            </div>;
+            >;
+              >;
+                Phase *;
+              </Label>;
+              <Select>;
+                name="phase";
                 value={formData.phase}
                 onValueChange={(value) => handleSelectChange("phase", value)}
                 required;
-              >
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pre-op">Pre-Op>
-                  <SelectItem value="intra-op">Intra-Op>
-                  <SelectItem value="post-op">Post-Op>
+              >;
+                >;
+                  <SelectValue />;
+                </SelectTrigger>;
+                <SelectContent>;
+                  <SelectItem value="pre-op">Pre-Op>;
+                  <SelectItem value="intra-op">Intra-Op>;
+                  <SelectItem value="post-op">Post-Op>;
                   {/* Add more specific phases if needed */}
-                </SelectContent>
-              </Select>
-            </div>
+                </SelectContent>;
+              </Select>;
+            </div>;
 
-            >
-              <Label className="font-semibold">Checklist Items>
-              >
-                {items.map((item, index) => (
-                  >
-                    <Input>
+            >;
+              <Label className="font-semibold">Checklist Items>;
+              >;
+                {items.map((item, index) => (;
+                  >;
+                    <Input>;
                       value={item.text}
                       onChange={(event) => handleItemChange(index, event.target.value)}
                       placeholder={`Item ${index + 1}`}
-                      className="flex-grow"
-                    />
-                    <Button>
-                      type="button"
-                      variant="ghost"
-                      size="icon"
+                      className="flex-grow";
+                    />;
+                    <Button>;
+                      type="button";
+                      variant="ghost";
+                      size="icon";
                       onClick={() => removeItem(index)}
                       disabled={items.length <= 1}
-                      title="Remove Item"
-                    >
-                      <Trash2 className="h-4 w-4 text-red-500" />
-                    </Button>
-                  </div>
+                      title="Remove Item";
+                    >;
+                      <Trash2 className="h-4 w-4 text-red-500" />;
+                    </Button>;
+                  </div>;
                 ))}
-              </div>
-              <Button>
-                type="button"
-                variant="outline"
-                size="sm"
+              </div>;
+              <Button>;
+                type="button";
+                variant="outline";
+                size="sm";
                 onClick={addItem}
-                className="mt-3"
-              >
-                <PlusCircle className="mr-2 h-4 w-4" /> Add Item
-              </Button>
-            </div>
-          </div>
-          <DialogFooter>
-            <Button>
-              type="button"
-              variant="outline"
+                className="mt-3";
+              >;
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Item;
+              </Button>;
+            </div>;
+          </div>;
+          <DialogFooter>;
+            <Button>;
+              type="button";
+              variant="outline";
               onClick={() => setIsOpen(false)}
-            >
-              Cancel
-            </Button>
-            >
+            >;
+              Cancel;
+            </Button>;
+            >;
               {isSaving ? "Saving..." : "Save Template"}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+            </Button>;
+          </DialogFooter>;
+        </form>;
+      </DialogContent>;
+    </Dialog>;
   );

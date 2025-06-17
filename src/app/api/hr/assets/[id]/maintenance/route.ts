@@ -3,35 +3,37 @@ import { z } from "zod";
 
 
 import { assetService } from "@/lib/hr/asset-service";
-// Schema for maintenance record
+// Schema for maintenance record;
 const maintenanceSchema = z.object({
   maintenanceType: z.enum(["PREVENTIVE", "CORRECTIVE", "CALIBRATION", "INSPECTION"], {
-    errorMap: () => ({ message: "Invalid maintenance type" }),
-  }),
+    errorMap: () => ({ message: "Invalid maintenance type" })}),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format";
   }),
   performedBy: z.string().optional(),
   cost: z.number().optional(),
   description: z.string().min(1, "Description is required"),
   nextMaintenanceDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
-  }),
-});
+    message: "Invalid date format";
+  })});
 
-// POST handler for recording maintenance
-export const _POST = async (
+// POST handler for recording maintenance;
+export const _POST = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
-    // Parse request body
+} catch (error) {
+}
+} catch (error) {
+}
+    // Parse request body;
     const body = await request.json();
 
-    // Validate request data
+    // Validate request data;
     const validationResult = maintenanceSchema.safeParse(body);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Validation error", details: validationResult.error.format() },
         { status: 400 }
       );
@@ -39,37 +41,41 @@ export const _POST = async (
 
     const data = validationResult.data;
 
-    // Convert date strings to Date objects
+    // Convert date strings to Date objects;
     const maintenanceData = {
       assetId: params.id,
       new Date(data.date),
       data.cost,
-      data.nextMaintenanceDate ? new Date(data.nextMaintenanceDate) : undefined
+      data.nextMaintenanceDate ? new Date(data.nextMaintenanceDate) : undefined;
     };
 
-    // Record maintenance
+    // Record maintenance;
     const maintenanceRecord = await assetService.recordMaintenance(maintenanceData);
 
     return NextResponse.json(maintenanceRecord);
   } catch (error) {
 
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to record maintenance", details: error.message },
       { status: 500 }
     );
   }
 }
 
-// GET handler for listing maintenance records
-export const _GET = async (
+// GET handler for listing maintenance records;
+export const _GET = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const asset = await assetService.getAsset(params.id);
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Asset not found" },
         { status: 404 }
       );
@@ -78,10 +84,9 @@ export const _GET = async (
     return NextResponse.json(asset.maintenanceRecords || []);
   } catch (error) {
 
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to fetch maintenance records", details: error.message },
       { status: 500 }
     );
-  }
 
-}
+

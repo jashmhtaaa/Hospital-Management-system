@@ -17,8 +17,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+  FormMessage} from "@/components/ui/form";
   Select,
   SelectContent,
   SelectItem,
@@ -36,12 +35,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "@/components/ui/use-toast";
 
-// Form schema for position assignment
+// Form schema for position assignment;
 const positionAssignmentSchema = z.object({
   positionId: z.string().min(1, "Position is required"),
   isPrimary: z.boolean().default(false),
   startDate: z.date(),
-  endDate: z.date().optional()
+  endDate: z.date().optional();
 });
 
 export default const _AssignPosition = ({ params }: { id: string }) {
@@ -50,27 +49,30 @@ export default const _AssignPosition = ({ params }: { id: string }) {
   const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState<any | null>(null);
 
-  // Initialize form
+  // Initialize form;
   const form = useForm({
     resolver: zodResolver(positionAssignmentSchema),
     "",
       new Date(),
-      endDate: undefined
-    },
-  });
+      endDate: undefined;
+    }});
 
-  // Fetch positions and employee data
+  // Fetch positions and employee data;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch positions
+} catch (error) {
+}
+} catch (error) {
+}
+        // Fetch positions;
         const posResponse = await fetch("/api/hr/positions");
         if (!session.user) {
           const posData = await posResponse.json(),
           setPositions(posData.positions || []);
         }
 
-        // Fetch employee
+        // Fetch employee;
         const empResponse = await fetch(`/api/hr/staff/${}`;
         if (!session.user) {
           const empData = await empResponse.json(),
@@ -80,7 +82,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
 
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         });
       }
     };
@@ -88,215 +90,218 @@ export default const _AssignPosition = ({ params }: { id: string }) {
     fetchData();
   }, [params.id]);
 
-  // Handle form submission
+  // Handle form submission;
   const _onSubmit = async (data) => {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       setLoading(true);
 
-      // Format dates for API
+      // Format dates for API;
       const formattedData = {
         ...data,
         startDate: format(data.startDate, "yyyy-MM-dd"),
-        endDate: data.endDate ? format(data.endDate, "yyyy-MM-dd") : undefined,
-      };
+        endDate: data.endDate ? format(data.endDate, "yyyy-MM-dd") : undefined};
 
       const response = await fetch(`/api/hr/staff/${params.id}/positions`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formattedData)
+          "Content-Type": "application/json"},
+        body: JSON.stringify(formattedData);
       });
 
       if (!session.user) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to assign position");
-      }
+
 
       toast({
         title: "Position Assigned",
-        description: "Successfully assigned position to employee"
+        description: "Successfully assigned position to employee";
       });
 
-      // Navigate back to employee profile
+      // Navigate back to employee profile;
       router.push(`/dashboard/hr/staff/${}`;
     } catch (error) {
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
-  return (
-    >
-      >
-        <Button>
-          variant="ghost"
-          size="sm"
+  return();
+    >;
+      >;
+        <Button>;
+          variant="ghost";
+          size="sm";
           onClick={() => router.push(`/dashboard/hr/staff/${}`}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Employee Profile
-        </Button>
-      </div>
+        >;
+          <ArrowLeft className="h-4 w-4 mr-2" />;
+          Back to Employee Profile;
+        </Button>;
+      </div>;
 
-      >
-        <h1 className="text-3xl font-bold">Assign Position>
-        >
-          {employee ? `Assign a position to /* SECURITY: Template literal eliminated */
-              <FormField>
+      >;
+        <h1 className="text-3xl font-bold">Assign Position>;
+        >;
+          {employee ? `Assign a position to /* SECURITY: Template literal eliminated */;
+              <FormField>;
                 control={form.control}
-                name="positionId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Position*</FormLabel>
-                    <Select>
+                name="positionId";
+                render={({ field }) => (;
+                  <FormItem>;
+                    <FormLabel>Position*</FormLabel>;
+                    <Select>;
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a position" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {positions.map((position) => (
-                          >
+                    >;
+                      <FormControl>;
+                        <SelectTrigger>;
+                          <SelectValue placeholder="Select a position" />;
+                        </SelectTrigger>;
+                      </FormControl>;
+                      <SelectContent>;
+                        {positions.map((position) => (;
+                          >;
                             {position.title} {position.department ? `(${position.department.name})` : ""}
-                          </SelectItem>
+                          </SelectItem>;
                         ))}
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      The position to assign to this employee
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
+                      </SelectContent>;
+                    </Select>;
+                    <FormDescription>;
+                      The position to assign to this employee;
+                    </FormDescription>;
+                    <FormMessage />;
+                  </FormItem>;
                 )}
-              />
+              />;
 
-              <FormField>
+              <FormField>;
                 control={form.control}
-                name="isPrimary"
-                render={({ field }) => (
-                  >
-                    <FormControl>
-                      <Checkbox>
+                name="isPrimary";
+                render={({ field }) => (;
+                  >;
+                    <FormControl>;
+                      <Checkbox>;
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    >
-                      <FormLabel>
-                        Primary Position
-                      </FormLabel>
-                      <FormDescription>
-                        Set as the employee"s primary position. This will update any existing primary position.
-                      </FormDescription>
-                    </div>
-                  </FormItem>
+                      />;
+                    </FormControl>;
+                    >;
+                      <FormLabel>;
+                        Primary Position;
+                      </FormLabel>;
+                      <FormDescription>;
+                        Set as the employee"s primary position. This will update any existing primary position.;
+                      </FormDescription>;
+                    </div>;
+                  </FormItem>;
                 )}
-              />
+              />;
 
-              >
-                <FormField>
+              >;
+                <FormField>;
                   control={form.control}
-                  name="startDate"
-                  render={({ field }) => (
-                    >
-                      <FormLabel>Start Date*</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button>
+                  name="startDate";
+                  render={({ field }) => (;
+                    >;
+                      <FormLabel>Start Date*</FormLabel>;
+                      <Popover>;
+                        <PopoverTrigger asChild>;
+                          <FormControl>;
+                            <Button>;
                               variant={"outline"}
                               className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
-                            >
-                              {field.value ? (
+                            >;
+                              {field.value ? (;
                                 format(field.value, "PPP");
-                              ) : (
-                                <span>Pick a date</span>
+                              ) : (;
+                                <span>Pick a date</span>;
                               )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        >
-                          <Calendar>
-                            mode="single"
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                            </Button>;
+                          </FormControl>;
+                        </PopoverTrigger>;
+                        >;
+                          <Calendar>;
+                            mode="single";
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus;
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormDescription>
-                        When the employee starts this position
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
+                          />;
+                        </PopoverContent>;
+                      </Popover>;
+                      <FormDescription>;
+                        When the employee starts this position;
+                      </FormDescription>;
+                      <FormMessage />;
+                    </FormItem>;
                   )}
-                />
+                />;
 
-                <FormField>
+                <FormField>;
                   control={form.control}
-                  name="endDate"
-                  render={({ field }) => (
-                    >
-                      <FormLabel>End Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button>
+                  name="endDate";
+                  render={({ field }) => (;
+                    >;
+                      <FormLabel>End Date</FormLabel>;
+                      <Popover>;
+                        <PopoverTrigger asChild>;
+                          <FormControl>;
+                            <Button>;
                               variant={"outline"}
                               className={`w-full pl-3 text-left font-normal ${!field?.value && "text-muted-foreground"}`}
-                            >
-                              {field.value ? (
+                            >;
+                              {field.value ? (;
                                 format(field.value, "PPP");
-                              ) : (
-                                <span>No end date (current)</span>
+                              ) : (;
+                                <span>No end date (current)</span>;
                               )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        >
-                          <Calendar>
-                            mode="single"
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />;
+                            </Button>;
+                          </FormControl>;
+                        </PopoverTrigger>;
+                        >;
+                          <Calendar>;
+                            mode="single";
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus;
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormDescription>
-                        Leave blank if this is a current position
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
+                          />;
+                        </PopoverContent>;
+                      </Popover>;
+                      <FormDescription>;
+                        Leave blank if this is a current position;
+                      </FormDescription>;
+                      <FormMessage />;
+                    </FormItem>;
                   )}
-                />
-              </div>
+                />;
+              </div>;
 
-              >
-                <Button>
-                  type="button"
-                  variant="outline"
+              >;
+                <Button>;
+                  type="button";
+                  variant="outline";
                   onClick={() => router.push(`/dashboard/hr/staff/${}`}
-                >
-                  Cancel
-                </Button>
-                >
+                >;
+                  Cancel;
+                </Button>;
+                >;
                   {loading ? "Saving..." : "Assign Position'}
                   {!loading && <Save className="ml-2 h-4 w-4" />}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+                </Button>;
+              </div>;
+            </form>;
+          </Form>;
+        </CardContent>;
+      </Card>;
+    </div>;
   );
+))))

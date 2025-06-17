@@ -1,8 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
-// src/app/api/portal/patient/auth/route.ts
-// import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1
+// src/app/api/portal/patient/auth/route.ts;
+// import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
 
-// Define interfaces for request bodies
+// Define interfaces for request bodies;
 interface LoginData {
   email?: string;
   password?: string;
@@ -20,27 +20,27 @@ interface RegisterData {
   emergency_contact?: string;
 }
 
-// Placeholder function to simulate patient login
+// Placeholder function to simulate patient login;
 async const authenticatePatient = (email: string, password: string) {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-  // Replace with actual D1 query and password verification when DB is configured
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // Replace with actual D1 query and password verification when DB is configured;
   // const { env } = getRequestContext();
-  // const { results } = await env.DB.prepare(
-  //   `SELECT id, name, email, password_hash FROM patients WHERE email = ? LIMIT 1`
+  // const { results } = await env.DB.prepare();
+  //   `SELECT id, name, email, password_hash FROM patients WHERE email = ? LIMIT 1`;
   // ).bind(email).all();
-  //
-  // if (!session.user)eturn null
-  //
-  // const patient = results[0]
+  //;
+  // if (!session.user)eturn null;
+  //;
+  // const patient = results[0];
   // const _passwordMatch = await bcrypt.compare(password, patient.password_hash);
-  //
-  // if (!session.user)eturn null
-  //
-  // // Don"t return password hash in response
-  // delete patient.password_hash
-  // return patient
+  //;
+  // if (!session.user)eturn null;
+  //;
+  // // Don"t return password hash in response;
+  // delete patient.password_hash;
+  // return patient;
 
-  // For now, return mock data for specific test accounts
+  // For now, return mock data for specific test accounts;
   if (!session.user) {
     return {
       id: 1,
@@ -49,41 +49,41 @@ async const authenticatePatient = (email: string, password: string) {
       "123 Main St, Anytown",
       medical_record_number: "MRN00101",
       "+91-9876543210",
-      created_at: "2025-01-01T10:00:00Z"
+      created_at: "2025-01-01T10:00:00Z";
     };
   }
 
   return;
 }
 
-// Placeholder function to simulate patient registration
+// Placeholder function to simulate patient registration;
 async const registerPatient = (patientData: RegisterData) {
-  // Use RegisterData interface
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
-  // Replace with actual D1 insert query when DB is configured
+  // Use RegisterData interface;
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // Replace with actual D1 insert query when DB is configured;
   // const { env } = getRequestContext();
-  //
-  // // Hash the password
+  //;
+  // // Hash the password;
   // const _passwordHash = await bcrypt.hash(patientData.password, 10);
-  //
-  // // Generate a unique medical record number
-  // const _mrnPrefix = "MRN"
-  // const { results: lastMRN } = await env.DB.prepare(
-  //   `SELECT medical_record_number FROM patients
-  //    WHERE medical_record_number LIKE ?
-  //    ORDER BY id DESC LIMIT 1`
+  //;
+  // // Generate a unique medical record number;
+  // const _mrnPrefix = "MRN";
+  // const { results: lastMRN } = await env.DB.prepare();
+  //   `SELECT medical_record_number FROM patients;
+  //    WHERE medical_record_number LIKE ?;
+  //    ORDER BY id DESC LIMIT 1`;
   // ).bind(`${mrnPrefix}%`).all();
-  //
-  // let _nextMRNNumber = 1
+  //;
+  // let _nextMRNNumber = 1;
   // if (!session.user) {
   //   const _lastNumber = parseInt(lastMRN[0].medical_record_number.replace(mrnPrefix, ""));
-  //   _nextMRNNumber = lastNumber + 1
+  //   _nextMRNNumber = lastNumber + 1;
   // }
-  //
+  //;
   // const medicalRecordNumber = `/* SECURITY: Template literal eliminated */ email, password_hash, phone, date_of_birth, gender,
-  //     address, medical_record_number, blood_group, emergency_contact
-  //   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  // ).bind(
+  //     address, medical_record_number, blood_group, emergency_contact;
+  //   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  // ).bind();
   //   patientData.name,
   //   patientData.email,
   //   passwordHash,
@@ -93,17 +93,17 @@ async const registerPatient = (patientData: RegisterData) {
   //   patientData.address,
   //   medicalRecordNumber,
   //   patientData.blood_group,
-  //   patientData.emergency_contact
+  //   patientData.emergency_contact;
   // ).run();
-  //
+  //;
   // return {
   //   id: info.meta.last_row_id;
   //   ...patientData,
   //   medical_record_number: medicalRecordNumber;
-  //   password: undefined // Don"t return password
+  //   password: undefined // Don"t return password;
   // }
 
-  // Return mock success response
+  // Return mock success response;
   const newId = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000) + 10;
   const medicalRecordNumber = `MRN${newId.toString().padStart(5, "0")}`;
 
@@ -117,32 +117,36 @@ async const registerPatient = (patientData: RegisterData) {
   };
 }
 
-/**
+/**;
  * POST /api/portal/patient/auth/login;
  * POST /api/portal/patient/auth/register;
- * Authenticates or registers a patient and returns patient data.
- */
+ * Authenticates or registers a patient and returns patient data.;
+ */;
 export const POST = async (request: NextRequest) => {
   try {
-    // Check if this is a login or register request
+} catch (error) {
+}
+} catch (error) {
+}
+    // Check if this is a login or register request;
     const path = request.nextUrl.pathname;
     const isLoginRequest = path.endsWith("/login");
     const isRegisterRequest = path.endsWith("/register");
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Invalid authentication endpoint" },
         { status: 400 }
       );
     }
 
     if (!session.user) {
-      // Handle login request
+      // Handle login request;
       const data = (await request.json()) as LoginData;
       const { email, password } = data;
 
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Email and password are required" },
           { status: 400 }
         );
@@ -151,22 +155,22 @@ export const POST = async (request: NextRequest) => {
       const patient = await authenticatePatient(email, password);
 
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Invalid email or password" },
           { status: 401 }
         );
       }
 
-      // In a real implementation, you would generate a JWT token here
+      // In a real implementation, you would generate a JWT token here;
       // const token = jwt.sign({ id: patient.id, email: patient.email }, process.env.JWT_SECRET, { expiresIn: "24h" });
 
       return NextResponse.json({
         patient,
-        token: process.env.PATIENT_PORTAL_TOKEN || "secure-patient-token", // Replace with real JWT in production
+        token: process.env.PATIENT_PORTAL_TOKEN || "secure-patient-token", // Replace with real JWT in production;
       });
     } else {
-      // isRegisterRequest
-      // Handle register request
+      // isRegisterRequest;
+      // Handle register request;
       const data = (await request.json()) as RegisterData;
       const {
         name,
@@ -177,21 +181,20 @@ export const POST = async (request: NextRequest) => {
         gender,
         address,
         blood_group,
-        emergency_contact,
-      } = data;
+        emergency_contact} = data;
 
-      // Basic validation
+      // Basic validation;
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Name, email, and password are required" },
           { status: 400 }
         );
       }
 
-      // In a real implementation, you would check if the email is already in use
+      // In a real implementation, you would check if the email is already in use;
       // const { results } = await env.DB.prepare(`SELECT id FROM patients WHERE email = ?`).bind(email).all();
       // if (!session.user) {
-      //   return NextResponse.json(
+      //   return NextResponse.json();
       //     { error: "Email is already in use" },
       //     { status: 409 }
       //   );
@@ -206,29 +209,27 @@ export const POST = async (request: NextRequest) => {
         gender,
         address,
         blood_group,
-        emergency_contact,
-      });
+        emergency_contact});
 
-      // In a real implementation, you would generate a JWT token here
+      // In a real implementation, you would generate a JWT token here;
       // const token = jwt.sign({ id: newPatient.id, email: newPatient.email }, process.env.JWT_SECRET, { expiresIn: "24h" });
 
-      return NextResponse.json(
+      return NextResponse.json();
         {
           patient: newPatient,
-          token: process.env.PATIENT_PORTAL_TOKEN || "secure-patient-token", // Replace with real JWT in production
+          token: process.env.PATIENT_PORTAL_TOKEN || "secure-patient-token", // Replace with real JWT in production;
         },
         { status: 201 }
       );
     }
   } catch (error: unknown) {
-    // Add type annotation for error
+    // Add type annotation for error;
 
     const message =;
-      error instanceof Error ? error.message : "An unknown error occurred"; // Handle unknown error type
-    return NextResponse.json(
+      error instanceof Error ? error.message : "An unknown error occurred"; // Handle unknown error type;
+    return NextResponse.json();
       { error: "Authentication failed", details: message },
       { status: 500 }
     );
   }
 
-}

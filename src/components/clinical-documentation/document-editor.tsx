@@ -6,22 +6,19 @@ import { useRouter } from "next/navigation";
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
-} from "../ui/card";
+  CardTitle} from "../ui/card";
   Form,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from "../ui/form";
+  FormMessage} from "../ui/form";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+  SelectValue} from "../ui/select";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -32,26 +29,26 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-// Form schema validation
+// Form schema validation;
 const documentFormSchema = z.object({
   documentTitle: z.string().min(1, "Document title is required"),
   documentType: z.string().min(1, "Document type is required"),
   content: z.string().min(1, "Content is required"),
   isConfidential: z.boolean().default(false),
-  sections: z.array(
+  sections: z.array();
     z.object({
       id: z.string().optional(),
       sectionTitle: z.string().min(1, "Section title is required"),
       sectionType: z.string().min(1, "Section type is required"),
       content: z.string().min(1, "Section content is required"),
-      sectionOrder: z.number().optional()
+      sectionOrder: z.number().optional();
     });
   ).optional(),
   tags: z.array(z.string()).optional(),
-  attachmentUrls: z.array(z.string()).optional()
+  attachmentUrls: z.array(z.string()).optional();
 });
 
-// Type for document templates
+// Type for document templates;
 interface DocumentTemplate {
   id: string,
   string,
@@ -61,7 +58,7 @@ interface DocumentTemplate {
   string,
     string,
     string,
-    boolean
+    boolean;
   }[];
 }
 
@@ -74,7 +71,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   const router = useRouter();
   const { toast } = useToast();
 
-  // State
+  // State;
   const [templates, setTemplates] = useState<DocumentTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -82,21 +79,24 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   const [isEditing, setIsEditing] = useState(!!documentId);
   const [activeTab, setActiveTab] = useState("content");
 
-  // Form
+  // Form;
   const form = useForm<z.infer<typeof documentFormSchema>>({
     resolver: zodResolver(documentFormSchema),
     "",
       "",
       [],
-      []
-    },
-  });
+      [];
+    }});
 
-  // Fetch document templates
+  // Fetch document templates;
   const fetchTemplates = async () => {
     setLoading(true);
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/clinical-documentation/templates");
 
       if (!session.user) {
@@ -109,20 +109,24 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch document if editing
+  // Fetch document if editing;
   const fetchDocument = async () => {
     if (!session.user)eturn;
 
     setLoading(true);
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch(`/api/clinical-documentation/${}`;
 
       if (!session.user) {
@@ -131,25 +135,25 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       const data = await response.json();
 
-      // Update form values
+      // Update form values;
       form.reset({
         documentTitle: data.documentTitle,
         data.content,
         data.sections,
-        data.attachmentUrls
+        data.attachmentUrls;
       });
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setLoading(false);
     }
   };
 
-  // Effect to fetch templates and document on initial load
+  // Effect to fetch templates and document on initial load;
   useEffect(() => {
     fetchTemplates();
 
@@ -158,7 +162,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     }
   }, [documentId]);
 
-  // Handle template selection
+  // Handle template selection;
   const handleTemplateChange = (templateId: string) => {
     setSelectedTemplate(templateId);
 
@@ -175,7 +179,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         const formattedSections = template.sections.map(section => ({
           sectionTitle: section.sectionTitle,
           section.content,
-          sectionOrder: section.sectionOrder
+          sectionOrder: section.sectionOrder;
         }));
 
         form.setValue("sections", formattedSections);
@@ -183,69 +187,71 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     }
   };
 
-  // Handle form submission
+  // Handle form submission;
   const onSubmit = async (values: z.infer<typeof documentFormSchema>) => {
     setSubmitLoading(true);
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const payload = {
         ...values,
         patientId,
         encounterId,
-        templateId: selectedTemplate || undefined
+        templateId: selectedTemplate || undefined;
       };
 
       let response;
 
       if (!session.user) {
-        // Update document
+        // Update document;
         response = await fetch(`/api/clinical-documentation/${documentId}`, {
           method: "PUT",
           headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload)
+            "Content-Type": "application/json"},
+          body: JSON.stringify(payload);
         });
       } else {
-        // Create document
+        // Create document;
         response = await fetch("/api/clinical-documentation", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload)
+            "Content-Type": "application/json"},
+          body: JSON.stringify(payload);
         });
-      }
+
 
       if (!session.user) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to save document");
-      }
+
 
       const data = await response.json(),
       toast({
         title: "Success",
-        description: isEditing ? "Document updated successfully" : "Document created successfully"
+        description: isEditing ? "Document updated successfully" : "Document created successfully";
       });
 
       if (!session.user) {
         onSuccess();
       } else {
-        // Navigate to document view
+        // Navigate to document view;
         router.push(`/clinical-documentation/${}`;
-      }
+
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setSubmitLoading(false);
-    }
+
   };
 
-  // Add section handler
+  // Add section handler;
   const handleAddSection = () => {
     const currentSections = form.getValues("sections") || [];
 
@@ -254,27 +260,27 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       {
         sectionTitle: "",
         "",
-        sectionOrder: currentSections.length + 1
-      }
-    ])
+        sectionOrder: currentSections.length + 1;
+
+    ]);
   };
 
-  // Remove section handler
+  // Remove section handler;
   const handleRemoveSection = (index: number) => {
     const currentSections = form.getValues("sections") || [];
     const updatedSections = currentSections.filter((_, i) => i !== index);
 
-    // Update section orders
+    // Update section orders;
     const reorderedSections = updatedSections.map((section, i) => ({
       ...section,
-      sectionOrder: i + 1
+      sectionOrder: i + 1;
     }));
 
     form.setValue("sections", reorderedSections)
   };
 
-  // Document type options
-  const documentTypeOptions = [
+  // Document type options;
+  const documentTypeOptions = [;
     { value: "Admission Note", label: "Admission Note" },
     { value: "Progress Note", label: "Progress Note" },
     { value: "Discharge Summary", label: "Discharge Summary" },
@@ -285,8 +291,8 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     { value: "Care Plan", label: "Care Plan" },
   ];
 
-  // Section type options
-  const sectionTypeOptions = [
+  // Section type options;
+  const sectionTypeOptions = [;
     { value: "History", label: "History" },
     { value: "Physical Exam", label: "Physical Exam" },
     { value: "Assessment", label: "Assessment" },
@@ -303,287 +309,288 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     { value: "Follow Up", label: "Follow Up" },
   ];
 
-  return (
-    >
-      <CardHeader>
-        <CardTitle>{isEditing ? "Edit Document" : "Create Document"}</CardTitle>
-        <CardDescription>
+  return();
+    >;
+      <CardHeader>;
+        <CardTitle>{isEditing ? "Edit Document" : "Create Document"}</CardTitle>;
+        <CardDescription>;
           {isEditing;
-            ? "Update an existing clinical document"
+            ? "Update an existing clinical document";
             : "Create a new clinical document for the patient"}
-        </CardDescription>
-      </CardHeader>
+        </CardDescription>;
+      </CardHeader>;
 
-      <CardContent>
-        <Form {...form}>
-          >
+      <CardContent>;
+        <Form {...form}>;
+          >;
             {/* Template selection (only for new documents) */}
-            {!isEditing && (
-              >
-                <FormLabel>Document Template</FormLabel>
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a template (optional)" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">No Template>
-                    {templates.map((template) => (
-                      >
-                        {template.templateName} ({template.templateType})
-                      </SelectItem>
+            {!isEditing && (;
+              >;
+                <FormLabel>Document Template</FormLabel>;
+                >;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select a template (optional)" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    <SelectItem value="">No Template>;
+                    {templates.map((template) => (;
+                      >;
+                        {template.templateName} ({template.templateType});
+                      </SelectItem>;
                     ))}
-                  </SelectContent>
-                </Select>
-                <FormDescription>
-                  Selecting a template will pre-fill the document with template content
-                </FormDescription>
-              </div>
+                  </SelectContent>;
+                </Select>;
+                <FormDescription>;
+                  Selecting a template will pre-fill the document with template content;
+                </FormDescription>;
+              </div>;
             )}
 
-            >
-              >
-                <TabsTrigger value="content">Document Content>
-                <TabsTrigger value="sections">Sections>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
-              </TabsList>
+            >;
+              >;
+                <TabsTrigger value="content">Document Content>;
+                <TabsTrigger value="sections">Sections>;
+                <TabsTrigger value="settings">Settings</TabsTrigger>;
+              </TabsList>;
 
-              >
+              >;
                 {/* Document Title */}
-                <FormField>
+                <FormField>;
                   control={form.control}
-                  name="documentTitle"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Document Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter document title" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  name="documentTitle";
+                  render={({ field }) => (;
+                    <FormItem>;
+                      <FormLabel>Document Title</FormLabel>;
+                      <FormControl>;
+                        <Input placeholder="Enter document title" {...field} />;
+                      </FormControl>;
+                      <FormMessage />;
+                    </FormItem>;
                   )}
-                />
+                />;
 
                 {/* Document Type */}
-                <FormField>
+                <FormField>;
                   control={form.control}
-                  name="documentType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Document Type</FormLabel>
-                      <FormControl>
-                        <Select>
+                  name="documentType";
+                  render={({ field }) => (;
+                    <FormItem>;
+                      <FormLabel>Document Type</FormLabel>;
+                      <FormControl>;
+                        <Select>;
                           value={field.value}
                           onValueChange={field.onChange}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select document type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {documentTypeOptions.map((option) => (
-                              >
+                        >;
+                          <SelectTrigger>;
+                            <SelectValue placeholder="Select document type" />;
+                          </SelectTrigger>;
+                          <SelectContent>;
+                            {documentTypeOptions.map((option) => (;
+                              >;
                                 {option.label}
-                              </SelectItem>
+                              </SelectItem>;
                             ))}
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                          </SelectContent>;
+                        </Select>;
+                      </FormControl>;
+                      <FormMessage />;
+                    </FormItem>;
                   )}
-                />
+                />;
 
                 {/* Document Content */}
-                <FormField>
+                <FormField>;
                   control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Document Content</FormLabel>
-                      <FormControl>
-                        <Textarea>
-                          placeholder="Enter document content"
-                          className="min-h-[300px]"
+                  name="content";
+                  render={({ field }) => (;
+                    <FormItem>;
+                      <FormLabel>Document Content</FormLabel>;
+                      <FormControl>;
+                        <Textarea>;
+                          placeholder="Enter document content";
+                          className="min-h-[300px]";
                           {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                        />;
+                      </FormControl>;
+                      <FormMessage />;
+                    </FormItem>;
                   )}
-                />
-              </TabsContent>
+                />;
+              </TabsContent>;
 
-              >
-                >
-                  >
-                    Add Section
-                  </Button>
-                </div>
+              >;
+                >;
+                  >;
+                    Add Section;
+                  </Button>;
+                </div>;
 
                 {/* Sections */}
-                {form.watch("sections")?.map((section, index) => (
-                  >
-                    >
-                      >
-                        <CardTitle className="text-lg">Section {index + 1}>
-                        <Button>
-                          type="button"
-                          variant="destructive"
-                          size="sm"
+                {form.watch("sections")?.map((section, index) => (;
+                  >;
+                    >;
+                      >;
+                        <CardTitle className="text-lg">Section {index + 1}>;
+                        <Button>;
+                          type="button";
+                          variant="destructive";
+                          size="sm";
                           onClick={() => handleRemoveSection(index)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    </CardHeader>
-                    >
+                        >;
+                          Remove;
+                        </Button>;
+                      </div>;
+                    </CardHeader>;
+                    >;
                       {/* Section Title */}
-                      <FormField>
+                      <FormField>;
                         control={form.control}
                         name={`sections.${index}.sectionTitle`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Section Title</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Enter section title" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                        render={({ field }) => (;
+                          <FormItem>;
+                            <FormLabel>Section Title</FormLabel>;
+                            <FormControl>;
+                              <Input placeholder="Enter section title" {...field} />;
+                            </FormControl>;
+                            <FormMessage />;
+                          </FormItem>;
                         )}
-                      />
+                      />;
 
                       {/* Section Type */}
-                      <FormField>
+                      <FormField>;
                         control={form.control}
                         name={`sections.${index}.sectionType`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Section Type</FormLabel>
-                            <FormControl>
-                              <Select>
+                        render={({ field }) => (;
+                          <FormItem>;
+                            <FormLabel>Section Type</FormLabel>;
+                            <FormControl>;
+                              <Select>;
                                 value={field.value}
                                 onValueChange={field.onChange}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select section type" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {sectionTypeOptions.map((option) => (
-                                    >
+                              >;
+                                <SelectTrigger>;
+                                  <SelectValue placeholder="Select section type" />;
+                                </SelectTrigger>;
+                                <SelectContent>;
+                                  {sectionTypeOptions.map((option) => (;
+                                    >;
                                       {option.label}
-                                    </SelectItem>
+                                    </SelectItem>;
                                   ))}
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                                </SelectContent>;
+                              </Select>;
+                            </FormControl>;
+                            <FormMessage />;
+                          </FormItem>;
                         )}
-                      />
+                      />;
 
                       {/* Section Content */}
-                      <FormField>
+                      <FormField>;
                         control={form.control}
                         name={`sections.${index}.content`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Section Content</FormLabel>
-                            <FormControl>
-                              <Textarea>
-                                placeholder="Enter section content"
-                                className="min-h-[150px]"
+                        render={({ field }) => (;
+                          <FormItem>;
+                            <FormLabel>Section Content</FormLabel>;
+                            <FormControl>;
+                              <Textarea>;
+                                placeholder="Enter section content";
+                                className="min-h-[150px]";
                                 {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                              />;
+                            </FormControl>;
+                            <FormMessage />;
+                          </FormItem>;
                         )}
-                      />
-                    </CardContent>
-                  </Card>
+                      />;
+                    </CardContent>;
+                  </Card>;
                 ))}
 
-                {(!form.watch("sections") || form.watch("sections").length === 0) && (
-                  >
-                    No sections added. Click "Add Section" to add document sections.
-                  </div>
+                {(!form.watch("sections") || form.watch("sections").length === 0) && (;
+                  >;
+                    No sections added. Click "Add Section" to add document sections.;
+                  </div>;
                 )}
-              </TabsContent>
+              </TabsContent>;
 
-              >
+              >;
                 {/* Confidentiality */}
-                <FormField>
+                <FormField>;
                   control={form.control}
-                  name="isConfidential"
-                  render={({ field }) => (
-                    >
-                      >
-                        <FormLabel className="text-base">Confidential Document>
-                        <FormDescription>
-                          Mark this document as confidential with restricted access
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Switch>
+                  name="isConfidential";
+                  render={({ field }) => (;
+                    >;
+                      >;
+                        <FormLabel className="text-base">Confidential Document>;
+                        <FormDescription>;
+                          Mark this document as confidential with restricted access;
+                        </FormDescription>;
+                      </div>;
+                      <FormControl>;
+                        <Switch>;
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
+                        />;
+                      </FormControl>;
+                    </FormItem>;
                   )}
-                />
+                />;
 
                 {/* Tags */}
-                >
-                  >
-                    <FormLabel className="text-base">Document Tags>
-                    <FormDescription>
-                      Add tags to categorize and find the document easily (coming soon)
-                    </FormDescription>
-                  </div>
-                </div>
+                >;
+                  >;
+                    <FormLabel className="text-base">Document Tags>;
+                    <FormDescription>;
+                      Add tags to categorize and find the document easily (coming soon);
+                    </FormDescription>;
+                  </div>;
+                </div>;
 
                 {/* Attachments */}
-                >
-                  >
-                    <FormLabel className="text-base">Document Attachments>
-                    <FormDescription>
-                      Upload files to attach to this document (coming soon)
-                    </FormDescription>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </form>
-        </Form>
-      </CardContent>
+                >;
+                  >;
+                    <FormLabel className="text-base">Document Attachments>;
+                    <FormDescription>;
+                      Upload files to attach to this document (coming soon);
+                    </FormDescription>;
+                  </div>;
+                </div>;
+              </TabsContent>;
+            </Tabs>;
+          </form>;
+        </Form>;
+      </CardContent>;
 
-      >
-        <Button>
-          variant="outline"
+      >;
+        <Button>;
+          variant="outline";
           onClick={() => router.back()}
           disabled={submitLoading}
-        >
-          Cancel
-        </Button>
+        >;
+          Cancel;
+        </Button>;
 
-        >
-          {isEditing && (
-            <Button>
-              variant="secondary"
+        >;
+          {isEditing && (;
+            <Button>;
+              variant="secondary";
               onClick={() => router.push(`/clinical-documentation/${}`}
               disabled={submitLoading}
-            >
-              View Document
-            </Button>
+            >;
+              View Document;
+            </Button>;
           )}
 
-          <Button>
+          <Button>;
             onClick={form.handleSubmit(onSubmit)}
             disabled={submitLoading || loading}
-          >
+          >;
             {submitLoading ? "Saving..." : (isEditing ? "Update Document" : "Create Document")}
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
+          </Button>;
+        </div>;
+      </CardFooter>;
+    </Card>;
   );
+)))

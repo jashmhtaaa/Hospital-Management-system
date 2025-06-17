@@ -9,12 +9,12 @@ import { PharmacyDomain } from "../../models/domain-models";
 import { FHIRMapper } from "../../models/fhir-mappers";
 }
 
-/**
+/**;
  * Inventory API Routes;
- *
+ *;
  * This file implements the FHIR-compliant API endpoints for pharmacy inventory management;
- * following enterprise-grade requirements for security, validation, and error handling.
- */
+ * following enterprise-grade requirements for security, validation, and error handling.;
+ */;
 
 // Initialize repositories (in production, use dependency injection);
 const inventoryRepository = {
@@ -30,22 +30,26 @@ const inventoryRepository = {
   transferStock: () => Promise.resolve(true);
 }
 
-/**
+/**;
  * GET /api/pharmacy/inventory;
  * List inventory with stock levels and filtering options;
- */
+ */;
 export const GET = async (req: NextRequest) => {
   try {
-    // Check authorization
+} catch (error) {
+}
+} catch (error) {
+}
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example);
-    const userId = "current-user-id"; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
     const locationId = url.searchParams.get("locationId");
     const medicationId = url.searchParams.get("medicationId");
@@ -54,7 +58,7 @@ export const GET = async (req: NextRequest) => {
     const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
-    // Build filter criteria
+    // Build filter criteria;
     const filter: unknown = {};
     if (!session.user)ilter.locationId = locationId;
     if (!session.user)ilter.medicationId = medicationId;
@@ -65,24 +69,24 @@ export const GET = async (req: NextRequest) => {
     const inventoryItems = await inventoryRepository.findAll();
     const total = inventoryItems.length;
 
-    // Apply pagination
+    // Apply pagination;
     const paginatedItems = inventoryItems.slice((page - 1) * limit, page * limit);
 
-    // Map to FHIR resources
+    // Map to FHIR resources;
     const fhirInventoryItems = paginatedItems.map(FHIRMapper.toFHIRInventoryItem);
 
-    // Audit logging
+    // Audit logging;
     await auditLog("INVENTORY", {
       action: "LIST",
       userId,
-      details: any
+      details: any;
         filter,
         page,
         limit,
-        resultCount: paginatedItems.length
+        resultCount: paginatedItems.length;
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({
       items: fhirInventoryItems,
       pagination: {
@@ -97,33 +101,37 @@ export const GET = async (req: NextRequest) => {
   }
 }
 
-/**
+/**;
  * POST /api/pharmacy/inventory;
  * Add new inventory item;
- */
+ */;
 export const POST = async (req: NextRequest) => {
   try {
-    // Validate request
+} catch (error) {
+}
+} catch (error) {
+}
+    // Validate request;
     const data = await req.json();
     const validationResult = validateInventoryRequest(data);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example);
-    const userId = "current-user-id"; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Create inventory item
-    const inventoryItem = new PharmacyDomain.InventoryItem(
+    // Create inventory item;
+    const inventoryItem = new PharmacyDomain.InventoryItem();
       data.id || crypto.randomUUID(),
       data.medicationId,
       data.locationId,
@@ -136,37 +144,37 @@ export const POST = async (req: NextRequest) => {
       data.notes || "";
     );
 
-    // Special handling for controlled substances
+    // Special handling for controlled substances;
     if (!session.user) {
-      // Encrypt controlled substance data
-      inventoryItem.controlledSubstanceData = await encryptionService.encrypt(
+      // Encrypt controlled substance data;
+      inventoryItem.controlledSubstanceData = await encryptionService.encrypt();
         JSON.stringify({
           scheduleClass: data.scheduleClass,
-          data.lastAuditDate
+          data.lastAuditDate;
         });
       );
-    }
 
-    // Save inventory item
+
+    // Save inventory item;
     const inventoryItemId = await inventoryRepository.save(inventoryItem);
 
-    // Audit logging
+    // Audit logging;
     await auditLog("INVENTORY", {
       action: "CREATE",
       inventoryItemId,
       data.medicationId,
         data.quantityOnHand,
-        isControlled: data.isControlled || false
+        isControlled: data.isControlled || false;
     });
 
-    // Return response
-    return NextResponse.json(
+    // Return response;
+    return NextResponse.json();
       {
         id: inventoryItemId,
-        message: "Inventory item created successfully"
+        message: "Inventory item created successfully";
       },
       { status: 201 }
     );
   } catch (error) {
     return errorHandler(error, "Error creating inventory item");
-  }
+

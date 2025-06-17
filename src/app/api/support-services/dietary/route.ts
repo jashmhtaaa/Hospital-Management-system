@@ -5,10 +5,10 @@ import { z } from "zod";
 import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { SecurityService } from "@/lib/security.service";
 import { DietaryService } from "@/lib/services/support-services/dietary/dietary.service";
-// Initialize service
+// Initialize service;
 const dietaryService = new DietaryService();
 
-// Request validation schemas
+// Request validation schemas;
 const createDietaryRequestSchema = z.object({
   patientId: z.string().uuid(),
   mealType: z.enum(["BREAKFAST", "LUNCH", "DINNER", "SNACK"]),
@@ -33,12 +33,12 @@ const updateDietaryRequestSchema = z.object({
   locationId: z.string().uuid().optional();
 });
 
-// GET /api/support-services/dietary/requests
+// GET /api/support-services/dietary/requests;
 export const _GET = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Parse query parameters
+      // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get("status") || undefined,
@@ -48,48 +48,48 @@ export const _GET = async (request: NextRequest) => {
         Number.parseInt(searchParams.get("limit") || "10");
       };
 
-      // Get dietary requests with filters
+      // Get dietary requests with filters;
       const result = await dietaryService.getDietaryRequests(filters);
 
       return NextResponse.json(result);
     },
     {
       requiredPermission: "dietary:read",
-      auditAction: "DIETARY_REQUESTS_VIEW"
+      auditAction: "DIETARY_REQUESTS_VIEW";
     }
   );
 }
 
-// POST /api/support-services/dietary/requests
+// POST /api/support-services/dietary/requests;
 export const _POST = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Parse and validate request body
+      // Parse and validate request body;
       const body = await req.json();
       const validatedData = createDietaryRequestSchema.parse(body);
 
-      // Sanitize input data
+      // Sanitize input data;
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
 
-      // Create dietary request
+      // Create dietary request;
       const result = await dietaryService.createDietaryRequest(sanitizedData);
 
       return NextResponse.json(result, { status: 201 });
     },
     {
       requiredPermission: "dietary:create",
-      auditAction: "DIETARY_REQUEST_CREATE"
+      auditAction: "DIETARY_REQUEST_CREATE";
     }
   );
 }
 
-// GET /api/support-services/dietary/requests/:id
+// GET /api/support-services/dietary/requests/:id;
 export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Get dietary request by ID
+      // Get dietary request by ID;
       const includeFHIR = req.nextUrl.searchParams.get("fhir") === "true";
       const result = await dietaryService.getDietaryRequestById(params.id, includeFHIR);
 
@@ -97,58 +97,58 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     },
     {
       requiredPermission: "dietary:read",
-      auditAction: "DIETARY_REQUEST_VIEW"
+      auditAction: "DIETARY_REQUEST_VIEW";
     }
   );
 }
 
-// PATCH /api/support-services/dietary/requests/:id
+// PATCH /api/support-services/dietary/requests/:id;
 export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Parse and validate request body
+      // Parse and validate request body;
       const body = await req.json();
       const validatedData = updateDietaryRequestSchema.parse(body);
 
-      // Sanitize input data
+      // Sanitize input data;
       const sanitizedData = SecurityService.sanitizeObject(validatedData);
 
-      // Update dietary request
+      // Update dietary request;
       const result = await dietaryService.updateDietaryRequest(params.id, sanitizedData);
 
       return NextResponse.json(result);
     },
     {
       requiredPermission: "dietary:update",
-      auditAction: "DIETARY_REQUEST_UPDATE"
+      auditAction: "DIETARY_REQUEST_UPDATE";
     }
   );
 }
 
-// DELETE /api/support-services/dietary/requests/:id
+// DELETE /api/support-services/dietary/requests/:id;
 export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Delete dietary request
+      // Delete dietary request;
       await dietaryService.deleteDietaryRequest(params.id);
 
       return NextResponse.json({ success: true });
     },
     {
       requiredPermission: "dietary:delete",
-      auditAction: "DIETARY_REQUEST_DELETE"
+      auditAction: "DIETARY_REQUEST_DELETE";
     }
   );
 }
 
-// POST /api/support-services/dietary/requests/:id/prepare
+// POST /api/support-services/dietary/requests/:id/prepare;
 export const _PREPARE = async (request: NextRequest, { params }: { params: { id: string } }) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Parse request body
+      // Parse request body;
       const body = await req.json();
       const { staffId, notes } = body;
 
@@ -156,8 +156,8 @@ export const _PREPARE = async (request: NextRequest, { params }: { params: { id:
         return NextResponse.json({ error: "Staff ID is required" }, { status: 400 });
       }
 
-      // Mark dietary request as preparing
-      const result = await dietaryService.prepareDietaryRequest(
+      // Mark dietary request as preparing;
+      const result = await dietaryService.prepareDietaryRequest();
         params.id,
         staffId,
         SecurityService.sanitizeInput(notes || "");
@@ -167,17 +167,17 @@ export const _PREPARE = async (request: NextRequest, { params }: { params: { id:
     },
     {
       requiredPermission: "dietary:update",
-      auditAction: "DIETARY_REQUEST_PREPARE"
+      auditAction: "DIETARY_REQUEST_PREPARE";
     }
   );
 }
 
-// POST /api/support-services/dietary/requests/:id/deliver
+// POST /api/support-services/dietary/requests/:id/deliver;
 export const _DELIVER = async (request: NextRequest, { params }: { params: { id: string } }) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Parse request body
+      // Parse request body;
       const body = await req.json();
       const { staffId, notes } = body;
 
@@ -185,8 +185,8 @@ export const _DELIVER = async (request: NextRequest, { params }: { params: { id:
         return NextResponse.json({ error: "Staff ID is required" }, { status: 400 });
       }
 
-      // Mark dietary request as delivered
-      const result = await dietaryService.deliverDietaryRequest(
+      // Mark dietary request as delivered;
+      const result = await dietaryService.deliverDietaryRequest();
         params.id,
         staffId,
         SecurityService.sanitizeInput(notes || "");
@@ -196,17 +196,17 @@ export const _DELIVER = async (request: NextRequest, { params }: { params: { id:
     },
     {
       requiredPermission: "dietary:update",
-      auditAction: "DIETARY_REQUEST_DELIVER"
+      auditAction: "DIETARY_REQUEST_DELIVER";
     }
   );
 }
 
-// GET /api/support-services/dietary/menus
+// GET /api/support-services/dietary/menus;
 export const _GET_MENUS = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Parse query parameters
+      // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         dietType: searchParams.get("dietType") || undefined,
@@ -214,37 +214,37 @@ export const _GET_MENUS = async (request: NextRequest) => {
         Number.parseInt(searchParams.get("limit") || "10");
       };
 
-      // Get dietary menus with filters
+      // Get dietary menus with filters;
       const result = await dietaryService.getDietaryMenus(filters);
 
       return NextResponse.json(result);
     },
     {
       requiredPermission: "dietary:read",
-      auditAction: "DIETARY_MENUS_VIEW"
+      auditAction: "DIETARY_MENUS_VIEW";
     }
   );
 }
 
-// GET /api/support-services/dietary/analytics
+// GET /api/support-services/dietary/analytics;
 export const _GET_ANALYTICS = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req) => {
-      // Parse query parameters
+      // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
       const fromDate = searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined;
       const toDate = searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined;
 
-      // Get dietary analytics
+      // Get dietary analytics;
       const result = await dietaryService.getDietaryAnalytics(fromDate, toDate);
 
       return NextResponse.json(result);
     },
     {
       requiredPermission: "dietary:analytics",
-      auditAction: "DIETARY_ANALYTICS_VIEW"
+      auditAction: "DIETARY_ANALYTICS_VIEW";
     }
   );
 
-}
+})

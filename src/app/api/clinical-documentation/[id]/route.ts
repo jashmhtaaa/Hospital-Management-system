@@ -5,24 +5,28 @@ import { type NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../../../lib/auth";
 import { BadRequestError, NotFoundError, UnauthorizedError } from "../../../../lib/core/errors";
 import { clinicalDocumentationService } from "../../../../services/clinical-documentation.service";
-/**
- * GET /api/clinical-documentation/[id]
- *
+/**;
+ * GET /api/clinical-documentation/[id];
+ *;
  * Get a clinical document by ID;
- */
-export const GET = async (
+ */;
+export const GET = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
-    // Get session
+} catch (error) {
+}
+} catch (error) {
+}
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get document
-    const document = await clinicalDocumentationService.getDocumentById(
+    // Get document;
+    const document = await clinicalDocumentationService.getDocumentById();
       params.id,
       session.user.id;
     );
@@ -46,27 +50,31 @@ export const GET = async (
   }
 }
 
-/**
- * PUT /api/clinical-documentation/[id]
- *
+/**;
+ * PUT /api/clinical-documentation/[id];
+ *;
  * Update a clinical document;
- */
-export const PUT = async (
+ */;
+export const PUT = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
-    // Get session
+} catch (error) {
+}
+} catch (error) {
+}
+    // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
 
-    // Update document
-    const document = await clinicalDocumentationService.updateDocument(
+    // Update document;
+    const document = await clinicalDocumentationService.updateDocument();
       params.id,
       body,
       session.user.id;
@@ -88,8 +96,8 @@ export const PUT = async (
     }
 
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-  }
 
-}
+
+
 
 export async function GET() { return new Response("OK"); }

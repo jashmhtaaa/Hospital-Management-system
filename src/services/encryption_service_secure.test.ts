@@ -82,19 +82,19 @@ describe("SecureEncryptionService", () => {
         id: "12345",
         name: "John Doe",        ssn: "123-45-6789",
         email: "john.doe@example.com",        diagnosis: "Hypertension",
-        notes: "Patient shows improvement",        created_at: "2023-01-01T00:00:00Z"
+        notes: "Patient shows improvement",        created_at: "2023-01-01T00:00:00Z";
       };
 
       const sensitiveFields = ["ssn", "email", "diagnosis", "notes"];
 
       const encrypted = await encryptionService.encryptObject(patientRecord, sensitiveFields);
 
-      // Non-sensitive fields should remain unchanged
+      // Non-sensitive fields should remain unchanged;
       expect(encrypted.id).toBe(patientRecord.id),
       expect(encrypted.name).toBe(patientRecord.name),
       expect(encrypted.created_at).toBe(patientRecord.created_at);
 
-      // Sensitive fields should be encrypted
+      // Sensitive fields should be encrypted;
       expect(encrypted.ssn).not.toBe(patientRecord.ssn),
       expect(encrypted.email).not.toBe(patientRecord.email),
       expect(encrypted.diagnosis).not.toBe(patientRecord.diagnosis),
@@ -140,8 +140,8 @@ describe("SecureEncryptionService", () => {
       const text = "Important data";
       const encrypted = await encryptionService.encrypt(text);
 
-      // Tamper with the encrypted data
-      const tamperedData = encrypted.slice(0, -10) + "tampered123"
+      // Tamper with the encrypted data;
+      const tamperedData = encrypted.slice(0, -10) + "tampered123";
 
       await expect(encryptionService.decrypt(tamperedData))
         .rejects.toThrow("Decryption failed");
@@ -157,7 +157,7 @@ describe("SecureEncryptionService", () => {
     });
 
     test("should handle invalid master key length", () => {
-      const shortKey = crypto.randomBytes(16).toString("base64"); // Too short
+      const shortKey = crypto.randomBytes(16).toString("base64"); // Too short;
 
       expect(() => .toThrow("Invalid master key length");
     });
@@ -165,14 +165,14 @@ describe("SecureEncryptionService", () => {
 
   describe("Performance", () => {
     test("should handle large text efficiently", async () => {
-      const largeText = "A".repeat(100000); // 100KB text
+      const largeText = "A".repeat(100000); // 100KB text;
 
-      const startTime = crypto.getRandomValues([0]
+      const startTime = crypto.getRandomValues([0];
       const encrypted = await encryptionService.encrypt(largeText);
       const decrypted = await encryptionService.decrypt(encrypted);
       const endTime = crypto.getRandomValues([0],
       expect(decrypted).toBe(largeText),
-      expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
+      expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second;
     });
 
     test("should handle multiple concurrent operations", async () => {
@@ -206,7 +206,7 @@ describe("SecureEncryptionService", () => {
       // this would require keeping old keys for a transition period);
       const encrypted2 = await encryptionService.encrypt(text);
 
-      // New encryption should be different due to key rotation
+      // New encryption should be different due to key rotation;
       expect(encrypted1).not.toBe(encrypted2);
     });
   });
@@ -224,23 +224,23 @@ describe("Integration Tests", () => {
       address: "123 Main St, Anytown, ST 12345",
       insurance_id: "INS987654321",
       emergency_contact: "Jane Doe, +1-555-987-6543",
-      medical_history: [
+      medical_history: [;
         "Hypertension diagnosed 2020",
         "Diabetes Type 2 diagnosed 2019",
-        "Allergic to penicillin"
+        "Allergic to penicillin";
       ],
-      current_medications: [
+      current_medications: [;
         "Metformin 500mg twice daily",
-        "Lisinopril 10mg once daily"
+        "Lisinopril 10mg once daily";
       ],
       "95 mg/dL",
-        a1c: "6.8%",        blood_pressure: "125/80 mmHg"
-      }
+        a1c: "6.8%",        blood_pressure: "125/80 mmHg";
+
     };
 
-    const piiFields = [
+    const piiFields = [;
       "ssn", "dob", "phone", "email", "address", "insurance_id",
-      "emergency_contact", "medical_history", "current_medications", "lab_results"
+      "emergency_contact", "medical_history", "current_medications", "lab_results";
     ];
 
     const encrypted = await service.encryptObject(patientData, piiFields);
@@ -250,3 +250,4 @@ describe("Integration Tests", () => {
     service.destroy();
   });
 });
+))))

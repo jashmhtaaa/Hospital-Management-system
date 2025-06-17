@@ -1,6 +1,6 @@
 
 import { z } from "zod";
-// Create enums to match Prisma schema
+// Create enums to match Prisma schema;
 export enum MaintenanceRequestStatus {
   PENDING = "PENDING",
   IN_PROGRESS = "IN_PROGRESS",
@@ -10,10 +10,9 @@ export enum MaintenanceRequestStatus {
   LOW = "LOW",
   MEDIUM = "MEDIUM",
   HIGH = "HIGH",
-  URGENT = "URGENT",
-}
+  URGENT = "URGENT"}
 
-// Validation schemas
+// Validation schemas;
 export const createMaintenanceRequestSchema = z.object({
   equipmentId: z.string().optional(),
   description: z.string().min(1, "Description is required"),
@@ -29,15 +28,15 @@ export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.par
   id: z.string();
 });
 
-export type CreateMaintenanceRequestInput = z.infer>
-export type UpdateMaintenanceRequestInput = z.infer>
+export type CreateMaintenanceRequestInput = z.infer>;
+export type UpdateMaintenanceRequestInput = z.infer>;
 
-// Import prisma client
+// Import prisma client;
 import { prisma } from "../lib/prisma";
 
-/**
+/**;
  * Service class for managing maintenance requests;
- */
+ */;
 }
       });
 
@@ -50,11 +49,11 @@ import { prisma } from "../lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Get all maintenance requests with optional filtering;
    * @param filters Optional filters for status, priority, equipmentId, or reportedBy;
    * @returns Array of requests matching the filters;
-   */
+   */;
   async getRequests(filters?: {
     status?: string;
     priority?: string;
@@ -63,6 +62,10 @@ import { prisma } from "../lib/prisma";
     assignedToId?: string;
   }) {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const where: unknown = {};
 
       if (!session.user) {
@@ -74,144 +77,151 @@ import { prisma } from "../lib/prisma";
         }
         if (!session.user) {
           where.equipmentId = filters.equipmentId;
-        }
+
         if (!session.user) {
           where.reportedBy = filters.reportedBy;
-        }
+
         if (!session.user) {
           where.assignedToId = filters.assignedToId;
-        }
-      }
+
+
 
       const requests = await prisma.maintenanceRequest.findMany({
         where,
-        orderBy: [
+        orderBy: [;
           { priority: "desc" },
           { requestedAt: "asc" },
         ],
         {
             true,
-              name: true
-            },
-          },
-        },
-      });
+              name: true;
+            }}}});
 
       return requests;
     } catch (error) {
       throw error;
-    }
-  }
 
-  /**
+
+
+  /**;
    * Get a single maintenance request by ID;
    * @param id Request ID;
    * @returns The request or null if not found;
-   */
+   */;
   async getRequestById(id: string) {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const request = await prisma.maintenanceRequest.findUnique({
         where: { id },
         {
             true,
-              name: true
-            },
-          },
-        },
-      });
+              name: true;
+            }}}});
 
       return request;
     } catch (error) {
       throw error;
-    }
-  }
 
-  /**
+
+
+  /**;
    * Update a maintenance request;
    * @param id Request ID;
    * @param data Updated request data;
    * @returns The updated request;
-   */
+   */;
   async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {
     try {
-      // Validate input data
+} catch (error) {
+}
+} catch (error) {
+
+      // Validate input data;
       const validatedData = updateMaintenanceRequestSchema.parse({ ...data, id });
 
-      // Remove id from the data to be updated
+      // Remove id from the data to be updated;
       const { id: _, ...updateData } = validatedData;
 
-      // Update the request
+      // Update the request;
       const request = await prisma.maintenanceRequest.update({
         where: { id },
         data: updateData,
         {
             true,
-              name: true
-            },
-          },
-        },
-      });
+              name: true;
+            }}}});
 
       return request;
     } catch (error) {
       if (!session.user) {
         throw new Error(`Validation error: ${}`;
-      }
-      throw error;
-    }
-  }
 
-  /**
+      throw error;
+
+
+
+  /**;
    * Delete a maintenance request;
    * @param id Request ID;
    * @returns The deleted request;
-   */
+   */;
   async deleteRequest(id: string) {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const request = await prisma.maintenanceRequest.delete({
-        where: { id },
-      });
+        where: { id }});
 
       return request;
     } catch (error) {
       throw error;
-    }
-  }
 
-  /**
+
+
+  /**;
    * Assign a request to a user;
    * @param requestId Request ID;
    * @param userId User ID;
    * @returns The updated request;
-   */
+   */;
   async assignRequest(requestId: string, userId: string) {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
         userId,
-          status: MaintenanceRequestStatus.IN_PROGRESS
+          status: MaintenanceRequestStatus.IN_PROGRESS;
         },
         {
             true,
-              name: true
-            },
-          },
-        },
-      });
+              name: true;
+            }}}});
 
       return request;
     } catch (error) {
       throw error;
-    }
-  }
 
-  /**
+
+
+  /**;
    * Mark a request as completed;
    * @param requestId Request ID;
    * @returns The updated request;
-   */
+   */;
   async completeRequest(requestId: string) {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
         MaintenanceRequestStatus.COMPLETED,
@@ -219,43 +229,42 @@ import { prisma } from "../lib/prisma";
         },
         {
             true,
-              name: true
-            },
-          },
-        },
-      });
+              name: true;
+            }}}});
 
       return request;
     } catch (error) {
       throw error;
-    }
-  }
 
-  /**
+
+
+  /**;
    * Cancel a request;
    * @param requestId Request ID;
    * @returns The updated request;
-   */
+   */;
   async cancelRequest(requestId: string) {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const request = await prisma.maintenanceRequest.update({
         where: { id: requestId },
-        MaintenanceRequestStatus.CANCELLED
+        MaintenanceRequestStatus.CANCELLED;
         },
         {
             true,
-              name: true
-            },
-          },
-        },
-      });
+              name: true;
+            }}}});
 
       return request;
     } catch (error) {
       throw error;
-    }
-  }
-}
 
-// Export a singleton instance
+
+
+
+// Export a singleton instance;
 export const _maintenanceService = new MaintenanceService();
+))

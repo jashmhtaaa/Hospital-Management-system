@@ -7,28 +7,28 @@ import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { SegmentService } from "@/lib/services/support-services/marketing";
 const segmentService = new SegmentService();
 
-/**
+/**;
  * POST /api/support-services/marketing/segments/:id/members;
  * Add a contact to a segment;
- */
-export const POST = async (
+ */;
+export const POST = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { contactId } = await req.json();
 
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Contact ID is required" },
           { status: 400 }
         );
       }
 
-      const member = await segmentService.addContactToSegment(
+      const member = await segmentService.addContactToSegment();
         params.id,
         contactId,
         session?.user?.id as string;
@@ -38,25 +38,25 @@ export const POST = async (
     },
     {
       requiredPermission: "marketing.segments.update",
-      auditAction: "SEGMENT_MEMBER_ADD"
+      auditAction: "SEGMENT_MEMBER_ADD";
     }
   );
 }
 
-/**
+/**;
  * DELETE /api/support-services/marketing/segments/:id/members/:contactId;
  * Remove a contact from a segment;
- */
-export const DELETE = async (
+ */;
+export const DELETE = async();
   request: NextRequest;
   { params }: { id: string, contactId: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
 
-      const member = await segmentService.removeContactFromSegment(
+      const member = await segmentService.removeContactFromSegment();
         params.id,
         params.contactId,
         session?.user?.id as string;
@@ -66,7 +66,7 @@ export const DELETE = async (
     },
     {
       requiredPermission: "marketing.segments.update",
-      auditAction: "SEGMENT_MEMBER_REMOVE"
+      auditAction: "SEGMENT_MEMBER_REMOVE";
     }
   );
 

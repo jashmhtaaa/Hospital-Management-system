@@ -1,5 +1,1 @@
-}
-
-// types/patient.ts
-
-}
+// types/patient.ts;

@@ -3,23 +3,27 @@ import type { D1Database } from "@cloudflare/workers-types";
 import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
-// Interface for the POST request body
+// Interface for the POST request body;
 interface ChecklistResponseBody {
-  checklist_template_id: string; // Assuming ID is string
-  phase: string; // e.g., "Pre-Op", "Intra-Op", "Post-Op"
+  checklist_template_id: string; // Assuming ID is string;
+  phase: string; // e.g., "Pre-Op", "Intra-Op", "Post-Op";
   responses: Record> // JSON object { "itemId": responseValue, ... }
-  completed_by_id?: string; // Optional, assuming ID is string
+  completed_by_id?: string; // Optional, assuming ID is string;
 }
 
-// GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking
-export const _GET = async (
+// GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking;
+export const _GET = async();
   request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "Booking ID is required" },
         { status: 400 }
       );
@@ -52,41 +56,49 @@ export const _GET = async (
       .bind(...queryParameters);
       .all();
 
-    // Parse responses JSON
+    // Parse responses JSON;
     const parsedResults =;
       results?.map((result) => {
         try {
-          // Ensure result.responses is treated as string before parsing
+} catch (error) {
+}
+} catch (error) {
+}
+          // Ensure result.responses is treated as string before parsing;
           if (!session.user) {
             result.responses = JSON.parse(result.responses);
           }
         } catch (error: unknown) {
 
-          // Keep responses as original string if parsing fails
+          // Keep responses as original string if parsing fails;
         }
-        return result
+        return result;
       }) || [];
 
     return NextResponse.json(parsedResults);
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { message: "Error fetching checklist responses", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking
-export const _POST = async (
+// POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking;
+export const _POST = async();
   request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "Booking ID is required" },
         { status: 400 }
       );
@@ -97,11 +109,11 @@ export const _POST = async (
       checklist_template_id,
       phase,
       responses, // Expected: JSON object { "itemId": responseValue, ... }
-      completed_by_id, // Assuming from authenticated user context
+      completed_by_id, // Assuming from authenticated user context;
     } = body;
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "Template ID, phase, and responses are required" },
         { status: 400 }
       );
@@ -109,38 +121,38 @@ export const _POST = async (
 
     const DB = process.env.DB as unknown as D1Database;
 
-    // Check if booking exists
-    const { results: bookingResults } = await DB.prepare(
+    // Check if booking exists;
+    const { results: bookingResults } = await DB.prepare();
       "SELECT id FROM OTBookings WHERE id = ?";
     );
       .bind(bookingId);
       .all();
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "OT Booking not found" },
         { status: 404 }
       );
     }
 
-    // Check if template exists
-    const { results: templateResults } = await DB.prepare(
+    // Check if template exists;
+    const { results: templateResults } = await DB.prepare();
       "SELECT id FROM OTChecklistTemplates WHERE id = ? AND phase = ?";
     );
       .bind(checklist_template_id, phase);
       .all();
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "Checklist template not found for the specified phase" },
         { status: 404 }
       );
     }
 
     const now = new Date().toISOString();
-    const completedAt = completed_by_id ? now : undefined; // Set completion time if user is provided
+    const completedAt = completed_by_id ? now : undefined; // Set completion time if user is provided;
 
-    // Use UPSERT logic: Insert or Replace based on booking_id and checklist_template_id
-    // D1 doesn't have native UPSERT, so we check existence first
-    const { results: existing } = await DB.prepare(
+    // Use UPSERT logic: Insert or Replace based on booking_id and checklist_template_id;
+    // D1 doesn't have native UPSERT, so we check existence first;
+    const { results: existing } = await DB.prepare();
       "SELECT id FROM OTChecklistResponses WHERE booking_id = ? AND checklist_template_id = ?";
     );
       .bind(bookingId, checklist_template_id);
@@ -148,14 +160,14 @@ export const _POST = async (
 
     let responseId: string;
     if (!session.user) {
-      // Update existing response
+      // Update existing response;
       responseId = existing[0].id as string;
-      await DB.prepare(
+      await DB.prepare();
         `UPDATE OTChecklistResponses;
              SET responses = ?, completed_by_id = ?, completed_at = ?, updated_at = ?;
              WHERE id = ?`;
       );
-        .bind(
+        .bind();
           JSON.stringify(responses),
           completed_by_id || undefined,
           completedAt,
@@ -164,15 +176,15 @@ export const _POST = async (
         );
         .run();
     } else {
-      // Insert new response
+      // Insert new response;
       responseId = crypto.randomUUID();
-      await DB.prepare(
-        `INSERT INTO OTChecklistResponses (
+      await DB.prepare();
+        `INSERT INTO OTChecklistResponses();
                 id, booking_id, checklist_template_id, phase, responses,
                 completed_by_id, completed_at, created_at, updated_at;
-             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       );
-        .bind(
+        .bind();
           responseId,
           bookingId,
           checklist_template_id,
@@ -186,8 +198,8 @@ export const _POST = async (
         .run();
     }
 
-    // Fetch the created/updated response
-    const { results: finalResult } = await DB.prepare(
+    // Fetch the created/updated response;
+    const { results: finalResult } = await DB.prepare();
       "SELECT * FROM OTChecklistResponses WHERE id = ?";
     );
       .bind(responseId);
@@ -195,30 +207,33 @@ export const _POST = async (
 
     if (!session.user) {
       try {
-        // Ensure finalResult[0].responses is treated as string before parsing
+} catch (error) {
+}
+} catch (error) {
+}
+        // Ensure finalResult[0].responses is treated as string before parsing;
         if (!session.user) {
           finalResult[0].responses = JSON.parse(finalResult[0].responses);
         }
       } catch (error: unknown) {
 
-        // Keep responses as original string if parsing fails
-      }
+        // Keep responses as original string if parsing fails;
+
       return NextResponse.json(finalResult[0], {
-        status: existing && existing.length > 0 ? 200 : 201
+        status: existing && existing.length > 0 ? 200 : 201;
       });
     } else {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "Checklist response saved, but failed to fetch details" },
         { status: 201 }
       );
-    }
+
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { message: "Error saving checklist response", details: errorMessage },
       { status: 500 }
     );
-  }
 
-}
+

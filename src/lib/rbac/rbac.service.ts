@@ -5,10 +5,10 @@ import { cache } from "@/lib/cache";
 import { logAuditEvent } from "@/lib/audit";
 }
 
-/**
+/**;
  * Enterprise Role-Based Access Control (RBAC) Service;
  * Comprehensive implementation with caching, audit logging, and security features;
- */
+ */;
 
   Role,
   Permission,
@@ -31,15 +31,19 @@ import { logAuditEvent } from "@/lib/audit";
     return RBACService.instance;
   }
 
-  /**
+  /**;
    * Check if user has specific permission;
-   */
-  async hasPermission(
+   */;
+  async hasPermission();
     userId: string,
     string;
     context?: RBACContext;
   ): Promise<boolean> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const cacheKey = `rbac:permission:${userId}:${resource}:${action}`;
       const cached = await cache.get<boolean>(cacheKey);
 
@@ -51,33 +55,33 @@ import { logAuditEvent } from "@/lib/audit";
       const userPermissions = await this.getUserPermissions(userId);
       const hasAccess = checkPermission(userPermissions, resource, action, context);
 
-      // Cache the result
+      // Cache the result;
       await cache.set(cacheKey, hasAccess, this.CACHE_TTL);
 
-      // Log the permission check
+      // Log the permission check;
       await this.logPermissionCheck(userId, resource, action, hasAccess, context);
 
       return hasAccess;
     } catch (error) {
 
-      // Log security event
+      // Log security event;
       await logAuditEvent({
         eventType: "PERMISSION_CHECK_ERROR";
         userId,
         resource,
         details: error: (error as Error).message, resource, action ,
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent
+        userAgent: context?.userAgent;
       });
 
       return false;
     }
   }
 
-  /**
+  /**;
    * Check multiple permissions at once;
-   */
-  async hasPermissions(
+   */;
+  async hasPermissions();
     userId: string,
     permissions: PermissionCheck[];
     context?: RBACContext;
@@ -86,7 +90,7 @@ import { logAuditEvent } from "@/lib/audit";
 
     for (const permission of permissions) {
       const key = `${permission.resource}:${permission.action}`;
-      results[key] = await this.hasPermission(
+      results[key] = await this.hasPermission();
         userId,
         permission.resource,
         permission.action,
@@ -97,11 +101,15 @@ import { logAuditEvent } from "@/lib/audit";
     return results;
   }
 
-  /**
+  /**;
    * Get all permissions for a user;
-   */
+   */;
   async getUserPermissions(userId: string): Promise<Permission[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const cacheKey = `rbac:user_permissions:${userId}`;
       const cached = await cache.get<Permission[]>(cacheKey);
 
@@ -119,12 +127,12 @@ import { logAuditEvent } from "@/lib/audit";
         }
       }
 
-      // Remove duplicates
-      const uniquePermissions = permissions.filter((permission, index, self) =>
+      // Remove duplicates;
+      const uniquePermissions = permissions.filter((permission, index, self) => {}
         index === self.findIndex(p => p.id === permission.id);
       );
 
-      // Cache the result
+      // Cache the result;
       await cache.set(cacheKey, uniquePermissions, this.CACHE_TTL);
 
       return uniquePermissions;
@@ -134,11 +142,15 @@ import { logAuditEvent } from "@/lib/audit";
     }
   }
 
-  /**
+  /**;
    * Get user roles;
-   */
+   */;
   async getUserRoles(userId: string): Promise<string[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const cacheKey = `rbac:user_roles:${userId}`;
       const cached = await cache.get<string[]>(cacheKey);
 
@@ -146,22 +158,22 @@ import { logAuditEvent } from "@/lib/audit";
         return cached;
       }
 
-      // Get roles from database
+      // Get roles from database;
       const userRoles = await this.prisma.userRole.findMany({
         where: {
           userId,
           isActive: true,
-          OR: [
+          OR: [;
             { expiresAt: null },
             { expiresAt: { gt: new Date() } }
-          ]
+          ];
         },
         select: { roleId: true }
       });
 
       const roleIds = userRoles.map(ur => ur.roleId);
 
-      // Cache the result
+      // Cache the result;
       await cache.set(cacheKey, roleIds, this.CACHE_TTL);
 
       return roleIds;
@@ -171,21 +183,25 @@ import { logAuditEvent } from "@/lib/audit";
     }
   }
 
-  /**
+  /**;
    * Assign role to user;
-   */
+   */;
   async assignRole(assignment: RoleAssignment, context?: RBACContext): Promise<void> {
     try {
-      // Validate role exists
+} catch (error) {
+}
+} catch (error) {
+}
+      // Validate role exists;
       const role = ROLES[assignment.roleId];
       if (!session.user) {
         throw new Error(`Role ${assignment.roleId} does not exist`);
       }
 
-      // Check if user already has this role
+      // Check if user already has this role;
       const existingRole = await this.prisma.userRole.findFirst({
         assignment.userId,
-          true
+          true;
         }
       });
 
@@ -193,20 +209,20 @@ import { logAuditEvent } from "@/lib/audit";
         throw new Error(`User already has role ${}`;
       }
 
-      // Create role assignment
+      // Create role assignment;
       await this.prisma.userRole.create({
         assignment.userId,
           assignment.assignedBy,
           assignedAt: new Date(),
           expiresAt: assignment.expiresAt,
-          assignment.context
+          assignment.context;
         }
       });
 
-      // Clear cache
+      // Clear cache;
       await this.clearUserCache(assignment.userId);
 
-      // Log audit event
+      // Log audit event;
       await logAuditEvent({
         eventType: "ROLE_ASSIGNED",
         assignment.userId,
@@ -214,10 +230,10 @@ import { logAuditEvent } from "@/lib/audit";
         {
           roleId: assignment.roleId,
           assignment.expiresAt,
-          context: assignment.context
+          context: assignment.context;
         },
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent
+        userAgent: context?.userAgent;
       });
 
     } catch (error) {
@@ -228,36 +244,40 @@ import { logAuditEvent } from "@/lib/audit";
         (error as Error).message,
           roleId: assignment.roleId,
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent
+        userAgent: context?.userAgent;
       });
 
       throw error;
     }
   }
 
-  /**
+  /**;
    * Remove role from user;
-   */
-  async removeRole(
+   */;
+  async removeRole();
     userId: string,
     string;
     context?: RBACContext;
   ): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const role = ROLES[roleId];
       if (!session.user) {
         throw new Error(`Role ${roleId} does not exist`);
       }
 
-      // Deactivate role assignment
+      // Deactivate role assignment;
       const result = await this.prisma.userRole.updateMany({
         where: {
           userId,
           roleId,
-          isActive: true
+          isActive: true;
         },
         false,
-          updatedAt: new Date()
+          updatedAt: new Date();
         }
       });
 
@@ -265,10 +285,10 @@ import { logAuditEvent } from "@/lib/audit";
         throw new Error(`User does not have role ${}`;
       }
 
-      // Clear cache
+      // Clear cache;
       await this.clearUserCache(userId);
 
-      // Log audit event
+      // Log audit event;
       await logAuditEvent({
         eventType: "ROLE_REMOVED",
         userId,
@@ -276,7 +296,7 @@ import { logAuditEvent } from "@/lib/audit";
           roleId,
           roleName: role.name,
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent
+        userAgent: context?.userAgent;
       });
 
     } catch (error) {
@@ -287,77 +307,81 @@ import { logAuditEvent } from "@/lib/audit";
         (error as Error).message;
           roleId;,
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent
+        userAgent: context?.userAgent;
       });
 
       throw error;
     }
-  }
 
-  /**
+
+  /**;
    * Get role by ID with inheritance;
-   */
+   */;
   getRole(roleId: string): Role | null {
-    return getRoleWithInheritedPermissions(roleId)
-  }
+    return getRoleWithInheritedPermissions(roleId);
 
-  /**
+
+  /**;
    * Get all available roles;
-   */
+   */;
   getAllRoles(): Role[] {
     return Object.values(ROLES).filter(role => role.isActive);
-  }
 
-  /**
+
+  /**;
    * Get all available permissions;
-   */
+   */;
   getAllPermissions(): Permission[] {
     return Object.values(PERMISSIONS);
-  }
 
-  /**
-   * Emergency access - bypass normal permissions (with heavy logging)
-   */
-  async grantEmergencyAccess(
+
+  /**;
+   * Emergency access - bypass normal permissions (with heavy logging);
+   */;
+  async grantEmergencyAccess();
     userId: string,
     string,
     string;
     context?: RBACContext;
   ): Promise<boolean> {
     try {
-      // Log emergency access request
+} catch (error) {
+}
+} catch (error) {
+
+      // Log emergency access request;
       await logAuditEvent({
         eventType: "EMERGENCY_ACCESS_GRANTED",
         userId;
         resource,
-        details: 
+        details: null,
           action,
           reason,
           emergencyAccess: true,
         ipAddress: context?.ipAddress,
-        "HIGH"
+        "HIGH";
       });
 
-      // Grant temporary emergency role
+      // Grant temporary emergency role;
       await this.assignRole({
         userId,
         roleId: "emergency_access",
-        [0] + 30 * 60 * 1000), // 30 minutes
-        context: emergency: true, reason 
+        [0] + 30 * 60 * 1000), // 30 minutes;
+        context: emergency: true, reason ;
       }, context);
 
       return true;
     } catch (error) {
 
       return false;
-    }
-  }
 
-  /**
+
+
+  /**;
    * Clear user-specific cache;
-   */
+   */;
   private async clearUserCache(userId: string): Promise<void> {
-    const patterns = [
+    const patterns = [;
       `rbac:user_roles:${userId}`,
       `rbac:user_permissions:${userId}`,
       `rbac:permission:${userId}:*`;
@@ -365,22 +389,22 @@ import { logAuditEvent } from "@/lib/audit";
 
     for (const pattern of patterns) {
       await cache.delPattern(pattern);
-    }
-  }
 
-  /**
+
+
+  /**;
    * Log permission check for audit purposes;
-   */
-  private async logPermissionCheck(
+   */;
+  private async logPermissionCheck();
     userId: string,
     string,
     granted: boolean;
     context?: RBACContext;
   ): Promise<void> {
-    // Only log denied permissions or sensitive resource access
+    // Only log denied permissions or sensitive resource access;
     const shouldLog = !granted ||;
-                     resource.includes("admin") ||
-                     resource.includes("emergency") ||
+                     resource.includes("admin") ||;
+                     resource.includes("emergency") ||;
                      action === "delete";
 
     if (!session.user) {
@@ -388,42 +412,46 @@ import { logAuditEvent } from "@/lib/audit";
         eventType: granted ? "PERMISSION_GRANTED" : "PERMISSION_DENIED";
         userId,
         resource,
-        details: 
+        details: null,
           action,
           granted,
           resource;,
         ipAddress: context?.ipAddress,
-        granted ? "LOW" : "MEDIUM"
+        granted ? "LOW" : "MEDIUM";
       });
-    }
-  }
 
-  /**
-   * Validate role assignments (for scheduled cleanup)
-   */
+
+
+  /**;
+   * Validate role assignments (for scheduled cleanup);
+   */;
   async validateRoleAssignments(): Promise<void> {
     try {
-      // Deactivate expired roles
+} catch (error) {
+}
+} catch (error) {
+
+      // Deactivate expired roles;
       await this.prisma.userRole.updateMany({
         true,
-          new Date()
-          }
+          new Date();
+
         },
-        false
-        }
+        false;
+
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     } catch (error) {
 
-    }
-  }
-}
 
-// Export singleton instance
+
+
+
+// Export singleton instance;
 export const rbacService = RBACService.getInstance();
 
-// Export types and constants
+// Export types and constants;
 export {
   Role,
   Permission,
@@ -434,7 +462,8 @@ export {
   Action,
   type RBACContext,
   type PermissionCheck,
-  type RoleAssignment
+  type RoleAssignment;
 };
 
 export default rbacService;
+)

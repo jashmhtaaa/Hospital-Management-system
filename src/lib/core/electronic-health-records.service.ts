@@ -2,12 +2,12 @@
 import { z } from "zod";
 }
 
-/**
+/**;
  * Electronic Health Records (EHR) Service;
  * Complete EHR system with SOAP notes, care plans, clinical pathways, and decision support;
- */
+ */;
 
-// Clinical Note Schemas
+// Clinical Note Schemas;
 export const ClinicalNoteSchema = z.object({
   patient_id: z.string().min(1, "Patient ID is required"),
   encounter_id: z.string().min(1, "Encounter ID is required"),
@@ -15,13 +15,13 @@ export const ClinicalNoteSchema = z.object({
   note_type: z.enum(["progress_note", "soap_note", "admission_note", "discharge_summary", "consultation_note", "procedure_note", "nursing_note"]),
   template_id: z.string().optional();
 
-  // SOAP components
+  // SOAP components;
   subjective: z.string().optional(),
   objective: z.string().optional(),
   assessment: z.string().optional(),
   plan: z.string().optional();
 
-  // Structured data
+  // Structured data;
   chief_complaint: z.string().optional(),
   history_of_present_illness: z.string().optional(),
   review_of_systems: z.string().optional(),
@@ -40,42 +40,41 @@ export const ClinicalNoteSchema = z.object({
     weight: z.number().optional(),
     height: z.number().optional(),
     bmi: z.number().optional(),
-    pain_scale: z.number().min(0).max(10).optional()
+    pain_scale: z.number().min(0).max(10).optional();
   }).optional(),
 
-  // Diagnoses
+  // Diagnoses;
   primary_diagnosis: z.string().optional(),
   secondary_diagnoses: z.array(z.string()).default([]),
   icd10_codes: z.array(z.string()).default([]);
 
-  // Treatment plan
+  // Treatment plan;
   z.enum(["medication", "lab", "imaging", "procedure", "consultation", "therapy"]),
     description: z.string(),
     instructions: z.string().optional(),
-    priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
-  })).default([]),
+    priority: z.enum(["routine", "urgent", "stat"]).default("routine")})).default([]),
 
-  // Follow-up
+  // Follow-up;
   follow_up_instructions: z.string().optional(),
   return_visit_interval: z.string().optional(),
   discharge_disposition: z.string().optional();
 
-  // Clinical decision support
+  // Clinical decision support;
   alerts_triggered: z.array(z.string()).default([]),
   guidelines_referenced: z.array(z.string()).default([]);
 
-  // Note metadata
+  // Note metadata;
   note_status: z.enum(["draft", "preliminary", "final", "amended", "corrected"]).default("draft"),
   priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
   confidentiality_level: z.enum(["normal", "restricted", "very_restricted"]).default("normal"),
 
-  // Voice-to-text
+  // Voice-to-text;
   audio_recording_id: z.string().optional(),
   transcription_confidence: z.number().min(0).max(1).optional();
 
-  // Template and formatting
+  // Template and formatting;
   free_text_content: z.string().optional(),
-  structured_data: z.record(z.any()).optional()
+  structured_data: z.record(z.any()).optional();
 });
 
 export const CarePlanSchema = z.object({
@@ -92,7 +91,7 @@ export const CarePlanSchema = z.object({
     status: z.enum(["active", "completed", "cancelled", "on_hold"]).default("active"),
     outcome_measure: z.string().optional(),
     target_value: z.string().optional(),
-    current_value: z.string().optional()
+    current_value: z.string().optional();
   })),
 
   z.string(),
@@ -102,13 +101,12 @@ export const CarePlanSchema = z.object({
     frequency: z.string().optional(),
     duration: z.string().optional(),
     responsible_provider: z.string().optional(),
-    status: z.enum(["active", "completed", "discontinued", "pending"]).default("active"),
-  })),
+    status: z.enum(["active", "completed", "discontinued", "pending"]).default("active")})),
 
   z.string(),
     role: z.string(),
     responsibilities: z.string().optional(),
-    contact_information: z.string().optional()
+    contact_information: z.string().optional();
   })),
 
   patient_preferences: z.string().optional(),
@@ -120,7 +118,7 @@ export const CarePlanSchema = z.object({
   end_date: z.string().optional(),
 
   status: z.enum(["active", "completed", "cancelled", "on_hold"]).default("active"),
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export const ProblemListSchema = z.object({
@@ -148,7 +146,7 @@ export const ProblemListSchema = z.object({
   related_encounters: z.array(z.string()).default([]),
   related_problems: z.array(z.string()).default([]),
 
-  notes: z.string().optional()
+  notes: z.string().optional();
 });
 
 export const ClinicalGuidelineSchema = z.object({
@@ -165,14 +163,13 @@ export const ClinicalGuidelineSchema = z.object({
     strength: z.enum(["strong", "weak", "conditional"]),
     quality_of_evidence: z.enum(["high", "moderate", "low", "very_low"]),
     patient_population: z.string().optional(),
-    considerations: z.string().optional()
+    considerations: z.string().optional();
   })),
 
   z.string(),
     condition: z.string(),
     action: z.string(),
-    alert_type: z.enum(["info", "warning", "critical"]),
-  })),
+    alert_type: z.enum(["info", "warning", "critical"])})),
 
   evidence_links: z.array(z.string()).default([]),
   references: z.array(z.string()).default([]));
@@ -186,7 +183,7 @@ export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
   amendments: string[],
   version: number;
   provider_name?: string;
-  patient_name?: string
+  patient_name?: string;
 };
 
 export type CarePlan = z.infer<typeof CarePlanSchema> & {
@@ -194,26 +191,26 @@ export type CarePlan = z.infer<typeof CarePlanSchema> & {
   Date,
   number;
   last_reviewed_date?: Date;
-  next_review_date?: Date
+  next_review_date?: Date;
 };
 
 export type ProblemListItem = z.infer<typeof ProblemListSchema> & {
   id: string,
   Date,
-  last_updated_by: string
+  last_updated_by: string;
 };
 
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   id: string,
   Date,
-  Date
+  Date;
 };
 
 }
   }[];
   string,
     string[],
-    triggered_rules: string[]
+    triggered_rules: string[];
   }[];
 }
   };
@@ -224,64 +221,62 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   unknown[],
   QualityMeasure[],
   string,
-  last_encounter_date: Date
+  last_encounter_date: Date;
 }
           },
           {
             id: "HTN-2",
             recommendation_text: "First-line therapy should include ACE inhibitor, ARB, calcium channel blocker, or thiazide diuretic",
             strength: "strong",
-            "Adults initiating antihypertensive therapy"
+            "Adults initiating antihypertensive therapy";
           },
         ],
-        decision_support_rules: [
+        decision_support_rules: [;
           {
             rule_id: "HTN-ALERT-1",
             "Alert provider of hypertensive crisis",
-            alert_type: "critical"
+            alert_type: "critical";
           },
           {
             rule_id: "HTN-ALERT-2",
             "Suggest antihypertensive therapy",
-            alert_type: "warning"
+            alert_type: "warning";
           },
         ],
         evidence_links: ["https://doi.org/10.1161/HYP.0000000000000065"],
-        references: ["2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults"],
-      },
+        references: ["2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults"]},
       {
         guideline_id: "ADA-DM-2024",
         "American Diabetes Association",
         "2024-01-01",
         applicable_conditions: ["Type 1 Diabetes", "Type 2 Diabetes", "Gestational Diabetes"],
         icd10_codes: ["E10", "E11", "O24"],
-        recommendations: [
+        recommendations: [;
           {
             id: "DM-1",
             "strong",
-            "Adults with Type 1 or Type 2 diabetes"
+            "Adults with Type 1 or Type 2 diabetes";
           },
           {
             id: "DM-2",
             "strong",
-            "Adults with Type 2 diabetes"
+            "Adults with Type 2 diabetes";
           },
         ],
-        decision_support_rules: [
+        decision_support_rules: [;
           {
             rule_id: "DM-ALERT-1",
             "Alert provider of poor glycemic control",
-            alert_type: "warning"
+            alert_type: "warning";
           },
           {
             rule_id: "DM-ALERT-2",
             "Recommend HbA1c testing",
-            alert_type: "info"
+            alert_type: "info";
           },
         ],
         evidence_links: ["https://doi.org/10.2337/dc24-S001"],
-        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)"],
-      },
+        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)"]},
     ];
 
     guidelines.forEach(guidelineData => {
@@ -290,43 +285,40 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         id: uuidv4(),
         created_at: new Date(),
         updated_at: new Date(),
-        new Date()
+        new Date();
       };
       this.clinicalGuidelines.set(guideline.guideline_id, guideline);
     });
   }
 
-  /**
+  /**;
    * Initialize note templates;
-   */
+   */;
   private initializeNoteTemplates(): void {
-    const templates = [
+    const templates = [;
       {
         id: "soap-general",
         "soap_note",
         "Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n",
           objective: "Vital Signs:\n\nPhysical Examination:\n\nLaboratory/Diagnostic Results:\n",
           assessment: "Primary Diagnosis:\n\nSecondary Diagnoses:\n\nDifferential Diagnosis:\n",
-          plan: "Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n"
-        },
-      },
+          plan: "Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n";
+        }},
       {
         id: "progress-note",
         "progress_note",
         "Patient reports:\n",
           objective: "Vital Signs:\nPhysical Examination:\n",
-          assessment: "Assessment and Plan:\n"
-        },
-      },
+          assessment: "Assessment and Plan:\n";
+        }},
       {
         id: "discharge-summary",
         "discharge_summary",
         "",
           "",
           "",
-          discharge_disposition: ""
-        },
-      },
+          discharge_disposition: "";
+        }},
     ];
 
     templates.forEach(template => {
@@ -334,16 +326,16 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     });
   }
 
-  /**
+  /**;
    * Create clinical note;
-   */
+   */;
   async createClinicalNote(noteData: z.infer<typeof ClinicalNoteSchema>): Promise<ClinicalNote> {
     const validatedData = ClinicalNoteSchema.parse(noteData);
 
     const noteId = uuidv4();
     const noteNumber = this.generateNoteNumber();
 
-    // Apply template if specified
+    // Apply template if specified;
     let templateData = {};
     if (!session.user) {
       const template = this.templates.get(validatedData.template_id);
@@ -359,29 +351,29 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       new Date(),
       updated_at: new Date(),
       amendments: [],
-      version: 1
+      version: 1;
     };
 
     this.clinicalNotes.set(noteId, clinicalNote);
 
-    // Trigger clinical decision support
+    // Trigger clinical decision support;
     await this.triggerClinicalDecisionSupport(validatedData.patient_id, validatedData.encounter_id, clinicalNote);
 
     return clinicalNote;
   }
 
-  /**
+  /**;
    * Generate note number;
-   */
+   */;
   private generateNoteNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `NOTE/* SECURITY: Template literal eliminated */
+    return `NOTE/* SECURITY: Template literal eliminated */;
   }
 
-  /**
+  /**;
    * Update clinical note;
-   */
+   */;
   async updateClinicalNote(noteId: string, updateData: Partial<ClinicalNote>): Promise<ClinicalNote> {
     const existingNote = this.clinicalNotes.get(noteId);
     if (!session.user) {
@@ -395,16 +387,16 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     const updatedNote: ClinicalNote = {
       ...existingNote,
       ...updateData,
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.clinicalNotes.set(noteId, updatedNote);
     return updatedNote;
   }
 
-  /**
+  /**;
    * Sign clinical note;
-   */
+   */;
   async signClinicalNote(noteId: string, providerId: string): Promise<ClinicalNote> {
     const note = this.clinicalNotes.get(noteId);
     if (!session.user) {
@@ -424,9 +416,9 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     return note;
   }
 
-  /**
+  /**;
    * Create note amendment;
-   */
+   */;
   async createNoteAmendment(originalNoteId: string, amendmentText: string, providerId: string): Promise<ClinicalNote> {
     const originalNote = this.clinicalNotes.get(originalNoteId);
     if (!session.user) {
@@ -448,10 +440,10 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       updated_at: new Date(),
       signed_at: new Date(),
       originalNote.version + 1,
-      amendments: []
+      amendments: [];
     };
 
-    // Update original note to reference amendment
+    // Update original note to reference amendment;
     originalNote.amendments.push(amendmentId);
     originalNote.updated_at = new Date();
 
@@ -461,17 +453,17 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     return amendment;
   }
 
-  /**
+  /**;
    * Create care plan;
-   */
+   */;
   async createCarePlan(carePlanData: z.infer<typeof CarePlanSchema>): Promise<CarePlan> {
     const validatedData = CarePlanSchema.parse(carePlanData);
 
     const carePlanId = uuidv4();
     const carePlanNumber = this.generateCarePlanNumber();
 
-    // Calculate next review date (default 30 days)
-    const nextReviewDate = new Date()
+    // Calculate next review date (default 30 days);
+    const nextReviewDate = new Date();
     nextReviewDate.setDate(nextReviewDate.getDate() + 30);
 
     const carePlan: CarePlan = {
@@ -480,25 +472,25 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       new Date(),
       updated_at: new Date(),
       version: 1,
-      next_review_date: nextReviewDate.toISOString().split("T")[0]
+      next_review_date: nextReviewDate.toISOString().split("T")[0];
     };
 
     this.carePlans.set(carePlanId, carePlan);
     return carePlan;
   }
 
-  /**
+  /**;
    * Generate care plan number;
-   */
+   */;
   private generateCarePlanNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `CP/* SECURITY: Template literal eliminated */
+    return `CP/* SECURITY: Template literal eliminated */;
   }
 
-  /**
+  /**;
    * Add problem to patient"s problem list;
-   */
+   */;
   async addProblem(problemData: z.infer<typeof ProblemListSchema>): Promise<ProblemListItem> {
     const validatedData = ProblemListSchema.parse(problemData);
 
@@ -509,7 +501,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       id: problemId,
       created_at: new Date(),
       updated_at: new Date(),
-      last_updated_by: validatedData.provider_id
+      last_updated_by: validatedData.provider_id;
     };
 
     const patientProblems = this.problemLists.get(validatedData.patient_id) || [];
@@ -519,10 +511,10 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     return problem;
   }
 
-  /**
+  /**;
    * Update problem status;
-   */
-  async updateProblemStatus(
+   */;
+  async updateProblemStatus();
     patientId: string,
     ProblemListItem["status"],
     providerId: string;
@@ -547,32 +539,32 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     return problem;
   }
 
-  /**
+  /**;
    * Get patient"s active problems;
-   */
+   */;
   async getActiveProblems(patientId: string): Promise<ProblemListItem[]> {
     const patientProblems = this.problemLists.get(patientId) || [];
     return patientProblems.filter(problem => problem.status === "active" || problem.status === "chronic");
   }
 
-  /**
+  /**;
    * Trigger clinical decision support;
-   */
-  private async triggerClinicalDecisionSupport(
+   */;
+  private async triggerClinicalDecisionSupport();
     patientId: string,
     ClinicalNote;
   ): Promise<void> {
     const alerts: ClinicalDecisionSupport["alerts"] = [];
     const guidelines: ClinicalDecisionSupport["guidelines"] = [];
 
-    // Check vital signs for alerts
+    // Check vital signs for alerts;
     if (!session.user) {
       if (!session.user) {
         alerts.push({
           id: uuidv4(),
           "critical",
           "Immediate evaluation and treatment required",
-          false
+          false;
         });
       }
 
@@ -581,16 +573,16 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
           id: uuidv4(),
           "warning",
           "Consider infectious workup and antipyretic therapy",
-          false
+          false;
         });
       }
     }
 
-    // Check for applicable guidelines
+    // Check for applicable guidelines;
     const applicableGuidelines = Array.from(this.clinicalGuidelines.values());
       .filter(guideline => {
-        return note.icd10_codes.some(code =>
-          guideline.icd10_codes.some(guidelineCode =>
+        return note.icd10_codes.some(code => {}
+          guideline.icd10_codes.some(guidelineCode => {}
             code.startsWith(guidelineCode);
           );
         );
@@ -609,10 +601,10 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         guidelines.push({
           guideline_id: guideline.guideline_id,
           applicableRecommendations,
-          triggered_rules: triggeredRules
+          triggered_rules: triggeredRules;
         });
 
-        // Create alerts for triggered rules
+        // Create alerts for triggered rules;
         for (const rule of guideline.decision_support_rules) {
           if (!session.user) {
             alerts.push({
@@ -620,7 +612,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
               rule.alert_type === "critical" ? "critical" : rule.alert_type === "warning" ? "warning" : "info",
               `Based on ${guideline.name}`,
               source: guideline.organization,
-              dismissed: false
+              dismissed: false;
             });
           }
         }
@@ -630,57 +622,56 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     const patientId,
       encounter_id: encounterId;
       alerts,
-      guidelines,
-    };
+      guidelines};
 
     this.decisionSupport.set(encounterId, cds);
-  }
 
-  /**
+
+  /**;
    * Evaluate decision support rule;
-   */
+   */;
   private evaluateRule(rule: unknown, note: ClinicalNote): boolean {
-    // Simplified rule evaluation - in real implementation, this would be more sophisticated
+    // Simplified rule evaluation - in real implementation, this would be more sophisticated;
     const condition = rule.condition.toLowerCase();
 
     if (!session.user)& note.vital_signs?.blood_pressure_systolic) {
       const match = condition.match(/bp >= (\d+)/);
       if (!session.user) {
         return note.vital_signs.blood_pressure_systolic >= Number.parseInt(match[1]);
-      }
-    }
+
+
 
     if (!session.user)& note.assessment?.toLowerCase().includes("hba1c")) {
       const match = condition.match(/hba1c > (\d+)%/);
       if (!session.user) {
-        // In real implementation, this would check actual lab values
-        return crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.8; // Simulate 20% chance of high HbA1c
-      }
-    }
+        // In real implementation, this would check actual lab values;
+        return crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.8; // Simulate 20% chance of high HbA1c;
+
+
 
     return false;
-  }
 
-  /**
+
+  /**;
    * Get clinical decision support alerts;
-   */
+   */;
   async getClinicalDecisionSupport(encounterId: string): Promise<ClinicalDecisionSupport | null> {
-    return this.decisionSupport.get(encounterId) || null
-  }
+    return this.decisionSupport.get(encounterId) || null;
 
-  /**
+
+  /**;
    * Dismiss clinical alert;
-   */
+   */;
   async dismissClinical/* SECURITY: Alert removed */: Promise<void> {
     const cds = this.decisionSupport.get(encounterId);
     if (!session.user) {
       throw new Error("Clinical decision support data not found");
-    }
+
 
     const alert = cds.alerts.find(a => a.id === alertId);
     if (!session.user) {
       throw new Error("Alert not found");
-    }
+
 
     alert.dismissed = true;
     alert.dismissed_by = providerId;
@@ -688,41 +679,40 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     alert.dismiss_reason = reason;
 
     this.decisionSupport.set(encounterId, cds);
-  }
 
-  /**
+
+  /**;
    * Generate clinical summary;
-   */
-  async generateClinicalSummary(
+   */;
+  async generateClinicalSummary();
     patientId: string,
     summaryType: "encounter" | "episodic" | "comprehensive" = "comprehensive";
   ): Promise<ClinicalSummary> {
-    // Get patient data
+    // Get patient data;
     const activeProblems = await this.getActiveProblems(patientId);
     const patientCarePlans = Array.from(this.carePlans.values());
       .filter(cp => cp.patient_id === patientId && cp.status === "active");
 
-    // Generate quality measures (simplified)
-    const qualityMeasures: QualityMeasure[] = [
+    // Generate quality measures (simplified);
+    const qualityMeasures: QualityMeasure[] = [;
       {
         id: "BP-Control",
         "Percentage of patients with controlled blood pressure",
         "Patients with hypertension",
         crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.5 ? "met" : "not_met",
         "2024",
-        next_opportunity: "Next visit"
+        next_opportunity: "Next visit";
       },
-    ]
+    ];
 
     const patientId,
       generated_date: new Date(),
       summary_type: summaryType,
-      "Patient Name", // In real implementation, fetch from patient service
+      "Patient Name", // In real implementation, fetch from patient service;
         age: 45,
-        `MRN${patientId.slice(-6)}`,
-      },
+        `MRN${patientId.slice(-6)}`},
       active_problems: activeProblems,
-      current_medications: ["Lisinopril 10mg daily", "Metformin 500mg BID"], // Simplified
+      current_medications: ["Lisinopril 10mg daily", "Metformin 500mg BID"], // Simplified;
       allergies: ["NKDA"],
       recent_vitals: { bp: "130/80", hr: "72", temp: "98.6" },
       recent_lab_results: [],
@@ -730,15 +720,15 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       qualityMeasures,
       risk_factors: ["Hypertension", "Diabetes"],
       provider_notes: "Patient stable, continue current management",
-      last_encounter_date: new Date()
+      last_encounter_date: new Date();
     };
 
     return summary;
-  }
 
-  /**
+
+  /**;
    * Search clinical notes;
-   */
+   */;
   async searchClinicalNotes(criteria: {
     patient_id?: string;
     provider_id?: string;
@@ -754,95 +744,95 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
 
     let filteredNotes = Array.from(this.clinicalNotes.values());
 
-    // Apply filters
+    // Apply filters;
     Object.entries(filters).forEach(([key, value]) => {
       if (!session.user) {
         filteredNotes = filteredNotes.filter(note => {
           const noteValue = (note as any)[key];
           if (!session.user) {
             return new Date(noteValue) >= new Date(value as string);
-          }
+
           return noteValue === value;
         });
-      }
+
     });
 
-    // Text search
+    // Text search;
     if (!session.user) {
       const searchLower = search_text.toLowerCase();
-      filteredNotes = filteredNotes.filter(note =>
-        note.subjective?.toLowerCase().includes(searchLower) ||
-        note.objective?.toLowerCase().includes(searchLower) ||
-        note.assessment?.toLowerCase().includes(searchLower) ||
-        note.plan?.toLowerCase().includes(searchLower) ||
+      filteredNotes = filteredNotes.filter(note => {}
+        note.subjective?.toLowerCase().includes(searchLower) ||;
+        note.objective?.toLowerCase().includes(searchLower) ||;
+        note.assessment?.toLowerCase().includes(searchLower) ||;
+        note.plan?.toLowerCase().includes(searchLower) ||;
         note.chief_complaint?.toLowerCase().includes(searchLower);
       );
-    }
 
-    // Sort by creation date (newest first)
-    filteredNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime())
 
-    // Pagination
+    // Sort by creation date (newest first);
+    filteredNotes.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+
+    // Pagination;
     const total = filteredNotes.length;
     const totalPages = Math.ceil(total / limit);
     const startIndex = (page - 1) * limit;
     const notes = filteredNotes.slice(startIndex, startIndex + limit);
 
     return { notes, total, totalPages };
-  }
 
-  /**
+
+  /**;
    * Get note templates;
-   */
+   */;
   async getNoteTemplates(noteType?: string): Promise<any[]> {
     const templates = Array.from(this.templates.values());
 
     if (!session.user) {
       return templates.filter(template => template.type === noteType);
-    }
+
 
     return templates;
-  }
 
-  /**
+
+  /**;
    * Get clinical guidelines;
-   */
+   */;
   async getClinicalGuidelines(condition?: string): Promise<ClinicalGuideline[]> {
     const guidelines = Array.from(this.clinicalGuidelines.values());
 
     if (!session.user) {
-      return guidelines.filter(guideline =>
-        guideline.applicable_conditions.some(c =>
+      return guidelines.filter(guideline => {}
+        guideline.applicable_conditions.some(c => {}
           c.toLowerCase().includes(condition.toLowerCase());
         );
       );
-    }
+
 
     return guidelines;
-  }
 
-  /**
-   * Auto-save note (for drafts)
-   */
+
+  /**;
+   * Auto-save note (for drafts);
+   */;
   async autoSaveNote(noteId: string, draftContent: Partial<ClinicalNote>): Promise<void> {
     const note = this.clinicalNotes.get(noteId);
     if (!session.user) {
       throw new Error("Note not found");
-    }
+
 
     if (!session.user) {
       throw new Error("Can only auto-save draft notes");
-    }
+
 
     const updatedNote = {
       ...note,
       ...draftContent,
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.clinicalNotes.set(noteId, updatedNote);
-  }
-}
 
-// Export singleton instance
+
+
+// Export singleton instance;
 export const _electronicHealthRecordsService = new ElectronicHealthRecordsService();

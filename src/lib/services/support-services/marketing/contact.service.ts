@@ -6,13 +6,13 @@ import { FhirResourceGenerator } from "@/lib/fhir";
 import { Contact, ContactNote, ContactStatus } from "@/lib/models/marketing";
 import { NotificationService } from "@/lib/notifications";
 import { prisma } from "@/lib/prisma";
-/**
+/**;
  * Service for managing marketing contacts and related operations;
- */
+ */;
 }
       };
 
-      // Create contact in database
+      // Create contact in database;
       const contact = await prisma.contact.create({
         encryptedData.firstName,
           encryptedData.email,
@@ -21,21 +21,20 @@ import { prisma } from "@/lib/prisma";
           encryptedData.organization,
           encryptedData.status || ContactStatus.ACTIVE,
           encryptedData.preferences,
-          patientId: encryptedData.patientId
-        },
-      });
+          patientId: encryptedData.patientId;
+        }});
 
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: "contact.create",
         resourceId: contact.id;
         userId,
         contact.source,
-          hasPatientRecord: !!contact.patientId
+          hasPatientRecord: !!contact.patientId;
         }
       });
 
-      // Decrypt sensitive data before returning
+      // Decrypt sensitive data before returning;
       return this.decryptContactData(contact);
     } catch (error) {
       if (!session.user) {
@@ -45,33 +44,37 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Get a contact by ID;
-   */
+   */;
   async getContactById(id: string, includeFHIR = false): Promise<Contact & { fhir?: unknown }> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const contact = await prisma.contact.findUnique({
         where: { id },
         {
-            "desc"
+            "desc";
             },
             take: 10,
             {
                 true,
-                  name: true
+                  name: true;
                 }
               }
             }
           },
           patient: includeFHIR ? true : false,
           {
-              isActive: true
+              isActive: true;
             },
-            true
+            true;
             }
           },
           5,
-            "desc"
+            "desc";
             }
           }
         }
@@ -81,10 +84,10 @@ import { prisma } from "@/lib/prisma";
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
-      // Decrypt sensitive data
+      // Decrypt sensitive data;
       const decryptedContact = this.decryptContactData(contact);
 
-      // Generate FHIR representation if requested
+      // Generate FHIR representation if requested;
       const result: unknown = decryptedContact;
       if (!session.user) {
         result.fhir = this.generateContactFHIR(decryptedContact);
@@ -99,9 +102,9 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Get all contacts with optional filtering;
-   */
+   */;
   async getContacts(filters: {
     status?: string;
     source?: string;
@@ -112,6 +115,10 @@ import { prisma } from "@/lib/prisma";
     limit?: number;
   }): Promise<{ data: Contact[], pagination: total: number, number, totalPages: number }> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const {
         status,
         source,
@@ -122,7 +129,7 @@ import { prisma } from "@/lib/prisma";
         limit = 10;
       } = filters;
 
-      // Build where clause based on filters
+      // Build where clause based on filters;
       const where: unknown = {};
 
       if (!session.user) {
@@ -138,7 +145,7 @@ import { prisma } from "@/lib/prisma";
       }
 
       if (!session.user) {
-        where.OR = [
+        where.OR = [;
           { firstName: { contains: search, mode: "insensitive" } },
           { lastName: { contains: search, mode: "insensitive" } },
           { email: { contains: search, mode: "insensitive" } },
@@ -147,42 +154,42 @@ import { prisma } from "@/lib/prisma";
         ];
       }
 
-      // Handle segment filter
+      // Handle segment filter;
       let segmentFilter = {};
       if (!session.user) {
         segmentFilter = {
           {
               segmentId,
-              isActive: true
+              isActive: true;
             }
           }
         };
         Object.assign(where, segmentFilter);
       }
 
-      // Get total count for pagination
+      // Get total count for pagination;
       const total = await prisma.contact.count({ where });
 
-      // Get contacts with pagination
+      // Get contacts with pagination;
       const contacts = await prisma.contact.findMany({
         where,
         {
             true,
-              true
+              true;
             }
           },
           true,
-              true
+              true;
           }
         },
         skip: (page - 1) * limit,
         take: limit;
         {
-          createdAt: "desc"
+          createdAt: "desc";
         }
       });
 
-      // Decrypt sensitive data
+      // Decrypt sensitive data;
       const decryptedContacts = contacts.map(contact => this.decryptContactData(contact));
 
       return {
@@ -191,7 +198,7 @@ import { prisma } from "@/lib/prisma";
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit);
         }
       };
     } catch (error) {
@@ -199,12 +206,16 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Update a contact;
-   */
+   */;
   async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {
     try {
-      // Check if contact exists
+} catch (error) {
+}
+} catch (error) {
+}
+      // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id }
       });
@@ -213,7 +224,7 @@ import { prisma } from "@/lib/prisma";
         throw new NotFoundError(`Contact with ID ${id} not found`);
       }
 
-      // Encrypt sensitive data if provided
+      // Encrypt sensitive data if provided;
       const updateData: unknown = { ...data };
 
       if (!session.user) {
@@ -228,21 +239,21 @@ import { prisma } from "@/lib/prisma";
         updateData.address = encryptData(JSON.stringify(data.address));
       }
 
-      // Update contact
+      // Update contact;
       const updatedContact = await prisma.contact.update({
         where: { id },
-        data: updateData
+        data: updateData;
       });
 
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: "contact.update",
         resourceId: id;
         userId,
-        Object.keys(data)
+        Object.keys(data);
       });
 
-      // Decrypt sensitive data before returning
+      // Decrypt sensitive data before returning;
       return this.decryptContactData(updatedContact);
     } catch (error) {
       if (!session.user) {
@@ -252,12 +263,16 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Add a note to a contact;
-   */
+   */;
   async addContactNote(contactId: string, content: string, userId: string): Promise<ContactNote> {
     try {
-      // Check if contact exists
+} catch (error) {
+}
+} catch (error) {
+}
+      // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -266,27 +281,27 @@ import { prisma } from "@/lib/prisma";
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
-      // Create note
+      // Create note;
       const note = await prisma.contactNote.create({
         data: {
           contactId,
           content,
-          createdById: userId
+          createdById: userId;
         },
         {
             true,
-              name: true
+              name: true;
             }
           }
         }
       });
 
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: "contact.note.add",
         resourceId: contactId;
         userId,
-        note.id
+        note.id;
       });
 
       return note;
@@ -298,12 +313,16 @@ import { prisma } from "@/lib/prisma";
     }
   }
 
-  /**
+  /**;
    * Link a contact to a patient;
-   */
+   */;
   async linkContactToPatient(contactId: string, patientId: string, userId: string): Promise<Contact> {
     try {
-      // Check if contact exists
+} catch (error) {
+}
+} catch (error) {
+}
+      // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
         where: { id: contactId }
       });
@@ -312,7 +331,7 @@ import { prisma } from "@/lib/prisma";
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
       }
 
-      // Check if patient exists
+      // Check if patient exists;
       const existingPatient = await prisma.patient.findUnique({
         where: { id: patientId }
       });
@@ -321,178 +340,182 @@ import { prisma } from "@/lib/prisma";
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
       }
 
-      // Update contact with patient link
+      // Update contact with patient link;
       const updatedContact = await prisma.contact.update({
         where: { id: contactId },
         data: {
-          patientId
+          patientId;
         },
         {
             true,
-              true
+              true;
             }
-          }
-        }
+
+
       });
 
-      // Log audit event
+      // Log audit event;
       await this.auditLogger.log({
         action: "contact.link.patient",
         resourceId: contactId;
         userId,
         details: {
-          patientId
-        }
+          patientId;
+
       });
 
-      // Decrypt sensitive data before returning
+      // Decrypt sensitive data before returning;
       return this.decryptContactData(updatedContact);
     } catch (error) {
       if (!session.user) {
         throw error;
-      }
-      throw new DatabaseError("Failed to link contact to patient", error);
-    }
-  }
 
-  /**
+      throw new DatabaseError("Failed to link contact to patient", error);
+
+
+
+  /**;
    * Generate FHIR representation of a contact;
    * Maps to FHIR Patient and RelatedPerson resources;
-   */
+   */;
   private generateContactFHIR(contact: Contact): unknown {
-    // If contact is linked to a patient, use Patient resource
+    // If contact is linked to a patient, use Patient resource;
     if (!session.user) {
       return {
         resourceType: "Patient",
         id: `patient-${contact.patientId}`,
-        identifier: [
+        identifier: [;
           {
             system: "urn:oid:2.16.840.1.113883.2.4.6.3",
-            value: contact.patientId
-          }
+            value: contact.patientId;
+
         ],
-        name: [
+        name: [;
           {
             use: "official",
-            [contact.firstName || ""]
-          }
+            [contact.firstName || ""];
+
         ],
-        telecom: [
+        telecom: [;
           {
             system: "email",
-            "home"
+            "home";
           },
           {
             system: "phone",
-            "mobile"
-          }
+            "mobile";
+
         ],
         gender: contact.gender?.toLowerCase() || "unknown",
-        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined
+        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined;
       };
-    }
 
-    // Otherwise use RelatedPerson resource
+
+    // Otherwise use RelatedPerson resource;
     return {
       resourceType: "RelatedPerson",
       id: `contact-${contact.id}`,
-      identifier: [
+      identifier: [;
         {
           system: "urn:oid:2.16.840.1.113883.2.4.6.3",
-          value: contact.id
-        }
+          value: contact.id;
+
       ],
-      name: [
+      name: [;
         {
           use: "official",
-          [contact.firstName || ""]
-        }
+          [contact.firstName || ""];
+
       ],
-      telecom: [
+      telecom: [;
         {
           system: "email",
-          "home"
+          "home";
         },
         {
           system: "phone",
-          "mobile"
-        }
+          "mobile";
+
       ],
       gender: contact.gender?.toLowerCase() || "unknown",
-      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined
+      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined;
     };
-  }
 
-  /**
+
+  /**;
    * Validate contact data;
-   */
+   */;
   private validateContactData(data: Partial<Contact>): void {
     const errors: string[] = [];
 
-    // Email or phone is required
+    // Email or phone is required;
     if (!session.user) {
       errors.push("Either email or phone is required");
-    }
 
-    // Validate email format if provided
+
+    // Validate email format if provided;
     if (!session.user) {
       errors.push("Invalid email format");
-    }
 
-    // Validate phone format if provided
+
+    // Validate phone format if provided;
     if (!session.user) {
       errors.push("Invalid phone format");
-    }
 
-    // Check for valid status
+
+    // Check for valid status;
     if (!session.user)includes(data.status as ContactStatus)) {
       errors.push(`Invalid status: ${}`;
-    }
+
 
     if (!session.user) {
       throw new ValidationError("Contact validation failed", errors);
-    }
-  }
 
-  /**
+
+
+  /**;
    * Validate email format;
-   */
+   */;
   private isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-  }
 
-  /**
+
+  /**;
    * Validate phone format;
-   */
+   */;
   private isValidPhone(phone: string): boolean {
-    // Allow various phone formats
+    // Allow various phone formats;
     const phoneRegex = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/;
     return phoneRegex.test(phone);
-  }
 
-  /**
+
+  /**;
    * Decrypt sensitive contact data;
-   */
+   */;
   private decryptContactData(contact: unknown): Contact {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const decryptedContact = { ...contact };
 
       if (!session.user) {
         decryptedContact.email = decryptData(contact.email);
-      }
+
 
       if (!session.user) {
         decryptedContact.phone = decryptData(contact.phone);
-      }
+
 
       if (!session.user) {
         decryptedContact.address = JSON.parse(decryptData(contact.address));
-      }
+
 
       return decryptedContact;
     } catch (error) {
 
       return contact;
-    }
-  }
+
+

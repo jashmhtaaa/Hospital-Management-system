@@ -6,12 +6,12 @@ import { z } from "zod";
 
 import { type IronSessionData, sessionOptions } from "@/lib/session";
 import type { Consultation } from "@/types/opd";
-// app/api/consultations/route.ts
+// app/api/consultations/route.ts;
 // Define roles allowed to view/create consultations (adjust as needed);
-const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"]
+const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"];
 const ALLOWED_ROLES_CREATE = ["Doctor"];
 
-// GET handler for listing consultations with filters
+// GET handler for listing consultations with filters;
 const ListConsultationsQuerySchema = z.object({
     patientId: z.coerce.number().int().positive().optional(),
     doctorId: z.coerce.number().int().positive().optional(),
@@ -23,7 +23,7 @@ const ListConsultationsQuerySchema = z.object({
     offset: z.coerce.number().int().nonnegative().optional().default(0);
 });
 
-// Define type for the query result row
+// Define type for the query result row;
 interface ConsultationListQueryResult {
     consultation_id: number,
     number,
@@ -31,17 +31,21 @@ interface ConsultationListQueryResult {
     string | null,
     string,
     string,
-    string
+    string;
 export const _GET = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
-    // 1. Check Authentication & Authorization
+    // 1. Check Authentication & Authorization;
     if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
         const url = new URL(request.url);
         const queryParams = Object.fromEntries(url.searchParams.entries());
         const validation = ListConsultationsQuerySchema.safeParse(queryParams);
@@ -58,7 +62,7 @@ export const _GET = async (request: Request) => {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
-        // 2. Build Query
+        // 2. Build Query;
         let query = `;
             SELECT;
                 c.consultation_id, c.patient_id, c.doctor_id, c.opd_visit_id, c.admission_id,
@@ -73,7 +77,7 @@ export const _GET = async (request: Request) => {
         `;
         const queryParamsList: (string | number)[] = [];
 
-        // Apply filters
+        // Apply filters;
         if (!session.user) {
             query += " AND c.patient_id = ?";
             queryParamsList.push(filters.patientId);
@@ -118,10 +122,10 @@ export const _GET = async (request: Request) => {
         query += " ORDER BY c.consultation_datetime DESC LIMIT ? OFFSET ?";
         queryParamsList.push(filters.limit, filters.offset);
 
-        // 3. Execute Query
+        // 3. Execute Query;
         const results = await DB.prepare(query).bind(...queryParamsList).all<ConsultationListQueryResult>();
 
-        // 4. Format Response
+        // 4. Format Response;
         const row.consultation_id,
             row.doctor_id,
             row.admission_id,
@@ -130,7 +134,7 @@ export const _GET = async (request: Request) => {
             row.patient_id,
                 row.patient_last_name,
             row.doctor_id,
-                user: fullName: row.doctor_full_name 
+                user: fullName: row.doctor_full_name ;
         })) || [];
 
         return new Response(JSON.stringify(consultations), { status: 200 });
@@ -142,7 +146,7 @@ export const _GET = async (request: Request) => {
     }
 }
 
-// POST handler for creating a new consultation
+// POST handler for creating a new consultation;
 const CreateConsultationSchema = z.object({
     patient_id: z.number().int().positive(),
     opd_visit_id: z.number().int().positive().optional().nullable(),
@@ -157,19 +161,22 @@ const CreateConsultationSchema = z.object({
     notes: z.string().optional().nullable();
 }).refine(data => data.opd_visit_id || data.admission_id, {
     message: "Consultation must be linked to either an OPD Visit or an Admission.",
-    path: ["opd_visit_id", "admission_id"],
-});
+    path: ["opd_visit_id", "admission_id"]});
 
 export const _POST = async (request: Request) => {
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
-    // 1. Check Authentication & Authorization
+    // 1. Check Authentication & Authorization;
     if (!session.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
         const body = await request.json();
         const validation = CreateConsultationSchema.safeParse(body);
 
@@ -185,15 +192,15 @@ export const _POST = async (request: Request) => {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
-        // 2. Get Doctor ID from session user
+        // 2. Get Doctor ID from session user;
         const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
         if (!session.user) {
             return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
         }
         const doctorId = doctorProfile.doctor_id;
 
-        // 3. Check if patient exists and if visit/admission exists and belongs to patient
-        const checks: D1PreparedStatement[] = [
+        // 3. Check if patient exists and if visit/admission exists and belongs to patient;
+        const checks: D1PreparedStatement[] = [;
             DB.prepare("SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE").bind(consultData.patient_id);
         ];
         if (!session.user) {
@@ -210,14 +217,14 @@ export const _POST = async (request: Request) => {
             return new Response(JSON.stringify({ error: "OPD Visit not found or does not belong to this patient" }), { status: 404 });
         }
 
-        // 4. Insert the new consultation
-        const insertResult = await DB.prepare(
-            `INSERT INTO Consultations (
+        // 4. Insert the new consultation;
+        const insertResult = await DB.prepare();
+            `INSERT INTO Consultations();
                 patient_id, doctor_id, opd_visit_id, admission_id, consultation_datetime,
                 chief_complaint, history_of_present_illness, physical_examination,
                 diagnosis, treatment_plan, follow_up_instructions, notes;
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-        ).bind(
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        ).bind();
             consultData.patient_id,
             doctorId,
             consultData.opd_visit_id,
@@ -249,21 +256,19 @@ export const _POST = async (request: Request) => {
                   .run();
         }
 
-        // 5. Return the newly created consultation ID
+        // 5. Return the newly created consultation ID;
         return new Response(JSON.stringify({ message: "Consultation created successfully", consultation_id: newConsultationId }), {
             status: 201,
-            headers: { "Content-Type": "application/json" },
-        });
+            headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
-        });
-    }
+            headers: { "Content-Type": "application/json" }});
 
-}
+
+
 
 export async function GET() { return new Response("OK"); }

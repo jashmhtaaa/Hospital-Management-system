@@ -1,4 +1,4 @@
-// Basic logger setup
+// Basic logger setup;
 export const _logger = {
   info: (message: string, data?: unknown) => {
     /* SECURITY: Console statement removed */
@@ -8,5 +8,5 @@ export const _logger = {
   },
   error: (message: string, data?: unknown) => {
     /* SECURITY: Console statement removed */
-  },
+  }
 };

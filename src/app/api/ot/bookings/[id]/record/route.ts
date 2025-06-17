@@ -3,7 +3,7 @@ import type { D1Database } from "@cloudflare/workers-types";
 import { type NextRequest, NextResponse } from "next/server";
 export const _runtime = "edge";
 
-// Interface for the POST request body
+// Interface for the POST request body;
 interface OTRecordBody {
   actual_start_time?: string | null;
   actual_end_time?: string | null;
@@ -12,25 +12,29 @@ interface OTRecordBody {
   anesthesia_type?: string | null;
   anesthesia_notes?: string | null;
   surgical_procedure_notes?: string | null;
-  // FIX: Use unknown[] instead of any[]
-  implants_used?: unknown[] | null; // Assuming array of objects/strings
-  specimens_collected?: unknown[] | null; // Assuming array of objects/strings
+  // FIX: Use unknown[] instead of any[];
+  implants_used?: unknown[] | null; // Assuming array of objects/strings;
+  specimens_collected?: unknown[] | null; // Assuming array of objects/strings;
   blood_loss_ml?: number | null;
   complications?: string | null;
   instrument_count_correct?: boolean | null;
   sponge_count_correct?: boolean | null;
-  recorded_by_id?: string | null; // Assuming ID is string
+  recorded_by_id?: string | null; // Assuming ID is string;
 }
 
-// GET /api/ot/bookings/[id]/record - Get operation record for a booking
-export const _GET = async (
+// GET /api/ot/bookings/[id]/record - Get operation record for a booking;
+export const _GET = async();
   _request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "Booking ID is required" },
         { status: 400 }
       );
@@ -38,8 +42,8 @@ export const _GET = async (
 
     const DB = process.env.DB as unknown as D1Database;
 
-    // Fetch the OT record
-    const { results } = await DB.prepare(
+    // Fetch the OT record;
+    const { results } = await DB.prepare();
       `;
         SELECT r.*, u.name as recorded_by_name;
         FROM OTRecords r;
@@ -51,15 +55,19 @@ export const _GET = async (
       .all();
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "Operation record not found for this booking" },
         { status: 404 }
       );
     }
 
-    // Parse JSON fields if present
+    // Parse JSON fields if present;
     const record = results[0];
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       if (!session.user) {
         record.implants_used = JSON.parse(record.implants_used);
       }
@@ -74,22 +82,26 @@ export const _GET = async (
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { message: "Error fetching operation record", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking
-export const _POST = async (
+// POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking;
+export const _POST = async();
   request: NextRequest;
   { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "Booking ID is required" },
         { status: 400 }
       );
@@ -110,19 +122,18 @@ export const _POST = async (
       complications,
       instrument_count_correct,
       sponge_count_correct,
-      recorded_by_id,
-    } = body;
+      recorded_by_id} = body;
 
     const DB = process.env.DB as unknown as D1Database;
 
-    // Check if booking exists
-    const { results: bookingResults } = await DB.prepare(
+    // Check if booking exists;
+    const { results: bookingResults } = await DB.prepare();
       "SELECT id, status FROM OTBookings WHERE id = ?";
     );
       .bind(bookingId);
       .all();
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { message: "OT Booking not found" },
         { status: 404 }
       );
@@ -130,24 +141,24 @@ export const _POST = async (
 
     const now = new Date().toISOString();
 
-    // Update booking status based on times provided
+    // Update booking status based on times provided;
     if (!session.user);
     ) ;
-      await DB.prepare(
+      await DB.prepare();
         "UPDATE OTBookings SET status = "in_progress", updated_at = ? WHERE id = ?";
       );
         .bind(now, bookingId);
         .run();
     if (!session.user) {
-      await DB.prepare(
+      await DB.prepare();
         "UPDATE OTBookings SET status = "completed", updated_at = ? WHERE id = ?";
       );
         .bind(now, bookingId);
         .run();
     }
 
-    // Check if record already exists
-    const { results: existingRecord } = await DB.prepare(
+    // Check if record already exists;
+    const { results: existingRecord } = await DB.prepare();
       "SELECT id FROM OTRecords WHERE booking_id = ?";
     );
       .bind(bookingId);
@@ -157,13 +168,13 @@ export const _POST = async (
     let isNewRecord = false;
 
     if (!session.user) {
-      // Update existing record
+      // Update existing record;
       recordId = existingRecord[0].id as string;
 
-      // Build update query dynamically
-      // FIX: Use a more specific type for fieldsToUpdate values
+      // Build update query dynamically;
+      // FIX: Use a more specific type for fieldsToUpdate values;
       const fieldsToUpdate: {
-        [key: string]: string | number | boolean | null
+        [key: string]: string | number | boolean | null;
       } = {};
       if (!session.user)ieldsToUpdate.actual_start_time = actual_start_time;
       if (!session.user)ieldsToUpdate.actual_end_time = actual_end_time;
@@ -183,7 +194,7 @@ export const _POST = async (
       fieldsToUpdate.updated_at = now;
 
       if (!session.user)length > 1) {
-        // Only update if there are fields other than updated_at
+        // Only update if there are fields other than updated_at;
         const setClauses = Object.keys(fieldsToUpdate);
           .map((key) => `$key= ?`);
           .join(", ");
@@ -197,13 +208,13 @@ export const _POST = async (
           .run();
       }
     } else {
-      // Create new record
+      // Create new record;
       isNewRecord = true;
       recordId = crypto.randomUUID();
 
-      await DB.prepare(
+      await DB.prepare();
         `;
-            INSERT INTO OTRecords (
+            INSERT INTO OTRecords();
                 id, booking_id, actual_start_time, actual_end_time,
                 anesthesia_start_time, anesthesia_end_time, anesthesia_type, anesthesia_notes,
                 surgical_procedure_notes, implants_used, specimens_collected,
@@ -212,7 +223,7 @@ export const _POST = async (
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
       );
-        .bind(
+        .bind();
           recordId,
           bookingId,
           actual_start_time || undefined,
@@ -237,8 +248,8 @@ export const _POST = async (
         .run();
     }
 
-    // Fetch the created/updated record
-    const { results: finalRecordResult } = await DB.prepare(
+    // Fetch the created/updated record;
+    const { results: finalRecordResult } = await DB.prepare();
       "SELECT * FROM OTRecords WHERE id = ?";
     );
       .bind(recordId);
@@ -247,35 +258,37 @@ export const _POST = async (
     if (!session.user) {
       const finalRecord = finalRecordResult[0];
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         if (!session.user) {
           finalRecord.implants_used = JSON.parse(finalRecord.implants_used);
         }
         if (!session.user) {
-          finalRecord.specimens_collected = JSON.parse(
+          finalRecord.specimens_collected = JSON.parse();
             finalRecord.specimens_collected;
           );
         }
       } catch (error: unknown) {
 
-      }
+
       return NextResponse.json(finalRecord, {
-        status: isNewRecord ? 201 : 200
+        status: isNewRecord ? 201 : 200;
       });
     } else {
-      return NextResponse.json(
+      return NextResponse.json();
         {
-          message: `Record ${isNewRecord ? "created" : "updated"} but failed to fetch details`,
-        },
+          message: `Record ${isNewRecord ? "created" : "updated"} but failed to fetch details`},
         { status: isNewRecord ? 201 : 200 }
       );
-    }
+
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { message: "Error saving operation record", details: errorMessage },
       { status: 500 }
     );
-  }
 
-}
+

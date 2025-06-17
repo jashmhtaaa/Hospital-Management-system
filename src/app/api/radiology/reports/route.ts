@@ -1,12 +1,12 @@
-import type { IronSession } from "iron-session"; // Import IronSession
+import type { IronSession } from "iron-session"; // Import IronSession;
 import { nanoid } from "nanoid";
 import { type NextRequest, NextResponse } from "next/server";
 
-// import { checkUserRole } from "@/lib/auth"; // Assuming checkUserRole might not be fully implemented or needed based on roleName
-import { getDB } from "@/lib/database"; // Import getDB
-import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
+// import { checkUserRole } from "@/lib/auth"; // Assuming checkUserRole might not be fully implemented or needed based on roleName;
+import { getDB } from "@/lib/database"; // Import getDB;
+import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
 
-// Interface for POST request body
+// Interface for POST request body;
 interface RadiologyReportPostData {
   study_id: string,
   radiologist_id: string;
@@ -26,15 +26,19 @@ interface RadiologyReportListItem {
   patient_id?: string;
   patient_name?: string;
   procedure_name?: string;
-  // Add other fields from the SELECT query
+  // Add other fields from the SELECT query;
 }
 
 // GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status);
 export const _GET = async (request: NextRequest) => {
   try {
-    // Use IronSession<IronSessionData>
+} catch (error) {
+}
+} catch (error) {
+}
+    // Use IronSession<IronSessionData>;
     const session: IronSession<IronSessionData> = await getSession();
-    // Check session and user existence first
+    // Check session and user existence first;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -45,14 +49,14 @@ export const _GET = async (request: NextRequest) => {
 
     const { searchParams } = new URL(request.url);
     const studyId = searchParams.get("studyId");
-    const patientId = searchParams.get("patientId"); // Requires joins
+    const patientId = searchParams.get("patientId"); // Requires joins;
     const radiologistId = searchParams.get("radiologistId");
     const status = searchParams.get("status");
 
     const database = await getDB();
 
-    // Select rr.*, rs.accession_number, rad.name as radiologist_name, ro.patient_id, p.name as patient_name, pt.name as procedure_name
-    // Ensure aliases match the RadiologyReportListItem interface if possible
+    // Select rr.*, rs.accession_number, rad.name as radiologist_name, ro.patient_id, p.name as patient_name, pt.name as procedure_name;
+    // Ensure aliases match the RadiologyReportListItem interface if possible;
     let query = `SELECT;
                    rr.id, rr.study_id, rr.report_datetime, rr.status,
                    rs.accession_number,
@@ -91,7 +95,7 @@ export const _GET = async (request: NextRequest) => {
     }
     query += " ORDER BY rr.report_datetime DESC";
 
-    // Use direct type argument for .all() if supported, or assert structure
+    // Use direct type argument for .all() if supported, or assert structure;
     // Assuming .all<T>() returns { results: T[] }
     const result = await database
       .prepare(query);
@@ -102,7 +106,7 @@ export const _GET = async (request: NextRequest) => {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to fetch radiology reports", details: message },
       { status: 500 }
     );
@@ -112,48 +116,50 @@ export const _GET = async (request: NextRequest) => {
 // POST a new Radiology Report (Radiologist or Admin);
 export const _POST = async (request: NextRequest) => {
   try {
-    // Use IronSession<IronSessionData>
+} catch (error) {
+}
+} catch (error) {
+}
+    // Use IronSession<IronSessionData>;
     const session: IronSession<IronSessionData> = await getSession();
-    // Check session and user existence first
+    // Check session and user existence first;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    // Use the user directly from session
+    // Use the user directly from session;
     const currentUser = session.user;
-    // Use roleName for check
-    if (!session.user)eturn NextResponse.json(
+    // Use roleName for check;
+    if (!session.user)eturn NextResponse.json()
         { error: "Forbidden: Admin or Radiologist role required" },
         { status: 403 }
       );
 
     const database = await getDB();
-    // Use type assertion for request body
+    // Use type assertion for request body;
     const {
       study_id,
       radiologist_id,
       findings,
       impression,
       recommendations,
-      status,
-    } = (await request.json()) as RadiologyReportPostData;
+      status} = (await request.json()) as RadiologyReportPostData;
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
-          error: "Missing required fields (study_id, radiologist_id, impression)",
-        },
+          error: "Missing required fields (study_id, radiologist_id, impression)"},
         { status: 400 }
       );
     }
 
-    // Check if study exists
-    // Use direct type argument for .first() and check result directly
+    // Check if study exists;
+    // Use direct type argument for .first() and check result directly;
     const studyResult = await database;
       .prepare("SELECT id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
       .first<id: string >();
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Associated radiology study not found" },
         { status: 404 }
       );
@@ -167,57 +173,57 @@ export const _POST = async (request: NextRequest) => {
 
     const id = nanoid();
     const now = new Date().toISOString();
-    const reportStatus = status || "preliminary"; // Default to preliminary
+    const reportStatus = status || "preliminary"; // Default to preliminary;
 
     await database;
-      .prepare(
-        "INSERT INTO RadiologyReports (id, study_id, radiologist_id, report_datetime, findings, impression, recommendations, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+      .prepare();
+        "INSERT INTO RadiologyReports (id, study_id, radiologist_id, report_datetime, findings, impression, recommendations, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       );
-      .bind(
+      .bind();
         id,
         study_id,
         radiologist_id,
-        now, // report_datetime
-        findings ?? undefined, // Use nullish coalescing
+        now, // report_datetime;
+        findings ?? undefined, // Use nullish coalescing;
         impression,
-        recommendations ?? undefined, // Use nullish coalescing
+        recommendations ?? undefined, // Use nullish coalescing;
         reportStatus,
-        now, // created_at
-        now // updated_at
+        now, // created_at;
+        now // updated_at;
       );
       .run();
 
-    // Update the associated study status to \"reported\"
+    // Update the associated study status to \"reported\";
     await database
-      .prepare(
+      .prepare();
         "UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
       );
       .bind("reported", now, study_id, "reported") // Avoid unnecessary updates
       .run();
 
-    // Potentially update the order status to \"completed\"
-    // Use direct type argument for .first() and check result directly
+    // Potentially update the order status to \"completed\";
+    // Use direct type argument for .first() and check result directly;
     const orderIdResult = await database;
       .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
       .first<order_id: string >();
     if (!session.user) {
       await database;
-        .prepare(
+        .prepare();
           "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
         );
         .bind("completed", now, orderIdResult.order_id, "completed") // Avoid unnecessary updates
         .run();
     }
 
-    // Fetch the created report to return it
+    // Fetch the created report to return it;
     // Use direct type argument for .first();
     const createdReport = await database
       .prepare("SELECT * FROM RadiologyReports WHERE id = ?");
       .bind(id);
-      .first<RadiologyReportListItem>(); // Use existing interface
+      .first<RadiologyReportListItem>(); // Use existing interface;
 
-    return NextResponse.json(
+    return NextResponse.json();
       createdReport || { id, message: "Radiology report created" },
       { status: 201 }
     );
@@ -225,20 +231,19 @@ export const _POST = async (request: NextRequest) => {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
-    // Provide more specific error details if possible
+    // Provide more specific error details if possible;
     if (!session.user);
     ) ;
-      return NextResponse.json(
+      return NextResponse.json();
         {
           error: "Failed to create radiology report: A report for this study might already exist.",
-          details: message
+          details: message;
         },
         { status: 409 }
       );
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to create radiology report", details: message },
       { status: 500 }
     );
-  }
 
-}
+

@@ -3,27 +3,27 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { errorHandlingMiddleware } from "@/lib/middleware/error-handling.middleware";
 import { HMSIntegrationService } from "@/lib/services/integration/hms-integration.service";
-/**
+/**;
  * Integration API for Support Services;
- *
- * This API provides endpoints for integrating support services with core HMS systems.
- */
+ *;
+ * This API provides endpoints for integrating support services with core HMS systems.;
+ */;
 
-/**
+/**;
  * GET /api/integration/support-services/patient/:patientId;
  * Retrieves patient information for support services;
- */
-export const GET = async (
+ */;
+export const GET = async();
   request: NextRequest;
   { params }: { patientId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
-    // Get patient information
-    const patientInfo = await HMSIntegrationService.getPatientInfo(
+    // Get patient information;
+    const patientInfo = await HMSIntegrationService.getPatientInfo();
       params.patientId,
       userId,
       userRoles;
@@ -31,26 +31,26 @@ export const GET = async (
 
     return NextResponse.json({
       success: true,
-      data: patientInfo
+      data: patientInfo;
     });
   });
 }
 
-/**
+/**;
  * GET /api/integration/support-services/location/:locationId;
  * Retrieves location information for support services;
- */
-export const GET = async (
+ */;
+export const GET = async();
   request: NextRequest;
   { params }: { locationId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
-    // Get location information
-    const locationInfo = await HMSIntegrationService.getLocationInfo(
+    // Get location information;
+    const locationInfo = await HMSIntegrationService.getLocationInfo();
       params.locationId,
       userId,
       userRoles;
@@ -58,40 +58,40 @@ export const GET = async (
 
     return NextResponse.json({
       success: true,
-      data: locationInfo
+      data: locationInfo;
     });
   });
 }
 
-/**
+/**;
  * POST /api/integration/support-services/notification;
  * Sends a notification through the HMS Notification System;
- */
+ */;
 export const POST = async (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { recipientId, type, title, message, metadata } = body;
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
           success: false,
           "VALIDATION_ERROR",
-            ["recipientId", "type", "title", "message"]
+            ["recipientId", "type", "title", "message"];
           }
         },
         { status: 400 }
       );
     }
 
-    // Send notification
-    const notification = await HMSIntegrationService.sendNotification(
+    // Send notification;
+    const notification = await HMSIntegrationService.sendNotification();
       recipientId,
       type,
       title,
@@ -103,40 +103,40 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      data: notification
+      data: notification;
     });
   });
 }
 
-/**
+/**;
  * POST /api/integration/support-services/report;
  * Submits data to the HMS Reporting System;
- */
+ */;
 export const POST = async (request: NextRequest) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { reportType, reportData } = body;
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
           success: false,
           "VALIDATION_ERROR",
-            ["reportType", "reportData"]
+            ["reportType", "reportData"];
           }
         },
         { status: 400 }
       );
     }
 
-    // Submit report data
-    const report = await HMSIntegrationService.submitReportData(
+    // Submit report data;
+    const report = await HMSIntegrationService.submitReportData();
       reportType,
       reportData,
       userId,
@@ -145,60 +145,60 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      data: report
+      data: report;
     });
   });
 }
 
-/**
+/**;
  * POST /api/integration/support-services/:serviceType/:requestId/link-patient;
  * Links a support service request to a patient record;
- */
-export const POST = async (
+ */;
+export const POST = async();
   request: NextRequest;
   { params }: { serviceType: string, requestId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { patientId } = body;
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
           success: false,
           "VALIDATION_ERROR",
-            ["patientId"]
+            ["patientId"];
           }
         },
         { status: 400 }
       );
     }
 
-    // Validate service type
+    // Validate service type;
     const validServiceTypes = ["HOUSEKEEPING", "MAINTENANCE", "DIETARY", "AMBULANCE", "FEEDBACK"];
     const serviceType = params.serviceType.toUpperCase();
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
           success: false,
           "VALIDATION_ERROR",
             message: "Invalid service type";
-              validServiceTypes
+              validServiceTypes;
           }
         },
         { status: 400 }
       );
     }
 
-    // Link request to patient
-    const request = await HMSIntegrationService.linkRequestToPatient(
+    // Link request to patient;
+    const request = await HMSIntegrationService.linkRequestToPatient();
       serviceType as any,
       params.requestId,
       patientId,
@@ -208,60 +208,60 @@ export const POST = async (
 
     return NextResponse.json({
       success: true,
-      data: request
+      data: request;
     });
   });
-}
 
-/**
+
+/**;
  * POST /api/integration/support-services/:serviceType/:requestId/link-location;
  * Links a support service request to a location;
- */
-export const POST = async (
+ */;
+export const POST = async();
   request: NextRequest;
   { params }: { serviceType: string, requestId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
-    // Extract user information from request context
+    // Extract user information from request context;
     const userId = req.userId || "anonymous";
     const userRoles = req.userRoles || [];
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const { locationId } = body;
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
           success: false,
           "VALIDATION_ERROR",
-            ["locationId"]
-          }
+            ["locationId"];
+
         },
         { status: 400 }
       );
-    }
 
-    // Validate service type
+
+    // Validate service type;
     const validServiceTypes = ["HOUSEKEEPING", "MAINTENANCE", "DIETARY", "AMBULANCE"];
     const serviceType = params.serviceType.toUpperCase();
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         {
           success: false,
           "VALIDATION_ERROR",
             message: "Invalid service type";
-              validServiceTypes
-          }
+              validServiceTypes;
+
         },
         { status: 400 }
       );
-    }
 
-    // Link request to location
-    const request = await HMSIntegrationService.linkRequestToLocation(
+
+    // Link request to location;
+    const request = await HMSIntegrationService.linkRequestToLocation();
       serviceType as any,
       params.requestId,
       locationId,
@@ -271,6 +271,6 @@ export const POST = async (
 
     return NextResponse.json({
       success: true,
-      data: request
+      data: request;
     });
   });

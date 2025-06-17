@@ -3,7 +3,7 @@ import { z } from "zod";
 
 
 import { employeeService } from "@/lib/hr/employee-service";
-// Schema for employee creation
+// Schema for employee creation;
 const createEmployeeSchema = z.object({
   employeeId: z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
@@ -19,27 +19,26 @@ const createEmployeeSchema = z.object({
   userId: z.string().optional(),
   photo: z.string().optional(),
   emergencyContact: z.any().optional(),
-  qualifications: z.array(
+  qualifications: z.array();
     z.object({
       code: z.string(),
       name: z.string(),
       issuer: z.string().optional(),
       identifier: z.string().optional(),
       startDate: z.string().transform(val => ,
-      z.string().optional()
+      z.string().optional();
     });
   ).optional(),
-  positions: z.array(
+  positions: z.array();
     z.object({
       positionId: z.string(),
       isPrimary: z.boolean(),
       startDate: z.string().transform(val => ,
-      endDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
+      endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
     });
-  ).optional(),
-});
+  ).optional()});
 
-// Schema for employee update
+// Schema for employee update;
 const _updateEmployeeSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
@@ -53,12 +52,16 @@ const _updateEmployeeSchema = z.object({
   photo: z.string().optional(),
   emergencyContact: z.any().optional(),
   active: z.boolean().optional(),
-  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
+  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
 });
 
-// GET /api/hr/staff
+// GET /api/hr/staff;
 export const _GET = async (request: NextRequest) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const { searchParams } = new URL(request.url);
 
     const skip = Number.parseInt(searchParams.get("skip") || "0");
@@ -66,7 +69,7 @@ export const _GET = async (request: NextRequest) => {
     const departmentId = searchParams.get("departmentId") || undefined;
     const positionId = searchParams.get("positionId") || undefined;
     const search = searchParams.get("search") || undefined;
-    const active = searchParams.get("active") !== "false"; // Default to true
+    const active = searchParams.get("active") !== "false"; // Default to true;
 
     const result = await employeeService.listEmployees({
       skip,
@@ -74,45 +77,48 @@ export const _GET = async (request: NextRequest) => {
       departmentId,
       positionId,
       search,
-      active,
-    });
+      active});
 
     return NextResponse.json(result);
   } catch (error: unknown) {
 
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to list employees", details: error.message },
       { status: 500 }
     );
   }
 }
 
-// POST /api/hr/staff
+// POST /api/hr/staff;
 export const _POST = async (request: NextRequest) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const body = await request.json();
 
-    // Validate request body
+    // Validate request body;
     const validatedData = createEmployeeSchema.parse(body);
 
-    // Create employee
+    // Create employee;
     const employee = await employeeService.createEmployee(validatedData);
 
     return NextResponse.json(employee, { status: 201 });
   } catch (error: unknown) {
 
-    // Handle validation errors
+    // Handle validation errors;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Validation error", details: error.errors },
         { status: 400 }
       );
-    }
 
-    return NextResponse.json(
+
+    return NextResponse.json();
       { error: "Failed to create employee", details: error.message },
       { status: 500 }
     );
-  }
 
-}
+
+})))

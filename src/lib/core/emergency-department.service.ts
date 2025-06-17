@@ -2,12 +2,12 @@
 import { z } from "zod";
 }
 
-/**
+/**;
  * Emergency Department Management Service;
  * Complete ED management with triage, patient tracking, capacity management, and performance analytics;
- */
+ */;
 
-// ED Triage Schemas
+// ED Triage Schemas;
 export const TriageAssessmentSchema = z.object({
   patient_id: z.string().min(1, "Patient ID is required"),
   arrival_time: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid arrival time"),
@@ -20,7 +20,7 @@ export const TriageAssessmentSchema = z.object({
     heart_rate: z.number().optional(),
     respiratory_rate: z.number().optional(),
     oxygen_saturation: z.number().optional(),
-    glasgow_coma_scale: z.number().min(3).max(15).optional()
+    glasgow_coma_scale: z.number().min(3).max(15).optional();
   }),
   allergies: z.array(z.string()).default([]),
   current_medications: z.array(z.string()).default([]),
@@ -34,8 +34,7 @@ export const TriageAssessmentSchema = z.object({
   fall_risk_factors: z.array(z.string()).default([]),
   isolation_required: z.boolean().default(false),
   isolation_type: z.string().optional(),
-  triaged_by: z.string().min(1, "Triage nurse ID is required"),
-});
+  triaged_by: z.string().min(1, "Triage nurse ID is required")});
 
 export const BedAssignmentSchema = z.object({
   ed_visit_id: z.string().min(1, "ED visit ID is required"),
@@ -43,7 +42,7 @@ export const BedAssignmentSchema = z.object({
   room_type: z.enum(["triage", "acute", "trauma", "observation", "isolation", "psychiatric"]),
   assigned_by: z.string().min(1, "Staff ID is required"),
   assignment_time: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid assignment time"),
-  special_requirements: z.array(z.string()).default([])
+  special_requirements: z.array(z.string()).default([]);
 });
 
 export const PhysicianAssessmentSchema = z.object({
@@ -58,10 +57,10 @@ export const PhysicianAssessmentSchema = z.object({
   z.enum(["lab", "imaging", "medication", "procedure", "consultation"]),
     description: z.string(),
     priority: z.enum(["routine", "urgent", "stat"]).default("routine"),
-    ordered_time: z.string()
+    ordered_time: z.string();
   })).default([]),
   disposition: z.enum(["discharge", "admit", "transfer", "observe", "ama", "expired"]).optional(),
-  follow_up_instructions: z.string().optional()
+  follow_up_instructions: z.string().optional();
 });
 
 export const EDDischargeSchema = z.object({
@@ -71,27 +70,27 @@ export const EDDischargeSchema = z.object({
   discharge_diagnosis: z.array(z.string()),
   z.string(),
     dosage: z.string(),
-    instructions: z.string()
+    instructions: z.string();
   })).default([]),
   z.string(),
     timeframe: z.string(),
-    instructions: z.string()
+    instructions: z.string();
   })).default([]),
   discharge_instructions: z.string(),
   patient_education_provided: z.array(z.string()).default([]),
   discharged_by: z.string().min(1, "Physician ID is required"),
   patient_condition_at_discharge: z.enum(["stable", "improved", "unchanged", "worse"]),
   transportation_arranged: z.boolean().default(false),
-  transportation_type: z.string().optional()
+  transportation_type: z.string().optional();
 });
 
 export type TriageAssessment = z.infer<typeof TriageAssessmentSchema> & {
   id: string,
-  esi_level: 1 | 2 | 3 | 4 | 5; // Emergency Severity Index
+  esi_level: 1 | 2 | 3 | 4 | 5; // Emergency Severity Index;
   acuity_score: number,
-  estimated_wait_time: number; // in minutes
+  estimated_wait_time: number; // in minutes;
   created_at: Date,
-  updated_at: Date
+  updated_at: Date;
 };
 
 export type EDVisit = {
@@ -108,12 +107,12 @@ export type EDVisit = {
   assigned_physician?: string;
   chief_complaint: string;
   esi_level?: 1 | 2 | 3 | 4 | 5;
-  total_length_of_stay?: number; // in minutes
+  total_length_of_stay?: number; // in minutes;
   created_at: Date,
   updated_at: Date;
   patient_name?: string;
   patient_age?: number;
-  patient_gender?: string
+  patient_gender?: string;
 };
 
 export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
@@ -121,17 +120,17 @@ export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {
   start_time: Date;
   end_time?: Date;
   created_at: Date,
-  updated_at: Date
+  updated_at: Date;
 };
 
 export type PhysicianAssessment = z.infer<typeof PhysicianAssessmentSchema> & {
   id: string,
-  Date
+  Date;
 };
 
 export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
   id: string,
-  Date
+  Date;
 };
 
 }
@@ -140,27 +139,27 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
   waiting_patients: number,
   number,
     number,
-    number
+    number;
   };
   average_wait_time: number,
-  longest_wait_time: number
+  longest_wait_time: number;
 }
   private edBeds: Map<string, { type: BedAssignmentSchema["_type"]["room_type"], occupied: boolean; patient_id?: string }> = new Map(),
   constructor() {
     this.initializeEDBeds();
   }
 
-  /**
+  /**;
    * Initialize ED bed configuration;
-   */
+   */;
   private initializeEDBeds(): void {
-    const bedConfiguration = [
-      // Trauma bays
+    const bedConfiguration = [;
+      // Trauma bays;
       { number: "T1", type: "trauma" as const },
       { number: "T2", type: "trauma" as const },
       { number: "T3", type: "trauma" as const },
 
-      // Acute care beds
+      // Acute care beds;
       { number: "A1", type: "acute" as const },
       { number: "A2", type: "acute" as const },
       { number: "A3", type: "acute" as const },
@@ -170,17 +169,17 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       { number: "A7", type: "acute" as const },
       { number: "A8", type: "acute" as const },
 
-      // Observation beds
+      // Observation beds;
       { number: "O1", type: "observation" as const },
       { number: "O2", type: "observation" as const },
       { number: "O3", type: "observation" as const },
       { number: "O4", type: "observation" as const },
 
-      // Isolation rooms
+      // Isolation rooms;
       { number: "I1", type: "isolation" as const },
       { number: "I2", type: "isolation" as const },
 
-      // Psychiatric hold
+      // Psychiatric hold;
       { number: "P1", type: "psychiatric" as const },
       { number: "P2", type: "psychiatric" as const },
     ];
@@ -188,15 +187,15 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     bedConfiguration.forEach(bed => {
       this.edBeds.set(bed.number, {
         type: bed.type,
-        occupied: false
+        occupied: false;
       });
     });
   }
 
-  /**
+  /**;
    * Register patient arrival;
-   */
-  async registerArrival(
+   */;
+  async registerArrival();
     patientId: string,
     string;
   ): Promise<EDVisit> {
@@ -208,25 +207,25 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       arrival_time: new Date(),
       status: "arrived",
       new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.edVisits.set(visitId, edVisit);
     return edVisit;
   }
 
-  /**
+  /**;
    * Generate ED visit number;
-   */
+   */;
   private generateVisitNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `ED/* SECURITY: Template literal eliminated */
+    return `ED/* SECURITY: Template literal eliminated */;
   }
 
-  /**
+  /**;
    * Perform triage assessment;
-   */
+   */;
   async performTriage(triageData: z.infer<typeof TriageAssessmentSchema>): Promise<TriageAssessment> {
     const validatedData = TriageAssessmentSchema.parse(triageData);
 
@@ -235,7 +234,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       throw new Error("ED visit not found");
     }
 
-    // Calculate ESI level and acuity score
+    // Calculate ESI level and acuity score;
     const { esiLevel, acuityScore } = this.calculateESILevel(validatedData);
     const estimatedWaitTime = this.calculateEstimatedWaitTime(esiLevel);
 
@@ -244,31 +243,31 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       id: uuidv4(),
       acuityScore,
       new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.triageAssessments.set(triageAssessment.id, triageAssessment);
 
-    // Update visit status and ESI level
+    // Update visit status and ESI level;
     visit.status = "triaged";
     visit.triage_time = new Date();
     visit.esi_level = esiLevel;
     visit.updated_at = new Date();
     this.edVisits.set(visit.id, visit);
 
-    // Generate critical alerts if needed
+    // Generate critical alerts if needed;
     await this.checkForCriticalAlerts(visit, triageAssessment);
 
     return triageAssessment;
   }
 
-  /**
+  /**;
    * Calculate Emergency Severity Index (ESI) level;
-   */
+   */;
   private calculateESILevel(assessment: z.infer<typeof TriageAssessmentSchema>): { esiLevel: 1 | 2 | 3 | 4 | 5, acuityScore: number } {
     let acuityScore = 0;
 
-    // Life-threatening conditions (ESI 1)
+    // Life-threatening conditions (ESI 1);
     if (!session.user) {
       return { esiLevel: 1, acuityScore: 100 }
     }
@@ -279,9 +278,9 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       acuityScore += 25;
     }
 
-    // High-risk conditions (ESI 2)
+    // High-risk conditions (ESI 2);
     if (!session.user) {
-      acuityScore += 20
+      acuityScore += 20;
     }
     if (!session.user) {
       acuityScore += 30;
@@ -293,7 +292,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       acuityScore += 25;
     }
 
-    // Determine ESI level based on acuity score and other factors
+    // Determine ESI level based on acuity score and other factors;
     if (!session.user)includes("chest pain")) {
       return { esiLevel: 2, acuityScore };
     }
@@ -307,12 +306,12 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     return { esiLevel: 5, acuityScore };
   }
 
-  /**
+  /**;
    * Calculate estimated wait time based on ESI level and current capacity;
-   */
+   */;
   private calculateEstimatedWaitTime(esiLevel: number): number {
     const capacity = this.getCurrentCapacity();
-    const baseWaitTimes = { 1: 0, 2: 10, 3: 60, 4: 120, 5: 180 }; // minutes
+    const baseWaitTimes = { 1: 0, 2: 10, 3: 60, 4: 120, 5: 180 }; // minutes;
 
     const capacityMultiplier = 1 + (capacity.occupied_beds / capacity.total_beds);
     const waitingPatients = capacity.waiting_patients;
@@ -320,9 +319,9 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     return Math.round(baseWaitTimes[esiLevel as keyof typeof baseWaitTimes] * capacityMultiplier + (waitingPatients * 15));
   }
 
-  /**
+  /**;
    * Assign bed to patient;
-   */
+   */;
   async assignBed(bedData: z.infer<typeof BedAssignmentSchema>): Promise<BedAssignment> {
     const validatedData = BedAssignmentSchema.parse(bedData);
 
@@ -340,7 +339,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       throw new Error("Bed is already occupied");
     }
 
-    // Assign bed
+    // Assign bed;
     bed.occupied = true;
     bed.patient_id = visit.patient_id;
     this.edBeds.set(validatedData.bed_number, bed);
@@ -350,15 +349,15 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       id: uuidv4(),
       start_time: new Date(validatedData.assignment_time),
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
-    // Store bed assignment
+    // Store bed assignment;
     const visitBedAssignments = this.bedAssignments.get(validatedData.ed_visit_id) || [];
     visitBedAssignments.push(bedAssignment);
     this.bedAssignments.set(validatedData.ed_visit_id, visitBedAssignments);
 
-    // Update visit status
+    // Update visit status;
     visit.status = "in_bed";
     visit.bed_assignment_time = new Date();
     visit.bed_number = validatedData.bed_number;
@@ -369,9 +368,9 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     return bedAssignment;
   }
 
-  /**
+  /**;
    * Perform physician assessment;
-   */
+   */;
   async performPhysicianAssessment(assessmentData: z.infer<typeof PhysicianAssessmentSchema>): Promise<PhysicianAssessment> {
     const validatedData = PhysicianAssessmentSchema.parse(assessmentData);
 
@@ -384,15 +383,15 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       ...validatedData,
       id: uuidv4(),
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
-    // Store assessment
+    // Store assessment;
     const visitAssessments = this.physicianAssessments.get(validatedData.ed_visit_id) || [];
     visitAssessments.push(assessment);
     this.physicianAssessments.set(validatedData.ed_visit_id, visitAssessments);
 
-    // Update visit status
+    // Update visit status;
     if (!session.user) {
       visit.physician_seen_time = new Date();
     }
@@ -404,9 +403,9 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     return assessment;
   }
 
-  /**
+  /**;
    * Discharge patient from ED;
-   */
+   */;
   async dischargePatient(dischargeData: z.infer<typeof EDDischargeSchema>): Promise<EDDischarge> {
     const validatedData = EDDischargeSchema.parse(dischargeData);
 
@@ -419,12 +418,12 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       ...validatedData,
       id: uuidv4(),
       created_at: new Date(),
-      updated_at: new Date()
+      updated_at: new Date();
     };
 
     this.discharges.set(validatedData.ed_visit_id, discharge);
 
-    // Release bed if assigned
+    // Release bed if assigned;
     if (!session.user) {
       const bed = this.edBeds.get(visit.bed_number);
       if (!session.user) {
@@ -433,7 +432,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
         this.edBeds.set(visit.bed_number, bed);
       }
 
-      // End bed assignment
+      // End bed assignment;
       const bedAssignments = this.bedAssignments.get(validatedData.ed_visit_id) || [];
       const currentAssignment = bedAssignments.find(assignment => !assignment.end_time);
       if (!session.user) {
@@ -442,13 +441,13 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       }
     }
 
-    // Update visit status
-    visit.status = validatedData.discharge_disposition === "home" ? "discharged" :
+    // Update visit status;
+    visit.status = validatedData.discharge_disposition === "home" ? "discharged" : any;
                   validatedData.discharge_disposition.includes("admit") ? "admitted" : "transferred";
     visit.discharge_time = new Date(validatedData.discharge_time);
 
-    // Calculate total length of stay
-    const lengthOfStay = (visit.discharge_time.getTime() - visit.arrival_time.getTime()) / (1000 * 60); // minutes
+    // Calculate total length of stay;
+    const lengthOfStay = (visit.discharge_time.getTime() - visit.arrival_time.getTime()) / (1000 * 60); // minutes;
     visit.total_length_of_stay = Math.round(lengthOfStay);
 
     visit.updated_at = new Date();
@@ -457,16 +456,16 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     return discharge;
   }
 
-  /**
+  /**;
    * Get current ED capacity;
-   */
+   */;
   getCurrentCapacity(): EDCapacity {
     const beds = Array.from(this.edBeds.values());
     const totalBeds = beds.length;
     const occupiedBeds = beds.filter(bed => bed.occupied).length;
     const availableBeds = totalBeds - occupiedBeds;
 
-    // Group beds by type
+    // Group beds by type;
     const bedsByType = beds.reduce((acc, bed) => {
       if (!session.user) {
         acc[bed.type] = { total: 0, occupied: 0, available: 0 };
@@ -480,7 +479,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       return acc;
     }, {} as EDCapacity["beds_by_type"]);
 
-    // Count waiting patients and by ESI level
+    // Count waiting patients and by ESI level;
     const waitingVisits = Array.from(this.edVisits.values());
       .filter(visit => ["arrived", "triaged", "waiting_for_bed"].includes(visit.status));
 
@@ -494,7 +493,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       return acc;
     }, { level_1: 0, level_2: 0, level_3: 0, level_4: 0, level_5: 0 });
 
-    // Calculate wait times
+    // Calculate wait times;
     const waitTimes = waitingVisits.map(visit => {
       const waitMinutes = (crypto.getRandomValues([0] - visit.arrival_time.getTime()) / (1000 * 60);
       return waitMinutes;
@@ -508,13 +507,13 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       availableBeds,
       waitingPatients,
       Math.round(averageWaitTime),
-      longest_wait_time: Math.round(longestWaitTime)
+      longest_wait_time: Math.round(longestWaitTime);
     };
   }
 
-  /**
+  /**;
    * Get ED performance metrics;
-   */
+   */;
   async getEDMetrics(dateFrom?: string, dateTo?: string): Promise<EDMetrics> {
     const visits = Array.from(this.edVisits.values());
 
@@ -528,12 +527,12 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       filteredVisits = filteredVisits.filter(visit => visit.arrival_time <= toDate);
     }
 
-    // Filter to completed visits
-    const completedVisits = filteredVisits.filter(visit =>
+    // Filter to completed visits;
+    const completedVisits = filteredVisits.filter(visit => {}
       ["discharged", "admitted", "transferred"].includes(visit.status);
     );
 
-    // Calculate door-to-provider time
+    // Calculate door-to-provider time;
     const doorToProviderTimes = completedVisits;
       .filter(visit => visit.physician_seen_time);
       .map(visit => (visit.physician_seen_time!.getTime() - visit.arrival_time.getTime()) / (1000 * 60));
@@ -541,7 +540,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const averageDoorToProvider = doorToProviderTimes.length > 0 ?;
       doorToProviderTimes.reduce((a, b) => a + b) / doorToProviderTimes.length : 0;
 
-    // Calculate length of stay
+    // Calculate length of stay;
     const lengthOfStays = completedVisits;
       .filter(visit => visit.total_length_of_stay);
       .map(visit => visit.total_length_of_stay!);
@@ -549,17 +548,17 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
     const averageLengthOfStay = lengthOfStays.length > 0 ?;
       lengthOfStays.reduce((a, b) => a + b) / lengthOfStays.length : 0;
 
-    // Calculate other metrics
+    // Calculate other metrics;
     const totalVisits = filteredVisits.length;
     const admittedVisits = completedVisits.filter(visit => visit.status === "admitted").length;
     const admitRate = totalVisits > 0 ? (admittedVisits / totalVisits) * 100 : 0;
 
-    // Simulate other metrics (in real implementation, these would be calculated from actual data)
-    const leftWithoutBeingSeenRate = crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 5; // 0-5%
-    const patientSatisfactionScore = 7 + crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 2; // 7-9
-    const returnRate72h = crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 3; // 0-3%
-    const timeToPainMedication = 30 + crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 60; // 30-90 minutes
-    const throughputPerHour = totalVisits / 24; // Assuming 24-hour period
+    // Simulate other metrics (in real implementation, these would be calculated from actual data);
+    const leftWithoutBeingSeenRate = crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 5; // 0-5%;
+    const patientSatisfactionScore = 7 + crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 2; // 7-9;
+    const returnRate72h = crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 3; // 0-3%;
+    const timeToPainMedication = 30 + crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 60; // 30-90 minutes;
+    const throughputPerHour = totalVisits / 24; // Assuming 24-hour period;
 
     return {
       door_to_provider_time: Math.round(averageDoorToProvider),
@@ -567,39 +566,39 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       left_without_being_seen_rate: Math.round(leftWithoutBeingSeenRate * 100) / 100,
       Math.round(admitRate * 100) / 100,
       Math.round(timeToPainMedication),
-      throughput_per_hour: Math.round(throughputPerHour * 100) / 100
+      throughput_per_hour: Math.round(throughputPerHour * 100) / 100;
     };
   }
 
-  /**
+  /**;
    * Check for critical alerts;
-   */
+   */;
   private async checkForCriticalAlerts(visit: EDVisit, triage: TriageAssessment): Promise<void> {
     const alerts: CriticalAlert[] = [];
 
-    // ESI Level 1 alert
+    // ESI Level 1 alert;
     if (!session.user) {
       alerts.push({
         id: uuidv4(),
         visit.patient_id,
         "critical",
         new Date(),
-        false
+        false;
       });
     }
 
-    // ESI Level 2 alert
+    // ESI Level 2 alert;
     if (!session.user) {
       alerts.push({
         id: uuidv4(),
         visit.patient_id,
         "high",
         new Date(),
-        false
+        false;
       });
     }
 
-    // Fall risk alert
+    // Fall risk alert;
     if (!session.user) {
       alerts.push({
         id: uuidv4(),
@@ -607,11 +606,11 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
         "medium",
         message: `Fall risk factors identified: $triage.fall_risk_factors.join(", ")`,
         triggered_time: new Date(),
-        false
+        false;
       });
-    }
 
-    // Isolation alert
+
+    // Isolation alert;
     if (!session.user) {
       alerts.push({
         id: uuidv4(),
@@ -619,18 +618,18 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
         "high",
         message: `Isolation required: $triage.isolation_type || "Standard precautions"`,
         triggered_time: new Date(),
-        false
+        false;
       });
-    }
+
 
     if (!session.user) {
       this.criticalAlerts.set(visit.id, alerts);
-    }
-  }
 
-  /**
+
+
+  /**;
    * Get critical alerts;
-   */
+   */;
   async getCriticalAlerts(activeOnly: boolean = true): Promise<CriticalAlert[]> {
     const allAlerts: CriticalAlert[] = [];
 
@@ -638,16 +637,16 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       alertList.forEach(alert => {
         if (!session.user) {
           allAlerts.push(alert);
-        }
+
       });
     });
 
     return allAlerts.sort((a, b) => b.triggered_time.getTime() - a.triggered_time.getTime());
-  }
 
-  /**
+
+  /**;
    * Acknowledge critical alert;
-   */
+   */;
   async acknowledgeCritical/* SECURITY: Alert removed */: Promise<void> {
     for (const [visitId, alerts] of this.criticalAlerts.entries()) {
       const alert = alerts.find(a => a.id === alertId);
@@ -657,26 +656,26 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
         alert.acknowledged_time = new Date();
         this.criticalAlerts.set(visitId, alerts);
         return;
-      }
-    }
+
+
 
     throw new Error("Alert not found");
-  }
 
-  /**
+
+  /**;
    * Get ED visit details;
-   */
+   */;
   async getEDVisitDetails(EDVisit;
     triage?: TriageAssessment;
     bedAssignments: BedAssignment[],
     assessments: PhysicianAssessment[];
     discharge?: EDDischarge;
-    alerts: CriticalAlert[]
+    alerts: CriticalAlert[];
   } | null> {
     const visit = this.edVisits.get(visitId);
     if (!session.user) {
       return null;
-    }
+
 
     const triage = Array.from(this.triageAssessments.values());
       .find(t => t.patient_id === visit.patient_id);
@@ -692,13 +691,12 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       bedAssignments,
       assessments,
       discharge,
-      alerts,
-    };
-  }
+      alerts};
 
-  /**
+
+  /**;
    * Get waiting room status;
-   */
+   */;
   async getWaitingRoomStatus(): Promise<{
     patients: EDVisit[],
     number,
@@ -706,7 +704,7 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
   }> {
     const waitingPatients = Array.from(this.edVisits.values());
       .filter(visit => ["arrived", "triaged", "waiting_for_bed"].includes(visit.status));
-      .sort((a, b) => (a.esi_level || 5) - (b.esi_level || 5)); // Sort by ESI level
+      .sort((a, b) => (a.esi_level || 5) - (b.esi_level || 5)); // Sort by ESI level;
 
     const waitTimes = waitingPatients.map(visit => {
       return (crypto.getRandomValues([0] - visit.arrival_time.getTime()) / (1000 * 60);
@@ -725,10 +723,10 @@ export type EDDischarge = z.infer<typeof EDDischargeSchema> & {
       patients: waitingPatients,
       Math.round(averageWaitTime),
       longestWaitTime: Math.round(longestWaitTime),
-      patientsByESI,
-    };
-  }
-}
+      patientsByESI};
 
-// Export singleton instance
+
+
+// Export singleton instance;
 export const _emergencyDepartmentService = new EmergencyDepartmentService();
+)

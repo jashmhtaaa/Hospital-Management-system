@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-// Interface for the request body when creating a reference range
+// Interface for the request body when creating a reference range;
 interface ReferenceRangeCreateBody {
   test_id: number;
   gender?: "male" | "female" | "other" | "unknown";
@@ -19,30 +19,34 @@ interface ReferenceRangeCreateBody {
   critical_high?: number;
 }
 
-// GET /api/diagnostics/lab/reference-ranges - Get reference ranges
+// GET /api/diagnostics/lab/reference-ranges - Get reference ranges;
 export const _GET = async (request: NextRequest) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication
+    // Check authentication;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Parse query parameters
+    // Parse query parameters;
     const { searchParams } = new URL(request.url);
     const testId = searchParams.get("testId");
     const gender = searchParams.get("gender");
 
-    // Validate required parameters
+    // Validate required parameters;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Test ID is required" },
         { status: 400 }
       );
     }
 
-    // Build query
+    // Build query;
     let query = `;
       SELECT;
         r.*,
@@ -63,7 +67,7 @@ export const _GET = async (request: NextRequest) => {
       parameters.push(gender);
     }
 
-    // Execute query
+    // Execute query;
     const rangesResult = await DB.query(query, parameters);
     const ranges = rangesResult.results || [];
 
@@ -71,62 +75,66 @@ export const _GET = async (request: NextRequest) => {
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to fetch reference ranges", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// POST /api/diagnostics/lab/reference-ranges - Create a new reference range
+// POST /api/diagnostics/lab/reference-ranges - Create a new reference range;
 export const _POST = async (request: NextRequest) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only lab managers and admins can create reference ranges
+    // Only lab managers and admins can create reference ranges;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json() as ReferenceRangeCreateBody;
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Test ID is required" },
         { status: 400 }
       );
     }
 
-    // Validate that either numeric values or text value is provided
+    // Validate that either numeric values or text value is provided;
     if (!session.user)|;
       (body?.text_value && (body.value_low !== undefined || body.value_high !== undefined));
     ) ;
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Either numeric range values or text value must be provided, but not both" },
         { status: 400 }
       );
 
-    // Check if test exists
-    const testCheckResult = await DB.query(
+    // Check if test exists;
+    const testCheckResult = await DB.query();
       "SELECT id FROM lab_tests WHERE id = ?",
-      [body.test_id]
+      [body.test_id];
     );
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Test not found" },
         { status: 404 }
       );
     }
 
-    // Check for overlapping ranges
+    // Check for overlapping ranges;
     if (!session.user) {
       const overlapCheckQuery = `;
         SELECT id FROM lab_test_reference_ranges;
@@ -145,7 +153,7 @@ export const _POST = async (request: NextRequest) => {
           );
       `;
 
-      const overlapCheckParams = [
+      const overlapCheckParams = [;
         body.test_id,
         body.gender, body.gender,
         body.age_low, body.age_high,
@@ -159,22 +167,22 @@ export const _POST = async (request: NextRequest) => {
       const overlapResult = await DB.query(overlapCheckQuery, overlapCheckParams);
 
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Reference range overlaps with existing ranges" },
           { status: 400 }
         );
       }
     }
 
-    // Insert reference range
+    // Insert reference range;
     const insertQuery = `;
-      INSERT INTO lab_test_reference_ranges (
+      INSERT INTO lab_test_reference_ranges();
         test_id, gender, age_low, age_high, value_low, value_high,
         text_value, unit, interpretation, is_critical, critical_low, critical_high;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
-    const insertParameters = [
+    const insertParameters = [;
       body.test_id,
       body.gender || null,
       body.age_low || null,
@@ -192,7 +200,7 @@ export const _POST = async (request: NextRequest) => {
     const result = await DB.query(insertQuery, insertParameters);
     const rangeId = result.insertId;
 
-    // Fetch the created reference range
+    // Fetch the created reference range;
     const fetchQuery = `;
       SELECT;
         r.*,
@@ -213,46 +221,50 @@ export const _POST = async (request: NextRequest) => {
       throw new Error("Failed to retrieve created reference range");
     }
 
-    // Return the created reference range
+    // Return the created reference range;
     return NextResponse.json(range, { status: 201 });
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to create reference range", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// PUT /api/diagnostics/lab/reference-ranges/:id - Update a reference range
-export const _PUT = async (
+// PUT /api/diagnostics/lab/reference-ranges/:id - Update a reference range;
+export const _PUT = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only lab managers and admins can update reference ranges
+    // Only lab managers and admins can update reference ranges;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     const rangeId = params.id;
 
-    // Check if reference range exists
-    const checkResult = await DB.query(
+    // Check if reference range exists;
+    const checkResult = await DB.query();
       "SELECT id, test_id FROM lab_test_reference_ranges WHERE id = ?",
-      [rangeId]
+      [rangeId];
     );
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Reference range not found" },
         { status: 404 }
       );
@@ -260,15 +272,15 @@ export const _PUT = async (
 
     const _existingRange = checkResult.results[0];
 
-    // Parse request body
-    const body = await request.json() as Partial>
+    // Parse request body;
+    const body = await request.json() as Partial>;
 
-    // Validate that either numeric values or text value is provided if both are included in the update
+    // Validate that either numeric values or text value is provided if both are included in the update;
     if (!session.user) {
-      // Get current values for fields not included in the update
-      const currentResult = await DB.query(
+      // Get current values for fields not included in the update;
+      const currentResult = await DB.query();
         "SELECT value_low, value_high, text_value FROM lab_test_reference_ranges WHERE id = ?",
-        [rangeId]
+        [rangeId];
       );
 
       const current = currentResult.results?.[0];
@@ -280,18 +292,18 @@ export const _PUT = async (
       if (!session.user)|;
         (updatedTextValue && (updatedValueLow !== null || updatedValueHigh !== null));
       ) ;
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Either numeric range values or text value must be provided, but not both" },
           { status: 400 }
         );
     }
 
-    // Check for overlapping ranges if age or gender criteria are being updated
+    // Check for overlapping ranges if age or gender criteria are being updated;
     if (!session.user) {
-      // Get current values for fields not included in the update
-      const currentResult = await DB.query(
+      // Get current values for fields not included in the update;
+      const currentResult = await DB.query();
         "SELECT test_id, gender, age_low, age_high FROM lab_test_reference_ranges WHERE id = ?",
-        [rangeId]
+        [rangeId];
       );
 
       const current = currentResult.results?.[0];
@@ -319,7 +331,7 @@ export const _PUT = async (
           );
       `;
 
-      const overlapCheckParams = [
+      const overlapCheckParams = [;
         testId, rangeId,
         gender, gender,
         ageLow, ageHigh,
@@ -333,27 +345,27 @@ export const _PUT = async (
       const overlapResult = await DB.query(overlapCheckQuery, overlapCheckParams);
 
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Reference range overlaps with existing ranges" },
           { status: 400 }
         );
       }
     }
 
-    // Build update query
+    // Build update query;
     let updateQuery = "UPDATE lab_test_reference_ranges SET ";
     const updateFields: string[] = [];
     const updateParameters: unknown[] = [];
 
     if (!session.user) {
-      // Check if test exists
-      const testCheckResult = await DB.query(
+      // Check if test exists;
+      const testCheckResult = await DB.query();
         "SELECT id FROM lab_tests WHERE id = ?",
-        [body.test_id]
+        [body.test_id];
       );
 
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Test not found" },
           { status: 404 }
         );
@@ -418,9 +430,9 @@ export const _PUT = async (
       updateParameters.push(body.critical_high || null);
     }
 
-    // Only proceed if there are fields to update
+    // Only proceed if there are fields to update;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "No fields to update" },
         { status: 400 }
       );
@@ -429,10 +441,10 @@ export const _PUT = async (
     updateQuery += updateFields.join(", ") + " WHERE id = ?";
     updateParameters.push(rangeId);
 
-    // Execute update
+    // Execute update;
     await DB.query(updateQuery, updateParameters);
 
-    // Fetch the updated reference range
+    // Fetch the updated reference range;
     const fetchQuery = `;
       SELECT;
         r.*,
@@ -453,67 +465,70 @@ export const _PUT = async (
       throw new Error("Failed to retrieve updated reference range");
     }
 
-    // Return the updated reference range
+    // Return the updated reference range;
     return NextResponse.json(range);
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to update reference range", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// DELETE /api/diagnostics/lab/reference-ranges/:id - Delete a reference range
-export const DELETE = async (
+// DELETE /api/diagnostics/lab/reference-ranges/:id - Delete a reference range;
+export const DELETE = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
 
-    // Check authentication and authorization
+    // Check authentication and authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Only lab managers and admins can delete reference ranges
+    // Only lab managers and admins can delete reference ranges;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
+
 
     const rangeId = params.id;
 
-    // Check if reference range exists
-    const checkResult = await DB.query(
+    // Check if reference range exists;
+    const checkResult = await DB.query();
       "SELECT id FROM lab_test_reference_ranges WHERE id = ?",
-      [rangeId]
+      [rangeId];
     );
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Reference range not found" },
         { status: 404 }
       );
-    }
 
-    // Delete the reference range
-    await DB.query(
+
+    // Delete the reference range;
+    await DB.query();
       "DELETE FROM lab_test_reference_ranges WHERE id = ?",
-      [rangeId]
+      [rangeId];
     );
 
     return NextResponse.json({
-      message: "Reference range deleted successfully"
+      message: "Reference range deleted successfully";
     });
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to delete reference range", details: errorMessage },
       { status: 500 }
     );
-  }
 
-}
+

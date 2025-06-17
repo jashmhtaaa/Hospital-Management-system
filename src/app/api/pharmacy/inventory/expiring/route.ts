@@ -6,14 +6,14 @@ import { errorHandler } from "../../../../../lib/error-handler";
 import { FHIRMapper } from "../../../models/fhir-mappers";
 }
 
-/**
+/**;
  * Expiring Medications API Routes;
- *
+ *;
  * This file implements the API endpoints for retrieving medications approaching expiry;
- * with filtering and alerting capabilities.
- */
+ * with filtering and alerting capabilities.;
+ */;
 
-// Initialize repositories (in production, use dependency injection)
+// Initialize repositories (in production, use dependency injection);
 const inventoryRepository = {
   findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
@@ -22,25 +22,29 @@ const inventoryRepository = {
   findExpiring: (daysThreshold: number) => Promise.resolve([]),
   save: (item: unknown) => Promise.resolve(item.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true);
 }
 
-/**
+/**;
  * GET /api/pharmacy/inventory/expiring;
  * List medications approaching expiry date;
- */
+ */;
 export const GET = async (req: NextRequest) => {
   try {
-    // Check authorization
+} catch (error) {
+}
+} catch (error) {
+}
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user from auth token (simplified for example)
-    const userId = "current-user-id"; // In production, extract from token
+    // Get user from auth token (simplified for example);
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
     const daysThreshold = Number.parseInt(url.searchParams.get("daysThreshold") || "90", 10);
     const locationId = url.searchParams.get("locationId");
@@ -48,15 +52,15 @@ export const GET = async (req: NextRequest) => {
     const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
-    // Build filter criteria
+    // Build filter criteria;
     const filter: unknown = { daysThreshold };
     if (!session.user)ilter.locationId = locationId;
     if (!session.user)ilter.medicationId = medicationId;
 
-    // Get expiring inventory items
+    // Get expiring inventory items;
     const expiringItems = await inventoryRepository.findExpiring(daysThreshold);
 
-    // Apply additional filters
+    // Apply additional filters;
     let filteredItems = expiringItems;
     if (!session.user) {
       filteredItems = filteredItems.filter(item => item.locationId === locationId);
@@ -67,13 +71,13 @@ export const GET = async (req: NextRequest) => {
 
     const total = filteredItems.length;
 
-    // Apply pagination
+    // Apply pagination;
     const paginatedItems = filteredItems.slice((page - 1) * limit, page * limit);
 
-    // Map to FHIR resources
+    // Map to FHIR resources;
     const fhirInventoryItems = paginatedItems.map(FHIRMapper.toFHIRInventoryItem);
 
-    // Group by expiry timeframe for reporting
+    // Group by expiry timeframe for reporting;
     const expiryGroups = {
       expired: filteredItems.filter(item => new Date(item.expiryDate) < .length,
       next30Days: filteredItems.filter(item => {
@@ -89,14 +93,14 @@ export const GET = async (req: NextRequest) => {
         const ninetyDaysFromNow = new Date();
         ninetyDaysFromNow.setDate(ninetyDaysFromNow.getDate() + 90);
         return expiryDate > thirtyDaysFromNow && expiryDate <= ninetyDaysFromNow;
-      }).length
+      }).length;
     };
 
-    // Audit logging
+    // Audit logging;
     await auditLog("INVENTORY", {
       action: "LIST_EXPIRING",
       userId,
-      details: 
+      details: null,
         daysThreshold,
         filter,
         page,
@@ -105,16 +109,17 @@ export const GET = async (req: NextRequest) => {
         expiryGroups;
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({
       items: fhirInventoryItems;
       expiryGroups,
-      pagination: 
+      pagination: null,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit);
     }, { status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving expiring medications");
-  }
+
+)

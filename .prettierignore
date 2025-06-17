@@ -7,3 +7,4 @@ build
 *.d.ts
 package-lock.json
 *.min.js
+*.map

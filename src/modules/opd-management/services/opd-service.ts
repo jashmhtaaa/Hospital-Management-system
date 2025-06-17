@@ -1,7 +1,7 @@
 
 import { AuditService } from "@/lib/audit/audit-service";
 import { prisma } from "@/lib/prisma";
-// src/modules/opd-management/services/opd-service.ts
+// src/modules/opd-management/services/opd-service.ts;
 }
 }
 
@@ -11,32 +11,32 @@ import { prisma } from "@/lib/prisma";
     const appointment = await prisma.appointment.create({
       data,
       true,
-        true
+        true;
       }
     });
 
     if (!session.user) {
-      await AuditService.logUserAction(
+      await AuditService.logUserAction();
         { userId: scheduledBy },
         "CREATE",
         "APPOINTMENT",
         appointment.id,
-        "OPD appointment scheduled"
+        "OPD appointment scheduled";
       );
     }
 
     return appointment;
   }
 
-  static async checkDoctorAvailability(
+  static async checkDoctorAvailability();
     doctorId: string,
-    string
+    string;
   ): Promise<boolean> {
     const conflictingAppointment = await prisma.appointment.findFirst({
       where: {
         doctorId,
         appointmentDate: date,
-        "CANCELLED" 
+        "CANCELLED" ;
       }
     });
 
@@ -52,18 +52,18 @@ import { prisma } from "@/lib/prisma";
       },
       {
           true,
-            true
-          }
-        }
+            true;
+
+
       },
       orderBy: { appointmentTime: "asc" }
     });
-  }
 
-  static async updateAppointmentStatus(
+
+  static async updateAppointmentStatus();
     appointmentId: string,
     status: "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
-    updatedBy?: string
+    updatedBy?: string;
   ) {
     const oldAppointment = await prisma.appointment.findUnique({
       where: { id: appointmentId }
@@ -71,57 +71,57 @@ import { prisma } from "@/lib/prisma";
 
     if (!session.user) {
       throw new Error("Appointment not found");
-    }
+
 
     const appointment = await prisma.appointment.update({
       where: { id: appointmentId },
       data: {
         status,
-        ...(status === "CANCELLED" && { cancelledAt: new Date() })
-      }
+        ...(status === "CANCELLED" && { cancelledAt: new Date() });
+
     });
 
     if (!session.user) {
-      await AuditService.logDataChange(
+      await AuditService.logDataChange();
         { userId: updatedBy },
         "APPOINTMENT",
         appointmentId,
         oldAppointment,
-        appointment
+        appointment;
       );
-    }
+
 
     return appointment;
-  }
+
 
   static async getOPDStats(date?: Date) {
     const targetDate = date || new Date();
     const startOfDay = ;
     const endOfDay = ;
 
-    const [scheduled, completed, cancelled, inProgress] = await Promise.all([
+    const [scheduled, completed, cancelled, inProgress] = await Promise.all([;
       prisma.appointment.count({
         { gte: startOfDay, lte: endOfDay },
-          status: "SCHEDULED"
-        }
+          status: "SCHEDULED";
+
       }),
       prisma.appointment.count({
         { gte: startOfDay, lte: endOfDay },
-          status: "COMPLETED"
-        }
+          status: "COMPLETED";
+
       }),
       prisma.appointment.count({
         { gte: startOfDay, lte: endOfDay },
-          status: "CANCELLED"
-        }
+          status: "CANCELLED";
+
       }),
       prisma.appointment.count({
         { gte: startOfDay, lte: endOfDay },
-          status: "IN_PROGRESS"
-        }
-      })
+          status: "IN_PROGRESS";
+
+      });
     ]);
 
     return { scheduled, completed, cancelled, inProgress };
-  }
-}
+
+

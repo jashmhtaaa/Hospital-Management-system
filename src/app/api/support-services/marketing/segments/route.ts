@@ -7,18 +7,18 @@ import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { SegmentService } from "@/lib/services/support-services/marketing";
 const segmentService = new SegmentService();
 
-/**
+/**;
  * GET /api/support-services/marketing/segments;
  * Get all segments with optional filtering;
- */
+ */;
 export const GET = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
-      // Parse query parameters
+      // Parse query parameters;
       const filters = {
         isActive: searchParams.has("isActive");
           ? searchParams.get("isActive") === "true";
@@ -29,8 +29,7 @@ export const GET = async (request: NextRequest) => {
           : 1,
         limit: searchParams.has("limit");
           ? parseInt(searchParams.get("limit") || "10", 10);
-          : 10,
-      };
+          : 10};
 
       const result = await segmentService.getSegments(filters);
 
@@ -38,23 +37,23 @@ export const GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: "marketing.segments.read",
-      auditAction: "SEGMENTS_LIST"
+      auditAction: "SEGMENTS_LIST";
     }
   );
 }
 
-/**
+/**;
  * POST /api/support-services/marketing/segments;
  * Create a new segment;
- */
+ */;
 export const POST = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
-      const segment = await segmentService.createSegment(
+      const segment = await segmentService.createSegment();
         data,
         session?.user?.id as string;
       );
@@ -63,7 +62,7 @@ export const POST = async (request: NextRequest) => {
     },
     {
       requiredPermission: "marketing.segments.create",
-      auditAction: "SEGMENT_CREATE"
+      auditAction: "SEGMENT_CREATE";
     }
   );
 

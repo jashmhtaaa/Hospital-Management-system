@@ -7,15 +7,15 @@ import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { ContactService } from "@/lib/services/support-services/marketing";
 const contactService = new ContactService();
 
-/**
+/**;
  * GET /api/support-services/marketing/contacts/:id;
  * Get a specific contact by ID;
- */
-export const GET = async (
+ */;
+export const GET = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
@@ -29,26 +29,26 @@ export const GET = async (
     },
     {
       requiredPermission: "marketing.contacts.read",
-      auditAction: "CONTACT_VIEW"
+      auditAction: "CONTACT_VIEW";
     }
   );
 }
 
-/**
+/**;
  * PUT /api/support-services/marketing/contacts/:id;
  * Update a specific contact;
- */
-export const PUT = async (
+ */;
+export const PUT = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
-      const contact = await contactService.updateContact(
+      const contact = await contactService.updateContact();
         params.id,
         data,
         session?.user?.id as string;
@@ -58,33 +58,33 @@ export const PUT = async (
     },
     {
       requiredPermission: "marketing.contacts.update",
-      auditAction: "CONTACT_UPDATE"
+      auditAction: "CONTACT_UPDATE";
     }
   );
 }
 
-/**
+/**;
  * POST /api/support-services/marketing/contacts/:id/notes;
  * Add a note to a specific contact;
- */
-export const POST = async (
+ */;
+export const POST = async();
   request: NextRequest;
   { params }: { id: string }
 ) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { content } = await req.json();
 
       if (!session.user) {
-        return NextResponse.json(
+        return NextResponse.json();
           { error: "Note content is required" },
           { status: 400 }
         );
       }
 
-      const note = await contactService.addContactNote(
+      const note = await contactService.addContactNote();
         params.id,
         content,
         session?.user?.id as string;
@@ -94,7 +94,7 @@ export const POST = async (
     },
     {
       requiredPermission: "marketing.contacts.update",
-      auditAction: "CONTACT_NOTE_ADD"
+      auditAction: "CONTACT_NOTE_ADD";
     }
   );
 

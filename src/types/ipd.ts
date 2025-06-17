@@ -1,5 +1,1 @@
-}
-
-// src/types/ipd.ts
-
-}
+// src/types/ipd.ts;

@@ -15,11 +15,11 @@ import { useToast } from "@/hooks/use-toast";
 import type { Patient } from "@/types/patient";
 }
 
-// src/app/dashboard/patients/[id]/edit/page.tsx
+// src/app/dashboard/patients/[id]/edit/page.tsx;
 "use client";
 export const dynamic = "force-dynamic";
 
-// Re-use or import the schema if defined elsewhere
+// Re-use or import the schema if defined elsewhere;
 const PatientUpdateSchema = z.object({
     first_name: z.string().min(1).optional(),
     last_name: z.string().min(1).optional(),
@@ -40,10 +40,10 @@ const PatientUpdateSchema = z.object({
     past_medical_history: z.string().optional(),
     current_medications: z.string().optional(),
     insurance_provider: z.string().optional(),
-    insurance_policy_number: z.string().optional()
+    insurance_policy_number: z.string().optional();
 }).partial().refine(obj => Object.keys(obj).length > 0, { message: "At least one field must be provided for update" });
 
-type FormData = Partial> // Use Partial<Patient> for form state
+type FormData = Partial> // Use Partial<Patient> for form state;
 
 export default const _EditPatientPage = () {
   const params = useParams();
@@ -52,7 +52,7 @@ export default const _EditPatientPage = () {
   const patientId = params.id as string;
 
   const [formData, setFormData] = useState<FormData>({});
-  const [isLoading, setIsLoading] = useState(true); // Start loading initially to fetch data
+  const [isLoading, setIsLoading] = useState(true); // Start loading initially to fetch data;
   const [isSaving, setIsSaving] = useState(false);
   const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
@@ -60,24 +60,28 @@ export default const _EditPatientPage = () {
       setIsLoading(true),
       setErrors([]);
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         const response = await fetch(`/api/patients/${}`;
         if (!session.user) {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch patient details");
         }
         const data: Patient = await response.json();
-        // Format date for input type="date"
+        // Format date for input type="date";
         const formattedData = {
             ...data,
-            date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : ""
+            date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "";
         }
         setFormData(formattedData);
-      } catch (err: unknown) { // Use unknown
+      } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
         toast({
           title: "Error Fetching Patient",
-          "destructive"
+          "destructive";
         });
       } finally {
         setIsLoading(false);
@@ -92,11 +96,11 @@ export default const _EditPatientPage = () {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -104,31 +108,31 @@ export default const _EditPatientPage = () {
     setIsSaving(true);
     setErrors([]);
 
-    // Prepare only changed fields for update
-    // This requires comparing formData with the initially fetched data, which adds complexity.
-    // For simplicity, we send all fields and let the backend handle it, or use a library like react-hook-form.
-    // Here, we will send the current formData, assuming the schema allows partial updates.
+    // Prepare only changed fields for update;
+    // This requires comparing formData with the initially fetched data, which adds complexity.;
+    // For simplicity, we send all fields and let the backend handle it, or use a library like react-hook-form.;
+    // Here, we will send the current formData, assuming the schema allows partial updates.;
 
-    const validation = PatientUpdateSchema.safeParse(formData)
+    const validation = PatientUpdateSchema.safeParse(formData);
 
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsSaving(false);
       toast({
         title: "Validation Error",
-        "destructive"
+        "destructive";
       });
       return;
     }
 
-    const dataToSend: Partial<Patient> = {}; // Initialize empty object
+    const dataToSend: Partial<Patient> = {}; // Initialize empty object;
     for (const key in validation.data) {
         if (!session.user) {
             const typedKey = key as keyof Patient;
             const value = formData[typedKey];
-            // Only include defined, non-null values that are part of the validated data
+            // Only include defined, non-null values that are part of the validated data;
             if (!session.user) {
-                 (dataToSend as Record<string, unknown>)[typedKey] = value; // Use Record<string, unknown> instead of any
+                 (dataToSend as Record<string, unknown>)[typedKey] = value; // Use Record<string, unknown> instead of any;
             }
         }
     }
@@ -140,12 +144,15 @@ export default const _EditPatientPage = () {
     }
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch(`/api/patients/${patientId}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend)
+          "Content-Type": "application/json"},
+        body: JSON.stringify(dataToSend);
       });
 
       const result: { error?: string } = await response.json();
@@ -156,208 +163,209 @@ export default const _EditPatientPage = () {
 
       toast({
         title: "Patient Updated",
-        description: `/* SECURITY: Template literal eliminated */
+        description: `/* SECURITY: Template literal eliminated */;
       });
 
-      router.push(`/dashboard/patients/${}`; // Redirect back to patient detail view
+      router.push(`/dashboard/patients/${}`; // Redirect back to patient detail view;
 
-    } catch (err: unknown) { // Use unknown
+    } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
         title: "Update Failed",
-        "destructive"
+        "destructive";
       });
     } finally {
       setIsSaving(false);
-    }
+
   };
 
   const getError = (fieldName: keyof FormData | "form") => {
-    return errors.find((err) => err.path[0] === fieldName)?.message
+    return errors.find((err) => err.path[0] === fieldName)?.message;
   };
 
   if (!session.user) {
-    return <DashboardLayout><p>Loading patient data for editing...</p>>
-  }
+    return <DashboardLayout><p>Loading patient data for editing...</p>>;
 
-  return (
-    <DashboardLayout>
-      >
-        <h1 className="text-2xl font-semibold">Edit Patient: {formData.first_name} {formData.last_name}>
-        >
+
+  return();
+    <DashboardLayout>;
+      >;
+        <h1 className="text-2xl font-semibold">Edit Patient: {formData.first_name} {formData.last_name}>;
+        >;
           {/* Reuse the form structure from AddPatientPage, but bind values and handle changes */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Patient Demographics</CardTitle>
-            </CardHeader>
-            >
-<div
-                <Label htmlFor="first_name">First Name *>
+          <Card>;
+            <CardHeader>;
+              <CardTitle>Patient Demographics</CardTitle>;
+            </CardHeader>;
+            >;
+<div;
+                <Label htmlFor="first_name">First Name *>;
                 <Input id="first_name" name="first_name" value={formData.first_name ||;
-                  ""} onChange={handleChange} required disabled={isSaving} />
+                  ""} onChange={handleChange} required disabled={isSaving} />;
                 {getError("first_name") && <p className="text-sm text-red-500 mt-1">{getError("first_name")}</p>}
-              </div>
-<div
-                <Label htmlFor="last_name">Last Name *>
+              </div>;
+<div;
+                <Label htmlFor="last_name">Last Name *>;
                 <Input id="last_name" name="last_name" value={formData.last_name ||;
-                  ""} onChange={handleChange} required disabled={isSaving} />
+                  ""} onChange={handleChange} required disabled={isSaving} />;
                  {getError("last_name") && <p className="text-sm text-red-500 mt-1">{getError("last_name")}</p>}
-             </div>
-<div
-                <Label htmlFor="date_of_birth">Date of Birth *>
+             </div>;
+<div;
+                <Label htmlFor="date_of_birth">Date of Birth *>;
                 <Input id="date_of_birth" name="date_of_birth" type="date" value={formData.date_of_birth ||;
-                  ""} onChange={handleChange} required disabled={isSaving} />
+                  ""} onChange={handleChange} required disabled={isSaving} />;
                  {getError("date_of_birth") && <p className="text-sm text-red-500 mt-1">{getError("date_of_birth")}</p>}
-             </div>
-<div
-                <Label htmlFor="gender">Gender *>
+             </div>;
+<div;
+                <Label htmlFor="gender">Gender *>;
                 <Select name="gender" value={formData.gender ||;
-                  ""} onValueChange={(value) => handleSelectChange("gender", value)} required disabled={isSaving}>
-                  >
-                    <SelectValue placeholder="Select gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Male">Male>
-                    <SelectItem value="Female">Female>
-                    <SelectItem value="Other">Other>
-                    <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>
-                  </SelectContent>
-                </Select>
+                  ""} onValueChange={(value) => handleSelectChange("gender", value)} required disabled={isSaving}>;
+                  >;
+                    <SelectValue placeholder="Select gender" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    <SelectItem value="Male">Male>;
+                    <SelectItem value="Female">Female>;
+                    <SelectItem value="Other">Other>;
+                    <SelectItem value="Prefer not to say">Prefer not to say</SelectItem>;
+                  </SelectContent>;
+                </Select>;
                  {getError("gender") && <p className="text-sm text-red-500 mt-1">{getError("gender")}</p>}
-             </div>
-            </CardContent>
-          </Card>
+             </div>;
+            </CardContent>;
+          </Card>;
 
-          >
-            <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
-            </CardHeader>
-            >
-<div
-                <Label htmlFor="phone_number">Phone Number *>
+          >;
+            <CardHeader>;
+              <CardTitle>Contact Information</CardTitle>;
+            </CardHeader>;
+            >;
+<div;
+                <Label htmlFor="phone_number">Phone Number *>;
                 <Input id="phone_number" name="phone_number" type="tel" value={formData.phone_number ||;
-                  ""} onChange={handleChange} required disabled={isSaving} />
+                  ""} onChange={handleChange} required disabled={isSaving} />;
                  {getError("phone_number") && <p className="text-sm text-red-500 mt-1">{getError("phone_number")}</p>}
-             </div>
-<div
-                <Label htmlFor="email">Email>
+             </div>;
+<div;
+                <Label htmlFor="email">Email>;
                 <Input id="email" name="email" type="email" value={formData.email ||;
-                  ""} onChange={handleChange} disabled={isSaving} />
+                  ""} onChange={handleChange} disabled={isSaving} />;
                  {getError("email") && <p className="text-sm text-red-500 mt-1">{getError("email")}</p>}
-             </div>
-              >
-                <Label htmlFor="address_line1">Address Line 1>
+             </div>;
+              >;
+                <Label htmlFor="address_line1">Address Line 1>;
                 <Input id="address_line1" name="address_line1" value={formData.address_line1 ||;
-                  ""} onChange={handleChange} disabled={isSaving} />
-              </div>
-              >
-                <Label htmlFor="address_line2">Address Line 2>
+                  ""} onChange={handleChange} disabled={isSaving} />;
+              </div>;
+              >;
+                <Label htmlFor="address_line2">Address Line 2>;
                 <Input id="address_line2" name="address_line2" value={formData.address_line2 ||;
-                  ""} onChange={handleChange} disabled={isSaving} />
-              </div>
-<div
-                <Label htmlFor="city">City>
-                <Input id="city" name="city" value={formData.city || ""} onChange={handleChange} disabled={isSaving} />
-              </div>
-<div
-                <Label htmlFor="state">State>
+                  ""} onChange={handleChange} disabled={isSaving} />;
+              </div>;
+<div;
+                <Label htmlFor="city">City>;
+                <Input id="city" name="city" value={formData.city || ""} onChange={handleChange} disabled={isSaving} />;
+              </div>;
+<div;
+                <Label htmlFor="state">State>;
                 <Input id="state" name="state" value={formData.state ||;
-                  ""} onChange={handleChange} disabled={isSaving} />
-              </div>
-<div
-                <Label htmlFor="postal_code">Postal Code>
+                  ""} onChange={handleChange} disabled={isSaving} />;
+              </div>;
+<div;
+                <Label htmlFor="postal_code">Postal Code>;
                 <Input id="postal_code" name="postal_code" value={formData.postal_code ||;
-                  ""} onChange={handleChange} disabled={isSaving} />
-              </div>
-<div
-                <Label htmlFor="country">Country>
+                  ""} onChange={handleChange} disabled={isSaving} />;
+              </div>;
+<div;
+                <Label htmlFor="country">Country>;
                 <Input id="country" name="country" value={formData.country ||;
-                  ""} onChange={handleChange} disabled={isSaving} />
-              </div>
-            </CardContent>
-          </Card>
+                  ""} onChange={handleChange} disabled={isSaving} />;
+              </div>;
+            </CardContent>;
+          </Card>;
 
-           >
-            <CardHeader>
-              <CardTitle>Emergency Contact</CardTitle>
-            </CardHeader>
-            >
-<div
-                    <Label htmlFor="emergency_contact_name">Name>
+           >;
+            <CardHeader>;
+              <CardTitle>Emergency Contact</CardTitle>;
+            </CardHeader>;
+            >;
+<div;
+                    <Label htmlFor="emergency_contact_name">Name>;
                     <Input id="emergency_contact_name" name="emergency_contact_name" value={formData.emergency_contact_name ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-<div
-                    <Label htmlFor="emergency_contact_relation">Relation>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+<div;
+                    <Label htmlFor="emergency_contact_relation">Relation>;
                     <Input id="emergency_contact_relation" name="emergency_contact_relation" value={formData.emergency_contact_relation ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-<div
-                    <Label htmlFor="emergency_contact_phone">Phone>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+<div;
+                    <Label htmlFor="emergency_contact_phone">Phone>;
                     <Input id="emergency_contact_phone" name="emergency_contact_phone" type="tel" value={formData.emergency_contact_phone ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-            </CardContent>
-           </Card>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+            </CardContent>;
+           </Card>;
 
-           >
-            <CardHeader>
-              <CardTitle>Medical Information</CardTitle>
-            </CardHeader>
-            >
-<div
-                    <Label htmlFor="blood_group">Blood Group>
+           >;
+            <CardHeader>;
+              <CardTitle>Medical Information</CardTitle>;
+            </CardHeader>;
+            >;
+<div;
+                    <Label htmlFor="blood_group">Blood Group>;
                     <Input id="blood_group" name="blood_group" value={formData.blood_group ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-                 >
-                    <Label htmlFor="allergies">Allergies>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+                 >;
+                    <Label htmlFor="allergies">Allergies>;
                     <Textarea id="allergies" name="allergies" value={formData.allergies ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-                 >
-                    <Label htmlFor="past_medical_history">Past Medical History>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+                 >;
+                    <Label htmlFor="past_medical_history">Past Medical History>;
                     <Textarea id="past_medical_history" name="past_medical_history" value={formData.past_medical_history ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-                 >
-                    <Label htmlFor="current_medications">Current Medications>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+                 >;
+                    <Label htmlFor="current_medications">Current Medications>;
                     <Textarea id="current_medications" name="current_medications" value={formData.current_medications ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-            </CardContent>
-           </Card>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+            </CardContent>;
+           </Card>;
 
-           >
-            <CardHeader>
-              <CardTitle>Insurance Information</CardTitle>
-            </CardHeader>
-            >
-<div
-                    <Label htmlFor="insurance_provider">Provider>
+           >;
+            <CardHeader>;
+              <CardTitle>Insurance Information</CardTitle>;
+            </CardHeader>;
+            >;
+<div;
+                    <Label htmlFor="insurance_provider">Provider>;
                     <Input id="insurance_provider" name="insurance_provider" value={formData.insurance_provider ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-<div
-                    <Label htmlFor="insurance_policy_number">Policy Number>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+<div;
+                    <Label htmlFor="insurance_policy_number">Policy Number>;
                     <Input id="insurance_policy_number" name="insurance_policy_number" value={formData.insurance_policy_number ||;
-                      ""} onChange={handleChange} disabled={isSaving} />
-                 </div>
-            </CardContent>
-           </Card>
+                      ""} onChange={handleChange} disabled={isSaving} />;
+                 </div>;
+            </CardContent>;
+           </Card>;
 
           {getError("form") && <p className="text-sm text-red-500 mt-4">{getError("form")}</p>}
 
-          >
-            <Button type="button" variant="outline" onClick={() => router.back()} disabled={isSaving}>
-              Cancel
-            </Button>
-            >
+          >;
+            <Button type="button" variant="outline" onClick={() => router.back()} disabled={isSaving}>;
+              Cancel;
+            </Button>;
+            >;
               {isSaving ? "Saving Changes..." : "Save Changes"}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </DashboardLayout>
+            </Button>;
+          </div>;
+        </form>;
+      </div>;
+    </DashboardLayout>;
   );
+)

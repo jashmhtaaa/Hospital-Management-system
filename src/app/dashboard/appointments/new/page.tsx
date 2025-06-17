@@ -21,24 +21,24 @@ import type { Patient } from "@/types/patient";
 
 export const dynamic = "force-dynamic";
 
-// Schema for booking validation
+// Schema for booking validation;
 const BookAppointmentSchema = z.object({
-  patient_id: z.string().min(1, "Patient selection is required"), // Use string initially from select
-  doctor_id: z.string().min(1, "Doctor selection is required"),   // Use string initially from select
-  appointment_date: z.string().min(1, "Date is required"), // YYYY-MM-DD
+  patient_id: z.string().min(1, "Patient selection is required"), // Use string initially from select;
+  doctor_id: z.string().min(1, "Doctor selection is required"),   // Use string initially from select;
+  appointment_date: z.string().min(1, "Date is required"), // YYYY-MM-DD;
   appointment_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH: MM format"),
   duration_minutes: z.number().int().positive().optional().default(15),
-  reason: z.string().optional()
+  reason: z.string().optional();
 });
 
-type FormData = z.infer>
+type FormData = z.infer>;
 
 export default const _BookAppointmentPage = () {
   const router = useRouter();
   const { toast } = useToast();
   const [formData, setFormData] = useState<Partial<FormData>>({
-      appointment_date: format(new Date(), "yyyy-MM-dd"), // Default to today
-      appointment_time: "09:00", // Default time
+      appointment_date: format(new Date(), "yyyy-MM-dd"), // Default to today;
+      appointment_time: "09:00", // Default time;
   });
   const [patients, setPatients] = useState<Patient[]>([]);
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -46,12 +46,16 @@ export default const _BookAppointmentPage = () {
   const [isFetchingData, setIsFetchingData] = useState(true);
   const [errors, setErrors] = useState<z.ZodIssue[]>([]);
 
-  // Fetch patients and doctors for dropdowns
+  // Fetch patients and doctors for dropdowns;
   useEffect(() => {
     const fetchData = async () => {
       setIsFetchingData(true);
       try {
-        const [patientsRes, doctorsRes] = await Promise.all([
+} catch (error) {
+}
+} catch (error) {
+}
+        const [patientsRes, doctorsRes] = await Promise.all([;
           fetch("/api/patients"),
           fetch("/api/doctors"),
         ]);
@@ -61,17 +65,17 @@ export default const _BookAppointmentPage = () {
 
         const patientsData: Patient[] = await patientsRes.json(),
         const doctorsData: Doctor[] = await doctorsRes.json(),
-        setPatients(patientsData.filter(p => p.is_active)); // Only show active patients
-        setDoctors(doctorsData); // Assuming API returns doctors linked to active users
+        setPatients(patientsData.filter(p => p.is_active)); // Only show active patients;
+        setDoctors(doctorsData); // Assuming API returns doctors linked to active users;
 
-      } catch (err: unknown) { // Use unknown
+      } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "Could not load patients or doctors.";
         toast({
           title: "Error Fetching Data",
-          "destructive"
+          "destructive";
         }),
         setErrors([code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." ]);
-      } finally 
+      } finally ;
         setIsFetchingData(false);
     };
     fetchData();
@@ -79,11 +83,11 @@ export default const _BookAppointmentPage = () {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -98,143 +102,146 @@ export default const _BookAppointmentPage = () {
       setIsLoading(false);
       toast({
         title: "Validation Error",
-        "destructive"
+        "destructive";
       });
       return;
     }
 
-    // Combine date and time into ISO string
-    const appointmentDateTimeISO = `${validation.data.appointment_date}T${validation.data.appointment_time}:00`; // Assuming local timezone, add Z or offset if needed
+    // Combine date and time into ISO string;
+    const appointmentDateTimeISO = `${validation.data.appointment_date}T${validation.data.appointment_time}:00`; // Assuming local timezone, add Z or offset if needed;
 
     const dataToSend = {
         patient_id: Number.parseInt(validation.data.patient_id, 10),
         doctor_id: Number.parseInt(validation.data.doctor_id, 10),
         appointment_datetime: appointmentDateTimeISO,
-        validation.data.reason
+        validation.data.reason;
     };
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/appointments", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend)
+          "Content-Type": "application/json"},
+        body: JSON.stringify(dataToSend);
       });
 
-      const result: { error?: string } = await response.json(); // Add type annotation
+      const result: { error?: string } = await response.json(); // Add type annotation;
 
       if (!session.user) {
         throw new Error(result.error || "Failed to book appointment");
-      }
+
 
       toast({
         title: "Appointment Booked",
-        description: `Appointment scheduled successfully.`
+        description: `Appointment scheduled successfully.`;
       });
 
-      router.push("/dashboard/appointments"); // Redirect to appointment list
+      router.push("/dashboard/appointments"); // Redirect to appointment list;
 
-    } catch (err: unknown) { // Use unknown
+    } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
       toast({
         title: "Booking Failed",
-        "destructive"
+        "destructive";
       });
     } finally {
       setIsLoading(false);
-    }
+
   };
 
   const getError = (fieldName: keyof FormData | "form") => {
-    return errors.find((err) => err.path[0] === fieldName)?.message
+    return errors.find((err) => err.path[0] === fieldName)?.message;
   };
 
-  return (
-    <DashboardLayout>
-      >
-        <h1 className="text-2xl font-semibold">Book New Appointment>
-        {isFetchingData ? (
-            <p>Loading patient and doctor data...</p>
-        ) : (
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle>Appointment Details</CardTitle>
-            </CardHeader>
-            >
-<div
-                <Label htmlFor="patient_id">Patient *>
-                <Select name="patient_id" onValueChange={(value) => handleSelectChange("patient_id", value)} required disabled={isLoading}>
-                  >
-                    <SelectValue placeholder="Select patient" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {patients.map(p => (
-                        >
-                            {p.first_name} {p.last_name} (ID: {p.patient_id})
-                        </SelectItem>
+  return();
+    <DashboardLayout>;
+      >;
+        <h1 className="text-2xl font-semibold">Book New Appointment>;
+        {isFetchingData ? (;
+            <p>Loading patient and doctor data...</p>;
+        ) : (;
+        >;
+          <Card>;
+            <CardHeader>;
+              <CardTitle>Appointment Details</CardTitle>;
+            </CardHeader>;
+            >;
+<div;
+                <Label htmlFor="patient_id">Patient *>;
+                <Select name="patient_id" onValueChange={(value) => handleSelectChange("patient_id", value)} required disabled={isLoading}>;
+                  >;
+                    <SelectValue placeholder="Select patient" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    {patients.map(p => (;
+                        >;
+                            {p.first_name} {p.last_name} (ID: {p.patient_id});
+                        </SelectItem>;
                     ))}
-                  </SelectContent>
-                </Select>
+                  </SelectContent>;
+                </Select>;
                 {getError("patient_id") && <p className="text-sm text-red-500 mt-1">{getError("patient_id")}</p>}
-              </div>
+              </div>;
 
-<div
-                <Label htmlFor="doctor_id">Doctor *>
-                <Select name="doctor_id" onValueChange={(value) => handleSelectChange("doctor_id", value)} required disabled={isLoading}>
-                  >
-                    <SelectValue placeholder="Select doctor" />
-                  </SelectTrigger>
-                  <SelectContent>
-                     {doctors.map(d => (
-                        >
-                            {d.user?.fullName} ({d.specialty})
-                        </SelectItem>
+<div;
+                <Label htmlFor="doctor_id">Doctor *>;
+                <Select name="doctor_id" onValueChange={(value) => handleSelectChange("doctor_id", value)} required disabled={isLoading}>;
+                  >;
+                    <SelectValue placeholder="Select doctor" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                     {doctors.map(d => (;
+                        >;
+                            {d.user?.fullName} ({d.specialty});
+                        </SelectItem>;
                     ))}
-                  </SelectContent>
-                </Select>
+                  </SelectContent>;
+                </Select>;
                 {getError("doctor_id") && <p className="text-sm text-red-500 mt-1">{getError("doctor_id")}</p>}
-              </div>
+              </div>;
 
-<div
-                <Label htmlFor="appointment_date">Date *>
+<div;
+                <Label htmlFor="appointment_date">Date *>;
                 <Input id="appointment_date" name="appointment_date" type="date" value={formData.appointment_date ||;
-                  ""} onChange={handleChange} required disabled={isLoading} />
-                {getError("appointment_date") &&
+                  ""} onChange={handleChange} required disabled={isLoading} />;
+                {getError("appointment_date") &&;
                   <p className="text-sm text-red-500 mt-1">{getError("appointment_date")}</p>}
-              </div>
+              </div>;
 
-<div
-                <Label htmlFor="appointment_time">Time *>
+<div;
+                <Label htmlFor="appointment_time">Time *>;
                 <Input id="appointment_time" name="appointment_time" type="time" value={formData.appointment_time ||;
-                  ""} onChange={handleChange} required disabled={isLoading} />
-                 {getError("appointment_time") &&
+                  ""} onChange={handleChange} required disabled={isLoading} />;
+                 {getError("appointment_time") &&;
                    <p className="text-sm text-red-500 mt-1">{getError("appointment_time")}</p>}
-             </div>
+             </div>;
 
-              >
-                <Label htmlFor="reason">Reason for Visit>
+              >;
+                <Label htmlFor="reason">Reason for Visit>;
                 <Textarea id="reason" name="reason" value={formData.reason ||;
-                  ""} onChange={handleChange} disabled={isLoading} />
+                  ""} onChange={handleChange} disabled={isLoading} />;
                 {getError("reason") && <p className="text-sm text-red-500 mt-1">{getError("reason")}</p>}
-              </div>
-            </CardContent>
-          </Card>
+              </div>;
+            </CardContent>;
+          </Card>;
 
           {getError("form") && <p className="text-sm text-red-500 mt-4">{getError("form")}</p>}
 
-          >
-            <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
-              Cancel
-            </Button>
-            >
+          >;
+            <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>;
+              Cancel;
+            </Button>;
+            >;
               {isLoading ? "Booking..." : "Book Appointment"}
-            </Button>
-          </div>
-        </form>
+            </Button>;
+          </div>;
+        </form>;
         )}
-      </div>
-    </DashboardLayout>
+      </div>;
+    </DashboardLayout>;
   );

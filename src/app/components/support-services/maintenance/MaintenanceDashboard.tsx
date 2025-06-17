@@ -19,14 +19,12 @@ import { Badge } from "@/components/ui/badge";
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  TableRow} from "@/components/ui/table";
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  SelectValue} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Pagination } from "@/components/ui/pagination";
 import { format } from "date-fns";
@@ -49,30 +47,30 @@ import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Status badge color mapping
+// Status badge color mapping;
 const statusColors: Record<string, string> = {
   "PENDING": "bg-yellow-500",
   "ASSIGNED": "bg-blue-500",
   "IN_PROGRESS": "bg-purple-500",
   "ON_HOLD": "bg-orange-500",
   "COMPLETED": "bg-green-500",
-  "CANCELLED": "bg-gray-500"
+  "CANCELLED": "bg-gray-500";
 };
 
-// Priority badge color mapping
+// Priority badge color mapping;
 const priorityColors: Record<string, string> = {
   "LOW": "bg-blue-500",
   "MEDIUM": "bg-yellow-500",
   "HIGH": "bg-orange-500",
-  "EMERGENCY": "bg-red-500"
+  "EMERGENCY": "bg-red-500";
 };
 
-// Request type icon mapping
+// Request type icon mapping;
 const requestTypeIcons: Record<string, unknown> = {
   "REPAIR": <Wrench className="h-4 w-4 mr-1" />,
   "PREVENTIVE": <Tool className="h-4 w-4 mr-1" />,
   "INSTALLATION": <HardDrive className="h-4 w-4 mr-1" />,
-  "INSPECTION": <Search className="h-4 w-4 mr-1" />
+  "INSPECTION": <Search className="h-4 w-4 mr-1" />;
 };
 
 export const _MaintenanceDashboard = () => {
@@ -93,7 +91,7 @@ export const _MaintenanceDashboard = () => {
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  // Load initial data from URL params
+  // Load initial data from URL params;
   useEffect(() => {
     const tab = searchParams.get("tab") || "all";
     const status = searchParams.get("status") || "";
@@ -112,44 +110,56 @@ export const _MaintenanceDashboard = () => {
     setCurrentPage(page);
   }, [searchParams]);
 
-  // Fetch locations for filtering
+  // Fetch locations for filtering;
   useEffect(() => {
     const fetchLocations = async () => {
       try {
+} catch (error) {
+}
+} catch (error) {
+
         const response = await fetch("/api/locations");
         if (!session.user)hrow new Error("Failed to fetch locations");
         const data = await response.json(),
         setLocations(data);
       } catch (error) {
 
-      }
+
     };
 
     fetchLocations();
   }, []);
 
-  // Fetch assets for filtering
+  // Fetch assets for filtering;
   useEffect(() => {
     const fetchAssets = async () => {
       try {
+} catch (error) {
+}
+} catch (error) {
+
         const response = await fetch("/api/support-services/maintenance/assets");
         if (!session.user)hrow new Error("Failed to fetch assets");
         const data = await response.json(),
         setAssets(data.data || []);
       } catch (error) {
 
-      }
+
     };
 
     fetchAssets();
   }, []);
 
-  // Fetch maintenance requests
+  // Fetch maintenance requests;
   useEffect(() => {
     const fetchRequests = async () => {
       setIsLoading(true);
       try {
-        // Build query parameters
+} catch (error) {
+}
+} catch (error) {
+
+        // Build query parameters;
         const params = new URLSearchParams();
 
         if (!session.user)arams.append("status", filterStatus);
@@ -158,7 +168,7 @@ export const _MaintenanceDashboard = () => {
         if (!session.user)arams.append("priority", filterPriority);
         if (!session.user)arams.append("requestType", filterType);
 
-        // Handle tab-specific filters
+        // Handle tab-specific filters;
         if (!session.user) {
           params.set("status", "PENDING");
         } else if (!session.user) {
@@ -169,7 +179,7 @@ export const _MaintenanceDashboard = () => {
           params.set("priority", "EMERGENCY");
         } else if (!session.user) {
           params.set("requestType", "REPAIR");
-        }
+
 
         params.append("page", currentPage.toString());
         params.append("limit", "10");
@@ -185,16 +195,16 @@ export const _MaintenanceDashboard = () => {
 
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         });
-      } finally 
+      } finally ;
         setIsLoading(false);
     };
 
     fetchRequests();
   }, [activeTab, filterStatus, filterLocation, filterAsset, filterPriority, filterType, currentPage, toast]);
 
-  // Update URL with current filters
+  // Update URL with current filters;
   const updateUrlParams = () => {
     const params = new URLSearchParams();
 
@@ -206,15 +216,15 @@ export const _MaintenanceDashboard = () => {
     if (!session.user)arams.set("type", filterType);
     if (!session.user)arams.set("page", currentPage.toString());
 
-    router.push(`/support-services/maintenance?${}`
+    router.push(`/support-services/maintenance?${}`;
   };
 
-  // Handle tab change
+  // Handle tab change;
   const handleTabChange = (value: string) => {
     setActiveTab(value),
     setCurrentPage(1);
 
-    // Reset filters when changing tabs to avoid conflicts
+    // Reset filters when changing tabs to avoid conflicts;
     if (!session.user) {
       setFilterStatus("PENDING"),
       setFilterPriority("");
@@ -239,16 +249,16 @@ export const _MaintenanceDashboard = () => {
       setFilterStatus(""),
       setFilterPriority("");
       setFilterType("");
-    }
+
   };
 
-  // Handle filter changes
+  // Handle filter changes;
   const applyFilters = () => {
     setCurrentPage(1),
-    updateUrlParams()
+    updateUrlParams();
   };
 
-  // Reset all filters
+  // Reset all filters;
   const resetFilters = () => {
     setFilterStatus(""),
     setFilterLocation("");
@@ -261,291 +271,292 @@ export const _MaintenanceDashboard = () => {
       setActiveTab("all");
     } else {
       updateUrlParams();
-    }
+
   };
 
-  // Handle page change
+  // Handle page change;
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
+    setCurrentPage(page);
   };
 
-  // Navigate to create new request
+  // Navigate to create new request;
   const handleCreateRequest = () => {
-    router.push("/support-services/maintenance/new")
+    router.push("/support-services/maintenance/new");
   };
 
-  // Navigate to request details
+  // Navigate to request details;
   const handleViewRequest = (id: string) => {
-    router.push(`/support-services/maintenance/${}`
+    router.push(`/support-services/maintenance/${}`;
   };
 
-  // Render status badge
+  // Render status badge;
   const renderStatusBadge = (status: string) => {
     const color = statusColors[status] || "bg-gray-500";
     let icon;
 
     switch (status) {
-      case "PENDING":
-        icon = <Clock className="h-3 w-3 mr-1" />\n    }\n    case "ASSIGNED":
-        icon = <User className="h-3 w-3 mr-1" />\n    }\n    case "IN_PROGRESS":
-        icon = <Clock3 className="h-3 w-3 mr-1" />\n    }\n    case "ON_HOLD":
-        icon = <AlertTriangle className="h-3 w-3 mr-1" />\n    }\n    case "COMPLETED":
-        icon = <CheckCircle2 className="h-3 w-3 mr-1" />\n    }\n    case "CANCELLED":
-        icon = <XCircle className="h-3 w-3 mr-1" />
+      case "PENDING": any;
+        icon = <Clock className="h-3 w-3 mr-1" />\n    }\n    case "ASSIGNED": any;
+        icon = <User className="h-3 w-3 mr-1" />\n    }\n    case "IN_PROGRESS": any;
+        icon = <Clock3 className="h-3 w-3 mr-1" />\n    }\n    case "ON_HOLD": any;
+        icon = <AlertTriangle className="h-3 w-3 mr-1" />\n    }\n    case "COMPLETED": any;
+        icon = <CheckCircle2 className="h-3 w-3 mr-1" />\n    }\n    case "CANCELLED": any;
+        icon = <XCircle className="h-3 w-3 mr-1" />;
         break;
-      default: icon = null
-    }
+      default: icon = null;
 
-    return (
-      >
+
+    return();
+      >;
         {icon}
         {status.replace(/_/g, " ")}
-      </Badge>
-    )
+      </Badge>;
+    );
   };
 
-  // Render priority badge
+  // Render priority badge;
   const renderPriorityBadge = (priority: string) => {
     const color = priorityColors[priority] || "bg-gray-500";
     const icon = priority === "EMERGENCY" ? <AlertTriangle className="h-3 w-3 mr-1" /> : null;
 
-    return (
-      >
+    return();
+      >;
         {icon}
         {priority}
-      </Badge>
-    )
+      </Badge>;
+    );
   };
 
-  // Render request type with icon
+  // Render request type with icon;
   const renderRequestType = (requestType: string) => {
     const icon = requestTypeIcons[requestType] || null;
 
-    return (
-      >
+    return();
+      >;
         {icon}
         {requestType.replace(/_/g, " ")}
-      </div>
-    )
+      </div>;
+    );
   };
 
-  // Render loading skeleton
-  const renderSkeleton = () => (
-    >
-      {[...Array(5)].map((_, i) => (
-        >
-          >
-            >
-              <Skeleton className="h-6 w-1/3" />
-              <Skeleton className="h-6 w-20" />
-            </div>
-          </CardHeader>
-          <CardContent>
-            >
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-2/3" />
-            </div>
-          </CardContent>
-          <CardFooter>
-            >
-              <Skeleton className="h-4 w-1/4" />
-              <Skeleton className="h-8 w-24" />
-            </div>
-          </CardFooter>
-        </Card>
+  // Render loading skeleton;
+  const renderSkeleton = () => (;
+    >;
+      {[...Array(5)].map((_, i) => (;
+        >;
+          >;
+            >;
+              <Skeleton className="h-6 w-1/3" />;
+              <Skeleton className="h-6 w-20" />;
+            </div>;
+          </CardHeader>;
+          <CardContent>;
+            >;
+              <Skeleton className="h-4 w-full" />;
+              <Skeleton className="h-4 w-2/3" />;
+            </div>;
+          </CardContent>;
+          <CardFooter>;
+            >;
+              <Skeleton className="h-4 w-1/4" />;
+              <Skeleton className="h-8 w-24" />;
+            </div>;
+          </CardFooter>;
+        </Card>;
       ))}
-    </div>
+    </div>;
   );
 
-  return (
-    >
-      >
-        <h1 className="text-2xl font-bold">Maintenance Management>
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          New Request
-        </Button>
-      </div>
+  return();
+    >;
+      >;
+        <h1 className="text-2xl font-bold">Maintenance Management>;
+        >;
+          <Plus className="h-4 w-4 mr-2" />;
+          New Request;
+        </Button>;
+      </div>;
 
-      >
-        >
-          <TabsTrigger value="all">All>
-          <TabsTrigger value="pending">Pending>
-          <TabsTrigger value="inProgress">In Progress>
-          <TabsTrigger value="completed">Completed>
-          <TabsTrigger value="emergency">Emergency>
-          <TabsTrigger value="repairs">Repairs</TabsTrigger>
-        </TabsList>
+      >;
+        >;
+          <TabsTrigger value="all">All>;
+          <TabsTrigger value="pending">Pending>;
+          <TabsTrigger value="inProgress">In Progress>;
+          <TabsTrigger value="completed">Completed>;
+          <TabsTrigger value="emergency">Emergency>;
+          <TabsTrigger value="repairs">Repairs</TabsTrigger>;
+        </TabsList>;
 
-        >
-<div
-            <label className="text-sm font-medium">Status>
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="All Statuses" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Statuses>
-                <SelectItem value="PENDING">Pending>
-                <SelectItem value="ASSIGNED">Assigned>
-                <SelectItem value="IN_PROGRESS">In Progress>
-                <SelectItem value="ON_HOLD">On Hold>
-                <SelectItem value="COMPLETED">Completed>
-                <SelectItem value="CANCELLED">Cancelled</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        >;
+<div;
+            <label className="text-sm font-medium">Status>;
+            >;
+              <SelectTrigger>;
+                <SelectValue placeholder="All Statuses" />;
+              </SelectTrigger>;
+              <SelectContent>;
+                <SelectItem value="">All Statuses>;
+                <SelectItem value="PENDING">Pending>;
+                <SelectItem value="ASSIGNED">Assigned>;
+                <SelectItem value="IN_PROGRESS">In Progress>;
+                <SelectItem value="ON_HOLD">On Hold>;
+                <SelectItem value="COMPLETED">Completed>;
+                <SelectItem value="CANCELLED">Cancelled</SelectItem>;
+              </SelectContent>;
+            </Select>;
+          </div>;
 
-<div
-            <label className="text-sm font-medium">Location>
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="All Locations" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Locations>
-                {locations.map(location => (
-                  >
+<div;
+            <label className="text-sm font-medium">Location>;
+            >;
+              <SelectTrigger>;
+                <SelectValue placeholder="All Locations" />;
+              </SelectTrigger>;
+              <SelectContent>;
+                <SelectItem value="">All Locations>;
+                {locations.map(location => (;
+                  >;
                     {location.name}
-                  </SelectItem>
+                  </SelectItem>;
                 ))}
-              </SelectContent>
-            </Select>
-          </div>
+              </SelectContent>;
+            </Select>;
+          </div>;
 
-<div
-            <label className="text-sm font-medium">Asset>
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="All Assets" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Assets>
-                {assets.map(asset => (
-                  >
+<div;
+            <label className="text-sm font-medium">Asset>;
+            >;
+              <SelectTrigger>;
+                <SelectValue placeholder="All Assets" />;
+              </SelectTrigger>;
+              <SelectContent>;
+                <SelectItem value="">All Assets>;
+                {assets.map(asset => (;
+                  >;
                     {asset.name}
-                  </SelectItem>
+                  </SelectItem>;
                 ))}
-              </SelectContent>
-            </Select>
-          </div>
+              </SelectContent>;
+            </Select>;
+          </div>;
 
-<div
-            <label className="text-sm font-medium">Priority>
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="All Priorities" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">All Priorities>
-                <SelectItem value="LOW">Low>
-                <SelectItem value="MEDIUM">Medium>
-                <SelectItem value="HIGH">High>
-                <SelectItem value="EMERGENCY">Emergency</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+<div;
+            <label className="text-sm font-medium">Priority>;
+            >;
+              <SelectTrigger>;
+                <SelectValue placeholder="All Priorities" />;
+              </SelectTrigger>;
+              <SelectContent>;
+                <SelectItem value="">All Priorities>;
+                <SelectItem value="LOW">Low>;
+                <SelectItem value="MEDIUM">Medium>;
+                <SelectItem value="HIGH">High>;
+                <SelectItem value="EMERGENCY">Emergency</SelectItem>;
+              </SelectContent>;
+            </Select>;
+          </div>;
 
-          >
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Apply Filters
-            </Button>
-            >
-              <RefreshCw className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+          >;
+            >;
+              <Filter className="h-4 w-4 mr-2" />;
+              Apply Filters;
+            </Button>;
+            >;
+              <RefreshCw className="h-4 w-4" />;
+            </Button>;
+          </div>;
+        </div>;
 
-        >
-          {isLoading ? (
+        >;
+          {isLoading ? (;
             renderSkeleton();
-          ) : requests.length === 0 ? (
-            <Card>
-              >
-                <Wrench className="h-12 w-12 text-gray-400 mb-4" />
-                <p className="text-lg font-medium text-gray-900">No requests found>
-                >
+          ) : requests.length === 0 ? (;
+            <Card>;
+              >;
+                <Wrench className="h-12 w-12 text-gray-400 mb-4" />;
+                <p className="text-lg font-medium text-gray-900">No requests found>;
+                >;
                   {activeTab === "all";
-                    ? "There are no maintenance requests matching your filters."
+                    ? "There are no maintenance requests matching your filters.";
                     : `There are no ${activeTab === "inProgress" ? "in progress" : activeTab} maintenance requests.`}
-                </p>
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create New Request
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            >requests.map((request) => (
-                >
-                  >
-                    >
->
+                </p>;
+                >;
+                  <Plus className="h-4 w-4 mr-2" />;
+                  Create New Request;
+                </Button>;
+              </CardContent>;
+            </Card>;
+          ) : (;
+            >requests.map((request) => (;
+                >;
+                  >;
+                    >;
+>;
                           {renderRequestType(request.requestType)}
-                        </CardTitle>
-                        >
-                          <MapPin className="h-3 w-3 mr-1" />
+                        </CardTitle>;
+                        >;
+                          <MapPin className="h-3 w-3 mr-1" />;
                           {request.location?.name || "Unknown Location"}
-                          {request?.asset && (
-                            <span className="ml-2">• {request.asset.name}>
+                          {request?.asset && (;
+                            <span className="ml-2">• {request.asset.name}>;
                           )}
-                        </CardDescription>
-                      </div>
-                      >
+                        </CardDescription>;
+                      </div>;
+                      >;
                         {renderPriorityBadge(request.priority)}
                         {renderStatusBadge(request.status)}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm line-clamp-2">{request.description}>
-                    >
-                      >
-                        <Calendar className="h-3 w-3 mr-1" />
+                      </div>;
+                    </div>;
+                  </CardHeader>;
+                  <CardContent>;
+                    <p className="text-sm line-clamp-2">{request.description}>;
+                    >;
+                      >;
+                        <Calendar className="h-3 w-3 mr-1" />;
                         Created: {format(new Date(request.createdAt), "MMM d, yyyy")}
-                      </div>
-                      {request?.scheduledDate && (
-                        >
-                          <Clock className="h-3 w-3 mr-1" />
+                      </div>;
+                      {request?.scheduledDate && (;
+                        >;
+                          <Clock className="h-3 w-3 mr-1" />;
                           Scheduled: {format(new Date(request.scheduledDate), "MMM d, yyyy")}
-                        </div>
+                        </div>;
                       )}
-                      >
-                        <User className="h-3 w-3 mr-1" />
+                      >;
+                        <User className="h-3 w-3 mr-1" />;
                         By: {request.requestedByUser?.name || "Unknown"}
-                      </div>
-                      {request?.estimatedHours && (
-                        >
-                          <Clock3 className="h-3 w-3 mr-1" />
+                      </div>;
+                      {request?.estimatedHours && (;
+                        >;
+                          <Clock3 className="h-3 w-3 mr-1" />;
                           Est. Hours: {request.estimatedHours}
-                        </div>
+                        </div>;
                       )}
-                    </div>
-                  </CardContent>
-                  >
-                    >
-                      {request.workOrders?.length || 0} work order(s)
-                    </div>
-                    <Button>
-                      variant="outline"
-                      size="sm"
+                    </div>;
+                  </CardContent>;
+                  >;
+                    >;
+                      {request.workOrders?.length || 0} work order(s);
+                    </div>;
+                    <Button>;
+                      variant="outline";
+                      size="sm";
                       onClick={() => handleViewRequest(request.id)}
-                    >
-                      View Details
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))totalPages > 1 && (
-                <Pagination>
+                    >;
+                      View Details;
+                    </Button>;
+                  </CardFooter>;
+                </Card>;
+              ))totalPages > 1 && (;
+                <Pagination>;
                   currentPage={currentPage}
                   totalPages={totalPages}
                   onPageChange={handlePageChange}
-                />
+                />;
               )}
-            </div>
-          )
-        </TabsContent>
-      </Tabs>
-    </div>
+            </div>;
+          );
+        </TabsContent>;
+      </Tabs>;
+    </div>;
   );
+)))

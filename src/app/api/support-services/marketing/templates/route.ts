@@ -7,18 +7,18 @@ import { withErrorHandling } from "@/lib/middleware/error-handling.middleware";
 import { TemplateService } from "@/lib/services/support-services/marketing";
 const templateService = new TemplateService();
 
-/**
+/**;
  * GET /api/support-services/marketing/templates;
  * Get all templates with optional filtering;
- */
+ */;
 export const GET = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
-      // Parse query parameters
+      // Parse query parameters;
       const filters = {
         type: searchParams.get("type") || undefined,
         isActive: searchParams.has("isActive");
@@ -30,8 +30,7 @@ export const GET = async (request: NextRequest) => {
           : 1,
         limit: searchParams.has("limit");
           ? parseInt(searchParams.get("limit") || "10", 10);
-          : 10,
-      };
+          : 10};
 
       const result = await templateService.getTemplates(filters);
 
@@ -39,23 +38,23 @@ export const GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: "marketing.templates.read",
-      auditAction: "TEMPLATES_LIST"
+      auditAction: "TEMPLATES_LIST";
     }
   );
 }
 
-/**
+/**;
  * POST /api/support-services/marketing/templates;
  * Create a new template;
- */
+ */;
 export const POST = async (request: NextRequest) => {
-  return withErrorHandling(
+  return withErrorHandling();
     request,
     async (req: NextRequest) => {
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
-      const template = await templateService.createTemplate(
+      const template = await templateService.createTemplate();
         data,
         session?.user?.id as string;
       );
@@ -64,7 +63,7 @@ export const POST = async (request: NextRequest) => {
     },
     {
       requiredPermission: "marketing.templates.create",
-      auditAction: "TEMPLATE_CREATE"
+      auditAction: "TEMPLATE_CREATE";
     }
   );
 

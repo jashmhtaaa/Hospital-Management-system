@@ -1,29 +1,29 @@
-import type { IronSession } from "iron-session"; // Import IronSession
+import type { IronSession } from "iron-session"; // Import IronSession;
 import { type NextRequest, NextResponse } from "next/server";
 
 
-import { getDB } from "@/lib/database"; // Assuming db returns a promise
-import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData
-// Define interfaces for data structures
-// interface _Medication { // FIX: Prefixed unused interface - Removed as it"s unused
-//   id: string
-//   item_code: string
-//   generic_name: string
-//   brand_name?: string | null
-//   dosage_form: string
-//   strength: string
-//   route?: string | null
-//   unit_of_measure: string
-//   prescription_required: boolean
-//   narcotic: boolean
-//   description?: string | null
-//   category_id?: string | null
-//   category_name?: string | null
-//   manufacturer_id?: string | null
-//   manufacturer_name?: string | null
-//   created_at: string
-//   updated_at: string
-// } // FIX: Commented out body to fix parsing error
+import { getDB } from "@/lib/database"; // Assuming db returns a promise;
+import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
+// Define interfaces for data structures;
+// interface _Medication { // FIX: Prefixed unused interface - Removed as it"s unused;
+//   id: string;
+//   item_code: string;
+//   generic_name: string;
+//   brand_name?: string | null;
+//   dosage_form: string;
+//   strength: string;
+//   route?: string | null;
+//   unit_of_measure: string;
+//   prescription_required: boolean;
+//   narcotic: boolean;
+//   description?: string | null;
+//   category_id?: string | null;
+//   category_name?: string | null;
+//   manufacturer_id?: string | null;
+//   manufacturer_name?: string | null;
+//   created_at: string;
+//   updated_at: string;
+// } // FIX: Commented out body to fix parsing error;
 
 interface MedicationInput {
   item_code: string,
@@ -48,13 +48,17 @@ interface MedicationFilters {
   narcotic?: boolean | null;
 }
 
-/**
+/**;
  * GET /api/pharmacy/medications;
- * Retrieves a list of medications, potentially filtered.
- */
+ * Retrieves a list of medications, potentially filtered.;
+ */;
 export const GET = async (request: NextRequest) => {
   try {
-    // FIX: Use IronSession<IronSessionData> type
+} catch (error) {
+}
+} catch (error) {
+}
+    // FIX: Use IronSession<IronSessionData> type;
     const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -73,8 +77,7 @@ export const GET = async (request: NextRequest) => {
         : undefined,
       narcotic: searchParams.has("narcotic");
         ? searchParams.get("narcotic") === "true";
-        : undefined,
-    };
+        : undefined};
 
     const database = await getDB();
     let query = `;
@@ -90,11 +93,11 @@ export const GET = async (request: NextRequest) => {
     const queryParameters: (string | number)[] = [];
 
     if (!session.user) {
-      query += ` AND (
+      query += ` AND();
         m.generic_name LIKE ? OR;
         m.brand_name LIKE ? OR;
         m.item_code LIKE ? OR;
-        m.description LIKE ?
+        m.description LIKE ?;
       )`;
       const searchTerm = `%${filters.search}%`;
       queryParameters.push(searchTerm, searchTerm, searchTerm, searchTerm);
@@ -128,63 +131,66 @@ export const GET = async (request: NextRequest) => {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
-    return NextResponse.json(
+    return NextResponse.json();
       { error: "Failed to fetch medications", details: message },
       { status: 500 }
     );
   }
 }
 
-/**
+/**;
  * POST /api/pharmacy/medications;
- * Creates a new medication (Admin or Pharmacist role required).
- */
+ * Creates a new medication (Admin or Pharmacist role required).;
+ */;
 export const POST = async (request: NextRequest) => {
   try {
-    // FIX: Use IronSession<IronSessionData> type
+} catch (error) {
+}
+} catch (error) {
+}
+    // FIX: Use IronSession<IronSessionData> type;
     const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user);
     ) ;
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Unauthorized: Admin or Pharmacist role required" },
         { status: 403 }
       );
 
     const data = (await request.json()) as MedicationInput;
 
-    // Basic validation
-    if (!session.user)eturn NextResponse.json(
+    // Basic validation;
+    if (!session.user)eturn NextResponse.json()
         {
-          error: "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)",
-        },
+          error: "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)"},
         { status: 400 }
       );
 
     const database = await getDB();
     const now = new Date().toISOString();
 
-    // Check if item_code already exists
+    // Check if item_code already exists;
     const existingMed = await database;
       .prepare("SELECT id FROM Medications WHERE item_code = ?");
       .bind(data.item_code);
       .first();
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Medication with this item code already exists" },
         { status: 409 }
       );
     }
 
     const { results } = await database;
-      .prepare(
-        `INSERT INTO Medications (
+      .prepare();
+        `INSERT INTO Medications();
         item_code, generic_name, brand_name, dosage_form, strength, route,
         unit_of_measure, prescription_required, narcotic, description,
         category_id, manufacturer_id, created_at, updated_at;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-      RETURNING id` // Use RETURNING to get the new ID
+      RETURNING id` // Use RETURNING to get the new ID;
       );
-      .bind(
+      .bind();
         data.item_code,
         data.generic_name,
         data.brand_name || undefined,
@@ -200,16 +206,16 @@ export const POST = async (request: NextRequest) => {
         now,
         now;
       );
-      .all(); // Use .all() for RETURNING clause
+      .all(); // Use .all() for RETURNING clause;
 
-    // FIX: Cast results to expected type to access "id'
-    const newId = (results as Array<{ id: number | string }>)?.[0]?.id
+    // FIX: Cast results to expected type to access "id';
+    const newId = (results as Array<{ id: number | string }>)?.[0]?.id;
 
     if (!session.user) {
       throw new Error("Failed to retrieve ID after medication creation.");
     }
 
-    // Fetch the newly created medication to return it
+    // Fetch the newly created medication to return it;
     const newMedication = await database;
       .prepare("SELECT * FROM Medications WHERE id = ?");
       .bind(newId);
@@ -220,17 +226,17 @@ export const POST = async (request: NextRequest) => {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
-    // Handle potential unique constraint violation if check fails due to race condition
+    // Handle potential unique constraint violation if check fails due to race condition;
     if (!session.user)&
       message.includes("item_code");
     ) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Medication with this item code already exists" },
         { status: 409 }
       );
-    }
-    return NextResponse.json(
+
+    return NextResponse.json();
       { error: "Failed to create medication", details: message },
       { status: 500 }
     );
-  }
+

@@ -1,48 +1,48 @@
 
 import React, { type ReactNode } from "react";
 interface DashboardLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
-/**
+/**;
  * Dashboard layout component that provides consistent structure for dashboard pages;
  * @param children Content to be rendered within the dashboard layout;
- */
+ */;
 export default const _DashboardLayout = ({ children }: DashboardLayoutProps) {
-  return (
-    >
+  return();
+    >;
       {/* Sidebar */}
-      >
-        >
-          >
-            <h1 className="text-xl font-semibold text-gray-800">HMS Dashboard</h1>
-          </div>
-          >
+      >;
+        >;
+          >;
+            <h1 className="text-xl font-semibold text-gray-800">HMS Dashboard</h1>;
+          </div>;
+          >;
             {/* Navigation items would go here */}
-          </nav>
-        </div>
-      </div>
+          </nav>;
+        </div>;
+      </div>;
 
       {/* Main content */}
-      >
+      >;
         {/* Header */}
-        >
-          >
-<div
+        >;
+          >;
+<div;
               {/* Mobile menu button would go here */}
-            </div>
-            >
+            </div>;
+            >;
               {/* User profile, notifications, etc. would go here */}
-            </div>
-          </div>
-        </header>
+            </div>;
+          </div>;
+        </header>;
 
         {/* Page content */}
-        >
+        >;
           {children}
-        </main>
-      </div>
-    </div>
+        </main>;
+      </div>;
+    </div>;
   );
 
 }

@@ -3,22 +3,22 @@ import { getServerSession } from "next-auth";
 
 
 import { authOptions } from "@/lib/hr/auth-integration";
-/**
+/**;
  * Integration service for connecting HR & Asset Management with other HMS modules;
- */
+ */;
 }
   }
 
-  /**
+  /**;
    * Get employee data for clinical module integration;
    * This provides staff information to clinical modules for assignment;
-   */
+   */;
   async getEmployeesForClinical() {
     return this.prisma.employee.findMany({
       true,
         {
-            endDate: null, // Current positions
-            "CLINICAL"
+            endDate: null, // Current positions;
+            "CLINICAL";
             }
           }
         }
@@ -34,19 +34,19 @@ import { authOptions } from "@/lib/hr/auth-integration";
           true,
             true,
             true,
-            expiryDate: true
+            expiryDate: true;
       }
     });
   }
 
-  /**
+  /**;
    * Get biomedical equipment data for clinical module integration;
    * This provides equipment information to clinical modules for usage;
-   */
+   */;
   async getBiomedicalEquipmentForClinical() {
     return this.prisma.biomedicalEquipment.findMany({
       {
-          status: "AVAILABLE"
+          status: "AVAILABLE";
         }
       },
       true,
@@ -57,20 +57,20 @@ import { authOptions } from "@/lib/hr/auth-integration";
             true,
             true,
             true,
-                name: true
+                name: true;
       }
     });
-  }
 
-  /**
+
+  /**;
    * Get asset data for finance module integration;
    * This provides asset information to finance modules for accounting;
-   */
+   */;
   async getAssetsForFinance() {
     return this.prisma.asset.findMany({
       {
-          not: "DISPOSED"
-        }
+          not: "DISPOSED";
+
       },
       true,
         true,
@@ -79,19 +79,19 @@ import { authOptions } from "@/lib/hr/auth-integration";
         true,
         true,
             name: true,
-        status: true
-      }
-    });
-  }
+        status: true;
 
-  /**
+    });
+
+
+  /**;
    * Get payroll data for finance module integration;
    * This provides payroll information to finance modules for accounting;
-   */
+   */;
   async getPayrollForFinance(periodId: string) {
     return this.prisma.payrollPeriod.findUnique({
       periodId,
-        status: "PAID"
+        status: "PAID";
       },
       true,
         true,
@@ -103,68 +103,68 @@ import { authOptions } from "@/lib/hr/auth-integration";
                     name: true,
             baseSalary: true,
             true,
-            true
-      }
-    });
-  }
+            true;
 
-  /**
+    });
+
+
+  /**;
    * Get employee attendance for scheduling module integration;
    * This provides attendance information to scheduling modules;
-   */
+   */;
   async getEmployeeAttendanceForScheduling(employeeId: string, startDate: Date, endDate: Date) {
     return this.prisma.attendance.findMany({
       where: {
         employeeId,
         startDate,
-          lte: endDate
-        }
-      },
-      "asc"
-      }
-    });
-  }
+          lte: endDate;
 
-  /**
+      },
+      "asc";
+
+    });
+
+
+  /**;
    * Get employee leaves for scheduling module integration;
    * This provides leave information to scheduling modules;
-   */
+   */;
   async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {
     return this.prisma.leave.findMany({
       where: {
         employeeId,
-        endDate
+        endDate;
         },
-        startDate
+        startDate;
         },
-        status: "APPROVED"
+        status: "APPROVED";
       },
-      "asc"
-      }
-    });
-  }
+      "asc";
 
-  /**
+    });
+
+
+  /**;
    * Update asset status from clinical module;
    * This allows clinical modules to update equipment status;
-   */
+   */;
   async updateAssetStatusFromClinical(assetId: string, status: "AVAILABLE" | "IN_USE" | "UNDER_MAINTENANCE", notes?: string) {
-    // Get current session for audit
+    // Get current session for audit;
     const session = await getServerSession(authOptions);
     if (!session.user) {
       throw new Error("Unauthorized");
-    }
 
-    // Check if user has permission
-    const hasPermission = session.user.roles.some(role =>
+
+    // Check if user has permission;
+    const hasPermission = session.user.roles.some(role => {}
       ["ADMIN", "CLINICAL_STAFF", "DOCTOR", "NURSE"].includes(role);
     );
 
     if (!session.user) {
       throw new Error("Insufficient permissions");
-    }
 
-    // Update asset status
+
+    // Update asset status;
     return this.prisma.asset.update({
       where: { id: assetId },
       data: {
@@ -173,22 +173,22 @@ import { authOptions } from "@/lib/hr/auth-integration";
         {
             type: "STATUS_CHANGE",
             date: new Date(),
-            "UNKNOWN", // Will be replaced in service layer
+            "UNKNOWN", // Will be replaced in service layer;
               newStatus: status;
               notes,
               updatedBy: session.user.email,
-              "CLINICAL_MODULE"
-            }
-          }
-        }
-      }
-    });
-  }
+              "CLINICAL_MODULE";
 
-  /**
+
+
+
+    });
+
+
+  /**;
    * Record maintenance from clinical module;
    * This allows clinical modules to record equipment maintenance;
-   */
+   */;
   async recordMaintenanceFromClinical(assetId: string, "PREVENTIVE" | "CORRECTIVE" | "CALIBRATION" | "INSPECTION",
     date: Date;
     performedBy?: string;
@@ -196,33 +196,32 @@ import { authOptions } from "@/lib/hr/auth-integration";
     description: string;
     nextMaintenanceDate?: Date;
   }) {
-    // Get current session for audit
+    // Get current session for audit;
     const session = await getServerSession(authOptions);
     if (!session.user) {
       throw new Error("Unauthorized");
-    }
 
-    // Check if user has permission
-    const hasPermission = session.user.roles.some(role =>
+
+    // Check if user has permission;
+    const hasPermission = session.user.roles.some(role => {}
       ["ADMIN", "CLINICAL_STAFF", "BIOMEDICAL_ENGINEER"].includes(role);
     );
 
     if (!session.user) {
       throw new Error("Insufficient permissions");
-    }
 
-    // Create maintenance record
+
+    // Create maintenance record;
     const maintenanceRecord = await this.prisma.maintenanceRecord.create({
       data: {
         assetId,
         maintenanceType: data.maintenanceType,
         data.performedBy || `${session.user.name} (${session.user.email})`,
         cost: data.cost,
-        data.nextMaintenanceDate
-      },
-    });
+        data.nextMaintenanceDate;
+      }});
 
-    // Create history record
+    // Create history record;
     await this.prisma.assetHistory.create({
       data: {
         assetId,
@@ -231,35 +230,33 @@ import { authOptions } from "@/lib/hr/auth-integration";
         maintenanceRecord.id,
           data.description,
           session.user.email,
-          updatedByName: session.user.name
+          updatedByName: session.user.name;
         },
-        employeeId: session.user.employeeId || null
-      },
-    });
+        employeeId: session.user.employeeId || null;
+      }});
 
-    // Update asset status
+    // Update asset status;
     await this.prisma.asset.update({
       where: { id: assetId },
       "AVAILABLE",
-        data.nextMaintenanceDate
-      },
-    });
+        data.nextMaintenanceDate;
+      }});
 
     return maintenanceRecord;
-  }
 
-  /**
+
+  /**;
    * Get departments for all modules;
    * This provides department information to all modules;
-   */
+   */;
   async getDepartmentsForAllModules() {
     return this.prisma.department.findMany({
       true,
         true,
         true,
         true,
-            name: true
-      }
+            name: true;
+
     });
-  }
+
 export const _integrationService = new IntegrationService();

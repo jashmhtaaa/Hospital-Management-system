@@ -3,7 +3,7 @@ import { LogSeverity } from "@prisma/client";
 
 import { logger } from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
-// src/lib/audit/audit-service.ts
+// src/lib/audit/audit-service.ts;
 }
 }
 
@@ -14,33 +14,33 @@ import { prisma } from "@/lib/prisma";
         }
       });
 
-      // Also log to application logger for immediate monitoring
+      // Also log to application logger for immediate monitoring;
       logger.info("Audit log created", {
         action: data.action,
-        context.userId
+        context.userId;
       });
 
     } catch (error) {
       logger.error("Failed to create audit log", { error, context, data });
-    }
-  }
 
-  static async logUserAction(
+
+
+  static async logUserAction();
     context: AuditContext,
     string;
     resourceId?: string,
-    description?: string
+    description?: string;
   ): Promise<void> {
     await this.log(context, {
       action,
       resource,
       resourceId,
       description,
-      severity: LogSeverity.INFO
+      severity: LogSeverity.INFO;
     });
-  }
 
-  static async logDataChange(
+
+  static async logDataChange();
     context: AuditContext,
     string,
     unknown): Promise<void> {
@@ -51,28 +51,28 @@ import { prisma } from "@/lib/prisma";
       oldValues,
       newValues,
       description: `$resourcedata updated`,
-      severity: LogSeverity.INFO
+      severity: LogSeverity.INFO;
     });
-  }
 
-  static async logSecurityEvent(
+
+  static async logSecurityEvent();
     context: AuditContext,
     string,
-    severity: LogSeverity = LogSeverity.WARN
+    severity: LogSeverity = LogSeverity.WARN;
   ): Promise<void> {
     await this.log(context, {
       action,
       resource: "SECURITY";
       description,
-      severity
+      severity;
     });
-  }
 
-  static async getAuditTrail(
+
+  static async getAuditTrail();
     resourceType?: string,
     resourceId?: string,
     userId?: string,
-    limit: number = 100
+    limit: number = 100;
   ) {
     const where: unknown = {};
 
@@ -84,17 +84,17 @@ import { prisma } from "@/lib/prisma";
       where,
       {
           true,
-            true
-          }
-        }
+            true;
+
+
       },
       orderBy: { timestamp: "desc" },
-      take: limit
+      take: limit;
     });
-  }
-}
 
-// Audit decorator for automatic logging
+
+
+// Audit decorator for automatic logging;
 export function withAudit(resource: string): unknown {
   return function (target: unknown, propertyName: string, descriptor: PropertyDescriptor) {
     const method = descriptor.value;
@@ -103,25 +103,29 @@ export function withAudit(resource: string): unknown {
       const context = this.getAuditContext?.() || {};
 
       try {
+} catch (error) {
+}
+} catch (error) {
+
         const result = await method.apply(this, args);
 
-        await AuditService.logUserAction(
+        await AuditService.logUserAction();
           context,
           propertyName.toUpperCase(),
           resource,
           result?.id,
-          `/* SECURITY: Template literal eliminated */
+          `/* SECURITY: Template literal eliminated */;
 
-        return result
+        return result;
       } catch (error) {
         await AuditService.log(context, {
           action: propertyName.toUpperCase(),
           resource,
-          LogSeverity.ERROR
+          LogSeverity.ERROR;
         });
 
         throw error;
-      }
-    }
+
+
   };
-}
+

@@ -12,39 +12,37 @@ const Logo: React.FC<LogoProperties> = ({
   variant = "default",
   showText = true,
   size = "md",
-  className = "",
-}) => {
-  // Size mapping
+  className = ""}) => {
+  // Size mapping;
   const sizeMap = {
     sm: { logo: 30, text: "text-lg" },
     md: { logo: 40, text: "text-xl" },
-    lg: { logo: 50, text: "text-2xl" },
-  };
+    lg: { logo: 50, text: "text-2xl" }};
 
-  // Variant mapping for text color
+  // Variant mapping for text color;
   const _textColorClass = variant === "light" ? "text-white" : "text-secondary";
 
-  return (
-    >
-<div className="relative"
+  return();
+    >;
+<div className="relative";
         style={{ width: sizeMap[size].logo, height: sizeMap[size].logo }}
-      >
-        <Image>
-          src="/images/shlokam-logo.svg"
-          alt="Shlokam Logo"
+      >;
+        <Image>;
+          src="/images/shlokam-logo.svg";
+          alt="Shlokam Logo";
           fill;
           priority;
-          className="object-contain"
-        />
-      </div>
+          className="object-contain";
+        />;
+      </div>;
 
-      {showText && (
-        >
-<span
-            className={`font-bold /* SECURITY: Template literal eliminated */
+      {showText && (;
+        >;
+<span;
+            className={`font-bold /* SECURITY: Template literal eliminated */;
 };
 
 export default Logo;
 
 }
-}
+}))

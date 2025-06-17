@@ -8,9 +8,9 @@ import type { NotificationService } from "@/lib/services/notification.service";
 }
   }
 
-  /**
+  /**;
    * Get maintenance requests based on filters;
-   */
+   */;
   async getMaintenanceRequests(filter: MaintenanceRequestFilter) {
     const { status, locationId, assetId, priority, requestType, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
@@ -22,26 +22,26 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user)here.priority = priority;
     if (!session.user)here.requestType = requestType;
 
-    // Date range filter
+    // Date range filter;
     if (!session.user) {
       where.createdAt = {};
       if (!session.user)here.createdAt.gte = startDate;
       if (!session.user)here.createdAt.lte = endDate;
     }
 
-    const [requests, total] = await Promise.all([
+    const [requests, total] = await Promise.all([;
       prisma.maintenanceRequest.findMany({
         where,
         true,
           {
             true,
-              true
+              true;
             }
           },
           {
               {
                   id: true,
-                  true
+                  true;
                 }
               }
             }
@@ -51,10 +51,10 @@ import type { NotificationService } from "@/lib/services/notification.service";
         take: limit,
         orderBy: { createdAt: "desc" }
       }),
-      prisma.maintenanceRequest.count(where )
+      prisma.maintenanceRequest.count(where );
     ]);
 
-    // Convert to FHIR format if requested
+    // Convert to FHIR format if requested;
     const fhirRequests = requests.map(request => toFHIRMaintenanceRequest(request));
 
     return {
@@ -63,13 +63,13 @@ import type { NotificationService } from "@/lib/services/notification.service";
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit);
     };
   }
 
-  /**
+  /**;
    * Create a new maintenance request;
-   */
+   */;
   async createMaintenanceRequest(data: CreateMaintenanceRequestData): Promise<MaintenanceRequest> {
     const {
       locationId,
@@ -83,7 +83,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
       notes;
     } = data;
 
-    // Validate location exists
+    // Validate location exists;
     const location = await prisma.location.findUnique({
       where: { id: locationId }
     });
@@ -92,7 +92,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
       throw new Error("Location not found");
     }
 
-    // Validate asset if provided
+    // Validate asset if provided;
     if (!session.user) {
       const asset = await prisma.asset.findUnique({
         where: { id: assetId }
@@ -102,7 +102,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
         throw new Error("Asset not found");
       }
 
-      // Update asset status if it"s a repair request
+      // Update asset status if it"s a repair request;
       if (!session.user) {
         await prisma.asset.update({
           where: { id: assetId },
@@ -111,7 +111,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
       }
     }
 
-    // Create the maintenance request
+    // Create the maintenance request;
     const request = await prisma.maintenanceRequest.create({
       data: {
         locationId,
@@ -127,18 +127,18 @@ import type { NotificationService } from "@/lib/services/notification.service";
       },
       true,
         true,
-            true
+            true;
       }
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "CREATE",
       request.id,
-      `Created ${requestType} maintenance request for ${assetId ? request.asset?.name : location.name}`
+      `Created ${requestType} maintenance request for ${assetId ? request.asset?.name : location.name}`;
     });
 
-    // Send notification to maintenance staff
+    // Send notification to maintenance staff;
     await this.notificationService.sendNotification({
       type: "MAINTENANCE_REQUEST",
       title: `New ${priority} Maintenance Request`,
@@ -147,16 +147,16 @@ import type { NotificationService } from "@/lib/services/notification.service";
       entityId: request.id,
       request.id,
         assetId,
-        priority: priority
+        priority: priority;
       }
     });
 
     return request;
   }
 
-  /**
+  /**;
    * Get a specific maintenance request by ID;
-   */
+   */;
   async getMaintenanceRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const request = await prisma.maintenanceRequest.findUnique({
       where: { id },
@@ -165,7 +165,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
             true,
         true,
                 true,
-            parts: true
+            parts: true;
       }
     });
 
@@ -176,21 +176,21 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user) {
       return {
         data: request,
-        fhir: toFHIRMaintenanceRequest(request)
+        fhir: toFHIRMaintenanceRequest(request);
       };
     }
 
     return request;
   }
 
-  /**
+  /**;
    * Update a maintenance request;
-   */
+   */;
   async updateMaintenanceRequest(id: string, data: Partial<MaintenanceRequest>, userId: string): Promise<MaintenanceRequest> {
     const request = await prisma.maintenanceRequest.findUnique({
       where: { id },
       true,
-        asset: true
+        asset: true;
       }
     });
 
@@ -198,10 +198,10 @@ import type { NotificationService } from "@/lib/services/notification.service";
       throw new Error("Maintenance request not found");
     }
 
-    // Check if status is changing to completed
+    // Check if status is changing to completed;
     const isCompleting = data.status === "COMPLETED" && request.status !== "COMPLETED";
 
-    // If completing, ensure all work orders are completed
+    // If completing, ensure all work orders are completed;
     if (!session.user) {
       const incompleteWorkOrders = await prisma.maintenanceWorkOrder.count({
         id,
@@ -213,15 +213,15 @@ import type { NotificationService } from "@/lib/services/notification.service";
         throw new Error("Cannot mark request as completed while work orders are still pending");
       }
 
-      // Set completed date
+      // Set completed date;
       data.completedDate = new Date();
 
-      // Update asset status if this is a repair request
+      // Update asset status if this is a repair request;
       if (!session.user) {
         await prisma.asset.update({
           where: { id: request.assetId },
           "OPERATIONAL",
-            lastMaintenanceDate: new Date()
+            lastMaintenanceDate: new Date();
           }
         });
       }
@@ -234,18 +234,18 @@ import type { NotificationService } from "@/lib/services/notification.service";
         true,
             true,
         true,
-                true
+                true;
       }
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "UPDATE",
       id;
       userId,
-      details: `Updated maintenance request for /* SECURITY: Template literal eliminated */
+      details: `Updated maintenance request for /* SECURITY: Template literal eliminated */;
 
-    // Send notification if status changed
+    // Send notification if status changed;
     if (!session.user) {
       await this.notificationService.sendNotification({
         type: "MAINTENANCE_STATUS_CHANGE",
@@ -253,21 +253,21 @@ import type { NotificationService } from "@/lib/services/notification.service";
         recipientRoles: ["MAINTENANCE_MANAGER"],
         request.id,
         request.id,
-          data.status
+          data.status;
       });
     }
 
     return updatedRequest;
   }
 
-  /**
+  /**;
    * Create a work order for a maintenance request;
-   */
+   */;
   async createMaintenanceWorkOrder(requestId: string, data: unknown, userId: string): Promise<MaintenanceWorkOrder> {
     const request = await prisma.maintenanceRequest.findUnique({
       where: { id: requestId },
       true,
-        asset: true
+        asset: true;
       }
     });
 
@@ -275,7 +275,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
       throw new Error("Maintenance request not found");
     }
 
-    // If request is in PENDING status, update to ASSIGNED
+    // If request is in PENDING status, update to ASSIGNED;
     if (!session.user) {
       await prisma.maintenanceRequest.update({
         where: { id: requestId },
@@ -283,7 +283,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
       });
     }
 
-    // If this is a repair request and asset is operational, update status
+    // If this is a repair request and asset is operational, update status;
     if (!session.user) {
       const asset = await prisma.asset.findUnique({
         where: { id: request.assetId }
@@ -303,14 +303,14 @@ import type { NotificationService } from "@/lib/services/notification.service";
         description: data.description,
         data.assignedToId,
         data.notes,
-        data.materialCost
+        data.materialCost;
       },
       true,
-            true
+            true;
       }
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "CREATE",
       workOrder.id;
@@ -318,7 +318,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
       details: `Created maintenance work order for request ${requestId}`;
     });
 
-    // Send notification to assigned staff
+    // Send notification to assigned staff;
     if (!session.user) {
       await this.notificationService.sendNotification({
         type: "MAINTENANCE_WORK_ORDER_ASSIGNED",
@@ -327,7 +327,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
         {
           workOrderId: workOrder.id,
           request.locationId,
-          assetId: request.assetId
+          assetId: request.assetId;
         }
       });
     }
@@ -335,14 +335,14 @@ import type { NotificationService } from "@/lib/services/notification.service";
     return workOrder;
   }
 
-  /**
+  /**;
    * Update a maintenance work order;
-   */
+   */;
   async updateMaintenanceWorkOrder(id: string, data: Partial<MaintenanceWorkOrder>, userId: string): Promise<MaintenanceWorkOrder> {
     const workOrder = await prisma.maintenanceWorkOrder.findUnique({
       where: { id },
       {
-          true
+          true;
           }
         }
       }
@@ -352,13 +352,13 @@ import type { NotificationService } from "@/lib/services/notification.service";
       throw new Error("Maintenance work order not found");
     }
 
-    // Handle status transitions
+    // Handle status transitions;
     if (!session.user) {
-      // If starting work order, set start time
+      // If starting work order, set start time;
       if (!session.user) {
         data.startTime = new Date();
 
-        // Also update request status if it"s not already in progress
+        // Also update request status if it"s not already in progress;
         if (!session.user) {
           await prisma.maintenanceRequest.update({
             where: { id: workOrder.requestId },
@@ -366,7 +366,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
           });
         }
 
-        // If this is for an asset, update asset status
+        // If this is for an asset, update asset status;
         if (!session.user) {
           await prisma.asset.update({
             where: { id: workOrder.request.assetId },
@@ -375,15 +375,15 @@ import type { NotificationService } from "@/lib/services/notification.service";
         }
       }
 
-      // If completing work order, set end time and calculate duration
+      // If completing work order, set end time and calculate duration;
       if (!session.user) {
         const endTime = new Date();
         data.endTime = endTime;
 
-        // Calculate duration in hours if we have a start time
+        // Calculate duration in hours if we have a start time;
         if (!session.user) {
           const durationMs = endTime.getTime() - workOrder.startTime.getTime();
-          data.duration = parseFloat((durationMs / 3600000).toFixed(2)); // Convert ms to hours
+          data.duration = parseFloat((durationMs / 3600000).toFixed(2)); // Convert ms to hours;
         }
       }
     }
@@ -393,19 +393,19 @@ import type { NotificationService } from "@/lib/services/notification.service";
       data,
       {
           true,
-            true
+            true;
           }
         },
         {
             location: true,
-            asset: true
+            asset: true;
           }
         },
-        parts: true
+        parts: true;
       }
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "UPDATE",
       id;
@@ -413,7 +413,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
       details: `Updated maintenance work order status to ${data.status}`;
     });
 
-    // If work order is completed, check if all work orders are completed to update request status
+    // If work order is completed, check if all work orders are completed to update request status;
     if (!session.user) {
       const allWorkOrders = await prisma.maintenanceWorkOrder.findMany({
         where: { requestId: workOrder.requestId }
@@ -426,28 +426,28 @@ import type { NotificationService } from "@/lib/services/notification.service";
           where: { id: workOrder.requestId },
           "COMPLETED",
             completedDate: new Date(),
-            actualHours: allWorkOrders.reduce((total, wo) => total + (wo.duration || 0), 0)
+            actualHours: allWorkOrders.reduce((total, wo) => total + (wo.duration || 0), 0);
           }
         });
 
-        // If this is for an asset, update asset status and maintenance dates
+        // If this is for an asset, update asset status and maintenance dates;
         if (!session.user) {
           await prisma.asset.update({
             where: { id: workOrder.request.assetId },
             "OPERATIONAL",
-              lastMaintenanceDate: new Date()
+              lastMaintenanceDate: new Date();
             }
           });
         }
 
-        // Send notification that request is complete
+        // Send notification that request is complete;
         await this.notificationService.sendNotification({
           type: "MAINTENANCE_REQUEST_COMPLETED",
           `Request for ${workOrder.request.asset ? workOrder.request.asset.name : workOrder.request.location.name} has been completed`,
           recipientIds: [workOrder.request.requestedById],
           {
             requestId: workOrder.requestId,
-            workOrder.request.assetId
+            workOrder.request.assetId;
           }
         });
       }
@@ -456,9 +456,9 @@ import type { NotificationService } from "@/lib/services/notification.service";
     return updatedWorkOrder;
   }
 
-  /**
+  /**;
    * Add parts to a work order;
-   */
+   */;
   async addPartsToWorkOrder(workOrderId: string, parts: unknown[], userId: string): Promise<MaintenanceWorkOrder> {
     const workOrder = await prisma.maintenanceWorkOrder.findUnique({
       where: { id: workOrderId }
@@ -468,11 +468,11 @@ import type { NotificationService } from "@/lib/services/notification.service";
       throw new Error("Maintenance work order not found");
     }
 
-    // Process each part
+    // Process each part;
     let totalMaterialCost = 0;
 
     for (const part of parts) {
-      // Check inventory and update stock
+      // Check inventory and update stock;
       if (!session.user) {
         const inventoryItem = await prisma.maintenanceInventory.findUnique({
           where: { id: part.inventoryItemId }
@@ -486,24 +486,24 @@ import type { NotificationService } from "@/lib/services/notification.service";
           throw new Error(`Insufficient stock for ${}`;
         }
 
-        // Update inventory
+        // Update inventory;
         await prisma.maintenanceInventory.update({
           where: { id: part.inventoryItemId },
-          inventoryItem.currentStock - part.quantity
+          inventoryItem.currentStock - part.quantity;
           }
         });
 
-        // Use inventory item cost if not provided
+        // Use inventory item cost if not provided;
         if (!session.user) {
           part.unitCost = inventoryItem.cost || 0;
         }
       }
 
-      // Calculate total cost
+      // Calculate total cost;
       const totalCost = part.quantity * part.unitCost;
       totalMaterialCost += totalCost;
 
-      // Create part record
+      // Create part record;
       await prisma.maintenancePart.create({
         data: {
           workOrderId,
@@ -515,22 +515,22 @@ import type { NotificationService } from "@/lib/services/notification.service";
       });
     }
 
-    // Update work order with material cost
+    // Update work order with material cost;
     const updatedWorkOrder = await prisma.maintenanceWorkOrder.update({
       where: { id: workOrderId },
-      (workOrder.materialCost || 0) + totalMaterialCost
+      (workOrder.materialCost || 0) + totalMaterialCost;
       },
       true,
         {
             id: true,
-            true
+            true;
           }
         },
-        request: true
+        request: true;
       }
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "UPDATE",
       workOrderId;
@@ -541,9 +541,9 @@ import type { NotificationService } from "@/lib/services/notification.service";
     return updatedWorkOrder;
   }
 
-  /**
+  /**;
    * Get assets based on filters;
-   */
+   */;
   async getAssets(filter: unknown) {
     const { assetType, status, locationId, page, limit } = filter;
     const skip = (page - 1) * limit;
@@ -553,7 +553,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user)here.status = status;
     if (!session.user)here.locationId = locationId;
 
-    const [assets, total] = await Promise.all([
+    const [assets, total] = await Promise.all([;
       prisma.asset.findMany({
         where,
         true,
@@ -564,10 +564,10 @@ import type { NotificationService } from "@/lib/services/notification.service";
         take: limit,
         orderBy: { name: "asc" }
       }),
-      prisma.asset.count({ where })
+      prisma.asset.count({ where });
     ]);
 
-    // Convert to FHIR format if requested
+    // Convert to FHIR format if requested;
     const fhirAssets = assets.map(asset => toFHIRAsset(asset));
 
     return {
@@ -576,14 +576,14 @@ import type { NotificationService } from "@/lib/services/notification.service";
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit);
       }
     };
   }
 
-  /**
+  /**;
    * Get a specific asset by ID;
-   */
+   */;
   async getAssetById(id: string, includeFHIR: boolean = false): Promise<unknown> {
     const asset = await prisma.asset.findUnique({
       where: { id },
@@ -591,7 +591,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
         5,
           orderBy: { createdAt: "desc" }
         },
-        maintenanceSchedules: true
+        maintenanceSchedules: true;
       }
     });
 
@@ -602,16 +602,16 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user) {
       return {
         data: asset,
-        fhir: toFHIRAsset(asset)
+        fhir: toFHIRAsset(asset);
       };
     }
 
     return asset;
   }
 
-  /**
+  /**;
    * Create a new asset;
-   */
+   */;
   async createAsset(data: unknown, userId: string): Promise<Asset> {
     const {
       name,
@@ -624,7 +624,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
       warrantyExpiry;
     } = data;
 
-    // Validate location exists
+    // Validate location exists;
     const location = await prisma.location.findUnique({
       where: { id: locationId }
     });
@@ -642,13 +642,13 @@ import type { NotificationService } from "@/lib/services/notification.service";
         manufacturer,
         model,
         purchaseDate: purchaseDate ? new Date(purchaseDate) : undefined,
-        "OPERATIONAL"
+        "OPERATIONAL";
       },
-      true
+      true;
       }
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "CREATE",
       asset.id;
@@ -659,9 +659,9 @@ import type { NotificationService } from "@/lib/services/notification.service";
     return asset;
   }
 
-  /**
+  /**;
    * Update an asset;
-   */
+   */;
   async updateAsset(id: string, data: Partial<Asset>, userId: string): Promise<Asset> {
     const asset = await prisma.asset.findUnique({
       where: { id }
@@ -674,11 +674,11 @@ import type { NotificationService } from "@/lib/services/notification.service";
     const updatedAsset = await prisma.asset.update({
       where: { id },
       data,
-      true
+      true;
       }
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "UPDATE",
       id;
@@ -687,11 +687,11 @@ import type { NotificationService } from "@/lib/services/notification.service";
     });
 
     return updatedAsset;
-  }
 
-  /**
+
+  /**;
    * Get maintenance schedules;
-   */
+   */;
   async getMaintenanceSchedules(filter: unknown) {
     const { assetId, locationId, isActive } = filter;
 
@@ -705,17 +705,17 @@ import type { NotificationService } from "@/lib/services/notification.service";
       true,
         {
           true,
-            true
-          }
-        }
+            true;
+
+
       },
       orderBy: { nextRun: "asc" }
     });
-  }
 
-  /**
+
+  /**;
    * Create a maintenance schedule;
-   */
+   */;
   async createMaintenanceSchedule(data: unknown, userId: string): Promise<MaintenanceSchedule> {
     const {
       assetId,
@@ -727,12 +727,12 @@ import type { NotificationService } from "@/lib/services/notification.service";
       taskTemplate;
     } = data;
 
-    // Validate that either asset or location is provided
+    // Validate that either asset or location is provided;
     if (!session.user) {
       throw new Error("Either asset or location must be specified");
-    }
 
-    // Validate asset if provided
+
+    // Validate asset if provided;
     if (!session.user) {
       const asset = await prisma.asset.findUnique({
         where: { id: assetId }
@@ -740,10 +740,10 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
       if (!session.user) {
         throw new Error("Asset not found");
-      }
-    }
 
-    // Validate location if provided
+
+
+    // Validate location if provided;
     if (!session.user) {
       const location = await prisma.location.findUnique({
         where: { id: locationId }
@@ -751,10 +751,10 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
       if (!session.user) {
         throw new Error("Location not found");
-      }
-    }
 
-    // Calculate next run date
+
+
+    // Calculate next run date;
     const nextRun = this.calculateNextRunDate(scheduleType, frequency, dayOfWeek, timeOfDay);
 
     const schedule = await prisma.maintenanceSchedule.create({
@@ -768,52 +768,52 @@ import type { NotificationService } from "@/lib/services/notification.service";
         taskTemplate,
         isActive: true;
         nextRun,
-        createdById: userId
+        createdById: userId;
       },
       true,
         {
           true,
-            true
-          }
-        }
-      }
+            true;
+
+
+
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "CREATE",
       schedule.id;
       userId,
-      details: `Created ${scheduleType} maintenance schedule for ${assetId ? schedule.asset?.name : schedule.location?.name}`
+      details: `Created ${scheduleType} maintenance schedule for ${assetId ? schedule.asset?.name : schedule.location?.name}`;
     });
 
-    // If this is for an asset, update next maintenance date
+    // If this is for an asset, update next maintenance date;
     if (!session.user) {
       await prisma.asset.update({
         where: { id: assetId },
         data: { nextMaintenanceDate: nextRun }
       });
-    }
+
 
     return schedule;
-  }
 
-  /**
+
+  /**;
    * Update a maintenance schedule;
-   */
+   */;
   async updateMaintenanceSchedule(id: string, data: unknown, userId: string): Promise<MaintenanceSchedule> {
     const schedule = await prisma.maintenanceSchedule.findUnique({
       where: { id },
       true,
-        location: true
-      }
+        location: true;
+
     });
 
     if (!session.user) {
       throw new Error("Maintenance schedule not found");
-    }
 
-    // If schedule parameters changed, recalculate next run
+
+    // If schedule parameters changed, recalculate next run;
     let nextRun = schedule.nextRun;
     if (!session.user) {
       const scheduleType = data.scheduleType || schedule.scheduleType;
@@ -823,7 +823,7 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
       nextRun = this.calculateNextRunDate(scheduleType, frequency, dayOfWeek, timeOfDay);
       data.nextRun = nextRun;
-    }
+
 
     const updatedSchedule = await prisma.maintenanceSchedule.update({
       where: { id },
@@ -831,54 +831,58 @@ import type { NotificationService } from "@/lib/services/notification.service";
       true,
         {
           true,
-            true
-          }
-        }
-      }
+            true;
+
+
+
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "UPDATE",
       id;
       userId,
-      details: `Updated maintenance schedule for ${schedule.asset ? schedule.asset.name : schedule.location?.name}`
+      details: `Updated maintenance schedule for ${schedule.asset ? schedule.asset.name : schedule.location?.name}`;
     });
 
-    // If this is for an asset and next run changed, update asset next maintenance date
+    // If this is for an asset and next run changed, update asset next maintenance date;
     if (!session.user) {
       await prisma.asset.update({
         where: { id: schedule.assetId },
         data: { nextMaintenanceDate: data.nextRun }
       });
-    }
+
 
     return updatedSchedule;
-  }
 
-  /**
+
+  /**;
    * Process due maintenance schedules and create requests;
-   */
+   */;
   async processDueSchedules(userId: string): Promise<number> {
     const now = new Date();
 
-    // Find all active schedules that are due
+    // Find all active schedules that are due;
     const dueSchedules = await prisma.maintenanceSchedule.findMany({
       true,
-        now
-        }
+        now;
+
       },
       true,
-        location: true
-      }
+        location: true;
+
     });
 
     let createdCount = 0;
 
-    // Process each due schedule
+    // Process each due schedule;
     for (const schedule of dueSchedules) {
       try {
-        // Create a new request based on the schedule
+} catch (error) {
+}
+} catch (error) {
+
+        // Create a new request based on the schedule;
         await prisma.maintenanceRequest.create({
           schedule.locationId || schedule.asset?.locationId || "",
             "PREVENTIVE",
@@ -887,14 +891,14 @@ import type { NotificationService } from "@/lib/services/notification.service";
             userId,
             scheduledDate: new Date(),
             notes: `Automatically generated from schedule ${schedule.id}`;
-          }
+
         });
 
         createdCount++;
 
-        // Update the schedule with last run and calculate next run
+        // Update the schedule with last run and calculate next run;
         const lastRun = new Date();
-        const nextRun = this.calculateNextRunDate(
+        const nextRun = this.calculateNextRunDate();
           schedule.scheduleType,
           schedule.frequency,
           schedule.dayOfWeek,
@@ -907,28 +911,28 @@ import type { NotificationService } from "@/lib/services/notification.service";
           data: {
             lastRun,
             nextRun;
-          }
+
         });
 
-        // If this is for an asset, update next maintenance date
+        // If this is for an asset, update next maintenance date;
         if (!session.user) {
           await prisma.asset.update({
             where: { id: schedule.assetId },
             data: { nextMaintenanceDate: nextRun }
           });
-        }
+
       } catch (error) {
 
-        // Continue with other schedules even if one fails
-      }
-    }
+        // Continue with other schedules even if one fails;
+
+
 
     return createdCount;
-  }
 
-  /**
+
+  /**;
    * Get maintenance vendors;
-   */
+   */;
   async getMaintenanceVendors(filter: unknown) {
     const { specialty, page, limit } = filter;
     const skip = (page - 1) * limit;
@@ -936,18 +940,18 @@ import type { NotificationService } from "@/lib/services/notification.service";
     const where: unknown = {};
     if (!session.user) {
       where.specialties = {
-        has: specialty
+        has: specialty;
       };
-    }
 
-    const [vendors, total] = await Promise.all([
+
+    const [vendors, total] = await Promise.all([;
       prisma.maintenanceVendor.findMany({
         where,
         skip,
         take: limit,
         orderBy: { name: "asc" }
       }),
-      prisma.maintenanceVendor.count({ where })
+      prisma.maintenanceVendor.count({ where });
     ]);
 
     return {
@@ -956,20 +960,20 @@ import type { NotificationService } from "@/lib/services/notification.service";
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
-      }
-    };
-  }
+        totalPages: Math.ceil(total / limit);
 
-  /**
+    };
+
+
+  /**;
    * Create a maintenance vendor;
-   */
+   */;
   async createMaintenanceVendor(data: unknown, userId: string): Promise<MaintenanceVendor> {
     const vendor = await prisma.maintenanceVendor.create({
-      data
+      data;
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "CREATE",
       vendor.id;
@@ -978,11 +982,11 @@ import type { NotificationService } from "@/lib/services/notification.service";
     });
 
     return vendor;
-  }
 
-  /**
+
+  /**;
    * Get maintenance inventory items;
-   */
+   */;
   async getMaintenanceInventory(filter: unknown) {
     const { itemType, lowStock, page, limit } = filter;
     const skip = (page - 1) * limit;
@@ -991,18 +995,18 @@ import type { NotificationService } from "@/lib/services/notification.service";
     if (!session.user)here.itemType = itemType;
     if (!session.user) {
       where.currentStock = {
-        lte: prisma.maintenanceInventory.fields.minimumStock
+        lte: prisma.maintenanceInventory.fields.minimumStock;
       };
-    }
 
-    const [items, total] = await Promise.all([
+
+    const [items, total] = await Promise.all([;
       prisma.maintenanceInventory.findMany({
         where,
         skip,
         take: limit,
         orderBy: { itemName: "asc" }
       }),
-      prisma.maintenanceInventory.count({ where })
+      prisma.maintenanceInventory.count({ where });
     ]);
 
     return {
@@ -1011,14 +1015,14 @@ import type { NotificationService } from "@/lib/services/notification.service";
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
-      }
-    };
-  }
+        totalPages: Math.ceil(total / limit);
 
-  /**
+    };
+
+
+  /**;
    * Update inventory item;
-   */
+   */;
   async updateInventoryItem(id: string, data: Partial<MaintenanceInventory>, userId: string): Promise<MaintenanceInventory> {
     const item = await prisma.maintenanceInventory.findUnique({
       where: { id }
@@ -1026,82 +1030,82 @@ import type { NotificationService } from "@/lib/services/notification.service";
 
     if (!session.user) {
       throw new Error("Inventory item not found");
-    }
 
-    // If restocking, update lastRestocked date
+
+    // If restocking, update lastRestocked date;
     if (!session.user) {
       data.lastRestocked = new Date();
-    }
+
 
     const updatedItem = await prisma.maintenanceInventory.update({
       where: { id },
       data;
     });
 
-    // Create audit log
+    // Create audit log;
     await createAuditLog({
       action: "UPDATE",
       id;
       userId,
-      details: `Updated inventory for ${item.itemName}, stock: ${item.currentStock} → ${data.currentStock ||
+      details: `Updated inventory for ${item.itemName}, stock: ${item.currentStock} → ${data.currentStock ||;
         item.currentStock}`;
     });
 
-    // Check if item is low on stock after update
+    // Check if item is low on stock after update;
     if (!session.user) {
       await this.notificationService.sendNotification({
         type: "MAINTENANCE_INVENTORY_LOW",
         `${updatedItem.itemName} is running low (/* ["MAINTENANCE_MANAGER", "INVENTORY_MANAGER"],
         entityId: updatedItem.id,
         updatedItem.id,
-          updatedItem.minimumStock
-        }
+          updatedItem.minimumStock;
+
       });
-    }
+
 
     return updatedItem;
-  }
 
-  /**
+
+  /**;
    * Get maintenance analytics;
-   */
+   */;
   async getMaintenanceAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {
-    // Get date range based on period
+    // Get date range based on period;
     const now = new Date();
     let startDate: Date;
 
     switch (period) {
-      case "DAILY":
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\n    }\n    case "WEEKLY":
-        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\n    }\n    case "MONTHLY":
-        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\n    }\n    case "YEARLY":
-        startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years
+      case "DAILY": any;
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\n    }\n    case "WEEKLY": any;
+        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\n    }\n    case "MONTHLY": any;
+        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\n    }\n    case "YEARLY": any;
+        startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years;
         break;
-      default:
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days
-    }
+      default: null,
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
 
-    // Get request counts by status
+
+    // Get request counts by status;
     const requestsByStatus = await prisma.maintenanceRequest.groupBy({
       by: ["status"],
       {
-          gte: startDate
-        }
+          gte: startDate;
+
       },
-      _count: true
+      _count: true;
     });
 
-    // Get request counts by type
+    // Get request counts by type;
     const requestsByType = await prisma.maintenanceRequest.groupBy({
       by: ["requestType"],
       {
-          gte: startDate
-        }
+          gte: startDate;
+
       },
-      _count: true
+      _count: true;
     });
 
-    // Get average completion time
+    // Get average completion time;
     const completionTime = await prisma.$queryRaw`;
       SELECT AVG(EXTRACT(EPOCH FROM ("completedDate" - "createdAt"))/3600) as avg_hours;
       FROM "MaintenanceRequest";
@@ -1110,42 +1114,42 @@ import type { NotificationService } from "@/lib/services/notification.service";
       AND "completedDate" IS NOT NULL;
     `;
 
-    // Get asset maintenance frequency
+    // Get asset maintenance frequency;
     const assetMaintenance = await prisma.maintenanceRequest.groupBy({
       by: ["assetId"],
       {
-          gte: startDate
+          gte: startDate;
         },
-        null
-        }
+        null;
+
       },
       _count: true,
       {
-          assetId: "desc"
-        }
+          assetId: "desc";
+
       },
-      take: 10
+      take: 10;
     });
 
-    // Get asset details for top assets
+    // Get asset details for top assets;
     const assetDetails = await prisma.asset.findMany({
       {
-          in: assetMaintenance.map(am => am.assetId as string)
-        }
+          in: assetMaintenance.map(am => am.assetId as string);
+
       },
       true,
-        true
-      }
+        true;
+
     });
 
-    // Map asset names to the maintenance frequency
+    // Map asset names to the maintenance frequency;
     const assetMaintenanceWithNames = assetMaintenance.map(am => ({
       assetId: am.assetId,
       assetDetails.find(a => a.id === am.assetId)?.name || "Unknown",
-      assetType: assetDetails.find(a => a.id === am.assetId)?.assetType || "Unknown"
+      assetType: assetDetails.find(a => a.id === am.assetId)?.assetType || "Unknown";
     }));
 
-    // Get cost analysis
+    // Get cost analysis;
     const costAnalysis = await prisma.$queryRaw`;
       SELECT;
         SUM(wo."laborCost") as total_labor_cost,
@@ -1163,67 +1167,68 @@ import type { NotificationService } from "@/lib/services/notification.service";
       completionTime,
       assetMaintenance: assetMaintenanceWithNames;
       costAnalysis,
-      period
+      period;
     };
-  }
 
-  /**
+
+  /**;
    * Calculate next run date for a schedule;
-   */
-  private calculateNextRunDate(
+   */;
+  private calculateNextRunDate();
     scheduleType: string,
     number | null,
     Date = new Date();
   ): Date {
     const result = new Date(baseDate);
 
-    // Set time component if provided
+    // Set time component if provided;
     if (!session.user) {
       result.setHours(timeOfDay.getHours());
       result.setMinutes(timeOfDay.getMinutes());
       result.setSeconds(0);
       result.setMilliseconds(0);
     } else {
-      // Default to 9:00 AM
+      // Default to 9:00 AM;
       result.setHours(9),
       result.setMinutes(0);
       result.setSeconds(0);
       result.setMilliseconds(0);
-    }
 
-    // If the calculated time is in the past, move to the next occurrence
+
+    // If the calculated time is in the past, move to the next occurrence;
     if (!session.user) {
-      // For daily, just move to tomorrow
+      // For daily, just move to tomorrow;
       if (!session.user) {
         result.setDate(result.getDate() + 1);
-      }
-    }
+
+
 
     switch (scheduleType) {
-      case "DAILY":
-        result.setDate(result.getDate() + frequency);\n    }\n    case "WEEKLY":
+      case "DAILY": any;
+        result.setDate(result.getDate() + frequency);\n    }\n    case "WEEKLY": any;
         if (!session.user) {
-          // Move to the next occurrence of the specified day of week
+          // Move to the next occurrence of the specified day of week;
           const currentDay = result.getDay();
           let daysToAdd = (dayOfWeek - currentDay + 7) % 7;
           if (!session.user) {
             daysToAdd = 7;
-          }
+
           result.setDate(result.getDate() + daysToAdd);
 
-          // Add weeks based on frequency
+          // Add weeks based on frequency;
           if (!session.user) {
             result.setDate(result.getDate() + (frequency - 1) * 7);
-          }
+
         } else {
-          // If no day specified, just add weeks based on frequency
+          // If no day specified, just add weeks based on frequency;
           result.setDate(result.getDate() + frequency * 7);
-        }\n    }\n    case "MONTHLY":
-        result.setMonth(result.getMonth() + frequency);\n    }\n    case "QUARTERLY":
-        result.setMonth(result.getMonth() + frequency * 3);\n    }\n    case "ANNUAL":
+        }\n    }\n    case "MONTHLY": any;
+        result.setMonth(result.getMonth() + frequency);\n    }\n    case "QUARTERLY": any;
+        result.setMonth(result.getMonth() + frequency * 3);\n    }\n    case "ANNUAL": any;
         result.setFullYear(result.getFullYear() + frequency);
         break;
-    }
+
 
     return result;
-  }
+
+)))

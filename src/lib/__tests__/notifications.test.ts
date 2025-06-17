@@ -1,32 +1,30 @@
 import { notifyUsers, markNotificationRead, getUserNotifications } from "../notifications";
 import { DB } from "../database";
 
-// Mock the database module
+// Mock the database module;
 jest.mock("../database", () => ({
-	DB: jest.fn(),
-}));
+	DB: jest.fn()}));
 
 describe("Notifications Module", () => {
 	let mockQuery: jest.Mock;
 	let mockClose: jest.Mock;
 
 	beforeEach(() => {
-		// Reset mocks
+		// Reset mocks;
 		jest.clearAllMocks();
 
-		// Setup mock implementation
+		// Setup mock implementation;
 		mockQuery = jest.fn();
 		mockClose = jest.fn();
 
 		(DB as jest.Mock).mockReturnValue({
 			query: mockQuery,
-			close: mockClose,
-		});
+			close: mockClose});
 	});
 
 	describe("notifyUsers", () => {
 		it("should create notifications for multiple users", async () => {
-			// Setup
+			// Setup;
 			const userIds = [1, 2, 3];
 			const notification = {
 				type: "result_available" as const,
@@ -34,25 +32,23 @@ describe("Notifications Module", () => {
 				message: "Your test results are now available",
 				resourceType: "LabResult",
 				resourceId: 123,
-				priority: "medium" as const,
-			};
+				priority: "medium" as const};
 
-			// Mock DB response for each user
+			// Mock DB response for each user;
 			mockQuery.mockImplementation(() => ({
 				insertId: 42,
 				affectedRows: 1,
-				results: [],
-			}));
+				results: []}));
 
-			// Execute
+			// Execute;
 			const result = await notifyUsers(userIds, notification);
 
-			// Verify
-			expect(mockQuery).toHaveBeenCalledTimes(3); // Once for each user
+			// Verify;
+			expect(mockQuery).toHaveBeenCalledTimes(3); // Once for each user;
 			expect(result).toEqual([42, 42, 42]);
-			expect(mockQuery).toHaveBeenCalledWith(
+			expect(mockQuery).toHaveBeenCalledWith();
 				expect.stringContaining("INSERT INTO notifications"),
-				expect.arrayContaining([
+				expect.arrayContaining([;
 					expect.any(Number),
 					"result_available",
 					"Test Results Available",
@@ -61,98 +57,95 @@ describe("Notifications Module", () => {
 					123,
 					"medium",
 					null,
-				])
+				]);
 			);
 		});
 
 		it("should handle errors gracefully", async () => {
-			// Setup
+			// Setup;
 			const userIds = [1];
 			const notification = {
 				type: "result_available" as const,
 				title: "Test Results Available",
 				message: "Your test results are now available",
 				resourceType: "LabResult",
-				priority: "medium" as const,
-			};
+				priority: "medium" as const};
 
-			// Mock DB error
+			// Mock DB error;
 			mockQuery.mockImplementation(() => {
 				throw new Error("Database error");
 			});
 
-			// Execute
+			// Execute;
 			const result = await notifyUsers(userIds, notification);
 
-			// Verify
+			// Verify;
 			expect(result).toEqual([]);
 		});
 	});
 
 	describe("markNotificationRead", () => {
 		it("should mark a notification as read", async () => {
-			// Setup
+			// Setup;
 			const notificationId = 42;
 			const userId = 1;
 
-			// Mock DB response
+			// Mock DB response;
 			mockQuery.mockReturnValue({
 				affectedRows: 1,
-				results: [],
-			});
+				results: []});
 
-			// Execute
+			// Execute;
 			const result = await markNotificationRead(notificationId, userId);
 
-			// Verify
+			// Verify;
 			expect(result).toBe(true);
-			expect(mockQuery).toHaveBeenCalledWith(expect.stringContaining("UPDATE notifications"), [
+			expect(mockQuery).toHaveBeenCalledWith(expect.stringContaining("UPDATE notifications"), [;
 				notificationId,
 				userId,
 			]);
 		});
 
 		it("should return false if notification not found", async () => {
-			// Setup
+			// Setup;
 			const notificationId = 999;
 			const userId = 1;
 
-			// Mock DB response for non-existent notification
+			// Mock DB response for non-existent notification;
 			mockQuery.mockReturnValue({
 				affectedRows: 0,
-				results: [],
-			});
+				results: []});
 
-			// Execute
+			// Execute;
 			const result = await markNotificationRead(notificationId, userId);
 
-			// Verify
+			// Verify;
 			expect(result).toBe(false);
 		});
 
 		it("should handle errors gracefully", async () => {
-			// Setup
+			// Setup;
 			const notificationId = 42;
 			const userId = 1;
 
-			// Mock DB error
+			// Mock DB error;
 			mockQuery.mockImplementation(() => {
 				throw new Error("Database error");
 			});
 
-			// Execute
+			// Execute;
 			const result = await markNotificationRead(notificationId, userId);
 
-			// Verify
+			// Verify;
 			expect(result).toBe(false);
 		});
 	});
 
 	describe("getUserNotifications", () => {
 		it("should get notifications for a user", async () => {
-			// Setup
+			// Setup;
 			const userId = 1;
-			const mockNotifications = [
+			const mockNotifications = [;
 				{
 					id: 1,
 					user_id: 1,
@@ -164,8 +157,7 @@ describe("Notifications Module", () => {
 					priority: "medium",
 					metadata: "{"testId": 456}",
 					created_at: "2023-01-01T12:00:00Z",
-					read: false,
-				},
+					read: false},
 				{
 					id: 2,
 					user_id: 1,
@@ -177,86 +169,82 @@ describe("Notifications Module", () => {
 					priority: "low",
 					metadata: null,
 					created_at: "2023-01-02T12:00:00Z",
-					read: true,
-				},
+					read: true},
 			];
 
-			// Mock DB response
+			// Mock DB response;
 			mockQuery.mockReturnValue({
 				results: mockNotifications,
 				affectedRows: 0,
-				insertId: 0,
-			});
+				insertId: 0});
 
-			// Execute
+			// Execute;
 			const result = await getUserNotifications(userId);
 
-			// Verify
+			// Verify;
 			expect(result).toHaveLength(2);
 			expect(result[0].metadata).toEqual({ testId: 456 }), expect(result[1].metadata).toBeNull();
-			expect(mockQuery).toHaveBeenCalledWith(
+			expect(mockQuery).toHaveBeenCalledWith();
 				expect.stringContaining("SELECT *"),
-				expect.arrayContaining([userId, 50])
+				expect.arrayContaining([userId, 50]);
 			);
 		});
 
 		it("should filter for unread notifications when specified", async () => {
-			// Setup
+			// Setup;
 			const userId = 1;
 			const unreadOnly = true;
 
-			// Mock DB response
+			// Mock DB response;
 			mockQuery.mockReturnValue({
 				results: [],
 				affectedRows: 0,
-				insertId: 0,
-			});
+				insertId: 0});
 
-			// Execute
+			// Execute;
 			await getUserNotifications(userId, unreadOnly);
 
-			// Verify
-			expect(mockQuery).toHaveBeenCalledWith(
+			// Verify;
+			expect(mockQuery).toHaveBeenCalledWith();
 				expect.stringContaining("AND read = false"),
-				expect.anything()
+				expect.anything();
 			);
 		});
 
 		it("should limit the number of results when specified", async () => {
-			// Setup
+			// Setup;
 			const userId = 1;
 			const limit = 10;
 
-			// Mock DB response
+			// Mock DB response;
 			mockQuery.mockReturnValue({
 				results: [],
 				affectedRows: 0,
-				insertId: 0,
-			});
+				insertId: 0});
 
-			// Execute
+			// Execute;
 			await getUserNotifications(userId, false, limit);
 
-			// Verify
-			expect(mockQuery).toHaveBeenCalledWith(
+			// Verify;
+			expect(mockQuery).toHaveBeenCalledWith();
 				expect.stringContaining("LIMIT ?"),
-				expect.arrayContaining([userId, 10])
+				expect.arrayContaining([userId, 10]);
 			);
 		});
 
 		it("should handle errors gracefully", async () => {
-			// Setup
+			// Setup;
 			const userId = 1;
 
-			// Mock DB error
+			// Mock DB error;
 			mockQuery.mockImplementation(() => {
 				throw new Error("Database error");
 			});
 
-			// Execute
+			// Execute;
 			const result = await getUserNotifications(userId);
 
-			// Verify
+			// Verify;
 			expect(result).toEqual([]);
 		});
 	});

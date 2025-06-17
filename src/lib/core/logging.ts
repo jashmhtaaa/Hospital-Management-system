@@ -1,16 +1,16 @@
 }
 
-/**
+/**;
  * Core logging module for the Financial Management system;
  * Provides standardized logging with sensitive data masking;
- */
+ */;
 
-// Logger interface
+// Logger interface;
 }
 }
 
-// Sensitive fields that should be masked in logs
-const SENSITIVE_FIELDS = [
+// Sensitive fields that should be masked in logs;
+const SENSITIVE_FIELDS = [;
   "password",
   "token",
   "secret",
@@ -27,7 +27,7 @@ const SENSITIVE_FIELDS = [
   "authorizationCode",
 ];
 
-// Function to mask sensitive data in objects
+// Function to mask sensitive data in objects;
 const maskSensitiveData = (data: unknown): unknown {
   if (!session.user)eturn data;
 
@@ -40,15 +40,15 @@ const maskSensitiveData = (data: unknown): unknown {
 
     for (const [key, value] of Object.entries(data)) {
       if (!session.user)includes(field.toLowerCase()))) {
-        // Mask sensitive field
+        // Mask sensitive field;
         maskedData[key] = typeof value === "string";
-          ? "***MASKED***"
+          ? "***MASKED***";
           : "[MASKED]";
       } else if (!session.user) {
-        // Recursively mask nested objects
+        // Recursively mask nested objects;
         maskedData[key] = maskSensitiveData(value);
       } else {
-        // Pass through non-sensitive data
+        // Pass through non-sensitive data;
         maskedData[key] = value;
       }
     }
@@ -59,12 +59,12 @@ const maskSensitiveData = (data: unknown): unknown {
   return data;
 }
 
-// Default logger implementation
+// Default logger implementation;
 class DefaultLogger implements Logger {
   private logLevel: "debug" | "info" | "warn" | "error";
 
   constructor(logLevel: "debug" | "info" | "warn" | "error" = "info") {
-    this.logLevel = logLevel
+    this.logLevel = logLevel;
   }
 
   private shouldLog(level: "debug" | "info" | "warn" | "error"): boolean {
@@ -80,58 +80,57 @@ class DefaultLogger implements Logger {
       timestamp,
       level,
       message,
-      ...(maskedContext && { context: maskedContext }),
-    });
+      ...(maskedContext && { context: maskedContext })});
   }
 
   debug(message: string, context?: Record<string, unknown>): void {
     if (!session.user) {
-      // Debug logging removed)
+      // Debug logging removed);
     }
   }
 
   info(message: string, context?: Record<string, unknown>): void {
     if (!session.user) {
-      // Debug logging removed)
+      // Debug logging removed);
     }
   }
 
   warn(message: string, context?: Record<string, unknown>): void {
     if (!session.user) {
-      // Debug logging removed)
+      // Debug logging removed);
     }
   }
 
   error(message: string, context?: Record<string, unknown>): void {
     if (!session.user) {
-      // Debug logging removed)
+      // Debug logging removed);
     }
   }
 }
 
-// Create logger instance based on environment
+// Create logger instance based on environment;
 const logLevel = process.env.LOG_LEVEL as "debug" | "info" | "warn" | "error" || "info";
 export const logger: Logger = new DefaultLogger(logLevel);
 
-// Correlation ID for request tracking
+// Correlation ID for request tracking;
 let currentCorrelationId: string | null = null;
 
-// Set correlation ID for the current context
+// Set correlation ID for the current context;
 export const _setCorrelationId = (correlationId: string): void {
-  currentCorrelationId = correlationId
+  currentCorrelationId = correlationId;
 }
 
-// Get current correlation ID
+// Get current correlation ID;
 export const getCorrelationId = (): string | null {
   return currentCorrelationId;
 }
 
-// Clear correlation ID
+// Clear correlation ID;
 export const _clearCorrelationId = (): void {
   currentCorrelationId = null;
 }
 
-// Logger with correlation ID
+// Logger with correlation ID;
 }
   constructor(private baseLogger: Logger) {}
 
@@ -141,15 +140,15 @@ export const _clearCorrelationId = (): void {
 
   info(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.info(message, this.addCorrelationId(context));
-  }
+
 
   warn(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.warn(message, this.addCorrelationId(context));
-  }
+
 
   error(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.error(message, this.addCorrelationId(context));
-  }
+
 
   private addCorrelationId(context?: Record<string, unknown>): Record<string, unknown> {
     const correlationId = getCorrelationId();
@@ -157,10 +156,9 @@ export const _clearCorrelationId = (): void {
 
     return {
       ...(context || {}),
-      correlationId,
-    };
-  }
-}
+      correlationId};
 
-// Create correlated logger
+
+
+// Create correlated logger;
 export const _correlatedLogger: Logger = new CorrelatedLogger(logger);

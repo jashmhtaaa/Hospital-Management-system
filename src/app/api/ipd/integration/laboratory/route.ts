@@ -5,37 +5,45 @@ import { handleApiError } from "@/lib/api/errorHandler";
 import { logger } from "@/lib/logger";
 import { LabCancelSchema, LabOrderSchema, LabResultNotificationSchema, LaboratoryService } from "@/services/integration/LaboratoryService";
 import { ipdMiddleware } from "../../middleware/auth";
-/**
+/**;
  * Integration endpoint for Laboratory Module;
  * This endpoint handles lab test orders and results;
  * POST /api/ipd/integration/laboratory;
- */
+ */;
 export const POST = async (req: NextRequest) => {
-  // Check authentication and authorization
+  // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "ORDER_LABS");
   if (!session.user) {
-    return authResult; // This is an error response
+    return authResult; // This is an error response;
   }
 
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const body = await req.json();
     logger.info({ route: "POST /api/ipd/integration/laboratory", actionType: body.actionType }, "Processing laboratory request");
 
-    // Validate request body
+    // Validate request body;
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Missing required fields: actionType, encounterId" },
         { status: 400 }
       );
     }
 
-    // Create laboratory service instance
+    // Create laboratory service instance;
     const laboratoryService = new LaboratoryService();
 
-    // Process different laboratory action types
+    // Process different laboratory action types;
     switch (body.actionType) {
-      case "ORDER":
+      case "ORDER": any;
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           const validatedData = LabOrderSchema.parse(body);
           const result = await laboratoryService.createLabOrder(validatedData, authResult.user.id);
           return NextResponse.json(result, { status: 201 });
@@ -43,8 +51,12 @@ export const POST = async (req: NextRequest) => {
           return handleApiError(error);
         }
 
-      case "CANCEL":
+      case "CANCEL": any;
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           const validatedData = LabCancelSchema.parse(body);
           const result = await laboratoryService.cancelLabOrder(validatedData, authResult.user.id);
           return NextResponse.json(result, { status: 200 });
@@ -52,8 +64,12 @@ export const POST = async (req: NextRequest) => {
           return handleApiError(error);
         }
 
-      case "RESULT_NOTIFICATION":
+      case "RESULT_NOTIFICATION": any;
         try {
+} catch (error) {
+}
+} catch (error) {
+}
           const validatedData = LabResultNotificationSchema.parse(body);
           const result = await laboratoryService.sendLabResultNotification(validatedData, authResult.user.id);
           return NextResponse.json(result, { status: 200 });
@@ -61,34 +77,37 @@ export const POST = async (req: NextRequest) => {
           return handleApiError(error);
         }
 
-      default:
-        return NextResponse.json(
+      default: null,
+        return NextResponse.json();
           { error: `Unsupported action type: ${body.actionType}` },
           { status: 400 }
-        ),
-    }
+        )}
   } catch (error) {
     return handleApiError(error);
   }
 }
 
-/**
+/**;
  * Get pending lab orders for a patient;
  * GET /api/ipd/integration/laboratory/pending-orders;
- */
+ */;
 export const GET = async (req: NextRequest) => {
-  // Check authentication and authorization
+  // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
-    return authResult; // This is an error response
+    return authResult; // This is an error response;
   }
 
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const { searchParams } = new URL(req.url);
     const patientId = searchParams.get("patientId");
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Missing patientId parameter" },
         { status: 400 }
       );
@@ -96,10 +115,10 @@ export const GET = async (req: NextRequest) => {
 
     logger.info({ route: "GET /api/ipd/integration/laboratory", patientId }, "Getting pending laboratory orders");
 
-    // Create laboratory service instance
+    // Create laboratory service instance;
     const laboratoryService = new LaboratoryService();
 
-    // Get pending lab orders
+    // Get pending lab orders;
     const pendingOrders = await laboratoryService.getPendingLabOrders(patientId);
 
     return NextResponse.json(pendingOrders);
@@ -108,18 +127,22 @@ export const GET = async (req: NextRequest) => {
   }
 }
 
-/**
+/**;
  * Get lab results for a patient;
  * GET /api/ipd/integration/laboratory/results;
- */
+ */;
 export const getLabResults = async (req: NextRequest) => {
-  // Check authentication and authorization
+  // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
-    return authResult; // This is an error response
+    return authResult; // This is an error response;
   }
 
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const { searchParams } = new URL(req.url);
     const patientId = searchParams.get("patientId");
     const encounterId = searchParams.get("encounterId") || undefined;
@@ -127,7 +150,7 @@ export const getLabResults = async (req: NextRequest) => {
     const includeDetails = searchParams.get("includeDetails") === "true";
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Missing patientId parameter" },
         { status: 400 }
       );
@@ -141,51 +164,54 @@ export const getLabResults = async (req: NextRequest) => {
       includeDetails;
     }, "Getting laboratory results");
 
-    // Create laboratory service instance
+    // Create laboratory service instance;
     const laboratoryService = new LaboratoryService();
 
-    // Get lab results
+    // Get lab results;
     const labResults = await laboratoryService.getLabResults(patientId, encounterId, limit, includeDetails);
 
     return NextResponse.json(labResults);
   } catch (error) {
     return handleApiError(error);
-  }
-}
 
-/**
+
+
+/**;
  * Get detailed lab result;
  * GET /api/ipd/integration/laboratory/results/details;
- */
+ */;
 export const getLabResultDetails = async (req: NextRequest) => {
-  // Check authentication and authorization
+  // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
-    return authResult; // This is an error response
-  }
+    return authResult; // This is an error response;
+
 
   try {
+} catch (error) {
+}
+} catch (error) {
+
     const { searchParams } = new URL(req.url);
     const orderId = searchParams.get("orderId");
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Missing orderId parameter" },
         { status: 400 }
       );
-    }
+
 
     logger.info({ route: "GET /api/ipd/integration/laboratory/results/details", orderId }, "Getting laboratory result details");
 
-    // Create laboratory service instance
+    // Create laboratory service instance;
     const laboratoryService = new LaboratoryService();
 
-    // Get lab result details
+    // Get lab result details;
     const resultDetails = await laboratoryService.getLabResultDetails(orderId, authResult.user.id);
 
     return NextResponse.json(resultDetails);
   } catch (error) {
     return handleApiError(error);
-  }
 
-}
+

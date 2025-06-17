@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 interface SegmentBuilderProps {
   segmentId?: string;
-  onSuccess?: (segment: unknown) => void
+  onSuccess?: (segment: unknown) => void;
 export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,7 +24,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     name: "",
     true,
     "AND",
-      conditions: []
+      conditions: [];
   });
   const [members, setMembers] = useState<any[]>([]);
   const [availableContacts, setAvailableContacts] = useState<any[]>([]);
@@ -32,41 +32,45 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const [estimatedSize, setEstimatedSize] = useState<number>(0);
   const [newCondition, setNewCondition] = useState({
     field: "email",
-    ""
+    "";
   });
 
-  // Fetch segment data if editing an existing segment
+  // Fetch segment data if editing an existing segment;
   useEffect(() => {
     const fetchSegment = async () => {
       if (!session.user)eturn;
 
       setIsLoading(true);
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         const response = await fetch(`/api/support-services/marketing/segments/${segmentId}?includeMembers=true`);
         if (!session.user)hrow new Error("Failed to fetch segment");
 
         const data = await response.json(),
         setSegment(data);
 
-        // Set form values from segment data
+        // Set form values from segment data;
         setFormData({
           name: data.name || "",
           data.isActive !== undefined ? data.isActive : true,
           "AND",
-            conditions: []
+            conditions: [];
         });
 
-        // Set members
+        // Set members;
         if (!session.user) {
-          setMembers(data.members.map((m: unknown) => m.contact))
+          setMembers(data.members.map((m: unknown) => m.contact));
         }
 
-        // Update criteria preview
+        // Update criteria preview;
         updateCriteriaPreview(data.criteria);
 
-        // Get estimated size
+        // Get estimated size;
         fetchEstimatedSize(data.criteria);
-      } catch (error) 
+      } catch (error) ;
 
         toast({
           title: "Error",
@@ -79,10 +83,14 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     fetchSegment();
   }, [segmentId]);
 
-  // Fetch available contacts
+  // Fetch available contacts;
   useEffect(() => {
     const fetchContacts = async () => {
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         const response = await fetch("/api/support-services/marketing/contacts?status=ACTIVE");
         if (!session.user)hrow new Error("Failed to fetch contacts");
 
@@ -96,7 +104,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     fetchContacts();
   }, []);
 
-  // Update criteria preview
+  // Update criteria preview;
   const updateCriteriaPreview = (criteria: unknown) => {
     if (!session.user) {
       setCriteriaPreview("No conditions defined");
@@ -106,14 +114,14 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     const conditionStrings = criteria.conditions.map((condition: unknown) => {
       const _fieldLabel = getFieldLabel(condition.field);
       const _operatorLabel = getOperatorLabel(condition.operator);
-      return `/* SECURITY: Template literal eliminated */
+      return `/* SECURITY: Template literal eliminated */;
     });
 
     const joinWord = criteria.type === "AND" ? "AND" : "OR";
-    setCriteriaPreview(conditionStrings.join(` $joinWord`))
+    setCriteriaPreview(conditionStrings.join(` $joinWord`));
   };
 
-  // Get estimated size
+  // Get estimated size;
   const fetchEstimatedSize = async (criteria: unknown) => {
     if (!session.user) {
       setEstimatedSize(0);
@@ -121,185 +129,193 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     }
 
     try {
-      // This would be a real API call in production
-      // For now, we"ll simulate with a random number
+} catch (error) {
+}
+} catch (error) {
+}
+      // This would be a real API call in production;
+      // For now, we"ll simulate with a random number;
       setEstimatedSize(Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100) + 1);
     } catch (error) {
 
     }
   };
 
-  // Get field label
+  // Get field label;
   const getFieldLabel = (field: string): string => {
     switch (field) {
-      case "email":
+      case "email": any;
         return "Email";
-      case "name":
+      case "name": any;
         return "Name";
-      case "phone":
+      case "phone": any;
         return "Phone";
-      case "source":
+      case "source": any;
         return "Source";
-      case "status":
+      case "status": any;
         return "Status";
-      case "preferences.emailOptIn":
+      case "preferences.emailOptIn": any;
         return "Email Opt-in";
-      case "preferences.smsOptIn":
+      case "preferences.smsOptIn": any;
         return "SMS Opt-in";
-      case "address.city":
+      case "address.city": any;
         return "City";
-      case "address.state":
+      case "address.state": any;
         return "State";
-      case "address.country":
+      case "address.country": any;
         return "Country";
-      case "createdAt":
+      case "createdAt": any;
         return "Created Date";
-      default: return field
+      default: return field;
     }
   };
 
-  // Get operator label
+  // Get operator label;
   const getOperatorLabel = (operator: string): string => {
     switch (operator) {
-      case "equals":
+      case "equals": any;
         return "equals";
-      case "notEquals":
+      case "notEquals": any;
         return "does not equal";
-      case "contains":
+      case "contains": any;
         return "contains";
-      case "notContains":
+      case "notContains": any;
         return "does not contain";
-      case "startsWith":
+      case "startsWith": any;
         return "starts with";
-      case "endsWith":
+      case "endsWith": any;
         return "ends with";
-      case "greaterThan":
+      case "greaterThan": any;
         return "is greater than";
-      case "lessThan":
+      case "lessThan": any;
         return "is less than";
-      case "isTrue":
+      case "isTrue": any;
         return "is true";
-      case "isFalse":
+      case "isFalse": any;
         return "is false";
-      case "isNull":
+      case "isNull": any;
         return "is empty";
-      case "isNotNull":
+      case "isNotNull": any;
         return "is not empty";
-      default: return operator
+      default: return operator;
     }
   };
 
-  // Handle form input changes
+  // Handle form input changes;
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value;
-    })
+    });
   };
 
-  // Handle switch changes
+  // Handle switch changes;
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
-      isActive: checked
-    })
+      isActive: checked;
+    });
   };
 
-  // Handle criteria type change
+  // Handle criteria type change;
   const handleCriteriaTypeChange = (value: string) => {
     const newCriteria = {
       ...formData.criteria,
-      type: value
+      type: value;
     };
 
     setFormData({
       ...formData,
-      criteria: newCriteria
+      criteria: newCriteria;
     }),
     updateCriteriaPreview(newCriteria);
-    fetchEstimatedSize(newCriteria)
+    fetchEstimatedSize(newCriteria);
   };
 
-  // Handle new condition field change
+  // Handle new condition field change;
   const handleConditionFieldChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      field: value
-    })
+      field: value;
+    });
   };
 
-  // Handle new condition operator change
+  // Handle new condition operator change;
   const handleConditionOperatorChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      operator: value
-    })
+      operator: value;
+    });
   };
 
-  // Handle new condition value change
+  // Handle new condition value change;
   const handleConditionValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCondition({
       ...newCondition,
-      value: e.target.value
-    })
+      value: e.target.value;
+    });
   };
 
-  // Add condition to criteria
+  // Add condition to criteria;
   const handleAddCondition = () => {
     if (!session.user) {
       toast({
         title: "Validation Error",
-        "destructive"
+        "destructive";
       });
       return;
     }
 
     const newCriteria = {
       ...formData.criteria,
-      conditions: [...formData.criteria.conditions, { ...newCondition }]
+      conditions: [...formData.criteria.conditions, { ...newCondition }];
     };
 
     setFormData({
       ...formData,
-      criteria: newCriteria
+      criteria: newCriteria;
     });
 
-    // Reset new condition
+    // Reset new condition;
     setNewCondition({
       field: "email",
-      ""
+      "";
     }),
     updateCriteriaPreview(newCriteria);
-    fetchEstimatedSize(newCriteria)
+    fetchEstimatedSize(newCriteria);
   };
 
-  // Remove condition from criteria
+  // Remove condition from criteria;
   const handleRemoveCondition = (index: number) => {
     const newConditions = [...formData.criteria.conditions];
     newConditions.splice(index, 1);
 
     const newCriteria = {
       ...formData.criteria,
-      conditions: newConditions
+      conditions: newConditions;
     };
 
     setFormData({
       ...formData,
-      criteria: newCriteria
+      criteria: newCriteria;
     }),
     updateCriteriaPreview(newCriteria);
-    fetchEstimatedSize(newCriteria)
+    fetchEstimatedSize(newCriteria);
   };
 
-  // Handle form submission
+  // Handle form submission;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(),
     setIsLoading(true);
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const url = segmentId;
-        ? `/api/support-services/marketing/segments/$segmentId`
+        ? `/api/support-services/marketing/segments/$segmentId`;
         : "/api/support-services/marketing/segments";
 
       const method = segmentId ? "PUT" : "POST";
@@ -307,9 +323,8 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       const response = await fetch(url, {
         method,
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData)
+          "Content-Type": "application/json"},
+        body: JSON.stringify(formData);
       });
 
       if (!session.user)hrow new Error("Failed to save segment");
@@ -317,8 +332,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       const savedSegment = await response.json(),
       toast({
         title: "Success",
-        description: `Segment $segmentId ? "updated" : "created"successfully.`,
-      });
+        description: `Segment $segmentId ? "updated" : "created"successfully.`});
 
       if (!session.user) {
         onSuccess(savedSegment);
@@ -329,402 +343,410 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Apply segment criteria
+  // Apply segment criteria;
   const handleApplyCriteria = async () => {
     if (!session.user)eturn;
 
     setIsLoading(true);
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch(`/api/support-services/marketing/segments/$segmentId/apply-criteria`, {
         method: "POST",
-        headers: 
-          "Content-Type": "application/json",
-      });
+        headers: null,
+          "Content-Type": "application/json"});
 
       if (!session.user)hrow new Error("Failed to apply criteria");
 
       const result = await response.json(),
       toast({
         title: "Success",
-        description: `Criteria applied successfully. ${result.addedCount} contacts added to segment.`,
-      });
+        description: `Criteria applied successfully. ${result.addedCount} contacts added to segment.`});
 
-      // Refresh members
+      // Refresh members;
       const segmentResponse = await fetch(`/api/support-services/marketing/segments/${segmentId}?includeMembers=true`);
       if (!session.user) {
         const segmentData = await segmentResponse.json();
         if (!session.user) {
-          setMembers(segmentData.members.map((m: unknown) => m.contact))
+          setMembers(segmentData.members.map((m: unknown) => m.contact));
         }
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Add contact to segment
+  // Add contact to segment;
   const handleAddContact = async (contactId: string) => {
     if (!session.user)eturn;
 
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ contactId }),
-      });
+          "Content-Type": "application/json"},
+        body: JSON.stringify({ contactId })});
 
       if (!session.user)hrow new Error("Failed to add contact");
 
-      // Update members
+      // Update members;
       const contact = availableContacts.find(c => c.id === contactId);
       if (!session.user) {
         setMembers([...members, contact]);
-      }
+
 
       toast({
         title: "Success",
-        description: "Contact added to segment successfully."
+        description: "Contact added to segment successfully.";
       });
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
-    }
+
   };
 
-  // Remove contact from segment
+  // Remove contact from segment;
   const handleRemoveContact = async (contactId: string) => {
     if (!session.user)eturn;
 
     try {
+} catch (error) {
+}
+} catch (error) {
+
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members/${contactId}`, {
-        method: "DELETE"
+        method: "DELETE";
       });
 
       if (!session.user)hrow new Error("Failed to remove contact");
 
-      // Update members
+      // Update members;
       setMembers(members.filter(m => m.id !== contactId));
 
       toast({
         title: "Success",
-        description: "Contact removed from segment successfully."
+        description: "Contact removed from segment successfully.";
       });
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
-    }
+
   };
 
-  return (
-    >
-      <CardHeader>
-        <CardTitle>{segmentId ? "Edit Segment" : "Create New Segment"}</CardTitle>
-        <CardDescription>
+  return();
+    >;
+      <CardHeader>;
+        <CardTitle>{segmentId ? "Edit Segment" : "Create New Segment"}</CardTitle>;
+        <CardDescription>;
           {segmentId;
-            ? "Update your contact segment criteria and members"
+            ? "Update your contact segment criteria and members";
             : "Create a new segment to target specific groups of contacts"}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        >
-          >
-            <TabsTrigger value="details">Segment Details>
-            <TabsTrigger value="criteria">Segment Criteria>
-            <TabsTrigger value="members" disabled={!segmentId}>Segment Members</TabsTrigger>
-          </TabsList>
+        </CardDescription>;
+      </CardHeader>;
+      <CardContent>;
+        >;
+          >;
+            <TabsTrigger value="details">Segment Details>;
+            <TabsTrigger value="criteria">Segment Criteria>;
+            <TabsTrigger value="members" disabled={!segmentId}>Segment Members</TabsTrigger>;
+          </TabsList>;
 
-          >
-            >
-              >
-                >
-                  <Label htmlFor="name">Segment Name>
-                  <Input>
-                    id="name"
-                    name="name"
+          >;
+            >;
+              >;
+                >;
+                  <Label htmlFor="name">Segment Name>;
+                  <Input>;
+                    id="name";
+                    name="name";
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Enter segment name"
+                    placeholder="Enter segment name";
                     required;
-                  />
-                </div>
+                  />;
+                </div>;
 
-                >
-                  <Label htmlFor="description">Description>
-                  <Textarea>
-                    id="description"
-                    name="description"
+                >;
+                  <Label htmlFor="description">Description>;
+                  <Textarea>;
+                    id="description";
+                    name="description";
                     value={formData.description}
                     onChange={handleInputChange}
-                    placeholder="Enter segment description"
+                    placeholder="Enter segment description";
                     rows={3}
-                  />
-                </div>
+                  />;
+                </div>;
 
-                >
-                  <Switch>
-                    id="isActive"
+                >;
+                  <Switch>;
+                    id="isActive";
                     checked={formData.isActive}
                     onCheckedChange={handleSwitchChange}
-                  />
-                  <Label htmlFor="isActive">Active</Label>
-                </div>
-              </div>
+                  />;
+                  <Label htmlFor="isActive">Active</Label>;
+                </div>;
+              </div>;
 
-              >
-                <Button>
-                  type="button"
-                  variant="outline"
+              >;
+                <Button>;
+                  type="button";
+                  variant="outline";
                   onClick={() => router.back()}
-                >
-                  Cancel
-                </Button>
-                >
+                >;
+                  Cancel;
+                </Button>;
+                >;
                   {isLoading ? "Saving..." : segmentId ? "Update Segment" : "Create Segment"}
-                </Button>
-              </div>
-            </form>
-          </TabsContent>
+                </Button>;
+              </div>;
+            </form>;
+          </TabsContent>;
 
-          >
-            >
-              >
-                >
-                  <Label>Match Type</Label>
-                  <Select>
+          >;
+            >;
+              >;
+                >;
+                  <Label>Match Type</Label>;
+                  <Select>;
                     value={formData.criteria.type}
                     onValueChange={handleCriteriaTypeChange}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select match type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="AND">Match ALL conditions (AND)>
-                      <SelectItem value="OR">Match ANY condition (OR)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  >
+                  >;
+                    <SelectTrigger>;
+                      <SelectValue placeholder="Select match type" />;
+                    </SelectTrigger>;
+                    <SelectContent>;
+                      <SelectItem value="AND">Match ALL conditions (AND)>;
+                      <SelectItem value="OR">Match ANY condition (OR)</SelectItem>;
+                    </SelectContent>;
+                  </Select>;
+                  >;
                     {formData.criteria.type === "AND";
-                      ? "Contacts must match all of the following conditions to be included in this segment."
+                      ? "Contacts must match all of the following conditions to be included in this segment.";
                       : "Contacts that match any of the following conditions will be included in this segment."}
-                  </p>
-                </div>
+                  </p>;
+                </div>;
 
-                >
-                  <Label>Current Conditions</Label>
-                  >
-                    {formData.criteria.conditions.length > 0 ? (
+                >;
+                  <Label>Current Conditions</Label>;
+                  >;
+                    {formData.criteria.conditions.length > 0 ? (;
                       formData.criteria.conditions.map((condition, index) => (
-                        >
-<span
+                        >;
+<span;
                             {getFieldLabel(condition.field)} {getOperatorLabel(condition.operator)} {condition.value}
-                          </span>
-                          <Button>
-                            variant="ghost"
-                            size="sm"
+                          </span>;
+                          <Button>;
+                            variant="ghost";
+                            size="sm";
                             onClick={() => handleRemoveCondition(index)}
-                          >
-                            Remove
-                          </Button>
-                        </div>
+                          >;
+                            Remove;
+                          </Button>;
+                        </div>;
                       ));
-                    ) : (
-                      <p className="text-sm text-muted-foreground">No conditions defined yet>
+                    ) : (;
+                      <p className="text-sm text-muted-foreground">No conditions defined yet>;
                     )}
-                  </div>
-                </div>
+                  </div>;
+                </div>;
 
-                >
-                  <Label>Add Condition</Label>
-                  >
-                    <Select>
+                >;
+                  <Label>Add Condition</Label>;
+                  >;
+                    <Select>;
                       value={newCondition.field}
                       onValueChange={handleConditionFieldChange}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select field" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="email">Email>
-                        <SelectItem value="name">Name>
-                        <SelectItem value="phone">Phone>
-                        <SelectItem value="source">Source>
-                        <SelectItem value="status">Status>
-                        <SelectItem value="preferences.emailOptIn">Email Opt-in>
-                        <SelectItem value="preferences.smsOptIn">SMS Opt-in>
-                        <SelectItem value="address.city">City>
-                        <SelectItem value="address.state">State>
-                        <SelectItem value="address.country">Country>
-                        <SelectItem value="createdAt">Created Date</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    >;
+                      <SelectTrigger>;
+                        <SelectValue placeholder="Select field" />;
+                      </SelectTrigger>;
+                      <SelectContent>;
+                        <SelectItem value="email">Email>;
+                        <SelectItem value="name">Name>;
+                        <SelectItem value="phone">Phone>;
+                        <SelectItem value="source">Source>;
+                        <SelectItem value="status">Status>;
+                        <SelectItem value="preferences.emailOptIn">Email Opt-in>;
+                        <SelectItem value="preferences.smsOptIn">SMS Opt-in>;
+                        <SelectItem value="address.city">City>;
+                        <SelectItem value="address.state">State>;
+                        <SelectItem value="address.country">Country>;
+                        <SelectItem value="createdAt">Created Date</SelectItem>;
+                      </SelectContent>;
+                    </Select>;
 
-                    <Select>
+                    <Select>;
                       value={newCondition.operator}
                       onValueChange={handleConditionOperatorChange}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select operator" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="equals">Equals>
-                        <SelectItem value="notEquals">Does not equal>
-                        <SelectItem value="contains">Contains>
-                        <SelectItem value="notContains">Does not contain>
-                        <SelectItem value="startsWith">Starts with>
-                        <SelectItem value="endsWith">Ends with>
+                    >;
+                      <SelectTrigger>;
+                        <SelectValue placeholder="Select operator" />;
+                      </SelectTrigger>;
+                      <SelectContent>;
+                        <SelectItem value="equals">Equals>;
+                        <SelectItem value="notEquals">Does not equal>;
+                        <SelectItem value="contains">Contains>;
+                        <SelectItem value="notContains">Does not contain>;
+                        <SelectItem value="startsWith">Starts with>;
+                        <SelectItem value="endsWith">Ends with>;
                         {(newCondition.field === "preferences.emailOptIn" || newCondition.field === "preferences.smsOptIn") &&;
-                          (
-                          <>
-                            <SelectItem value="isTrue">Is true>
-                            <SelectItem value="isFalse">Is false</SelectItem>
-                          </>
+                          (;
+                          <>;
+                            <SelectItem value="isTrue">Is true>;
+                            <SelectItem value="isFalse">Is false</SelectItem>;
+                          </>;
                         )}
-                        <SelectItem value="isNull">Is empty>
-                        <SelectItem value="isNotNull">Is not empty</SelectItem>
-                      </SelectContent>
-                    </Select>
+                        <SelectItem value="isNull">Is empty>;
+                        <SelectItem value="isNotNull">Is not empty</SelectItem>;
+                      </SelectContent>;
+                    </Select>;
 
-                    {!["isTrue", "isFalse", "isNull", "isNotNull"].includes(newCondition.operator) && (
-                      <Input>
+                    {!["isTrue", "isFalse", "isNull", "isNotNull"].includes(newCondition.operator) && (;
+                      <Input>;
                         value={newCondition.value}
                         onChange={handleConditionValueChange}
-                        placeholder="Enter value"
-                      />
+                        placeholder="Enter value";
+                      />;
                     )}
-                  </div>
-                  >
-                    >
-                      Add Condition
-                    </Button>
-                  </div>
-                </div>
+                  </div>;
+                  >;
+                    >;
+                      Add Condition;
+                    </Button>;
+                  </div>;
+                </div>;
 
-                >
-                  <Label>Segment Preview</Label>
-                  >
-                    <p className="text-sm">{criteriaPreview}</p>
-                  </div>
-                  >
-                    <p className="text-sm">Estimated size: <Badge>{estimatedSize} contacts</Badge>>
-                    {segmentId && (
-                      <Button>
-                        type="button"
+                >;
+                  <Label>Segment Preview</Label>;
+                  >;
+                    <p className="text-sm">{criteriaPreview}</p>;
+                  </div>;
+                  >;
+                    <p className="text-sm">Estimated size: <Badge>{estimatedSize} contacts</Badge>>;
+                    {segmentId && (;
+                      <Button>;
+                        type="button";
                         onClick={handleApplyCriteria}
                         disabled={isLoading || formData.criteria.conditions.length === 0}
-                      >
-                        Apply Criteria
-                      </Button>
+                      >;
+                        Apply Criteria;
+                      </Button>;
                     )}
-                  </div>
-                </div>
-              </div>
+                  </div>;
+                </div>;
+              </div>;
 
-              >
-                <Button>
-                  type="button"
-                  variant="outline"
+              >;
+                <Button>;
+                  type="button";
+                  variant="outline";
                   onClick={() => setActiveTab("details")}
-                >
-                  Back
-                </Button>
-                <Button>
-                  type="button"
+                >;
+                  Back;
+                </Button>;
+                <Button>;
+                  type="button";
                   onClick={handleSubmit}
                   disabled={isLoading}
-                >
+                >;
                   {isLoading ? "Saving..." : "Save Criteria'}
-                </Button>
-              </div>
-            </div>
-          </TabsContent>
+                </Button>;
+              </div>;
+            </div>;
+          </TabsContent>;
 
-          >
-            {segmentId ? (
-              >
-                >
-                  <h3 className="text-lg font-medium">Segment Members>
-                  >
-                    <Badge>{members.length} contacts</Badge>
-                    >
-                      >
-                        <SelectValue placeholder="Add contact" />
-                      </SelectTrigger>
-                      <SelectContent>
+          >;
+            {segmentId ? (;
+              >;
+                >;
+                  <h3 className="text-lg font-medium">Segment Members>;
+                  >;
+                    <Badge>{members.length} contacts</Badge>;
+                    >;
+                      >;
+                        <SelectValue placeholder="Add contact" />;
+                      </SelectTrigger>;
+                      <SelectContent>;
                         {availableContacts;
                           .filter(contact => !members.some(m => m.id === contact.id));
-                          .map(contact => (
-                            >
+                          .map(contact => (;
+                            >;
                               {contact.name}
-                            </SelectItem>
+                            </SelectItem>;
                           ));
-                        }
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
 
-                >
-                  {members.map(member => (
-                    >
-<div
-                        <h4 className="font-medium">{member.name}>
-                        <p className="text-sm text-muted-foreground">{member.email}</p>
-                      </div>
-                      >
-                        <Button>
-                          variant="outline"
-                          size="sm"
+                      </SelectContent>;
+                    </Select>;
+                  </div>;
+                </div>;
+
+                >;
+                  {members.map(member => (;
+                    >;
+<div;
+                        <h4 className="font-medium">{member.name}>;
+                        <p className="text-sm text-muted-foreground">{member.email}</p>;
+                      </div>;
+                      >;
+                        <Button>;
+                          variant="outline";
+                          size="sm";
                           onClick={() => router.push(`/marketing/contacts/${}`}
-                        >
-                          View
-                        </Button>
-                        <Button>
-                          variant="outline"
-                          size="sm"
+                        >;
+                          View;
+                        </Button>;
+                        <Button>;
+                          variant="outline";
+                          size="sm";
                           onClick={() => handleRemoveContact(member.id)}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    </div>
+                        >;
+                          Remove;
+                        </Button>;
+                      </div>;
+                    </div>;
                   ))}
 
-                  {members.length === 0 && (
-                    <p className="text-sm text-muted-foreground">No members in this segment yet>
+                  {members.length === 0 && (;
+                    <p className="text-sm text-muted-foreground">No members in this segment yet>;
                   )}
-                </div>
-              </div>
-            ) : (
-              >
-                <p>Please save the segment first to manage members.</p>
-              </div>
+                </div>;
+              </div>;
+            ) : (;
+              >;
+                <p>Please save the segment first to manage members.</p>;
+              </div>;
             )}
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
+          </TabsContent>;
+        </Tabs>;
+      </CardContent>;
+    </Card>;
   );
 
-}
-}
+
+}))

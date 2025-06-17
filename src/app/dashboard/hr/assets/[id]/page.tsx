@@ -28,8 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  DialogTrigger} from "@/components/ui/dialog";
   ArrowLeft,
   Edit,
   Trash,
@@ -56,10 +55,14 @@ export default const _AssetDetail = ({ params }: { id: string }) {
   const [activeTab, setActiveTab] = useState("details");
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  // Fetch asset data
+  // Fetch asset data;
   useEffect(() => {
     const fetchAsset = async () => {
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         setLoading(true);
         const response = await fetch(`/api/hr/assets/${}`;
 
@@ -76,25 +79,29 @@ export default const _AssetDetail = ({ params }: { id: string }) {
         setError(err.message),
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         });
-      } finally 
+      } finally ;
         setLoading(false);
     };
 
     fetchAsset();
   }, [params.id]);
 
-  // Handle edit navigation
+  // Handle edit navigation;
   const handleEdit = () => {
-    router.push(`/dashboard/hr/assets/${params.id}/edit`)
+    router.push(`/dashboard/hr/assets/${params.id}/edit`);
   };
 
-  // Handle delete
+  // Handle delete;
   const handleDelete = async () => {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch(`/api/hr/assets/${params.id}`, {
-        method: "DELETE"
+        method: "DELETE";
       });
 
       if (!session.user) {
@@ -103,501 +110,502 @@ export default const _AssetDetail = ({ params }: { id: string }) {
 
       toast({
         title: "Success",
-        description: "Asset has been deleted"
+        description: "Asset has been deleted";
       });
 
       router.push("/dashboard/hr/assets");
     } catch (err) {
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     }
   };
 
-  // Handle maintenance record
+  // Handle maintenance record;
   const handleAddMaintenance = () => {
-    router.push(`/dashboard/hr/assets/${params.id}/maintenance/new`)
+    router.push(`/dashboard/hr/assets/${params.id}/maintenance/new`);
   };
 
-  // Handle asset transfer
+  // Handle asset transfer;
   const handleTransfer = () => {
-    router.push(`/dashboard/hr/assets/${params.id}/transfer`)
+    router.push(`/dashboard/hr/assets/${params.id}/transfer`);
   };
 
-  // Handle asset assignment
+  // Handle asset assignment;
   const handleAssign = () => {
-    router.push(`/dashboard/hr/assets/${params.id}/assign`)
+    router.push(`/dashboard/hr/assets/${params.id}/assign`);
   };
 
-  // Get status badge variant
+  // Get status badge variant;
   const getStatusBadgeVariant = (status: unknown) => {
     switch (status) {
-      case "AVAILABLE":
+      case "AVAILABLE": any;
         return "default";
-      case "IN_USE":
+      case "IN_USE": any;
         return "secondary";
-      case "UNDER_MAINTENANCE":
+      case "UNDER_MAINTENANCE": any;
         return "warning";
-      case "DISPOSED":
+      case "DISPOSED": any;
         return "destructive";
-      case "LOST":
+      case "LOST": any;
         return "outline";
-      default: return "default"
-    }
+      default: return "default";
+
   };
 
-  // Format currency
+  // Format currency;
   const formatCurrency = (amount: unknown) => {
     if (!session.user)eturn "—";
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD"
-    }).format(amount)
+      currency: "USD";
+    }).format(amount);
   };
 
-  // Format date or show placeholder
+  // Format date or show placeholder;
   const formatDateOrPlaceholder = (date: unknown) => {
-    return date ? format(new Date(date), "PPP") : "—"
+    return date ? format(new Date(date), "PPP") : "—";
   };
 
   if (!session.user) {
-    return (
-      >
-        >
-          <Button>
-            variant="ghost"
-            size="sm"
+    return();
+      >;
+        >;
+          <Button>;
+            variant="ghost";
+            size="sm";
             onClick={() => router.push("/dashboard/hr/assets")}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Assets
-          </Button>
-        </div>
-        >
-          <p>Loading asset data...</p>
-        </div>
-      </div>
+          >;
+            <ArrowLeft className="h-4 w-4 mr-2" />;
+            Back to Assets;
+          </Button>;
+        </div>;
+        >;
+          <p>Loading asset data...</p>;
+        </div>;
+      </div>;
     );
-  }
+
 
   if (!session.user) {
-    return (
-      >
-        >
-          <Button>
-            variant="ghost"
-            size="sm"
+    return();
+      >;
+        >;
+          <Button>;
+            variant="ghost";
+            size="sm";
             onClick={() => router.push("/dashboard/hr/assets")}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Assets
-          </Button>
-        </div>
-        <Card>
-          >
-            <AlertTriangle className="h-10 w-10 text-destructive mb-4" />
-            <h2 className="text-xl font-semibold mb-2">Error>
-            <p className="text-muted-foreground">{error}>
-            <Button>
-              className="mt-4"
+          >;
+            <ArrowLeft className="h-4 w-4 mr-2" />;
+            Back to Assets;
+          </Button>;
+        </div>;
+        <Card>;
+          >;
+            <AlertTriangle className="h-10 w-10 text-destructive mb-4" />;
+            <h2 className="text-xl font-semibold mb-2">Error>;
+            <p className="text-muted-foreground">{error}>;
+            <Button>;
+              className="mt-4";
               onClick={() => router.push("/dashboard/hr/assets")}
-            >
-              Return to Assets
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+            >;
+              Return to Assets;
+            </Button>;
+          </CardContent>;
+        </Card>;
+      </div>;
     );
-  }
+
 
   if (!session.user) {
     return null;
-  }
 
-  return (
-    >
-      >
-        <Button>
-          variant="ghost"
-          size="sm"
+
+  return();
+    >;
+      >;
+        <Button>;
+          variant="ghost";
+          size="sm";
           onClick={() => router.push("/dashboard/hr/assets")}
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Assets
-        </Button>
-      </div>
+        >;
+          <ArrowLeft className="h-4 w-4 mr-2" />;
+          Back to Assets;
+        </Button>;
+      </div>;
 
-      >
->
+      >;
+>;
             {asset.name}
-          </h1>
-          >
+          </h1>;
+          >;
             {asset.serialNumber ? `Serial: ${asset.serialNumber}` : "No serial number"}
-          </p>
-        </div>
+          </p>;
+        </div>;
 
-        >
-          >
-            <Edit className="h-4 w-4 mr-2" />
-            Edit
-          </Button>
+        >;
+          >;
+            <Edit className="h-4 w-4 mr-2" />;
+            Edit;
+          </Button>;
 
-          >
-            <DialogTrigger asChild>
-              >
-                <Trash className="h-4 w-4 mr-2" />
-                Delete
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Confirm Deletion</DialogTitle>
-                <DialogDescription>
-                  Are you sure you want to delete this asset? This action cannot be undone.
-                </DialogDescription>
-              </DialogHeader>
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setConfirmDelete(false)}>
-                  Cancel
-                </Button>
-                >
-                  Delete
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
+          >;
+            <DialogTrigger asChild>;
+              >;
+                <Trash className="h-4 w-4 mr-2" />;
+                Delete;
+              </Button>;
+            </DialogTrigger>;
+            <DialogContent>;
+              <DialogHeader>;
+                <DialogTitle>Confirm Deletion</DialogTitle>;
+                <DialogDescription>;
+                  Are you sure you want to delete this asset? This action cannot be undone.;
+                </DialogDescription>;
+              </DialogHeader>;
+              <DialogFooter>;
+                <Button variant="outline" onClick={() => setConfirmDelete(false)}>;
+                  Cancel;
+                </Button>;
+                >;
+                  Delete;
+                </Button>;
+              </DialogFooter>;
+            </DialogContent>;
+          </Dialog>;
+        </div>;
+      </div>;
 
-      >
-        <TabsList>
-          <TabsTrigger value="details">Details>
-          <TabsTrigger value="history">History>
-          <TabsTrigger value="maintenance">Maintenance</TabsTrigger>
-        </TabsList>
+      >;
+        <TabsList>;
+          <TabsTrigger value="details">Details>;
+          <TabsTrigger value="history">History>;
+          <TabsTrigger value="maintenance">Maintenance</TabsTrigger>;
+        </TabsList>;
 
-        >
-          >
-            >
-              <CardHeader>
-                <CardTitle>Asset Information</CardTitle>
-              </CardHeader>
-              >
-                >
-                  >
-                    <Package className="h-12 w-12 text-muted-foreground" />
-                  </div>
+        >;
+          >;
+            >;
+              <CardHeader>;
+                <CardTitle>Asset Information</CardTitle>;
+              </CardHeader>;
+              >;
+                >;
+                  >;
+                    <Package className="h-12 w-12 text-muted-foreground" />;
+                  </div>;
 
-                  >
+                  >;
                     {asset.name}
-                  </h3>
-                  >
+                  </h3>;
+                  >;
                     {asset.serialNumber || "No serial number"}
-                  </p>
+                  </p>;
 
-                  >
+                  >;
                     {asset.status.replace("_", " ")}
-                  </Badge>
-                </div>
+                  </Badge>;
+                </div>;
 
-                <Separator />
+                <Separator />;
 
-                >
-                  >
-                    <Tag className="h-4 w-4 text-muted-foreground" />
-<div
-                      <p className="text-sm text-muted-foreground">Asset Type>
-                      <p className="font-medium">{asset.assetType}</p>
-                    </div>
-                  </div>
+                >;
+                  >;
+                    <Tag className="h-4 w-4 text-muted-foreground" />;
+<div;
+                      <p className="text-sm text-muted-foreground">Asset Type>;
+                      <p className="font-medium">{asset.assetType}</p>;
+                    </div>;
+                  </div>;
 
-                  >
-                    <Building className="h-4 w-4 text-muted-foreground" />
-<div
-                      <p className="text-sm text-muted-foreground">Department>
-                      <p className="font-medium">{asset.department?.name || "Not Assigned"}</p>
-                    </div>
-                  </div>
+                  >;
+                    <Building className="h-4 w-4 text-muted-foreground" />;
+<div;
+                      <p className="text-sm text-muted-foreground">Department>;
+                      <p className="font-medium">{asset.department?.name || "Not Assigned"}</p>;
+                    </div>;
+                  </div>;
 
-                  >
-                    <MapPin className="h-4 w-4 text-muted-foreground" />
-<div
-                      <p className="text-sm text-muted-foreground">Location>
-                      <p className="font-medium">{asset.location || "Not Specified"}</p>
-                    </div>
-                  </div>
+                  >;
+                    <MapPin className="h-4 w-4 text-muted-foreground" />;
+<div;
+                      <p className="text-sm text-muted-foreground">Location>;
+                      <p className="font-medium">{asset.location || "Not Specified"}</p>;
+                    </div>;
+                  </div>;
 
-                  {asset?.assignedTo && (
-                    >
-                      <User className="h-4 w-4 text-muted-foreground" />
-<div
-                        <p className="text-sm text-muted-foreground">Assigned To>
-                        <p className="font-medium">{asset.assignedTo.firstName} {asset.assignedTo.lastName}</p>
-                      </div>
-                    </div>
+                  {asset?.assignedTo && (;
+                    >;
+                      <User className="h-4 w-4 text-muted-foreground" />;
+<div;
+                        <p className="text-sm text-muted-foreground">Assigned To>;
+                        <p className="font-medium">{asset.assignedTo.firstName} {asset.assignedTo.lastName}</p>;
+                      </div>;
+                    </div>;
                   )}
-                </div>
+                </div>;
 
-                <Separator />
+                <Separator />;
 
-                >
-                  >
-                    <Wrench className="h-4 w-4 mr-2" />
-                    Record Maintenance
-                  </Button>
+                >;
+                  >;
+                    <Wrench className="h-4 w-4 mr-2" />;
+                    Record Maintenance;
+                  </Button>;
 
-                  >
-                    <MapPin className="h-4 w-4 mr-2" />
-                    Transfer Asset
-                  </Button>
+                  >;
+                    <MapPin className="h-4 w-4 mr-2" />;
+                    Transfer Asset;
+                  </Button>;
 
-                  >
-                    <User className="h-4 w-4 mr-2" />
+                  >;
+                    <User className="h-4 w-4 mr-2" />;
                     {asset.assignedTo ? "Reassign Asset" : "Assign Asset"}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  </Button>;
+                </div>;
+              </CardContent>;
+            </Card>;
 
-            >
-              <CardHeader>
-                <CardTitle>Asset Details</CardTitle>
-              </CardHeader>
-              <CardContent>
-                >
-                  >
-                    <p className="text-sm text-muted-foreground">Manufacturer>
-                    <p className="font-medium">{asset.manufacturer || "—"}</p>
-                  </div>
+            >;
+              <CardHeader>;
+                <CardTitle>Asset Details</CardTitle>;
+              </CardHeader>;
+              <CardContent>;
+                >;
+                  >;
+                    <p className="text-sm text-muted-foreground">Manufacturer>;
+                    <p className="font-medium">{asset.manufacturer || "—"}</p>;
+                  </div>;
 
-                  >
-                    <p className="text-sm text-muted-foreground">Model>
-                    <p className="font-medium">{asset.model || "—"}</p>
-                  </div>
+                  >;
+                    <p className="text-sm text-muted-foreground">Model>;
+                    <p className="font-medium">{asset.model || "—"}</p>;
+                  </div>;
 
-                  >
-                    <p className="text-sm text-muted-foreground">Purchase Date>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.purchaseDate)}</p>
-                  </div>
+                  >;
+                    <p className="text-sm text-muted-foreground">Purchase Date>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.purchaseDate)}</p>;
+                  </div>;
 
-                  >
-                    <p className="text-sm text-muted-foreground">Purchase Price>
-                    <p className="font-medium">{formatCurrency(asset.purchasePrice)}</p>
-                  </div>
+                  >;
+                    <p className="text-sm text-muted-foreground">Purchase Price>;
+                    <p className="font-medium">{formatCurrency(asset.purchasePrice)}</p>;
+                  </div>;
 
-                  >
-                    <p className="text-sm text-muted-foreground">Warranty Expiry>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.warrantyExpiryDate)}</p>
-                  </div>
+                  >;
+                    <p className="text-sm text-muted-foreground">Warranty Expiry>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.warrantyExpiryDate)}</p>;
+                  </div>;
 
-                  >
-                    <p className="text-sm text-muted-foreground">Last Maintenance>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.lastMaintenanceDate)}</p>
-                  </div>
+                  >;
+                    <p className="text-sm text-muted-foreground">Last Maintenance>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.lastMaintenanceDate)}</p>;
+                  </div>;
 
-                  >
-                    <p className="text-sm text-muted-foreground">Next Maintenance>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.nextMaintenanceDate)}</p>
-                  </div>
+                  >;
+                    <p className="text-sm text-muted-foreground">Next Maintenance>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.nextMaintenanceDate)}</p>;
+                  </div>;
 
-                  >
-                    <p className="text-sm text-muted-foreground">Created On>
-                    <p className="font-medium">{formatDateOrPlaceholder(asset.createdAt)}</p>
-                  </div>
-                </div>
+                  >;
+                    <p className="text-sm text-muted-foreground">Created On>;
+                    <p className="font-medium">{formatDateOrPlaceholder(asset.createdAt)}</p>;
+                  </div>;
+                </div>;
 
-                {asset?.tags && asset.tags.length > 0 && (
-                  <>
-                    <Separator className="my-6" />
+                {asset?.tags && asset.tags.length > 0 && (;
+                  <>;
+                    <Separator className="my-6" />;
 
-                    >
-                      <p className="text-sm text-muted-foreground">Tags>
-                      >
-                        {asset.tags.map((tag, index) => (
-                          >
+                    >;
+                      <p className="text-sm text-muted-foreground">Tags>;
+                      >;
+                        {asset.tags.map((tag, index) => (;
+                          >;
                             {tag}
-                          </Badge>
+                          </Badge>;
                         ))}
-                      </div>
-                    </div>
-                  </>
+                      </div>;
+                    </div>;
+                  </>;
                 )}
 
-                {asset?.notes && (
-                  <>
-                    <Separator className="my-6" />
+                {asset?.notes && (;
+                  <>;
+                    <Separator className="my-6" />;
 
-                    >
-                      <p className="text-sm text-muted-foreground">Notes>
-                      >
-                        <p className="whitespace-pre-line">{asset.notes}</p>
-                      </div>
-                    </div>
-                  </>
+                    >;
+                      <p className="text-sm text-muted-foreground">Notes>;
+                      >;
+                        <p className="whitespace-pre-line">{asset.notes}</p>;
+                      </div>;
+                    </div>;
+                  </>;
                 )}
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+              </CardContent>;
+            </Card>;
+          </div>;
+        </TabsContent>;
 
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle>Asset History</CardTitle>
-              <CardDescription>
-                Track changes and events related to this asset
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {!asset.assetHistory || asset.assetHistory.length === 0 ? (
-                >
-                  <p>No history records found for this asset.</p>
-                </div>
-              ) : (
-                >
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Event Type</TableHead>
-                        <TableHead>Details</TableHead>
-                        <TableHead>Performed By</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {asset.assetHistory.map((history) => (
-                        >
-                          <TableCell>
+        >;
+          <Card>;
+            <CardHeader>;
+              <CardTitle>Asset History</CardTitle>;
+              <CardDescription>;
+                Track changes and events related to this asset;
+              </CardDescription>;
+            </CardHeader>;
+            <CardContent>;
+              {!asset.assetHistory || asset.assetHistory.length === 0 ? (;
+                >;
+                  <p>No history records found for this asset.</p>;
+                </div>;
+              ) : (;
+                >;
+                  <Table>;
+                    <TableHeader>;
+                      <TableRow>;
+                        <TableHead>Date</TableHead>;
+                        <TableHead>Event Type</TableHead>;
+                        <TableHead>Details</TableHead>;
+                        <TableHead>Performed By</TableHead>;
+                      </TableRow>;
+                    </TableHeader>;
+                    <TableBody>;
+                      {asset.assetHistory.map((history) => (;
+                        >;
+                          <TableCell>;
                             {format(new Date(history.date), "PPP p")}
-                          </TableCell>
-                          <TableCell>
-                            >
+                          </TableCell>;
+                          <TableCell>;
+                            >;
                               {history.type.replace("_", " ")}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
-                            {history.type === "TRANSFER" && (
-<span
-                                Transferred from {history.details.previousLocation ||
+                            </Badge>;
+                          </TableCell>;
+                          <TableCell>;
+                            {history.type === "TRANSFER" && (;
+<span;
+                                Transferred from {history.details.previousLocation ||;
                                   "Unknown"} to {history.details.newLocation}
-                              </span>
+                              </span>;
                             )}
-                            {history.type === "ASSIGNMENT" && (
-<span
+                            {history.type === "ASSIGNMENT" && (;
+<span;
                                 Assigned to {history.employee?.firstName} {history.employee?.lastName}
-                              </span>
+                              </span>;
                             )}
-                            {history.type === "UNASSIGNMENT" && (
-<span
+                            {history.type === "UNASSIGNMENT" && (;
+<span;
                                 Unassigned from employee;
-                              </span>
+                              </span>;
                             )}
-                            {history.type === "MAINTENANCE" && (
-<span
+                            {history.type === "MAINTENANCE" && (;
+<span;
                                 {history.details.maintenanceType} maintenance: {history.details.description}
-                              </span>
+                              </span>;
                             )}
-                            {history.type === "DISPOSAL" && (
-<span
+                            {history.type === "DISPOSAL" && (;
+<span;
                                 Disposed via {history.details.disposalMethod}: {history.details.reason}
-                              </span>
+                              </span>;
                             )}
-                            {history.type === "STATUS_CHANGE" && (
-<span
+                            {history.type === "STATUS_CHANGE" && (;
+<span;
                                 Status changed from {history.details.previousStatus} to {history.details.newStatus}
-                              </span>
+                              </span>;
                             )}
-                          </TableCell>
-                          <TableCell>
-                            {history.employee ? (
-                              <span>{history.employee.firstName} {history.employee.lastName}</span>
-                            ) : (
-                              <span>System</span>
+                          </TableCell>;
+                          <TableCell>;
+                            {history.employee ? (;
+                              <span>{history.employee.firstName} {history.employee.lastName}</span>;
+                            ) : (;
+                              <span>System</span>;
                             )}
-                          </TableCell>
-                        </TableRow>
+                          </TableCell>;
+                        </TableRow>;
                       ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                    </TableBody>;
+                  </Table>;
+                </div>;
               )}
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </CardContent>;
+          </Card>;
+        </TabsContent>;
 
-        >
-          <Card>
-            <CardHeader>
-              >
-<div
-                  <CardTitle>Maintenance Records</CardTitle>
-                  <CardDescription>
-                    View and manage maintenance history
-                  </CardDescription>
-                </div>
-                >
-                  <Wrench className="h-4 w-4 mr-2" />
-                  Record Maintenance
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {!asset.maintenanceRecords || asset.maintenanceRecords.length === 0 ? (
-                >
-                  <p>No maintenance records found for this asset.</p>
-                </div>
-              ) : (
-                >
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Performed By</TableHead>
-                        <TableHead>Cost</TableHead>
-                        <TableHead>Next Maintenance</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {asset.maintenanceRecords.map((record) => (
-                        >
-                          <TableCell>
+        >;
+          <Card>;
+            <CardHeader>;
+              >;
+<div;
+                  <CardTitle>Maintenance Records</CardTitle>;
+                  <CardDescription>;
+                    View and manage maintenance history;
+                  </CardDescription>;
+                </div>;
+                >;
+                  <Wrench className="h-4 w-4 mr-2" />;
+                  Record Maintenance;
+                </Button>;
+              </div>;
+            </CardHeader>;
+            <CardContent>;
+              {!asset.maintenanceRecords || asset.maintenanceRecords.length === 0 ? (;
+                >;
+                  <p>No maintenance records found for this asset.</p>;
+                </div>;
+              ) : (;
+                >;
+                  <Table>;
+                    <TableHeader>;
+                      <TableRow>;
+                        <TableHead>Date</TableHead>;
+                        <TableHead>Type</TableHead>;
+                        <TableHead>Performed By</TableHead>;
+                        <TableHead>Cost</TableHead>;
+                        <TableHead>Next Maintenance</TableHead>;
+                        <TableHead>Actions</TableHead>;
+                      </TableRow>;
+                    </TableHeader>;
+                    <TableBody>;
+                      {asset.maintenanceRecords.map((record) => (;
+                        >;
+                          <TableCell>;
                             {format(new Date(record.date), "PPP")}
-                          </TableCell>
-                          <TableCell>
-                            >
+                          </TableCell>;
+                          <TableCell>;
+                            >;
                               {record.maintenanceType}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>
+                            </Badge>;
+                          </TableCell>;
+                          <TableCell>;
                             {record.performedBy || "—"}
-                          </TableCell>
-                          <TableCell>
+                          </TableCell>;
+                          <TableCell>;
                             {formatCurrency(record.cost)}
-                          </TableCell>
-                          <TableCell>
+                          </TableCell>;
+                          <TableCell>;
                             {formatDateOrPlaceholder(record.nextMaintenanceDate)}
-                          </TableCell>
-                          <TableCell>
-                            <Button>
-                              variant="ghost"
-                              size="sm"
+                          </TableCell>;
+                          <TableCell>;
+                            <Button>;
+                              variant="ghost";
+                              size="sm";
                               onClick={() => router.push(`/dashboard/hr/assets/${asset.id}/maintenance/${}`}
-                            >
-                              View
-                            </Button>
-                          </TableCell>
-                        </TableRow>
+                            >;
+                              View;
+                            </Button>;
+                          </TableCell>;
+                        </TableRow>;
                       ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                    </TableBody>;
+                  </Table>;
+                </div>;
               )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
+            </CardContent>;
+          </Card>;
+        </TabsContent>;
+      </Tabs>;
+    </div>;
   );
+))

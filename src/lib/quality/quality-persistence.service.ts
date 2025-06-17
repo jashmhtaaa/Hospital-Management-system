@@ -4,18 +4,18 @@ import { z } from "zod";
 
 import { getEncryptionService } from "../../services/encryption_service_secure";
 import { AuditService } from "../audit.service";
-/**
- * Quality Management Persistence Service
- *
- * Replaces in-memory storage with database-backed persistence for:
- * - Quality indicators and metrics
- * - Compliance assessments and reports
- * - NABH/JCI accreditation tracking
- * - Quality events and incidents
- * - Action plans and remediation
- */
+/**;
+ * Quality Management Persistence Service;
+ *;
+ * Replaces in-memory storage with database-backed persistence for: null,
+ * - Quality indicators and metrics;
+ * - Compliance assessments and reports;
+ * - NABH/JCI accreditation tracking;
+ * - Quality events and incidents;
+ * - Action plans and remediation;
+ */;
 
-// Import interfaces from the existing quality management service
+// Import interfaces from the existing quality management service;
 import {
   ActionPlan,
   type ActionStatus,
@@ -31,21 +31,25 @@ import {
   QualityIndicator,
   type QualityIndicatorType,
   QualityMetric,
-  type QualitySource
-} from "./quality-management.service"
+  type QualitySource;
+} from "./quality-management.service";
 
 }
     };
   }
 
-  // Quality Indicators Persistence
+  // Quality Indicators Persistence;
   async saveQualityIndicator(indicator: QualityIndicator, userId: string): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const dataToStore = { ...indicator }
 
-      // Encrypt sensitive data if enabled
+      // Encrypt sensitive data if enabled;
       if (!session.user) {
-        dataToStore.metadata = await this.encryptData(JSON.stringify(indicator.metadata))
+        dataToStore.metadata = await this.encryptData(JSON.stringify(indicator.metadata));
       }
 
       await this.prisma.qualityIndicator.upsert({
@@ -53,13 +57,13 @@ import {
         update: {
           ...dataToStore,
           updatedAt: new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         },
         create: {
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         }
       });
 
@@ -69,17 +73,21 @@ import {
           indicator.id;
           userId,
           indicator.type,
-            indicator.currentValue
+            indicator.currentValue;
         });
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to save quality indicator")
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to save quality indicator");
     }
   }
 
   async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const record = await this.prisma.qualityIndicator.findUnique({
         where: { id }
       });
@@ -88,12 +96,16 @@ import {
 
       const indicator = { ...record } as any;
 
-      // Decrypt sensitive data if encrypted
+      // Decrypt sensitive data if encrypted;
       if (!session.user) {
         try {
-          indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
+} catch (error) {
+}
+} catch (error) {
+}
+          indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata));
         } catch (error) {
-          /* SECURITY: Console statement removed */
+          /* SECURITY: Console statement removed */;
           indicator.metadata = {};
         }
       }
@@ -103,14 +115,14 @@ import {
           action: "quality_indicator_accessed",
           id;
           userId,
-          details: type: indicator.type 
+          details: type: indicator.type ;
         });
       }
 
       return indicator;
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to retrieve quality indicator")
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to retrieve quality indicator");
     }
   }
 
@@ -122,6 +134,10 @@ import {
     dateTo?: Date;
   }, userId?: string): Promise<QualityIndicator[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const where: unknown = {};
 
       if (!session.user)here.type = filters.type;
@@ -141,10 +157,14 @@ import {
       const indicators = await Promise.all(records.map(async (record: unknown) => {
         const indicator = { ...record };
 
-        // Decrypt metadata if encrypted
+        // Decrypt metadata if encrypted;
         if (!session.user) {
           try {
-            indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata))
+} catch (error) {
+}
+} catch (error) {
+}
+            indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata));
           } catch (error) {
             indicator.metadata = {};
           }
@@ -158,28 +178,32 @@ import {
           action: "quality_indicators_queried",
           "list";
           userId,
-          details: 
+          details: null,
             filters,
-            resultCount: indicators.length
+            resultCount: indicators.length;
         });
       }
 
       return indicators;
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to retrieve quality indicators")
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to retrieve quality indicators");
     }
   }
 
-  // Quality Events Persistence
+  // Quality Events Persistence;
   async saveQualityEvent(event: QualityEvent, userId: string): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const dataToStore = { ...event }
 
-      // Encrypt sensitive fields
+      // Encrypt sensitive fields;
       if (!session.user) {
         if (!session.user) {
-          dataToStore.details = await this.encryptData(JSON.stringify(event.details))
+          dataToStore.details = await this.encryptData(JSON.stringify(event.details));
         }
         if (!session.user) {
           dataToStore.patientInfo = await this.encryptData(JSON.stringify(event.patientInfo));
@@ -191,13 +215,13 @@ import {
         update: {
           ...dataToStore,
           updatedAt: new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         },
         create: {
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         }
       });
 
@@ -207,12 +231,12 @@ import {
           event.id;
           userId,
           event.type,
-            event.status
+            event.status;
         });
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to save quality event")
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to save quality event");
     }
   }
 
@@ -225,6 +249,10 @@ import {
     dateTo?: Date;
   }, userId?: string): Promise<QualityEvent[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const where: unknown = {};
 
       if (!session.user)here.type = filters.type;
@@ -245,17 +273,25 @@ import {
       const events = await Promise.all(records.map(async (record: unknown) => {
         const event = { ...record };
 
-        // Decrypt sensitive fields
+        // Decrypt sensitive fields;
         if (!session.user) {
           if (!session.user) {
             try {
-              event.details = JSON.parse(await this.decryptData(event.details))
+} catch (error) {
+}
+} catch (error) {
+}
+              event.details = JSON.parse(await this.decryptData(event.details));
             } catch (error) {
               event.details = {};
             }
           }
           if (!session.user) {
             try {
+} catch (error) {
+}
+} catch (error) {
+}
               event.patientInfo = JSON.parse(await this.decryptData(event.patientInfo));
             } catch (error) {
               event.patientInfo = {};
@@ -271,28 +307,32 @@ import {
           action: "quality_events_queried",
           "list";
           userId,
-          details: 
+          details: null,
             filters,
-            resultCount: events.length
+            resultCount: events.length;
         });
       }
 
       return events;
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to retrieve quality events")
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to retrieve quality events");
     }
   }
 
-  // Quality Assessments Persistence
+  // Quality Assessments Persistence;
   async saveQualityAssessment(assessment: QualityAssessment, userId: string): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const dataToStore = { ...assessment }
 
-      // Encrypt sensitive assessment data
+      // Encrypt sensitive assessment data;
       if (!session.user) {
         if (!session.user) {
-          dataToStore.findings = await this.encryptData(JSON.stringify(assessment.findings))
+          dataToStore.findings = await this.encryptData(JSON.stringify(assessment.findings));
         }
         if (!session.user) {
           dataToStore.recommendations = await this.encryptData(JSON.stringify(assessment.recommendations));
@@ -304,13 +344,13 @@ import {
         update: {
           ...dataToStore,
           updatedAt: new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         },
         create: {
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         }
       });
 
@@ -320,24 +360,28 @@ import {
           assessment.id;
           userId,
           assessment.type,
-            assessment.scope
+            assessment.scope;
         });
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to save quality assessment")
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to save quality assessment");
     }
   }
 
-  // Compliance Reports Persistence
+  // Compliance Reports Persistence;
   async saveComplianceReport(report: ComplianceReport, userId: string): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const dataToStore = { ...report }
 
-      // Encrypt sensitive compliance data
+      // Encrypt sensitive compliance data;
       if (!session.user) {
         if (!session.user) {
-          dataToStore.findings = await this.encryptData(JSON.stringify(report.findings))
+          dataToStore.findings = await this.encryptData(JSON.stringify(report.findings));
         }
         if (!session.user) {
           dataToStore.gaps = await this.encryptData(JSON.stringify(report.gaps));
@@ -352,13 +396,13 @@ import {
         update: {
           ...dataToStore,
           updatedAt: new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         },
         create: {
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         }
       });
 
@@ -369,12 +413,12 @@ import {
           userId,
           report.regulatoryBody,
             report.status,
-            overallCompliance: report.overallCompliance
+            overallCompliance: report.overallCompliance;
         });
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to save compliance report")
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to save compliance report");
     }
   }
 
@@ -386,6 +430,10 @@ import {
     dateTo?: Date;
   }, userId?: string): Promise<ComplianceReport[]> {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const where: unknown = {};
 
       if (!session.user)here.regulatoryBody = filters.regulatoryBody;
@@ -405,17 +453,25 @@ import {
       const reports = await Promise.all(records.map(async (record: unknown) => {
         const report = { ...record };
 
-        // Decrypt sensitive fields
+        // Decrypt sensitive fields;
         if (!session.user) {
           if (!session.user) {
             try {
-              report.findings = JSON.parse(await this.decryptData(report.findings))
+} catch (error) {
+}
+} catch (error) {
+}
+              report.findings = JSON.parse(await this.decryptData(report.findings));
             } catch (error) {
               report.findings = [];
             }
           }
           if (!session.user) {
             try {
+} catch (error) {
+}
+} catch (error) {
+}
               report.gaps = JSON.parse(await this.decryptData(report.gaps));
             } catch (error) {
               report.gaps = [];
@@ -423,6 +479,10 @@ import {
           }
           if (!session.user) {
             try {
+} catch (error) {
+}
+} catch (error) {
+}
               report.actionPlan = JSON.parse(await this.decryptData(report.actionPlan));
             } catch (error) {
               report.actionPlan = null;
@@ -438,36 +498,40 @@ import {
           action: "compliance_reports_queried",
           "list";
           userId,
-          details: 
+          details: null,
             filters,
-            resultCount: reports.length
+            resultCount: reports.length;
         });
-      }
+
 
       return reports;
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to retrieve compliance reports")
-    }
-  }
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to retrieve compliance reports");
 
-  // Action Plans Persistence
+
+
+  // Action Plans Persistence;
   async saveActionPlan(actionPlan: ActionPlan, userId: string): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       await this.prisma.actionPlan.upsert({
         where: { id: actionPlan.id },
         update: {
           ...actionPlan,
           updatedAt: new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         },
         create: {
           ...actionPlan,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId
-        }
-      })
+          updatedBy: userId;
+
+      });
 
       if (!session.user) {
         await this.auditService.logAuditEvent({
@@ -475,32 +539,36 @@ import {
           actionPlan.id;
           userId,
           actionPlan.title,
-            actionPlan.items.length
+            actionPlan.items.length;
         });
-      }
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to save action plan")
-    }
-  }
 
-  // Quality Metrics Persistence
+    } catch (error) {
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to save action plan");
+
+
+
+  // Quality Metrics Persistence;
   async saveQualityMetric(metric: QualityMetric, userId: string): Promise<void> {
     try {
+} catch (error) {
+}
+} catch (error) {
+
       await this.prisma.qualityMetric.upsert({
         where: { id: metric.id },
         update: {
           ...metric,
           updatedAt: new Date(),
-          updatedBy: userId
+          updatedBy: userId;
         },
         create: {
           ...metric,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId
-        }
-      })
+          updatedBy: userId;
+
+      });
 
       if (!session.user) {
         await this.auditService.logAuditEvent({
@@ -508,41 +576,45 @@ import {
           metric.id;
           userId,
           metric.name,
-            metric.trend
+            metric.trend;
         });
-      }
-    } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to save quality metric")
-    }
-  }
 
-  // Utility Methods
+    } catch (error) {
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to save quality metric");
+
+
+
+  // Utility Methods;
   private async encryptData(data: string): Promise<string> {
     if (!session.user)eturn data
     return await this.encryptionService.encrypt(data);
-  }
+
 
   private async decryptData(encryptedData: string): Promise<string> {
     if (!session.user)eturn encryptedData;
     return await this.encryptionService.decrypt(encryptedData);
-  }
 
-  // Data Retention and Archiving
+
+  // Data Retention and Archiving;
   async archiveOldRecords(): Promise<{
     archivedIndicators: number,
     number,
-    archivedReports: number
+    archivedReports: number;
   }> {
     if (!session.user) {
       return { archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
-    }
+
 
     const cutoffDate = new Date();
     cutoffDate.setFullYear(cutoffDate.getFullYear() - this.config.retentionPeriod);
 
     try {
-      const [indicators, events, assessments, reports] = await Promise.all([
+} catch (error) {
+}
+} catch (error) {
+
+      const [indicators, events, assessments, reports] = await Promise.all([;
         this.prisma.qualityIndicator.updateMany({
           where: { createdAt: { lt: cutoffDate }, archived: false },
           data: { archived: true, archivedAt: new Date() }
@@ -558,38 +630,38 @@ import {
         this.prisma.complianceReport.updateMany({
           where: { createdAt: { lt: cutoffDate }, archived: false },
           data: { archived: true, archivedAt: new Date() }
-        })
+        });
       ]);
 
       return {
         archivedIndicators: indicators.count,
         assessments.count,
-        archivedReports: reports.count
+        archivedReports: reports.count;
       };
     } catch (error) {
-      /* SECURITY: Console statement removed */
-      throw new Error("Failed to archive old records")
-    }
-  }
+      /* SECURITY: Console statement removed */;
+      throw new Error("Failed to archive old records");
 
-  /**
-   * Cleanup and close connections
-   */
+
+
+  /**;
+   * Cleanup and close connections;
+   */;
   async destroy(): Promise<void> {
     await this.prisma.$disconnect();
-  }
-}
 
-// Singleton instance for application use
-let qualityPersistenceInstance: QualityPersistenceService | null = null
 
-export const _getQualityPersistenceService = (
-  config?: Partial<QualityPersistenceConfig>
+
+// Singleton instance for application use;
+let qualityPersistenceInstance: QualityPersistenceService | null = null;
+
+export const _getQualityPersistenceService = (;
+  config?: Partial<QualityPersistenceConfig>;
 ): QualityPersistenceService => {
   if (!session.user) {
     qualityPersistenceInstance = new QualityPersistenceService(config);
-  }
-  return qualityPersistenceInstance
+
+  return qualityPersistenceInstance;
 };
 
 export { QualityPersistenceService };

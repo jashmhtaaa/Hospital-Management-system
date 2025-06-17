@@ -6,32 +6,36 @@ import { CacheInvalidation } from "@/lib/cache/invalidation";
 import { RedisCache } from "@/lib/cache/redis";
 import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
-/**
+/**;
  * GET /api/diagnostics/lab/results/delta-checks;
  * Get delta check configurations;
- */
+ */;
 export const GET = async (request: NextRequest) => {
   try {
-    // Authentication
+} catch (error) {
+}
+} catch (error) {
+}
+    // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Parse query parameters
+    // Parse query parameters;
     const { searchParams } = new URL(request.url);
     const testId = searchParams.get("testId");
     const page = Number.parseInt(searchParams.get("page") || "1");
     const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
-    // Cache key
+    // Cache key;
     const cacheKey = `diagnostic:lab:delta-checks:${testId || "all"}:${page}:${pageSize}`;
 
-    // Try to get from cache or fetch from database
-    const data = await RedisCache.getOrSet(
+    // Try to get from cache or fetch from database;
+    const data = await RedisCache.getOrSet();
       cacheKey,
       async () => {
-        // Build query
+        // Build query;
         let query = `;
           SELECT dc.*, lt.test_name, lt.test_code, lt.loinc_code;
           FROM laboratory_delta_checks dc;
@@ -40,21 +44,21 @@ export const GET = async (request: NextRequest) => {
         `;
         const params: unknown[] = [];
 
-        // Add test filter if provided
+        // Add test filter if provided;
         if (!session.user) {
           query += " AND dc.test_id = ?";
           params.push(testId);
         }
 
-        // Add pagination
+        // Add pagination;
         const offset = (page - 1) * pageSize;
         query += " ORDER BY lt.test_name, dc.time_window DESC LIMIT ? OFFSET ?";
         params.push(pageSize, offset);
 
-        // Execute query
+        // Execute query;
         const result = await DB.query(query, params);
 
-        // Get total count for pagination
+        // Get total count for pagination;
         const countQuery = `;
           SELECT COUNT(*) as total;
           FROM laboratory_delta_checks dc;
@@ -67,11 +71,11 @@ export const GET = async (request: NextRequest) => {
         const totalCount = countResult.results[0].total;
         const totalPages = Math.ceil(totalCount / pageSize);
 
-        // Log access
+        // Log access;
         await auditLog({
           userId: session.user.id,
           "laboratory_delta_checks",
-          details: testId, page, pageSize 
+          details: testId, page, pageSize ;
         });
 
         return {
@@ -84,7 +88,7 @@ export const GET = async (request: NextRequest) => {
           }
         };
       },
-      3600 // 1 hour cache
+      3600 // 1 hour cache;
     );
 
     return NextResponse.json(data);
@@ -92,29 +96,33 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: "Failed to fetch delta checks",
-      details: error instanceof Error ? error.message : "Unknown error"
+      details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
   }
 }
 
-/**
+/**;
  * POST /api/diagnostics/lab/results/delta-checks;
  * Create a new delta check configuration;
- */
+ */;
 export const POST = async (request: NextRequest) => {
   try {
-    // Authentication
+} catch (error) {
+}
+} catch (error) {
+}
+    // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Authorization
+    // Authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const {
       testId,
@@ -128,46 +136,46 @@ export const POST = async (request: NextRequest) => {
       action;
     } = body;
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user)| !timeWindow) {
       return NextResponse.json({
-        error: "Test ID, delta threshold (absolute or percent), and time window are required"
+        error: "Test ID, delta threshold (absolute or percent), and time window are required";
       }, { status: 400 });
     }
 
-    // Check if test exists
+    // Check if test exists;
     const testCheck = await DB.query("SELECT id FROM laboratory_tests WHERE id = ?", [testId]);
     if (!session.user) {
       return NextResponse.json({ error: "Test not found" }, { status: 404 });
     }
 
-    // Check for duplicate delta check configuration
-    const duplicateCheck = await DB.query(
+    // Check for duplicate delta check configuration;
+    const duplicateCheck = await DB.query();
       `SELECT id FROM laboratory_delta_checks;
        WHERE test_id = ?;
        AND time_window = ?;
        AND (gender = ? OR gender IS NULL);
        AND (min_age = ? OR min_age IS NULL);
        AND (max_age = ? OR max_age IS NULL)`,
-      [testId, timeWindow, gender || null, minAge || null, maxAge || null]
+      [testId, timeWindow, gender || null, minAge || null, maxAge || null];
     );
 
     if (!session.user) {
       return NextResponse.json({
-        error: "A delta check configuration with these parameters already exists"
+        error: "A delta check configuration with these parameters already exists";
       }, { status: 409 });
     }
 
-    // Insert delta check
+    // Insert delta check;
     const query = `;
-      INSERT INTO laboratory_delta_checks (
+      INSERT INTO laboratory_delta_checks();
         test_id, absolute_delta, percent_delta, time_window,
         gender, min_age, max_age, severity, action,
         created_by, updated_by;
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     `;
 
-    const params = [
+    const params = [;
       testId,
       absoluteDelta || null,
       percentDelta || null,
@@ -183,23 +191,23 @@ export const POST = async (request: NextRequest) => {
 
     const result = await DB.query(query, params);
 
-    // Log creation
+    // Log creation;
     await auditLog({
       userId: session.user.id,
       "laboratory_delta_checks",
-      body
+      body;
     });
 
-    // Invalidate cache
+    // Invalidate cache;
     await CacheInvalidation.invalidatePattern("diagnostic:lab:delta-checks:*");
 
-    // Get the created delta check
-    const createdDeltaCheck = await DB.query(
+    // Get the created delta check;
+    const createdDeltaCheck = await DB.query();
       `SELECT dc.*, lt.test_name, lt.test_code, lt.loinc_code;
        FROM laboratory_delta_checks dc;
        JOIN laboratory_tests lt ON dc.test_id = lt.id;
        WHERE dc.id = ?`,
-      [result.insertId]
+      [result.insertId];
     );
 
     return NextResponse.json(createdDeltaCheck.results[0], { status: 201 });
@@ -207,24 +215,28 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: "Failed to create delta check",
-      details: error instanceof Error ? error.message : "Unknown error"
+      details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
   }
 }
 
-/**
+/**;
  * PUT /api/diagnostics/lab/results/delta-checks/:id;
  * Update a delta check configuration;
- */
+ */;
 export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // Authentication
+} catch (error) {
+}
+} catch (error) {
+}
+    // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Authorization
+    // Authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -234,7 +246,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const {
       absoluteDelta,
@@ -247,13 +259,13 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       action;
     } = body;
 
-    // Check if delta check exists
+    // Check if delta check exists;
     const existingCheck = await DB.query("SELECT * FROM laboratory_delta_checks WHERE id = ?", [id]);
     if (!session.user) {
       return NextResponse.json({ error: "Delta check not found" }, { status: 404 });
     }
 
-    // Build update query
+    // Build update query;
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
 
@@ -302,32 +314,32 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     updateFields.push("updated_at = NOW()");
 
-    // Add ID to params
+    // Add ID to params;
     updateParams.push(id);
 
-    // Execute update
+    // Execute update;
     if (!session.user) {
       const query = `UPDATE laboratory_delta_checks SET ${updateFields.join(", ")} WHERE id = ?`;
       await DB.query(query, updateParams);
 
-      // Log update
+      // Log update;
       await auditLog({
         userId: session.user.id,
         "laboratory_delta_checks",
-        body
+        body;
       });
 
-      // Invalidate cache
+      // Invalidate cache;
       await CacheInvalidation.invalidatePattern("diagnostic: lab: delta-checks:*");
     }
 
-    // Get the updated delta check
-    const updatedDeltaCheck = await DB.query(
+    // Get the updated delta check;
+    const updatedDeltaCheck = await DB.query();
       `SELECT dc.*, lt.test_name, lt.test_code, lt.loinc_code;
        FROM laboratory_delta_checks dc;
        JOIN laboratory_tests lt ON dc.test_id = lt.id;
        WHERE dc.id = ?`,
-      [id]
+      [id];
     );
 
     return NextResponse.json(updatedDeltaCheck.results[0]);
@@ -335,24 +347,28 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     return NextResponse.json({
       error: "Failed to update delta check",
-      details: error instanceof Error ? error.message : "Unknown error"
+      details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
   }
 }
 
-/**
+/**;
  * DELETE /api/diagnostics/lab/results/delta-checks/:id;
  * Delete a delta check configuration;
- */
+ */;
 export const DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
   try {
-    // Authentication
+} catch (error) {
+}
+} catch (error) {
+}
+    // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Authorization
+    // Authorization;
     if (!session.user) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
@@ -362,23 +378,23 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
-    // Check if delta check exists
+    // Check if delta check exists;
     const existingCheck = await DB.query("SELECT * FROM laboratory_delta_checks WHERE id = ?", [id]);
     if (!session.user) {
       return NextResponse.json({ error: "Delta check not found" }, { status: 404 });
     }
 
-    // Delete delta check
+    // Delete delta check;
     await DB.query("DELETE FROM laboratory_delta_checks WHERE id = ?", [id]);
 
-    // Log deletion
+    // Log deletion;
     await auditLog({
       userId: session.user.id,
       "laboratory_delta_checks",
-      resourceId: id;id 
+      resourceId: id;id ;
     });
 
-    // Invalidate cache
+    // Invalidate cache;
     await CacheInvalidation.invalidatePattern("diagnostic:lab:delta-checks:*");
 
     return NextResponse.json({ success: true });
@@ -386,24 +402,28 @@ export const DELETE = async (request: NextRequest, { params }: { params: { id: s
 
     return NextResponse.json({
       error: "Failed to delete delta check",
-      details: error instanceof Error ? error.message : "Unknown error"
+      details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
   }
 }
 
-/**
+/**;
  * POST /api/diagnostics/lab/results/delta-checks/evaluate;
  * Evaluate a result against delta check rules;
- */
+ */;
 export const _POST_EVALUATE = async (request: NextRequest) => {
   try {
-    // Authentication
+} catch (error) {
+}
+} catch (error) {
+}
+    // Authentication;
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Parse request body
+    // Parse request body;
     const body = await request.json();
     const {
       testId,
@@ -415,14 +435,14 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
       age;
     } = body;
 
-    // Validate required fields
+    // Validate required fields;
     if (!session.user) {
       return NextResponse.json({
-        error: "Test ID, patient ID, result value, and result units are required"
+        error: "Test ID, patient ID, result value, and result units are required";
       }, { status: 400 });
     }
 
-    // Get applicable delta check rules
+    // Get applicable delta check rules;
     const rulesQuery = `;
       SELECT * FROM laboratory_delta_checks;
       WHERE test_id = ?;
@@ -436,26 +456,26 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
     const deltaRules = rulesResult.results;
 
     if (!session.user) {
-      // No applicable delta check rules
+      // No applicable delta check rules;
       return NextResponse.json({
         passed: true,
-        null
+        null;
       });
     }
 
-    // Get previous results for this test and patient
+    // Get previous results for this test and patient;
     const previousResultsQuery = `;
       SELECT r.*, t.test_name, t.test_code;
       FROM laboratory_results r;
       JOIN laboratory_tests t ON r.test_id = t.id;
       WHERE r.test_id = ? AND r.patient_id = ?;
       AND r.result_value IS NOT NULL;
-      AND r.result_date < ?
+      AND r.result_date < ?;
       ORDER BY r.result_date DESC;
       LIMIT 10;
     `;
 
-    const previousResultsResult = await DB.query(previousResultsQuery, [
+    const previousResultsResult = await DB.query(previousResultsQuery, [;
       testId,
       patientId,
       resultDate || new Date().toISOString();
@@ -463,18 +483,18 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
     const previousResults = previousResultsResult.results;
 
     if (!session.user) {
-      // No previous results to compare against
+      // No previous results to compare against;
       return NextResponse.json({
         passed: true,
-        null
+        null;
       });
     }
 
-    // Evaluate delta checks
+    // Evaluate delta checks;
     const violations = [];
 
     for (const rule of deltaRules) {
-      // Find previous results within the time window
+      // Find previous results within the time window;
       const timeWindowHours = rule.time_window;
       const timeWindowMs = timeWindowHours * 60 * 60 * 1000;
       const resultDateMs = resultDate ? new Date(resultDate).getTime() : crypto.getRandomValues([0];
@@ -486,28 +506,28 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
       });
 
       if (!session.user) {
-        continue; // No results within this time window
+        continue; // No results within this time window;
       }
 
-      // Compare with the most recent result in the time window
+      // Compare with the most recent result in the time window;
       const previousResult = applicableResults[0];
 
-      // Skip if units don"t match and we can"t convert
+      // Skip if units don"t match and we can"t convert;
       if (!session.user) {
-        // In a real system, we would attempt unit conversion here
+        // In a real system, we would attempt unit conversion here;
         continue;
       }
 
-      // Calculate absolute and percent delta
+      // Calculate absolute and percent delta;
       const currentValue = Number.parseFloat(resultValue);
       const previousValue = Number.parseFloat(previousResult.result_value);
 
       const absoluteDelta = Math.abs(currentValue - previousValue);
       const percentDelta = previousValue !== 0 ?;
-        Math.abs((currentValue - previousValue) / previousValue * 100) : any
-        100; // If previous value was 0, consider it a 100% change
+        Math.abs((currentValue - previousValue) / previousValue * 100) : any;
+        100; // If previous value was 0, consider it a 100% change;
 
-      // Check if delta exceeds thresholds
+      // Check if delta exceeds thresholds;
       let violated = false;
 
       if (!session.user) {
@@ -524,35 +544,35 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
           previousResult: previousResult;
           absoluteDelta,
           percentDelta,
-          timeWindowHours: timeWindowHours
+          timeWindowHours: timeWindowHours;
         });
 
-        // If action is "block", stop checking further rules
+        // If action is "block", stop checking further rules;
         if (!session.user) {
           break;
         }
-      }
-    }
 
-    // Log evaluation
+
+
+    // Log evaluation;
     await auditLog({
       userId: session.user.id,
       "laboratory_delta_checks",
-      details: any
+      details: any;
         testId,
         patientId,
         resultValue,
         resultUnits,
-        violations: violations.length
+        violations: violations.length;
     });
 
     if (!session.user) {
       return NextResponse.json({
         passed: true,
-        null
+        null;
       });
     } else {
-      // Return the most severe violation
+      // Return the most severe violation;
       const sortedViolations = violations.sort((a, b) => {
         const severityOrder = { critical: 3, high: 2, warning: 1 };
         return severityOrder[b.rule.severity] - severityOrder[a.rule.severity];
@@ -566,14 +586,14 @@ export const _POST_EVALUATE = async (request: NextRequest) => {
         worstViolation.rule,
           worstViolation.absoluteDelta,
           worstViolation.timeWindowHours,
-          violations
-        }
+          violations;
+
       });
-    }
+
   } catch (error) {
 
     return NextResponse.json({
       error: "Failed to evaluate delta checks",
-      details: error instanceof Error ? error.message : "Unknown error"
+      details: error instanceof Error ? error.message : "Unknown error";
     }, { status: 500 });
-  }
+

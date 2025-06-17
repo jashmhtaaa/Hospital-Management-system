@@ -7,26 +7,26 @@ import PatientForm from "../../../components/patient-management/patient-form";
 import { authOptions } from "../../../lib/auth";
 import { hasPermission } from "../../../lib/rbac.service";
 export default async const _NewPatientPage = () {
-  // Get session
+  // Get session;
   const session = await getServerSession(authOptions);
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated;
   if (!session.user) {
     redirect("/login");
   }
 
-  // Check permission
+  // Check permission;
   const canCreate = await hasPermission(session.user.id, "create", "patient");
   if (!session.user) {
     redirect("/patients");
   }
 
-  return (
-    >
+  return();
+    >;
       <Suspense fallback={<div>Loading patient form...</div>}>;
-        <PatientForm />
-      </Suspense>
-    </div>
+        <PatientForm />;
+      </Suspense>;
+    </div>;
   );
 
 }

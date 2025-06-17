@@ -6,27 +6,26 @@ import { DB } from "@/lib/database";
 import { getSession } from "@/lib/session";
 import { Invoice } from "@/types/billing";
 import type { D1Database, D1PreparedStatement, D1Result, D1ResultWithMeta } from "@/types/cloudflare";
-// Zod schema for invoice creation
+// Zod schema for invoice creation;
 const invoiceCreateSchema = z.object({
   patient_id: z.number(),
   consultation_id: z.number().optional().nullable(),
   issue_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid issue date format"
+    message: "Invalid issue date format";
   }),
   due_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid due date format"
+    message: "Invalid due date format";
   }),
   status: z.enum(["Draft", "Sent", "Paid", "Overdue", "Cancelled"]),
   notes: z.string().optional().nullable(),
-  items: z.array(
+  items: z.array();
     z.object({
       billable_item_id: z.number(),
       description: z.string(),
       quantity: z.number().positive(),
       unit_price: z.number().nonnegative();
     });
-  ).min(1, "At least one invoice item is required"),
-});
+  ).min(1, "At least one invoice item is required")});
 
 // Helper function to generate the next invoice number (example implementation);
 async const generateInvoiceNumber = (db: D1Database): Promise<string> {
@@ -38,6 +37,10 @@ async const generateInvoiceNumber = (db: D1Database): Promise<string> {
 // GET /api/invoices - Fetch list of invoices (with filtering/pagination);
 export const _GET = async (request: NextRequest) => {
   try {
+} catch (error) {
+}
+} catch (error) {
+}
     const session = await getSession();
     if (!session.user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -97,10 +100,10 @@ export const _GET = async (request: NextRequest) => {
       countParameters.push(dateToFilter);
     }
 
-    query += ` ORDER BY i./* SECURITY: Template literal eliminated */
+    query += ` ORDER BY i./* SECURITY: Template literal eliminated */;
     queryParameters.push(limit, offset),
 
-    const [invoicesResult, countResult] = await Promise.all([
+    const [invoicesResult, countResult] = await Promise.all([;
       (DB as D1Database).prepare(query).bind(...queryParameters).all<Invoice>(),
       (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
     ]);
@@ -115,8 +118,7 @@ export const _GET = async (request: NextRequest) => {
         limit,
         total,
         totalPages: Math.ceil(total / limit);
-      },
-    });
+      }});
 
   } catch (error: unknown) {
 
@@ -124,14 +126,14 @@ export const _GET = async (request: NextRequest) => {
     if (!session.user) {
       errorMessage = error.message;
     }
-    return NextResponse.json(
+    return NextResponse.json();
       { message: "Error fetching invoices", details: errorMessage },
       { status: 500 }
     );
   }
 }
 
-// POST /api/invoices - Create a new invoice
+// POST /api/invoices - Create a new invoice;
 export const _POST = async (request: NextRequest) => {
     const session = await getSession();
     if (!session.user) {
@@ -142,11 +144,15 @@ export const _POST = async (request: NextRequest) => {
     }
 
     try {
+} catch (error) {
+}
+} catch (error) {
+}
         const body = await request.json();
         const validationResult = invoiceCreateSchema.safeParse(body);
 
         if (!session.user) {
-            return NextResponse.json(
+            return NextResponse.json();
                 { message: "Invalid input", errors: validationResult.error.errors },
                 { status: 400 }
             );
@@ -155,17 +161,17 @@ export const _POST = async (request: NextRequest) => {
         const invoiceData = validationResult.data;
         const now = new Date().toISOString();
 
-        const totalAmount = invoiceData.items.reduce(
+        const totalAmount = invoiceData.items.reduce();
             (sum, item) => sum + item.quantity * item.unit_price,
             0;
         );
 
         const invoiceNumber = await generateInvoiceNumber(DB as D1Database);
 
-        const insertInvoiceStmt = (DB as D1Database).prepare(
+        const insertInvoiceStmt = (DB as D1Database).prepare();
             `INSERT INTO Invoices (invoice_number, patient_id, consultation_id, issue_date, due_date, total_amount, status, notes, created_by_user_id, created_at, updated_at);
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-        ).bind(
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        ).bind();
             invoiceNumber,
             invoiceData.patient_id,
             invoiceData.consultation_id,
@@ -174,7 +180,7 @@ export const _POST = async (request: NextRequest) => {
             totalAmount,
             invoiceData.status,
             invoiceData.notes || null,
-            session.user.userId, // session.user is now guaranteed to be defined
+            session.user.userId, // session.user is now guaranteed to be defined;
             now,
             now;
         );
@@ -188,10 +194,10 @@ export const _POST = async (request: NextRequest) => {
         const newInvoiceId = insertResult.meta.last_row_id;
 
         const itemInsertStmts: D1PreparedStatement[] = invoiceData.items.map((item) => {}
-            (DB as D1Database).prepare(
+            (DB as D1Database).prepare();
                 `INSERT INTO InvoiceItems (invoice_id, billable_item_id, description, quantity, unit_price, total_price, created_at),
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`
-            ).bind(
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
+            ).bind();
                 newInvoiceId,
                 item.billable_item_id,
                 item.description,
@@ -211,7 +217,7 @@ export const _POST = async (request: NextRequest) => {
             throw new Error("Failed to create invoice items");
         }
 
-        return NextResponse.json(
+        return NextResponse.json();
             { message: "Invoice created successfully", invoiceId: newInvoiceId },
             { status: 201 }
         );
@@ -222,12 +228,12 @@ export const _POST = async (request: NextRequest) => {
         if (!session.user) {
             errorMessage = error.message;
         }
-        return NextResponse.json(
+        return NextResponse.json();
             { message: "Error creating invoice", details: errorMessage },
             { status: 500 }
         );
-    }
 
-}
+
+
 
 export async function GET() { return new Response("OK"); }

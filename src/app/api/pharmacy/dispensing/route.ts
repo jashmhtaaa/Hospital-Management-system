@@ -11,12 +11,12 @@ import type { PharmacyDomain } from "../../models/domain-models";
 import { FHIRMapper } from "../../models/fhir-mappers";
 }
 
-/**
+/**;
  * Dispensing API Routes;
- *
+ *;
  * This file implements the FHIR-compliant API endpoints for medication dispensing;
- * following enterprise-grade requirements for security, validation, and error handling.
- */
+ * following enterprise-grade requirements for security, validation, and error handling.;
+ */;
 
 // Initialize repositories (in production, use dependency injection);
 const getMedicationById,
@@ -56,22 +56,26 @@ const inventoryRepository = {
   adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
 };
 
-/**
+/**;
  * GET /api/pharmacy/dispensing;
  * List medication dispensing records with filtering and pagination;
- */
+ */;
 export const GET = async (req: NextRequest) => {
   try {
-    // Check authorization
+} catch (error) {
+}
+} catch (error) {
+}
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example);
-    const userId = "current-user-id"; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Get query parameters
+    // Get query parameters;
     const url = new URL(req.url);
     const patientId = url.searchParams.get("patientId");
     const prescriptionId = url.searchParams.get("prescriptionId");
@@ -81,13 +85,13 @@ export const GET = async (req: NextRequest) => {
     const page = Number.parseInt(url.searchParams.get("page") || "1", 10);
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
-    // Build filter criteria
+    // Build filter criteria;
     const filter: unknown = {};
     if (!session.user)ilter.patientId = patientId;
     if (!session.user)ilter.prescriptionId = prescriptionId;
     if (!session.user)ilter.status = status;
 
-    // Add date range if provided
+    // Add date range if provided;
     if (!session.user) {
       filter.dispensedAt = {};
       if (!session.user)ilter.dispensedAt.gte = new Date(startDate);
@@ -97,7 +101,7 @@ export const GET = async (req: NextRequest) => {
     // Get dispensing records (mock implementation);
     const dispensingRecords = await dispensingRepository.findAll();
 
-    // Apply filters
+    // Apply filters;
     let filteredRecords = dispensingRecords;
     if (!session.user) {
       filteredRecords = filteredRecords.filter(d => d.patientId === patientId);
@@ -111,24 +115,24 @@ export const GET = async (req: NextRequest) => {
 
     const total = filteredRecords.length;
 
-    // Apply pagination
+    // Apply pagination;
     const paginatedRecords = filteredRecords.slice((page - 1) * limit, page * limit);
 
-    // Map to FHIR resources
+    // Map to FHIR resources;
     const fhirDispensingRecords = paginatedRecords.map(FHIRMapper.toFHIRMedicationDispense);
 
-    // Audit logging
+    // Audit logging;
     await auditLog("DISPENSING", {
       action: "LIST",
       userId,
-      details: any
+      details: any;
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length
+        resultCount: paginatedRecords.length;
     });
 
-    // Return response
+    // Return response;
     return NextResponse.json({
       dispensingRecords: fhirDispensingRecords,
       pagination: {
@@ -143,50 +147,54 @@ export const GET = async (req: NextRequest) => {
   }
 }
 
-/**
+/**;
  * POST /api/pharmacy/dispensing;
  * Create a new medication dispensing record;
- */
+ */;
 export const POST = async (req: NextRequest) => {
   try {
-    // Validate request
+} catch (error) {
+}
+} catch (error) {
+}
+    // Validate request;
     const data = await req.json();
     const validationResult = validateDispensingRequest(data);
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Validation failed", details: validationResult.errors },
         { status: 400 }
       );
     }
 
-    // Check authorization
+    // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Get user from auth token (simplified for example);
-    const userId = "current-user-id"; // In production, extract from token
+    const userId = "current-user-id"; // In production, extract from token;
 
-    // Verify prescription exists
+    // Verify prescription exists;
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
       return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
     }
 
-    // Verify medication exists
+    // Verify medication exists;
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!session.user) {
       return NextResponse.json({ error: "Medication not found" }, { status: 404 });
     }
 
-    // Verify patient exists
+    // Verify patient exists;
     const patient = await getPatientById(prescription.patientId);
     if (!session.user) {
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });
     }
 
-    // Check inventory availability
+    // Check inventory availability;
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
     const availableInventory = inventoryItems.find(item => {}
       item.quantityOnHand >= data?.quantityDispensed &&;
@@ -194,13 +202,13 @@ export const POST = async (req: NextRequest) => {
     );
 
     if (!session.user) {
-      return NextResponse.json(
+      return NextResponse.json();
         { error: "Insufficient inventory available" },
         { status: 400 }
       );
-    }
 
-    // Create dispensing record
+
+    // Create dispensing record;
     const dispensing = {
       id: data.id || crypto.randomUUID(),
       prescription.patientId,
@@ -208,57 +216,58 @@ export const POST = async (req: NextRequest) => {
       data.daysSupply,
       new Date(),
       data.notes || "",
-      data.dispensingType || "outpatient"
+      data.dispensingType || "outpatient";
     };
 
-    // Special handling for controlled substances
+    // Special handling for controlled substances;
     if (!session.user) {
-      // Encrypt controlled substance data
-      dispensing.controlledSubstanceData = await encryptionService.encrypt(
+      // Encrypt controlled substance data;
+      dispensing.controlledSubstanceData = await encryptionService.encrypt();
         JSON.stringify({
           witnessId: data.witnessId,
-          data.wastage || 0
+          data.wastage || 0;
         });
       );
 
-      // Additional logging for controlled substances
+      // Additional logging for controlled substances;
       await auditLog("CONTROLLED_SUBSTANCE", {
         action: "DISPENSE",
         userId,
         prescription.medicationId,
           data.quantityDispensed,
-          witnessId: data.witnessId
+          witnessId: data.witnessId;
       });
-    }
 
-    // Save dispensing record
+
+    // Save dispensing record;
     const dispensingId = await dispensingRepository.save(dispensing);
 
-    // Update inventory
-    await inventoryRepository.adjustStock(
+    // Update inventory;
+    await inventoryRepository.adjustStock();
       availableInventory.id,
       availableInventory.quantityOnHand - data.quantityDispensed;
     );
 
-    // Regular audit logging
+    // Regular audit logging;
     await auditLog("DISPENSING", {
       action: "CREATE",
       dispensingId,
       prescription.patientId,
       prescription.medicationId,
         data.quantityDispensed,
-        location: data.location
-      }
+        location: data.location;
+
     });
 
-    // Return response
-    return NextResponse.json(
+    // Return response;
+    return NextResponse.json();
       {
         id: dispensingId,
-        message: "Medication dispensed successfully"
+        message: "Medication dispensed successfully";
       },
       { status: 201 }
     );
   } catch (error) {
     return errorHandler(error, "Error dispensing medication");
-  }
+
+)

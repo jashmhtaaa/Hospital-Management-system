@@ -1,7 +1,6 @@
 import type React from "react";
 import { useState, useEffect } from "react";
 import {
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 }
@@ -13,18 +12,17 @@ import { Card, CardContent } from "@/components/ui/card";
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  TableRow} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-// Define interface for Radiology Study data
+// Define interface for Radiology Study data;
 interface RadiologyStudy {
   id: string,
   string,
-  string; // Assuming ISO string format
-  status: "scheduled" | "acquired" | "reported" | "verified"
+  string; // Assuming ISO string format;
+  status: "scheduled" | "acquired" | "reported" | "verified";
 export default const _RadiologyStudiesList = () {
   const [studies, setStudies] = useState<RadiologyStudy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -36,108 +34,112 @@ export default const _RadiologyStudiesList = () {
 
   const fetchStudies = async (): Promise<void> => {
     setLoading(true),
-    setError(undefined); // Reset error state before fetching
+    setError(undefined); // Reset error state before fetching;
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/radiology/studies");
       if (!session.user) {
         throw new Error("Failed to fetch radiology studies");
       }
       const data = await response.json();
-      // Assuming the API returns an array of studies
+      // Assuming the API returns an array of studies;
       setStudies(Array.isArray(data) ? data : []);
       setError(undefined);
     } catch (error_) {
 
       const errorMessage =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
-      setError(
+      setError();
         `Failed to load radiology studies: ${errorMessage}. Please try again later.`;
       );
     } finally {
       setLoading(false);
-    }
+
   };
 
   const handleViewStudy = (studyId: string): void => {
-    router.push(`/dashboard/radiology/studies/${}`
+    router.push(`/dashboard/radiology/studies/${}`;
   };
 
-  const getStatusBadge = (
-    status: RadiologyStudy["status"]
+  const getStatusBadge = (;
+    status: RadiologyStudy["status"];
   ): React.ReactNode => {
     const statusStyles: { [key in RadiologyStudy["status"]]: string } = {
       scheduled: "bg-yellow-100 text-yellow-800",
       "bg-purple-100 text-purple-800",
-      verified: "bg-green-100 text-green-800"
+      verified: "bg-green-100 text-green-800";
     };
 
     const statusText =;
       status?.charAt(0).toUpperCase() + status?.slice(1).replace("_", " ");
 
-    return (
-      >
+    return();
+      >;
         {statusText}
-      </Badge>
-    )
+      </Badge>;
+    );
   };
 
-  return (
-    <Card>
-      >
-        >
-          <h2 className="text-xl font-semibold">Radiology Studies</h2>
-        </div>
+  return();
+    <Card>;
+      >;
+        >;
+          <h2 className="text-xl font-semibold">Radiology Studies</h2>;
+        </div>;
 
-        {loading ? (
-          >
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        ) : error ? (
-          <div className="text-center text-red-500 p-4">{error}>
-        ) : studies.length === 0 ? (
-          >
-            No radiology studies found.
-          </div>
-        ) : (
-          >
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Patient</TableHead>
-                  <TableHead>Procedure</TableHead>
-                  <TableHead>Accession #</TableHead>
-                  <TableHead>Study Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {studies.map((study: RadiologyStudy) => (
-                  >
-                    <TableCell>{study.patient_name}</TableCell>
-                    <TableCell>{study.procedure_name}</TableCell>
-                    <TableCell>{study.accession_number || "N/A"}</TableCell>
-                    <TableCell>
+        {loading ? (;
+          >;
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />;
+          </div>;
+        ) : error ? (;
+          <div className="text-center text-red-500 p-4">{error}>;
+        ) : studies.length === 0 ? (;
+          >;
+            No radiology studies found.;
+          </div>;
+        ) : (;
+          >;
+            <Table>;
+              <TableHeader>;
+                <TableRow>;
+                  <TableHead>Patient</TableHead>;
+                  <TableHead>Procedure</TableHead>;
+                  <TableHead>Accession #</TableHead>;
+                  <TableHead>Study Date</TableHead>;
+                  <TableHead>Status</TableHead>;
+                  <TableHead className="text-right">Actions</TableHead>;
+                </TableRow>;
+              </TableHeader>;
+              <TableBody>;
+                {studies.map((study: RadiologyStudy) => (;
+                  >;
+                    <TableCell>{study.patient_name}</TableCell>;
+                    <TableCell>{study.procedure_name}</TableCell>;
+                    <TableCell>{study.accession_number || "N/A"}</TableCell>;
+                    <TableCell>;
                       {new Date(study.study_datetime).toLocaleString()}
-                    </TableCell>
-                    <TableCell>{getStatusBadge(study.status)}</TableCell>
-                    >
-                      <Button>
-                        variant="outline"
-                        size="sm"
+                    </TableCell>;
+                    <TableCell>{getStatusBadge(study.status)}</TableCell>;
+                    >;
+                      <Button>;
+                        variant="outline";
+                        size="sm";
                         onClick={() => handleViewStudy(study.id)}
-                      >
-                        View
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                      >;
+                        View;
+                      </Button>;
+                    </TableCell>;
+                  </TableRow>;
                 ))}
-              </TableBody>
-            </Table>
-          </div>
+              </TableBody>;
+            </Table>;
+          </div>;
         )}
-      </CardContent>
-    </Card>
+      </CardContent>;
+    </Card>;
   );
 
-}
+})

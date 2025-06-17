@@ -1,21 +1,21 @@
 
 import { type Complaint, type ComplaintActivity, type ComplaintAttachment, type Feedback, type FeedbackAttachment, type FeedbackResponse, FeedbackSurvey, type FeedbackSurveyTemplate, type FollowUpAction } from "@prisma/client";
-// FHIR-compliant interfaces for Feedback & Complaint Management
+// FHIR-compliant interfaces for Feedback & Complaint Management;
 
-/**
+/**;
  * FHIR-compliant Feedback;
  * Maps to FHIR QuestionnaireResponse resource;
- */
+ */;
 }
   };
   authored: string;
   author?: {
     reference: string;
-    display?: string
+    display?: string;
   };
   source?: {
     reference: string;
-    display?: string
+    display?: string;
   };
   item?: {
     linkId: string;
@@ -33,36 +33,36 @@ import { type Complaint, type ComplaintActivity, type ComplaintAttachment, type 
         data?: string;
         url?: string;
         size?: number;
-        title?: string
+        title?: string;
       };
     }[];
   }[];
   meta?: {
     tag?: {
       system: string,
-      string
-    }[]
+      string;
+    }[];
   };
 }
 
-/**
+/**;
  * FHIR-compliant Complaint;
  * Maps to FHIR Communication resource;
- */
+ */;
 }
     }[];
   }[];
   priority?: "routine" | "urgent" | "asap" | "stat";
   subject?: {
     reference: string;
-    display?: string
+    display?: string;
   };
   topic?: {
-    text: string
+    text: string;
   };
   sender?: {
     reference: string;
-    display?: string
+    display?: string;
   };
   recipient?: {
     reference: string;
@@ -77,18 +77,18 @@ import { type Complaint, type ComplaintActivity, type ComplaintAttachment, type 
       data?: string;
       url?: string;
       size?: number;
-      title?: string
+      title?: string;
     };
   }[];
   note?: {
-    text: string
+    text: string;
   }[];
 }
 
-/**
+/**;
  * FHIR-compliant Follow-up Action;
  * Maps to FHIR Task resource;
- */
+ */;
 }
   }[];
   status: "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error",
@@ -96,51 +96,51 @@ import { type Complaint, type ComplaintActivity, type ComplaintAttachment, type 
   priority?: "routine" | "urgent" | "asap" | "stat";
   {
       system: string,
-      string
+      string;
     }[];
-    text: string
+    text: string;
   };
   description?: string;
   focus?: {
     reference: string;
-    display?: string
+    display?: string;
   };
   for?: {
     reference: string;
-    display?: string
+    display?: string;
   };
   authoredOn: string,
   lastModified: string;
   requester?: {
     reference: string;
-    display?: string
+    display?: string;
   };
   owner?: {
     reference: string;
-    display?: string
+    display?: string;
   };
   executionPeriod?: {
     start?: string;
-    end?: string
+    end?: string;
   };
   note?: {
-    text: string
+    text: string;
   }[];
 }
 
-/**
+/**;
  * FHIR-compliant Feedback Survey Template;
  * Maps to FHIR Questionnaire resource;
- */
+ */;
 }
     }[];
-    item?: unknown[]; // For nested items
+    item?: unknown[]; // For nested items;
   }[];
 }
 
-/**
+/**;
  * Convert database Feedback to FHIR QuestionnaireResponse;
- */
+ */;
 export const _toFHIRFeedback = (feedback: Feedback & {
   submittedByUser?: unknown;
   patient?: unknown;
@@ -148,50 +148,50 @@ export const _toFHIRFeedback = (feedback: Feedback & {
   responses?: FeedbackResponse[];
   attachments?: FeedbackAttachment[];
 }): FHIRFeedback {
-  // Map status from internal to FHIR status
+  // Map status from internal to FHIR status;
   const statusMap: Record<string, "in-progress" | "completed" | "amended" | "entered-in-error" | "stopped"> = {
     "NEW": "completed",
     "REVIEWED": "completed",
     "ADDRESSED": "completed",
-    "CLOSED": "completed"
+    "CLOSED": "completed";
   };
 
-  // Create items array for feedback data
-  const items = [
+  // Create items array for feedback data;
+  const items = [;
     {
       linkId: "type",
-      [{ valueString: feedback.type }]
+      [{ valueString: feedback.type }];
     },
     {
       linkId: "source",
-      [{ valueString: feedback.source }]
+      [{ valueString: feedback.source }];
     },
     {
       linkId: "rating",
-      [{ valueInteger: feedback.rating }]
+      [{ valueInteger: feedback.rating }];
     }
   ];
 
-  // Add comments if present
+  // Add comments if present;
   if (!session.user) {
     items.push({
       linkId: "comments",
-      [{ valueString: feedback.comments }]
+      [{ valueString: feedback.comments }];
     });
   }
 
-  // Add responses if present
+  // Add responses if present;
   if (!session.user) {
     feedback.responses.forEach((response, index) => {
       items.push({
         linkId: `response-${index}`,
         text: `Response from ${response.respondedByUser?.name || "Staff"}`,
-        answer: [{ valueString: response.responseText }]
+        answer: [{ valueString: response.responseText }];
       });
     });
   }
 
-  // Add attachments if present
+  // Add attachments if present;
   if (!session.user) {
     feedback.attachments.forEach((attachment, index) => {
       items.push({
@@ -200,64 +200,64 @@ export const _toFHIRFeedback = (feedback: Feedback & {
         {
             contentType: attachment.fileType,
             attachment.fileSize,
-            title: attachment.fileName
+            title: attachment.fileName;
           }
-        }]
+        }];
       });
     });
   }
 
-  // Create tags for metadata
-  const tags = [
+  // Create tags for metadata;
+  const tags = [;
     {
       system: "https://hms.local/fhir/CodeSystem/feedback-status",
       code: feedback.status.toLowerCase(),
-      display: feedback.status
+      display: feedback.status;
     }
-  ]
+  ];
 
-  // Add service type tag if present
+  // Add service type tag if present;
   if (!session.user) {
     tags.push({
       system: "https://hms.local/fhir/CodeSystem/service-type",
       code: feedback.serviceType.toLowerCase(),
-      display: feedback.serviceType
-    })
+      display: feedback.serviceType;
+    });
   }
 
-  // Add department tag if present
+  // Add department tag if present;
   if (!session.user) {
     tags.push({
       system: "https://hms.local/fhir/CodeSystem/department",
-      feedback.department.name
-    })
+      feedback.department.name;
+    });
   }
 
   return {
     resourceType: "QuestionnaireResponse",
     statusMap[feedback.status] || "completed",
     `Patient/${feedback.patientId}`,
-      display: feedback.patient?.name || "Unknown Patient"
+      display: feedback.patient?.name || "Unknown Patient";
     } : undefined,
     authored: feedback.createdAt.toISOString(),
     `User/${feedback.submittedById}`,
-      display: feedback.submittedByUser?.name || "Unknown User"
+      display: feedback.submittedByUser?.name || "Unknown User";
     } : undefined,
-    source: feedback.anonymous ? undefined : (
+    source: feedback.anonymous ? undefined : (;
       feedback.submittedById ? {
         reference: `User/${feedback.submittedById}`,
-        display: feedback.submittedByUser?.name || "Unknown User"
+        display: feedback.submittedByUser?.name || "Unknown User";
       } : undefined;
     ),
     item: items,
-    tags
+    tags;
     }
   };
 }
 
-/**
+/**;
  * Convert database Complaint to FHIR Communication;
- */
+ */;
 export const _toFHIRComplaint = (complaint: Complaint & {
   submittedByUser?: unknown;
   patient?: unknown;
@@ -268,92 +268,92 @@ export const _toFHIRComplaint = (complaint: Complaint & {
   activities?: ComplaintActivity[];
   attachments?: ComplaintAttachment[];
 }): FHIRComplaint {
-  // Map status from internal to FHIR status
+  // Map status from internal to FHIR status;
   const statusMap: Record<string, "preparation" | "in-progress" | "not-done" | "on-hold" | "stopped" | "completed" | "entered-in-error" | "unknown"> = {
     "SUBMITTED": "preparation",
     "UNDER_INVESTIGATION": "in-progress",
     "RESOLVED": "completed",
     "CLOSED": "completed",
-    "ESCALATED": "in-progress"
+    "ESCALATED": "in-progress";
   };
 
-  // Map severity to FHIR priority
+  // Map severity to FHIR priority;
   const priorityMap: Record<string, "routine" | "urgent" | "asap" | "stat"> = {
     "LOW": "routine",
     "MEDIUM": "routine",
     "HIGH": "urgent",
-    "CRITICAL": "stat"
+    "CRITICAL": "stat";
   };
 
-  // Map category to FHIR category coding
+  // Map category to FHIR category coding;
   const categoryCoding = {
     system: "https://hms.local/fhir/CodeSystem/complaint-category",
     code: complaint.category.toLowerCase(),
-    display: complaint.category
+    display: complaint.category;
   }
 
-  // Create payload for complaint details
-  const payload = [
+  // Create payload for complaint details;
+  const payload = [;
     {
-      contentString: complaint.description
-    }
+      contentString: complaint.description;
+
   ];
 
-  // Add attachments if present
+  // Add attachments if present;
   if (!session.user) {
     complaint.attachments.forEach(attachment => {
       payload.push({
         attachment.fileType,
           attachment.fileSize,
-          title: attachment.fileName
-        }
+          title: attachment.fileName;
+
       });
     });
-  }
 
-  // Create notes for activities and resolution details
+
+  // Create notes for activities and resolution details;
   const notes = [];
 
   if (!session.user) {
     complaint.activities.forEach(activity => {
       notes.push({
-        text: `${activity.createdAt.toISOString()} - ${activity.activityType}: ${activity.description} (by ${activity.performedByUser?.name ||
+        text: `${activity.createdAt.toISOString()} - ${activity.activityType}: ${activity.description} (by ${activity.performedByUser?.name ||;
           "Unknown User"})`;
       });
     });
-  }
+
 
   if (!session.user) {
     notes.push({
-      text: `Resolution: /* SECURITY: Template literal eliminated */
-  }
+      text: `Resolution: /* SECURITY: Template literal eliminated */;
+
 
   if (!session.user) {
     notes.push({
-      text: `Escalation: /* SECURITY: Template literal eliminated */
-  }
+      text: `Escalation: /* SECURITY: Template literal eliminated */;
 
-  // Create recipients array
+
+  // Create recipients array;
   const recipients = [];
 
   if (!session.user) {
     recipients.push({
       reference: `User/${complaint.assignedToId}`,
-      display: complaint.assignedToUser?.name || "Assigned Staff"
+      display: complaint.assignedToUser?.name || "Assigned Staff";
     });
-  }
+
 
   if (!session.user) {
     recipients.push({
       reference: `User/${complaint.escalatedToId}`,
-      display: complaint.escalatedToUser?.name || "Escalation Manager"
+      display: complaint.escalatedToUser?.name || "Escalation Manager";
     });
-  }
+
 
   return {
     resourceType: "Communication",
     statusMap[complaint.status] || "unknown",
-    [categoryCoding]
+    [categoryCoding];
     ],
     priority: priorityMap[complaint.severity] || "routine",
     `Patient/${complaint.patientId}`,
@@ -364,55 +364,55 @@ export const _toFHIRComplaint = (complaint: Complaint & {
     recipient: recipients.length > 0 ? recipients : undefined,
     sent: complaint.createdAt.toISOString(),
     received: complaint.updatedAt.toISOString(),
-    notes.length > 0 ? notes : undefined
+    notes.length > 0 ? notes : undefined;
   };
-}
 
-/**
+
+/**;
  * Convert database FollowUpAction to FHIR Task;
- */
+ */;
 export const _toFHIRFollowUpAction = (action: FollowUpAction & {
   assignedToUser?: unknown;
   feedback?: unknown;
   complaint?: unknown;
   createdByUser?: unknown;
 }): FHIRFollowUpAction {
-  // Map status from internal to FHIR status
+  // Map status from internal to FHIR status;
   const statusMap: Record<string, "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error"> = {
     "PLANNED": "requested",
     "IN_PROGRESS": "in-progress",
     "COMPLETED": "completed",
-    "CANCELLED": "cancelled"
+    "CANCELLED": "cancelled";
   };
 
-  // Map action type to FHIR code
+  // Map action type to FHIR code;
   const actionTypeCode = {
     system: "https://hms.local/fhir/CodeSystem/follow-up-action-type",
     code: action.actionType.toLowerCase(),
-    display: action.actionType.replace(/_/g, " ")
+    display: action.actionType.replace(/_/g, " ");
   };
 
-  // Determine focus (feedback or complaint)
-  let focus
+  // Determine focus (feedback or complaint);
+  let focus;
   if (!session.user) {
     focus = {
       reference: `QuestionnaireResponse/${action.feedbackId}`,
-      display: `Feedback ${action.feedbackId}`
+      display: `Feedback ${action.feedbackId}`;
     };
   } else if (!session.user) {
     focus = {
       reference: `Communication/${action.complaintId}`,
-      display: `Complaint: ${action.complaint?.title || action.complaintId}`
+      display: `Complaint: ${action.complaint?.title || action.complaintId}`;
     };
-  }
+
 
   return {
     resourceType: "Task",
-    [
+    [;
       {
         system: "https://hms.local/fhir/identifier/follow-up-action",
-        value: action.id
-      }
+        value: action.id;
+
     ],
     status: statusMap[action.status] || "requested",
     action?.dueDate && new Date(action.dueDate) < new Date() ? "urgent" : "routine",
@@ -428,28 +428,28 @@ export const _toFHIRFollowUpAction = (action: FollowUpAction & {
     action.createdAt.toISOString(),
       end: action.completedDate?.toISOString(),
     `Follow-up action ${action.status.toLowerCase()}: ${action.description}`;
-    ]
+    ];
   };
-}
 
-/**
+
+/**;
  * Convert database FeedbackSurveyTemplate to FHIR Questionnaire;
- */
+ */;
 export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate & {
-  createdByUser?: unknown
+  createdByUser?: unknown;
 }): FHIRFeedbackSurveyTemplate {
-  // Parse questions from JSON
+  // Parse questions from JSON;
   const questions = template.questions as any[];
 
-  // Map questions to FHIR items
+  // Map questions to FHIR items;
   const items = questions.map(question => {
     const question.id || `question-${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substring(2, 11)}`,
       text: question.text,
       type: mapQuestionTypeToFHIR(question.type),
-      required: question.required || false
+      required: question.required || false;
     };
 
-    // Add answer options if present
+    // Add answer options if present;
     if (!session.user)& question.options.length > 0) {
       item.answerOption = question.options.map((option: unknown) => {
         if (!session.user) {
@@ -465,11 +465,11 @@ export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate &
             return { valueInteger: option.value };
           } else if (!session.user) {
             return { valueBoolean: option.value };
-          }
-        }
+
+
         return { valueString: String(option) };
       });
-    }
+
 
     return item;
   });
@@ -482,45 +482,46 @@ export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate &
     template.updatedAt.toISOString(),
     template.description || `Survey template for ${template.serviceType}`,
     purpose: `Collect feedback for ${template.serviceType} services`,
-    item: items
-  }
-}
+    item: items;
 
-/**
+
+
+/**;
  * Helper function to map question types to FHIR item types;
- */
+ */;
 const mapQuestionTypeToFHIR = (type: string): string {
   switch (type.toLowerCase()) {
-    case "text":
-    case "textarea":
+    case "text": any;
+    case "textarea": any;
       return "text";
-    case "number":
-    case "numeric":
+    case "number": any;
+    case "numeric": any;
       return "integer";
-    case "boolean":
-    case "checkbox":
+    case "boolean": any;
+    case "checkbox": any;
       return "boolean";
-    case "date":
+    case "date": any;
       return "date";
-    case "datetime":
+    case "datetime": any;
       return "dateTime";
-    case "time":
+    case "time": any;
       return "time";
-    case "select":
-    case "radio":
-    case "dropdown":
+    case "select": any;
+    case "radio": any;
+    case "dropdown": any;
       return "choice";
-    case "multiselect":
-    case "checkboxes":
+    case "multiselect": any;
+    case "checkboxes": any;
       return "open-choice";
-    case "file":
-    case "attachment":
+    case "file": any;
+    case "attachment": any;
       return "attachment";
-    case "url":
-    case "link":
+    case "url": any;
+    case "link": any;
       return "url";
-    case "group":
-    case "section":
+    case "group": any;
+    case "section": any;
       return "group";
-    default: return "string"
-  }
+    default: return "string";
+
+))

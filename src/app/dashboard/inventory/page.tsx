@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-
 import { Button } from "@/components/ui/button";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 }
 
-// src/app/dashboard/inventory/page.tsx
+// src/app/dashboard/inventory/page.tsx;
 "use client";
 export const dynamic = "force-dynamic";
 
@@ -14,8 +13,7 @@ export const dynamic = "force-dynamic";
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  TableRow} from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { PlusCircle, Search } from "lucide-react";
@@ -34,34 +32,38 @@ export default const _InventoryPage = () {
       setIsLoading(true),
       setError(null);
       try {
+} catch (error) {
+}
+} catch (error) {
+}
         const params = new URLSearchParams();
         if (!session.user) {
             params.append("name", searchTerm);
         }
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-        const response = await fetch(`/api/inventory-items?${}`
+        const response = await fetch(`/api/inventory-items?${}`;
         if (!session.user) {
           const errorData: { error?: string } = await response.json();
           throw new Error(errorData.error || "Failed to fetch inventory items");
         }
         const data: InventoryItem[] = await response.json(),
         setInventoryItems(data);
-      } catch (err: unknown) { // Use unknown
+      } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
         toast({
           title: "Error Fetching Inventory",
-          "destructive"
+          "destructive";
         });
-      } finally 
+      } finally ;
         setIsLoading(false);
     };
 
-    // Debounce search or fetch on button click if preferred
+    // Debounce search or fetch on button click if preferred;
     const debounceTimer = setTimeout(() => {
         fetchInventoryItems();
-    }, 300); // Fetch after 300ms of inactivity
+    }, 300); // Fetch after 300ms of inactivity;
 
     return () => clearTimeout(debounceTimer);
 
@@ -74,92 +76,93 @@ export default const _InventoryPage = () {
         return { text: "Out of Stock", variant: "destructive" };
     }
     if (!session.user) {
-        return { text: "Low Stock", variant: "secondary" }; // Use secondary (yellowish) for low stock
-    }
-    return { text: "In Stock", variant: "default" }; // Use default (greenish) for in stock
+        return { text: "Low Stock", variant: "secondary" }; // Use secondary (yellowish) for low stock;
+
+    return { text: "In Stock", variant: "default" }; // Use default (greenish) for in stock;
   };
 
-  return (
-    <DashboardLayout>
-      >
-        >
-          <h1 className="text-2xl font-semibold">Inventory Management>
-          >
-             <Button>
-                <PlusCircle className="mr-2 h-4 w-4" /> Add Item
-             </Button>
-          </Link>
-        </div>
+  return();
+    <DashboardLayout>;
+      >;
+        >;
+          <h1 className="text-2xl font-semibold">Inventory Management>;
+          >;
+             <Button>;
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Item;
+             </Button>;
+          </Link>;
+        </div>;
 
         {/* Filters: Search */}
-        >
-            >
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input>
-                    type="search"
-                    placeholder="Search by Item Name..."
-                    className="pl-8 w-full sm:w-64"
+        >;
+            >;
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
+                <Input>;
+                    type="search";
+                    placeholder="Search by Item Name...";
+                    className="pl-8 w-full sm:w-64";
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
+                />;
+            </div>;
             {/* TODO: Add Category Filter Dropdown */}
-        </div>
+        </div>;
 
         {/* Inventory Table */}
         {isLoading && <p>Loading inventory...</p>}
         {error && <p className="text-red-500">Error: {error}</p>}
-        {!isLoading && !error && (
-          >
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Item Name</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Current Stock</TableHead>
-                  <TableHead>Unit</TableHead>
-                  <TableHead>Reorder Level</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead><span className="sr-only">Actions</span></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {inventoryItems.length > 0 ? (
+        {!isLoading && !error && (;
+          >;
+            <Table>;
+              <TableHeader>;
+                <TableRow>;
+                  <TableHead>Item Name</TableHead>;
+                  <TableHead>Category</TableHead>;
+                  <TableHead>Current Stock</TableHead>;
+                  <TableHead>Unit</TableHead>;
+                  <TableHead>Reorder Level</TableHead>;
+                  <TableHead>Status</TableHead>;
+                  <TableHead><span className="sr-only">Actions</span></TableHead>;
+                </TableRow>;
+              </TableHeader>;
+              <TableBody>;
+                {inventoryItems.length > 0 ? (;
                   inventoryItems.map((item) => {
                     const status = getStockStatus(item);
-                    return (
-                        >
-                        <TableCell className="font-medium">{item.item_name}>
-                        <TableCell>{item.category || "N/A"}</TableCell>
-                        <TableCell>{item.current_stock ?? 0}</TableCell>
-                        <TableCell>{item.unit_of_measure || "N/A"}</TableCell>
-                        <TableCell>{item.reorder_level}</TableCell>
-                        <TableCell>
-                            <Badge variant={status.variant}>{status.text}</Badge>
-                        </TableCell>
-                        <TableCell>
+                    return();
+                        >;
+                        <TableCell className="font-medium">{item.item_name}>;
+                        <TableCell>{item.category || "N/A"}</TableCell>;
+                        <TableCell>{item.current_stock ?? 0}</TableCell>;
+                        <TableCell>{item.unit_of_measure || "N/A"}</TableCell>;
+                        <TableCell>{item.reorder_level}</TableCell>;
+                        <TableCell>;
+                            <Badge variant={status.variant}>{status.text}</Badge>;
+                        </TableCell>;
+                        <TableCell>;
                             {/* Add action buttons like View Details, Add Stock */}
-                            >
-                            <Button variant="outline" size="sm" className="mr-2">View</Button>
-                            </Link>
-                            >
-                                <Button variant="outline" size="sm">Add Stock</Button>
-                            </Link>
-                        </TableCell>
-                        </TableRow>
+                            >;
+                            <Button variant="outline" size="sm" className="mr-2">View</Button>;
+                            </Link>;
+                            >;
+                                <Button variant="outline" size="sm">Add Stock</Button>;
+                            </Link>;
+                        </TableCell>;
+                        </TableRow>;
                     );
                   });
-                ) : (
-                  <TableRow>
-                    >
-                      No inventory items found.
-                    </TableCell>
-                  </TableRow>
+                ) : (;
+                  <TableRow>;
+                    >;
+                      No inventory items found.;
+                    </TableCell>;
+                  </TableRow>;
                 )}
-              </TableBody>
-            </Table>
-          </div>
+              </TableBody>;
+            </Table>;
+          </div>;
         )}
-      </div>
-    </DashboardLayout>
+      </div>;
+    </DashboardLayout>;
   );
+)

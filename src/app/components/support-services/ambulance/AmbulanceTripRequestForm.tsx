@@ -29,17 +29,16 @@ export default const _AmbulanceTripRequestForm = () {
     "",
     "",
     "",
-    medicalDetails: 
-  });
+    medicalDetails: null});
   const [medicalDetails, setMedicalDetails] = useState({
     chiefComplaint: "",
     "",
       "",
-      ""
+      "";
     },
     requiresOxygen: false,
     false,
-    additionalNotes: ""
+    additionalNotes: "";
   }),
   useEffect(() => {
     fetchAmbulances(),
@@ -50,6 +49,10 @@ export default const _AmbulanceTripRequestForm = () {
   const fetchAmbulances = async () => {
     setLoading(true);
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/support-services/ambulance?status=AVAILABLE&status=ON_DUTY&page=1&limit=50");
       const data = await response.json();
 
@@ -58,14 +61,14 @@ export default const _AmbulanceTripRequestForm = () {
       } else {
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setLoading(false);
@@ -74,6 +77,10 @@ export default const _AmbulanceTripRequestForm = () {
 
   const fetchLocations = async () => {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/locations?page=1&limit=100");
       const data = await response.json();
 
@@ -82,20 +89,24 @@ export default const _AmbulanceTripRequestForm = () {
       } else {
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     }
   };
 
   const fetchPatients = async () => {
     try {
+} catch (error) {
+}
+} catch (error) {
+}
       const response = await fetch("/api/patients?page=1&limit=100");
       const data = await response.json();
 
@@ -104,14 +115,14 @@ export default const _AmbulanceTripRequestForm = () {
       } else {
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     }
   };
@@ -121,7 +132,7 @@ export default const _AmbulanceTripRequestForm = () {
     setFormData({
       ...formData,
       [name]: value;
-    })
+    });
   };
 
   const handleMedicalDetailsChange = (e: unknown) => {
@@ -150,7 +161,7 @@ export default const _AmbulanceTripRequestForm = () {
     if (!session.user) {
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
       return;
     }
@@ -158,7 +169,7 @@ export default const _AmbulanceTripRequestForm = () {
     if (!session.user) {
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
       return;
     }
@@ -166,7 +177,7 @@ export default const _AmbulanceTripRequestForm = () {
     if (!session.user) {
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
       return;
     }
@@ -174,7 +185,7 @@ export default const _AmbulanceTripRequestForm = () {
     if (!session.user) {
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
       return;
     }
@@ -182,7 +193,11 @@ export default const _AmbulanceTripRequestForm = () {
     setSubmitting(true);
 
     try {
-      // Combine date and time
+} catch (error) {
+}
+} catch (error) {
+}
+      // Combine date and time;
       const [hours, minutes] = selectedTime.split(":");
       const scheduledTime = new Date(selectedDate);
       scheduledTime.setHours(Number.parseInt(hours, 10), Number.parseInt(minutes, 10));
@@ -196,9 +211,8 @@ export default const _AmbulanceTripRequestForm = () {
       const response = await fetch("/api/support-services/ambulance/trips", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload)
+          "Content-Type": "application/json"},
+        body: JSON.stringify(payload);
       });
 
       const data = await response.json();
@@ -206,20 +220,20 @@ export default const _AmbulanceTripRequestForm = () {
       if (!session.user) {
         toast({
           title: "Success",
-          description: "Ambulance trip scheduled successfully"
+          description: "Ambulance trip scheduled successfully";
         });
         router.push("/support-services/ambulance");
       } else {
         toast({
           title: "Error",
-          "destructive"
+          "destructive";
         });
       }
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setSubmitting(false);
@@ -231,15 +245,19 @@ export default const _AmbulanceTripRequestForm = () {
       toast({
         title: "Error",
         description: "Please select date, time, trip type, and pickup location",
-        variant: "destructive"
+        variant: "destructive";
       });
       return;
-    }
+
 
     setLoading(true);
 
     try {
-      // Combine date and time
+} catch (error) {
+}
+} catch (error) {
+
+      // Combine date and time;
       const [hours, minutes] = selectedTime.split(":");
       const scheduledTime = new Date(selectedDate);
       scheduledTime.setHours(Number.parseInt(hours, 10), Number.parseInt(minutes, 10));
@@ -253,362 +271,362 @@ export default const _AmbulanceTripRequestForm = () {
         if (!session.user) {
           toast({
             title: "No Ambulances Available",
-            "destructive"
+            "destructive";
           });
         } else {
           toast({
             title: "Success",
-            description: `Found ${data.data.length} available ambulance(s)`,
-          });
-        }
-      } else 
+            description: `Found ${data.data.length} available ambulance(s)`});
+
+      } else ;
         toast({
           title: "Error",
           "destructive");
-      }
+
     } catch (error) {
 
       toast({
         title: "Error",
-        "destructive"
+        "destructive";
       });
     } finally {
       setLoading(false);
-    }
+
   };
 
-  return (
-    >
-      >
-        <h1 className="text-3xl font-bold">Schedule Ambulance Trip>
-        <Button variant="outline" onClick={() => router.push("/support-services/ambulance")}>
-          Back to Dashboard
-        </Button>
-      </div>
+  return();
+    >;
+      >;
+        <h1 className="text-3xl font-bold">Schedule Ambulance Trip>;
+        <Button variant="outline" onClick={() => router.push("/support-services/ambulance")}>;
+          Back to Dashboard;
+        </Button>;
+      </div>;
 
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>Trip Details</CardTitle>
-          </CardHeader>
-          >
-            >
-              >
-                <Label htmlFor="tripType">Trip Type>
-                <Select>
-                  name="tripType"
+      >;
+        <Card>;
+          <CardHeader>;
+            <CardTitle>Trip Details</CardTitle>;
+          </CardHeader>;
+          >;
+            >;
+              >;
+                <Label htmlFor="tripType">Trip Type>;
+                <Select>;
+                  name="tripType";
                   value={formData.tripType}
                   onValueChange={(value) => setFormData({...formData, tripType: value})}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Trip Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="EMERGENCY">Emergency>
-                    <SelectItem value="NON_EMERGENCY">Non-Emergency>
-                    <SelectItem value="TRANSFER">Transfer>
-                    <SelectItem value="RETURN">Return</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                >;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select Trip Type" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    <SelectItem value="EMERGENCY">Emergency>;
+                    <SelectItem value="NON_EMERGENCY">Non-Emergency>;
+                    <SelectItem value="TRANSFER">Transfer>;
+                    <SelectItem value="RETURN">Return</SelectItem>;
+                  </SelectContent>;
+                </Select>;
+              </div>;
 
-              >
-                <Label htmlFor="priority">Priority>
-                <Select>
-                  name="priority"
+              >;
+                <Label htmlFor="priority">Priority>;
+                <Select>;
+                  name="priority";
                   value={formData.priority}
                   onValueChange={(value) => setFormData({...formData, priority: value})}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Priority" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="HIGH">High>
-                    <SelectItem value="MEDIUM">Medium>
-                    <SelectItem value="LOW">Low</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                >;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select Priority" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    <SelectItem value="HIGH">High>;
+                    <SelectItem value="MEDIUM">Medium>;
+                    <SelectItem value="LOW">Low</SelectItem>;
+                  </SelectContent>;
+                </Select>;
+              </div>;
 
-              >
-                <Label htmlFor="date">Date>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button>
-                      variant="outline"
-                      className="w-full justify-start text-left font-normal"
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+              >;
+                <Label htmlFor="date">Date>;
+                <Popover>;
+                  <PopoverTrigger asChild>;
+                    <Button>;
+                      variant="outline";
+                      className="w-full justify-start text-left font-normal";
+                    >;
+                      <CalendarIcon className="mr-2 h-4 w-4" />;
                       {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  >
-                    <Calendar>
-                      mode="single"
+                    </Button>;
+                  </PopoverTrigger>;
+                  >;
+                    <Calendar>;
+                      mode="single";
                       selected={selectedDate}
                       onSelect={setSelectedDate}
                       initialFocus;
                       disabled={(date) => date < new Date()}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
+                    />;
+                  </PopoverContent>;
+                </Popover>;
+              </div>;
 
-              >
-                <Label htmlFor="time">Time>
-                <Input>
-                  type="time"
+              >;
+                <Label htmlFor="time">Time>;
+                <Input>;
+                  type="time";
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
-                  className="w-full"
-                />
-              </div>
+                  className="w-full";
+                />;
+              </div>;
 
-              >
-                <Label htmlFor="pickupLocationId">Pickup Location>
-                <Select>
-                  name="pickupLocationId"
+              >;
+                <Label htmlFor="pickupLocationId">Pickup Location>;
+                <Select>;
+                  name="pickupLocationId";
                   value={formData.pickupLocationId}
                   onValueChange={(value) => setFormData({...formData, pickupLocationId: value})}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Pickup Location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {locations.map(location => (
-                      >
+                >;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select Pickup Location" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    {locations.map(location => (;
+                      >;
                         {location.name}
-                      </SelectItem>
+                      </SelectItem>;
                     ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  </SelectContent>;
+                </Select>;
+              </div>;
 
-              >
-                <Label htmlFor="dropLocationId">Destination>
-                <Select>
-                  name="dropLocationId"
+              >;
+                <Label htmlFor="dropLocationId">Destination>;
+                <Select>;
+                  name="dropLocationId";
                   value={formData.dropLocationId}
                   onValueChange={(value) => setFormData({...formData, dropLocationId: value})}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Destination" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {locations.map(location => (
-                      >
+                >;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select Destination" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    {locations.map(location => (;
+                      >;
                         {location.name}
-                      </SelectItem>
+                      </SelectItem>;
                     ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  </SelectContent>;
+                </Select>;
+              </div>;
 
-              >
-                <Label htmlFor="patientId">Patient (Optional)>
-                <Select>
-                  name="patientId"
+              >;
+                <Label htmlFor="patientId">Patient (Optional)>;
+                <Select>;
+                  name="patientId";
                   value={formData.patientId}
                   onValueChange={(value) => setFormData({...formData, patientId: value})}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Patient" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">No Patient>
-                    {patients.map(patient => (
-                      >
+                >;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select Patient" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    <SelectItem value="">No Patient>;
+                    {patients.map(patient => (;
+                      >;
                         {patient.name}
-                      </SelectItem>
+                      </SelectItem>;
                     ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  </SelectContent>;
+                </Select>;
+              </div>;
 
-              >
-                <Button>
-                  type="button"
-                  variant="outline"
+              >;
+                <Button>;
+                  type="button";
+                  variant="outline";
                   onClick={handleFindAvailableAmbulances}
                   disabled={loading}
-                  className="w-full"
-                >
+                  className="w-full";
+                >;
                   {loading ? "Finding Available Ambulances..." : "Find Available Ambulances"}
-                </Button>
-              </div>
+                </Button>;
+              </div>;
 
-              >
-                <Label htmlFor="ambulanceId">Ambulance>
-                <Select>
-                  name="ambulanceId"
+              >;
+                <Label htmlFor="ambulanceId">Ambulance>;
+                <Select>;
+                  name="ambulanceId";
                   value={formData.ambulanceId}
                   onValueChange={(value) => setFormData({...formData, ambulanceId: value})}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Ambulance" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ambulances.map(ambulance => (
-                      >
+                >;
+                  <SelectTrigger>;
+                    <SelectValue placeholder="Select Ambulance" />;
+                  </SelectTrigger>;
+                  <SelectContent>;
+                    {ambulances.map(ambulance => (;
+                      >;
                         {ambulance.registrationNumber} - {ambulance.vehicleType.replace(/_/g, " ")}
                         {ambulance?.eta && ` (ETA: ${Math.round(ambulance.eta.minutes)} min)`}
-                      </SelectItem>
+                      </SelectItem>;
                     ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  </SelectContent>;
+                </Select>;
+              </div>;
 
-              >
-                <Label htmlFor="notes">Notes>
-                <Textarea>
-                  name="notes"
+              >;
+                <Label htmlFor="notes">Notes>;
+                <Textarea>;
+                  name="notes";
                   value={formData.notes}
                   onChange={handleInputChange}
-                  placeholder="Enter any additional notes"
-                  className="min-h-[100px]"
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+                  placeholder="Enter any additional notes";
+                  className="min-h-[100px]";
+                />;
+              </div>;
+            </div>;
+          </CardContent>;
+        </Card>;
 
-        {(formData.tripType === "EMERGENCY" || formData.tripType === "NON_EMERGENCY") && (
-          >
-            <CardHeader>
-              <CardTitle>Medical Details</CardTitle>
-            </CardHeader>
-            >
-              >
-                >
-                  <Label htmlFor="chiefComplaint">Chief Complaint>
-                  <Textarea>
-                    name="chiefComplaint"
+        {(formData.tripType === "EMERGENCY" || formData.tripType === "NON_EMERGENCY") && (;
+          >;
+            <CardHeader>;
+              <CardTitle>Medical Details</CardTitle>;
+            </CardHeader>;
+            >;
+              >;
+                >;
+                  <Label htmlFor="chiefComplaint">Chief Complaint>;
+                  <Textarea>;
+                    name="chiefComplaint";
                     value={medicalDetails.chiefComplaint}
                     onChange={handleMedicalDetailsChange}
-                    placeholder="Enter chief complaint"
-                  />
-                </div>
+                    placeholder="Enter chief complaint";
+                  />;
+                </div>;
 
-                >
-                  <Label>Vital Signs</Label>
-                  >
-<div
-                      <Label htmlFor="vitalSigns.bloodPressure" className="text-sm">Blood Pressure>
-                      <Input>
-                        name="vitalSigns.bloodPressure"
+                >;
+                  <Label>Vital Signs</Label>;
+                  >;
+<div;
+                      <Label htmlFor="vitalSigns.bloodPressure" className="text-sm">Blood Pressure>;
+                      <Input>;
+                        name="vitalSigns.bloodPressure";
                         value={medicalDetails.vitalSigns.bloodPressure}
                         onChange={handleMedicalDetailsChange}
-                        placeholder="e.g., 120/80"
-                      />
-                    </div>
-<div
-                      <Label htmlFor="vitalSigns.heartRate" className="text-sm">Heart Rate>
-                      <Input>
-                        name="vitalSigns.heartRate"
+                        placeholder="e.g., 120/80";
+                      />;
+                    </div>;
+<div;
+                      <Label htmlFor="vitalSigns.heartRate" className="text-sm">Heart Rate>;
+                      <Input>;
+                        name="vitalSigns.heartRate";
                         value={medicalDetails.vitalSigns.heartRate}
                         onChange={handleMedicalDetailsChange}
-                        placeholder="e.g., 80 bpm"
-                      />
-                    </div>
-<div
-                      <Label htmlFor="vitalSigns.respiratoryRate" className="text-sm">Respiratory Rate>
-                      <Input>
-                        name="vitalSigns.respiratoryRate"
+                        placeholder="e.g., 80 bpm";
+                      />;
+                    </div>;
+<div;
+                      <Label htmlFor="vitalSigns.respiratoryRate" className="text-sm">Respiratory Rate>;
+                      <Input>;
+                        name="vitalSigns.respiratoryRate";
                         value={medicalDetails.vitalSigns.respiratoryRate}
                         onChange={handleMedicalDetailsChange}
-                        placeholder="e.g., 16/min"
-                      />
-                    </div>
-<div
-                      <Label htmlFor="vitalSigns.temperature" className="text-sm">Temperature>
-                      <Input>
-                        name="vitalSigns.temperature"
+                        placeholder="e.g., 16/min";
+                      />;
+                    </div>;
+<div;
+                      <Label htmlFor="vitalSigns.temperature" className="text-sm">Temperature>;
+                      <Input>;
+                        name="vitalSigns.temperature";
                         value={medicalDetails.vitalSigns.temperature}
                         onChange={handleMedicalDetailsChange}
-                        placeholder="e.g., 98.6°F"
-                      />
-                    </div>
-<div
-                      <Label htmlFor="vitalSigns.oxygenSaturation" className="text-sm">O2 Saturation>
-                      <Input>
-                        name="vitalSigns.oxygenSaturation"
+                        placeholder="e.g., 98.6°F";
+                      />;
+                    </div>;
+<div;
+                      <Label htmlFor="vitalSigns.oxygenSaturation" className="text-sm">O2 Saturation>;
+                      <Input>;
+                        name="vitalSigns.oxygenSaturation";
                         value={medicalDetails.vitalSigns.oxygenSaturation}
                         onChange={handleMedicalDetailsChange}
-                        placeholder="e.g., 98%"
-                      />
-                    </div>
-                  </div>
-                </div>
+                        placeholder="e.g., 98%";
+                      />;
+                    </div>;
+                  </div>;
+                </div>;
 
-                >
-                  <Label>Required Support</Label>
-                  >
-                    >
-                      <input>
-                        type="checkbox"
-                        id="requiresOxygen"
-                        name="requiresOxygen"
+                >;
+                  <Label>Required Support</Label>;
+                  >;
+                    >;
+                      <input>;
+                        type="checkbox";
+                        id="requiresOxygen";
+                        name="requiresOxygen";
                         checked={medicalDetails.requiresOxygen}
                         onChange={handleMedicalDetailsChange}
-                        className="h-4 w-4 rounded border-gray-300"
-                      />
-                      <Label htmlFor="requiresOxygen" className="text-sm">Requires Oxygen</Label>
-                    </div>
-                    >
-                      <input>
-                        type="checkbox"
-                        id="requiresIV"
-                        name="requiresIV"
+                        className="h-4 w-4 rounded border-gray-300";
+                      />;
+                      <Label htmlFor="requiresOxygen" className="text-sm">Requires Oxygen</Label>;
+                    </div>;
+                    >;
+                      <input>;
+                        type="checkbox";
+                        id="requiresIV";
+                        name="requiresIV";
                         checked={medicalDetails.requiresIV}
                         onChange={handleMedicalDetailsChange}
-                        className="h-4 w-4 rounded border-gray-300"
-                      />
-                      <Label htmlFor="requiresIV" className="text-sm">Requires IV</Label>
-                    </div>
-                    >
-                      <input>
-                        type="checkbox"
-                        id="requiresMonitoring"
-                        name="requiresMonitoring"
+                        className="h-4 w-4 rounded border-gray-300";
+                      />;
+                      <Label htmlFor="requiresIV" className="text-sm">Requires IV</Label>;
+                    </div>;
+                    >;
+                      <input>;
+                        type="checkbox";
+                        id="requiresMonitoring";
+                        name="requiresMonitoring";
                         checked={medicalDetails.requiresMonitoring}
                         onChange={handleMedicalDetailsChange}
-                        className="h-4 w-4 rounded border-gray-300"
-                      />
-                      <Label htmlFor="requiresMonitoring" className="text-sm">Requires Monitoring</Label>
-                    </div>
-                  </div>
-                </div>
+                        className="h-4 w-4 rounded border-gray-300";
+                      />;
+                      <Label htmlFor="requiresMonitoring" className="text-sm">Requires Monitoring</Label>;
+                    </div>;
+                  </div>;
+                </div>;
 
-                >
-                  <Label htmlFor="additionalNotes">Additional Medical Notes>
-                  <Textarea>
-                    name="additionalNotes"
+                >;
+                  <Label htmlFor="additionalNotes">Additional Medical Notes>;
+                  <Textarea>;
+                    name="additionalNotes";
                     value={medicalDetails.additionalNotes}
                     onChange={handleMedicalDetailsChange}
-                    placeholder="Enter any additional medical notes"
-                    className="min-h-[100px]"
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                    placeholder="Enter any additional medical notes";
+                    className="min-h-[100px]";
+                  />;
+                </div>;
+              </div>;
+            </CardContent>;
+          </Card>;
         )}
 
-        >
-          <Button>
-            variant="outline"
-            type="button"
+        >;
+          <Button>;
+            variant="outline";
+            type="button";
             onClick={() => router.push("/support-services/ambulance")}
-          >
-            Cancel
-          </Button>
-          <Button>
-            type="submit"
+          >;
+            Cancel;
+          </Button>;
+          <Button>;
+            type="submit";
             disabled={submitting}
-          >
+          >;
             {submitting ? "Scheduling..." : "Schedule Trip"}
-          </Button>
-        </div>
-      </form>
-    </div>
+          </Button>;
+        </div>;
+      </form>;
+    </div>;
   );
+))

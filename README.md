@@ -22,6 +22,12 @@ The Hospital Management System (HMS) is a comprehensive, production-ready health
 - **📱 Real-time Notifications** - SMS/Email/WhatsApp integration
 - **📊 Advanced Analytics** - Business intelligence and reporting
 
+## 📚 Comprehensive Documentation
+
+For complete and up-to-date information on the Hospital Management System, including detailed architecture, API documentation, development guidelines, security, and compliance, please refer to the [Comprehensive Documentation](comprehensive_documentation.md).
+
+This document serves as the single source of truth for the entire project, consolidating all relevant information previously scattered across multiple files.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -57,103 +63,6 @@ npm run dev
 
 Visit `http://localhost:3000` to access the application.
 
-## 🏗️ Architecture
-
-### Microservices
-
-1. **Patient Management** - Registration, demographics, profiles
-2. **Electronic Health Records** - Clinical data, medical history
-3. **Appointment Scheduling** - Booking, calendar management
-4. **Billing & Revenue** - Insurance, billing, payments
-5. **Notifications** - SMS, email, WhatsApp alerts
-6. **Quality Management** - Compliance, quality metrics
-7. **Analytics & Reporting** - Business intelligence
-
-### Technology Stack
-
-- **Backend**: Node.js, TypeScript, Express.js
-- **Frontend**: React, Next.js, Tailwind CSS
-- **Database**: PostgreSQL with Redis caching
-- **Infrastructure**: Kubernetes, Docker, Cloudflare
-- **Security**: AES-256 encryption, JWT with MFA
-
-## 📚 Documentation
-
-**📖 [Complete Documentation](ULTIMATE_MASTER_DOCUMENTATION.md)** - Comprehensive system documentation including:
-
-- API Documentation & Endpoints
-- Architecture & Design Patterns
-- User Manuals (Admin, Doctor, Nurse, Patient)
-- Security & Compliance Guidelines
-- Deployment & Operations Guide
-- Development & Testing Procedures
-
-## 🔧 Development
-
-### Project Structure
-
-```
-├── src/
-│   ├── app/                 # Next.js pages and API routes
-│   ├── lib/                 # Core utilities and services
-│   ├── components/          # React components
-│   └── microservices/       # Individual microservices
-├── k8s/                     # Kubernetes manifests
-├── tests/                   # Test suites
-└── docs/                    # Additional documentation
-```
-
-### Scripts
-
-```bash
-npm run dev              # Start development server
-npm run build            # Build for production
-npm run test             # Run all tests
-npm run test:unit        # Unit tests only
-npm run test:e2e         # End-to-end tests
-npm run lint             # Code linting
-npm run db:migrate       # Run database migrations
-npm run db:seed          # Seed development data
-```
-
-## 🛡️ Security & Compliance
-
-- **HIPAA Compliance** - Administrative, physical, and technical safeguards
-- **GDPR Compliance** - Data protection by design and default
-- **SOC 2 Type II** - Security, availability, processing integrity
-- **Field-level Encryption** - AES-256 encryption for PHI
-- **Audit Logging** - Comprehensive activity tracking
-- **MFA Support** - TOTP and SMS-based authentication
-
-## 📊 Production Metrics
-
-- **Performance**: 99.9% of requests < 200ms
-- **Availability**: 99.95% uptime SLA
-- **Security**: Zero critical vulnerabilities
-- **Code Coverage**: 94.7%
-- **User Satisfaction**: 4.8/5.0 rating
-
-## 🚀 Deployment
-
-### Production Deployment
-
-```bash
-# Deploy to Kubernetes
-kubectl apply -f k8s/
-
-# Verify deployment
-kubectl get pods -n hospital-system
-
-# Run health checks
-curl -f https://api.hospital.com/health
-```
-
-### Environment Support
-
-- **Development** - Local Docker setup
-- **Staging** - AWS EKS staging cluster
-- **Production** - AWS EKS with multi-AZ deployment
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -162,7 +71,7 @@ curl -f https://api.hospital.com/health
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open Pull Request
 
-See [CONTRIBUTING.md](ULTIMATE_MASTER_DOCUMENTATION.md#development--operations) for detailed guidelines.
+See the [Comprehensive Documentation](comprehensive_documentation.md#development--operations) for detailed guidelines.
 
 ## 📄 License
 
@@ -170,19 +79,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- **Documentation**: [Complete Documentation](ULTIMATE_MASTER_DOCUMENTATION.md)
+- **Documentation**: [Comprehensive Documentation](comprehensive_documentation.md)
 - **Issues**: [GitHub Issues](https://github.com/jashmhta/Hospital-Management-System/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/jashmhta/Hospital-Management-System/discussions)
-
-## 🏆 Achievements
-
-✅ **Enterprise-grade** microservices architecture  
-✅ **100% HIPAA/GDPR** compliance  
-✅ **Zero critical** security vulnerabilities  
-✅ **94.7% code** coverage  
-✅ **Production-ready** with 99.95% uptime  
-✅ **Complete documentation** consolidation
 
 ---
 
 **Hospital Management System** - Built with ❤️ for healthcare excellence.
+
+

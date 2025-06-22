@@ -3,10 +3,10 @@ import "./repository.ts"
 import NotFoundError }
 import Repository }
 import type
-import { AuthorizationError
-import { QueryOptions
+import {   AuthorizationError
+import {  QueryOptions
 
-}
+ } from "@/lib/database"
 
 /**;
  * Core service layer implementation for the Financial Management system;

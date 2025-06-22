@@ -3,10 +3,10 @@ import "@/lib/database"
 import "next/server"
 import NextRequest
 import NextResponse }
-import { getDB }
-import { type
+import {  getDB  } from "@/lib/database"
+import {   type
 
-import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
+import {  type IronSessionData, getSession  } from "@/lib/database" from "@/lib/session"; // Import IronSessionData;
 // import { checkUserRole } from "@/lib/auth";
 
 // Define Database interface (can be moved to a shared types file);

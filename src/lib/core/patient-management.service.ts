@@ -2,10 +2,10 @@ import "@/lib/fhir/fhir-integration"
 import "@/lib/fhir/patient"
 import "@prisma/client"
 import "zod"
-import { FHIRPatient }
-import { FHIRPatientIntegration }
-import { PrismaClient }
-import { z }
+import {  FHIRPatient  } from "@/lib/database"
+import {  FHIRPatientIntegration  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 }
 

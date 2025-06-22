@@ -1,9 +1,9 @@
 import "../../services/encryption_service_secure"
 import "@prisma/client"
 import "zod"
-import { getEncryptionService }
-import { PrismaClient }
-import { z }
+import {  getEncryptionService  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 /**;
  * Electronic Health Records (EHR) Service - Persistent Implementation;

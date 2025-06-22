@@ -1,5 +1,5 @@
 import "./errors.ts"
-import { DatabaseError }
+import {  DatabaseError  } from "@/lib/database"
 
 }
 

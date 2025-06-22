@@ -82,7 +82,7 @@ const eslintConfig: Linter.FlatConfig[] = [
     name: 'hms-react-typescript',
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
-      react: reactPlugin;
+      react: reactPlugin,
       'react-hooks': reactHooksPlugin,
       'jsx-a11y': accessibilityPlugin,
       security: securityPlugin,

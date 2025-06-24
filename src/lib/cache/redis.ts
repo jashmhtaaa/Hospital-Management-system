@@ -4,8 +4,7 @@ import {  config  } from "@/lib/database"
 import {  createClient  } from "@/lib/database"
 
 // Create Redis client;
-const redisClient = createClient({
-  url: config.redis.url,
+const redisClient = createClient({url:config.redis.url,
   password: config.redis.password;
 });
 
@@ -63,7 +62,7 @@ redisClient.on("error", (err) => {
 }
 } catch (error) {
 }
-      await redisClient.set(key, JSON.stringify(data), { EX: ttlSeconds });
+      await redisClient.set(key, JSON.stringify(data), {EX:ttlSeconds });
     } catch (error) {
 
     }

@@ -42,7 +42,7 @@ import { PrismaClient }
    */;
   async login();
     credentials: UserCredentials,
-    context: { ipAddress: string, userAgent: string }
+    context: {ipAddress:string, userAgent: string }
   ): Promise<{ tokens?: AuthTokens; mfaRequired?: boolean; user?: unknown; error?: string }> {
     try {
 } catch (error) {
@@ -79,34 +79,31 @@ import { PrismaClient }
       // Check for account lockout;
       const isLocked = await this.isAccountLocked(credentials.email);
       if (!session.user) {
-        await this.logLoginAttempt({
-          email: credentials.email,
+        await this.logLoginAttempt({email:credentials.email,
           context.userAgent,
           "Account locked";
         });
-        return { error: "Account is temporarily locked due to multiple failed attempts" };
+        return {error:"Account is temporarily locked due to multiple failed attempts" };
       }
 
       // Find user;
-      const user = await this.prisma.user.findUnique({
-        where: { email: credentials.email },
-        {
-            where: { isActive: true },
-            select: { roleId: true }
+      const user = await this.prisma.user.findUnique({where:{ email: credentials.email },
+        {where:{ isActive: true },
+            select: {roleId:true }
           }
         }
       });
 
       if (!session.user) {
         await this.recordLoginFailure(credentials.email, context);
-        return { error: "Invalid credentials" };
+        return {error:"Invalid credentials" };
       }
 
       // Verify password;
       const validPassword = await bcrypt.compare(credentials.password, user.password);
       if (!session.user) {
         await this.recordLoginFailure(credentials.email, context);
-        return { error: "Invalid credentials" };
+        return {error:"Invalid credentials" };
       }
 
       // Check if MFA is enabled;
@@ -115,14 +112,12 @@ import { PrismaClient }
         // Generate temporary session for MFA verification;
         const tempSessionId = await this.createTemporarySession(user.id, context);
 
-        await this.logLoginAttempt({
-          email: credentials.email,
+        await this.logLoginAttempt({email:credentials.email,
           context.userAgent,
           true;
         });
 
-        return {
-          mfaRequired: true,
+        return {mfaRequired:true,
           user.id,
             email: user.email;
             tempSessionId;
@@ -136,8 +131,7 @@ import { PrismaClient }
       // Reset login attempts on successful login;
       await this.resetLoginAttempts(credentials.email);
 
-      await this.logLoginAttempt({
-        email: credentials.email,
+      await this.logLoginAttempt({email:credentials.email,
         context.userAgent,
         success: true;
       });
@@ -151,7 +145,7 @@ import { PrismaClient }
 
     } catch (error) {
 
-      return { error: "Authentication failed" };
+      return {error:"Authentication failed" };
     }
   }
 
@@ -161,7 +155,7 @@ import { PrismaClient }
   async verifyMFA();
     userId: string,
     string,
-    context: { ipAddress: string, userAgent: string }
+    context: {ipAddress:string, userAgent: string }
   ): Promise<{ tokens?: AuthTokens; error?: string }> {
     try {
 } catch (error) {
@@ -205,51 +199,46 @@ import { PrismaClient }
       });
 
       if (!session.user) {
-        return { error: "Invalid or expired session" };
+        return {error:"Invalid or expired session" };
       }
 
       // Verify MFA token;
       const mfaValid = await this.verifyMFAToken(userId, mfaToken);
       if (!session.user) {
-        await logAuditEvent({
-          eventType: "MFA_VERIFICATION_FAILED";
+        await logAuditEvent({eventType:"MFA_VERIFICATION_FAILED";
           userId,
           resource: "authentication",
           details: mfaToken: mfaToken.substring(0, 2) + "****" ,
           ipAddress: context.ipAddress,
           "MEDIUM";
         });
-        return { error: "Invalid MFA token" };
+        return {error:"Invalid MFA token" };
       }
 
       // Get user with roles;
-      const user = await this.prisma.user.findUnique({
-        where: { id: userId },
-        {
-            where: { isActive: true },
-            select: { roleId: true }
+      const user = await this.prisma.user.findUnique({where:{ id: userId },
+        {where:{ isActive: true },
+            select: {roleId:true }
           }
         }
       });
 
       if (!session.user) {
-        return { error: "User not found" };
+        return {error:"User not found" };
       }
 
       // Generate tokens with MFA verified flag;
       const tokens = await this.generateTokens(user, context, true);
 
       // Deactivate temporary session;
-      await this.prisma.temporarySession.update({
-        where: { id: tempSessionId },
-        data: { isActive: false }
+      await this.prisma.temporarySession.update({where:{ id: tempSessionId },
+        data: {isActive:false }
       });
 
-      await logAuditEvent({
-        eventType: "MFA_VERIFICATION_SUCCESS";
+      await logAuditEvent({eventType:"MFA_VERIFICATION_SUCCESS";
         userId,
         resource: "authentication",
-        details: { sessionId: tokens.accessToken.substring(0, 10) + "..." },
+        details: {sessionId:tokens.accessToken.substring(0, 10) + "..." },
         ipAddress: context.ipAddress,
         userAgent: context.userAgent;
       });
@@ -258,7 +247,7 @@ import { PrismaClient }
 
     } catch (error) {
 
-      return { error: "MFA verification failed" };
+      return {error:"MFA verification failed" };
     }
   }
 
@@ -267,7 +256,7 @@ import { PrismaClient }
    */;
   async refreshToken();
     refreshToken: string,
-    context: { ipAddress: string, userAgent: string }
+    context: {ipAddress:string, userAgent: string }
   ): Promise<{ tokens?: AuthTokens; error?: string }> {
     try {
 } catch (error) {
@@ -315,7 +304,7 @@ import { PrismaClient }
       });
 
       if (!session.user) {
-        return { error: "Invalid or expired session" };
+        return {error:"Invalid or expired session" };
       }
 
       // Generate new tokens;
@@ -330,7 +319,7 @@ import { PrismaClient }
 
     } catch (error) {
 
-      return { error: "Token refresh failed" };
+      return {error:"Token refresh failed" };
     }
   }
 
@@ -339,7 +328,7 @@ import { PrismaClient }
    */;
   async logout();
     sessionId: string,
-    context: { ipAddress: string, userAgent: string }
+    context: {ipAddress:string, userAgent: string }
   ): Promise<void> {
     try {
 } catch (error) {
@@ -374,16 +363,14 @@ import { PrismaClient }
 } catch (error) {
 }
       // Deactivate session;
-      const session = await this.prisma.userSession.update({
-        where: { id: sessionId },
-        data: { isActive: false, loggedOutAt: new Date() }
+      const session = await this.prisma.userSession.update({where:{ id: sessionId },
+        data: {isActive:false, loggedOutAt: new Date() }
       });
 
       // Clear session cache;
       await cache.del(`session:${}`;
 
-      await logAuditEvent({
-        eventType: "USER_LOGOUT",
+      await logAuditEvent({eventType:"USER_LOGOUT",
         "authentication",
         details: sessionId ,
         ipAddress: context.ipAddress,
@@ -431,16 +418,14 @@ import { PrismaClient }
 
 } catch (error) {
 
-      const user = await this.prisma.user.findUnique({
-        where: { id: userId }
+      const user = await this.prisma.user.findUnique({where:{ id: userId }
       });
 
       if (!session.user) {
         throw new Error("User not found");
 
       // Generate MFA secret;
-      const secret = speakeasy.generateSecret({
-        name: `HMS - ${user.email}`,
+      const secret = speakeasy.generateSecret({name:`HMS - ${user.email}`,
         issuer: "Hospital Management System",
         length: 32;
       });
@@ -449,7 +434,7 @@ import { PrismaClient }
       const qrCode = await QRCode.toDataURL(secret.otpauth_url || "");
 
       // Generate backup codes;
-      const backupCodes = Array.from({ length: 10 }, () => {}
+      const backupCodes = Array.from({length:10 }, () => {}
         crypto.randomBytes(4).toString("hex").toUpperCase();
       );
 
@@ -458,8 +443,7 @@ import { PrismaClient }
       const encryptedBackupCodes = encrypt(JSON.stringify(backupCodes));
 
       // Store in database (but don"t activate yet);
-      await this.prisma.userMFA.upsert({
-        where: { userId },
+      await this.prisma.userMFA.upsert({where:{ userId },
         create: {
           userId,
           secret: encryptedSecret,
@@ -469,8 +453,7 @@ import { PrismaClient }
           backupCodes: encryptedBackupCodes;
       });
 
-      return {
-        secret: secret.base32;
+      return {secret:secret.base32;
         qrCode,
         backupCodes;
       };
@@ -519,15 +502,13 @@ import { PrismaClient }
       if (!session.user) {
         return false;
 
-      await this.prisma.userMFA.update({
-        where: { userId },
+      await this.prisma.userMFA.update({where:{ userId },
         true,
           enabledAt: new Date();
 
       });
 
-      await logAuditEvent({
-        eventType: "MFA_ENABLED";
+      await logAuditEvent({eventType:"MFA_ENABLED";
         userId,
         resource: "user_security",
         details: mfaEnabled: true });
@@ -577,15 +558,13 @@ import { PrismaClient }
       if (!session.user) {
         return false;
 
-      await this.prisma.userMFA.update({
-        where: { userId },
+      await this.prisma.userMFA.update({where:{ userId },
         false,
           disabledAt: new Date();
 
       });
 
-      await logAuditEvent({
-        eventType: "MFA_DISABLED";
+      await logAuditEvent({eventType:"MFA_DISABLED";
         userId,
         resource: "user_security",
         details: mfaEnabled: false ,
@@ -693,17 +672,15 @@ import { PrismaClient }
 
 } catch (error) {
 
-      const sessions = await this.prisma.userSession.findMany({
-        where: {
+      const sessions = await this.prisma.userSession.findMany({where:{
           userId,
           isActive: true,
-          expiresAt: { gt: new Date() }
+          expiresAt: {gt:new Date() }
         },
-        orderBy: { createdAt: "desc" }
+        orderBy: {createdAt:"desc" }
       });
 
-      return sessions.map(session => ({
-        userId: session.userId,
+      return sessions.map(session => ({userId:session.userId,
         session.ipAddress,
         session.createdAt,
         session.isActive,
@@ -770,7 +747,7 @@ import { PrismaClient }
    */;
   private async generateTokens();
     user: unknown,
-    context: { ipAddress: string, userAgent: string },
+    context: {ipAddress:string, userAgent: string },
     mfaVerified: boolean = false;
     existingSessionId?: string;
   ): Promise<AuthTokens> {
@@ -784,16 +761,14 @@ import { PrismaClient }
       mfaVerified;
     };
 
-    const accessToken = sign(payload, this.JWT_SECRET, {
-      expiresIn: this.ACCESS_TOKEN_EXPIRES,
+    const accessToken = sign(payload, this.JWT_SECRET, {expiresIn:this.ACCESS_TOKEN_EXPIRES,
       issuer: "hms-auth";
     });
 
     const refreshToken = sign();
       { ...payload, type: "refresh" },
       this.REFRESH_SECRET,
-      {
-        expiresIn: this.REFRESH_TOKEN_EXPIRES,
+      {expiresIn:this.REFRESH_TOKEN_EXPIRES,
         issuer: "hms-auth";
 
     );
@@ -821,8 +796,7 @@ import { PrismaClient }
    * Helper methods;
    */;
   private async isMFAEnabled(userId: string): Promise<boolean> {
-    const mfa = await this.prisma.userMFA.findUnique({
-      where: { userId }
+    const mfa = await this.prisma.userMFA.findUnique({where:{ userId }
     });
     return mfa?.isEnabled || false;
 
@@ -859,8 +833,7 @@ import { PrismaClient }
 
 } catch (error) {
 
-      const mfa = await this.prisma.userMFA.findUnique({
-        where: { userId }
+      const mfa = await this.prisma.userMFA.findUnique({where:{ userId }
       });
 
       if (!session.user)eturn false;
@@ -884,9 +857,8 @@ import { PrismaClient }
       if (!session.user) {
         // Remove used backup code;
         backupCodes.splice(codeIndex, 1);
-        await this.prisma.userMFA.update({
-          where: { userId },
-          data: { backupCodes: encrypt(JSON.stringify(backupCodes)) }
+        await this.prisma.userMFA.update({where:{ userId },
+          data: {backupCodes:encrypt(JSON.stringify(backupCodes)) }
         });
         return true;
 
@@ -897,10 +869,9 @@ import { PrismaClient }
 
   private async createTemporarySession();
     userId: string,
-    context: { ipAddress: string, userAgent: string }
+    context: {ipAddress:string, userAgent: string }
   ): Promise<string> {
-    const tempSession = await this.prisma.temporarySession.create({
-      data: {
+    const tempSession = await this.prisma.temporarySession.create({data:{
         userId,
         ipAddress: context.ipAddress,
         [0] + 5 * 60 * 1000), // 5 minutes;
@@ -916,7 +887,7 @@ import { PrismaClient }
 
   private async recordLoginFailure();
     email: string,
-    context: { ipAddress: string, userAgent: string }
+    context: {ipAddress:string, userAgent: string }
   ): Promise<void> {
     const attemptsKey = `attempts:${email}`;
     const attempts = (await cache.get<number>(attemptsKey)) || 0;
@@ -928,8 +899,7 @@ import { PrismaClient }
       const lockKey = `lockout:${email}`;
       await cache.set(lockKey, true, this.LOCKOUT_DURATION / 1000);
 
-      await logAuditEvent({
-        eventType: "ACCOUNT_LOCKED",
+      await logAuditEvent({eventType:"ACCOUNT_LOCKED",
         "authentication",
         details: attempts: newAttempts, lockoutDuration: this.LOCKOUT_DURATION ,
         ipAddress: context.ipAddress,
@@ -950,8 +920,7 @@ import { PrismaClient }
     await cache.del(lockKey);
 
   private async logLoginAttempt(attempt: LoginAttempt): Promise<void> {
-    await logAuditEvent({
-      eventType: attempt.success ? "LOGIN_SUCCESS" : "LOGIN_FAILURE",
+    await logAuditEvent({eventType:attempt.success ? "LOGIN_SUCCESS" : "LOGIN_FAILURE",
       "authentication",
       attempt.mfaRequired,
         failureReason: attempt.failureReason,

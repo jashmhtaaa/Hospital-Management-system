@@ -3,8 +3,8 @@ import "@/lib/security.service"
 import "@/lib/services/support-services/maintenance/maintenance.service"
 import "next/server"
 import "zod"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  MaintenanceService  } from "@/lib/database"
 import {  SecurityService  } from "@/lib/database"
 import {   type
@@ -15,8 +15,7 @@ import {  z  } from "@/lib/database"
 const maintenanceService = new MaintenanceService();
 
 // Request validation schemas;
-const createRequestSchema = z.object({
-  assetId: z.string().uuid(),
+const createRequestSchema = z.object({assetId:z.string().uuid(),
   requestType: z.enum(["PREVENTIVE", "CORRECTIVE", "EMERGENCY", "INSPECTION", "INSTALLATION", "OTHER"]),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
   description: z.string().min(5).max(500),
@@ -26,8 +25,7 @@ const createRequestSchema = z.object({
   estimatedDuration: z.number().min(1).optional(), // in minutes;
 });
 
-const updateRequestSchema = z.object({
-  requestType: z.enum(["PREVENTIVE", "CORRECTIVE", "EMERGENCY", "INSPECTION", "INSTALLATION", "OTHER"]).optional(),
+const updateRequestSchema = z.object({requestType:z.enum(["PREVENTIVE", "CORRECTIVE", "EMERGENCY", "INSPECTION", "INSTALLATION", "OTHER"]).optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
   description: z.string().min(5).max(500).optional(),
   scheduledTime: z.string().transform(val => .optional(),
@@ -46,8 +44,7 @@ export const _GET = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {
-        status: searchParams.get("status") || undefined,
+      const filters = {status:searchParams.get("status") || undefined,
         searchParams.get("assetId") || undefined,
         searchParams.get("departmentId") || undefined,
         searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
@@ -60,8 +57,7 @@ export const _GET = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "maintenance:read",
+    {requiredPermission:"maintenance:read",
       auditAction: "MAINTENANCE_REQUESTS_VIEW";
     }
   );
@@ -82,17 +78,16 @@ export const _POST = async (request: any) => {
       // Create maintenance request;
       const result = await maintenanceService.createMaintenanceRequest(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, {status:201 });
     },
-    {
-      requiredPermission: "maintenance:create",
+    {requiredPermission:"maintenance:create",
       auditAction: "MAINTENANCE_REQUEST_CREATE";
     }
   );
 }
 
 // GET /api/support-services/maintenance/requests/:id;
-export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -102,15 +97,14 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "maintenance:read",
+    {requiredPermission:"maintenance:read",
       auditAction: "MAINTENANCE_REQUEST_VIEW";
     }
   );
 }
 
 // PATCH /api/support-services/maintenance/requests/:id;
-export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -126,32 +120,30 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "maintenance:update",
+    {requiredPermission:"maintenance:update",
       auditAction: "MAINTENANCE_REQUEST_UPDATE";
     }
   );
 }
 
 // DELETE /api/support-services/maintenance/requests/:id;
-export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
       // Delete maintenance request;
       await maintenanceService.deleteMaintenanceRequest(params.id);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({success:true });
     },
-    {
-      requiredPermission: "maintenance:delete",
+    {requiredPermission:"maintenance:delete",
       auditAction: "MAINTENANCE_REQUEST_DELETE";
     }
   );
 }
 
 // POST /api/support-services/maintenance/requests/:id/assign;
-export const _ASSIGN = async (request: any, { params }: { params: { id: string } }) => {
+export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -160,7 +152,7 @@ export const _ASSIGN = async (request: any, { params }: { params: { id: string }
       const { technicianId } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Technician ID is required" }, { status: 400 });
+        return NextResponse.json({error:"Technician ID is required" }, {status:400 });
       }
 
       // Assign maintenance request;
@@ -168,15 +160,14 @@ export const _ASSIGN = async (request: any, { params }: { params: { id: string }
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "maintenance:assign",
+    {requiredPermission:"maintenance:assign",
       auditAction: "MAINTENANCE_REQUEST_ASSIGN";
     }
   );
 }
 
 // POST /api/support-services/maintenance/requests/:id/start;
-export const _START = async (request: any, { params }: { params: { id: string } }) => {
+export const _START = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -185,7 +176,7 @@ export const _START = async (request: any, { params }: { params: { id: string } 
       const { technicianId, notes } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Technician ID is required" }, { status: 400 });
+        return NextResponse.json({error:"Technician ID is required" }, {status:400 });
       }
 
       // Start maintenance work;
@@ -197,15 +188,14 @@ export const _START = async (request: any, { params }: { params: { id: string } 
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "maintenance:update",
+    {requiredPermission:"maintenance:update",
       auditAction: "MAINTENANCE_WORK_START";
     }
   );
 }
 
 // POST /api/support-services/maintenance/requests/:id/complete;
-export const _COMPLETE = async (request: any, { params }: { params: { id: string } }) => {
+export const _COMPLETE = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -214,7 +204,7 @@ export const _COMPLETE = async (request: any, { params }: { params: { id: string
       const { technicianId, notes, partsUsed, laborHours } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Technician ID is required" }, { status: 400 });
+        return NextResponse.json({error:"Technician ID is required" }, {status:400 });
       }
 
       // Complete maintenance request;
@@ -228,8 +218,7 @@ export const _COMPLETE = async (request: any, { params }: { params: { id: string
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "maintenance:update",
+    {requiredPermission:"maintenance:update",
       auditAction: "MAINTENANCE_REQUEST_COMPLETE";
     }
   );
@@ -242,8 +231,7 @@ export const _GET_ASSETS = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {
-        type: searchParams.get("type") || undefined,
+      const filters = {type:searchParams.get("type") || undefined,
         searchParams.get("locationId") || undefined,
         Number.parseInt(searchParams.get("page") || "1"),
         limit: parseInt(searchParams.get("limit") || "10");
@@ -254,8 +242,7 @@ export const _GET_ASSETS = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "maintenance:read",
+    {requiredPermission:"maintenance:read",
       auditAction: "MAINTENANCE_ASSETS_VIEW";
     }
   );
@@ -276,8 +263,7 @@ export const _GET_ANALYTICS = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "maintenance:analytics",
+    {requiredPermission:"maintenance:analytics",
       auditAction: "MAINTENANCE_ANALYTICS_VIEW";
     }
   );

@@ -7,8 +7,8 @@ import "zod"
 import D1PreparedStatement
 import D1Result
 import D1ResultWithMeta }
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {   D1Database
 import {  DB  } from "@/lib/database"
 import {  getSession  } from "@/lib/database"
@@ -17,20 +17,16 @@ import {   type
 import {  z  } from "@/lib/database"
 
 // Zod schema for invoice creation;
-const invoiceCreateSchema = z.object({
-  patient_id: z.number(),
+const invoiceCreateSchema = z.object({patient_id:z.number(),
   consultation_id: z.number().optional().nullable(),
-  issue_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid issue date format";
+  issue_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid issue date format";
   }),
-  due_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid due date format";
+  due_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid due date format";
   }),
   status: z.enum(["Draft", "Sent", "Paid", "Overdue", "Cancelled"]),
   notes: z.string().optional().nullable(),
   items: z.array();
-    z.object({
-      billable_item_id: z.number(),
+    z.object({billable_item_id:z.number(),
       description: z.string(),
       quantity: z.number().positive(),
       unit_price: z.number().nonnegative();
@@ -39,7 +35,7 @@ const invoiceCreateSchema = z.object({
 
 // Helper function to generate the next invoice number (example implementation);
 async const generateInvoiceNumber = (db: D1Database): Promise<string> {
-  const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{ maxId: number | null }>();
+  const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{maxId:number | null }>();
   const nextId = (result?.maxId || 0) + 1;
   return `INV-${String(nextId).padStart(6, "0")}`;
 }
@@ -80,7 +76,7 @@ export const _GET = async (request: any) => {
 }
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({message:"Unauthorized" }, {status:401 });
     }
 
     const { searchParams } = new URL(request.url);
@@ -142,14 +138,13 @@ export const _GET = async (request: any) => {
 
     const [invoicesResult, countResult] = await Promise.all([;
       (DB as D1Database).prepare(query).bind(...queryParameters).all<Invoice>(),
-      (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
+      (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{total:number }>();
     ]);
 
     const results = invoicesResult.results || [];
     const total = countResult?.total || 0;
 
-    return NextResponse.json({
-      data: results,
+    return NextResponse.json({data:results,
       pagination: {
         page,
         limit,
@@ -164,8 +159,8 @@ export const _GET = async (request: any) => {
       errorMessage = error.message;
     }
     return NextResponse.json();
-      { message: "Error fetching invoices", details: errorMessage },
-      { status: 500 }
+      {message:"Error fetching invoices", details: errorMessage },
+      {status:500 }
     );
   }
 }
@@ -174,10 +169,10 @@ export const _GET = async (request: any) => {
 export const _POST = async (request: any) => {
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({message:"Unauthorized" }, {status:401 });
     }
     if (!session.user) { // Ensure user exists if logged in
-        return NextResponse.json({ message: "User not found in session" }, { status: 500 });
+        return NextResponse.json({message:"User not found in session" }, {status:500 });
     }
 
     try {
@@ -217,8 +212,8 @@ export const _POST = async (request: any) => {
 
         if (!session.user) {
             return NextResponse.json();
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                {message:"Invalid input", errors: validationResult.error.errors },
+                {status:400 }
             );
 
         const invoiceData = validationResult.data;
@@ -279,8 +274,8 @@ export const _POST = async (request: any) => {
             throw new Error("Failed to create invoice items");
 
         return NextResponse.json();
-            { message: "Invoice created successfully", invoiceId: newInvoiceId },
-            { status: 201 }
+            {message:"Invoice created successfully", invoiceId: newInvoiceId },
+            {status:201 }
         );
 
     } catch (error: unknown) {
@@ -290,8 +285,8 @@ export const _POST = async (request: any) => {
             errorMessage = error.message;
 
         return NextResponse.json();
-            { message: "Error creating invoice", details: errorMessage },
-            { status: 500 }
+            {message:"Error creating invoice", details: errorMessage },
+            {status:500 }
         );
 
 export async function GET() { return new Response("OK"); }

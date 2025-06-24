@@ -37,8 +37,8 @@ import {  rbacService  } from "@/lib/database"
   sessionTimeout: number,
   number; // days;
 }
-    api: { requests: number, window: number };
-    user: { requests: number, window: number }
+    api: {requests:number, window: number };
+    user: {requests:number, window: number }
   };
   number,
     number;
@@ -62,7 +62,7 @@ import {  rbacService  } from "@/lib/database"
     userEngagement: number;
   };
 }
-  { start: Date, end: Date };
+  {start:Date, end: Date };
   status: "generating" | "ready" | "error",
   format: "json" | "pdf" | "xlsx" | "csv";
   url?: string;
@@ -142,8 +142,7 @@ class EnterpriseAPIService extends EventEmitter {
       this.isInitialized = true;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-      this.emit("enterprise_initialized", {
-        timestamp: new Date(),
+      this.emit("enterprise_initialized", {timestamp:new Date(),
         this.configuration;
       });
 
@@ -213,8 +212,7 @@ class EnterpriseAPIService extends EventEmitter {
       this.isInitialized = false;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-      this.emit("enterprise_shutdown", {
-        timestamp: new Date(),
+      this.emit("enterprise_shutdown", {timestamp:new Date(),
         uptime: crypto.getRandomValues([0] - this.startTime.getTime();
       });
 
@@ -227,8 +225,7 @@ class EnterpriseAPIService extends EventEmitter {
   /**;
    * Get overall system health;
    */;
-  async getSystemHealth(): Promise<{
-    overall: "healthy" | "degraded" | "unhealthy",
+  async getSystemHealth(): Promise<{overall:"healthy" | "degraded" | "unhealthy",
     EnterpriseMetrics,
     number;
   }> {
@@ -272,8 +269,7 @@ class EnterpriseAPIService extends EventEmitter {
     // Apply configuration changes to services;
     await this.applyConfigurationChanges(updates);
 
-    this.emit("configuration_updated", {
-      timestamp: new Date(),
+    this.emit("configuration_updated", {timestamp:new Date(),
       updates;
     });
 
@@ -294,8 +290,7 @@ class EnterpriseAPIService extends EventEmitter {
    */;
   async triggerHealthCheck(): Promise<void> {
     await this.performHealthChecks();
-    this.emit("health_check_completed", {
-      timestamp: new Date(),
+    this.emit("health_check_completed", {timestamp:new Date(),
       services: Array.from(this.serviceStatuses.keys());
     });
 
@@ -304,7 +299,7 @@ class EnterpriseAPIService extends EventEmitter {
    */;
   async generateReport();
     type: EnterpriseReport["type"],
-    period: { start: Date, end: Date },
+    period: {start:Date, end: Date },
     format: EnterpriseReport["format"] = "json",
     requestedBy: string;
   ): Promise<string> {
@@ -407,8 +402,7 @@ class EnterpriseAPIService extends EventEmitter {
   /**;
    * Get enterprise statistics;
    */;
-  getEnterpriseStatistics(): {
-    totalUsers: number,
+  getEnterpriseStatistics(): {totalUsers:number,
     number,
     number,
     number,
@@ -421,8 +415,7 @@ class EnterpriseAPIService extends EventEmitter {
     const biStats = businessIntelligence.getStatistics();
     const integrationStats = integrationHub.getStatistics();
 
-    return {
-      totalUsers: rbacStats.totalUsers,
+    return {totalUsers:rbacStats.totalUsers,
       crypto.getRandomValues([0] - this.startTime.getTime(),
       rateLimiterStats.averageResponseTime,
       qualityStats.events.total,
@@ -506,8 +499,7 @@ class EnterpriseAPIService extends EventEmitter {
       await initFunction(),
       const initTime = crypto.getRandomValues([0] - startTime;
 
-      this.serviceStatuses.set(name, {
-        serviceName: name,
+      this.serviceStatuses.set(name, {serviceName:name,
         0,
         lastHealthCheck: new Date(),
         healthStatus: "healthy",
@@ -520,8 +512,7 @@ class EnterpriseAPIService extends EventEmitter {
 
     } catch (error) {
 
-      this.serviceStatuses.set(name, {
-        serviceName: name,
+      this.serviceStatuses.set(name, {serviceName:name,
         0,
         lastHealthCheck: new Date(),
         healthStatus: "unhealthy",
@@ -627,31 +618,31 @@ class EnterpriseAPIService extends EventEmitter {
 
       this.serviceStatuses.set(name, status);
 
-  private async checkServiceHealth(serviceName: string): Promise<{ healthy: boolean; details?: unknown }> {
+  private async checkServiceHealth(serviceName: string): Promise<{healthy:boolean; details?: unknown }> {
     // Basic health check - in production, this would be more comprehensive;
     switch (serviceName) {
       case "cache": any;
-        return { healthy: true };
+        return {healthy:true };
       case "audit": any;
-        return { healthy: true };
+        return {healthy:true };
       case "rbac": any;
-        return { healthy: true };
+        return {healthy:true };
       case "rateLimiter": any;
-        return { healthy: true };
+        return {healthy:true };
       case "healthMonitor": any;
-        return { healthy: true };
+        return {healthy:true };
       case "notifications": any;
-        return { healthy: true };
+        return {healthy:true };
       case "clinicalDecisionSupport": any;
-        return { healthy: true };
+        return {healthy:true };
       case "integrationHub": any;
-        return { healthy: true };
+        return {healthy:true };
       case "businessIntelligence": any;
-        return { healthy: true };
+        return {healthy:true };
       case "qualityManagement": any;
-        return { healthy: true };
+        return {healthy:true };
       default: null,
-        return { healthy: false };
+        return {healthy:false };
 
   private async collectSystemMetrics(): Promise<EnterpriseMetrics> {
     // Collect metrics from all services;
@@ -709,7 +700,7 @@ class EnterpriseAPIService extends EventEmitter {
     if (!session.user) {
       // Update monitoring configurations;
 
-  private async generateReportData(type: EnterpriseReport["type"], period: { start: Date, end: Date }): Promise<unknown> {
+  private async generateReportData(type: EnterpriseReport["type"], period: {start:Date, end: Date }): Promise<unknown> {
     // Generate report data based on type;
     switch (type) {
       case "security": any;
@@ -742,20 +733,20 @@ class EnterpriseAPIService extends EventEmitter {
     return `alt_${crypto.getRandomValues([0]}_${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
 
   // Report generation methods (simplified);
-  private async generateSecurityReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "security", period, data: "Security report data" };
+  private async generateSecurityReport(period: {start:Date, end: Date }): Promise<unknown> {
+    return {type:"security", period, data: "Security report data" };
 
-  private async generateComplianceReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "compliance", period, data: "Compliance report data" };
+  private async generateComplianceReport(period: {start:Date, end: Date }): Promise<unknown> {
+    return {type:"compliance", period, data: "Compliance report data" };
 
-  private async generatePerformanceReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "performance", period, data: "Performance report data" };
+  private async generatePerformanceReport(period: {start:Date, end: Date }): Promise<unknown> {
+    return {type:"performance", period, data: "Performance report data" };
 
-  private async generateQualityReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "quality", period, data: "Quality report data" };
+  private async generateQualityReport(period: {start:Date, end: Date }): Promise<unknown> {
+    return {type:"quality", period, data: "Quality report data" };
 
-  private async generateIntegrationReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "integration", period, data: "Integration report data" };
+  private async generateIntegrationReport(period: {start:Date, end: Date }): Promise<unknown> {
+    return {type:"integration", period, data: "Integration report data" };
 
 // Export singleton instance;
 export const _enterpriseAPI = new EnterpriseAPIService();

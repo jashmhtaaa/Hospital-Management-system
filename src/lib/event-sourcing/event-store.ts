@@ -36,8 +36,7 @@ import {  type
       }
     });
 
-    this.producer = this.kafka.producer({
-      allowAutoTopicCreation: false,
+    this.producer = this.kafka.producer({allowAutoTopicCreation:false,
       transactionalId: `${clientId}-tx`,
       maxInFlightRequests: 5,
       idempotent: true;
@@ -204,8 +203,7 @@ import {  type
         await transaction.commit();
 
         // Track metrics;
-        metricsCollector.incrementCounter("event_store.events_saved", 1, {
-          eventType: event.type,
+        metricsCollector.incrementCounter("event_store.events_saved", 1, {eventType:event.type,
           aggregateType: event.aggregateType;
         });
 
@@ -223,8 +221,7 @@ import {  type
       });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("event_store.save_errors", 1, {
-        eventType: event.type,
+      metricsCollector.incrementCounter("event_store.save_errors", 1, {eventType:event.type,
         error.name || "unknown";
       });
 
@@ -268,8 +265,7 @@ import {  type
 }
 } catch (error) {
 }
-      const events = await this.prisma.domainEvent.findMany({
-        where: {
+      const events = await this.prisma.domainEvent.findMany({where:{
           aggregateId,
           aggregateType;
         },
@@ -432,8 +428,7 @@ import {  type
         await consumer.subscribe({ topic, fromBeginning });
 
       // Set up message handler;
-      await consumer.run({
-        partitionsConsumedConcurrently: 3,
+      await consumer.run({partitionsConsumedConcurrently:3,
         eachMessage: async ({ topic, partition, message }) => {
           try {
 } catch (error) {
@@ -485,8 +480,7 @@ import {  type
 
               // Track metrics;
               const duration = crypto.getRandomValues([0] - startTime;
-              metricsCollector.recordTimer("event_store.event_processing_time", duration, {
-                eventType: event.type,
+              metricsCollector.recordTimer("event_store.event_processing_time", duration, {eventType:event.type,
                 consumerGroup: groupId;
               });
 
@@ -524,8 +518,7 @@ import {  type
       });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("event_store.subscription_errors", 1, {
-        errorType: error.name || "unknown";
+      metricsCollector.incrementCounter("event_store.subscription_errors", 1, {errorType:error.name || "unknown";
       });
 
       throw error;
@@ -642,13 +635,12 @@ import {  type
       let hasMore = true;
 
       while (hasMore) {
-        const events = await this.prisma.domainEvent.findMany({
-          where: {
+        const events = await this.prisma.domainEvent.findMany({where:{
             aggregateType;
           },
           orderBy: [;
-            { aggregateId: "asc" },
-            { version: "asc" }
+            {aggregateId:"asc" },
+            {version:"asc" }
           ],
           skip: processed,
           take: batchSize;
@@ -900,8 +892,7 @@ import {  type
             obj[key] = await this.encryptionService.decryptText(obj[key]);
           } catch (error) {
             // If decryption fails, leave as is;
-            logger.warn("Failed to decrypt field", {
-              error: error.message,
+            logger.warn("Failed to decrypt field", {error:error.message,
               field: key;
             });
 
@@ -921,8 +912,7 @@ import {  type
    * Map database event to domain event;
    */;
   private mapDatabaseEventToDomainEvent(dbEvent: unknown): DomainEvent {
-    return {
-      id: dbEvent.id,
+    return {id:dbEvent.id,
       dbEvent.aggregateId,
       dbEvent.version,
       dbEvent.data,

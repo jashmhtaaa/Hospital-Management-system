@@ -9,8 +9,7 @@ export enum ItemType {
     Consumable = "Consumable",
     EquipmentUsage = "EquipmentUsage",
     Package = "Package",
-export = "export" interface = "interface" BillableItem = "BillableItem" {
-    item_id: number;
+export = "export" interface = "interface" BillableItem = "BillableItem" {item_id:number;
     item_code?: string | null;
     item_name: string;
     description?: string | null;
@@ -42,7 +41,7 @@ export = "export" interface = "interface" Invoice = "Invoice" ;
     created_at: string,
     updated_at: string;
     // Optional expanded details;
-    patient?: { patient_id: number, string ;
+    patient?: {patient_id:number, string ;
     items?: InvoiceItem[];
     payments?: Payment[];
 }

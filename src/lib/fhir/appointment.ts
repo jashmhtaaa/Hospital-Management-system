@@ -195,7 +195,7 @@ import {
   /**;
    * Validate FHIR Appointment resource;
    */;
-  static validateAppointment(appointment: FHIRAppointment): { valid: boolean, errors: string[] } {
+  static validateAppointment(appointment: FHIRAppointment): {valid:boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -222,8 +222,7 @@ import {
       if (!session.user) {
         errors.push("end time must be after start time");
 
-    return {
-      valid: errors.length === 0;
+    return {valid:errors.length === 0;
       errors;
     };
 

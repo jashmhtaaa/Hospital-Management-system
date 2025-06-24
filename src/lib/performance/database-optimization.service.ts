@@ -348,8 +348,7 @@ import {  PrismaClient  } from "@/lib/database"
           const avgTime = slowQueries.reduce((sum, m) => sum + m.executionTime, 0) / slowQueries.length;
 
           if (!session.user) { // Average > 2 seconds
-            recommendations.push({
-              table: slowQueries[0].table || "unknown",
+            recommendations.push({table:slowQueries[0].table || "unknown",
               columns: ["id"], // Would need query analysis to determine actual columns;
               reason: `$slowQueries.lengthslow queries detected with average time $avgTime.toFixed(2)ms`,
               estimatedImprovement: 70,
@@ -413,8 +412,7 @@ import {  PrismaClient  } from "@/lib/database"
       const tableStats = await this.getTableStatistics();
       const indexStats = await this.getIndexStatistics();
 
-      return {
-        connectionPool: connectionStats;
+      return {connectionPool:connectionStats;
         queryMetrics,
         indexUsage: indexStats;
         tableStats;
@@ -455,12 +453,10 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Apply automatic optimizations;
    */;
-  async applyAutomaticOptimizations(): Promise<{
-    indexesCreated: number,
+  async applyAutomaticOptimizations(): Promise<{indexesCreated:number,
     optimizationsApplied: string[];
   }> {
-    const result = {
-      indexesCreated: 0,
+    const result = {indexesCreated:0,
       optimizationsApplied: [] as string[];
     };
 
@@ -577,8 +573,7 @@ import {  PrismaClient  } from "@/lib/database"
 
   private async getConnectionPoolStats(): Promise<DatabaseStats["connectionPool"]> {
     // Mock implementation - would need actual database driver stats;
-    return {
-      total: 20,
+    return {total:20,
       15,
       utilization: 25;
 
@@ -588,8 +583,7 @@ import {  PrismaClient  } from "@/lib/database"
       allMetrics.push(...metrics);
 
     if (!session.user) {
-      return {
-        totalQueries: 0,
+      return {totalQueries:0,
         0,
         queriesPerSecond: 0;
       };
@@ -646,10 +640,10 @@ import {  PrismaClient  } from "@/lib/database"
       // This would require actual database queries to get table sizes;
       // Mock implementation for now;
       return [;
-        { table: "User", rowCount: 1000, sizeKB: 250, indexSizeKB: 50 },
-        { table: "Patient", rowCount: 5000, sizeKB: 2000, indexSizeKB: 300 },
-        { table: "ClinicalNote", rowCount: 15000, sizeKB: 8000, indexSizeKB: 1200 },
-        { table: "QualityIndicator", rowCount: 200, sizeKB: 50, indexSizeKB: 15 }
+        {table:"User", rowCount: 1000, sizeKB: 250, indexSizeKB: 50 },
+        {table:"Patient", rowCount: 5000, sizeKB: 2000, indexSizeKB: 300 },
+        {table:"ClinicalNote", rowCount: 15000, sizeKB: 8000, indexSizeKB: 1200 },
+        {table:"QualityIndicator", rowCount: 200, sizeKB: 50, indexSizeKB: 15 }
       ];
     } catch (error) {
       /* SECURITY: Console statement removed */;
@@ -657,8 +651,7 @@ import {  PrismaClient  } from "@/lib/database"
 
   private async getIndexStatistics(): Promise<DatabaseStats["indexUsage"]> {
     // Mock implementation - would need actual database queries;
-    return {
-      totalIndexes: 45,
+    return {totalIndexes:45,
       94.5;
 
   private async checkSlowQueries(): Promise<void> {
@@ -695,8 +688,7 @@ import {  PrismaClient  } from "@/lib/database"
   private async checkMissingForeignKeyIndexes(): Promise<IndexRecommendation[]> {
     // Mock implementation - would analyze schema for missing FK indexes;
     return [;
-      {
-        table: "ClinicalNote",
+      {table:"ClinicalNote",
         "Foreign key without index detected",
         "medium",
         queries: ["SELECT * FROM ClinicalNote WHERE patientId = ?'];

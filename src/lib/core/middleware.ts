@@ -165,16 +165,14 @@ export const _withErrorHandling = (;
 
       return await handler(req, ...args);
     } catch (error) {
-      logger.error("API error", {
-        path: req.nextUrl.pathname,
+      logger.error("API error", {path:req.nextUrl.pathname,
         method: req.method;
         error;
       });
 
       if (!session.user) {
         return NextResponse.json();
-          {
-            error: error.message,
+          {error:error.message,
             error.details;
           },status: error.statusCode ;
         );
@@ -182,11 +180,10 @@ export const _withErrorHandling = (;
       // For unexpected errors, don"t expose details in production;
       const isProd = process.env.NODE_ENV === "production";
       return NextResponse.json();
-        {
-          error: "Internal server error",
+        {error:"Internal server error",
           isProd ? undefined : String(error);
         },
-        { status: 500 }
+        {status:500 }
       );
 
   };
@@ -206,8 +203,8 @@ export const _withAuth = (;
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Unauthorized", code: "UNAUTHORIZED" },
-        { status: 401 }
+        {error:"Unauthorized", code: "UNAUTHORIZED" },
+        {status:401 }
       );
 
     return handler(req, ...args);
@@ -230,8 +227,8 @@ export const _withPermissions = (;
 
     if (!session.user)) {
       return NextResponse.json();
-        { error: "Forbidden", code: "FORBIDDEN' },
-        { status: 403 }
+        {error:"Forbidden", code: "FORBIDDEN' },
+        {status:403 }
       );
 
     return handler(req, ...args);

@@ -435,8 +435,7 @@ import {  logAuditEvent  } from "@/lib/database"
       // Re-encrypt with new key (same instance for now, but could use new key);
       const newEncrypted = this.encrypt(plaintext, context);
 
-      await logAuditEvent({
-        eventType: "ENCRYPTION_KEY_ROTATION",
+      await logAuditEvent({eventType:"ENCRYPTION_KEY_ROTATION",
         context?.resource || "encrypted_data",
         this.keyId,
           context?.purpose ,
@@ -536,8 +535,7 @@ import {  logAuditEvent  } from "@/lib/database"
   ): Promise<void> {
     // Only log significant events to avoid excessive logging;
     if (!session.user) {
-      await logAuditEvent({
-        eventType: `ENCRYPTION_${operation}`,
+      await logAuditEvent({eventType:`ENCRYPTION_${operation}`,
         userId: context?.userId,
         resource: context?.resource || "encrypted_data";
           operation,

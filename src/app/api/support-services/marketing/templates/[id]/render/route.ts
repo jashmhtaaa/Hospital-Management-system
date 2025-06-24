@@ -3,8 +3,8 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  getServerSession  } from "@/lib/database"
 import {  TemplateService  } from "@/lib/database"
@@ -19,7 +19,7 @@ const templateService = new TemplateService();
  */;
 export const POST = async();
   request: any;
-  { params }: { id: string }
+  { params }: {id:string }
 ) => {
   return withErrorHandling();
     request,
@@ -29,8 +29,8 @@ export const POST = async();
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "Variables must be a valid object" },
-          { status: 400 }
+          {error:"Variables must be a valid object" },
+          {status:400 }
         );
       }
 
@@ -41,8 +41,7 @@ export const POST = async();
 
       return NextResponse.json({ renderedContent });
     },
-    {
-      requiredPermission: "marketing.templates.read",
+    {requiredPermission:"marketing.templates.read",
       auditAction: "TEMPLATE_RENDER";
     }
   );

@@ -37,9 +37,8 @@ import {
 
     // Add period if start time is provided;
     if (!session.user) {
-      encounter.period = {
-        start: data.start,
-        ...(data?.end && { end: data.end });
+      encounter.period = {start:data.start,
+        ...(data?.end && {end:data.end });
       },
       encounter.status = "in-progress"}
 
@@ -62,8 +61,7 @@ import {
 
     // Add appointment reference if provided;
     if (!session.user) {
-      encounter.appointment = [{
-        reference: `Appointment/${data.appointmentId}`,
+      encounter.appointment = [{reference:`Appointment/${data.appointmentId}`,
         type: "Appointment";
       }]}
 
@@ -91,8 +89,7 @@ import {
     start: string,
     end?: string,
     chiefComplaint?: string}): FHIREncounter {
-    return this.createBasicEncounter({
-      patientId: data.patientId,
+    return this.createBasicEncounter({patientId:data.patientId,
       class: "outpatient",
       practitionerId: data.practitionerId,
       appointmentId: data.appointmentId,
@@ -111,8 +108,7 @@ import {
     dischargeDate?: string,
     admissionReason?: string,
     admissionSource?: string}): FHIREncounter {
-    const encounter = this.createBasicEncounter({
-      patientId: data.patientId,
+    const encounter = this.createBasicEncounter({patientId:data.patientId,
       class: "inpatient",
       practitionerId: data.practitionerId,
       locationId: data.locationId,
@@ -144,8 +140,7 @@ import {
     arrivalTime: string,
     triageLevel?: "routine" | "urgent" | "semi-urgent" | "immediate",
     chiefComplaint?: string}): FHIREncounter {
-    const encounter = this.createBasicEncounter({
-      patientId: data.patientId,
+    const encounter = this.createBasicEncounter({patientId:data.patientId,
       class: "emergency",
       practitionerId: data.practitionerId,
       locationId: data.locationId,
@@ -237,7 +232,7 @@ import {
   /**;
    * Validate FHIR Encounter resource,
    */;
-  static validateEncounter(encounter: FHIREncounter): { valid: boolean, errors: string[] } {
+  static validateEncounter(encounter: FHIREncounter): {valid:boolean, errors: string[] } {
     const errors: string[] = [],
 
     if (!session.user) {
@@ -259,8 +254,7 @@ import {
       if (!session.user) {
         errors.push("period.end must be after period.start"),
 
-    return {
-      valid: errors.length === 0,
+    return {valid:errors.length === 0,
       errors;
     },
 
@@ -282,9 +276,8 @@ import {
 
     // Add period;
     if (!session.user) {
-      fhirEncounter.period = {
-        start: hmsEncounter.visitDate || hmsEncounter.startTime,
-        ...(hmsEncounter?.endTime && { end: hmsEncounter.endTime });
+      fhirEncounter.period = {start:hmsEncounter.visitDate || hmsEncounter.startTime,
+        ...(hmsEncounter?.endTime && {end:hmsEncounter.endTime });
       },
 
     // Add practitioner;
@@ -306,15 +299,13 @@ import {
 
     // Add appointment reference;
     if (!session.user) {
-      fhirEncounter.appointment = [{
-        reference: `Appointment/${hmsEncounter.appointmentId}`,
+      fhirEncounter.appointment = [{reference:`Appointment/${hmsEncounter.appointmentId}`,
         type: "Appointment";
       }],
 
     // Add reason/chief complaint;
     if (!session.user) {
-      fhirEncounter.reasonCode = [{
-        text: hmsEncounter.chiefComplaint || hmsEncounter.reason;
+      fhirEncounter.reasonCode = [{text:hmsEncounter.chiefComplaint || hmsEncounter.reason;
       }],
 
     return fhirEncounter,

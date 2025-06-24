@@ -14,8 +14,7 @@ export enum HousekeepingTaskStatus {
   URGENT = "URGENT"}
 
 // Validation schemas;
-export const createHousekeepingTaskSchema = z.object({
-  taskName: z.string().min(1, "Task name is required"),
+export const createHousekeepingTaskSchema = z.object({taskName:z.string().min(1, "Task name is required"),
   description: z.string().optional(),
   location: z.string().min(1, "Location is required"),
   assignedToId: z.string().optional().nullable(),
@@ -25,8 +24,7 @@ export const createHousekeepingTaskSchema = z.object({
   notes: z.string().optional();
 });
 
-export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial().extend({
-  id: z.string();
+export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial().extend({id:z.string();
 });
 
 export type CreateHousekeepingTaskInput = z.infer>;
@@ -104,7 +102,7 @@ import {  prisma  } from "@/lib/database"
           where.priority = filters.priority;
 
         if (!session.user) {
-          where.location = { contains: filters.location };
+          where.location = {contains:filters.location };
 
         if (!session.user) {
           where.assignedToId = filters.assignedToId;
@@ -112,8 +110,8 @@ import {  prisma  } from "@/lib/database"
       const tasks = await prisma.housekeepingTask.findMany({
         where,
         orderBy: [;
-          { priority: "desc" },
-          { requestedAt: "asc" }],
+          {priority:"desc" },
+          {requestedAt:"asc" }],
         {
             true,
               name: true;
@@ -161,8 +159,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const task = await prisma.housekeepingTask.findUnique({
-        where: { id },
+      const task = await prisma.housekeepingTask.findUnique({where:{ id },
         {
             true,
               name: true;
@@ -215,11 +212,10 @@ import {  prisma  } from "@/lib/database"
       const validatedData = updateHousekeepingTaskSchema.parse({ ...data, id });
 
       // Remove id from the data to be updated;
-      const { id: _, ...updateData } = validatedData;
+      const {id:_, ...updateData } = validatedData;
 
       // Update the task;
-      const task = await prisma.housekeepingTask.update({
-        where: { id },
+      const task = await prisma.housekeepingTask.update({where:{ id },
         data: updateData,
         {
             true,
@@ -271,8 +267,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const task = await prisma.housekeepingTask.delete({
-        where: { id }});
+      const task = await prisma.housekeepingTask.delete({where:{ id }});
 
       return task;
     } catch (error) {
@@ -317,8 +312,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const task = await prisma.housekeepingTask.update({
-        where: { id: taskId },
+      const task = await prisma.housekeepingTask.update({where:{ id: taskId },
         userId,
           status: HousekeepingTaskStatus.IN_PROGRESS;
         },
@@ -369,8 +363,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const task = await prisma.housekeepingTask.update({
-        where: { id: taskId },
+      const task = await prisma.housekeepingTask.update({where:{ id: taskId },
         HousekeepingTaskStatus.COMPLETED,
           completedAt: new Date();
         },
@@ -421,8 +414,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const task = await prisma.housekeepingTask.update({
-        where: { id: taskId },
+      const task = await prisma.housekeepingTask.update({where:{ id: taskId },
         HousekeepingTaskStatus.CANCELLED;
         },
         {

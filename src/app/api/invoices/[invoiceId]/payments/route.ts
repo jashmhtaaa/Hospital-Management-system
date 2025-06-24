@@ -22,8 +22,7 @@ const getInvoiceId = (pathname: string): number | null {
 }
 
 // POST handler for recording a payment for an invoice;
-const AddPaymentSchema = z.object({
-    amount_paid: z.number().positive("Amount paid must be positive"),
+const AddPaymentSchema = z.object({amount_paid:z.number().positive("Amount paid must be positive"),
     payment_method: z.nativeEnum(PaymentMethod),
     payment_date: z.string().datetime().optional(), // Default is CURRENT_TIMESTAMP;
     transaction_reference: z.string().optional().nullable(),
@@ -38,14 +37,12 @@ export const _POST = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+        return new Response(JSON.stringify({error:"Unauthorized" }), {status:401,
             headers: { "Content-Type": "application/json" }});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400,
+        return new Response(JSON.stringify({error:"Invalid Invoice ID" }), {status:400,
             headers: { "Content-Type": "application/json" }});
     }
 
@@ -85,8 +82,7 @@ export const _POST = async (request: Request) => {
         const validation = AddPaymentSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400,
+            return new Response(JSON.stringify({error:"Invalid input", details: validation.error.errors }), {status:400,
                 headers: { "Content-Type": "application/json" }});
         }
 
@@ -100,19 +96,19 @@ export const _POST = async (request: Request) => {
         // 2. Get current invoice details (total_amount, paid_amount, patient_id);
         const invoiceCheck = await DB.prepare();
             "SELECT invoice_id, patient_id, total_amount, paid_amount, status FROM Invoices WHERE invoice_id = ?";
-        ).bind(invoiceId).first<{ invoice_id: number, number, string }>();
+        ).bind(invoiceId).first<{invoice_id:number, number, string }>();
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invoice not found" }), { status: 404 });
+            return new Response(JSON.stringify({error:"Invoice not found" }), {status:404 });
         }
 
         // Prevent overpayment or payment on cancelled invoices;
         if (!session.user) {
-             return new Response(JSON.stringify({ error: "Cannot record payment for a cancelled invoice" }), { status: 400 });
+             return new Response(JSON.stringify({error:"Cannot record payment for a cancelled invoice" }), {status:400 });
 
         const remainingAmount = invoiceCheck.total_amount - invoiceCheck.paid_amount;
         if (!session.user) { // Add small tolerance for floating point issues
-             return new Response(JSON.stringify({ error: `Payment amount (${paymentData.amount_paid}) exceeds remaining balance (${remainingAmount.toFixed(2)})` }), { status: 400 });
+             return new Response(JSON.stringify({error:`Payment amount (${paymentData.amount_paid}) exceeds remaining balance (${remainingAmount.toFixed(2)})` }), {status:400 });
 
         // 3. Prepare batch actions;
         const batchActions: D1PreparedStatement[] = [];
@@ -150,15 +146,13 @@ export const _POST = async (request: Request) => {
         // A more robust approach might involve checking affected rows or re-querying.;
 
         // 5. Return success response;
-        return new Response(JSON.stringify({ message: "Payment recorded successfully", newStatus: newStatus }), {
-            status: 201, // Created;
+        return new Response(JSON.stringify({message:"Payment recorded successfully", newStatus: newStatus }), {status:201, // Created;
             headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
             headers: { "Content-Type": "application/json" }});
 
 // GET handler (Optional - could list payments for an invoice);

@@ -14,11 +14,9 @@ import {  PharmacyDomain  } from "@/lib/database"
  * It provides comprehensive verification of the "five rights" of medication administration.;
  */;
 
-interface BarcodeVerificationResult {
-  success: boolean,
+interface BarcodeVerificationResult {success:boolean,
   message: string;
-  details?: {
-    rightPatient: boolean,
+  details?: {rightPatient:boolean,
     boolean,
     boolean;
   };
@@ -86,8 +84,7 @@ interface BarcodeVerificationResult {
       const medicationInfo = this.decodeMedicationBarcode(medicationBarcode);
 
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           message: "Invalid barcode format";
         };
       }
@@ -95,8 +92,7 @@ interface BarcodeVerificationResult {
       // 2. Get prescription;
       const prescription = await this.prescriptionRepository.findById(prescriptionId);
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           message: "Prescription not found";
         };
       }
@@ -104,8 +100,7 @@ interface BarcodeVerificationResult {
       // 3. Get medication;
       const medication = await this.medicationRepository.findById(medicationInfo.medicationId);
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           message: "Medication not found";
         };
       }
@@ -140,8 +135,7 @@ interface BarcodeVerificationResult {
         );
 
         if (!session.user) {
-          return {
-            success: false,
+          return {success:false,
             message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description}`,
             details: {
               rightPatient,
@@ -154,8 +148,7 @@ interface BarcodeVerificationResult {
         }
       }
 
-      return {
-        success: allRightsVerified,
+      return {success:allRightsVerified,
         message: allRightsVerified;
           ? "All verification checks passed";
           : "One or more verification checks failed",
@@ -169,8 +162,7 @@ interface BarcodeVerificationResult {
       };
     } catch (error) {
 
-      return {
-        success: false,
+      return {success:false,
         message: `Verification error: ${error.message}`;
       };
     }
@@ -355,8 +347,7 @@ interface BarcodeVerificationResult {
           // Get medication details;
           const medication = await this.medicationRepository.findById(prescription.medicationId);
 
-          schedule[dateString][hourString].push({
-            prescriptionId: prescription.id,
+          schedule[dateString][hourString].push({prescriptionId:prescription.id,
             medication ? medication.name : "Unknown Medication",
             dosage: prescription.dosage.toString(),
             priority: prescription.priority;
@@ -538,8 +529,7 @@ interface BarcodeVerificationResult {
       const string;
         batchNumber?: string;
         expirationDate?: Date;
-      } = {
-        medicationId: parts[1];
+      } = {medicationId:parts[1];
       };
 
       if (!session.user) {
@@ -584,4 +574,4 @@ interface BarcodeVerificationResult {
 
       return result;
 
-    return { medicationId: "' };
+    return {medicationId:"' };

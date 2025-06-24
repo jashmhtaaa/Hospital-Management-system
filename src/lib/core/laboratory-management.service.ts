@@ -9,8 +9,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Lab Test Validation Schemas;
-export const LabTestSchema = z.object({
-  code: z.string().min(1, "Test code is required"),
+export const LabTestSchema = z.object({code:z.string().min(1, "Test code is required"),
   name: z.string().min(1, "Test name is required"),
   description: z.string().optional(),
   category: z.enum(["chemistry", "hematology", "microbiology", "serology", "molecular", "pathology"]),
@@ -37,8 +36,7 @@ export const LabTestSchema = z.object({
   is_active: z.boolean().default(true);
 });
 
-export const LabOrderSchema = z.object({
-  patient_id: z.string().min(1, "Patient ID is required"),
+export const LabOrderSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
   ordering_provider_id: z.string().min(1, "Ordering provider is required"),
   test_codes: z.array(z.string()).min(1, "At least one test must be ordered"),
   priority: z.enum(["routine", "urgent", "stat", "asap"]).default("routine"),
@@ -49,8 +47,7 @@ export const LabOrderSchema = z.object({
   special_instructions: z.string().optional();
 });
 
-export const SampleCollectionSchema = z.object({
-  order_id: z.string().min(1, "Order ID is required"),
+export const SampleCollectionSchema = z.object({order_id:z.string().min(1, "Order ID is required"),
   collected_by: z.string().min(1, "Collector ID is required"),
   collection_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid collection date"),
   collection_time: z.string(),
@@ -64,8 +61,7 @@ export const SampleCollectionSchema = z.object({
   barcode: z.string().optional();
 });
 
-export const LabResultSchema = z.object({
-  order_id: z.string(),
+export const LabResultSchema = z.object({order_id:z.string(),
   test_code: z.string(),
   result_value: z.string(),
   numeric_value: z.number().optional(),
@@ -80,13 +76,11 @@ export const LabResultSchema = z.object({
   comments: z.string().optional(),
   resulted_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid result date")});
 
-export type LabTest = z.infer<typeof LabTestSchema> & {
-  id: string,
+export type LabTest = z.infer<typeof LabTestSchema> & {id:string,
   Date;
 };
 
-export type LabOrder = z.infer<typeof LabOrderSchema> & {
-  id: string,
+export type LabOrder = z.infer<typeof LabOrderSchema> & {id:string,
   "pending" | "collected" | "processing" | "completed" | "cancelled",
   Date;
   tests?: LabTest[];
@@ -94,14 +88,12 @@ export type LabOrder = z.infer<typeof LabOrderSchema> & {
   provider_name?: string;
 };
 
-export type SampleCollection = z.infer<typeof SampleCollectionSchema> & {
-  id: string,
+export type SampleCollection = z.infer<typeof SampleCollectionSchema> & {id:string,
   "collected" | "received" | "processing" | "resulted" | "rejected",
   Date;
 };
 
-export type LabResult = z.infer<typeof LabResultSchema> & {
-  id: string,
+export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
   Date;
   test_name?: string;
   patient_name?: string;
@@ -115,53 +107,49 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
    */;
   private initializeDefaultTests(): void {
     const defaultTests: Omit<LabTest, "id" | "created_at" | "updated_at">[] = [;
-      {
-        code: "CBC",
+      {code:"CBC",
         "Complete blood count with differential",
         "blood",
         2,
         reference_ranges: [;
-          { gender: "male", range_min: 13.5, range_max: 17.5, unit: "g/dL", normal_text: "Hemoglobin" },
-          { gender: "female", range_min: 12.0, range_max: 15.5, unit: "g/dL", normal_text: "Hemoglobin" }],
-        critical_values: { low_critical: 7.0, high_critical: 20.0 },
+          {gender:"male", range_min: 13.5, range_max: 17.5, unit: "g/dL", normal_text: "Hemoglobin" },
+          {gender:"female", range_min: 12.0, range_max: 15.5, unit: "g/dL", normal_text: "Hemoglobin" }],
+        critical_values: {low_critical:7.0, high_critical: 20.0 },
         cost: 25.00,
         "58410-2",
         is_active: true;
       },
-      {
-        code: "BMP",
+      {code:"BMP",
         "Basic metabolic panel (8 tests)",
         "blood",
         collection_instructions: "Collect in SST tube, fasting preferred",
         preparation_instructions: "Patient should fast for 8-12 hours",
         [;
-          { gender: "both", range_min: 70, range_max: 100, unit: "mg/dL", normal_text: "Glucose" },
-          { gender: "both", range_min: 0.6, range_max: 1.2, unit: "mg/dL", normal_text: "Creatinine" }],
-        critical_values: { low_critical: 50, high_critical: 400 },
+          {gender:"both", range_min: 70, range_max: 100, unit: "mg/dL", normal_text: "Glucose" },
+          {gender:"both", range_min: 0.6, range_max: 1.2, unit: "mg/dL", normal_text: "Creatinine" }],
+        critical_values: {low_critical:50, high_critical: 400 },
         cost: 35.00,
         "24323-8",
         is_active: true;
       },
-      {
-        code: "LIPID",
+      {code:"LIPID",
         "Total cholesterol, HDL, LDL, triglycerides",
         category: "chemistry",
         "Collect in SST tube, fasting required",
         preparation_instructions: "Patient must fast for 12 hours",
         [;
-          { gender: "both", range_min: 0, range_max: 200, unit: "mg/dL", normal_text: "Total Cholesterol" },
-          { gender: "both", range_min: 40, range_max: 999, unit: "mg/dL", normal_text: "HDL" }],
+          {gender:"both", range_min: 0, range_max: 200, unit: "mg/dL", normal_text: "Total Cholesterol" },
+          {gender:"both", range_min: 40, range_max: 999, unit: "mg/dL", normal_text: "HDL" }],
         cost: 45.00,
         "24331-1",
         is_active: true;
       },
-      {
-        code: "UA",
+      {code:"UA",
         "Complete urinalysis with microscopy",
         "urine",
         1,
         reference_ranges: [;
-          { gender: "both", normal_text: "Negative for protein, glucose, blood" }],
+          {gender:"both", normal_text: "Negative for protein, glucose, blood" }],
         cost: 20.00,
         "24357-6",
         is_active: true;
@@ -183,8 +171,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
    */;
   private initializeEquipment(): void {
     const defaultEquipment: EquipmentInterface[] = [;
-      {
-        id: uuidv4(),
+      {id:uuidv4(),
         "Sysmex XN-1000",
         "online",
         supported_tests: ["CBC", "DIFF"],
@@ -192,8 +179,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
         next_maintenance: [0] + 23 * 24 * 60 * 60 * 1000), // 23 days from now;
         connection_status: "connected";
       },
-      {
-        id: uuidv4(),
+      {id:uuidv4(),
         "Roche Cobas 6000",
         "online",
         supported_tests: ["BMP", "LIPID", "LFT"],
@@ -288,7 +274,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ orders: LabOrder[], number }> {
+  }): Promise<{orders:LabOrder[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredOrders = Array.from(this.labOrders.values());
@@ -514,8 +500,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {
   /**;
    * Get laboratory statistics;
    */;
-  async getLabStatistics(dateFrom?: string, dateTo?: string): Promise<{
-    totalOrders: number,
+  async getLabStatistics(dateFrom?: string, dateTo?: string): Promise<{totalOrders:number,
     number,
     number,
     qcFailures: number;

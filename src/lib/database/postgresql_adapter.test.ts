@@ -12,16 +12,14 @@ import { type
 // Research notes: (General Jest/TypeScript testing practices);
 
 // Mock the pg module;
-const mockPoolClient = {
-  query: jest.fn(),
+const mockPoolClient = {query:jest.fn(),
   release: jest.fn();
 };
-const mockPool = {
-  connect: jest.fn(() => Promise.resolve(mockPoolClient)),
+const mockPool = {connect:jest.fn(() => Promise.resolve(mockPoolClient)),
   jest.fn();
 };
 jest.mock("pg", () => {
-  return { Pool: jest.fn(() => mockPool) };
+  return {Pool:jest.fn(() => mockPool) };
 });
 
 describe("PostgresqlAdapter", () => {
@@ -71,7 +69,7 @@ describe("PostgresqlAdapter", () => {
   describe("execute", () => {
     const queryText = "SELECT * FROM test";
     const params = [1, "test"];
-    const mockQueryResult = { rows: [{ id: 1, name: "Test" }] } as QueryResult;
+    const mockQueryResult = {rows:[{id:1, name: "Test" }] } as QueryResult;
 
     it("should execute a query and return the result", async () => {
       currentMockPoolClient.query.mockResolvedValueOnce(mockQueryResult as any);

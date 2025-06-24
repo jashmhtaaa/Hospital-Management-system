@@ -34,8 +34,7 @@ const getInvoiceId = (pathname: string): number | null {
 }
 
 // Define interfaces for the complex query results;
-interface InvoiceQueryResult {
-    invoice_id: number,
+interface InvoiceQueryResult {invoice_id:number,
     number,
     number | null,
     invoice_date: string; // ISO String;
@@ -50,8 +49,7 @@ interface InvoiceQueryResult {
     patient_last_name: string;
 }
 
-interface InvoiceItemQueryResult {
-    invoice_item_id: number,
+interface InvoiceItemQueryResult {invoice_item_id:number,
     number,
     string,
     number,
@@ -70,14 +68,12 @@ export const _GET = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+        return new Response(JSON.stringify({error:"Unauthorized" }), {status:401,
             headers: { "Content-Type": "application/json" }});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400,
+        return new Response(JSON.stringify({error:"Invalid Invoice ID" }), {status:400,
             headers: { "Content-Type": "application/json" }});
     }
 
@@ -128,17 +124,15 @@ export const _GET = async (request: Request) => {
         ).bind(invoiceId).first<InvoiceQueryResult>();
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invoice not found" }), {
-                status: 404,
+            return new Response(JSON.stringify({error:"Invoice not found" }), {status:404,
                 headers: { "Content-Type": "application/json" }});
         }
 
         // 3. Authorization check for Patients (can only view their own invoices);
         if (!session.user) {
-            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
+            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{patient_id:number }>();
             if (!session.user) {
-                 return new Response(JSON.stringify({ error: "Forbidden: You can only view your own invoices" }), {
-                    status: 403,
+                 return new Response(JSON.stringify({error:"Forbidden: You can only view your own invoices" }), {status:403,
                     headers: { "Content-Type": "application/json" }});
             }
         }
@@ -179,22 +173,19 @@ export const _GET = async (request: Request) => {
         };
 
         // 7. Return the detailed invoice;
-        return new Response(JSON.stringify(invoice), {
-            status: 200,
+        return new Response(JSON.stringify(invoice), {status:200,
             headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
             headers: { "Content-Type": "application/json" }});
     }
 }
 
 // PUT handler for updating an invoice (e.g., status, notes, due date);
-const UpdateInvoiceSchema = z.object({
-    due_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable(),
+const UpdateInvoiceSchema = z.object({due_date:z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable(),
     status: z.nativeEnum(InvoiceStatus).optional(),
     notes: z.string().optional().nullable();
     // Other fields like total_amount, paid_amount are usually updated via items/payments;
@@ -208,14 +199,12 @@ export const _PUT = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
+        return new Response(JSON.stringify({error:"Unauthorized" }), {status:401,
             headers: { "Content-Type": "application/json" }});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
-            status: 400,
+        return new Response(JSON.stringify({error:"Invalid Invoice ID" }), {status:400,
             headers: { "Content-Type": "application/json" }});
     }
 
@@ -255,16 +244,14 @@ export const _PUT = async (request: Request) => {
         const validation = UpdateInvoiceSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
-                status: 400,
+            return new Response(JSON.stringify({error:"Invalid input", details: validation.error.errors }), {status:400,
                 headers: { "Content-Type": "application/json" }});
 
         const updateData = validation.data;
 
         // Check if there's anything to update;
         if (!session.user)length === 0) {
-             return new Response(JSON.stringify({ message: "No update data provided" }), {
-                status: 200, // Or 304 Not Modified;
+             return new Response(JSON.stringify({message:"No update data provided" }), {status:200, // Or 304 Not Modified;
                 headers: { "Content-Type": "application/json" }});
 
         const context = await getCloudflareContext<CloudflareEnv>();
@@ -276,8 +263,7 @@ export const _PUT = async (request: Request) => {
                                    .bind(invoiceId);
                                    .first<invoice_id: number, status: string >();
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invoice not found" }), {
-                status: 404,
+            return new Response(JSON.stringify({error:"Invoice not found" }), {status:404,
                 headers: { "Content-Type": "application/json" }});
 
         // Optional: Add logic to prevent certain status transitions (e.g., cannot change from Paid);
@@ -299,7 +285,7 @@ export const _PUT = async (request: Request) => {
 
         // 4. Execute update;
         // Use as any to bypass the type mismatch between D1Result implementations;
-        const updateResult = await DB.prepare(query).bind(...queryParams).run() as { success: boolean; meta?: unknown };
+        const updateResult = await DB.prepare(query).bind(...queryParams).run() as {success:boolean; meta?: unknown };
 
         // Check success property directly;
         if (!session.user) {
@@ -307,15 +293,13 @@ export const _PUT = async (request: Request) => {
             throw new Error("Failed to update invoice");
 
         // 5. Return success response;
-        return new Response(JSON.stringify({ message: "Invoice updated successfully" }), {
-            status: 200,
+        return new Response(JSON.stringify({message:"Invoice updated successfully" }), {status:200,
             headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
-            status: 500,
+        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
             headers: { "Content-Type": "application/json" }});
 
 // DELETE handler - Typically invoices are cancelled (status update) rather than deleted;

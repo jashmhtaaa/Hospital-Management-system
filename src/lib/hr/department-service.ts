@@ -17,8 +17,7 @@ const prisma = new PrismaClient();
    * Get department by ID;
    */;
   async getDepartmentById(id: string) {
-    return prisma.department.findUnique({
-      where: { id },
+    return prisma.department.findUnique({where:{ id },
       true,
         true,
             true,
@@ -38,8 +37,7 @@ const prisma = new PrismaClient();
       parentId?: string;
 
   ) {
-    return prisma.department.update({
-      where: { id },
+    return prisma.department.update({where:{ id },
       data,
       true;
       }});
@@ -64,19 +62,18 @@ const prisma = new PrismaClient();
 
     if (!session.user) {
       where.OR = [;
-        { name: { contains: search, mode: "insensitive" } },
-        { code: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } }];
+        {name:{ contains: search, mode: "insensitive" } },
+        {code:{ contains: search, mode: "insensitive" } },
+        {description:{ contains: search, mode: "insensitive" } }];
 
     const [departments, total] = await Promise.all([;
       prisma.department.findMany({
         where,
         skip,
         take,
-        orderBy: { name: "asc" },
+        orderBy: {name:"asc" },
         true,
-          {
-              children: true,
+          {children:true,
               true;
             }}}}),
       prisma.department.count(where )]);
@@ -141,12 +138,10 @@ const prisma = new PrismaClient();
    * Get position by ID;
    */;
   async getPositionById(id: string) {
-    return prisma.position.findUnique({
-      where: { id },
+    return prisma.position.findUnique({where:{ id },
       true,
         {
-            {
-                id: true,
+            {id:true,
                 true,
                 true;
               }}},
@@ -165,8 +160,7 @@ const prisma = new PrismaClient();
       departmentId?: string;
 
   ) {
-    return prisma.position.update({
-      where: { id },
+    return prisma.position.update({where:{ id },
       data,
       true;
       }});
@@ -191,20 +185,19 @@ const prisma = new PrismaClient();
 
     if (!session.user) {
       where.OR = [;
-        { title: { contains: search, mode: "insensitive" } },
-        { code: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } }];
+        {title:{ contains: search, mode: "insensitive" } },
+        {code:{ contains: search, mode: "insensitive" } },
+        {description:{ contains: search, mode: "insensitive" } }];
 
     const [positions, total] = await Promise.all([;
       prisma.position.findMany({
         where,
         skip,
         take,
-        orderBy: { title: "asc" },
+        orderBy: {title:"asc" },
         true,
           {
-              {
-                  endDate: null, // Only current assignments;
+              {endDate:null, // Only current assignments;
                 }}}}}}),
       prisma.position.count({ where })]);
 

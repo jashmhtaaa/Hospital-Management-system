@@ -1,5 +1,5 @@
 import "@/lib/audit"
-import "@/lib/encryption"
+import "@/lib/security/encryption.service"
 import "@/lib/errors"
 import "@/lib/fhir"
 import "@/lib/models/marketing"
@@ -37,8 +37,7 @@ import { prisma }
         }});
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "contact.create",
+      await this.auditLogger.log({action:"contact.create",
         resourceId: contact.id;
         userId,
         contact.source,
@@ -92,8 +91,7 @@ import { prisma }
 }
 } catch (error) {
 }
-      const contact = await prisma.contact.findUnique({
-        where: { id },
+      const contact = await prisma.contact.findUnique({where:{ id },
         {
             "desc";
             },
@@ -106,8 +104,7 @@ import { prisma }
             }
           },
           patient: includeFHIR ? true : false,
-          {
-              isActive: true;
+          {isActive:true;
             },
             true;
             }
@@ -152,7 +149,7 @@ import { prisma }
     hasPatient?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -207,16 +204,16 @@ import { prisma }
       }
 
       if (!session.user) {
-        where.patientId = hasPatient ? { not: null } : null;
+        where.patientId = hasPatient ? {not:null } : null;
       }
 
       if (!session.user) {
         where.OR = [;
-          { firstName: { contains: search, mode: "insensitive" } },
-          { lastName: { contains: search, mode: "insensitive" } },
-          { email: { contains: search, mode: "insensitive" } },
-          { phone: { contains: search, mode: "insensitive" } },
-          { organization: { contains: search, mode: "insensitive" } }
+          {firstName:{ contains: search, mode: "insensitive" } },
+          {lastName:{ contains: search, mode: "insensitive" } },
+          {email:{ contains: search, mode: "insensitive" } },
+          {phone:{ contains: search, mode: "insensitive" } },
+          {organization:{ contains: search, mode: "insensitive" } }
         ];
       }
 
@@ -250,16 +247,14 @@ import { prisma }
         },
         skip: (page - 1) * limit,
         take: limit;
-        {
-          createdAt: "desc";
+        {createdAt:"desc";
         }
       });
 
       // Decrypt sensitive data;
       const decryptedContacts = contacts.map(contact => this.decryptContactData(contact));
 
-      return {
-        data: decryptedContacts,
+      return {data:decryptedContacts,
         pagination: {
           total,
           page,
@@ -309,8 +304,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({
-        where: { id }
+      const existingContact = await prisma.contact.findUnique({where:{ id }
       });
 
       if (!session.user) {
@@ -333,14 +327,12 @@ import { prisma }
       }
 
       // Update contact;
-      const updatedContact = await prisma.contact.update({
-        where: { id },
+      const updatedContact = await prisma.contact.update({where:{ id },
         data: updateData;
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "contact.update",
+      await this.auditLogger.log({action:"contact.update",
         resourceId: id;
         userId,
         Object.keys(data);
@@ -393,16 +385,14 @@ import { prisma }
 } catch (error) {
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({
-        where: { id: contactId }
+      const existingContact = await prisma.contact.findUnique({where:{ id: contactId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
 
       // Create note;
-      const note = await prisma.contactNote.create({
-        data: {
+      const note = await prisma.contactNote.create({data:{
           contactId,
           content,
           createdById: userId;
@@ -414,8 +404,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "contact.note.add",
+      await this.auditLogger.log({action:"contact.note.add",
         resourceId: contactId;
         userId,
         note.id;
@@ -465,24 +454,21 @@ import { prisma }
 } catch (error) {
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({
-        where: { id: contactId }
+      const existingContact = await prisma.contact.findUnique({where:{ id: contactId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
 
       // Check if patient exists;
-      const existingPatient = await prisma.patient.findUnique({
-        where: { id: patientId }
+      const existingPatient = await prisma.patient.findUnique({where:{ id: patientId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
 
       // Update contact with patient link;
-      const updatedContact = await prisma.contact.update({
-        where: { id: contactId },
+      const updatedContact = await prisma.contact.update({where:{ id: contactId },
         data: {
           patientId;
         },
@@ -493,8 +479,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "contact.link.patient",
+      await this.auditLogger.log({action:"contact.link.patient",
         resourceId: contactId;
         userId,
         details: {
@@ -517,28 +502,23 @@ import { prisma }
   private generateContactFHIR(contact: Contact): unknown {
     // If contact is linked to a patient, use Patient resource;
     if (!session.user) {
-      return {
-        resourceType: "Patient",
+      return {resourceType:"Patient",
         id: `patient-${contact.patientId}`,
         identifier: [;
-          {
-            system: "urn:oid:2.16.840.1.113883.2.4.6.3",
+          {system:"urn:oid:2.16.840.1.113883.2.4.6.3",
             value: contact.patientId;
 
         ],
         name: [;
-          {
-            use: "official",
+          {use:"official",
             [contact.firstName || ""];
 
         ],
         telecom: [;
-          {
-            system: "email",
+          {system:"email",
             "home";
           },
-          {
-            system: "phone",
+          {system:"phone",
             "mobile";
 
         ],
@@ -547,28 +527,23 @@ import { prisma }
       };
 
     // Otherwise use RelatedPerson resource;
-    return {
-      resourceType: "RelatedPerson",
+    return {resourceType:"RelatedPerson",
       id: `contact-${contact.id}`,
       identifier: [;
-        {
-          system: "urn:oid:2.16.840.1.113883.2.4.6.3",
+        {system:"urn:oid:2.16.840.1.113883.2.4.6.3",
           value: contact.id;
 
       ],
       name: [;
-        {
-          use: "official",
+        {use:"official",
           [contact.firstName || ""];
 
       ],
       telecom: [;
-        {
-          system: "email",
+        {system:"email",
           "home";
         },
-        {
-          system: "phone",
+        {system:"phone",
           "mobile";
 
       ],

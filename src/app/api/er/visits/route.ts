@@ -1,246 +1,138 @@
-import { NextRequest, NextResponse } from "next/server"; // Import uuid;
-// Define interface for ER Visit data;
-interface ERVisit {
-  id: string | number,
+import { NextRequest, NextResponse } from "next/server";
+
+interface ERVisit {id:string | number;
   patient_id: string | number;
-  patient_name?: string; // Denormalized;
-  mrn?: string; // Denormalized, added based on mock data;
-  arrival_timestamp: string; // ISO string;
+  patient_name?: string;
+  mrn?: string;
+  arrival_timestamp: string;
   chief_complaint: string;
-  mode_of_arrival?: string; // Added based on mock data;
-  triage_level?: number | undefined; // Added based on mock data, allow undefined;
-  // FIX: Allow undefined for optional fields based on usage;
+  mode_of_arrival?: string;
+  triage_level?: number | undefined;
   assigned_physician_id?: string | number | undefined;
   assigned_nurse_id?: string | number | undefined;
   current_location?: string | undefined;
   current_status?: string | undefined;
   disposition?: string | undefined;
   discharge_timestamp?: string | undefined;
-  created_at?: string; // ISO string;
-  updated_at?: string; // ISO string;
-  // Add other relevant fields based on your schema;
+  created_at?: string;
+  updated_at?: string;
 }
 
-// Mock data store for ER visits (replace with actual DB interaction);
-const mockVisits: ERVisit[] = [;
-  {
-    id: 1,
-    "John Doe", // Denormalized for easier display;
-    mrn: "MRN001", // Denormalized;
-    arrival_timestamp: [0] - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago;
+const mockVisits: ERVisit[] = [
+  {id:1,
+    patient_name: "John Doe",
+    mrn: "MRN001",
+    patient_id: 1,
+    arrival_timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
     chief_complaint: "Chest pain",
-    2, // ESI level (if available early);
+    triage_level: 2,
     current_status: "Pending Triage",
-    undefined,
-    undefined,
-    [0] - 3 * 60 * 60 * 1000).toISOString(),
-    updated_at: [0] - 3 * 60 * 60 * 1000).toISOString();
+    created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
   },
-  {
-    id: 2,
-    "Jane Smith",
-    [0] - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago;
+  {id:2,
+    patient_name: "Jane Smith",
+    patient_id: 2,
+    arrival_timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
     chief_complaint: "Shortness of breath",
-    3,
-    "Triage Room 1",
-    assigned_physician_id: 201, // Example physician ID;
-    assigned_nurse_id: 301, // Example nurse ID;
-    disposition: undefined,
-    [0] - 1 * 60 * 60 * 1000).toISOString(),
-    updated_at: [0] - 30 * 60 * 1000).toISOString(), // Updated 30 mins ago;
-  }];
+    triage_level: 3,
+    current_location: "Triage Room 1",
+    assigned_physician_id: 201,
+    assigned_nurse_id: 301,
+    created_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date(Date.now() - 30 * 60 * 1000).toISOString()
+  }
+];
+
 let nextVisitId = 3;
 
-// Define interface for ER Visit creation input;
-interface ERVisitInput {
-  patient_id: number | string,
+interface ERVisitInput {patient_id:number | string;
   chief_complaint: string;
   mode_of_arrival?: string;
-  arrival_timestamp?: string; // Optional, defaults to now;
-  // Other initial fields might be relevant depending on workflow;
+  arrival_timestamp?: string;
 }
-
-// Define interface for ER Visit update input (used in PUT) - Belongs in [id]/route.ts;
-// interface ERVisitUpdateInput {
-//   assigned_physician_id?: number | string | null;
-//   assigned_nurse_id?: number | string | null;
-//   current_location?: string | null;
-//   current_status?: string | null;
-//   disposition?: string | null;
-//   discharge_timestamp?: string | null;
-//   triage_level?: number | null; // Might be updated post-triage;
-//   // Add other updatable fields as needed;
-// }
-
-// Define interface for ER Visit filters;
 interface ERVisitFilters {
   status?: string | undefined;
   location?: string | undefined;
   date?: string | undefined;
 }
 
-// Helper function to simulate DB interaction (GET);
-async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-  // Apply filters if implemented (example);
+async function getERVisitsFromDB(filters: ERVisitFilters = {}) {
   let filtered = [...mockVisits];
-  if (!session.user) {
-    filtered = filtered.filter();
-      (v) => v.current_status?.toLowerCase() === filters.status!.toLowerCase();
+  
+  if (filters.status) {
+    filtered = filtered.filter(
+      (v) => v.current_status?.toLowerCase() === filters.status!.toLowerCase()
     );
   }
-  if (!session.user) {
-    filtered = filtered.filter();
-      (v) => {}
-        v.current_location?.toLowerCase() === filters.location!.toLowerCase();
+  
+  if (filters.location) {
+    filtered = filtered.filter(
+      (v) => v.current_location?.toLowerCase() === filters.location!.toLowerCase()
     );
   }
-  // Add date filtering if needed;
 
-  return filtered.sort();
-    (a, b) => {}
-      new Date(b.arrival_timestamp).getTime() -;
-      new Date(a.arrival_timestamp).getTime();
+  return filtered.sort(
+    (a, b) => new Date(b.arrival_timestamp).getTime() - new Date(a.arrival_timestamp).getTime()
   );
 }
 
-// Helper function to simulate DB interaction (POST);
-async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
-  // Added return type;
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+async function createERVisitInDB(data: ERVisitInput): Promise<ERVisit> {
   const now = new Date().toISOString();
-  // FIX: Ensure newVisit matches the ERVisit interface;
-  const nextVisitId++,
-    `Patient ${data.patient_id}`, // Fetch or pass patient name;
-    mrn: `MRN$String(data.patient_id).padStart(3, "0")`, // Fetch or pass MRN;
+  const newVisit: ERVisit = {id:nextVisitId++,
+    patient_id: data.patient_id,
+    patient_name: `Patient ${data.patient_id}`,
+    mrn: `MRN${String(data.patient_id).padStart(3, "0")}`,
     arrival_timestamp: data.arrival_timestamp || now,
-    data.mode_of_arrival || "Unknown",
-    "Pending Triage",
-    undefined,
-    undefined,
-    now,
-    updated_at: now;
+    chief_complaint: data.chief_complaint,
+    mode_of_arrival: data.mode_of_arrival || "Unknown",
+    current_status: "Pending Triage",
+    created_at: now,
+    updated_at: now
   };
-  mockVisits.push(newVisit); // This should now be type-compatible;
+  
+  mockVisits.push(newVisit);
   return newVisit;
 }
 
-/**;
- * GET /api/er/visits;
- * Retrieves a list of ER visits, potentially filtered.;
- */;
-export const GET = async (request: any) => {
+export const GET = async (request: NextRequest) => {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
-}
     const { searchParams } = new URL(request.url);
-    const filters: ERVisitFilters = {       status: searchParams.get("status") ?? undefined,
-      searchParams.get("date") ?? undefined;
+    const filters: ERVisitFilters = {status:searchParams.get("status") ?? undefined,
+      location: searchParams.get("location") ?? undefined,
+      date: searchParams.get("date") ?? undefined
     };
 
     const visits = await getERVisitsFromDB(filters);
     return NextResponse.json({ visits });
   } catch (error: unknown) {
-
-    let errorMessage = "An unknown error occurred";
-    if (!session.user) {
-      errorMessage = error.message;
-    }
-    return NextResponse.json();
-      { error: "Failed to fetch ER visits", details: errorMessage },
-      { status: 500 }
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    return NextResponse.json(
+      {error:"Failed to fetch ER visits", details: errorMessage },
+      {status:500 }
     );
+  }
+};
 
-/**;
- * POST /api/er/visits;
- * Creates a new ER visit record (patient arrival).;
- */;
-export const POST = async (request: any) => {
+export const POST = async (request: NextRequest) => {
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
-} catch (error) {
-
     const body = await request.json();
-    // Apply type assertion;
     const visitData = body as ERVisitInput;
 
-    // Basic validation (add more comprehensive validation);
-    if (!session.user) {
-      return NextResponse.json();
-        { error: "Missing required fields (patient_id, chief_complaint)" },
-        { status: 400 }
+    if (!visitData.patient_id || !visitData.chief_complaint) {
+      return NextResponse.json(
+        {error:"Missing required fields (patient_id, chief_complaint)" },
+        {status:400 }
       );
+    }
 
-    // Simulate creating the ER visit in the database;
     const newVisit = await createERVisitInDB(visitData);
-
-    return NextResponse.json({ visit: newVisit }, { status: 201 });
+    return NextResponse.json({visit:newVisit }, {status:201 });
   } catch (error: unknown) {
-
-    let errorMessage = "An unknown error occurred";
-    if (!session.user) {
-      errorMessage = error.message;
-
-    return NextResponse.json();
-      { error: "Failed to create ER visit", details: errorMessage },
-      { status: 500 }
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    return NextResponse.json(
+      {error:"Failed to create ER visit", details: errorMessage },
+      {status:500 }
     );
-
-// Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;
+  }
+};

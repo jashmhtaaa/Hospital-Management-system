@@ -12,8 +12,7 @@ import {  HousekeepingInspection
 
      } from "@/lib/database"[];
   }[];
-  {
-      system: string,
+  {system:string,
       string;
     }[];
     text: string;
@@ -24,8 +23,7 @@ import {  HousekeepingInspection
   string;
     display?: string;
   };
-  performer?: {
-    reference: string;
+  performer?: {reference:string;
     display?: string;
   }[];
   string;
@@ -33,8 +31,7 @@ import {  HousekeepingInspection
   }[];
   occurrenceDateTime?: string;
   authoredOn: string;
-  note?: {
-    text: string;
+  note?: {text:string;
   }[];
 
 /**;
@@ -45,22 +42,18 @@ import {  HousekeepingInspection
   }[];
   status: "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error",
   "routine" | "urgent" | "asap" | "stat",
-  {
-    reference: string;
+  {reference:string;
   };
   string;
   };
   authoredOn: string,
-  {
-    reference: string;
+  {reference:string;
     display?: string;
   };
-  owner?: {
-    reference: string;
+  owner?: {reference:string;
     display?: string;
   };
-  note?: {
-    text: string;
+  note?: {text:string;
   }[];
   executionPeriod?: {
     start?: string;
@@ -79,11 +72,9 @@ import {  HousekeepingInspection
       string;
     }[];
   };
-  managingOrganization?: {
-    reference: string;
+  managingOrganization?: {reference:string;
   };
-  partOf?: {
-    reference: string;
+  partOf?: {reference:string;
   };
 
 /**;
@@ -93,34 +84,29 @@ import {  HousekeepingInspection
 
     }[];
   }[];
-  {
-      system: string,
+  {system:string,
       string;
     }[];
     text: string;
   };
-  subject?: {
-    reference: string;
+  subject?: {reference:string;
   };
   effectiveDateTime: string,
   string;
     display?: string;
   }[];
-  valueQuantity?: {
-    value: number,
+  valueQuantity?: {value:number,
     string,
     code: string;
   };
   component?: {
-    {
-        system: string,
+    {system:string,
         string;
       }[];
       text: string;
     };
     valueString?: string;
-    valueQuantity?: {
-      value: number,
+    valueQuantity?: {value:number,
       string,
       code: string;
     };
@@ -151,19 +137,17 @@ export const _toFHIRHousekeepingRequest = (unknown,
   };
 
   // Map request type to FHIR coding;
-  const requestTypeMap: Record<string, { code: string, display: string }> = {
-    "REGULAR_CLEANING": { code: "regular-cleaning", display: "Regular Cleaning" },
-    "DEEP_CLEANING": { code: "deep-cleaning", display: "Deep Cleaning" },
-    "SPILL_CLEANUP": { code: "spill-cleanup", display: "Spill Cleanup" },
-    "TERMINAL_CLEANING": { code: "terminal-cleaning", display: "Terminal Cleaning" }
+  const requestTypeMap: Record<string, {code:string, display: string }> = {
+    "REGULAR_CLEANING": {code:"regular-cleaning", display: "Regular Cleaning" },
+    "DEEP_CLEANING": {code:"deep-cleaning", display: "Deep Cleaning" },
+    "SPILL_CLEANUP": {code:"spill-cleanup", display: "Spill Cleanup" },
+    "TERMINAL_CLEANING": {code:"terminal-cleaning", display: "Terminal Cleaning" }
   };
 
-  return {
-    resourceType: "ServiceRequest",
+  return {resourceType:"ServiceRequest",
     statusMap[request.status] || "unknown",
     priorityMap[request.priority] || "routine",
-    [{
-        system: "https://terminology.hl7.org/CodeSystem/service-category",
+    [{system:"https://terminology.hl7.org/CodeSystem/service-category",
         "Housekeeping";
       }]],
     "https://hms.local/fhir/CodeSystem/housekeeping-request-type",
@@ -198,10 +182,8 @@ export const _toFHIRHousekeepingTask = (HousekeepingRequest;
     "CANCELLED": "cancelled";
   };
 
-  return {
-    resourceType: "Task",
-    [{
-      reference: `ServiceRequest/${task.requestId}`;
+  return {resourceType:"Task",
+    [{reference:`ServiceRequest/${task.requestId}`;
     }],
     status: statusMap[task.status] || "requested",
     priorityMap[task.request?.priority] || "routine",
@@ -231,11 +213,9 @@ export const _toFHIRHousekeepingInspection = (unknown,
     "FAILED": "final";
   };
 
-  return {
-    resourceType: "Observation",
+  return {resourceType:"Observation",
     statusMap[inspection.status] || "unknown",
-    [{
-        system: "https://terminology.hl7.org/CodeSystem/observation-category",
+    [{system:"https://terminology.hl7.org/CodeSystem/observation-category",
         "Survey";
       }]],
     "https://hms.local/fhir/CodeSystem/housekeeping-inspection-type",
@@ -256,8 +236,7 @@ export const _toFHIRHousekeepingInspection = (unknown,
     } : undefined,
     component: [
       ...(inspection.findings ? [{
-        [{
-            system: "https://hms.local/fhir/CodeSystem/housekeeping-inspection",
+        [{system:"https://hms.local/fhir/CodeSystem/housekeeping-inspection",
             "Findings";
           }],
           text: "Findings";
@@ -265,8 +244,7 @@ export const _toFHIRHousekeepingInspection = (unknown,
         valueString: inspection.findings;
       }] : []),
       ...(inspection.recommendations ? [{
-        [{
-            system: "https://hms.local/fhir/CodeSystem/housekeeping-inspection",
+        [{system:"https://hms.local/fhir/CodeSystem/housekeeping-inspection",
             "Recommendations";
           }],
           text: "Recommendations";

@@ -1,8 +1,8 @@
 import "../../../../../lib/audit"
 import "../../../../../lib/error-handler"
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
 import {  errorHandler  } from "@/lib/database"
 import {  type
@@ -17,8 +17,7 @@ import {  type
  */;
 
 // Initialize repositories (in production, use dependency injection);
-const administrationRepository = {
-  findById: (id: string) => Promise.resolve(null),
+const administrationRepository = {findById:(id: string) => Promise.resolve(null),
   findByPatientId: (patientId: string) => Promise.resolve([]),
   findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
@@ -26,7 +25,7 @@ const administrationRepository = {
   findByDateRange: (startDate: Date, endDate: Date) => Promise.resolve([]),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByAdministeredBy: (userId: string) => Promise.resolve([]),
-  generateReport: (criteria: unknown) => Promise.resolve({ data: [], summary: {} }),
+  generateReport: (criteria: unknown) => Promise.resolve({data:[], summary: {} }),
   save: (administration: unknown) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true);
@@ -72,7 +71,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({error:"Unauthorized" }, {status:401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -96,8 +95,8 @@ export const GET = async (req: any) => {
     // Validate date range;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Start date and end date are required" },
-        { status: 400 }
+        {error:"Start date and end date are required" },
+        {status:400 }
       );
     }
 
@@ -132,8 +131,7 @@ export const GET = async (req: any) => {
       formattedReport = convertToCSV(report.data);
 
       // Audit logging;
-      await auditLog("MEDICATION_ADMINISTRATION", {
-        action: "EXPORT_REPORT",
+      await auditLog("MEDICATION_ADMINISTRATION", {action:"EXPORT_REPORT",
         userId,
         details: null,
           reportType,
@@ -143,8 +141,7 @@ export const GET = async (req: any) => {
       });
 
       // Return CSV response;
-      return new NextResponse(formattedReport, {
-        status: 200,
+      return new NextResponse(formattedReport, {status:200,
         headers: {
           "Content-Type": "text/csv",
           "Content-Disposition": `attachment; filename="med_admin_report_${startDate}_to_${endDate}.csv"`;
@@ -154,8 +151,7 @@ export const GET = async (req: any) => {
       formattedReport = report;
 
       // Audit logging;
-      await auditLog("MEDICATION_ADMINISTRATION", {
-        action: "GENERATE_REPORT",
+      await auditLog("MEDICATION_ADMINISTRATION", {action:"GENERATE_REPORT",
         userId,
         details: null,
           reportType,
@@ -165,7 +161,7 @@ export const GET = async (req: any) => {
       });
 
       // Return JSON response;
-      return NextResponse.json(formattedReport, { status: 200 });
+      return NextResponse.json(formattedReport, {status:200 });
     }
   } catch (error) {
     return errorHandler(error, "Error generating medication administration report");
@@ -177,8 +173,7 @@ export const GET = async (req: any) => {
  */;
 const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
   // Calculate various metrics based on the report data;
-  const metrics = {
-    totalAdministrations: data.length,
+  const metrics = {totalAdministrations:data.length,
     0,
     0,
     0,

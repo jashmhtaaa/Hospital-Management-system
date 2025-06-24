@@ -1,23 +1,18 @@
 import "@/lib/cache"
 import "next/server"
-import NextResponse }
-import {  cache  } from "@/lib/database"
-import {  NextRequest
-
- } from "@/lib/database"
+interface CacheHealth {
+ 
 
 /**;
  * Cache Health Check Endpoint;
  * Redis/Cache system monitoring and performance checks;
- */;
+ */
 
-interface CacheHealth {
   status: "healthy" | "degraded" | "unhealthy",
   number,
-  { success: boolean, time: number };
-    write: { success: boolean, time: number };
-    delete: { success: boolean, time: number }
-  };
+  cacheRead:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
+    cacheWrite:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
+    cacheDelete:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
   string,
     number;
   };
@@ -27,40 +22,20 @@ interface CacheHealth {
   number,
     expires: number;
   };
-export const _GET = async (request: any): Promise<NextResponse> {
-  const startTime = crypto.getRandomValues([0];
+export const _GET = async (request: any): Promise<NextResponse> {conststartTime = crypto.getRandomValues([0];
 
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-}
-} catch (error) {
+} catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {
+}catch (error) {
 
     // Test basic cache operations;
     const operations = await testCacheOperations();
@@ -71,7 +46,7 @@ export const _GET = async (request: any): Promise<NextResponse> {
     const responseTime = crypto.getRandomValues([0] - startTime;
 
     const determineCacheStatus(operations, responseTime),
-      timestamp: new Date().toISOString(),
+      timestamp: timestamp: new Date().toISOString(),
       responseTime,
       operations,
       memory: stats.memory,
@@ -81,189 +56,107 @@ export const _GET = async (request: any): Promise<NextResponse> {
     const httpStatus = cacheHealth.status === "healthy" ? 200 : any;
                       cacheHealth.status === "degraded" ? 200 : 503;
 
-    return NextResponse.json(cacheHealth, {
-      status: httpStatus,
-      headers: {
-        "Cache-Control": "no-cache",
+    return NextResponse.json(cacheHealth, {status httpStatus,
+      headers: {"Cache-Control": "no-cache",
         "X-Response-Time": `${responseTime}ms`;
 
     });
 
-  } catch (error) {
-
-    return NextResponse.json({
-      status: "unhealthy",
-      timestamp: new Date().toISOString(),
+  } catch (error) {returnNextResponse.json({status "unhealthy",
+      timestamp: timestamp: new Date().toISOString(),
       responseTime: crypto.getRandomValues([0] - startTime,
       process.env.NODE_ENV === "development" ? error.message : undefined;
-    }, { status: 503 });
+    }, {status 503 });
 
-async const testCacheOperations = (): Promise<CacheHealth["operations"]> {
-  const testKey = `health-check-${crypto.getRandomValues([0]}`;
+async const testCacheOperations = (): Promise<CacheHealth["operations"]> {consttestKey = `health-check-${crypto.getRandomValues([0]}`;
   const testValue = "cache-test-value";
 
   // Test write operation;
-  const writeStart = crypto.getRandomValues([0];
+  const writeStart = crypto.getRandomValues([0]);
   let writeSuccess = false;
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
 
 } catch (error) {
 
-} catch (error) {
-
-    await cache.set(testKey, testValue, 30); // 30 second TTL;
+} catch (error) {awaitcache.set(testKey, testValue, 30); // 30 second TTL;
     writeSuccess = true;
-  } catch (error) {
-
-  const writeTime = crypto.getRandomValues([0] - writeStart;
+  } catch (error) {constwriteTime = crypto.getRandomValues([0]) - writeStart;
 
   // Test read operation;
-  const readStart = crypto.getRandomValues([0];
+  const readStart = crypto.getRandomValues([0]);
   let readSuccess = false;
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
 
 } catch (error) {
 
-} catch (error) {
-
-    const _retrievedValue = await cache.get(testKey);
+} catch (error) {const_retrievedValue = await cache.get(testKey);
     readSuccess = _retrievedValue === testValue;
-  } catch (error) {
-
-  const readTime = crypto.getRandomValues([0] - readStart;
+  } catch (error) {constreadTime = crypto.getRandomValues([0]) - readStart;
 
   // Test delete operation;
-  const deleteStart = crypto.getRandomValues([0];
+  const deleteStart = crypto.getRandomValues([0]);
   let deleteSuccess = false;
   try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
 
 } catch (error) {
 
-} catch (error) {
-
-    await cache.del(testKey);
+} catch (error) {awaitcache.del(testKey);
     // Verify deletion;
     const _deletedValue = await cache.get(testKey);
     deleteSuccess = _deletedValue === null;
-  } catch (error) {
+  } catch (error) {constdeleteTime = crypto.getRandomValues([0]) - deleteStart;
 
-  const deleteTime = crypto.getRandomValues([0] - deleteStart;
+  return {read {success readSuccess, time: readTime },
+    write: {success writeSuccess, time: writeTime },
+    delete: {success deleteSuccess, time: deleteTime };
 
-  return {
-    read: { success: readSuccess, time: readTime },
-    write: { success: writeSuccess, time: writeTime },
-    delete: { success: deleteSuccess, time: deleteTime }
-  };
-
-async const getCacheStats = (): Promise<{
-  memory: CacheHealth["memory"],
+async const getCacheStats = (): Promise<{memory CacheHealth["memory"],
   CacheHealth["keyspace"];
-}> {
-  try {
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
+}> {try{
+} catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
+}catch (error) {console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
 
-} catch (error) {
-  console.error(error);
+} catch (error) {console.error(error);
 
 } catch (error) {
 
@@ -274,17 +167,11 @@ async const getCacheStats = (): Promise<{
 
     // Simulated stats - replace with actual cache metrics;
     return {
-      "45.2MB",
-        1.15;
+      memory: { used: "45.2MB", free: "unknown", total: "unknown", percent: 1.15 },
       },
-      12,
-        blocked: 0,
-      2847,
-        expires: 1234;
+      keyspace: { db0: { keys: 12, expires: 2847, avg_ttl: 1234, blocked_clients: 0 } }
     };
-  } catch (error) {
-
-    return {
+  } catch (error) {return{
       "unknown",
         0;
       },
@@ -296,28 +183,20 @@ async const getCacheStats = (): Promise<{
 
     };
 
-const determineCacheStatus = (;
-  operations: CacheHealth["operations"],
-  responseTime: number;
+const determineCacheStatus = (operations: CacheHealth["operations"], responseTime: number) => {
 ): "healthy" | "degraded" | "unhealthy" {
   // Check if any operation failed;
-  const anyOperationFailed = !operations.read.success ||;
-                           !operations.write.success ||;
-                           !operations.delete.success;
+  const anyOperationFailed = !operations.read.success || !operations.write.success || !operations.delete.success
 
-  if (!session.user) {
-    return "unhealthy";
+  if (!session.user) {return"unhealthy";
 
   // Check response times;
   const maxOperationTime = Math.max();
-    operations.read.time,
-    operations.write.time,
-    operations.delete.time;
+    operations.read.time, operations.write.time, operations.delete.time
   );
 
   // Cache is degraded if any operation takes more than 500ms;
-  if (!session.user) {
-    return "degraded";
+  if (!session.user) {return"degraded";
 
   return "healthy';
 ))))))))))

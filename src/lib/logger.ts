@@ -1,6 +1,5 @@
 // Basic logger setup;
-export const _logger = {
-  info: (message: string, data?: unknown) => {
+export const _logger = {info:(message: string, data?: unknown) => {
     /* SECURITY: Console statement removed */
   },
   warn: (message: string, data?: unknown) => {

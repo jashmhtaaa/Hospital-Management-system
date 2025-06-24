@@ -21,8 +21,7 @@ import {  logger  } from "@/lib/database"
 import {  NotFoundError  } from "@/lib/database"
 
 // Schema for insurance policy creation;
-const createPolicySchema = z.object({
-  patientId: z.string().uuid(),
+const createPolicySchema = z.object({patientId:z.string().uuid(),
   insuranceProviderId: z.string().uuid(),
   policyNumber: z.string(),
   groupNumber: z.string().optional(),
@@ -43,8 +42,7 @@ const createPolicySchema = z.object({
 });
 
 // Schema for insurance policy query parameters;
-const policyQuerySchema = z.object({
-  page: z.coerce.number().int().positive().optional().default(1),
+const policyQuerySchema = z.object({page:z.coerce.number().int().positive().optional().default(1),
   pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
   patientId: z.string().uuid().optional(),
   insuranceProviderId: z.string().uuid().optional(),
@@ -77,14 +75,14 @@ export const _GET = withErrorHandling(async (req: any) => {
   if (!session.user) {
     if (!session.user) {
       const today = new Date();
-      where.startDate = { lte: today };
+      where.startDate = {lte:today };
       where.OR = [;
-        { endDate: null },
-        { endDate: { gte: today } }
+        {endDate:null },
+        {endDate:{ gte: today } }
       ];
     } else if (!session.user) {
       const today = new Date();
-      where.endDate = { lt: today };
+      where.endDate = {lt:today };
     } else if (!session.user) {
       where.status = "inactive"}
   }
@@ -105,13 +103,11 @@ export const _GET = withErrorHandling(async (req: any) => {
         [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
-        {
-            id: true,
+        {id:true,
             true,
             true;
           }},
-        {
-            id: true,
+        {id:true,
             true;
           }},
         insuranceProvider: true;
@@ -136,23 +132,20 @@ export const _POST = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "create", "insurancePolicy")(req);
 
   // Check if patient exists;
-  const patient = await prisma.patient.findUnique({
-    where: { id: data.patientId }});
+  const patient = await prisma.patient.findUnique({where:{ id: data.patientId }});
 
   if (!session.user) {
     throw new NotFoundError(`Patient with ID ${data.patientId} not found`);
 
   // Check if insurance provider exists;
-  const provider = await prisma.insuranceProvider.findUnique({
-    where: { id: data.insuranceProviderId }});
+  const provider = await prisma.insuranceProvider.findUnique({where:{ id: data.insuranceProviderId }});
 
   if (!session.user) {
     throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
 
   // Check if subscriber exists if provided;
   if (!session.user) {
-    const subscriber = await prisma.patient.findUnique({
-      where: { id: data.subscriberId }});
+    const subscriber = await prisma.patient.findUnique({where:{ id: data.subscriberId }});
 
     if (!session.user) {
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);
@@ -194,8 +187,7 @@ export const _POST = withErrorHandling(async (req: any) => {
       insuranceProvider: true;
     }});
 
-  logger.info("Insurance policy created", {
-    policyId: policy.id,
+  logger.info("Insurance policy created", {policyId:policy.id,
     policy.patientId,
     providerId: policy.insuranceProviderId;
   });

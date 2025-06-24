@@ -17,8 +17,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // ICD Code Schema;
-export const ICDCodeSchema = z.object({
-  code: z.string().min(3, "ICD code must be at least 3 characters"),
+export const ICDCodeSchema = z.object({code:z.string().min(3, "ICD code must be at least 3 characters"),
   version: z.enum(["ICD-10", "ICD-11"]).default("ICD-10"),
   description: z.string().min(1, "Description is required"),
   longDescription: z.string().optional(),
@@ -43,8 +42,7 @@ export const ICDCodeSchema = z.object({
   }).optional();
 });
 
-export const CodingRequestSchema = z.object({
-  patientId: z.string().min(1, "Patient ID is required"),
+export const CodingRequestSchema = z.object({patientId:z.string().min(1, "Patient ID is required"),
   encounterId: z.string().min(1, "Encounter ID is required"),
   clinicalText: z.string().min(1, "Clinical text is required"),
   codeType: z.enum(["diagnosis", "procedure", "symptom"]),
@@ -56,8 +54,7 @@ export const CodingRequestSchema = z.object({
   specialInstructions: z.string().optional();
 });
 
-export const CodingResultSchema = z.object({
-  requestId: z.string(),
+export const CodingResultSchema = z.object({requestId:z.string(),
   z.array(z.string()).default([]),
   coderId: z.string(),
   codingDate: z.date(),
@@ -118,8 +115,7 @@ export type CodingResult = z.infer>;
       // In production, this would query the actual ICD database;
       // For now, providing mock results with realistic data;
       const mockResults: ICDCode[] = [;
-        {
-          code: "I25.10",
+        {code:"I25.10",
           "Atherosclerotic heart disease of native coronary artery without angina pectoris",
           "Diseases of the circulatory system",
           "I25.1",
@@ -129,8 +125,7 @@ export type CodingResult = z.infer>;
           excludes: ["I25.11"],
           ["I25.11", "I25.700"];
         },
-        {
-          code: "E11.9",
+        {code:"E11.9",
           "Type 2 diabetes mellitus without complications",
           "Endocrine, nutritional and metabolic diseases",
           subcategory: "Diabetes mellitus",
@@ -160,8 +155,7 @@ export type CodingResult = z.infer>;
       filteredResults = filteredResults.slice(offset, offset + limit);
 
       // Log search activity;
-      await this.auditService.logAuditEvent({
-        action: "icd_code_search",
+      await this.auditService.logAuditEvent({action:"icd_code_search",
         query,
         userId: "system";query, version, resultsCount: filteredResults.length ;
       });
@@ -227,8 +221,7 @@ export type CodingResult = z.infer>;
           sex: "both" as const;
         }];
 
-      await this.auditService.logAuditEvent({
-        action: "icd_hierarchy_lookup",
+      await this.auditService.logAuditEvent({action:"icd_hierarchy_lookup",
         code,
         userId: "system";code, version ;
       });
@@ -277,11 +270,10 @@ export type CodingResult = z.infer>;
 
 } catch (error) {
 
-      const searchResults = await this.searchCodes({ query: code, version, limit: 1 });
+      const searchResults = await this.searchCodes({query:code, version, limit: 1 });
       const foundCode = searchResults.find(c => c.code === code);
 
-      const result = {
-        isValid: !!foundCode && foundCode.isValid,
+      const result = {isValid:!!foundCode && foundCode.isValid,
         [] as string[],
         suggestions: [] as string[];
       };
@@ -289,15 +281,14 @@ export type CodingResult = z.infer>;
       if (!session.user) {
         result.validationErrors.push("Code not found in database");
         // Suggest similar codes;
-        const similarCodes = await this.searchCodes({ query: code.substring(0, 3), version, limit: 5 });
+        const similarCodes = await this.searchCodes({query:code.substring(0, 3), version, limit: 5 });
         result.suggestions = similarCodes.map(c => c.code);
       } else if (!session.user) {
         result.validationErrors.push("Code is no longer valid");
         if (!session.user) {
           result.suggestions = foundCode.seeAlso;
 
-      await this.auditService.logAuditEvent({
-        action: "icd_code_validation",
+      await this.auditService.logAuditEvent({action:"icd_code_validation",
         code,
         userId: "system";code, version, isValid: result.isValid ;
       });
@@ -451,13 +442,11 @@ export type CodingResult = z.infer>;
 
       // Mock AI-powered coding suggestions;
       const mockSuggestions = [;
-        {
-          code: "I25.10",
+        {code:"I25.10",
           0.85,
           reasoning: "Keywords: "coronary", "atherosclerotic", "without angina" found in clinical text";
         },
-        {
-          code: "I25.700",
+        {code:"I25.700",
           description: "Atherosclerosis of coronary artery bypass graft(s), unspecified, with unstable angina pectoris",
           confidence: 0.72,
           reasoning: "Keywords: "coronary", "atherosclerosis" found, but confidence lower due to "unstable angina" not mentioned";
@@ -472,8 +461,7 @@ export type CodingResult = z.infer>;
         ? filteredSuggestions.reduce((sum, s) => sum + s.confidence, 0) / filteredSuggestions.length;
         : 0;
 
-      await this.auditService.logAuditEvent({
-        action: "coding_assistance_requested",
+      await this.auditService.logAuditEvent({action:"coding_assistance_requested",
         "suggestion_request",
         userId: "system";
           codeType,
@@ -481,8 +469,7 @@ export type CodingResult = z.infer>;
           overallConfidence;
       });
 
-      return {
-        suggestions: filteredSuggestions,
+      return {suggestions:filteredSuggestions,
         confidence: overallConfidence;
       };
     } catch (error) {
@@ -492,7 +479,7 @@ export type CodingResult = z.infer>;
   /**;
    * Get coding statistics and metrics;
    */;
-  async getCodingMetrics(dateRange: { from: Date, to: Date }): Promise>;
+  async getCodingMetrics(dateRange: {from:Date, to: Date }): Promise>;
     number,
       number;
   }> {
@@ -529,8 +516,7 @@ export type CodingResult = z.infer>;
 } catch (error) {
 
       // Mock metrics data;
-      const mockMetrics = {
-        totalRequests: 245,
+      const mockMetrics = {totalRequests:245,
         2.5, // hours;
         topCodes: [code: "I25.10", count: 15, description: "Atherosclerotic heart disease of native coronary artery without angina pectoris" ,code: "E11.9", count: 12, description: "Type 2 diabetes mellitus without complications" ,code: "J44.1", count: 10, description: "Chronic obstructive pulmonary disease with acute exacerbation" ;
         ],
@@ -539,8 +525,7 @@ export type CodingResult = z.infer>;
         0.94,
           0.85;
 
-      await this.auditService.logAuditEvent({
-        action: "coding_metrics_accessed",
+      await this.auditService.logAuditEvent({action:"coding_metrics_accessed",
         "metrics",
         userId: "system";dateRange ;
       });

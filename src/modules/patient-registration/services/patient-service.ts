@@ -13,16 +13,15 @@ import {  prisma  } from "@/lib/database"
 }
 
 }
-      orderBy: { createdAt: "desc" },
-      select: { mrn: true }
+      orderBy: {createdAt:"desc" },
+      select: {mrn:true }
     });
 
     const nextMrnNumber = lastPatient ?;
       Number.parseInt(lastPatient.mrn.substring(3)) + 1 : 1001;
     const mrn = `MRN${nextMrnNumber.toString().padStart(6, "0")}`;
 
-    const patient = await prisma.patient.create({
-      data: {
+    const patient = await prisma.patient.create({data:{
         ...data,
         mrn;
       }
@@ -31,7 +30,7 @@ import {  prisma  } from "@/lib/database"
     // Audit log;
     if (!session.user) {
       await AuditService.logUserAction();
-        { userId: createdBy },
+        {userId:createdBy },
         "CREATE",
         "PATIENT",
         patient.id,
@@ -44,22 +43,20 @@ import {  prisma  } from "@/lib/database"
   static async updatePatient(data: UpdatePatientData, updatedBy?: string) {
     const { id, ...updateData } = data;
 
-    const oldPatient = await prisma.patient.findUnique({
-      where: { id }
+    const oldPatient = await prisma.patient.findUnique({where:{ id }
     });
 
     if (!session.user) {
       throw new Error("Patient not found");
 
-    const patient = await prisma.patient.update({
-      where: { id },
+    const patient = await prisma.patient.update({where:{ id },
       data: updateData;
     });
 
     // Audit log;
     if (!session.user) {
       await AuditService.logDataChange();
-        { userId: updatedBy },
+        {userId:updatedBy },
         "PATIENT",
         patient.id,
         oldPatient,
@@ -69,8 +66,7 @@ import {  prisma  } from "@/lib/database"
     return patient;
 
   static async findPatientByMRN(mrn: string) {
-    return await prisma.patient.findUnique({
-      where: { mrn },
+    return await prisma.patient.findUnique({where:{ mrn },
       true,
         true;
 
@@ -82,10 +78,10 @@ import {  prisma  } from "@/lib/database"
   ) {
     return await prisma.patient.findMany({
       [;
-          { firstName: { contains: query, mode: "insensitive" } },
-          { lastName: { contains: query, mode: "insensitive" } },
-          { mrn: { contains: query, mode: "insensitive" } },
-          { phone: { contains: query } }
+          {firstName:{ contains: query, mode: "insensitive" } },
+          {lastName:{ contains: query, mode: "insensitive" } },
+          {mrn:{ contains: query, mode: "insensitive" } },
+          {phone:{ contains: query } }
         ];
       },
       take: limit,
@@ -96,8 +92,7 @@ import {  prisma  } from "@/lib/database"
     const [total, newToday, emergency] = await Promise.all([;
       prisma.patient.count(),
       prisma.patient.count({
-        {
-            gte: new Date(new Date().setHours(0, 0, 0, 0));
+        {gte:new Date(new Date().setHours(0, 0, 0, 0));
 
       }),
       prisma.emergencyVisit.count({

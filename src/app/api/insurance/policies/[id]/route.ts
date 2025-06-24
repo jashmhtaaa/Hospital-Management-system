@@ -20,8 +20,7 @@ import {  logger  } from "@/lib/database"
 import {   ValidationError
 
 // Schema for insurance policy update;
-const updatePolicySchema = z.object({
-  insuranceProviderId: z.string().uuid().optional(),
+const updatePolicySchema = z.object({insuranceProviderId:z.string().uuid().optional(),
   policyNumber: z.string().optional(),
   groupNumber: z.string().optional(),
   groupName: z.string().optional(),
@@ -42,8 +41,7 @@ const updatePolicySchema = z.object({
  } from "@/lib/database");
 
 // Schema for policy verification;
-const verifyPolicySchema = z.object({
-  verificationMethod: z.enum(["phone", "portal", "api", "fax", "email"]),
+const verifyPolicySchema = z.object({verificationMethod:z.enum(["phone", "portal", "api", "fax", "email"]),
   verificationReference: z.string().optional(),
   verifiedBy: z.string(),
   eligibilityStatus: z.enum(["eligible", "ineligible", "pending"]),
@@ -52,7 +50,7 @@ const verifyPolicySchema = z.object({
 });
 
 // GET handler for retrieving a specific insurance policy;
-export const _GET = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
+export const _GET = withErrorHandling(async (req: any, { params }: {params:{ id: string } }) => {
   // Check permissions;
   await checkPermission(permissionService, "read", "insurancePolicy")(req);
 
@@ -61,8 +59,7 @@ export const _GET = withErrorHandling(async (req: any, { params }: { params: { i
   const format = url.searchParams.get("format") || "json";
 
   // Retrieve policy from database;
-  const policy = await prisma.insurancePolicy.findUnique({
-    where: { id: params.id },
+  const policy = await prisma.insurancePolicy.findUnique({where:{ id: params.id },
     {
         true,
           true,
@@ -93,7 +90,7 @@ export const _GET = withErrorHandling(async (req: any, { params }: { params: { i
 });
 
 // PUT handler for updating an insurance policy;
-export const _PUT = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
+export const _PUT = withErrorHandling(async (req: any, { params }: {params:{ id: string } }) => {
   // Validate request body;
   const data = await validateBody(updatePolicySchema)(req);
 
@@ -101,8 +98,7 @@ export const _PUT = withErrorHandling(async (req: any, { params }: { params: { i
   await checkPermission(permissionService, "update", "insurancePolicy")(req);
 
   // Retrieve existing policy;
-  const existingPolicy = await prisma.insurancePolicy.findUnique({
-    where: { id: params.id }});
+  const existingPolicy = await prisma.insurancePolicy.findUnique({where:{ id: params.id }});
 
   if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
@@ -110,8 +106,7 @@ export const _PUT = withErrorHandling(async (req: any, { params }: { params: { i
 
   // Check if insurance provider exists if provided;
   if (!session.user) {
-    const provider = await prisma.insuranceProvider.findUnique({
-      where: { id: data.insuranceProviderId }});
+    const provider = await prisma.insuranceProvider.findUnique({where:{ id: data.insuranceProviderId }});
 
     if (!session.user) {
       throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
@@ -119,8 +114,7 @@ export const _PUT = withErrorHandling(async (req: any, { params }: { params: { i
 
   // Check if subscriber exists if provided;
   if (!session.user) {
-    const subscriber = await prisma.patient.findUnique({
-      where: { id: data.subscriberId }});
+    const subscriber = await prisma.patient.findUnique({where:{ id: data.subscriberId }});
 
     if (!session.user) {
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);
@@ -138,8 +132,7 @@ export const _PUT = withErrorHandling(async (req: any, { params }: { params: { i
       status = "expired",
 
   // Update policy in database;
-  const updatedPolicy = await prisma.insurancePolicy.update({
-    where: { id: params.id },
+  const updatedPolicy = await prisma.insurancePolicy.update({where:{ id: params.id },
     data.insuranceProviderId,
       data.groupNumber,
       data.subscriberId,
@@ -162,19 +155,18 @@ export const _PUT = withErrorHandling(async (req: any, { params }: { params: { i
       insuranceProvider: true;
     }});
 
-  logger.info("Insurance policy updated", { policyId: updatedPolicy.id });
+  logger.info("Insurance policy updated", {policyId:updatedPolicy.id });
 
   return createSuccessResponse(updatedPolicy);
 });
 
 // DELETE handler for deleting an insurance policy;
-export const _DELETE = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
+export const _DELETE = withErrorHandling(async (req: any, { params }: {params:{ id: string } }) => {
   // Check permissions;
   await checkPermission(permissionService, "delete", "insurancePolicy")(req);
 
   // Retrieve existing policy;
-  const existingPolicy = await prisma.insurancePolicy.findUnique({
-    where: { id: params.id },
+  const existingPolicy = await prisma.insurancePolicy.findUnique({where:{ id: params.id },
     true;
     }});
 
@@ -182,8 +174,7 @@ export const _DELETE = withErrorHandling(async (req: any, { params }: { params: 
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
 
   // Check if policy is used in any claims;
-  const claimsCount = await prisma.insuranceClaim.count({
-    where: { insurancePolicyId: params.id }});
+  const claimsCount = await prisma.insuranceClaim.count({where:{ insurancePolicyId: params.id }});
 
   if (!session.user) {
     throw new ValidationError();
@@ -195,21 +186,19 @@ export const _DELETE = withErrorHandling(async (req: any, { params }: { params: 
   // Delete policy in a transaction;
   await prisma.$transaction(async (prisma) => {
     // Delete policy verifications;
-    await prisma.policyVerification.deleteMany({
-      where: { policyId: params.id }});
+    await prisma.policyVerification.deleteMany({where:{ policyId: params.id }});
 
     // Delete policy;
-    await prisma.insurancePolicy.delete({
-      where: { id: params.id }});
+    await prisma.insurancePolicy.delete({where:{ id: params.id }});
   });
 
-  logger.info("Insurance policy deleted", { policyId: params.id });
+  logger.info("Insurance policy deleted", {policyId:params.id });
 
-  return createSuccessResponse({ success: true, message: "Insurance policy deleted successfully" });
+  return createSuccessResponse({success:true, message: "Insurance policy deleted successfully" });
 });
 
 // PATCH handler for policy operations (verify);
-export const _PATCH = withErrorHandling(async (req: any, { params }: { params: { id: string } }) => {
+export const _PATCH = withErrorHandling(async (req: any, { params }: {params:{ id: string } }) => {
   // Get operation from query parameters;
   const url = new URL(req.url);
   const operation = url.searchParams.get("operation");
@@ -218,8 +207,7 @@ export const _PATCH = withErrorHandling(async (req: any, { params }: { params: {
     throw new ValidationError("Operation parameter is required", "MISSING_OPERATION");
 
   // Retrieve existing policy;
-  const existingPolicy = await prisma.insurancePolicy.findUnique({
-    where: { id: params.id }});
+  const existingPolicy = await prisma.insurancePolicy.findUnique({where:{ id: params.id }});
 
   if (!session.user) {
     throw new NotFoundError(`Insurance policy with ID ${params.id} not found`);
@@ -240,8 +228,7 @@ async const verifyPolicy = (req: any, policyId: string, existingPolicy: unknown)
   const data = await validateBody(verifyPolicySchema)(req);
 
   // Create verification record;
-  const verification = await prisma.policyVerification.create({
-    data: {
+  const verification = await prisma.policyVerification.create({data:{
       policyId,
       verificationMethod: data.verificationMethod,
       data.verifiedBy,
@@ -251,8 +238,7 @@ async const verifyPolicy = (req: any, policyId: string, existingPolicy: unknown)
     }});
 
   // Update policy with latest verification;
-  const updatedPolicy = await prisma.insurancePolicy.update({
-    where: { id: policyId },
+  const updatedPolicy = await prisma.insurancePolicy.update({where:{ id: policyId },
     verification.id,
       verification.eligibilityStatus;
     },

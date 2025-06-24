@@ -1,5 +1,5 @@
 import "@/lib/audit"
-import "@/lib/encryption"
+import "@/lib/security/encryption.service"
 import "@/lib/errors"
 import "@/lib/fhir"
 import "@/lib/models/marketing"
@@ -27,19 +27,17 @@ import { prisma }
         }});
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "campaign.create",
+      await this.auditLogger.log({action:"campaign.create",
         resourceId: campaign.id;
         userId,
-        details: { campaignName: campaign.name, campaignType: campaign.type }
+        details: {campaignName:campaign.name, campaignType: campaign.type }
       });
 
       // Notify relevant users;
-      await this.notificationService.sendNotification({
-        type: "CAMPAIGN_CREATED",
+      await this.notificationService.sendNotification({type:"CAMPAIGN_CREATED",
         `A new marketing campaign "${campaign.name}" has been created`,
         recipientRoles: ["MARKETING_MANAGER", "MARKETING_STAFF"],
-        metadata: { campaignId: campaign.id }
+        metadata: {campaignId:campaign.id }
       });
 
       return campaign;
@@ -87,11 +85,9 @@ import { prisma }
 }
 } catch (error) {
 }
-      const campaign = await prisma.marketingCampaign.findUnique({
-        where: { id },
+      const campaign = await prisma.marketingCampaign.findUnique({where:{ id },
         true,
-          {
-              segment: true;
+          {segment:true;
             }
           },
           10,
@@ -102,8 +98,7 @@ import { prisma }
             "desc";
             }
           },
-          {
-              id: true,
+          {id:true,
               true;
             }
           }
@@ -141,7 +136,7 @@ import { prisma }
     endDateTo?: Date;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingCampaign[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{data:MarketingCampaign[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -223,17 +218,14 @@ import { prisma }
       const campaigns = await prisma.marketingCampaign.findMany({
         where,
         true,
-          {
-              segment: true;
+          {segment:true;
             }
           },
-          {
-              leads: true,
+          {leads:true,
               activities: true;
             }
           },
-          {
-              id: true,
+          {id:true,
               name: true;
             }
           }
@@ -242,8 +234,7 @@ import { prisma }
         "desc";
       });
 
-      return {
-        data: campaigns,
+      return {data:campaigns,
         pagination: {
           total,
           page,
@@ -293,8 +284,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({
-        where: { id }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id }
       });
 
       if (!session.user) {
@@ -302,8 +292,7 @@ import { prisma }
       }
 
       // Update campaign;
-      const updatedCampaign = await prisma.marketingCampaign.update({
-        where: { id },
+      const updatedCampaign = await prisma.marketingCampaign.update({where:{ id },
         data: {
           ...data,
           updatedById: userId;
@@ -311,8 +300,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "campaign.update",
+      await this.auditLogger.log({action:"campaign.update",
         resourceId: id;
         userId,
         updatedCampaign.name,
@@ -365,8 +353,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({
-        where: { id }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id }
       });
 
       if (!session.user) {
@@ -374,13 +361,11 @@ import { prisma }
       }
 
       // Delete campaign;
-      await prisma.marketingCampaign.delete({
-        where: { id }
+      await prisma.marketingCampaign.delete({where:{ id }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "campaign.delete",
+      await this.auditLogger.log({action:"campaign.delete",
         resourceId: id;
         userId,
         existingCampaign.name,
@@ -431,8 +416,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({
-        where: { id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
       });
 
       if (!session.user) {
@@ -440,8 +424,7 @@ import { prisma }
       }
 
       // Create channel;
-      const channel = await prisma.campaignChannel.create({
-        data: {
+      const channel = await prisma.campaignChannel.create({data:{
           campaignId,
           channelType: channelData.channelType,
           channelData.content,
@@ -451,8 +434,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "campaign.channel.add",
+      await this.auditLogger.log({action:"campaign.channel.add",
         resourceId: campaignId;
         userId,
         channel.id,
@@ -506,8 +488,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({
-        where: { id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
       });
 
       if (!session.user) {
@@ -515,14 +496,12 @@ import { prisma }
       }
 
       // Get analytics data;
-      const analytics = await prisma.campaignAnalytics.findMany({
-        where: { campaignId },
-        orderBy: { date: "asc" }
+      const analytics = await prisma.campaignAnalytics.findMany({where:{ campaignId },
+        orderBy: {date:"asc" }
       });
 
       // Get channel metrics;
-      const channels = await prisma.campaignChannel.findMany({
-        where: { campaignId },
+      const channels = await prisma.campaignChannel.findMany({where:{ campaignId },
         {
             {
                 true;
@@ -534,8 +513,7 @@ import { prisma }
       });
 
       // Get lead conversion metrics;
-      const leads = await prisma.lead.findMany({
-        where: { campaignId },
+      const leads = await prisma.lead.findMany({where:{ campaignId },
         true,
           true;
         }
@@ -613,8 +591,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({
-        where: { id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
       });
 
       if (!session.user) {
@@ -622,8 +599,7 @@ import { prisma }
       }
 
       // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({
-        where: { id: segmentId }
+      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId }
       });
 
       if (!session.user) {
@@ -631,8 +607,7 @@ import { prisma }
       }
 
       // Check if segment is already added to campaign;
-      const existingRelation = await prisma.campaignSegment.findFirst({
-        where: {
+      const existingRelation = await prisma.campaignSegment.findFirst({where:{
           campaignId,
           segmentId;
         }
@@ -643,16 +618,14 @@ import { prisma }
       }
 
       // Add segment to campaign;
-      const campaignSegment = await prisma.campaignSegment.create({
-        data: {
+      const campaignSegment = await prisma.campaignSegment.create({data:{
           campaignId,
           segmentId;
         }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "campaign.segment.add",
+      await this.auditLogger.log({action:"campaign.segment.add",
         resourceId: campaignId;
         userId,
         details: {
@@ -676,15 +649,12 @@ import { prisma }
    */;
   private generateCampaignFHIR(campaign: unknown): unknown {
     // Create FHIR Communication resource for the campaign;
-    const communicationResource = {
-      resourceType: "Communication",
+    const communicationResource = {resourceType:"Communication",
       id: `marketing-campaign-${campaign.id}`,
       status: this.mapCampaignStatusToFHIR(campaign.status),
       category: [;
-        {
-          coding: [;
-            {
-              system: "https://terminology.hl7.org/CodeSystem/communication-category",
+        {coding:[;
+            {system:"https://terminology.hl7.org/CodeSystem/communication-category",
               "Marketing";
             }
           ];
@@ -704,15 +674,12 @@ import { prisma }
     };
 
     // Create FHIR CommunicationRequest resource for campaign planning;
-    const communicationRequestResource = {
-      resourceType: "CommunicationRequest",
+    const communicationRequestResource = {resourceType:"CommunicationRequest",
       id: `marketing-campaign-request-${campaign.id}`,
       status: this.mapCampaignStatusToFHIRRequest(campaign.status),
       category: [;
-        {
-          coding: [;
-            {
-              system: "https://terminology.hl7.org/CodeSystem/communication-category",
+        {coding:[;
+            {system:"https://terminology.hl7.org/CodeSystem/communication-category",
               "Marketing";
             }
           ];
@@ -731,14 +698,12 @@ import { prisma }
       },
       authoredOn: campaign.createdAt,
       payload: [;
-        {
-          contentString: campaign.description;
+        {contentString:campaign.description;
         }
       ];
     }
 
-    return {
-      communication: communicationResource,
+    return {communication:communicationResource,
       communicationRequest: communicationRequestResource;
     };
   }
@@ -789,8 +754,7 @@ import { prisma }
    * Group leads by status;
    */;
   private groupLeadsByStatus(leads: unknown[]): Record<string, number> {
-    const result: Record<string, number> = {
-      NEW: 0,
+    const result: Record<string, number> = {NEW:0,
       0,
       0;
     };
@@ -810,8 +774,7 @@ import { prisma }
   private aggregateTimeSeriesData(analytics: unknown[]): unknown {
     // Implementation depends on the structure of metrics in analytics;
     // This is a simplified example;
-    return analytics.map(item => ({
-      date: item.date;
+    return analytics.map(item => ({date:item.date;
       ...item.metrics;
     }));
   }
@@ -851,8 +814,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "contact.create",
+      await this.auditLogger.log({action:"contact.create",
         resourceId: contact.id;
         userId,
         data.email,
@@ -904,8 +866,7 @@ import { prisma }
 }
 } catch (error) {
 }
-      const contact = await prisma.contact.findUnique({
-        where: { id },
+      const contact = await prisma.contact.findUnique({where:{ id },
         {
             true,
               true,
@@ -948,7 +909,7 @@ import { prisma }
     tags?: string[];
     page?: number;
     limit?: number;
-  }): Promise<{ data: Contact[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -995,10 +956,10 @@ import { prisma }
 
       if (!session.user) {
         where.OR = [;
-          { firstName: { contains: search, mode: "insensitive" } },
-          { lastName: { contains: search, mode: "insensitive" } },
-          { email: { contains: search, mode: "insensitive" } },
-          { phone: { contains: search } }
+          {firstName:{ contains: search, mode: "insensitive" } },
+          {lastName:{ contains: search, mode: "insensitive" } },
+          {email:{ contains: search, mode: "insensitive" } },
+          {phone:{ contains: search } }
         ];
       }
 
@@ -1011,8 +972,7 @@ import { prisma }
       }
 
       if (!session.user) {
-        where.tags = {
-          hasSome: tags;
+        where.tags = {hasSome:tags;
         };
       }
 
@@ -1026,8 +986,7 @@ import { prisma }
             true;
             }
           },
-          {
-              interactions: true,
+          {interactions:true,
               true,
               segmentMembers: true;
             }
@@ -1035,16 +994,14 @@ import { prisma }
         },
         skip: (page - 1) * limit,
         take: limit;
-        {
-          createdAt: "desc";
+        {createdAt:"desc";
         }
       });
 
       // Decrypt sensitive data;
       const decryptedContacts = contacts.map(contact => this.decryptSensitiveData(contact));
 
-      return {
-        data: decryptedContacts,
+      return {data:decryptedContacts,
         pagination: {
           total,
           page,
@@ -1094,8 +1051,7 @@ import { prisma }
 } catch (error) {
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({
-        where: { id }
+      const existingContact = await prisma.contact.findUnique({where:{ id }
       });
 
       if (!session.user) {
@@ -1105,14 +1061,12 @@ import { prisma }
       const encryptedData = this.encryptSensitiveData(data);
 
       // Update contact;
-      const updatedContact = await prisma.contact.update({
-        where: { id },
+      const updatedContact = await prisma.contact.update({where:{ id },
         data: encryptedData;
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "contact.update",
+      await this.auditLogger.log({action:"contact.update",
         resourceId: id;
         userId,
         Object.keys(data);
@@ -1162,21 +1116,18 @@ import { prisma }
 } catch (error) {
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({
-        where: { id }
+      const existingContact = await prisma.contact.findUnique({where:{ id }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
 
       // Delete contact;
-      await prisma.contact.delete({
-        where: { id }
+      await prisma.contact.delete({where:{ id }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "contact.delete",
+      await this.auditLogger.log({action:"contact.delete",
         resourceId: id;
         userId,
         existingContact.email;
@@ -1224,16 +1175,14 @@ import { prisma }
 } catch (error) {
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({
-        where: { id: contactId }
+      const existingContact = await prisma.contact.findUnique({where:{ id: contactId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
 
       // Create note;
-      const note = await prisma.contactNote.create({
-        data: {
+      const note = await prisma.contactNote.create({data:{
           contactId,
           content,
           createdById: userId;
@@ -1245,8 +1194,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "contact.note.add",
+      await this.auditLogger.log({action:"contact.note.add",
         resourceId: contactId;
         userId,
         note.id;
@@ -1308,8 +1256,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "segment.create",
+      await this.auditLogger.log({action:"segment.create",
         resourceId: segment.id;
         userId,
         segment.name;
@@ -1330,7 +1277,7 @@ import { prisma }
     isActive?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -1386,8 +1333,7 @@ import { prisma }
               campaigns: true;
 
           },
-          {
-              id: true,
+          {id:true,
               name: true;
 
         },
@@ -1395,8 +1341,7 @@ import { prisma }
         "desc";
       });
 
-      return {
-        data: segments,
+      return {data:segments,
         pagination: {
           total,
           page,
@@ -1444,24 +1389,21 @@ import { prisma }
 } catch (error) {
 
       // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({
-        where: { id: segmentId }
+      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({
-        where: { id: contactId }
+      const existingContact = await prisma.contact.findUnique({where:{ id: contactId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
 
       // Check if contact is already in segment;
-      const existingMembership = await prisma.segmentMember.findFirst({
-        where: {
+      const existingMembership = await prisma.segmentMember.findFirst({where:{
           segmentId,
           contactId,
           isActive: true;
@@ -1472,8 +1414,7 @@ import { prisma }
         return existingMembership;
 
       // If contact was previously removed from segment, reactivate;
-      const inactiveMemebership = await prisma.segmentMember.findFirst({
-        where: {
+      const inactiveMemebership = await prisma.segmentMember.findFirst({where:{
           segmentId,
           contactId,
           isActive: false;
@@ -1481,16 +1422,14 @@ import { prisma }
       });
 
       if (!session.user) {
-        const updatedMembership = await prisma.segmentMember.update({
-          where: { id: inactiveMemebership.id },
+        const updatedMembership = await prisma.segmentMember.update({where:{ id: inactiveMemebership.id },
           true,
             removedAt: null;
 
         });
 
         // Log audit event;
-        await this.auditLogger.log({
-          action: "segment.contact.reactivate",
+        await this.auditLogger.log({action:"segment.contact.reactivate",
           resourceId: segmentId;
           userId,
           details: null,
@@ -1501,8 +1440,7 @@ import { prisma }
         return updatedMembership;
 
       // Add contact to segment;
-      const membership = await prisma.segmentMember.create({
-        data: {
+      const membership = await prisma.segmentMember.create({data:{
           segmentId,
           contactId,
           isActive: true;
@@ -1510,8 +1448,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "segment.contact.add",
+      await this.auditLogger.log({action:"segment.contact.add",
         resourceId: segmentId;
         userId,
         details: null,
@@ -1563,24 +1500,21 @@ import { prisma }
 } catch (error) {
 
       // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({
-        where: { id: segmentId }
+      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({
-        where: { id: contactId }
+      const existingContact = await prisma.contact.findUnique({where:{ id: contactId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
 
       // Check if contact is in segment;
-      const membership = await prisma.segmentMember.findFirst({
-        where: {
+      const membership = await prisma.segmentMember.findFirst({where:{
           segmentId,
           contactId,
           isActive: true;
@@ -1591,16 +1525,14 @@ import { prisma }
         throw new NotFoundError(`Contact is not a member of this segment`);
 
       // Remove contact from segment (soft delete);
-      const updatedMembership = await prisma.segmentMember.update({
-        where: { id: membership.id },
+      const updatedMembership = await prisma.segmentMember.update({where:{ id: membership.id },
         false,
           removedAt: new Date();
 
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "segment.contact.remove",
+      await this.auditLogger.log({action:"segment.contact.remove",
         resourceId: segmentId;
         userId,
         details: null,
@@ -1748,8 +1680,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "lead.create",
+      await this.auditLogger.log({action:"lead.create",
         resourceId: lead.id;
         userId,
         lead.contactId,
@@ -1759,10 +1690,9 @@ import { prisma }
 
       // Notify assigned user if applicable;
       if (!session.user) {
-        await this.notificationService.sendNotification({
-          type: "LEAD_ASSIGNED",
+        await this.notificationService.sendNotification({type:"LEAD_ASSIGNED",
           `A new lead has been assigned to [lead.assignedToId],
-          metadata: { leadId: lead.id }
+          metadata: {leadId:lead.id }
         });
 
       return lead;
@@ -1808,23 +1738,20 @@ import { prisma }
 
 } catch (error) {
 
-      const lead = await prisma.lead.findUnique({
-        where: { id },
+      const lead = await prisma.lead.findUnique({where:{ id },
         true,
           {
             true,
               true;
 
           },
-          {
-              id: true,
+          {id:true,
               true,
               dateOfBirth: true;
 
           },
           {
-              {
-                  id: true,
+              {id:true,
                   name: true;
 
             },
@@ -1852,7 +1779,7 @@ import { prisma }
     assignedToId?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: Lead[], pagination: { total: number, number, totalPages: number } }> {
+  }): Promise<{data:Lead[], pagination: {total:number, number, totalPages: number } }> {
     try {
 } catch (error) {
   console.error(error);
@@ -1921,28 +1848,23 @@ import { prisma }
               true;
 
           },
-          {
-              id: true,
+          {id:true,
               name: true;
 
           },
-          {
-              id: true,
+          {id:true,
               name: true;
 
           },
-          {
-              activities: true;
+          {activities:true;
 
         },
         skip: (page - 1) * limit,
-        {
-          createdAt: "desc";
+        {createdAt:"desc";
 
       });
 
-      return {
-        data: leads,
+      return {data:leads,
         pagination: {
           total,
           page,
@@ -1990,8 +1912,7 @@ import { prisma }
 } catch (error) {
 
       // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({
-        where: { id },
+      const existingLead = await prisma.lead.findUnique({where:{ id },
         {
             true,
               true;
@@ -2006,8 +1927,7 @@ import { prisma }
         data.conversionDate = new Date();
 
       // Update lead;
-      const updatedLead = await prisma.lead.update({
-        where: { id },
+      const updatedLead = await prisma.lead.update({where:{ id },
         data,
         true,
           {
@@ -2017,8 +1937,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "lead.update",
+      await this.auditLogger.log({action:"lead.update",
         resourceId: id;
         userId,
         Object.keys(data);
@@ -2027,16 +1946,14 @@ import { prisma }
 
       // Create activity for status change if applicable;
       if (!session.user) {
-        await this.addLeadActivity(id, {
-          activityType: "STATUS_CHANGE",
+        await this.addLeadActivity(id, {activityType:"STATUS_CHANGE",
           description: `Status changed from $existingLead.statusto $data.status`,
           performedById: userId;
         });
 
       // Notify newly assigned user if applicable;
       if (!session.user) {
-        await this.notificationService.sendNotification({
-          type: "LEAD_ASSIGNED",
+        await this.notificationService.sendNotification({type:"LEAD_ASSIGNED",
           `A lead has been assigned to [data.assignedToId],
           metadata: leadId: id ;
         });
@@ -2051,7 +1968,7 @@ import { prisma }
   /**;
    * Add an activity to a lead;
    */;
-  async addLeadActivity(leadId: string, data: { activityType: string, string; metadata?: unknown }): Promise<unknown> {
+  async addLeadActivity(leadId: string, data: {activityType:string, string; metadata?: unknown }): Promise<unknown> {
     try {
 } catch (error) {
   console.error(error);
@@ -2085,16 +2002,14 @@ import { prisma }
 } catch (error) {
 
       // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({
-        where: { id: leadId }
+      const existingLead = await prisma.lead.findUnique({where:{ id: leadId }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
 
       // Create activity;
-      const activity = await prisma.leadActivity.create({
-        data: {
+      const activity = await prisma.leadActivity.create({data:{
           leadId,
           activityType: data.activityType,
           data.performedById,
@@ -2105,8 +2020,7 @@ import { prisma }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "lead.activity.add",
+      await this.auditLogger.log({action:"lead.activity.add",
         data.performedById,
         activity.id,
           activityType: data.activityType;
@@ -2157,8 +2071,7 @@ import { prisma }
 } catch (error) {
 
       // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({
-        where: { id: leadId },
+      const existingLead = await prisma.lead.findUnique({where:{ id: leadId },
         true;
 
       });
@@ -2181,16 +2094,14 @@ import { prisma }
       });
 
       // Update lead with conversion data;
-      const updatedLead = await prisma.lead.update({
-        where: { id: leadId },
+      const updatedLead = await prisma.lead.update({where:{ id: leadId },
         "CONVERTED",
           new Date();
 
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "lead.convert",
+      await this.auditLogger.log({action:"lead.convert",
         resourceId: leadId;
         userId,
         patient.id;
@@ -2198,14 +2109,12 @@ import { prisma }
       });
 
       // Add lead activity;
-      await this.addLeadActivity(leadId, {
-        activityType: "CONVERSION",
+      await this.addLeadActivity(leadId, {activityType:"CONVERSION",
         userId,
-        metadata: { patientId: patient.id }
+        metadata: {patientId:patient.id }
       });
 
-      return {
-        lead: updatedLead;
+      return {lead:updatedLead;
         patient;
       };
     } catch (error) {

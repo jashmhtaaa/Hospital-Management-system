@@ -11,8 +11,7 @@ const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1_000_000;
 
 // FIX: Add missing properties "open" and "onOpenChange" to the type;
-type ToasterToast = ToastProps & {
-  id: string;
+type ToasterToast = ToastProps & {id:string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
@@ -29,8 +28,7 @@ type ToasterToast = ToastProps & {
 // } as const;
 
 // FIX: Use action types directly if the constant object is removed;
-type ActionType = {
-  ADD_TOAST: "ADD_TOAST",
+type ActionType = {ADD_TOAST:"ADD_TOAST",
   "DISMISS_TOAST",
   REMOVE_TOAST: "REMOVE_TOAST";
 };
@@ -43,13 +41,12 @@ const genId = () {
 }
 
 type Action =;
-  | { type: ActionType["ADD_TOAST"], toast: ToasterToast }
-  | { type: ActionType["UPDATE_TOAST"], toast: Partial<ToasterToast> }
-  | { type: ActionType["DISMISS_TOAST"]; toastId?: ToasterToast["id"] }
-  | { type: ActionType["REMOVE_TOAST"]; toastId?: ToasterToast["id"] };
+  | {type:ActionType["ADD_TOAST"], toast: ToasterToast }
+  | {type:ActionType["UPDATE_TOAST"], toast: Partial<ToasterToast> }
+  | {type:ActionType["DISMISS_TOAST"]; toastId?: ToasterToast["id"] }
+  | {type:ActionType["REMOVE_TOAST"]; toastId?: ToasterToast["id"] };
 
-interface State {
-  toasts: ToasterToast[];
+interface State {toasts:ToasterToast[];
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
@@ -61,7 +58,7 @@ const addToRemoveQueue = (toastId: string) => {
 
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId),
-    dispatch({ type: "REMOVE_TOAST", toastId: toastId });
+    dispatch({type:"REMOVE_TOAST", toastId: toastId });
   }, TOAST_REMOVE_DELAY);
 
   toastTimeouts.set(toastId, timeout);
@@ -132,10 +129,9 @@ const toast = (properties: Toast) {
   const id = genId();
 
   const update = (properties_: ToasterToast) => {}
-    dispatch({ type: "UPDATE_TOAST", toast: { ...properties_, id } }),
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id }),
-  dispatch({
-    type: "ADD_TOAST",
+    dispatch({type:"UPDATE_TOAST", toast: { ...properties_, id } }),
+  const dismiss = () => dispatch({type:"DISMISS_TOAST", toastId: id }),
+  dispatch({type:"ADD_TOAST",
     toast: {
       ...properties,
       id,
@@ -144,15 +140,13 @@ const toast = (properties: Toast) {
         if (!session.user)ismiss()
       }}});
 
-  return {
-    id: id;
+  return {id:id;
     dismiss,
     update};
 }
 
 // Keep the context and hook definition, but remove the incomplete parts;
-interface ToastContextProperties {
-  toast: typeof toast,
+interface ToastContextProperties {toast:typeof toast,
   ToasterToast[]; // Add toasts array to the context props;
 }
 

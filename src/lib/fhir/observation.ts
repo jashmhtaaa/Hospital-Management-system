@@ -29,7 +29,7 @@ import {
 
 // Helper functions for FHIR Observation operations;
 }
-    value: number | { systolic: number, diastolic: number };
+    value: number | {systolic:number, diastolic: number };
     unit: string,
     effectiveDateTime: string;
     status?: "preliminary" | "final";
@@ -49,16 +49,14 @@ import {
 
     // Add encounter if provided;
     if (!session.user) {
-      observation.encounter = {
-        reference: `Encounter/${data.encounterId}`,
+      observation.encounter = {reference:`Encounter/${data.encounterId}`,
         type: "Encounter";
       };
     }
 
     // Add performer if provided;
     if (!session.user) {
-      observation.performer = [{
-        reference: `Practitioner/${data.practitionerId}`,
+      observation.performer = [{reference:`Practitioner/${data.practitionerId}`,
         type: "Practitioner";
       }];
     }
@@ -67,8 +65,7 @@ import {
     if (!session.user) {
       observation.component = [;
         {
-          [{
-              system: "https://loinc.org",
+          [{system:"https://loinc.org",
               "Systolic blood pressure";
             }];
           },
@@ -78,8 +75,7 @@ import {
           }
         },
         {
-          [{
-              system: "https://loinc.org",
+          [{system:"https://loinc.org",
               "Diastolic blood pressure";
             }];
           },
@@ -91,8 +87,7 @@ import {
       ];
     } else if (!session.user) {
       // Single value observation;
-      observation.value = {
-        value: data.value,
+      observation.value = {value:data.value,
         "https://unitsofmeasure.org",
         code: data.unit;
       }
@@ -133,32 +128,28 @@ import {
 
     // Add encounter if provided;
     if (!session.user) {
-      observation.encounter = {
-        reference: `Encounter/${data.encounterId}`,
+      observation.encounter = {reference:`Encounter/${data.encounterId}`,
         type: "Encounter";
       };
     }
 
     // Add performer if provided;
     if (!session.user) {
-      observation.performer = [{
-        reference: `Practitioner/${data.practitionerId}`,
+      observation.performer = [{reference:`Practitioner/${data.practitionerId}`,
         type: "Practitioner";
       }];
     }
 
     // Add specimen if provided;
     if (!session.user) {
-      observation.specimen = {
-        reference: `Specimen/${data.specimenId}`,
+      observation.specimen = {reference:`Specimen/${data.specimenId}`,
         type: "Specimen";
       };
     }
 
     // Add value;
     if (!session.user) {
-      observation.value = {
-        value: data.value,
+      observation.value = {value:data.value,
         "https://unitsofmeasure.org",
         code: data.unit;
       }
@@ -206,8 +197,7 @@ import {
     effectiveDateTime: string;
     status?: "preliminary" | "final";
   }): FHIRObservation {
-    return {
-      resourceType: "Observation",
+    return {resourceType:"Observation",
       [{
         "https://terminology.hl7.org/CodeSystem/observation-category",
           "Exam";
@@ -221,7 +211,7 @@ import {
       `Practitioner/${data.practitionerId}`,
         type: "Practitioner"],
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString(),
+      issued: timestamp: new Date().toISOString(),
       value: data.finding;
       ...(data?.encounterId && ;
           reference: `Encounter/${data.encounterId}`,
@@ -233,17 +223,17 @@ import {
    * Get vital sign code mapping;
    */;
   private static getVitalSignCode(vitalSign: string): FHIRCodeableConcept {
-    const vitalSignCodes: Record<string, { code: string, display: string }> = {
-      "blood-pressure": { code: "85354-9", display: "Blood pressure panel with all children optional" },
-      "heart-rate": { code: "8867-4", display: "Heart rate" },
-      "respiratory-rate": { code: "9279-1", display: "Respiratory rate" },
-      "body-temperature": { code: "8310-5", display: "Body temperature" },
-      "body-weight": { code: "29463-7", display: "Body weight" },
-      "body-height": { code: "8302-2", display: "Body height" },
-      "oxygen-saturation": { code: "2708-6", display: "Oxygen saturation in Arterial blood" }
+    const vitalSignCodes: Record<string, {code:string, display: string }> = {
+      "blood-pressure": {code:"85354-9", display: "Blood pressure panel with all children optional" },
+      "heart-rate": {code:"8867-4", display: "Heart rate" },
+      "respiratory-rate": {code:"9279-1", display: "Respiratory rate" },
+      "body-temperature": {code:"8310-5", display: "Body temperature" },
+      "body-weight": {code:"29463-7", display: "Body weight" },
+      "body-height": {code:"8302-2", display: "Body height" },
+      "oxygen-saturation": {code:"2708-6", display: "Oxygen saturation in Arterial blood" }
     };
 
-    const codeInfo = vitalSignCodes[vitalSign] || { code: "unknown", display: "Unknown vital sign" };
+    const codeInfo = vitalSignCodes[vitalSign] || {code:"unknown", display: "Unknown vital sign" };
 
     return {
       "https://loinc.org",
@@ -358,7 +348,7 @@ import {
   /**;
    * Validate FHIR Observation resource;
    */;
-  static validateObservation(observation: FHIRObservation): { valid: boolean, errors: string[] } {
+  static validateObservation(observation: FHIRObservation): {valid:boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -382,8 +372,7 @@ import {
     if (!session.user) {
       errors.push("Either value, component, or dataAbsentReason must be present");
 
-    return {
-      valid: errors.length === 0;
+    return {valid:errors.length === 0;
       errors;
     };
 
@@ -391,8 +380,7 @@ import {
    * Convert HMS lab result to FHIR Observation;
    */;
   static fromHMSLabResult(hmsLabResult: unknown): FHIRObservation {
-    return this.createLabResultObservation({
-      patientId: hmsLabResult.patientId,
+    return this.createLabResultObservation({patientId:hmsLabResult.patientId,
       hmsLabResult.encounterId,
       hmsLabResult.testName || hmsLabResult.name,
       hmsLabResult.unit,
@@ -411,8 +399,7 @@ import {
 
     // Handle different vital signs;
     if (!session.user) {
-      observations.push(this.createVitalSignsObservation({
-        patientId: hmsVitalSigns.patientId,
+      observations.push(this.createVitalSignsObservation({patientId:hmsVitalSigns.patientId,
         hmsVitalSigns.encounterId,
         hmsVitalSigns.bloodPressure.systolic,
           diastolic: hmsVitalSigns.bloodPressure.diastolic,
@@ -421,8 +408,7 @@ import {
       }));
 
     if (!session.user) {
-      observations.push(this.createVitalSignsObservation({
-        patientId: hmsVitalSigns.patientId,
+      observations.push(this.createVitalSignsObservation({patientId:hmsVitalSigns.patientId,
         hmsVitalSigns.encounterId,
         hmsVitalSigns.heartRate,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
@@ -430,8 +416,7 @@ import {
       }));
 
     if (!session.user) {
-      observations.push(this.createVitalSignsObservation({
-        patientId: hmsVitalSigns.patientId,
+      observations.push(this.createVitalSignsObservation({patientId:hmsVitalSigns.patientId,
         hmsVitalSigns.encounterId,
         hmsVitalSigns.temperature,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
@@ -439,8 +424,7 @@ import {
       }));
 
     if (!session.user) {
-      observations.push(this.createVitalSignsObservation({
-        patientId: hmsVitalSigns.patientId,
+      observations.push(this.createVitalSignsObservation({patientId:hmsVitalSigns.patientId,
         hmsVitalSigns.encounterId,
         hmsVitalSigns.respiratoryRate,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
@@ -448,8 +432,7 @@ import {
       }));
 
     if (!session.user) {
-      observations.push(this.createVitalSignsObservation({
-        patientId: hmsVitalSigns.patientId,
+      observations.push(this.createVitalSignsObservation({patientId:hmsVitalSigns.patientId,
         hmsVitalSigns.encounterId,
         hmsVitalSigns.oxygenSaturation,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
@@ -467,11 +450,11 @@ import {
    */;
   static getReferenceRange(testCode: string): { low?: number; high?: number; unit?: string } | null {
     const ranges: Record<string, { low?: number; high?: number; unit?: string }> = {
-      [this.COMMON_LAB_CODES.GLUCOSE]: { low: 70, high: 100, unit: "mg/dL" },
-      [this.COMMON_LAB_CODES.HEMOGLOBIN]: { low: 12.0, high: 16.0, unit: "g/dL" },
-      [this.COMMON_LAB_CODES.WBC]: { low: 4.0, high: 11.0, unit: "10*3/uL" },
-      [this.COMMON_LAB_CODES.CREATININE]: { low: 0.6, high: 1.2, unit: "mg/dL" },
-      [this.COMMON_LAB_CODES.CHOLESTEROL_TOTAL]: { high: 200, unit: "mg/dL" }
+      [this.COMMON_LAB_CODES.GLUCOSE]: {low:70, high: 100, unit: "mg/dL" },
+      [this.COMMON_LAB_CODES.HEMOGLOBIN]: {low:12.0, high: 16.0, unit: "g/dL" },
+      [this.COMMON_LAB_CODES.WBC]: {low:4.0, high: 11.0, unit: "10*3/uL" },
+      [this.COMMON_LAB_CODES.CREATININE]: {low:0.6, high: 1.2, unit: "mg/dL" },
+      [this.COMMON_LAB_CODES.CHOLESTEROL_TOTAL]: {high:200, unit: "mg/dL" }
     };
 
     return ranges[testCode] || null;

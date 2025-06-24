@@ -18,8 +18,7 @@ import {  z  } from "@/lib/database"
   discrepancies: Array>;
 
 // Validation schemas using Zod;
-export const MedicationSchema = z.object({
-  id: z.string(),
+export const MedicationSchema = z.object({id:z.string(),
   name: z.string(),
   brandName: z.string(),
   ndc: z.string(),
@@ -41,8 +40,7 @@ export const MedicationSchema = z.object({
   requiresControlledStorage: z.boolean().optional();
 });
 
-export const MedicationInventorySchema = z.object({
-  id: z.string(),
+export const MedicationInventorySchema = z.object({id:z.string(),
   medicationId: z.string(),
   locationId: z.string(),
   batchNumber: z.string(),
@@ -59,8 +57,7 @@ export const MedicationInventorySchema = z.object({
   notes: z.string().optional();
 });
 
-export const MedicationOrderSchema = z.object({
-  id: z.string(),
+export const MedicationOrderSchema = z.object({id:z.string(),
   patientId: z.string(),
   providerId: z.string(),
   medicationId: z.string(),

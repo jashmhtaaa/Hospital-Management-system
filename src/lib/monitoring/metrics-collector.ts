@@ -37,8 +37,7 @@ class MetricsCollector {
 
   private initializeAlertRules(): void {
     // Database response time alert;
-    this.addAlertRule({
-      id: "db_response_time",
+    this.addAlertRule({id:"db_response_time",
       "database.response_time",
       2000, // 2 seconds;
       duration: 300, // 5 minutes;
@@ -46,8 +45,7 @@ class MetricsCollector {
       ["email", "slack"]});
 
     // Error rate alert;
-    this.addAlertRule({
-      id: "error_rate_high",
+    this.addAlertRule({id:"error_rate_high",
       "api.error_rate",
       0.05, // 5%;
       duration: 180, // 3 minutes;
@@ -55,8 +53,7 @@ class MetricsCollector {
       ["email", "slack", "sms"]});
 
     // Memory usage alert;
-    this.addAlertRule({
-      id: "memory_usage_high",
+    this.addAlertRule({id:"memory_usage_high",
       "system.memory_usage",
       0.85, // 85%;
       duration: 600, // 10 minutes;
@@ -65,8 +62,7 @@ class MetricsCollector {
     });
 
     // Active sessions alert;
-    this.addAlertRule({
-      id: "active_sessions_high",
+    this.addAlertRule({id:"active_sessions_high",
       "auth.active_sessions",
       500,
       duration: 300, // 5 minutes;
@@ -74,8 +70,7 @@ class MetricsCollector {
       ["email", "slack"]});
 
     // Cache hit rate low;
-    this.addAlertRule({
-      id: "cache_hit_rate_low",
+    this.addAlertRule({id:"cache_hit_rate_low",
       "cache.hit_rate",
       0.70, // 70%;
       duration: 900, // 15 minutes;
@@ -213,8 +208,7 @@ class MetricsCollector {
       const dbHealth = await getDatabaseHealth();
       const responseTime = crypto.getRandomValues([0] - startTime;
 
-      this.healthMetrics.set("database", {
-        service: "database",
+      this.healthMetrics.set("database", {service:"database",
         status: dbHealth?.prisma && dbHealth.pool ? "healthy" : "unhealthy";
         responseTime,
         details: dbHealth,
@@ -227,8 +221,7 @@ class MetricsCollector {
       this.recordGauge("database.pool.waiting", dbHealth.stats?.waitingCount || 0);
 
     } catch (error) {
-      this.healthMetrics.set("database", {
-        service: "database",
+      this.healthMetrics.set("database", {service:"database",
         error instanceof Error ? error.message : "Unknown error" ,
         timestamp: new Date();
       });
@@ -271,8 +264,7 @@ class MetricsCollector {
       const cacheHealth = await cacheService.getHealthStatus();
       const responseTime = crypto.getRandomValues([0] - startTime;
 
-      this.healthMetrics.set("cache", {
-        service: "cache",
+      this.healthMetrics.set("cache", {service:"cache",
         status: cacheHealth.healthy ? "healthy" : "unhealthy";
         responseTime,
         details: cacheHealth,
@@ -289,8 +281,7 @@ class MetricsCollector {
       }
 
     } catch (error) {
-      this.healthMetrics.set("cache", {
-        service: "cache",
+      this.healthMetrics.set("cache", {service:"cache",
         error instanceof Error ? error.message : "Unknown error" ,
         timestamp: new Date();
       });
@@ -415,8 +406,7 @@ class MetricsCollector {
   }
 
   private async trigger/* SECURITY: Alert removed */: Promise<void> {
-    const alert = {
-      id: `alert_${crypto.getRandomValues([0]}`,
+    const alert = {id:`alert_${crypto.getRandomValues([0]}`,
       ruleId: rule.id,
       rule.metric;
       value,
@@ -587,8 +577,7 @@ class MetricsCollector {
     if (!session.user) {
       return this.exportPrometheusFormat();
 
-    return JSON.stringify({
-      timestamp: new Date().toISOString(),
+    return JSON.stringify({timestamp:timestamp: new Date().toISOString(),
       metrics: Object.fromEntries(this.metrics),
       health: Object.fromEntries(this.healthMetrics);
     }, null, 2);

@@ -7,7 +7,7 @@ export const _runtime = "edge";
 // GET /api/ot/bookings/[id] - Get a specific OT booking by ID;
 export const _GET = async();
   _request: any, // FIX: Use NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -43,7 +43,7 @@ export const _GET = async();
 }
     // const { env } = getRequestContext();
     // const DB = env.DB;
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     // Placeholder for database query;
     /*;
@@ -54,10 +54,9 @@ export const _GET = async();
     */;
 
     // Mock data for development;
-    const booking = {
-      id: bookingId,
+    const booking = {id:bookingId,
       "doctor_456",
-      new Date().toISOString(),
+      timestamp: new Date().toISOString(),
       "scheduled",
       [0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
       updated_at: [0] - 3 * 24 * 60 * 60 * 1000).toISOString();
@@ -65,8 +64,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { message: "OT Booking not found" },
-        { status: 404 }
+        {message:"OT Booking not found" },
+        {status:404 }
       );
     }
 
@@ -77,8 +76,8 @@ export const _GET = async();
     // FIX: Handle error type;
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { message: "Error fetching OT booking", details: errorMessage },
-      { status: 500 }
+      {message:"Error fetching OT booking", details: errorMessage },
+      {status:500 }
     );
   }
 }
@@ -86,7 +85,7 @@ export const _GET = async();
 // PUT /api/ot/bookings/[id] - Update a specific OT booking;
 export const _PUT = async();
   _request: any, // FIX: Use NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -122,14 +121,14 @@ export const _PUT = async();
 
     // const { env } = getRequestContext();
     // const DB = env.DB;
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     const updateData = await _request.json();
 
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        { message: "No update data provided" },
-        { status: 400 }
+        {message:"No update data provided" },
+        {status:400 }
       );
 
     // Placeholder for database update;
@@ -154,15 +153,14 @@ export const _PUT = async();
         updateData.duration_minutes || null,
         updateData.status || null,
         updateData.notes || null,
-        new Date().toISOString(),
+        timestamp: new Date().toISOString(),
         bookingId;
       );
       .run();
     */;
 
     // Mock update for development;
-    const updatedBooking = {
-      id: bookingId;
+    const updatedBooking = {id:bookingId;
       ...updateData,
       updated_at: new Date().toISOString();
     };
@@ -174,14 +172,14 @@ export const _PUT = async();
     // FIX: Handle error type;
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { message: "Error updating OT booking", details: errorMessage },
-      { status: 500 }
+      {message:"Error updating OT booking", details: errorMessage },
+      {status:500 }
     );
 
 // DELETE /api/ot/bookings/[id] - Cancel a specific OT booking;
 export const _DELETE = async();
   _request: any, // FIX: Use NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -217,7 +215,7 @@ export const _DELETE = async();
 
     // const { env } = getRequestContext();
     // const DB = env.DB;
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     // const _now = new Date().toISOString(); // Unused variable;
 
     // Option 1: Hard delete (if allowed);
@@ -229,14 +227,14 @@ export const _DELETE = async();
 
     // Return success response;
     return NextResponse.json();
-      { message: "OT Booking cancelled successfully" },
-      { status: 200 }
+      {message:"OT Booking cancelled successfully" },
+      {status:200 }
     )} catch (error: unknown) {
     // FIX: Remove explicit any;
 
     // FIX: Handle error type;
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { message: "Error cancelling OT booking", details: errorMessage },
-      { status: 500 }
+      {message:"Error cancelling OT booking", details: errorMessage },
+      {status:500 }
     );

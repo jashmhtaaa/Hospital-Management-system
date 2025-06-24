@@ -5,8 +5,8 @@ import "../../../models/domain-models"
 import "../../../models/fhir-mappers"
 import "next/server"
 import getPrescriptionById }
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
 import {  errorHandler  } from "@/lib/database"
 import {  FHIRMapper  } from "@/lib/database"
@@ -32,8 +32,7 @@ const getMedicationById,
   delete: () => Promise.resolve(true);
 }
 
-const prescriptionRepository = {
-  findById: getPrescriptionById,
+const prescriptionRepository = {findById:getPrescriptionById,
   findByPatientId: (patientId: string) => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -94,7 +93,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({error:"Unauthorized" }, {status:401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -162,8 +161,7 @@ export const GET = async (req: any) => {
         if (!session.user)ontinue;
 
         // Add to due administrations;
-        dueAdministrations.push({
-          prescriptionId: prescription.id,
+        dueAdministrations.push({prescriptionId:prescription.id,
           medication.id,
           prescription.dosage.value,
           prescription.dosage.route,
@@ -183,8 +181,7 @@ export const GET = async (req: any) => {
     // const _fhirAdministrations = paginatedAdministrations.map(FHIRMapper.toFHIRMedicationAdministration);
 
     // Audit logging;
-    await auditLog("MEDICATION_ADMINISTRATION", {
-      action: "LIST_DUE",
+    await auditLog("MEDICATION_ADMINISTRATION", {action:"LIST_DUE",
       userId,
       details: null,
         timeWindow,
@@ -195,8 +192,7 @@ export const GET = async (req: any) => {
     });
 
     // Return response;
-    return NextResponse.json({
-      dueAdministrations: paginatedAdministrations,
+    return NextResponse.json({dueAdministrations:paginatedAdministrations,
       startTime,
         end: endTime;
       },
@@ -206,7 +202,7 @@ export const GET = async (req: any) => {
         total,
         pages: Math.ceil(total / limit);
       }
-    }, { status: 200 });
+    }, {status:200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving due medications");
   }

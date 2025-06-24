@@ -1,15 +1,14 @@
 import "@cloudflare/workers-types"
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  D1Database  } from "@/lib/database"
 import { type
 
 export const _runtime = "edge";
 
 // Interface for checklist item (re-used from [id] route, consider moving to a shared types file);
-interface ChecklistItem {
-  id: string; // Unique ID for the item within the template;
+interface ChecklistItem {id:string; // Unique ID for the item within the template;
   text: string,
   type: "checkbox" | "text" | "number" | "select"; // Example types;
   options?: string[]; // For select type;
@@ -17,8 +16,7 @@ interface ChecklistItem {
 }
 
 // Interface for the POST request body;
-interface ChecklistTemplateCreateBody {
-  name: string,
+interface ChecklistTemplateCreateBody {name:string,
   ChecklistItem[];
 }
 
@@ -79,8 +77,8 @@ export const _GET = async (request: any) => {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { message: "Error fetching checklist templates", details: errorMessage },
-      { status: 500 }
+      {message:"Error fetching checklist templates", details: errorMessage },
+      {status:500 }
     );
   }
 }
@@ -126,16 +124,16 @@ export const _POST = async (request: any) => {
       items.length === 0;
     ) ;
       return NextResponse.json();
-        { message: "Name, phase, and a non-empty array of items are required" },
-        { status: 400 }
+        {message:"Name, phase, and a non-empty array of items are required" },
+        {status:400 }
       );
 
     // Validate phase;
     const validPhases = ["pre-op", "intra-op", "post-op"]; // Add specific intra-op phases if needed;
     if (!session.user) {
       return NextResponse.json();
-        { message: "Invalid phase. Must be one of: " + validPhases.join(", ") },
-        { status: 400 }
+        {message:"Invalid phase. Must be one of: " + validPhases.join(", ") },
+        {status:400 }
       );
 
     // Validate items structure (basic check);
@@ -148,9 +146,8 @@ export const _POST = async (request: any) => {
       );
     ) ;
       return NextResponse.json();
-        {
-          message: "Each item must be an object with id, text, and type properties"},
-        { status: 400 }
+        {message:"Each item must be an object with id, text, and type properties"},
+        {status:400 }
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -212,12 +209,12 @@ export const _POST = async (request: any) => {
 
         // Return raw string if parsing fails;
 
-      return NextResponse.json(newTemplate, { status: 201 });
+      return NextResponse.json(newTemplate, {status:201 });
     } else {
       // Fallback response if fetching fails;
       return NextResponse.json();
         { id, name, phase, items, created_at: now, updated_at: now },
-        { status: 201 }
+        {status:201 }
       );
 
   } catch (error: unknown) {
@@ -226,14 +223,13 @@ export const _POST = async (request: any) => {
     const errorMessage = error instanceof Error ? error.message : String(error),
     if (!session.user) {
       return NextResponse.json();
-        {
-          message: "Checklist template name must be unique",
+        {message:"Checklist template name must be unique",
           details: errorMessage;
         },
-        { status: 409 }
+        {status:409 }
       );
 
     return NextResponse.json();
-      { message: "Error creating checklist template", details: errorMessage },
-      { status: 500 }
+      {message:"Error creating checklist template", details: errorMessage },
+      {status:500 }
     );

@@ -9,8 +9,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Radiology Schemas;
-export const ImagingStudySchema = z.object({
-  patient_id: z.string().min(1, "Patient ID is required"),
+export const ImagingStudySchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
   ordering_provider_id: z.string().min(1, "Ordering provider is required"),
   study_type: z.enum(["x_ray", "ct_scan", "mri", "ultrasound", "mammography", "nuclear_medicine", "pet_scan", "fluoroscopy"]),
   exam_code: z.string().min(1, "Exam code is required"),
@@ -37,8 +36,7 @@ export const ImagingStudySchema = z.object({
   language: z.string().optional();
 });
 
-export const ImagingReportSchema = z.object({
-  study_id: z.string().min(1, "Study ID is required"),
+export const ImagingReportSchema = z.object({study_id:z.string().min(1, "Study ID is required"),
   radiologist_id: z.string().min(1, "Radiologist ID is required"),
   report_type: z.enum(["preliminary", "final", "addendum", "corrected"]).default("preliminary"),
   clinical_history: z.string(),
@@ -61,8 +59,7 @@ export const ImagingReportSchema = z.object({
   template_id: z.string().optional();
 });
 
-export const DicomSeriesSchema = z.object({
-  study_id: z.string().min(1, "Study ID is required"),
+export const DicomSeriesSchema = z.object({study_id:z.string().min(1, "Study ID is required"),
   series_number: z.number().min(1),
   series_description: z.string(),
   modality: z.string(),
@@ -88,8 +85,7 @@ export const DicomSeriesSchema = z.object({
   archive_location: z.string().optional();
 });
 
-export const QualityAssuranceSchema = z.object({
-  study_id: z.string().min(1, "Study ID is required"),
+export const QualityAssuranceSchema = z.object({study_id:z.string().min(1, "Study ID is required"),
   technologist_id: z.string().min(1, "Technologist ID is required"),
   image_quality: z.enum(["excellent", "good", "acceptable", "poor", "non_diagnostic"]),
   positioning: z.enum(["excellent", "good", "acceptable", "poor"]),
@@ -110,8 +106,7 @@ export const QualityAssuranceSchema = z.object({
   reviewed_by: z.string();
 });
 
-export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
-  id: string,
+export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {id:string,
   string,
   status: "scheduled" | "arrived" | "in_progress" | "completed" | "cancelled" | "no_show";
   arrival_time?: Date;
@@ -132,8 +127,7 @@ export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {
   ordering_provider_name?: string;
 };
 
-export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
-  id: string,
+export type ImagingReport = z.infer<typeof ImagingReportSchema> & {id:string,
   "draft" | "preliminary" | "final" | "amended";
   dictated_at?: Date;
   transcribed_at?: Date;
@@ -148,8 +142,7 @@ export type ImagingReport = z.infer<typeof ImagingReportSchema> & {
   radiologist_name?: string;
 };
 
-export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
-  id: string,
+export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {id:string,
   Date,
   string;
   compression_type?: string;
@@ -159,8 +152,7 @@ export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {
   access_count: number;
 };
 
-export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
-  id: string,
+export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:string,
   overall_score: number; // 1-100;
   created_at: Date,
   updated_at: Date;
@@ -179,22 +171,18 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
    */;
   private initializeReportTemplates(): void {
     const templates = [;
-      {
-        id: "chest-xray",
+      {id:"chest-xray",
         "x_ray",
-        {
-          technique: "PA and lateral chest radiographs were obtained.",
+        {technique:"PA and lateral chest radiographs were obtained.",
           findings_sections: [;
             "Lungs and pleura",
             "Heart and mediastinum",
             "Bones and soft tissues";
           ],
           impression_guidelines: "Provide clear, concise impression with actionable recommendations."}},
-      {
-        id: "ct-head",
+      {id:"ct-head",
         "ct_scan",
-        {
-          technique: "Axial CT images of the head were obtained without intravenous contrast.",
+        {technique:"Axial CT images of the head were obtained without intravenous contrast.",
           findings_sections: [;
             "Brain parenchyma",
             "Ventricular system",
@@ -202,11 +190,9 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
             "Skull and scalp";
           ],
           impression_guidelines: "Comment on acute findings, mass effect, and need for follow-up."}},
-      {
-        id: "mri-brain",
+      {id:"mri-brain",
         "mri",
-        {
-          technique: "Multiplanar, multisequence MRI of the brain was performed.",
+        {technique:"Multiplanar, multisequence MRI of the brain was performed.",
           findings_sections: [;
             "Brain parenchyma",
             "White matter",
@@ -298,8 +284,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
 
       if (!session.user) {
         // Schedule the equipment;
-        schedule.push({
-          study_id: study.id,
+        schedule.push({study_id:study.id,
           start_time: scheduledDateTime.toISOString(),
           end_time: new Date(scheduledDateTime.getTime() + study.estimated_duration * 60000).toISOString(),
           study.patient_id;
@@ -589,8 +574,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     const qaId = uuidv4();
 
     // Calculate overall score;
-    const scores = {
-      excellent: 100,
+    const scores = {excellent:100,
       70,
       0,
       60;
@@ -770,8 +754,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     filteredReports.forEach(report => {
       if (!session.user)eturn;
 
-      const current = radiologistStats.get(report.radiologist_id) || {
-        radiologist_id: report.radiologist_id,
+      const current = radiologistStats.get(report.radiologist_id) || {radiologist_id:report.radiologist_id,
         0,
         0;
       };
@@ -784,8 +767,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       radiologistStats.set(report.radiologist_id, current);
     });
 
-    const _radiologistProductivity = Array.from(radiologistStats.values()).map(stats => ({
-      radiologist_id: stats.radiologist_id,
+    const _radiologistProductivity = Array.from(radiologistStats.values()).map(stats => ({radiologist_id:stats.radiologist_id,
       stats.studies_read > 0 ? stats.total_read_time / stats.studies_read : 0,
       stats.amendments;
     }));
@@ -802,8 +784,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
       percentage: (count / filteredStudies.length) * 100;
     }));
 
-    return {
-      daily_volume: dailyVolume,
+    return {daily_volume:dailyVolume,
       Math.round(turnaroundTimeStat * 100) / 100,
       Math.round(criticalResultsPercentage * 100) / 100,
       Math.round(noShowRate * 100) / 100,
@@ -826,7 +807,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ studies: ImagingStudy[], number }> {
+  }): Promise<{studies:ImagingStudy[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredStudies = Array.from(this.imagingStudies.values());

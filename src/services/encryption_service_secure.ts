@@ -10,8 +10,7 @@ import * as crypto
 }
 }
 
-interface EncryptedData {
-  encrypted: string,
+interface EncryptedData {encrypted:string,
   iv: string,  tag: string,
   version: string,  algorithm: string,
   timestamp: number;

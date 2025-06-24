@@ -61,7 +61,6 @@ import {  SecurityService  } from "@/lib/database"
       const severity = entry.severity || this.determineSeverity(entry.action);
 
       // Create the audit log entry;
-;
           severity;
 
       });
@@ -92,13 +91,11 @@ import {  SecurityService  } from "@/lib/database"
     const sanitized: Record<string, unknown> = {};
 
     // Define sensitive field patterns;
-;
     ];
 
     // Process each field in the details object;
     for (const [key, value] of Object.entries(details)) {
       // Check if this is a sensitive field;
-;
       );
 
       if (!session.user) {

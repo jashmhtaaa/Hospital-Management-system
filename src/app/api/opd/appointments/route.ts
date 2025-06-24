@@ -1,14 +1,13 @@
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import { type
 
 // src/app/api/opd/appointments/route.ts;
 // import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
 
 // Interface for the POST request body;
-interface AppointmentCreateBody {
-  patient_id: number,
+interface AppointmentCreateBody {patient_id:number,
   doctor_id: number;
   department?: string; // Assuming department might be derived or optional;
   appointment_date: string; // Assuming ISO string format;
@@ -62,8 +61,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
 
   // Return mock data for now;
   const mockAppointments = [;
-    {
-      id: 1,
+    {id:1,
       101,
       5,
       "General Medicine",
@@ -72,8 +70,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
       "Patient has history of asthma",
       created_at: "2025-04-25T14:20:00Z";
     },
-    {
-      id: 2,
+    {id:2,
       102,
       8,
       "Orthopedics",
@@ -82,8 +79,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
       "Check X-ray results",
       created_at: "2025-04-26T09:45:00Z";
     },
-    {
-      id: 3,
+    {id:3,
       103,
       3,
       "Cardiology",
@@ -92,8 +88,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
       "Patient has family history of heart disease",
       created_at: "2025-04-27T16:30:00Z";
     },
-    {
-      id: 4,
+    {id:4,
       104,
       5,
       "General Medicine",
@@ -162,7 +157,7 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
   //   appointmentData.reason,
   //   appointmentData.notes;
   // ).run();
-  // return { id: info.meta.last_row_id, ...appointmentData }
+  // return {id:info.meta.last_row_id, ...appointmentData }
 
   // Return mock success response;
   const newId = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000) + 10;
@@ -170,8 +165,7 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
     .toISOString();
     .slice(0, 10);
     .replaceAll("-", "")}-${newId.toString().padStart(3, "0")}`;
-  return {
-    id: newId,
+  return {id:newId,
     appointment_number: appointmentNumber;
     ...appointmentData,
     status: "scheduled",
@@ -195,8 +189,7 @@ async const getAppointmentByIdFromDB = (id: number) {
 
   // Return mock data for now;
   const mockAppointments = [;
-    {
-      id: 1,
+    {id:1,
       101,
       5,
       "General Medicine",
@@ -208,8 +201,7 @@ async const getAppointmentByIdFromDB = (id: number) {
         "+91-9876543210",
         medical_record_number: "MRN00101";
       }},
-    {
-      id: 2,
+    {id:2,
       102,
       8,
       "Orthopedics",
@@ -312,8 +304,8 @@ export const GET = async (request: any) => {
         const appointment = await getAppointmentByIdFromDB(id);
         if (!session.user) {
           return NextResponse.json();
-            { error: "Appointment not found" },
-            { status: 404 }
+            {error:"Appointment not found" },
+            {status:404 }
           );
         }
         return NextResponse.json({ appointment });
@@ -328,11 +320,10 @@ export const GET = async (request: any) => {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {
-        error: "Failed to fetch appointments",
+      {error:"Failed to fetch appointments",
         details: errorMessage;
       },
-      { status: 500 }
+      {status:500 }
     );
   }
 
@@ -378,24 +369,22 @@ export const POST = async (request: any) => {
     // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json();
-        {
-          error: "Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)"},
-        { status: 400 }
+        {error:"Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)"},
+        {status:400 }
       );
 
     // Simulate creating the appointment in the database;
     const newAppointment = await createAppointmentInDB(appointmentData);
 
-    return NextResponse.json({ appointment: newAppointment }, { status: 201 });
+    return NextResponse.json({appointment:newAppointment }, {status:201 });
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {
-        error: "Failed to create appointment",
+      {error:"Failed to create appointment",
         details: errorMessage;
       },
-      { status: 500 }
+      {status:500 }
     );
 
 /**;
@@ -440,8 +429,8 @@ export const PUT = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid appointment ID" },
-        { status: 400 }
+        {error:"Invalid appointment ID" },
+        {status:400 }
       );
 
     const updateData = (await request.json()) as AppointmentUpdateBody;
@@ -449,14 +438,13 @@ export const PUT = async (request: any) => {
     // Simulate updating the appointment in the database;
     const updatedAppointment = await updateAppointmentInDB(id, updateData);
 
-    return NextResponse.json({ appointment: updatedAppointment });
+    return NextResponse.json({appointment:updatedAppointment });
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {
-        error: "Failed to update appointment",
+      {error:"Failed to update appointment",
         details: errorMessage;
       },
-      { status: 500 }
+      {status:500 }
     );

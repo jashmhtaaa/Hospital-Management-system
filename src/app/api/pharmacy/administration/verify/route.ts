@@ -6,8 +6,8 @@ import "../../../models/domain-models"
 import "../../../services/barcode-administration-service"
 import "next/server"
 import getPrescriptionById }
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
 import {  BarcodeAdministrationService  } from "@/lib/database"
 import {  errorHandler  } from "@/lib/database"
@@ -103,14 +103,14 @@ export const POST = async (req: any) => {
     const validationResult = validateBarcodeVerificationRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        {error:"Validation failed", details: validationResult.errors },
+        {status:400 }
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -127,8 +127,7 @@ export const POST = async (req: any) => {
     // If verification failed, return error;
     if (!session.user) {
       return NextResponse.json();
-        {
-          error: "Verification failed",
+        {error:"Verification failed",
           details: verificationResult.errors;
           verificationResult;
         },status: 400 ;
@@ -143,18 +142,16 @@ export const POST = async (req: any) => {
       response.warnings = verificationResult.warnings;
 
     // Audit logging;
-    await auditLog("MEDICATION_ADMINISTRATION", {
-      action: "VERIFY",
+    await auditLog("MEDICATION_ADMINISTRATION", {action:"VERIFY",
       userId,
       patientId: verificationResult.patientId;
-      {
-        medicationId: verificationResult.medicationId,
+      {medicationId:verificationResult.medicationId,
         verificationResult.success,
         warningCount: verificationResult.warnings?.length || 0;
 
     });
 
     // Return response;
-    return NextResponse.json(response, { status: 200 });
+    return NextResponse.json(response, {status:200 });
   } catch (error) {
     return errorHandler(error, "Error verifying medication administration");

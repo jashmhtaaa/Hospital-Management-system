@@ -24,17 +24,17 @@ export = "export" enum = "enum" OPDVisitType = "OPDVisitType" {
     New = "New",
     FollowUp = "FollowUp",
     WalkIn = "WalkIn"}
-    doctor?: { doctor_id: number; user?: { fullName?: string | null } };
+    doctor?: {doctor_id:number; user?: { fullName?: string | null } };
     appointment?: Pick>;
 }
-    recorded_by_user?: { user_id: number; full_name?: string | null };
+    recorded_by_user?: {user_id:number; full_name?: string | null };
 
-    doctor?: { doctor_id: number; user?: { fullName?: string | null } };
+    doctor?: {doctor_id:number; user?: { fullName?: string | null } };
     opd_visit?: Pick>;
     prescriptions?: Prescription[];
     lab_orders?: LabOrder[];
 
-    doctor?: { doctor_id: number; user?: { fullName?: string | null } ;
+    doctor?: {doctor_id:number; user?: { fullName?: string | null } ;
 
-    sample_collected_by_user?: { user_id: number; full_name?: string | null };
-    result_verified_by_user?: { user_id: number; full_name?: string | null };
+    sample_collected_by_user?: {user_id:number; full_name?: string | null };
+    result_verified_by_user?: {user_id:number; full_name?: string | null };

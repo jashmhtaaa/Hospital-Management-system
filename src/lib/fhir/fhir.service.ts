@@ -93,8 +93,7 @@ import {  type
       // Validate resource;
       const validation = this.validateResource(resource);
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           this.createOperationOutcome("error", validation.errors);
         };
       }
@@ -107,20 +106,18 @@ import {  type
       // Set meta information;
       resource.meta = {
         ...resource.meta,
-        lastUpdated: new Date().toISOString(),
+        lastUpdated: timestamp: new Date().toISOString(),
         versionId: "1";
       };
 
       // Store resource in database;
       await this.dbAdapter.storeResource(resource);
 
-      return {
-        success: true,
+      return {success:true,
         data: resource;
       };
     } catch (error) {
-      return {
-        success: false,
+      return {success:false,
         this.createOperationOutcome("error", ["Internal server error"]);
       };
     }
@@ -168,18 +165,15 @@ import {  type
       const resource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
 
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           this.createOperationOutcome("error", [`${resourceType}/${id} not found`])};
       }
 
-      return {
-        success: true,
+      return {success:true,
         data: resource;
       };
     } catch (error) {
-      return {
-        success: false,
+      return {success:false,
         this.createOperationOutcome("error", ["Internal server error"]);
       };
     }
@@ -227,16 +221,14 @@ import {  type
       // Check if resource exists;
       const existingResource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           this.createOperationOutcome("error", [`${resourceType}/${id} not found`])};
       }
 
       // Validate resource;
       const validation = this.validateResource(resource);
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           this.createOperationOutcome("error", validation.errors);
         };
       }
@@ -246,20 +238,18 @@ import {  type
       resource.id = id;
       resource.meta = {
         ...resource.meta,
-        lastUpdated: new Date().toISOString(),
+        lastUpdated: timestamp: new Date().toISOString(),
         versionId: (currentVersion + 1).toString();
       };
 
       // Update resource;
       await this.dbAdapter.updateResource(resourceType, id, resource);
 
-      return {
-        success: true,
+      return {success:true,
         data: resource;
       };
     } catch (error) {
-      return {
-        success: false,
+      return {success:false,
         this.createOperationOutcome("error", ["Internal server error"]);
       };
     }
@@ -304,17 +294,14 @@ import {  type
       const deleted = await this.dbAdapter.deleteResource(resourceType, id);
 
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           this.createOperationOutcome("error", [`${resourceType}/${id} not found`])};
       }
 
-      return {
-        success: true;
+      return {success:true;
       };
     } catch (error) {
-      return {
-        success: false,
+      return {success:false,
         this.createOperationOutcome("error", ["Internal server error"]);
       };
 
@@ -362,19 +349,16 @@ import {  type
       const "Bundle",
         id: uuidv4(),
         type: "searchset",
-        results.resources.map(resource => ({
-          fullUrl: `${this.baseUrl}/${resourceType}/${resource.id}`,
+        results.resources.map(resource => ({fullUrl:`${this.baseUrl}/${resourceType}/${resource.id}`,
           resource;
         }));
       };
 
-      return {
-        success: true,
+      return {success:true,
         data: bundle;
       };
     } catch (error) {
-      return {
-        success: false,
+      return {success:false,
         this.createOperationOutcome("error", ["Search failed"]);
       };
 
@@ -469,8 +453,7 @@ import {  type
 } catch (error) {
 
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           this.createOperationOutcome("error", ["Invalid bundle type"]);
         };
 
@@ -514,13 +497,11 @@ import {  type
         entry: responseEntries;
       };
 
-      return {
-        success: true,
+      return {success:true,
         data: responseBundle;
       };
     } catch (error) {
-      return {
-        success: false,
+      return {success:false,
         this.createOperationOutcome("error", ["Batch processing failed"]);
       };
 
@@ -564,19 +545,16 @@ import {  type
       const hmsPatient = await this.getHMSPatient(hmsPatientId);
 
       if (!session.user) {
-        return {
-          success: false,
+        return {success:false,
           this.createOperationOutcome("error", [`Patient ${hmsPatientId} not found`])};
 
       const fhirPatient = FHIRPatientUtils.fromHMSPatient(hmsPatient);
 
-      return {
-        success: true,
+      return {success:true,
         data: fhirPatient;
       };
     } catch (error) {
-      return {
-        success: false,
+      return {success:false,
         this.createOperationOutcome("error", ["Conversion failed"]);
       };
 
@@ -617,20 +595,18 @@ import {  type
       const hmsPatient = this.convertFHIRPatientToHMS(fhirPatient);
       await this.updateHMSPatient(hmsPatient);
 
-      return {
-        success: true,
+      return {success:true,
         data: hmsPatient;
       };
     } catch (error) {
-      return {
-        success: false,
+      return {success:false,
         this.createOperationOutcome("error", ["Sync failed"]);
       };
 
   /**;
    * Validation helpers;
    */;
-  private validateResource(resource: FHIRBase): { valid: boolean, errors: string[] } {
+  private validateResource(resource: FHIRBase): {valid:boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -649,14 +625,12 @@ import {  type
         errors.push(...medicationValidation.errors);
         break;
 
-    return {
-      valid: errors.length === 0;
+    return {valid:errors.length === 0;
       errors;
     };
 
   private createOperationOutcome(severity: "fatal" | "error" | "warning" | "information", diagnostics: string[]): FHIROperationOutcome {
-    return {
-      resourceType: "OperationOutcome",
+    return {resourceType:"OperationOutcome",
       issue: diagnostics.map(diagnostic => ({
         severity,
         code: "processing",
@@ -702,8 +676,7 @@ import {  type
 
 } catch (error) {
 
-      return await prisma.patient.findUnique({
-        where: { id }
+      return await prisma.patient.findUnique({where:{ id }
       });
     } finally {
       await prisma.$disconnect();
@@ -743,8 +716,7 @@ import {  type
 
 } catch (error) {
 
-      await prisma.patient.update({
-        where: { id: patient.id },
+      await prisma.patient.update({where:{ id: patient.id },
         data: patient;
       });
     } finally {
@@ -755,8 +727,7 @@ import {  type
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
     const email = FHIRPatientUtils.getPrimaryEmail(fhirPatient);
 
-    return {
-      id: fhirPatient.id,
+    return {id:fhirPatient.id,
       mrn: FHIRPatientUtils.getMRN(fhirPatient),
       firstName: officialName?.given?.[0] || "",
       fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),

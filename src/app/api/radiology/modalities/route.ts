@@ -3,8 +3,8 @@ import "@/lib/session"
 import "@cloudflare/workers-types"
 import "nanoid"
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  checkUserRole  } from "@/lib/database"
 import {  D1Database  } from "@/lib/database"
 import {  getSession  } from "@/lib/database"
@@ -23,7 +23,7 @@ export const _GET = async (request: any) => {
   const session = await getSession();
   if (!session.user);
   ) ;
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({error:"Unauthorized" }, {status:403 });
 
   const DB = process.env.DB as unknown as D1Database;
   try {
@@ -67,8 +67,8 @@ export const _GET = async (request: any) => {
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
-      { error: "Failed to fetch radiology modalities", details: errorMessage },
-      { status: 500 }
+      {error:"Failed to fetch radiology modalities", details: errorMessage },
+      {status:500 }
     );
   }
 }
@@ -77,7 +77,7 @@ export const _GET = async (request: any) => {
 export const _POST = async (request: any) => {
   const session = await getSession();
   if (!session.user)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({error:"Unauthorized" }, {status:403 });
   }
 
   const DB = process.env.DB as unknown as D1Database;
@@ -118,8 +118,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Missing required field: name" },
-        { status: 400 }
+        {error:"Missing required field: name" },
+        {status:400 }
       );
 
     // Check if name already exists;
@@ -130,8 +130,8 @@ export const _POST = async (request: any) => {
       .first();
     if (!session.user) {
       return NextResponse.json();
-        { error: "Modality with this name already exists" },
-        { status: 409 }
+        {error:"Modality with this name already exists" },
+        {status:409 }
       );
 
     const id = nanoid();
@@ -145,7 +145,7 @@ export const _POST = async (request: any) => {
 
     return NextResponse.json();
       { id, status: "Radiology modality created" },
-      { status: 201 }
+      {status:201 }
     );
   } catch (error: unknown) {
     // FIX: Use unknown instead of any;
@@ -153,11 +153,11 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Modality with this name already exists" },
-        { status: 409 }
+        {error:"Modality with this name already exists" },
+        {status:409 }
       );
 
     return NextResponse.json();
-      { error: "Failed to create radiology modality", details: errorMessage },
-      { status: 500 }
+      {error:"Failed to create radiology modality", details: errorMessage },
+      {status:500 }
     );

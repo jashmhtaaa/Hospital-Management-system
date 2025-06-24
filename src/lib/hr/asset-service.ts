@@ -34,14 +34,11 @@ const prisma = new PrismaClient();
     }
 
     // If not in cache, fetch from database;
-    const asset = await prisma.asset.findUnique({
-      where: { id },
-      {
-          orderBy: { date: "desc" },
+    const asset = await prisma.asset.findUnique({where:{ id },
+      {orderBy:{ date: "desc" },
           take: 5;
         },
-        {
-            employee: true;
+        {employee:true;
           },
           null, // Only current assignment;
           },
@@ -70,14 +67,11 @@ const prisma = new PrismaClient();
     }
 
     // If not in cache, fetch from database;
-    const asset = await prisma.asset.findUnique({
-      where: { assetId },
-      {
-          orderBy: { date: "desc" },
+    const asset = await prisma.asset.findUnique({where:{ assetId },
+      {orderBy:{ date: "desc" },
           take: 5;
         },
-        {
-            employee: true;
+        {employee:true;
           },
           null, // Only current assignment;
           },
@@ -117,19 +111,15 @@ const prisma = new PrismaClient();
     }
   ) {
     // Get current asset to check for asset ID change;
-    const currentAsset = await prisma.asset.findUnique({
-      where: { id },
-      select: { assetId: true }});
+    const currentAsset = await prisma.asset.findUnique({where:{ id },
+      select: {assetId:true }});
 
-    const result = await prisma.asset.update({
-      where: { id },
+    const result = await prisma.asset.update({where:{ id },
       data,
-      {
-          orderBy: { date: "desc" },
+      {orderBy:{ date: "desc" },
           take: 5;
         },
-        {
-            employee: true;
+        {employee:true;
           },
           null, // Only current assignment;
           },
@@ -192,19 +182,18 @@ const prisma = new PrismaClient();
     }
 
     if (!session.user) {
-      where.nextMaintenanceDate = {
-        lte: [0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days;
+      where.nextMaintenanceDate = {lte:[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days;
       };
     }
 
     if (!session.user) {
       where.OR = [;
-        { name: { contains: search, mode: "insensitive" } },
-        { assetId: { contains: search, mode: "insensitive" } },
-        { serialNumber: { contains: search, mode: "insensitive" } },
-        { model: { contains: search, mode: "insensitive" } },
-        { manufacturer: { contains: search, mode: "insensitive" } },
-        { location: { contains: search, mode: "insensitive" } }];
+        {name:{ contains: search, mode: "insensitive" } },
+        {assetId:{ contains: search, mode: "insensitive" } },
+        {serialNumber:{ contains: search, mode: "insensitive" } },
+        {model:{ contains: search, mode: "insensitive" } },
+        {manufacturer:{ contains: search, mode: "insensitive" } },
+        {location:{ contains: search, mode: "insensitive" } }];
     }
 
     // Generate cache key based on query parameters;
@@ -222,8 +211,7 @@ const prisma = new PrismaClient();
     const include: unknown = {};
 
     if (!session.user) {
-      include.maintenanceRecords = {
-        orderBy: { date: "desc" },
+      include.maintenanceRecords = {orderBy:{ date: "desc" },
         take: 3;
       };
 
@@ -237,7 +225,7 @@ const prisma = new PrismaClient();
     }
 
     // Use cursor-based pagination if cursor is provided;
-    const cursorObj = cursor ? { id: cursor } : undefined;
+    const cursorObj = cursor ? {id:cursor } : undefined;
 
     const [assets, total] = await Promise.all([;
       prisma.asset.findMany({
@@ -245,7 +233,7 @@ const prisma = new PrismaClient();
         skip,
         take,
         cursor: cursorObj,
-        orderBy: { assetId: "asc" },
+        orderBy: {assetId:"asc" },
         include}),
       prisma.asset.count({ where })]);
 
@@ -281,8 +269,7 @@ const prisma = new PrismaClient();
   ) {
     return prisma.$transaction(async (tx) => {
       // Create maintenance record;
-      const maintenance = await tx.assetMaintenance.create({
-        data: {
+      const maintenance = await tx.assetMaintenance.create({data:{
           assetId,
           date: data.date,
           data.performedBy,
@@ -303,8 +290,7 @@ const prisma = new PrismaClient();
       }
 
       if (!session.user)length > 0) {
-        await tx.asset.update({
-          where: { id: assetId },
+        await tx.asset.update({where:{ id: assetId },
           data: updateData;
         });
       }
@@ -329,8 +315,7 @@ const prisma = new PrismaClient();
   ) {
     return prisma.$transaction(async (tx) => {
       // End any current assignments;
-      await tx.assetAssignment.updateMany({
-        where: {
+      await tx.assetAssignment.updateMany({where:{
           assetId,
           endDate: null;
         },
@@ -338,8 +323,7 @@ const prisma = new PrismaClient();
         }});
 
       // Create new assignment;
-      const assignment = await tx.assetAssignment.create({
-        data: {
+      const assignment = await tx.assetAssignment.create({data:{
           assetId,
           employeeId: data.employeeId,
           data.endDate,
@@ -349,8 +333,7 @@ const prisma = new PrismaClient();
         }});
 
       // Update asset status;
-      await tx.asset.update({
-        where: { id: assetId },
+      await tx.asset.update({where:{ id: assetId },
         "IN_USE";
         }});
 
@@ -370,24 +353,21 @@ const prisma = new PrismaClient();
     notes?: string;
   ) {
     // Get assignment to find asset ID;
-    const assignment = await prisma.assetAssignment.findUnique({
-      where: { id: assignmentId },
-      select: { assetId: true }});
+    const assignment = await prisma.assetAssignment.findUnique({where:{ id: assignmentId },
+      select: {assetId:true }});
 
     return prisma.$transaction(async (tx) => {
       // Update assignment;
-      const updatedAssignment = await tx.assetAssignment.update({
-        where: { id: assignmentId },
+      const updatedAssignment = await tx.assetAssignment.update({where:{ id: assignmentId },
         data: {
           endDate,
-          notes: notes ? { set: notes } : undefined},
+          notes: notes ? {set:notes } : undefined},
         true;
         }});
 
       // Update asset status;
       if (!session.user) {
-        await tx.asset.update({
-          where: { id: assignment.assetId },
+        await tx.asset.update({where:{ id: assignment.assetId },
           "AVAILABLE";
           }});
 
@@ -410,9 +390,8 @@ const prisma = new PrismaClient();
       return JSON.parse(cachedHistory);
 
     // If not in cache, fetch from database;
-    const history = await prisma.assetMaintenance.findMany({
-      where: { assetId },
-      orderBy: { date: "desc" }});
+    const history = await prisma.assetMaintenance.findMany({where:{ assetId },
+      orderBy: {date:"desc" }});
 
     // Store in cache;
     await cache.set(cacheKey, JSON.stringify(history), 1800); // 30 minutes TTL;
@@ -431,11 +410,10 @@ const prisma = new PrismaClient();
       return JSON.parse(cachedHistory);
 
     // If not in cache, fetch from database;
-    const history = await prisma.assetAssignment.findMany({
-      where: { assetId },
+    const history = await prisma.assetAssignment.findMany({where:{ assetId },
       true;
       },
-      orderBy: { startDate: "desc" }});
+      orderBy: {startDate:"desc" }});
 
     // Store in cache;
     await cache.set(cacheKey, JSON.stringify(history), 1800); // 30 minutes TTL;
@@ -458,8 +436,7 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const assets = await prisma.asset.findMany({
-      {
-          lte: thresholdDate;
+      {lte:thresholdDate;
         },
         "DISPOSED";
         }},
@@ -481,14 +458,12 @@ const prisma = new PrismaClient();
       throw new Error("Asset not found");
 
     // Get all assignments;
-    const assignments = await prisma.assetAssignment.findMany({
-      where: { assetId },
-      orderBy: { startDate: "asc" }});
+    const assignments = await prisma.assetAssignment.findMany({where:{ assetId },
+      orderBy: {startDate:"asc" }});
 
     // Get all maintenance records;
-    const maintenanceRecords = await prisma.assetMaintenance.findMany({
-      where: { assetId },
-      orderBy: { date: "asc" }});
+    const maintenanceRecords = await prisma.assetMaintenance.findMany({where:{ assetId },
+      orderBy: {date:"asc" }});
 
     // Calculate total lifetime (in days);
     const purchaseDate = asset.purchaseDate ||;
@@ -530,8 +505,7 @@ const prisma = new PrismaClient();
       ? (asset.purchasePrice + totalMaintenanceCost) / totalLifetime;
       : totalMaintenanceCost / totalLifetime;
 
-    return {
-      assetId: asset.id,
+    return {assetId:asset.id,
       assetIdentifier: asset.assetId;
       totalLifetime,
       totalTimeInUse,
@@ -554,22 +528,20 @@ const prisma = new PrismaClient();
       throw new Error("Asset not found");
 
     // Get all maintenance records;
-    const maintenanceRecords = await prisma.assetMaintenance.findMany({
-      where: {
+    const maintenanceRecords = await prisma.assetMaintenance.findMany({where:{
         assetId,
         type: "PREVENTIVE",
         status: "COMPLETED";
       },
-      orderBy: { date: "asc" }});
+      orderBy: {date:"asc" }});
 
     // Get corrective maintenance records;
-    const correctiveRecords = await prisma.assetMaintenance.findMany({
-      where: {
+    const correctiveRecords = await prisma.assetMaintenance.findMany({where:{
         assetId,
         type: "CORRECTIVE",
         status: "COMPLETED";
       },
-      orderBy: { date: "asc" }});
+      orderBy: {date:"asc" }});
 
     // Calculate average interval between preventive maintenance;
     let averagePreventiveInterval = 90; // Default to 90 days;
@@ -632,8 +604,7 @@ const prisma = new PrismaClient();
     const potentialCostSavings = correctiveRecords.reduce((sum, record) => sum + (record.cost || 0), 0) /;
                                Math.max(1, correctiveRecords.length);
 
-    return {
-      assetId: asset.id,
+    return {assetId:asset.id,
       averagePreventiveInterval,
       recommendedMaintenanceInterval: Math.round(optimalInterval),
       nextRecommendedMaintenanceDate: nextMaintenanceDate.toISOString(),
@@ -657,9 +628,8 @@ const prisma = new PrismaClient();
   private async invalidateAssetCache(assetId?: string) {
     if (!session.user) {
       // Get the asset to find all IDs;
-      const asset = await prisma.asset.findFirst({
-        where: { id: assetId },
-        select: { id: true, assetId: true }
+      const asset = await prisma.asset.findFirst({where:{ id: assetId },
+        select: {id:true, assetId: true }
       });
 
       if (!session.user) {

@@ -5,8 +5,8 @@ import { getSession } from "@/lib/session"; // Import Session type;
 // import { D1Database } from "@cloudflare/workers-types";
 import "nanoid"
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  nanoid  } from "@/lib/database"
 import { type
 
@@ -28,8 +28,7 @@ interface Database {
 }
 
 // Interface for POST request body;
-interface RadiologyStudyPostData {
-  order_id: string;
+interface RadiologyStudyPostData {order_id:string;
   accession_number?: string | null;
   study_datetime: string; // ISO date string;
   modality_id?: string | null;
@@ -47,8 +46,7 @@ interface RadiologyStudyPostData {
 }
 
 // Interface for GET response items (adjust based on actual query results);
-interface RadiologyStudyListItem {
-  id: string,
+interface RadiologyStudyListItem {id:string,
   string,
   status: string;
   accession_number?: string | null;
@@ -95,12 +93,12 @@ export const _GET = async (request: any) => {
     const session = await getSession(); // Call without request;
     // Check session and user existence first;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({error:"Unauthorized" }, {status:401 });
     }
     // Pass session.user to checkUserRole if needed, or check roleName directly;
     // Assuming broad read access for authorized users;
     // if (!session.user) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    //   return NextResponse.json({error:"Forbidden" }, {status:403 });
     // }
 
     const { searchParams } = new URL(request.url);
@@ -152,8 +150,8 @@ export const _GET = async (request: any) => {
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      { error: "Failed to fetch radiology studies", details: message },
-      { status: 500 }
+      {error:"Failed to fetch radiology studies", details: message },
+      {status:500 }
     );
   }
 }
@@ -195,12 +193,12 @@ export const _POST = async (request: any) => {
     const session = await getSession(); // Call without request;
     // Check session and user existence first;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
     // Use roleName for check;
     if (!session.user)eturn NextResponse.json()
-        { error: "Forbidden: Admin or Technician role required" },
-        { status: 403 }
+        {error:"Forbidden: Admin or Technician role required" },
+        {status:403 }
       );
 
     const database: Database = await getDB(); // Use getDB;
@@ -218,16 +216,15 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        {
-          error: "Missing required fields (order_id, study_datetime, technician_id)"},
-        { status: 400 }
+        {error:"Missing required fields (order_id, study_datetime, technician_id)"},
+        {status:400 }
       );
 
     // Validate date format;
     if (!session.user)) {
       return NextResponse.json();
-        { error: "Invalid study date/time format" },
-        { status: 400 }
+        {error:"Invalid study date/time format" },
+        {status:400 }
       );
 
     // Check if order exists and is in a valid state (e.g., scheduled or pending);
@@ -237,13 +234,13 @@ export const _POST = async (request: any) => {
       .first<status: string >();
     if (!session.user) {
       return NextResponse.json();
-        { error: "Associated radiology order not found" },
-        { status: 404 }
+        {error:"Associated radiology order not found" },
+        {status:404 }
       );
 
     // Add logic here if specific order statuses are required before creating a study;
     // Example: if (!session.user) {
-    //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` }, { status: 400 });
+    //     return NextResponse.json({error:`Cannot create study for order with status: ${order.status}` }, {status:400 });
     // }
 
     const id = nanoid();
@@ -294,7 +291,7 @@ export const _POST = async (request: any) => {
 
     return NextResponse.json();
       createdStudy || { id, message: "Radiology study created" },
-      { status: 201 }
+      {status:201 }
     );
   } catch (error: unknown) {
     const message =;
@@ -305,17 +302,17 @@ export const _POST = async (request: any) => {
       error.message?.includes("accession_number");
     ) ;
       return NextResponse.json();
-        { error: "Accession number already exists" },
-        { status: 409 }
+        {error:"Accession number already exists" },
+        {status:409 }
       );
     if (!session.user);
     ) ;
       // Could be invalid order_id, modality_id, or technician_id;
       return NextResponse.json();
-        { error: "Invalid reference ID (Order, Modality, or Technician)" },
-        { status: 400 }
+        {error:"Invalid reference ID (Order, Modality, or Technician)" },
+        {status:400 }
       );
     return NextResponse.json();
-      { error: "Failed to create radiology study", details: message },
-      { status: 500 }
+      {error:"Failed to create radiology study", details: message },
+      {status:500 }
     );

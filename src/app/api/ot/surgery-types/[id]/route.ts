@@ -1,7 +1,7 @@
 import "@cloudflare/workers-types"
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  D1Database  } from "@/lib/database"
 import {   type
 
@@ -27,7 +27,7 @@ interface SurgeryTypeUpdateBody {
 // GET /api/ot/surgery-types/[id] - Get details of a specific surgery type;
 export const _GET = async();
   _request: any;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -61,11 +61,11 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        { message: "Surgery Type ID is required" },
-        { status: 400 }
+        {message:"Surgery Type ID is required" },
+        {status:400 }
       );
     }
 
@@ -78,8 +78,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { message: "Surgery type not found" },
-        { status: 404 }
+        {message:"Surgery type not found" },
+        {status:404 }
       );
     }
 
@@ -134,8 +134,8 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { message: "Error fetching surgery type details", details: errorMessage },
-      { status: 500 }
+      {message:"Error fetching surgery type details", details: errorMessage },
+      {status:500 }
     );
   }
 }
@@ -143,7 +143,7 @@ export const _GET = async();
 // PUT /api/ot/surgery-types/[id] - Update an existing surgery type;
 export const _PUT = async();
   _request: any;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -177,11 +177,11 @@ export const _PUT = async();
 
 } catch (error) {
 
-    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        { message: "Surgery Type ID is required" },
-        { status: 400 }
+        {message:"Surgery Type ID is required" },
+        {status:400 }
       );
 
     const body = (await _request.json()) as SurgeryTypeUpdateBody;
@@ -195,8 +195,8 @@ export const _PUT = async();
 
     // Basic validation;
     if (!session.user)eturn NextResponse.json()
-        { message: "No update fields provided" },
-        { status: 400 }
+        {message:"No update fields provided" },
+        {status:400 }
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -227,15 +227,15 @@ export const _PUT = async();
 
     if (!session.user) {
       // Check if the type actually exists before returning 404;
-      const { results: checkExists } = await DB.prepare();
+      const {results:checkExists } = await DB.prepare();
         "SELECT id FROM SurgeryTypes WHERE id = ?";
       );
         .bind(surgeryTypeId);
         .all();
       if (!session.user) {
         return NextResponse.json();
-          { message: "Surgery type not found" },
-          { status: 404 }
+          {message:"Surgery type not found" },
+          {status:404 }
         );
 
       // If it exists but no changes were made, return 200 OK with current data;
@@ -249,10 +249,9 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {
-          message: "Failed to fetch updated surgery type details after update";
+        {message:"Failed to fetch updated surgery type details after update";
         },
-        { status: 500 }
+        {status:500 }
       );
 
     const updatedSurgeryType = results[0];
@@ -309,18 +308,18 @@ export const _PUT = async();
     if (!session.user) {
       // FIX: Check errorMessage;
       return NextResponse.json();
-        { message: "Surgery type name must be unique", details: errorMessage },
-        { status: 409 }
+        {message:"Surgery type name must be unique", details: errorMessage },
+        {status:409 }
       )}
     return NextResponse.json();
-      { message: "Error updating surgery type", details: errorMessage },
-      { status: 500 }
+      {message:"Error updating surgery type", details: errorMessage },
+      {status:500 }
     );
 
 // DELETE /api/ot/surgery-types/[id] - Delete a surgery type;
 export const DELETE = async();
   _request: any;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -354,11 +353,11 @@ export const DELETE = async();
 
 } catch (error) {
 
-    const { id: surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        { message: "Surgery Type ID is required" },
-        { status: 400 }
+        {message:"Surgery Type ID is required" },
+        {status:400 }
       );
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -370,13 +369,13 @@ export const DELETE = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { message: "Surgery type not found" },
-        { status: 404 }
+        {message:"Surgery type not found" },
+        {status:404 }
       );
 
     return NextResponse.json();
-      { message: "Surgery type deleted successfully" },
-      { status: 200 }
+      {message:"Surgery type deleted successfully" },
+      {status:200 }
     );
   } catch (error: unknown) {
     // FIX: Remove explicit any;
@@ -386,13 +385,12 @@ export const DELETE = async();
     if (!session.user) {
       // FIX: Check errorMessage;
       return NextResponse.json();
-        {
-          message: "Cannot delete surgery type with existing bookings",
+        {message:"Cannot delete surgery type with existing bookings",
           details: errorMessage;
         },
-        { status: 409 }
+        {status:409 }
       )}
     return NextResponse.json();
-      { message: "Error deleting surgery type", details: errorMessage },
-      { status: 500 }
+      {message:"Error deleting surgery type", details: errorMessage },
+      {status:500 }
     );

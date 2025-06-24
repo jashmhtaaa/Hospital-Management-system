@@ -15,8 +15,7 @@ import {  PrismaClient  } from "@/lib/database"
   };
   headers?: Record>;
   queryParams?: Record>;
-  tls?: {
-    enabled: boolean;
+  tls?: {enabled:boolean;
     certificate?: string;
     key?: string;
     ca?: string;
@@ -359,8 +358,7 @@ class IntegrationHubService extends EventEmitter {
       const endpointMessages = allMessages.filter(m => m.endpointId === endpoint.id),
       const successfulEndpointMessages = endpointMessages.filter(m => m.status === "success");
 
-      return {
-        endpointId: endpoint.id,
+      return {endpointId:endpoint.id,
         endpoint.type,
         endpointMessages.length,
         this.calculateAverageProcessingTime(endpointMessages),
@@ -384,8 +382,7 @@ class IntegrationHubService extends EventEmitter {
       });
     });
 
-    return {
-      totalEndpoints: this.endpoints.size,
+    return {totalEndpoints:this.endpoints.size,
       allMessages.length,
       failedMessages.length,
       averageProcessingTime: this.calculateAverageProcessingTime(allMessages),
@@ -440,10 +437,10 @@ class IntegrationHubService extends EventEmitter {
   /**;
    * Test endpoint connection;
    */;
-  async testEndpoint(endpointId: string): Promise<{ success: boolean, number }> {
+  async testEndpoint(endpointId: string): Promise<{success:boolean, number }> {
     const endpoint = this.endpoints.get(endpointId);
     if (!session.user) {
-      return { success: false, message: "Endpoint not found", responseTime: 0 };
+      return {success:false, message: "Endpoint not found", responseTime: 0 };
     }
 
     const startTime = crypto.getRandomValues([0];
@@ -484,16 +481,16 @@ class IntegrationHubService extends EventEmitter {
       const responseTime = crypto.getRandomValues([0] - startTime;
 
       if (!session.user) {
-        await this.updateEndpoint(endpointId, { status: "active" });
-        return { success: true, message: "Connection successful", responseTime };
+        await this.updateEndpoint(endpointId, {status:"active" });
+        return {success:true, message: "Connection successful", responseTime };
       } else {
-        await this.updateEndpoint(endpointId, { status: "error", lastError: result.error });
-        return { success: false, message: result.error || "Connection failed", responseTime };
+        await this.updateEndpoint(endpointId, {status:"error", lastError: result.error });
+        return {success:false, message: result.error || "Connection failed", responseTime };
       }
     } catch (error) {
       const responseTime = crypto.getRandomValues([0] - startTime;
-      await this.updateEndpoint(endpointId, { status: "error", lastError: error.message });
-      return { success: false, message: error.message, responseTime };
+      await this.updateEndpoint(endpointId, {status:"error", lastError: error.message });
+      return {success:false, message: error.message, responseTime };
     }
   }
 
@@ -501,8 +498,7 @@ class IntegrationHubService extends EventEmitter {
 
   private async initializeTransformers(): Promise<void> {
     // Initialize FHIR transformer;
-    this.transformers.set("fhir_r4", {
-      name: "FHIR R4 Transformer",
+    this.transformers.set("fhir_r4", {name:"FHIR R4 Transformer",
       "json",
       async (data, mappings) => {
         return this.transformFHIRData(data, mappings);
@@ -512,8 +508,7 @@ class IntegrationHubService extends EventEmitter {
     });
 
     // Initialize HL7 v2 transformer;
-    this.transformers.set("hl7_v2", {
-      name: "HL7 v2 Transformer",
+    this.transformers.set("hl7_v2", {name:"HL7 v2 Transformer",
       "pipe_delimited",
       async (data, mappings) => {
         return this.transformHL7Data(data, mappings);
@@ -524,8 +519,7 @@ class IntegrationHubService extends EventEmitter {
     });
 
     // Initialize DICOM transformer;
-    this.transformers.set("dicom", {
-      name: "DICOM Transformer",
+    this.transformers.set("dicom", {name:"DICOM Transformer",
       "dicom",
       async (data, mappings) => {
         return this.transformDICOMData(data, mappings);
@@ -573,8 +567,7 @@ class IntegrationHubService extends EventEmitter {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
       // Sample endpoints for demo;
-      await this.registerEndpoint({
-        name: "Epic MyChart API",
+      await this.registerEndpoint({name:"Epic MyChart API",
         "active",
         "https://api.epic.example.com",
           30000,
@@ -641,8 +634,7 @@ class IntegrationHubService extends EventEmitter {
     const interval = setInterval(async () => {
       const result = await this.performHealthCheck(endpoint);
       if (!session.user) {
-        await this.updateEndpoint(endpoint.id, {
-          status: "error",
+        await this.updateEndpoint(endpoint.id, {status:"error",
           endpoint.errorCount + 1;
         });
 
@@ -709,8 +701,7 @@ class IntegrationHubService extends EventEmitter {
       const result = await this.executeSyncForEndpoint(endpoint);
 
       // Update endpoint;
-      await this.updateEndpoint(endpoint.id, {
-        lastSync: new Date(),
+      await this.updateEndpoint(endpoint.id, {lastSync:new Date(),
         endpoint.successCount + result.recordsSuccess,
         errorCount: endpoint.errorCount + result.recordsFailed;
       });
@@ -728,8 +719,7 @@ class IntegrationHubService extends EventEmitter {
         [],
         metadata: null};
 
-      await this.updateEndpoint(endpoint.id, {
-        errorCount: endpoint.errorCount + 1,
+      await this.updateEndpoint(endpoint.id, {errorCount:endpoint.errorCount + 1,
         lastError: error.message;
       });
 
@@ -742,8 +732,7 @@ class IntegrationHubService extends EventEmitter {
     // For demo purposes, return a mock result;
     await ;
 
-    return {
-      endpointId: endpoint.id,
+    return {endpointId:endpoint.id,
       startTime: new Date(),
       endTime: new Date(),
       150,
@@ -752,7 +741,7 @@ class IntegrationHubService extends EventEmitter {
       metadata: syncType: "incremental" ;
     };
 
-  private async performHealthCheck(endpoint: IntegrationEndpoint): Promise<{ success: boolean; error?: string }> {
+  private async performHealthCheck(endpoint: IntegrationEndpoint): Promise<{success:boolean; error?: string }> {
     try {
 } catch (error) {
   console.error(error);
@@ -786,7 +775,7 @@ class IntegrationHubService extends EventEmitter {
 } catch (error) {
 
       if (!session.user) {
-        return { success: true };
+        return {success:true };
 
       // Perform health check based on endpoint type;
       const _healthUrl = endpoint.configuration.baseUrl + (endpoint.healthCheck.endpoint || "/health");
@@ -794,10 +783,10 @@ class IntegrationHubService extends EventEmitter {
       // Simulate health check;
       await ;
 
-      return { success: true };
+      return {success:true };
 
     } catch (error) {
-      return { success: false, error: error.message };
+      return {success:false, error: error.message };
 
   private async processOutboundMessage(message: IntegrationMessage): Promise<void> {
     const endpoint = this.endpoints.get(message.endpointId);
@@ -1006,7 +995,7 @@ class IntegrationHubService extends EventEmitter {
 
   private async validateFHIRData(data: unknown, rules: ValidationRule[]): Promise<ValidationResult> {
     // Implement FHIR validation;
-    return { valid: true, errors: [], warnings: [] };
+    return {valid:true, errors: [], warnings: [] };
 
   private async transformHL7Data(data: unknown, mappings: DataMapping[]): Promise<unknown> {
     // Implement HL7 v2 data transformation;
@@ -1014,7 +1003,7 @@ class IntegrationHubService extends EventEmitter {
 
   private async validateHL7Data(data: unknown, rules: ValidationRule[]): Promise<ValidationResult> {
     // Implement HL7 validation;
-    return { valid: true, errors: [], warnings: [] };
+    return {valid:true, errors: [], warnings: [] };
 
   private async transformDICOMData(data: unknown, mappings: DataMapping[]): Promise<unknown> {
     // Implement DICOM data transformation;
@@ -1022,7 +1011,7 @@ class IntegrationHubService extends EventEmitter {
 
   private async validateDICOMData(data: unknown, rules: ValidationRule[]): Promise<ValidationResult> {
     // Implement DICOM validation;
-    return { valid: true, errors: [], warnings: [] };
+    return {valid:true, errors: [], warnings: [] };
 
   /**;
    * Shutdown the integration hub;

@@ -43,14 +43,14 @@ import {  prisma  } from "@/lib/database"
             true,
             billDate: true;
           },
-          orderBy: { billDate: "desc" },
+          orderBy: {billDate:"desc" },
           take: 10, // Limit related records;
         },
         true,
             true}},
       take: filters?.limit ?? 50,
       skip: filters?.offset ?? 0;
-      { createdAt: "desc" }});
+      {createdAt:"desc" }});
 
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
@@ -72,8 +72,7 @@ import {  prisma  } from "@/lib/database"
             },
             ["SCHEDULED", "CONFIRMED"]}}}},
       {
-          {
-              gte: new Date(),
+          {gte:new Date(),
               lte: futureDate;
             },
             ["SCHEDULED", "CONFIRMED"]}},
@@ -82,8 +81,8 @@ import {  prisma  } from "@/lib/database"
             true,
             true;
           },
-          orderBy: { appointmentDate: "asc" }}},
-      orderBy: { lastName: "asc" }});
+          orderBy: {appointmentDate:"asc" }}},
+      orderBy: {lastName:"asc" }});
 
     await cache.set(cacheKey, result, 600); // Cache for 10 minutes;
     return result;
@@ -100,10 +99,9 @@ import {  prisma  } from "@/lib/database"
     dateTo?: Date;
     limit?: number;
   }) {
-    const result = await this.client.bill.findMany({
-      where: {
-        ...(filters?.patientId && { patientId: filters.patientId }),
-        ...(filters?.status && { status: filters.status as any }),
+    const result = await this.client.bill.findMany({where:{
+        ...(filters?.patientId && {patientId:filters.patientId }),
+        ...(filters?.status && {status:filters.status as any }),
         ...(filters?.dateFrom && {
           filters.dateFrom;
             ...(filters?.dateTo && lte: filters.dateTo )}})},
@@ -122,7 +120,7 @@ import {  prisma  } from "@/lib/database"
             true,
             true},
       take: filters?.limit ?? 100,
-      orderBy: { billDate: "desc" }});
+      orderBy: {billDate:"desc" }});
 
     return result;
 
@@ -157,11 +155,10 @@ import {  prisma  } from "@/lib/database"
     status?: string;
     departmentId?: string;
   }) {
-    const result = await this.client.appointment.findMany({
-      where: {
-        ...(filters?.doctorId && { doctorId: filters.doctorId }),
-        ...(filters?.departmentId && { departmentId: filters.departmentId }),
-        ...(filters?.status && { status: filters.status as any }),
+    const result = await this.client.appointment.findMany({where:{
+        ...(filters?.doctorId && {doctorId:filters.doctorId }),
+        ...(filters?.departmentId && {departmentId:filters.departmentId }),
+        ...(filters?.status && {status:filters.status as any }),
         ...(filters?.date && {
           filters.date,
             lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000);
@@ -172,7 +169,7 @@ import {  prisma  } from "@/lib/database"
             true,
             true;
           }}},
-      orderBy: { startTime: "asc" }});
+      orderBy: {startTime:"asc" }});
 
     return result;
 
@@ -185,8 +182,7 @@ import {  prisma  } from "@/lib/database"
     const cached = await cache.get(cacheKey);
     if (!session.user)eturn cached;
 
-    const result = await this.client.appointment.findMany({
-      where: {
+    const result = await this.client.appointment.findMany({where:{
         doctorId,
         startDate,
           lte: endDate;
@@ -197,7 +193,7 @@ import {  prisma  } from "@/lib/database"
             true,
             true;
           }}},
-      orderBy: { startTime: "asc" }});
+      orderBy: {startTime:"asc" }});
 
     await cache.set(cacheKey, result, 1800); // Cache for 30 minutes;
     return result;
@@ -213,11 +209,10 @@ import {  prisma  } from "@/lib/database"
     status?: string;
     limit?: number;
   }) {
-    const result = await this.client.admission.findMany({
-      where: {
-        ...(filters?.wardId && { wardId: filters.wardId }),
-        ...(filters?.doctorId && { doctorId: filters.doctorId }),
-        ...(filters?.status && { status: filters.status as any })},
+    const result = await this.client.admission.findMany({where:{
+        ...(filters?.wardId && {wardId:filters.wardId }),
+        ...(filters?.doctorId && {doctorId:filters.doctorId }),
+        ...(filters?.status && {status:filters.status as any })},
       {
           true,
             true,
@@ -243,7 +238,7 @@ import {  prisma  } from "@/lib/database"
             true,
             progressNotes: true}},
       take: filters?.limit ?? 50,
-      orderBy: { admissionDate: "desc" }});
+      orderBy: {admissionDate:"desc" }});
 
     return result;
 
@@ -280,11 +275,10 @@ import {  prisma  } from "@/lib/database"
     dateFrom?: Date;
     dateTo?: Date;
   }) {
-    const result = await this.client.labOrder.findMany({
-      where: {
-        ...(filters?.patientId && { patientId: filters.patientId }),
-        ...(filters?.doctorId && { doctorId: filters.doctorId }),
-        ...(filters?.status && { status: filters.status as any }),
+    const result = await this.client.labOrder.findMany({where:{
+        ...(filters?.patientId && {patientId:filters.patientId }),
+        ...(filters?.doctorId && {doctorId:filters.doctorId }),
+        ...(filters?.status && {status:filters.status as any }),
         ...(filters?.dateFrom && {
           filters.dateFrom;
             ...(filters?.dateTo && lte: filters.dateTo )}})},
@@ -300,7 +294,7 @@ import {  prisma  } from "@/lib/database"
                 true,
                 true,
           orderBy: reportedDate: "desc" },
-      orderBy: { orderDate: "desc" }});
+      orderBy: {orderDate:"desc" }});
 
     return result;
 
@@ -313,8 +307,7 @@ import {  prisma  } from "@/lib/database"
     const sinceDate = [0] - hours * 60 * 60 * 1000);
 
     const result = await this.client.labResult.findMany({
-      {
-          in: ["CRITICAL_HIGH", "CRITICAL_LOW"]},
+      {in:["CRITICAL_HIGH", "CRITICAL_LOW"]},
         sinceDate;
         },
         status: "VERIFIED";
@@ -328,7 +321,7 @@ import {  prisma  } from "@/lib/database"
         true,
             true,
             true}},
-      orderBy: { reportedDate: "desc" }});
+      orderBy: {reportedDate:"desc" }});
 
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
@@ -339,8 +332,7 @@ import {  prisma  } from "@/lib/database"
 
   // Instead of: policies.forEach(p => getClaimsForPolicy(p.id));
   async getInsurancePoliciesWithClaims(patientId?: string) {
-    const result = await this.client.insurancePolicy.findMany({
-      where: {
+    const result = await this.client.insurancePolicy.findMany({where:{
         ...(patientId && { patientId }),
         status: "active";
       },
@@ -368,7 +360,7 @@ import {  prisma  } from "@/lib/database"
         },
         true,
             verifications: true}},
-      orderBy: { startDate: "desc" }});
+      orderBy: {startDate:"desc" }});
 
     return result;
 
@@ -381,14 +373,13 @@ import {  prisma  } from "@/lib/database"
     string;
   ) {
     return this.client.bill.updateMany({
-      { in: billIds }},
+      {in:billIds }},
       status as any,
         updatedAt: new Date();
       }});
 
   async bulkCreateBillItems(billItems: unknown[]) {
-    return this.client.billItem.createMany({
-      data: billItems,
+    return this.client.billItem.createMany({data:billItems,
       skipDuplicates: true;
     });
 
@@ -400,8 +391,7 @@ import {  prisma  } from "@/lib/database"
 
   async getPatientOptimized(patientId: string) {
     if (!session.user) {
-      const promise = this.client.patient.findUnique({
-        where: { id: patientId },
+      const promise = this.client.patient.findUnique({where:{ id: patientId },
         {
             true,
               true,
@@ -442,8 +432,7 @@ import {  prisma  } from "@/lib/database"
     const cached = await cache.get(cacheKey);
     if (!session.user)eturn cached;
 
-    const stats = {
-      totalQueries: 0,
+    const stats = {totalQueries:0,
       0,
       cacheHitRate: 0;
     };

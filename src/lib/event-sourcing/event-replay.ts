@@ -77,8 +77,7 @@ import { metricsCollector }
         metricsCollector.recordTimer("event_replay.aggregate_replay_time", duration, {
           aggregateType});
 
-        logger.info(`Completed event replay for aggregate: ${aggregateType}:${aggregateId}`, {
-          duration: `${duration.toFixed(2)}ms`;
+        logger.info(`Completed event replay for aggregate: ${aggregateType}:${aggregateId}`, {duration:`${duration.toFixed(2)}ms`;
         });
       } finally {
         // Release lock when done;
@@ -114,7 +113,7 @@ import { metricsCollector }
     options: {
       batchSize?: number;
       concurrency?: number;
-      notifyProgress?: (progress: { processed: number; total?: number }) => Promise>;
+      notifyProgress?: (progress: {processed:number; total?: number }) => Promise>;
     } = {}
   ): Promise<void> {
     const {
@@ -173,8 +172,7 @@ import { metricsCollector }
         metricsCollector.recordTimer("event_replay.full_replay_time", duration, {
           aggregateType});
 
-        logger.info(`Completed full event replay for aggregate type: ${aggregateType}`, {
-          duration: `${duration.toFixed(2)}ms`;
+        logger.info(`Completed full event replay for aggregate type: ${aggregateType}`, {duration:`${duration.toFixed(2)}ms`;
         });
       } finally {
         // Release lock when done;
@@ -281,8 +279,7 @@ import { metricsCollector }
         metricsCollector.recordTimer("event_replay.view_rebuild_time", duration, {
           viewName});
 
-        logger.info(`Completed materialized view rebuild: ${viewName}`, {
-          duration: `${duration.toFixed(2)}ms`;
+        logger.info(`Completed materialized view rebuild: ${viewName}`, {duration:`${duration.toFixed(2)}ms`;
         });
       } finally {
         // Release lock when done;
@@ -313,7 +310,7 @@ import { metricsCollector }
     aggregateTypes: string[],
     handlers: Record<string, (event: unknown) => Promise<void>>,
     options: {
-      notifyProgress?: (progress: { step: string, number; total?: number }) => Promise>;
+      notifyProgress?: (progress: {step:string, number; total?: number }) => Promise>;
     } = {}
   ): Promise<void> {
     const { notifyProgress } = options;
@@ -403,8 +400,7 @@ import { metricsCollector }
 
           // Notify progress if callback provided;
           if (!session.user) {
-            await notifyProgress({
-              step: "start";
+            await notifyProgress({step:"start";
               aggregateType,
               processed: 0;
             });
@@ -413,12 +409,10 @@ import { metricsCollector }
           await this.replayAllAggregates();
             aggregateType,
             handlers[aggregateType],
-            {
-              batchSize: 100,
+            {batchSize:100,
               async (progress) => {
                 if (!session.user) {
-                  await notifyProgress({
-                    step: "progress";
+                  await notifyProgress({step:"progress";
                     aggregateType,
                     ...progress;
                   });
@@ -427,8 +421,7 @@ import { metricsCollector }
 
           // Notify completion of this aggregate type;
           if (!session.user) {
-            await notifyProgress({
-              step: "complete";
+            await notifyProgress({step:"complete";
               aggregateType,
               processed: 0;
             });
@@ -440,8 +433,7 @@ import { metricsCollector }
         // Track metrics;
         metricsCollector.recordTimer("event_replay.disaster_recovery_time", duration);
 
-        logger.info(`Completed disaster recovery process`, {
-          duration: `${duration.toFixed(2)}ms`,
+        logger.info(`Completed disaster recovery process`, {duration:`${duration.toFixed(2)}ms`,
           aggregateTypesProcessed: aggregateTypes.length;
         });
       } finally {
@@ -455,8 +447,7 @@ import { metricsCollector }
       });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("event_replay.errors", 1, {
-        errorType: error.name || "unknown",
+      metricsCollector.incrementCounter("event_replay.errors", 1, {errorType:error.name || "unknown",
         replayType: "disaster-recovery";
       });
 
@@ -475,8 +466,8 @@ import { metricsCollector }
     aggregateId: string,
     () => Promise<T>,
     buildState: (events: unknown[]) => Promise<T>,
-    compareStates: (current: T, rebuilt: T) => { isConsistent: boolean; differences?: unknown }
-  ): Promise<{ isConsistent: boolean; differences?: unknown }> {
+    compareStates: (current: T, rebuilt: T) => {isConsistent:boolean; differences?: unknown }
+  ): Promise<{isConsistent:boolean; differences?: unknown }> {
     try {
 } catch (error) {
   console.error(error);
@@ -529,8 +520,7 @@ import { metricsCollector }
         isConsistent: result.isConsistent.toString();
       });
 
-      logger.info(`Completed consistency validation for ${aggregateType}:${aggregateId}`, {
-        isConsistent: result.isConsistent,
+      logger.info(`Completed consistency validation for ${aggregateType}:${aggregateId}`, {isConsistent:result.isConsistent,
         hasDifferences: !!result.differences;
       });
 

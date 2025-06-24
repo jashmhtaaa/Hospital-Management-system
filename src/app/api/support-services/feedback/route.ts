@@ -3,8 +3,8 @@ import "@/lib/security.service"
 import "@/lib/services/support-services/feedback/feedback.service"
 import "next/server"
 import "zod"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  FeedbackService  } from "@/lib/database"
 import {  SecurityService  } from "@/lib/database"
 import {   type
@@ -15,8 +15,7 @@ import {  z  } from "@/lib/database"
 const feedbackService = new FeedbackService();
 
 // Validation schemas;
-const createFeedbackSchema = z.object({
-  type: z.enum(["GENERAL", "SERVICE", "STAFF", "FACILITY", "CARE", "OTHER"]),
+const createFeedbackSchema = z.object({type:z.enum(["GENERAL", "SERVICE", "STAFF", "FACILITY", "CARE", "OTHER"]),
   subject: z.string().min(3).max(100),
   description: z.string().min(10).max(2000),
   rating: z.number().min(1).max(5).optional(),
@@ -29,8 +28,7 @@ const createFeedbackSchema = z.object({
   isAnonymous: z.boolean().default(false);
 });
 
-const createComplaintSchema = z.object({
-  category: z.enum(["CARE_QUALITY", "STAFF_BEHAVIOR", "BILLING", "FACILITY", "SAFETY", "PRIVACY", "OTHER"]),
+const createComplaintSchema = z.object({category:z.enum(["CARE_QUALITY", "STAFF_BEHAVIOR", "BILLING", "FACILITY", "SAFETY", "PRIVACY", "OTHER"]),
   subject: z.string().min(3).max(100),
   description: z.string().min(10).max(2000),
   severity: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
@@ -44,15 +42,13 @@ const createComplaintSchema = z.object({
   desiredResolution: z.string().max(1000).optional();
 });
 
-const updateFeedbackSchema = z.object({
-  status: z.enum(["NEW", "UNDER_REVIEW", "ACKNOWLEDGED", "RESOLVED", "CLOSED"]).optional(),
+const updateFeedbackSchema = z.object({status:z.enum(["NEW", "UNDER_REVIEW", "ACKNOWLEDGED", "RESOLVED", "CLOSED"]).optional(),
   response: z.string().max(2000).optional(),
   assignedToId: z.string().uuid().optional(),
   internalNotes: z.string().max(1000).optional();
 });
 
-const updateComplaintSchema = z.object({
-  status: z.enum(["NEW", "UNDER_INVESTIGATION", "IN_PROGRESS", "RESOLVED", "CLOSED"]).optional(),
+const updateComplaintSchema = z.object({status:z.enum(["NEW", "UNDER_INVESTIGATION", "IN_PROGRESS", "RESOLVED", "CLOSED"]).optional(),
   response: z.string().max(2000).optional(),
   assignedToId: z.string().uuid().optional(),
   internalNotes: z.string().max(1000).optional(),
@@ -66,8 +62,7 @@ export const _GET = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {
-        type: searchParams.get("type") || undefined,
+      const filters = {type:searchParams.get("type") || undefined,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         searchParams.get("departmentId") || undefined,
         searchParams.get("patientId") || undefined,
@@ -80,8 +75,7 @@ export const _GET = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "feedback:read",
+    {requiredPermission:"feedback:read",
       auditAction: "FEEDBACK_VIEW";
     }
   );
@@ -102,7 +96,7 @@ export const _POST = async (request: any) => {
       // Create feedback;
       const result = await feedbackService.createFeedback(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, {status:201 });
     },
     {
       // Allow anonymous feedback submission;
@@ -113,7 +107,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/feedback/:id;
-export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -123,15 +117,14 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "feedback:read",
+    {requiredPermission:"feedback:read",
       auditAction: "FEEDBACK_DETAIL_VIEW";
     }
   );
 }
 
 // PATCH /api/support-services/feedback/:id;
-export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -147,8 +140,7 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "feedback:update",
+    {requiredPermission:"feedback:update",
       auditAction: "FEEDBACK_UPDATE";
     }
   );
@@ -161,8 +153,7 @@ export const _GET_COMPLAINTS = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {
-        category: searchParams.get("category") || undefined,
+      const filters = {category:searchParams.get("category") || undefined,
         searchParams.get("severity") || undefined,
         searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
         searchParams.get("staffId") || undefined,
@@ -175,8 +166,7 @@ export const _GET_COMPLAINTS = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "complaints:read",
+    {requiredPermission:"complaints:read",
       auditAction: "COMPLAINTS_VIEW";
     }
   );
@@ -197,7 +187,7 @@ export const _POST_COMPLAINT = async (request: any) => {
       // Create complaint;
       const result = await feedbackService.createComplaint(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, {status:201 });
     },
     {
       // Allow anonymous complaint submission;
@@ -208,7 +198,7 @@ export const _POST_COMPLAINT = async (request: any) => {
 }
 
 // GET /api/support-services/complaints/:id;
-export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -218,15 +208,14 @@ export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: { params: {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "complaints:read",
+    {requiredPermission:"complaints:read",
       auditAction: "COMPLAINT_DETAIL_VIEW";
     }
   );
 }
 
 // PATCH /api/support-services/complaints/:id;
-export const _PATCH_COMPLAINT = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH_COMPLAINT = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -242,15 +231,14 @@ export const _PATCH_COMPLAINT = async (request: any, { params }: { params: { id:
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "complaints:update",
+    {requiredPermission:"complaints:update",
       auditAction: "COMPLAINT_UPDATE";
     }
   );
 }
 
 // POST /api/support-services/complaints/:id/escalate;
-export const _ESCALATE_COMPLAINT = async (request: any, { params }: { params: { id: string } }) => {
+export const _ESCALATE_COMPLAINT = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -259,7 +247,7 @@ export const _ESCALATE_COMPLAINT = async (request: any, { params }: { params: { 
       const { escalationLevel, reason, escalatedById } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Escalation level is required" }, { status: 400 });
+        return NextResponse.json({error:"Escalation level is required" }, {status:400 });
       }
 
       // Escalate complaint;
@@ -272,8 +260,7 @@ export const _ESCALATE_COMPLAINT = async (request: any, { params }: { params: { 
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "complaints:escalate",
+    {requiredPermission:"complaints:escalate",
       auditAction: "COMPLAINT_ESCALATE";
     }
   );
@@ -295,8 +282,7 @@ export const _GET_ANALYTICS = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "feedback:analytics",
+    {requiredPermission:"feedback:analytics",
       auditAction: "FEEDBACK_ANALYTICS_VIEW";
     }
   );

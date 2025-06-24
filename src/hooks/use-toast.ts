@@ -11,8 +11,7 @@ import {   } from "@/lib/database"
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
-type ToasterToast = ToastProps & {
-  id: string;
+type ToasterToast = ToastProps & {id:string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
@@ -33,25 +32,20 @@ const genId = () {
 }
 
 type Action =;
-  | {
-      type: "ADD_TOAST" // Use string literal,
+  | {type:"ADD_TOAST" // Use string literal,
       toast: ToasterToast;
     }
-  | {
-      type: "UPDATE_TOAST" // Use string literal,
+  | {type:"UPDATE_TOAST" // Use string literal,
       toast: Partial<ToasterToast>;
     }
-  | {
-      type: "DISMISS_TOAST" // Use string literal;
+  | {type:"DISMISS_TOAST" // Use string literal;
       toastId?: ToasterToast["id"];
     }
-  | {
-      type: "REMOVE_TOAST" // Use string literal;
+  | {type:"REMOVE_TOAST" // Use string literal;
       toastId?: ToasterToast["id"];
     }
 
-interface State {
-  toasts: ToasterToast[];
+interface State {toasts:ToasterToast[];
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
@@ -63,8 +57,7 @@ const addToRemoveQueue = (toastId: string) => {
 
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId),
-    dispatch({
-      type: "REMOVE_TOAST",
+    dispatch({type:"REMOVE_TOAST",
       toastId: toastId;
     });
   }, TOAST_REMOVE_DELAY);
@@ -123,7 +116,7 @@ export const reducer = (state: State, action: Action): State => {
 
 const listeners: Array<(state: State) => void> = [];
 
-let memoryState: State = { toasts: [] }
+let memoryState: State = {toasts:[] }
 
 const dispatch = (action: Action) {
   memoryState = reducer(memoryState, action);
@@ -138,12 +131,10 @@ const toast = ({ ...props }: Toast) {
   const id = genId();
 
   const update = (props: ToasterToast) => {}
-    dispatch({
-      type: "UPDATE_TOAST",
+    dispatch({type:"UPDATE_TOAST",
       toast: { ...props, id }}),
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id }),
-  dispatch({
-    type: "ADD_TOAST",
+  const dismiss = () => dispatch({type:"DISMISS_TOAST", toastId: id }),
+  dispatch({type:"ADD_TOAST",
     toast: {
       ...props,
       id,
@@ -152,8 +143,7 @@ const toast = ({ ...props }: Toast) {
         if (!session.user)ismiss()
       }}});
 
-  return {
-    id: id;
+  return {id:id;
     dismiss,
     update}
 }
@@ -174,7 +164,7 @@ const useToast = () {
   return {
     ...state,
     toast,
-    dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId })}
+    dismiss: (toastId?: string) => dispatch({type:"DISMISS_TOAST", toastId })}
 export { useToast, toast;
 
 }

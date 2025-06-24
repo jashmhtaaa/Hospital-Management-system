@@ -17,8 +17,7 @@ import {  prisma  } from "@/lib/database"
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "template.create",
+      await this.auditLogger.log({action:"template.create",
         resourceId: template.id;
         userId,
         template.name,
@@ -71,8 +70,7 @@ import {  prisma  } from "@/lib/database"
 }
 } catch (error) {
 }
-      const template = await prisma.marketingTemplate.findUnique({
-        where: { id },
+      const template = await prisma.marketingTemplate.findUnique({where:{ id },
         {
             true,
               name: true;
@@ -103,7 +101,7 @@ import {  prisma  } from "@/lib/database"
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{data:MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -157,8 +155,8 @@ import {  prisma  } from "@/lib/database"
 
       if (!session.user) {
         where.OR = [;
-          { name: { contains: search, mode: "insensitive" } },
-          { description: { contains: search, mode: "insensitive" } }
+          {name:{ contains: search, mode: "insensitive" } },
+          {description:{ contains: search, mode: "insensitive" } }
         ];
       }
 
@@ -178,8 +176,7 @@ import {  prisma  } from "@/lib/database"
         "desc";
       });
 
-      return {
-        data: templates,
+      return {data:templates,
         pagination: {
           total,
           page,
@@ -227,22 +224,19 @@ import {  prisma  } from "@/lib/database"
 } catch (error) {
 
       // Check if template exists;
-      const existingTemplate = await prisma.marketingTemplate.findUnique({
-        where: { id }
+      const existingTemplate = await prisma.marketingTemplate.findUnique({where:{ id }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
 
       // Update template;
-      const updatedTemplate = await prisma.marketingTemplate.update({
-        where: { id },
+      const updatedTemplate = await prisma.marketingTemplate.update({where:{ id },
         data;
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "template.update",
+      await this.auditLogger.log({action:"template.update",
         resourceId: id;
         userId,
         updatedTemplate.name,
@@ -293,21 +287,18 @@ import {  prisma  } from "@/lib/database"
 } catch (error) {
 
       // Check if template exists;
-      const existingTemplate = await prisma.marketingTemplate.findUnique({
-        where: { id }
+      const existingTemplate = await prisma.marketingTemplate.findUnique({where:{ id }
       });
 
       if (!session.user) {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
 
       // Delete template;
-      await prisma.marketingTemplate.delete({
-        where: { id }
+      await prisma.marketingTemplate.delete({where:{ id }
       });
 
       // Log audit event;
-      await this.auditLogger.log({
-        action: "template.delete",
+      await this.auditLogger.log({action:"template.delete",
         resourceId: id;
         userId,
         existingTemplate.name,

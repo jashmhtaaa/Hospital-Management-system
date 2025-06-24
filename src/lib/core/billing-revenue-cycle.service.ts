@@ -9,8 +9,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Billing Schemas;
-export const ServiceCatalogSchema = z.object({
-  service_code: z.string().min(1, "Service code is required"),
+export const ServiceCatalogSchema = z.object({service_code:z.string().min(1, "Service code is required"),
   cpt_code: z.string().optional(),
   hcpcs_code: z.string().optional(),
   service_name: z.string().min(1, "Service name is required"),
@@ -30,8 +29,7 @@ export const ServiceCatalogSchema = z.object({
   is_active: z.boolean().default(true);
 });
 
-export const ChargeSchema = z.object({
-  patient_id: z.string().min(1, "Patient ID is required"),
+export const ChargeSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
   encounter_id: z.string().min(1, "Encounter ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
   service_code: z.string().min(1, "Service code is required"),
@@ -48,8 +46,7 @@ export const ChargeSchema = z.object({
   notes: z.string().optional();
 });
 
-export const InsuranceClaimSchema = z.object({
-  patient_id: z.string().min(1, "Patient ID is required"),
+export const InsuranceClaimSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
   encounter_id: z.string().min(1, "Encounter ID is required"),
   insurance_plan_id: z.string().min(1, "Insurance plan ID is required"),
   claim_type: z.enum(["primary", "secondary", "tertiary"]).default("primary"),
@@ -65,8 +62,7 @@ export const InsuranceClaimSchema = z.object({
   submission_method: z.enum(["electronic", "paper"]).default("electronic"),
   priority: z.enum(["normal", "urgent"]).default("normal")});
 
-export const PaymentSchema = z.object({
-  patient_id: z.string().min(1, "Patient ID is required"),
+export const PaymentSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
   encounter_id: z.string().optional(),
   claim_id: z.string().optional(),
   payer_type: z.enum(["insurance", "patient", "government", "charity"]),
@@ -83,13 +79,11 @@ export const PaymentSchema = z.object({
   notes: z.string().optional();
 });
 
-export type ServiceCatalogItem = z.infer<typeof ServiceCatalogSchema> & {
-  id: string,
+export type ServiceCatalogItem = z.infer<typeof ServiceCatalogSchema> & {id:string,
   Date;
 };
 
-export type Charge = z.infer<typeof ChargeSchema> & {
-  id: string,
+export type Charge = z.infer<typeof ChargeSchema> & {id:string,
   Date,
   updated_at: Date;
   submitted_date?: Date;
@@ -102,8 +96,7 @@ export type Charge = z.infer<typeof ChargeSchema> & {
   provider_name?: string;
 };
 
-export type InsuranceClaim = z.infer<typeof InsuranceClaimSchema> & {
-  id: string,
+export type InsuranceClaim = z.infer<typeof InsuranceClaimSchema> & {id:string,
   "draft" | "submitted" | "pending" | "paid" | "denied" | "appealed" | "closed";
   submission_date?: Date;
   response_date?: Date;
@@ -115,8 +108,7 @@ export type InsuranceClaim = z.infer<typeof InsuranceClaimSchema> & {
   Date;
 };
 
-export type Payment = z.infer<typeof PaymentSchema> & {
-  id: string,
+export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   "pending" | "processed" | "posted" | "rejected";
   processed_date?: Date;
   posted_date?: Date;
@@ -140,8 +132,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
    */;
   private initializeServiceCatalog(): void {
     const services: Omit<ServiceCatalogItem, "id" | "created_at" | "updated_at">[] = [;
-      {
-        service_code: "E&M-99213",
+      {service_code:"E&M-99213",
         "Office Visit - Established Patient Level 3",
         description: "Established patient office visit, moderate complexity",
         department: "Primary Care",
@@ -152,8 +143,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
         [],
         true;
       },
-      {
-        service_code: "LAB-CBC",
+      {service_code:"LAB-CBC",
         "Complete Blood Count with Differential",
         "Laboratory",
         45.00,
@@ -163,8 +153,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
         [],
         true;
       },
-      {
-        service_code: "IMG-XRAY-CHEST",
+      {service_code:"IMG-XRAY-CHEST",
         "Chest X-Ray, 2 Views",
         description: "Radiologic examination, chest; 2 views",
         department: "Radiology",
@@ -175,8 +164,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
         [],
         true;
       },
-      {
-        service_code: "SURG-APPEND",
+      {service_code:"SURG-APPEND",
         "Laparoscopic Appendectomy",
         "Surgery",
         8500.00,
@@ -187,8 +175,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
         modifiers: [],
         is_active: true;
       },
-      {
-        service_code: "ER-LEVEL4",
+      {service_code:"ER-LEVEL4",
         "Emergency Department Visit - Level 4",
         "Emergency",
         750.00,
@@ -498,14 +485,13 @@ export type Payment = z.infer<typeof PaymentSchema> & {
       }
 
       return acc;
-    }, { current: 0, days_30: 0, days_60: 0, days_90: 0, days_120_plus: 0 });
+    }, {current:0, days_30: 0, days_60: 0, days_90: 0, days_120_plus: 0 });
 
     // Estimate insurance vs patient balance (simplified);
     const insuranceBalance = currentBalance * 0.8; // Assume 80% insurance responsibility;
     const patientBalance = currentBalance * 0.2; // Assume 20% patient responsibility;
 
-    return {
-      patient_id: patientId,
+    return {patient_id:patientId,
       Math.round(totalPayments * 100) / 100,
       Math.round(currentBalance * 100) / 100,
       Math.round(patientBalance * 100) / 100;
@@ -552,35 +538,31 @@ export type Payment = z.infer<typeof PaymentSchema> & {
 
     // By payer analysis (simplified);
     const byPayer = [;
-      {
-        payer_name: "Medicare",
+      {payer_name:"Medicare",
         cashCollections * 0.35,
         netRevenue * 0.3;
       },
-      {
-        payer_name: "Medicaid",
+      {payer_name:"Medicaid",
         cashCollections * 0.15,
         netRevenue * 0.15;
       },
-      {
-        payer_name: "Commercial",
+      {payer_name:"Commercial",
         cashCollections * 0.4,
         netRevenue * 0.45;
       },
-      {
-        payer_name: "Self-Pay",
+      {payer_name:"Self-Pay",
         cashCollections * 0.1,
         netRevenue * 0.1;
       }];
 
     // By service analysis;
-    const serviceStats = new Map<string, { volume: number, number }>();
+    const serviceStats = new Map<string, {volume:number, number }>();
 
     periodCharges.forEach(charge => {
       const service = this.serviceCatalog.get(charge.service_code);
       if (!session.user) {
         const category = service.category;
-        const current = serviceStats.get(category) || { volume: 0, charges: 0, payments: 0 };
+        const current = serviceStats.get(category) || {volume:0, charges: 0, payments: 0 };
         current.volume += charge.quantity;
         current.charges += charge.total_charge;
         current.payments += charge.payments_received;
@@ -588,14 +570,12 @@ export type Payment = z.infer<typeof PaymentSchema> & {
       }
     });
 
-    const byService = Array.from(serviceStats.entries()).map(([category, stats]) => ({
-      service_category: category,
+    const byService = Array.from(serviceStats.entries()).map(([category, stats]) => ({service_category:category,
       stats.charges,
       stats.payments, // Simplified;
     }));
 
-    return {
-      period: `$startDateto $endDate`,
+    return {period:`$startDateto $endDate`,
       gross_charges: Math.round(grossCharges * 100) / 100,
       Math.round(badDebtAdjustments * 100) / 100,
       Math.round(cashCollections * 100) / 100,
@@ -627,7 +607,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ charges: Charge[], number }> {
+  }): Promise<{charges:Charge[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredCharges = Array.from(this.charges.values());
@@ -682,7 +662,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ claims: InsuranceClaim[], number }> {
+  }): Promise<{claims:InsuranceClaim[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredClaims = Array.from(this.claims.values());
@@ -718,12 +698,11 @@ export type Payment = z.infer<typeof PaymentSchema> & {
   /**;
    * Get billing statistics;
    */;
-  async getBillingStatistics(dateFrom?: string, dateTo?: string): Promise<{
-    total_charges: number,
+  async getBillingStatistics(dateFrom?: string, dateTo?: string): Promise<{total_charges:number,
     number,
     number,
     number,
-    top_services: { service_name: string, number }[];
+    top_services: {service_name:string, number }[];
   }> {
     const charges = Array.from(this.charges.values());
     const payments = Array.from(this.payments.values()).filter(p => p.payment_status === "posted");
@@ -761,10 +740,10 @@ export type Payment = z.infer<typeof PaymentSchema> & {
     const averagePaymentTime = paidCharges.length > 0 ? totalPaymentDays / paidCharges.length : 0;
 
     // Top services by volume and revenue;
-    const serviceStats = new Map<string, { volume: number, revenue: number }>();
+    const serviceStats = new Map<string, {volume:number, revenue: number }>();
     filteredCharges.forEach(charge => {
       const serviceName = charge.service_name || charge.service_code;
-      const current = serviceStats.get(serviceName) || { volume: 0, revenue: 0 };
+      const current = serviceStats.get(serviceName) || {volume:0, revenue: 0 };
       current.volume += charge.quantity;
       current.revenue += charge.payments_received;
       serviceStats.set(serviceName, current);
@@ -775,8 +754,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {
       .sort((a, b) => b.revenue - a.revenue);
       .slice(0, 10);
 
-    return {
-      total_charges: Math.round(totalCharges * 100) / 100,
+    return {total_charges:Math.round(totalCharges * 100) / 100,
       Math.round(totalAdjustments * 100) / 100,
       pendingCharges,
       Math.round(averagePaymentTime * 100) / 100;

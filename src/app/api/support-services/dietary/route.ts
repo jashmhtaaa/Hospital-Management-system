@@ -3,8 +3,8 @@ import "@/lib/security.service"
 import "@/lib/services/support-services/dietary/dietary.service"
 import "next/server"
 import "zod"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  DietaryService  } from "@/lib/database"
 import {  SecurityService  } from "@/lib/database"
 import {   type
@@ -15,8 +15,7 @@ import {  z  } from "@/lib/database"
 const dietaryService = new DietaryService();
 
 // Request validation schemas;
-const createDietaryRequestSchema = z.object({
-  patientId: z.string().uuid(),
+const createDietaryRequestSchema = z.object({patientId:z.string().uuid(),
   mealType: z.enum(["BREAKFAST", "LUNCH", "DINNER", "SNACK"]),
   dietType: z.enum(["REGULAR", "VEGETARIAN", "VEGAN", "GLUTEN_FREE", "DIABETIC", "LOW_SODIUM", "LIQUID", "SOFT", "CUSTOM"]),
   customDietDetails: z.string().max(500).optional(),
@@ -27,8 +26,7 @@ const createDietaryRequestSchema = z.object({
   locationId: z.string().uuid();
 });
 
-const updateDietaryRequestSchema = z.object({
-  mealType: z.enum(["BREAKFAST", "LUNCH", "DINNER", "SNACK"]).optional(),
+const updateDietaryRequestSchema = z.object({mealType:z.enum(["BREAKFAST", "LUNCH", "DINNER", "SNACK"]).optional(),
   dietType: z.enum(["REGULAR", "VEGETARIAN", "VEGAN", "GLUTEN_FREE", "DIABETIC", "LOW_SODIUM", "LIQUID", "SOFT", "CUSTOM"]).optional(),
   customDietDetails: z.string().max(500).optional(),
   allergies: z.array(z.string()).optional(),
@@ -46,8 +44,7 @@ export const _GET = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {
-        status: searchParams.get("status") || undefined,
+      const filters = {status:searchParams.get("status") || undefined,
         searchParams.get("mealType") || undefined,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         searchParams.get("locationId") || undefined,
@@ -59,8 +56,7 @@ export const _GET = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "dietary:read",
+    {requiredPermission:"dietary:read",
       auditAction: "DIETARY_REQUESTS_VIEW";
     }
   );
@@ -81,17 +77,16 @@ export const _POST = async (request: any) => {
       // Create dietary request;
       const result = await dietaryService.createDietaryRequest(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, {status:201 });
     },
-    {
-      requiredPermission: "dietary:create",
+    {requiredPermission:"dietary:create",
       auditAction: "DIETARY_REQUEST_CREATE";
     }
   );
 }
 
 // GET /api/support-services/dietary/requests/:id;
-export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -101,15 +96,14 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "dietary:read",
+    {requiredPermission:"dietary:read",
       auditAction: "DIETARY_REQUEST_VIEW";
     }
   );
 }
 
 // PATCH /api/support-services/dietary/requests/:id;
-export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -125,32 +119,30 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "dietary:update",
+    {requiredPermission:"dietary:update",
       auditAction: "DIETARY_REQUEST_UPDATE";
     }
   );
 }
 
 // DELETE /api/support-services/dietary/requests/:id;
-export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
       // Delete dietary request;
       await dietaryService.deleteDietaryRequest(params.id);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({success:true });
     },
-    {
-      requiredPermission: "dietary:delete",
+    {requiredPermission:"dietary:delete",
       auditAction: "DIETARY_REQUEST_DELETE";
     }
   );
 }
 
 // POST /api/support-services/dietary/requests/:id/prepare;
-export const _PREPARE = async (request: any, { params }: { params: { id: string } }) => {
+export const _PREPARE = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -159,7 +151,7 @@ export const _PREPARE = async (request: any, { params }: { params: { id: string 
       const { staffId, notes } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Staff ID is required" }, { status: 400 });
+        return NextResponse.json({error:"Staff ID is required" }, {status:400 });
       }
 
       // Mark dietary request as preparing;
@@ -171,15 +163,14 @@ export const _PREPARE = async (request: any, { params }: { params: { id: string 
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "dietary:update",
+    {requiredPermission:"dietary:update",
       auditAction: "DIETARY_REQUEST_PREPARE";
     }
   );
 }
 
 // POST /api/support-services/dietary/requests/:id/deliver;
-export const _DELIVER = async (request: any, { params }: { params: { id: string } }) => {
+export const _DELIVER = async (request: any, { params }: {params:{ id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -188,7 +179,7 @@ export const _DELIVER = async (request: any, { params }: { params: { id: string 
       const { staffId, notes } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Staff ID is required" }, { status: 400 });
+        return NextResponse.json({error:"Staff ID is required" }, {status:400 });
       }
 
       // Mark dietary request as delivered;
@@ -200,8 +191,7 @@ export const _DELIVER = async (request: any, { params }: { params: { id: string 
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "dietary:update",
+    {requiredPermission:"dietary:update",
       auditAction: "DIETARY_REQUEST_DELIVER";
     }
   );
@@ -214,8 +204,7 @@ export const _GET_MENUS = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {
-        dietType: searchParams.get("dietType") || undefined,
+      const filters = {dietType:searchParams.get("dietType") || undefined,
         searchParams.get("isActive") === "true",
         Number.parseInt(searchParams.get("limit") || "10");
       };
@@ -225,8 +214,7 @@ export const _GET_MENUS = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "dietary:read",
+    {requiredPermission:"dietary:read",
       auditAction: "DIETARY_MENUS_VIEW";
     }
   );
@@ -247,8 +235,7 @@ export const _GET_ANALYTICS = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "dietary:analytics",
+    {requiredPermission:"dietary:analytics",
       auditAction: "DIETARY_ANALYTICS_VIEW";
     }
   );

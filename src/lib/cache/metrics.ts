@@ -25,13 +25,11 @@ import {  RedisCache  } from "@/lib/database"
   /**;
    * Get cache metrics;
    */;
-  static getMetrics(): {
-    hits: number,
+  static getMetrics(): {hits:number,
     number,
     hitRate: number;
   } {
-    return {
-      hits: this.hits,
+    return {hits:this.hits,
       this.totalRequests,
       hitRate: this.getHitRate();
     };

@@ -9,8 +9,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Clinical Note Schemas;
-export const ClinicalNoteSchema = z.object({
-  patient_id: z.string().min(1, "Patient ID is required"),
+export const ClinicalNoteSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
   encounter_id: z.string().min(1, "Encounter ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
   note_type: z.enum(["progress_note", "soap_note", "admission_note", "discharge_summary", "consultation_note", "procedure_note", "nursing_note"]),
@@ -78,8 +77,7 @@ export const ClinicalNoteSchema = z.object({
   structured_data: z.record(z.any()).optional();
 });
 
-export const CarePlanSchema = z.object({
-  patient_id: z.string().min(1, "Patient ID is required"),
+export const CarePlanSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
   care_plan_name: z.string().min(1, "Care plan name is required"),
   diagnosis: z.string().min(1, "Primary diagnosis is required"),
@@ -122,8 +120,7 @@ export const CarePlanSchema = z.object({
   notes: z.string().optional();
 });
 
-export const ProblemListSchema = z.object({
-  patient_id: z.string().min(1, "Patient ID is required"),
+export const ProblemListSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
 
   problem_name: z.string().min(1, "Problem name is required"),
@@ -150,8 +147,7 @@ export const ProblemListSchema = z.object({
   notes: z.string().optional();
 });
 
-export const ClinicalGuidelineSchema = z.object({
-  guideline_id: z.string(),
+export const ClinicalGuidelineSchema = z.object({guideline_id:z.string(),
   name: z.string(),
   organization: z.string(),
   version: z.string(),
@@ -175,8 +171,7 @@ export const ClinicalGuidelineSchema = z.object({
   evidence_links: z.array(z.string()).default([]),
   references: z.array(z.string()).default([]));
 
-export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
-  id: string,
+export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {id:string,
   Date,
   updated_at: Date;
   signed_at?: Date;
@@ -187,22 +182,19 @@ export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {
   patient_name?: string;
 };
 
-export type CarePlan = z.infer<typeof CarePlanSchema> & {
-  id: string,
+export type CarePlan = z.infer<typeof CarePlanSchema> & {id:string,
   Date,
   number;
   last_reviewed_date?: Date;
   next_review_date?: Date;
 };
 
-export type ProblemListItem = z.infer<typeof ProblemListSchema> & {
-  id: string,
+export type ProblemListItem = z.infer<typeof ProblemListSchema> & {id:string,
   Date,
   last_updated_by: string;
 };
 
-export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
-  id: string,
+export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:string,
   Date,
   Date;
 };
@@ -225,50 +217,42 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
   last_encounter_date: Date;
 }
           },
-          {
-            id: "HTN-2",
+          {id:"HTN-2",
             recommendation_text: "First-line therapy should include ACE inhibitor, ARB, calcium channel blocker, or thiazide diuretic",
             strength: "strong",
             "Adults initiating antihypertensive therapy";
           }],
         decision_support_rules: [;
-          {
-            rule_id: "HTN-ALERT-1",
+          {rule_id:"HTN-ALERT-1",
             "Alert provider of hypertensive crisis",
             alert_type: "critical";
           },
-          {
-            rule_id: "HTN-ALERT-2",
+          {rule_id:"HTN-ALERT-2",
             "Suggest antihypertensive therapy",
             alert_type: "warning";
           }],
         evidence_links: ["https://doi.org/10.1161/HYP.0000000000000065"],
         references: ["2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults"]},
-      {
-        guideline_id: "ADA-DM-2024",
+      {guideline_id:"ADA-DM-2024",
         "American Diabetes Association",
         "2024-01-01",
         applicable_conditions: ["Type 1 Diabetes", "Type 2 Diabetes", "Gestational Diabetes"],
         icd10_codes: ["E10", "E11", "O24"],
         recommendations: [;
-          {
-            id: "DM-1",
+          {id:"DM-1",
             "strong",
             "Adults with Type 1 or Type 2 diabetes";
           },
-          {
-            id: "DM-2",
+          {id:"DM-2",
             "strong",
             "Adults with Type 2 diabetes";
           }],
         decision_support_rules: [;
-          {
-            rule_id: "DM-ALERT-1",
+          {rule_id:"DM-ALERT-1",
             "Alert provider of poor glycemic control",
             alert_type: "warning";
           },
-          {
-            rule_id: "DM-ALERT-2",
+          {rule_id:"DM-ALERT-2",
             "Recommend HbA1c testing",
             alert_type: "info";
           }],
@@ -292,23 +276,20 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
    */;
   private initializeNoteTemplates(): void {
     const templates = [;
-      {
-        id: "soap-general",
+      {id:"soap-general",
         "soap_note",
         "Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n",
           objective: "Vital Signs:\n\nPhysical Examination:\n\nLaboratory/Diagnostic Results:\n",
           assessment: "Primary Diagnosis:\n\nSecondary Diagnoses:\n\nDifferential Diagnosis:\n",
           plan: "Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n";
         }},
-      {
-        id: "progress-note",
+      {id:"progress-note",
         "progress_note",
         "Patient reports:\n",
           objective: "Vital Signs:\nPhysical Examination:\n",
           assessment: "Assessment and Plan:\n";
         }},
-      {
-        id: "discharge-summary",
+      {id:"discharge-summary",
         "discharge_summary",
         "",
           "",
@@ -555,8 +536,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     // Check vital signs for alerts;
     if (!session.user) {
       if (!session.user) {
-        alerts.push({
-          id: uuidv4(),
+        alerts.push({id:uuidv4(),
           "critical",
           "Immediate evaluation and treatment required",
           false;
@@ -564,8 +544,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       }
 
       if (!session.user) {
-        alerts.push({
-          id: uuidv4(),
+        alerts.push({id:uuidv4(),
           "warning",
           "Consider infectious workup and antipyretic therapy",
           false;
@@ -593,8 +572,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         .map(rule => rule.rule_id);
 
       if (!session.user) {
-        guidelines.push({
-          guideline_id: guideline.guideline_id,
+        guidelines.push({guideline_id:guideline.guideline_id,
           applicableRecommendations,
           triggered_rules: triggeredRules;
         });
@@ -602,8 +580,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
         // Create alerts for triggered rules;
         for (const rule of guideline.decision_support_rules) {
           if (!session.user) {
-            alerts.push({
-              id: uuidv4(),
+            alerts.push({id:uuidv4(),
               rule.alert_type === "critical" ? "critical" : rule.alert_type === "warning" ? "warning" : "info",
               `Based on ${guideline.name}`,
               source: guideline.organization,
@@ -680,8 +657,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
 
     // Generate quality measures (simplified);
     const qualityMeasures: QualityMeasure[] = [;
-      {
-        id: "BP-Control",
+      {id:"BP-Control",
         "Percentage of patients with controlled blood pressure",
         "Patients with hypertension",
         crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.5 ? "met" : "not_met",
@@ -698,7 +674,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
       active_problems: activeProblems,
       current_medications: ["Lisinopril 10mg daily", "Metformin 500mg BID"], // Simplified;
       allergies: ["NKDA"],
-      recent_vitals: { bp: "130/80", hr: "72", temp: "98.6" },
+      recent_vitals: {bp:"130/80", hr: "72", temp: "98.6" },
       recent_lab_results: [],
       [],
       qualityMeasures,
@@ -722,7 +698,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {
     status?: ClinicalNote["note_status"];
     page?: number;
     limit?: number;
-  }): Promise<{ notes: ClinicalNote[], number }> {
+  }): Promise<{notes:ClinicalNote[], number }> {
     const { page = 1, limit = 10, search_text, ...filters } = criteria;
 
     let filteredNotes = Array.from(this.clinicalNotes.values());

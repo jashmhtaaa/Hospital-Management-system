@@ -77,16 +77,16 @@ export const GET = async (request: any) => {
       const id = Number.parseInt(admissionId);
       if (!session.user)| id <= 0) {
         return NextResponse.json();
-          { error: "Invalid admission ID provided" },
-          { status: 400 }
+          {error:"Invalid admission ID provided" },
+          {status:400 }
         );
       } else {
         // Simulate fetching a single admission by ID;
         const admission = await getAdmissionByIdFromDB(id);
         if (!session.user) {
           return NextResponse.json();
-            { error: "Admission not found" },
-            { status: 404 }
+            {error:"Admission not found" },
+            {status:404 }
           );
         }
         return NextResponse.json({ admission });
@@ -103,8 +103,8 @@ export const GET = async (request: any) => {
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      { error: "Failed to fetch admissions", details: errorMessage },
-      { status: 500 }
+      {error:"Failed to fetch admissions", details: errorMessage },
+      {status:500 }
     );
   }
 }
@@ -153,22 +153,22 @@ export const POST = async (request: any) => {
     // Assuming other fields like diagnosis, attending_doctor_id might also be required by CreateAdmissionData;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields;
-        { status: 400 }
+        {error:"Missing required fields (e.g., patient_id)" }, // Adjust error message based on actual required fields;
+        {status:400 }
       );
 
     // Simulate creating the admission in the database;
     const newAdmission = await createAdmissionInDB(admissionData);
 
-    return NextResponse.json({ admission: newAdmission }, { status: 201 });
+    return NextResponse.json({admission:newAdmission }, {status:201 });
   } catch (error: unknown) {
 
     // Fixed: Safely access error message;
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      { error: "Failed to create admission", details: errorMessage },
-      { status: 500 }
+      {error:"Failed to create admission", details: errorMessage },
+      {status:500 }
     );
 
 /**;
@@ -218,8 +218,8 @@ export const PUT = async (request: any) => {
 
     if (!session.user)| id <= 0) {
       return NextResponse.json();
-        { error: "Invalid or missing admission ID in URL path" },
-        { status: 400 }
+        {error:"Invalid or missing admission ID in URL path" },
+        {status:400 }
       );
 
     // FIX: Use imported UpdateAdmissionData type;
@@ -230,17 +230,17 @@ export const PUT = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Admission not found or update failed" },
-        { status: 404 }
+        {error:"Admission not found or update failed" },
+        {status:404 }
       );
 
-    return NextResponse.json({ admission: updatedAdmission });
+    return NextResponse.json({admission:updatedAdmission });
   } catch (error: unknown) {
 
     // Fixed: Safely access error message;
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      { error: "Failed to update admission", details: errorMessage },
-      { status: 500 }
+      {error:"Failed to update admission", details: errorMessage },
+      {status:500 }
     );

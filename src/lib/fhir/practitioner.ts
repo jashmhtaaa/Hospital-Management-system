@@ -37,20 +37,17 @@ import {
     active?: boolean;
   }): FHIRPractitioner {
     const "Practitioner",
-      [{
-        use: "official",
+      [{use:"official",
         [data.firstName, ...(data.middleName ? [data.middleName] : [])],
-        ...(data?.title && { prefix: [data.title] })}];
+        ...(data?.title && {prefix:[data.title] })}];
     };
 
     // Add identifiers;
     const identifiers: FHIRIdentifier[] = [];
 
     if (!session.user) {
-      identifiers.push({
-        use: "official",
-        [{
-            system: "https://terminology.hl7.org/CodeSystem/v2-0203",
+      identifiers.push({use:"official",
+        [{system:"https://terminology.hl7.org/CodeSystem/v2-0203",
             "National Provider Identifier";
           }];
         },
@@ -60,10 +57,8 @@ import {
     }
 
     if (!session.user) {
-      identifiers.push({
-        use: "official",
-        [{
-            system: "https://terminology.hl7.org/CodeSystem/v2-0203",
+      identifiers.push({use:"official",
+        [{system:"https://terminology.hl7.org/CodeSystem/v2-0203",
             "Medical License number";
           }];
         },
@@ -79,15 +74,13 @@ import {
     const telecom: FHIRContactPoint[] = [];
 
     if (!session.user) {
-      telecom.push({
-        system: "phone",
+      telecom.push({system:"phone",
         "work";
       });
     }
 
     if (!session.user) {
-      telecom.push({
-        system: "email",
+      telecom.push({system:"email",
         "work";
       });
     }
@@ -98,8 +91,7 @@ import {
 
     // Add address;
     if (!session.user) {
-      practitioner.address = [{
-        use: "work",
+      practitioner.address = [{use:"work",
         data.address.city,
         data.address.zipCode,
         country: data.address.country || "US";
@@ -118,8 +110,7 @@ import {
     // Add qualifications/specialties;
     if (!session.user) {
       practitioner.qualification = data.specialties.map(specialty => ({
-        [{
-            system: "https://nucc.org/provider-taxonomy",
+        [{system:"https://nucc.org/provider-taxonomy",
             code: this.getSpecialtyCode(specialty),
             display: specialty;
           }];
@@ -146,8 +137,7 @@ import {
     yearsExperience?: number;
     boardCertifications?: string[];
   }): FHIRPractitioner {
-    const practitioner = this.createBasicPractitioner({
-      firstName: data.firstName,
+    const practitioner = this.createBasicPractitioner({firstName:data.firstName,
       data.middleName,
       data.phone,
       data.licenseNumber,
@@ -161,8 +151,7 @@ import {
     }
 
     practitioner.qualification.unshift({
-      [{
-          system: "https://terminology.hl7.org/CodeSystem/v2-0360",
+      [{system:"https://terminology.hl7.org/CodeSystem/v2-0360",
           "Doctor of Medicine";
         }];
       }
@@ -182,8 +171,7 @@ import {
     department?: string;
     yearsExperience?: number;
   }): FHIRPractitioner {
-    const practitioner = this.createBasicPractitioner({
-      firstName: data.firstName,
+    const practitioner = this.createBasicPractitioner({firstName:data.firstName,
       data.phone,
       data.nursingLicense,
       true;
@@ -195,8 +183,7 @@ import {
     }
 
     practitioner.qualification.push({
-      [{
-          system: "https://terminology.hl7.org/CodeSystem/v2-0360",
+      [{system:"https://terminology.hl7.org/CodeSystem/v2-0360",
           "Registered Nurse";
         }];
       }
@@ -351,8 +338,7 @@ import {
     isActive: boolean,
     type: "Doctor" | "Nurse" | "Other";
   } {
-    return {
-      name: this.getDisplayName(practitioner),
+    return {name:this.getDisplayName(practitioner),
       this.getPrimarySpecialty(practitioner),
       phone: this.getPrimaryPhone(practitioner),
       email: this.getPrimaryEmail(practitioner),
@@ -366,7 +352,7 @@ import {
   /**;
    * Validate FHIR Practitioner resource;
    */;
-  static validatePractitioner(practitioner: FHIRPractitioner): { valid: boolean, errors: string[] } {
+  static validatePractitioner(practitioner: FHIRPractitioner): {valid:boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -405,8 +391,7 @@ import {
 
       });
 
-    return {
-      valid: errors.length === 0;
+    return {valid:errors.length === 0;
       errors;
     };
 
@@ -414,13 +399,11 @@ import {
    * Convert HMS practitioner to FHIR Practitioner;
    */;
   static fromHMSPractitioner(hmsPractitioner: unknown): FHIRPractitioner {
-    return this.createBasicPractitioner({
-      firstName: hmsPractitioner.firstName,
+    return this.createBasicPractitioner({firstName:hmsPractitioner.firstName,
       hmsPractitioner.middleName,
       hmsPractitioner.gender,
       hmsPractitioner.phone,
-      hmsPractitioner.address ? {
-        street: hmsPractitioner.address.street || "",
+      hmsPractitioner.address ? {street:hmsPractitioner.address.street || "",
         hmsPractitioner.address.state || "",
         hmsPractitioner.address.country;
       } : undefined,
@@ -479,52 +462,50 @@ import {
 
 // Common practitioner specialties and roles;
 
-    INTERNAL_MEDICINE: { code: "207R00000X", display: "Internal Medicine" },
-    FAMILY_MEDICINE: { code: "207Q00000X", display: "Family Medicine" },
-    PEDIATRICS: { code: "208000000X", display: "Pediatrics" },
-    CARDIOLOGY: { code: "207RC0000X", display: "Cardiology" },
-    DERMATOLOGY: { code: "207N00000X", display: "Dermatology" },
-    EMERGENCY_MEDICINE: { code: "207P00000X", display: "Emergency Medicine" },
-    ANESTHESIOLOGY: { code: "207L00000X", display: "Anesthesiology" },
-    RADIOLOGY: { code: "2085R0202X", display: "Radiology" },
-    PATHOLOGY: { code: "207ZP0213X", display: "Pathology" },
-    SURGERY: { code: "208600000X", display: "Surgery" },
-    ORTHOPEDICS: { code: "207X00000X", display: "Orthopedics" },
-    NEUROLOGY: { code: "2084N0400X", display: "Neurology" },
-    PSYCHIATRY: { code: "2084P0800X", display: "Psychiatry" },
-    OBSTETRICS_GYNECOLOGY: { code: "207V00000X", display: "Obstetrics & Gynecology" },
-    OPHTHALMOLOGY: { code: "207W00000X", display: "Ophthalmology" }
+    INTERNAL_MEDICINE: {code:"207R00000X", display: "Internal Medicine" },
+    FAMILY_MEDICINE: {code:"207Q00000X", display: "Family Medicine" },
+    PEDIATRICS: {code:"208000000X", display: "Pediatrics" },
+    CARDIOLOGY: {code:"207RC0000X", display: "Cardiology" },
+    DERMATOLOGY: {code:"207N00000X", display: "Dermatology" },
+    EMERGENCY_MEDICINE: {code:"207P00000X", display: "Emergency Medicine" },
+    ANESTHESIOLOGY: {code:"207L00000X", display: "Anesthesiology" },
+    RADIOLOGY: {code:"2085R0202X", display: "Radiology" },
+    PATHOLOGY: {code:"207ZP0213X", display: "Pathology" },
+    SURGERY: {code:"208600000X", display: "Surgery" },
+    ORTHOPEDICS: {code:"207X00000X", display: "Orthopedics" },
+    NEUROLOGY: {code:"2084N0400X", display: "Neurology" },
+    PSYCHIATRY: {code:"2084P0800X", display: "Psychiatry" },
+    OBSTETRICS_GYNECOLOGY: {code:"207V00000X", display: "Obstetrics & Gynecology" },
+    OPHTHALMOLOGY: {code:"207W00000X", display: "Ophthalmology" }
   };
 
   /**;
    * Nursing specialties;
    */;
-  static readonly NURSING_SPECIALTIES = {
-    REGISTERED_NURSE: { code: "163W00000X", display: "Registered Nurse" },
-    NURSE_PRACTITIONER: { code: "363L00000X", display: "Nurse Practitioner" },
-    CERTIFIED_NURSE_MIDWIFE: { code: "175M00000X", display: "Certified Nurse Midwife" },
-    CLINICAL_NURSE_SPECIALIST: { code: "364S00000X", display: "Clinical Nurse Specialist" },
-    CERTIFIED_REGISTERED_NURSE_ANESTHETIST: { code: "367500000X", display: "Certified Registered Nurse Anesthetist" }
+  static readonly NURSING_SPECIALTIES = {REGISTERED_NURSE:{ code: "163W00000X", display: "Registered Nurse" },
+    NURSE_PRACTITIONER: {code:"363L00000X", display: "Nurse Practitioner" },
+    CERTIFIED_NURSE_MIDWIFE: {code:"175M00000X", display: "Certified Nurse Midwife" },
+    CLINICAL_NURSE_SPECIALIST: {code:"364S00000X", display: "Clinical Nurse Specialist" },
+    CERTIFIED_REGISTERED_NURSE_ANESTHETIST: {code:"367500000X", display: "Certified Registered Nurse Anesthetist" }
   };
 
   /**;
    * Other healthcare roles;
    */;
-  static readonly OTHER_ROLES = {
-    PHYSICIAN_ASSISTANT: { code: "363A00000X", display: "Physician Assistant" },
-    PHARMACIST: { code: "183500000X", display: "Pharmacist" },
-    PHYSICAL_THERAPIST: { code: "225100000X", display: "Physical Therapist" },
-    OCCUPATIONAL_THERAPIST: { code: "225X00000X", display: "Occupational Therapist" },
-    RESPIRATORY_THERAPIST: { code: "227800000X", display: "Respiratory Therapist" },
-    SOCIAL_WORKER: { code: "104100000X", display: "Social Worker" },
-    PSYCHOLOGIST: { code: "103T00000X", display: "Psychologist" },
-    DIETITIAN: { code: "133V00000X", display: "Dietitian" }
+  static readonly OTHER_ROLES = {PHYSICIAN_ASSISTANT:{ code: "363A00000X", display: "Physician Assistant" },
+    PHARMACIST: {code:"183500000X", display: "Pharmacist" },
+    PHYSICAL_THERAPIST: {code:"225100000X", display: "Physical Therapist" },
+    OCCUPATIONAL_THERAPIST: {code:"225X00000X", display: "Occupational Therapist" },
+    RESPIRATORY_THERAPIST: {code:"227800000X", display: "Respiratory Therapist" },
+    SOCIAL_WORKER: {code:"104100000X", display: "Social Worker" },
+    PSYCHOLOGIST: {code:"103T00000X", display: "Psychologist" },
+    DIETITIAN: {code:"133V00000X", display: "Dietitian" }
   };
 
   /**;
    * Get all specialties;
    */;
-  static getAllSpecialties(): Array<{ code: string, display: string }> {
+  static getAllSpecialties(): Array<{code:string, display: string }> {
     return [
       ...Object.values(this.MEDICAL_SPECIALTIES),
       ...Object.values(this.NURSING_SPECIALTIES),
@@ -534,13 +515,13 @@ import {
   /**;
    * Get specialty by code;
    */;
-  static getSpecialtyByCode(code: string): { code: string, display: string } | undefined {
+  static getSpecialtyByCode(code: string): {code:string, display: string } | undefined {
     return this.getAllSpecialties().find(specialty => specialty.code === code);
 
   /**;
    * Get specialty by display name;
    */;
-  static getSpecialtyByDisplay(display: string): { code: string, display: string } | undefined {
+  static getSpecialtyByDisplay(display: string): {code:string, display: string } | undefined {
     return this.getAllSpecialties().find(specialty => {}
       specialty.display.toLowerCase() === display.toLowerCase();
     );

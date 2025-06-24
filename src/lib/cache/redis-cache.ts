@@ -11,8 +11,7 @@ import {  cache  } from "@/lib/database"
  */;
 
 // Cache configuration;
-interface CacheConfig {
-  host: string,
+interface CacheConfig {host:string,
   port: number;
   password?: string;
   db: number,
@@ -22,8 +21,7 @@ interface CacheConfig {
 }
 
 // Cache key patterns for different data types;
-export const CACHE_PATTERNS = {
-  PATIENT: "patient:",
+export const CACHE_PATTERNS = {PATIENT:"patient:",
   PATIENT_LIST: "patients:list:",
   PATIENT_SEARCH: "patients:search:",
   BILL: "bill:",
@@ -46,8 +44,7 @@ export const CACHE_PATTERNS = {
 } as const;
 
 // TTL constants (in seconds);
-export const CACHE_TTL = {
-  SHORT: 300,      // 5 minutes;
+export const CACHE_TTL = {SHORT:300,      // 5 minutes;
   MEDIUM: 1800,    // 30 minutes;
   LONG: 3600,      // 1 hour;
   VERY_LONG: 86400, // 24 hours;
@@ -74,8 +71,7 @@ class RedisCacheManager {
   }
 
   private getConfig(): CacheConfig {
-    return {
-      host: process.env.REDIS_HOST || "localhost",
+    return {host:process.env.REDIS_HOST || "localhost",
       port: Number.parseInt(process.env.REDIS_PORT || "6379"),
       password: process.env.REDIS_PASSWORD,
       db: Number.parseInt(process.env.REDIS_DB || "0"),
@@ -87,8 +83,7 @@ class RedisCacheManager {
   }
 
   private createRedisClient(): Redis {
-    const redisConfig = {
-      host: this.config.host,
+    const redisConfig = {host:this.config.host,
       this.config.password,
       this.config.keyPrefix,
       this.config.maxRetriesPerRequest,
@@ -941,8 +936,7 @@ class RedisCacheManager {
       const info = await this.redis.info("memory");
       const dbSize = await this.redis.dbsize();
 
-      return {
-        connected: this.isConnected;
+      return {connected:this.isConnected;
         dbSize,
         memoryInfo: this.parseRedisInfo(info),
         this.config.host,
@@ -950,8 +944,7 @@ class RedisCacheManager {
           keyPrefix: this.config.keyPrefix};
     } catch (error) {
 
-      return {
-        connected: false,
+      return {connected:false,
         error: error instanceof Error ? error.message : "Unknown error";
       };
 
@@ -1127,8 +1120,7 @@ export const redisCache = RedisCacheManager.getInstance();
     const isHealthy = await this.redis.healthCheck();
     const stats = await this.redis.getStats();
 
-    return {
-      healthy: isHealthy;
+    return {healthy:isHealthy;
       stats,
       timestamp: new Date().toISOString();
     };

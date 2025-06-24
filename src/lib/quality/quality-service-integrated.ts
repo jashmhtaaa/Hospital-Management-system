@@ -160,7 +160,7 @@ import {  QualityPersistenceService  } from "@/lib/database"
   }
 
   // Quality Statistics (now with persistent data);
-  async getQualityStatistics(): Promise<{total: number, number ;total: number, number ;total: number, number ;reports: number, number ;
+  async getQualityStatistics(): Promise<{total:number, number ;total: number, number ;total: number, number ;reports: number, number ;
   }> {
     const indicators = await this.persistenceService.getQualityIndicators({}, "system");
     const events = await this.persistenceService.getQualityEvents({}, "system");
@@ -192,8 +192,7 @@ import {  QualityPersistenceService  } from "@/lib/database"
     const stats = await this.getQualityStatistics();
 
     // Get recent events for overview;
-    const recentEvents = await this.persistenceService.getQualityEvents({
-      dateFrom: [0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days;
+    const recentEvents = await this.persistenceService.getQualityEvents({dateFrom:[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days;
     }, "system");
 
     return {
@@ -217,8 +216,7 @@ import {  QualityPersistenceService  } from "@/lib/database"
   async migrateExistingData(number,
     number;
   }> {
-    const migratedCounts = {
-      indicatorsMigrated: 0,
+    const migratedCounts = {indicatorsMigrated:0,
       0;
     };
 
@@ -264,8 +262,7 @@ import {  QualityPersistenceService  } from "@/lib/database"
       throw new Error("Failed to migrate existing quality data");
 
   // Data Archival and Cleanup;
-  async archiveOldData(): Promise<{
-    archivedIndicators: number,
+  async archiveOldData(): Promise<{archivedIndicators:number,
     number,
     archivedReports: number;
   }> {
@@ -302,8 +299,7 @@ import {  QualityPersistenceService  } from "@/lib/database"
 
     // Critical events alert;
     if (!session.user) {
-      alerts.push({
-        type: "critical_events",
+      alerts.push({type:"critical_events",
         `${stats.events.critical} critical quality events require immediate attention`,
         actionRequired: true;
       });
@@ -314,8 +310,7 @@ import {  QualityPersistenceService  } from "@/lib/database"
     ).length;
 
     if (!session.user) {
-      alerts.push({
-        type: "high_event_frequency",
+      alerts.push({type:"high_event_frequency",
         `${todayEvents} quality events reported today - higher than usual`,
         actionRequired: false;
       });
@@ -325,8 +320,7 @@ import {  QualityPersistenceService  } from "@/lib/database"
   /**;
    * Health check for the integrated service;
    */;
-  async healthCheck(): Promise<{
-    status: "healthy" | "degraded" | "unhealthy",
+  async healthCheck(): Promise<{status:"healthy" | "degraded" | "unhealthy",
     boolean,
       Date;
   }> {
@@ -365,16 +359,14 @@ import {  QualityPersistenceService  } from "@/lib/database"
       // Check if services are responsive;
       const stats = await this.getQualityStatistics();
 
-      return {
-        status: "healthy",
+      return {status:"healthy",
         true,
           persistenceService: true;
         },
         lastChecked: new Date();
       };
     } catch (error) {
-      return {
-        status: "unhealthy',
+      return {status:"unhealthy',
         false,
           persistenceService: false;
         },

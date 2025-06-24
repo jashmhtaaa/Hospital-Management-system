@@ -3,8 +3,8 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  ContactService  } from "@/lib/database"
 import {  getServerSession  } from "@/lib/database"
@@ -25,8 +25,7 @@ export const GET = async (request: any) => {
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters;
-      const filters = {
-        status: searchParams.get("status") || undefined,
+      const filters = {status:searchParams.get("status") || undefined,
         searchParams.get("search") || undefined,
         searchParams.has("hasPatient");
           ? searchParams.get("hasPatient") === "true";
@@ -42,8 +41,7 @@ export const GET = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {
-      requiredPermission: "marketing.contacts.read",
+    {requiredPermission:"marketing.contacts.read",
       auditAction: "CONTACTS_LIST";
     }
   );
@@ -65,10 +63,9 @@ export const POST = async (request: any) => {
         session?.user?.id as string;
       );
 
-      return NextResponse.json(contact, { status: 201 });
+      return NextResponse.json(contact, {status:201 });
     },
-    {
-      requiredPermission: "marketing.contacts.create",
+    {requiredPermission:"marketing.contacts.create",
       auditAction: "CONTACT_CREATE";
     }
   );

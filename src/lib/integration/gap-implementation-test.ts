@@ -305,8 +305,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     const icdService = getICDCodingService();
 
     // Test 1: Search ICD codes;
-    const searchResults = await icdService.searchCodes({
-      query: "diabetes",
+    const searchResults = await icdService.searchCodes({query:"diabetes",
       5;
     });
 
@@ -328,8 +327,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       throw new Error("ICD coding suggestions failed");
 
     // Test 4: Submit coding request;
-    const requestId = await icdService.submitCodingRequest({
-      patientId: "test_patient_123",
+    const requestId = await icdService.submitCodingRequest({patientId:"test_patient_123",
       "Test clinical text",
       "test_coder_789",
       priority: "routine";
@@ -347,8 +345,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     const qualityPersistence = getQualityPersistenceService();
 
     // Test 1: Save quality indicator;
-    const testIndicator = {
-      id: "test_indicator_123",
+    const testIndicator = {id:"test_indicator_123",
       "Test indicator for gap testing",
       "emergency",
       95,
@@ -371,8 +368,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       throw new Error("Failed to retrieve saved quality indicator");
 
     // Test 3: Save quality event;
-    const testEvent = {
-      id: "test_event_123",
+    const testEvent = {id:"test_event_123",
       "moderate" as const,
       "Test event for gap testing",
       "Pharmacy Unit 1",
@@ -385,8 +381,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     await qualityPersistence.saveQualityEvent(testEvent, "test_user");
 
     // Test 4: Retrieve quality events;
-    const events = await qualityPersistence.getQualityEvents({
-      type: "medication_error";
+    const events = await qualityPersistence.getQualityEvents({type:"medication_error";
     }, "test_user");
 
     if (!session.user) {
@@ -400,8 +395,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     const ehrPersistence = getEHRPersistenceService();
 
     // Test 1: Save clinical note;
-    const testNote = {
-      id: "test_note_123",
+    const testNote = {id:"test_note_123",
       "test_encounter_456",
       "Test Clinical Note",
       "test_doctor_789",
@@ -423,8 +417,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       throw new Error("Failed to retrieve saved clinical note");
 
     // Test 3: Search clinical notes;
-    const searchResults = await ehrPersistence.searchClinicalNotes({
-      patientId: testNote.patientId,
+    const searchResults = await ehrPersistence.searchClinicalNotes({patientId:testNote.patientId,
       authorId: testNote.authorId;
     }, "test_user");
 
@@ -527,8 +520,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     await integratedService.start();
 
     // Test 2: Register quality indicator;
-    const indicatorId = await integratedService.registerQualityIndicator({
-      name: "Integrated Test Indicator",
+    const indicatorId = await integratedService.registerQualityIndicator({name:"Integrated Test Indicator",
       "efficiency",
       "automated",
       85,

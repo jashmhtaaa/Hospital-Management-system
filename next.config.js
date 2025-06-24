@@ -11,10 +11,8 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
-    serverComponentsExternalPackages: ['prisma'],
   },
-  swcMinify: false,
-  reactStrictMode: false
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig

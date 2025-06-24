@@ -5,8 +5,8 @@ import "../../../../lib/validation/pharmacy-validation"
 import "../../models/domain-models"
 import "../../models/fhir-mappers"
 import "next/server"
-import NextRequest
-import NextResponse }
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
 import {  encryptionService  } from "@/lib/database"
 import {  errorHandler  } from "@/lib/database"
@@ -25,8 +25,7 @@ import {  validateInventoryRequest  } from "@/lib/database"
  */;
 
 // Initialize repositories (in production, use dependency injection);
-const inventoryRepository = {
-  findById: (id: string) => Promise.resolve(null),
+const inventoryRepository = {findById:(id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
@@ -78,7 +77,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({error:"Unauthorized" }, {status:401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -98,7 +97,7 @@ export const GET = async (req: any) => {
     if (!session.user)ilter.locationId = locationId;
     if (!session.user)ilter.medicationId = medicationId;
     if (!session.user)ilter.belowReorderLevel = true;
-    if (!session.user)ilter.quantityOnHand = { gt: 0 };
+    if (!session.user)ilter.quantityOnHand = {gt:0 };
 
     // Get inventory items (mock implementation);
     const inventoryItems = await inventoryRepository.findAll();
@@ -111,8 +110,7 @@ export const GET = async (req: any) => {
     const fhirInventoryItems = paginatedItems.map(FHIRMapper.toFHIRInventoryItem);
 
     // Audit logging;
-    await auditLog("INVENTORY", {
-      action: "LIST",
+    await auditLog("INVENTORY", {action:"LIST",
       userId,
       details: any;
         filter,
@@ -122,15 +120,14 @@ export const GET = async (req: any) => {
     });
 
     // Return response;
-    return NextResponse.json({
-      items: fhirInventoryItems,
+    return NextResponse.json({items:fhirInventoryItems,
       pagination: {
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
       }
-    }, { status: 200 });
+    }, {status:200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving inventory");
   }
@@ -177,14 +174,14 @@ export const POST = async (req: any) => {
     const validationResult = validateInventoryRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        {error:"Validation failed", details: validationResult.errors },
+        {status:400 }
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -207,8 +204,7 @@ export const POST = async (req: any) => {
     if (!session.user) {
       // Encrypt controlled substance data;
       inventoryItem.controlledSubstanceData = await encryptionService.encrypt();
-        JSON.stringify({
-          scheduleClass: data.scheduleClass,
+        JSON.stringify({scheduleClass:data.scheduleClass,
           data.lastAuditDate;
         });
       );
@@ -217,8 +213,7 @@ export const POST = async (req: any) => {
     const inventoryItemId = await inventoryRepository.save(inventoryItem);
 
     // Audit logging;
-    await auditLog("INVENTORY", {
-      action: "CREATE",
+    await auditLog("INVENTORY", {action:"CREATE",
       inventoryItemId,
       data.medicationId,
         data.quantityOnHand,
@@ -227,11 +222,10 @@ export const POST = async (req: any) => {
 
     // Return response;
     return NextResponse.json();
-      {
-        id: inventoryItemId,
+      {id:inventoryItemId,
         message: "Inventory item created successfully";
       },
-      { status: 201 }
+      {status:201 }
     );
   } catch (error) {
     return errorHandler(error, "Error creating inventory item");

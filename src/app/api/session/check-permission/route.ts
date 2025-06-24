@@ -8,7 +8,7 @@ export const _GET = async (request: Request) => {
   const permission = searchParams.get("permission");
 
   if (!session.user) {
-    return NextResponse.json({ error: "Permission parameter is required" }, { status: 400 });
+    return NextResponse.json({error:"Permission parameter is required" }, {status:400 });
   }
 
   try {
@@ -48,8 +48,8 @@ export const _GET = async (request: Request) => {
     if (!session.user) {
       hasPerm = session.user.permissions.includes(permission);
 
-    return NextResponse.json({ hasPermission: hasPerm });
+    return NextResponse.json({hasPermission:hasPerm });
   } catch (error: unknown) {
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({error:"Internal server error" }, {status:500 });
 
 };

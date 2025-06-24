@@ -30,27 +30,23 @@ import {
 }
   }): FHIRCondition {
     const "Condition",
-      [{
-          system: "https://terminology.hl7.org/CodeSystem/condition-clinical",
+      [{system:"https://terminology.hl7.org/CodeSystem/condition-clinical",
           (data.clinicalStatus ||;
             "active").charAt(0).toUpperCase() + (data.clinicalStatus ||;
             "active").slice(1);
         }];
       },
-      [{
-          system: "https://terminology.hl7.org/CodeSystem/condition-ver-status",
+      [{system:"https://terminology.hl7.org/CodeSystem/condition-ver-status",
           (data.verificationStatus ||;
             "confirmed").charAt(0).toUpperCase() + (data.verificationStatus ||;
             "confirmed").slice(1);
         }];
       },
-      [{
-          system: "https://terminology.hl7.org/CodeSystem/condition-category",
+      [{system:"https://terminology.hl7.org/CodeSystem/condition-category",
           data.category === "problem-list-item" ? "Problem List Item" : "Encounter Diagnosis";
         }];
       }],
-      [{
-          system: "https://snomed.info/sct",
+      [{system:"https://snomed.info/sct",
           data.conditionDisplay;
         }];
       },
@@ -65,8 +61,7 @@ import {
 
     // Add encounter if provided;
     if (!session.user) {
-      condition.encounter = {
-        reference: `Encounter/${data.encounterId}`,
+      condition.encounter = {reference:`Encounter/${data.encounterId}`,
         type: "Encounter";
       };
     }
@@ -88,8 +83,7 @@ import {
 
     // Add notes if provided;
     if (!session.user) {
-      condition.note = [{
-        text: data.notes,
+      condition.note = [{text:data.notes,
         time: new Date().toISOString();
       }];
     }
@@ -110,7 +104,7 @@ import {
       ...data,
       category: "problem-list-item",
       "confirmed",
-      recordedDate: new Date().toISOString(),
+      recordedDate: timestamp: new Date().toISOString(),
       notes: data.managementNotes;
     });
   }
@@ -129,7 +123,7 @@ import {
       ...data,
       category: "encounter-diagnosis",
       "confirmed",
-      recordedDate: new Date().toISOString(),
+      recordedDate: timestamp: new Date().toISOString(),
       notes: data.clinicalNotes;
     });
   }
@@ -147,7 +141,7 @@ import {
       ...data,
       category: "problem-list-item",
       "confirmed",
-      recordedDate: new Date().toISOString(),
+      recordedDate: timestamp: new Date().toISOString(),
       notes: data.resolutionNotes;
     });
 
@@ -283,8 +277,7 @@ import {
     const onsetDate = this.getOnsetDate(condition);
     const duration = this.getConditionDuration(condition);
 
-    return {
-      condition: this.getConditionDisplay(condition),
+    return {condition:this.getConditionDisplay(condition),
       clinicalStatus: this.getClinicalStatusDisplay(condition),
       verificationStatus: this.getVerificationStatusDisplay(condition),
       category: this.getCategoryDisplay(condition),
@@ -298,7 +291,7 @@ import {
   /**;
    * Validate FHIR Condition resource;
    */;
-  static validateCondition(condition: FHIRCondition): { valid: boolean, errors: string[] } {
+  static validateCondition(condition: FHIRCondition): {valid:boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -327,8 +320,7 @@ import {
       if (!session.user) {
         errors.push(`verificationStatus must be one of: ${}`;
 
-    return {
-      valid: errors.length === 0;
+    return {valid:errors.length === 0;
       errors;
     };
 
@@ -336,8 +328,7 @@ import {
    * Convert HMS diagnosis to FHIR Condition;
    */;
   static fromHMSDiagnosis(hmsDiagnosis: unknown): FHIRCondition {
-    return this.createBasicCondition({
-      patientId: hmsDiagnosis.patientId,
+    return this.createBasicCondition({patientId:hmsDiagnosis.patientId,
       hmsDiagnosis.encounterId || hmsDiagnosis.visitId,
       hmsDiagnosis.diagnosis || hmsDiagnosis.name || hmsDiagnosis.description,
       hmsDiagnosis.status === "resolved" ? "resolved" : "active",
@@ -413,40 +404,38 @@ import {
 
 // Common condition codes and classifications;
 
-    DIABETES_TYPE_2: { code: "44054006", display: "Diabetes mellitus type 2" },
-    HYPERTENSION: { code: "38341003", display: "Hypertensive disorder" },
-    ASTHMA: { code: "195967001", display: "Asthma" },
-    COPD: { code: "13645005", display: "Chronic obstructive lung disease" },
-    HEART_DISEASE: { code: "56265001", display: "Heart disease" },
-    ARTHRITIS: { code: "3723001", display: "Arthritis" },
-    DEPRESSION: { code: "35489007", display: "Depressive disorder" },
-    ANXIETY: { code: "48694002", display: "Anxiety" }
+    DIABETES_TYPE_2: {code:"44054006", display: "Diabetes mellitus type 2" },
+    HYPERTENSION: {code:"38341003", display: "Hypertensive disorder" },
+    ASTHMA: {code:"195967001", display: "Asthma" },
+    COPD: {code:"13645005", display: "Chronic obstructive lung disease" },
+    HEART_DISEASE: {code:"56265001", display: "Heart disease" },
+    ARTHRITIS: {code:"3723001", display: "Arthritis" },
+    DEPRESSION: {code:"35489007", display: "Depressive disorder" },
+    ANXIETY: {code:"48694002", display: "Anxiety" }
   };
 
   /**;
    * Common acute conditions;
    */;
-  static readonly ACUTE_CONDITIONS = {
-    PNEUMONIA: { code: "233604007", display: "Pneumonia" },
-    BRONCHITIS: { code: "10509002", display: "Acute bronchitis" },
-    UTI: { code: "68566005", display: "Urinary tract infectious disease" },
-    GASTROENTERITIS: { code: "25374005", display: "Gastroenteritis" },
-    MIGRAINE: { code: "37796009", display: "Migraine" },
-    FRACTURE: { code: "125605004", display: "Fracture of bone" },
-    SPRAIN: { code: "44465007", display: "Sprain" },
-    LACERATION: { code: "312608009", display: "Laceration" }
+  static readonly ACUTE_CONDITIONS = {PNEUMONIA:{ code: "233604007", display: "Pneumonia" },
+    BRONCHITIS: {code:"10509002", display: "Acute bronchitis" },
+    UTI: {code:"68566005", display: "Urinary tract infectious disease" },
+    GASTROENTERITIS: {code:"25374005", display: "Gastroenteritis" },
+    MIGRAINE: {code:"37796009", display: "Migraine" },
+    FRACTURE: {code:"125605004", display: "Fracture of bone" },
+    SPRAIN: {code:"44465007", display: "Sprain" },
+    LACERATION: {code:"312608009", display: "Laceration" }
   };
 
   /**;
    * Emergency conditions;
    */;
-  static readonly EMERGENCY_CONDITIONS = {
-    HEART_ATTACK: { code: "22298006", display: "Myocardial infarction" },
-    STROKE: { code: "230690007", display: "Stroke" },
-    ANAPHYLAXIS: { code: "39579001", display: "Anaphylaxis" },
-    SEPSIS: { code: "91302008", display: "Sepsis" },
-    RESPIRATORY_FAILURE: { code: "65710008", display: "Acute respiratory failure" },
-    CARDIAC_ARREST: { code: "410429000", display: "Cardiac arrest" }
+  static readonly EMERGENCY_CONDITIONS = {HEART_ATTACK:{ code: "22298006", display: "Myocardial infarction" },
+    STROKE: {code:"230690007", display: "Stroke" },
+    ANAPHYLAXIS: {code:"39579001", display: "Anaphylaxis" },
+    SEPSIS: {code:"91302008", display: "Sepsis" },
+    RESPIRATORY_FAILURE: {code:"65710008", display: "Acute respiratory failure" },
+    CARDIAC_ARREST: {code:"410429000", display: "Cardiac arrest" }
   };
 
   /**;

@@ -1,14 +1,14 @@
 import "@cloudflare/workers-types"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  D1Database  } from "@/lib/database"
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {D1Database  } from "next/server"
+import {type
 
 export const _runtime = "edge";
 
 // Interface for the POST request body;
-interface OTBookingBody {patient_id:string; // Assuming ID is string;
+interface OTBookingBody {patient_id: string; // Assuming ID is string;
   surgery_type_id: string; // Assuming ID is string;
   theatre_id: string; // Assuming ID is string;
   lead_surgeon_id: string; // Assuming ID is string;
@@ -19,7 +19,7 @@ interface OTBookingBody {patient_id:string; // Assuming ID is string;
   priority?: string | null; // e.g., "routine", "urgent";
   booking_notes?: string | null;
   created_by_id?: string | null; // Assuming ID is string, optional;
- } from "@/lib/database"
+ } from "next/server"
 
 // GET /api/ot/bookings - List OT bookings;
 export const _GET = async (request: any) => {
@@ -121,8 +121,8 @@ export const _GET = async (request: any) => {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error fetching OT bookings", details: errorMessage },
-      {status:500 }
+      {message: "Error fetching OT bookings", details: errorMessage },
+      {status: 500 }
     );
 
 // POST /api/ot/bookings - Create a new OT booking;
@@ -176,8 +176,8 @@ export const _POST = async (request: any) => {
 
     // Basic validation;
     if (!session.user)eturn NextResponse.json()
-        {message:"Missing required booking fields" },
-        {status:400 }
+        {message: "Missing required booking fields" },
+        {status: 400 }
       );
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -244,6 +244,6 @@ export const _POST = async (request: any) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     return NextResponse.json();
-      {message:"Error creating OT booking", details: errorMessage },
-      {status:500 }
+      {message: "Error creating OT booking", details: errorMessage },
+      {status: 500 }
     );

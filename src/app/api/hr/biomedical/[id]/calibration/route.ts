@@ -1,19 +1,19 @@
 import "@/lib/hr/biomedical-service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  biomedicalService  } from "@/lib/database"
-import {   type
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {biomedicalService  } from "next/server"
+import {type
+import {  z  } from "next/server"
 
 // Schema for calibration record;
-const calibrationSchema = z.object({date:z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid date format";
+const calibrationSchema = z.object({date: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid date format";
   }),
   performedBy: z.string().optional(),
-  result: z.enum(["PASS", "FAIL", "ADJUSTED"], {errorMap:() => ({message:"Invalid result" })}),
+  result: z.enum(["PASS", "FAIL", "ADJUSTED"], {errorMap: () => ({message:"Invalid result" })}),
   notes: z.string().optional(),
-  nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format";
+  nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
   }),
   attachments: z.array(z.string()).optional();
 });
@@ -21,7 +21,7 @@ const calibrationSchema = z.object({date:z.string().refine(val => !isNaN(Date.pa
 // POST handler for recording calibration;
 export const _POST = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id: string }
 ) => {
   try {
 } catch (error) {
@@ -62,14 +62,14 @@ export const _POST = async();
     const validationResult = calibrationSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation error", details: validationResult.error.format() },
-        {status:400 }
+        {error: "Validation error", details: validationResult.error.format() },
+        {status: 400 }
       );
 
     const data = validationResult.data;
 
     // Convert date strings to Date objects;
-    const calibrationData = {biomedicalEquipmentId:params.id,
+    const calibrationData = {biomedicalEquipmentId: params.id,
       date: new Date(data.date),
       performedBy: data.performedBy,
       data.notes,
@@ -83,14 +83,14 @@ export const _POST = async();
   } catch (error) {
 
     return NextResponse.json();
-      {error:"Failed to record calibration", details: error.message },
-      {status:500 }
+      {error: "Failed to record calibration", details: error.message },
+      {status: 500 }
     );
 
 // GET handler for listing calibration records;
 export const _GET = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id: string }
 ) => {
   try {
 } catch (error) {
@@ -130,6 +130,6 @@ export const _GET = async();
   } catch (error) {
 
     return NextResponse.json();
-      {error:"Failed to fetch calibration records", details: error.message },
-      {status:500 }
+      {error: "Failed to fetch calibration records", details: error.message },
+      {status: 500 }
     );

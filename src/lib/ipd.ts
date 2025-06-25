@@ -1,11 +1,11 @@
 import "@/lib/database"
-import {  getDB  } from "@/lib/database"
+import {getDB  } from "next/server"
 
 }
 
 // Placeholder for IPD related database functions;
 // FIX: Define a more specific type for Admission data;
-interface Admission {id:number,
+interface Admission {id: number,
   string; // ISO string;
   discharge_date?: string | null; // ISO string;
   attending_doctor_id?: string | null;
@@ -43,7 +43,7 @@ export type AdmissionFilters = {
 export type CreateAdmissionData = Omit<;
   Admission,
   "id" | "admission_date" | "discharge_date" | "status" | "patient_id";
-> & {patient_id:string; // Explicitly require patient_id;
+> & {patient_id: string; // Explicitly require patient_id;
   // Add any fields required for creation but not part of the base Admission type;
 };
 

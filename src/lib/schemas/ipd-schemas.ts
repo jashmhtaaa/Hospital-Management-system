@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 // Define sub-schemas if vital_signs and medication_given have specific structures;
 // For now, using z.record(z.string(), z.any()) as a placeholder;
@@ -9,7 +9,7 @@ const MedicationGivenSchema = z;
   .optional();
   .nullable();
 
-export const ProgressNoteSchema = z.object({admission_id:z.number().int().positive(),
+export const ProgressNoteSchema = z.object({admission_id: z.number().int().positive(),
   note_date: z;
     .string();
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"), // Assuming YYYY-MM-DD format;

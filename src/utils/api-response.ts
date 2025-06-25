@@ -1,7 +1,7 @@
 import "@/lib/logger"
 import "next/server"
-import {  logger  } from "@/lib/database"
-import {  NextResponse  } from "@/lib/database"
+import {logger  } from "next/server"
+import {NextResponse  } from "next/server"
 
 // src/utils/api-response.ts;
 }
@@ -25,7 +25,7 @@ import {  NextResponse  } from "@/lib/database"
 
     logger.error("API Error Response", { error, statusCode, details });
 
-    return NextResponse.json(response, {status:statusCode });
+    return NextResponse.json(response, {status: statusCode });
 
   static notFound(resource: string = "Resource"): NextResponse {
     return this.error(`${resource} not found`, 404);
@@ -49,7 +49,7 @@ import {  NextResponse  } from "@/lib/database"
     const skip = (page - 1) * limit;
     const take = Math.min(limit, 100); // Max 100 items per page;
 
-    const orderBy = sortBy ? { [sortBy]: sortOrder } : {createdAt:"desc" };
+    const orderBy = sortBy ? { [sortBy]: sortOrder } : {createdAt: "desc" };
 
     return { skip, take, orderBy };
 

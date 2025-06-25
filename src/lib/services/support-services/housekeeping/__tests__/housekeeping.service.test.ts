@@ -14,7 +14,7 @@ import { SecurityService }
 
 // Mock Prisma;
 vi.mock("@/lib/prisma", () => ({
-  {findMany:vi.fn(),
+  {findMany: vi.fn(),
       findUnique: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
@@ -55,7 +55,7 @@ describe("HousekeepingService", () => {
     it("should return housekeeping requests with pagination", async () => {
       // Mock data;
       const mockRequests = [;
-        {id:"1",
+        {id: "1",
           "CLEANING",
           "Clean patient room",
           scheduledTime: new Date(),
@@ -63,7 +63,7 @@ describe("HousekeepingService", () => {
           createdAt: new Date(),
           updatedAt: new Date();
         },
-        {id:"2",
+        {id: "2",
           "DISINFECTION",
           "Disinfect surgery room",
           scheduledTime: new Date(),
@@ -84,13 +84,13 @@ describe("HousekeepingService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.housekeepingRequest.findMany).toHaveBeenCalledWith();
-        expect.objectContaining({skip:0,
+        expect.objectContaining({skip: 0,
           "asc" ;
         });
       );
 
       // Verify result;
-      expect(result).toEqual({data:mockRequests,
+      expect(result).toEqual({data: mockRequests,
         1,
           2,
           totalPages: 1;
@@ -101,7 +101,7 @@ describe("HousekeepingService", () => {
     it("should apply filters correctly", async () => {
       // Mock data;
       const mockRequests = [;
-        {id:"1",
+        {id: "1",
           "CLEANING",
           "Clean patient room",
           scheduledTime: new Date(),
@@ -141,13 +141,13 @@ describe("HousekeepingService", () => {
   describe("createHousekeepingRequest", () => {
     it("should create a new housekeeping request", async () => {
       // Mock data;
-      const mockRequest = {locationId:"location1",
+      const mockRequest = {locationId: "location1",
         "HIGH",
         new Date(),
         "user1";
       };
 
-      const mockCreatedRequest = {id:"1";
+      const mockCreatedRequest = {id: "1";
         ...mockRequest,
         status: "PENDING",
         createdAt: new Date(),
@@ -155,8 +155,8 @@ describe("HousekeepingService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.location.findUnique as any).mockResolvedValue({id:"location1", name: "Room 101" });
-      (prisma.user.findUnique as any).mockResolvedValue({id:"user1", name: "John Doe" });
+      (prisma.location.findUnique as any).mockResolvedValue({id: "location1", name: "Room 101" });
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "John Doe" });
       (prisma.housekeepingRequest.create as any).mockResolvedValue(mockCreatedRequest);
 
       // Call the service method;
@@ -178,7 +178,7 @@ describe("HousekeepingService", () => {
 
     it("should throw an error if location does not exist", async () => {
       // Mock data;
-      const mockRequest = {locationId:"invalid-location",
+      const mockRequest = {locationId: "invalid-location",
         "HIGH",
         new Date(),
         requestedById: "user1";
@@ -195,7 +195,7 @@ describe("HousekeepingService", () => {
   describe("getHousekeepingRequestById", () => {
     it("should return a housekeeping request by ID", async () => {
       // Mock data;
-      const mockRequest = {id:"1",
+      const mockRequest = {id: "1",
         "CLEANING",
         "Clean patient room",
         scheduledTime: new Date(),
@@ -211,7 +211,7 @@ describe("HousekeepingService", () => {
       const result = await housekeepingService.getHousekeepingRequestById("1");
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.housekeepingRequest.findUnique).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.housekeepingRequest.findUnique).toHaveBeenCalledWith({where: { id: "1" },
         include: expect.any(Object);
       });
 
@@ -229,7 +229,7 @@ describe("HousekeepingService", () => {
 
     it("should return FHIR format when requested", async () => {
       // Mock data;
-      const mockRequest = {id:"1",
+      const mockRequest = {id: "1",
         "location1", name: "Room 101" ,
         requestType: "CLEANING",
         "Clean patient room",
@@ -264,7 +264,7 @@ describe("HousekeepingService", () => {
   describe("updateHousekeepingRequest", () => {
     it("should update a housekeeping request", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CLEANING",
         "Clean patient room",
         scheduledTime: new Date(),
@@ -273,7 +273,7 @@ describe("HousekeepingService", () => {
         updatedAt: new Date();
       };
 
-      const mockUpdateData = {priority:"URGENT",
+      const mockUpdateData = {priority: "URGENT",
         "ASSIGNED";
       };
 
@@ -291,7 +291,7 @@ describe("HousekeepingService", () => {
       const result = await housekeepingService.updateHousekeepingRequest("1", mockUpdateData);
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         data: mockUpdateData,
         include: expect.any(Object);
       });
@@ -305,14 +305,14 @@ describe("HousekeepingService", () => {
       (prisma.housekeepingRequest.findUnique as any).mockResolvedValue(null);
 
       // Expect the update to throw an error;
-      await expect(housekeepingService.updateHousekeepingRequest("invalid-id", {priority:"LOW" })).rejects.toThrow();
+      await expect(housekeepingService.updateHousekeepingRequest("invalid-id", {priority: "LOW" })).rejects.toThrow();
     });
   });
 
   describe("assignHousekeepingRequest", () => {
     it("should assign a staff member to a housekeeping request", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CLEANING",
         "Clean patient room",
         scheduledTime: new Date(),
@@ -321,7 +321,7 @@ describe("HousekeepingService", () => {
         updatedAt: new Date();
       };
 
-      const mockStaff = {id:"staff1",
+      const mockStaff = {id: "staff1",
         "HOUSEKEEPER";
       };
 
@@ -341,7 +341,7 @@ describe("HousekeepingService", () => {
       const result = await housekeepingService.assignHousekeepingRequest("1", "staff1");
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         "ASSIGNED",
           assignedToId: "staff1";
         },
@@ -354,7 +354,7 @@ describe("HousekeepingService", () => {
 
     it("should throw an error if staff does not exist", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CLEANING",
         "Clean patient room",
         scheduledTime: new Date(),
@@ -375,7 +375,7 @@ describe("HousekeepingService", () => {
   describe("completeHousekeepingRequest", () => {
     it("should mark a housekeeping request as completed", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CLEANING",
         "Clean patient room",
         scheduledTime: new Date(),
@@ -384,7 +384,7 @@ describe("HousekeepingService", () => {
         updatedAt: new Date();
       };
 
-      const mockStaff = {id:"staff1",
+      const mockStaff = {id: "staff1",
         "HOUSEKEEPER";
       };
 
@@ -406,7 +406,7 @@ describe("HousekeepingService", () => {
       const result = await housekeepingService.completeHousekeepingRequest("1", "staff1", "Completed as requested");
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         "COMPLETED",
           expect.any(Date),
           notes: "Completed as requested";
@@ -420,7 +420,7 @@ describe("HousekeepingService", () => {
 
     it("should throw an error if request is not in ASSIGNED or IN_PROGRESS status", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CLEANING",
         "Clean patient room",
         scheduledTime: new Date(),
@@ -440,7 +440,7 @@ describe("HousekeepingService", () => {
   describe("deleteHousekeepingRequest", () => {
     it("should delete a housekeeping request", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CLEANING",
         "Clean patient room",
         scheduledTime: new Date(),
@@ -457,7 +457,7 @@ describe("HousekeepingService", () => {
       await housekeepingService.deleteHousekeepingRequest("1");
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.housekeepingRequest.delete).toHaveBeenCalledWith({where:{ id: "1" }
+      expect(prisma.housekeepingRequest.delete).toHaveBeenCalledWith({where: { id: "1" }
       });
     });
 
@@ -474,27 +474,27 @@ describe("HousekeepingService", () => {
     it("should return analytics data", async () => {
       // Mock data for status counts;
       const mockStatusCounts = [;
-        {status:"PENDING", count: 5 },
-        {status:"ASSIGNED", count: 3 },
-        {status:"IN_PROGRESS", count: 2 },
-        {status:"COMPLETED", count: 10 },
-        {status:"CANCELLED", count: 1 }
+        {status: "PENDING", count: 5 },
+        {status: "ASSIGNED", count: 3 },
+        {status: "IN_PROGRESS", count: 2 },
+        {status: "COMPLETED", count: 10 },
+        {status: "CANCELLED", count: 1 }
       ];
 
       // Mock data for request types;
       const mockRequestTypes = [;
-        {requestType:"CLEANING", count: 12 },
-        {requestType:"DISINFECTION", count: 5 },
-        {requestType:"LINEN_CHANGE", count: 3 },
-        {requestType:"WASTE_DISPOSAL", count: 1 }
+        {requestType: "CLEANING", count: 12 },
+        {requestType: "DISINFECTION", count: 5 },
+        {requestType: "LINEN_CHANGE", count: 3 },
+        {requestType: "WASTE_DISPOSAL", count: 1 }
       ];
 
       // Mock data for priority distribution;
       const mockPriorities = [;
-        {priority:"LOW", count: 2 },
-        {priority:"MEDIUM", count: 8 },
-        {priority:"HIGH", count: 6 },
-        {priority:"URGENT", count: 5 }
+        {priority: "LOW", count: 2 },
+        {priority: "MEDIUM", count: 8 },
+        {priority: "HIGH", count: 6 },
+        {priority: "URGENT", count: 5 }
       ];
 
       // Mock Prisma response for each query;
@@ -517,18 +517,18 @@ describe("HousekeepingService", () => {
 
       // Verify specific data;
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
-        {status:"PENDING", count: 5 },
-        {status:"COMPLETED", count: 10 }
+        {status: "PENDING", count: 5 },
+        {status: "COMPLETED", count: 10 }
       ]));
 
       expect(result.requestTypeDistribution).toEqual(expect.arrayContaining([;
-        {requestType:"CLEANING", count: 12 },
-        {requestType:"DISINFECTION", count: 5 }
+        {requestType: "CLEANING", count: 12 },
+        {requestType: "DISINFECTION", count: 5 }
       ]));
 
       expect(result.priorityDistribution).toEqual(expect.arrayContaining([;
-        {priority:"MEDIUM", count: 8 },
-        {priority:"HIGH", count: 6 }
+        {priority: "MEDIUM", count: 8 },
+        {priority: "HIGH", count: 6 }
       ]));
     });
 
@@ -546,13 +546,13 @@ describe("HousekeepingService", () => {
 
       // Verify Prisma was called with date filters;
       expect(prisma.housekeepingRequest.count).toHaveBeenCalledWith({
-        {gte:fromDate,
+        {gte: fromDate,
             lte: toDate;
 
       }),
       expect(prisma.housekeepingRequest.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
-          {gte:fromDate,
+          {gte: fromDate,
               lte: toDate;
 
         });

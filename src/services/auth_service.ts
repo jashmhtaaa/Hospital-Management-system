@@ -7,22 +7,25 @@
 
 // Placeholder for actual user repository/data access;
 interface IUserRepository {
+
   findByUsername(username: string): Promise<any | null>;
 }
 
 // Placeholder for auth utilities (hashing, token generation);
 interface IAuthUtils {
+
   verifyPassword(password: string, hash: string): Promise<boolean>;
   generateToken(userId: string, username: string): Promise<string>;
 }
 
 // Placeholder for AuditLogService;
 interface IAuditLogService {
+
   logEvent(userId: string, eventType: string, entityType: string, entityId: string | null, status: string, details?: object): Promise>;
 }
   ) {}
 
-  async login(credentials: unknown): Promise<{token:string, user: unknown } | null> {
+  async login(credentials: unknown): Promise<{token: string, user: unknown } | null> {
     const { username, password } = credentials;
     let userIdForAudit = "unknown_user";
     let _loginStatus = "FAILURE";
@@ -66,7 +69,7 @@ interface IAuditLogService {
       const user = await this.userRepository.findByUsername(username);
       if (!session.user) {
         // Log audit event for failed login (user not found);
-        await this.auditLogService.logEvent(username, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", {reason:"User not found" });
+        await this.auditLogService.logEvent(username, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", {reason: "User not found" });
         return null; // Or throw specific error;
       }
       userIdForAudit = user.id || username; // Use actual user ID if available;
@@ -74,7 +77,7 @@ interface IAuditLogService {
       const isPasswordValid = await this.authUtils.verifyPassword(password, user.passwordHash); // Assuming user object has passwordHash;
       if (!session.user) {
         // Log audit event for failed login (invalid password);
-        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", user.id, "FAILURE", {reason:"Invalid password" });
+        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", user.id, "FAILURE", {reason: "Invalid password" });
         return null; // Or throw specific error;
 
       const token = await this.authUtils.generateToken(user.id, user.username);
@@ -92,7 +95,7 @@ interface IAuditLogService {
       if (!session.user) {
          // Avoid double logging if specific failure was already logged;
       } else {
-        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", {reason:error.message ||;
+        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", {reason: error.message ||;
           "Unknown error" });
 
       // Depending on requirements, might re-throw or return null/specific error structure;
@@ -140,6 +143,6 @@ interface IAuditLogService {
       return Promise.resolve();
     } catch (error: unknown) {
 
-      await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", {reason:error.message ||;
+      await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", {reason: error.message ||;
         "Unknown error during logout" });
       throw error; // Or handle more gracefully;

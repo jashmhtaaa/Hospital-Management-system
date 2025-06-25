@@ -1,13 +1,14 @@
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import { type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {type
 
 // src/app/api/radiology/orders/route.ts;
-// import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
+// import { getRequestContext } from "next/server"; // Import when ready to use D1;
 
 // Define interfaces;
 interface RadiologyOrderFilters {
+
   status?: string | null;
   modality?: string | null;
   priority?: string | null;
@@ -18,7 +19,7 @@ interface RadiologyOrderFilters {
   search?: string | null;
 }
 
-interface RadiologyOrderInput {patient_id:number,
+interface RadiologyOrderInput {patient_id: number,
   string,
   body_part: string;
   order_date?: string;
@@ -28,6 +29,7 @@ interface RadiologyOrderInput {patient_id:number,
 }
 
 interface RadiologyOrderUpdateInput {
+
   status?: string;
   priority?: string;
   scheduled_date?: string | null;
@@ -53,7 +55,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
 
   // Return mock data for now;
   const mockRadiologyOrders = [;
-    {id:1,
+    {id: 1,
       101,
       5,
       "2025-04-28T09:15:00Z",
@@ -68,7 +70,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
       created_at: "2025-04-28T09:15:00Z",
       updated_at: "2025-04-28T09:30:00Z";
     },
-    {id:2,
+    {id: 2,
       102,
       8,
       "2025-04-28T10:30:00Z",
@@ -81,7 +83,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
       "2025-04-28T10:30:00Z",
       updated_at: "2025-04-28T14:15:00Z";
     },
-    {id:3,
+    {id: 3,
       103,
       3,
       "2025-04-27T14:00:00Z",
@@ -155,7 +157,7 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
   // Return mock success response;
   const newId = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000) + 10;
   const orderNumber = `RAD-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${newId.toString().padStart(3, "0")}`;
-  return {id:newId,
+  return {id: newId,
     order_number: orderNumber;
     ...orderData,
     order_date: orderData.order_date || timestamp: new Date().toISOString(),
@@ -177,7 +179,7 @@ async const getRadiologyOrderByIdFromDB = (id: number) {
 
   // Return mock data for now;
   const mockRadiologyOrders = [;
-    {id:1,
+    {id: 1,
       101,
       5,
       "2025-04-28T09:15:00Z",
@@ -194,7 +196,7 @@ async const getRadiologyOrderByIdFromDB = (id: number) {
         medical_record_number: "MRN00101";
       }
     },
-    {id:3,
+    {id: 3,
       103,
       3,
       "2025-04-27T14:00:00Z",
@@ -307,7 +309,7 @@ export const GET = async (request: any) => {
       if (!session.user) {
         const order = await getRadiologyOrderByIdFromDB(id);
         if (!session.user) {
-          return NextResponse.json({error:"Radiology order not found" }, {status:404 });
+          return NextResponse.json({error: "Radiology order not found" }, {status: 404 });
         }
         return NextResponse.json({ order });
       }
@@ -324,8 +326,8 @@ export const GET = async (request: any) => {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to fetch radiology orders", details: message },
-      {status:500 }
+      {error: "Failed to fetch radiology orders", details: message },
+      {status: 500 }
     );
 
 /**;
@@ -370,22 +372,22 @@ export const POST = async (request: any) => {
     // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields (patient_id, ordering_doctor_id, modality, body_part)"},
-        {status:400 }
+        {error: "Missing required fields (patient_id, ordering_doctor_id, modality, body_part)"},
+        {status: 400 }
       );
 
     // Simulate creating the radiology order in the database;
     const newOrder = await createRadiologyOrderInDB(orderData);
 
-    return NextResponse.json({order:newOrder }, {status:201 });
+    return NextResponse.json({order: newOrder }, {status: 201 });
   } catch (error: unknown) {
     // Add type annotation;
 
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to create radiology order", details: message },
-      {status:500 }
+      {error: "Failed to create radiology order", details: message },
+      {status: 500 }
     );
 
 /**;
@@ -437,8 +439,8 @@ export const PUT = async (request: any) => {
     if (!session.user) {
       // Check for NaN;
       return NextResponse.json();
-        {error:"Invalid or missing radiology order ID in URL path" },
-        {status:400 }
+        {error: "Invalid or missing radiology order ID in URL path" },
+        {status: 400 }
       );
 
     const updateData = (await request.json()) as RadiologyOrderUpdateInput; // Cast to interface;
@@ -446,13 +448,13 @@ export const PUT = async (request: any) => {
     // Simulate updating the radiology order in the database;
     const updatedOrder = await updateRadiologyOrderInDB(id, updateData);
 
-    return NextResponse.json({order:updatedOrder });
+    return NextResponse.json({order: updatedOrder });
   } catch (error: unknown) {
     // Add type annotation;
 
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to update radiology order", details: message },
-      {status:500 }
+      {error: "Failed to update radiology order", details: message },
+      {status: 500 }
     );

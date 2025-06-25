@@ -1,15 +1,15 @@
 import "@opennextjs/cloudflare"
 import "iron-session"
 import "next/headers"
-import {  cookies  } from "@/lib/database"
-import {  getCloudflareContext  } from "@/lib/database"
-import {  getIronSession  } from "@/lib/database"
+import {cookies  } from "next/server"
+import {getCloudflareContext  } from "next/server"
+import {getIronSession  } from "next/server"
 
-import { type IronSessionData, sessionOptions } from "@/lib/session"; // Import IronSessionData;
+import {type IronSessionData, sessionOptions } from "next/server"; // Import IronSessionData;
 // app/api/prescriptions/[prescriptionId]/items/route.ts;
-// import { PrescriptionItem } from "@/types/opd"; // Removed unused import;
+// import {PrescriptionItem } from "next/server"; // Removed unused import;
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 // Define roles allowed to add items to prescriptions (adjust as needed);
 const ALLOWED_ROLES_ADD = ["Doctor"];
@@ -24,7 +24,7 @@ const getPrescriptionId = (pathname: string): number | null {
 }
 
 // POST handler for adding an item to a prescription;
-const AddPrescriptionItemSchema = z.object({inventory_item_id:z.number().int().positive(), // Link to the specific drug/item;
+const AddPrescriptionItemSchema = z.object({inventory_item_id: z.number().int().positive(), // Link to the specific drug/item;
     dosage: z.string().min(1, "Dosage is required"),
     frequency: z.string().min(1, "Frequency is required"),
     duration: z.string().min(1, "Duration is required"),
@@ -41,11 +41,11 @@ export const _POST = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Unauthorized" }), {status:401 });
+        return new Response(JSON.stringify({error: "Unauthorized" }), {status: 401 });
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Invalid Prescription ID" }), {status:400 });
+        return new Response(JSON.stringify({error: "Invalid Prescription ID" }), {status: 400 });
     }
 
     try {
@@ -86,7 +86,7 @@ export const _POST = async (request: Request) => {
         const validation = itemsArraySchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Invalid input", details: validation.error.errors }), {status:400 });
+            return new Response(JSON.stringify({error: "Invalid input", details: validation.error.errors }), {status: 400 });
         }
 
         const itemsData = validation.data;
@@ -94,9 +94,9 @@ export const _POST = async (request: Request) => {
         const { DB } = env;
 
         // 2. Get Doctor ID from session user;
-        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{doctor_id:number }>();
+        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{doctor_id: number }>();
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Doctor profile not found for the current user" }), {status:404 });
+            return new Response(JSON.stringify({error: "Doctor profile not found for the current user" }), {status: 404 });
         }
         const doctorId = doctorProfile.doctor_id;
 
@@ -106,24 +106,24 @@ export const _POST = async (request: Request) => {
                                   .first<prescription_id: number, doctor_id: number >();
 
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Prescription not found" }), {status:404 });
+            return new Response(JSON.stringify({error: "Prescription not found" }), {status: 404 });
         }
         if (!session.user) {
             // Corrected escaped quote;
-            return new Response(JSON.stringify({error:"Forbidden: Cannot add items to another doctor"s prescription" }), {status:403 });
+            return new Response(JSON.stringify({error: "Forbidden: Cannot add items to another doctor"s prescription" }), {status: 403 });
 
         // 4. Validate all inventory items exist and get their names;
         const inventoryItemIds = itemsData.map((item: AddPrescriptionItemType) => item.inventory_item_id);
         // Corrected template literal for IN clause placeholders;
         const inventoryCheckQuery = `SELECT inventory_item_id, item_name FROM InventoryItems WHERE inventory_item_id IN (${inventoryItemIds.map(() => "?").join(",")}) AND is_active = TRUE`;
-        const inventoryResults = await DB.prepare(inventoryCheckQuery).bind(...inventoryItemIds).all<{inventory_item_id:number, item_name: string }>();
+        const inventoryResults = await DB.prepare(inventoryCheckQuery).bind(...inventoryItemIds).all<{inventory_item_id: number, item_name: string }>();
 
-        const foundInventoryItems = new Map(inventoryResults.results?.map((item: {inventory_item_id:number, item_name: string }) => [item.inventory_item_id, item.item_name]));
+        const foundInventoryItems = new Map(inventoryResults.results?.map((item: {inventory_item_id: number, item_name: string }) => [item.inventory_item_id, item.item_name]));
 
         const missingItems = inventoryItemIds.filter(id => !foundInventoryItems.has(id));
         if (!session.user) {
             // Corrected template literal for error message;
-            return new Response(JSON.stringify({error:`Inventory item(s) not found or inactive: ${missingItems.join(", ")}` }), {status:404 });
+            return new Response(JSON.stringify({error: `Inventory item(s) not found or inactive: ${missingItems.join(", ")}` }), {status: 404 });
 
         // 5. Prepare batch insert for all items;
         const batchActions: D1PreparedStatement[] = itemsData.map(item => {
@@ -156,13 +156,13 @@ export const _POST = async (request: Request) => {
 
         // 7. Return success response;
         // Corrected template literal for success message;
-        return new Response(JSON.stringify({message:`${itemsData.length} item(s) added to prescription successfully` }), {status:201, // Created;
+        return new Response(JSON.stringify({message: `${itemsData.length} item(s) added to prescription successfully` }), {status: 201, // Created;
             headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
+        return new Response(JSON.stringify({error: "Internal Server Error", details: errorMessage }), {status: 500,
             headers: { "Content-Type": "application/json" }});
 
 // DELETE handler for removing an item from a prescription (if allowed before dispensing);

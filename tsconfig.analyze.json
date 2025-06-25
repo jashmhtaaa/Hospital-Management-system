@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist-analyze",
+    "rootDir": ".",
+    "module": "CommonJS",
+    "target": "ES2022",
+    "noEmit": false,
+    "skipLibCheck": true,
+    "strict": false,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "moduleResolution": "node" // Explicitly set to override inherited 'bundler'
+  },
+  "include": [
+    "analyze_errors.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

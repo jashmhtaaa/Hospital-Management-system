@@ -1,9 +1,9 @@
 import "@/lib/logger"
 import "@/lib/prisma"
 import "@prisma/client"
-import {  logger  } from "@/lib/database"
-import {  LogSeverity  } from "@/lib/database"
-import {  prisma  } from "@/lib/database"
+import {logger  } from "next/server"
+import {LogSeverity  } from "next/server"
+import {prisma  } from "next/server"
 
 // src/lib/audit/audit-service.ts;
 }
@@ -17,7 +17,7 @@ import {  prisma  } from "@/lib/database"
       });
 
       // Also log to application logger for immediate monitoring;
-      logger.info("Audit log created", {action:data.action,
+      logger.info("Audit log created", {action: data.action,
         context.userId;
       });
 
@@ -42,7 +42,7 @@ import {  prisma  } from "@/lib/database"
     context: AuditContext,
     string,
     unknown): Promise<void> {
-    await this.log(context, {action:"UPDATE";
+    await this.log(context, {action: "UPDATE";
       resource,
       resourceId,
       oldValues,
@@ -82,7 +82,7 @@ import {  prisma  } from "@/lib/database"
             true;
 
       },
-      orderBy: {timestamp:"desc" },
+      orderBy: {timestamp: "desc" },
       take: limit;
     });
 
@@ -137,7 +137,7 @@ export function withAudit(resource: string): unknown {
 
         return result;
       } catch (error) {
-        await AuditService.log(context, {action:propertyName.toUpperCase(),
+        await AuditService.log(context, {action: propertyName.toUpperCase(),
           resource,
           LogSeverity.ERROR;
         });

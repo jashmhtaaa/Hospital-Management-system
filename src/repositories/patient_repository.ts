@@ -1,7 +1,7 @@
 import "../lib/database/postgresql_adapter.ts"
 import "pg"
-import {  IDatabaseAdapter  } from "@/lib/database"
-import {  QueryResult  } from "@/lib/database"
+import {IDatabaseAdapter  } from "next/server"
+import {QueryResult  } from "next/server"
 
 }
 

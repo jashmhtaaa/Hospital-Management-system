@@ -1,10 +1,10 @@
 import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/integration/hms-integration.service"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  errorHandlingMiddleware  } from "@/lib/database"
-import {  HMSIntegrationService  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {errorHandlingMiddleware  } from "next/server"
+import {HMSIntegrationService  } from "next/server"
 import { type
 
 /**;
@@ -19,7 +19,7 @@ import { type
  */;
 export const GET = async();
   request: any;
-  { params }: {patientId:string }
+  { params }: {patientId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
@@ -33,7 +33,7 @@ export const GET = async();
       userRoles;
     );
 
-    return NextResponse.json({success:true,
+    return NextResponse.json({success: true,
       data: patientInfo;
     });
   });
@@ -45,7 +45,7 @@ export const GET = async();
  */;
 export const GET = async();
   request: any;
-  { params }: {locationId:string }
+  { params }: {locationId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
@@ -59,7 +59,7 @@ export const GET = async();
       userRoles;
     );
 
-    return NextResponse.json({success:true,
+    return NextResponse.json({success: true,
       data: locationInfo;
     });
   });
@@ -82,12 +82,12 @@ export const POST = async (request: any) => {
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        {success:false,
+        {success: false,
           "VALIDATION_ERROR",
             ["recipientId", "type", "title", "message"];
           }
         },
-        {status:400 }
+        {status: 400 }
       );
     }
 
@@ -102,7 +102,7 @@ export const POST = async (request: any) => {
       userRoles;
     );
 
-    return NextResponse.json({success:true,
+    return NextResponse.json({success: true,
       data: notification;
     });
   });
@@ -125,12 +125,12 @@ export const POST = async (request: any) => {
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        {success:false,
+        {success: false,
           "VALIDATION_ERROR",
             ["reportType", "reportData"];
           }
         },
-        {status:400 }
+        {status: 400 }
       );
     }
 
@@ -142,7 +142,7 @@ export const POST = async (request: any) => {
       userRoles;
     );
 
-    return NextResponse.json({success:true,
+    return NextResponse.json({success: true,
       data: report;
     });
   });
@@ -154,7 +154,7 @@ export const POST = async (request: any) => {
  */;
 export const POST = async();
   request: any;
-  { params }: {serviceType:string, requestId: string }
+  { params }: {serviceType: string, requestId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
@@ -168,12 +168,12 @@ export const POST = async();
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        {success:false,
+        {success: false,
           "VALIDATION_ERROR",
             ["patientId"];
           }
         },
-        {status:400 }
+        {status: 400 }
       );
     }
 
@@ -183,13 +183,13 @@ export const POST = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {success:false,
+        {success: false,
           "VALIDATION_ERROR",
             message: "Invalid service type";
               validServiceTypes;
           }
         },
-        {status:400 }
+        {status: 400 }
       );
     }
 
@@ -202,7 +202,7 @@ export const POST = async();
       userRoles;
     );
 
-    return NextResponse.json({success:true,
+    return NextResponse.json({success: true,
       data: request;
     });
   });
@@ -213,7 +213,7 @@ export const POST = async();
  */;
 export const POST = async();
   request: any;
-  { params }: {serviceType:string, requestId: string }
+  { params }: {serviceType: string, requestId: string }
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
@@ -227,12 +227,12 @@ export const POST = async();
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        {success:false,
+        {success: false,
           "VALIDATION_ERROR",
             ["locationId"];
 
         },
-        {status:400 }
+        {status: 400 }
       );
 
     // Validate service type;
@@ -241,13 +241,13 @@ export const POST = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {success:false,
+        {success: false,
           "VALIDATION_ERROR",
             message: "Invalid service type";
               validServiceTypes;
 
         },
-        {status:400 }
+        {status: 400 }
       );
 
     // Link request to location;
@@ -259,7 +259,7 @@ export const POST = async();
       userRoles;
     );
 
-    return NextResponse.json({success:true,
+    return NextResponse.json({success: true,
       data: request;
     });
   });

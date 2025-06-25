@@ -2,12 +2,12 @@ import "../../../../../lib/audit"
 import "../../../../../lib/error-handler"
 import "../../../../../lib/validation/pharmacy-validation"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   type
-import {  validateInventoryAdjustmentRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {errorHandler  } from "next/server"
+import {type
+import {  validateInventoryAdjustmentRequest  } from "next/server"
 
 }
 
@@ -19,7 +19,7 @@ import {  validateInventoryAdjustmentRequest  } from "@/lib/database"
  */;
 
 // Initialize repositories (in production, use dependency injection);
-const inventoryRepository = {findById:(id: string) => Promise.resolve(null),
+const inventoryRepository = {findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
@@ -29,7 +29,7 @@ const inventoryRepository = {findById:(id: string) => Promise.resolve(null),
   adjustStock: () => Promise.resolve(true);
 }
 
-const adjustmentRepository = {findById:(id: string) => Promise.resolve(null),
+const adjustmentRepository = {findById: (id: string) => Promise.resolve(null),
   findByInventoryId: (inventoryId: string) => Promise.resolve([]),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
@@ -79,15 +79,15 @@ export const POST = async (req: any) => {
     const validationResult = validateInventoryAdjustmentRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error: "Validation failed", details: validationResult.errors },
+        {status: 400 }
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -96,14 +96,14 @@ export const POST = async (req: any) => {
     // Verify inventory exists;
     const inventory = await inventoryRepository.findById(data.inventoryId);
     if (!session.user) {
-      return NextResponse.json({error:"Inventory not found" }, {status:404 });
+      return NextResponse.json({error: "Inventory not found" }, {status: 404 });
     }
 
     // Calculate adjustment quantity;
     const adjustmentQuantity = data.newQuantity - inventory.quantityOnHand;
 
     // Create adjustment record;
-    const adjustment = {id:crypto.randomUUID(),
+    const adjustment = {id: crypto.randomUUID(),
       inventory.locationId,
       inventory.quantityOnHand,
       newQuantity: data.newQuantity;
@@ -122,7 +122,7 @@ export const POST = async (req: any) => {
     // Special handling for controlled substances;
     if (!session.user) {
       // Additional logging for controlled substances;
-      await auditLog("CONTROLLED_SUBSTANCE", {action:"ADJUST",
+      await auditLog("CONTROLLED_SUBSTANCE", {action: "ADJUST",
         data.inventoryId,
         userId: userId;
           adjustmentId,
@@ -134,7 +134,7 @@ export const POST = async (req: any) => {
     }
 
     // Regular audit logging;
-    await auditLog("INVENTORY", {action:"ADJUST",
+    await auditLog("INVENTORY", {action: "ADJUST",
       adjustmentId,
       userId: userId;
       {inventoryId:data.inventoryId,
@@ -147,10 +147,10 @@ export const POST = async (req: any) => {
 
     // Return response;
     return NextResponse.json();
-      {id:adjustmentId,
+      {id: adjustmentId,
         message: "Inventory adjusted successfully";
       },
-      {status:201 }
+      {status: 201 }
     );
   } catch (error) {
     return errorHandler(error, "Error adjusting inventory");
@@ -196,7 +196,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -230,7 +230,7 @@ export const GET = async (req: any) => {
     const total = 0; // In production, get total count;
 
     // Audit logging;
-    await auditLog("INVENTORY", {action:"LIST_ADJUSTMENTS",
+    await auditLog("INVENTORY", {action: "LIST_ADJUSTMENTS",
       userId,
       details: null,
         filter,
@@ -248,6 +248,6 @@ export const GET = async (req: any) => {
         total,
         pages: Math.ceil(total / limit);
 
-    }, {status:200 });
+    }, {status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving inventory adjustments");

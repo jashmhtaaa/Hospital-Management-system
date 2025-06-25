@@ -3,19 +3,19 @@ import "@/lib/security.service"
 import "@/lib/services/support-services/ambulance/ambulance.service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  AmbulanceService  } from "@/lib/database"
-import {  SecurityService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {AmbulanceService  } from "next/server"
+import {SecurityService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
+import {z  } from "next/server"
 
 // Initialize service;
 const ambulanceService = new AmbulanceService();
 
 // Request validation schemas;
-const createTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]),
+const createTripRequestSchema = z.object({requestType: z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
   pickupLocation: z.string().min(3).max(200),
   dropoffLocation: z.string().min(3).max(200),
@@ -28,7 +28,7 @@ const createTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_
   specialInstructions: z.string().max(500).optional();
 });
 
-const updateTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]).optional(),
+const updateTripRequestSchema = z.object({requestType: z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]).optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
   pickupLocation: z.string().min(3).max(200).optional(),
   dropoffLocation: z.string().min(3).max(200).optional(),
@@ -49,7 +49,7 @@ export const _GET = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {status:searchParams.get("status") || undefined,
+      const filters = {status: searchParams.get("status") || undefined,
         searchParams.get("requestType") || undefined,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
@@ -61,7 +61,7 @@ export const _GET = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"ambulance:read",
+    {requiredPermission: "ambulance:read",
       auditAction: "AMBULANCE_TRIPS_VIEW";
     }
   );
@@ -82,16 +82,16 @@ export const _POST = async (request: any) => {
       // Create ambulance trip request;
       const result = await ambulanceService.createAmbulanceTrip(sanitizedData);
 
-      return NextResponse.json(result, {status:201 });
+      return NextResponse.json(result, {status: 201 });
     },
-    {requiredPermission:"ambulance:create",
+    {requiredPermission: "ambulance:create",
       auditAction: "AMBULANCE_TRIP_CREATE";
     }
   );
 }
 
 // GET /api/support-services/ambulance/trips/:id;
-export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: {params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -101,14 +101,14 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"ambulance:read",
+    {requiredPermission: "ambulance:read",
       auditAction: "AMBULANCE_TRIP_VIEW";
     }
   );
 }
 
 // PATCH /api/support-services/ambulance/trips/:id;
-export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {
+export const _PATCH = async (request: any, { params }: {params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -124,30 +124,30 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"ambulance:update",
+    {requiredPermission: "ambulance:update",
       auditAction: "AMBULANCE_TRIP_UPDATE";
     }
   );
 }
 
 // DELETE /api/support-services/ambulance/trips/:id;
-export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {
+export const _DELETE = async (request: any, { params }: {params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
       // Delete ambulance trip;
       await ambulanceService.deleteAmbulanceTrip(params.id);
 
-      return NextResponse.json({success:true });
+      return NextResponse.json({success: true });
     },
-    {requiredPermission:"ambulance:delete",
+    {requiredPermission: "ambulance:delete",
       auditAction: "AMBULANCE_TRIP_DELETE";
     }
   );
 }
 
 // POST /api/support-services/ambulance/trips/:id/assign;
-export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }) => {
+export const _ASSIGN = async (request: any, { params }: {params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -156,7 +156,7 @@ export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }
       const { ambulanceId, crewIds } = body;
 
       if (!session.user) {
-        return NextResponse.json({error:"Ambulance ID is required" }, {status:400 });
+        return NextResponse.json({error: "Ambulance ID is required" }, {status: 400 });
       }
 
       // Assign ambulance and crew to trip;
@@ -168,14 +168,14 @@ export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"ambulance:assign",
+    {requiredPermission: "ambulance:assign",
       auditAction: "AMBULANCE_TRIP_ASSIGN";
     }
   );
 }
 
 // POST /api/support-services/ambulance/trips/:id/status;
-export const _UPDATE_STATUS = async (request: any, { params }: {params:{ id: string } }) => {
+export const _UPDATE_STATUS = async (request: any, { params }: {params: { id: string } }) => {
   return withErrorHandling();
     request,
     async (req) => {
@@ -184,7 +184,7 @@ export const _UPDATE_STATUS = async (request: any, { params }: {params:{ id: str
       const { status, notes, latitude, longitude } = body;
 
       if (!session.user) {
-        return NextResponse.json({error:"Status is required" }, {status:400 });
+        return NextResponse.json({error: "Status is required" }, {status: 400 });
       }
 
       // Update ambulance trip status;
@@ -198,7 +198,7 @@ export const _UPDATE_STATUS = async (request: any, { params }: {params:{ id: str
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"ambulance:update",
+    {requiredPermission: "ambulance:update",
       auditAction: "AMBULANCE_TRIP_STATUS_UPDATE";
     }
   );
@@ -211,7 +211,7 @@ export const _GET_VEHICLES = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {status:searchParams.get("status") || undefined,
+      const filters = {status: searchParams.get("status") || undefined,
         searchParams.get("available") === "true",
         Number.parseInt(searchParams.get("limit") || "10");
       };
@@ -221,7 +221,7 @@ export const _GET_VEHICLES = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"ambulance:read",
+    {requiredPermission: "ambulance:read",
       auditAction: "AMBULANCE_VEHICLES_VIEW";
     }
   );
@@ -234,7 +234,7 @@ export const _GET_CREWS = async (request: any) => {
     async (req) => {
       // Parse query parameters;
       const searchParams = req.nextUrl.searchParams;
-      const filters = {status:searchParams.get("status") || undefined,
+      const filters = {status: searchParams.get("status") || undefined,
         searchParams.get("available") === "true",
         Number.parseInt(searchParams.get("limit") || "10");
       };
@@ -244,7 +244,7 @@ export const _GET_CREWS = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"ambulance:read",
+    {requiredPermission: "ambulance:read",
       auditAction: "AMBULANCE_CREWS_VIEW";
     }
   );
@@ -265,7 +265,7 @@ export const _GET_ANALYTICS = async (request: any) => {
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"ambulance:analytics",
+    {requiredPermission: "ambulance:analytics",
       auditAction: "AMBULANCE_ANALYTICS_VIEW";
     }
   );

@@ -1,9 +1,9 @@
 import "../../../../implementation/models/domain-models"
 import "../../../../implementation/utils/audit-logger"
 import "@prisma/client"
-import {  AuditLogger  } from "@/lib/database"
-import {  PharmacyDomain  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
+import {AuditLogger  } from "next/server"
+import {PharmacyDomain  } from "next/server"
+import {PrismaClient  } from "next/server"
 
 }
 
@@ -34,33 +34,33 @@ import {  PrismaClient  } from "@/lib/database"
   private initializeReferenceData(): void {
     // Initialize allergy classes;
     this.allergyClasses = [;
-      {id:"class1",
+      {id: "class1",
         ["Amoxicillin", "Ampicillin", "Penicillin G", "Piperacillin"];
       },
-      {id:"class2",
+      {id: "class2",
         ["Cefazolin", "Ceftriaxone", "Cefuroxime", "Cephalexin"];
       },
-      {id:"class3",
+      {id: "class3",
         ["Sulfamethoxazole", "Sulfadiazine", "Sulfasalazine"];
       },
-      {id:"class4",
+      {id: "class4",
         ["Aspirin", "Ibuprofen", "Naproxen", "Diclofenac", "Celecoxib"];
       }
     ];
 
     // Initialize condition interactions;
     this.conditionInteractions = [;
-      {id:"condint1",
+      {id: "condint1",
         "N17.9", // Acute kidney failure;
         severity: "severe",
         "https://example.com/interactions/metformin-kidney-failure";
       },
-      {id:"condint2",
+      {id: "condint2",
         "K92.2", // Gastrointestinal hemorrhage;
         severity: "severe",
         "https://example.com/interactions/warfarin-gi-bleeding";
       },
-      {id:"condint3",
+      {id: "condint3",
         "J45.909", // Asthma;
         severity: "severe",
         "https://example.com/interactions/propranolol-asthma";
@@ -69,19 +69,19 @@ import {  PrismaClient  } from "@/lib/database"
 
     // Initialize lab interactions;
     this.labInteractions = [;
-      {id:"labint1",
+      {id: "labint1",
         "2823-3", // Potassium;
         abnormalFlag: "L", // Low;
         severity: "severe",
         "https://example.com/interactions/digoxin-hypokalemia";
       },
-      {id:"labint2",
+      {id: "labint2",
         "6301-6", // INR;
         abnormalFlag: "H", // High;
         severity: "severe",
         "https://example.com/interactions/warfarin-inr";
       },
-      {id:"labint3",
+      {id: "labint3",
         "2951-2", // Sodium;
         abnormalFlag: "L", // Low;
         severity: "severe",
@@ -136,17 +136,17 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 }
       // Log the interaction check;
-      this.auditLogger.logEvent({eventType:"INTERACTION_CHECK",
+      this.auditLogger.logEvent({eventType: "INTERACTION_CHECK",
         `${medicationId1},${medicationId2}`,
         details: `Checking drug-drug interaction between medications $medicationId1and $medicationId2`,
         severity: "INFO";
       });
 
       // Get medication details;
-      const medication1 = await this.prisma.medication.findUnique({where:{ id: medicationId1 }
+      const medication1 = await this.prisma.medication.findUnique({where: { id: medicationId1 }
       });
 
-      const medication2 = await this.prisma.medication.findUnique({where:{ id: medicationId2 }
+      const medication2 = await this.prisma.medication.findUnique({where: { id: medicationId2 }
       });
 
       if (!session.user) {
@@ -156,14 +156,14 @@ import {  PrismaClient  } from "@/lib/database"
       // Check for interactions in the database;
       const interactions = await this.prisma.medication.findMany({
         [;
-            {AND:[;
+            {AND: [;
                 {medicationId1:medicationId1 },
-                {medicationId2:medicationId2 }
+                {medicationId2: medicationId2 }
               ];
             },
-            {AND:[;
+            {AND: [;
                 {medicationId1:medicationId2 },
-                {medicationId2:medicationId1 }
+                {medicationId2: medicationId1 }
               ];
             }
           ];
@@ -172,7 +172,7 @@ import {  PrismaClient  } from "@/lib/database"
 
       // If no interactions found, return negative result;
       if (!session.user) {
-        return {hasInteraction:false,
+        return {hasInteraction: false,
           medications: [medication1, medication2],
           interactionType: "drug-drug";
         };
@@ -180,7 +180,7 @@ import {  PrismaClient  } from "@/lib/database"
 
       // Get the most severe interaction;
       const interaction = interactions.reduce((prev, current) => {
-        const severityRank: Record<string, number> = {severe:3,
+        const severityRank: Record<string, number> = {severe: 3,
           1;
         };
 
@@ -205,7 +205,7 @@ import {  PrismaClient  } from "@/lib/database"
           overrideReason = override.reason;
 
           // Log the override application;
-          this.auditLogger.logEvent({eventType:"INTERACTION_OVERRIDE_APPLIED",
+          this.auditLogger.logEvent({eventType: "INTERACTION_OVERRIDE_APPLIED",
             `$medicationId1,$medicationId2`,
             details: `Applied override for interaction between medications $medicationId1and $medicationId2`,
             severity: "WARNING";
@@ -215,7 +215,7 @@ import {  PrismaClient  } from "@/lib/database"
           }
         })) {
           // Log expired override;
-          this.auditLogger.logEvent({eventType:"EXPIRED_OVERRIDE_IGNORED",
+          this.auditLogger.logEvent({eventType: "EXPIRED_OVERRIDE_IGNORED",
             `$medicationId1,$medicationId2`,
             details: `Expired override found for interaction between medications $medicationId1and $medicationId2`,
             severity: "WARNING";
@@ -224,7 +224,7 @@ import {  PrismaClient  } from "@/lib/database"
       }
 
       // Return interaction result;
-      return {hasInteraction:true;
+      return {hasInteraction: true;
         isOverridden,
         overrideReason,
         medications: [medication1, medication2],
@@ -234,7 +234,7 @@ import {  PrismaClient  } from "@/lib/database"
       };
     } catch (error) {
       // Log the error;
-      this.auditLogger.logEvent({eventType:"INTERACTION_CHECK_ERROR",
+      this.auditLogger.logEvent({eventType: "INTERACTION_CHECK_ERROR",
         `$medicationId1,$medicationId2`,
         details: `Error checking drug-drug interaction: $error instanceof Error ? error.message : "Unknown error"`,
         severity: "ERROR";
@@ -288,14 +288,14 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 }
       // Log the interaction check;
-      this.auditLogger.logEvent({eventType:"ALLERGY_INTERACTION_CHECK",
+      this.auditLogger.logEvent({eventType: "ALLERGY_INTERACTION_CHECK",
         medicationId,
         details: `Checking drug-allergy interaction for medication ${medicationId} and patient $patientId`,
         severity: "INFO";
       });
 
       // Get medication details;
-      const medication = await this.prisma.medication.findUnique({where:{ id: medicationId }
+      const medication = await this.prisma.medication.findUnique({where: { id: medicationId }
       });
 
       if (!session.user) {
@@ -303,7 +303,7 @@ import {  PrismaClient  } from "@/lib/database"
       }
 
       // Get patient allergies;
-      const allergies = await this.prisma.allergy.findMany({where:{
+      const allergies = await this.prisma.allergy.findMany({where: {
           patientId,
           status: "active";
         }
@@ -316,13 +316,13 @@ import {  PrismaClient  } from "@/lib/database"
 
       if (!session.user) {
         // Log the interaction detection;
-        this.auditLogger.logEvent({eventType:"ALLERGY_INTERACTION_DETECTED",
+        this.auditLogger.logEvent({eventType: "ALLERGY_INTERACTION_DETECTED",
           medicationId,
           details: `Direct allergy match detected for ${medication.name}`,
           severity: "WARNING";
         });
 
-        return {hasInteraction:true;
+        return {hasInteraction: true;
           medication,
           interactionType: "drug-allergy",
           directMatch.severity,
@@ -339,13 +339,13 @@ import {  PrismaClient  } from "@/lib/database"
         if (!session.user)== medication.name.toLowerCase();
         )) {
           // Log the interaction detection;
-          this.auditLogger.logEvent({eventType:"ALLERGY_INTERACTION_DETECTED",
+          this.auditLogger.logEvent({eventType: "ALLERGY_INTERACTION_DETECTED",
             medicationId,
             details: `Class-based allergy match detected for ${medication.name} in class ${allergyClass.name}`,
             severity: "WARNING";
           });
 
-          return {hasInteraction:true;
+          return {hasInteraction: true;
             medication,
             interactionType: "drug-allergy",
             allergy.severity,
@@ -355,13 +355,13 @@ import {  PrismaClient  } from "@/lib/database"
       }
 
       // No interaction found;
-      return {hasInteraction:false;
+      return {hasInteraction: false;
         medication,
         interactionType: "drug-allergy";
       };
     } catch (error) {
       // Log the error;
-      this.auditLogger.logEvent({eventType:"ALLERGY_INTERACTION_CHECK_ERROR",
+      this.auditLogger.logEvent({eventType: "ALLERGY_INTERACTION_CHECK_ERROR",
         medicationId,
         details: `Error checking drug-allergy interaction: $error instanceof Error ? error.message : "Unknown error"`,
         severity: "ERROR";
@@ -415,14 +415,14 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 }
       // Log the interaction check;
-      this.auditLogger.logEvent({eventType:"CONDITION_INTERACTION_CHECK",
+      this.auditLogger.logEvent({eventType: "CONDITION_INTERACTION_CHECK",
         medicationId,
         details: `Checking drug-condition interaction for medication ${medicationId} and patient $patientId`,
         severity: "INFO";
       });
 
       // Get medication details;
-      const medication = await this.prisma.medication.findUnique({where:{ id: medicationId }
+      const medication = await this.prisma.medication.findUnique({where: { id: medicationId }
       });
 
       if (!session.user) {
@@ -430,7 +430,7 @@ import {  PrismaClient  } from "@/lib/database"
       }
 
       // Get patient conditions;
-      const conditions = await this.prisma.condition.findMany({where:{
+      const conditions = await this.prisma.condition.findMany({where: {
           patientId,
           status: "active";
 
@@ -445,13 +445,13 @@ import {  PrismaClient  } from "@/lib/database"
 
         if (!session.user) {
           // Log the interaction detection;
-          this.auditLogger.logEvent({eventType:"CONDITION_INTERACTION_DETECTED",
+          this.auditLogger.logEvent({eventType: "CONDITION_INTERACTION_DETECTED",
             medicationId,
             details: `Condition interaction detected for ${medication.name} with condition $condition.name`,
             severity: "WARNING";
           });
 
-          return {hasInteraction:true;
+          return {hasInteraction: true;
             medication,
             condition,
             interactionType: "drug-condition",
@@ -460,13 +460,13 @@ import {  PrismaClient  } from "@/lib/database"
           };
 
       // No interaction found;
-      return {hasInteraction:false;
+      return {hasInteraction: false;
         medication,
         interactionType: "drug-condition";
       };
     } catch (error) {
       // Log the error;
-      this.auditLogger.logEvent({eventType:"CONDITION_INTERACTION_CHECK_ERROR",
+      this.auditLogger.logEvent({eventType: "CONDITION_INTERACTION_CHECK_ERROR",
         medicationId,
         details: `Error checking drug-condition interaction: $error instanceof Error ? error.message : "Unknown error"`,
         severity: "ERROR";
@@ -518,21 +518,21 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       // Log the interaction check;
-      this.auditLogger.logEvent({eventType:"LAB_INTERACTION_CHECK",
+      this.auditLogger.logEvent({eventType: "LAB_INTERACTION_CHECK",
         medicationId,
         details: `Checking drug-lab interaction for medication ${medicationId} and patient $patientId`,
         severity: "INFO";
       });
 
       // Get medication details;
-      const medication = await this.prisma.medication.findUnique({where:{ id: medicationId }
+      const medication = await this.prisma.medication.findUnique({where: { id: medicationId }
       });
 
       if (!session.user) {
         throw new Error("Medication not found");
 
       // Get patient lab results (recent abnormal results);
-      const labResults = await this.prisma.labResult.findMany({where:{
+      const labResults = await this.prisma.labResult.findMany({where: {
           patientId,
           ["H", "L", "HH", "LL", "A"] // Abnormal flags;
           },
@@ -553,13 +553,13 @@ import {  PrismaClient  } from "@/lib/database"
 
         if (!session.user) {
           // Log the interaction detection;
-          this.auditLogger.logEvent({eventType:"LAB_INTERACTION_DETECTED",
+          this.auditLogger.logEvent({eventType: "LAB_INTERACTION_DETECTED",
             medicationId,
             details: `Lab interaction detected for ${medication.name} with abnormal $labResult.name`,
             severity: "WARNING";
           });
 
-          return {hasInteraction:true;
+          return {hasInteraction: true;
             medication,
             labResult,
             interactionType: "drug-lab",
@@ -568,13 +568,13 @@ import {  PrismaClient  } from "@/lib/database"
           };
 
       // No interaction found;
-      return {hasInteraction:false;
+      return {hasInteraction: false;
         medication,
         interactionType: "drug-lab";
       };
     } catch (error) {
       // Log the error;
-      this.auditLogger.logEvent({eventType:"LAB_INTERACTION_CHECK_ERROR",
+      this.auditLogger.logEvent({eventType: "LAB_INTERACTION_CHECK_ERROR",
         medicationId,
         details: `Error checking drug-lab interaction: $error instanceof Error ? error.message : "Unknown error"`,
         severity: "ERROR";
@@ -630,7 +630,7 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       // Log the override creation;
-      this.auditLogger.logEvent({eventType:"INTERACTION_OVERRIDE_CREATED",
+      this.auditLogger.logEvent({eventType: "INTERACTION_OVERRIDE_CREATED",
         "Interaction",
         `Creating override for interaction ${interactionId} for patient ${patientId}`,
         severity: "WARNING";
@@ -641,7 +641,7 @@ import {  PrismaClient  } from "@/lib/database"
       expiresAt.setDate(expiresAt.getDate() + durationDays);
 
       // Create the override in the database;
-      const override = await this.prisma.interactionOverride.create({data:{
+      const override = await this.prisma.interactionOverride.create({data: {
           interactionId,
           patientId,
           providerId,
@@ -654,7 +654,7 @@ import {  PrismaClient  } from "@/lib/database"
       return override;
     } catch (error) {
       // Log the error;
-      this.auditLogger.logEvent({eventType:"INTERACTION_OVERRIDE_ERROR",
+      this.auditLogger.logEvent({eventType: "INTERACTION_OVERRIDE_ERROR",
         "Interaction",
         `Error creating interaction override: $error instanceof Error ? error.message : "Unknown error"`,
         severity: "ERROR";
@@ -706,7 +706,7 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       // Log the batch check;
-      this.auditLogger.logEvent({eventType:"BATCH_INTERACTION_CHECK",
+      this.auditLogger.logEvent({eventType: "BATCH_INTERACTION_CHECK",
         patientId,
         details: `Performing batch interaction check for ${medicationIds.length} medications`,
         severity: "INFO";
@@ -773,7 +773,7 @@ import {  PrismaClient  } from "@/lib/database"
       };
     } catch (error) {
       // Log the error;
-      this.auditLogger.logEvent({eventType:"BATCH_INTERACTION_CHECK_ERROR",
+      this.auditLogger.logEvent({eventType: "BATCH_INTERACTION_CHECK_ERROR",
         patientId,
         details: `Error performing batch interaction check: $error instanceof Error ? error.message : "Unknown error"`,
         severity: "ERROR';

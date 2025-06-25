@@ -2,12 +2,12 @@ import "../../../../../lib/audit"
 import "../../../../../lib/error-handler"
 import "../../../../../lib/validation/pharmacy-validation"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   type
-import {  validateInventoryTransferRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {errorHandler  } from "next/server"
+import {type
+import {  validateInventoryTransferRequest  } from "next/server"
 
 }
 
@@ -19,7 +19,7 @@ import {  validateInventoryTransferRequest  } from "@/lib/database"
  */;
 
 // Initialize repositories (in production, use dependency injection);
-const inventoryRepository = {findById:(id: string) => Promise.resolve(null),
+const inventoryRepository = {findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
@@ -30,7 +30,7 @@ const inventoryRepository = {findById:(id: string) => Promise.resolve(null),
   transferStock: () => Promise.resolve(true);
 }
 
-const transferRepository = {findById:(id: string) => Promise.resolve(null),
+const transferRepository = {findById: (id: string) => Promise.resolve(null),
   findBySourceLocationId: (locationId: string) => Promise.resolve([]),
   findByDestinationLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
@@ -80,15 +80,15 @@ export const POST = async (req: any) => {
     const validationResult = validateInventoryTransferRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error: "Validation failed", details: validationResult.errors },
+        {status: 400 }
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -97,16 +97,16 @@ export const POST = async (req: any) => {
     // Verify source inventory has sufficient stock;
     const sourceInventory = await inventoryRepository.findById(data.sourceInventoryId);
     if (!session.user) {
-      return NextResponse.json({error:"Source inventory not found" }, {status:404 });
+      return NextResponse.json({error: "Source inventory not found" }, {status: 404 });
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Insufficient stock in source location" },
-        {status:400 }
+        {error: "Insufficient stock in source location" },
+        {status: 400 }
       );
 
     // Create transfer record;
-    const transfer = {id:crypto.randomUUID(),
+    const transfer = {id: crypto.randomUUID(),
       sourceInventory.locationId,
       sourceInventory.medicationId,
       sourceInventory.batchNumber,
@@ -129,7 +129,7 @@ export const POST = async (req: any) => {
     // Special handling for controlled substances;
     if (!session.user) {
       // Additional logging for controlled substances;
-      await auditLog("CONTROLLED_SUBSTANCE", {action:"TRANSFER",
+      await auditLog("CONTROLLED_SUBSTANCE", {action: "TRANSFER",
         data.sourceInventoryId,
         userId: userId;
           transferId,
@@ -139,7 +139,7 @@ export const POST = async (req: any) => {
       });
 
     // Regular audit logging;
-    await auditLog("INVENTORY", {action:"TRANSFER",
+    await auditLog("INVENTORY", {action: "TRANSFER",
       transferId,
       userId: userId;
       {sourceInventoryId:data.sourceInventoryId,
@@ -150,10 +150,10 @@ export const POST = async (req: any) => {
 
     // Return response;
     return NextResponse.json();
-      {id:transferId,
+      {id: transferId,
         message: "Inventory transferred successfully";
       },
-      {status:201 }
+      {status: 201 }
     );
   } catch (error) {
     return errorHandler(error, "Error transferring inventory");

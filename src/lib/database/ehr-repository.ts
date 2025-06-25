@@ -1,7 +1,7 @@
 import "../../services/encryption_service_secure"
 import "@prisma/client"
-import {  getEncryptionService  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
+import {getEncryptionService  } from "next/server"
+import {PrismaClient  } from "next/server"
 
 /**;
  * Electronic Health Records Repository;
@@ -108,7 +108,7 @@ import {  PrismaClient  } from "@/lib/database"
         this.encryptedFields;
       );
 
-      const created = await this.prisma.clinicalNote.create({data:{
+      const created = await this.prisma.clinicalNote.create({data: {
           ...encryptedNote,
           vital_signs: note.vital_signs ? JSON.stringify(note.vital_signs) : null,
           note.snomed_codes ? JSON.stringify(note.snomed_codes) : null,
@@ -157,7 +157,7 @@ import {  PrismaClient  } from "@/lib/database"
 }
 } catch (error) {
 }
-      const note = await this.prisma.clinicalNote.findUnique({where:{ id }
+      const note = await this.prisma.clinicalNote.findUnique({where: { id }
       });
 
       if (!session.user)eturn null;
@@ -200,8 +200,8 @@ import {  PrismaClient  } from "@/lib/database"
 }
 } catch (error) {
 }
-      const notes = await this.prisma.clinicalNote.findMany({where:{ patient_id: patientId },
-        orderBy: {created_at:"desc" }
+      const notes = await this.prisma.clinicalNote.findMany({where: { patient_id: patientId },
+        orderBy: {created_at: "desc" }
       });
 
       return Promise.all(notes.map(note => this.decryptClinicalNote(note)));
@@ -249,7 +249,7 @@ import {  PrismaClient  } from "@/lib/database"
         this.encryptedFields;
       );
 
-      const updated = await this.prisma.clinicalNote.update({where:{ id },
+      const updated = await this.prisma.clinicalNote.update({where: { id },
         data: {
           ...encryptedUpdates,
           vital_signs: updates.vital_signs ? JSON.stringify(updates.vital_signs) : undefined,
@@ -296,7 +296,7 @@ import {  PrismaClient  } from "@/lib/database"
 
 } catch (error) {
 
-      await this.prisma.clinicalNote.delete({where:{ id }
+      await this.prisma.clinicalNote.delete({where: { id }
       });
     } catch (error) {
       throw new Error(`Failed to delete clinical note: ${}`;
@@ -335,7 +335,7 @@ import {  PrismaClient  } from "@/lib/database"
 
 } catch (error) {
 
-      const created = await this.prisma.carePlan.create({data:{
+      const created = await this.prisma.carePlan.create({data: {
           ...carePlan,
           goals: JSON.stringify(carePlan.goals),
           activities: JSON.stringify(carePlan.activities),
@@ -383,7 +383,7 @@ import {  PrismaClient  } from "@/lib/database"
 
 } catch (error) {
 
-      const carePlan = await this.prisma.carePlan.findUnique({where:{ id }
+      const carePlan = await this.prisma.carePlan.findUnique({where: { id }
       });
 
       if (!session.user)eturn null;
@@ -424,8 +424,8 @@ import {  PrismaClient  } from "@/lib/database"
 
 } catch (error) {
 
-      const carePlans = await this.prisma.carePlan.findMany({where:{ patient_id: patientId },
-        orderBy: {created_at:"desc" }
+      const carePlans = await this.prisma.carePlan.findMany({where: { patient_id: patientId },
+        orderBy: {created_at: "desc" }
       });
 
       return carePlans.map(cp => this.deserializeCarePlan(cp));
@@ -472,7 +472,7 @@ import {  PrismaClient  } from "@/lib/database"
         this.encryptedFields;
       );
 
-      const created = await this.prisma.problemListItem.create({data:{
+      const created = await this.prisma.problemListItem.create({data: {
           ...encryptedItem,
           created_at: new Date(),
           updated_at: new Date();
@@ -516,8 +516,8 @@ import {  PrismaClient  } from "@/lib/database"
 
 } catch (error) {
 
-      const items = await this.prisma.problemListItem.findMany({where:{ patient_id: patientId },
-        orderBy: {created_at:"desc" }
+      const items = await this.prisma.problemListItem.findMany({where: { patient_id: patientId },
+        orderBy: {created_at: "desc" }
       });
 
       return Promise.all(items.map(item => this.decryptProblemListItem(item)));
@@ -558,7 +558,7 @@ import {  PrismaClient  } from "@/lib/database"
 
 } catch (error) {
 
-      const created = await this.prisma.clinicalGuideline.create({data:{
+      const created = await this.prisma.clinicalGuideline.create({data: {
           ...guideline,
           icd10_codes: guideline.icd10_codes ? JSON.stringify(guideline.icd10_codes) : null,
           JSON.stringify(guideline.decision_support_rules),
@@ -614,7 +614,7 @@ import {  PrismaClient  } from "@/lib/database"
 
       const guidelines = await this.prisma.clinicalGuideline.findMany({
         where,
-        orderBy: {created_at:"desc" }
+        orderBy: {created_at: "desc" }
       });
 
       return guidelines.map(g => this.deserializeClinicalGuideline(g));

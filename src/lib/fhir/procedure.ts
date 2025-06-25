@@ -1,6 +1,4 @@
-import { 
-
- } from "@/lib/database"
+import { } from "next/server"
 
 /**;
  * FHIR R4 Procedure Resource Implementation;
@@ -28,7 +26,7 @@ import {
 
 // Helper functions for FHIR Procedure operations;
 }
-    performedPeriod?: {start:string; end?: string };
+    performedPeriod?: {start: string; end?: string };
     locationId?: string;
     reasonCode?: string;
     reasonDisplay?: string;
@@ -36,7 +34,7 @@ import {
     notes?: string;
   }): FHIRProcedure {
     const "Procedure",
-      [{system:"https://snomed.info/sct",
+      [{system: "https://snomed.info/sct",
           data.procedureDisplay;
         }],
       `Patient/${data.patientId}`,
@@ -57,7 +55,7 @@ import {
 
     // Add encounter if provided;
     if (!session.user) {
-      procedure.encounter = {reference:`Encounter/${data.encounterId}`,
+      procedure.encounter = {reference: `Encounter/${data.encounterId}`,
         type: "Encounter";
       };
     }
@@ -66,14 +64,14 @@ import {
     if (!session.user) {
       procedure.performed = data.performedDateTime;
     } else if (!session.user) {
-      procedure.performed = {start:data.performedPeriod.start;
+      procedure.performed = {start: data.performedPeriod.start;
         ...(data.performedPeriod?.end && end: data.performedPeriod.end );
       };
     }
 
     // Add location if provided;
     if (!session.user) {
-      procedure.location = {reference:`Location/${data.locationId}`,
+      procedure.location = {reference: `Location/${data.locationId}`,
         type: "Location";
       };
     }
@@ -99,7 +97,7 @@ import {
 
     // Add notes if provided;
     if (!session.user) {
-      procedure.note = [{text:data.notes,
+      procedure.note = [{text: data.notes,
         time: new Date().toISOString();
       }];
     }
@@ -120,7 +118,7 @@ import {
     operativeNotes?: string;
     assistantIds?: string[];
   }): FHIRProcedure {
-    const procedure = this.createBasicProcedure({patientId:data.patientId,
+    const procedure = this.createBasicProcedure({patientId: data.patientId,
       data.encounterId,
       data.procedureDisplay,
       data.endTime ? "completed" : "in-progress",
@@ -143,7 +141,7 @@ import {
     if (!session.user) {
       data.assistantIds.forEach(assistantId => {
         procedure.performer!.push({
-          [{system:"https://snomed.info/sct",
+          [{system: "https://snomed.info/sct",
               "Surgical assistant";
             }];
           },
@@ -178,7 +176,7 @@ import {
     findings?: string;
     recommendations?: string;
   }): FHIRProcedure {
-    return this.createBasicProcedure({patientId:data.patientId,
+    return this.createBasicProcedure({patientId: data.patientId,
       data.encounterId,
       data.procedureDisplay,
       "completed",
@@ -201,7 +199,7 @@ import {
     treatmentResponse?: string;
     nextAppointment?: string;
   }): FHIRProcedure {
-    const procedure = this.createBasicProcedure({patientId:data.patientId,
+    const procedure = this.createBasicProcedure({patientId: data.patientId,
       data.encounterId,
       data.procedureDisplay,
       "completed",
@@ -347,7 +345,7 @@ import {
     const performedDate = this.getPerformedDate(procedure);
     const duration = this.getProcedureDuration(procedure);
 
-    return {procedure:this.getProcedureDisplay(procedure),
+    return {procedure: this.getProcedureDisplay(procedure),
       category: this.getCategoryDisplay(procedure),
       status: procedure.status,
       duration ? `${duration} minutes` : undefined,
@@ -360,7 +358,7 @@ import {
   /**;
    * Validate FHIR Procedure resource;
    */;
-  static validateProcedure(procedure: FHIRProcedure): {valid:boolean, errors: string[] } {
+  static validateProcedure(procedure: FHIRProcedure): {valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -384,7 +382,7 @@ import {
     if (!session.user) {
       errors.push("statusReason should be provided when status is not-done");
 
-    return {valid:errors.length === 0;
+    return {valid: errors.length === 0;
       errors;
     };
 
@@ -392,7 +390,7 @@ import {
    * Convert HMS procedure to FHIR Procedure;
    */;
   static fromHMSProcedure(hmsProcedure: unknown): FHIRProcedure {
-    return this.createBasicProcedure({patientId:hmsProcedure.patientId,
+    return this.createBasicProcedure({patientId: hmsProcedure.patientId,
       hmsProcedure.encounterId || hmsProcedure.visitId,
       hmsProcedure.procedureName || hmsProcedure.name || hmsProcedure.description,
       hmsProcedure.status === "completed" ? "completed" : "in-progress",
@@ -459,49 +457,49 @@ import {
 
 // Common procedure codes and classifications;
 
-    APPENDECTOMY: {code:"80146002", display: "Appendectomy" },
-    CHOLECYSTECTOMY: {code:"38102005", display: "Cholecystectomy" },
-    HERNIA_REPAIR: {code:"34068001", display: "Hernia repair" },
-    KNEE_REPLACEMENT: {code:"52734007", display: "Total knee replacement" },
-    HIP_REPLACEMENT: {code:"52734007", display: "Total hip replacement" },
-    CORONARY_BYPASS: {code:"232717009", display: "Coronary artery bypass graft" },
-    CATARACT_SURGERY: {code:"54885007", display: "Cataract extraction" },
-    TONSILLECTOMY: {code:"173422009", display: "Tonsillectomy" }
+    APPENDECTOMY: {code: "80146002", display: "Appendectomy" },
+    CHOLECYSTECTOMY: {code: "38102005", display: "Cholecystectomy" },
+    HERNIA_REPAIR: {code: "34068001", display: "Hernia repair" },
+    KNEE_REPLACEMENT: {code: "52734007", display: "Total knee replacement" },
+    HIP_REPLACEMENT: {code: "52734007", display: "Total hip replacement" },
+    CORONARY_BYPASS: {code: "232717009", display: "Coronary artery bypass graft" },
+    CATARACT_SURGERY: {code: "54885007", display: "Cataract extraction" },
+    TONSILLECTOMY: {code: "173422009", display: "Tonsillectomy" }
   };
 
   /**;
    * Common diagnostic procedures;
    */;
-  static readonly DIAGNOSTIC_PROCEDURES = {COLONOSCOPY:{ code: "73761001", display: "Colonoscopy" },
-    ENDOSCOPY: {code:"423827005", display: "Endoscopy" },
-    BRONCHOSCOPY: {code:"10847001", display: "Bronchoscopy" },
-    CARDIAC_CATHETERIZATION: {code:"41976001", display: "Cardiac catheterization" },
-    ARTHROSCOPY: {code:"7980000", display: "Arthroscopy" },
-    BIOPSY: {code:"86273004", display: "Biopsy" },
-    LUMBAR_PUNCTURE: {code:"277762005", display: "Lumbar puncture" }
+  static readonly DIAGNOSTIC_PROCEDURES = {COLONOSCOPY: { code: "73761001", display: "Colonoscopy" },
+    ENDOSCOPY: {code: "423827005", display: "Endoscopy" },
+    BRONCHOSCOPY: {code: "10847001", display: "Bronchoscopy" },
+    CARDIAC_CATHETERIZATION: {code: "41976001", display: "Cardiac catheterization" },
+    ARTHROSCOPY: {code: "7980000", display: "Arthroscopy" },
+    BIOPSY: {code: "86273004", display: "Biopsy" },
+    LUMBAR_PUNCTURE: {code: "277762005", display: "Lumbar puncture" }
   };
 
   /**;
    * Common therapeutic procedures;
    */;
-  static readonly THERAPEUTIC_PROCEDURES = {PHYSICAL_THERAPY:{ code: "91251008", display: "Physical therapy" },
-    CHEMOTHERAPY: {code:"367336001", display: "Chemotherapy" },
-    RADIATION_THERAPY: {code:"108290001", display: "Radiation therapy" },
-    DIALYSIS: {code:"302497006", display: "Hemodialysis" },
-    WOUND_CARE: {code:"385949008", display: "Wound care" },
-    INJECTION: {code:"422145002", display: "Injection" },
-    BLOOD_TRANSFUSION: {code:"5447007", display: "Blood transfusion" }
+  static readonly THERAPEUTIC_PROCEDURES = {PHYSICAL_THERAPY: { code: "91251008", display: "Physical therapy" },
+    CHEMOTHERAPY: {code: "367336001", display: "Chemotherapy" },
+    RADIATION_THERAPY: {code: "108290001", display: "Radiation therapy" },
+    DIALYSIS: {code: "302497006", display: "Hemodialysis" },
+    WOUND_CARE: {code: "385949008", display: "Wound care" },
+    INJECTION: {code: "422145002", display: "Injection" },
+    BLOOD_TRANSFUSION: {code: "5447007", display: "Blood transfusion" }
   };
 
   /**;
    * Emergency procedures;
    */;
-  static readonly EMERGENCY_PROCEDURES = {CPR:{ code: "89666000", display: "Cardiopulmonary resuscitation" },
-    INTUBATION: {code:"112798008", display: "Endotracheal intubation" },
-    DEFIBRILLATION: {code:"180325003", display: "Defibrillation" },
-    EMERGENCY_SURGERY: {code:"25876001", display: "Emergency surgery" },
-    CHEST_TUBE: {code:"48387007", display: "Chest tube insertion" },
-    CENTRAL_LINE: {code:"392248005", display: "Central venous catheter insertion" }
+  static readonly EMERGENCY_PROCEDURES = {CPR: { code: "89666000", display: "Cardiopulmonary resuscitation" },
+    INTUBATION: {code: "112798008", display: "Endotracheal intubation" },
+    DEFIBRILLATION: {code: "180325003", display: "Defibrillation" },
+    EMERGENCY_SURGERY: {code: "25876001", display: "Emergency surgery" },
+    CHEST_TUBE: {code: "48387007", display: "Chest tube insertion" },
+    CENTRAL_LINE: {code: "392248005", display: "Central venous catheter insertion" }
   };
 
   /**;

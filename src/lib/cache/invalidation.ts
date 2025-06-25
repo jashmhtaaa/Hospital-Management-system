@@ -1,7 +1,7 @@
 import "./redis.ts"
 import "@/config"
-import {  config  } from "@/lib/database"
-import {  RedisCache  } from "@/lib/database"
+import {config  } from "next/server"
+import {RedisCache  } from "next/server"
 
 }
     await RedisCache.deletePattern(`${config.cache.prefix.test}list:*`);

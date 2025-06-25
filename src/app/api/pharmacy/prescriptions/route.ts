@@ -9,18 +9,18 @@ import "../../models/fhir-mappers"
 import "../../services/drug-interaction-service"
 import "next/server"
 import getPatientById }
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  DrugInteractionService  } from "@/lib/database"
-import {  encryptionService  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {  FHIRMapper  } from "@/lib/database"
-import {  getMedicationById  } from "@/lib/database"
-import {   getPatientAllergies
-import {  PharmacyDomain  } from "@/lib/database"
-import {   type
-import {  validatePrescriptionRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {DrugInteractionService  } from "next/server"
+import {encryptionService  } from "next/server"
+import {errorHandler  } from "next/server"
+import {FHIRMapper  } from "next/server"
+import {getMedicationById  } from "next/server"
+import {getPatientAllergies
+import {  PharmacyDomain  } from "next/server"
+import {type
+import {  validatePrescriptionRequest  } from "next/server"
 
 }
 
@@ -40,7 +40,7 @@ const getMedicationById,
   delete: () => Promise.resolve(true);
 }
 
-const prescriptionRepository = {findById:(id: string) => Promise.resolve(null),
+const prescriptionRepository = {findById: (id: string) => Promise.resolve(null),
   findByPatientId: (patientId: string) => Promise.resolve([]),
   findByPrescriberId: (prescriberId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
@@ -97,7 +97,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -155,7 +155,7 @@ export const GET = async (req: any) => {
     const fhirPrescriptions = paginatedPrescriptions.map(FHIRMapper.toFHIRMedicationRequest);
 
     // Audit logging;
-    await auditLog("PRESCRIPTION", {action:"LIST",
+    await auditLog("PRESCRIPTION", {action: "LIST",
       userId,
       details: any;
         filter,
@@ -165,14 +165,14 @@ export const GET = async (req: any) => {
     });
 
     // Return response;
-    return NextResponse.json({prescriptions:fhirPrescriptions,
+    return NextResponse.json({prescriptions: fhirPrescriptions,
       pagination: {
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
       }
-    }, {status:200 });
+    }, {status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving prescriptions");
   }
@@ -220,14 +220,14 @@ export const POST = async (req: any) => {
     const validationResult = validatePrescriptionRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error: "Validation failed", details: validationResult.errors },
+        {status: 400 }
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -235,12 +235,12 @@ export const POST = async (req: any) => {
     // Verify patient exists;
     const patient = await getPatientById(data.patientId);
     if (!session.user) {
-      return NextResponse.json({error:"Patient not found" }, {status:404 });
+      return NextResponse.json({error: "Patient not found" }, {status: 404 });
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(data.medicationId);
     if (!session.user) {
-      return NextResponse.json({error:"Medication not found" }, {status:404 });
+      return NextResponse.json({error: "Medication not found" }, {status: 404 });
 
     // Check for drug interactions;
     const patientPrescriptions = await prescriptionRepository.findByPatientId(data.patientId);
@@ -276,7 +276,7 @@ export const POST = async (req: any) => {
     // If there are severe interactions and no override provided, return error;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Severe drug interactions detected",
+        {error: "Severe drug interactions detected",
           true;
         },status: 409 ;
       );
@@ -308,7 +308,7 @@ export const POST = async (req: any) => {
     if (!session.user) {
       // Encrypt controlled substance data;
       prescription.controlledSubstanceData = await encryptionService.encrypt();
-        JSON.stringify({dea:data.dea,
+        JSON.stringify({dea: data.dea,
           new Date();
         });
       );
@@ -322,7 +322,7 @@ export const POST = async (req: any) => {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
     // Audit logging;
-    await auditLog("PRESCRIPTION", {action:"CREATE",
+    await auditLog("PRESCRIPTION", {action: "CREATE",
       prescriptionId,
       data.patientId,
       data.medicationId,
@@ -333,10 +333,10 @@ export const POST = async (req: any) => {
 
     // Return response;
     return NextResponse.json();
-      {id:prescriptionId,
+      {id: prescriptionId,
         allInteractions.length > 0 ? allInteractions : undefined;
       },
-      {status:201 }
+      {status: 201 }
     );
   } catch (error) {
     return errorHandler(error, "Error creating prescription");

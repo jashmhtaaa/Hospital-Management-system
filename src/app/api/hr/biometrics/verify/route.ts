@@ -1,14 +1,14 @@
 import "@/lib/hr/biometric-service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  biometricService  } from "@/lib/database"
-import {   type
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {biometricService  } from "next/server"
+import {type
+import {  z  } from "next/server"
 
 // Schema for biometric verification;
-const biometricVerificationSchema = z.object({employeeId:z.string().min(1, "Employee ID is required"),
+const biometricVerificationSchema = z.object({employeeId: z.string().min(1, "Employee ID is required"),
   templateType: z.enum(["FINGERPRINT", "FACIAL", "IRIS"], {errorMap:() => ({message:"Template type must be FINGERPRINT, FACIAL, or IRIS" })}),
   sampleData: z.string().min(1, "Sample data is required")});
 
@@ -53,8 +53,8 @@ export const _POST = async (request: any) => {
     const validationResult = biometricVerificationSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation error", details: validationResult.error.format() },
-        {status:400 }
+        {error: "Validation error", details: validationResult.error.format() },
+        {status: 400 }
       );
 
     // Verify biometric data;
@@ -62,6 +62,6 @@ export const _POST = async (request: any) => {
 
     return NextResponse.json(result);
   } catch (error) {
-    return NextResponse.json({error:"Failed to verify biometric data", details: error.message }, {status:500 });
+    return NextResponse.json({error: "Failed to verify biometric data", details: error.message }, {status: 500 });
 
 };

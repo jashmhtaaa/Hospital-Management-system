@@ -1,9 +1,9 @@
 import "../../../../implementation/models/domain-models"
 import "../../../../implementation/utils/audit-logger"
 import "@prisma/client"
-import {  AuditLogger  } from "@/lib/database"
-import {  PharmacyDomain  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
+import {AuditLogger  } from "next/server"
+import {PharmacyDomain  } from "next/server"
+import {PrismaClient  } from "next/server"
 
 }
 
@@ -32,7 +32,7 @@ import {  PrismaClient  } from "@/lib/database"
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationResult> {
     // Log the start of reconciliation;
-    this.auditLogger.logEvent({eventType:"MEDICATION_RECONCILIATION_STARTED",
+    this.auditLogger.logEvent({eventType: "MEDICATION_RECONCILIATION_STARTED",
       "Patient",
       `Starting ${sourceType} reconciliation for ${targetType} medications`,
       severity: "INFO";
@@ -60,7 +60,7 @@ import {  PrismaClient  } from "@/lib/database"
     };
 
     // Log the completion of reconciliation;
-    this.auditLogger.logEvent({eventType:"MEDICATION_RECONCILIATION_COMPLETED",
+    this.auditLogger.logEvent({eventType: "MEDICATION_RECONCILIATION_COMPLETED",
       "Patient",
       `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
       severity: "INFO";
@@ -253,7 +253,7 @@ import {  PrismaClient  } from "@/lib/database"
       );
 
       if (!session.user) {
-        discrepancies.push({id:`disc-${crypto.getRandomValues([0]}-${sourceMed.id}`,
+        discrepancies.push({id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id}`,
           medicationId: sourceMed.id,
           `/* this.calculateDiscrepancySeverity(sourceMed),
           status: "unresolved";
@@ -268,7 +268,7 @@ import {  PrismaClient  } from "@/lib/database"
       );
 
       if (!session.user) {
-        discrepancies.push({id:`disc-$crypto.getRandomValues([0]-$targetMed.id`,
+        discrepancies.push({id: `disc-$crypto.getRandomValues([0]-$targetMed.id`,
           medicationId: targetMed.id,
           `/* this.calculateDiscrepancySeverity(targetMed),
           status: "unresolved";
@@ -281,7 +281,7 @@ import {  PrismaClient  } from "@/lib/database"
       const targetMed = targetMedications.find(med => med.name === sourceMed?.name && med.form === sourceMed.form);
 
       if (!session.user) {
-        discrepancies.push({id:`disc-${crypto.getRandomValues([0]}-${sourceMed.id}-${targetMed.id}`,
+        discrepancies.push({id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id}-${targetMed.id}`,
           medicationId: sourceMed.id,
           "dosing",
           this.calculateDiscrepancySeverity(sourceMed, targetMed),
@@ -338,7 +338,7 @@ import {  PrismaClient  } from "@/lib/database"
     // For now, we"ll simulate the resolution;
 
     // Log the resolution;
-    this.auditLogger.logEvent({eventType:"MEDICATION_DISCREPANCY_RESOLVED",
+    this.auditLogger.logEvent({eventType: "MEDICATION_DISCREPANCY_RESOLVED",
       "MedicationReconciliation",
       `Resolved discrepancy ${discrepancyId} with action: ${action}`,
       severity: "INFO";
@@ -355,7 +355,7 @@ import {  PrismaClient  } from "@/lib/database"
 
     // In a real implementation, this would return the updated reconciliation from the database;
     // For now, we"ll return a simulated response;
-    return {id:reconciliationId,
+    return {id: reconciliationId,
       patientId: "patient123";
       providerId,
       sourceType: "admission",
@@ -380,7 +380,7 @@ import {  PrismaClient  } from "@/lib/database"
     // For now, we"ll simulate the completion;
 
     // Log the completion;
-    this.auditLogger.logEvent({eventType:"MEDICATION_RECONCILIATION_FINALIZED",
+    this.auditLogger.logEvent({eventType: "MEDICATION_RECONCILIATION_FINALIZED",
       "MedicationReconciliation",
       "Finalized medication reconciliation",
       severity: "INFO";
@@ -388,7 +388,7 @@ import {  PrismaClient  } from "@/lib/database"
 
     // In a real implementation, this would return the updated reconciliation from the database;
     // For now, we"ll return a simulated response;
-    return {id:reconciliationId,
+    return {id: reconciliationId,
       patientId: "patient123";
       providerId,
       sourceType: "admission",
@@ -455,21 +455,21 @@ import {  PrismaClient  } from "@/lib/database"
     // For now, we"ll return simulated history;
 
     return [;
-      {id:"recon1",
+      {id: "recon1",
         "provider456",
         "inpatient",
         reconciliationDate: [0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago;
         status: "completed",
         3;
       },
-      {id:"recon2",
+      {id: "recon2",
         "provider789",
         "inpatient",
         reconciliationDate: [0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago;
         status: "completed",
         2;
       },
-      {id:"recon3",
+      {id: "recon3",
         "provider456",
         "outpatient",
         reconciliationDate: new Date(),
@@ -500,7 +500,7 @@ import {  PrismaClient  } from "@/lib/database"
     string;
   ): Promise<PharmacyDomain.MedicationOrder> {
     // Log the order creation;
-    this.auditLogger.logEvent({eventType:"MEDICATION_ORDER_FROM_RECONCILIATION",
+    this.auditLogger.logEvent({eventType: "MEDICATION_ORDER_FROM_RECONCILIATION",
       "MedicationReconciliation",
       `Created order for medication ${medicationId} from reconciliation`,
       severity: "INFO";
@@ -508,7 +508,7 @@ import {  PrismaClient  } from "@/lib/database"
 
     // In a real implementation, this would create an order in the database;
     // For now, we"ll return a simulated order;
-    return {id:`order-${crypto.getRandomValues([0]}`,
+    return {id: `order-${crypto.getRandomValues([0]}`,
       patientId: "patient123";
       providerId,
       medicationId,
@@ -533,7 +533,7 @@ import {  PrismaClient  } from "@/lib/database"
     _sessionId: string;
   ): Promise<boolean> {
     // Log the timeout;
-    this.auditLogger.logEvent({eventType:"MEDICATION_RECONCILIATION_SESSION_TIMEOUT",
+    this.auditLogger.logEvent({eventType: "MEDICATION_RECONCILIATION_SESSION_TIMEOUT",
       reconciliationId,
       "WARNING";
     });
@@ -555,7 +555,7 @@ import {  PrismaClient  } from "@/lib/database"
     // For now, we"ll return simulated pending reconciliations;
 
     return [;
-      {id:"recon4",
+      {id: "recon4",
         patientId: "patient456";
         providerId,
         sourceType: "admission",

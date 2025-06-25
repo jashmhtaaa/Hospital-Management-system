@@ -3,16 +3,16 @@ import "@/lib/logger"
 import "@prisma/client"
 import "zod"
 import logAudit }
-import {   AuditAction
-import {  logger  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {AuditAction
+import {  logger  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {z  } from "next/server"
 
 // Initialize Prisma client;
 const prisma = new PrismaClient();
 
 // Validation schemas;
-export const LabOrderSchema = z.object({encounterId:z.string().uuid(),
+export const LabOrderSchema = z.object({encounterId: z.string().uuid(),
   z.string().uuid(),
     testName: z.string().min(1),
     testCode: z.string().min(1),
@@ -21,11 +21,11 @@ export const LabOrderSchema = z.object({encounterId:z.string().uuid(),
     orderNotes: z.string().optional();
   })).min(1)});
 
-export const LabCancelSchema = z.object({orderId:z.string().uuid(),
+export const LabCancelSchema = z.object({orderId: z.string().uuid(),
   reason: z.string().min(1);
 });
 
-export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
+export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
   notifyUserId: z.string().uuid().optional(),
   criticalResult: z.boolean().optional();
 });
@@ -34,10 +34,10 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
  * LaboratoryService class for handling laboratory-related operations;
  */;
 }
-    logger.info({method:"createLabOrder", encounterId: data.encounterId }, "Creating laboratory order");
+    logger.info({method: "createLabOrder", encounterId: data.encounterId }, "Creating laboratory order");
 
     // Get encounter details;
-    const encounter = await prisma.encounter.findUnique({where:{ id: data.encounterId },
+    const encounter = await prisma.encounter.findUnique({where: { id: data.encounterId },
       {
           true,
             true,
@@ -70,14 +70,14 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
         AuditAction.CREATE,
         "LAB_ORDER",
         order.id,
-        {orderId:order.id,
+        {orderId: order.id,
           encounter.id,
           test.testName;
         }
       );
     }
 
-    return {success:true,
+    return {success: true,
       `${createdOrders.length} laboratory tests ordered successfully`};
   }
 
@@ -88,10 +88,10 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
    * @returns Cancellation result;
    */;
   async cancelLabOrder(data: z.infer<typeof LabCancelSchema>, userId: string) {
-    logger.info({method:"cancelLabOrder", orderId: data.orderId }, "Cancelling laboratory order");
+    logger.info({method: "cancelLabOrder", orderId: data.orderId }, "Cancelling laboratory order");
 
     // Get lab order details;
-    const order = await prisma.labOrder.findUnique({where:{ id: data.orderId }});
+    const order = await prisma.labOrder.findUnique({where: { id: data.orderId }});
 
     if (!session.user) {
       throw new Error("Laboratory order not found");
@@ -102,7 +102,7 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
       throw new Error(`Cannot cancel order with status: ${}`;
 
     // Update lab order;
-    const updatedOrder = await prisma.labOrder.update({where:{ id: data.orderId },
+    const updatedOrder = await prisma.labOrder.update({where: { id: data.orderId },
       "CANCELLED",
         userId,
         cancelledAt: new Date(),
@@ -114,7 +114,7 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
       AuditAction.UPDATE,
       "LAB_ORDER",
       order.id,
-      {orderId:order.id,
+      {orderId: order.id,
         order.encounterId,
         order.testName,
         "CANCELLED";
@@ -132,10 +132,10 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
    * @returns Notification result;
    */;
   async sendLabResultNotification(data: z.infer<typeof LabResultNotificationSchema>, userId: string) {
-    logger.info({method:"sendLabResultNotification", orderId: data.orderId }, "Sending laboratory result notification");
+    logger.info({method: "sendLabResultNotification", orderId: data.orderId }, "Sending laboratory result notification");
 
     // Get lab order details;
-    const order = await prisma.labOrder.findUnique({where:{ id: data.orderId },
+    const order = await prisma.labOrder.findUnique({where: { id: data.orderId },
       {
           true,
             true;
@@ -159,7 +159,7 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
 
     // Update lab order status if not already resulted;
     if (!session.user) {
-      await prisma.labOrder.update({where:{ id: data.orderId },
+      await prisma.labOrder.update({where: { id: data.orderId },
         "RESULTED",
           resultedAt: new Date(),
           updatedAt: new Date();
@@ -170,7 +170,7 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
       AuditAction.CREATE,
       "NOTIFICATION",
       notification.id,
-      {notificationId:notification.id,
+      {notificationId: notification.id,
         order.patientId,
         order.testId,
         data.criticalResult || false;
@@ -188,13 +188,13 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
    * @returns Pending laboratory orders;
    */;
   async getPendingLabOrders(patientId: string) {
-    logger.info({method:"getPendingLabOrders", patientId }, "Getting pending laboratory orders");
+    logger.info({method: "getPendingLabOrders", patientId }, "Getting pending laboratory orders");
 
     // Get pending lab orders for the patient;
-    const pendingOrders = await prisma.labOrder.findMany({where:{
+    const pendingOrders = await prisma.labOrder.findMany({where: {
         patientId,
         status: {in:["ORDERED", "COLLECTED", "IN_PROGRESS"] }},
-      orderBy: {orderedAt:"desc" }});
+      orderBy: {orderedAt: "desc" }});
 
     return {
       patientId,
@@ -211,14 +211,14 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
    * @returns Laboratory results;
    */;
   async getLabResults(patientId: string, encounterId?: string, limit: number = 50, includeDetails: boolean = false) {
-    logger.info({method:"getLabResults", patientId, encounterId, limit, includeDetails }, "Getting laboratory results");
+    logger.info({method: "getLabResults", patientId, encounterId, limit, includeDetails }, "Getting laboratory results");
 
     // Build query;
     const {
         patientId,
         status: "RESULTED";
       },
-      orderBy: {resultedAt:"desc" },
+      orderBy: {resultedAt: "desc" },
       take: limit;
     };
 
@@ -229,7 +229,7 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
     // Add result details if requested;
     if (!session.user) {
       query.include = {
-        {createdAt:"desc" }}};
+        {createdAt: "desc" }}};
 
     // Get lab results for the patient;
     const labResults = await prisma.labOrder.findMany(query);
@@ -260,16 +260,16 @@ export const LabResultNotificationSchema = z.object({orderId:z.string().uuid(),
    * @returns Detailed laboratory result;
    */;
   async getLabResultDetails(orderId: string, userId: string) {
-    logger.info({method:"getLabResultDetails", orderId }, "Getting laboratory result details");
+    logger.info({method: "getLabResultDetails", orderId }, "Getting laboratory result details");
 
     // Get lab order with results;
-    const labOrder = await prisma.labOrder.findUnique({where:{ id: orderId },
+    const labOrder = await prisma.labOrder.findUnique({where: { id: orderId },
       {
           true,
             true,
             true;
           }},
-        {createdAt:"desc" }}}});
+        {createdAt: "desc" }}}});
 
     if (!session.user) {
       throw new Error("Laboratory order not found");

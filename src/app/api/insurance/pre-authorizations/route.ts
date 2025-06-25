@@ -1,12 +1,12 @@
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import { type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {type
 
-// import { v4 as uuidv4 } from "uuid"; // Unused import;
+// import { v4 as uuidv4 } from "next/server"; // Unused import;
 
 // Define interface for Pre-Authorization data;
-interface PreAuthorization {_id:number | string,
+interface PreAuthorization {_id: number | string,
   string;
   estimated_cost?: number | undefined;
   request_date: string; // ISO string;
@@ -25,7 +25,7 @@ interface PreAuthorization {_id:number | string,
 // Mock data store for pre-authorizations (replace with actual DB interaction);
 // FIX: Changed let to const for prefer-const rule;
 const mockPreAuths: PreAuthorization[] = [;
-  {_id:1,
+  {_id: 1,
     "Appendectomy",
     [0] - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days ago;
     status: "Approved", // e.g., "Pending", "Approved", "Rejected", "More Info Required";
@@ -35,7 +35,7 @@ const mockPreAuths: PreAuthorization[] = [;
     created_at: [0] - 5 * 24 * 60 * 60 * 1000).toISOString(),
     updated_at: [0] - 3 * 24 * 60 * 60 * 1000).toISOString(), // Updated 3 days ago;
   },
-  {_id:2,
+  {_id: 2,
     "MRI Brain",
     [0] - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago;
     status: "Pending",
@@ -47,7 +47,7 @@ const mockPreAuths: PreAuthorization[] = [;
 let nextPreAuthId = 3;
 
 // Define interface for pre-authorization creation input;
-interface PreAuthorizationInput {patient_insurance_id:number | string,
+interface PreAuthorizationInput {patient_insurance_id: number | string,
   requested_procedure: string;
   estimated_cost?: number;
   request_date?: string; // Optional, defaults to now;
@@ -58,6 +58,7 @@ interface PreAuthorizationInput {patient_insurance_id:number | string,
 
 // Define interface for pre-authorization update input - Belongs in [id]/route.ts;
 // interface PreAuthorizationUpdateInput {
+
 //   status?: string;
 //   authorization_number?: string | null;
 //   approved_amount?: number | null;
@@ -68,6 +69,7 @@ interface PreAuthorizationInput {patient_insurance_id:number | string,
 
 // Define interface for pre-authorization filters;
 interface PreAuthorizationFilters {
+
   status?: string | undefined;
   patient_insurance_id?: string | undefined;
   date_from?: string | undefined;
@@ -222,10 +224,10 @@ export const GET = async (request: any) => {
       errorMessage = error.message;
 
     return NextResponse.json();
-      {error:"Failed to fetch pre-authorization requests",
+      {error: "Failed to fetch pre-authorization requests",
         details: errorMessage;
       },
-      {status:500 }
+      {status: 500 }
     );
 
 /**;
@@ -272,14 +274,14 @@ export const POST = async (request: any) => {
     // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields (patient_insurance_id, requested_procedure)"},
-        {status:400 }
+        {error: "Missing required fields (patient_insurance_id, requested_procedure)"},
+        {status: 400 }
       );
 
     // Simulate creating the pre-authorization request in the database;
     const newPreAuth = await createPreAuthorizationInDB(preAuthData);
 
-    return NextResponse.json({preAuthorization:newPreAuth }, {status:201 });
+    return NextResponse.json({preAuthorization: newPreAuth }, {status: 201 });
   } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
@@ -287,10 +289,10 @@ export const POST = async (request: any) => {
       errorMessage = error.message;
 
     return NextResponse.json();
-      {error:"Failed to create pre-authorization request",
+      {error: "Failed to create pre-authorization request",
         details: errorMessage;
       },
-      {status:500 }
+      {status: 500 }
     );
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

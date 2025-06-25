@@ -8,17 +8,17 @@ import OPDVisit
 import OPDVisitStatus
 import OPDVisitType }
 import type
-import {  cookies  } from "@/lib/database"
-import {  getCloudflareContext  } from "@/lib/database"
-import {  getIronSession  } from "@/lib/database"
-import {  IronSessionData  } from "@/lib/database"
-import {  sessionOptions  } from "@/lib/database"
-import {   type
-import {  z  } from "@/lib/database"
+import {cookies  } from "next/server"
+import {getCloudflareContext  } from "next/server"
+import {getIronSession  } from "next/server"
+import {IronSessionData  } from "next/server"
+import {sessionOptions  } from "next/server"
+import {type
+import {  z  } from "next/server"
 
 // app/api/opd-visits/[visitId]/route.ts;
 // Define the expected shape of the database query result;
-interface OPDVisitQueryResult {opd_visit_id:number,
+interface OPDVisitQueryResult {opd_visit_id: number,
   number | null,
   visit_datetime: string; // Assuming ISO string format;
   visit_type: string; // Should ideally be an enum;
@@ -52,12 +52,12 @@ export const _GET = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Unauthorized" }), {status:401,
+        return new Response(JSON.stringify({error: "Unauthorized" }), {status: 401,
             headers: { "Content-Type": "application/json" }});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Invalid Visit ID" }), {status:400,
+        return new Response(JSON.stringify({error: "Invalid Visit ID" }), {status: 400,
             headers: { "Content-Type": "application/json" }});
     }
 
@@ -110,7 +110,7 @@ export const _GET = async (request: Request) => {
         ).bind(visitId).first<OPDVisitQueryResult>(); // Use the defined interface;
 
         if (!session.user) {
-            return new Response(JSON.stringify({error:"OPD Visit not found" }), {status:404,
+            return new Response(JSON.stringify({error: "OPD Visit not found" }), {status: 404,
                 headers: { "Content-Type": "application/json" }});
         }
 
@@ -130,19 +130,19 @@ export const _GET = async (request: Request) => {
         }
 
         // 4. Return the detailed visit;
-        return new Response(JSON.stringify(visit), {status:200,
+        return new Response(JSON.stringify(visit), {status: 200,
             headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
+        return new Response(JSON.stringify({error: "Internal Server Error", details: errorMessage }), {status: 500,
             headers: { "Content-Type": "application/json" }});
     }
 }
 
 // PUT handler for updating an OPD visit (e.g., status, notes);
-const UpdateVisitSchema = z.object({status:z.nativeEnum(OPDVisitStatus).optional(),
+const UpdateVisitSchema = z.object({status: z.nativeEnum(OPDVisitStatus).optional(),
     notes: z.string().optional().nullable();
     // Add other updatable fields if necessary (e.g., doctor_id, department - requires careful consideration);
 });
@@ -154,12 +154,12 @@ export const _PUT = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Unauthorized" }), {status:401,
+        return new Response(JSON.stringify({error: "Unauthorized" }), {status: 401,
             headers: { "Content-Type": "application/json" }});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Invalid Visit ID" }), {status:400,
+        return new Response(JSON.stringify({error: "Invalid Visit ID" }), {status: 400,
             headers: { "Content-Type": "application/json" }});
     }
 
@@ -199,14 +199,14 @@ export const _PUT = async (request: Request) => {
         const validation = UpdateVisitSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Invalid input", details: validation.error.errors }), {status:400,
+            return new Response(JSON.stringify({error: "Invalid input", details: validation.error.errors }), {status: 400,
                 headers: { "Content-Type": "application/json" }});
 
         const updateData = validation.data;
 
         // Check if there's anything to update;
         if (!session.user)length === 0) {
-             return new Response(JSON.stringify({message:"No update data provided" }), {status:200, // Or 304 Not Modified;
+             return new Response(JSON.stringify({message: "No update data provided" }), {status: 200, // Or 304 Not Modified;
                 headers: { "Content-Type": "application/json" }});
 
         const { env } = await getCloudflareContext();
@@ -217,7 +217,7 @@ export const _PUT = async (request: Request) => {
                                    .bind(visitId);
                                    .first<opd_visit_id: number >();
         if (!session.user) {
-            return new Response(JSON.stringify({error:"OPD Visit not found" }), {status:404,
+            return new Response(JSON.stringify({error: "OPD Visit not found" }), {status: 404,
                 headers: { "Content-Type": "application/json" }});
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -243,13 +243,13 @@ export const _PUT = async (request: Request) => {
             throw new Error("Failed to update OPD visit");
 
         // 5. Return success response;
-        return new Response(JSON.stringify({message:"OPD Visit updated successfully" }), {status:200,
+        return new Response(JSON.stringify({message: "OPD Visit updated successfully" }), {status: 200,
             headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
+        return new Response(JSON.stringify({error: "Internal Server Error", details: errorMessage }), {status: 500,
             headers: { "Content-Type": "application/json" }});
 
 // DELETE handler - Typically visits are cancelled (status update) rather than deleted;

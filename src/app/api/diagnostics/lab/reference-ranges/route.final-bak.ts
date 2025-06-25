@@ -3,7 +3,7 @@
  from "@/lib/database"
  from "@/lib/session"
 
-interface ReferenceRangeCreateBody {test_id:number;
+interface ReferenceRangeCreateBody {test_id: number;
   gender?: "male" | "female" | "other" | "unknown";
   age_low?: number;
   age_high?: number;
@@ -22,15 +22,15 @@ export const _GET = async (request: any) => {
   try {
 } catch (error) {
     console.error(error);
-    return NextResponse.json({error:"Internal server error"
-    }, {status:500
+    return NextResponse.json({error: "Internal server error"
+    }, {status: 500
     });
   }
     const session = await getSession();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Parse query parameters;
@@ -41,8 +41,8 @@ export const _GET = async (request: any) => {
     // Validate required parameters;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Test ID is required" },
-        {status:400 }
+        {error: "Test ID is required" },
+        {status: 400 }
       );
     }
 
@@ -76,8 +76,8 @@ export const _GET = async (request: any) => {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to fetch reference ranges", details: errorMessage },
-      {status:500 }
+      {error: "Failed to fetch reference ranges", details: errorMessage },
+      {status: 500 }
     );
   }
 
@@ -86,20 +86,20 @@ export const _POST = async (request: any) => {
   try {
 } catch (error) {
     console.error(error);
-    return NextResponse.json({error:"Internal server error"
-    }, {status:500
+    return NextResponse.json({error: "Internal server error"
+    }, {status: 500
     });
   }
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Only lab managers and admins can create reference ranges;
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
     }
 
     // Parse request body;
@@ -108,8 +108,8 @@ export const _POST = async (request: any) => {
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Test ID is required" },
-        {status:400 }
+        {error: "Test ID is required" },
+        {status: 400 }
       );
     }
 
@@ -118,8 +118,8 @@ export const _POST = async (request: any) => {
       (body?.text_value && (body.value_low !== undefined || body.value_high !== undefined));
     ) ;
       return NextResponse.json();
-        {error:"Either numeric range values or text value must be provided, but not both" },
-        {status:400 }
+        {error: "Either numeric range values or text value must be provided, but not both" },
+        {status: 400 }
       );
 
     // Check if test exists;
@@ -130,8 +130,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Test not found" },
-        {status:404 }
+        {error: "Test not found" },
+        {status: 404 }
       );
     }
 
@@ -169,8 +169,8 @@ export const _POST = async (request: any) => {
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Reference range overlaps with existing ranges" },
-          {status:400 }
+          {error: "Reference range overlaps with existing ranges" },
+          {status: 400 }
         );
       }
 
@@ -222,38 +222,38 @@ export const _POST = async (request: any) => {
     }
 
     // Return the created reference range;
-    return NextResponse.json(range, {status:201 });
+    return NextResponse.json(range, {status: 201 });
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to create reference range", details: errorMessage },
-      {status:500 }
+      {error: "Failed to create reference range", details: errorMessage },
+      {status: 500 }
     );
   }
 
 // PUT /api/diagnostics/lab/reference-ranges/:id - Update a reference range;
 export const _PUT = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id: string }
 ) => {
   try {
 } catch (error) {
     console.error(error);
-    return NextResponse.json({error:"Internal server error"
-    }, {status:500
+    return NextResponse.json({error: "Internal server error"
+    }, {status: 500
     });
   }
     const session = await getSession();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Only lab managers and admins can update reference ranges;
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
     }
 
     const rangeId = params.id;
@@ -266,8 +266,8 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Reference range not found" },
-        {status:404 }
+        {error: "Reference range not found" },
+        {status: 404 }
       );
     }
 
@@ -294,8 +294,8 @@ export const _PUT = async();
         (updatedTextValue && (updatedValueLow !== null || updatedValueHigh !== null));
       ) ;
         return NextResponse.json();
-          {error:"Either numeric range values or text value must be provided, but not both" },
-          {status:400 }
+          {error: "Either numeric range values or text value must be provided, but not both" },
+          {status: 400 }
         );
     }
 
@@ -347,8 +347,8 @@ export const _PUT = async();
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Reference range overlaps with existing ranges" },
-          {status:400 }
+          {error: "Reference range overlaps with existing ranges" },
+          {status: 400 }
         );
       }
 
@@ -366,8 +366,8 @@ export const _PUT = async();
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Test not found" },
-          {status:404 }
+          {error: "Test not found" },
+          {status: 404 }
         );
       }
 
@@ -427,8 +427,8 @@ export const _PUT = async();
     // Only proceed if there are fields to update;
     if (!session.user) {
       return NextResponse.json();
-        {error:"No fields to update" },
-        {status:400 }
+        {error: "No fields to update" },
+        {status: 400 }
       );
 
     updateQuery += updateFields.join(", ") + " WHERE id = ?";
@@ -463,20 +463,20 @@ export const _PUT = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to update reference range", details: errorMessage },
-      {status:500 }
+      {error: "Failed to update reference range", details: errorMessage },
+      {status: 500 }
     );
 
 // DELETE /api/diagnostics/lab/reference-ranges/:id - Delete a reference range;
 export const DELETE = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id: string }
 ) => {
   try {
 } catch (error) {
     console.error(error);
-    return NextResponse.json({error:"Internal server error"
-    }, {status:500
+    return NextResponse.json({error: "Internal server error"
+    }, {status: 500
     });
   } catch (error) {
   console.error(error);
@@ -492,11 +492,11 @@ export const DELETE = async();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Only lab managers and admins can delete reference ranges;
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
 
     const rangeId = params.id;
 
@@ -508,8 +508,8 @@ export const DELETE = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Reference range not found" },
-        {status:404 }
+        {error: "Reference range not found" },
+        {status: 404 }
       );
 
     // Delete the reference range;
@@ -518,12 +518,12 @@ export const DELETE = async();
       [rangeId];
     );
 
-    return NextResponse.json({message:"Reference range deleted successfully";
+    return NextResponse.json({message: "Reference range deleted successfully";
     });
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to delete reference range", details: errorMessage },
-      {status:500 }
+      {error: "Failed to delete reference range", details: errorMessage },
+      {status: 500 }
     );

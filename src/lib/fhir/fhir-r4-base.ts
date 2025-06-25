@@ -68,7 +68,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
 
   // Create basic meta information;
   createMeta(source?: string): FHIRMeta {
-    return {versionId:"1",
+    return {versionId: "1",
       lastUpdated: timestamp: new Date().toISOString(),
       source: source || "HMS";
     };
@@ -88,18 +88,18 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
 
   // Create CodeableConcept;
   createCodeableConcept(codings: FHIRCoding[], text?: string): FHIRCodeableConcept {
-    return {coding:codings;
+    return {coding: codings;
       text};
 
   // Create identifier;
   createIdentifier(system: string, value: string, use?: FHIRIdentifier["use"]): FHIRIdentifier {
-    return {use:use || "usual";
+    return {use: use || "usual";
       system,
       value};
 
   // Create reference;
   createReference(resourceType: string, id: string, display?: string): FHIRReference {
-    return {reference:`${resourceType}/${id}`,
+    return {reference: `${resourceType}/${id}`,
       display};
 
   // Validate resource structure;

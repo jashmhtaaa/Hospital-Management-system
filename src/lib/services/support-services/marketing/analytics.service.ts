@@ -4,16 +4,16 @@ import "@/lib/models/marketing"
 import "@/lib/prisma"
 import NotFoundError
 import ValidationError }
-import {  AuditLogger  } from "@/lib/database"
-import {  CampaignAnalytics  } from "@/lib/database"
-import {   DatabaseError
-import {  prisma  } from "@/lib/database"
+import {AuditLogger  } from "next/server"
+import {CampaignAnalytics  } from "next/server"
+import {DatabaseError
+import {  prisma  } from "next/server"
 
 /**;
  * Service for managing marketing analytics;
  */;
 }
-  async recordAnalytics(campaignId: string, data: {date:Date, metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
+  async recordAnalytics(campaignId: string, data: {date: Date, metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
     try {
 } catch (error) {
   console.error(error);
@@ -50,7 +50,7 @@ import {  prisma  } from "@/lib/database"
       this.validateAnalyticsData(data);
 
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where: { id: campaignId }
       });
 
       if (!session.user) {
@@ -58,7 +58,7 @@ import {  prisma  } from "@/lib/database"
       }
 
       // Check if analytics for this date already exists;
-      const existingAnalytics = await prisma.campaignAnalytics.findFirst({where:{
+      const existingAnalytics = await prisma.campaignAnalytics.findFirst({where: {
           campaignId,
           date: data.date;
         }
@@ -68,14 +68,14 @@ import {  prisma  } from "@/lib/database"
 
       if (!session.user) {
         // Update existing analytics;
-        analytics = await prisma.campaignAnalytics.update({where:{ id: existingAnalytics.id },
+        analytics = await prisma.campaignAnalytics.update({where: { id: existingAnalytics.id },
           data.metrics,
             updatedAt: new Date();
           }
         });
       } else {
         // Create new analytics;
-        analytics = await prisma.campaignAnalytics.create({data:{
+        analytics = await prisma.campaignAnalytics.create({data: {
             campaignId,
             date: data.date,
             metrics: data.metrics;
@@ -84,7 +84,7 @@ import {  prisma  } from "@/lib/database"
       }
 
       // Log audit event;
-      await this.auditLogger.log({action:existingAnalytics ? "analytics.update" : "analytics.create",
+      await this.auditLogger.log({action: existingAnalytics ? "analytics.update" : "analytics.create",
         resourceId: campaignId;
         userId,
         analytics.id,
@@ -143,7 +143,7 @@ import {  prisma  } from "@/lib/database"
       const { startDate, endDate, metrics } = filters;
 
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where: { id: campaignId }
       });
 
       if (!session.user) {
@@ -249,7 +249,7 @@ import {  prisma  } from "@/lib/database"
       // Calculate trends;
       const trends = this.calculateAnalyticsTrends(analyticsData);
 
-      return {timeSeriesData:groupedData;
+      return {timeSeriesData: groupedData;
         totals,
         averages,
         trends;
@@ -339,7 +339,7 @@ import {  prisma  } from "@/lib/database"
 }
 } catch (error) {
 
-            const campaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId },
+            const campaign = await prisma.marketingCampaign.findUnique({where: { id: campaignId },
               true,
                 true,
                 status: true;
@@ -375,7 +375,7 @@ import {  prisma  } from "@/lib/database"
       // Sort by performance (using first metric as sorting criteria);
       const sortedData = this.sortCampaignsByPerformance(validCampaignsData);
 
-      return {campaigns:sortedData,
+      return {campaigns: sortedData,
         comparisonDate: new Date();
       };
     } catch (error) {
@@ -426,7 +426,7 @@ import {  prisma  } from "@/lib/database"
           groupKey = date.toISOString().split("T")[0]; // Default to day;
 
       if (!session.user) {
-        groupedData.set(groupKey, {interval:groupKey,
+        groupedData.set(groupKey, {interval: groupKey,
           metrics: { ...item.metrics }
         });
       } else {
@@ -557,7 +557,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Validate analytics data;
    */;
-  private validateAnalyticsData(data: {date:Date, metrics: unknown }): void {
+  private validateAnalyticsData(data: {date: Date, metrics: unknown }): void {
     const errors: string[] = [];
 
     // Date is required;

@@ -2,9 +2,9 @@ import "@/lib/cache"
 import "@/lib/hr/types"
 import "@prisma/client"
 import PractitionerRole }
-import {  cache  } from "@/lib/database"
-import {   Practitioner
-import {  PrismaClient  } from "@/lib/database"
+import {cache  } from "next/server"
+import {Practitioner
+import {  PrismaClient  } from "next/server"
 
 const prisma = new PrismaClient();
 
@@ -14,7 +14,7 @@ const prisma = new PrismaClient();
  */;
 
     }[];
-    positions?: {positionId:string,
+    positions?: {positionId: string,
       isPrimary: boolean,
       startDate: Date,
       endDate?: Date}[];
@@ -90,12 +90,12 @@ const prisma = new PrismaClient();
       return JSON.parse(cachedEmployee);
 
     // If not in cache, fetch from database;
-    const employee = await prisma.employee.findUnique({where:{ id },
+    const employee = await prisma.employee.findUnique({where: { id },
       true,
-        {position:true;
+        {position: true;
           }},
         qualifications: true,
-        {id:true,
+        {id: true,
             name: true,
             email: true,
             image: true,
@@ -121,12 +121,12 @@ const prisma = new PrismaClient();
       return JSON.parse(cachedEmployee);
 
     // If not in cache, fetch from database;
-    const employee = await prisma.employee.findUnique({where:{ employeeId },
+    const employee = await prisma.employee.findUnique({where: { employeeId },
       true,
-        {position:true;
+        {position: true;
           }},
         qualifications: true,
-        {id:true,
+        {id: true,
             name: true,
             email: true,
             image: true,

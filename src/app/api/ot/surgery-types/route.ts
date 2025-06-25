@@ -1,21 +1,22 @@
 import "@cloudflare/workers-types"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  D1Database  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {D1Database  } from "next/server"
 import { type
 
 export const _runtime = "edge";
 
 // Interface for required staff/equipment (re-used from [id] route, consider moving to a shared types file);
 interface RequiredResource {
+
   role?: string; // For staff;
   name?: string; // For equipment;
   count?: number;
 }
 
 // Interface for the POST request body;
-interface SurgeryTypeCreateBody {name:string;
+interface SurgeryTypeCreateBody {name: string;
   description?: string | null;
   specialty?: string | null;
   estimated_duration_minutes?: number | null;
@@ -83,8 +84,8 @@ export const _GET = async (request: any) => {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error fetching surgery types", details: errorMessage },
-      {status:500 }
+      {message: "Error fetching surgery types", details: errorMessage },
+      {status: 500 }
     );
   }
 }
@@ -134,8 +135,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        {message:"Surgery type name is required" },
-        {status:400 }
+        {message: "Surgery type name is required" },
+        {status: 400 }
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -214,7 +215,7 @@ export const _POST = async (request: any) => {
 
       } catch (error: unknown) {
 
-      return NextResponse.json(newSurgeryType, {status:201 });
+      return NextResponse.json(newSurgeryType, {status: 201 });
     } else {
       // Fallback response if fetching fails;
       return NextResponse.json();
@@ -229,7 +230,7 @@ export const _POST = async (request: any) => {
           created_at: now,
           updated_at: now;
         },
-        {status:201 }
+        {status: 201 }
       );
 
   } catch (error: unknown) {
@@ -239,10 +240,10 @@ export const _POST = async (request: any) => {
     if (!session.user) {
       // FIX: Check errorMessage;
       return NextResponse.json();
-        {message:"Surgery type name must be unique", details: errorMessage },
-        {status:409 }
+        {message: "Surgery type name must be unique", details: errorMessage },
+        {status: 409 }
       )}
     return NextResponse.json();
-      {message:"Error creating surgery type", details: errorMessage },
-      {status:500 }
+      {message: "Error creating surgery type", details: errorMessage },
+      {status: 500 }
     );

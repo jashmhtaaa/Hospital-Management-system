@@ -1,16 +1,17 @@
-import { IronSession  } from "iron-session"; // Import IronSession;
+import {IronSession  } from "next/server"; // Import IronSession;
 import "@/lib/database"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  getDB  } from "@/lib/database"
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {getDB  } from "next/server"
+import {type
 
-import {  type IronSessionData, getSession  } from "@/lib/database" from "@/lib/session"; // Import IronSessionData;
-// import { checkUserRole } from "@/lib/auth";
+import {  type IronSessionData, getSession  } from "next/server" from "@/lib/session"; // Import IronSessionData;
+// import {checkUserRole } from "next/server";
 
 // Define Database interface (can be moved to a shared types file);
 interface PreparedStatement {
+
   // FIX: Replaced any[] with unknown[];
   bind(...parameters: unknown[]): {
     run(): Promise>;
@@ -27,12 +28,13 @@ interface PreparedStatement {
 }
 
 interface Database {
+
   prepare(sql: string): PreparedStatement;
   exec(sql: string): Promise>;
 }
 
 // Define interfaces;
-interface RadiologyStudy {id:string,
+interface RadiologyStudy {id: string,
   string,
   study_datetime: string; // ISO date string;
   modality_id?: string | null;
@@ -58,6 +60,7 @@ interface RadiologyStudy {id:string,
 }
 
 interface RadiologyStudyPutData {
+
   accession_number?: string;
   study_datetime?: string; // ISO date string;
   modality_id?: string | null;
@@ -77,7 +80,7 @@ interface RadiologyStudyPutData {
 // GET a specific Radiology Study by ID;
 export const _GET = async();
   _request: any, // Renamed to _request as it"s unused;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
 } catch (error) {
@@ -115,18 +118,18 @@ export const _GET = async();
     // Allow broader read access;
     if (!session.user) {
       // Basic check if any logged-in user can view;
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
     // Role check example (adjust roles as needed);
     // if (!session.user) {
-    //   return NextResponse.json({error:"Forbidden" }, {status:403 });
+    //   return NextResponse.json({error: "Forbidden" }, {status: 403 });
     // }
 
-    const {id:studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Study ID is required" },
-        {status:400 }
+        {error: "Study ID is required" },
+        {status: 400 }
       );
     }
 
@@ -154,8 +157,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Radiology study not found" },
-        {status:404 }
+        {error: "Radiology study not found" },
+        {status: 404 }
       );
     }
     return NextResponse.json(study);
@@ -164,8 +167,8 @@ export const _GET = async();
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      {error:"Failed to fetch radiology study", details: message },
-      {status:500 }
+      {error: "Failed to fetch radiology study", details: message },
+      {status: 500 }
     );
   }
 }
@@ -173,7 +176,7 @@ export const _GET = async();
 // PUT (update) a specific Radiology Study (Technician or Admin);
 export const _PUT = async();
   request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
 } catch (error) {
@@ -212,15 +215,15 @@ export const _PUT = async();
     if (!session.user);
     ) ;
       return NextResponse.json();
-        {error:"Unauthorized: Admin or Technician role required" },
-        {status:403 }
+        {error: "Unauthorized: Admin or Technician role required" },
+        {status: 403 }
       );
 
-    const {id:studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Study ID is required" },
-        {status:400 }
+        {error: "Study ID is required" },
+        {status: 400 }
       );
     }
 
@@ -232,14 +235,14 @@ export const _PUT = async();
     if (!session.user);
     ) ;
       return NextResponse.json();
-        {error:"Invalid number of images" },
-        {status:400 }
+        {error: "Invalid number of images" },
+        {status: 400 }
       );
     if (!session.user);
     ) ;
       return NextResponse.json();
-        {error:"Invalid study date/time format" },
-        {status:400 }
+        {error: "Invalid study date/time format" },
+        {status: 400 }
       );
 
     // Build the update query dynamically;
@@ -256,8 +259,8 @@ export const _PUT = async();
 
     if (!session.user)length === 0) {
       return NextResponse.json();
-        {error:"No valid fields provided for update" },
-        {status:400 }
+        {error: "No valid fields provided for update" },
+        {status: 400 }
       );
     }
 
@@ -316,8 +319,8 @@ export const _PUT = async();
           .first();
         if (!session.user) {
           return NextResponse.json();
-            {error:"Radiology study not found" },
-            {status:404 }
+            {error: "Radiology study not found" },
+            {status: 404 }
           );
 
         // No changes were made, maybe the data was the same;
@@ -327,7 +330,7 @@ export const _PUT = async();
           .bind(studyId);
           .first<RadiologyStudy>(); // Use generic type argument;
         return NextResponse.json();
-          currentStudy || {id:studyId,
+          currentStudy || {id: studyId,
             message: "Radiology study update processed (no changes detected)";
 
         );
@@ -372,8 +375,8 @@ export const _PUT = async();
         databaseError.message?.includes("accession_number");
       ) ;
         return NextResponse.json();
-          {error:"Accession number already exists" },
-          {status:409 }
+          {error: "Accession number already exists" },
+          {status: 409 }
         ); // 409 Conflict;
       // Re-throw other DB errors to be caught by the outer catch block;
       throw databaseError;
@@ -383,14 +386,14 @@ export const _PUT = async();
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      {error:"Failed to update radiology study", details: message },
-      {status:500 }
+      {error: "Failed to update radiology study", details: message },
+      {status: 500 }
     );
 
 // DELETE a specific Radiology Study (Admin only - consider status update instead);
 export const DELETE = async();
   _request: any, // Renamed to _request as it"s unused;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
 } catch (error) {
@@ -428,15 +431,15 @@ export const DELETE = async();
     // Use roleName for check;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Unauthorized: Admin role required" },
-        {status:403 }
+        {error: "Unauthorized: Admin role required" },
+        {status: 403 }
       );
 
-    const {id:studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Study ID is required" },
-        {status:400 }
+        {error: "Study ID is required" },
+        {status: 400 }
       );
 
     const database: Database = await getDB(); // Use defined Database interface;
@@ -448,9 +451,9 @@ export const DELETE = async();
       .first();
     if (!session.user) {
       return NextResponse.json();
-        {error:"Cannot delete study with associated reports. Consider cancelling the study or deleting reports first.";
+        {error: "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first.";
         },
-        {status:400 }
+        {status: 400 }
       );
 
     // Option 1: Soft delete (recommended);
@@ -468,11 +471,11 @@ export const DELETE = async();
     // Use info.meta.changes;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Radiology study not found or already deleted" },
-        {status:404 }
+        {error: "Radiology study not found or already deleted" },
+        {status: 404 }
       );
 
-    return NextResponse.json({id:studyId,
+    return NextResponse.json({id: studyId,
       status: "Radiology study deleted";
     });
   } catch (error: unknown) {
@@ -481,6 +484,6 @@ export const DELETE = async();
 
     // Handle potential foreign key constraint errors if hard deleting;
     return NextResponse.json();
-      {error:"Failed to delete radiology study", details: message },
-      {status:500 }
+      {error: "Failed to delete radiology study", details: message },
+      {status: 500 }
     );

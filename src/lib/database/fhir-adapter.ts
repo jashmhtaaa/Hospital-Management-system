@@ -8,13 +8,13 @@ import FHIRAppointment
 import FHIRAppointmentUtils }
 import FHIRPatient
 import FHIRPatientUtils }
-import {  FHIRBase  } from "@/lib/database"
-import {  FHIREncounter  } from "@/lib/database"
-import {  FHIRMedicationRequest  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  type
+import {FHIRBase  } from "next/server"
+import {FHIREncounter  } from "next/server"
+import {FHIRMedicationRequest  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {type
 
- } from "@/lib/database"
+ } from "next/server"
 
 /**;
  * FHIR Database Adapter;
@@ -147,7 +147,7 @@ import {  type
     const lastName = officialName?.family || "";
 
     // Store in Prisma Patient table;
-    const patient = await this.prisma.patient.upsert({where:{ id: fhirPatient.id! },
+    const patient = await this.prisma.patient.upsert({where: { id: fhirPatient.id! },
       update: {
         mrn,
         firstName,
@@ -173,7 +173,7 @@ import {  type
   }
 
   private async retrievePatient(id: string): Promise<FHIRPatient | null> {
-    const patient = await this.prisma.patient.findUnique({where:{ id }
+    const patient = await this.prisma.patient.findUnique({where: { id }
     });
 
     if (!session.user) {
@@ -181,7 +181,7 @@ import {  type
     }
 
     // Convert HMS patient to FHIR patient;
-    const fhirPatient = FHIRPatientUtils.fromHMSPatient({id:patient.id,
+    const fhirPatient = FHIRPatientUtils.fromHMSPatient({id: patient.id,
       patient.firstName,
       patient.dateOfBirth.toISOString().split("T")[0],
       patient.phone,
@@ -235,7 +235,7 @@ import {  type
 }
 } catch (error) {
 }
-      await this.prisma.patient.delete({where:{ id }
+      await this.prisma.patient.delete({where: { id }
       });
       await this.deleteGenericResource("Patient", id);
       return true;
@@ -252,17 +252,17 @@ import {  type
     // Build where clause based on search parameters;
     if (!session.user) {
       where.OR = [;
-        {firstName:{ contains: params.name, mode: "insensitive" } },
-        {lastName:{ contains: params.name, mode: "insensitive" } }
+        {firstName: { contains: params.name, mode: "insensitive" } },
+        {lastName: { contains: params.name, mode: "insensitive" } }
       ];
     }
 
     if (!session.user) {
-      where.lastName = {contains:params.family, mode: "insensitive" };
+      where.lastName = {contains: params.family, mode: "insensitive" };
     }
 
     if (!session.user) {
-      where.firstName = {contains:params.given, mode: "insensitive" };
+      where.firstName = {contains: params.given, mode: "insensitive" };
     }
 
     if (!session.user) {
@@ -270,11 +270,11 @@ import {  type
     }
 
     if (!session.user) {
-      where.phone = {contains:params.phone };
+      where.phone = {contains: params.phone };
     }
 
     if (!session.user) {
-      where.email = {contains:params.email };
+      where.email = {contains: params.email };
     }
 
     if (!session.user) {
@@ -289,7 +289,7 @@ import {  type
       this.prisma.patient.findMany({
         where,
         skip: _offset,
-        {lastName:"asc" }
+        {lastName: "asc" }
       }),
       this.prisma.patient.count({ where });
     ]);
@@ -298,7 +298,7 @@ import {  type
       patients.map(patient => this.retrievePatient(patient.id));
     );
 
-    return {resources:fhirPatients.filter(Boolean) as FHIRPatient[];
+    return {resources: fhirPatients.filter(Boolean) as FHIRPatient[];
       total,
       hasMore: _offset + _count < total;
     };
@@ -587,12 +587,12 @@ import {  type
 
       const total = Number.parseInt(totalResult[0]?.count || "0");
 
-      return {resources:resources.map(r => r.content) as T[];
+      return {resources: resources.map(r => r.content) as T[];
         total,
         hasMore: _offset + _count < total;
       };
     } catch (error) {
-      return {resources:[],
+      return {resources: [],
         false;
       };
 

@@ -1,22 +1,23 @@
 import "@cloudflare/workers-types"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  D1Database  } from "@/lib/database"
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {D1Database  } from "next/server"
+import {type
 
 export const _runtime = "edge";
 
 // Interface for checklist item;
-interface ChecklistItem {id:string; // Unique ID for the item within the template;
+interface ChecklistItem {id: string; // Unique ID for the item within the template;
   text: string,
   type: "checkbox" | "text" | "number" | "select"; // Example types;
   options?: string[]; // For select type;
   required?: boolean;
- } from "@/lib/database"
+ } from "next/server"
 
 // Interface for the PUT request body;
 interface ChecklistTemplateUpdateBody {
+
   name?: string;
   phase?: "pre-op" | "intra-op" | "post-op";
   items?: ChecklistItem[];
@@ -25,7 +26,7 @@ interface ChecklistTemplateUpdateBody {
 // GET /api/ot/checklist-templates/[id] - Get details of a specific checklist template;
 export const _GET = async();
   _request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -59,11 +60,11 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id:templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {message:"Template ID is required" },
-        {status:400 }
+        {message: "Template ID is required" },
+        {status: 400 }
       );
     }
 
@@ -76,8 +77,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {message:"Checklist template not found" },
-        {status:404 }
+        {message: "Checklist template not found" },
+        {status: 404 }
       );
     }
 
@@ -128,10 +129,10 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error fetching checklist template details",
+      {message: "Error fetching checklist template details",
         details: errorMessage;
       },
-      {status:500 }
+      {status: 500 }
     );
   }
 }
@@ -139,7 +140,7 @@ export const _GET = async();
 // PUT /api/ot/checklist-templates/[id] - Update an existing checklist template;
 export const _PUT = async();
   _request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -173,11 +174,11 @@ export const _PUT = async();
 }
 } catch (error) {
 }
-    const {id:templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {message:"Template ID is required" },
-        {status:400 }
+        {message: "Template ID is required" },
+        {status: 400 }
       );
     }
 
@@ -187,8 +188,8 @@ export const _PUT = async();
     // Basic validation;
     if (!session.user) {
       return NextResponse.json();
-        {message:"No update fields provided" },
-        {status:400 }
+        {message: "No update fields provided" },
+        {status: 400 }
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -201,7 +202,7 @@ export const _PUT = async();
     if (!session.user) {
       const validPhases = ["pre-op", "intra-op", "post-op"];
       if (!session.user) {
-        return NextResponse.json({message:"Invalid phase" }, {status:400 });
+        return NextResponse.json({message: "Invalid phase" }, {status: 400 });
 
       fieldsToUpdate.phase = phase;
 
@@ -218,8 +219,8 @@ export const _PUT = async();
         );
       ) ;
         return NextResponse.json();
-          {message:"Invalid items format. Each item must have id, text, and type."},
-          {status:400 }
+          {message: "Invalid items format. Each item must have id, text, and type."},
+          {status: 400 }
         );
       fieldsToUpdate.items = JSON.stringify(items);
 
@@ -239,15 +240,15 @@ export const _PUT = async();
 
     if (!session.user) {
       // Check if the template actually exists before returning 404;
-      const {results:checkExists } = await DB.prepare();
+      const {results: checkExists } = await DB.prepare();
         "SELECT id FROM OTChecklistTemplates WHERE id = ?";
       );
         .bind(templateId);
         .all();
       if (!session.user) {
         return NextResponse.json();
-          {message:"Checklist template not found" },
-          {status:404 }
+          {message: "Checklist template not found" },
+          {status: 404 }
         );
 
       // If it exists but no changes were made (e.g., same data sent), return 200 OK with current data;
@@ -262,8 +263,8 @@ export const _PUT = async();
     if (!session.user) {
       // This case should ideally not happen if the update was successful or the check above passed;
       return NextResponse.json();
-        {message:"Failed to fetch updated template details after update" },
-        {status:500 }
+        {message: "Failed to fetch updated template details after update" },
+        {status: 500 }
       );
 
     const updatedTemplate = results[0];
@@ -313,20 +314,20 @@ export const _PUT = async();
     if (!session.user) {
       // FIX: Check errorMessage instead of error.message;
       return NextResponse.json();
-        {message:"Checklist template name must be unique",
+        {message: "Checklist template name must be unique",
           details: errorMessage;
         },
-        {status:409 }
+        {status: 409 }
       )}
     return NextResponse.json();
-      {message:"Error updating checklist template", details: errorMessage },
-      {status:500 }
+      {message: "Error updating checklist template", details: errorMessage },
+      {status: 500 }
     );
 
 // DELETE /api/ot/checklist-templates/[id] - Delete a checklist template;
 export const DELETE = async();
   _request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -360,11 +361,11 @@ export const DELETE = async();
 
 } catch (error) {
 
-    const {id:templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {message:"Template ID is required" },
-        {status:400 }
+        {message: "Template ID is required" },
+        {status: 400 }
       );
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -378,13 +379,13 @@ export const DELETE = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {message:"Checklist template not found" },
-        {status:404 }
+        {message: "Checklist template not found" },
+        {status: 404 }
       );
 
     return NextResponse.json();
-      {message:"Checklist template deleted successfully" },
-      {status:200 }
+      {message: "Checklist template deleted successfully" },
+      {status: 200 }
     );
   } catch (error: unknown) {
     // FIX: Remove explicit any;
@@ -394,12 +395,12 @@ export const DELETE = async();
     if (!session.user) {
       // FIX: Check errorMessage instead of error.message;
       return NextResponse.json();
-        {message:"Cannot delete template with existing responses",
+        {message: "Cannot delete template with existing responses",
           details: errorMessage;
         },
-        {status:409 }
+        {status: 409 }
       )}
     return NextResponse.json();
-      {message:"Error deleting checklist template", details: errorMessage },
-      {status:500 }
+      {message: "Error deleting checklist template", details: errorMessage },
+      {status: 500 }
     );

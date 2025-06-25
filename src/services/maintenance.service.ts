@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 // Create enums to match Prisma schema;
 export enum MaintenanceRequestStatus {
@@ -14,7 +14,7 @@ export enum MaintenanceRequestStatus {
   URGENT = "URGENT"}
 
 // Validation schemas;
-export const createMaintenanceRequestSchema = z.object({equipmentId:z.string().optional(),
+export const createMaintenanceRequestSchema = z.object({equipmentId: z.string().optional(),
   description: z.string().min(1, "Description is required"),
   reportedBy: z.string().min(1, "Reporter ID is required"),
   assignedToId: z.string().optional().nullable(),
@@ -24,7 +24,7 @@ export const createMaintenanceRequestSchema = z.object({equipmentId:z.string().o
   notes: z.string().optional();
 });
 
-export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({id:z.string();
+export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({id: z.string();
 });
 
 export type CreateMaintenanceRequestInput = z.infer>;
@@ -32,7 +32,7 @@ export type UpdateMaintenanceRequestInput = z.infer>;
 
 // Import prisma client;
 import "../lib/prisma"
-import {  prisma  } from "@/lib/database"
+import {prisma  } from "next/server"
 
 /**;
  * Service class for managing maintenance requests;
@@ -114,8 +114,8 @@ import {  prisma  } from "@/lib/database"
       const requests = await prisma.maintenanceRequest.findMany({
         where,
         orderBy: [;
-          {priority:"desc" },
-          {requestedAt:"asc" }],
+          {priority: "desc" },
+          {requestedAt: "asc" }],
         {
             true,
               name: true;
@@ -163,7 +163,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.findUnique({where:{ id },
+      const request = await prisma.maintenanceRequest.findUnique({where: { id },
         {
             true,
               name: true;
@@ -216,10 +216,10 @@ import {  prisma  } from "@/lib/database"
       const validatedData = updateMaintenanceRequestSchema.parse({ ...data, id });
 
       // Remove id from the data to be updated;
-      const {id:_, ...updateData } = validatedData;
+      const {id: _, ...updateData } = validatedData;
 
       // Update the request;
-      const request = await prisma.maintenanceRequest.update({where:{ id },
+      const request = await prisma.maintenanceRequest.update({where: { id },
         data: updateData,
         {
             true,
@@ -271,7 +271,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.delete({where:{ id }});
+      const request = await prisma.maintenanceRequest.delete({where: { id }});
 
       return request;
     } catch (error) {
@@ -316,7 +316,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.update({where:{ id: requestId },
+      const request = await prisma.maintenanceRequest.update({where: { id: requestId },
         userId,
           status: MaintenanceRequestStatus.IN_PROGRESS;
         },
@@ -367,7 +367,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.update({where:{ id: requestId },
+      const request = await prisma.maintenanceRequest.update({where: { id: requestId },
         MaintenanceRequestStatus.COMPLETED,
           completedAt: new Date();
         },
@@ -418,7 +418,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.update({where:{ id: requestId },
+      const request = await prisma.maintenanceRequest.update({where: { id: requestId },
         MaintenanceRequestStatus.CANCELLED;
         },
         {

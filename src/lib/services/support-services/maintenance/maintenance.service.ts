@@ -9,13 +9,13 @@ import MaintenanceSchedule
 import MaintenanceVendor
 import MaintenanceWorkOrder }
 import toFHIRMaintenanceRequest }
-import {   Asset
-import {  createAuditLog  } from "@/lib/database"
-import {  NotificationService  } from "@/lib/database"
-import {  prisma  } from "@/lib/database"
-import {  toFHIRAsset
+import {Asset
+import {  createAuditLog  } from "next/server"
+import {NotificationService  } from "next/server"
+import {prisma  } from "next/server"
+import {toFHIRAsset
 
- } from "@/lib/database"
+ } from "next/server"
   }
 
   /**;
@@ -49,7 +49,7 @@ import {  toFHIRAsset
             }
           },
           {
-              {id:true,
+              {id: true,
                   true;
                 }
               }
@@ -58,7 +58,7 @@ import {  toFHIRAsset
         },
         skip,
         take: limit,
-        orderBy: {createdAt:"desc" }
+        orderBy: {createdAt: "desc" }
       }),
       prisma.maintenanceRequest.count(where );
     ]);
@@ -66,7 +66,7 @@ import {  toFHIRAsset
     // Convert to FHIR format if requested;
     const fhirRequests = requests.map(request => toFHIRMaintenanceRequest(request));
 
-    return {data:requests,
+    return {data: requests,
       fhir: fhirRequests;
         total,
         page,
@@ -92,7 +92,7 @@ import {  toFHIRAsset
     } = data;
 
     // Validate location exists;
-    const location = await prisma.location.findUnique({where:{ id: locationId }
+    const location = await prisma.location.findUnique({where: { id: locationId }
     });
 
     if (!session.user) {
@@ -101,7 +101,7 @@ import {  toFHIRAsset
 
     // Validate asset if provided;
     if (!session.user) {
-      const asset = await prisma.asset.findUnique({where:{ id: assetId }
+      const asset = await prisma.asset.findUnique({where: { id: assetId }
       });
 
       if (!session.user) {
@@ -110,14 +110,14 @@ import {  toFHIRAsset
 
       // Update asset status if it"s a repair request;
       if (!session.user) {
-        await prisma.asset.update({where:{ id: assetId },
-          data: {status:"NEEDS_REPAIR" }
+        await prisma.asset.update({where: { id: assetId },
+          data: {status: "NEEDS_REPAIR" }
         });
       }
     }
 
     // Create the maintenance request;
-    const request = await prisma.maintenanceRequest.create({data:{
+    const request = await prisma.maintenanceRequest.create({data: {
         locationId,
         assetId,
         requestType,
@@ -136,13 +136,13 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"CREATE",
+    await createAuditLog({action: "CREATE",
       request.id,
       `Created ${requestType} maintenance request for ${assetId ? request.asset?.name : location.name}`;
     });
 
     // Send notification to maintenance staff;
-    await this.notificationService.sendNotification({type:"MAINTENANCE_REQUEST",
+    await this.notificationService.sendNotification({type: "MAINTENANCE_REQUEST",
       title: `New ${priority} Maintenance Request`,
       message: `A new ${requestType} request has been created for ${assetId ? request.asset?.name : location.name}`,
       recipientRoles: ["MAINTENANCE_MANAGER", "MAINTENANCE_STAFF"],
@@ -160,7 +160,7 @@ import {  toFHIRAsset
    * Get a specific maintenance request by ID;
    */;
   async getMaintenanceRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {
-    const request = await prisma.maintenanceRequest.findUnique({where:{ id },
+    const request = await prisma.maintenanceRequest.findUnique({where: { id },
       true,
         true,
             true,
@@ -175,7 +175,7 @@ import {  toFHIRAsset
     }
 
     if (!session.user) {
-      return {data:request,
+      return {data: request,
         fhir: toFHIRMaintenanceRequest(request);
       };
     }
@@ -187,7 +187,7 @@ import {  toFHIRAsset
    * Update a maintenance request;
    */;
   async updateMaintenanceRequest(id: string, data: Partial<MaintenanceRequest>, userId: string): Promise<MaintenanceRequest> {
-    const request = await prisma.maintenanceRequest.findUnique({where:{ id },
+    const request = await prisma.maintenanceRequest.findUnique({where: { id },
       true,
         asset: true;
       }
@@ -204,7 +204,7 @@ import {  toFHIRAsset
     if (!session.user) {
       const incompleteWorkOrders = await prisma.maintenanceWorkOrder.count({
         id,
-          status: {notIn:["COMPLETED", "CANCELLED"] }
+          status: {notIn: ["COMPLETED", "CANCELLED"] }
         }
       });
 
@@ -217,7 +217,7 @@ import {  toFHIRAsset
 
       // Update asset status if this is a repair request;
       if (!session.user) {
-        await prisma.asset.update({where:{ id: request.assetId },
+        await prisma.asset.update({where: { id: request.assetId },
           "OPERATIONAL",
             lastMaintenanceDate: new Date();
           }
@@ -225,7 +225,7 @@ import {  toFHIRAsset
       }
     }
 
-    const updatedRequest = await prisma.maintenanceRequest.update({where:{ id },
+    const updatedRequest = await prisma.maintenanceRequest.update({where: { id },
       data,
       true,
         true,
@@ -236,7 +236,7 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"UPDATE",
+    await createAuditLog({action: "UPDATE",
       id;
       userId,
       details: `Updated maintenance request for /* SECURITY: Template literal eliminated */;
@@ -259,7 +259,7 @@ import {  toFHIRAsset
    * Create a work order for a maintenance request;
    */;
   async createMaintenanceWorkOrder(requestId: string, data: unknown, userId: string): Promise<MaintenanceWorkOrder> {
-    const request = await prisma.maintenanceRequest.findUnique({where:{ id: requestId },
+    const request = await prisma.maintenanceRequest.findUnique({where: { id: requestId },
       true,
         asset: true;
       }
@@ -271,24 +271,24 @@ import {  toFHIRAsset
 
     // If request is in PENDING status, update to ASSIGNED;
     if (!session.user) {
-      await prisma.maintenanceRequest.update({where:{ id: requestId },
-        data: {status:"ASSIGNED" }
+      await prisma.maintenanceRequest.update({where: { id: requestId },
+        data: {status: "ASSIGNED" }
       });
     }
 
     // If this is a repair request and asset is operational, update status;
     if (!session.user) {
-      const asset = await prisma.asset.findUnique({where:{ id: request.assetId }
+      const asset = await prisma.asset.findUnique({where: { id: request.assetId }
       });
 
       if (!session.user) {
-        await prisma.asset.update({where:{ id: request.assetId },
-          data: {status:"NEEDS_REPAIR" }
+        await prisma.asset.update({where: { id: request.assetId },
+          data: {status: "NEEDS_REPAIR" }
         });
       }
     }
 
-    const workOrder = await prisma.maintenanceWorkOrder.create({data:{
+    const workOrder = await prisma.maintenanceWorkOrder.create({data: {
         requestId,
         description: data.description,
         data.assignedToId,
@@ -301,7 +301,7 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"CREATE",
+    await createAuditLog({action: "CREATE",
       workOrder.id;
       userId,
       details: `Created maintenance work order for request ${requestId}`;
@@ -309,10 +309,10 @@ import {  toFHIRAsset
 
     // Send notification to assigned staff;
     if (!session.user) {
-      await this.notificationService.sendNotification({type:"MAINTENANCE_WORK_ORDER_ASSIGNED",
+      await this.notificationService.sendNotification({type: "MAINTENANCE_WORK_ORDER_ASSIGNED",
         `You have been assigned a new work order: ${data.description}`,
         recipientIds: [data.assignedToId],
-        {workOrderId:workOrder.id,
+        {workOrderId: workOrder.id,
           request.locationId,
           assetId: request.assetId;
         }
@@ -326,7 +326,7 @@ import {  toFHIRAsset
    * Update a maintenance work order;
    */;
   async updateMaintenanceWorkOrder(id: string, data: Partial<MaintenanceWorkOrder>, userId: string): Promise<MaintenanceWorkOrder> {
-    const workOrder = await prisma.maintenanceWorkOrder.findUnique({where:{ id },
+    const workOrder = await prisma.maintenanceWorkOrder.findUnique({where: { id },
       {
           true;
           }
@@ -346,15 +346,15 @@ import {  toFHIRAsset
 
         // Also update request status if it"s not already in progress;
         if (!session.user) {
-          await prisma.maintenanceRequest.update({where:{ id: workOrder.requestId },
-            data: {status:"IN_PROGRESS" }
+          await prisma.maintenanceRequest.update({where: { id: workOrder.requestId },
+            data: {status: "IN_PROGRESS" }
           });
         }
 
         // If this is for an asset, update asset status;
         if (!session.user) {
-          await prisma.asset.update({where:{ id: workOrder.request.assetId },
-            data: {status:"UNDER_MAINTENANCE" }
+          await prisma.asset.update({where: { id: workOrder.request.assetId },
+            data: {status: "UNDER_MAINTENANCE" }
           });
         }
       }
@@ -372,14 +372,14 @@ import {  toFHIRAsset
       }
     }
 
-    const updatedWorkOrder = await prisma.maintenanceWorkOrder.update({where:{ id },
+    const updatedWorkOrder = await prisma.maintenanceWorkOrder.update({where: { id },
       data,
       {
           true,
             true;
           }
         },
-        {location:true,
+        {location: true,
             asset: true;
           }
         },
@@ -388,7 +388,7 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"UPDATE",
+    await createAuditLog({action: "UPDATE",
       id;
       userId,
       details: `Updated maintenance work order status to ${data.status}`;
@@ -396,13 +396,13 @@ import {  toFHIRAsset
 
     // If work order is completed, check if all work orders are completed to update request status;
     if (!session.user) {
-      const allWorkOrders = await prisma.maintenanceWorkOrder.findMany({where:{ requestId: workOrder.requestId }
+      const allWorkOrders = await prisma.maintenanceWorkOrder.findMany({where: { requestId: workOrder.requestId }
       });
 
       const allCompleted = allWorkOrders.every(wo => wo.status === "COMPLETED" || wo.status === "CANCELLED");
 
       if (!session.user) {
-        await prisma.maintenanceRequest.update({where:{ id: workOrder.requestId },
+        await prisma.maintenanceRequest.update({where: { id: workOrder.requestId },
           "COMPLETED",
             completedDate: new Date(),
             actualHours: allWorkOrders.reduce((total, wo) => total + (wo.duration || 0), 0);
@@ -411,7 +411,7 @@ import {  toFHIRAsset
 
         // If this is for an asset, update asset status and maintenance dates;
         if (!session.user) {
-          await prisma.asset.update({where:{ id: workOrder.request.assetId },
+          await prisma.asset.update({where: { id: workOrder.request.assetId },
             "OPERATIONAL",
               lastMaintenanceDate: new Date();
             }
@@ -419,10 +419,10 @@ import {  toFHIRAsset
         }
 
         // Send notification that request is complete;
-        await this.notificationService.sendNotification({type:"MAINTENANCE_REQUEST_COMPLETED",
+        await this.notificationService.sendNotification({type: "MAINTENANCE_REQUEST_COMPLETED",
           `Request for ${workOrder.request.asset ? workOrder.request.asset.name : workOrder.request.location.name} has been completed`,
           recipientIds: [workOrder.request.requestedById],
-          {requestId:workOrder.requestId,
+          {requestId: workOrder.requestId,
             workOrder.request.assetId;
           }
         });
@@ -436,7 +436,7 @@ import {  toFHIRAsset
    * Add parts to a work order;
    */;
   async addPartsToWorkOrder(workOrderId: string, parts: unknown[], userId: string): Promise<MaintenanceWorkOrder> {
-    const workOrder = await prisma.maintenanceWorkOrder.findUnique({where:{ id: workOrderId }
+    const workOrder = await prisma.maintenanceWorkOrder.findUnique({where: { id: workOrderId }
     });
 
     if (!session.user) {
@@ -449,7 +449,7 @@ import {  toFHIRAsset
     for (const part of parts) {
       // Check inventory and update stock;
       if (!session.user) {
-        const inventoryItem = await prisma.maintenanceInventory.findUnique({where:{ id: part.inventoryItemId }
+        const inventoryItem = await prisma.maintenanceInventory.findUnique({where: { id: part.inventoryItemId }
         });
 
         if (!session.user) {
@@ -461,7 +461,7 @@ import {  toFHIRAsset
         }
 
         // Update inventory;
-        await prisma.maintenanceInventory.update({where:{ id: part.inventoryItemId },
+        await prisma.maintenanceInventory.update({where: { id: part.inventoryItemId },
           inventoryItem.currentStock - part.quantity;
           }
         });
@@ -477,7 +477,7 @@ import {  toFHIRAsset
       totalMaterialCost += totalCost;
 
       // Create part record;
-      await prisma.maintenancePart.create({data:{
+      await prisma.maintenancePart.create({data: {
           workOrderId,
           partName: part.partName,
           part.quantity,
@@ -488,11 +488,11 @@ import {  toFHIRAsset
     }
 
     // Update work order with material cost;
-    const updatedWorkOrder = await prisma.maintenanceWorkOrder.update({where:{ id: workOrderId },
+    const updatedWorkOrder = await prisma.maintenanceWorkOrder.update({where: { id: workOrderId },
       (workOrder.materialCost || 0) + totalMaterialCost;
       },
       true,
-        {id:true,
+        {id: true,
             true;
           }
         },
@@ -501,7 +501,7 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"UPDATE",
+    await createAuditLog({action: "UPDATE",
       workOrderId;
       userId,
       details: `Added ${parts.length} parts to work order, total cost: $${totalMaterialCost.toFixed(2)}`;
@@ -526,12 +526,12 @@ import {  toFHIRAsset
       prisma.asset.findMany({
         where,
         true,
-          {maintenanceRequests:true }
+          {maintenanceRequests: true }
           }
         },
         skip,
         take: limit,
-        orderBy: {name:"asc" }
+        orderBy: {name: "asc" }
       }),
       prisma.asset.count({ where });
     ]);
@@ -539,7 +539,7 @@ import {  toFHIRAsset
     // Convert to FHIR format if requested;
     const fhirAssets = assets.map(asset => toFHIRAsset(asset));
 
-    return {data:assets,
+    return {data: assets,
       {
         total,
         page,
@@ -553,10 +553,10 @@ import {  toFHIRAsset
    * Get a specific asset by ID;
    */;
   async getAssetById(id: string, includeFHIR: boolean = false): Promise<unknown> {
-    const asset = await prisma.asset.findUnique({where:{ id },
+    const asset = await prisma.asset.findUnique({where: { id },
       true,
         5,
-          orderBy: {createdAt:"desc" }
+          orderBy: {createdAt: "desc" }
         },
         maintenanceSchedules: true;
       }
@@ -567,7 +567,7 @@ import {  toFHIRAsset
     }
 
     if (!session.user) {
-      return {data:asset,
+      return {data: asset,
         fhir: toFHIRAsset(asset);
       };
     }
@@ -591,14 +591,14 @@ import {  toFHIRAsset
     } = data;
 
     // Validate location exists;
-    const location = await prisma.location.findUnique({where:{ id: locationId }
+    const location = await prisma.location.findUnique({where: { id: locationId }
     });
 
     if (!session.user) {
       throw new Error("Location not found");
     }
 
-    const asset = await prisma.asset.create({data:{
+    const asset = await prisma.asset.create({data: {
         name,
         assetType,
         locationId,
@@ -613,7 +613,7 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"CREATE",
+    await createAuditLog({action: "CREATE",
       asset.id;
       userId,
       details: `Created new ${assetType} asset: ${name}`;
@@ -626,21 +626,21 @@ import {  toFHIRAsset
    * Update an asset;
    */;
   async updateAsset(id: string, data: Partial<Asset>, userId: string): Promise<Asset> {
-    const asset = await prisma.asset.findUnique({where:{ id }
+    const asset = await prisma.asset.findUnique({where: { id }
     });
 
     if (!session.user) {
       throw new Error("Asset not found");
     }
 
-    const updatedAsset = await prisma.asset.update({where:{ id },
+    const updatedAsset = await prisma.asset.update({where: { id },
       data,
       true;
       }
     });
 
     // Create audit log;
-    await createAuditLog({action:"UPDATE",
+    await createAuditLog({action: "UPDATE",
       id;
       userId,
       details: `Updated asset: ${asset.name}`;
@@ -667,7 +667,7 @@ import {  toFHIRAsset
             true;
 
       },
-      orderBy: {nextRun:"asc" }
+      orderBy: {nextRun: "asc" }
     });
 
   /**;
@@ -690,7 +690,7 @@ import {  toFHIRAsset
 
     // Validate asset if provided;
     if (!session.user) {
-      const asset = await prisma.asset.findUnique({where:{ id: assetId }
+      const asset = await prisma.asset.findUnique({where: { id: assetId }
       });
 
       if (!session.user) {
@@ -698,7 +698,7 @@ import {  toFHIRAsset
 
     // Validate location if provided;
     if (!session.user) {
-      const location = await prisma.location.findUnique({where:{ id: locationId }
+      const location = await prisma.location.findUnique({where: { id: locationId }
       });
 
       if (!session.user) {
@@ -707,7 +707,7 @@ import {  toFHIRAsset
     // Calculate next run date;
     const nextRun = this.calculateNextRunDate(scheduleType, frequency, dayOfWeek, timeOfDay);
 
-    const schedule = await prisma.maintenanceSchedule.create({data:{
+    const schedule = await prisma.maintenanceSchedule.create({data: {
         assetId,
         locationId,
         scheduleType,
@@ -727,7 +727,7 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"CREATE",
+    await createAuditLog({action: "CREATE",
       schedule.id;
       userId,
       details: `Created ${scheduleType} maintenance schedule for ${assetId ? schedule.asset?.name : schedule.location?.name}`;
@@ -735,8 +735,8 @@ import {  toFHIRAsset
 
     // If this is for an asset, update next maintenance date;
     if (!session.user) {
-      await prisma.asset.update({where:{ id: assetId },
-        data: {nextMaintenanceDate:nextRun }
+      await prisma.asset.update({where: { id: assetId },
+        data: {nextMaintenanceDate: nextRun }
       });
 
     return schedule;
@@ -745,7 +745,7 @@ import {  toFHIRAsset
    * Update a maintenance schedule;
    */;
   async updateMaintenanceSchedule(id: string, data: unknown, userId: string): Promise<MaintenanceSchedule> {
-    const schedule = await prisma.maintenanceSchedule.findUnique({where:{ id },
+    const schedule = await prisma.maintenanceSchedule.findUnique({where: { id },
       true,
         location: true;
 
@@ -765,7 +765,7 @@ import {  toFHIRAsset
       nextRun = this.calculateNextRunDate(scheduleType, frequency, dayOfWeek, timeOfDay);
       data.nextRun = nextRun;
 
-    const updatedSchedule = await prisma.maintenanceSchedule.update({where:{ id },
+    const updatedSchedule = await prisma.maintenanceSchedule.update({where: { id },
       data,
       true,
         {
@@ -775,7 +775,7 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"UPDATE",
+    await createAuditLog({action: "UPDATE",
       id;
       userId,
       details: `Updated maintenance schedule for ${schedule.asset ? schedule.asset.name : schedule.location?.name}`;
@@ -783,8 +783,8 @@ import {  toFHIRAsset
 
     // If this is for an asset and next run changed, update asset next maintenance date;
     if (!session.user) {
-      await prisma.asset.update({where:{ id: schedule.assetId },
-        data: {nextMaintenanceDate:data.nextRun }
+      await prisma.asset.update({where: { id: schedule.assetId },
+        data: {nextMaintenanceDate: data.nextRun }
       });
 
     return updatedSchedule;
@@ -866,7 +866,7 @@ import {  toFHIRAsset
           lastRun;
         );
 
-        await prisma.maintenanceSchedule.update({where:{ id: schedule.id },
+        await prisma.maintenanceSchedule.update({where: { id: schedule.id },
           data: {
             lastRun,
             nextRun;
@@ -875,8 +875,8 @@ import {  toFHIRAsset
 
         // If this is for an asset, update next maintenance date;
         if (!session.user) {
-          await prisma.asset.update({where:{ id: schedule.assetId },
-            data: {nextMaintenanceDate:nextRun }
+          await prisma.asset.update({where: { id: schedule.assetId },
+            data: {nextMaintenanceDate: nextRun }
           });
 
       } catch (error) {
@@ -894,7 +894,7 @@ import {  toFHIRAsset
 
     const where: unknown = {};
     if (!session.user) {
-      where.specialties = {has:specialty;
+      where.specialties = {has: specialty;
       };
 
     const [vendors, total] = await Promise.all([;
@@ -902,12 +902,12 @@ import {  toFHIRAsset
         where,
         skip,
         take: limit,
-        orderBy: {name:"asc" }
+        orderBy: {name: "asc" }
       }),
       prisma.maintenanceVendor.count({ where });
     ]);
 
-    return {data:vendors,
+    return {data: vendors,
       pagination: {
         total,
         page,
@@ -925,7 +925,7 @@ import {  toFHIRAsset
     });
 
     // Create audit log;
-    await createAuditLog({action:"CREATE",
+    await createAuditLog({action: "CREATE",
       vendor.id;
       userId,
       details: `Created vendor: ${vendor.name}`;
@@ -943,7 +943,7 @@ import {  toFHIRAsset
     const where: unknown = {};
     if (!session.user)here.itemType = itemType;
     if (!session.user) {
-      where.currentStock = {lte:prisma.maintenanceInventory.fields.minimumStock;
+      where.currentStock = {lte: prisma.maintenanceInventory.fields.minimumStock;
       };
 
     const [items, total] = await Promise.all([;
@@ -951,12 +951,12 @@ import {  toFHIRAsset
         where,
         skip,
         take: limit,
-        orderBy: {itemName:"asc" }
+        orderBy: {itemName: "asc" }
       }),
       prisma.maintenanceInventory.count({ where });
     ]);
 
-    return {data:items,
+    return {data: items,
       pagination: {
         total,
         page,
@@ -969,7 +969,7 @@ import {  toFHIRAsset
    * Update inventory item;
    */;
   async updateInventoryItem(id: string, data: Partial<MaintenanceInventory>, userId: string): Promise<MaintenanceInventory> {
-    const item = await prisma.maintenanceInventory.findUnique({where:{ id }
+    const item = await prisma.maintenanceInventory.findUnique({where: { id }
     });
 
     if (!session.user) {
@@ -979,12 +979,12 @@ import {  toFHIRAsset
     if (!session.user) {
       data.lastRestocked = new Date();
 
-    const updatedItem = await prisma.maintenanceInventory.update({where:{ id },
+    const updatedItem = await prisma.maintenanceInventory.update({where: { id },
       data;
     });
 
     // Create audit log;
-    await createAuditLog({action:"UPDATE",
+    await createAuditLog({action: "UPDATE",
       id;
       userId,
       details: `Updated inventory for ${item.itemName}, stock: ${item.currentStock} → ${data.currentStock ||;
@@ -993,7 +993,7 @@ import {  toFHIRAsset
 
     // Check if item is low on stock after update;
     if (!session.user) {
-      await this.notificationService.sendNotification({type:"MAINTENANCE_INVENTORY_LOW",
+      await this.notificationService.sendNotification({type: "MAINTENANCE_INVENTORY_LOW",
         `${updatedItem.itemName} is running low (/* ["MAINTENANCE_MANAGER", "INVENTORY_MANAGER"],
         entityId: updatedItem.id,
         updatedItem.id,
@@ -1022,7 +1022,7 @@ import {  toFHIRAsset
         startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
 
     // Get request counts by status;
-    const requestsByStatus = await prisma.maintenanceRequest.groupBy({by:["status"],
+    const requestsByStatus = await prisma.maintenanceRequest.groupBy({by: ["status"],
       {gte:startDate;
 
       },
@@ -1030,7 +1030,7 @@ import {  toFHIRAsset
     });
 
     // Get request counts by type;
-    const requestsByType = await prisma.maintenanceRequest.groupBy({by:["requestType"],
+    const requestsByType = await prisma.maintenanceRequest.groupBy({by: ["requestType"],
       {gte:startDate;
 
       },
@@ -1047,14 +1047,14 @@ import {  toFHIRAsset
     `;
 
     // Get asset maintenance frequency;
-    const assetMaintenance = await prisma.maintenanceRequest.groupBy({by:["assetId"],
+    const assetMaintenance = await prisma.maintenanceRequest.groupBy({by: ["assetId"],
       {gte:startDate;
         },
         null;
 
       },
       _count: true,
-      {assetId:"desc";
+      {assetId: "desc";
 
       },
       take: 10;
@@ -1062,7 +1062,7 @@ import {  toFHIRAsset
 
     // Get asset details for top assets;
     const assetDetails = await prisma.asset.findMany({
-      {in:assetMaintenance.map(am => am.assetId as string);
+      {in: assetMaintenance.map(am => am.assetId as string);
 
       },
       true,
@@ -1071,7 +1071,7 @@ import {  toFHIRAsset
     });
 
     // Map asset names to the maintenance frequency;
-    const assetMaintenanceWithNames = assetMaintenance.map(am => ({assetId:am.assetId,
+    const assetMaintenanceWithNames = assetMaintenance.map(am => ({assetId: am.assetId,
       assetDetails.find(a => a.id === am.assetId)?.name || "Unknown",
       assetType: assetDetails.find(a => a.id === am.assetId)?.assetType || "Unknown";
     }));

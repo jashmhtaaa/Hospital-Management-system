@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnalyticsService = exports.TemplateService = exports.SegmentService = exports.ContactService = exports.MarketingCampaignService = void 0;
+/**;
+ * Marketing CRM Module Services Index;
+ * Exports all marketing-related services for easy importing;
+ */ var marketing_service_ts_1 = require("./marketing.service.ts");
+Object.defineProperty(exports, "MarketingCampaignService", { enumerable: true, get: function () { return marketing_service_ts_1.MarketingCampaignService; } });
+var contact_service_ts_1 = require("./contact.service.ts");
+Object.defineProperty(exports, "ContactService", { enumerable: true, get: function () { return contact_service_ts_1.ContactService; } });
+var segment_service_ts_1 = require("./segment.service.ts");
+Object.defineProperty(exports, "SegmentService", { enumerable: true, get: function () { return segment_service_ts_1.SegmentService; } });
+var template_service_ts_1 = require("./template.service.ts");
+Object.defineProperty(exports, "TemplateService", { enumerable: true, get: function () { return template_service_ts_1.TemplateService; } });
+var analytics_service_ts_1 = require("./analytics.service.ts");
+Object.defineProperty(exports, "AnalyticsService", { enumerable: true, get: function () { return analytics_service_ts_1.AnalyticsService; } });

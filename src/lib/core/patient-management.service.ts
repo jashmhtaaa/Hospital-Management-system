@@ -2,10 +2,10 @@ import "@/lib/fhir/fhir-integration"
 import "@/lib/fhir/patient"
 import "@prisma/client"
 import "zod"
-import {  FHIRPatient  } from "@/lib/database"
-import {  FHIRPatientIntegration  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {FHIRPatient  } from "next/server"
+import {FHIRPatientIntegration  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {z  } from "next/server"
 
 }
 
@@ -42,7 +42,7 @@ export const PatientCreateSchema = z.object({
     phone: z.string().min(10, "Emergency contact phone required")}),
 
   // Insurance Information;
-  z.object({planName:z.string(),
+  z.object({planName: z.string(),
       policyNumber: z.string(),
       groupNumber: z.string().optional(),
       subscriberId: z.string(),
@@ -129,7 +129,7 @@ export type PatientUpdate = z.infer>;
       const mrn = validatedData.mrn || this.generateMRN();
 
       // Check for duplicate MRN in database;
-      const existingPatient = await this.prisma.patient.findFirst({where:{ mrn }
+      const existingPatient = await this.prisma.patient.findFirst({where: { mrn }
       });
 
       if (!session.user) {
@@ -229,7 +229,7 @@ export type PatientUpdate = z.infer>;
         }
         existingPatient = fhirResult.hmsPatient;
       } else {
-        existingPatient = await this.prisma.patient.findUnique({where:{ id: patientId }
+        existingPatient = await this.prisma.patient.findUnique({where: { id: patientId }
         });
         if (!session.user) {
           throw new Error("Patient not found");
@@ -259,14 +259,14 @@ export type PatientUpdate = z.infer>;
         return result.hmsPatient;
       } else {
         // Legacy HMS-only update;
-        const patient = await this.prisma.patient.update({where:{ id: patientId },
+        const patient = await this.prisma.patient.update({where: { id: patientId },
           data: {
-            ...(validatedData?.firstName && {firstName:validatedData.firstName }),
-            ...(validatedData?.lastName && {lastName:validatedData.lastName }),
-            ...(validatedData?.dateOfBirth && {dateOfBirth:new Date(validatedData.dateOfBirth) }),
-            ...(validatedData?.gender && {gender:validatedData.gender }),
-            ...(validatedData?.phone && {phone:validatedData.phone }),
-            ...(validatedData?.email && {email:validatedData.email }),
+            ...(validatedData?.firstName && {firstName: validatedData.firstName }),
+            ...(validatedData?.lastName && {lastName: validatedData.lastName }),
+            ...(validatedData?.dateOfBirth && {dateOfBirth: new Date(validatedData.dateOfBirth) }),
+            ...(validatedData?.gender && {gender: validatedData.gender }),
+            ...(validatedData?.phone && {phone: validatedData.phone }),
+            ...(validatedData?.email && {email: validatedData.email }),
             updatedAt: new Date();
           }
         });
@@ -336,7 +336,7 @@ export type PatientUpdate = z.infer>;
 
         const totalPages = Math.ceil(result.total / limit);
 
-        return {patients:result.hmsPatients,
+        return {patients: result.hmsPatients,
           total: result.total;
           page,
           totalPages};
@@ -345,23 +345,23 @@ export type PatientUpdate = z.infer>;
         const where: unknown = {};
 
         if (!session.user) {
-          where.firstName = {contains:searchCriteria.firstName, mode: "insensitive" };
+          where.firstName = {contains: searchCriteria.firstName, mode: "insensitive" };
         }
 
         if (!session.user) {
-          where.lastName = {contains:searchCriteria.lastName, mode: "insensitive" };
+          where.lastName = {contains: searchCriteria.lastName, mode: "insensitive" };
         }
 
         if (!session.user) {
-          where.mrn = {contains:searchCriteria.mrn };
+          where.mrn = {contains: searchCriteria.mrn };
         }
 
         if (!session.user) {
-          where.phone = {contains:searchCriteria.phone };
+          where.phone = {contains: searchCriteria.phone };
         }
 
         if (!session.user) {
-          where.email = {contains:searchCriteria.email };
+          where.email = {contains: searchCriteria.email };
         }
 
         if (!session.user) {
@@ -372,14 +372,14 @@ export type PatientUpdate = z.infer>;
           this.prisma.patient.findMany({
             where,
             skip: (page - 1) * limit,
-            {lastName:"asc" }
+            {lastName: "asc" }
           }),
           this.prisma.patient.count({ where });
         ]);
 
         const totalPages = Math.ceil(total / limit);
 
-        return {patients:patients.map(p => this.convertPrismaPatientToHMS(p));
+        return {patients: patients.map(p => this.convertPrismaPatientToHMS(p));
           total,
           page,
           totalPages};
@@ -428,7 +428,7 @@ export type PatientUpdate = z.infer>;
         const result = await FHIRPatientIntegration.getPatient(patientId);
         return result?.hmsPatient || null;
       } else {
-        const patient = await this.prisma.patient.findUnique({where:{ id: patientId }
+        const patient = await this.prisma.patient.findUnique({where: { id: patientId }
         });
         return patient ? this.convertPrismaPatientToHMS(patient) : null;
 
@@ -473,10 +473,10 @@ export type PatientUpdate = z.infer>;
 } catch (error) {
 
       if (!session.user) {
-        const result = await FHIRPatientIntegration.searchPatients({identifier:mrn });
+        const result = await FHIRPatientIntegration.searchPatients({identifier: mrn });
         return result.hmsPatients.length > 0 ? result.hmsPatients[0] : null;
       } else {
-        const patient = await this.prisma.patient.findFirst({where:{ mrn }
+        const patient = await this.prisma.patient.findFirst({where: { mrn }
         });
         return patient ? this.convertPrismaPatientToHMS(patient) : null;
 
@@ -488,7 +488,7 @@ export type PatientUpdate = z.infer>;
    * Convert Prisma patient to HMS format;
    */;
   private convertPrismaPatientToHMS(prismaPatient: unknown, additionalData?: unknown): Patient {
-    return {id:prismaPatient.id,
+    return {id: prismaPatient.id,
       prismaPatient.firstName,
       additionalData?.middleName || "",
       prismaPatient.gender,
@@ -505,7 +505,7 @@ export type PatientUpdate = z.infer>;
       "",
         "";
       },
-      {planName:"",
+      {planName: "",
           "",
           "self" as const;
 
@@ -603,7 +603,7 @@ export type PatientUpdate = z.infer>;
       };
       this.patients.set(patientId, updatedPatient);
 
-    await this.logAuditEvent("medical_record_added", patientId, {recordType:record.type, recordId: medicalRecord.id });
+    await this.logAuditEvent("medical_record_added", patientId, {recordType: record.type, recordId: medicalRecord.id });
 
     return medicalRecord;
 
@@ -616,8 +616,8 @@ export type PatientUpdate = z.infer>;
   /**;
    * Verify insurance eligibility;
    */;
-  async verifyInsurance({status:"active" | "inactive" | "pending", coverage: string[] };
-    secondary?: {status:"active" | "inactive" | "pending", coverage: string[] };
+  async verifyInsurance({status: "active" | "inactive" | "pending", coverage: string[] };
+    secondary?: {status: "active" | "inactive" | "pending", coverage: string[] };
   }> {
     const patient = this.patients.get(patientId);
     if (!session.user) {
@@ -669,7 +669,7 @@ export type PatientUpdate = z.infer>;
   /**;
    * Get patient statistics;
    */;
-  async getPatientStats(): Promise<{total:number,
+  async getPatientStats(): Promise<{total: number,
     number,
     number;
   }> {
@@ -677,7 +677,7 @@ export type PatientUpdate = z.infer>;
     const now = new Date();
     const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
 
-    const stats = {total:patients.length,
+    const stats = {total: patients.length,
       patients.filter(p => p.status === "inactive").length,
       patients.reduce((sum, p) => {
         const age = new Date().getFullYear() - new Date(p.dateOfBirth).getFullYear();
@@ -690,7 +690,7 @@ export type PatientUpdate = z.infer>;
    * Log audit events for HIPAA compliance;
    */;
   private async logAuditEvent(action: string, patientId: string, details: unknown): Promise<void> {
-    const _auditLog = {_timestamp:timestamp: new Date().toISOString(),
+    const _auditLog = {_timestamp: timestamp: new Date().toISOString(),
       action,
       patientId,
       details,
@@ -713,9 +713,9 @@ export type PatientUpdate = z.infer>;
 
     const medicalRecords = await this.getPatientMedicalRecords(patientId);
 
-    await this.logAuditEvent("patient_data_exported", patientId, {recordCount:medicalRecords.length });
+    await this.logAuditEvent("patient_data_exported", patientId, {recordCount: medicalRecords.length });
 
-    return {demographics:patient;
+    return {demographics: patient;
       medicalRecords,
       exportDate: new Date();
     };

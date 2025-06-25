@@ -8,17 +8,17 @@ import "../../../models/domain-models"
 import "../../../services/drug-interaction-service"
 import "next/server"
 import getPatientConditions }
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  DrugInteractionService  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {  getMedicationById  } from "@/lib/database"
-import {   getPatientAllergies
-import {  getPatientLabResults  } from "@/lib/database"
-import {  PharmacyDomain  } from "@/lib/database"
-import {   type
-import {  validateBatchInteractionCheckRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {DrugInteractionService  } from "next/server"
+import {errorHandler  } from "next/server"
+import {getMedicationById  } from "next/server"
+import {getPatientAllergies
+import {  getPatientLabResults  } from "next/server"
+import {PharmacyDomain  } from "next/server"
+import {type
+import {  validateBatchInteractionCheckRequest  } from "next/server"
 
 }
 
@@ -86,15 +86,15 @@ export const POST = async (req: any) => {
     const validationResult = validateBatchInteractionCheckRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error: "Validation failed", details: validationResult.errors },
+        {status: 400 }
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -119,13 +119,13 @@ export const POST = async (req: any) => {
       // Fetch patient lab results if not provided;
       if (!session.user) {
         const patientLabResults = await getPatientLabResults(data.patientId);
-        labResults = patientLabResults.map(lr => ({code:lr.code,
+        labResults = patientLabResults.map(lr => ({code: lr.code,
           lr.unit,
           lr.abnormalFlag;
         }));
 
     // Perform batch interaction checks;
-    const results = await interactionService.batchCheckInteractions({medicationIds:data.medicationIds;
+    const results = await interactionService.batchCheckInteractions({medicationIds: data.medicationIds;
       allergies,
       conditions,
       labResults,
@@ -133,7 +133,7 @@ export const POST = async (req: any) => {
     });
 
     // Audit logging;
-    await auditLog("DRUG_INTERACTION", {action:"BATCH_CHECK",
+    await auditLog("DRUG_INTERACTION", {action: "BATCH_CHECK",
       userId,
       patientId: data.patientId;
       {medicationCount:data.medicationIds.length,
@@ -150,6 +150,6 @@ export const POST = async (req: any) => {
         results.totalInteractionCount,
         criticalInteractionCount: results.criticalInteractionCount;
 
-    }, {status:200 });
+    }, {status: 200 });
   } catch (error) {
     return errorHandler(error, "Error performing batch interaction check");

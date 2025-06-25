@@ -1,7 +1,7 @@
 import "@/lib/prisma"
 import "@/lib/security.service"
-import {  prisma  } from "@/lib/database"
-import {  SecurityService  } from "@/lib/database"
+import {prisma  } from "next/server"
+import {SecurityService  } from "next/server"
 
 }
 

@@ -1,14 +1,14 @@
 import "@/lib/session"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  getSession  } from "@/lib/database"
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {getSession  } from "next/server"
+import {type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
 
 // Define interface for POST request body;
-interface MedicationAdminInput {medication_id:number | string,
+interface MedicationAdminInput {medication_id: number | string,
   string;
   administered_time?: string; // Optional, defaults to now;
   notes?: string | null;
@@ -17,7 +17,7 @@ interface MedicationAdminInput {medication_id:number | string,
 // GET /api/ipd/admissions/[id]/medication-administration - Get all medication administration records for an admission;
 export const _GET = async();
   _request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -55,15 +55,15 @@ export const _GET = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Check if admission exists using db.query;
-    // Assuming db.query exists and returns {results:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const admissionResult = await database.query();
       `;
       SELECT a.*, p.first_name as patient_first_name, p.last_name as patient_last_name;
@@ -80,8 +80,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Admission not found" },
-        {status:404 }
+        {error: "Admission not found" },
+        {status: 404 }
       );
     }
 
@@ -95,11 +95,11 @@ export const _GET = async();
       false;
 
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
     }
 
     // Get medication administration records using db.query;
-    // Assuming db.query exists and returns {results:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const medicationRecordsResult = await database.query();
       `;
       SELECT ma.*,
@@ -124,10 +124,10 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to fetch medication administration records",
+      {error: "Failed to fetch medication administration records",
         details: errorMessage;
       },
-      {status:500 }
+      {status: 500 }
     );
   }
 }
@@ -135,7 +135,7 @@ export const _GET = async();
 /// POST /api/ipd/admissions/[id]/medication-administration - Create a new medication administration record;
 export const _POST = async();
   request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -173,7 +173,7 @@ export const _POST = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Check permissions (using mock session data);
     const isNurse = session.user.roleName === "Nurse";
@@ -184,9 +184,9 @@ export const _POST = async();
       false;
 
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
 
-    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     // Fixed: Apply type assertion;
     const data = (await request.json()) as MedicationAdminInput;
 
@@ -198,38 +198,38 @@ export const _POST = async();
     for (const field of requiredFields) {
       if (!session.user) {
         return NextResponse.json();
-          {error:`Missing required field: ${field}` },
-          {status:400 }
+          {error: `Missing required field: ${field}` },
+          {status: 400 }
         );
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Check if admission exists and is active using db.query;
-    // Assuming db.query exists and returns {results:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const admissionResult = await database.query();
       "SELECT id, status FROM admissions WHERE id = ?",
       [admissionId];
     );
     const admission =;
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results;
-        ? (admissionResult.results[0] as {id:string, status: string }) // Changed .rows to .results;
+        ? (admissionResult.results[0] as {id: string, status: string }) // Changed .rows to .results;
         : undefined;
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Admission not found" },
-        {status:404 }
+        {error: "Admission not found" },
+        {status: 404 }
       );
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Cannot record medication administration for a non-active admission";
+        {error: "Cannot record medication administration for a non-active admission";
         },
-        {status:409 }
+        {status: 409 }
       );
 
     // Check if medication exists using db.query;
-    // Assuming db.query exists and returns {results:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const medicationResult = await database.query();
       "SELECT id FROM medications WHERE id = ?",
       [data.medication_id];
@@ -241,8 +241,8 @@ export const _POST = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Medication not found" },
-        {status:404 }
+        {error: "Medication not found" },
+        {status: 404 }
       ); // Updated error message;
 
     // Insert new medication administration record using db.query;
@@ -265,15 +265,15 @@ export const _POST = async();
 
     // Cannot reliably get the new record from mock DB;
     return NextResponse.json();
-      {message:"Medication administration recorded (mock operation)" },
-      {status:201 }
+      {message: "Medication administration recorded (mock operation)" },
+      {status: 201 }
     );
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to create medication administration record",
+      {error: "Failed to create medication administration record",
         details: errorMessage;
       },
-      {status:500 }
+      {status: 500 }
     );

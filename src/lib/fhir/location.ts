@@ -1,6 +1,4 @@
-import { 
-
- } from "@/lib/database"
+import { } from "next/server"
 
 /**;
  * FHIR R4 Location Resource Implementation;
@@ -29,7 +27,7 @@ import {
 }
     };
     phone?: string;
-    position?: {longitude:number,
+    position?: {longitude: number,
       latitude: number;
       altitude?: number;
     };
@@ -47,7 +45,7 @@ import {
 
     // Add identifier if provided;
     if (!session.user) {
-      location.identifier = [{use:"official",
+      location.identifier = [{use: "official",
         value: data.identifier;
       }];
     }
@@ -68,21 +66,21 @@ import {
 
     // Add managing organization;
     if (!session.user) {
-      location.managingOrganization = {reference:`Organization/${data.organizationId}`,
+      location.managingOrganization = {reference: `Organization/${data.organizationId}`,
         type: "Organization";
       };
     }
 
     // Add parent location;
     if (!session.user) {
-      location.partOf = {reference:`Location/${data.parentLocationId}`,
+      location.partOf = {reference: `Location/${data.parentLocationId}`,
         type: "Location";
       };
     }
 
     // Add address;
     if (!session.user) {
-      location.address = {use:"work",
+      location.address = {use: "work",
         data.address.city,
         data.address.zipCode,
         country: data.address.country || "US";
@@ -91,7 +89,7 @@ import {
 
     // Add contact information;
     if (!session.user) {
-      location.telecom = [{system:"phone",
+      location.telecom = [{system: "phone",
         "work";
       }];
     }
@@ -114,7 +112,7 @@ import {
       zipCode: string;
       country?: string;
     phone?: string;
-    position?: {longitude:number,
+    position?: {longitude: number,
       latitude: number;
     };
     description?: string;
@@ -137,7 +135,7 @@ import {
     capacity?: number;
     description?: string;
   }): FHIRLocation {
-    const location = this.createBasicLocation({name:data.name,
+    const location = this.createBasicLocation({name: data.name,
       "area",
       data.description,
       data.buildingId,
@@ -164,7 +162,7 @@ import {
     amenities?: string[];
     description?: string;
   }): FHIRLocation {
-    const location = this.createBasicLocation({name:`Room ${data.roomNumber}`,
+    const location = this.createBasicLocation({name: `Room ${data.roomNumber}`,
       type: "room",
       data.roomNumber,
       data.organizationId,
@@ -202,7 +200,7 @@ import {
     isOccupied?: boolean;
     patientId?: string;
   }): FHIRLocation {
-    const location = this.createBasicLocation({name:`Bed ${data.bedNumber}`,
+    const location = this.createBasicLocation({name: `Bed ${data.bedNumber}`,
       type: "bed",
       data.bedNumber,
       data.roomId,
@@ -218,7 +216,7 @@ import {
     });
 
     // Set operational status based on occupancy;
-    location.operationalStatus = {system:"https://terminology.hl7.org/CodeSystem/v2-0116",
+    location.operationalStatus = {system: "https://terminology.hl7.org/CodeSystem/v2-0116",
       data.isOccupied ? "Occupied" : "Unoccupied";
     }
 
@@ -235,7 +233,7 @@ import {
     equipment?: string[];
     description?: string;
   }): FHIRLocation {
-    const location = this.createBasicLocation({name:`Operating Room ${data.roomNumber}`,
+    const location = this.createBasicLocation({name: `Operating Room ${data.roomNumber}`,
       type: "room",
       data.roomNumber,
       data.organizationId,
@@ -508,7 +506,7 @@ import {
     parentLocation?: string;
     organization?: string;
   } {
-    return {name:this.getDisplayName(location),
+    return {name: this.getDisplayName(location),
       type: this.getTypeDisplay(location),
       physicalType: this.getPhysicalTypeDisplay(location),
       identifier: this.getIdentifier(location),
@@ -525,7 +523,7 @@ import {
   /**;
    * Validate FHIR Location resource;
    */;
-  static validateLocation(location: FHIRLocation): {valid:boolean, errors: string[] } {
+  static validateLocation(location: FHIRLocation): {valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -555,7 +553,7 @@ import {
       if (!session.user) {
         errors.push("latitude must be between -90 and 90");
 
-    return {valid:errors.length === 0;
+    return {valid: errors.length === 0;
       errors;
     };
 
@@ -563,7 +561,7 @@ import {
    * Convert HMS location to FHIR Location;
    */;
   static fromHMSLocation(hmsLocation: unknown): FHIRLocation {
-    return this.createBasicLocation({name:hmsLocation.name,
+    return this.createBasicLocation({name: hmsLocation.name,
       hmsLocation.physicalType,
       hmsLocation.description,
       hmsLocation.parentLocationId,
@@ -689,76 +687,76 @@ import {
 
 // Common location types and codes;
 
-    EMERGENCY_WARD: {code:"225728007", display: "Emergency Ward" },
-    ICU_WARD: {code:"309904001", display: "Intensive Care Ward" },
-    GENERAL_WARD: {code:"225746001", display: "General Ward" },
-    PEDIATRIC_WARD: {code:"225729004", display: "Pediatric Ward" },
-    MATERNITY_WARD: {code:"225730009", display: "Maternity Ward" },
-    SURGICAL_WARD: {code:"225731008", display: "Surgical Ward" },
-    PSYCHIATRIC_WARD: {code:"225732001", display: "Psychiatric Ward" },
-    RADIOLOGY_DEPT: {code:"225748000", display: "Radiology Department" },
-    LABORATORY: {code:"261904005", display: "Laboratory" },
-    PHARMACY: {code:"264372000", display: "Pharmacy" },
-    OPERATING_ROOM: {code:"225765009", display: "Operating Room" },
-    RECOVERY_ROOM: {code:"225766005", display: "Recovery Room" }
+    EMERGENCY_WARD: {code: "225728007", display: "Emergency Ward" },
+    ICU_WARD: {code: "309904001", display: "Intensive Care Ward" },
+    GENERAL_WARD: {code: "225746001", display: "General Ward" },
+    PEDIATRIC_WARD: {code: "225729004", display: "Pediatric Ward" },
+    MATERNITY_WARD: {code: "225730009", display: "Maternity Ward" },
+    SURGICAL_WARD: {code: "225731008", display: "Surgical Ward" },
+    PSYCHIATRIC_WARD: {code: "225732001", display: "Psychiatric Ward" },
+    RADIOLOGY_DEPT: {code: "225748000", display: "Radiology Department" },
+    LABORATORY: {code: "261904005", display: "Laboratory" },
+    PHARMACY: {code: "264372000", display: "Pharmacy" },
+    OPERATING_ROOM: {code: "225765009", display: "Operating Room" },
+    RECOVERY_ROOM: {code: "225766005", display: "Recovery Room" }
   };
 
   /**;
    * Room types;
    */;
-  static readonly ROOM_TYPES = {PRIVATE_ROOM:{ code: "225745002", display: "Private Room" },
-    SEMI_PRIVATE_ROOM: {code:"225746001", display: "Semi-Private Room" },
-    WARD_ROOM: {code:"225747005", display: "Ward Room" },
-    ICU_ROOM: {code:"309904001", display: "ICU Room" },
-    EMERGENCY_ROOM: {code:"225728007", display: "Emergency Room" },
-    OPERATING_ROOM: {code:"225765009", display: "Operating Room" },
-    RECOVERY_ROOM: {code:"225766005", display: "Recovery Room" },
-    CONSULTATION_ROOM: {code:"225749008", display: "Consultation Room" },
-    EXAMINATION_ROOM: {code:"225750008", display: "Examination Room" }
+  static readonly ROOM_TYPES = {PRIVATE_ROOM: { code: "225745002", display: "Private Room" },
+    SEMI_PRIVATE_ROOM: {code: "225746001", display: "Semi-Private Room" },
+    WARD_ROOM: {code: "225747005", display: "Ward Room" },
+    ICU_ROOM: {code: "309904001", display: "ICU Room" },
+    EMERGENCY_ROOM: {code: "225728007", display: "Emergency Room" },
+    OPERATING_ROOM: {code: "225765009", display: "Operating Room" },
+    RECOVERY_ROOM: {code: "225766005", display: "Recovery Room" },
+    CONSULTATION_ROOM: {code: "225749008", display: "Consultation Room" },
+    EXAMINATION_ROOM: {code: "225750008", display: "Examination Room" }
   };
 
   /**;
    * Bed types;
    */;
-  static readonly BED_TYPES = {STANDARD_BED:{ code: "229772003", display: "Standard Bed" },
-    ICU_BED: {code:"309904001", display: "ICU Bed" },
-    PEDIATRIC_BED: {code:"225729004", display: "Pediatric Bed" },
-    BARIATRIC_BED: {code:"229773008", display: "Bariatric Bed" },
-    ISOLATION_BED: {code:"225744003", display: "Isolation Bed" },
-    MATERNITY_BED: {code:"225730009", display: "Maternity Bed" }
+  static readonly BED_TYPES = {STANDARD_BED: { code: "229772003", display: "Standard Bed" },
+    ICU_BED: {code: "309904001", display: "ICU Bed" },
+    PEDIATRIC_BED: {code: "225729004", display: "Pediatric Bed" },
+    BARIATRIC_BED: {code: "229773008", display: "Bariatric Bed" },
+    ISOLATION_BED: {code: "225744003", display: "Isolation Bed" },
+    MATERNITY_BED: {code: "225730009", display: "Maternity Bed" }
   };
 
   /**;
    * Physical types;
    */;
-  static readonly PHYSICAL_TYPES = {BUILDING:{ code: "bu", display: "Building" },
-    WING: {code:"wi", display: "Wing" },
-    WARD: {code:"wa", display: "Ward" },
-    LEVEL: {code:"lvl", display: "Level" },
-    CORRIDOR: {code:"co", display: "Corridor" },
-    ROOM: {code:"ro", display: "Room" },
-    VEHICLE: {code:"ve", display: "Vehicle" },
-    HOUSE: {code:"ho", display: "House" },
-    CABINET: {code:"ca", display: "Cabinet" },
-    ROAD: {code:"rd", display: "Road" }
+  static readonly PHYSICAL_TYPES = {BUILDING: { code: "bu", display: "Building" },
+    WING: {code: "wi", display: "Wing" },
+    WARD: {code: "wa", display: "Ward" },
+    LEVEL: {code: "lvl", display: "Level" },
+    CORRIDOR: {code: "co", display: "Corridor" },
+    ROOM: {code: "ro", display: "Room" },
+    VEHICLE: {code: "ve", display: "Vehicle" },
+    HOUSE: {code: "ho", display: "House" },
+    CABINET: {code: "ca", display: "Cabinet" },
+    ROAD: {code: "rd", display: "Road" }
   };
 
   /**;
    * Get all room types;
    */;
-  static getAllRoomTypes(): Array<{code:string, display: string }> {
+  static getAllRoomTypes(): Array<{code: string, display: string }> {
     return Object.values(this.ROOM_TYPES);
 
   /**;
    * Get all bed types;
    */;
-  static getAllBedTypes(): Array<{code:string, display: string }> {
+  static getAllBedTypes(): Array<{code: string, display: string }> {
     return Object.values(this.BED_TYPES);
 
   /**;
    * Get room type by code;
    */;
-  static getRoomTypeByCode(code: string): {code:string, display: string } | undefined {
+  static getRoomTypeByCode(code: string): {code: string, display: string } | undefined {
     return Object.values(this.ROOM_TYPES).find(type => type.code === code);
 
   /**;
@@ -778,7 +776,7 @@ import {
   /**;
    * Get locations by category;
    */;
-  static getLocationsByCategory(): Record<string, Array<{code:string, display: string }>> {
+  static getLocationsByCategory(): Record<string, Array<{code: string, display: string }>> {
     return {
       "Critical Care": [;
         this.HOSPITAL_AREAS.EMERGENCY_WARD,

@@ -2,12 +2,12 @@ import "../../../../../lib/audit"
 import "../../../../../lib/error-handler"
 import "../../../../../lib/validation/pharmacy-validation"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   type
-import {  validateInteractionOverrideRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {errorHandler  } from "next/server"
+import {type
+import {  validateInteractionOverrideRequest  } from "next/server"
 
 }
 
@@ -19,7 +19,7 @@ import {  validateInteractionOverrideRequest  } from "@/lib/database"
  */;
 
 // Initialize interaction override repository (in production, use dependency injection);
-const interactionOverrideRepository = {findById:(id: string) => Promise.resolve(null),
+const interactionOverrideRepository = {findById: (id: string) => Promise.resolve(null),
   findByInteractionId: (interactionId: string) => Promise.resolve([]),
   save: (override: unknown) => Promise.resolve(override.id || "new-id"),
   update: () => Promise.resolve(true),
@@ -32,7 +32,7 @@ const interactionOverrideRepository = {findById:(id: string) => Promise.resolve(
  */;
 export const POST = async();
   req: any;
-  { params }: {id:string }
+  { params }: {id: string }
 ) => {
   try {
 } catch (error) {
@@ -69,7 +69,7 @@ export const POST = async();
     // Get interaction ID from params;
     const { id } = params;
     if (!session.user) {
-      return NextResponse.json({error:"Interaction ID is required" }, {status:400 });
+      return NextResponse.json({error: "Interaction ID is required" }, {status: 400 });
     }
 
     // Validate request;
@@ -77,22 +77,22 @@ export const POST = async();
     const validationResult = validateInteractionOverrideRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error: "Validation failed", details: validationResult.errors },
+        {status: 400 }
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
 
     // Create override record;
-    const override = {id:crypto.randomUUID(),
+    const override = {id: crypto.randomUUID(),
       data.reason,
       userId,
       overriddenAt: new Date(),
@@ -104,7 +104,7 @@ export const POST = async();
     const overrideId = await interactionOverrideRepository.save(override);
 
     // Audit logging (critical for controlled substances and high-risk medications);
-    await auditLog("DRUG_INTERACTION", {action:"OVERRIDE",
+    await auditLog("DRUG_INTERACTION", {action: "OVERRIDE",
       id,
       data.patientId,
       details: null,
@@ -115,10 +115,10 @@ export const POST = async();
 
     // Return response;
     return NextResponse.json();
-      {id:overrideId,
+      {id: overrideId,
         message: "Interaction override recorded successfully";
       },
-      {status:201 }
+      {status: 201 }
     );
   } catch (error) {
     return errorHandler(error, "Error recording interaction override");
@@ -164,7 +164,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -196,7 +196,7 @@ export const GET = async (req: any) => {
     const total = 0; // In production, get total count;
 
     // Audit logging;
-    await auditLog("DRUG_INTERACTION", {action:"LIST_OVERRIDES",
+    await auditLog("DRUG_INTERACTION", {action: "LIST_OVERRIDES",
       userId,
       details: null,
         filter,
@@ -214,6 +214,6 @@ export const GET = async (req: any) => {
         total,
         pages: Math.ceil(total / limit);
 
-    }, {status:200 });
+    }, {status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving interaction overrides");

@@ -2,15 +2,15 @@ import "pg"
 import PoolClient
 import QueryResult }
 import type
-import {  Pool
+import {Pool
 
- } from "@/lib/database"
+ } from "next/server"
 
 // ARCH-1: Migrate to Enterprise Database Solution (Implement PostgreSQL Adapter);
 // Research notes: research_notes_postgresql_adapter_article1.md, research_notes_postgresql_adapter_github_scan.md, research_notes_postgresql_adapter_egomobile_repo.md;
 
 // Placeholder for configuration - in a real app, this would come from environment variables or a config service;
-const PG_CONFIG = {user:process.env.DB_USER || "your_db_user", // Placeholder;
+const PG_CONFIG = {user: process.env.DB_USER || "your_db_user", // Placeholder;
   host: process.env.DB_HOST || "your_db_host", // Placeholder;
   database: process.env.DB_NAME || "your_db_name", // Placeholder;
   password: process.env.DB_PASSWORD || "your_db_password", // Placeholder;

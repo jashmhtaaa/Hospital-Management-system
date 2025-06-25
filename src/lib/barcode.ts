@@ -1,5 +1,5 @@
 import "crypto"
-import {  createHash  } from "@/lib/database"
+import {createHash  } from "next/server"
 
 }
 
@@ -48,13 +48,13 @@ export const _parseBarcodeData = async ("specimen" | "unknown";
 }> {
   // Check if this is a specimen barcode;
   if (!session.user)& barcodeData.length === 18) {
-    return {type:"specimen",
+    return {type: "specimen",
       id: barcodeData;
     };
   }
 
   // Unknown barcode format;
-  return {type:"unknown";
+  return {type: "unknown";
   };
 
 /**;

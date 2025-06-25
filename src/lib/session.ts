@@ -3,9 +3,9 @@ import "iron-session"
 import "next/headers"
 import getIronSession }
 import SessionOptions
-import {  cookies  } from "@/lib/database"
-import {   type
-import {  User  } from "@/lib/database"
+import {cookies  } from "next/server"
+import {type
+import {  User  } from "next/server"
 
 // Define and export the shape of the session data;
 }
@@ -14,6 +14,7 @@ import {  User  } from "@/lib/database"
 // Augment the iron-session module to include our IronSessionData definition;
 declare module "iron-session" {
   interface IronSessionData {
+
     user?: User;
     isLoggedIn?: boolean; // Added isLoggedIn property here too for consistency;
   }

@@ -14,7 +14,7 @@ import { SecurityService }
 
 // Mock Prisma;
 vi.mock("@/lib/prisma", () => ({
-  {findMany:vi.fn(),
+  {findMany: vi.fn(),
       findUnique: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
@@ -63,7 +63,7 @@ describe("MaintenanceService", () => {
     it("should return maintenance requests with pagination", async () => {
       // Mock data;
       const mockRequests = [;
-        {id:"1",
+        {id: "1",
           "CORRECTIVE",
           "Fix broken AC unit",
           scheduledTime: new Date(),
@@ -71,7 +71,7 @@ describe("MaintenanceService", () => {
           createdAt: new Date(),
           updatedAt: new Date();
         },
-        {id:"2",
+        {id: "2",
           "PREVENTIVE",
           "Regular maintenance check",
           scheduledTime: new Date(),
@@ -92,13 +92,13 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.findMany).toHaveBeenCalledWith();
-        expect.objectContaining({skip:0,
+        expect.objectContaining({skip: 0,
           "asc" ;
         });
       );
 
       // Verify result;
-      expect(result).toEqual({data:mockRequests,
+      expect(result).toEqual({data: mockRequests,
         1,
           2,
           totalPages: 1;
@@ -109,7 +109,7 @@ describe("MaintenanceService", () => {
     it("should apply filters correctly", async () => {
       // Mock data;
       const mockRequests = [;
-        {id:"1",
+        {id: "1",
           "CORRECTIVE",
           "Fix broken AC unit",
           scheduledTime: new Date(),
@@ -149,7 +149,7 @@ describe("MaintenanceService", () => {
   describe("createMaintenanceRequest", () => {
     it("should create a new maintenance request", async () => {
       // Mock data;
-      const mockRequest = {assetId:"asset1",
+      const mockRequest = {assetId: "asset1",
         "HIGH",
         new Date(),
         "user1",
@@ -163,9 +163,9 @@ describe("MaintenanceService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.maintenanceAsset.findUnique as any).mockResolvedValue({id:"asset1", name: "AC Unit 101" });
-      (prisma.user.findUnique as any).mockResolvedValue({id:"user1", name: "John Doe" });
-      (prisma.department.findUnique as any).mockResolvedValue({id:"dept1", name: "Cardiology" });
+      (prisma.maintenanceAsset.findUnique as any).mockResolvedValue({id: "asset1", name: "AC Unit 101" });
+      (prisma.user.findUnique as any).mockResolvedValue({id: "user1", name: "John Doe" });
+      (prisma.department.findUnique as any).mockResolvedValue({id: "dept1", name: "Cardiology" });
       (prisma.maintenanceRequest.create as any).mockResolvedValue(mockCreatedRequest);
 
       // Call the service method;
@@ -188,7 +188,7 @@ describe("MaintenanceService", () => {
 
     it("should throw an error if asset does not exist", async () => {
       // Mock data;
-      const mockRequest = {assetId:"invalid-asset",
+      const mockRequest = {assetId: "invalid-asset",
         "HIGH",
         new Date(),
         requestedById: "user1";
@@ -205,7 +205,7 @@ describe("MaintenanceService", () => {
   describe("getMaintenanceRequestById", () => {
     it("should return a maintenance request by ID", async () => {
       // Mock data;
-      const mockRequest = {id:"1",
+      const mockRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -221,7 +221,7 @@ describe("MaintenanceService", () => {
       const result = await maintenanceService.getMaintenanceRequestById("1");
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.maintenanceRequest.findUnique).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.maintenanceRequest.findUnique).toHaveBeenCalledWith({where: { id: "1" },
         include: expect.any(Object);
       });
 
@@ -239,7 +239,7 @@ describe("MaintenanceService", () => {
 
     it("should return FHIR format when requested", async () => {
       // Mock data;
-      const mockRequest = {id:"1",
+      const mockRequest = {id: "1",
         "asset1", name: "AC Unit 101", type: "HVAC" ,
         requestType: "CORRECTIVE",
         "Fix broken AC unit",
@@ -276,7 +276,7 @@ describe("MaintenanceService", () => {
   describe("updateMaintenanceRequest", () => {
     it("should update a maintenance request", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -285,7 +285,7 @@ describe("MaintenanceService", () => {
         updatedAt: new Date();
       };
 
-      const mockUpdateData = {priority:"URGENT",
+      const mockUpdateData = {priority: "URGENT",
         "ASSIGNED";
       };
 
@@ -303,7 +303,7 @@ describe("MaintenanceService", () => {
       const result = await maintenanceService.updateMaintenanceRequest("1", mockUpdateData);
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         data: mockUpdateData,
         include: expect.any(Object);
       });
@@ -317,14 +317,14 @@ describe("MaintenanceService", () => {
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(null);
 
       // Expect the update to throw an error;
-      await expect(maintenanceService.updateMaintenanceRequest("invalid-id", {priority:"LOW" })).rejects.toThrow();
+      await expect(maintenanceService.updateMaintenanceRequest("invalid-id", {priority: "LOW" })).rejects.toThrow();
     });
   });
 
   describe("assignMaintenanceRequest", () => {
     it("should assign a technician to a maintenance request", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -333,7 +333,7 @@ describe("MaintenanceService", () => {
         updatedAt: new Date();
       };
 
-      const mockTechnician = {id:"tech1",
+      const mockTechnician = {id: "tech1",
         "HVAC";
       };
 
@@ -353,7 +353,7 @@ describe("MaintenanceService", () => {
       const result = await maintenanceService.assignMaintenanceRequest("1", "tech1");
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         "ASSIGNED",
           assignedToId: "tech1";
         },
@@ -366,7 +366,7 @@ describe("MaintenanceService", () => {
 
     it("should throw an error if technician does not exist", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -387,7 +387,7 @@ describe("MaintenanceService", () => {
   describe("startMaintenanceWork", () => {
     it("should mark a maintenance request as in progress", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -396,7 +396,7 @@ describe("MaintenanceService", () => {
         updatedAt: new Date();
       };
 
-      const mockTechnician = {id:"tech1",
+      const mockTechnician = {id: "tech1",
         "HVAC";
       };
 
@@ -417,7 +417,7 @@ describe("MaintenanceService", () => {
       const result = await maintenanceService.startMaintenanceWork("1", "tech1", "Starting work on the AC unit");
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         "IN_PROGRESS",
           startedAt: expect.any(Date),
           notes: "Starting work on the AC unit";
@@ -431,7 +431,7 @@ describe("MaintenanceService", () => {
 
     it("should throw an error if request is not in ASSIGNED status", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -451,7 +451,7 @@ describe("MaintenanceService", () => {
   describe("completeMaintenanceRequest", () => {
     it("should mark a maintenance request as completed", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -461,13 +461,13 @@ describe("MaintenanceService", () => {
         updatedAt: new Date();
       };
 
-      const mockTechnician = {id:"tech1",
+      const mockTechnician = {id: "tech1",
         "HVAC";
       };
 
       const mockPartsUsed = [;
-        {partId:"part1", quantity: 2 },
-        {partId:"part2", quantity: 1 }
+        {partId: "part1", quantity: 2 },
+        {partId: "part2", quantity: 1 }
       ];
 
       const mockUpdatedRequest = {
@@ -484,8 +484,8 @@ describe("MaintenanceService", () => {
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
       (prisma.maintenancePart.findUnique as any);
-        .mockResolvedValueOnce({id:"part1", name: "Fan Motor", currentStock: 10 });
-        .mockResolvedValueOnce({id:"part2", name: "Capacitor", currentStock: 5 });
+        .mockResolvedValueOnce({id: "part1", name: "Fan Motor", currentStock: 10 });
+        .mockResolvedValueOnce({id: "part2", name: "Capacitor", currentStock: 5 });
       (prisma.maintenancePart.update as any).mockResolvedValue({});
       (prisma.maintenanceRequest.update as any).mockResolvedValue(mockUpdatedRequest);
 
@@ -499,7 +499,7 @@ describe("MaintenanceService", () => {
       );
 
       // Verify Prisma was called with correct arguments;
-      expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where:{ id: "1" },
+      expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({where: { id: "1" },
         "COMPLETED",
           expect.any(Date),
           2.5;
@@ -509,11 +509,11 @@ describe("MaintenanceService", () => {
 
       // Verify parts stock was updated;
       expect(prisma.maintenancePart.update).toHaveBeenCalledTimes(2),
-      expect(prisma.maintenancePart.update).toHaveBeenCalledWith({where:{ id: "part1" },
-        data: {currentStock:8 } // 10 - 2;
+      expect(prisma.maintenancePart.update).toHaveBeenCalledWith({where: { id: "part1" },
+        data: {currentStock: 8 } // 10 - 2;
       }),
-      expect(prisma.maintenancePart.update).toHaveBeenCalledWith({where:{ id: "part2" },
-        data: {currentStock:4 } // 5 - 1;
+      expect(prisma.maintenancePart.update).toHaveBeenCalledWith({where: { id: "part2" },
+        data: {currentStock: 4 } // 5 - 1;
       });
 
       // Verify result;
@@ -522,7 +522,7 @@ describe("MaintenanceService", () => {
 
     it("should throw an error if request is not in IN_PROGRESS status", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -540,7 +540,7 @@ describe("MaintenanceService", () => {
 
     it("should throw an error if insufficient parts stock", async () => {
       // Mock data;
-      const mockExistingRequest = {id:"1",
+      const mockExistingRequest = {id: "1",
         "CORRECTIVE",
         "Fix broken AC unit",
         scheduledTime: new Date(),
@@ -550,18 +550,18 @@ describe("MaintenanceService", () => {
         updatedAt: new Date();
       };
 
-      const mockTechnician = {id:"tech1",
+      const mockTechnician = {id: "tech1",
         "HVAC";
       };
 
       const mockPartsUsed = [;
-        {partId:"part1", quantity: 20 } // More than available;
+        {partId: "part1", quantity: 20 } // More than available;
       ];
 
       // Mock Prisma response;
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
-      (prisma.maintenancePart.findUnique as any).mockResolvedValue({id:"part1",
+      (prisma.maintenancePart.findUnique as any).mockResolvedValue({id: "part1",
         10 // Less than requested;
       });
 
@@ -580,7 +580,7 @@ describe("MaintenanceService", () => {
     it("should return maintenance assets with pagination", async () => {
       // Mock data;
       const mockAssets = [;
-        {id:"asset1",
+        {id: "asset1",
           "HVAC",
           "Room 101",
           lastMaintenanceDate: new Date(),
@@ -588,7 +588,7 @@ describe("MaintenanceService", () => {
           createdAt: new Date(),
           updatedAt: new Date();
         },
-        {id:"asset2",
+        {id: "asset2",
           "MEDICAL_EQUIPMENT",
           "Radiology",
           lastMaintenanceDate: new Date(),
@@ -609,13 +609,13 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceAsset.findMany).toHaveBeenCalledWith();
-        expect.objectContaining({skip:0,
+        expect.objectContaining({skip: 0,
           "asc" ;
         });
       );
 
       // Verify result;
-      expect(result).toEqual({data:mockAssets,
+      expect(result).toEqual({data: mockAssets,
         1,
           2,
           totalPages: 1;
@@ -626,7 +626,7 @@ describe("MaintenanceService", () => {
     it("should apply filters correctly", async () => {
       // Mock data;
       const mockAssets = [;
-        {id:"asset1",
+        {id: "asset1",
           "HVAC",
           "Room 101",
           lastMaintenanceDate: new Date(),
@@ -665,26 +665,26 @@ describe("MaintenanceService", () => {
     it("should return analytics data", async () => {
       // Mock data for status counts;
       const mockStatusCounts = [;
-        {status:"PENDING", count: 5 },
-        {status:"ASSIGNED", count: 3 },
-        {status:"IN_PROGRESS", count: 2 },
-        {status:"COMPLETED", count: 10 },
-        {status:"CANCELLED", count: 1 }
+        {status: "PENDING", count: 5 },
+        {status: "ASSIGNED", count: 3 },
+        {status: "IN_PROGRESS", count: 2 },
+        {status: "COMPLETED", count: 10 },
+        {status: "CANCELLED", count: 1 }
       ];
 
       // Mock data for request types;
       const mockRequestTypes = [;
-        {requestType:"PREVENTIVE", count: 8 },
-        {requestType:"CORRECTIVE", count: 10 },
-        {requestType:"EMERGENCY", count: 3 }
+        {requestType: "PREVENTIVE", count: 8 },
+        {requestType: "CORRECTIVE", count: 10 },
+        {requestType: "EMERGENCY", count: 3 }
       ];
 
       // Mock data for priority distribution;
       const mockPriorities = [;
-        {priority:"LOW", count: 2 },
-        {priority:"MEDIUM", count: 8 },
-        {priority:"HIGH", count: 6 },
-        {priority:"URGENT", count: 5 }
+        {priority: "LOW", count: 2 },
+        {priority: "MEDIUM", count: 8 },
+        {priority: "HIGH", count: 6 },
+        {priority: "URGENT", count: 5 }
       ];
 
       // Mock Prisma response for each query;
@@ -707,18 +707,18 @@ describe("MaintenanceService", () => {
 
       // Verify specific data;
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
-        {status:"PENDING", count: 5 },
-        {status:"COMPLETED", count: 10 }
+        {status: "PENDING", count: 5 },
+        {status: "COMPLETED", count: 10 }
       ]));
 
       expect(result.requestTypeDistribution).toEqual(expect.arrayContaining([;
-        {requestType:"PREVENTIVE", count: 8 },
-        {requestType:"CORRECTIVE", count: 10 }
+        {requestType: "PREVENTIVE", count: 8 },
+        {requestType: "CORRECTIVE", count: 10 }
       ]));
 
       expect(result.priorityDistribution).toEqual(expect.arrayContaining([;
-        {priority:"MEDIUM", count: 8 },
-        {priority:"HIGH", count: 6 }
+        {priority: "MEDIUM", count: 8 },
+        {priority: "HIGH", count: 6 }
       ]));
     });
 
@@ -736,13 +736,13 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with date filters;
       expect(prisma.maintenanceRequest.count).toHaveBeenCalledWith({
-        {gte:fromDate,
+        {gte: fromDate,
             lte: toDate;
 
       }),
       expect(prisma.maintenanceRequest.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
-          {gte:fromDate,
+          {gte: fromDate,
               lte: toDate;
 
         });

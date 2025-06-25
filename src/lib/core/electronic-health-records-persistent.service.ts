@@ -1,9 +1,9 @@
 import "../../services/encryption_service_secure"
 import "@prisma/client"
 import "zod"
-import {  getEncryptionService  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {getEncryptionService  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {z  } from "next/server"
 
 /**;
  * Electronic Health Records (EHR) Service - Persistent Implementation;
@@ -12,7 +12,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Re-export schemas from original service for compatibility;
-export const ClinicalNoteSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const ClinicalNoteSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
   encounter_id: z.string().min(1, "Encounter ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
   note_type: z.enum(["progress_note", "soap_note", "admission_note", "discharge_summary", "consultation_note", "procedure_note", "nursing_note"]),
@@ -56,7 +56,7 @@ export const ClinicalNoteSchema = z.object({patient_id:z.string().min(1, "Patien
   created_by: z.string(),
   status: z.enum(["draft", "final", "amended", "corrected"]).default("draft")});
 
-export const CarePlanSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const CarePlanSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
   encounter_id: z.string().optional(),
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
@@ -95,7 +95,7 @@ export const CarePlanSchema = z.object({patient_id:z.string().min(1, "Patient ID
   period_end: z.date().optional();
 });
 
-export const ProblemListSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const ProblemListSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
   encounter_id: z.string().optional(),
   problem_description: z.string().min(1, "Problem description is required"),
   icd10_code: z.string().optional(),
@@ -108,7 +108,7 @@ export const ProblemListSchema = z.object({patient_id:z.string().min(1, "Patient
   created_by: z.string();
 });
 
-export const ClinicalGuidelineSchema = z.object({title:z.string().min(1, "Title is required"),
+export const ClinicalGuidelineSchema = z.object({title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
   version: z.string().min(1, "Version is required"),
   status: z.enum(["draft", "active", "retired"]).default("draft"),
@@ -137,7 +137,7 @@ export type ProblemListItem = z.infer>;
 export type ClinicalGuideline = z.infer>;
 
 }
-    lab_values?: {name:string, number }[];
+    lab_values?: {name: string, number }[];
     medication_interactions?: string[];
   };
   "alert" | "suggestion" | "warning" | "info",
@@ -157,7 +157,7 @@ export type ClinicalGuideline = z.infer>;
   }
 
   // Clinical Notes Operations;
-  async createClinicalNote(data: ClinicalNote): Promise<ClinicalNote & {id:string }> {
+  async createClinicalNote(data: ClinicalNote): Promise<ClinicalNote & {id: string }> {
     try {
 } catch (error) {
   console.error(error);
@@ -203,7 +203,7 @@ export type ClinicalGuideline = z.infer>;
     }
   }
 
-  private async createSoapNote(data: ClinicalNote): Promise<ClinicalNote & {id:string }> {
+  private async createSoapNote(data: ClinicalNote): Promise<ClinicalNote & {id: string }> {
     const encryptedData = await this.encryptionService.encryptObject(data, this.encryptedFields);
 
     const soapNote = await this.prisma.soapNote.create({
@@ -224,7 +224,7 @@ export type ClinicalGuideline = z.infer>;
     };
   }
 
-  private async createProgressNote(data: ClinicalNote): Promise<ClinicalNote & {id:string }> {
+  private async createProgressNote(data: ClinicalNote): Promise<ClinicalNote & {id: string }> {
     const encryptedData = await this.encryptionService.encryptObject(data, this.encryptedFields);
 
     const progressNote = await this.prisma.progressNote.create({
@@ -278,7 +278,7 @@ export type ClinicalGuideline = z.infer>;
 } catch (error) {
 }
       // Try SOAP note first;
-      const soapNote = await this.prisma.soapNote.findUnique({where:{ id }
+      const soapNote = await this.prisma.soapNote.findUnique({where: { id }
       });
 
       if (!session.user) {
@@ -286,7 +286,7 @@ export type ClinicalGuideline = z.infer>;
       }
 
       // Try progress note;
-      const progressNote = await this.prisma.progressNote.findUnique({where:{ id }
+      const progressNote = await this.prisma.progressNote.findUnique({where: { id }
       });
 
       if (!session.user) {
@@ -333,11 +333,11 @@ export type ClinicalGuideline = z.infer>;
 } catch (error) {
 }
       const [soapNotes, progressNotes] = await Promise.all([;
-        this.prisma.soapNote.findMany({where:{ patientId },
-          orderBy: {noteDateTime:"desc" }
+        this.prisma.soapNote.findMany({where: { patientId },
+          orderBy: {noteDateTime: "desc" }
         }),
-        this.prisma.progressNote.findMany({where:{ patientId },
-          orderBy: {noteDateTime:"desc" }
+        this.prisma.progressNote.findMany({where: { patientId },
+          orderBy: {noteDateTime: "desc" }
         });
       ]);
 
@@ -355,7 +355,7 @@ export type ClinicalGuideline = z.infer>;
   }
 
   // Care Plans Operations;
-  async createCarePlan(data: CarePlan): Promise<CarePlan & {id:string }> {
+  async createCarePlan(data: CarePlan): Promise<CarePlan & {id: string }> {
     try {
 } catch (error) {
   console.error(error);
@@ -458,7 +458,7 @@ export type ClinicalGuideline = z.infer>;
 
 } catch (error) {
 
-      const carePlan = await this.prisma.carePlan.findUnique({where:{ id },
+      const carePlan = await this.prisma.carePlan.findUnique({where: { id },
         true,
           interventions: true;
 
@@ -466,7 +466,7 @@ export type ClinicalGuideline = z.infer>;
 
       if (!session.user)eturn null;
 
-      return {patient_id:carePlan.patientId,
+      return {patient_id: carePlan.patientId,
         carePlan.title,
         carePlan.status as any,
         carePlan.goals.map(goal => ({id:goal.id,
@@ -519,14 +519,14 @@ export type ClinicalGuideline = z.infer>;
 
 } catch (error) {
 
-      const carePlans = await this.prisma.carePlan.findMany({where:{ patientId },
+      const carePlans = await this.prisma.carePlan.findMany({where: { patientId },
         true,
           interventions: true;
         },
-        orderBy: {createdAt:"desc" }
+        orderBy: {createdAt: "desc" }
       });
 
-      return carePlans.map(carePlan => ({patient_id:carePlan.patientId,
+      return carePlans.map(carePlan => ({patient_id: carePlan.patientId,
         carePlan.title,
         carePlan.status as any,
         carePlan.goals.map(goal => ({id:goal.id,
@@ -546,7 +546,7 @@ export type ClinicalGuideline = z.infer>;
       throw new Error(`Failed to get care plans for patient: ${}`;
 
   // Problem List Operations;
-  async createProblemListItem(data: ProblemListItem): Promise<ProblemListItem & {id:string }> {
+  async createProblemListItem(data: ProblemListItem): Promise<ProblemListItem & {id: string }> {
     try {
 } catch (error) {
   console.error(error);
@@ -632,13 +632,13 @@ export type ClinicalGuideline = z.infer>;
 
 } catch (error) {
 
-      const problems = await this.prisma.problemEntry.findMany({where:{ patientId },
-        orderBy: {createdAt:"desc" }
+      const problems = await this.prisma.problemEntry.findMany({where: { patientId },
+        orderBy: {createdAt: "desc" }
       });
 
       return Promise.all(problems.map(async (problem) => {
         const decrypted = await this.encryptionService.decryptObject(problem, this.encryptedFields);
-        return {patient_id:problem.patientId,
+        return {patient_id: problem.patientId,
           decrypted.problemDescription,
           problem.snomedCode || undefined,
           problem.severity as any,
@@ -650,7 +650,7 @@ export type ClinicalGuideline = z.infer>;
       throw new Error(`Failed to get problem list for patient: ${}`;
 
   // Clinical Guidelines Operations;
-  async createClinicalGuideline(data: ClinicalGuideline): Promise<ClinicalGuideline & {id:string }> {
+  async createClinicalGuideline(data: ClinicalGuideline): Promise<ClinicalGuideline & {id: string }> {
     try {
 } catch (error) {
   console.error(error);
@@ -738,21 +738,21 @@ export type ClinicalGuideline = z.infer>;
 
 } catch (error) {
 
-      const where: unknown = {ruleType:"guideline" };
+      const where: unknown = {ruleType: "guideline" };
 
       if (!session.user) {
         where.status = filters.status;
 
       const guidelines = await this.prisma.clinicalDecisionSupport.findMany({
         where,
-        orderBy: {createdAt:"desc" }
+        orderBy: {createdAt: "desc" }
       });
 
       return guidelines.map(guideline => {
         const triggerConditions = JSON.parse(guideline.triggerConditions);
         const recommendations = JSON.parse(guideline.recommendations);
 
-        return {title:guideline.title,
+        return {title: guideline.title,
           "1.0", // Would need to add version tracking;
           status: guideline.status as any,
           triggerConditions.snomed_codes,
@@ -767,7 +767,7 @@ export type ClinicalGuideline = z.infer>;
   private async deserializeSoapNote(note: unknown): Promise<ClinicalNote> {
     const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields);
 
-    return {patient_id:note.patientId,
+    return {patient_id: note.patientId,
       note.providerId,
       decrypted.subjective,
       decrypted.assessment,
@@ -780,7 +780,7 @@ export type ClinicalGuideline = z.infer>;
     const content = JSON.parse(note.content);
     const decrypted = await this.encryptionService.decryptObject(content, this.encryptedFields);
 
-    return {patient_id:note.patientId,
+    return {patient_id: note.patientId,
       note.providerId,
       note_type: note.noteType || "progress_note";
       ...decrypted,
@@ -844,13 +844,13 @@ export type ClinicalGuideline = z.infer>;
       const [soapNotes, progressNotes] = await Promise.all([;
         this.prisma.soapNote.findMany({
           where,
-          orderBy: {noteDateTime:"desc" }
+          orderBy: {noteDateTime: "desc" }
         }),
-        this.prisma.progressNote.findMany({where:{
+        this.prisma.progressNote.findMany({where: {
             ...where,
             ...(query?.noteType && query.noteType !== "soap_note" ? {noteType:query.noteType } : {});
           },
-          orderBy: {noteDateTime:"desc" }
+          orderBy: {noteDateTime: "desc" }
         });
       ]);
 
@@ -871,7 +871,7 @@ export type ClinicalGuideline = z.infer>;
     context: {
       icd10_codes?: string[];
       snomed_codes?: string[];
-      lab_values?: {name:string, value: number }[];
+      lab_values?: {name: string, value: number }[];
       medications?: string[];
 
   ): Promise<ClinicalDecisionSupport[]> {
@@ -907,7 +907,7 @@ export type ClinicalGuideline = z.infer>;
 
 } catch (error) {
 
-      const rules = await this.prisma.clinicalDecisionSupport.findMany({where:{ status: "active" }
+      const rules = await this.prisma.clinicalDecisionSupport.findMany({where: { status: "active" }
       });
 
       const triggeredRules: ClinicalDecisionSupport[] = [];
@@ -931,7 +931,7 @@ export type ClinicalGuideline = z.infer>;
         // Add more trigger condition logic as needed;
 
         if (!session.user) {
-          triggeredRules.push({id:rule.id,
+          triggeredRules.push({id: rule.id,
             rule.description,
             JSON.parse(rule.recommendations),
             rule.createdBy,

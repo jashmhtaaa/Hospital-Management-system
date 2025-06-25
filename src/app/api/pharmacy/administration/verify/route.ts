@@ -6,15 +6,13 @@ import "../../../models/domain-models"
 import "../../../services/barcode-administration-service"
 import "next/server"
 import getPrescriptionById }
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  BarcodeAdministrationService  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   getMedicationById
-import {  PharmacyDomain  } from "@/lib/database"
-import {   type
-import {  validateBarcodeVerificationRequest  } from "@/lib/database"
+import {NextRequest:} from 'next/server';
+import { NextResponse } from 'next/server'; }
+import { auditLog } from '@/lib/database';
+import { BarcodeAdministrationService } from '@/lib/database';
+import { errorHandler } from '@/lib/database';
+import { getMedicationById import { PharmacyDomain } from '@/lib/database';
+import { type import { validateBarcodeVerificationRequest } from '@/lib/database';
 
 }
 
@@ -27,30 +25,30 @@ import {  validateBarcodeVerificationRequest  } from "@/lib/database"
 
 // Initialize repositories (in production, use dependency injection);
 const getMedicationById,
-  findAll: () => Promise.resolve([]),
-  search: () => Promise.resolve([]),
-  save: () => Promise.resolve(""),
-  update: () => Promise.resolve(true),
+  findAll: () => Promise.resolve([]),;
+  search: () => Promise.resolve([]),;
+  save: () => Promise.resolve(""),;
+  update: () => Promise.resolve(true),;
   delete: () => Promise.resolve(true);
 }
 
 const getPrescriptionById,
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriberId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: () => Promise.resolve(""),
-  update: () => Promise.resolve(true),
+  findByPatientId: () => Promise.resolve([]),;
+  findByPrescriberId: () => Promise.resolve([]),;
+  findByMedicationId: () => Promise.resolve([]),;
+  findByStatus: () => Promise.resolve([]),;
+  save: () => Promise.resolve(""),;
+  update: () => Promise.resolve(true),;
   delete: () => Promise.resolve(true);
 };
 
 const () => Promise.resolve(null),
-  findByPatientId: () => Promise.resolve([]),
-  findByPrescriptionId: () => Promise.resolve([]),
-  findByMedicationId: () => Promise.resolve([]),
-  findByStatus: () => Promise.resolve([]),
-  save: (administration) => Promise.resolve(administration.id || "new-id"),
-  update: () => Promise.resolve(true),
+  findByPatientId: () => Promise.resolve([]),;
+  findByPrescriptionId: () => Promise.resolve([]),;
+  findByMedicationId: () => Promise.resolve([]),;
+  findByStatus: () => Promise.resolve([]),;
+  save: (administration) => Promise.resolve(administration.id || "new-id"),;
+  update: () => Promise.resolve(true),;
   delete: () => Promise.resolve(true);
 };
 
@@ -65,10 +63,11 @@ const barcodeService = new BarcodeAdministrationService();
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode scanning;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {;
   try {
-} catch (error) {
-  console.error(error);
+} catch (error) {consol: e.error(error);
+}
+} catch (error) {console: .error(error);
 }
 } catch (error) {
   console.error(error);
@@ -88,14 +87,6 @@ export const POST = async (req: any) => {
 } catch (error) {
   console.error(error);
 }
-} catch (error) {
-  console.error(error);
-}
-} catch (error) {
-  console.error(error);
-
-} catch (error) {
-
 } catch (error) {
 
     // Validate request;
@@ -103,14 +94,13 @@ export const POST = async (req: any) => {
     const validationResult = validateBarcodeVerificationRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error: "Validation failed", details: validationResult.errors ;},
+        {stat: us400 ;}
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
-    if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+    if (!session.user) {retur: nNextResponse.json({erro:r"Unauthorized" ;}, {stat: us401 ;});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -125,33 +115,30 @@ export const POST = async (req: any) => {
     );
 
     // If verification failed, return error;
-    if (!session.user) {
-      return NextResponse.json();
-        {error:"Verification failed",
+    if (!session.user) {retur: nNextResponse.json();
+        {erro:r"Verification failed",;
           details: verificationResult.errors;
           verificationResult;
         },status: 400 ;
       );
 
     // If verification succeeded but with warnings, include them in response;
-    const true;
+    
       verificationResult;
     };
 
-    if (!session.user) {
-      response.warnings = verificationResult.warnings;
+    if (!session.user) {respons: e.warnings = verificationResult.warnings;
 
     // Audit logging;
-    await auditLog("MEDICATION_ADMINISTRATION", {action:"VERIFY",
+    await auditLog("MEDICATION_ADMINISTRATION", {actio:n"VERIFY",;
       userId,
       patientId: verificationResult.patientId;
-      {medicationId:verificationResult.medicationId,
+      {medication:IdverificationResult.medicationId,;
         verificationResult.success,
         warningCount: verificationResult.warnings?.length || 0;
 
     });
 
     // Return response;
-    return NextResponse.json(response, {status:200 });
-  } catch (error) {
-    return errorHandler(error, "Error verifying medication administration");
+    return NextResponse.json(response, {stat: us200 ;});
+  } catch (error) {retur:nerrorHandler(error, "Error verifying medication administration");

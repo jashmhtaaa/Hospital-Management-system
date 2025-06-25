@@ -5,14 +5,14 @@ import "../../../../../lib/validation/pharmacy-validation"
 import "../../../models/domain-models"
 import "next/server"
 import getPrescriptionById }
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   getMedicationById
-import {  PharmacyDomain  } from "@/lib/database"
-import {   type
-import {  validateDispensingVerificationRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {errorHandler  } from "next/server"
+import {getMedicationById
+import {  PharmacyDomain  } from "next/server"
+import {type
+import {  validateDispensingVerificationRequest  } from "next/server"
 
 }
 
@@ -32,7 +32,7 @@ const getMedicationById,
   delete: () => Promise.resolve(true);
 }
 
-const prescriptionRepository = {findById:getPrescriptionById,
+const prescriptionRepository = {findById: getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -42,7 +42,7 @@ const prescriptionRepository = {findById:getPrescriptionById,
   delete: () => Promise.resolve(true);
 };
 
-const dispensingRepository = {findById:(id: string) => Promise.resolve(null),
+const dispensingRepository = {findById: (id: string) => Promise.resolve(null),
   findByPrescriptionId: (prescriptionId: string) => Promise.resolve([]),
   findByPatientId: (patientId: string) => Promise.resolve([]),
   findByStatus: (status: string) => Promise.resolve([]),
@@ -93,15 +93,15 @@ export const POST = async (req: any) => {
     const validationResult = validateDispensingVerificationRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error: "Validation failed", details: validationResult.errors },
+        {status: 400 }
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -110,19 +110,19 @@ export const POST = async (req: any) => {
     // Verify prescription exists;
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
-      return NextResponse.json({error:"Prescription not found" }, {status:404 });
+      return NextResponse.json({error: "Prescription not found" }, {status: 404 });
     }
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!session.user) {
-      return NextResponse.json({error:"Medication not found" }, {status:404 });
+      return NextResponse.json({error: "Medication not found" }, {status: 404 });
     }
 
     // Verify medication barcode matches prescription;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Medication barcode does not match prescription",
+        {error: "Medication barcode does not match prescription",
           data.medicationBarcode;
         },status: 400 ;
       );
@@ -131,13 +131,13 @@ export const POST = async (req: any) => {
     // Verify patient barcode matches prescription;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Patient barcode does not match prescription",
+        {error: "Patient barcode does not match prescription",
           data.patientBarcode;
         },status: 400 ;
       );
 
     // Create verification record;
-    const verification = {id:crypto.randomUUID(),
+    const verification = {id: crypto.randomUUID(),
       data.medicationBarcode,
       userId,
       verifiedAt: new Date(),
@@ -158,7 +158,7 @@ export const POST = async (req: any) => {
         await dispensingRepository.update(dispensing);
 
     // Audit logging;
-    await auditLog("DISPENSING", {action:"VERIFY",
+    await auditLog("DISPENSING", {action: "VERIFY",
       userId,
       patientId: prescription.patientId;
       {medicationId:prescription.medicationId,
@@ -168,13 +168,13 @@ export const POST = async (req: any) => {
 
     // Return response;
     return NextResponse.json();
-      {success:true,
+      {success: true,
         message: "Dispensing verification successful";
         {id:verification.id,
           verifiedAt: verification.verifiedAt;
 
       },
-      {status:200 }
+      {status: 200 }
     );
   } catch (error) {
     return errorHandler(error, "Error verifying medication dispensing");

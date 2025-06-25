@@ -1,14 +1,15 @@
 import "@/lib/session"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  getSession  } from "@/lib/database"
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {getSession  } from "next/server"
+import {type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
 
 // Define interface for POST request body;
 interface ProgressNoteInput {
+
   note_date?: string; // Optional, defaults to now;
   subjective: string,
   string,
@@ -18,7 +19,7 @@ interface ProgressNoteInput {
 // GET /api/ipd/admissions/[id]/progress-notes - Get all progress notes for an admission;
 export const _GET = async();
   _request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -56,15 +57,15 @@ export const _GET = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Check if admission exists using db.query;
-    // Assuming db.query exists and returns {results:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const admissionResult = await database.query();
       `;
       SELECT a.*, p.first_name as patient_first_name, p.last_name as patient_last_name;
@@ -76,13 +77,13 @@ export const _GET = async();
     );
     const admission =;
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results;
-        ? (admissionResult.results[0] as {id:string, primary_doctor_id: number }) // Changed .rows to .results;
+        ? (admissionResult.results[0] as {id: string, primary_doctor_id: number }) // Changed .rows to .results;
         : undefined;
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Admission not found" },
-        {status:404 }
+        {error: "Admission not found" },
+        {status: 404 }
       );
     }
 
@@ -109,11 +110,11 @@ export const _GET = async();
     }
 
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
     }
 
     // Get progress notes using db.query;
-    // Assuming db.query exists and returns {results:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const progressNotesResult = await database.query();
       `;
       SELECT pn.*, u.first_name as doctor_first_name, u.last_name as doctor_last_name;
@@ -133,8 +134,8 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to fetch progress notes", details: errorMessage },
-      {status:500 }
+      {error: "Failed to fetch progress notes", details: errorMessage },
+      {status: 500 }
     );
   }
 }
@@ -142,7 +143,7 @@ export const _GET = async();
 // POST /api/ipd/admissions/[id]/progress-notes - Create a new progress note;
 export const _POST = async();
   request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -180,7 +181,7 @@ export const _POST = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Check permissions (using mock session data);
     const isDoctor = session.user.roleName === "Doctor";
@@ -193,12 +194,12 @@ export const _POST = async();
     if (!session.user) {
       // Must be doctor or have general create permission;
       return NextResponse.json();
-        {error:"Forbidden: Only doctors or users with create permission can add progress notes";
+        {error: "Forbidden: Only doctors or users with create permission can add progress notes";
         },
-        {status:403 }
+        {status: 403 }
       );
 
-    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     // Fixed: Apply type assertion;
     const data = (await request.json()) as ProgressNoteInput;
 
@@ -211,14 +212,14 @@ export const _POST = async();
     for (const field of requiredFields) {
       if (!session.user) {
         return NextResponse.json();
-          {error:`Missing required field: ${field}` },
-          {status:400 }
+          {error: `Missing required field: ${field}` },
+          {status: 400 }
         );
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Check if admission exists and is active using db.query;
-    // Assuming db.query exists and returns {results:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const admissionResult = await database.query();
       "SELECT id, status, primary_doctor_id FROM admissions WHERE id = ?",
       [admissionId];
@@ -233,22 +234,22 @@ export const _POST = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Admission not found" },
-        {status:404 }
+        {error: "Admission not found" },
+        {status: 404 }
       );
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Cannot add progress notes to a non-active admission" },
-        {status:409 }
+        {error: "Cannot add progress notes to a non-active admission" },
+        {status: 409 }
       ); // Updated error message;
 
     // If user is a doctor, check if they are the primary doctor for this admission or have override permission;
     // Ensure userId exists on session.user before comparison;
     if (!session.user)eturn NextResponse.json()
-        {error:"You are not authorized to add progress notes for this patient";
+        {error: "You are not authorized to add progress notes for this patient";
         },
-        {status:403 }
+        {status: 403 }
       );
 
     // Insert new progress note using db.query;
@@ -271,13 +272,13 @@ export const _POST = async();
 
     // Cannot reliably get the new record from mock DB;
     return NextResponse.json();
-      {message:"Progress note created (mock operation)" },
-      {status:201 }
+      {message: "Progress note created (mock operation)" },
+      {status: 201 }
     );
   } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to create progress note", details: errorMessage },
-      {status:500 }
+      {error: "Failed to create progress note", details: errorMessage },
+      {status: 500 }
     );

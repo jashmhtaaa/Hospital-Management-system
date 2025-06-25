@@ -36,8 +36,6 @@
     "noUnusedParameters": false,
     "allowUnreachableCode": true,
     "allowUnusedLabels": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "suppressExcessPropertyErrors": true
   },
   "include": [
     "next-env.d.ts",

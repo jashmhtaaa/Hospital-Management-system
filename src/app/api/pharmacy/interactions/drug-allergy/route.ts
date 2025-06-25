@@ -6,16 +6,16 @@ import "../../../../../lib/validation/pharmacy-validation"
 import "../../../models/domain-models"
 import "../../../services/drug-interaction-service"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  DrugInteractionService  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {  getMedicationById  } from "@/lib/database"
-import {  getPatientAllergies  } from "@/lib/database"
-import {  PharmacyDomain  } from "@/lib/database"
-import {   type
-import {  validateDrugAllergyInteractionRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {DrugInteractionService  } from "next/server"
+import {errorHandler  } from "next/server"
+import {getMedicationById  } from "next/server"
+import {getPatientAllergies  } from "next/server"
+import {PharmacyDomain  } from "next/server"
+import {type
+import {  validateDrugAllergyInteractionRequest  } from "next/server"
 
 }
 
@@ -83,14 +83,14 @@ export const POST = async (req: any) => {
     const validationResult = validateDrugAllergyInteractionRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error: "Validation failed", details: validationResult.errors },
+        {status: 400 }
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -110,7 +110,7 @@ export const POST = async (req: any) => {
     );
 
     // Audit logging;
-    await auditLog("DRUG_INTERACTION", {action:"CHECK_DRUG_ALLERGY",
+    await auditLog("DRUG_INTERACTION", {action: "CHECK_DRUG_ALLERGY",
       userId,
       data.medicationIds,
         interactions.length;
@@ -124,6 +124,6 @@ export const POST = async (req: any) => {
           interactions.filter(i => i.severity === "moderate").length,
           interactions.filter(i => i.severity === "unknown").length;
 
-    }, {status:200 });
+    }, {status: 200 });
   } catch (error) {
     return errorHandler(error, "Error checking drug-allergy interactions");

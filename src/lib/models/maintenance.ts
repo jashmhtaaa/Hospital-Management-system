@@ -1,7 +1,7 @@
 import "@prisma/client"
 import MaintenanceRequest
 import MaintenanceWorkOrder }
-import {  Asset
+import {Asset
 
 // FHIR-compliant interfaces for Maintenance Management;
 
@@ -10,9 +10,9 @@ import {  Asset
  * Maps to FHIR ServiceRequest resource;
  */;
 
-     } from "@/lib/database"[];
+     } from "next/server"[];
   }[];
-  {system:string,
+  {system: string,
       string;
     }[];
     text: string;
@@ -23,7 +23,7 @@ import {  Asset
   string;
     display?: string;
   };
-  performer?: {reference:string;
+  performer?: {reference: string;
     display?: string;
   }[];
   string;
@@ -31,7 +31,7 @@ import {  Asset
   }[];
   occurrenceDateTime?: string;
   authoredOn: string;
-  note?: {text:string;
+  note?: {text: string;
   }[];
 
 /**;
@@ -42,18 +42,18 @@ import {  Asset
   }[];
   status: "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error",
   "routine" | "urgent" | "asap" | "stat",
-  {reference:string;
+  {reference: string;
   };
   string;
   };
   authoredOn: string,
-  {reference:string;
+  {reference: string;
     display?: string;
   };
-  owner?: {reference:string;
+  owner?: {reference: string;
     display?: string;
   };
-  note?: {text:string;
+  note?: {text: string;
   }[];
   executionPeriod?: {
     start?: string;
@@ -70,15 +70,15 @@ import {  Asset
   manufacturer?: string;
   model?: string;
   serialNumber?: string;
-  {system:string,
+  {system: string,
       string;
     }[];
     text: string;
   };
-  location?: {reference:string;
+  location?: {reference: string;
     display?: string;
   };
-  note?: {text:string;
+  note?: {text: string;
   }[];
   manufactureDate?: string;
   expirationDate?: string;
@@ -110,14 +110,14 @@ export const _toFHIRMaintenanceRequest = (unknown;
   };
 
   // Map request type to FHIR coding;
-  const requestTypeMap: Record<string, {code:string, display: string }> = {
-    "REPAIR": {code:"repair", display: "Repair" },
-    "PREVENTIVE": {code:"preventive", display: "Preventive Maintenance" },
-    "INSTALLATION": {code:"installation", display: "Installation" },
-    "INSPECTION": {code:"inspection", display: "Inspection" }
+  const requestTypeMap: Record<string, {code: string, display: string }> = {
+    "REPAIR": {code: "repair", display: "Repair" },
+    "PREVENTIVE": {code: "preventive", display: "Preventive Maintenance" },
+    "INSTALLATION": {code: "installation", display: "Installation" },
+    "INSPECTION": {code: "inspection", display: "Inspection" }
   };
 
-  return {resourceType:"ServiceRequest",
+  return {resourceType: "ServiceRequest",
     statusMap[request.status] || "unknown",
     priorityMap[request.priority] || "routine",
     [{system:"https://terminology.hl7.org/CodeSystem/service-category",
@@ -165,7 +165,7 @@ export const _toFHIRMaintenanceWorkOrder = (MaintenanceRequest;
     "EMERGENCY": "stat";
   };
 
-  return {resourceType:"Task",
+  return {resourceType: "Task",
     [{reference:`ServiceRequest/${workOrder.requestId}`;
     }],
     status: statusMap[workOrder.status] || "requested",
@@ -199,25 +199,25 @@ export const _toFHIRAsset = (unknown;
   };
 
   // Map asset type to FHIR coding;
-  const assetTypeMap: Record<string, {code:string, display: string }> = {
-    "EQUIPMENT": {code:"equipment", display: "Medical Equipment" },
-    "FACILITY": {code:"facility", display: "Facility Asset" },
-    "VEHICLE": {code:"vehicle", display: "Vehicle" },
-    "IT": {code:"it", display: "IT Equipment" }
+  const assetTypeMap: Record<string, {code: string, display: string }> = {
+    "EQUIPMENT": {code: "equipment", display: "Medical Equipment" },
+    "FACILITY": {code: "facility", display: "Facility Asset" },
+    "VEHICLE": {code: "vehicle", display: "Vehicle" },
+    "IT": {code: "it", display: "IT Equipment" }
   };
 
-  return {resourceType:"Device",
+  return {resourceType: "Device",
     [;
       {system:"https://hms.local/identifier/asset",
         value: asset.id;
       },
-      ...(asset.serialNumber ? [{system:"https://hms.local/identifier/serial-number",
+      ...(asset.serialNumber ? [{system: "https://hms.local/identifier/serial-number",
         value: asset.serialNumber;
       }] : []);
     ],
     status: statusMap[asset.status] || "unknown",
     asset.model,
-    [{system:"https://hms.local/fhir/CodeSystem/asset-type",
+    [{system: "https://hms.local/fhir/CodeSystem/asset-type",
         code: assetTypeMap[asset.assetType]?.code || asset.assetType.toLowerCase(),
         display: assetTypeMap[asset.assetType]?.display || asset.assetType;
       }],

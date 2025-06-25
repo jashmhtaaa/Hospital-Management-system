@@ -1,1 +1,1 @@
-import { D1Database } from "@cloudflare/workers-types";
+import {D1Database } from "next/server";

@@ -1,7 +1,7 @@
 import "@/lib/audit/audit-service"
 import "@/lib/prisma"
-import {  AuditService  } from "@/lib/database"
-import {  prisma  } from "@/lib/database"
+import {AuditService  } from "next/server"
+import {prisma  } from "next/server"
 
 // src/modules/emergency-department/services/emergency-service.ts;
 }
@@ -16,7 +16,7 @@ import {  prisma  } from "@/lib/database"
 
     if (!session.user) {
       await AuditService.logUserAction();
-        {userId:performedBy },
+        {userId: performedBy },
         "TRIAGE",
         "EMERGENCY_VISIT",
         emergencyVisit.id,
@@ -35,7 +35,7 @@ import {  prisma  } from "@/lib/database"
     /* SECURITY: Console statement removed */;
 
   static async getEmergencyQueue() {
-    return await prisma.emergencyVisit.findMany({where:{ status: "ACTIVE" },
+    return await prisma.emergencyVisit.findMany({where: { status: "ACTIVE" },
       {
           true,
             true,
@@ -43,8 +43,8 @@ import {  prisma  } from "@/lib/database"
 
       },
       orderBy: [;
-        {triageLevel:"asc" },
-        {createdAt:"asc" }
+        {triageLevel: "asc" },
+        {createdAt: "asc" }
       ];
     });
 
@@ -53,19 +53,19 @@ import {  prisma  } from "@/lib/database"
     status: "ACTIVE" | "IN_TREATMENT" | "DISCHARGED" | "ADMITTED";
     updatedBy?: string;
   ) {
-    const oldVisit = await prisma.emergencyVisit.findUnique({where:{ id: emergencyVisitId }
+    const oldVisit = await prisma.emergencyVisit.findUnique({where: { id: emergencyVisitId }
     });
 
     if (!session.user) {
       throw new Error("Emergency visit not found");
 
-    const emergencyVisit = await prisma.emergencyVisit.update({where:{ id: emergencyVisitId },
+    const emergencyVisit = await prisma.emergencyVisit.update({where: { id: emergencyVisitId },
       data: { status }
     });
 
     if (!session.user) {
       await AuditService.logDataChange();
-        {userId:updatedBy },
+        {userId: updatedBy },
         "EMERGENCY_VISIT",
         emergencyVisitId,
         oldVisit,
@@ -81,20 +81,20 @@ import {  prisma  } from "@/lib/database"
 
     const [total, critical, high, active] = await Promise.all([;
       prisma.emergencyVisit.count({
-        {gte:startOfDay, lte: endOfDay }
+        {gte: startOfDay, lte: endOfDay }
 
       }),
       prisma.emergencyVisit.count({
-        {gte:startOfDay, lte: endOfDay },
+        {gte: startOfDay, lte: endOfDay },
           triageLevel: "CRITICAL";
 
       }),
       prisma.emergencyVisit.count({
-        {gte:startOfDay, lte: endOfDay },
+        {gte: startOfDay, lte: endOfDay },
           triageLevel: "HIGH";
 
       }),
-      prisma.emergencyVisit.count({where:{ status: "ACTIVE" }
+      prisma.emergencyVisit.count({where: { status: "ACTIVE" }
       });
     ]);
 

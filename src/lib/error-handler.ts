@@ -142,8 +142,8 @@
   public static createError();
     message: string,
     keyof typeof ErrorHandler.ERROR_CODES;
-  ): Error & {status:number, code: string } {
-    const error = new Error(message) as Error & {status:number, code: string };
+  ): Error & {status: number, code: string } {
+    const error = new Error(message) as Error & {status: number, code: string };
     error.name = `${type}Error`;
     error.status = this.ERROR_TYPES[type];
     error.code = this.ERROR_CODES[code];

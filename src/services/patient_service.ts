@@ -2,10 +2,10 @@ import "../repositories/patient_repository.ts"
 import "./encryption_service.ts"
 import Patient
 import PatientInputData }
-import {  IEncryptionService  } from "@/lib/database"
-import {   IPatientRepository
+import {IEncryptionService  } from "next/server"
+import {IPatientRepository
 
-import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.ts"; // Import AuditLogService interface;
+import {  IAuditLogService   } from "next/server" from "./audit_log_service.ts"; // Import AuditLogService interface;
 
 }
 
@@ -75,7 +75,7 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
         "Patient",
         newPatientFromRepo.id,
         "SUCCESS",
-        {inputName:patientInputData.name } // Log non-sensitive part of input for context;
+        {inputName: patientInputData.name } // Log non-sensitive part of input for context;
       );
       return newPatientFromRepo;
     } catch (error: unknown) {
@@ -85,7 +85,7 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
         "Patient",
         null, // No patient ID created yet;
         "FAILURE",
-        {error:error.message, inputName: patientInputData.name }
+        {error: error.message, inputName: patientInputData.name }
       );
       throw error; // Re-throw the error after logging;
 
@@ -137,7 +137,7 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
           "Patient",
           id,
           "FAILURE",
-          {reason:"Patient not found" }
+          {reason: "Patient not found" }
         );
         return null;
 
@@ -163,6 +163,6 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
         "Patient",
         id,
         "FAILURE",
-        {error:error.message }
+        {error: error.message }
       );
       throw error; // Re-throw the error after logging;

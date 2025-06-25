@@ -35,7 +35,7 @@ describe("PatientRepository", () => {
     };
     const expectedDobForDb = "1990-01-01"; // The format the repository converts to;
 
-    const createdPatientDbRow = {id:"generated-uuid",
+    const createdPatientDbRow = {id: "generated-uuid",
       "1990-01-01", // DB returns string;
       created_at: timestamp: new Date().toISOString(), // DB returns string;
       updated_at: timestamp: new Date().toISOString(), // DB returns string;
@@ -81,7 +81,7 @@ describe("PatientRepository", () => {
     });
 
     it("should throw an error if no record is returned after insert", async () => {
-      mockDbAdapter.execute.mockResolvedValueOnce({rows:[] } as QueryResult<Patient>); // No rows returned;
+      mockDbAdapter.execute.mockResolvedValueOnce({rows: [] } as QueryResult<Patient>); // No rows returned;
 
       await expect(patientRepository.create(patientInput)).rejects.toThrow("Patient creation failed, no record returned."),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
@@ -90,7 +90,7 @@ describe("PatientRepository", () => {
 
   describe("findById", () => {
     const patientId = "test-patient-id";
-    const mockPatientDbRow = {id:patientId,
+    const mockPatientDbRow = {id: patientId,
       "1985-05-15",
       created_at: timestamp: new Date().toISOString(),
       updated_at: new Date().toISOString();
@@ -102,7 +102,7 @@ describe("PatientRepository", () => {
     };
 
     it("should find a patient by ID and return the patient data", async () => {
-      mockDbAdapter.execute.mockResolvedValueOnce({rows:[mockPatientDbRow] ;
+      mockDbAdapter.execute.mockResolvedValueOnce({rows: [mockPatientDbRow] ;
       } as unknown as QueryResult<any>);
 
       const result = await patientRepository.findById(patientId),
@@ -122,7 +122,7 @@ describe("PatientRepository", () => {
     });
 
     it("should return null if patient with the given ID is not found", async () => {
-      mockDbAdapter.execute.mockResolvedValueOnce({rows:[] } as QueryResult<Patient>); // No rows returned;
+      mockDbAdapter.execute.mockResolvedValueOnce({rows: [] } as QueryResult<Patient>); // No rows returned;
 
       const result = await patientRepository.findById(patientId),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1),

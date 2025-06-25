@@ -1,13 +1,14 @@
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Using mock DB;
-import { getSession } from "@/lib/session"; // Using mock session;
+import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
+import {getSession } from "next/server"; // Using mock session;
 // --- Interfaces ---;
 
 interface SampleInput {
+
   id?: number; // For updates;
   order_id: number,
   sample_type: string;
@@ -17,7 +18,7 @@ interface SampleInput {
   notes?: string;
 }
 
-interface LabSample {id:number,
+interface LabSample {id: number,
   string,
   number | null,
   number | null,
@@ -69,7 +70,7 @@ export const _GET = async (request: any) => {
 }
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
@@ -121,8 +122,8 @@ export const _GET = async (request: any) => {
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to fetch laboratory samples", details: errorMessage },
-      {status:500 }
+      {error: "Failed to fetch laboratory samples", details: errorMessage },
+      {status: 500 }
     );
   }
 }
@@ -163,7 +164,7 @@ export const _POST = async (request: any) => {
 }
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Fixed: Use roleName;
@@ -173,7 +174,7 @@ export const _POST = async (request: any) => {
       "Phlebotomist",
       "Admin"]; // Adjust role names;
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
     }
 
     const body = (await request.json()) as SampleInput;
@@ -193,8 +194,8 @@ export const _POST = async (request: any) => {
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Sample not found" },
-          {status:404 }
+          {error: "Sample not found" },
+          {status: 404 }
         );
       }
 
@@ -212,8 +213,8 @@ export const _POST = async (request: any) => {
           parameters.push(session.user.userId);
         if (!session.user) {
           return NextResponse.json();
-            {error:"Rejection reason is required when rejecting a sample" },
-            {status:400 }
+            {error: "Rejection reason is required when rejecting a sample" },
+            {status: 400 }
           );
         }
 
@@ -227,8 +228,8 @@ export const _POST = async (request: any) => {
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"No updates provided" },
-          {status:400 }
+          {error: "No updates provided" },
+          {status: 400 }
         );
 
       parameters.push(body.id); // Add ID for WHERE clause;
@@ -256,8 +257,8 @@ export const _POST = async (request: any) => {
       for (const field of requiredFields) {
         if (!session.user) {
           return NextResponse.json();
-            {error:`Missing required field: ${field}` },
-            {status:400 }
+            {error: `Missing required field: ${field}` },
+            {status: 400 }
           );
 
       const _timestamp = crypto.getRandomValues([0];
@@ -292,21 +293,21 @@ export const _POST = async (request: any) => {
       if (!session.user) {
         // Fallback if mock fetch fails;
         return NextResponse.json();
-          {message:"Sample created (mock), but could not fetch immediately.",
+          {message: "Sample created (mock), but could not fetch immediately.",
             barcode: barcode;
           },
-          {status:201 }
+          {status: 201 }
         );
 
-      return NextResponse.json(newSample, {status:201 });
+      return NextResponse.json(newSample, {status: 201 });
 
   } catch (error: unknown) {
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to manage laboratory sample", details: errorMessage },
-      {status:500 }
+      {error: "Failed to manage laboratory sample", details: errorMessage },
+      {status: 500 }
     );
 
 export async function GET() { return new Response("OK"); }))

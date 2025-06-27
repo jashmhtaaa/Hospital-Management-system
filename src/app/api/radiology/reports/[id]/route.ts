@@ -1,19 +1,21 @@
-import { IronSession  } from "iron-session"; // Import IronSession;
+import {IronSession  } from "next/server"; // Import IronSession;
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Import getDB function;
-import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
+import {  getDB  } from "next/server" from "@/lib/database"; // Import getDB function;
+import {type IronSessionData, getSession } from "next/server"; // Import IronSessionData;
 // Define generic SingleQueryResult type for .first();
-interface SingleQueryResult<T> {
+interface SingleQueryResult {
+    <T> {
   result?: T | null;
   // Add other potential properties based on your DB library;
 }
 
 // Define interfaces;
-interface RadiologyReport {id:string,
+interface RadiologyReport {
+    {id:string,
   study_id: string;
   report_text?: string | null;
   findings?: string | null;
@@ -37,9 +39,10 @@ interface RadiologyReport {id:string,
 
 // Define type for the raw DB result for the GET request;
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type;
-interface RadiologyReportQueryResultRow extends RadiologyReport {}
+interface RadiologyReportQueryResultRow {extends RadiologyReport {}
 
 interface RadiologyReportPutData {
+    {
   findings?: string | null;
   impression?: string | null;
   recommendations?: string | null;
@@ -52,7 +55,7 @@ interface RadiologyReportPutData {
 // GET a specific Radiology Report by ID;
 export const _GET = async();
   _request: any, // Renamed to _request as it"s unused;
-  { params }: {params:Promise<{id:string }> } // Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> ,} // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
 } catch (error) {
@@ -89,18 +92,18 @@ export const _GET = async();
     // Use IronSession<IronSessionData>;
     const session: IronSession<IronSessionData> = await getSession();
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
     // Role check example (adjust roles as needed);
     // if (!session.user) {
-    //   return NextResponse.json({error:"Forbidden" }, {status:403 });
+    //   return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
     // }
 
-    const {id:reportId } = await params; // Await params and destructure id (Next.js 15+);
+    const {id:reportId ,} = await params; // Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Report ID is required" },
-        {status:400 }
+        {error:"Report ID is required" ,},
+        {status:400 },
       );
     }
 
@@ -135,18 +138,18 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Radiology report not found" },
-        {status:404 }
+        {error:"Radiology report not found" ,},
+        {status:404 },
       );
     }
     return NextResponse.json(report);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      {error:"Failed to fetch radiology report", details: message },
-      {status:500 }
+      {error:"Failed to fetch radiology report", details: message ,},
+      {status:500 },
     );
   }
 }
@@ -154,7 +157,7 @@ export const _GET = async();
 // PUT (update/verify) a specific Radiology Report;
 export const _PUT = async();
   request: any;
-  { params }: {params:Promise<{id:string }> } // Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> ,} // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
 } catch (error) {
@@ -191,16 +194,16 @@ export const _PUT = async();
     // Use IronSession<IronSessionData>;
     const session: IronSession<IronSessionData> = await getSession();
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
     // Use the user directly from session;
     const currentUser = session.user;
 
-    const {id:reportId } = await params; // Await params and destructure id (Next.js 15+);
+    const {id:reportId ,} = await params; // Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Report ID is required" },
-        {status:400 }
+        {error:"Report ID is required" ,},
+        {status:400 },
       );
     }
 
@@ -222,8 +225,8 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Radiology report not found" },
-        {status:404 }
+        {error:"Radiology report not found" ,},
+        {status:404 },
       );
     }
 
@@ -238,22 +241,22 @@ export const _PUT = async();
     // Only Admin or the owning Radiologist can update (unless already final);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Forbidden: Insufficient permissions" },
-        {status:403 }
+        {error:"Forbidden: Insufficient permissions" ,},
+        {status:403 },
       );
     }
 
     // Prevent updates if report is already final, unless user is Admin or creating addendum;
     if (!session.user)eturn NextResponse.json()
-        {error:"Cannot update a final report. Create an addendum instead." },
-        {status:403 }
+        {error:"Cannot update a final report. Create an addendum instead." ,},
+        {status:403 },
       );
     // Radiologist cannot verify their own report (assuming this rule);
     // Adjust type comparison if needed (e.g., String(currentUser.userId));
     if (!session.user) {
       return NextResponse.json();
-        {error:"Radiologists cannot verify their own reports" },
-        {status:403 }
+        {error:"Radiologists cannot verify their own reports" ,},
+        {status:403 },
       );
     }
 
@@ -269,7 +272,7 @@ export const _PUT = async();
     if (!session.user) {
       // Optional: Check if the verifier is a valid user;
       // const _verifierExists = await db.prepare("SELECT id FROM Users WHERE id = ? AND \"Radiologist\" = ANY(roles)").bind(data.verified_by_id).first();
-      // if (!session.user)eturn NextResponse.json({error:"Invalid verifier ID or verifier is not a Radiologist" }, {status:400 });
+      // if (!session.user)eturn NextResponse.json({error:"Invalid verifier ID or verifier is not a Radiologist" ,}, {status:400 ,});
 
       fieldsToUpdate.verified_by_id = data.verified_by_id;
       fieldsToUpdate.verified_datetime = updatedAt;
@@ -278,8 +281,8 @@ export const _PUT = async();
 
     if (!session.user)length === 0) {
       return NextResponse.json();
-        {error:"No valid fields provided for update" },
-        {status:400 }
+        {error:"No valid fields provided for update" ,},
+        {status:400 },
       );
     }
 
@@ -353,19 +356,19 @@ export const _PUT = async();
         message: "Radiology report update processed";
 
     ); // Return updated report or confirmation;
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      {error:"Failed to update radiology report", details: message },
-      {status:500 }
+      {error:"Failed to update radiology report", details: message ,},
+      {status:500 },
     );
 
 // DELETE a specific Radiology Report (Admin only - consider status update instead);
 export const _DELETE = async();
   _request: any, // Renamed to _request as it"s unused;
-  { params }: {params:Promise<{id:string }> } // Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> ,} // Use Promise type for params (Next.js 15+);
 ): Promise<NextResponse> {
   try {
 } catch (error) {
@@ -403,22 +406,22 @@ export const _DELETE = async();
     const session: IronSession<IronSessionData> = await getSession();
     // Check session and user safely;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Use the user directly from session;
     const currentUser = session.user;
     // Use roleName for check;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Unauthorized: Admin role required" },
-        {status:403 }
+        {error:"Unauthorized: Admin role required" ,},
+        {status:403 },
       );
 
-    const {id:reportId } = await params; // Await params and destructure id (Next.js 15+);
+    const {id:reportId ,} = await params; // Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Report ID is required" },
-        {status:400 }
+        {error:"Report ID is required" ,},
+        {status:400 },
       );
 
     const database = await getDB();
@@ -441,18 +444,18 @@ export const _DELETE = async();
     if (!session.user) {
       // Check success;
       return NextResponse.json();
-        {error:"Radiology report not found or already retracted" },
-        {status:404 }
+        {error:"Radiology report not found or already retracted" ,},
+        {status:404 },
       );
 
     return NextResponse.json({id:reportId,
       status: "Radiology report retracted";
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      {error:"Failed to delete/retract radiology report", details: message },
-      {status:500 }
+      {error:"Failed to delete/retract radiology report", details: message ,},
+      {status:500 },
     );

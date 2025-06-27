@@ -9,7 +9,7 @@ import { metricsCollector } from '@/lib/monitoring/metrics-collector';
  * Provides access to system metrics and health data;
  */
 
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
     const format = searchParams.get('format') || 'json';
@@ -18,11 +18,11 @@ export const _GET = async (request: NextRequest) => {
 
     // Check authentication/authorization here if needed
     // const _user = await getCurrentUser(request)
-    // \1 {\n  \2 {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    //  {\n   {
+    //   return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 }),
     // }
 
-    \1 {\n  \2{
+     {\n  {
       // Return specific metric
       const timeWindowSeconds = timeWindow ? Number.parseInt(timeWindow) : undefined;
       const metrics = metricsCollector.getMetrics(metric, timeWindowSeconds);
@@ -30,16 +30,16 @@ export const _GET = async (request: NextRequest) => {
       return NextResponse.json({
         metric,
         timeWindow: timeWindowSeconds,
-        \1,\2 metrics.length
+         metrics.length
       });
     }
 
-    \1 {\n  \2{
+     {\n  {
       // Return Prometheus format
       const prometheusData = metricsCollector.exportMetrics('prometheus');
 
       return new NextResponse(prometheusData, {
-        headers: {
+        headers: {,
           'Content-Type': 'text/plain; charset=utf-8',
         },
       });
@@ -50,7 +50,7 @@ export const _GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       timestamp: new Date().toISOString(),
-      \1,\2 dashboardMetrics
+       dashboardMetrics
     });
 
   } catch (error) {
@@ -58,12 +58,12 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json(
       {
         error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const body = await request.json();
     const { action } = body;
@@ -72,21 +72,21 @@ export const _POST = async (request: NextRequest) => {
       case 'start_collection':
         const interval = body.interval || 60;
         metricsCollector.startCollection(interval);
-        return NextResponse.json({ message: 'Metrics collection started' });
+        return NextResponse.json({ message: 'Metrics collection started' ,});
 
       case 'stop_collection':
         metricsCollector.stopCollection(),
-        return NextResponse.json({ message: 'Metrics collection stopped' });
+        return NextResponse.json({ message: 'Metrics collection stopped' ,});
 
       case 'record_metric':
         const { name, value, type, tags } = body;
         metricsCollector.recordMetric(name, value, type, tags);
-        return NextResponse.json({ message: 'Metric recorded' });
+        return NextResponse.json({ message: 'Metric recorded' ,});
 
       default:
-        return NextResponse.json(
-          { error: 'Invalid action' },
-          { status: 400 }
+        return NextResponse.json(,
+          { error: 'Invalid action' ,},
+          { status: 400 },
         ),
     }
 
@@ -95,8 +95,8 @@ export const _POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         error: 'Internal server error',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }

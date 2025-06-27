@@ -123,7 +123,7 @@ export const _updateAdmissionInDB = async();
     return null;
 
   // Apply updates to the existing mock data;
-  const updatedAdmission: Admission = {
+  const updatedAdmission: Admission = {,
     ...existing,
     ...updateData};
   return updatedAdmission;

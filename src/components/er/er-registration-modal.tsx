@@ -42,8 +42,7 @@ import { useToast }
 
 // Define Zod schema for form validation;
 const registrationSchema = z;
-  .object({
-    searchMrn: z.string().optional(), // MRN for searching existing patient;
+  .object({searchMrn:z.string().optional(), // MRN for searching existing patient;
     firstName: z.string().min(1, "First name is required").optional(),
     lastName: z.string().min(1, "Last name is required").optional(),
     dob: z.string().optional(), // Consider using a date type if input is date picker;
@@ -62,26 +61,22 @@ const registrationSchema = z;
 type RegistrationFormValues = z.infer>;
 
 // Define interfaces for API responses (adjust based on actual API);
-interface PatientResponse {
-  id: string,
+interface PatientResponse {id:string,
   string,
   string,
   sex: string;
 }
 
-interface ERVisitResponse {
-  id: string;
+interface ERVisitResponse {id:string;
   visit_number?: string; // Optional visit number;
   patient_id: string,
   status: string;
 }
 
-interface ApiErrorResponse {
-  error: string;
+interface ApiErrorResponse {error:string;
 }
 
-interface ERRegistrationModalProperties {
-  isOpen: boolean,
+interface ERRegistrationModalProperties {isOpen:boolean,
   onClose: () => void;
   onSuccess?: (visit: ERVisitResponse) => void; // Optional callback on successful registration;
 export default const _ERRegistrationModal = ({
@@ -95,8 +90,7 @@ export default const _ERRegistrationModal = ({
 
   );
 
-  const form = useForm<RegistrationFormValues>({
-    resolver: zodResolver(registrationSchema),
+  const form = useForm<RegistrationFormValues>({resolver:zodResolver(registrationSchema),
     "",
       "",
       undefined,
@@ -131,8 +125,7 @@ export default const _ERRegistrationModal = ({
   const handleSearchPatient = async () => {
     const mrn = form.getValues("searchMrn");
     if (!session.user) {
-      toast({
-        title: "MRN Required",
+      toast({title:"MRN Required",
         "destructive";
       });
       return;
@@ -187,21 +180,18 @@ export default const _ERRegistrationModal = ({
           sex: "Male";
         };
         setFoundPatient(mockPatient),
-        toast({
-          title: "Patient Found",
+        toast({title:"Patient Found",
           description: `Found /* SECURITY: Template literal eliminated */;
         });
       } else {
-        toast({
-          title: "Patient Not Found",
+        toast({title:"Patient Not Found",
           description: `No patient found with MRN ${mrn}.`,
           variant: "default";
         });
 
     } catch (error) {
 
-      toast({
-        title: "Search Failed",
+      toast({title:"Search Failed",
         "destructive";
       });
     } finally {
@@ -269,8 +259,7 @@ export default const _ERRegistrationModal = ({
       // Step 2: Create ER Visit;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      const visitResponse = await fetch("/api/er/visits", {
-        method: "POST",
+      const visitResponse = await fetch("/api/er/visits", {method:"POST",
         headers: { "Content-Type": "application/json" },
         patientId,
           data.arrivalMode || "Walk-in",
@@ -322,8 +311,7 @@ export default const _ERRegistrationModal = ({
 
       // FIX: Use defined type for newVisit;
       const newVisit: ERVisitResponse = await visitResponse.json(),
-      toast({
-        title: "ER Visit Registered",
+      toast({title:"ER Visit Registered",
         description: `Visit ${newVisit.visit_number || newVisit.id} created for patient ${patientId}.`});
 
       if (!session.user) {
@@ -339,8 +327,7 @@ export default const _ERRegistrationModal = ({
         error instanceof Error;
           ? error.message;
           : "An unexpected error occurred.";
-      toast({
-        title: "Registration Failed",
+      toast({title:"Registration Failed",
         "destructive";
       });
     } finally {

@@ -2,10 +2,10 @@ import "../../services/encryption_service_secure"
 import "../audit.service"
 import "@prisma/client"
 import "zod"
-import {  AuditService  } from "@/lib/database"
-import {  getEncryptionService  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {AuditService  } from "next/server"
+import {getEncryptionService  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {z  } from "next/server"
 
 /**;
  * Quality Management Persistence Service;
@@ -19,9 +19,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Import interfaces from the existing quality management service;
-import {
-
-  ActionPlan,
+import {ActionPlan,
   type ActionStatus,
   type AssessmentStatus,
   type AssessmentType,
@@ -36,14 +34,14 @@ import {
   type QualityIndicatorType,
   QualityMetric,
   type QualitySource;
-} from "./quality-management.service";
+} from "next/server";
 
 }
     };
   }
 
   // Quality Indicators Persistence;
-  async saveQualityIndicator(indicator: QualityIndicator, userId: string): Promise<void> {
+  async saveQualityIndicator(indicator: QualityIndicator, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -83,13 +81,13 @@ import {
         dataToStore.metadata = await this.encryptData(JSON.stringify(indicator.metadata));
       }
 
-      await this.prisma.qualityIndicator.upsert({where:{ id: indicator.id },
-        update: {
+      await this.prisma.qualityIndicator.upsert({where:{ id: indicator.id ,},
+        update: {,
           ...dataToStore,
           updatedAt: new Date(),
           updatedBy: userId;
         },
-        create: {
+        create: {,
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
@@ -111,7 +109,7 @@ import {
     }
   }
 
-  async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {
+  async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -144,7 +142,7 @@ import {
 }
 } catch (error) {
 }
-      const record = await this.prisma.qualityIndicator.findUnique({where:{ id }
+      const record = await this.prisma.qualityIndicator.findUnique({where:{ id },
       });
 
       if (!session.user)eturn null;
@@ -246,7 +244,7 @@ import {
 }
 } catch (error) {
 }
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user)here.type = filters.type;
       if (!session.user)here.department = filters.department;
@@ -259,10 +257,10 @@ import {
 
       const records = await this.prisma.qualityIndicator.findMany({
         where,
-        orderBy: {createdAt:"desc" }
+        orderBy: {createdAt:"desc" },
       });
 
-      const indicators = await Promise.all(records.map(async (record: unknown) => {
+      const indicators = await Promise.all(records.map(async (record: unknown) => {,
         const indicator = { ...record };
 
         // Decrypt metadata if encrypted;
@@ -326,7 +324,7 @@ import {
   }
 
   // Quality Events Persistence;
-  async saveQualityEvent(event: QualityEvent, userId: string): Promise<void> {
+  async saveQualityEvent(event: QualityEvent, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -371,13 +369,13 @@ import {
         }
       }
 
-      await this.prisma.qualityEvent.upsert({where:{ id: event.id },
-        update: {
+      await this.prisma.qualityEvent.upsert({where:{ id: event.id ,},
+        update: {,
           ...dataToStore,
           updatedAt: new Date(),
           updatedBy: userId;
         },
-        create: {
+        create: {,
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
@@ -439,7 +437,7 @@ import {
 }
 } catch (error) {
 }
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user)here.type = filters.type;
       if (!session.user)here.severity = filters.severity;
@@ -453,10 +451,10 @@ import {
 
       const records = await this.prisma.qualityEvent.findMany({
         where,
-        orderBy: {eventDate:"desc" }
+        orderBy: {eventDate:"desc" },
       });
 
-      const events = await Promise.all(records.map(async (record: unknown) => {
+      const events = await Promise.all(records.map(async (record: unknown) => {,
         const event = { ...record };
 
         // Decrypt sensitive fields;
@@ -554,7 +552,7 @@ import {
       throw new Error("Failed to retrieve quality events");
 
   // Quality Assessments Persistence;
-  async saveQualityAssessment(assessment: QualityAssessment, userId: string): Promise<void> {
+  async saveQualityAssessment(assessment: QualityAssessment, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -597,13 +595,13 @@ import {
         if (!session.user) {
           dataToStore.recommendations = await this.encryptData(JSON.stringify(assessment.recommendations));
 
-      await this.prisma.qualityAssessment.upsert({where:{ id: assessment.id },
-        update: {
+      await this.prisma.qualityAssessment.upsert({where:{ id: assessment.id ,},
+        update: {,
           ...dataToStore,
           updatedAt: new Date(),
           updatedBy: userId;
         },
-        create: {
+        create: {,
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
@@ -624,7 +622,7 @@ import {
       throw new Error("Failed to save quality assessment");
 
   // Compliance Reports Persistence;
-  async saveComplianceReport(report: ComplianceReport, userId: string): Promise<void> {
+  async saveComplianceReport(report: ComplianceReport, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -670,13 +668,13 @@ import {
         if (!session.user) {
           dataToStore.actionPlan = await this.encryptData(JSON.stringify(report.actionPlan));
 
-      await this.prisma.complianceReport.upsert({where:{ id: report.id },
-        update: {
+      await this.prisma.complianceReport.upsert({where:{ id: report.id ,},
+        update: {,
           ...dataToStore,
           updatedAt: new Date(),
           updatedBy: userId;
         },
-        create: {
+        create: {,
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
@@ -736,7 +734,7 @@ import {
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user)here.regulatoryBody = filters.regulatoryBody;
       if (!session.user)here.standard = filters.standard;
@@ -748,10 +746,10 @@ import {
 
       const records = await this.prisma.complianceReport.findMany({
         where,
-        orderBy: {reportDate:"desc" }
+        orderBy: {reportDate:"desc" },
       });
 
-      const reports = await Promise.all(records.map(async (record: unknown) => {
+      const reports = await Promise.all(records.map(async (record: unknown) => {,
         const report = { ...record };
 
         // Decrypt sensitive fields;
@@ -885,7 +883,7 @@ import {
       throw new Error("Failed to retrieve compliance reports");
 
   // Action Plans Persistence;
-  async saveActionPlan(actionPlan: ActionPlan, userId: string): Promise<void> {
+  async saveActionPlan(actionPlan: ActionPlan, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -918,13 +916,13 @@ import {
 
 } catch (error) {
 
-      await this.prisma.actionPlan.upsert({where:{ id: actionPlan.id },
-        update: {
+      await this.prisma.actionPlan.upsert({where:{ id: actionPlan.id ,},
+        update: {,
           ...actionPlan,
           updatedAt: new Date(),
           updatedBy: userId;
         },
-        create: {
+        create: {,
           ...actionPlan,
           createdAt: new Date(),
           new Date(),
@@ -945,7 +943,7 @@ import {
       throw new Error("Failed to save action plan");
 
   // Quality Metrics Persistence;
-  async saveQualityMetric(metric: QualityMetric, userId: string): Promise<void> {
+  async saveQualityMetric(metric: QualityMetric, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -978,13 +976,13 @@ import {
 
 } catch (error) {
 
-      await this.prisma.qualityMetric.upsert({where:{ id: metric.id },
-        update: {
+      await this.prisma.qualityMetric.upsert({where:{ id: metric.id ,},
+        update: {,
           ...metric,
           updatedAt: new Date(),
           updatedBy: userId;
         },
-        create: {
+        create: {,
           ...metric,
           createdAt: new Date(),
           new Date(),
@@ -1005,11 +1003,11 @@ import {
       throw new Error("Failed to save quality metric");
 
   // Utility Methods;
-  private async encryptData(data: string): Promise<string> {
+  private async encryptData(data: string): Promise<string> {,
     if (!session.user)eturn data
     return await this.encryptionService.encrypt(data);
 
-  private async decryptData(encryptedData: string): Promise<string> {
+  private async decryptData(encryptedData: string): Promise<string> {,
     if (!session.user)eturn encryptedData;
     return await this.encryptionService.decrypt(encryptedData);
 
@@ -1019,7 +1017,7 @@ import {
     archivedReports: number;
   }> {
     if (!session.user) {
-      return {archivedIndicators:0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
+      return {archivedIndicators:0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 ,};
 
     const cutoffDate = new Date();
     cutoffDate.setFullYear(cutoffDate.getFullYear() - this.config.retentionPeriod);
@@ -1057,17 +1055,17 @@ import {
 } catch (error) {
 
       const [indicators, events, assessments, reports] = await Promise.all([;
-        this.prisma.qualityIndicator.updateMany({where:{ createdAt: {lt:cutoffDate }, archived: false },
-          data: {archived:true, archivedAt: new Date() }
+        this.prisma.qualityIndicator.updateMany({where:{ createdAt: {lt:cutoffDate ,}, archived: false ,},
+          data: {archived:true, archivedAt: new Date() },
         }),
-        this.prisma.qualityEvent.updateMany({where:{ createdAt: {lt:cutoffDate }, archived: false },
-          data: {archived:true, archivedAt: new Date() }
+        this.prisma.qualityEvent.updateMany({where:{ createdAt: {lt:cutoffDate ,}, archived: false ,},
+          data: {archived:true, archivedAt: new Date() },
         }),
-        this.prisma.qualityAssessment.updateMany({where:{ createdAt: {lt:cutoffDate }, archived: false },
-          data: {archived:true, archivedAt: new Date() }
+        this.prisma.qualityAssessment.updateMany({where:{ createdAt: {lt:cutoffDate ,}, archived: false ,},
+          data: {archived:true, archivedAt: new Date() },
         }),
-        this.prisma.complianceReport.updateMany({where:{ createdAt: {lt:cutoffDate }, archived: false },
-          data: {archived:true, archivedAt: new Date() }
+        this.prisma.complianceReport.updateMany({where:{ createdAt: {lt:cutoffDate ,}, archived: false ,},
+          data: {archived:true, archivedAt: new Date() },
         });
       ]);
 

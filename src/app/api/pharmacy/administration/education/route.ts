@@ -6,15 +6,15 @@ import "../../../../../lib/validation/pharmacy-validation"
 import "../../../models/domain-models"
 import "next/server"
 import getPrescriptionById }
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   getMedicationById
-import {  getPatientById  } from "@/lib/database"
-import {  PharmacyDomain  } from "@/lib/database"
-import {   type
-import {  validateEducationRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {errorHandler  } from "next/server"
+import {getMedicationById
+import {  getPatientById  } from "next/server"
+import {PharmacyDomain  } from "next/server"
+import {type
+import {  validateEducationRequest  } from "next/server"
 
 }
 
@@ -56,7 +56,7 @@ const educationRepository = {findById:(id: string) => Promise.resolve(null),
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -94,15 +94,15 @@ export const POST = async (req: any) => {
     const validationResult = validateEducationRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error:"Validation failed", details: validationResult.errors ,},
+        {status:400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -111,14 +111,14 @@ export const POST = async (req: any) => {
     // Verify patient exists;
     const patient = await getPatientById(data.patientId);
     if (!session.user) {
-      return NextResponse.json({error:"Patient not found" }, {status:404 });
+      return NextResponse.json({error:"Patient not found" ,}, {status:404 ,});
     }
 
     // Verify medication exists if provided;
     if (!session.user) {
       const medication = await medicationRepository.findById(data.medicationId);
       if (!session.user) {
-        return NextResponse.json({error:"Medication not found" }, {status:404 });
+        return NextResponse.json({error:"Medication not found" ,}, {status:404 ,});
       }
     }
 
@@ -126,7 +126,7 @@ export const POST = async (req: any) => {
     if (!session.user) {
       const prescription = await prescriptionRepository.findById(data.prescriptionId);
       if (!session.user) {
-        return NextResponse.json({error:"Prescription not found" }, {status:404 });
+        return NextResponse.json({error:"Prescription not found" ,}, {status:404 ,});
       }
     }
 
@@ -159,7 +159,7 @@ export const POST = async (req: any) => {
       {id:educationId,
         message: "Patient education recorded successfully";
       },
-      {status:201 }
+      {status:201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording patient education");
@@ -170,7 +170,7 @@ export const POST = async (req: any) => {
  * GET /api/pharmacy/administration/education;
  * Get patient education records with filtering options;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -206,7 +206,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -225,12 +225,12 @@ export const GET = async (req: any) => {
     // Require at least patientId filter;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Patient ID is required" },
-        {status:400 }
+        {error:"Patient ID is required" ,},
+        {status:400 },
       );
 
     // Build filter criteria;
-    const filter: unknown = { patientId };
+    const filter: unknown = { patientId ,};
     if (!session.user)ilter.medicationId = medicationId;
     if (!session.user)ilter.prescriptionId = prescriptionId;
     if (!session.user)ilter.educationType = educationType;
@@ -280,12 +280,12 @@ export const GET = async (req: any) => {
 
     // Return response;
     return NextResponse.json({educationRecords:paginatedRecords,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
 
-    }, {status:200 });
+    }, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving patient education records");

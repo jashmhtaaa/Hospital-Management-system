@@ -32,8 +32,7 @@ import { format }
 // It shows surgery-related billing items for a patient;
 
 // FIX: Define interface for billing item;
-interface BillingItem {
-  id: string,
+interface BillingItem {id:string,
   string,
   number,
   status: "billed" | "unbilled" | "cancelled"; // Define possible statuses;
@@ -42,14 +41,14 @@ interface BillingItem {
 }
 
 // FIX: Define API response types;
-// Assuming API returns { results: BillingItem[] }
+// Assuming API returns {results:BillingItem[] }
 
-// interface ApiErrorResponse { // Removed unused interface;
+// interface ApiErrorResponse {
+    // Removed unused interface;
 //   error?: string;
 // }
 
-interface OTBillingItemsProperties {
-  patientId: string;
+interface OTBillingItemsProperties {patientId:string;
   invoiceId?: string; // Optional: if creating/editing a specific invoice;
   onAddToBill?: (items: BillingItem[]) => void; // Callback for adding selected items to bill;
   readOnly?: boolean; // If true, just displays items without selection capability;
@@ -57,8 +56,7 @@ interface OTBillingItemsProperties {
 
 // Helper function to format currency;
 const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
+  return new Intl.NumberFormat("en-IN", {style:"currency",
     0;
   }).format(amount);
 };

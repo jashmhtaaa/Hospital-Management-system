@@ -7,45 +7,45 @@ import { EmployeeService } from '../employee-service';
 // Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
-    employee: {
+    employee: {,
       create: jest.fn(),
       findUnique: jest.fn(),
       findMany: jest.fn(),
       update: jest.fn(),
       count: jest.fn(),
-      findFirst: jest.fn()
+      findFirst: jest.fn(),
     },
-    qualification: {
+    qualification: {,
       create: jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
-      findMany: jest.fn()
+      findMany: jest.fn(),
     },
-    employeePosition: {
+    employeePosition: {,
       create: jest.fn(),
       findUnique: jest.fn(),
       update: jest.fn(),
-      updateMany: jest.fn()
+      updateMany: jest.fn(),
     },
-    attendance: {
-      findMany: jest.fn()
+    attendance: {,
+      findMany: jest.fn(),
     },
     $transaction: jest.fn((callback) => callback(mockPrismaClient)),
   };
   return {
-    PrismaClient: jest.fn(() => mockPrismaClient)
+    PrismaClient: jest.fn(() => mockPrismaClient),
   };
 });
 
 // Mock cache service
 jest.mock('@/lib/cache', () => ({
-  cache: {
+  cache: {,
     get: jest.fn(),
     set: jest.fn(),
     del: jest.fn(),
     delPattern: jest.fn(),
-    clear: jest.fn()
+    clear: jest.fn(),
   },
 }));
 
@@ -65,7 +65,7 @@ describe('EmployeeService', () => {
 
   describe('getEmployeeById', () => {
     it('should return cached employee if available', async () => {
-      const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' };
+      const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' ,};
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockEmployee));
 
       const result = await employeeService.getEmployeeById('123'),
@@ -75,15 +75,15 @@ describe('EmployeeService', () => {
     });
 
     it('should fetch from database and cache if not in cache', async () => {
-      const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' };
+      const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' ,};
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findUnique as jest.Mock).mockResolvedValue(mockEmployee);
 
       const result = await employeeService.getEmployeeById('123'),
       expect(cache.get).toHaveBeenCalledWith('employee:id:123'),
       expect(prisma.employee.findUnique).toHaveBeenCalledWith({
-        where: { id: '123' },
-        include: expect.any(Object)
+        where: { id: '123' ,},
+        include: expect.any(Object),
       });
       expect(cache.set).toHaveBeenCalledWith(
         'employee:id:123',
@@ -97,11 +97,11 @@ describe('EmployeeService', () => {
   describe('listEmployees', () => {
     it('should return cached list if available', async () => {
       const mockResult = {
-        employees: [{ id: '123', firstName: 'John' }],
+        employees: [{ id: '123', firstName: 'John' ,}],
         total: 1,
         skip: 0;
         take: 10,
-        nextCursor: null
+        nextCursor: null,
       };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockResult));
 
@@ -112,7 +112,7 @@ describe('EmployeeService', () => {
     });
 
     it('should fetch from database and cache if not in cache', async () => {
-      const mockEmployees = [{ id: '123', firstName: 'John' }];
+      const mockEmployees = [{ id: '123', firstName: 'John' ,}];
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockEmployees);
       (prisma.employee.count as jest.Mock).mockResolvedValue(1);
@@ -127,15 +127,15 @@ describe('EmployeeService', () => {
     });
 
     it('should use cursor-based pagination when cursor is provided', async () => {
-      const mockEmployees = [{ id: '123', firstName: 'John' }];
+      const mockEmployees = [{ id: '123', firstName: 'John' ,}];
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockEmployees);
       (prisma.employee.count as jest.Mock).mockResolvedValue(1);
 
-      await employeeService.listEmployees({ cursor: '456' }),
+      await employeeService.listEmployees({ cursor: '456' ,}),
       expect(prisma.employee.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          cursor: { id: '456' },
+          cursor: { id: '456' ,},
         });
       );
     });
@@ -143,7 +143,7 @@ describe('EmployeeService', () => {
 
   describe('createEmployee', () => {
     it('should create employee and invalidate cache', async () => {
-      const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' };
+      const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' ,};
       (prisma.employee.create as jest.Mock).mockResolvedValue(mockEmployee);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
       // Mock the invalidateEmployeeCache method to avoid the findFirst call
@@ -153,7 +153,7 @@ describe('EmployeeService', () => {
         employeeId: 'EMP123',
         firstName: 'John';
         lastName: 'Doe',
-        joiningDate: new Date()
+        joiningDate: new Date(),
       });
 
       expect(prisma.employee.create).toHaveBeenCalled(),
@@ -163,16 +163,16 @@ describe('EmployeeService', () => {
 
   describe('updateEmployee', () => {
     it('should update employee and invalidate cache', async () => {
-      const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' };
+      const mockEmployee = { id: '123', firstName: 'John', lastName: 'Doe' ,};
       (prisma.employee.update as jest.Mock).mockResolvedValue(mockEmployee);
       // Mock the invalidateEmployeeCache method to avoid the findFirst call
       jest.spyOn(EmployeeService.prototype, 'invalidateEmployeeCache' as any).mockResolvedValue(undefined);
 
-      await employeeService.updateEmployee('123', { firstName: 'John Updated' }),
+      await employeeService.updateEmployee('123', { firstName: 'John Updated' ,}),
       expect(prisma.employee.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { id: '123' },
-          data: { firstName: 'John Updated' },
+          where: { id: '123' ,},
+          data: { firstName: 'John Updated' ,},
         });
       );
       expect(EmployeeService.prototype.invalidateEmployeeCache).toHaveBeenCalled();
@@ -184,30 +184,30 @@ describe('EmployeeService', () => {
       const mockAttendance = [
         {
           checkInTime: new Date('2024-05-20T08:00:00Z'),
-          employee: {
-            positions: [{ position: { code: 'NURSE' } }],
+          employee: {,
+            positions: [{ position: { code: 'NURSE' } ,}],
           },
         },
         {
           checkInTime: new Date('2024-05-20T08:00:00Z'),
-          employee: {
-            positions: [{ position: { code: 'NURSE' } }],
+          employee: {,
+            positions: [{ position: { code: 'NURSE' } ,}],
           },
         },
         {
           checkInTime: new Date('2024-05-20T08:00:00Z'),
-          employee: {
-            positions: [{ position: { code: 'DOCTOR' } }],
+          employee: {,
+            positions: [{ position: { code: 'DOCTOR' } ,}],
           },
         },
       ];
 
       const mockCurrentStaff = [
         {
-          positions: [{ position: { code: 'NURSE' } }],
+          positions: [{ position: { code: 'NURSE' } ,}],
         },
         {
-          positions: [{ position: { code: 'DOCTOR' } }],
+          positions: [{ position: { code: 'DOCTOR' } ,}],
         },
       ];
 
@@ -234,7 +234,7 @@ describe('EmployeeService', () => {
         lastName: 'Doe';
         email: 'john@example.com',
         active: true;
-        qualifications: []
+        qualifications: [],
       };
 
       const result = employeeService.toFhirPractitioner(mockEmployee),
@@ -259,12 +259,12 @@ describe('EmployeeService', () => {
 
       const mockPosition = {
         id: '456',
-        position: {
+        position: {,
           code: 'NURSE',
-          title: 'Registered Nurse'
+          title: 'Registered Nurse',
         },
         startDate: new Date('2023-01-01'),
-        endDate: null
+        endDate: null,
       };
 
       const result = employeeService.toFhirPractitionerRole(mockEmployee, mockPosition),
@@ -284,10 +284,10 @@ describe('EmployeeService', () => {
       const mockQualifications = [
         {
           endDate: new Date('2025-06-15'),
-          employee: {
+          employee: {,
             firstName: 'John',
             lastName: 'Doe';
-            department: { name: 'Cardiology' },
+            department: { name: 'Cardiology' ,},
           },
         },
       ];
@@ -297,10 +297,10 @@ describe('EmployeeService', () => {
       const result = await employeeService.getEmployeesWithExpiringQualifications(30),
       expect(prisma.qualification.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({
-            endDate: expect.objectContaining({
+          where: expect.objectContaining({,
+            endDate: expect.objectContaining({,
               gte: expect.any(Date),
-              lte: expect.any(Date)
+              lte: expect.any(Date),
             }),
           }),
         });

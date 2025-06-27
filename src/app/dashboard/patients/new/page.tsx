@@ -38,8 +38,7 @@ import { z }
 export const dynamic = "force-dynamic";
 
 // Re-use or import the schema if defined elsewhere;
-const PatientRegistrationSchema = z.object({
-  first_name: z.string().min(1, "First name is required"),
+const PatientRegistrationSchema = z.object({first_name:z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last name is required"),
   date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date of birth must be in YYYY-MM-DD format"),
   gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]),
@@ -90,8 +89,7 @@ export default const _AddPatientPage = () {
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsLoading(false);
-      toast({
-        title: "Validation Error",
+      toast({title:"Validation Error",
         "destructive";
       });
       return;
@@ -129,8 +127,7 @@ export default const _AddPatientPage = () {
 
 } catch (error) {
 
-      const response = await fetch("/api/patients/register", {
-        method: "POST",
+      const response = await fetch("/api/patients/register", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(validation.data);
@@ -141,8 +138,7 @@ export default const _AddPatientPage = () {
       if (!session.user) {
         throw new Error(result.error || "Failed to register patient");
 
-      toast({
-        title: "Patient Registered",
+      toast({title:"Patient Registered",
         description: `/* SECURITY: Template literal eliminated */;
       });
 
@@ -150,9 +146,8 @@ export default const _AddPatientPage = () {
 
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
-      toast({
-        title: "Registration Failed",
+      setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
+      toast({title:"Registration Failed",
         "destructive";
       });
     } finally {

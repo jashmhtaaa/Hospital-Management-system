@@ -9,20 +9,20 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
  * HIPAA-compliant comprehensive audit logging with structured data;
  */
 
-\1
+
 }
   };
-\1
+
 }
-    topUsers: Array<{ userId: string, count: number }>;
-    topResources: Array<{ resource: string, count: number }>
+    topUsers: Array<{ userId: string, count: number ,}>;
+    topResources: Array<{ resource: string, count: number }>,
   };
-\1
+
 }
   }
 
   public static getInstance(): AuditService {
-    \1 {\n  \2{
+     {\n  {
       AuditService.instance = new AuditService();
     }
     return AuditService.instance;
@@ -31,13 +31,13 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
   /**
    * Log an audit event;
    */
-  async logEvent(event: AuditEvent): Promise<void> {
+  async logEvent(event: AuditEvent): Promise<void> {,
     try {
       const auditEvent = {
         ...event,
         timestamp: event.timestamp || new Date(),
-        \1,\2 event.outcome || 'SUCCESS',
-        compliance: 
+         event.outcome || 'SUCCESS',
+        compliance: ,
           hipaa: this.isHIPAARelevant(event),
           gdpr: this.isGDPRRelevant(event),
           sox: this.isSOXRelevant(event);
@@ -51,21 +51,21 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
       await this.logToSystem(auditEvent);
 
       // Send alerts for critical events
-      \1 {\n  \2{
-        await this.sendCritical/* SECURITY: Alert removed */
+       {\n  {
+        await this.sendCritical/* SECURITY: Alert removed */,
       }
 
     } catch (error) {
 
       // Fallback to console logging
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     }
   }
 
   /**
    * Batch log multiple events
    */
-  async logEvents(events: AuditEvent[]): Promise<void> {
+  async logEvents(events: AuditEvent[]): Promise<void> {,
     for (const event of events) {
       await this.logEvent(event)
     }
@@ -74,28 +74,28 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
   /**
    * Query audit logs;
    */
-  async queryLogs(query: AuditQuery): Promise<AuditReport> {
+  async queryLogs(query: AuditQuery): Promise<AuditReport> {,
     try {
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
+       {\n  {
         where.timestamp = {};
-        \1 {\n  \2here.timestamp.gte = query.startDate;
-        \1 {\n  \2here.timestamp.lte = query.endDate;
+         {\n  here.timestamp.gte = query.startDate;
+         {\n  here.timestamp.lte = query.endDate;
       }
 
-      \1 {\n  \2here.userId = query.userId;
-      \1 {\n  \2here.eventType = query.eventType;
-      \1 {\n  \2here.resource = query.resource;
-      \1 {\n  \2here.severity = query.severity;
-      \1 {\n  \2here.outcome = query.outcome;
+       {\n  here.userId = query.userId;
+       {\n  here.eventType = query.eventType;
+       {\n  here.resource = query.resource;
+       {\n  here.severity = query.severity;
+       {\n  here.outcome = query.outcome;
 
       const [events, totalCount] = await Promise.all([
         this.prisma.auditLog.findMany({
           where,
-          orderBy: { timestamp: 'desc' },
+          orderBy: { timestamp: 'desc' ,},
           take: query.limit || 100,
-          skip: query.offset || 0
+          skip: query.offset || 0,
         }),
         this.prisma.auditLog.count({ where })
       ]);
@@ -120,14 +120,14 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
    */
   async generateComplianceReport(
     type: 'HIPAA' | 'GDPR' | 'SOX',
-    \1,\2 Date;
+     Date;
   ): Promise<AuditReport> {
     const _complianceField = `compliance.${type.toLowerCase()}`;
 
     return this.queryLogs({
       startDate,
       endDate,
-      // Note: Prisma doesn't support direct JSON field queries like this
+      // Note: Prisma doesn't support direct JSON field queries like this,
       // This would need to be implemented differently in production
     });
   }
@@ -140,9 +140,9 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
     startDate?: Date,
     endDate?: Date;
   ): Promise<AuditEvent[]> {
-    const query: AuditQuery = { userId };
-    \1 {\n  \2uery.startDate = startDate;
-    \1 {\n  \2uery.endDate = endDate;
+    const query: AuditQuery = { userId ,};
+     {\n  uery.startDate = startDate;
+     {\n  uery.endDate = endDate;
 
     const report = await this.queryLogs(query);
     return report.events;
@@ -172,7 +172,7 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
         eventType,
         startDate,
         endDate,
-        limit: 1000
+        limit: 1000,
       });
       events.push(...report.events);
     }
@@ -185,20 +185,20 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
   /**
    * Archive old audit logs;
    */
-  async archiveLogs(olderThan: Date): Promise<number> {
+  async archiveLogs(olderThan: Date): Promise<number> {,
     try {
       // In production, this would move logs to cold storage
       const result = await this.prisma.auditLog.deleteMany({
-        where: {
-          timestamp: { lt: olderThan }
+        where: {,
+          timestamp: { lt: olderThan },
         }
       });
 
       await this.logEvent({
         eventType: 'AUDIT_LOGS_ARCHIVED',
-        \1,\2 result.count,
+         result.count,
           olderThan: olderThan.toISOString(),
-        severity: 'LOW'
+        severity: 'LOW',
       });
 
       return result.count;
@@ -223,41 +223,41 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
   /**
    * Private helper methods;
    */
-  private async storeInDatabase(event: AuditEvent): Promise<void> {
+  private async storeInDatabase(event: AuditEvent): Promise<void> {,
     await this.prisma.auditLog.create({
-      data: {
+      data: {,
         eventType: event.eventType,
-        \1,\2 event.targetUserId,
-        \1,\2 event.resourceId,
-        \1,\2 event.details,
-        \1,\2 event.userAgent,
-        \1,\2 event.timestamp || new Date(),
-        \1,\2 event.outcome || 'SUCCESS',
-        compliance: event.compliance
+         event.targetUserId,
+         event.resourceId,
+         event.details,
+         event.userAgent,
+         event.timestamp || new Date(),
+         event.outcome || 'SUCCESS',
+        compliance: event.compliance,
       }
     });
   }
 
-  private async logToSystem(event: AuditEvent): Promise<void> {
+  private async logToSystem(event: AuditEvent): Promise<void> {,
     this.logger.info('AUDIT_EVENT', {
       ...event,
       '@timestamp': event.timestamp || new Date(),
       service: 'hms-audit',
-      environment: process.env.NODE_ENV || 'development'
+      environment: process.env.NODE_ENV || 'development',
     });
   }
 
   private setupLogger(): void {
-    const transports: winston.transport[] = [
+    const transports: winston.transport[] = [,
       new winston.transports.Console({
-        format: winston.format.combine(
+        format: winston.format.combine(,
           winston.format.timestamp(),
           winston.format.json();
         );
       }),
       new winston.transports.File({
         filename: 'logs/audit.log',
-        format: winston.format.combine(
+        format: winston.format.combine(,
           winston.format.timestamp(),
           winston.format.json();
         );
@@ -265,13 +265,13 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
     ];
 
     // Add Elasticsearch transport if configured
-    \1 {\n  \2{
+     {\n  {
       transports.push(
         new ElasticsearchTransport({
-          clientOpts: {
-            node: process.env.ELASTICSEARCH_URL
+          clientOpts: {,
+            node: process.env.ELASTICSEARCH_URL,
           },
-          index: 'hms-audit-logs'
+          index: 'hms-audit-logs',
         });
       );
     }
@@ -283,7 +283,7 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
     });
   }
 
-  private isHIPAARelevant(event: AuditEvent): boolean {
+  private isHIPAARelevant(event: AuditEvent): boolean {,
     const phiResources = [
       'patient',
       'patient.medical_record',
@@ -299,7 +299,7 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
     );
   }
 
-  private isGDPRRelevant(event: AuditEvent): boolean {
+  private isGDPRRelevant(event: AuditEvent): boolean {,
     const piiActions = ['read', 'update', 'delete', 'export'];
     const piiResources = ['patient', 'staff', 'user'];
 
@@ -308,7 +308,7 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
     ) && piiActions.includes(event.action || '');
   }
 
-  private isSOXRelevant(event: AuditEvent): boolean {
+  private isSOXRelevant(event: AuditEvent): boolean {,
     const financialResources = [
       'billing',
       'payment',
@@ -321,7 +321,7 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
     );
   }
 
-  private async generateSummary(where: unknown): Promise<AuditReport['summary']> {
+  private async generateSummary(where: unknown): Promise<AuditReport['summary']> {,
     const [
       totalEvents,
       successfulEvents,
@@ -348,7 +348,7 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
         where,
         _count: resource: true ,
         orderBy: resource: 'desc' ,
-        take: 10)
+        take: 10),
     ]);
 
     return {
@@ -359,41 +359,41 @@ import { ElasticsearchTransport } from 'winston-elasticsearch';
         acc[group.severity] = group._count.severity;
         return acc;
       }, {} as Record<string, number>),
-      topUsers: userGroups.map(group => ({
+      topUsers: userGroups.map(group => ({,
         userId: group.userId || 'unknown',
-        count: group._count.userId
+        count: group._count.userId,
       })),
-      topResources: resourceGroups.map(group => ({
+      topResources: resourceGroups.map(group => ({,
         resource: group.resource,
-        count: group._count.resource
+        count: group._count.resource,
       }))
     };
   }
 
-  private formatAuditEvent(dbEvent: unknown): AuditEvent {
+  private formatAuditEvent(dbEvent: unknown): AuditEvent {,
     return {
       eventType: dbEvent.eventType,
-      \1,\2 dbEvent.targetUserId,
-      \1,\2 dbEvent.resourceId,
-      \1,\2 dbEvent.details,
-      \1,\2 dbEvent.userAgent,
-      \1,\2 dbEvent.timestamp,
-      \1,\2 dbEvent.outcome,
-      compliance: dbEvent.compliance
+       dbEvent.targetUserId,
+       dbEvent.resourceId,
+       dbEvent.details,
+       dbEvent.userAgent,
+       dbEvent.timestamp,
+       dbEvent.outcome,
+      compliance: dbEvent.compliance,
     };
   }
 
-  private async sendCritical/* SECURITY: Alert removed */: Promise<void> {
+  private async sendCritical/* SECURITY: Alert removed */: Promise<void> {,
     // Implement critical alert logic
     // This could send emails, SMS, Slack notifications, etc.
 
-    // Example: Log to dedicated critical events log
+    // Example: Log to dedicated critical events log,
     this.logger.error('CRITICAL_AUDIT_EVENT', event)
   }
 }
 
 // Export convenience function
-export const _logAuditEvent = async (event: AuditEvent): Promise<void> {
+export const _logAuditEvent = async (event: AuditEvent): Promise<void> {,
   return AuditService.getInstance().logEvent(event)
 }
 

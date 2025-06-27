@@ -1,10 +1,9 @@
 import "@/lib/audit"
 import "@/lib/cache"
 import "@prisma/client"
-import {  
-import {  cache  } from "@/lib/database"
-import {  logAuditEvent  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
+import {import {  cache  } from "next/server"
+import {logAuditEvent  } from "next/server"
+import {PrismaClient  } from "next/server"
 
 }
 
@@ -74,7 +73,7 @@ import {  PrismaClient  } from "@/lib/database"
 }
 } catch (error) {
 }
-      const cacheKey = `rbac:permission:${userId}:${resource}:${action}`;
+      const cacheKey = `rbac:permission:${userId}:${resource}:${action,}`;
       const cached = await cache.get<boolean>(cacheKey);
 
       if (!session.user) {
@@ -133,7 +132,7 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Get all permissions for a user;
    */;
-  async getUserPermissions(userId: string): Promise<Permission[]> {
+  async getUserPermissions(userId: string): Promise<Permission[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -166,7 +165,7 @@ import {  PrismaClient  } from "@/lib/database"
 }
 } catch (error) {
 }
-      const cacheKey = `rbac:user_permissions:${userId}`;
+      const cacheKey = `rbac:user_permissions:${userId,}`;
       const cached = await cache.get<Permission[]>(cacheKey);
 
       if (!session.user) {
@@ -201,7 +200,7 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Get user roles;
    */;
-  async getUserRoles(userId: string): Promise<string[]> {
+  async getUserRoles(userId: string): Promise<string[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -234,7 +233,7 @@ import {  PrismaClient  } from "@/lib/database"
 }
 } catch (error) {
 }
-      const cacheKey = `rbac:user_roles:${userId}`;
+      const cacheKey = `rbac:user_roles:${userId,}`;
       const cached = await cache.get<string[]>(cacheKey);
 
       if (!session.user) {
@@ -242,15 +241,15 @@ import {  PrismaClient  } from "@/lib/database"
       }
 
       // Get roles from database;
-      const userRoles = await this.prisma.userRole.findMany({where:{
+      const userRoles = await this.prisma.userRole.findMany({where:{,
           userId,
           isActive: true,
           OR: [;
-            {expiresAt:null },
-            {expiresAt:{ gt: new Date() } }
+            {expiresAt:null ,},
+            {expiresAt:{ gt: new Date() } },
           ];
         },
-        select: {roleId:true }
+        select: {roleId:true },
       });
 
       const roleIds = userRoles.map(ur => ur.roleId);
@@ -398,7 +397,7 @@ import {  PrismaClient  } from "@/lib/database"
         throw new Error(`Role ${roleId} does not exist`);
 
       // Deactivate role assignment;
-      const result = await this.prisma.userRole.updateMany({where:{
+      const result = await this.prisma.userRole.updateMany({where:{,
           userId,
           roleId,
           isActive: true;
@@ -439,7 +438,7 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Get role by ID with inheritance;
    */;
-  getRole(roleId: string): Role | null {
+  getRole(roleId: string): Role | null {,
     return getRoleWithInheritedPermissions(roleId);
 
   /**;
@@ -523,11 +522,11 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Clear user-specific cache;
    */;
-  private async clearUserCache(userId: string): Promise<void> {
+  private async clearUserCache(userId: string): Promise<void> {,
     const patterns = [;
-      `rbac:user_roles:${userId}`,
-      `rbac:user_permissions:${userId}`,
-      `rbac:permission:${userId}:*`;
+      `rbac:user_roles:${userId,}`,
+      `rbac:user_permissions:${userId,}`,
+      `rbac:permission:${userId,}:*`;
     ];
 
     for (const pattern of patterns) {

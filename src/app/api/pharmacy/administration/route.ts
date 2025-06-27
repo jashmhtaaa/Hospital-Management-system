@@ -7,16 +7,16 @@ import "../../models/fhir-mappers"
 import "../../services/barcode-administration-service"
 import "next/server"
 import getPrescriptionById }
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
 import validateBarcodeVerificationRequest }
-import {  auditLog  } from "@/lib/database"
-import {  BarcodeAdministrationService  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {  FHIRMapper  } from "@/lib/database"
-import {   getMedicationById
-import {  PharmacyDomain  } from "@/lib/database"
-import {   type
+import {auditLog  } from "next/server"
+import {BarcodeAdministrationService  } from "next/server"
+import {errorHandler  } from "next/server"
+import {FHIRMapper  } from "next/server"
+import {getMedicationById
+import {  PharmacyDomain  } from "next/server"
+import {type
 import {  validateAdministrationRequest
 
 /**;
@@ -33,7 +33,7 @@ const getMedicationById,
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true);
- } from "@/lib/database"
+ } from "next/server"
 
 const getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
@@ -66,7 +66,7 @@ const barcodeService = new BarcodeAdministrationService();
  * POST /api/pharmacy/administration;
  * Record a medication administration;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -104,15 +104,15 @@ export const POST = async (req: any) => {
     const validationResult = validateAdministrationRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error:"Validation failed", details: validationResult.errors ,},
+        {status:400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -150,7 +150,7 @@ export const POST = async (req: any) => {
       {id:administrationId,
         message: "Medication administration recorded successfully";
       },
-      {status:201 }
+      {status:201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording medication administration");
@@ -161,7 +161,7 @@ export const POST = async (req: any) => {
  * GET /api/pharmacy/administration/patient/[patientId];
  * Get medication administration history for a patient;
  */;
-export const GET = async (req: any, { params }: {params:{ patientId: string } }) => {
+export const GET = async (req: any, { params }: {params:{ patientId: string } }) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -197,13 +197,13 @@ export const GET = async (req: any, { params }: {params:{ patientId: string } })
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Get patient ID from params;
     const { patientId } = params;
     if (!session.user) {
-      return NextResponse.json({error:"Patient ID is required" }, {status:400 });
+      return NextResponse.json({error:"Patient ID is required" ,}, {status:400 ,});
     }
 
     // Get administration history;
@@ -220,7 +220,7 @@ export const GET = async (req: any, { params }: {params:{ patientId: string } })
     });
 
     // Return response;
-    return NextResponse.json({administrations:fhirAdministrations }, {status:200 });
+    return NextResponse.json({administrations:fhirAdministrations ,}, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving medication administration history");
   }
@@ -230,7 +230,7 @@ export const GET = async (req: any, { params }: {params:{ patientId: string } })
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode;
  */;
-export const verifyAdministration = async (req: any) => {
+export const verifyAdministration = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -268,15 +268,15 @@ export const verifyAdministration = async (req: any) => {
     const validationResult = validateBarcodeVerificationRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error:"Validation failed", details: validationResult.errors ,},
+        {status:400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Verify administration;
@@ -297,7 +297,7 @@ export const verifyAdministration = async (req: any) => {
     });
 
     // Return response;
-    return NextResponse.json(verificationResult, {status:200 });
+    return NextResponse.json(verificationResult, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error verifying medication administration");
   }
@@ -307,7 +307,7 @@ export const verifyAdministration = async (req: any) => {
  * POST /api/pharmacy/administration/missed;
  * Record a missed medication dose;
  */;
-export const recordMissedDose = async (req: any) => {
+export const recordMissedDose = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -344,15 +344,15 @@ export const recordMissedDose = async (req: any) => {
     const data = await req.json();
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields" },
-        {status:400 }
+        {error:"Missing required fields" ,},
+        {status:400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -390,7 +390,7 @@ export const recordMissedDose = async (req: any) => {
       {id:administrationId,
         message: "Missed dose recorded successfully";
       },
-      {status:201 }
+      {status:201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording missed dose");
@@ -401,7 +401,7 @@ export const recordMissedDose = async (req: any) => {
  * GET /api/pharmacy/administration/schedule/[patientId];
  * Get medication administration schedule for a patient;
  */;
-export const getAdministrationSchedule = async (req: any, { params }: {params:{ patientId: string } }) => {
+export const getAdministrationSchedule = async (req: any, { params }: {params:{ patientId: string } }) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -437,13 +437,13 @@ export const getAdministrationSchedule = async (req: any, { params }: {params:{ 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Get patient ID from params;
     const { patientId } = params;
     if (!session.user) {
-      return NextResponse.json({error:"Patient ID is required" }, {status:400 });
+      return NextResponse.json({error:"Patient ID is required" ,}, {status:400 ,});
     }
 
     // Get active prescriptions for patient;
@@ -485,7 +485,7 @@ export const getAdministrationSchedule = async (req: any, { params }: {params:{ 
     });
 
     // Return response;
-    return NextResponse.json({ schedule }, {status:200 });
+    return NextResponse.json({ schedule }, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving medication administration schedule");
   }
@@ -494,7 +494,7 @@ export const getAdministrationSchedule = async (req: any, { params }: {params:{ 
 /**;
  * Helper function to generate schedule times based on frequency;
  */;
-const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
+const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {,
   const times: Date[] = [];
 
   // Parse frequency;
@@ -596,7 +596,7 @@ const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[
  * POST /api/pharmacy/administration/prn;
  * Record a PRN (as needed) medication administration;
  */;
-export const recordPRNAdministration = async (req: any) => {
+export const recordPRNAdministration = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -633,14 +633,14 @@ export const recordPRNAdministration = async (req: any) => {
     const data = await req.json();
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields" },
-        {status:400 }
+        {error:"Missing required fields" ,},
+        {status:400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -648,12 +648,12 @@ export const recordPRNAdministration = async (req: any) => {
     // Verify prescription is PRN;
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
-      return NextResponse.json({error:"Prescription not found" }, {status:404 });
+      return NextResponse.json({error:"Prescription not found" ,}, {status:404 ,});
 
     if (!session.user)& !prescription.dosage.frequency.includes("as needed")) {
       return NextResponse.json();
-        {error:"Prescription is not PRN (as needed)" },
-        {status:400 }
+        {error:"Prescription is not PRN (as needed)" ,},
+        {status:400 },
       );
 
     // Create PRN administration record;
@@ -688,7 +688,7 @@ export const recordPRNAdministration = async (req: any) => {
       {id:administrationId,
         message: "PRN medication administration recorded successfully";
       },
-      {status:201 }
+      {status:201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording PRN medication administration");
@@ -697,7 +697,7 @@ export const recordPRNAdministration = async (req: any) => {
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */;
-export const recordPatientEducation = async (req: any) => {
+export const recordPatientEducation = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -734,14 +734,14 @@ export const recordPatientEducation = async (req: any) => {
     const data = await req.json();
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields" },
-        {status:400 }
+        {error:"Missing required fields" ,},
+        {status:400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -771,7 +771,7 @@ export const recordPatientEducation = async (req: any) => {
       {id:education.id,
         message: "Patient education recorded successfully";
       },
-      {status:201 }
+      {status:201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording patient education");
@@ -780,7 +780,7 @@ export const recordPatientEducation = async (req: any) => {
  * POST /api/pharmacy/administration/reaction;
  * Record adverse reaction to medication;
  */;
-export const recordAdverseReaction = async (req: any) => {
+export const recordAdverseReaction = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -817,14 +817,14 @@ export const recordAdverseReaction = async (req: any) => {
     const data = await req.json();
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields" },
-        {status:400 }
+        {error:"Missing required fields" ,},
+        {status:400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -862,7 +862,7 @@ export const recordAdverseReaction = async (req: any) => {
       {id:reaction.id,
         message: "Adverse reaction recorded successfully";
       },
-      {status:201 }
+      {status:201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording adverse reaction");
@@ -871,7 +871,7 @@ export const recordAdverseReaction = async (req: any) => {
  * GET /api/pharmacy/administration/due;
  * List medications due for administration;
  */;
-export const getDueMedications = async (req: any) => {
+export const getDueMedications = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -907,7 +907,7 @@ export const getDueMedications = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get query parameters;
     const url = new URL(req.url);
@@ -915,7 +915,7 @@ export const getDueMedications = async (req: any) => {
     const timeWindow = Number.parseInt(url.searchParams.get("timeWindow") || "60", 10); // Default to 60 minutes;
 
     if (!session.user) {
-      return NextResponse.json({error:"Ward ID is required" }, {status:400 });
+      return NextResponse.json({error:"Ward ID is required" ,}, {status:400 ,});
 
     // In a real implementation, get patients in ward and their schedules;
     // For now, return mock data;
@@ -948,7 +948,7 @@ export const getDueMedications = async (req: any) => {
     });
 
     // Return response;
-    return NextResponse.json({medications:dueMedications }, {status:200 });
+    return NextResponse.json({medications:dueMedications ,}, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving due medications");
 
@@ -956,7 +956,7 @@ export const getDueMedications = async (req: any) => {
  * GET /api/pharmacy/administration/overdue;
  * List overdue medications;
  */;
-export const getOverdueMedications = async (req: any) => {
+export const getOverdueMedications = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -992,7 +992,7 @@ export const getOverdueMedications = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get query parameters;
     const url = new URL(req.url);
@@ -1000,7 +1000,7 @@ export const getOverdueMedications = async (req: any) => {
     const overdueThreshold = Number.parseInt(url.searchParams.get("overdueThreshold") || "30", 10); // Default to 30 minutes;
 
     if (!session.user) {
-      return NextResponse.json({error:"Ward ID is required" }, {status:400 });
+      return NextResponse.json({error:"Ward ID is required" ,}, {status:400 ,});
 
     // In a real implementation, get patients in ward and their schedules;
     // For now, return mock data;
@@ -1035,7 +1035,7 @@ export const getOverdueMedications = async (req: any) => {
     });
 
     // Return response;
-    return NextResponse.json({medications:overdueMedications }, {status:200 });
+    return NextResponse.json({medications:overdueMedications ,}, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving overdue medications");
 
@@ -1043,7 +1043,7 @@ export const getOverdueMedications = async (req: any) => {
  * GET /api/pharmacy/administration/reports;
  * Generate administration reports;
  */;
-export const generateAdministrationReports = async (req: any) => {
+export const generateAdministrationReports = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -1079,7 +1079,7 @@ export const generateAdministrationReports = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get query parameters;
     const url = new URL(req.url);
@@ -1090,7 +1090,7 @@ export const generateAdministrationReports = async (req: any) => {
     const medicationId = url.searchParams.get("medicationId");
 
     if (!session.user) {
-      return NextResponse.json({error:"Start date and end date are required" }, {status:400 });
+      return NextResponse.json({error:"Start date and end date are required" ,}, {status:400 ,});
 
     // In a real implementation, generate report based on parameters;
     // For now, return mock data;
@@ -1143,12 +1143,12 @@ export const generateAdministrationReports = async (req: any) => {
           "Ward C": 30;
       };
     } else {
-      return NextResponse.json({error:"Invalid report type" }, {status:400 });
+      return NextResponse.json({error:"Invalid report type" ,}, {status:400 ,});
 
     // Audit logging;
     await auditLog("MEDICATION_ADMINISTRATION", {action:"REPORT_GENERATION",
       userId: "current-user-id", // In production, extract from token;
-      details: {
+      details: {,
         reportType,
         startDate,
         endDate,
@@ -1158,7 +1158,7 @@ export const generateAdministrationReports = async (req: any) => {
     });
 
     // Return response;
-    return NextResponse.json({ report }, {status:200 });
+    return NextResponse.json({ report }, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error generating administration report");
 

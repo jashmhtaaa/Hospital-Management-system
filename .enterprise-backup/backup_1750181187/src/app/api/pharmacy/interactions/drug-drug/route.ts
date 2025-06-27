@@ -17,13 +17,13 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 // Initialize services
@@ -36,22 +36,22 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/drug-drug;
  * Check for drug-drug interactions between specific medications;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateDrugDrugInteractionRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -66,24 +66,24 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_DRUG',
-      \1,\2 userId,
-      details: 
+       userId,
+      details: ,
         medicationIds: data.medicationIds,
-        \1,\2 data.includeMonographs || false
+         data.includeMonographs || false
     });
 
     // Return response
     return NextResponse.json({
       interactions,
-      metadata: {
+      metadata: {,
         totalCount: interactions.length,
-        severityCounts: {
+        severityCounts: {,
           contraindicated: interactions.filter(i => i.severity === 'contraindicated').length,
-          \1,\2 interactions.filter(i => i.severity === 'moderate').length,
-          \1,\2 interactions.filter(i => i.severity === 'unknown').length
+           interactions.filter(i => i.severity === 'moderate').length,
+           interactions.filter(i => i.severity === 'unknown').length
         }
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error checking drug-drug interactions');
   }

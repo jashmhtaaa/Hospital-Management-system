@@ -38,15 +38,14 @@ import { useEffect
 import { useRouter }
 
 interface ContactManagementProps {
-  contactId?: string;
+    contactId?: string;
   onSuccess?: (contact: unknown) => void;
 export default const _ContactManagement = ({ contactId, onSuccess }: ContactManagementProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [contact, setContact] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
-  const [formData, setFormData] = useState({
-    name: "",
+  const [formData, setFormData] = useState({name:"",
     "",
     "ACTIVE",
     "",
@@ -109,8 +108,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         setContact(data);
 
         // Set form values from contact data;
-        setFormData({
-          name: data.name || "",
+        setFormData({name:data.name || "",
           data.phone || "",
           data.status || "ACTIVE",
           "",
@@ -142,8 +140,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         fetchContactActivities(contactId);
       } catch (error) ;
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive");
       } finally {
         setIsLoading(false);
@@ -400,8 +397,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       if (!session.user)hrow new Error("Failed to save contact");
 
       const savedContact = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Contact $contactId ? "updated" : "created"successfully.`});
 
       if (!session.user) {
@@ -411,8 +407,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -456,8 +451,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/marketing/contacts/$contactId/notes`, {
-        method: "POST",
+      const response = await fetch(`/api/support-services/marketing/contacts/$contactId/notes`, {method:"POST",
         headers: null,
           "Content-Type": "application/json",
         body: JSON.stringify(content: newNote )});
@@ -467,14 +461,12 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       const addedNote = await response.json(),
       setNotes([...notes, addedNote]);
       setNewNote(""),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Note added successfully.";
       });
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -516,8 +508,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/marketing/contacts/${contactId}/link-patient`, {
-        method: "POST",
+      const response = await fetch(`/api/support-services/marketing/contacts/${contactId}/link-patient`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify({ patientId })});
@@ -527,14 +518,12 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       const updatedContact = await response.json(),
       setContact(updatedContact);
       fetchPatientData(patientId),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Patient linked successfully.";
       });
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -576,8 +565,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {
-        method: "POST",
+      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify({ contactId })});
@@ -589,14 +577,12 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       if (!session.user) {
         setSegments([...segments, segment]);
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Added to segment successfully.";
       });
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 

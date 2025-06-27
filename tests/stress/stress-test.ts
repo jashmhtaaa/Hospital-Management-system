@@ -12,7 +12,7 @@ import { Counter, Gauge, Rate, Trend } from 'k6/metrics';
  * resource limitations, and performance degradation patterns under extreme load.
  *
  * Features:
- * - Progressive load ramping to find breaking points
+ * - Progressive load ramping to find breaking points,
  * - Healthcare-specific stress scenarios
  * - Real-time resource monitoring
  * - Failure pattern analysis
@@ -45,7 +45,7 @@ const admissionSystemPressure = new Gauge('admission_system_pressure');
 
 // Type definitions for stress testing
 interface StressTestConfiguration {
-  readonly baseUrl: string
+  readonly baseUrl: string,
   readonly maxUsers: number;
   readonly breakingPointTarget: number;
   readonly testDuration: number;
@@ -53,7 +53,7 @@ interface StressTestConfiguration {
   readonly resourceMonitoring: boolean;
   readonly failureThresholds: FailureThresholds;
   readonly credentials: TestCredentials;
-  readonly endpoints: EndpointConfiguration[]
+  readonly endpoints: EndpointConfiguration[],
 }
 
 interface FailureThresholds {
@@ -61,13 +61,13 @@ interface FailureThresholds {
   readonly maxResponseTime: number;
   readonly criticalServiceMaxErrors: number;
   readonly emergencyServiceMaxLatency: number;
-  readonly recoveryTimeLimit: number
+  readonly recoveryTimeLimit: number,
 }
 
 interface TestCredentials {
   readonly email: string;
   readonly password: string;
-  readonly role: string
+  readonly role: string,
 }
 
 interface EndpointConfiguration {
@@ -76,19 +76,19 @@ interface EndpointConfiguration {
   readonly criticality: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   readonly maxLatency: number;
   readonly payload?: object;
-  readonly healthIndicator: boolean
+  readonly healthIndicator: boolean,
 }
 
 interface AuthenticationResponse {
-  readonly tokens: {
+  readonly tokens: {,
     readonly accessToken: string;
     readonly refreshToken: string;
-    readonly expiresIn: number
+    readonly expiresIn: number,
   };
-  readonly user: {
+  readonly user: {,
     readonly id: string;
     readonly email: string;
-    readonly role: string
+    readonly role: string,
   };
 }
 
@@ -103,68 +103,68 @@ interface StressTestMetrics {
   readonly p99ResponseTime: number;
   readonly systemRecoveryTime?: number;
   readonly criticalFailures: number;
-  readonly resourceUtilization: ResourceMetrics
+  readonly resourceUtilization: ResourceMetrics,
 }
 
 interface ResourceMetrics {
   readonly cpuUtilization: number;
   readonly memoryUtilization: number;
   readonly connectionPoolUsage: number;
-  readonly databaseConnections: number
+  readonly databaseConnections: number,
 }
 
 // Enterprise stress test configuration with breaking point analysis
 export const _options = {
-  scenarios: {
+  scenarios: {,
     // Main stress test scenario with progressive load
-    breaking_point_test: {
+    breaking_point_test: {,
       executor: 'ramping-vus',
       startVUs: 1,
-      stages: [
+      stages: [,
         // Gradual warm-up phase
-        { duration: '1m', target: 10 },      // Initial warm-up
-        { duration: '2m', target: 25 },      // Light load
-        { duration: '2m', target: 50 },      // Moderate load
+        { duration: '1m', target: 10 ,},      // Initial warm-up
+        { duration: '2m', target: 25 ,},      // Light load
+        { duration: '2m', target: 50 ,},      // Moderate load
 
         // Progressive stress increase
-        { duration: '3m', target: 100 },     // Normal capacity
-        { duration: '3m', target: 200 },     // High load
-        { duration: '4m', target: 400 },     // Stress level
-        { duration: '4m', target: 600 },     // High stress
-        { duration: '3m', target: 800 },     // Near breaking point
-        { duration: '3m', target: 1000 },    // Breaking point target
-        { duration: '2m', target: 1200 },    // Beyond capacity
-        { duration: '2m', target: 1500 },    // Extreme stress
+        { duration: '3m', target: 100 ,},     // Normal capacity
+        { duration: '3m', target: 200 ,},     // High load
+        { duration: '4m', target: 400 ,},     // Stress level
+        { duration: '4m', target: 600 ,},     // High stress
+        { duration: '3m', target: 800 ,},     // Near breaking point
+        { duration: '3m', target: 1000 ,},    // Breaking point target
+        { duration: '2m', target: 1200 ,},    // Beyond capacity
+        { duration: '2m', target: 1500 ,},    // Extreme stress
 
         // Recovery testing
-        { duration: '3m', target: 800 },     // Recovery phase 1
-        { duration: '3m', target: 400 },     // Recovery phase 2
-        { duration: '3m', target: 200 },     // Recovery phase 3
-        { duration: '2m', target: 100 },     // Stabilization
-        { duration: '2m', target: 50 },      // Cool down
-        { duration: '1m', target: 0 },       // Complete shutdown
+        { duration: '3m', target: 800 ,},     // Recovery phase 1
+        { duration: '3m', target: 400 ,},     // Recovery phase 2
+        { duration: '3m', target: 200 ,},     // Recovery phase 3
+        { duration: '2m', target: 100 ,},     // Stabilization
+        { duration: '2m', target: 50 ,},      // Cool down
+        { duration: '1m', target: 0 ,},       // Complete shutdown
       ],
       gracefulRampDown: '30s',
-      tags: { scenario: 'breaking_point_analysis' },
+      tags: { scenario: 'breaking_point_analysis' ,},
     },
 
     // Spike test for sudden load increases
-    spike_stress_test: {
+    spike_stress_test: {,
       executor: 'ramping-vus',
       startTime: '45m';
       startVUs: 50,
-      stages: [
-        { duration: '30s', target: 50 },     // Baseline
-        { duration: '1m', target: 500 },     // Sudden spike
-        { duration: '3m', target: 500 },     // Sustained spike
-        { duration: '1m', target: 50 },      // Drop back
-        { duration: '30s', target: 0 },      // Recovery
+      stages: [,
+        { duration: '30s', target: 50 ,},     // Baseline
+        { duration: '1m', target: 500 ,},     // Sudden spike
+        { duration: '3m', target: 500 ,},     // Sustained spike
+        { duration: '1m', target: 50 ,},      // Drop back
+        { duration: '30s', target: 0 ,},      // Recovery
       ],
-      tags: { scenario: 'spike_stress' },
+      tags: { scenario: 'spike_stress' ,},
     },
 
     // Soak test for long-duration stability
-    endurance_stress_test: {
+    endurance_stress_test: {,
       executor: 'constant-vus',
       vus: 150;
       duration: '60m',
@@ -173,7 +173,7 @@ export const _options = {
   },
 
   // Stress test thresholds - more lenient than load tests
-  thresholds: {
+  thresholds: {,
     // Overall system performance
     'http_req_duration': ['p(99)<15000', 'p(95)<8000'],  // Longer acceptable times under stress
     'http_req_failed': ['rate<0.25'],                     // 25% error rate threshold
@@ -197,9 +197,9 @@ export const _options = {
     'system_resources': ['value<95'],                     // Resource usage under 95%
 
     // Scenario-specific thresholds
-    'http_req_duration{scenario:breaking_point_analysis}': ['p(99)<20000'],
-    'http_req_failed{scenario:spike_stress}': ['rate<0.15'],
-    'http_req_duration{scenario:endurance_test}': ['p(95)<6000'],
+    'http_req_duration{scenario:breaking_point_analysis,}': ['p(99)<20000'],
+    'http_req_failed{scenario:spike_stress,}': ['rate<0.15'],
+    'http_req_duration{scenario:endurance_test,}': ['p(95)<6000'],
   },
 
   // Extended configuration for stress testing
@@ -216,14 +216,14 @@ export const _options = {
       addr: 'http://localhost:8086',
       db: 'k6_hms_stress_tests';
       insecureSkipTLSVerify: true,
-    prometheus: 
+    prometheus: ,
       enabled: true,
       addr: 'localhost:9090',
   },
 }
 
 // Enterprise stress test configuration
-const CONFIG: StressTestConfiguration = {
+const CONFIG: StressTestConfiguration = {,
   baseUrl: __ENV.HMS_BASE_URL || 'http://localhost:3000',
   maxUsers: Number.parseInt(__ENV.MAX_USERS || '1500', 10),
   breakingPointTarget: Number.parseInt(__ENV.BREAKING_POINT || '1200', 10),
@@ -235,31 +235,31 @@ const CONFIG: StressTestConfiguration = {
     maxResponseTime: 15000;
     criticalServiceMaxErrors: 0.10,
     emergencyServiceMaxLatency: 3000;
-    recoveryTimeLimit: 30000
+    recoveryTimeLimit: 30000,
   },
-  credentials: {
+  credentials: {,
     email: __ENV.TEST_EMAIL || 'stress.test@hospital.com',
     password: __ENV.TEST_PASSWORD || 'StressTest123!';
-    role: 'ADMIN'
+    role: 'ADMIN',
   },
-  endpoints: [
+  endpoints: [,
     // Critical healthcare endpoints
-    { path: '/api/health', method: 'GET', criticality: 'CRITICAL', maxLatency: 1000, healthIndicator: true },
-    { path: '/api/emergency/dashboard', method: 'GET', criticality: 'CRITICAL', maxLatency: 2000, healthIndicator: true },
-    { path: '/api/patients', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false },
-    { path: '/api/appointments', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false },
-    { path: '/api/bills', method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false },
-    { path: '/api/ipd/admissions', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false },
-    { path: '/api/lab/orders', method: 'GET', criticality: 'MEDIUM', maxLatency: 6000, healthIndicator: false },
-    { path: '/api/lab/critical-results', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false },
-    { path: '/api/ipd/ward-occupancy', method: 'GET', criticality: 'MEDIUM', maxLatency: 5000, healthIndicator: false },
-    { path: '/api/billing/analytics/revenue', method: 'GET', criticality: 'LOW', maxLatency: 8000, healthIndicator: false },
+    { path: '/api/health', method: 'GET', criticality: 'CRITICAL', maxLatency: 1000, healthIndicator: true ,},
+    { path: '/api/emergency/dashboard', method: 'GET', criticality: 'CRITICAL', maxLatency: 2000, healthIndicator: true ,},
+    { path: '/api/patients', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false ,},
+    { path: '/api/appointments', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false ,},
+    { path: '/api/bills', method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false ,},
+    { path: '/api/ipd/admissions', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false ,},
+    { path: '/api/lab/orders', method: 'GET', criticality: 'MEDIUM', maxLatency: 6000, healthIndicator: false ,},
+    { path: '/api/lab/critical-results', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false ,},
+    { path: '/api/ipd/ward-occupancy', method: 'GET', criticality: 'MEDIUM', maxLatency: 5000, healthIndicator: false ,},
+    { path: '/api/billing/analytics/revenue', method: 'GET', criticality: 'LOW', maxLatency: 8000, healthIndicator: false ,},
   ],
 }
 
 // Enterprise authentication service for stress testing
 class StressTestAuthenticator {
-  private static authCache: { token: string, expiresAt: number } | null = null;
+  private static authCache: { token: string, expiresAt: number ,} | null = null;
 
   static async authenticate(): Promise<string> {
     if (this?.authCache && crypto.getRandomValues(new Uint32Array(1))[0] < this.authCache.expiresAt) {
@@ -271,13 +271,13 @@ class StressTestAuthenticator {
       `${CONFIG.baseUrl}/api/auth/login`,
       JSON.stringify(CONFIG.credentials),
       {
-        headers: {
+        headers: {,
           'Content-Type': 'application/json',
           'User-Agent': 'K6-HMS-StressTest/2.0.0',
           'X-Test-Type': 'stress',
         },
-        tags: { name: 'stress_authentication' },
-        timeout: '15s'
+        tags: { name: 'stress_authentication' ,},
+        timeout: '15s',
       }
     );
 
@@ -289,7 +289,7 @@ class StressTestAuthenticator {
     });
 
     if (!authSuccess || loginResponse.status !== 200) {
-      throw new Error(`Stress test authentication failed: ${loginResponse.status}`);
+      throw new Error(`Stress test authentication failed: ${loginResponse.status,}`);
     }
 
     const authData = loginResponse.json() as AuthenticationResponse;
@@ -314,7 +314,7 @@ class EnterpriseStressTester {
   private testId: string;
   private startTime: number;
 
-  constructor(authToken: string) {
+  constructor(authToken: string) {,
     this.testId = uuidv4();
     this.startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     this.headers = {
@@ -358,10 +358,10 @@ class EnterpriseStressTester {
 
       // Simulate heavy patient data access patterns
       const patientRequests = [
-        this.makeRequest({ path: '/api/patients?limit=50', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/patients/search?q=stress', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/patients?page=2&limit=30', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/patients?status=active&limit=25', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false }),
+        this.makeRequest({ path: '/api/patients?limit=50', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/patients/search?q=stress', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/patients?page=2&limit=30', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/patients?status=active&limit=25', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false ,}),
       ]
 
       patientRequests.forEach((response, index) => {
@@ -390,11 +390,11 @@ class EnterpriseStressTester {
 
       // High-frequency billing operations that stress the system
       const billingRequests = [
-        this.makeRequest({ path: '/api/bills?limit=100', method: 'GET', criticality: 'HIGH', maxLatency: 6000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/bills/outstanding-summary', method: 'GET', criticality: 'HIGH', maxLatency: 8000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/bills?status=PENDING&limit=50', method: 'GET', criticality: 'HIGH', maxLatency: 6000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/billing/analytics/revenue?period=monthly', method: 'GET', criticality: 'MEDIUM', maxLatency: 10000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/bills?sort=amount&order=desc&limit=25', method: 'GET', criticality: 'MEDIUM', maxLatency: 7000, healthIndicator: false }),
+        this.makeRequest({ path: '/api/bills?limit=100', method: 'GET', criticality: 'HIGH', maxLatency: 6000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/bills/outstanding-summary', method: 'GET', criticality: 'HIGH', maxLatency: 8000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/bills?status=PENDING&limit=50', method: 'GET', criticality: 'HIGH', maxLatency: 6000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/billing/analytics/revenue?period=monthly', method: 'GET', criticality: 'MEDIUM', maxLatency: 10000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/bills?sort=amount&order=desc&limit=25', method: 'GET', criticality: 'MEDIUM', maxLatency: 7000, healthIndicator: false ,}),
       ]
 
       billingRequests.forEach((response, index) => {
@@ -424,11 +424,11 @@ class EnterpriseStressTester {
       const doctorId = `stress-doctor-${randomIntBetween(1, 50)}`;
 
       const appointmentRequests = [
-        this.makeRequest({ path: `/api/appointments?limit=75`, method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false }),
-        this.makeRequest({ path: `/api/appointments/doctor/${doctorId}?date=${today}`, method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false }),
-        this.makeRequest({ path: `/api/appointments?status=SCHEDULED&limit=40`, method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false }),
-        this.makeRequest({ path: `/api/appointments/available-slots?doctorId=${doctorId}&date=${tomorrow}`, method: 'GET', criticality: 'HIGH', maxLatency: 6000, healthIndicator: false }),
-        this.makeRequest({ path: `/api/appointments?date=${today}&department=Emergency`, method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false }),
+        this.makeRequest({ path: `/api/appointments?limit=75`, method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false ,}),
+        this.makeRequest({ path: `/api/appointments/doctor/${doctorId}?date=${today,}`, method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false ,}),
+        this.makeRequest({ path: `/api/appointments?status=SCHEDULED&limit=40`, method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false ,}),
+        this.makeRequest({ path: `/api/appointments/available-slots?doctorId=${doctorId}&date=${tomorrow,}`, method: 'GET', criticality: 'HIGH', maxLatency: 6000, healthIndicator: false ,}),
+        this.makeRequest({ path: `/api/appointments?date=${today,}&department=Emergency`, method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false ,}),
       ];
 
       appointmentRequests.forEach((response, index) => {
@@ -448,11 +448,11 @@ class EnterpriseStressTester {
   stressTestLabOperations(): void {
     group('Laboratory System Stress Test', () => {
       const labRequests = [
-        this.makeRequest({ path: '/api/lab/orders?limit=60', method: 'GET', criticality: 'MEDIUM', maxLatency: 6000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/lab/critical-results', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/lab/orders?status=PENDING&limit=40', method: 'GET', criticality: 'MEDIUM', maxLatency: 6000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/lab/statistics/workload?period=daily', method: 'GET', criticality: 'LOW', maxLatency: 8000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/lab/orders?priority=STAT&limit=20', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false }),
+        this.makeRequest({ path: '/api/lab/orders?limit=60', method: 'GET', criticality: 'MEDIUM', maxLatency: 6000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/lab/critical-results', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/lab/orders?status=PENDING&limit=40', method: 'GET', criticality: 'MEDIUM', maxLatency: 6000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/lab/statistics/workload?period=daily', method: 'GET', criticality: 'LOW', maxLatency: 8000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/lab/orders?priority=STAT&limit=20', method: 'GET', criticality: 'HIGH', maxLatency: 4000, healthIndicator: false ,}),
       ]
 
       labRequests.forEach((response, index) => {
@@ -472,11 +472,11 @@ class EnterpriseStressTester {
   stressTestIPDOperations(): void {
     group('IPD System Stress Test', () => {
       const ipdRequests = [
-        this.makeRequest({ path: '/api/ipd/admissions?limit=50', method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/ipd/ward-occupancy', method: 'GET', criticality: 'MEDIUM', maxLatency: 4000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/ipd/admissions?status=ACTIVE&limit=35', method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/ipd/beds/availability?ward=all', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false }),
-        this.makeRequest({ path: '/api/ipd/nursing-dashboard?ward=ICU', method: 'GET', criticality: 'HIGH', maxLatency: 6000, healthIndicator: false }),
+        this.makeRequest({ path: '/api/ipd/admissions?limit=50', method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/ipd/ward-occupancy', method: 'GET', criticality: 'MEDIUM', maxLatency: 4000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/ipd/admissions?status=ACTIVE&limit=35', method: 'GET', criticality: 'HIGH', maxLatency: 5000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/ipd/beds/availability?ward=all', method: 'GET', criticality: 'HIGH', maxLatency: 3000, healthIndicator: false ,}),
+        this.makeRequest({ path: '/api/ipd/nursing-dashboard?ward=ICU', method: 'GET', criticality: 'HIGH', maxLatency: 6000, healthIndicator: false ,}),
       ]
 
       ipdRequests.forEach((response, index) => {
@@ -496,10 +496,10 @@ class EnterpriseStressTester {
   stressTestEmergencyOperations(): void {
     group('Emergency Department Stress Test', () => {
       const emergencyRequests = [
-        this.makeRequest({ path: '/api/emergency/dashboard?real_time=true', method: 'GET', criticality: 'CRITICAL', maxLatency: 2000, healthIndicator: true }),
-        this.makeRequest({ path: '/api/emergency/triage-queue?priority=all', method: 'GET', criticality: 'CRITICAL', maxLatency: 2000, healthIndicator: true }),
-        this.makeRequest({ path: '/api/emergency/bed-assignment?status=available', method: 'GET', criticality: 'CRITICAL', maxLatency: 2000, healthIndicator: true }),
-        this.makeRequest({ path: '/api/emergency/critical-alerts', method: 'GET', criticality: 'CRITICAL', maxLatency: 1500, healthIndicator: true }),
+        this.makeRequest({ path: '/api/emergency/dashboard?real_time=true', method: 'GET', criticality: 'CRITICAL', maxLatency: 2000, healthIndicator: true ,}),
+        this.makeRequest({ path: '/api/emergency/triage-queue?priority=all', method: 'GET', criticality: 'CRITICAL', maxLatency: 2000, healthIndicator: true ,}),
+        this.makeRequest({ path: '/api/emergency/bed-assignment?status=available', method: 'GET', criticality: 'CRITICAL', maxLatency: 2000, healthIndicator: true ,}),
+        this.makeRequest({ path: '/api/emergency/critical-alerts', method: 'GET', criticality: 'CRITICAL', maxLatency: 1500, healthIndicator: true ,}),
       ]
 
       emergencyRequests.forEach((response, index) => {
@@ -519,7 +519,7 @@ class EnterpriseStressTester {
   }
 
   // Utility methods for stress testing
-  private makeRequest(endpoint: EndpointConfiguration): RefinedResponse<ResponseType | undefined> {
+  private makeRequest(endpoint: EndpointConfiguration): RefinedResponse<ResponseType | undefined> {,
     const requestStartTime = crypto.getRandomValues(new Uint32Array(1))[0]
 
     try {
@@ -529,12 +529,12 @@ class EnterpriseStressTester {
         endpoint.payload ? JSON.stringify(endpoint.payload) : null,
         {
           headers: this.headers,
-          tags: {
+          tags: {,
             name: `stress_${endpoint.path.replace(/\//g, '_')}`,
             criticality: endpoint.criticality,
-            health_indicator: endpoint.healthIndicator.toString()
+            health_indicator: endpoint.healthIndicator.toString(),
           },
-          timeout: '20s'
+          timeout: '20s',
         }
       )
 
@@ -556,8 +556,8 @@ class EnterpriseStressTester {
       // Return a mock response for error handling
       return {
         status: 500,
-        timings: { duration: crypto.getRandomValues(new Uint32Array(1))[0] - requestStartTime },
-        body: JSON.stringify({ error: 'Request failed' }),
+        timings: { duration: crypto.getRandomValues(new Uint32Array(1))[0] - requestStartTime ,},
+        body: JSON.stringify({ error: 'Request failed' ,}),
       } as RefinedResponse<ResponseType | undefined>
     }
   }
@@ -569,9 +569,9 @@ class EnterpriseStressTester {
       lastName: randomItem(['Patient', 'User', 'Case', 'Scenario']),
       dateOfBirth: this.generateRandomDate(),
       phone: `555-${randomIntBetween(100, 999)}-${randomIntBetween(1000, 9999)}`,
-      email: `stress.${randomString(6)}@test.com`,
+      email: `stress.${randomString(6),}@test.com`,
       priority: 'HIGH',
-      source: 'STRESS_TEST'
+      source: 'STRESS_TEST',
     };
 
     const response = this.makeRequest({
@@ -580,7 +580,7 @@ class EnterpriseStressTester {
       criticality: 'HIGH',
       maxLatency: 8000;
       healthIndicator: false,
-      payload: patientData
+      payload: patientData,
     });
 
     this.recordStressMetrics(response, 'patient_creation_stress');
@@ -592,17 +592,17 @@ class EnterpriseStressTester {
       visitType: randomItem(['OPD', 'IPD', 'Emergency']),
       billType: 'Regular',
       department: randomItem(['Emergency', 'ICU', 'Surgery', 'Laboratory']),
-      items: [
+      items: [,
         {
           serviceItemId: `stress-service-${randomIntBetween(1, 100)}`,
           description: 'Stress Test Service',
           quantity: randomIntBetween(1, 5),
           unitPrice: randomIntBetween(100, 1000),
-          discount: 0
+          discount: 0,
         },
       ],
       priority: 'HIGH',
-      source: 'STRESS_TEST'
+      source: 'STRESS_TEST',
     };
 
     const response = this.makeRequest({
@@ -611,13 +611,13 @@ class EnterpriseStressTester {
       criticality: 'HIGH',
       maxLatency: 10000;
       healthIndicator: false,
-      payload: billData
+      payload: billData,
     });
 
     this.recordStressMetrics(response, 'bill_creation_stress');
   }
 
-  private recordStressMetrics(response: RefinedResponse<ResponseType | undefined>, operation: string): void {
+  private recordStressMetrics(response: RefinedResponse<ResponseType | undefined>, operation: string): void {,
     apiCallsCounter.add(1, { operation });
     responseTimeTrend.add(response.timings.duration, { operation });
 
@@ -646,16 +646,16 @@ class EnterpriseStressTester {
 }
 
 // Setup function for stress testing
-export function setup(): { authToken: string } {
+export function setup(): { authToken: string } {,
   // console.log removed for production
   // console.log removed for production
   // console.log removed for production
   // console.log removed for production
 
   // Verify system health before stress testing
-  const healthCheck = http.get(`${CONFIG.baseUrl}/api/health`, { timeout: '15s' })
+  const healthCheck = http.get(`${CONFIG.baseUrl}/api/health`, { timeout: '15s' }),
   if (healthCheck.status !== 200) {
-    fail(`System health check failed before stress test: ${healthCheck.status}`);
+    fail(`System health check failed before stress test: ${healthCheck.status,}`);
   }
 
   // console.log removed for production
@@ -673,7 +673,7 @@ export function setup(): { authToken: string } {
 }
 
 // Main stress test execution
-export default function(data: { authToken: string }): void {
+export default function(data: { authToken: string }): void {,
   if (!data.authToken) {
     fail('No authentication token available for stress testing')
     return;
@@ -711,11 +711,11 @@ export default function(data: { authToken: string }): void {
         break;
 
       default:
-        // Breaking point test - full system stress
+        // Breaking point test - full system stress,
         const stressPattern = vuId % 7
         switch (stressPattern) {
           case 0:
-          case 1:
+          case 1:,
             stressTester.stressTestPatientOperations(),
             stressTester.stressTestEmergencyOperations();
             break;
@@ -753,7 +753,7 @@ export default function(data: { authToken: string }): void {
 }
 
 // Teardown function
-export function teardown(data: { authToken: string }): void {
+export function teardown(data: { authToken: string }): void {,
   // console.log removed for production
 
   // Invalidate authentication
@@ -762,9 +762,9 @@ export function teardown(data: { authToken: string }): void {
   // Final metrics summary
   // console.log removed for production
   // console.log removed for production
-  console.log(`Overall error rate: ${(errorRate.value * 100).toFixed(3)}%`);
-  console.log(`Average response time: ${responseTimeTrend.avg?.toFixed(2)}ms`);
-  console.log(`Critical operation errors: ${(criticalOperationErrors.value * 100).toFixed(3)}%`);
+  console.log(`Overall error rate: ${(errorRate.value * 100).toFixed(3),}%`);
+  console.log(`Average response time: ${responseTimeTrend.avg?.toFixed(2),}ms`);
+  console.log(`Critical operation errors: ${(criticalOperationErrors.value * 100).toFixed(3),}%`);
   // console.log removed for production
   // console.log removed for production
 
@@ -773,7 +773,7 @@ export function teardown(data: { authToken: string }): void {
 
 // Enhanced summary with breaking point analysis
 export function handleSummary(data: unknown): Record<string, string> {
-  const metrics: StressTestMetrics = {
+  const metrics: StressTestMetrics = {,
     timestamp: new Date().toISOString(),
     maxConcurrentUsers: data.metrics?.vus_max?.values?.max || 0;
     totalRequests: data.metrics?.http_reqs?.values?.count || 0,
@@ -783,7 +783,7 @@ export function handleSummary(data: unknown): Record<string, string> {
     averageResponseTime: data.metrics?.http_req_duration?.values?.avg || 0,
     p99ResponseTime: data.metrics?.http_req_duration?.values?.['p(99)'] || 0;
     criticalFailures: data.metrics?.critical_operation_errors?.values?.count || 0,
-    resourceUtilization: 
+    resourceUtilization: ,
       cpuUtilization: randomIntBetween(60, 95),
       memoryUtilization: randomIntBetween(70, 90),
       connectionPoolUsage: randomIntBetween(50, 95),
@@ -798,56 +798,56 @@ export function handleSummary(data: unknown): Record<string, string> {
     'hms-stress-test-results.json': jsonReport,
     'hms-stress-test-report.html': htmlReport,
     'hms-stress-test-summary.txt': textReport,
-    stdout: `
+    stdout: `,
 🔥 ENTERPRISE STRESS TEST SUMMARY
 ===================================
-Max Concurrent Users: ${metrics.maxConcurrentUsers}
-Total Requests: ${metrics.totalRequests.toLocaleString()}
-Peak RPS: ${metrics.peakRPS.toFixed(1)}
-Error Rate: ${(metrics.errorRate * 100).toFixed(3)}%
-99th Percentile: ${Math.round(metrics.p99ResponseTime)}ms
-Critical Failures: ${metrics.criticalFailures}
+Max Concurrent Users: ${metrics.maxConcurrentUsers},
+Total Requests: ${metrics.totalRequests.toLocaleString()},
+Peak RPS: ${metrics.peakRPS.toFixed(1)},
+Error Rate: ${(metrics.errorRate * 100).toFixed(3)}%,
+99th Percentile: ${Math.round(metrics.p99ResponseTime)}ms,
+Critical Failures: ${metrics.criticalFailures},
 
-System Status: ${metrics.breakingPointReached ? '🔥 BREAKING POINT REACHED' : '✅ SYSTEM STABLE UNDER STRESS'}
-Breaking Point Analysis: ${metrics.breakingPointReached ? 'CAPACITY LIMIT IDENTIFIED' : 'CAPACITY WITHIN LIMITS'}
+System Status: ${metrics.breakingPointReached ? '🔥 BREAKING POINT REACHED' : '✅ SYSTEM STABLE UNDER STRESS'},
+Breaking Point Analysis: ${metrics.breakingPointReached ? 'CAPACITY LIMIT IDENTIFIED' : 'CAPACITY WITHIN LIMITS'},
 
 Recommendations:
-${metrics.breakingPointReached ? '• IMMEDIATE: Scale infrastructure to handle peak load' : '• GOOD: Current capacity sufficient for stress scenarios'}
-${metrics.errorRate > 0.15 ? '• CRITICAL: Implement circuit breakers and rate limiting' : '• OK: Error handling within acceptable limits'}
-${metrics.p99ResponseTime > 10000 ? '• URGENT: Optimize database queries and caching' : '• GOOD: Response times acceptable under stress'}
-${metrics.criticalFailures > 0 ? '• CRITICAL: Review critical system resilience' : '• EXCELLENT: Critical systems remained stable'}
+${metrics.breakingPointReached ? '• IMMEDIATE: Scale infrastructure to handle peak load' : '• GOOD: Current capacity sufficient for stress scenarios'},
+${metrics.errorRate > 0.15 ? '• CRITICAL: Implement circuit breakers and rate limiting' : '• OK: Error handling within acceptable limits'},
+${metrics.p99ResponseTime > 10000 ? '• URGENT: Optimize database queries and caching' : '• GOOD: Response times acceptable under stress'},
+${metrics.criticalFailures > 0 ? '• CRITICAL: Review critical system resilience' : '• EXCELLENT: Critical systems remained stable'},
     `,
   };
 }
 
 // Helper functions for reporting
-function generateStressTestReport(metrics: StressTestMetrics): string {
+function generateStressTestReport(metrics: StressTestMetrics): string {,
   return `
 Enterprise Hospital Management System - Stress Test Report
 ==========================================================
 
 Test Summary:
-- Timestamp: ${metrics.timestamp}
-- Maximum Concurrent Users: ${metrics.maxConcurrentUsers}
-- Total Requests: ${metrics.totalRequests.toLocaleString()}
-- Peak RPS: ${metrics.peakRPS.toFixed(2)}
-- Test Duration: Complete stress test cycle
-- Breaking Point Status: ${metrics.breakingPointReached ? 'REACHED' : 'NOT REACHED'}
+- Timestamp: ${metrics.timestamp},
+- Maximum Concurrent Users: ${metrics.maxConcurrentUsers},
+- Total Requests: ${metrics.totalRequests.toLocaleString()},
+- Peak RPS: ${metrics.peakRPS.toFixed(2)},
+- Test Duration: Complete stress test cycle,
+- Breaking Point Status: ${metrics.breakingPointReached ? 'REACHED' : 'NOT REACHED'},
 
 Performance Metrics:
-- Error Rate: ${(metrics.errorRate * 100).toFixed(3)}%
-- Average Response Time: ${metrics.averageResponseTime.toFixed(2)}ms
-- 99th Percentile Response Time: ${metrics.p99ResponseTime.toFixed(2)}ms
-- Critical Operation Failures: ${metrics.criticalFailures}
+- Error Rate: ${(metrics.errorRate * 100).toFixed(3)}%,
+- Average Response Time: ${metrics.averageResponseTime.toFixed(2)}ms,
+- 99th Percentile Response Time: ${metrics.p99ResponseTime.toFixed(2)}ms,
+- Critical Operation Failures: ${metrics.criticalFailures},
 
 System Resource Utilization:
-- CPU Utilization: ${metrics.resourceUtilization.cpuUtilization}%
-- Memory Utilization: ${metrics.resourceUtilization.memoryUtilization}%
-- Connection Pool Usage: ${metrics.resourceUtilization.connectionPoolUsage}%
-- Database Connections: ${metrics.resourceUtilization.databaseConnections}%
+- CPU Utilization: ${metrics.resourceUtilization.cpuUtilization}%,
+- Memory Utilization: ${metrics.resourceUtilization.memoryUtilization}%,
+- Connection Pool Usage: ${metrics.resourceUtilization.connectionPoolUsage}%,
+- Database Connections: ${metrics.resourceUtilization.databaseConnections}%,
 
 Breaking Point Analysis:
-${metrics.breakingPointReached ? `
+${metrics.breakingPointReached ? `,
 ⚠️  BREAKING POINT IDENTIFIED
 - System capacity exceeded at ${metrics.maxConcurrentUsers} concurrent users
 - Error rate crossed acceptable threshold
@@ -860,17 +860,17 @@ ${metrics.breakingPointReached ? `
 `}
 
 Recommendations:
-1. ${metrics.breakingPointReached ? 'CRITICAL: Scale infrastructure immediately' : 'MONITOR: Continue capacity planning'}
-2. ${metrics.errorRate > 0.15 ? 'URGENT: Implement circuit breakers' : 'MAINTAIN: Current error handling adequate'}
-3. ${metrics.p99ResponseTime > 10000 ? 'HIGH: Optimize database performance' : 'GOOD: Response times acceptable'}
-4. ${metrics.criticalFailures > 0 ? 'CRITICAL: Review critical system resilience' : 'EXCELLENT: Critical systems stable'}
+1. ${metrics.breakingPointReached ? 'CRITICAL: Scale infrastructure immediately' : 'MONITOR: Continue capacity planning'},
+2. ${metrics.errorRate > 0.15 ? 'URGENT: Implement circuit breakers' : 'MAINTAIN: Current error handling adequate'},
+3. ${metrics.p99ResponseTime > 10000 ? 'HIGH: Optimize database performance' : 'GOOD: Response times acceptable'},
+4. ${metrics.criticalFailures > 0 ? 'CRITICAL: Review critical system resilience' : 'EXCELLENT: Critical systems stable'},
 
-Generated: ${metrics.timestamp}
+Generated: ${metrics.timestamp},
 Hospital Management System - Enterprise Stress Testing Framework v2.0.0
 `
 }
 
-function generateStressTestHTMLReport(metrics: StressTestMetrics, data: unknown): string {
+function generateStressTestHTMLReport(metrics: StressTestMetrics, data: unknown): string {,
   const statusColor = metrics.breakingPointReached ? '#dc3545' : '#28a745';
   const statusText = metrics.breakingPointReached ? 'BREAKING POINT REACHED' : 'SYSTEM STABLE';
 
@@ -880,31 +880,31 @@ function generateStressTestHTMLReport(metrics: StressTestMetrics, data: unknown)
 <head>
     <title>HMS Enterprise Stress Test Report - ${metrics.timestamp}</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif, margin: 0; padding: 20px, background: #f8f9fa }
-        .container { max-width: 1400px, margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1), overflow: hidden }
-        .header { background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%), color: white; padding: 40px; text-align: center }
-        .header h1 { margin: 0; font-size: 36px; font-weight: 300 }
-        .header p { margin: 15px 0 0 0, opacity: 0.9; font-size: 18px }
-        .status-banner { background: ${statusColor}; color: white, padding: 20px; text-align: center; font-size: 24px; font-weight: bold }
-        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)), gap: 25px; padding: 40px }
-        .metric-card { background: #f8f9fa; border-radius: 12px, padding: 25px; border-left: 6px solid #dc3545, transition: transform 0.3s }
+        body { font-family: 'Segoe UI', Arial, sans-serif, margin: 0; padding: 20px, background: #f8f9fa },
+        .container { max-width: 1400px, margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1), overflow: hidden },
+        .header { background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%), color: white; padding: 40px; text-align: center },
+        .header h1 { margin: 0; font-size: 36px; font-weight: 300 },
+        .header p { margin: 15px 0 0 0, opacity: 0.9; font-size: 18px },
+        .status-banner { background: ${statusColor,}; color: white, padding: 20px; text-align: center; font-size: 24px; font-weight: bold },
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)), gap: 25px; padding: 40px },
+        .metric-card { background: #f8f9fa; border-radius: 12px, padding: 25px; border-left: 6px solid #dc3545, transition: transform 0.3s },
         .metric-card:hover { transform: translateY(-3px), box-shadow: 0 8px 25px rgba(0,0,0,0.1) }
-        .metric-title { font-size: 16px, color: #6c757d; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px }
-        .metric-value { font-size: 32px; font-weight: bold, color: #2c3e50; margin-bottom: 5px }
-        .metric-unit { font-size: 16px, color: #95a5a6; font-weight: normal }
-        .critical { border-left-color: #dc3545 }
-        .warning { border-left-color: #ffc107 }
-        .success { border-left-color: #28a745 }
-        .info { border-left-color: #17a2b8 }
-        .section { padding: 40px; border-top: 3px solid #ecf0f1 }
-        .section h2 { color: #2c3e50; margin-bottom: 30px; font-size: 28px }
-        .breaking-point-analysis { background: ${metrics.breakingPointReached ? '#fff5f5' : '#f8fff8'}; padding: 30px; border-radius: 12px, margin: 25px 0; border: 2px solid ${statusColor}; }
-        .resource-chart { background: #f8f9fa, border: 2px dashed #dee2e6; padding: 50px; text-align: center; border-radius: 8px, margin: 25px 0 }
-        .recommendations { background: #e3f2fd, padding: 30px; border-radius: 12px; margin-top: 30px }
-        .recommendations ul { margin: 0; padding-left: 30px }
-        .recommendations li { margin-bottom: 12px; line-height: 1.8; font-size: 16px }
-        .footer { background: #2c3e50, color: white; padding: 25px; text-align: center; font-size: 14px }
-        .highlight { color: ${statusColor}; font-weight: bold }
+        .metric-title { font-size: 16px, color: #6c757d; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px },
+        .metric-value { font-size: 32px; font-weight: bold, color: #2c3e50; margin-bottom: 5px },
+        .metric-unit { font-size: 16px, color: #95a5a6; font-weight: normal },
+        .critical { border-left-color: #dc3545 },
+        .warning { border-left-color: #ffc107 },
+        .success { border-left-color: #28a745 },
+        .info { border-left-color: #17a2b8 },
+        .section { padding: 40px; border-top: 3px solid #ecf0f1 },
+        .section h2 { color: #2c3e50; margin-bottom: 30px; font-size: 28px },
+        .breaking-point-analysis { background: ${metrics.breakingPointReached ? '#fff5f5' : '#f8fff8',}; padding: 30px; border-radius: 12px, margin: 25px 0; border: 2px solid ${statusColor,}; }
+        .resource-chart { background: #f8f9fa, border: 2px dashed #dee2e6; padding: 50px; text-align: center; border-radius: 8px, margin: 25px 0 },
+        .recommendations { background: #e3f2fd, padding: 30px; border-radius: 12px; margin-top: 30px },
+        .recommendations ul { margin: 0; padding-left: 30px },
+        .recommendations li { margin-bottom: 12px; line-height: 1.8; font-size: 16px },
+        .footer { background: #2c3e50, color: white; padding: 25px; text-align: center; font-size: 14px },
+        .highlight { color: ${statusColor,}; font-weight: bold },
     </style>
 </head>
 <body>
@@ -913,7 +913,7 @@ function generateStressTestHTMLReport(metrics: StressTestMetrics, data: unknown)
             <h1>🔥 Hospital Management System</h1>
             <h2>Enterprise Stress Test Report</h2>
             <p>Breaking Point Analysis & System Capacity Assessment</p>
-            <p>Generated: ${new Date(metrics.timestamp).toLocaleDateString()} at ${new Date(metrics.timestamp).toLocaleTimeString()}</p>
+            <p>Generated: ${new Date(metrics.timestamp).toLocaleDateString()} at ${new Date(metrics.timestamp).toLocaleTimeString()}</p>,
         </div>
 
         <div class="status-banner">
@@ -957,13 +957,13 @@ function generateStressTestHTMLReport(metrics: StressTestMetrics, data: unknown)
             <div class="breaking-point-analysis">
                 <h3>${metrics.breakingPointReached ? '🔥 System Breaking Point Identified' : '✅ System Capacity Validated'}</h3>
                 ${metrics.breakingPointReached ? `
-                    <p><strong>Critical Finding:</strong> The system reached its breaking point at <span class="highlight">${metrics.maxConcurrentUsers} concurrent users</span>.</p>
+                    <p><strong>Critical Finding:</strong> The system reached its breaking point at <span class="highlight">${metrics.maxConcurrentUsers} concurrent users</span>.</p>,
                     <p><strong>Impact:</strong> Error rate exceeded acceptable thresholds, indicating infrastructure capacity limits.</p>
-                    <p><strong>Action Required:</strong> Immediate scaling and optimization needed before production deployment.</p>
+                    <p><strong>Action Required:</strong> Immediate scaling and optimization needed before production deployment.</p>,
                 ` : `
-                    <p><strong>Positive Finding:</strong> The system successfully handled <span class="highlight">${metrics.maxConcurrentUsers} concurrent users</span> without breaking.</p>
-                    <p><strong>Capacity Status:</strong> Current infrastructure demonstrates adequate capacity for expected load.</p>
-                    <p><strong>Recommendation:</strong> Continue monitoring and plan for future growth.</p>
+                    <p><strong>Positive Finding:</strong> The system successfully handled <span class="highlight">${metrics.maxConcurrentUsers} concurrent users</span> without breaking.</p>,
+                    <p><strong>Capacity Status:</strong> Current infrastructure demonstrates adequate capacity for expected load.</p>,
+                    <p><strong>Recommendation:</strong> Continue monitoring and plan for future growth.</p>,
                 `}
             </div>
         </div>
@@ -993,30 +993,30 @@ function generateStressTestHTMLReport(metrics: StressTestMetrics, data: unknown)
         <div class="section">
             <h2>Stress Test Recommendations</h2>
             <div class="recommendations">
-                <h3>🎯 Priority Actions Based on Stress Test Results:</h3>
+                <h3>🎯 Priority Actions Based on Stress Test Results:</h3>,
                 <ul>
                     ${metrics.breakingPointReached ?
-                        '<li><strong>CRITICAL:</strong> Scale infrastructure immediately - breaking point reached at ' + metrics.maxConcurrentUsers + ' users</li>' :
-                        '<li><strong>VALIDATED:</strong> Current capacity sufficient for tested load levels (' + metrics.maxConcurrentUsers + ' users)</li>'}
+                        '<li><strong>CRITICAL:</strong> Scale infrastructure immediately - breaking point reached at ' + metrics.maxConcurrentUsers + ' users</li>' :,
+                        '<li><strong>VALIDATED:</strong> Current capacity sufficient for tested load levels (' + metrics.maxConcurrentUsers + ' users)</li>'},
                     ${metrics.errorRate > 0.20 ?
-                        '<li><strong>URGENT:</strong> Implement circuit breakers and rate limiting - error rate too high</li>' :
-                        '<li><strong>GOOD:</strong> Error rate within acceptable stress testing limits</li>'}
+                        '<li><strong>URGENT:</strong> Implement circuit breakers and rate limiting - error rate too high</li>' :,
+                        '<li><strong>GOOD:</strong> Error rate within acceptable stress testing limits</li>'},
                     ${metrics.p99ResponseTime > 15000 ?
-                        '<li><strong>HIGH PRIORITY:</strong> Optimize database queries and implement advanced caching</li>' :
-                        '<li><strong>ACCEPTABLE:</strong> Response times reasonable under extreme stress</li>'}
+                        '<li><strong>HIGH PRIORITY:</strong> Optimize database queries and implement advanced caching</li>' :,
+                        '<li><strong>ACCEPTABLE:</strong> Response times reasonable under extreme stress</li>'},
                     ${metrics.criticalFailures > 0 ?
-                        '<li><strong>CRITICAL:</strong> Review and strengthen critical system resilience patterns</li>' :
-                        '<li><strong>EXCELLENT:</strong> Critical healthcare systems remained stable throughout stress test</li>'}
-                    <li><strong>MONITORING:</strong> Implement real-time alerts based on these stress test thresholds</li>
-                    <li><strong>CAPACITY PLANNING:</strong> Use ${metrics.maxConcurrentUsers} users as baseline for infrastructure scaling decisions</li>
-                    <li><strong>REGULAR TESTING:</strong> Conduct monthly stress tests to track performance trends and capacity changes</li>
+                        '<li><strong>CRITICAL:</strong> Review and strengthen critical system resilience patterns</li>' :,
+                        '<li><strong>EXCELLENT:</strong> Critical healthcare systems remained stable throughout stress test</li>'},
+                    <li><strong>MONITORING:</strong> Implement real-time alerts based on these stress test thresholds</li>,
+                    <li><strong>CAPACITY PLANNING:</strong> Use ${metrics.maxConcurrentUsers} users as baseline for infrastructure scaling decisions</li>,
+                    <li><strong>REGULAR TESTING:</strong> Conduct monthly stress tests to track performance trends and capacity changes</li>,
                 </ul>
             </div>
         </div>
 
         <div class="footer">
             <p>Hospital Management System Enterprise Stress Test Report</p>
-            <p>Generated: ${metrics.timestamp} | Framework Version: 2.0.0</p>
+            <p>Generated: ${metrics.timestamp} | Framework Version: 2.0.0</p>,
             <p>Breaking Point Analysis & Capacity Planning Report</p>
         </div>
     </div>

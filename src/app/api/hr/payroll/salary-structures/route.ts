@@ -1,17 +1,17 @@
 import "@/lib/hr/salary-service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  salaryService  } from "@/lib/database"
-import {   type
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {salaryService  } from "next/server"
+import {type
+import {  z  } from "next/server"
 
 // Schema for salary structure creation;
-const salaryStructureSchema = z.object({name:z.string().min(1, "Name is required"),
+const salaryStructureSchema = z.object({{name:z.string(,}).min(1, "Name is required"),
   description: z.string().optional(),
   components: z.array();
-    z.object({name:z.string().min(1, "Component name is required"),
+    z.object({{name:z.string(,}).min(1, "Component name is required"),
       type: z.enum(["EARNING", "DEDUCTION", "TAX"], {errorMap:() => ({message:"Type must be EARNING, DEDUCTION, or TAX" })}),
       calculationType: z.enum(["FIXED", "PERCENTAGE", "FORMULA"], {errorMap:() => ({message:"Calculation type must be FIXED, PERCENTAGE, or FORMULA" })}),
       value: z.number(),
@@ -22,7 +22,7 @@ const salaryStructureSchema = z.object({name:z.string().min(1, "Name is required
   ).min(1, "At least one component is required")});
 
 // POST handler for creating salary structure;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -62,8 +62,8 @@ export const _POST = async (request: any) => {
     const validationResult = salaryStructureSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation error", details: validationResult.error.format() },
-        {status:400 }
+        {error:"Validation error", details: validationResult.error.format() ,},
+        {status:400 },
       );
 
     // Create salary structure;
@@ -73,12 +73,12 @@ export const _POST = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      {error:"Failed to create salary structure", details: error.message },
-      {status:500 }
+      {error:"Failed to create salary structure", details: error.message ,},
+      {status:500 },
     );
 
 // GET handler for listing salary structures;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -117,6 +117,6 @@ export const _GET = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      {error:"Failed to fetch salary structures", details: error.message },
-      {status:500 }
+      {error:"Failed to fetch salary structures", details: error.message ,},
+      {status:500 },
     );

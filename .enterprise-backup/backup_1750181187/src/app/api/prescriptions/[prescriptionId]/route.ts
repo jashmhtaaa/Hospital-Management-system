@@ -12,27 +12,27 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "Pharmacist", "Patient"]
 // Define the expected shape of the main prescription query result
 interface PrescriptionQueryResult {
     prescription_id: number,
-    \1,\2 number,
-    \1,\2 string; // Assuming date is returned as string
+     number,
+     string; // Assuming date is returned as string
     notes: string | null,
-    \1,\2 string,
-    \1,\2 string,
-    doctor_full_name: string
+     string,
+     string,
+    doctor_full_name: string,
 }
 
 // Define the expected shape of the prescription items query result
 interface PrescriptionItemQueryResult {
     prescription_item_id: number,
-    \1,\2 number,
-    \1,\2 string,
-    \1,\2 string,
-    \1,\2 string | null,
-    \1,\2 string,
-    inventory_unit_of_measure: string
+     number,
+     string,
+     string,
+     string | null,
+     string,
+    inventory_unit_of_measure: string,
 }
 
 // Helper function to get prescription ID from URL
-const getPrescriptionId = (pathname: string): number | null {
+const getPrescriptionId = (pathname: string): number | null {,
     // Pathname might be /api/prescriptions/123
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 1]; // Last part
@@ -41,18 +41,18 @@ const getPrescriptionId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific prescription with items
-export const _GET = async (request: Request) => {
+export const _GET = async (request: Request) => {,
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions); // Added await for cookies()
     const url = new URL(request.url)
     const prescriptionId = getPrescriptionId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
-    \1 {\n  \2{
-        return new Response(JSON.stringify({ error: "Invalid Prescription ID" }), { status: 400 });
+     {\n  {
+        return new Response(JSON.stringify({ error: "Invalid Prescription ID" ,}), { status: 400 ,});
     }
 
     try {
@@ -72,22 +72,22 @@ export const _GET = async (request: Request) => {
              WHERE pr.prescription_id = ?`;
         ).bind(prescriptionId).first<PrescriptionQueryResult>(); // Use defined interface
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Prescription not found" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Prescription not found" ,}), { status: 404 ,});
         }
 
         // 3. Authorization check for Patients and Doctors
-        \1 {\n  \2{
-            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-            \1 {\n  \2{
-                return new Response(JSON.stringify({ error: "Forbidden: You can only view your own prescriptions" }), { status: 403 });
+         {\n  {
+            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number ,}>();
+             {\n  {
+                return new Response(JSON.stringify({ error: "Forbidden: You can only view your own prescriptions" ,}), { status: 403 ,});
             }
         }
-        \1 {\n  \2{
-            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-            \1 {\n  \2{
+         {\n  {
+            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+             {\n  {
                 // Allow viewing if not the prescribing doctor? Or restrict? For now, restrict.
-                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own prescriptions" }), { status: 403 })
+                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own prescriptions" ,}), { status: 403 }),
             }
         }
 
@@ -100,36 +100,36 @@ export const _GET = async (request: Request) => {
         ).bind(prescriptionId).all<PrescriptionItemQueryResult>(); // Use defined interface
 
         // 5. Format the final response
-        const prescription: Prescription = {
+        const prescription: Prescription = {,
             prescription_id: presResult.prescription_id,
             consultation_id: presResult.consultation_id ?? null, // Handle potential null
             patient_id: presResult.patient_id,
-            \1,\2 presResult.prescription_date,
-            \1,\2 presResult.created_at,
+             presResult.prescription_date,
+             presResult.created_at,
             updated_at: presResult.updated_at;
             // Include patient and doctor info if needed in detail view
-            // patient: { ... },
-            // doctor: { ... },
+            // patient: { ... ,},
+            // doctor: { ... ,},
             items: itemsResult.results?.map((item: PrescriptionItemQueryResult) => ({ // Use defined interface,
                 prescription_item_id: item.prescription_item_id,
-                \1,\2 item.inventory_item_id,
-                \1,\2 item.dosage,
-                \1,\2 item.duration,
-                \1,\2 item.instructions,
-                \1,\2 item.created_at,
-                inventory_item: 
+                 item.inventory_item_id,
+                 item.dosage,
+                 item.duration,
+                 item.instructions,
+                 item.created_at,
+                inventory_item: ,
                     inventory_item_id: item.inventory_item_id,
-                    unit_of_measure: item.inventory_unit_of_measure
+                    unit_of_measure: item.inventory_unit_of_measure,
             })) || [],
         }
 
         // 6. Return the detailed prescription
-        return new Response(JSON.stringify(prescription), { status: 200 });
+        return new Response(JSON.stringify(prescription), { status: 200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), { status: 500 ,});
     }
 }
 

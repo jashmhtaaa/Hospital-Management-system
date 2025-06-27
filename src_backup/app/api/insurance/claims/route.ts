@@ -62,7 +62,7 @@ const claimQuerySchema = z.object({
   format: z.enum(["json", "fhir"]).optional().default("json")});
 
 // GET handler for retrieving all claims with filtering and pagination;
-export const _GET = withErrorHandling(async (req: any) => {
+export const _GET = withErrorHandling(async (req: any) => {,
   // Validate query parameters;
   const query = validateQuery(claimQuerySchema)(req);
 
@@ -70,7 +70,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "read", "claim")(req);
 
   // Build filter conditions;
-  const where: unknown = {};
+  const where: unknown = {,};
 
   if (!session.user) {
     where.invoice = {
@@ -136,7 +136,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   const [claims, total] = await Promise.all([;
     prisma.insuranceClaim.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
@@ -172,7 +172,7 @@ export const _GET = withErrorHandling(async (req: any) => {
 });
 
 // POST handler for creating a new claim;
-export const _POST = withErrorHandling(async (req: any) => {
+export const _POST = withErrorHandling(async (req: any) => {,
   // Validate request body;
   const data = await validateBody(createClaimSchema)(req);
 
@@ -181,7 +181,7 @@ export const _POST = withErrorHandling(async (req: any) => {
 
   // Retrieve invoice;
   const invoice = await prisma.bill.findUnique({
-    where: { id: data.invoiceId }});
+    where: { id: data.invoiceId },});
 
   if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
@@ -191,12 +191,12 @@ export const _POST = withErrorHandling(async (req: any) => {
     throw new BusinessLogicError();
       "Claims can only be created for approved or paid invoices",
       "INVALID_INVOICE_STATUS",
-      { currentStatus: invoice.status }
+      { currentStatus: invoice.status },
     );
 
   // Check if insurance policy exists;
   const insurancePolicy = await prisma.insurancePolicy.findUnique({
-    where: { id: data.insurancePolicyId },
+    where: { id: data.insurancePolicyId ,},
     true;
     }});
 
@@ -208,7 +208,7 @@ export const _POST = withErrorHandling(async (req: any) => {
     throw new BusinessLogicError();
       "Insurance policy is not active",
       "INACTIVE_INSURANCE_POLICY",
-      { policyStatus: insurancePolicy.status }
+      { policyStatus: insurancePolicy.status },
     );
 
   // Check if patient on invoice matches policy beneficiary;
@@ -233,7 +233,7 @@ export const _POST = withErrorHandling(async (req: any) => {
   const claim = await prisma.$transaction(async (prisma) => {
     // Create claim record;
     const newClaim = await prisma.insuranceClaim.create({
-      data: {
+      data: {,
         claimNumber,
         invoiceId: data.invoiceId,
         "draft";
@@ -249,16 +249,16 @@ export const _POST = withErrorHandling(async (req: any) => {
             true,
             true,
                 true,
-                mrn: true}}},
+                mrn: true}},},
         true,
             true,
-                name: true},
+                name: true,},
         diagnoses: true,
         true}}});
 
     // Update invoice to link claim;
     await prisma.bill.update({
-      where: { id: data.invoiceId },
+      where: { id: data.invoiceId ,},
       newClaim.id;
       }});
 

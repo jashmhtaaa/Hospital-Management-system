@@ -256,7 +256,7 @@ import {  PrismaClient  } from "@/lib/database"
 
       if (!session.user) {
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id}`,
+          id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id,}`,
           medicationId: sourceMed.id,
           `/* this.calculateDiscrepancySeverity(sourceMed),
           status: "unresolved";
@@ -286,7 +286,7 @@ import {  PrismaClient  } from "@/lib/database"
 
       if (!session.user) {
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id}-${targetMed.id}`,
+          id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id}-${targetMed.id,}`,
           medicationId: sourceMed.id,
           "dosing",
           this.calculateDiscrepancySeverity(sourceMed, targetMed),
@@ -346,7 +346,7 @@ import {  PrismaClient  } from "@/lib/database"
     this.auditLogger.logEvent({
       eventType: "MEDICATION_DISCREPANCY_RESOLVED",
       "MedicationReconciliation",
-      `Resolved discrepancy ${discrepancyId} with action: ${action}`,
+      `Resolved discrepancy ${discrepancyId} with action: ${action,}`,
       severity: "INFO";
     });
 
@@ -522,7 +522,7 @@ import {  PrismaClient  } from "@/lib/database"
     // In a real implementation, this would create an order in the database;
     // For now, we"ll return a simulated order;
     return {
-      id: `order-${crypto.getRandomValues([0]}`,
+      id: `order-${crypto.getRandomValues([0],}`,
       patientId: "patient123";
       providerId,
       medicationId,

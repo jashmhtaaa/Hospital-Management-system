@@ -14,20 +14,20 @@ import type { PrismaService } from '@/lib/prisma';
  * Comprehensive sample tracking with barcode/RFID and chain of custody;
  */
 
-\1
+
 }
 }
 
 @Injectable();
-\1
+
 }
   }
 
   /**
    * Create new sample with barcode generation;
    */
-  async createSample(data: Partial<Sample>): Promise<Sample> {
-    const startTime = crypto.getRandomValues(\1[0];
+  async createSample(data: Partial<Sample>): Promise<Sample> {,
+    const startTime = crypto.getRandomValues([0];
 
     try {
       // Generate unique barcode
@@ -35,19 +35,19 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Create sample record
       const sample = await this.prisma.sample.create({
-        data: {
+        data: {,
           ...data,
           barcode,
           status: SampleStatus.COLLECTED,
-          \1,\2 {
+           {
               fromUserId: data.collectedBy!,
-              \1,\2 'Collection Point',
-              \1,\2 new Date(),
-              \1,\2 'Initial collection'
+               'Collection Point',
+               new Date(),
+               'Initial collection'
             },
           },
         },
-        \1,\2 true,
+         true,
           qualityControl: true,
       });
 
@@ -64,16 +64,16 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.SAMPLE_STATUS_CHANGED, {
-        sampleStatusChanged: sample
+        sampleStatusChanged: sample,
       });
 
       // Record metrics
       metricsCollector.incrementCounter('lab.samples_created', 1, {
         sampleType: sample.sampleType,
-        priority: sample.priority
+        priority: sample.priority,
       });
 
-      const duration = crypto.getRandomValues(\1[0] - startTime;
+      const duration = crypto.getRandomValues([0] - startTime;
       metricsCollector.recordTimer('lab.sample_creation_time', duration);
 
       return sample as Sample;
@@ -88,34 +88,34 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async updateSampleStatus(
     sampleId: string,
-    \1,\2 string;
+     string;
     location?: string,
     notes?: string;
   ): Promise<Sample> {
     try {
       const sample = await this.getSampleById(sampleId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Sample ${sampleId} not found`);
       }
 
       // Create chain of custody entry if location changed
       const chainOfCustodyData = location !== sample.location ? {
-        \1,\2 sample.chainOfCustody[sample.chainOfCustody.length - 1]?.toUserId || userId,
-          \1,\2 sample.location,
-          \1,\2 new Date(),
-          \1,\2 notes || `Status changed to ${newStatus}`,
+         sample.chainOfCustody[sample.chainOfCustody.length - 1]?.toUserId || userId,
+           sample.location,
+           new Date(),
+           notes || `Status changed to ${newStatus}`,
         },
       } : undefined;
 
       // Update sample
       const updatedSample = await this.prisma.sample.update({
-        where: { id: sampleId },
-        \1,\2 newStatus,
-          \1,\2 new Date(),
-          chainOfCustody: chainOfCustodyData
+        where: { id: sampleId ,},
+         newStatus,
+           new Date(),
+          chainOfCustody: chainOfCustodyData,
         },
-        \1,\2 true,
-          qualityControl: true
+         true,
+          qualityControl: true,
         },
       });
 
@@ -127,13 +127,13 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.SAMPLE_STATUS_CHANGED, {
-        sampleStatusChanged: updatedSample
+        sampleStatusChanged: updatedSample,
       });
 
       // Record metrics
       metricsCollector.incrementCounter('lab.sample_status_updates', 1, {
         fromStatus: sample.status,
-        \1,\2 sample.sampleType
+         sample.sampleType
       });
 
       return updatedSample as Sample;
@@ -148,31 +148,31 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async performQualityControl(
     sampleId: string,
-    qcData: Omit\1>
+    qcData: Omit>,
   ): Promise<QualityControlResult> {
     try {
       const qcResult = await this.prisma.qualityControlResult.create({
-        data: {
+        data: {,
           ...qcData,
           sampleId,
         },
       });
 
       // If QC fails, update sample status
-      \1 {\n  \2{
+       {\n  {
         await this.updateSampleStatus(
           sampleId,
           SampleStatus.REJECTED,
           qcData.performedBy,
           undefined,
-          `QC failed: ${qcData.parameter} - ${qcData.notes}`;
+          `QC failed: ${qcData.parameter} - ${qcData.notes,}`;
         );
       }
 
       // Record metrics
       metricsCollector.incrementCounter('lab.quality_control_checks', 1, {
         testType: qcData.testType,
-        status: qcResult.status
+        status: qcResult.status,
       });
 
       return qcResult as QualityControlResult;
@@ -185,12 +185,12 @@ import type { PrismaService } from '@/lib/prisma';
   /**
    * Automated sample routing based on test requirements;
    */
-  async routeSample(sampleId: string, labOrderId: string): Promise<SampleRouting> {
+  async routeSample(sampleId: string, labOrderId: string): Promise<SampleRouting> {,
     try {
       const sample = await this.getSampleById(sampleId);
       const labOrder = await this.getLabOrder(labOrderId);
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Sample or lab order not found');
       }
 
@@ -198,18 +198,18 @@ import type { PrismaService } from '@/lib/prisma';
       const workflow = await this.determineWorkflow(labOrder.tests);
 
       // Create routing record
-      const routing: SampleRouting = {
+      const routing: SampleRouting = {,
         sampleId,
         workflowId: workflow.id,
-        \1,\2 workflow.steps.slice(1),
+         workflow.steps.slice(1),
         estimatedCompletion: this.calculateEstimatedCompletion(workflow, sample.priority),
         priority: sample.priority,
-        department: workflow.department
+        department: workflow.department,
       };
 
       // Assign to appropriate technician if available
       const assignedTech = await this.assignTechnician(workflow.department, sample.priority);
-      \1 {\n  \2{
+       {\n  {
         routing.assignedTo = assignedTech.id;
       }
 
@@ -219,7 +219,7 @@ import type { PrismaService } from '@/lib/prisma';
       // Record metrics
       metricsCollector.incrementCounter('lab.samples_routed', 1, {
         department: workflow.department,
-        priority: sample.priority
+        priority: sample.priority,
       });
 
       return routing;
@@ -232,34 +232,34 @@ import type { PrismaService } from '@/lib/prisma';
   /**
    * Track sample location in real-time;
    */
-  async trackSampleLocation(\1,\2 Sample,
-    \1,\2 ChainOfCustodyEntry[],
-    estimatedNextUpdate: Date
+  async trackSampleLocation( Sample,
+     ChainOfCustodyEntry[],
+    estimatedNextUpdate: Date,
   }> {
     try {
       // Try cache first
       const cached = await cacheService.getCachedResult('sample_location:', barcode);
-      \1 {\n  \2{
+       {\n  {
         return cached;
       }
 
       const sample = await this.prisma.sample.findUnique({
-        where: { barcode },
-        \1,\2 {
-            orderBy: { transferredAt: 'desc' },
+        where: { barcode ,},
+         {
+            orderBy: { transferredAt: 'desc' ,},
           },
-          qualityControl: true
+          qualityControl: true,
         },
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Sample with barcode ${barcode} not found`);
       }
 
       const result = {
         sample: sample as Sample,
-        \1,\2 sample.chainOfCustody as ChainOfCustodyEntry[],
-        estimatedNextUpdate: this.estimateNextUpdate(sample as Sample)
+         sample.chainOfCustody as ChainOfCustodyEntry[],
+        estimatedNextUpdate: this.estimateNextUpdate(sample as Sample),
       };
 
       // Cache for 2 minutes
@@ -277,9 +277,9 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async processBatch(
     sampleIds: string[],
-    \1,\2 string,
+     string,
     performedBy: string;
-  ): Promise<{ successful: string[], \1,\2 unknown[] }> {
+  ): Promise<{ successful: string[],  unknown[] }> {
     const successful: string[] = [];
     const failed: string[] = [];
     const errors: unknown[] = [];
@@ -298,13 +298,13 @@ import type { PrismaService } from '@/lib/prisma';
                 SampleStatus.PROCESSING,
                 performedBy,
                 undefined,
-                `Batch processing: ${processingType}`;
+                `Batch processing: ${processingType,}`;
               );
 
               // Update batch ID
               await this.prisma.sample.update({
-                where: { id: sampleId },
-                data: { batchId },
+                where: { id: sampleId ,},
+                data: { batchId ,},
               });
 
               return sampleId;
@@ -315,7 +315,7 @@ import type { PrismaService } from '@/lib/prisma';
         );
 
         results.forEach((result) => {
-          \1 {\n  \2{
+           {\n  {
             successful.push(result.value);
           } else {
             const errorData = result.reason;
@@ -329,7 +329,7 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('lab.batch_processing', 1, {
         processingType,
         totalSamples: sampleIds.length,
-        \1,\2 failed.length
+         failed.length
       });
 
       return { successful, failed, errors };
@@ -352,31 +352,31 @@ import type { PrismaService } from '@/lib/prisma';
       department?: string;
       assignedTo?: string;
     },
-    pagination?: { limit: number, offset: number }
-  ): Promise<{ samples: Sample[], total: number }> {
+    pagination?: { limit: number, offset: number },
+  ): Promise<{ samples: Sample[], total: number }> {,
     try {
-      const where: unknown = { status };
+      const where: unknown = { status ,};
 
-      \1 {\n  \2here.sampleType = filters.sampleType;
-      \1 {\n  \2here.priority = filters.priority;
-      \1 {\n  \2{
+       {\n  here.sampleType = filters.sampleType;
+       {\n  here.priority = filters.priority;
+       {\n  {
         where.createdAt = {};
-        \1 {\n  \2here.createdAt.gte = filters.dateFrom;
-        \1 {\n  \2here.createdAt.lte = filters.dateTo;
+         {\n  here.createdAt.gte = filters.dateFrom;
+         {\n  here.createdAt.lte = filters.dateTo;
       }
 
       const [samples, total] = await Promise.all([
         this.prisma.sample.findMany({
           where,
-          \1,\2 true,
-            qualityControl: true
+           true,
+            qualityControl: true,
           },
-          orderBy: [
-            { priority: 'desc' },
-            { createdAt: 'asc' },
+          orderBy: [,
+            { priority: 'desc' ,},
+            { createdAt: 'asc' ,},
           ],
           take: pagination?.limit || 50,
-          skip: pagination?.offset || 0
+          skip: pagination?.offset || 0,
         }),
         this.prisma.sample.count({ where }),
       ]);
@@ -396,20 +396,20 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async getStatisticalProcessControl(
     testType: string,
-    \1,\2 number = 30;
-  ): Promise<{date: Date, \1,\2 number, \1,\2 number, \1,\2 QualityControlResult[]
+     number = 30;
+  ): Promise<{date: Date,  number,  number,  QualityControlResult[]
   }> {
     try {
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - days);
 
       const qcResults = await this.prisma.qualityControlResult.findMany({
-        where: {
+        where: {,
           testType,
           parameter,
-          performedAt: { gte: startDate },
+          performedAt: { gte: startDate ,},
         },
-        orderBy: { performedAt: 'asc' },
+        orderBy: { performedAt: 'asc' ,},
       });
 
       // Calculate control limits (mean ± 3σ)
@@ -425,7 +425,7 @@ import type { PrismaService } from '@/lib/prisma';
       const dailyData = new Map<string, number[]>();
       qcResults.forEach(result => {
         const dateKey = result.performedAt.toISOString().split('T')[0];
-        \1 {\n  \2 {
+         {\n   {
           dailyData.set(dateKey, []);
         }
         dailyData.get(dateKey)!.push(result.value);
@@ -435,7 +435,7 @@ import type { PrismaService } from '@/lib/prisma';
         const dailyMean = values.reduce((sum, val) => sum + val, 0) / values.length;
         return {
           date: new Date(dateStr),
-          \1,\2 upperControlLimit,
+           upperControlLimit,
             lower: lowerControlLimit,
         };
       });
@@ -467,7 +467,7 @@ import type { PrismaService } from '@/lib/prisma';
       return {
         data,
         trends: { slope, rSquared },
-        outliers: outliers as QualityControlResult[]
+        outliers: outliers as QualityControlResult[],
       };
     } catch (error) {
 
@@ -478,47 +478,47 @@ import type { PrismaService } from '@/lib/prisma';
   // Private helper methods
   private async generateBarcode(): Promise<string> {
     const _prefix = 'LAB';
-    const _timestamp = crypto.getRandomValues(\1[0].toString();
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `/* SECURITY: Template literal eliminated */
+    const _timestamp = crypto.getRandomValues([0].toString();
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `/* SECURITY: Template literal eliminated */,
   }
 
-  private async getSampleById(id: string): Promise<Sample | null> {
+  private async getSampleById(id: string): Promise<Sample | null> {,
     const cached = await cacheService.getCachedResult('sample:', id);
-    \1 {\n  \2eturn cached;
+     {\n  eturn cached;
 
     const sample = await this.prisma.sample.findUnique({
-      where: { id },
-      \1,\2 true,
-        qualityControl: true
+      where: { id ,},
+       true,
+        qualityControl: true,
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       await cacheService.cacheResult('sample:', id, sample, 300)
     }
 
     return sample as Sample | null;
   }
 
-  private async getLabOrder(id: string): Promise<any> {
+  private async getLabOrder(id: string): Promise<any> {,
     // Implementation to fetch lab order
     return await this.prisma.labOrder.findUnique({
-      where: { id },
-      include: { labTests: true },
+      where: { id ,},
+      include: { labTests: true ,},
     });
   }
 
-  private async determineWorkflow(tests: unknown[]): Promise<any> {
+  private async determineWorkflow(tests: unknown[]): Promise<any> {,
     // Implementation to determine workflow based on tests
     return {
       id: 'workflow-1',
       steps: ['Collection', 'Processing', 'Analysis', 'Verification'],
-      department: 'Hematology'
+      department: 'Hematology',
     };
   }
 
-  private calculateEstimatedCompletion(workflow: unknown, priority: Priority): Date {
+  private calculateEstimatedCompletion(workflow: unknown, priority: Priority): Date {,
     const baseHours = workflow.steps.length * 2; // 2 hours per step
     const priorityMultiplier = priority === Priority.STAT ? 0.25 : priority === Priority.URGENT ? 0.5 : 1;
 
@@ -529,47 +529,47 @@ import type { PrismaService } from '@/lib/prisma';
     return completion;
   }
 
-  private async assignTechnician(department: string, priority: Priority): Promise<any> {
+  private async assignTechnician(department: string, priority: Priority): Promise<any> {,
     // Implementation to assign technician based on workload and expertise
-    return { id: 'tech-1', name: 'Lab Technician' };
+    return { id: 'tech-1', name: 'Lab Technician' ,};
   }
 
-  private estimateNextUpdate(sample: Sample): Date {
+  private estimateNextUpdate(sample: Sample): Date {,
     const nextUpdate = new Date();
     nextUpdate.setMinutes(nextUpdate.getMinutes() + 30); // Estimate 30 minutes
     return nextUpdate;
   }
 
   // FHIR compliance methods
-  private async createFHIRSpecimen(sample: Sample): Promise<void> {
+  private async createFHIRSpecimen(sample: Sample): Promise<void> {,
     // Implementation to create FHIR Specimen resource
   }
 
-  private async updateFHIRSpecimen(sample: Sample): Promise<void> {
+  private async updateFHIRSpecimen(sample: Sample): Promise<void> {,
     // Implementation to update FHIR Specimen resource
   }
 
   // Required abstract methods
-  validate(resource: FHIRObservation): boolean {
+  validate(resource: FHIRObservation): boolean {,
     return !!(resource?.resourceType && resource?.status && resource.code)
   }
 
-  toFHIR(sample: Sample): FHIRObservation {
+  toFHIR(sample: Sample): FHIRObservation {,
     // Convert internal sample data to FHIR Observation
     return {
       resourceType: 'Observation',
-      \1,\2 'registered',
-      code: this.createCodeableConcept([
+       'registered',
+      code: this.createCodeableConcept([,
         this.createCoding(FHIR_SYSTEMS.SNOMED_CT, '123456', 'Sample Collection'),
       ]),
       subject: this.createReference('Patient', sample.patientId),
     };
   }
 
-  fromFHIR(fhirResource: FHIRObservation): Partial<Sample> {
+  fromFHIR(fhirResource: FHIRObservation): Partial<Sample> {,
     // Convert FHIR Observation to internal sample format
     return {
       id: fhirResource.id,
-      patientId: fhirResource.subject?.reference?.split('/')[1] || ''
+      patientId: fhirResource.subject?.reference?.split('/')[1] || '',
     };
   }

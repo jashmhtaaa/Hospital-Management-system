@@ -15,7 +15,7 @@ export interface InsurancePolicy {
     coverageDetails: string,
     startDate: Date;
     endDate: Date,
-    isActive: boolean
+    isActive: boolean,
 export interface EligibilityStatus {
     eligible: boolean;
     reason?: string;

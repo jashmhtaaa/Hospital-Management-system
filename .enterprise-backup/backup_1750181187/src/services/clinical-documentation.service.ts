@@ -9,12 +9,12 @@ const prisma = new PrismaClient();
 /**
  * Service for managing clinical documentation;
  */
-\1
+
 }
-      where: { id: data.patientId }
+      where: { id: data.patientId },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new NotFoundError('Patient not found');
     }
 
@@ -25,7 +25,7 @@ const prisma = new PrismaClient();
     const document = await prisma.$transaction(async (tx) => {
       // Create the document
       const document = await tx.clinicalDocument.create({
-        data: {
+        data: {,
           documentNumber,
           patientId: data.patientId,
           encounterId: data.encounterId,          documentType: data.documentType,
@@ -34,20 +34,20 @@ const prisma = new PrismaClient();
           status: 'Draft',
           content: data.content,          templateId: data.templateId,
           isConfidential: data.isConfidential || false,          attachmentUrls: data.attachmentUrls || [],
-          tags: data.tags || []
+          tags: data.tags || [],
         }
       });
 
       // Create document sections if provided
-      \1 {\n  \2{
+       {\n  {
         for (let i = 0; i < data.sections.length; i++) {
           const section = data.sections[i];
           await tx.documentSection.create({
-            data: {
+            data: {,
               documentId: document.id,
               sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
-              authorId: userId,              authoredDate: new Date()
+              authorId: userId,              authoredDate: new Date(),
             }
           });
         }
@@ -60,9 +60,9 @@ const prisma = new PrismaClient();
     await auditLog({
       action: 'CREATE',
       resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
-      metadata: {
+      metadata: {,
         documentType: data.documentType,
-        patientId: data.patientId,        encounterId: data.encounterId
+        patientId: data.patientId,        encounterId: data.encounterId,
       }
     });
 
@@ -76,35 +76,35 @@ const prisma = new PrismaClient();
    * @param userId ID of the user requesting the document;
    * @returns Document with sections, signatures, and amendments;
    */
-  async getDocumentById(id: string, userId: string): Promise<DocumentWithRelations> {
+  async getDocumentById(id: string, userId: string): Promise<DocumentWithRelations> {,
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'read');
 
     const document = await prisma.clinicalDocument.findUnique({
-      where: { id },
-      include: {
-        sections: {
-          orderBy: {
-            sectionOrder: 'asc'
+      where: { id ,},
+      include: {,
+        sections: {,
+          orderBy: {,
+            sectionOrder: 'asc',
           }
         },
         signatures: true,
-        amendments: true
+        amendments: true,
       }
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new NotFoundError('Document not found');
     }
 
     // Check if document is confidential and user has permission
-    \1 {\n  \2{
+     {\n  {
       await validatePermission(userId, 'clinical_documentation', 'read_confidential');
     }
 
     // Log access
     await prisma.documentAccessLog.create({
-      data: {
+      data: {,
         documentId: id,
         accessorId: userId,        accessorRole: await this.getUserRole(userId),
         accessDate: new Date(),
@@ -118,9 +118,9 @@ const prisma = new PrismaClient();
     await auditLog({
       action: 'READ',
       resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
-      metadata: {
+      metadata: {,
         documentType: document.documentType,
-        patientId: document.patientId
+        patientId: document.patientId,
       }
     });
 
@@ -135,21 +135,21 @@ const prisma = new PrismaClient();
    * @param userId ID of the user updating the document;
    * @returns Updated document;
    */
-  async updateDocument(id: string, data: UpdateDocumentDto, userId: string): Promise<ClinicalDocument> {
+  async updateDocument(id: string, data: UpdateDocumentDto, userId: string): Promise<ClinicalDocument> {,
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'update');
 
     // Check if document exists
     const document = await prisma.clinicalDocument.findUnique({
-      where: { id }
+      where: { id },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new NotFoundError('Document not found');
     }
 
     // Only allow updates if document is in Draft or Preliminary status
-    \1 {\n  \2 {
+     {\n   {
       throw new BadRequestError('Cannot update a finalized document');
     }
 
@@ -157,44 +157,44 @@ const prisma = new PrismaClient();
     const updatedDocument = await prisma.$transaction(async (tx) => {
       // Update the document
       const updatedDoc = await tx.clinicalDocument.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           documentTitle: data.documentTitle || undefined,
           content: data.content || undefined,          status: data.status || undefined,
           isConfidential: data.isConfidential !== undefined ? data.isConfidential : undefined,          attachmentUrls: data.attachmentUrls || undefined,
-          tags: data.tags || undefined,          updatedAt: new Date()
+          tags: data.tags || undefined,          updatedAt: new Date(),
         }
       });
 
       // Update sections if provided
-      \1 {\n  \2{
+       {\n  {
         // First, get existing sections
         const existingSections = await tx.documentSection.findMany({
-          where: { documentId: id }
+          where: { documentId: id },
         });
 
         for (const section of data.sections) {
-          \1 {\n  \2{
+           {\n  {
             // Update existing section
             await tx.documentSection.update({
-              where: { id: section.id },
-              data: {
+              where: { id: section.id ,},
+              data: {,
                 sectionTitle: section.sectionTitle || undefined,
                 sectionType: section.sectionType || undefined,                sectionOrder: section.sectionOrder || undefined,
                 content: section.content || undefined,                updatedById: userId,
                 updatedDate: new Date(),
-                updatedAt: new Date()
+                updatedAt: new Date(),
               }
             });
           } else {
             // Create new section
             await tx.documentSection.create({
-              data: {
+              data: {,
                 documentId: id,
                 sectionTitle: section.sectionTitle,                sectionType: section.sectionType,
                 sectionOrder: section.sectionOrder || (existingSections.length + 1),
                 content: section.content,
-                authorId: userId,                authoredDate: new Date()
+                authorId: userId,                authoredDate: new Date(),
               }
             });
           }
@@ -202,12 +202,12 @@ const prisma = new PrismaClient();
       }
 
       // If status is changing to Final, update finalizedDate and finalizedById
-      \1 {\n  \2{
+       {\n  {
         await tx.clinicalDocument.update({
-          where: { id },
-          data: {
+          where: { id ,},
+          data: {,
             finalizedDate: new Date(),
-            finalizedById: userId
+            finalizedById: userId,
           }
         });
       }
@@ -219,9 +219,9 @@ const prisma = new PrismaClient();
     await auditLog({
       action: 'UPDATE',
       resourceType: 'ClinicalDocument',      resourceId: updatedDocument.id,      userId,
-      metadata: {
+      metadata: {,
         documentType: document.documentType,
-        patientId: document.patientId,        newStatus: data.status
+        patientId: document.patientId,        newStatus: data.status,
       }
     });
 
@@ -236,39 +236,39 @@ const prisma = new PrismaClient();
    * @param userId ID of the user signing the document;
    * @returns Document signature;
    */
-  async signDocument(id: string, data: SignDocumentDto, userId: string): Promise<DocumentSignature> {
+  async signDocument(id: string, data: SignDocumentDto, userId: string): Promise<DocumentSignature> {,
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'sign');
 
     // Check if document exists
     const document = await prisma.clinicalDocument.findUnique({
-      where: { id }
+      where: { id },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new NotFoundError('Document not found');
     }
 
     // Create document signature
     const signature = await prisma.documentSignature.create({
-      data: {
+      data: {,
         documentId: id,
         signerId: userId,        signerRole: data.signerRole,
         signatureDate: new Date(),
         signatureType: data.signatureType,
         attestation: data.attestation,        ipAddress: data.ipAddress,
-        deviceInfo: data.deviceInfo,        notes: data.notes
+        deviceInfo: data.deviceInfo,        notes: data.notes,
       }
     });
 
     // If document status is Preliminary and attestation indicates finalization, update to Final
-    \1 {\n  \2{
+     {\n  {
       await prisma.clinicalDocument.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           status: 'Final',
           finalizedDate: new Date(),
-          finalizedById: userId
+          finalizedById: userId,
         }
       });
     }
@@ -277,9 +277,9 @@ const prisma = new PrismaClient();
     await auditLog({
       action: 'SIGN',
       resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
-      metadata: {
+      metadata: {,
         documentType: document.documentType,
-        patientId: document.patientId,        signatureType: data.signatureType
+        patientId: document.patientId,        signatureType: data.signatureType,
       }
     });
 
@@ -294,21 +294,21 @@ const prisma = new PrismaClient();
    * @param userId ID of the user creating the amendment;
    * @returns Document amendment;
    */
-  async createAmendment(id: string, data: CreateAmendmentDto, userId: string): Promise<DocumentAmendment> {
+  async createAmendment(id: string, data: CreateAmendmentDto, userId: string): Promise<DocumentAmendment> {,
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'amend');
 
     // Check if document exists
     const document = await prisma.clinicalDocument.findUnique({
-      where: { id }
+      where: { id },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new NotFoundError('Document not found');
     }
 
     // Only allow amendments if document is in Final status
-    \1 {\n  \2{
+     {\n  {
       throw new BadRequestError('Can only amend finalized documents');
     }
 
@@ -317,13 +317,13 @@ const prisma = new PrismaClient();
 
     // Create amendment
     const amendment = await prisma.documentAmendment.create({
-      data: {
+      data: {,
         documentId: id,        amendmentNumber,
         amendmentType: data.amendmentType,
         amendmentReason: data.amendmentReason,        content: data.content,
         authorId: userId,        authoredDate: new Date(),
         status: data.status || 'Draft',        finalizedDate: data.status === 'Final' ? new Date() : null,
-        finalizedById: data.status === 'Final' ? userId : null
+        finalizedById: data.status === 'Final' ? userId : null,
       }
     });
 
@@ -331,7 +331,7 @@ const prisma = new PrismaClient();
     await auditLog({
       action: 'AMEND',
       resourceType: 'ClinicalDocument',      resourceId: document.id,      userId,
-      metadata: {
+      metadata: {,
         documentType: document.documentType,
         patientId: document.patientId,        amendmentType: data.amendmentType,        amendmentNumber,
       }
@@ -356,45 +356,45 @@ const prisma = new PrismaClient();
 
     // Check if patient exists
     const patient = await prisma.patient.findUnique({
-      where: { id: patientId }
+      where: { id: patientId },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new NotFoundError('Patient not found');
     }
 
     // Build filters
-    const where: unknown = {
+    const where: unknown = {,
       patientId,
     };
 
-    \1 {\n  \2{
+     {\n  {
       where.documentType = filters.documentType;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.status = filters.status;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.authorId = filters.authorId;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.authoredDate = {};
 
-      \1 {\n  \2{
+       {\n  {
         where.authoredDate.gte = new Date(filters.dateFrom);
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.authoredDate.lte = new Date(filters.dateTo);
       }
     }
 
     // Handle confidential documents
     const hasConfidentialAccess = await this.hasConfidentialAccess(userId);
-    \1 {\n  \2{
+     {\n  {
       where.isConfidential = false;
     }
 
@@ -408,18 +408,18 @@ const prisma = new PrismaClient();
 
     const documents = await prisma.clinicalDocument.findMany({
       where,
-      orderBy: {
-        authoredDate: 'desc'
+      orderBy: {,
+        authoredDate: 'desc',
       },
       skip,
-      take: pageSize
+      take: pageSize,
     });
 
     // Audit log
     await auditLog({
       action: 'LIST',
       resourceType: 'ClinicalDocument',      resourceId: null,      userId,
-      metadata: {
+      metadata: {,
         patientId,
         filters,
       }
@@ -427,11 +427,11 @@ const prisma = new PrismaClient();
 
     return {
       data: documents,
-      pagination: {
+      pagination: {,
         total,
         page,
         pageSize,
-        totalPages: Math.ceil(total / pageSize)
+        totalPages: Math.ceil(total / pageSize),
       }
     };
   }
@@ -450,15 +450,15 @@ const prisma = new PrismaClient();
     await validatePermission(userId, 'clinical_documentation', 'read_templates');
 
     // Build filters
-    const where: unknown = {
-      isActive: true
+    const where: unknown = {,
+      isActive: true,
     };
 
-    \1 {\n  \2{
+     {\n  {
       where.templateType = filters.templateType;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.specialtyType = filters.specialtyType;
     }
 
@@ -472,15 +472,15 @@ const prisma = new PrismaClient();
 
     const templates = await prisma.documentTemplate.findMany({
       where,
-      orderBy: {
-        templateName: 'asc'
+      orderBy: {,
+        templateName: 'asc',
       },
       skip,
       take: pageSize,
-      include: {
-        sections: {
-          orderBy: {
-            sectionOrder: 'asc'
+      include: {,
+        sections: {,
+          orderBy: {,
+            sectionOrder: 'asc',
           }
         }
       }
@@ -488,11 +488,11 @@ const prisma = new PrismaClient();
 
     return {
       data: templates,
-      pagination: {
+      pagination: {,
         total,
         page,
         pageSize,
-        totalPages: Math.ceil(total / pageSize)
+        totalPages: Math.ceil(total / pageSize),
       }
     };
   }
@@ -504,7 +504,7 @@ const prisma = new PrismaClient();
    * @param userId ID of the user creating the template;
    * @returns Created template;
    */
-  async createDocumentTemplate(data: CreateTemplateDto, userId: string): Promise<unknown> {
+  async createDocumentTemplate(data: CreateTemplateDto, userId: string): Promise<unknown> {,
     // Validate user permission
     await validatePermission(userId, 'clinical_documentation', 'create_templates');
 
@@ -515,7 +515,7 @@ const prisma = new PrismaClient();
     const template = await prisma.$transaction(async (tx) => {
       // Create the template
       const template = await tx.documentTemplate.create({
-        data: {
+        data: {,
           templateNumber,
           templateName: data.templateName,
           templateType: data.templateType,          specialtyType: data.specialtyType,
@@ -523,20 +523,20 @@ const prisma = new PrismaClient();
           isActive: true,          authorId: userId,
           createdDate: new Date(),
           version: 1,
-          approvalStatus: 'Draft'
+          approvalStatus: 'Draft',
         }
       });
 
       // Create template sections if provided
-      \1 {\n  \2{
+       {\n  {
         for (let i = 0; i < data.sections.length; i++) {
           const section = data.sections[i];
           await tx.templateSection.create({
-            data: {
+            data: {,
               templateId: template.id,
               sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
-              isRequired: section.isRequired || false,              defaultExpanded: section.defaultExpanded !== undefined ? section.defaultExpanded : true
+              isRequired: section.isRequired || false,              defaultExpanded: section.defaultExpanded !== undefined ? section.defaultExpanded : true,
             }
           });
         }
@@ -549,9 +549,9 @@ const prisma = new PrismaClient();
     await auditLog({
       action: 'CREATE',
       resourceType: 'DocumentTemplate',      resourceId: template.id,      userId,
-      metadata: {
+      metadata: {,
         templateType: data.templateType,
-        templateName: data.templateName
+        templateName: data.templateName,
       }
     });
 
@@ -564,7 +564,7 @@ const prisma = new PrismaClient();
    * @param documentType Document type;
    * @returns Generated document number;
    */
-  private generateDocumentNumber(documentType: string): string {
+  private generateDocumentNumber(documentType: string): string {,
     const typeCode = documentType.substring(0, 3).toUpperCase();
     const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().substring(5);
     const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
@@ -577,7 +577,7 @@ const prisma = new PrismaClient();
    * @param templateType Template type;
    * @returns Generated template number;
    */
-  private generateTemplateNumber(templateType: string): string {
+  private generateTemplateNumber(templateType: string): string {,
     const typeCode = templateType.substring(0, 3).toUpperCase();
     const timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString().substring(5);
     const random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
@@ -590,9 +590,9 @@ const prisma = new PrismaClient();
    * @param documentId Document ID;
    * @returns Next amendment number;
    */
-  private async getNextAmendmentNumber(documentId: string): Promise<number> {
+  private async getNextAmendmentNumber(documentId: string): Promise<number> {,
     const amendments = await prisma.documentAmendment.findMany({
-      where: { documentId }
+      where: { documentId },
     });
 
     return amendments.length + 1;
@@ -604,7 +604,7 @@ const prisma = new PrismaClient();
    * @param userId User ID;
    * @returns User role;
    */
-  private async getUserRole(userId: string): Promise<string> {
+  private async getUserRole(userId: string): Promise<string> {,
     // In a real implementation, this would query the user's role from the database
     // For now, we'll return a placeholder
     return 'Doctor';
@@ -616,7 +616,7 @@ const prisma = new PrismaClient();
    * @param userId User ID;
    * @returns Whether user has confidential access;
    */
-  private async hasConfidentialAccess(userId: string): Promise<boolean> {
+  private async hasConfidentialAccess(userId: string): Promise<boolean> {,
     try {
       await validatePermission(userId, 'clinical_documentation', 'read_confidential');
       return true;
@@ -628,19 +628,19 @@ const prisma = new PrismaClient();
 
 // Types
 
-\1
+
 }
   }[];
-\1
+
 }
   }[];
-\1
+
 }
   }[];
-\1
+
 }
   };
-\1
+
 }
 }
 

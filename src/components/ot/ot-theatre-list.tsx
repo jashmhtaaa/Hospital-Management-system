@@ -28,8 +28,7 @@ import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing im
 
 
 // Mock data structure - replace with actual API response type;
-interface Theatre {
-  id: string,
+interface Theatre {id:string,
   string | null,
   string,
   updated_at: string;
@@ -86,26 +85,22 @@ export default const _OTTheatreList = () {
         // Mock data for demonstration;
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
         const mockData: Theatre[] = [;
-          {
-            id: "theatre-1",
+          {id:"theatre-1",
             "Floor 2, Wing A",
             specialty: "General Surgery",
             "2025-04-28T10:00:00Z";
           },
-          {
-            id: "theatre-2",
+          {id:"theatre-2",
             "Floor 2, Wing A",
             specialty: "Orthopedics",
             "2025-04-28T09:30:00Z";
           },
-          {
-            id: "theatre-3",
+          {id:"theatre-3",
             "Floor 2, Wing B",
             specialty: "Cardiology",
             "2025-04-27T15:00:00Z";
           },
-          {
-            id: "theatre-4",
+          {id:"theatre-4",
             "Floor 3, Wing C",
             specialty: "Neurosurgery",
             "2025-04-28T11:00:00Z";

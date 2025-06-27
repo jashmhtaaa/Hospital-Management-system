@@ -4,15 +4,15 @@ import { LogSeverity } from '@prisma/client';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 // src/lib/audit/audit-service.ts
-\1
+
 }
 }
 
-\1
+
 }
 }
 
-\1
+
 }
         }
       });
@@ -20,7 +20,7 @@ import { prisma } from '@/lib/prisma';
       // Also log to application logger for immediate monitoring
       logger.info('Audit log created', {
         action: data.action,
-        \1,\2 context.userId
+         context.userId
       });
 
     } catch (error) {
@@ -30,7 +30,7 @@ import { prisma } from '@/lib/prisma';
 
   static async logUserAction(
     context: AuditContext,
-    \1,\2 string;
+     string;
     resourceId?: string,
     description?: string
   ): Promise<void> {
@@ -39,14 +39,14 @@ import { prisma } from '@/lib/prisma';
       resource,
       resourceId,
       description,
-      severity: LogSeverity.INFO
+      severity: LogSeverity.INFO,
     });
   }
 
   static async logDataChange(
     context: AuditContext,
-    \1,\2 string,
-    \1,\2 unknown): Promise<void> {
+     string,
+     unknown): Promise<void> {
     await this.log(context, {
       action: 'UPDATE';
       resource,
@@ -54,14 +54,14 @@ import { prisma } from '@/lib/prisma';
       oldValues,
       newValues,
       description: `$resourcedata updated`,
-      severity: LogSeverity.INFO
+      severity: LogSeverity.INFO,
     });
   }
 
   static async logSecurityEvent(
     context: AuditContext,
-    \1,\2 string,
-    severity: LogSeverity = LogSeverity.WARN
+     string,
+    severity: LogSeverity = LogSeverity.WARN,
   ): Promise<void> {
     await this.log(context, {
       action,
@@ -75,36 +75,36 @@ import { prisma } from '@/lib/prisma';
     resourceType?: string,
     resourceId?: string,
     userId?: string,
-    limit: number = 100
+    limit: number = 100,
   ) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
-    \1 {\n  \2here.resource = resourceType;
-    \1 {\n  \2here.resourceId = resourceId;
-    \1 {\n  \2here.userId = userId;
+     {\n  here.resource = resourceType;
+     {\n  here.resourceId = resourceId;
+     {\n  here.userId = userId;
 
     return await prisma.auditLog.findMany({
       where,
-      include: {
-        user: {
-          select: {
+      include: {,
+        user: {,
+          select: {,
             firstName: true,
-            \1,\2 true
+             true
           }
         }
       },
-      orderBy: { timestamp: 'desc' },
-      take: limit
+      orderBy: { timestamp: 'desc' ,},
+      take: limit,
     });
   }
 }
 
 // Audit decorator for automatic logging
-export function withAudit(resource: string): unknown {
-  return function (target: unknown, propertyName: string, descriptor: PropertyDescriptor) {
+export function withAudit(resource: string): unknown {,
+  return function (target: unknown, propertyName: string, descriptor: PropertyDescriptor) {,
     const method = descriptor.value;
 
-    descriptor.value = async function (...args: unknown[]) {
+    descriptor.value = async function (...args: unknown[]) {,
       const context = this.getAuditContext?.() || {};
 
       try {
@@ -115,15 +115,15 @@ export function withAudit(resource: string): unknown {
           propertyName.toUpperCase(),
           resource,
           result?.id,
-          `/* SECURITY: Template literal eliminated */
+          `/* SECURITY: Template literal eliminated */,
 
         return result
       } catch (error) {
         await AuditService.log(context, {
           action: propertyName.toUpperCase(),
           resource,
-          description: `/* SECURITY: Template literal eliminated */
-          severity: LogSeverity.ERROR
+          description: `/* SECURITY: Template literal eliminated */,
+          severity: LogSeverity.ERROR,
         });
 
         throw error;

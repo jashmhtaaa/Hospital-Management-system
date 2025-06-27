@@ -15,7 +15,7 @@ import { PrismaClient }
 }
   };
 }
-    Array<{ resource: string, count: number }>;
+    Array<{ resource: string, count: number ,}>;
   };
 }
   }
@@ -30,7 +30,7 @@ import { PrismaClient }
   /**;
    * Log an audit event;
    */;
-  async logEvent(event: AuditEvent): Promise<void> {
+  async logEvent(event: AuditEvent): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -94,7 +94,7 @@ import { PrismaClient }
   /**;
    * Batch log multiple events;
    */;
-  async logEvents(events: AuditEvent[]): Promise<void> {
+  async logEvents(events: AuditEvent[]): Promise<void> {,
     for (const event of events) {
       await this.logEvent(event);
     }
@@ -103,7 +103,7 @@ import { PrismaClient }
   /**;
    * Query audit logs;
    */;
-  async queryLogs(query: AuditQuery): Promise<AuditReport> {
+  async queryLogs(query: AuditQuery): Promise<AuditReport> {,
     try {
 } catch (error) {
   console.error(error);
@@ -136,7 +136,7 @@ import { PrismaClient }
 }
 } catch (error) {
 }
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.timestamp = {};
@@ -153,7 +153,7 @@ import { PrismaClient }
       const [events, totalCount] = await Promise.all([;
         this.prisma.auditLog.findMany({
           where,
-          orderBy: { timestamp: "desc" },
+          orderBy: { timestamp: "desc" ,},
           take: query.limit || 100,
           skip: query.offset || 0;
         }),
@@ -197,7 +197,7 @@ import { PrismaClient }
     startDate?: Date,
     endDate?: Date;
   ): Promise<AuditEvent[]> {
-    const query: AuditQuery = { userId };
+    const query: AuditQuery = { userId ,};
     if (!session.user)uery.startDate = startDate;
     if (!session.user)uery.endDate = endDate;
 
@@ -239,7 +239,7 @@ import { PrismaClient }
   /**;
    * Archive old audit logs;
    */;
-  async archiveLogs(olderThan: Date): Promise<number> {
+  async archiveLogs(olderThan: Date): Promise<number> {,
     try {
 } catch (error) {
   console.error(error);
@@ -274,7 +274,7 @@ import { PrismaClient }
 
       // In production, this would move logs to cold storage;
       const result = await this.prisma.auditLog.deleteMany({
-        { lt: olderThan }
+        { lt: olderThan },
 
       });
 
@@ -304,7 +304,7 @@ import { PrismaClient }
   /**;
    * Private helper methods;
    */;
-  private async storeInDatabase(event: AuditEvent): Promise<void> {
+  private async storeInDatabase(event: AuditEvent): Promise<void> {,
     await this.prisma.auditLog.create({
       event.eventType,
         event.targetUserId,
@@ -317,7 +317,7 @@ import { PrismaClient }
 
     });
 
-  private async logToSystem(event: AuditEvent): Promise<void> {
+  private async logToSystem(event: AuditEvent): Promise<void> {,
     this.logger.info("AUDIT_EVENT", {
       ...event,
       "@timestamp": event.timestamp || new Date(),
@@ -328,14 +328,14 @@ import { PrismaClient }
   private setupLogger(): void {
     const transports: winston.transport[] = [;
       new winston.transports.Console({
-        format: winston.format.combine()
+        format: winston.format.combine(),
           winston.format.timestamp(),
           winston.format.json();
         );
       }),
       new winston.transports.File({
         filename: "logs/audit.log",
-        format: winston.format.combine()
+        format: winston.format.combine(),
           winston.format.timestamp(),
           winston.format.json();
         );
@@ -358,7 +358,7 @@ import { PrismaClient }
       transports;
     });
 
-  private isHIPAARelevant(event: AuditEvent): boolean {
+  private isHIPAARelevant(event: AuditEvent): boolean {,
     const phiResources = [;
       "patient",
       "patient.medical_record",
@@ -373,7 +373,7 @@ import { PrismaClient }
       event.resource.includes(resource);
     );
 
-  private isGDPRRelevant(event: AuditEvent): boolean {
+  private isGDPRRelevant(event: AuditEvent): boolean {,
     const piiActions = ["read", "update", "delete", "export"];
     const piiResources = ["patient", "staff", "user"];
 
@@ -381,7 +381,7 @@ import { PrismaClient }
       event.resource.includes(resource);
     ) && piiActions.includes(event.action || "");
 
-  private isSOXRelevant(event: AuditEvent): boolean {
+  private isSOXRelevant(event: AuditEvent): boolean {,
     const financialResources = [;
       "billing",
       "payment",
@@ -393,7 +393,7 @@ import { PrismaClient }
       event.resource.includes(resource);
     );
 
-  private async generateSummary(where: unknown): Promise<AuditReport["summary"]> {
+  private async generateSummary(where: unknown): Promise<AuditReport["summary"]> {,
     const [;
       totalEvents,
       successfulEvents,
@@ -439,7 +439,7 @@ import { PrismaClient }
       }));
     };
 
-  private formatAuditEvent(dbEvent: unknown): AuditEvent {
+  private formatAuditEvent(dbEvent: unknown): AuditEvent {,
     return {
       eventType: dbEvent.eventType,
       dbEvent.targetUserId,
@@ -451,7 +451,7 @@ import { PrismaClient }
       compliance: dbEvent.compliance;
     };
 
-  private async sendCritical/* SECURITY: Alert removed */: Promise<void> {
+  private async sendCritical/* SECURITY: Alert removed */: Promise<void> {,
     // Implement critical alert logic;
     // This could send emails, SMS, Slack notifications, etc.;
 
@@ -459,7 +459,7 @@ import { PrismaClient }
     this.logger.error("CRITICAL_AUDIT_EVENT', event);
 
 // Export convenience function;
-export const _logAuditEvent = async (event: AuditEvent): Promise<void> {
+export const _logAuditEvent = async (event: AuditEvent): Promise<void> {,
   return AuditService.getInstance().logEvent(event);
 
 // Export singleton instance;

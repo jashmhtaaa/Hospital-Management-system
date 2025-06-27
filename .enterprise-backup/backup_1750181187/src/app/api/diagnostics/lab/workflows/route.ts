@@ -7,7 +7,7 @@ import { getSession } from "@/lib/session";
 interface TestWorkflowCreateBody {
   name: string;
   description?: string;
-  steps: Array<{
+  steps: Array<{,
     sequence: number,
     name: string;
     description?: string;
@@ -20,13 +20,13 @@ interface TestWorkflowCreateBody {
 }
 
 // GET /api/diagnostics/lab/workflows - Get all test workflows
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters
@@ -53,17 +53,17 @@ export const _GET = async (request: NextRequest) => {
     const parameters: unknown[] = [];
     const conditions: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("w.name LIKE ?");
       parameters.push(`%${name}%`);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("w.is_active = ?");
       parameters.push(isActive === "true" ? 1 : 0);
     }
 
-    \1 {\n  \2{
+     {\n  {
       query = `;
         SELECT;
           w.*,
@@ -77,10 +77,10 @@ export const _GET = async (request: NextRequest) => {
       `;
       parameters.push(testId);
 
-      \1 {\n  \2{
+       {\n  {
         query += " AND " + conditions.join(" AND ");
       }
-    } else \1 {\n  \2{
+    } else  {\n  {
       query += " WHERE " + conditions.join(" AND ");
     }
 
@@ -98,7 +98,7 @@ export const _GET = async (request: NextRequest) => {
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_test_workflows w";
 
-    \1 {\n  \2{
+     {\n  {
       countQuery = `;
         SELECT COUNT(*) as total;
         FROM lab_test_workflows w;
@@ -106,10 +106,10 @@ export const _GET = async (request: NextRequest) => {
         WHERE m.test_id = ?;
       `;
 
-      \1 {\n  \2{
+       {\n  {
         countQuery += " AND " + conditions.join(" AND ");
       }
-    } else \1 {\n  \2{
+    } else  {\n  {
       countQuery += " WHERE " + conditions.join(" AND ");
     }
 
@@ -149,7 +149,7 @@ export const _GET = async (request: NextRequest) => {
         return {
           ...workflow,
           steps,
-          applicable_tests: tests
+          applicable_tests: tests,
         };
       });
     );
@@ -157,53 +157,53 @@ export const _GET = async (request: NextRequest) => {
     // Return workflows with pagination metadata
     return NextResponse.json({
       data: workflowsWithDetails,
-      pagination: {
+      pagination: {,
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize)
+        totalPages: Math.ceil(totalCount / pageSize),
       }
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to fetch test workflows", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch test workflows", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/diagnostics/lab/workflows - Create a new test workflow
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const session = await getSession();
 
     // Check authentication and authorization
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can create test workflows
-    \1 {\n  \2 {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Parse request body
     const body = await request.json() as TestWorkflowCreateBody;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Workflow name is required" },
-        { status: 400 }
+        { error: "Workflow name is required" ,},
+        { status: 400 },
       );
     }
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Workflow must include at least one step" },
-        { status: 400 }
+        { error: "Workflow must include at least one step" ,},
+        { status: 400 },
       );
     }
 
@@ -211,25 +211,25 @@ export const _POST = async (request: NextRequest) => {
     const sequences = body.steps.map(step => step.sequence);
     const uniqueSequences = new Set(sequences);
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Step sequences must be unique" },
-        { status: 400 }
+        { error: "Step sequences must be unique" ,},
+        { status: 400 },
       );
     }
 
     // Validate applicable tests if provided
-    \1 {\n  \2{
+     {\n  {
       for (const testId of body.applicable_test_ids) {
         const testCheckResult = await DB.query(
           "SELECT id FROM lab_tests WHERE id = ?",
           [testId]
         );
 
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: `Test with ID ${testId} not found` },
-            { status: 404 }
+            { error: `Test with ID ${testId} not found` ,},
+            { status: 404 },
           );
         }
       }
@@ -279,7 +279,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Insert workflow-test mappings if applicable
-      \1 {\n  \2{
+       {\n  {
         for (const testId of body.applicable_test_ids) {
           await DB.query(
             "INSERT INTO lab_test_workflow_mappings (workflow_id, test_id) VALUES (?, ?)",
@@ -299,7 +299,7 @@ export const _POST = async (request: NextRequest) => {
       const workflowFetchResult = await DB.query(fetchWorkflowQuery, [workflowId]);
       const workflow = workflowFetchResult.results?.[0];
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error("Failed to retrieve created workflow");
       }
 
@@ -334,22 +334,22 @@ export const _POST = async (request: NextRequest) => {
       const completeWorkflow = {
         ...workflow,
         steps,
-        applicable_tests: tests
+        applicable_tests: tests,
       };
 
       // Return the created workflow
-      return NextResponse.json(completeWorkflow, { status: 201 });
+      return NextResponse.json(completeWorkflow, { status: 201 ,});
     } catch (error) {
       // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to create test workflow", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create test workflow", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -357,14 +357,14 @@ export const _POST = async (request: NextRequest) => {
 // GET /api/diagnostics/lab/workflows/:id - Get a specific test workflow
 export const _GET_BY_ID = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const workflowId = params.id;
@@ -377,10 +377,10 @@ export const _GET_BY_ID = async (
     const workflowResult = await DB.query(fetchWorkflowQuery, [workflowId]);
     const workflow = workflowResult.results?.[0];
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Test workflow not found" },
-        { status: 404 }
+        { error: "Test workflow not found" ,},
+        { status: 404 },
       );
     }
 
@@ -415,17 +415,17 @@ export const _GET_BY_ID = async (
     const completeWorkflow = {
       ...workflow,
       steps,
-      applicable_tests: tests
+      applicable_tests: tests,
     };
 
     // Return the workflow
     return NextResponse.json(completeWorkflow);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to fetch test workflow", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch test workflow", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -433,19 +433,19 @@ export const _GET_BY_ID = async (
 // PUT /api/diagnostics/lab/workflows/:id - Update a test workflow
 export const _PUT = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const session = await getSession();
 
     // Check authentication and authorization
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can update test workflows
-    \1 {\n  \2 {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const workflowId = params.id;
@@ -456,10 +456,10 @@ export const _PUT = async (
       [workflowId]
     );
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Test workflow not found" },
-        { status: 404 }
+        { error: "Test workflow not found" ,},
+        { status: 404 },
       );
     }
 
@@ -467,30 +467,30 @@ export const _PUT = async (
     const body = await request.json() as Partial<TestWorkflowCreateBody>;
 
     // Validate step sequences if steps are provided
-    \1 {\n  \2{
+     {\n  {
       const sequences = body.steps.map(step => step.sequence);
       const uniqueSequences = new Set(sequences);
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "Step sequences must be unique" },
-          { status: 400 }
+          { error: "Step sequences must be unique" ,},
+          { status: 400 },
         );
       }
     }
 
     // Validate applicable tests if provided
-    \1 {\n  \2{
+     {\n  {
       for (const testId of body.applicable_test_ids) {
         const testCheckResult = await DB.query(
           "SELECT id FROM lab_tests WHERE id = ?",
           [testId]
         );
 
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: `Test with ID ${testId} not found` },
-            { status: 404 }
+            { error: `Test with ID ${testId} not found` ,},
+            { status: 404 },
           );
         }
       }
@@ -501,22 +501,22 @@ export const _PUT = async (
 
     try {
       // Update workflow
-      \1 {\n  \2{
+       {\n  {
         let updateQuery = "UPDATE lab_test_workflows SET ";
         const updateFields: string[] = [];
         const updateParameters: unknown[] = [];
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("name = ?");
           updateParameters.push(body.name);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("description = ?");
           updateParameters.push(body.description);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("is_active = ?");
           updateParameters.push(body.is_active ? 1 : 0);
         }
@@ -533,7 +533,7 @@ export const _PUT = async (
       }
 
       // Update workflow steps if provided
-      \1 {\n  \2{
+       {\n  {
         // Delete existing steps
         await DB.query(
           "DELETE FROM lab_test_workflow_steps WHERE workflow_id = ?",
@@ -541,7 +541,7 @@ export const _PUT = async (
         );
 
         // Insert new steps
-        \1 {\n  \2{
+         {\n  {
           for (const step of body.steps) {
             const insertStepQuery = `;
               INSERT INTO lab_test_workflow_steps (
@@ -564,14 +564,14 @@ export const _PUT = async (
           }
         } else {
           return NextResponse.json(
-            { error: "Workflow must include at least one step" },
-            { status: 400 }
+            { error: "Workflow must include at least one step" ,},
+            { status: 400 },
           );
         }
       }
 
       // Update workflow-test mappings if provided
-      \1 {\n  \2{
+       {\n  {
         // Delete existing mappings
         await DB.query(
           "DELETE FROM lab_test_workflow_mappings WHERE workflow_id = ?",
@@ -579,7 +579,7 @@ export const _PUT = async (
         );
 
         // Insert new mappings
-        \1 {\n  \2{
+         {\n  {
           for (const testId of body.applicable_test_ids) {
             await DB.query(
               "INSERT INTO lab_test_workflow_mappings (workflow_id, test_id) VALUES (?, ?)",
@@ -600,7 +600,7 @@ export const _PUT = async (
       const workflowResult = await DB.query(fetchWorkflowQuery, [workflowId]);
       const workflow = workflowResult.results?.[0];
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error("Failed to retrieve updated workflow");
       }
 
@@ -635,7 +635,7 @@ export const _PUT = async (
       const completeWorkflow = {
         ...workflow,
         steps,
-        applicable_tests: tests
+        applicable_tests: tests,
       };
 
       // Return the updated workflow
@@ -645,12 +645,12 @@ export const _PUT = async (
       await DB.query("ROLLBACK", []);
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to update test workflow", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update test workflow", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -658,19 +658,19 @@ export const _PUT = async (
 // DELETE /api/diagnostics/lab/workflows/:id - Delete a test workflow
 export const DELETE = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const session = await getSession();
 
     // Check authentication and authorization
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can delete test workflows
-    \1 {\n  \2 {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const workflowId = params.id;
@@ -681,10 +681,10 @@ export const DELETE = async (
       [workflowId]
     );
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Test workflow not found" },
-        { status: 404 }
+        { error: "Test workflow not found" ,},
+        { status: 404 },
       );
     }
 
@@ -694,7 +694,7 @@ export const DELETE = async (
       [workflowId]
     );
 
-    \1 {\n  \2{
+     {\n  {
       // Instead of deleting, mark as inactive
       await DB.query(
         "UPDATE lab_test_workflows SET is_active = 0 WHERE id = ?",
@@ -702,7 +702,7 @@ export const DELETE = async (
       );
 
       return NextResponse.json({
-        message: "Workflow is in use and cannot be deleted. It has been marked as inactive instead."
+        message: "Workflow is in use and cannot be deleted. It has been marked as inactive instead.",
       });
     }
 
@@ -732,18 +732,18 @@ export const DELETE = async (
       await DB.query("COMMIT", []);
 
       return NextResponse.json({
-        message: "Test workflow deleted successfully"
+        message: "Test workflow deleted successfully",
       });
     } catch (error) {
       // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to delete test workflow", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to delete test workflow", details: errorMessage ,},
+      { status: 500 },
     );
   }

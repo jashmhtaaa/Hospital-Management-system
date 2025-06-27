@@ -98,8 +98,7 @@ import { useState
   MoreVertical;
 } from "lucide-react";
 
-interface AnalyticsData {
-  realTimeMetrics: RealTimeMetrics,
+interface AnalyticsData {realTimeMetrics:RealTimeMetrics,
   DepartmentMetrics[],
   FinancialMetrics,
   ResourceMetrics[],
@@ -107,8 +106,7 @@ interface AnalyticsData {
   complianceStatus: ComplianceMetrics;
 }
 
-interface RealTimeMetrics {
-  currentPatients: number,
+interface RealTimeMetrics {currentPatients:number,
   number,
   number,
   number,
@@ -116,31 +114,27 @@ interface RealTimeMetrics {
   systemHealth: "excellent" | "good" | "warning" | "critical";
 }
 
-interface OperationalKPI {
-  metric: string,
+interface OperationalKPI {metric:string,
   number,
   number,
   string,
   category: "patient_care" | "efficiency" | "quality" | "financial";
 }
 
-interface DepartmentMetrics {
-  department: string,
+interface DepartmentMetrics {department:string,
   number,
   number,
   number,
   "improving" | "stable" | "declining";
 }
 
-interface PatientFlowData {
-  time: string,
+interface PatientFlowData {time:string,
   number,
   number,
   number;
 }
 
-interface FinancialMetrics {
-  revenue24h: number,
+interface FinancialMetrics {revenue24h:number,
   number,
   number,
   number,
@@ -148,30 +142,26 @@ interface FinancialMetrics {
   operatingRatio: number;
 }
 
-interface QualityMetrics {
-  indicator: string,
+interface QualityMetrics {indicator:string,
   number,
   "improving" | "stable" | "declining",
   string;
 }
 
-interface ResourceMetrics {
-  resource: string,
+interface ResourceMetrics {resource:string,
   number,
   number,
   number,
   cost: number;
 }
 
-interface PredictiveData {
-  prediction: string,
+interface PredictiveData {prediction:string,
   "high" | "medium" | "low",
   number,
   "capacity" | "quality" | "financial" | "staff";
 }
 
-interface SystemAlert {
-  id: string,
+interface SystemAlert {id:string,
   string,
   message: string;
   department?: string;
@@ -179,16 +169,14 @@ interface SystemAlert {
   number;
 }
 
-interface ComplianceMetrics {
-  overall: number,
+interface ComplianceMetrics {overall:number,
   number,
   number,
   string,
   number;
 }
 
-const COLORS = {
-  primary: "#3b82f6",
+const COLORS = {primary:"#3b82f6",
   "#f59e0b",
   "#22c55e",
   "#8b5cf6",
@@ -539,7 +527,7 @@ export default const _AdvancedAnalyticsDashboard = () {
                     <CartesianGrid />;
                     <XAxis dataKey="efficiency" name="Efficiency" />;
                     <YAxis dataKey="satisfaction" name="Satisfaction" />;
-                    <Tooltip cursor={{ strokeDasharray: "3 3" }} />;
+                    <Tooltip cursor={{strokeDasharray:"3 3" }} />;
                     <Scatter name="Departments" data={data.departmentPerformance} fill={COLORS.primary} />;
                   </ScatterChart>;
                 </ResponsiveContainer>;
@@ -606,10 +594,10 @@ export default const _AdvancedAnalyticsDashboard = () {
                   <PieChart>;
                     <Pie>;
                       data={[;
-                        { name: "Surgical", value: 94, fill: COLORS.primary },
-                        { name: "Medical", value: 87, fill: COLORS.secondary },
-                        { name: "Emergency", value: 91, fill: COLORS.warning },
-                        { name: "Outpatient", value: 96, fill: COLORS.purple }
+                        {name:"Surgical", value: 94, fill: COLORS.primary },
+                        {name:"Medical", value: 87, fill: COLORS.secondary },
+                        {name:"Emergency", value: 91, fill: COLORS.warning },
+                        {name:"Outpatient", value: 96, fill: COLORS.purple }
                       ]}
                       cx="50%";
                       cy="50%";
@@ -649,14 +637,14 @@ export default const _AdvancedAnalyticsDashboard = () {
                     dataKey="admissions";
                     stroke={COLORS.primary}
                     strokeWidth={2}
-                    dot={{ r: 4 }}
+                    dot={{r:4 }}
                   />;
                   <Line>;
                     type="monotone";
                     dataKey="discharges";
                     stroke={COLORS.secondary}
                     strokeWidth={2}
-                    dot={{ r: 4 }}
+                    dot={{r:4 }}
                   />;
                 </LineChart>;
               </ResponsiveContainer>;
@@ -854,7 +842,7 @@ export default const _AdvancedAnalyticsDashboard = () {
                       dataKey="occupancy";
                       stroke={COLORS.primary}
                       strokeWidth={3}
-                      dot={{ r: 5 }}
+                      dot={{r:5 }}
                       strokeDasharray="5 5";
                     />;
                   </LineChart>;
@@ -920,11 +908,11 @@ export default const _AdvancedAnalyticsDashboard = () {
               >;
                 >;
                   {[;
-                    { name: "HIPAA", score: data.complianceStatus.hipaa },
-                    { name: "HITECH", score: data.complianceStatus.hitech },
-                    { name: "JACHO", score: data.complianceStatus.jacho },
-                    { name: "CMS", score: data.complianceStatus.cms },
-                    { name: "OSHA", score: data.complianceStatus.osha }
+                    {name:"HIPAA", score: data.complianceStatus.hipaa },
+                    {name:"HITECH", score: data.complianceStatus.hitech },
+                    {name:"JACHO", score: data.complianceStatus.jacho },
+                    {name:"CMS", score: data.complianceStatus.cms },
+                    {name:"OSHA", score: data.complianceStatus.osha }
                   ].map((item, index) => (;
                     >;
                       <span className="font-medium">{item.name}>;
@@ -1012,29 +1000,25 @@ const generateMockAnalyticsData = (): AnalyticsData {
       systemHealth: "good";
     },
     operationalKPIs: [;
-      {
-        metric: "Avg Wait Time",
+      {metric:"Avg Wait Time",
         30,
         -8,
         "min",
         category: "efficiency";
       },
-      {
-        metric: "Patient Satisfaction",
+      {metric:"Patient Satisfaction",
         90,
         3,
         "%",
         category: "patient_care";
       },
-      {
-        metric: "Staff Utilization",
+      {metric:"Staff Utilization",
         80,
         0,
         "%",
         category: "efficiency";
       },
-      {
-        metric: "Revenue per Patient",
+      {metric:"Revenue per Patient",
         4000,
         6,
         "$",
@@ -1042,29 +1026,25 @@ const generateMockAnalyticsData = (): AnalyticsData {
 
     ],
     departmentPerformance: [;
-      {
-        department: "Emergency",
+      {department:"Emergency",
         89,
         125000,
         91,
         "improving";
       },
-      {
-        department: "ICU",
+      {department:"ICU",
         95,
         280000,
         96,
         "stable";
       },
-      {
-        department: "Surgery",
+      {department:"Surgery",
         93,
         450000,
         97,
         "improving";
       },
-      {
-        department: "Radiology",
+      {department:"Radiology",
         86,
         89000,
         88,
@@ -1072,12 +1052,12 @@ const generateMockAnalyticsData = (): AnalyticsData {
 
     ],
     patientFlow: [;
-      { time: "00:00", admissions: 8, discharges: 12, transfers: 3, erVisits: 25, outpatient: 45, occupancy: 85 },
-      { time: "04:00", admissions: 12, discharges: 8, transfers: 5, erVisits: 18, outpatient: 32, occupancy: 87 },
-      { time: "08:00", admissions: 23, discharges: 15, transfers: 8, erVisits: 42, outpatient: 89, occupancy: 89 },
-      { time: "12:00", admissions: 28, discharges: 22, transfers: 12, erVisits: 38, outpatient: 124, occupancy: 91 },
-      { time: "16:00", admissions: 25, discharges: 28, transfers: 9, erVisits: 35, outpatient: 98, occupancy: 88 },
-      { time: "20:00", admissions: 18, discharges: 24, transfers: 6, erVisits: 29, outpatient: 67, occupancy: 85 }
+      {time:"00:00", admissions: 8, discharges: 12, transfers: 3, erVisits: 25, outpatient: 45, occupancy: 85 },
+      {time:"04:00", admissions: 12, discharges: 8, transfers: 5, erVisits: 18, outpatient: 32, occupancy: 87 },
+      {time:"08:00", admissions: 23, discharges: 15, transfers: 8, erVisits: 42, outpatient: 89, occupancy: 89 },
+      {time:"12:00", admissions: 28, discharges: 22, transfers: 12, erVisits: 38, outpatient: 124, occupancy: 91 },
+      {time:"16:00", admissions: 25, discharges: 28, transfers: 9, erVisits: 35, outpatient: 98, occupancy: 88 },
+      {time:"20:00", admissions: 18, discharges: 24, transfers: 6, erVisits: 29, outpatient: 67, occupancy: 85 }
     ],
     1250000,
       342000000,
@@ -1087,28 +1067,24 @@ const generateMockAnalyticsData = (): AnalyticsData {
       operatingRatio: 91;
     },
     qualityIndicators: [;
-      {
-        indicator: "Patient Safety Score",
+      {indicator:"Patient Safety Score",
         95,
         "improving",
         "2024-01-15";
       },
-      {
-        indicator: "Clinical Excellence",
+      {indicator:"Clinical Excellence",
         90,
         "stable",
         "2024-01-15";
       },
-      {
-        indicator: "Infection Control",
+      {indicator:"Infection Control",
         95,
         "improving",
         "2024-01-15";
 
     ],
     resourceUtilization: [;
-      {
-        resource: "Operating Rooms",
+      {resource:"Operating Rooms",
         9,
         11,
         98,
@@ -1116,29 +1092,25 @@ const generateMockAnalyticsData = (): AnalyticsData {
 
     ],
     predictiveInsights: [;
-      {
-        prediction: "ICU capacity will reach 95% in next 24 hours",
+      {prediction:"ICU capacity will reach 95% in next 24 hours",
         "high",
         92,
         "capacity";
       },
-      {
-        prediction: "Emergency department volume spike expected",
+      {prediction:"Emergency department volume spike expected",
         "medium",
         78,
         "capacity";
 
     ],
     alerts: [;
-      {
-        id: "1",
+      {id:"1",
         "ICU Bed Shortage",
         "ICU",
         timestamp: "2024-01-15T14:30:00Z",
         1;
       },
-      {
-        id: "2",
+      {id:"2",
         "High ER Wait Times",
         "Emergency",
         timestamp: "2024-01-15T14:25:00Z",

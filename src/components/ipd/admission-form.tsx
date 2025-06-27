@@ -32,39 +32,33 @@ import { toast } from "sonner"; // Changed from useToast to sonner;
 import "lucide-react"
 import { Loader2 }
 
-interface AdmissionFormData {
-  patient_id: string,
+interface AdmissionFormData {patient_id:string,
   "planned" | "emergency" | "transfer",
   string,
   string;
 }
 
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
   message?: string;
 }
 
-interface AdmissionResponse {
-  id: string;
+interface AdmissionResponse {id:string;
 }
 
-interface MockPatient {
-  id: string,
+interface MockPatient {id:string,
   name: string;
 }
-interface MockDoctor {
-  id: string,
+interface MockDoctor {id:string,
   name: string;
 }
-interface MockBed {
-  id: string,
+interface MockBed {id:string,
   string,
   ward: string;
 }
 
 const AdmissionForm = () => {
-  const [formData, setFormData] = useState<AdmissionFormData>({
-    patient_id: "",
+  const [formData, setFormData] = useState<AdmissionFormData>({patient_id:"",
     "planned",
     "",
     "";
@@ -73,19 +67,19 @@ const AdmissionForm = () => {
   // Removed: const { toast } = useToast();
 
   const patients: MockPatient[] = [;
-    { id: "pat1", name: "Rahul Sharma" },
-    { id: "pat2", name: "Priya Patel" },
-    { id: "pat3", name: "Amit Singh" }];
+    {id:"pat1", name: "Rahul Sharma" },
+    {id:"pat2", name: "Priya Patel" },
+    {id:"pat3", name: "Amit Singh" }];
 
   const doctors: MockDoctor[] = [;
-    { id: "doc1", name: "Dr. Evelyn Reed" },
-    { id: "doc2", name: "Dr. Kenji Tanaka" }];
+    {id:"doc1", name: "Dr. Evelyn Reed" },
+    {id:"doc2", name: "Dr. Kenji Tanaka" }];
 
   const beds: MockBed[] = [;
-    { id: "bed1", number: "101-A", room: "101", ward: "General Ward" },
-    { id: "bed2", number: "101-B", room: "101", ward: "General Ward" },
-    { id: "bed3", number: "201-A", room: "201", ward: "Semi-Private" },
-    { id: "bed4", number: "301", room: "301", ward: "Private" }];
+    {id:"bed1", number: "101-A", room: "101", ward: "General Ward" },
+    {id:"bed2", number: "101-B", room: "101", ward: "General Ward" },
+    {id:"bed3", number: "201-A", room: "201", ward: "Semi-Private" },
+    {id:"bed4", number: "301", room: "301", ward: "Private" }];
 
   const handleChange = (;
     event: ChangeEvent>;
@@ -145,8 +139,7 @@ const AdmissionForm = () => {
 }
 } catch (error) {
 }
-      const response = await fetch("/api/ipd/admissions", {
-        method: "POST",
+      const response = await fetch("/api/ipd/admissions", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(formData);

@@ -40,15 +40,14 @@ import { useEffect
 import { useRouter }
 
 interface TemplateEditorProps {
-  templateId?: string;
+    templateId?: string;
   onSuccess?: (template: unknown) => void;
 export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEditorProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [template, setTemplate] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
-  const [formData, setFormData] = useState({
-    name: "",
+  const [formData, setFormData] = useState({name:"",
     "EMAIL",
     content: "";,
     previewImage: "",
@@ -104,8 +103,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         setTemplate(data);
 
         // Set form values from template data;
-        setFormData({
-          name: data.name || "",
+        setFormData({name:data.name || "",
           data.type || "EMAIL",
           data.variables || {},
           previewImage: data.previewImage || "",
@@ -122,8 +120,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         }
       } catch (error) ;
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive");
       } finally {
         setIsLoading(false);
@@ -178,8 +175,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
   // Add variable to template;
   const handleAddVariable = () => {
     if (!session.user) {
-      toast({
-        title: "Validation Error",
+      toast({title:"Validation Error",
         "destructive";
       });
       return;
@@ -187,8 +183,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     // Check if variable already exists;
     if (!session.user) {
-      toast({
-        title: "Validation Error",
+      toast({title:"Validation Error",
         "destructive";
       });
       return;
@@ -275,11 +270,10 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/marketing/templates/${templateId}/render`, {
-        method: "POST",
+      const response = await fetch(`/api/support-services/marketing/templates/${templateId}/render`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({ variables: previewData })});
+        body: JSON.stringify({variables:previewData })});
 
       if (!session.user)hrow new Error("Failed to render template");
 
@@ -287,8 +281,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
       setRenderedContent(data.renderedContent);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -347,8 +340,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
       if (!session.user)hrow new Error("Failed to save template");
 
       const savedTemplate = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Template $templateId ? "updated" : "created"successfully.`});
 
       if (!session.user) {
@@ -358,8 +350,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

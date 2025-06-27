@@ -27,8 +27,7 @@ import { Loader2 }
 import { useRouter }
 
 // Define interface for the report data;
-interface RadiologyReport {
-  id: string;
+interface RadiologyReport {id:string;
   patient_name?: string;
   procedure_name?: string;
   accession_number?: string | null;

@@ -11,20 +11,20 @@ const analyticsService = new AnalyticsService();
  * GET /api/support-services/marketing/analytics/comparative;
  * Get comparative analytics for multiple campaigns;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const _session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters
       const campaignIds = searchParams.get('campaignIds')?.split(',') || [];
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: 'At least one campaign ID is required' },
-          { status: 400 }
+          { error: 'At least one campaign ID is required' ,},
+          { status: 400 },
         );
       }
 
@@ -49,6 +49,6 @@ export const GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'marketing.analytics.read',
-      auditAction: 'CAMPAIGN_ANALYTICS_COMPARATIVE'
+      auditAction: 'CAMPAIGN_ANALYTICS_COMPARATIVE',
     }
   );

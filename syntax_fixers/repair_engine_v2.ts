@@ -19,14 +19,14 @@ try {
     const project = new Project({
         tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
         skipAddingFilesFromTsConfig: false,
-        skipFileDependencyResolution: false
+        skipFileDependencyResolution: false,
     });
 
     // Register typed repair functions
     const repairStrategies: Record<string, RepairStrategy> = {
         // Fix malformed imports
-        fixImports: (file: SourceFile) => {
-            file.getImportDeclarations().forEach((imp: ImportDeclaration) => {
+        fixImports: (file: SourceFile) => {,
+            file.getImportDeclarations().forEach((imp: ImportDeclaration) => {,
                 const text = imp.getText();
                 if (text.includes('import') && text.includes('}') && !text.includes('from')) {
                     const fixedText = text
@@ -38,8 +38,8 @@ try {
         },
         
         // Fix malformed exports
-        fixExports: (file: SourceFile) => {
-            file.getExportDeclarations().forEach((exp: ExportDeclaration) => {
+        fixExports: (file: SourceFile) => {,
+            file.getExportDeclarations().forEach((exp: ExportDeclaration) => {,
                 const text = exp.getText();
                 if (text.includes('export') && text.includes('}') && !text.includes('from')) {
                     const fixedText = text
@@ -52,7 +52,7 @@ try {
     };
 
     // Process files with enhanced error handling
-    project.getSourceFiles().forEach((file: SourceFile) => {
+    project.getSourceFiles().forEach((file: SourceFile) => {,
         const filePath = file.getFilePath();
         
         // Skip excluded files

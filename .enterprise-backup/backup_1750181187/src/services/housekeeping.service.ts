@@ -6,7 +6,7 @@ export enum HousekeepingTaskStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
-\1\n\nexport \2 HousekeepingTaskPriority {
+\n\nexport  HousekeepingTaskPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
@@ -22,11 +22,11 @@ export const createHousekeepingTaskSchema = z.object({
   status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING),
   priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM),
   requestedAt: z.date().default(() => new Date()),  completedAt: z.date().optional().nullable(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial().extend({
-  id: z.string()
+  id: z.string(),
 });
 
 export type CreateHousekeepingTaskInput = z.infer<typeof createHousekeepingTaskSchema>;
@@ -38,14 +38,14 @@ import { prisma } from '../lib/prisma';
 /**
  * Service class for managing housekeeping tasks;
  */
-\1
+
 }
       });
 
       return task;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -63,34 +63,34 @@ import { prisma } from '../lib/prisma';
     assignedToId?: string;
   }) {
     try {
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+         {\n  {
           where.priority = filters.priority;
         }
-        \1 {\n  \2{
-          where.location = { contains: filters.location };
+         {\n  {
+          where.location = { contains: filters.location ,};
         }
-        \1 {\n  \2{
+         {\n  {
           where.assignedToId = filters.assignedToId;
         }
       }
 
       const tasks = await prisma.housekeepingTask.findMany({
         where,
-        orderBy: [
-          { priority: 'desc' },
-          { requestedAt: 'asc' },
+        orderBy: [,
+          { priority: 'desc' ,},
+          { requestedAt: 'asc' ,},
         ],
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -107,15 +107,15 @@ import { prisma } from '../lib/prisma';
    * @param id Task ID;
    * @returns The task or null if not found;
    */
-  async getTaskById(id: string) {
+  async getTaskById(id: string) {,
     try {
       const task = await prisma.housekeepingTask.findUnique({
-        where: { id },
-        include: {
-          assignedTo: {
-            select: {
+        where: { id ,},
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -133,7 +133,7 @@ import { prisma } from '../lib/prisma';
    * @param data Updated task data;
    * @returns The updated task;
    */
-  async updateTask(id: string, data: UpdateHousekeepingTaskInput) {
+  async updateTask(id: string, data: UpdateHousekeepingTaskInput) {,
     try {
       // Validate input data
       const validatedData = updateHousekeepingTaskSchema.parse({ ...data, id });
@@ -143,13 +143,13 @@ import { prisma } from '../lib/prisma';
 
       // Update the task
       const task = await prisma.housekeepingTask.update({
-        where: { id },
+        where: { id ,},
         data: updateData,
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -157,8 +157,8 @@ import { prisma } from '../lib/prisma';
 
       return task;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -169,10 +169,10 @@ import { prisma } from '../lib/prisma';
    * @param id Task ID;
    * @returns The deleted task;
    */
-  async deleteTask(id: string) {
+  async deleteTask(id: string) {,
     try {
       const task = await prisma.housekeepingTask.delete({
-        where: { id },
+        where: { id ,},
       });
 
       return task;
@@ -187,19 +187,19 @@ import { prisma } from '../lib/prisma';
    * @param userId User ID;
    * @returns The updated task;
    */
-  async assignTask(taskId: string, userId: string) {
+  async assignTask(taskId: string, userId: string) {,
     try {
       const task = await prisma.housekeepingTask.update({
-        where: { id: taskId },
-        data: {
+        where: { id: taskId ,},
+        data: {,
           assignedToId: userId,
-          status: HousekeepingTaskStatus.IN_PROGRESS
+          status: HousekeepingTaskStatus.IN_PROGRESS,
         },
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -216,19 +216,19 @@ import { prisma } from '../lib/prisma';
    * @param taskId Task ID;
    * @returns The updated task;
    */
-  async completeTask(taskId: string) {
+  async completeTask(taskId: string) {,
     try {
       const task = await prisma.housekeepingTask.update({
-        where: { id: taskId },
-        data: {
+        where: { id: taskId ,},
+        data: {,
           status: HousekeepingTaskStatus.COMPLETED,
-          completedAt: new Date()
+          completedAt: new Date(),
         },
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -245,18 +245,18 @@ import { prisma } from '../lib/prisma';
    * @param taskId Task ID;
    * @returns The updated task;
    */
-  async cancelTask(taskId: string) {
+  async cancelTask(taskId: string) {,
     try {
       const task = await prisma.housekeepingTask.update({
-        where: { id: taskId },
-        data: {
-          status: HousekeepingTaskStatus.CANCELLED
+        where: { id: taskId ,},
+        data: {,
+          status: HousekeepingTaskStatus.CANCELLED,
         },
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },

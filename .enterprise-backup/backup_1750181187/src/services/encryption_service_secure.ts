@@ -6,7 +6,7 @@ import * as crypto from 'crypto';
  * Compliant with HIPAA requirements for PHI protection
  */
 
-\1
+
 }
 }
 
@@ -14,14 +14,14 @@ interface EncryptedData {
   encrypted: string,
   iv: string,  tag: string,
   version: string,  algorithm: string,
-  timestamp: number
-\1
+  timestamp: number,
+
 }
       }
     } else {
       // Generate new master key for development/testing only
       this.masterKey = crypto.randomBytes(this.keyLength)
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       /* SECURITY: Console statement removed */: $this.masterKey.toString('base64')`);
     }
 
@@ -32,8 +32,8 @@ interface EncryptedData {
   /**
    * Derives encryption key from master key and context
    */
-  private deriveKey(context: string = 'default'): Buffer {
-    \1 {\n  \2 {
+  private deriveKey(context: string = 'default'): Buffer {,
+     {\n   {
       return this.keyCache.get(context)!
     }
 
@@ -48,9 +48,9 @@ interface EncryptedData {
   /**
    * Encrypts text using AES-256-GCM
    */
-  async encrypt(text: string, context: string = 'default'): Promise<string> {
-    \1 {\n  \2{
-      throw new Error('Invalid input: text must be a non-empty string')
+  async encrypt(text: string, context: string = 'default'): Promise<string> {,
+     {\n  {
+      throw new Error('Invalid input: text must be a non-empty string'),
     }
 
     try {
@@ -64,12 +64,12 @@ interface EncryptedData {
 
       const tag = cipher.getAuthTag();
 
-      const encryptedData: EncryptedData = {
+      const encryptedData: EncryptedData = {,
         encrypted,
         iv: iv.toString('hex'),
         tag: tag.toString('hex'),
         version: this.currentVersion,
-        algorithm: this.algorithm,        timestamp: crypto.getRandomValues(new Uint32Array(1))[0]
+        algorithm: this.algorithm,        timestamp: crypto.getRandomValues(new Uint32Array(1))[0],
       };
 
       return Buffer.from(JSON.stringify(encryptedData)).toString('base64');
@@ -81,23 +81,23 @@ interface EncryptedData {
   /**
    * Decrypts text using AES-256-GCM
    */
-  async decrypt(encryptedText: string, context: string = 'default'): Promise<string> {
-    \1 {\n  \2{
-      throw new Error('Invalid input: encryptedText must be a non-empty string')
+  async decrypt(encryptedText: string, context: string = 'default'): Promise<string> {,
+     {\n  {
+      throw new Error('Invalid input: encryptedText must be a non-empty string'),
     }
 
     try {
       // Handle legacy placeholder format
-      \1 {\n  \2 {
-        /* SECURITY: Console statement removed */return encryptedText.substring('encrypted_placeholder_'.length)
+       {\n   {
+        /* SECURITY: Console statement removed */return encryptedText.substring('encrypted_placeholder_'.length),
       }
 
-      const encryptedData: EncryptedData = JSON.parse(
+      const encryptedData: EncryptedData = JSON.parse(,
         Buffer.from(encryptedText, 'base64').toString('utf8')
       );
 
       // Validate data structure
-      \1 {\n  \2 {
+       {\n   {
         throw new Error('Invalid encrypted data structure')
       }
 
@@ -123,7 +123,7 @@ interface EncryptedData {
     const result = { ...obj };
 
     for (const field of fields) {
-      \1 {\n  \2{
+       {\n  {
         const fieldValue = typeof result[field] === 'string'
           ? result[field]
           : JSON.stringify(result[field]),
@@ -141,7 +141,7 @@ interface EncryptedData {
     const result = { ...obj };
 
     for (const field of fields) {
-      \1 {\n  \2{
+       {\n  {
         try {
           result[field] = await this.decrypt(result[field], field);
           // Try to parse as JSON if it was originally an object
@@ -151,7 +151,7 @@ interface EncryptedData {
             // Keep as string if not valid JSON
           }
         } catch (error) {
-          /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails
+          /* SECURITY: Console statement removed */// Keep encrypted value if decryption fails,
         }
       }
     }
@@ -162,7 +162,7 @@ interface EncryptedData {
   /**
    * Validates encrypted data structure
    */
-  private validateEncryptedData(data: unknown): data is EncryptedData {
+  private validateEncryptedData(data: unknown): data is EncryptedData {,
     return (
       typeof data === 'object' &&
       typeof data.encrypted === 'string' &&
@@ -177,9 +177,9 @@ interface EncryptedData {
   /**
    * Validates integrity of encrypted text
    */
-  validateIntegrity(encryptedText: string): boolean {
+  validateIntegrity(encryptedText: string): boolean {,
     try {
-      const encryptedData: EncryptedData = JSON.parse(
+      const encryptedData: EncryptedData = JSON.parse(,
         Buffer.from(encryptedText, 'base64').toString('utf8')
       );
       return this.validateEncryptedData(encryptedData);
@@ -192,15 +192,15 @@ interface EncryptedData {
    * Rotates encryption keys
    */
   async rotateKeys(): Promise<void> {
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */,
     this.keyCache.clear();
 
-    // In production, this would involve: // 1. Generating new master key
+    // In production, this would involve: // 1. Generating new master key,
     // 2. Re-encrypting all data with new key
     // 3. Updating key storage systems
     // 4. Notifying key management systems
 
-    /* SECURITY: Console statement removed */}
+    /* SECURITY: Console statement removed */},
 
   /**
    * Initializes automatic key rotation
@@ -214,7 +214,7 @@ interface EncryptedData {
       try {
         await this.rotateKeys()
       } catch (error) {
-        /* SECURITY: Console statement removed */
+        /* SECURITY: Console statement removed */,
       }
     }, rotationInterval);
   }
@@ -223,7 +223,7 @@ interface EncryptedData {
    * Cleanup resources
    */
   destroy(): void {
-    \1 {\n  \2{
+     {\n  {
       clearInterval(this.keyRotationInterval);
       this.keyRotationInterval = null;
     }
@@ -233,10 +233,10 @@ interface EncryptedData {
 }
 
 // Singleton instance for application use
-let encryptionServiceInstance: SecureEncryptionService | null = null
+let encryptionServiceInstance: SecureEncryptionService | null = null,
 
 export const _getEncryptionService = (): SecureEncryptionService => {
-  \1 {\n  \2{
+   {\n  {
     encryptionServiceInstance = new SecureEncryptionService();
   }
   return encryptionServiceInstance

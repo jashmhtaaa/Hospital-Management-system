@@ -40,7 +40,7 @@ const updateDietaryRequestSchema = z.object({
 });
 
 // GET /api/support-services/dietary/requests;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -67,7 +67,7 @@ export const _GET = async (request: any) => {
 }
 
 // POST /api/support-services/dietary/requests;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -81,7 +81,7 @@ export const _POST = async (request: any) => {
       // Create dietary request;
       const result = await dietaryService.createDietaryRequest(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       requiredPermission: "dietary:create",
@@ -91,7 +91,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/dietary/requests/:id;
-export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -109,7 +109,7 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
 }
 
 // PATCH /api/support-services/dietary/requests/:id;
-export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -133,14 +133,14 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
 }
 
 // DELETE /api/support-services/dietary/requests/:id;
-export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
       // Delete dietary request;
       await dietaryService.deleteDietaryRequest(params.id);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true ,});
     },
     {
       requiredPermission: "dietary:delete",
@@ -150,7 +150,7 @@ export const _DELETE = async (request: any, { params }: { params: { id: string }
 }
 
 // POST /api/support-services/dietary/requests/:id/prepare;
-export const _PREPARE = async (request: any, { params }: { params: { id: string } }) => {
+export const _PREPARE = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -159,7 +159,7 @@ export const _PREPARE = async (request: any, { params }: { params: { id: string 
       const { staffId, notes } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Staff ID is required" }, { status: 400 });
+        return NextResponse.json({ error: "Staff ID is required" ,}, { status: 400 ,});
       }
 
       // Mark dietary request as preparing;
@@ -179,7 +179,7 @@ export const _PREPARE = async (request: any, { params }: { params: { id: string 
 }
 
 // POST /api/support-services/dietary/requests/:id/deliver;
-export const _DELIVER = async (request: any, { params }: { params: { id: string } }) => {
+export const _DELIVER = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -188,7 +188,7 @@ export const _DELIVER = async (request: any, { params }: { params: { id: string 
       const { staffId, notes } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Staff ID is required" }, { status: 400 });
+        return NextResponse.json({ error: "Staff ID is required" ,}, { status: 400 ,});
       }
 
       // Mark dietary request as delivered;
@@ -208,7 +208,7 @@ export const _DELIVER = async (request: any, { params }: { params: { id: string 
 }
 
 // GET /api/support-services/dietary/menus;
-export const _GET_MENUS = async (request: any) => {
+export const _GET_MENUS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -233,7 +233,7 @@ export const _GET_MENUS = async (request: any) => {
 }
 
 // GET /api/support-services/dietary/analytics;
-export const _GET_ANALYTICS = async (request: any) => {
+export const _GET_ANALYTICS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {

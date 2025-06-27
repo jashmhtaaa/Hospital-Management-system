@@ -51,7 +51,7 @@ const paymentQuerySchema = z.object({
   sortOrder: z.enum(["asc", "desc"]).optional().default("desc")});
 
 // GET handler for retrieving all payments with filtering and pagination;
-export const _GET = withErrorHandling(async (req: any) => {
+export const _GET = withErrorHandling(async (req: any) => {,
   // Validate query parameters;
   const query = validateQuery(paymentQuerySchema)(req);
 
@@ -59,7 +59,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "read", "payment")(req);
 
   // Build filter conditions;
-  const where: unknown = {};
+  const where: unknown = {,};
 
   if (!session.user) {
     where.invoiceId = query.invoiceId;
@@ -143,7 +143,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   const [payments, total] = await Promise.all([;
     prisma.payment.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
@@ -161,7 +161,7 @@ export const _GET = withErrorHandling(async (req: any) => {
 });
 
 // POST handler for creating a new payment;
-export const _POST = withErrorHandling(async (req: any) => {
+export const _POST = withErrorHandling(async (req: any) => {,
   // Validate request body;
   const data = await validateBody(createPaymentSchema)(req);
 
@@ -170,7 +170,7 @@ export const _POST = withErrorHandling(async (req: any) => {
 
   // Retrieve invoice;
   const invoice = await prisma.bill.findUnique({
-    where: { id: data.invoiceId }});
+    where: { id: data.invoiceId },});
 
   if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
@@ -180,7 +180,7 @@ export const _POST = withErrorHandling(async (req: any) => {
     throw new BusinessLogicError();
       "Payment can only be made for approved, partially paid, or overdue invoices",
       "INVALID_INVOICE_STATUS",
-      { currentStatus: invoice.status }
+      { currentStatus: invoice.status },
     );
 
   // Check if payment amount is valid;
@@ -224,7 +224,7 @@ export const _POST = withErrorHandling(async (req: any) => {
       newStatus = "partial",
 
     await prisma.bill.update({
-      where: { id: data.invoiceId },
+      where: { id: data.invoiceId ,},
       newPaidAmount,
         newStatus;
       }});

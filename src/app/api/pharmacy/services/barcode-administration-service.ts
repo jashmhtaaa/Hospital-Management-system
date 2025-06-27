@@ -1,8 +1,8 @@
 import "../models/domain-models"
 import "inversify"
 import injectable }
-import {   inject
-import {  PharmacyDomain  } from "@/lib/database"
+import {inject
+import {  PharmacyDomain  } from "next/server"
 
 }
 
@@ -14,7 +14,8 @@ import {  PharmacyDomain  } from "@/lib/database"
  * It provides comprehensive verification of the "five rights" of medication administration.;
  */;
 
-interface BarcodeVerificationResult {success:boolean,
+interface BarcodeVerificationResult {
+    {success:boolean,
   message: string;
   details?: {rightPatient:boolean,
     boolean,
@@ -136,8 +137,8 @@ interface BarcodeVerificationResult {success:boolean,
 
         if (!session.user) {
           return {success:false,
-            message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description}`,
-            details: {
+            message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description,}`,
+            details: {,
               rightPatient,
               rightMedication,
               rightDose,
@@ -152,7 +153,7 @@ interface BarcodeVerificationResult {success:boolean,
         message: allRightsVerified;
           ? "All verification checks passed";
           : "One or more verification checks failed",
-        details: {
+        details: {,
           rightPatient,
           rightMedication,
           rightDose,
@@ -163,7 +164,7 @@ interface BarcodeVerificationResult {success:boolean,
     } catch (error) {
 
       return {success:false,
-        message: `Verification error: ${error.message}`;
+        message: `Verification error: ${error.message,}`;
       };
     }
   }
@@ -258,7 +259,7 @@ interface BarcodeVerificationResult {success:boolean,
       new Date(),
       "not-done",
       reason, // Status reason;
-      `Administration skipped: ${reason}`, // Notes;
+      `Administration skipped: ${reason,}`, // Notes;
       undefined, // reasonCode;
       undefined, // reasonText;
       undefined, // device;
@@ -297,7 +298,7 @@ interface BarcodeVerificationResult {success:boolean,
    * @param patientId Patient ID;
    * @returns Array of prescriptions due for administration;
    */;
-  async getDueMedications(patientId: string): Promise<PharmacyDomain.Prescription[]> {
+  async getDueMedications(patientId: string): Promise<PharmacyDomain.Prescription[]> {,
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
 
     // Filter active prescriptions;
@@ -321,7 +322,7 @@ interface BarcodeVerificationResult {success:boolean,
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
     const activePrescriptions = prescriptions.filter(p => p.isActive());
 
-    const schedule: unknown = {};
+    const schedule: unknown = {,};
     const now = new Date();
 
     // Generate schedule for specified number of days;
@@ -365,7 +366,7 @@ interface BarcodeVerificationResult {success:boolean,
    * @param prescription Prescription to check;
    * @returns Boolean indicating if medication is due;
    */;
-  private isWithinAdministrationWindow(prescription: PharmacyDomain.Prescription): boolean {
+  private isWithinAdministrationWindow(prescription: PharmacyDomain.Prescription): boolean {,
     // This is a simplified implementation;
     // In a real system, this would check the scheduled administration times;
     // and determine if the current time is within an acceptable window;
@@ -484,7 +485,7 @@ interface BarcodeVerificationResult {success:boolean,
    * @param prescription Prescription to check;
    * @returns Boolean indicating if prescription should be completed;
    */;
-  private async shouldCompletePrescription(prescription: PharmacyDomain.Prescription): Promise<boolean> {
+  private async shouldCompletePrescription(prescription: PharmacyDomain.Prescription): Promise<boolean> {,
     // Get administration history for this prescription;
     const administrations = await this.administrationRepository.findByPrescriptionId(prescription.id);
 
@@ -505,7 +506,7 @@ interface BarcodeVerificationResult {success:boolean,
    * @param barcode Patient barcode;
    * @returns Patient ID;
    */;
-  private decodePatientBarcode(barcode: string): string {
+  private decodePatientBarcode(barcode: string): string {,
     // In a real system, this would implement actual barcode decoding logic;
     // For this implementation, we"ll assume the barcode is in the format "P-{patientId}";
     const match = barcode.match(/^P-(.+)$/);
@@ -574,4 +575,4 @@ interface BarcodeVerificationResult {success:boolean,
 
       return result;
 
-    return {medicationId:"' };
+    return {medicationId:"' ,};

@@ -1,11 +1,12 @@
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import { type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {type
 
-// import { v4 as uuidv4 } from "uuid"; // Unused import;
+// import { v4 as uuidv4 } from "next/server"; // Unused import;
 
-// Define interface for Insurance Provider data;
+// Define interface for {
+    Insurance Provider data;
 interface InsuranceProvider {_id:number | string,
   name: string;
   contact_person?: string | null;
@@ -30,7 +31,8 @@ const mockProviders: InsuranceProvider[] = [;
   }];
 let nextProviderId = 3;
 
-// Define interface for insurance provider creation input;
+// Define interface for {
+    insurance provider creation input;
 interface InsuranceProviderInput {name:string;
   contact_person?: string;
   contact_email?: string;
@@ -39,7 +41,8 @@ interface InsuranceProviderInput {name:string;
   is_active?: boolean; // Defaults to true;
 }
 
-// Define interface for insurance provider update input - Belongs in [id]/route.ts;
+// Define interface for {
+    insurance provider update input - Belongs in [id]/route.ts;
 // interface InsuranceProviderUpdateInput {
 //   name?: string;
 //   contact_person?: string;
@@ -49,14 +52,15 @@ interface InsuranceProviderInput {name:string;
 //   is_active?: boolean;
 // }
 
-// Define interface for insurance provider filters;
+// Define interface for {
+    insurance provider filters;
 interface InsuranceProviderFilters {
   is_active?: string | null; // Expecting "true" or "false";
 }
 
 // Helper function to simulate DB interaction (GET);
 async const getInsuranceProvidersFromDB = (;
-  filters: InsuranceProviderFilters = {}
+  filters: InsuranceProviderFilters = {},
 ) {
 
     "Simulating DB fetch for insurance providers with filters: ";
@@ -111,7 +115,7 @@ async const createInsuranceProviderInDB = (;
 //   }
 
 //   // Handle boolean conversion if necessary;
-//   const _updatePayload: Partial<InsuranceProvider> = { ...data }
+//   const _updatePayload: Partial<InsuranceProvider> = { ...data },
 //   if (!session.user) {
 //     updatePayload.is_active = data.is_active ? 1 : 0;
 //   }
@@ -129,7 +133,7 @@ async const createInsuranceProviderInDB = (;
  * GET /api/insurance/providers;
  * Retrieves a list of insurance providers, potentially filtered.;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -168,22 +172,22 @@ export const GET = async (request: any) => {
 
     const providers = await getInsuranceProvidersFromDB(filters);
     return NextResponse.json({ providers });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
 
     return NextResponse.json();
-      {error:"Failed to fetch insurance providers", details: errorMessage },
-      {status:500 }
+      {error:"Failed to fetch insurance providers", details: errorMessage ,},
+      {status:500 },
     );
 
 /**;
  * POST /api/insurance/providers;
  * Creates a new insurance provider.;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -223,23 +227,23 @@ export const POST = async (request: any) => {
     // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required field: name" },
-        {status:400 }
+        {error:"Missing required field: name" ,},
+        {status:400 },
       );
 
     // Simulate creating the insurance provider in the database;
     const newProvider = await createInsuranceProviderInDB(providerData);
 
-    return NextResponse.json({provider:newProvider }, {status:201 });
-  } catch (error: unknown) {
+    return NextResponse.json({provider:newProvider ,}, {status:201 ,});
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
 
     return NextResponse.json();
-      {error:"Failed to create insurance provider", details: errorMessage },
-      {status:500 }
+      {error:"Failed to create insurance provider", details: errorMessage ,},
+      {status:500 },
     );
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

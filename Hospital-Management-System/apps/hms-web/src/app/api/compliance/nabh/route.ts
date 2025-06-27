@@ -37,47 +37,47 @@ const _JCI_STANDARDS = {
 };
 
 // GET /api/compliance/nabh/standards
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const { user } = await authService.verifyToken(request);
 
     if (!user || !['Admin', 'Quality Manager'].includes(user.role)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
     }
 
     const standards = await prisma.complianceStandard.findMany({
-      where: { type: 'NABH' },
-      include: {
+      where: { type: 'NABH' ,},
+      include: {,
         checklistItems: true,
-        assessments: {
-          orderBy: { createdAt: 'desc' },
-          take: 1
+        assessments: {,
+          orderBy: { createdAt: 'desc' ,},
+          take: 1,
         }
       }
     });
 
     return NextResponse.json({ standards });
   } catch (error) {
-    /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 }),
+    /* SECURITY: Console statement removed */,
+    return NextResponse.json({ error: 'Internal server error' ,}, { status: 500 ,}),
   }
 };
 
 // POST /api/compliance/nabh/assessment
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const { user } = await authService.verifyToken(request);
     const body = await request.json();
 
     if (!user || !['Admin', 'Quality Manager'].includes(user.role)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
     }
 
     const { standardId, assessmentData, notes } = body;
 
     // Create compliance assessment
     const assessment = await prisma.complianceAssessment.create({
-      data: {
+      data: {,
         standardId,
         assessorId: user.id,
         assessmentDate: new Date(),
@@ -87,7 +87,7 @@ export const _POST = async (request: NextRequest) => {
         recommendations: assessmentData.recommendations;
         notes,
         evidenceDocuments: assessmentData.evidenceDocuments || [],
-        correctiveActions: assessmentData.correctiveActions || []
+        correctiveActions: assessmentData.correctiveActions || [],
       }
     });
 
@@ -96,16 +96,16 @@ export const _POST = async (request: NextRequest) => {
 
     return NextResponse.json({ assessment });
   } catch (error) {
-    /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 }),
+    /* SECURITY: Console statement removed */,
+    return NextResponse.json({ error: 'Internal server error' ,}, { status: 500 ,}),
   }
 };
 
-async function updateDepartmentComplianceScore(standardId: string): unknown {
+async function updateDepartmentComplianceScore(standardId: string): unknown {,
   // Calculate overall compliance score based on assessments
   const assessments = await prisma.complianceAssessment.findMany({
-    where: { standardId },
-    orderBy: { createdAt: 'desc' }
+    where: { standardId ,},
+    orderBy: { createdAt: 'desc' },
   });
 
   if (assessments.length > 0) {
@@ -113,11 +113,11 @@ async function updateDepartmentComplianceScore(standardId: string): unknown {
     const averageScore = assessments.reduce((sum, assessment) => sum + assessment.score, 0) / assessments.length;
 
     await prisma.complianceStandard.update({
-      where: { id: standardId },
-      data: {
+      where: { id: standardId ,},
+      data: {,
         currentScore: averageScore,
         lastAssessmentDate: latestAssessment.assessmentDate;
-        status: averageScore >= 80 ? 'COMPLIANT' : averageScore >= 60 ? 'PARTIAL' : 'NON_COMPLIANT'
+        status: averageScore >= 80 ? 'COMPLIANT' : averageScore >= 60 ? 'PARTIAL' : 'NON_COMPLIANT',
       }
     });
   }

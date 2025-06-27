@@ -7,7 +7,7 @@ import { notifyUsers
 
 // Mock the database module;
 jest.mock("../database", () => ({
-	DB: jest.fn()}));
+	DB: jest.fn(),}));
 
 describe("Notifications Module", () => {
 	let mockQuery: jest.Mock;
@@ -23,7 +23,7 @@ describe("Notifications Module", () => {
 
 		(DB as jest.Mock).mockReturnValue({
 			query: mockQuery,
-			close: mockClose});
+			close: mockClose,});
 	});
 
 	describe("notifyUsers", () => {
@@ -36,13 +36,13 @@ describe("Notifications Module", () => {
 				message: "Your test results are now available",
 				resourceType: "LabResult",
 				resourceId: 123,
-				priority: "medium" as const};
+				priority: "medium" as const,};
 
 			// Mock DB response for each user;
 			mockQuery.mockImplementation(() => ({
 				insertId: 42,
 				affectedRows: 1,
-				results: []}));
+				results: [],}));
 
 			// Execute;
 			const result = await notifyUsers(userIds, notification);
@@ -72,7 +72,7 @@ describe("Notifications Module", () => {
 				title: "Test Results Available",
 				message: "Your test results are now available",
 				resourceType: "LabResult",
-				priority: "medium" as const};
+				priority: "medium" as const,};
 
 			// Mock DB error;
 			mockQuery.mockImplementation(() => {
@@ -96,7 +96,7 @@ describe("Notifications Module", () => {
 			// Mock DB response;
 			mockQuery.mockReturnValue({
 				affectedRows: 1,
-				results: []});
+				results: [],});
 
 			// Execute;
 			const result = await markNotificationRead(notificationId, userId);
@@ -116,7 +116,7 @@ describe("Notifications Module", () => {
 			// Mock DB response for non-existent notification;
 			mockQuery.mockReturnValue({
 				affectedRows: 0,
-				results: []});
+				results: [],});
 
 			// Execute;
 			const result = await markNotificationRead(notificationId, userId);
@@ -157,9 +157,9 @@ describe("Notifications Module", () => {
 					resource_type: "LabResult",
 					resource_id: 123,
 					priority: "medium",
-					metadata: "{"testId": 456}",
+					metadata: "{"testId": 456,}",
 					created_at: "2023-01-01T12:00:00Z",
-					read: false},
+					read: false,},
 				{
 					id: 2,
 					user_id: 1,
@@ -171,20 +171,20 @@ describe("Notifications Module", () => {
 					priority: "low",
 					metadata: null,
 					created_at: "2023-01-02T12:00:00Z",
-					read: true}];
+					read: true,}];
 
 			// Mock DB response;
 			mockQuery.mockReturnValue({
 				results: mockNotifications,
 				affectedRows: 0,
-				insertId: 0});
+				insertId: 0,});
 
 			// Execute;
 			const result = await getUserNotifications(userId);
 
 			// Verify;
 			expect(result).toHaveLength(2);
-			expect(result[0].metadata).toEqual({ testId: 456 }), expect(result[1].metadata).toBeNull();
+			expect(result[0].metadata).toEqual({ testId: 456 ,}), expect(result[1].metadata).toBeNull();
 			expect(mockQuery).toHaveBeenCalledWith();
 				expect.stringContaining("SELECT *"),
 				expect.arrayContaining([userId, 50]);
@@ -200,7 +200,7 @@ describe("Notifications Module", () => {
 			mockQuery.mockReturnValue({
 				results: [],
 				affectedRows: 0,
-				insertId: 0});
+				insertId: 0,});
 
 			// Execute;
 			await getUserNotifications(userId, unreadOnly);
@@ -221,7 +221,7 @@ describe("Notifications Module", () => {
 			mockQuery.mockReturnValue({
 				results: [],
 				affectedRows: 0,
-				insertId: 0});
+				insertId: 0,});
 
 			// Execute;
 			await getUserNotifications(userId, false, limit);

@@ -57,7 +57,7 @@ const dispensingRepository = {
  * POST /api/pharmacy/dispensing/verify;
  * Verify medication dispensing with barcode scanning;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -95,15 +95,15 @@ export const POST = async (req: any) => {
     const validationResult = validateDispensingVerificationRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -112,13 +112,13 @@ export const POST = async (req: any) => {
     // Verify prescription exists;
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
-      return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
+      return NextResponse.json({ error: "Prescription not found" ,}, { status: 404 ,});
     }
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!session.user) {
-      return NextResponse.json({ error: "Medication not found" }, { status: 404 });
+      return NextResponse.json({ error: "Medication not found" ,}, { status: 404 ,});
     }
 
     // Verify medication barcode matches prescription;
@@ -183,7 +183,7 @@ export const POST = async (req: any) => {
           verifiedAt: verification.verifiedAt;
 
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return errorHandler(error, "Error verifying medication dispensing");

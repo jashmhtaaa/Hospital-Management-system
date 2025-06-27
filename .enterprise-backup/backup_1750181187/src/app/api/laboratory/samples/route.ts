@@ -17,12 +17,12 @@ interface SampleInput {
 
 interface LabSample {
   id: number,
-  \1,\2 string,
-  \1,\2 number | null,
-  \1,\2 number | null,
-  \1,\2 "collected" | "received" | "processing" | "rejected",
-  \1,\2 string | null,
-  \1,\2 string;
+   string,
+   number | null,
+   number | null,
+   "collected" | "received" | "processing" | "rejected",
+   string | null,
+   string;
   // Joined fields
   patient_id?: number;
   patient_name?: string;
@@ -33,11 +33,11 @@ interface LabSample {
 // --- API Route Handlers ---
 
 // GET /api/laboratory/samples - Get laboratory samples
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const { searchParams } = new URL(request.url);
@@ -59,65 +59,65 @@ export const _GET = async (request: NextRequest) => {
       LEFT JOIN users r ON s.received_by = r.id;
     `;
 
-    // FIX: Use specific type for params
+    // FIX: Use specific type for params,
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("s.order_id = ?");
       parameters.push(orderId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("s.barcode = ?");
       parameters.push(barcode);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("s.status = ?");
       parameters.push(status);
     }
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY s.created_at DESC";
 
-    // Fixed: Use db.query
+    // Fixed: Use db.query,
     const samplesResult = await database.query(query, parameters),
     return NextResponse.json(samplesResult.results || []); // Changed .rows to .results
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to fetch laboratory samples", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch laboratory samples", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/laboratory/samples - Create or update a laboratory sample
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
-    // Fixed: Use roleName
+    // Fixed: Use roleName,
     const allowedRoles = [
       "Lab Technician",
       "Lab Manager",
       "Phlebotomist",
       "Admin",
     ]; // Adjust role names
-    \1 {\n  \2 {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const body = (await request.json()) as SampleInput;
     const database = await getDB();
 
-    \1 {\n  \2{
+     {\n  {
       // --- Update existing sample ---
       const sampleResult = await database.query(
         "SELECT * FROM lab_samples WHERE id = ?",
@@ -129,57 +129,57 @@ export const _POST = async (request: NextRequest) => {
           : undefined;
       ) as LabSample | null;
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "Sample not found" },
-          { status: 404 }
+          { error: "Sample not found" ,},
+          { status: 404 },
         );
       }
 
       const updates: string[] = [];
-      // FIX: Use specific type for params
+      // FIX: Use specific type for params,
       const parameters: (string | number | boolean)[] = [];
 
-      \1 {\n  \2{
+       {\n  {
         updates.push("status = ?");
         parameters.push(body.status);
 
-        \1 {\n  \2pdates.push("collected_by = ?", "collected_at = CURRENT_TIMESTAMP");
+         {\n  pdates.push("collected_by = ?", "collected_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
-        \1 {\n  \2pdates.push("received_by = ?", "received_at = CURRENT_TIMESTAMP");
+         {\n  pdates.push("received_by = ?", "received_at = CURRENT_TIMESTAMP");
           parameters.push(session.user.userId);
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: "Rejection reason is required when rejecting a sample" },
-            { status: 400 }
+            { error: "Rejection reason is required when rejecting a sample" ,},
+            { status: 400 },
           );
         }
       }
-      \1 {\n  \2{
+       {\n  {
         updates.push("rejection_reason = ?");
         parameters.push(body.rejection_reason);
       }
-      \1 {\n  \2{
+       {\n  {
         updates.push("notes = ?");
         parameters.push(body.notes);
       }
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "No updates provided" },
-          { status: 400 }
+          { error: "No updates provided" ,},
+          { status: 400 },
         );
       }
 
       parameters.push(body.id); // Add ID for WHERE clause
 
-      // Fixed: Use db.query for update
+      // Fixed: Use db.query for update,
       await database.query(
         `UPDATE lab_samples SET ${updates.join(", ")}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
         parameters;
       );
 
-      // Fixed: Use db.query to get updated sample
+      // Fixed: Use db.query to get updated sample,
       const updatedSampleResult = await database.query(
         "SELECT * FROM lab_samples WHERE id = ?",
         [body.id]
@@ -194,19 +194,19 @@ export const _POST = async (request: NextRequest) => {
       // --- Create new sample ---
       const requiredFields: (keyof SampleInput)[] = ["order_id", "sample_type"]
       for (const field of requiredFields) {
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: `Missing required field: ${field}` },
-            { status: 400 }
+            { error: `Missing required field: ${field}` ,},
+            { status: 400 },
           );
         }
       }
 
       const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0];
       const _random = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
-      const barcode = body.barcode || `LAB/* SECURITY: Template literal eliminated */
+      const barcode = body.barcode || `LAB/* SECURITY: Template literal eliminated */,
 
-      // Fixed: Use db.query for insert (mock DB doesn't return last_row_id)
+      // Fixed: Use db.query for insert (mock DB doesn't return last_row_id),
       await database.query(
         `
         INSERT INTO lab_samples (order_id, barcode, sample_type, collected_by, collected_at, status, notes, created_at, updated_at),
@@ -232,25 +232,25 @@ export const _POST = async (request: NextRequest) => {
           ? newSampleResult.results[0] // Changed .rows to .results
           : undefined;
 
-      \1 {\n  \2{
+       {\n  {
         // Fallback if mock fetch fails
         return NextResponse.json(
           {
             message: "Sample created (mock), but could not fetch immediately.",
-            barcode: barcode
+            barcode: barcode,
           },
-          { status: 201 }
+          { status: 201 },
         );
       }
 
-      return NextResponse.json(newSample, { status: 201 });
+      return NextResponse.json(newSample, { status: 201 ,});
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to manage laboratory sample", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to manage laboratory sample", details: errorMessage ,},
+      { status: 500 },
     );
   }

@@ -30,8 +30,7 @@ import "lucide-react"
 import { Loader2 }
 
 // Define interfaces for data structures;
-interface VitalSignRecord {
-  id: string,
+interface VitalSignRecord {id:string,
   string;
   temperature?: number | string | null;
   pulse?: number | string | null;
@@ -46,15 +45,13 @@ interface VitalSignRecord {
   recorded_by_last_name?: string;
 }
 
-interface AdmissionInfo {
-  admission_number: string,
+interface AdmissionInfo {admission_number:string,
   string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
-interface FormData {
-  temperature: string,
+interface FormData {temperature:string,
   string,
   string,
   string;
@@ -64,8 +61,7 @@ interface FormData {
 type NewVitalSignResponse = VitalSignRecord;
 
 // FIX: Define type for submission data;
-interface VitalSignSubmissionData {
-  record_time: string,
+interface VitalSignSubmissionData {record_time:string,
   number | null,
   string | null,
   number | null,
@@ -73,16 +69,14 @@ interface VitalSignSubmissionData {
   // recorded_by_user_id will be added on the server or from session;
 }
 
-interface VitalSignsProperties {
-  admissionId: string | null;
+interface VitalSignsProperties {admissionId:string | null;
 }
 
 const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   const [vitalSigns, setVitalSigns] = useState<VitalSignRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
-  const [formData, setFormData] = useState<FormData>({
-    temperature: "",
+  const [formData, setFormData] = useState<FormData>({temperature:"",
     "",
     "",
     "";
@@ -175,7 +169,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         //   } catch (jsonError) { /* Ignore */ }
         //   throw new Error(errorMsg);
         // }
-        // const data = await response.json(); // Assuming { admission: AdmissionInfo, vital_signs: VitalSignRecord[] }
+        // const data = await response.json(); // Assuming {admission:AdmissionInfo, vital_signs: VitalSignRecord[] }
         // setVitalSigns(data.vital_signs?.sort((a, b) => new Date(b.record_time).getTime() - new Date(a.record_time).getTime()) || []);
         // setPatientInfo(data.admission || null);
 
@@ -187,8 +181,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           "Pneumonia";
         };
         const mockVitalSigns: VitalSignRecord[] = [;
-          {
-            id: "vs_001",
+          {id:"vs_001",
             [0] - 3_600_000 * 4).toISOString(), // 4 hours ago;
             temperature: 37.8,
             18,
@@ -197,8 +190,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
             "Joy",
             notes: "Patient comfortable";
           },
-          {
-            id: "vs_002",
+          {id:"vs_002",
             [0] - 3_600_000 * 8).toISOString(), // 8 hours ago;
             temperature: 38.1,
             20,
@@ -238,8 +230,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     if (!session.user) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
       return;
@@ -366,14 +357,12 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       setVitalSigns((previous) => [newRecord, ...previous]);
 
       // Reset form;
-      setFormData({
-        temperature: "",
+      setFormData({temperature:"",
         "",
         "",
         "";
       }),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Vital signs recorded successfully!";
       });
     } catch (error_: unknown) {
@@ -381,7 +370,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      toast({ title: "Error", description: message, variant: "destructive" });
+      toast({title:"Error", description: message, variant: "destructive" });
     } finally {
       setSubmitting(false);
 

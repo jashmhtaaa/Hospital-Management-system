@@ -4,15 +4,15 @@ import "../../../../../../lib/services/pharmacy/pharmacy.service"
 import "../../../../models/domain-models"
 import "next/server"
 import getPrescriptionById }
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   getMedicationById
-import {  PharmacyDomain  } from "@/lib/database"
-import {  type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {errorHandler  } from "next/server"
+import {getMedicationById
+import {  PharmacyDomain  } from "next/server"
+import {type
 
- } from "@/lib/database"
+ } from "next/server"
 
 /**;
  * Patient Medication Schedule API;
@@ -56,7 +56,7 @@ const () => Promise.resolve(null),
  */;
 export const GET = async();
   req: any;
-  { params }: {patientId:string }
+  { params }: {patientId:string },
 ) => {
   try {
 } catch (error) {
@@ -93,7 +93,7 @@ export const GET = async();
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -102,7 +102,7 @@ export const GET = async();
     // Get patient ID from params;
     const { patientId } = params;
     if (!session.user) {
-      return NextResponse.json({error:"Patient ID is required" }, {status:400 });
+      return NextResponse.json({error:"Patient ID is required" ,}, {status:400 ,});
     }
 
     // Get query parameters;
@@ -182,7 +182,7 @@ export const GET = async();
     });
 
     // Return response;
-    return NextResponse.json({ schedule }, {status:200 });
+    return NextResponse.json({ schedule }, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving medication administration schedule");
   }
@@ -191,7 +191,7 @@ export const GET = async();
 /**;
  * Helper function to generate schedule times based on frequency;
  */;
-const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
+const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {,
   const times: Date[] = [];
 
   // Parse frequency;

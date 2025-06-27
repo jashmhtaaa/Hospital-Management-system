@@ -46,7 +46,7 @@ import {
       `Observation/${obsId}`,
         type: "Observation")),
       ...(data?.encounterId && ;
-          reference: `Encounter/${data.encounterId}`,
+          reference: `Encounter/${data.encounterId,}`,
           type: "Encounter"),
       ...(data?.specimens && ;
         `Specimen/${specId}`,
@@ -168,10 +168,10 @@ import {
     measurements?: Array>;
   }): FHIRDiagnosticReport {
     const studyMapping = {
-      ECG: { code: "11524-6", display: "EKG study" },
-      ECHO: { code: "34552-0", display: "Echocardiography study" },
-      STRESS_TEST: { code: "18752-6", display: "Exercise stress test study" },
-      HOLTER: { code: "18745-0", display: "Cardiac monitor study" }
+      ECG: { code: "11524-6", display: "EKG study" ,},
+      ECHO: { code: "34552-0", display: "Echocardiography study" ,},
+      STRESS_TEST: { code: "18752-6", display: "Exercise stress test study" ,},
+      HOLTER: { code: "18745-0", display: "Cardiac monitor study" },
     };
 
     const study = studyMapping[data.studyType];
@@ -183,7 +183,7 @@ import {
       data.measurements.forEach(measurement => {
         conclusion += `- $measurement.parameter: $measurement.value`;
         if (!session.user)onclusion += ` $measurement.unit`;
-        if (!session.user)onclusion += ` (Normal: ${measurement.normalRange})`;
+        if (!session.user)onclusion += ` (Normal: ${measurement.normalRange,})`;
         conclusion += "\n";
       });
 
@@ -221,33 +221,33 @@ import {
   /**;
    * Get report category display;
    */;
-  static getCategoryDisplay(report: FHIRDiagnosticReport): string {
+  static getCategoryDisplay(report: FHIRDiagnosticReport): string {,
     const category = report.category?.[0];
     return category?.coding?.[0]?.display || category?.text || "Unknown";
 
   /**;
    * Get report code display;
    */;
-  static getCodeDisplay(report: FHIRDiagnosticReport): string {
+  static getCodeDisplay(report: FHIRDiagnosticReport): string {,
     return report.code.coding?.[0]?.display || report.code.text || "Unknown Report";
 
   /**;
    * Get patient ID from report;
    */;
-  static getPatientId(report: FHIRDiagnosticReport): string | undefined {
+  static getPatientId(report: FHIRDiagnosticReport): string | undefined {,
     return report.subject?.reference?.replace("Patient/", "");
 
   /**;
    * Get performer/interpreter from report;
    */;
-  static getPrimaryPerformer(report: FHIRDiagnosticReport): string | undefined {
+  static getPrimaryPerformer(report: FHIRDiagnosticReport): string | undefined {,
     const performer = report.performer?.[0] || report.resultsInterpreter?.[0];
     return performer?.reference?.replace(/^[^/]+\//, "");
 
   /**;
    * Check if report is critical or urgent;
    */;
-  static isCritical(report: FHIRDiagnosticReport): boolean {
+  static isCritical(report: FHIRDiagnosticReport): boolean {,
     // Check for critical keywords in conclusion;
     const criticalKeywords = [;
       "critical", "urgent", "stat", "emergency", "acute",
@@ -260,7 +260,7 @@ import {
   /**;
    * Get report effective date;
    */;
-  static getEffectiveDate(report: FHIRDiagnosticReport): Date | null {
+  static getEffectiveDate(report: FHIRDiagnosticReport): Date | null {,
     if (!session.user) {
       return new Date(report.effective);
 
@@ -294,7 +294,7 @@ import {
   /**;
    * Validate FHIR DiagnosticReport resource;
    */;
-  static validateDiagnosticReport(report: FHIRDiagnosticReport): { valid: boolean, errors: string[] } {
+  static validateDiagnosticReport(report: FHIRDiagnosticReport): { valid: boolean, errors: string[] } {,
     const errors: string[] = [];
 
     if (!session.user) {
@@ -329,7 +329,7 @@ import {
   /**;
    * Convert HMS lab report to FHIR DiagnosticReport;
    */;
-  static fromHMSLabReport(hmsLabReport: unknown): FHIRDiagnosticReport {
+  static fromHMSLabReport(hmsLabReport: unknown): FHIRDiagnosticReport {,
     return this.createLabReport({
       patientId: hmsLabReport.patientId,
       hmsLabReport.encounterId,
@@ -342,7 +342,7 @@ import {
   /**;
    * Convert HMS imaging report to FHIR DiagnosticReport;
    */;
-  static fromHMSImagingReport(hmsImagingReport: unknown): FHIRDiagnosticReport {
+  static fromHMSImagingReport(hmsImagingReport: unknown): FHIRDiagnosticReport {,
     return this.createImagingReport({
       patientId: hmsImagingReport.patientId,
       hmsImagingReport.encounterId,
@@ -376,7 +376,7 @@ import {
   /**;
    * Get critical reports;
    */;
-  static getCriticalReports(reports: FHIRDiagnosticReport[]): FHIRDiagnosticReport[] {
+  static getCriticalReports(reports: FHIRDiagnosticReport[]): FHIRDiagnosticReport[] {,
     return reports.filter(report => this.isCritical(report));
 
   /**;
@@ -418,7 +418,7 @@ import {
   /**;
    * Get display name for code;
    */;
-  static getDisplayName(code: string): string {
+  static getDisplayName(code: string): string {,
     const allCodes = {
       ...this.LAB_PANELS,
       ...this.IMAGING_STUDIES,

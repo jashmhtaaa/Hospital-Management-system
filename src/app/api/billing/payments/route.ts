@@ -1,5 +1,5 @@
 import "next/server";
 import "zod";
-import { NextRequest } from "@/lib/database";
-import { prisma } from "@/lib/database";
-import { z } from "@/lib/database";
+import {NextRequest } from "next/server";
+import {prisma } from "next/server";
+import {z } from "next/server";

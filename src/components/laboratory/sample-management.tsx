@@ -33,8 +33,7 @@ import { ColumnsType }
 const { Option } = Select;
 
 // Define interfaces for data structures;
-interface Sample {
-  id: string,
+interface Sample {id:string,
   string;
   patient_name?: string; // Optional, might come from join;
   order_id: string,
@@ -49,12 +48,10 @@ interface Sample {
   created_at: string;
 }
 
-interface ScanFormValues {
-  barcode: string;
+interface ScanFormValues {barcode:string;
 }
 
-interface UpdateFormValues {
-  status: "rejected"; // Only handling rejection in this modal;
+interface UpdateFormValues {status:"rejected"; // Only handling rejection in this modal;
   rejection_reason: string;
   notes?: string;
 }
@@ -123,15 +120,13 @@ const SampleManagement: React.FC = () => {
       // Mock Data;
       await new Promise((resolve) => setTimeout(resolve, 500));
       let mockSamples: Sample[] = [;
-        {
-          id: "smp_001",
+        {id:"smp_001",
           "p001",
           "ord_001",
           "pending",
           created_at: new Date().toISOString();
         },
-        {
-          id: "smp_002",
+        {id:"smp_002",
           "p002",
           "ord_002",
           "collected",
@@ -139,8 +134,7 @@ const SampleManagement: React.FC = () => {
           collected_by_user_id: "nurse01",
           [0] - 7_200_000).toISOString();
         },
-        {
-          id: "smp_003",
+        {id:"smp_003",
           "p003",
           "ord_003",
           "received",
@@ -149,8 +143,7 @@ const SampleManagement: React.FC = () => {
           [0] - 9_000_000).toISOString(),
           [0] - 14_400_000).toISOString();
         },
-        {
-          id: "smp_004",
+        {id:"smp_004",
           "p004",
           "ord_004",
           "rejected",
@@ -309,7 +302,7 @@ const SampleManagement: React.FC = () => {
       // const _response = await fetch(`/api/laboratory/samples/${sample.id}/status`, {
       //   method: "PUT";
       //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ status: newStatus }),
+      //   body: JSON.stringify({status:newStatus }),
       // });
       // if (!session.user) {
       //   const _errorData = await response.json().catch(() => ({}));
@@ -338,8 +331,7 @@ const SampleManagement: React.FC = () => {
 
   const showRejectModal = (sample: Sample): void => {
     setSelectedSample(sample);
-    updateForm.setFieldsValue({
-      status: "rejected",
+    updateForm.setFieldsValue({status:"rejected",
       sample.notes || "";
     }),
     setIsUpdateModalVisible(true);
@@ -361,23 +353,19 @@ const SampleManagement: React.FC = () => {
 
   // Table columns definition;
   const columns: ColumnsType<Sample> = [;
-    {
-      title: "Barcode",
+    {title:"Barcode",
       "barcode",
       width: "15%";
     },
-    {
-      title: "Patient",
+    {title:"Patient",
       "patient_name",
       (name) => name || "N/A";
     },
-    {
-      title: "Sample Type",
+    {title:"Sample Type",
       "sample_type",
       width: "10%";
     },
-    {
-      title: "Status",
+    {title:"Status",
       "status",
       (status: Sample["status"]) => {
         let color = "default";
@@ -387,14 +375,12 @@ const SampleManagement: React.FC = () => {
         if (!session.user)olor = "warning"; // Example for processed
         return <Tag color={color}>{status.toUpperCase()}>;
       }},
-    {
-      title: "Collected By",
+    {title:"Collected By",
       "15%",
       render: (_, record: Sample) => {}
         record.collector_name ||;
         (record.status === "pending" ? "Not collected" : "Unknown")},
-    {
-      title: "Collected At",
+    {title:"Collected At",
       "collected_at",
       (date: string | null | undefined, record: Sample) => // Added record here;
         date;
@@ -402,8 +388,7 @@ const SampleManagement: React.FC = () => {
           : record.status === "pending" // Changed status to record.status;
             ? "Not collected";
             : "N/A"},
-    {
-      title: "Actions",
+    {title:"Actions",
       "20%",
       render: (_, record: Sample) => {
         const actions: React.ReactNode[] = [];
@@ -494,14 +479,14 @@ const SampleManagement: React.FC = () => {
               setSearchText(event.target.value);
 
             onPressEnter={handleSearch}
-            style={{ width: 250 }}
+            style={{width:250 }}
             allowClear;
           />;
 
           <Select<string | null>;
             placeholder="Filter by status";
             allowClear;
-            style={{ width: 200 }}
+            style={{width:200 }}
             value={statusFilter}
             onChange={(value) => setStatusFilter(value)}
           >;
@@ -521,8 +506,8 @@ const SampleManagement: React.FC = () => {
             columns={columns}
             dataSource={samples}
             rowKey="id";
-            pagination={{ pageSize: 10, showSizeChanger: true }}
-            scroll={{ x: "max-content" }} // Ensure horizontal scroll on smaller screens;
+            pagination={{pageSize:10, showSizeChanger: true }}
+            scroll={{x:"max-content" }} // Ensure horizontal scroll on smaller screens;
           />;
         </Spin>;
       </Card>;
@@ -543,7 +528,7 @@ const SampleManagement: React.FC = () => {
             name="barcode";
             label="Barcode";
             rules={[;
-              { required: true, message: "Please enter or scan barcode" }]}
+              {required:true, message: "Please enter or scan barcode" }]}
           >;
             <Input>;
               placeholder="Scan or enter barcode";
@@ -571,7 +556,7 @@ const SampleManagement: React.FC = () => {
           form={updateForm}
           layout="vertical";
           onFinish={handleUpdateSample}
-          initialValues={{ status: "rejected" }} // Set initial status;
+          initialValues={{status:"rejected" }} // Set initial status;
         >;
           >;
             <Select disabled>;
@@ -583,7 +568,7 @@ const SampleManagement: React.FC = () => {
             name="rejection_reason";
             label="Rejection Reason";
             rules={[;
-              { required: true, message: "Please provide rejection reason" }]}
+              {required:true, message: "Please provide rejection reason" }]}
           >;
             >;
               <Option value="insufficient_volume">Insufficient Volume>;

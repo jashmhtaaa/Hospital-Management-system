@@ -30,7 +30,7 @@ const mockAlerts: Alert[] = [];
 // GET /api/er/visits/[id]/alerts - Get alerts for a specific ER visit;
 export const _GET = async();
   _request: any, // Prefixed as unused;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -66,7 +66,7 @@ export const _GET = async();
 
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     // Placeholder for database query;
     /*;
@@ -86,20 +86,20 @@ export const _GET = async();
       );
 
     return NextResponse.json(visitAlerts);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     // Debug logging removed});
     return NextResponse.json();
       {
         error: "Failed to fetch critical alerts",
         details: error instanceof Error ? error.message : String(error);
       },
-      { status: 500 }
+      { status: 500 },
     );
 
 // POST /api/er/visits/[id]/alerts - Create a new critical alert for an ER visit;
 export const _POST = async();
   request: any;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -135,7 +135,7 @@ export const _POST = async();
 
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
     const body = await request.json();
     // Apply type assertion;
     const alertData = body as AlertInput;
@@ -145,7 +145,7 @@ export const _POST = async();
     if (!session.user) {
       return NextResponse.json();
         { error: "Missing required fields (alert_type, activated_by_id)" },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Placeholder for database insert;
@@ -166,7 +166,7 @@ export const _POST = async();
       .run();
     */;
 
-    // FIX: Explicitly type newAlert to match interface Alert {}
+    // FIX: Explicitly type newAlert to match interface Alert {},
     const alertId,
       alertData.alert_type,
       alertData.details ?? undefined, // Use nullish coalescing;
@@ -180,15 +180,15 @@ export const _POST = async();
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-    return NextResponse.json(newAlert, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json(newAlert, { status: 201 ,});
+  } catch (error: unknown) {,
     // Debug logging removed});
     return NextResponse.json();
       {
         error: "Failed to create critical alert",
         details: error instanceof Error ? error.message : String(error);
       },
-      { status: 500 }
+      { status: 500 },
     );
 
 // Note: Updating alert status (acknowledge/resolve) might be better handled;

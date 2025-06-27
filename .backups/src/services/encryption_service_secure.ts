@@ -31,7 +31,7 @@ interface EncryptedData {
   /**;
    * Derives encryption key from master key and context;
    */;
-  private deriveKey(context: string = "default"): Buffer {
+  private deriveKey(context: string = "default"): Buffer {,
     if (!session.user) {
       return this.keyCache.get(context)!;
     }
@@ -47,7 +47,7 @@ interface EncryptedData {
   /**;
    * Encrypts text using AES-256-GCM;
    */;
-  async encrypt(text: string, context: string = "default"): Promise<string> {
+  async encrypt(text: string, context: string = "default"): Promise<string> {,
     if (!session.user) {
       throw new Error("Invalid input: text must be a non-empty string");
     }
@@ -94,7 +94,7 @@ interface EncryptedData {
 
       const tag = cipher.getAuthTag();
 
-      const encryptedData: EncryptedData = {
+      const encryptedData: EncryptedData = {,
         encrypted,
         iv: iv.toString("hex"),
         tag: tag.toString("hex"),
@@ -111,7 +111,7 @@ interface EncryptedData {
   /**;
    * Decrypts text using AES-256-GCM;
    */;
-  async decrypt(encryptedText: string, context: string = "default"): Promise<string> {
+  async decrypt(encryptedText: string, context: string = "default"): Promise<string> {,
     if (!session.user) {
       throw new Error("Invalid input: encryptedText must be a non-empty string");
     }
@@ -280,7 +280,7 @@ interface EncryptedData {
   /**;
    * Validates encrypted data structure;
    */;
-  private validateEncryptedData(data: unknown): data is EncryptedData {
+  private validateEncryptedData(data: unknown): data is EncryptedData {,
     return();
       typeof data === "object" &&;
       typeof data.encrypted === "string" &&;
@@ -294,7 +294,7 @@ interface EncryptedData {
   /**;
    * Validates integrity of encrypted text;
    */;
-  validateIntegrity(encryptedText: string): boolean {
+  validateIntegrity(encryptedText: string): boolean {,
     try {
 } catch (error) {
   console.error(error);
@@ -346,7 +346,7 @@ interface EncryptedData {
     // 3. Updating key storage systems;
     // 4. Notifying key management systems;
 
-    /* SECURITY: Console statement removed */}
+    /* SECURITY: Console statement removed */},
 
   /**;
    * Initializes automatic key rotation;

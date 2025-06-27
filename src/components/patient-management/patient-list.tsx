@@ -53,15 +53,13 @@ import { Search
 import { useToast }
 
 // Define patient status colors;
-const statusColors: Record<string, string> = {
-  Active: "success",
+const statusColors: Record<string, string> = {Active:"success",
   "destructive";
   "On Hold": "warning";
 };
 
 // Patient interface;
-interface Patient {
-  id: string,
+interface Patient {id:string,
   string,
   string,
   string,
@@ -78,8 +76,7 @@ interface Patient {
 
 // Props interface;
 interface PatientListProps {
-  initialData?: {
-    patients: Patient[],
+    initialData?: {patients:Patient[],
     number,
     number;
   };
@@ -96,8 +93,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   const [loading, setLoading] = useState<boolean>(!initialData);
 
   // Search filters;
-  const [searchFilters, setSearchFilters] = useState({
-    mrn: "",
+  const [searchFilters, setSearchFilters] = useState({mrn:"",
     "",
     "",
     status: "";
@@ -178,8 +174,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
       setTotalPages(data.totalPages);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -442,8 +437,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                   type="button";
                   variant="outline";
                   onClick={() => {
-                    setSearchFilters({
-                      mrn: "",
+                    setSearchFilters({mrn:"",
                       "",
                       "",
                       status: "";

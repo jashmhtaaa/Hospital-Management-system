@@ -25,7 +25,7 @@ import {  UserRole  } from "@/lib/database"
 
     // Find user with permissions;
     const user = await prisma.user.findUnique({
-      where: { email, isActive: true },
+      where: { email, isActive: true ,},
       true,
         department: true;
       }
@@ -45,8 +45,8 @@ import {  UserRole  } from "@/lib/database"
 
     // Update last login;
     await prisma.user.update({
-      where: { id: user.id },
-      data: { lastLogin: new Date() }
+      where: { id: user.id ,},
+      data: { lastLogin: new Date() },
     });
 
     // Generate tokens;
@@ -71,12 +71,12 @@ import {  UserRole  } from "@/lib/database"
 
     return { user: authUser, accessToken, refreshToken };
 
-  static async register(data: RegisterData): Promise<AuthUser> {
+  static async register(data: RegisterData): Promise<AuthUser> {,
     const { email, password, firstName, lastName, role = UserRole.STAFF } = data;
 
     // Check if user exists;
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
 
     if (!session.user) {
@@ -87,7 +87,7 @@ import {  UserRole  } from "@/lib/database"
 
     // Create user;
     const user = await prisma.user.create({
-      data: {
+      data: {,
         email,
         password: hashedPassword;
         firstName,
@@ -106,7 +106,7 @@ import {  UserRole  } from "@/lib/database"
       permissions: user.permissions.map(p => `$p.resource:$p.action`);
     };
 
-  static async verifyToken(token: string): Promise<AuthUser | null> {
+  static async verifyToken(token: string): Promise<AuthUser | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -143,7 +143,7 @@ import {  UserRole  } from "@/lib/database"
 
       // Check if session is still valid;
       const session = await prisma.userSession.findUnique({
-        where: { sessionToken: token, isActive: true },
+        where: { sessionToken: token, isActive: true ,},
         {
             true;
 
@@ -161,13 +161,13 @@ import {  UserRole  } from "@/lib/database"
       logger.error("Token verification failed", { error });
       return null;
 
-  static async logout(token: string): Promise<void> {
+  static async logout(token: string): Promise<void> {,
     await prisma.userSession.updateMany({
-      where: { sessionToken: token },
-      data: { isActive: false }
+      where: { sessionToken: token ,},
+      data: { isActive: false },
     });
 
-  private static generateAccessToken(user: AuthUser): string {
+  private static generateAccessToken(user: AuthUser): string {,
     return jwt.sign();
       {
         userId: user.id,
@@ -175,12 +175,12 @@ import {  UserRole  } from "@/lib/database"
         permissions: user.permissions;
       },
       this.JWT_SECRET,
-      { expiresIn: this.JWT_EXPIRES_IN }
+      { expiresIn: this.JWT_EXPIRES_IN },
     );
 
-  private static generateRefreshToken(userId: string): string {
+  private static generateRefreshToken(userId: string): string {,
     return jwt.sign();
       { userId },
       this.JWT_SECRET,
-      { expiresIn: this.REFRESH_EXPIRES_IN }
+      { expiresIn: this.REFRESH_EXPIRES_IN },
     );

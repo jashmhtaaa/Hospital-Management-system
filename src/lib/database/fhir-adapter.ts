@@ -8,13 +8,13 @@ import FHIRAppointment
 import FHIRAppointmentUtils }
 import FHIRPatient
 import FHIRPatientUtils }
-import {  FHIRBase  } from "@/lib/database"
-import {  FHIREncounter  } from "@/lib/database"
-import {  FHIRMedicationRequest  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  type
+import {FHIRBase  } from "next/server"
+import {FHIREncounter  } from "next/server"
+import {FHIRMedicationRequest  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {type
 
- } from "@/lib/database"
+ } from "next/server"
 
 /**;
  * FHIR Database Adapter;
@@ -28,7 +28,7 @@ import {  type
   /**;
    * Store a FHIR resource;
    */;
-  async storeResource<T extends FHIRBase>(resource: T): Promise<T> {
+  async storeResource<T extends FHIRBase>(resource: T): Promise<T> {,
     const resourceType = resource.resourceType;
     const resourceId = resource.id || uuidv4();
 
@@ -56,7 +56,7 @@ import {  type
   /**;
    * Retrieve a FHIR resource by ID;
    */;
-  async retrieveResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {
+  async retrieveResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {,
     switch (resourceType) {
       case "Patient": any;
         return this.retrievePatient(id) as Promise>;
@@ -74,7 +74,7 @@ import {  type
   /**;
    * Update a FHIR resource;
    */;
-  async updateResource<T extends FHIRBase>(resourceType: string, id: string, resource: T): Promise<T> {
+  async updateResource<T extends FHIRBase>(resourceType: string, id: string, resource: T): Promise<T> {,
     // Get current version;
     const existing = await this.retrieveResource<T>(resourceType, id);
     if (!session.user) {
@@ -96,7 +96,7 @@ import {  type
   /**;
    * Delete a FHIR resource;
    */;
-  async deleteResource(resourceType: string, id: string): Promise<boolean> {
+  async deleteResource(resourceType: string, id: string): Promise<boolean> {,
     switch (resourceType) {
       case "Patient": any;
         return this.deletePatient(id),
@@ -135,7 +135,7 @@ import {  type
   /**;
    * Patient-specific operations;
    */;
-  private async storePatient(fhirPatient: FHIRPatient): Promise<FHIRPatient> {
+  private async storePatient(fhirPatient: FHIRPatient): Promise<FHIRPatient> {,
     const mrn = FHIRPatientUtils.getMRN(fhirPatient) || this.generateMRN();
     const _displayName = FHIRPatientUtils.getDisplayName(fhirPatient);
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
@@ -147,8 +147,8 @@ import {  type
     const lastName = officialName?.family || "";
 
     // Store in Prisma Patient table;
-    const patient = await this.prisma.patient.upsert({where:{ id: fhirPatient.id! },
-      update: {
+    const patient = await this.prisma.patient.upsert({where:{ id: fhirPatient.id! ,},
+      update: {,
         mrn,
         firstName,
         lastName,
@@ -172,8 +172,8 @@ import {  type
     return fhirPatient;
   }
 
-  private async retrievePatient(id: string): Promise<FHIRPatient | null> {
-    const patient = await this.prisma.patient.findUnique({where:{ id }
+  private async retrievePatient(id: string): Promise<FHIRPatient | null> {,
+    const patient = await this.prisma.patient.findUnique({where:{ id },
     });
 
     if (!session.user) {
@@ -202,7 +202,7 @@ import {  type
     return fhirPatient;
   }
 
-  private async deletePatient(id: string): Promise<boolean> {
+  private async deletePatient(id: string): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -235,7 +235,7 @@ import {  type
 }
 } catch (error) {
 }
-      await this.prisma.patient.delete({where:{ id }
+      await this.prisma.patient.delete({where:{ id },
       });
       await this.deleteGenericResource("Patient", id);
       return true;
@@ -244,25 +244,25 @@ import {  type
     }
   }
 
-  private async searchPatients(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRPatient>> {
+  private async searchPatients(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRPatient>> {,
     const { _count = 20, _offset = 0, ...params } = searchParams;
 
-    const where: unknown = {};
+    const where: unknown = {,};
 
     // Build where clause based on search parameters;
     if (!session.user) {
       where.OR = [;
-        {firstName:{ contains: params.name, mode: "insensitive" } },
-        {lastName:{ contains: params.name, mode: "insensitive" } }
+        {firstName:{ contains: params.name, mode: "insensitive" } ,},
+        {lastName:{ contains: params.name, mode: "insensitive" } },
       ];
     }
 
     if (!session.user) {
-      where.lastName = {contains:params.family, mode: "insensitive" };
+      where.lastName = {contains:params.family, mode: "insensitive" ,};
     }
 
     if (!session.user) {
-      where.firstName = {contains:params.given, mode: "insensitive" };
+      where.firstName = {contains:params.given, mode: "insensitive" ,};
     }
 
     if (!session.user) {
@@ -270,11 +270,11 @@ import {  type
     }
 
     if (!session.user) {
-      where.phone = {contains:params.phone };
+      where.phone = {contains:params.phone ,};
     }
 
     if (!session.user) {
-      where.email = {contains:params.email };
+      where.email = {contains:params.email ,};
     }
 
     if (!session.user) {
@@ -289,7 +289,7 @@ import {  type
       this.prisma.patient.findMany({
         where,
         skip: _offset,
-        {lastName:"asc" }
+        {lastName:"asc" },
       }),
       this.prisma.patient.count({ where });
     ]);
@@ -307,7 +307,7 @@ import {  type
   /**;
    * Appointment-specific operations;
    */;
-  private async storeAppointment(fhirAppointment: FHIRAppointment): Promise<FHIRAppointment> {
+  private async storeAppointment(fhirAppointment: FHIRAppointment): Promise<FHIRAppointment> {,
     const patientId = FHIRAppointmentUtils.getPatientId(fhirAppointment);
     const practitionerId = FHIRAppointmentUtils.getPractitionerId(fhirAppointment);
 
@@ -321,62 +321,62 @@ import {  type
     return fhirAppointment;
   }
 
-  private async retrieveAppointment(id: string): Promise<FHIRAppointment | null> {
+  private async retrieveAppointment(id: string): Promise<FHIRAppointment | null> {,
     return this.retrieveGenericResource<FHIRAppointment>("Appointment", id);
   }
 
-  private async deleteAppointment(id: string): Promise<boolean> {
+  private async deleteAppointment(id: string): Promise<boolean> {,
     return this.deleteGenericResource("Appointment", id);
   }
 
-  private async searchAppointments(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRAppointment>> {
+  private async searchAppointments(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRAppointment>> {,
     return this.searchGenericResources<FHIRAppointment>("Appointment", searchParams);
   }
 
   /**;
    * Encounter-specific operations;
    */;
-  private async storeEncounter(fhirEncounter: FHIREncounter): Promise<FHIREncounter> {
+  private async storeEncounter(fhirEncounter: FHIREncounter): Promise<FHIREncounter> {,
     await this.storeGenericResource(fhirEncounter);
     return fhirEncounter;
   }
 
-  private async retrieveEncounter(id: string): Promise<FHIREncounter | null> {
+  private async retrieveEncounter(id: string): Promise<FHIREncounter | null> {,
     return this.retrieveGenericResource<FHIREncounter>("Encounter", id);
   }
 
-  private async deleteEncounter(id: string): Promise<boolean> {
+  private async deleteEncounter(id: string): Promise<boolean> {,
     return this.deleteGenericResource("Encounter", id);
   }
 
-  private async searchEncounters(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIREncounter>> {
+  private async searchEncounters(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIREncounter>> {,
     return this.searchGenericResources<FHIREncounter>("Encounter", searchParams);
   }
 
   /**;
    * MedicationRequest-specific operations;
    */;
-  private async storeMedicationRequest(fhirMedRequest: FHIRMedicationRequest): Promise<FHIRMedicationRequest> {
+  private async storeMedicationRequest(fhirMedRequest: FHIRMedicationRequest): Promise<FHIRMedicationRequest> {,
     await this.storeGenericResource(fhirMedRequest);
     return fhirMedRequest;
   }
 
-  private async retrieveMedicationRequest(id: string): Promise<FHIRMedicationRequest | null> {
+  private async retrieveMedicationRequest(id: string): Promise<FHIRMedicationRequest | null> {,
     return this.retrieveGenericResource<FHIRMedicationRequest>("MedicationRequest", id);
   }
 
-  private async deleteMedicationRequest(id: string): Promise<boolean> {
+  private async deleteMedicationRequest(id: string): Promise<boolean> {,
     return this.deleteGenericResource("MedicationRequest", id);
   }
 
-  private async searchMedicationRequests(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRMedicationRequest>> {
+  private async searchMedicationRequests(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRMedicationRequest>> {,
     return this.searchGenericResources<FHIRMedicationRequest>("MedicationRequest", searchParams);
   }
 
   /**;
    * Generic FHIR resource operations (for resources without specific tables);
    */;
-  private async storeGenericResource<T extends FHIRBase>(resource: T): Promise<T> {
+  private async storeGenericResource<T extends FHIRBase>(resource: T): Promise<T> {,
     // Create a generic FHIR resource table if it doesn"t exist;
     // For now, we"ll store in a JSON format;
 
@@ -446,7 +446,7 @@ import {  type
 
     return resource;
 
-  private async retrieveGenericResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {
+  private async retrieveGenericResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -492,7 +492,7 @@ import {  type
 
       return null;
 
-  private async deleteGenericResource(resourceType: string, id: string): Promise<boolean> {
+  private async deleteGenericResource(resourceType: string, id: string): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);

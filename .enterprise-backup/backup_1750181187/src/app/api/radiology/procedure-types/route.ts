@@ -13,12 +13,12 @@ interface ProcedureTypeInput {
 }
 
 // GET all Radiology Procedure Types
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   const session = await getSession();
   // Allow broader access for viewing procedure types
-  \1 {\n  \2;
+   {\n  ;
   ) 
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
 
   const DB = process.env.DB as unknown as D1Database;
   try {
@@ -26,26 +26,26 @@ export const _GET = async (request: NextRequest) => {
       "SELECT * FROM RadiologyProcedureTypes ORDER BY name ASC";
     ).all();
     return NextResponse.json(results);
-  } catch (error: unknown) {
-    // FIX: Replaced any with unknown
+  } catch (error: unknown) {,
+    // FIX: Replaced any with unknown,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
       {
         error: "Failed to fetch radiology procedure types",
-        details: errorMessage
+        details: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 // POST a new Radiology Procedure Type (Admin only)
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   const session = await getSession()
-  \1 {\n  \2) {
+   {\n  ) {
     // Use await, pass request, add optional chaining
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
   }
 
   const DB = process.env.DB as unknown as D1Database;
@@ -53,10 +53,10 @@ export const _POST = async (request: NextRequest) => {
     const { name, description, modality_type } =;
       (await request.json()) as ProcedureTypeInput; // Cast to ProcedureTypeInput
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Missing required field: name" },
-        { status: 400 }
+        { error: "Missing required field: name" ,},
+        { status: 400 },
       );
     }
 
@@ -66,10 +66,10 @@ export const _POST = async (request: NextRequest) => {
     );
       .bind(name);
       .first();
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Procedure type with this name already exists" },
-        { status: 409 }
+        { error: "Procedure type with this name already exists" ,},
+        { status: 409 },
       );
     }
 
@@ -83,26 +83,26 @@ export const _POST = async (request: NextRequest) => {
       .run();
 
     return NextResponse.json(
-      { id, status: "Radiology procedure type created" },
-      { status: 201 }
+      { id, status: "Radiology procedure type created" ,},
+      { status: 201 },
     );
-  } catch (error: unknown) {
-    // FIX: Replaced any with unknown
+  } catch (error: unknown) {,
+    // FIX: Replaced any with unknown,
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     // Handle potential unique constraint violation if check fails due to race condition
-    \1 {\n  \2 {
-      // FIX: Check errorMessage instead of e.message
+     {\n   {
+      // FIX: Check errorMessage instead of e.message,
       return NextResponse.json(
-        { error: "Procedure type with this name already exists" },
-        { status: 409 }
+        { error: "Procedure type with this name already exists" ,},
+        { status: 409 },
       ),
     }
     return NextResponse.json(
       {
         error: "Failed to create radiology procedure type",
-        details: errorMessage
+        details: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }

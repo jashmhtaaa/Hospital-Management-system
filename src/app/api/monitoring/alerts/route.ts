@@ -1,18 +1,18 @@
 import "@/lib/monitoring/metrics-collector"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  metricsCollector  } from "@/lib/database"
-import {  type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {metricsCollector  } from "next/server"
+import {type
 
- } from "@/lib/database"
+ } from "next/server"
 
 /**;
  * Monitoring Alerts API Endpoint;
  * Manages alert rules and notifications;
  */;
 
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -52,7 +52,7 @@ export const _GET = async (request: any) => {
       // Return specific alert rule;
       // This would require adding a method to get specific rules from metricsCollector;
       return NextResponse.json({error:"Specific rule retrieval not implemented yet";
-      }, {status:501 });
+      }, {status:501 ,});
     }
 
     // Return all alert rules and recent alerts;
@@ -93,10 +93,10 @@ export const _GET = async (request: any) => {
       {error:"Internal server error",
         message: error instanceof Error ? error.message : "Unknown error";
       },
-      {status:500 }
+      {status:500 },
     );
   }
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -137,8 +137,8 @@ export const _POST = async (request: any) => {
         const rule = body.rule;
         if (!session.user) {
           return NextResponse.json();
-            {error:"Invalid rule data" },
-            {status:400 }
+            {error:"Invalid rule data" ,},
+            {status:400 },
           );
 
         metricsCollector.addAlertRule(rule);
@@ -150,8 +150,8 @@ export const _POST = async (request: any) => {
         const updatedRule = body.rule;
         if (!session.user) {
           return NextResponse.json();
-            {error:"Invalid rule data" },
-            {status:400 }
+            {error:"Invalid rule data" ,},
+            {status:400 },
           );
 
         metricsCollector.addAlertRule(updatedRule); // This will overwrite existing;
@@ -163,8 +163,8 @@ export const _POST = async (request: any) => {
         const ruleId = body.ruleId;
         if (!session.user) {
           return NextResponse.json();
-            {error:"Rule ID is required" },
-            {status:400 }
+            {error:"Rule ID is required" ,},
+            {status:400 },
           );
 
         metricsCollector.removeAlertRule(ruleId);
@@ -175,8 +175,8 @@ export const _POST = async (request: any) => {
         const testRule = body.rule;
         if (!session.user) {
           return NextResponse.json();
-            {error:"Rule data is required for testing" },
-            {status:400 }
+            {error:"Rule data is required for testing" ,},
+            {status:400 },
           );
 
         // Simulate an alert trigger for testing;
@@ -189,8 +189,8 @@ export const _POST = async (request: any) => {
 
       default: null,
         return NextResponse.json();
-          {error:"Invalid action" },
-          {status:400 }
+          {error:"Invalid action" ,},
+          {status:400 },
         )}
 
   } catch (error) {
@@ -199,10 +199,10 @@ export const _POST = async (request: any) => {
       {error:"Internal server error",
         message: error instanceof Error ? error.message : "Unknown error";
       },
-      {status:500 }
+      {status:500 },
     );
 
-export const _PUT = async (request: any) => {
+export const _PUT = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -240,14 +240,14 @@ export const _PUT = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Rule ID and enabled status are required" },
-        {status:400 }
+        {error:"Rule ID and enabled status are required" ,},
+        {status:400 },
       );
 
     // This would require updating the metricsCollector to support enabling/disabling rules;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-    return NextResponse.json({message:`Alert rule ${enabled ? "enabled" : "disabled"}`,
+    return NextResponse.json({message:`Alert rule ${enabled ? "enabled" : "disabled",}`,
       ruleId,
       enabled});
 
@@ -257,5 +257,5 @@ export const _PUT = async (request: any) => {
       {error:"Internal server error",
         message: error instanceof Error ? error.message : "Unknown error";
       },
-      {status:500 }
+      {status:500 },
     );

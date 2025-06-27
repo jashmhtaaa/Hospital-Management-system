@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 
 
-import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData,
 import { StockBatch } from "@/types/inventory";
 // app/api/inventory-items/[itemId]/batches/route.ts
 // Define roles allowed to view/manage stock batches (adjust as needed)
@@ -12,7 +12,7 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"]
 const ALLOWED_ROLES_MANAGE = ["Admin", "Pharmacist", "Inventory Manager"];
 
 // Helper function to get item ID from URL
-const getItemId = (pathname: string): number | null {
+const getItemId = (pathname: string): number | null {,
     // Pathname might be /api/inventory-items/123/batches
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part
@@ -21,55 +21,55 @@ const getItemId = (pathname: string): number | null {
 }
 
 // GET handler for listing batches for a specific inventory item
-export const _GET = async (request: Request) => {
-    const cookieStore = await cookies(); // FIX: Await cookies()
+export const _GET = async (request: Request) => {,
+    const cookieStore = await cookies(); // FIX: Await cookies(),
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const inventoryItemId = getItemId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 
-    \1 {\n  \2{
-        return new Response(JSON.stringify({ error: "Invalid Inventory Item ID" }), {
+     {\n  {
+        return new Response(JSON.stringify({ error: "Invalid Inventory Item ID" ,}), {
             status: 400,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 
     try {
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Await and type context
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Await and type context,
         // const { env } = context; // Removed destructuring
-        const DB = context.env.DB; // FIX: Access DB via context.env
+        const DB = context.env.DB; // FIX: Access DB via context.env,
 
-        \1 {\n  \2{ throw new Error("Database binding not found."); } // Add null check
+         {\n  { throw new Error("Database binding not found."); } // Add null check
 
         // 2. Retrieve batches for the item
         const batchesResult = await DB.prepare(
             "SELECT * FROM StockBatches WHERE inventory_item_id = ? ORDER BY received_date DESC, expiry_date ASC";
         ).bind(inventoryItemId).all<StockBatch>();
 
-        \1 {\n  \2{
+         {\n  {
             throw new Error("Failed to retrieve stock batches");
         }
 
         // 3. Return batch list
         return new Response(JSON.stringify(batchesResult.results), {
             status: 200,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 }
@@ -77,33 +77,33 @@ export const _GET = async (request: Request) => {
 // POST handler for adding a new stock batch for an item
 const AddStockBatchSchema = z.object({
     batch_number: z.string().optional(),
-    expiry_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Expiry date must be in YYYY-MM-DD format").optional().nullable(),
+    expiry_date: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/, "Expiry date must be in YYYY-MM-DD format").optional().nullable(),
     quantity_received: z.number().int().positive("Quantity received must be positive"),
     cost_price_per_unit: z.number().nonnegative("Cost price must be non-negative").optional().nullable(),
     selling_price_per_unit: z.number().nonnegative("Selling price must be non-negative").optional().nullable(),
     supplier_id: z.number().int().positive().optional().nullable(), // Assuming Suppliers table exists later
-    received_date: z.string().datetime({ message: "Invalid ISO 8601 datetime string for received date" }).optional(), // Default is CURRENT_TIMESTAMP in DB
-    notes: z.string().optional()
+    received_date: z.string().datetime({ message: "Invalid ISO 8601 datetime string for received date" ,}).optional(), // Default is CURRENT_TIMESTAMP in DB
+    notes: z.string().optional(),
 });
 
-export const _POST = async (request: Request) => {
-    const cookieStore = await cookies(); // FIX: Await cookies()
+export const _POST = async (request: Request) => {,
+    const cookieStore = await cookies(); // FIX: Await cookies(),
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const inventoryItemId = getItemId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 
-    \1 {\n  \2{
-        return new Response(JSON.stringify({ error: "Invalid Inventory Item ID" }), {
+     {\n  {
+        return new Response(JSON.stringify({ error: "Invalid Inventory Item ID" ,}), {
             status: 400,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 
@@ -111,29 +111,29 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = AddStockBatchSchema.safeParse(body);
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json" ,},
             });
         }
 
         const batchData = validation.data;
 
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Await and type context
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Await and type context,
         // const { env } = context; // Removed destructuring
-        const DB = context.env.DB; // FIX: Access DB via context.env
+        const DB = context.env.DB; // FIX: Access DB via context.env,
 
-        \1 {\n  \2{ throw new Error("Database binding not found."); } // Add null check
+         {\n  { throw new Error("Database binding not found."); } // Add null check
 
         // 2. Verify the inventory item exists and is active
         const itemCheck = await DB.prepare("SELECT inventory_item_id FROM InventoryItems WHERE inventory_item_id = ? AND is_active = TRUE");
                                 .bind(inventoryItemId);
                                 .first();
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Inventory item not found or is inactive" }), {
+         {\n  {
+            return new Response(JSON.stringify({ error: "Inventory item not found or is inactive" ,}), {
                 status: 404,
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json" ,},
             });
         }
 
@@ -156,29 +156,29 @@ export const _POST = async (request: Request) => {
         );
         .run();
 
-        \1 {\n  \2{
+         {\n  {
             throw new Error("Failed to add stock batch");
         }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newBatchId = meta.last_row_id;
-        \1 {\n  \2{
+         {\n  {
 
             throw new Error("Failed to retrieve batch ID after creation.");
         }
 
         // 4. Return success response
-        return new Response(JSON.stringify({ message: "Stock batch added successfully", batchId: newBatchId }), {
+        return new Response(JSON.stringify({ message: "Stock batch added successfully", batchId: newBatchId ,}), {
             status: 201, // Created
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         // Handle potential constraint errors if any
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }

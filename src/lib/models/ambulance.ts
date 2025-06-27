@@ -3,7 +3,7 @@ import AmbulanceCrew
 import AmbulanceMaintenance
 import AmbulanceTrip }
 import type
-import {  Ambulance
+import {Ambulance
 
 // FHIR-compliant interfaces for Ambulance Management;
 
@@ -12,7 +12,7 @@ import {  Ambulance
  * Maps to FHIR Device resource;
  */;
 
-   } from "@/lib/database"[];
+   } from "next/server"[];
   status: "active" | "inactive" | "entered-in-error" | "unknown",
   {system:string,
       string;
@@ -87,7 +87,7 @@ import {  Ambulance
 
   }[];
   active: boolean,
-  name: {
+  name: {,
     use?: "official" | "usual" | "temp" | "nickname" | "anonymous" | "old" | "maiden";
     text?: string;
     family?: string;
@@ -149,7 +149,7 @@ import {  Ambulance
 /**;
  * Convert database Ambulance to FHIR Device;
  */;
-export const _toFHIRAmbulance = (ambulance: Ambulance & {
+export const _toFHIRAmbulance = (ambulance: Ambulance & {,
   currentLocation?: unknown;
 }): FHIRAmbulance {
   // Map status from internal to FHIR status;
@@ -161,10 +161,10 @@ export const _toFHIRAmbulance = (ambulance: Ambulance & {
   };
 
   // Map vehicle type to FHIR device type;
-  const vehicleTypeMap: Record<string, {code:string, display: string }> = {
-    "BASIC_LIFE_SUPPORT": {code:"bls-ambulance", display: "Basic Life Support Ambulance" },
-    "ADVANCED_LIFE_SUPPORT": {code:"als-ambulance", display: "Advanced Life Support Ambulance" },
-    "PATIENT_TRANSPORT": {code:"transport-ambulance", display: "Patient Transport Ambulance" }
+  const vehicleTypeMap: Record<string, {code:string, display: string }> = {,
+    "BASIC_LIFE_SUPPORT": {code:"bls-ambulance", display: "Basic Life Support Ambulance" ,},
+    "ADVANCED_LIFE_SUPPORT": {code:"als-ambulance", display: "Advanced Life Support Ambulance" ,},
+    "PATIENT_TRANSPORT": {code:"transport-ambulance", display: "Patient Transport Ambulance" },
   };
 
   // Create properties array for ambulance features;
@@ -202,7 +202,7 @@ export const _toFHIRAmbulance = (ambulance: Ambulance & {
       text: vehicleTypeMap[ambulance.vehicleType]?.display || ambulance.vehicleType;
     },
     deviceName: [;
-      {name:`Ambulance ${ambulance.registrationNumber}`,
+      {name:`Ambulance ${ambulance.registrationNumber,}`,
         type: "user-friendly-name";
 
     ],
@@ -221,7 +221,7 @@ export const _toFHIRAmbulance = (ambulance: Ambulance & {
 /**;
  * Convert database AmbulanceTrip to FHIR ServiceRequest;
  */;
-export const _toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
+export const _toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {,
   ambulance?: unknown;
   patient?: unknown;
   requestedByUser?: unknown;
@@ -248,33 +248,33 @@ export const _toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
   };
 
   // Map trip type to FHIR category;
-  const tripTypeMap: Record<string, {code:string, display: string }> = {
-    "EMERGENCY": {code:"emergency", display: "Emergency Transport" },
-    "NON_EMERGENCY": {code:"non-emergency", display: "Non-Emergency Transport" },
-    "TRANSFER": {code:"transfer", display: "Inter-facility Transfer" },
-    "RETURN": {code:"return", display: "Return Transport" }
+  const tripTypeMap: Record<string, {code:string, display: string }> = {,
+    "EMERGENCY": {code:"emergency", display: "Emergency Transport" ,},
+    "NON_EMERGENCY": {code:"non-emergency", display: "Non-Emergency Transport" ,},
+    "TRANSFER": {code:"transfer", display: "Inter-facility Transfer" ,},
+    "RETURN": {code:"return", display: "Return Transport" },
   };
 
   // Create performers array from crew;
-  const performers = trip.crew?.map(crewMember => ({reference:`Practitioner/${crewMember.userId}`,
+  const performers = trip.crew?.map(crewMember => ({reference:`Practitioner/${crewMember.userId,}`,
     display: crewMember.user?.name || "Unknown Crew Member";
   })) || [];
 
   // Add ambulance as performer;
   if (!session.user) {
-    performers.push({reference:`Device/${trip.ambulanceId}`,
-      display: `Ambulance ${trip.ambulance.registrationNumber}`;
+    performers.push({reference:`Device/${trip.ambulanceId,}`,
+      display: `Ambulance ${trip.ambulance.registrationNumber,}`;
     });
 
   // Create location references;
   const locationReferences = [];
   if (!session.user) {
-    locationReferences.push({reference:`Location/${trip.pickupLocationId}`,
+    locationReferences.push({reference:`Location/${trip.pickupLocationId,}`,
       display: trip.pickupLocation?.name || "Pickup Location";
     });
 
   if (!session.user) {
-    locationReferences.push({reference:`Location/${trip.dropLocationId}`,
+    locationReferences.push({reference:`Location/${trip.dropLocationId,}`,
       display: trip.dropLocation?.name || "Destination Location";
     });
 
@@ -305,7 +305,7 @@ export const _toFHIRAmbulanceTrip = (trip: AmbulanceTrip & {
     performer: performers.length > 0 ? performers : undefined,
     trip.scheduledTime.toISOString(),
     authoredOn: trip.createdAt.toISOString(),
-    note: trip.notes ? [{text:trip.notes }] : undefined;
+    note: trip.notes ? [{text:trip.notes ,}] : undefined;
   };
 
 /**;
@@ -354,7 +354,7 @@ export const _toFHIRAmbulanceCrew = (unknown;
 /**;
  * Convert database AmbulanceMaintenance to FHIR Task;
  */;
-export const _toFHIRAmbulanceMaintenance = (maintenance: AmbulanceMaintenance & {
+export const _toFHIRAmbulanceMaintenance = (maintenance: AmbulanceMaintenance & {,
   ambulance?: unknown;
   performedByUser?: unknown;
 }): FHIRAmbulanceMaintenance {
@@ -367,11 +367,11 @@ export const _toFHIRAmbulanceMaintenance = (maintenance: AmbulanceMaintenance & 
   };
 
   // Map maintenance type to FHIR code;
-  const maintenanceTypeMap: Record<string, {code:string, display: string }> = {
-    "ROUTINE": {code:"routine-maintenance", display: "Routine Maintenance" },
-    "REPAIR": {code:"repair", display: "Repair" },
-    "INSPECTION": {code:"inspection", display: "Inspection" },
-    "EMERGENCY": {code:"emergency-repair", display: "Emergency Repair" }
+  const maintenanceTypeMap: Record<string, {code:string, display: string }> = {,
+    "ROUTINE": {code:"routine-maintenance", display: "Routine Maintenance" ,},
+    "REPAIR": {code:"repair", display: "Repair" ,},
+    "INSPECTION": {code:"inspection", display: "Inspection" ,},
+    "EMERGENCY": {code:"emergency-repair", display: "Emergency Repair" },
   };
 
   return {resourceType:"Task",
@@ -400,5 +400,5 @@ export const _toFHIRAmbulanceMaintenance = (maintenance: AmbulanceMaintenance & 
     maintenance.scheduledDate.toISOString(),
       end: maintenance.completedDate?.toISOString();
     },
-    note: maintenance.notes ? [{text:maintenance.notes }] : undefined;
+    note: maintenance.notes ? [{text:maintenance.notes ,}] : undefined;
   };

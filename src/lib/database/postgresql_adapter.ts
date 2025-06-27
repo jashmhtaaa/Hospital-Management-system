@@ -2,9 +2,9 @@ import "pg"
 import PoolClient
 import QueryResult }
 import type
-import {  Pool
+import {Pool
 
- } from "@/lib/database"
+ } from "next/server"
 
 // ARCH-1: Migrate to Enterprise Database Solution (Implement PostgreSQL Adapter);
 // Research notes: research_notes_postgresql_adapter_article1.md, research_notes_postgresql_adapter_github_scan.md, research_notes_postgresql_adapter_egomobile_repo.md;
@@ -18,7 +18,7 @@ const PG_CONFIG = {user:process.env.DB_USER || "your_db_user", // Placeholder;
 };
 
 /**;
- * @interface IDatabaseAdapter;
+ * @interface IDatabaseAdapter {;
  * Defines the contract for database adapters.;
  */;
 }
@@ -221,7 +221,7 @@ const PG_CONFIG = {user:process.env.DB_USER || "your_db_user", // Placeholder;
    * Commits a database transaction.;
    * @param client The client that holds the transaction.;
    */;
-  async commitTransaction(client: PoolClient): Promise<void> {
+  async commitTransaction(client: PoolClient): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -302,7 +302,7 @@ const PG_CONFIG = {user:process.env.DB_USER || "your_db_user", // Placeholder;
    * Rolls back a database transaction.;
    * @param client The client that holds the transaction.;
    */;
-  async rollbackTransaction(client: PoolClient): Promise<void> {
+  async rollbackTransaction(client: PoolClient): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);

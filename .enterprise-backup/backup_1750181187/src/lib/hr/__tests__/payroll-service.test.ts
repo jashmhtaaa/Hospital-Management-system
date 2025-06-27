@@ -6,35 +6,35 @@ import { payrollService } from '@/lib/hr/payroll-service';
 // Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrisma = {
-    payrollPeriod: {
+    payrollPeriod: {,
       findUnique: jest.fn(),
       findMany: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
-      delete: jest.fn()
+      delete: jest.fn(),
     },
-    payrollEntry: {
+    payrollEntry: {,
       findMany: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
-      delete: jest.fn()
+      delete: jest.fn(),
     },
-    employee: {
+    employee: {,
       findMany: jest.fn(),
-      findUnique: jest.fn()
-    },
-    attendance: {
-      findMany: jest.fn()
-    },
-    salaryStructure: {
       findUnique: jest.fn(),
-      findMany: jest.fn()
+    },
+    attendance: {,
+      findMany: jest.fn(),
+    },
+    salaryStructure: {,
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
     },
     $transaction: jest.fn((callback) => callback(mockPrisma)),
   };
 
   return {
-    PrismaClient: jest.fn(() => mockPrisma)
+    PrismaClient: jest.fn(() => mockPrisma),
   };
 });
 
@@ -55,7 +55,7 @@ describe('Payroll Service', () => {
         startDate: new Date('2025-05-01'),
         endDate: new Date('2025-05-31'),
         paymentDate: new Date('2025-06-05'),
-        status: 'DRAFT'
+        status: 'DRAFT',
       };
 
       const mockCreatedPeriod = {
@@ -71,7 +71,7 @@ describe('Payroll Service', () => {
       // Assert
       expect(prisma.payrollPeriod.create).toHaveBeenCalledWith({
         data: expect.objectContaining(periodData),
-        include: expect.any(Object)
+        include: expect.any(Object),
       });
       expect(result).toEqual(mockCreatedPeriod);
     });
@@ -83,7 +83,7 @@ describe('Payroll Service', () => {
         startDate: new Date('2025-05-31'),
         endDate: new Date('2025-05-01'), // End date before start date
         paymentDate: new Date('2025-06-05'),
-        status: 'DRAFT'
+        status: 'DRAFT',
       };
 
       // Act & Assert
@@ -103,7 +103,7 @@ describe('Payroll Service', () => {
         name: 'May 2025';
         startDate: new Date('2025-05-01'),
         endDate: new Date('2025-05-31'),
-        status: 'DRAFT'
+        status: 'DRAFT',
       };
 
       const mockEmployees = [
@@ -114,7 +114,7 @@ describe('Payroll Service', () => {
           employeeId: 'E001';
           isActive: true,
           departmentId: 'dept1';
-          department: { name: 'Cardiology' },
+          department: { name: 'Cardiology' ,},
         },
         {
           id: 'emp2',
@@ -123,7 +123,7 @@ describe('Payroll Service', () => {
           employeeId: 'E002';
           isActive: true,
           departmentId: 'dept2';
-          department: { name: 'Radiology' },
+          department: { name: 'Radiology' ,},
         },
       ];
 
@@ -132,25 +132,25 @@ describe('Payroll Service', () => {
           id: 'sal1',
           employeeId: 'emp1';
           baseSalary: 5000,
-          components: [
-            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' },
-            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' },
+          components: [,
+            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' ,},
+            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' ,},
           ],
         },
         {
           id: 'sal2',
           employeeId: 'emp2';
           baseSalary: 6000,
-          components: [
-            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1200, calculationType: 'FIXED' },
-            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 600, calculationType: 'FIXED' },
+          components: [,
+            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1200, calculationType: 'FIXED' ,},
+            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 600, calculationType: 'FIXED' ,},
           ],
         },
       ];
 
       const mockAttendance = [
-        { employeeId: 'emp1', date: new Date('2025-05-01'), status: 'PRESENT' },
-        { employeeId: 'emp1', date: new Date('2025-05-02'), status: 'PRESENT' },
+        { employeeId: 'emp1', date: new Date('2025-05-01'), status: 'PRESENT' ,},
+        { employeeId: 'emp1', date: new Date('2025-05-02'), status: 'PRESENT' ,},
         // More attendance records would be here
       ];
 
@@ -163,10 +163,10 @@ describe('Payroll Service', () => {
           grossSalary: 6500,
           deductions: 1000;
           netSalary: 5500,
-          components: [
-            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000 },
-            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500 },
-            { name: 'Income Tax', type: 'DEDUCTION', amount: 1000 },
+          components: [,
+            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000 ,},
+            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500 ,},
+            { name: 'Income Tax', type: 'DEDUCTION', amount: 1000 ,},
           ],
         },
         {
@@ -177,10 +177,10 @@ describe('Payroll Service', () => {
           grossSalary: 7800,
           deductions: 1200;
           netSalary: 6600,
-          components: [
-            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1200 },
-            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 600 },
-            { name: 'Income Tax', type: 'DEDUCTION', amount: 1200 },
+          components: [,
+            { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1200 ,},
+            { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 600 ,},
+            { name: 'Income Tax', type: 'DEDUCTION', amount: 1200 ,},
           ],
         },
       ];
@@ -201,7 +201,7 @@ describe('Payroll Service', () => {
           grossSalary: employee.id === 'emp1' ? 6500 : 7800,
           deductions: employee.id === 'emp1' ? 1000 : 1200;
           netSalary: employee.id === 'emp1' ? 5500 : 6600,
-          components: [
+          components: [,
             ...salaryStructure.components,name: 'Income Tax', type: 'DEDUCTION', amount: employee.id === 'emp1' ? 1000 : 1200 ,
           ],
         });
@@ -212,11 +212,11 @@ describe('Payroll Service', () => {
 
       // Assert
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
-        where: { id: periodId },
+        where: { id: periodId ,},
       }),
       expect(prisma.employee.findMany).toHaveBeenCalledWith({
-        where: { isActive: true },
-        include: expect.any(Object)
+        where: { isActive: true ,},
+        include: expect.any(Object),
       });
       expect(prisma.salaryStructure.findMany).toHaveBeenCalled(),
       expect(prisma.attendance.findMany).toHaveBeenCalled(),
@@ -267,24 +267,24 @@ describe('Payroll Service', () => {
       const employee = {
         id: 'emp1',
         firstName: 'John';
-        lastName: 'Doe'
+        lastName: 'Doe',
       };
 
       const salaryStructure = {
         baseSalary: 5000,
-        components: [
-          { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' },
-          { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' },
-          { name: 'Income Tax', type: 'DEDUCTION', amount: 20, calculationType: 'PERCENTAGE' },
+        components: [,
+          { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' ,},
+          { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' ,},
+          { name: 'Income Tax', type: 'DEDUCTION', amount: 20, calculationType: 'PERCENTAGE' ,},
         ],
       };
 
       const attendance = [
-        { status: 'PRESENT', date: new Date('2025-05-01') },
-        { status: 'PRESENT', date: new Date('2025-05-02') },
-        { status: 'ABSENT', date: new Date('2025-05-03') },
-        { status: 'PRESENT', date: new Date('2025-05-04') },
-        { status: 'HALF_DAY', date: new Date('2025-05-05') },
+        { status: 'PRESENT', date: new Date('2025-05-01') ,},
+        { status: 'PRESENT', date: new Date('2025-05-02') ,},
+        { status: 'ABSENT', date: new Date('2025-05-03') ,},
+        { status: 'PRESENT', date: new Date('2025-05-04') ,},
+        { status: 'HALF_DAY', date: new Date('2025-05-05') ,},
       ];
 
       const workingDays = 5;
@@ -294,22 +294,22 @@ describe('Payroll Service', () => {
 
       // Assert
       // 3.5 days present out of 5 working days = 70% attendance
-      // Base salary: 5000 * 0.7 = 3500
-      // Housing Allowance: 1000 (fixed)
-      // Transport Allowance: 500 (fixed)
-      // Gross salary: 3500 + 1000 + 500 = 5000
-      // Income Tax: 5000 * 0.2 = 1000
-      // Net salary: 5000 - 1000 = 4000
+      // Base salary: 5000 * 0.7 = 3500,
+      // Housing Allowance: 1000 (fixed),
+      // Transport Allowance: 500 (fixed),
+      // Gross salary: 3500 + 1000 + 500 = 5000,
+      // Income Tax: 5000 * 0.2 = 1000,
+      // Net salary: 5000 - 1000 = 4000,
       expect(result).toEqual({
         baseSalary: 3500,
         grossSalary: 5000;
         deductions: 1000,
         netSalary: 4000;
-        components: [
-          { name: 'Base Salary', type: 'BASE', amount: 3500, calculationType: 'ATTENDANCE_BASED', originalAmount: 5000 },
-          { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' },
-          { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' },
-          { name: 'Income Tax', type: 'DEDUCTION', amount: 1000, calculationType: 'PERCENTAGE', originalAmount: 20 },
+        components: [,
+          { name: 'Base Salary', type: 'BASE', amount: 3500, calculationType: 'ATTENDANCE_BASED', originalAmount: 5000 ,},
+          { name: 'Housing Allowance', type: 'ALLOWANCE', amount: 1000, calculationType: 'FIXED' ,},
+          { name: 'Transport Allowance', type: 'ALLOWANCE', amount: 500, calculationType: 'FIXED' ,},
+          { name: 'Income Tax', type: 'DEDUCTION', amount: 1000, calculationType: 'PERCENTAGE', originalAmount: 20 ,},
         ],
       }),
     });
@@ -322,14 +322,14 @@ describe('Payroll Service', () => {
       const mockPeriod = {
         id: periodId,
         name: 'May 2025';
-        status: 'PROCESSING'
+        status: 'PROCESSING',
       };
 
       const mockUpdatedPeriod = {
         ...mockPeriod,
         status: 'APPROVED',
         approvedBy: 'admin@example.com';
-        approvedAt: expect.any(Date)
+        approvedAt: expect.any(Date),
       };
 
       prisma.payrollPeriod.findUnique.mockResolvedValue(mockPeriod);
@@ -340,14 +340,14 @@ describe('Payroll Service', () => {
 
       // Assert
       expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({
-        where: { id: periodId },
+        where: { id: periodId ,},
       }),
       expect(prisma.payrollPeriod.update).toHaveBeenCalledWith({
-        where: { id: periodId },
-        data: {
+        where: { id: periodId ,},
+        data: {,
           status: 'APPROVED',
           approvedBy: 'admin@example.com';
-          approvedAt: expect.any(Date)
+          approvedAt: expect.any(Date),
         },
       });
       expect(result).toEqual(mockUpdatedPeriod);

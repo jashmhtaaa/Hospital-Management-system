@@ -17,30 +17,30 @@ const updateEmployeeSchema = z.object({
   photo: z.string().optional(),
   emergencyContact: z.any().optional(),
   active: z.boolean().optional(),
-  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined)
+  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
 });
 
 // GET /api/hr/staff/[id]
 export const _GET = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const employee = await employeeService.getEmployeeById(params.id)
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Employee not found' },
-        { status: 404 }
+        { error: 'Employee not found' ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json(employee);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     return NextResponse.json(
-      { error: 'Failed to fetch employee', details: error.message },
-      { status: 500 }
+      { error: 'Failed to fetch employee', details: error.message ,},
+      { status: 500 },
     );
   }
 }
@@ -48,7 +48,7 @@ export const _GET = async (
 // PUT /api/hr/staff/[id]
 export const _PUT = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const body = await request.json()
@@ -60,27 +60,27 @@ export const _PUT = async (
     const employee = await employeeService.updateEmployee(params.id, validatedData);
 
     return NextResponse.json(employee);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     // Handle validation errors
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation error', details: error.errors },
-        { status: 400 }
+        { error: 'Validation error', details: error.errors ,},
+        { status: 400 },
       );
     }
 
     // Handle not found errors
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Employee not found' },
-        { status: 404 }
+        { error: 'Employee not found' ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json(
-      { error: 'Failed to update employee', details: error.message },
-      { status: 500 }
+      { error: 'Failed to update employee', details: error.message ,},
+      { status: 500 },
     );
   }
 }
@@ -88,28 +88,28 @@ export const _PUT = async (
 // DELETE /api/hr/staff/[id] - Soft delete by setting active to false
 export const _DELETE = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     // Soft delete by setting active to false and recording termination date
     const employee = await employeeService.updateEmployee(params.id, {
       active: false,
-      terminationDate: new Date()
+      terminationDate: new Date(),
     });
 
-    return NextResponse.json({ success: true });
-  } catch (error: unknown) {
+    return NextResponse.json({ success: true ,});
+  } catch (error: unknown) {,
 
     // Handle not found errors
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Employee not found' },
-        { status: 404 }
+        { error: 'Employee not found' ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json(
-      { error: 'Failed to delete employee', details: error.message },
-      { status: 500 }
+      { error: 'Failed to delete employee', details: error.message ,},
+      { status: 500 },
     );
   }

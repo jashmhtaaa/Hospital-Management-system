@@ -14,13 +14,13 @@ try {
     const project = new Project({
         tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
         skipAddingFilesFromTsConfig: false,
-        skipFileDependencyResolution: false
+        skipFileDependencyResolution: false,
     });
 
     // Register repair functions for different error patterns
     const repairStrategies = {
         // Fix malformed imports
-        fixImports: (file) => {
+        fixImports: (file) => {,
             file.getImportDeclarations().forEach(imp => {
                 const text = imp.getText();
                 if (text.includes('import') && text.includes('}') && !text.includes('from')) {
@@ -33,7 +33,7 @@ try {
         },
         
         // Fix malformed exports
-        fixExports: (file) => {
+        fixExports: (file) => {,
             file.getExportDeclarations().forEach(exp => {
                 const text = exp.getText();
                 if (text.includes('export') && text.includes('}') && !text.includes('from')) {
@@ -46,7 +46,7 @@ try {
         },
         
         // Fix common syntax errors
-        fixSyntax: (file) => {
+        fixSyntax: (file) => {,
             // Implement additional syntax repair logic here
             // based on the specific error patterns observed
         }

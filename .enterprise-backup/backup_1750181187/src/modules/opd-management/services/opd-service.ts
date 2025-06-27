@@ -2,25 +2,25 @@
 import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 // src/modules/opd-management/services/opd-service.ts
-\1
+
 }
 }
 
-\1
+
 }
     }
 
     const appointment = await prisma.appointment.create({
       data,
-      include: {
+      include: {,
         patient: true,
-        \1,\2 true
+         true
       }
     });
 
-    \1 {\n  \2{
+     {\n  {
       await AuditService.logUserAction(
-        { userId: scheduledBy },
+        { userId: scheduledBy ,},
         'CREATE',
         'APPOINTMENT',
         appointment.id,
@@ -33,35 +33,35 @@ import { prisma } from '@/lib/prisma';
 
   static async checkDoctorAvailability(
     doctorId: string,
-    \1,\2 string
+     string
   ): Promise<boolean> {
     const conflictingAppointment = await prisma.appointment.findFirst({
-      where: {
+      where: {,
         doctorId,
         appointmentDate: date,
-        \1,\2 'CANCELLED' 
+         'CANCELLED' 
       }
     });
 
     return !conflictingAppointment;
   }
 
-  static async getDoctorSchedule(doctorId: string, date: Date) {
+  static async getDoctorSchedule(doctorId: string, date: Date) {,
     return await prisma.appointment.findMany({
-      where: {
+      where: {,
         doctorId,
         appointmentDate: date,
-        status: { not: 'CANCELLED' }
+        status: { not: 'CANCELLED' },
       },
-      include: {
-        patient: {
-          select: {
+      include: {,
+        patient: {,
+          select: {,
             firstName: true,
-            \1,\2 true
+             true
           }
         }
       },
-      orderBy: { appointmentTime: 'asc' }
+      orderBy: { appointmentTime: 'asc' },
     });
   }
 
@@ -71,24 +71,24 @@ import { prisma } from '@/lib/prisma';
     updatedBy?: string
   ) {
     const oldAppointment = await prisma.appointment.findUnique({
-      where: { id: appointmentId }
+      where: { id: appointmentId },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Appointment not found');
     }
 
     const appointment = await prisma.appointment.update({
-      where: { id: appointmentId },
-      data: {
+      where: { id: appointmentId ,},
+      data: {,
         status,
-        ...(status === 'CANCELLED' && { cancelledAt: new Date() })
+        ...(status === 'CANCELLED' && { cancelledAt: new Date() }),
       }
     });
 
-    \1 {\n  \2{
+     {\n  {
       await AuditService.logDataChange(
-        { userId: updatedBy },
+        { userId: updatedBy ,},
         'APPOINTMENT',
         appointmentId,
         oldAppointment,
@@ -106,27 +106,27 @@ import { prisma } from '@/lib/prisma';
 
     const [scheduled, completed, cancelled, inProgress] = await Promise.all([
       prisma.appointment.count({
-        where: {
-          appointmentDate: { gte: startOfDay, lte: endOfDay },
-          status: 'SCHEDULED'
+        where: {,
+          appointmentDate: { gte: startOfDay, lte: endOfDay ,},
+          status: 'SCHEDULED',
         }
       }),
       prisma.appointment.count({
-        where: {
-          appointmentDate: { gte: startOfDay, lte: endOfDay },
-          status: 'COMPLETED'
+        where: {,
+          appointmentDate: { gte: startOfDay, lte: endOfDay ,},
+          status: 'COMPLETED',
         }
       }),
       prisma.appointment.count({
-        where: {
-          appointmentDate: { gte: startOfDay, lte: endOfDay },
-          status: 'CANCELLED'
+        where: {,
+          appointmentDate: { gte: startOfDay, lte: endOfDay ,},
+          status: 'CANCELLED',
         }
       }),
       prisma.appointment.count({
-        where: {
-          appointmentDate: { gte: startOfDay, lte: endOfDay },
-          status: 'IN_PROGRESS'
+        where: {,
+          appointmentDate: { gte: startOfDay, lte: endOfDay ,},
+          status: 'IN_PROGRESS',
         }
       })
     ]);

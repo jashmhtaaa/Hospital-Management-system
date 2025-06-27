@@ -18,10 +18,10 @@ const createRadiologyRequestSchema = z.object({
   status: z.nativeEnum(RadiologyRequestStatus).default(RadiologyRequestStatus.PENDING_SCHEDULE).optional(),
   reason: z.string().max(2000).optional().nullable(),
   notes: z.string().max(2000).optional().nullable(),
-  scheduledDate: z.string().datetime({ offset: true, message: "Invalid scheduled date format. ISO 8601 expected." }).optional().nullable(),
+  scheduledDate: z.string().datetime({ offset: true, message: "Invalid scheduled date format. ISO 8601 expected." ,}).optional().nullable(),
 });
 
-export async const _POST = (request: NextRequest) => {
+export async const _POST = (request: NextRequest) => {,
   const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
 
@@ -35,26 +35,26 @@ export async const _POST = (request: NextRequest) => {
 
     const canCreateRequest = await hasPermission(userId, "RADIOLOGY_CREATE_REQUEST");
     if (!canCreateRequest) {
-      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
+      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_ATTEMPT_DENIED", { path: request.nextUrl.pathname ,});
       return sendErrorResponse("Forbidden: You do not have permission to create radiology requests.", 403)
     }
 
     const body: unknown = await request.json();
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const validation = createRadiologyRequestSchema.safeParse(body)
     if (!validation.success) {
       // Debug logging removed)
-      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
+      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() ,});
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
 
     const { patientId, orderedById, procedureIds, status, reason, notes, scheduledDate } = validation.data;
 
     const [patient, orderedByUser, procedures] = await Promise.all([
-        prisma.patient.findUnique({ where: { id: patientId } }),
-        prisma.user.findUnique({ where: { id: orderedById } }),
-        prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } })
+        prisma.patient.findUnique({ where: { id: patientId } ,}),
+        prisma.user.findUnique({ where: { id: orderedById } ,}),
+        prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } }),
     ]);
 
     if (!patient) {
@@ -68,38 +68,38 @@ export async const _POST = (request: NextRequest) => {
     if (procedures.length !== procedureIds.length) {
       const foundIds = procedures.map(p => p.id);
       const notFoundIds = procedureIds.filter(id => !foundIds.includes(id));
-      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_PROCEDURE_NOT_FOUND", { notFoundProcedureIds: notFoundIds });
-      return sendErrorResponse("One or more procedures not found.", 404, { notFoundProcedureIds: notFoundIds });
+      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_PROCEDURE_NOT_FOUND", { notFoundProcedureIds: notFoundIds ,});
+      return sendErrorResponse("One or more procedures not found.", 404, { notFoundProcedureIds: notFoundIds ,});
     }
 
-    const dataToCreate: Prisma.RadiologyRequestCreateInput = {
-        patient: { connect: { id: patientId } },
-        orderedBy: { connect: { id: orderedById } },
+    const dataToCreate: Prisma.RadiologyRequestCreateInput = {,
+        patient: { connect: { id: patientId } ,},
+        orderedBy: { connect: { id: orderedById } ,},
         status: status || RadiologyRequestStatus.PENDING_SCHEDULE,
         reason: reason,
         notes: notes,
         scheduledDate: scheduledDate ? new Date(scheduledDate) : null,
-        procedures: {
-          connect: procedureIds.map((id: string) => ({ id })),
+        procedures: {,
+          connect: procedureIds.map((id: string) => ({ id ,})),
         },
       };
 
     const newRadiologyRequest = await prisma.radiologyRequest.create({
       data: dataToCreate,
-      include: {
-        patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
-        orderedBy: { select: { id: true, name: true } },
-        procedures: { select: { id: true, name: true, code: true } },
+      include: {,
+        patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } ,},
+        orderedBy: { select: { id: true, name: true } ,},
+        procedures: { select: { id: true, name: true, code: true } ,},
       },
     });
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_SUCCESS", { path: request.nextUrl.pathname, requestId: newRadiologyRequest.id, data: newRadiologyRequest })
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_SUCCESS", { path: request.nextUrl.pathname, requestId: newRadiologyRequest.id, data: newRadiologyRequest }),
     const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     return sendSuccessResponse(newRadiologyRequest, 201)
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errStatus = 500;
     let errMessage = "Internal Server Error";
@@ -111,19 +111,19 @@ export async const _POST = (request: NextRequest) => {
         errStatus = 409;
         errMessage = "Conflict: This radiology request cannot be created due to a conflict.";
         const target = Array.isArray(meta?.target) ? meta.target.join(", ") : String(meta?.target),
-        errDetails = `A unique constraint was violated. Fields: ${target}`;
+        errDetails = `A unique constraint was violated. Fields: ${target,}`;
       } else if (error.code === "P2025") {
         errStatus = 400;
         errMessage = "Bad Request: A related record was not found.";
         errDetails = meta?.cause || "Failed to find a related entity for the request.";
       }
     }
-    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
+    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) ,});
     const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
-export async const _GET = (request: NextRequest) => {
+export async const _GET = (request: NextRequest) => {,
   const start = crypto.getRandomValues(new Uint32Array(1))[0];
   let userId: string | undefined;
 
@@ -139,7 +139,7 @@ export async const _GET = (request: NextRequest) => {
     const canViewPatient = await hasPermission(userId, "RADIOLOGY_VIEW_PATIENT_REQUESTS");
 
     if (!canViewAll && !canViewPatient) {
-      await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
+      await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname ,});
       return sendErrorResponse("Forbidden: You do not have permission to view radiology requests.", 403)
     }
 
@@ -151,7 +151,7 @@ export async const _GET = (request: NextRequest) => {
     const limit = Number.parseInt(searchParams.get("limit") || "20");
     const skip = (page - 1) * limit;
 
-    const whereClause: Prisma.RadiologyRequestWhereInput = {};
+    const whereClause: Prisma.RadiologyRequestWhereInput = {,};
     if (patientIdParam != null) {
       if (!z.string().cuid().safeParse(patientIdParam).success) return sendErrorResponse("Invalid patientId format.", 400);
       whereClause.patientId = patientIdParam;
@@ -173,41 +173,41 @@ export async const _GET = (request: NextRequest) => {
         }
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const [radiologyRequests, totalCount] = await prisma.$transaction([
       prisma.radiologyRequest.findMany({
         where: whereClause,
-        include: {
-          patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
-          orderedBy: { select: { id: true, name: true } },
-          procedures: { select: { id: true, name: true, code: true } },
-          RadiologyReport: { select: { id: true, reportDate: true, status: true } }
+        include: {,
+          patient: { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } ,},
+          orderedBy: { select: { id: true, name: true } ,},
+          procedures: { select: { id: true, name: true, code: true } ,},
+          RadiologyReport: { select: { id: true, reportDate: true, status: true } },
         },
-        orderBy: { requestDate: "desc" },
+        orderBy: { requestDate: "desc" ,},
         skip,
-        take: limit
+        take: limit,
       }),
-      prisma.radiologyRequest.count({ where: whereClause })
+      prisma.radiologyRequest.count({ where: whereClause }),
     ])
 
     await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: radiologyRequests.length, totalCount });
     const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     return sendSuccessResponse({
       data: radiologyRequests,
-      pagination: {
+      pagination: {,
         page,
         limit,
         totalCount,
-        totalPages: Math.ceil(totalCount / limit)
+        totalPages: Math.ceil(totalCount / limit),
       }
     })
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
-    await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
+    await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) ,});
     const _duration = crypto.getRandomValues(new Uint32Array(1))[0] - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));

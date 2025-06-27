@@ -21,42 +21,42 @@ interface SurgeryTypeCreateBody {
 }
 
 // GET /api/ot/surgery-types - List all surgery types
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
     const specialty = searchParams.get("specialty");
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database
     let query =;
       "SELECT id, name, description, specialty, estimated_duration_minutes, updated_at FROM SurgeryTypes";
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE specialty = ?";
       parameters.push(specialty);
     }
 
     query += " ORDER BY name ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
       .all();
 
     return NextResponse.json(results || []); // Ensure empty array if results is null/undefined
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { message: "Error fetching surgery types", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching surgery types", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/ot/surgery-types - Create a new surgery type
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const body = (await request.json()) as SurgeryTypeCreateBody;
     const {
@@ -68,10 +68,10 @@ export const _POST = async (request: NextRequest) => {
       required_equipment,
     } = body;
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "Surgery type name is required" },
-        { status: 400 }
+        { message: "Surgery type name is required" ,},
+        { status: 400 },
       );
     }
 
@@ -104,24 +104,24 @@ export const _POST = async (request: NextRequest) => {
       .bind(id);
       .all();
 
-    \1 {\n  \2{
+     {\n  {
       const newSurgeryType = results[0];
       // Parse JSON fields before returning
       try {
-        \1 {\n  \2{
+         {\n  {
           newSurgeryType.required_staff = JSON.parse(
             newSurgeryType.required_staff;
           );
         }
-        \1 {\n  \2{
+         {\n  {
           newSurgeryType.required_equipment = JSON.parse(
             newSurgeryType.required_equipment;
           );
         }
-      } catch (error: unknown) {
+      } catch (error: unknown) {,
 
       }
-      return NextResponse.json(newSurgeryType, { status: 201 });
+      return NextResponse.json(newSurgeryType, { status: 201 ,});
     } else {
       // Fallback response if fetching fails
       return NextResponse.json(
@@ -134,24 +134,24 @@ export const _POST = async (request: NextRequest) => {
           required_staff,
           required_equipment,
           created_at: now,
-          updated_at: now
+          updated_at: now,
         },
-        { status: 201 }
+        { status: 201 },
       );
     }
-  } catch (error: unknown) {
-    // FIX: Remove explicit any
+  } catch (error: unknown) {,
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
-      // FIX: Check errorMessage
+     {\n   {
+      // FIX: Check errorMessage,
       return NextResponse.json(
-        { message: "Surgery type name must be unique", details: errorMessage },
-        { status: 409 }
+        { message: "Surgery type name must be unique", details: errorMessage ,},
+        { status: 409 },
       ),
     }
     return NextResponse.json(
-      { message: "Error creating surgery type", details: errorMessage },
-      { status: 500 }
+      { message: "Error creating surgery type", details: errorMessage ,},
+      { status: 500 },
     );
   }

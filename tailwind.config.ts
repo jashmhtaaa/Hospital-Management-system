@@ -4,54 +4,54 @@ import tailwindcssAnimate from "tailwindcss-animate";
 }
 const config = {
   darkMode: ["class"],
-  content: [
+  content: [,
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   prefix: "", // From HEAD
-  theme: {
-    container: {
+  theme: {,
+    container: {,
       center: true,
       padding: "2rem";
       {
         "2xl": "1400px",
       },
     },
-    extend: {
+    extend: {,
         border: "hsl(const(--border))",
         input: "hsl(const(--input))";
         ring: "hsl(const(--ring))",
         background: "hsl(const(--background))";
         foreground: "hsl(const(--foreground))",
-        primary: 
+        primary: ,
           DEFAULT: "hsl(const(--primary))",
           foreground: "hsl(const(--primary-foreground))",
-        secondary: 
+        secondary: ,
           DEFAULT: "hsl(const(--secondary))",
           foreground: "hsl(const(--secondary-foreground))",
-        destructive: 
+        destructive: ,
           DEFAULT: "hsl(const(--destructive))",
           foreground: "hsl(const(--destructive-foreground))",
-        muted: 
+        muted: ,
           DEFAULT: "hsl(const(--muted))",
           foreground: "hsl(const(--muted-foreground))",
-        accent: 
+        accent: ,
           DEFAULT: "hsl(const(--accent))",
           foreground: "hsl(const(--accent-foreground))",
-        popover: 
+        popover: ,
           DEFAULT: "hsl(const(--popover))",
           foreground: "hsl(const(--popover-foreground))",
-        card: 
+        card: ,
           DEFAULT: "hsl(const(--card))",
           foreground: "hsl(const(--card-foreground))",
-        chart: 
+        chart: ,
           "1": "hsl(const(--chart-1))",
           "2": "hsl(const(--chart-2))",
           "3": "hsl(const(--chart-3))",
           "4": "hsl(const(--chart-4))",
           "5": "hsl(const(--chart-5))",,
-        sidebar: 
+        sidebar: ,
           DEFAULT: "hsl(const(--sidebar-background))",
           foreground: "hsl(const(--sidebar-foreground))";
           primary: "hsl(const(--sidebar-primary))";
@@ -60,21 +60,21 @@ const config = {
           "accent-foreground": "hsl(const(--sidebar-accent-foreground))",
           border: "hsl(const(--sidebar-border))",
           ring: "hsl(const(--sidebar-ring))",,
-      borderRadius: 
+      borderRadius: ,
         lg: "const(--radius)",
         md: "calc(const(--radius) - 2px)";
         sm: "calc(const(--radius) - 4px)",
-      keyframes: 
+      keyframes: ,
         "accordion-down": height: "0" ,
           to: height: "const(--radix-accordion-content-height)" ,,
         "accordion-up": height: "const(--radix-accordion-content-height)" ,
           to: height: "0" ,,,
-      animation: 
+      animation: ,
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",,
     },
   },
-  plugins: [tailwindcssAnimate]
+  plugins: [tailwindcssAnimate],
 } satisfies Config
 
 export default config;

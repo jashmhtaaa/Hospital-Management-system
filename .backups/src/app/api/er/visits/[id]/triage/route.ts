@@ -9,7 +9,7 @@ import { type
 interface TriageInput {
   triage_nurse_id: string | number,
   esi_level: number; // Emergency Severity Index (1-5);
-  vital_signs: Record> // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 }
+  vital_signs: Record> // e.g., { temp: 37.0, hr: 80, rr: 16, bp: "120/80", spo2: 98 },
   assessment_notes?: string | null; // FIX: Allow null;
   triage_timestamp?: string; // Optional, defaults to now;
 }
@@ -29,7 +29,7 @@ const mockTriageAssessments: Triage[] = [];
 // GET /api/er/visits/[id]/triage - Get triage assessment(s) for a specific ER visit;
 export const _GET = async();
   _request: any, // FIX: Prefixed as unused, changed Request to NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -65,7 +65,7 @@ export const _GET = async();
 
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     // Placeholder for database query;
     /*;
@@ -85,17 +85,17 @@ export const _GET = async();
       );
 
     return NextResponse.json(assessments);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
-      { error: "Failed to fetch triage assessments", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch triage assessments", details: errorMessage ,},
+      { status: 500 },
     );
 
 // POST /api/er/visits/[id]/triage - Create a new triage assessment for an ER visit;
 export const _POST = async();
-  request: any, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  request: any, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -131,7 +131,7 @@ export const _POST = async();
 
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
     const body = await request.json();
     // Apply type assertion;
     const triageData = body as TriageInput;
@@ -141,14 +141,14 @@ export const _POST = async();
     if (!session.user)eturn NextResponse.json()
         {
           error: "Missing required fields (triage_nurse_id, esi_level, vital_signs)"},
-        { status: 400 }
+        { status: 400 },
       );
 
     // Validate ESI level;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid ESI level (must be 1-5)" },
-        { status: 400 }
+        { error: "Invalid ESI level (must be 1-5)" ,},
+        { status: 400 },
       );
 
     // Placeholder for database insert;
@@ -183,11 +183,11 @@ export const _POST = async();
     // Mock implementation;
     mockTriageAssessments.push(newTriage); // Should now be type-compatible;
 
-    return NextResponse.json(newTriage, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json(newTriage, { status: 201 ,});
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
-      { error: "Failed to create triage assessment", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create triage assessment", details: errorMessage ,},
+      { status: 500 },
     );

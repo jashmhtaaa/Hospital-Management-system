@@ -9,37 +9,37 @@ import { getCurrentUser, hasPermission } from "@/lib/authUtils";
 // app/api/lis/tests/route.ts
 const prisma = new PrismaClient();
 
-export const \1 = async = (request: NextRequest) => {
-  const start = crypto.getRandomValues(\1[0];
+export const  = async = (request: NextRequest) => {,
+  const start = crypto.getRandomValues([0];
   let userId: string | undefined;
   try {
     const currentUser = await getCurrentUser(request);
     userId = currentUser?.id;
 
-    \1 {\n  \2{
+     {\n  {
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canViewTests = await hasPermission(userId, "LIS_VIEW_ALL_TESTS");
-    \1 {\n  \2{
-      await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
+     {\n  {
+      await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname ,});
       return sendErrorResponse("Forbidden: You do not have permission to view LIS tests.", 403)
     }
 
-    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement,
     const labTestItems = await prisma.labTestItem.findMany({
-      \1,\2 "asc"
+       "asc"
       },
     })
 
-    await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_SUCCESS", { path: request.nextUrl.pathname, count: labTestItems.length });
-    const _duration = crypto.getRandomValues(\1[0] - start;
-    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
+    await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_SUCCESS", { path: request.nextUrl.pathname, count: labTestItems.length ,});
+    const _duration = crypto.getRandomValues([0] - start;
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement,
     return sendSuccessResponse(labTestItems)
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
-    await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) })
-    const _duration = crypto.getRandomValues(\1[0] - start;
+    await auditLogService.logEvent(userId, "LIS_VIEW_ALL_TESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) }),
+    const _duration = crypto.getRandomValues([0] - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }
@@ -50,76 +50,76 @@ const createLabTestItemSchema = z.object({
   code: z.string().max(50).optional().nullable(),
   description: z.string().max(1000).optional().nullable(),
   category: z.string().max(100).optional().nullable(),
-  price: z.number().positive("Price must be positive").optional().nullable()
+  price: z.number().positive("Price must be positive").optional().nullable(),
 });
 
-export const \1 = async = (request: NextRequest) => {
-  const start = crypto.getRandomValues(\1[0];
+export const  = async = (request: NextRequest) => {,
+  const start = crypto.getRandomValues([0];
   let userId: string | undefined;
 
   try {
     const currentUser = await getCurrentUser(request);
     userId = currentUser?.id;
 
-    \1 {\n  \2{
+     {\n  {
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canCreateTests = await hasPermission(userId, "LIS_CREATE_TEST_DEFINITION");
-    \1 {\n  \2{
-      await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
+     {\n  {
+      await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_ATTEMPT_DENIED", { path: request.nextUrl.pathname ,});
       return sendErrorResponse("Forbidden: You do not have permission to create LIS tests.", 403)
     }
 
     const body: unknown = await request.json();
-    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement,
 
     const validation = createLabTestItemSchema.safeParse(body)
 
-    \1 {\n  \2{
+     {\n  {
       // Debug logging removed)
-      await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
+      await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() ,});
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
 
     const { name, code, description, category, price } = validation.data;
 
-    const dataToCreate: Prisma.LabTestItemUncheckedCreateInput = {
+    const dataToCreate: Prisma.LabTestItemUncheckedCreateInput = {,
         name,
         code: code === undefined ? null : code,
         description: description === undefined ? null : description,
         category: category === undefined ? null : category,
-        price: price === undefined ? null : price
+        price: price === undefined ? null : price,
     };
 
     const newLabTestItem = await prisma.labTestItem.create({
-      data: dataToCreate
+      data: dataToCreate,
     });
 
-    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
-    await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_SUCCESS", { path: request.nextUrl.pathname, testItemId: newLabTestItem.id, data: newLabTestItem })
-    const _duration = crypto.getRandomValues(\1[0] - start;
-    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement,
+    await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_SUCCESS", { path: request.nextUrl.pathname, testItemId: newLabTestItem.id, data: newLabTestItem }),
+    const _duration = crypto.getRandomValues([0] - start;
+    // RESOLVED: Replace with proper logging - // Debug logging removed - Automated quality improvement,
     return sendSuccessResponse(newLabTestItem, 201)
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errStatus = 500;
     let errMessage = "Internal Server Error";
     let errDetails: string | Record<string, unknown> | undefined = error.message;
 
-    \1 {\n  \2{
+     {\n  {
       errDetails = error.meta;
-      \1 {\n  \2{
+       {\n  {
         errStatus = 409;
         errMessage = "Conflict: Lab test item with this code or name already exists.";
         const target = Array.isArray(error.meta?.target) ? error.meta.target.join(", ") : String(error.meta?.target),
-        errDetails = `A lab test item with the same unique field (e.g., \"code\" or \"name\") already exists. Fields: ${target}`;
-        // Debug logging removed for user ${userId}. Details: ${\1}`
+        errDetails = `A lab test item with the same unique field (e.g., \"code\" or \"name\") already exists. Fields: ${target,}`;
+        // Debug logging removed for user ${userId}. Details: ${}`,
       }
     }
-    await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
-    const _duration = crypto.getRandomValues(\1[0] - start;
+    await auditLogService.logEvent(userId, "LIS_CREATE_TEST_DEFINITION_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) ,});
+    const _duration = crypto.getRandomValues([0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }

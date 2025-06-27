@@ -37,36 +37,31 @@ import { format }
 import { Pagination }
 import { useToast }
 
-interface Document {
-  id: string,
+interface Document {id:string,
   string,
   string,
   string,
   boolean;
 }
 
-interface PaginationInfo {
-  total: number,
+interface PaginationInfo {total:number,
   number,
   totalPages: number;
 }
 
-interface DocumentListProps {
-  patientId: string;
+interface DocumentListProps {patientId:string;
 export const _DocumentList = ({ patientId }: DocumentListProps) => {
   const router = useRouter();
   const { toast } = useToast();
 
   // State;
   const [documents, setDocuments] = useState<Document[]>([]);
-  const [pagination, setPagination] = useState<PaginationInfo>({
-    total: 0,
+  const [pagination, setPagination] = useState<PaginationInfo>({total:0,
     10,
     totalPages: 0;
   });
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState({
-    documentType: "",
+  const [filters, setFilters] = useState({documentType:"",
     null as Date | null,
     dateTo: null as Date | null;
   });
@@ -140,8 +135,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
       setPagination(data.pagination);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

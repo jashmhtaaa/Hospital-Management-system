@@ -12,7 +12,7 @@ export enum DietType {
   SOFT = 'SOFT',
   NPO = 'NPO',
   CUSTOM = 'CUSTOM',
-\1\n\nexport \2 DietOrderStatus {
+\n\nexport  DietOrderStatus {
   ACTIVE = 'ACTIVE',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
@@ -27,11 +27,11 @@ export const createDietOrderSchema = z.object({
   endDate: z.date().optional().nullable(),
   status: z.nativeEnum(DietOrderStatus).default(DietOrderStatus.ACTIVE),
   createdBy: z.string().min(1, 'Creator ID is required'),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 export const updateDietOrderSchema = createDietOrderSchema.partial().extend({
-  id: z.string()
+  id: z.string(),
 });
 
 export type CreateDietOrderInput = z.infer<typeof createDietOrderSchema>;
@@ -43,14 +43,14 @@ import { prisma } from '../lib/prisma';
 /**
  * Service class for managing dietary orders;
  */
-\1
+
 }
       });
 
       return order;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -68,38 +68,38 @@ import { prisma } from '../lib/prisma';
     activeOn?: Date;
   }) {
     try {
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+         {\n  {
           where.dietType = filters.dietType;
         }
-        \1 {\n  \2{
+         {\n  {
           where.patientId = filters.patientId;
         }
-        \1 {\n  \2{
+         {\n  {
           // Find orders active on the specified date
-          where.startDate = { lte: filters.activeOn };
+          where.startDate = { lte: filters.activeOn ,};
           where.OR = [
-            { endDate: null },
-            { endDate: { gte: filters.activeOn } },
+            { endDate: null ,},
+            { endDate: { gte: filters.activeOn } ,},
           ];
         }
       }
 
       const orders = await prisma.dietOrder.findMany({
         where,
-        orderBy: [
-          { startDate: 'desc' },
+        orderBy: [,
+          { startDate: 'desc' ,},
         ],
-        include: {
-          patient: {
-            select: {
+        include: {,
+          patient: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -116,15 +116,15 @@ import { prisma } from '../lib/prisma';
    * @param id Diet order ID;
    * @returns The diet order or null if not found;
    */
-  async getOrderById(id: string) {
+  async getOrderById(id: string) {,
     try {
       const order = await prisma.dietOrder.findUnique({
-        where: { id },
-        include: {
-          patient: {
-            select: {
+        where: { id ,},
+        include: {,
+          patient: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -142,7 +142,7 @@ import { prisma } from '../lib/prisma';
    * @param data Updated diet order data;
    * @returns The updated diet order;
    */
-  async updateOrder(id: string, data: UpdateDietOrderInput) {
+  async updateOrder(id: string, data: UpdateDietOrderInput) {,
     try {
       // Validate input data
       const validatedData = updateDietOrderSchema.parse({ ...data, id });
@@ -152,13 +152,13 @@ import { prisma } from '../lib/prisma';
 
       // Update the diet order
       const order = await prisma.dietOrder.update({
-        where: { id },
+        where: { id ,},
         data: updateData,
-        include: {
-          patient: {
-            select: {
+        include: {,
+          patient: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -166,8 +166,8 @@ import { prisma } from '../lib/prisma';
 
       return order;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -178,10 +178,10 @@ import { prisma } from '../lib/prisma';
    * @param id Diet order ID;
    * @returns The deleted diet order;
    */
-  async deleteOrder(id: string) {
+  async deleteOrder(id: string) {,
     try {
       const order = await prisma.dietOrder.delete({
-        where: { id },
+        where: { id ,},
       });
 
       return order;
@@ -195,19 +195,19 @@ import { prisma } from '../lib/prisma';
    * @param id Diet order ID;
    * @returns The updated diet order;
    */
-  async cancelOrder(id: string) {
+  async cancelOrder(id: string) {,
     try {
       const order = await prisma.dietOrder.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           status: DietOrderStatus.CANCELLED,
-          endDate: new Date()
+          endDate: new Date(),
         },
-        include: {
-          patient: {
-            select: {
+        include: {,
+          patient: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -224,19 +224,19 @@ import { prisma } from '../lib/prisma';
    * @param id Diet order ID;
    * @returns The updated diet order;
    */
-  async completeOrder(id: string) {
+  async completeOrder(id: string) {,
     try {
       const order = await prisma.dietOrder.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           status: DietOrderStatus.COMPLETED,
-          endDate: new Date()
+          endDate: new Date(),
         },
-        include: {
-          patient: {
-            select: {
+        include: {,
+          patient: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -253,22 +253,22 @@ import { prisma } from '../lib/prisma';
    * @param date Date to check for active orders;
    * @returns Array of active diet orders on the specified date;
    */
-  async getActiveOrdersForDate(date: Date) {
+  async getActiveOrdersForDate(date: Date) {,
     try {
       const orders = await prisma.dietOrder.findMany({
-        where: {
-          startDate: { lte: date },
-          OR: [
-            { endDate: null },
-            { endDate: { gte: date } },
+        where: {,
+          startDate: { lte: date ,},
+          OR: [,
+            { endDate: null ,},
+            { endDate: { gte: date } ,},
           ],
-          status: DietOrderStatus.ACTIVE
+          status: DietOrderStatus.ACTIVE,
         },
-        include: {
-          patient: {
-            select: {
+        include: {,
+          patient: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },

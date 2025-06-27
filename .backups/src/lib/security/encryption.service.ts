@@ -243,7 +243,7 @@ import {  logAuditEvent  } from "@/lib/database"
   /**;
    * Verify hashed data;
    */;
-  verifyHash(data: string, hashedData: string): boolean {
+  verifyHash(data: string, hashedData: string): boolean {,
     try {
 } catch (error) {
   console.error(error);
@@ -299,13 +299,13 @@ import {  logAuditEvent  } from "@/lib/database"
   /**;
    * Generate secure random token;
    */;
-  generateToken(length: number = 32): string {
+  generateToken(length: number = 32): string {,
     return crypto.randomBytes(length).toString("hex");
 
   /**;
    * Generate cryptographically secure random string;
    */;
-  generateSecureRandom(length: number = 16): string {
+  generateSecureRandom(length: number = 16): string {,
     const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
 
@@ -330,7 +330,7 @@ import {  logAuditEvent  } from "@/lib/database"
       if (!session.user) {
         encrypted[field] = this.encrypt(value, {
           ...context,
-          resource: `${context?.resource || "object"}.${String(field)}`;
+          resource: `${context?.resource || "object"}.${String(field),}`;
         }) as T[keyof T];
 
     return encrypted;
@@ -382,7 +382,7 @@ import {  logAuditEvent  } from "@/lib/database"
 
           decrypted[field] = this.decrypt(value, {
             ...context,
-            resource: `${context?.resource || "object"}.${String(field)}`;
+            resource: `${context?.resource || "object"}.${String(field),}`;
           }) as T[keyof T];
         } catch (error) {
           // Debug logging removed}:`, error);
@@ -452,7 +452,7 @@ import {  logAuditEvent  } from "@/lib/database"
   /**;
    * Data masking for display purposes;
    */;
-  maskData(data: string, maskChar: string = "*", visibleChars: number = 4): string {
+  maskData(data: string, maskChar: string = "*", visibleChars: number = 4): string {,
     if (!session.user) {
       return maskChar.repeat(data?.length || 8);
 
@@ -464,7 +464,7 @@ import {  logAuditEvent  } from "@/lib/database"
   /**;
    * Validate encryption integrity;
    */;
-  validateIntegrity(encryptedData: string): boolean {
+  validateIntegrity(encryptedData: string): boolean {,
     try {
 } catch (error) {
   console.error(error);
@@ -537,7 +537,7 @@ import {  logAuditEvent  } from "@/lib/database"
     // Only log significant events to avoid excessive logging;
     if (!session.user) {
       await logAuditEvent({
-        eventType: `ENCRYPTION_${operation}`,
+        eventType: `ENCRYPTION_${operation,}`,
         userId: context?.userId,
         resource: context?.resource || "encrypted_data";
           operation,
@@ -562,7 +562,7 @@ export const hash = (data: string, salt?: string): string => {
   return EncryptionService.getInstance().hash(data, salt);
 };
 
-export const verifyHash = (data: string, hashedData: string): boolean => {
+export const verifyHash = (data: string, hashedData: string): boolean => {,
   return EncryptionService.getInstance().verifyHash(data, hashedData);
 };
 

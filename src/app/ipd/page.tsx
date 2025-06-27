@@ -39,14 +39,12 @@ import { Button } from "@/components/ui/button"; // FIX: Add missing Button impo
 // --- INTERFACES ---;
 
 // FIX: Define props type for IPDPatientDetails;
-interface IPDPatientDetailsProperties {
-  patientId: number; // Assuming ID is a number;
+interface IPDPatientDetailsProperties {patientId:number; // Assuming ID is a number;
   admissionId: number; // Assuming ID is a number;
 }
 
 // FIX: Define type for selected admission state;
-interface SelectedAdmission {
-  admissionId: number,
+interface SelectedAdmission {admissionId:number,
   patientId: number;
 
 // --- COMPONENTS ---;

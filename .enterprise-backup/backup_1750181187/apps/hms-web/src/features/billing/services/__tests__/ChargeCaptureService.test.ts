@@ -13,21 +13,21 @@ describe("ChargeCaptureService", () => {
 
   describe("createCharge", () => {
     it("should create a charge successfully with valid data", async () => {
-      // Arrange: Setup your test data and mocks
+      // Arrange: Setup your test data and mocks,
       const _chargeData = {
         patientId: "patient-123",
         serviceId: "service-456";
         amount: 100.00,
         dateOfService: new Date(),
-        providerId: "provider-789"
+        providerId: "provider-789",
       };
       // Mock the repository or other dependencies to return expected values
 
-      // Act: Call the method being tested
+      // Act: Call the method being tested,
       // const _chargeCaptureService = new ChargeCaptureService(/* pass mocks */)
       // const _result = await chargeCaptureService.createCharge(chargeData)
 
-      // Assert: Check if the result is as expected
+      // Assert: Check if the result is as expected,
       // expect(result).toBeDefined()
       // expect(result.id).toBeDefined()
       // expect(result.amount).toEqual(chargeData.amount),

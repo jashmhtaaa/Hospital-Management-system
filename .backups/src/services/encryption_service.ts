@@ -28,7 +28,7 @@ export {
   /**;
    * @deprecated Use async decrypt method from SecureEncryptionService;
    */;
-  decrypt(encryptedText: string): string {
+  decrypt(encryptedText: string): string {,
     if (!session.user) {
       return encryptedText;
 

@@ -8,7 +8,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 /**
  * Event interface for domain events;
  */
-\1
+
 }
   };
 }
@@ -16,27 +16,27 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 /**
  * Event Store interface;
  */
-\1
+
 }
 }
 
 /**
  * Kafka Event Store implementation;
  */
-\1
+
 }
       } : undefined,
-      retry: {
+      retry: {,
         initialRetryTime: 100,
-        retries: 8
+        retries: 8,
       }
     });
 
     this.producer = this.kafka.producer({
       allowAutoTopicCreation: false,
-      transactionalId: `${clientId}-tx`,
+      transactionalId: `${clientId,}-tx`,
       maxInFlightRequests: 5,
-      idempotent: true
+      idempotent: true,
     });
   }
 
@@ -58,15 +58,15 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
    * Save an event to the event store;
    */
   async saveEvent<T>(eventData: Omit<DomainEvent<T>, 'id' | 'timestamp'>): Promise<DomainEvent<T>> {
-    \1 {\n  \2{
+     {\n  {
       await this.initialize();
     }
 
     // Create full event
-    const event: DomainEvent<T> = {
+    const event: DomainEvent<T> = {,
       ...eventData,
       id: uuidv4(),
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     try {
@@ -84,26 +84,26 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       try {
         // Save to database first (event sourcing store)
         await this.prisma.domainEvent.create({
-          data: {
+          data: {,
             id: event.id,
-            \1,\2 event.aggregateId,
-            \1,\2 event.version,
-            \1,\2 processedEvent.data as any,
-            metadata: processedEvent.metadata as any
+             event.aggregateId,
+             event.version,
+             processedEvent.data as any,
+            metadata: processedEvent.metadata as any,
           }
         })
 
         // Then send to Kafka (for event streaming to other services)
         await transaction.send(
           topic,
-          messages: [
+          messages: [,
               key: event.aggregateId,
               value: JSON.stringify(processedEvent),
-              headers: 
+              headers: ,
                 eventType: event.type,
-                \1,\2 String(event.version),
+                 String(event.version),
                 timestamp: event.timestamp.toISOString(),
-                correlationId: event.metadata.correlationId || uuidv4()
+                correlationId: event.metadata.correlationId || uuidv4(),
           ])
 
         // Commit the transaction
@@ -112,7 +112,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         // Track metrics
         metricsCollector.incrementCounter('event_store.events_saved', 1, {
           eventType: event.type,
-          aggregateType: event.aggregateType
+          aggregateType: event.aggregateType,
         });
 
         return event;
@@ -125,13 +125,13 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       logger.error('Failed to save event to event store', {
         error,
         eventType: event.type,
-        \1,\2 event.aggregateType
+         event.aggregateType
       });
 
       // Track error metrics
       metricsCollector.incrementCounter('event_store.save_errors', 1, {
         eventType: event.type,
-        \1,\2 error.name || 'unknown'
+         error.name || 'unknown'
       });
 
       throw error;
@@ -141,15 +141,15 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Get events for a specific aggregate;
    */
-  async getEvents(aggregateId: string, aggregateType: string): Promise<DomainEvent[]> {
+  async getEvents(aggregateId: string, aggregateType: string): Promise<DomainEvent[]> {,
     try {
       const events = await this.prisma.domainEvent.findMany({
-        where: {
+        where: {,
           aggregateId,
           aggregateType;
         },
         orderBy: 
-          version: 'asc'
+          version: 'asc',
       });
 
       // Track metrics
@@ -168,7 +168,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Track error metrics
       metricsCollector.incrementCounter('event_store.retrieval_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
 
       throw error;
@@ -181,14 +181,14 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   async getEventsByType(eventType: string, limit = 100, offset = 0): Promise<DomainEvent[]> {
     try {
       const events = await this.prisma.domainEvent.findMany({
-        where: {
-          type: eventType
+        where: {,
+          type: eventType,
         },
-        orderBy: {
-          timestamp: 'asc'
+        orderBy: {,
+          timestamp: 'asc',
         },
         take: limit,
-        skip: offset
+        skip: offset,
       });
 
       // Track metrics
@@ -206,7 +206,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Track error metrics
       metricsCollector.incrementCounter('event_store.retrieval_errors', 1, {
         eventType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
 
       throw error;
@@ -219,7 +219,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   async subscribeToEvents(
     eventTypes: string[],
     handler: (event: DomainEvent) => Promise<void>,
-    options: {
+    options: {,
       groupId?: string;
       fromBeginning?: boolean;
     } = {}
@@ -238,10 +238,10 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       const consumer = this.kafka.consumer({
         groupId,
         sessionTimeout: 30000,
-        \1,\2 5,
-        retry: 
+         5,
+        retry: ,
           initialRetryTime: 300,
-          retries: 10
+          retries: 10,
       });
 
       await consumer.connect();
@@ -256,12 +256,12 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         partitionsConsumedConcurrently: 3,
         eachMessage: async ({ topic, partition, message }) => {
           try {
-            \1 {\n  \2eturn;
+             {\n  eturn;
 
             const event: DomainEvent = JSON.parse(message.value.toString());
 
             // Filter by event type if necessary
-            \1 {\n  \2 {
+             {\n   {
               const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
               // Decrypt sensitive data if needed
@@ -276,7 +276,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
               const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
               metricsCollector.recordTimer('event_store.event_processing_time', duration, {
                 eventType: event.type,
-                consumerGroup: groupId
+                consumerGroup: groupId,
               });
             }
           } catch (error) {
@@ -285,14 +285,14 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
               topic,
               partition,
               offset: message.offset,
-              \1,\2 groupId
+               groupId
             });
 
             // Track error metrics
             metricsCollector.incrementCounter('event_store.consumer_errors', 1, {
               topic,
               consumerGroup: groupId,
-              errorType: error.name || 'unknown'
+              errorType: error.name || 'unknown',
             });
           }
         }
@@ -315,7 +315,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
       // Track error metrics
       metricsCollector.incrementCounter('event_store.subscription_errors', 1, {
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
 
       throw error;
@@ -327,7 +327,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
    */
   async replayEvents(
     aggregateId: string,
-    \1,\2 (event: DomainEvent) => Promise<void>;
+     (event: DomainEvent) => Promise<void>;
   ): Promise<void> {
     try {
       const events = await this.getEvents(aggregateId, aggregateType);
@@ -355,7 +355,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Track error metrics
       metricsCollector.incrementCounter('event_store.replay_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
 
       throw error;
@@ -376,18 +376,18 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
       while (hasMore) {
         const events = await this.prisma.domainEvent.findMany({
-          where: {
+          where: {,
             aggregateType
           },
-          orderBy: [
-            { aggregateId: 'asc' },
-            { version: 'asc' }
+          orderBy: [,
+            { aggregateId: 'asc' ,},
+            { version: 'asc' },
           ],
           skip: processed,
-          take: batchSize
+          take: batchSize,
         });
 
-        \1 {\n  \2{
+         {\n  {
           hasMore = false;
           break;
         }
@@ -406,7 +406,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         processed += events.length;
 
         // Track progress
-        logger.info(`Replayed ${processed} events for aggregate type ${\1}`;
+        logger.info(`Replayed ${processed} events for aggregate type ${}`;
       }
 
       // Track metrics
@@ -422,7 +422,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Track error metrics
       metricsCollector.incrementCounter('event_store.replay_errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
 
       throw error;
@@ -438,14 +438,14 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       for (const [groupId, consumer] of this.consumers.entries()) {
         try {
           await consumer.disconnect();
-          logger.info(`Disconnected consumer group ${\1}`;
+          logger.info(`Disconnected consumer group ${}`;
         } catch (error) {
           logger.error(`Error disconnecting consumer group ${groupId}`, { error });
         }
       }
 
       // Disconnect producer
-      \1 {\n  \2{
+       {\n  {
         await this.producer.disconnect();
         this.isProducerConnected = false;
         logger.info('Disconnected event store producer');
@@ -458,7 +458,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Helper to get topic name from aggregate type;
    */
-  private getTopicForAggregateType(aggregateType: string): string {
+  private getTopicForAggregateType(aggregateType: string): string {,
     // Map aggregate types to topics
     const topicMap: Record<string, string> = {
       'patient': 'patient-events',
@@ -477,7 +477,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Process sensitive data for encryption;
    */
-  private async processSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {
+  private async processSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {,
     // Define fields that should be encrypted based on event type
     const sensitiveFieldPatterns = [
       /\.ssn$/i,
@@ -495,9 +495,9 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
     // Function to recursively process object
     const processObject = async (obj: unknown, path = ''): Promise<unknown> => {
-      \1 {\n  \2eturn obj;
+       {\n  eturn obj;
 
-      \1 {\n  \2 {
+       {\n   {
         for (let i = 0; i < obj.length; i++) {
           obj[i] = await processObject(obj[i], `${path}[${i}]`);
         }
@@ -512,10 +512,10 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
           pattern.test(currentPath);
         );
 
-        \1 {\n  \2{
+         {\n  {
           // Encrypt sensitive string fields
           obj[key] = await this.encryptionService.encryptText(obj[key]);
-        } else \1 {\n  \2{
+        } else  {\n  {
           // Recursively process nested objects
           obj[key] = await processObject(obj[key], currentPath);
         }
@@ -533,15 +533,15 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Decrypt sensitive data;
    */
-  private async decryptSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {
+  private async decryptSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {,
     // Deep clone to avoid modifying the original
     const processedEvent = JSON.parse(JSON.stringify(event)) as DomainEvent<T>;
 
     // Function to recursively process object
-    const processObject = async (obj: unknown): Promise<unknown> => {
-      \1 {\n  \2eturn obj;
+    const processObject = async (obj: unknown): Promise<unknown> => {,
+       {\n  eturn obj;
 
-      \1 {\n  \2 {
+       {\n   {
         for (let i = 0; i < obj.length; i++) {
           obj[i] = await processObject(obj[i]);
         }
@@ -549,7 +549,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       }
 
       for (const key of Object.keys(obj)) {
-        \1 {\n  \2 {
+         {\n   {
           // Decrypt encrypted fields
           try {
             obj[key] = await this.encryptionService.decryptText(obj[key]);
@@ -557,10 +557,10 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
             // If decryption fails, leave as is
             logger.warn('Failed to decrypt field', {
               error: error.message,
-              field: key
+              field: key,
             });
           }
-        } else \1 {\n  \2{
+        } else  {\n  {
           // Recursively process nested objects
           obj[key] = await processObject(obj[key]);
         }
@@ -578,13 +578,13 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Map database event to domain event;
    */
-  private mapDatabaseEventToDomainEvent(dbEvent: unknown): DomainEvent {
+  private mapDatabaseEventToDomainEvent(dbEvent: unknown): DomainEvent {,
     return {
       id: dbEvent.id,
-      \1,\2 dbEvent.aggregateId,
-      \1,\2 dbEvent.version,
-      \1,\2 dbEvent.data,
-      metadata: dbEvent.metadata || 
+       dbEvent.aggregateId,
+       dbEvent.version,
+       dbEvent.data,
+      metadata: dbEvent.metadata || ,
     };
   }
 }
@@ -599,7 +599,7 @@ export const _getEventStore = async (
   prisma: PrismaService,
   encryptionService: EncryptionService;
 ): Promise<EventStore> => {
-  \1 {\n  \2{
+   {\n  {
     eventStoreInstance = new KafkaEventStore(prisma, encryptionService);
     await eventStoreInstance.initialize();
   }
@@ -610,7 +610,7 @@ export const _getEventStore = async (
  * Shutdown the event store;
  */
 export const _shutdownEventStore = async (): Promise<void> => {
-  \1 {\n  \2{
+   {\n  {
     await eventStoreInstance.shutdown();
     eventStoreInstance = null;
   }

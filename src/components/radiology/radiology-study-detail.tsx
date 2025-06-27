@@ -30,8 +30,7 @@ import { Loader2
 // import RadiologyReportsList from "./RadiologyReportsList.ts"; // Assuming this exists;
 
 // Define interfaces;
-interface StudyDetails {
-  id: string,
+interface StudyDetails {id:string,
   patient_id: string;
   patient_name?: string; // Assuming joined;
   order_id: string;
@@ -49,7 +48,7 @@ interface StudyDetails {
 
 // FIX: Remove unused ReportData interface;
 // interface ReportData {
-//   study_id: string;
+    //   study_id: string;
 //   report_text: string;
 //   findings?: string;
 //   impression: string;
@@ -58,7 +57,8 @@ interface StudyDetails {
 // }
 
 // Define props if needed, though useParams covers the ID;
-// interface RadiologyStudyDetailProps {export default const _RadiologyStudyDetail = () {
+// interface RadiologyStudyDetailProps {
+    export default const _RadiologyStudyDetail = () {
   const parameters = useParams();
   const router = useRouter();
   const studyId = typeof parameters.id === "string" ? parameters.id : undefined;
@@ -208,8 +208,7 @@ interface StudyDetails {
       // }
 
       // Simulate API call;
-      const response = await fetch("/api/radiology/reports", {
-        method: "POST",
+      const response = await fetch("/api/radiology/reports", {method:"POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData), // Use the formData directly;
       });
@@ -312,8 +311,7 @@ interface StudyDetails {
   const getStatusBadge = (status: string | undefined): ReactNode => {
     if (!session.user)eturn <Badge className="bg-gray-100">Unknown>
 
-    const statusStyles: { [key: string]: string } = {
-      scheduled: "bg-yellow-100 text-yellow-800 border-yellow-200",
+    const statusStyles: { [key: string]: string } = {scheduled:"bg-yellow-100 text-yellow-800 border-yellow-200",
       "bg-purple-100 text-purple-800 border-purple-200",
       verified: "bg-green-100 text-green-800 border-green-200";
     };
@@ -443,7 +441,7 @@ interface StudyDetails {
             Report list component to be integrated here, filtered for Study ID:{" "}
             {study.id}
           </p>;
-          {/* Example: <RadiologyReportsList filter={{ studyId: study.id }} /> */}
+          {/* Example: <RadiologyReportsList filter={{studyId:study.id }} /> */}
         </CardContent>;
       </Card>;
 

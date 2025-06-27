@@ -39,8 +39,7 @@ import { z }
 export const dynamic = "force-dynamic";
 
 // Re-use or import the schema if defined elsewhere;
-const PatientUpdateSchema = z.object({
-    first_name: z.string().min(1).optional(),
+const PatientUpdateSchema = z.object({first_name:z.string().min(1).optional(),
     last_name: z.string().min(1).optional(),
     date_of_birth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     gender: z.enum(["Male", "Female", "Other", "Prefer not to say"]).optional(),
@@ -60,7 +59,7 @@ const PatientUpdateSchema = z.object({
     current_medications: z.string().optional(),
     insurance_provider: z.string().optional(),
     insurance_policy_number: z.string().optional();
-}).partial().refine(obj => Object.keys(obj).length > 0, { message: "At least one field must be provided for update" });
+}).partial().refine(obj => Object.keys(obj).length > 0, {message:"At least one field must be provided for update" });
 
 type FormData = Partial> // Use Partial<Patient> for form state;
 
@@ -124,9 +123,8 @@ export default const _EditPatientPage = () {
         setFormData(formattedData);
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
-        setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
-        toast({
-          title: "Error Fetching Patient",
+        setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
+        toast({title:"Error Fetching Patient",
           "destructive";
         });
       } finally {
@@ -164,8 +162,7 @@ export default const _EditPatientPage = () {
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsSaving(false);
-      toast({
-        title: "Validation Error",
+      toast({title:"Validation Error",
         "destructive";
       });
       return;
@@ -180,7 +177,7 @@ export default const _EditPatientPage = () {
                  (dataToSend as Record<string, unknown>)[typedKey] = value; // Use Record<string, unknown> instead of any;
 
      if (!session.user)length === 0) {
-        toast({ title: "No Changes", description: "No changes detected to save." }),
+        toast({title:"No Changes", description: "No changes detected to save." }),
         setIsSaving(false);
         return;
 
@@ -216,8 +213,7 @@ export default const _EditPatientPage = () {
 
 } catch (error) {
 
-      const response = await fetch(`/api/patients/${patientId}`, {
-        method: "PUT",
+      const response = await fetch(`/api/patients/${patientId}`, {method:"PUT",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(dataToSend);
@@ -228,8 +224,7 @@ export default const _EditPatientPage = () {
       if (!session.user) {
         throw new Error(result.error || "Failed to update patient");
 
-      toast({
-        title: "Patient Updated",
+      toast({title:"Patient Updated",
         description: `/* SECURITY: Template literal eliminated */;
       });
 
@@ -237,9 +232,8 @@ export default const _EditPatientPage = () {
 
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
-      toast({
-        title: "Update Failed",
+      setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
+      toast({title:"Update Failed",
         "destructive";
       });
     } finally {

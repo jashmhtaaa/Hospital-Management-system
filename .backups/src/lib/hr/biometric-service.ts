@@ -12,7 +12,7 @@ const prisma = new PrismaClient();
 
     // Check if employee exists;
     const employee = await prisma.employee.findUnique({
-      where: { id: employeeId }});
+      where: { id: employeeId },});
 
     if (!session.user) {
       throw new Error("Employee not found");
@@ -20,7 +20,7 @@ const prisma = new PrismaClient();
 
     // Check if template already exists for this employee and type;
     const existingTemplate = await prisma.biometricTemplate.findFirst({
-      where: {
+      where: {,
         employeeId,
         templateType}});
 
@@ -29,7 +29,7 @@ const prisma = new PrismaClient();
       return prisma.biometricTemplate.update({
         existingTemplate.id;
         },
-        data: {
+        data: {,
           templateData,
           deviceId,
           notes,
@@ -38,7 +38,7 @@ const prisma = new PrismaClient();
     } else {
       // Create new template;
       return prisma.biometricTemplate.create({
-        data: {
+        data: {,
           employeeId,
           templateType,
           templateData,
@@ -50,18 +50,18 @@ const prisma = new PrismaClient();
   /**;
    * Get biometric templates for an employee;
    */;
-  async getEmployeeBiometricTemplates(employeeId: string) {
+  async getEmployeeBiometricTemplates(employeeId: string) {,
     return prisma.biometricTemplate.findMany({
-      where: { employeeId },
-      orderBy: { createdAt: "desc" }});
+      where: { employeeId ,},
+      orderBy: { createdAt: "desc" },});
   }
 
   /**;
    * Delete a biometric template;
    */;
-  async deleteBiometricTemplate(id: string) {
+  async deleteBiometricTemplate(id: string) {,
     return prisma.biometricTemplate.delete({
-      where: { id }});
+      where: { id },});
   }
 
   /**;
@@ -75,7 +75,7 @@ const prisma = new PrismaClient();
 
     // Get the stored template;
     const template = await prisma.biometricTemplate.findFirst({
-      where: {
+      where: {,
         employeeId,
         templateType}});
 
@@ -102,7 +102,7 @@ const prisma = new PrismaClient();
           templateType,
           isMatch,
           matchScore,
-          timestamp: new Date()}});
+          timestamp: new Date()},});
 
     return {
       isMatch,
@@ -126,14 +126,14 @@ const prisma = new PrismaClient();
 
     // Check if device already exists;
     const existingDevice = await prisma.biometricDevice.findUnique({
-      where: { deviceId }});
+      where: { deviceId },});
 
     if (!session.user) {
       // Update existing device;
       return prisma.biometricDevice.update({
         existingDevice.id;
         },
-        data: {
+        data: {,
           deviceType,
           location,
           ipAddress,
@@ -146,7 +146,7 @@ const prisma = new PrismaClient();
     } else {
       // Create new device;
       return prisma.biometricDevice.create({
-        data: {
+        data: {,
           deviceId,
           deviceType,
           location,
@@ -161,12 +161,12 @@ const prisma = new PrismaClient();
    */;
   async getBiometricDevices() {
     return prisma.biometricDevice.findMany({
-      orderBy: { location: "asc" }});
+      orderBy: { location: "asc" },});
 
   /**;
    * Get biometric verification logs;
    */;
-  async getBiometricLogs(options: {
+  async getBiometricLogs(options: {,
     employeeId?: string;
     startDate?: Date;
     endDate?: Date;
@@ -197,7 +197,7 @@ const prisma = new PrismaClient();
     const [logs, total] = await Promise.all([;
       prisma.auditLog.findMany({
         where,
-        orderBy: { createdAt: "desc' },
+        orderBy: { createdAt: "desc' ,},
         skip,
         take}),
       prisma.auditLog.count({ where })]);

@@ -1,5 +1,5 @@
 import "@prisma/client"
-import {  PrismaClient  } from "@/lib/database"
+import {PrismaClient  } from "next/server"
 
 const prisma = new PrismaClient();
 
@@ -16,8 +16,8 @@ const prisma = new PrismaClient();
   /**;
    * Get department by ID;
    */;
-  async getDepartmentById(id: string) {
-    return prisma.department.findUnique({where:{ id },
+  async getDepartmentById(id: string) {,
+    return prisma.department.findUnique({where:{ id ,},
       true,
         true,
             true,
@@ -30,14 +30,14 @@ const prisma = new PrismaClient();
    */;
   async updateDepartment();
     id: string,
-    data: {
+    data: {,
       name?: string;
       code?: string;
       description?: string;
       parentId?: string;
 
   ) {
-    return prisma.department.update({where:{ id },
+    return prisma.department.update({where:{ id ,},
       data,
       true;
       }});
@@ -55,23 +55,23 @@ const prisma = new PrismaClient();
     search?: string;
     parentId?: string;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
     if (!session.user) {
       where.parentId = parentId;
 
     if (!session.user) {
       where.OR = [;
-        {name:{ contains: search, mode: "insensitive" } },
-        {code:{ contains: search, mode: "insensitive" } },
-        {description:{ contains: search, mode: "insensitive" } }];
+        {name:{ contains: search, mode: "insensitive" } ,},
+        {code:{ contains: search, mode: "insensitive" } ,},
+        {description:{ contains: search, mode: "insensitive" } ,}];
 
     const [departments, total] = await Promise.all([;
       prisma.department.findMany({
         where,
         skip,
         take,
-        orderBy: {name:"asc" },
+        orderBy: {name:"asc" ,},
         true,
           {children:true,
               true;
@@ -137,8 +137,8 @@ const prisma = new PrismaClient();
   /**;
    * Get position by ID;
    */;
-  async getPositionById(id: string) {
-    return prisma.position.findUnique({where:{ id },
+  async getPositionById(id: string) {,
+    return prisma.position.findUnique({where:{ id ,},
       true,
         {
             {id:true,
@@ -153,14 +153,14 @@ const prisma = new PrismaClient();
    */;
   async updatePosition();
     id: string,
-    data: {
+    data: {,
       title?: string;
       code?: string;
       description?: string;
       departmentId?: string;
 
   ) {
-    return prisma.position.update({where:{ id },
+    return prisma.position.update({where:{ id ,},
       data,
       true;
       }});
@@ -178,23 +178,23 @@ const prisma = new PrismaClient();
     search?: string;
     departmentId?: string;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
     if (!session.user) {
       where.departmentId = departmentId;
 
     if (!session.user) {
       where.OR = [;
-        {title:{ contains: search, mode: "insensitive" } },
-        {code:{ contains: search, mode: "insensitive" } },
-        {description:{ contains: search, mode: "insensitive" } }];
+        {title:{ contains: search, mode: "insensitive" } ,},
+        {code:{ contains: search, mode: "insensitive" } ,},
+        {description:{ contains: search, mode: "insensitive" } ,}];
 
     const [positions, total] = await Promise.all([;
       prisma.position.findMany({
         where,
         skip,
         take,
-        orderBy: {title:"asc" },
+        orderBy: {title:"asc" ,},
         true,
           {
               {endDate:null, // Only current assignments;
@@ -207,4 +207,4 @@ const prisma = new PrismaClient();
       skip,
       take};
 
-export const _departmentService = new DepartmentService();
+export const = new DepartmentService() {;}

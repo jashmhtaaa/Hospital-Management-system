@@ -7,7 +7,7 @@ export const _runtime = "edge";
 // GET /api/er/visits/[id]/statuses - Get status/location history for a visit;
 export const _GET = async();
   _request: any, // Fixed: Use NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -43,7 +43,7 @@ export const _GET = async();
 
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     // Placeholder for database query;
     /*;
@@ -77,12 +77,12 @@ export const _GET = async();
       }];
 
     return NextResponse.json(results);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
-      { error: "Failed to fetch status logs", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch status logs", details: errorMessage ,},
+      { status: 500 },
     );
 
 // Note: POST for status logs is implicitly handled by updating the visit status/location via PUT /api/er/visits/[id];

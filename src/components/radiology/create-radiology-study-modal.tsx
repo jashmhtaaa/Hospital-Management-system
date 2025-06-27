@@ -33,13 +33,11 @@ import { Loader2 }
 import { Textarea }
 
 // Define interfaces;
-interface Modality {
-  id: string,
+interface Modality {id:string,
   name: string;
 }
 
-interface Technician {
-  id: string,
+interface Technician {id:string,
   name: string;
 }
 
@@ -47,8 +45,7 @@ interface Technician {
 }
 }
 
-interface CreateRadiologyStudyModalProperties {
-  onClose: () => void,
+interface CreateRadiologyStudyModalProperties {onClose:() => void,
   onSubmit: (payload: StudyPayload) => Promise<void>,
   orderId: string;
 export default const _CreateRadiologyStudyModal = ({
@@ -117,7 +114,7 @@ export default const _CreateRadiologyStudyModal = ({
         const modalitiesData: Modality[] = await modalitiesResponse.json(),
         const techniciansData: Technician[] = await techniciansResponse.json();
 
-        // Assuming API returns array directly, adjust if it returns { results: [...] }
+        // Assuming API returns array directly, adjust if it returns {results:[...] }
         setModalities(modalitiesData),
         setTechnicians(techniciansData);
 
@@ -142,8 +139,7 @@ export default const _CreateRadiologyStudyModal = ({
       return;
 
     setIsSubmitting(true);
-    await onSubmit({
-      order_id: orderId,
+    await onSubmit({order_id:orderId,
       studyDatetime,
       technicianId,
       seriesDescription || null,

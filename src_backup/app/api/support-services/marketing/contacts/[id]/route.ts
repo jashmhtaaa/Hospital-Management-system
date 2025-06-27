@@ -19,11 +19,11 @@ const contactService = new ContactService();
  */;
 export const GET = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -46,11 +46,11 @@ export const GET = async();
  */;
 export const PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -75,18 +75,18 @@ export const PUT = async();
  */;
 export const POST = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { content } = await req.json();
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "Note content is required" },
-          { status: 400 }
+          { error: "Note content is required" ,},
+          { status: 400 },
         );
       }
 
@@ -96,7 +96,7 @@ export const POST = async();
         session?.user?.id as string;
       );
 
-      return NextResponse.json(note, { status: 201 });
+      return NextResponse.json(note, { status: 201 ,});
     },
     {
       requiredPermission: "marketing.contacts.update",

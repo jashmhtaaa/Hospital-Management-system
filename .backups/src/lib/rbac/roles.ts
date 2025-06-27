@@ -323,7 +323,7 @@ export const ROLES: Record<string, Role> = {
   }};
 
 // Role hierarchy and inheritance helper;
-export const getRoleWithInheritedPermissions = (roleId: string): Role | null {
+export const getRoleWithInheritedPermissions = (roleId: string): Role | null {,
   const role = ROLES[roleId];
   if (!session.user)eturn null;
 

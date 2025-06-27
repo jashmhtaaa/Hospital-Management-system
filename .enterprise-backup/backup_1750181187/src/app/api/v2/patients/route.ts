@@ -20,13 +20,13 @@ const SearchQuerySchema = z.object({
   email: z.string().optional(),
   status: z.enum(['active', 'inactive', 'deceased']).optional(),
   page: z.string().transform(Number).default('1'),
-  limit: z.string().transform(Number).default('10')
+  limit: z.string().transform(Number).default('10'),
 });
 
 /**
  * GET /api/v2/patients - Search and list patients with enhanced features;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
     const queryParams = Object.fromEntries(searchParams.entries());
@@ -39,29 +39,29 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      \1,\2 `Found ${result.total} patients`,
-      metadata: 
+       `Found ${result.total} patients`,
+      metadata: ,
         currentPage: result.page,
-        \1,\2 result.total,
-        \1,\2 result.page > 1,
+         result.total,
+         result.page > 1,
     });
   } catch (error) {
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 error.errors
-        },status: 400 
+           error.errors
+        },status: 400 ,
       );
     }
 
     return NextResponse.json(
       {
         success: false,
-        \1,\2 'Failed to search patients'
+         'Failed to search patients'
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -69,7 +69,7 @@ export const GET = async (request: NextRequest) => {
 /**
  * POST /api/v2/patients - Create new patient with enhanced validation;
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   try {
     const body = await request.json();
 
@@ -82,39 +82,39 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: true,
-        \1,\2 'Patient created successfully',
-        metadata: 
+         'Patient created successfully',
+        metadata: ,
           patientId: patient.id,
-          \1,\2 patient.createdAt,
-      },status: 201 
+           patient.createdAt,
+      },status: 201 ,
     );
   } catch (error) {
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 error.errors,
-          message: 'Please check the provided patient information'
-        },status: 400 
+           error.errors,
+          message: 'Please check the provided patient information',
+        },status: 400 ,
       );
     }
 
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
         {
           success: false,
-          \1,\2 error.message
+           error.message
         },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
     return NextResponse.json(
       {
         success: false,
-        \1,\2 'Failed to create patient'
+         'Failed to create patient'
       },
-      { status: 500 }
+      { status: 500 },
     );
   }

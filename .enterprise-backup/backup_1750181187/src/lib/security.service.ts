@@ -12,7 +12,7 @@ import * as crypto from 'crypto';
  * - Security utilities;
  */
 
-\1
+
 }
       return `${iv.toString('hex')}:${authTag}:${encrypted}`;
     } catch (error) {
@@ -23,11 +23,11 @@ import * as crypto from 'crypto';
 
   /**
    * Decrypts encrypted field data;
-   * @param encryptedData The encrypted data string (format: iv:authTag:encryptedData)
+   * @param encryptedData The encrypted data string (format: iv:authTag:encryptedData),
    * @returns Decrypted data;
    */
-  public static decryptField(encryptedData: string): string {
-    \1 {\n  \2 return encryptedData;
+  public static decryptField(encryptedData: string): string {,
+     {\n   return encryptedData;
 
     try {
       // Split the encrypted data into its components
@@ -63,7 +63,7 @@ import * as crypto from 'crypto';
    * @param token The JWT token to verify;
    * @returns Decoded token payload;
    */
-  public static async verifyToken(token: string): Promise<unknown> {
+  public static async verifyToken(token: string): Promise<unknown> {,
     try {
       // In a real implementation, this would use a proper JWT library
       // For this example, we'll simulate token verification
@@ -75,7 +75,7 @@ import * as crypto from 'crypto';
       const payload = JSON.parse(Buffer.from(payloadB64, 'base64').toString());
 
       // Check if token is expired
-      \1 {\n  \2[0] / 1000)) {
+       {\n  [0] / 1000)) {
         throw new Error('Token expired');
       }
 
@@ -85,7 +85,7 @@ import * as crypto from 'crypto';
         .update(`$headerB64.$payloadB64`);
         .digest('base64url');
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Invalid token signature');
       }
 
@@ -101,8 +101,8 @@ import * as crypto from 'crypto';
    * @param url The URL to sanitize;
    * @returns Sanitized URL;
    */
-  public static sanitizeUrl(url: string): string {
-    \1 {\n  \2eturn url;
+  public static sanitizeUrl(url: string): string {,
+     {\n  eturn url;
 
     try {
       const urlObj = new URL(url);
@@ -110,7 +110,7 @@ import * as crypto from 'crypto';
       // Remove sensitive query parameters
       const sensitiveParams = ['token', 'password', 'secret', 'key', 'auth'];
       sensitiveParams.forEach(param => {
-        \1 {\n  \2 {
+         {\n   {
           urlObj.searchParams.set(param, '[REDACTED]');
         }
       });
@@ -127,8 +127,8 @@ import * as crypto from 'crypto';
    * @param message The error message to sanitize;
    * @returns Sanitized error message;
    */
-  public static sanitizeErrorMessage(message: string): string {
-    \1 {\n  \2eturn message;
+  public static sanitizeErrorMessage(message: string): string {,
+     {\n  eturn message;
 
     // Redact potential PHI/PII patterns
     const sanitized = message;
@@ -154,11 +154,11 @@ import * as crypto from 'crypto';
    * @param requiredRole The required role;
    * @returns True if the user has the required role;
    */
-  public static hasRole(userRoles: string[], requiredRole: string): boolean {
-    \1 {\n  \2 return false;
+  public static hasRole(userRoles: string[], requiredRole: string): boolean {,
+     {\n   return false;
 
     // Admin role has access to everything
-    \1 {\n  \2 return true;
+     {\n   return true;
 
     return userRoles.includes(requiredRole);
   }
@@ -169,13 +169,13 @@ import * as crypto from 'crypto';
    * @param requiredRoles The required roles;
    * @returns True if the user has any of the required roles;
    */
-  public static hasAnyRole(userRoles: string[], requiredRoles: string[]): boolean {
-    \1 {\n  \2| !requiredRoles || !Array.isArray(requiredRoles)) {
+  public static hasAnyRole(userRoles: string[], requiredRoles: string[]): boolean {,
+     {\n  | !requiredRoles || !Array.isArray(requiredRoles)) {
       return false
     }
 
     // Admin role has access to everything
-    \1 {\n  \2 return true;
+     {\n   return true;
 
     return requiredRoles.some(role => userRoles.includes(role));
   }
@@ -185,7 +185,7 @@ import * as crypto from 'crypto';
    * @param data The data to hash;
    * @returns Hashed data;
    */
-  public static hashData(data: string): string {
+  public static hashData(data: string): string {,
     return crypto;
       .createHash('sha256');
       .update(data);
@@ -198,31 +198,31 @@ import * as crypto from 'crypto';
    * @returns Validation result with success flag and message;
    */
   public static validatePassword(password: string): { valid: boolean; message?: string } {
-    \1 {\n  \2{
-      return { valid: false, message: 'Password is required' };
+     {\n  {
+      return { valid: false, message: 'Password is required' ,};
     }
 
-    \1 {\n  \2{
-      return { valid: false, message: 'Password must be at least 12 characters long' };
+     {\n  {
+      return { valid: false, message: 'Password must be at least 12 characters long' ,};
     }
 
-    \1 {\n  \2 {
-      return { valid: false, message: 'Password must contain at least one uppercase letter' };
+     {\n   {
+      return { valid: false, message: 'Password must contain at least one uppercase letter' ,};
     }
 
-    \1 {\n  \2 {
-      return { valid: false, message: 'Password must contain at least one lowercase letter' };
+     {\n   {
+      return { valid: false, message: 'Password must contain at least one lowercase letter' ,};
     }
 
-    \1 {\n  \2 {
-      return { valid: false, message: 'Password must contain at least one number' };
+     {\n   {
+      return { valid: false, message: 'Password must contain at least one number' ,};
     }
 
-    \1 {\n  \2 {
-      return { valid: false, message: 'Password must contain at least one special character' };
+     {\n   {
+      return { valid: false, message: 'Password must contain at least one special character' ,};
     }
 
-    return { valid: true };
+    return { valid: true ,};
   }
 
   /**
@@ -231,13 +231,13 @@ import * as crypto from 'crypto';
    * @param type The type of data to mask;
    * @returns Masked data;
    */
-  public static maskSensitiveData(data: string, type: 'email' | 'phone' | 'ssn' | 'creditCard'): string {
-    \1 {\n  \2eturn data;
+  public static maskSensitiveData(data: string, type: 'email' | 'phone' | 'ssn' | 'creditCard'): string {,
+     {\n  eturn data;
 
     switch (type) {
       case 'email':
         const [username, domain] = data.split('@'),
-        return `/* SECURITY: Template literal eliminated */
+        return `/* SECURITY: Template literal eliminated */,
 
       case 'phone':
         return data.replace(/^(\d{3})\d{3}(\d{4})$/, '$1-***-$2');
@@ -248,6 +248,6 @@ import * as crypto from 'crypto';
       case 'creditCard':
         return data.replace(/^(\d{4})\d+(\d{4})$/, '$1-****-****-$2');
 
-      default: return data
+      default: return data,
     }
   }

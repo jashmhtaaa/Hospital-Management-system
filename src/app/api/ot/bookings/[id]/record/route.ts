@@ -1,14 +1,15 @@
 import "@cloudflare/workers-types"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  D1Database  } from "@/lib/database"
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {D1Database  } from "next/server"
+import {type
 
 export const _runtime = "edge";
 
 // Interface for the POST request body;
 interface OTRecordBody {
+    {
   actual_start_time?: string | null;
   actual_end_time?: string | null;
   anesthesia_start_time?: string | null;
@@ -24,12 +25,12 @@ interface OTRecordBody {
   instrument_count_correct?: boolean | null;
   sponge_count_correct?: boolean | null;
   recorded_by_id?: string | null; // Assuming ID is string;
- } from "@/lib/database"
+ } from "next/server"
 
 // GET /api/ot/bookings/[id]/record - Get operation record for a booking;
 export const _GET = async();
   _request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -63,11 +64,11 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {message:"Booking ID is required" },
-        {status:400 }
+        {message:"Booking ID is required" ,},
+        {status:400 },
       );
     }
 
@@ -87,8 +88,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {message:"Operation record not found for this booking" },
-        {status:404 }
+        {message:"Operation record not found for this booking" ,},
+        {status:404 },
       );
     }
 
@@ -132,17 +133,17 @@ export const _GET = async();
       if (!session.user) {
         record.specimens_collected = JSON.parse(record.specimens_collected);
       }
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
     }
 
     return NextResponse.json(record);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error fetching operation record", details: errorMessage },
-      {status:500 }
+      {message:"Error fetching operation record", details: errorMessage ,},
+      {status:500 },
     );
   }
 }
@@ -150,7 +151,7 @@ export const _GET = async();
 // POST /api/ot/bookings/[id]/record - Create/Update operation record for a booking;
 export const _POST = async();
   request: any;
-  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params:Promise<{id:string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -184,11 +185,11 @@ export const _POST = async();
 
 } catch (error) {
 
-    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {message:"Booking ID is required" },
-        {status:400 }
+        {message:"Booking ID is required" ,},
+        {status:400 },
       );
 
     const body = (await request.json()) as OTRecordBody;
@@ -211,15 +212,15 @@ export const _POST = async();
     const DB = process.env.DB as unknown as D1Database;
 
     // Check if booking exists;
-    const {results:bookingResults } = await DB.prepare();
+    const {results:bookingResults ,} = await DB.prepare();
       "SELECT id, status FROM OTBookings WHERE id = ?";
     );
       .bind(bookingId);
       .all();
     if (!session.user) {
       return NextResponse.json();
-        {message:"OT Booking not found" },
-        {status:404 }
+        {message:"OT Booking not found" ,},
+        {status:404 },
       );
 
     const now = new Date().toISOString();
@@ -240,7 +241,7 @@ export const _POST = async();
         .run();
 
     // Check if record already exists;
-    const {results:existingRecord } = await DB.prepare();
+    const {results:existingRecord ,} = await DB.prepare();
       "SELECT id FROM OTRecords WHERE booking_id = ?";
     );
       .bind(bookingId);
@@ -255,7 +256,7 @@ export const _POST = async();
 
       // Build update query dynamically;
       // FIX: Use a more specific type for fieldsToUpdate values;
-      const fieldsToUpdate: {
+      const fieldsToUpdate: {,
         [key: string]: string | number | boolean | null;
       } = {};
       if (!session.user)ieldsToUpdate.actual_start_time = actual_start_time;
@@ -330,7 +331,7 @@ export const _POST = async();
         .run();
 
     // Fetch the created/updated record;
-    const {results:finalRecordResult } = await DB.prepare();
+    const {results:finalRecordResult ,} = await DB.prepare();
       "SELECT * FROM OTRecords WHERE id = ?";
     );
       .bind(recordId);
@@ -378,20 +379,20 @@ export const _POST = async();
             finalRecord.specimens_collected;
           );
 
-      } catch (error: unknown) {
+      } catch (error: unknown) {,
 
       return NextResponse.json(finalRecord, {status:isNewRecord ? 201 : 200;
       });
     } else {
       return NextResponse.json();
-        {message:`Record ${isNewRecord ? "created" : "updated"} but failed to fetch details`},
-        {status:isNewRecord ? 201 : 200 }
+        {message:`Record ${isNewRecord ? "created" : "updated"} but failed to fetch details`,},
+        {status:isNewRecord ? 201 : 200 },
       );
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error saving operation record", details: errorMessage },
-      {status:500 }
+      {message:"Error saving operation record", details: errorMessage ,},
+      {status:500 },
     );

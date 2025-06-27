@@ -13,11 +13,11 @@ const segmentService = new SegmentService();
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
 
       const result = await segmentService.applySegmentCriteria(
@@ -29,6 +29,6 @@ export const POST = async (
     },
     {
       requiredPermission: 'marketing.segments.update',
-      auditAction: 'SEGMENT_CRITERIA_APPLY'
+      auditAction: 'SEGMENT_CRITERIA_APPLY',
     }
   );

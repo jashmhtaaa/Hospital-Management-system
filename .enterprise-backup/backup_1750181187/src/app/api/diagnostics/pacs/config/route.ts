@@ -11,17 +11,17 @@ import { getSession } from '@/lib/session';
  * GET /api/diagnostics/pacs/config;
  * Get PACS configuration settings;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Cache key
@@ -41,10 +41,10 @@ export const GET = async (request: NextRequest) => {
 
         const result = await DB.query(query);
 
-        \1 {\n  \2{
+         {\n  {
           return {
             configured: false,
-            message: 'PACS not configured'
+            message: 'PACS not configured',
           };
         }
 
@@ -55,14 +55,14 @@ export const GET = async (request: NextRequest) => {
           hostname: decryptSensitiveData(result.results[0].hostname),
           username: result.results[0].username ? decryptSensitiveData(result.results[0].username) : null;
           // Don't include password in response
-          password: null
+          password: null,
         };
 
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'pacs_configuration',
-          details: configId: config.id 
+           'pacs_configuration',
+          details: configId: config.id ,
         });
 
         return {
@@ -78,8 +78,8 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: 'Failed to fetch PACS configuration',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -87,17 +87,17 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/config;
  * Create or update PACS configuration;
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Parse request body
@@ -118,10 +118,10 @@ export const POST = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
         error: 'AE Title, hostname, and port are required'
-      }, { status: 400 });
+      }, { status: 400 ,});
     }
 
     // Encrypt sensitive data
@@ -168,14 +168,14 @@ export const POST = async (request: NextRequest) => {
     // Log creation
     await auditLog({
       userId: session.user.id,
-      \1,\2 'pacs_configuration',
+       'pacs_configuration',
       resourceId: result.insertId;
         aetitle,
         hostname,
         port,
         hasUsername: !!username,
-        \1,\2 modality_worklist_enabled || false,
-        \1,\2 auto_retrieve_enabled || false
+         modality_worklist_enabled || false,
+         auto_retrieve_enabled || false
     });
 
     // Invalidate cache
@@ -203,19 +203,19 @@ export const POST = async (request: NextRequest) => {
       hostname: decryptSensitiveData(createdConfig.results[0].hostname),
       username: createdConfig.results[0].username ? decryptSensitiveData(createdConfig.results[0].username) : null;
       // Don't include password in response
-      password: null
+      password: null,
     };
 
     return NextResponse.json({
       config,
       connectionTest;
-    }, { status: 201 });
+    }, { status: 201 ,});
   } catch (error) {
 
     return NextResponse.json({
       error: 'Failed to create PACS configuration',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -223,17 +223,17 @@ export const POST = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/config/test;
  * Test PACS connection;
  */
-export const _POST_TEST = async (request: NextRequest) => {
+export const _POST_TEST = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Parse request body
@@ -249,7 +249,7 @@ export const _POST_TEST = async (request: NextRequest) => {
 
     let connectionParams;
 
-    \1 {\n  \2{
+     {\n  {
       // Get existing configuration
       const configQuery = `;
         SELECT * FROM pacs_configuration;
@@ -260,10 +260,10 @@ export const _POST_TEST = async (request: NextRequest) => {
 
       const configResult = await DB.query(configQuery);
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json({
-          error: 'No active PACS configuration found'
-        }, { status: 404 });
+          error: 'No active PACS configuration found',
+        }, { status: 404 ,});
       }
 
       const config = configResult.results[0];
@@ -272,14 +272,14 @@ export const _POST_TEST = async (request: NextRequest) => {
         aetitle: decryptSensitiveData(config.aetitle),
         hostname: decryptSensitiveData(config.hostname),
         port: config.port,
-        \1,\2 config.password ? decryptSensitiveData(config.password) : null
+         config.password ? decryptSensitiveData(config.password) : null
       };
     } else {
       // Validate required fields
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json({
           error: 'AE Title, hostname, and port are required'
-        }, { status: 400 });
+        }, { status: 400 ,});
       }
 
       connectionParams = {
@@ -297,10 +297,10 @@ export const _POST_TEST = async (request: NextRequest) => {
     // Log test
     await auditLog({
       userId: session.user.id,
-      \1,\2 'pacs_connection',
-      details: {
+       'pacs_connection',
+      details: {,
         useExisting,
-        success: connectionTest.success
+        success: connectionTest.success,
       }
     });
 
@@ -309,17 +309,17 @@ export const _POST_TEST = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: 'Failed to test PACS connection',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
 /**
  * Helper function to test PACS connection;
  */
-async const testPacsConnection = (params: {
+async const testPacsConnection = (params: {,
   aetitle: string,
-  \1,\2 number;
+   number;
   username?: string | null;
   password?: string | null;
 }) {
@@ -333,28 +333,28 @@ async const testPacsConnection = (params: {
     // Simulate successful connection
     return {
       success: true,
-      \1,\2 params.aetitle,
-        \1,\2 params.port,
-        \1,\2 'Successful',
-        timestamp: new Date().toISOString()
+       params.aetitle,
+         params.port,
+         'Successful',
+        timestamp: new Date().toISOString(),
     };
 
     // For a real implementation, you would handle connection failures like:
-    /*
+    /*,
     return {
       success: false,
-      \1,\2 {
+       {
         aetitle: params.aetitle,
-        \1,\2 params.port,
-        \1,\2 new Date().toISOString()
+         params.port,
+         new Date().toISOString()
       }
     }
     */
   } catch (error) {
     return {
       success: false,
-      \1,\2 params.aetitle,
-        \1,\2 params.port,
-        \1,\2 new Date().toISOString()
+       params.aetitle,
+         params.port,
+         new Date().toISOString()
     };
   }

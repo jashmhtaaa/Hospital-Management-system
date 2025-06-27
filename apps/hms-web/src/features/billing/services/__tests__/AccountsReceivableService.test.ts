@@ -22,7 +22,7 @@ describe("AccountsReceivableService", () => {
       // Assert
       // expect(balances).toBeDefined()
       // expect(balances.length).toBeGreaterThanOrEqual(0)
-      // \1 {\n  \2{
+      //  {\n  {
       //   expect(balances[0].patientId).toBeDefined()
       //   expect(balances[0].outstandingAmount).toBeGreaterThan(0)
       // }

@@ -3,8 +3,7 @@ import React
 import ReactNode }
 import { type
 
-interface DashboardLayoutProps {
-  children: ReactNode;
+interface DashboardLayoutProps {children:ReactNode;
 }
 
 /**;

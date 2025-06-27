@@ -36,7 +36,7 @@ interface LabOrderUpdateInput {
   result_verified_at?: string | null;
   notes?: string;
   // Allow updating tests statuses or adding results (more complex);
-  // tests?: { test_id: number | string, status: string }[];
+  // tests?: { test_id: number | string, status: string ,}[];
   // results?: { test_id: number | string, result_value: string; ... }[];
 }
 
@@ -95,7 +95,7 @@ async const getLabOrdersFromDB = (;
   return (result.results || []) as LabOrder[]; // Changed .rows to .results;
 }
 
-async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
+async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {,
   // Added return type;
 
   const database = await getDB();
@@ -125,11 +125,11 @@ async const createLabOrderInDB = (orderData: LabOrderInput): Promise<LabOrder> {
     notes: orderData.notes,
     created_at: new Date().toISOString(),
     test.test_id,
-      status: "pending"))};
+      status: "pending")),};
   return newOrder;
 }
 
-async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
+async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {,
   // Added return type;
 
   const database = await getDB();
@@ -176,14 +176,14 @@ async const updateLabOrderInDB = (;
   const existing: LabOrder | null = await getLabOrderByIdFromDB(id); // Added type annotation;
   // Fixed: Check if existing is an object before spreading;
   if (!session.user) {
-    return { ...existing, ...updateData, updated_at: new Date().toISOString() };
+    return { ...existing, ...updateData, updated_at: new Date().toISOString() ,};
   }
   return null; // Return null if existing is null or not an object;
 }
 
 // --- API Route Handlers ---;
 
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -218,7 +218,7 @@ export const _GET = async (request: any) => {
 }
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const { searchParams } = new URL(request.url);
@@ -228,15 +228,15 @@ export const _GET = async (request: any) => {
       const id = Number.parseInt(orderId);
       if (!session.user)| id <= 0) {
         return NextResponse.json();
-          { error: "Invalid lab order ID provided" },
-          { status: 400 }
+          { error: "Invalid lab order ID provided" ,},
+          { status: 400 },
         );
       }
       const order = await getLabOrderByIdFromDB(id);
       if (!session.user) {
         return NextResponse.json();
-          { error: "Lab order not found" },
-          { status: 404 }
+          { error: "Lab order not found" ,},
+          { status: 404 },
         );
       }
       return NextResponse.json({ order });
@@ -261,16 +261,16 @@ export const _GET = async (request: any) => {
     const orders = await getLabOrdersFromDB(filters);
 
     return NextResponse.json({ orders });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      { error: "Failed to fetch lab orders", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch lab orders", details: errorMessage ,},
+      { status: 500 },
     );
   }
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -305,30 +305,30 @@ export const _POST = async (request: any) => {
 
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     const orderData = (await request.json()) as LabOrderInput;
 
     if (!session.user)eturn NextResponse.json()
         {
           error: "Missing required fields (patient_id, ordering_doctor_id, tests)"},
-        { status: 400 }
+        { status: 400 },
       );
 
     const newOrder = await createLabOrderInDB(orderData);
 
-    return NextResponse.json({ order: newOrder }, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json({ order: newOrder ,}, { status: 201 ,});
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      { error: "Failed to create lab order", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create lab order", details: errorMessage ,},
+      { status: 500 },
     );
 
 export const _PUT = async();
-  request: any;params : params: Promise<{ id: string }> ;
+  request: any;params : params: Promise<{ id: string ,}> ;
 ) ;
   try {
 } catch (error) {
@@ -364,14 +364,14 @@ export const _PUT = async();
 
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     const { id } = await params; // FIX: Await params and destructure id (Next.js 15+);
     const numericId = Number.parseInt(id),
     if (!session.user)| numericId <= 0) {
       return NextResponse.json();
-        { error: "Invalid lab order ID" },
-        { status: 400 }
+        { error: "Invalid lab order ID" ,},
+        { status: 400 },
       );
 
     const updateData = (await request.json()) as LabOrderUpdateInput;
@@ -380,16 +380,16 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Lab order not found or update failed" },
-        { status: 404 }
+        { error: "Lab order not found or update failed" ,},
+        { status: 404 },
       );
 
-    return NextResponse.json({ order: updatedOrder });
-  } catch (error: unknown) {
+    return NextResponse.json({ order: updatedOrder ,});
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      { error: "Failed to update lab order", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update lab order", details: errorMessage ,},
+      { status: 500 },
     );

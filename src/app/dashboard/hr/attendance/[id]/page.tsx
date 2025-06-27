@@ -48,7 +48,7 @@ import "date-fns"
 import { format }
 import { toast }
 
-export default const _AttendanceDetail = ({ params }: { id: string }) {
+export default const _AttendanceDetail = ({ params }: {id:string }) {
   const router = useRouter();
   const [attendance, setAttendance] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -102,8 +102,7 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
         setAttendance(data);
       } catch (err) {
         setError(err.message),
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       } finally ;

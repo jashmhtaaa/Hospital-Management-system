@@ -86,8 +86,7 @@ export default const _BiomedicalEquipment = () {
   const [riskLevelFilter, setRiskLevelFilter] = useState("");
   const [calibrationDueFilter, setCalibrationDueFilter] = useState(false);
   const [departments, setDepartments] = useState<any[]>([]);
-  const [pagination, setPagination] = useState({
-    skip: 0,
+  const [pagination, setPagination] = useState({skip:0,
     0;
   });
   const [activeTab, setActiveTab] = useState("all");
@@ -129,8 +128,7 @@ export default const _BiomedicalEquipment = () {
 } catch (error) {
 }
         setLoading(true);
-        const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
+        const queryParams = new URLSearchParams({skip:pagination.skip.toString(),
           take: pagination.take.toString();
         });
 
@@ -156,8 +154,7 @@ export default const _BiomedicalEquipment = () {
         }));
       } catch (err) {
         setError(err.message),
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       } finally ;
@@ -349,21 +346,18 @@ export default const _BiomedicalEquipment = () {
 } catch (error) {
 
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
-      toast({
-        title: "Export Started",
+      toast({title:"Export Started",
         description: "Your biomedical equipment report is being generated and will download shortly.";
       });
 
       // Simulate download delay;
       setTimeout(() => {
-        toast({
-          title: "Export Complete",
+        toast({title:"Export Complete",
           description: "Biomedical equipment report has been downloaded.";
         });
       }, 2000);
     } catch (error) {
-      toast({
-        title: "Export Failed",
+      toast({title:"Export Failed",
         "destructive";
       });
 
@@ -436,8 +430,7 @@ export default const _BiomedicalEquipment = () {
   // Format currency;
   const _formatCurrency = (amount: unknown) => {
     if (!session.user)eturn "—";
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
+    return new Intl.NumberFormat("en-US", {style:"currency",
       currency: "USD";
     }).format(amount);
   };

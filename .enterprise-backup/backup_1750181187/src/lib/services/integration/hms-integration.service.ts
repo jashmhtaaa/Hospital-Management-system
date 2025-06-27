@@ -13,9 +13,9 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
  * workflow coordination.
  */
 
-\1
+
 }
-      { patientData: true },
+      { patientData: true ,},
       userId,
       patientId;
     );
@@ -27,28 +27,28 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.patient.info.request',
         resourceId: patientId;
         userId,
-        details: patientId 
+        details: patientId ,
       });
 
       // In a real implementation, this would call the HMS Patient Management API
       // For this example, we'll simulate the API call with a database query
       const patient = await prisma.patient.findUnique({
-        where: { id: patientId },
-        select: {
+        where: { id: patientId ,},
+        select: {,
           id: true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true;
+           true,
+           true,
+           true;
           // Exclude sensitive medical information based on roles
           ...(RBACService.hasPermission(userRoles, Resource.USER, Action.READ, fullMedicalData: true );
             ? 
                 allergies: true,
-                \1,\2 true
+                 true
             : );
         }
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new NotFoundError(`Patient with ID ${patientId} not found`);
       }
 
@@ -57,13 +57,13 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.patient.info.success',
         resourceId: patientId;
         userId,
-        details: { patientId }
+        details: { patientId },
       });
 
       return patient;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
 
@@ -80,14 +80,14 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    */
   public static async getLocationInfo(
     locationId: string,
-    \1,\2 string[]
+     string[]
   ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.SYSTEM,
       Action.READ,
-      { locationData: true },
+      { locationData: true ,},
       userId,
       locationId;
     );
@@ -99,23 +99,23 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.location.info.request',
         resourceId: locationId;
         userId,
-        details: locationId 
+        details: locationId ,
       });
 
       // In a real implementation, this would call the HMS Location Management API
       // For this example, we'll simulate the API call with a database query
       const location = await prisma.location.findUnique({
-        where: { id: locationId },
-        select: {
+        where: { id: locationId ,},
+        select: {,
           id: true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          currentOccupancy: true
+           true,
+           true,
+           true,
+          currentOccupancy: true,
         }
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new NotFoundError(`Location with ID ${locationId} not found`);
       }
 
@@ -124,13 +124,13 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.location.info.success',
         resourceId: locationId;
         userId,
-        details: { locationId }
+        details: { locationId },
       });
 
       return location;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
 
@@ -151,17 +151,17 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    */
   public static async sendNotification(
     recipientId: string,
-    \1,\2 string,
-    \1,\2 Record<string, unknown>,
+     string,
+     Record<string, unknown>,
     userId: string,
-    userRoles: string[]
+    userRoles: string[],
   ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.SYSTEM,
       Action.CREATE,
-      { notificationSend: true },
+      { notificationSend: true ,},
       userId,
       recipientId;
     );
@@ -173,7 +173,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.notification.send.request',
         resourceId: recipientId;
         userId,
-        details: 
+        details: ,
           recipientId,
           notificationType,
           title;
@@ -182,14 +182,14 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       // In a real implementation, this would call the HMS Notification System API
       // For this example, we'll simulate the API call with a database insert
       const notification = await prisma.notification.create({
-        data: {
+        data: {,
           recipientId,
           type: notificationType;
           title,
           message,
           metadata,
           status: 'PENDING',
-          createdById: userId
+          createdById: userId,
         }
       });
 
@@ -198,17 +198,17 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.notification.send.success',
         resourceId: notification.id;
         userId,
-        details: {
+        details: {,
           recipientId,
           notificationType,
-          notificationId: notification.id
+          notificationId: notification.id,
         }
       });
 
       return notification;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
 
@@ -225,14 +225,14 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    */
   public static async getUserInfo(
     targetUserId: string,
-    \1,\2 string[]
+     string[]
   ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
       userRoles,
       Resource.USER,
       Action.READ,
-      { userId: targetUserId === userId ? 'self' : 'other' },
+      { userId: targetUserId === userId ? 'self' : 'other' ,},
       userId,
       targetUserId;
     );
@@ -244,29 +244,29 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.user.info.request',
         resourceId: targetUserId;
         userId,
-        details: targetUserId 
+        details: targetUserId ,
       });
 
       // In a real implementation, this would call the HMS User Management API
       // For this example, we'll simulate the API call with a database query
       const user = await prisma.user.findUnique({
-        where: { id: targetUserId },
-        select: {
+        where: { id: targetUserId ,},
+        select: {,
           id: true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 true;
+           true,
+           true,
+           true,
+           true;
           // Only include sensitive fields for self or admin
           ...(targetUserId === userId || userRoles.includes('admin');
             ? 
                 lastLogin: true,
-                \1,\2 true
+                 true
             : );
         }
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new NotFoundError(`User with ID ${targetUserId} not found`);
       }
 
@@ -275,13 +275,13 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.user.info.success',
         resourceId: targetUserId;
         userId,
-        details: { targetUserId }
+        details: { targetUserId },
       });
 
       return user;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
 
@@ -301,7 +301,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
     reportType: string,
     reportData: Record<string, unknown>,
     userId: string,
-    userRoles: string[]
+    userRoles: string[],
   ): Promise<unknown> {
     // Enforce RBAC
     RBACService.enforcePermission(
@@ -317,18 +317,18 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: 'integration.report.submit.request',
-        resourceId: `report-${reportType}`,
+        resourceId: `report-${reportType,}`,
         userId,
-        details: { reportType }
+        details: { reportType },
       });
 
       // In a real implementation, this would call the HMS Reporting System API
       // For this example, we'll simulate the API call with a database insert
       const report = await prisma.report.create({
-        data: {
+        data: {,
           type: reportType,
-          \1,\2 'SUBMITTED',
-          submittedById: userId
+           'SUBMITTED',
+          submittedById: userId,
         }
       });
 
@@ -337,16 +337,16 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.report.submit.success',
         resourceId: report.id;
         userId,
-        details: {
+        details: {,
           reportType,
-          reportId: report.id
+          reportId: report.id,
         }
       });
 
       return report;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
 
@@ -365,8 +365,8 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    */
   public static async linkRequestToPatient(
     serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE' | 'FEEDBACK',
-    \1,\2 string,
-    \1,\2 string[]
+     string,
+     string[]
   ): Promise<unknown> {
     // Map service type to resource
     const resourceMap = {
@@ -384,7 +384,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       userRoles,
       resource,
       Action.UPDATE,
-      { patientLink: true },
+      { patientLink: true ,},
       userId,
       requestId;
     );
@@ -396,7 +396,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.request.patient.link.request',
         resourceId: requestId;
         userId,
-        details: 
+        details: ,
           serviceType,
           requestId,
           patientId;
@@ -411,10 +411,10 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
 
       // Dynamic update based on service type
       const request = await prisma[tableName].update({
-        where: { id: requestId },
-        data: {
+        where: { id: requestId ,},
+        data: {,
           patientId,
-          updatedById: userId
+          updatedById: userId,
         }
       });
 
@@ -423,7 +423,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.request.patient.link.success',
         resourceId: requestId;
         userId,
-        details: 
+        details: ,
           serviceType,
           requestId,
           patientId;
@@ -432,7 +432,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return request;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
 
@@ -451,8 +451,8 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
    */
   public static async linkRequestToLocation(
     serviceType: 'HOUSEKEEPING' | 'MAINTENANCE' | 'DIETARY' | 'AMBULANCE',
-    \1,\2 string,
-    \1,\2 string[]
+     string,
+     string[]
   ): Promise<unknown> {
     // Map service type to resource
     const resourceMap = {
@@ -469,7 +469,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       userRoles,
       resource,
       Action.UPDATE,
-      { locationLink: true },
+      { locationLink: true ,},
       userId,
       requestId;
     );
@@ -481,7 +481,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.request.location.link.request',
         resourceId: requestId;
         userId,
-        details: 
+        details: ,
           serviceType,
           requestId,
           locationId;
@@ -496,10 +496,10 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
 
       // Dynamic update based on service type
       const request = await prisma[tableName].update({
-        where: { id: requestId },
-        data: {
+        where: { id: requestId ,},
+        data: {,
           locationId,
-          updatedById: userId
+          updatedById: userId,
         }
       });
 
@@ -508,7 +508,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
         action: 'integration.request.location.link.success',
         resourceId: requestId;
         userId,
-        details: 
+        details: ,
           serviceType,
           requestId,
           locationId;
@@ -517,7 +517,7 @@ import { Action, RBACService, Resource } from '@/lib/rbac.service';
       return request;
     } catch (error) {
       // Handle and rethrow appropriate errors
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
 

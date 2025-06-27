@@ -15,27 +15,27 @@ export const pubsub = new PubSub();
 export const _SUBSCRIPTION_EVENTS = {
   // Laboratory events
   LAB_ORDER_CREATED: 'LAB_ORDER_CREATED',
-  \1,\2 'CRITICAL_RESULT_ALERT',
+   'CRITICAL_RESULT_ALERT',
   SAMPLE_STATUS_CHANGED: 'SAMPLE_STATUS_CHANGED';
 
   // Pharmacy events
   PRESCRIPTION_CREATED: 'PRESCRIPTION_CREATED',
-  \1,\2 'DRUG_INTERACTION_ALERT',
+   'DRUG_INTERACTION_ALERT',
   INVENTORY_LOW_STOCK: 'INVENTORY_LOW_STOCK';
 
   // Emergency Department events
   PATIENT_TRIAGED: 'PATIENT_TRIAGED',
-  \1,\2 'CRITICAL_PATIENT_ALERT',
+   'CRITICAL_PATIENT_ALERT',
   ED_CAPACITY_ALERT: 'ED_CAPACITY_ALERT';
 
   // Clinical Documentation events
   CLINICAL_NOTE_CREATED: 'CLINICAL_NOTE_CREATED',
-  \1,\2 'QUALITY_METRIC_ALERT';
+   'QUALITY_METRIC_ALERT';
 
   // Patient Management events
   PATIENT_REGISTERED: 'PATIENT_REGISTERED',
-  \1,\2 'APPOINTMENT_SCHEDULED',
-  INSURANCE_VERIFIED: 'INSURANCE_VERIFIED'
+   'APPOINTMENT_SCHEDULED',
+  INSURANCE_VERIFIED: 'INSURANCE_VERIFIED',
 } as const;
 
 // Base GraphQL types
@@ -65,22 +65,22 @@ export const _baseTypeDefs = gql`
   # Base interfaces;
   interface Node {
     id: ID!,
-    \1,\2 DateTime!
+     DateTime!
   }
 
   interface AuditableEntity {
     id: ID!,
-    \1,\2 DateTime!,
-    \1,\2 String,
-    version: Int!
+     DateTime!,
+     String,
+    version: Int!,
   }
 
   # Common types;
   type Address {
     line1: String!,
-    \1,\2 String!,
-    \1,\2 String!,
-    \1,\2 AddressType!
+     String!,
+     String!,
+     AddressType!
   }
 
   enum AddressType {
@@ -92,14 +92,14 @@ export const _baseTypeDefs = gql`
 
   type ContactInfo {
     phone: String,
-    \1,\2 String,
-    fax: String
+     String,
+    fax: String,
   }
 
   type Identifier {
     system: String!,
-    \1,\2 String,
-    use: IdentifierUse
+     String,
+    use: IdentifierUse,
   }
 
   enum IdentifierUse {
@@ -113,32 +113,32 @@ export const _baseTypeDefs = gql`
   # FHIR-compliant coding;
   type Coding {
     system: String,
-    \1,\2 String,
-    \1,\2 Boolean
+     String,
+     Boolean
   }
 
   type CodeableConcept {
-    coding: [Coding!]
-    text: String
+    coding: [Coding!],
+    text: String,
   }
 
   # Pagination;
   type PageInfo {
     hasNextPage: Boolean!,
-    \1,\2 String,
-    \1,\2 Int!
+     String,
+     Int!
   }
 
   # Common input types;
   input PaginationInput {
     first: Int,
-    \1,\2 Int,
-    before: String
+     Int,
+    before: String,
   }
 
   input SortInput {
     field: String!,
-    direction: SortDirection!
+    direction: SortDirection!,
   }
 
   enum SortDirection {
@@ -148,7 +148,7 @@ export const _baseTypeDefs = gql`
 
   input FilterInput {
     field: String!,
-    \1,\2 String!
+     String!
   }
 
   enum FilterOperator {
@@ -171,24 +171,24 @@ export const _baseTypeDefs = gql`
   # Error handling;
   type Error {
     code: String!,
-    \1,\2 String,
-    details: JSON
+     String,
+    details: JSON,
   }
 
   type MutationResponse {
     success: Boolean!,
-    errors: [Error!]
-    message: String
+    errors: [Error!],
+    message: String,
   }
 
   # Real-time notifications;
   type Notification {
     id: ID!,
-    type: NotificationType!
+    type: NotificationType!,
     title: String!,
-    \1,\2 JSON,
-    \1,\2 DateTime!,
-    \1,\2 Boolean!
+     JSON,
+     DateTime!,
+     Boolean!
   }
 
   enum NotificationType {
@@ -202,17 +202,17 @@ export const _baseTypeDefs = gql`
   # File upload;
   type FileUpload {
     id: ID!,
-    \1,\2 String!,
-    \1,\2 String!,
-    \1,\2 DateTime!,
-    uploadedBy: String!
+     String!,
+     String!,
+     DateTime!,
+    uploadedBy: String!,
   }
 
   # System health;
   type HealthStatus {
     service: String!,
-    \1,\2 DateTime!,
-    details: JSON
+     DateTime!,
+    details: JSON,
   }
 
   enum HealthStatusType {
@@ -231,7 +231,7 @@ export const _baseTypeDefs = gql`
     systemInfo: SystemInfo!;
 
     # Current user context;
-    me: User
+    me: User,
   }
 
   # Base mutations (will be extended by each module);
@@ -240,7 +240,7 @@ export const _baseTypeDefs = gql`
     uploadFile(file: Upload!): FileUpload!;
 
     # Mark notification as read;
-    markNotificationRead(id: ID!): MutationResponse!
+    markNotificationRead(id: ID!): MutationResponse!,
   }
 
   # Base subscriptions (will be extended by each module);
@@ -249,49 +249,49 @@ export const _baseTypeDefs = gql`
     notifications(userId: String): Notification!;
 
     # System health updates;
-    healthUpdates: HealthStatus!
+    healthUpdates: HealthStatus!,
   }
 
   # System info;
   type SystemInfo {
     version: String!,
-    \1,\2 Int!,
-    \1,\2 [String!]!
+     Int!,
+     [String!]!
   }
 
   # User type (basic structure);
   type User implements Node {
     id: ID!,
-    \1,\2 String!,
-    \1,\2 String!,
-    \1,\2 String,
-    \1,\2 DateTime,
-    \1,\2 DateTime!,
-    permissions: [String!]!
+     String!,
+     String!,
+     String,
+     DateTime,
+     DateTime!,
+    permissions: [String!]!,
   }
 `;
 
 // Base resolvers
 export const _baseResolvers = {
-  DateTime: {
-    serialize: (date: unknown) => {
-      \1 {\n  \2{
+  DateTime: {,
+    serialize: (date: unknown) => {,
+       {\n  {
         return date.toISOString()
       }
       return date;
     },
-    parseValue: (value: unknown) => {
+    parseValue: (value: unknown) => {,
       return new Date(value)
     },
-    parseLiteral: (ast: unknown) => {
+    parseLiteral: (ast: unknown) => {,
       return new Date(ast.value)
     },
   },
 
-  JSON: {
+  JSON: {,
     serialize: (value: unknown) => value,
     parseValue: (value: unknown) => value,
-    parseLiteral: (ast: unknown) => {
+    parseLiteral: (ast: unknown) => {,
       switch (ast.kind) {
         case 'StringValue':
         case 'BooleanValue':
@@ -300,44 +300,44 @@ export const _baseResolvers = {
         case 'FloatValue':
           return Number.parseFloat(ast.value),
         case 'ObjectValue':
-          return ast.fields.reduce((obj: unknown, field: unknown) => {
+          return ast.fields.reduce((obj: unknown, field: unknown) => {,
             obj[field.name.value] = field.value;
             return obj;
           }, {});
         case 'ListValue':
           return ast.values.map((value: unknown) => value),
-        default: return null
+        default: return null,
       }
     },
   },
 
-  Query: {
-    health: async () => {
+  Query: {,
+    health: async () => {,
       // Implementation would check actual services
       return [
         {
           service: 'database',
-          \1,\2 new Date(),
-          details: { connections: 10, responseTime: '50ms' },
+           new Date(),
+          details: { connections: 10, responseTime: '50ms' ,},
         },
         {
           service: 'cache',
-          \1,\2 new Date(),
-          details: { hitRate: 0.95, memoryUsage: '45%' },
+           new Date(),
+          details: { hitRate: 0.95, memoryUsage: '45%' ,},
         },
         {
           service: 'fhir-server',
-          \1,\2 new Date(),
-          details: { resources: 1250 },
+           new Date(),
+          details: { resources: 1250 ,},
         },
       ];
     },
 
-    systemInfo: () => ({
+    systemInfo: () => ({,
       version: process.env.npm_package_version || '1.0.0',
-      \1,\2 Math.floor(process.uptime()),
+       Math.floor(process.uptime()),
       timestamp: new Date(),
-      features: [
+      features: [,
         'FHIR_R4_COMPLIANCE',
         'REAL_TIME_SUBSCRIPTIONS',
         'MICROSERVICES_ARCHITECTURE',
@@ -352,7 +352,7 @@ export const _baseResolvers = {
     },
   },
 
-  Mutation: {
+  Mutation: {,
     uploadFile: async (parent, { file }, context) => {
       // File upload implementation
       const { createReadStream, filename, mimetype, encoding } = await file;
@@ -366,7 +366,7 @@ export const _baseResolvers = {
         url: `/uploads/$filename`,
         size: 1024, // Would be actual file size
         uploadedAt: new Date(),
-        uploadedBy: context.user?.id || 'system'
+        uploadedBy: context.user?.id || 'system',
       };
     },
 
@@ -374,26 +374,26 @@ export const _baseResolvers = {
       // Implementation would update notification status
       return {
         success: true,
-        \1,\2 []
+         []
       };
     },
   },
 
-  Subscription: {
-    notifications: {
+  Subscription: {,
+    notifications: {,
       subscribe: (parent, { userId }, context) => {
         const eventName = userId ? `NOTIFICATION_$userId` : 'NOTIFICATION_GLOBAL';
         return pubsub.asyncIterator([eventName]);
       },
     },
 
-    healthUpdates: {
-      subscribe: () => pubsub.asyncIterator(['HEALTH_UPDATE'])
+    healthUpdates: {,
+      subscribe: () => pubsub.asyncIterator(['HEALTH_UPDATE']),
     },
   },
 
-  User: {
-    fullName: (parent) => `/* SECURITY: Template literal eliminated */
+  User: {,
+    fullName: (parent) => `/* SECURITY: Template literal eliminated */,
     permissions: async (parent, args, context) => {
       // Implementation would fetch user permissions from RBAC system
       return parent.permissions || [];
@@ -402,18 +402,18 @@ export const _baseResolvers = {
 };
 
 // Utility functions for GraphQL
-\1
+
 }
     };
   }
 
   static createConnection<T>(
     items: T[],
-    \1,\2 number;
+     number;
   ) {
     const edges = items.map((item: unknown, index) => ({
-      cursor: Buffer.from(`${\1}`.toString('base64'),
-      node: item
+      cursor: Buffer.from(`${}`.toString('base64'),
+      node: item,
     }));
 
     const hasNextPage = args.first ? items.length === args.first : false;
@@ -421,37 +421,37 @@ export const _baseResolvers = {
 
     return {
       edges,
-      pageInfo: {
+      pageInfo: {,
         hasNextPage,
         hasPreviousPage,
         startCursor: edges.length > 0 ? edges[0].cursor : null,
-        \1,\2 totalCount
+         totalCount
       },
     };
   }
 
-  static buildFilters(filters: unknown[]): unknown {
-    const where: unknown = {};
+  static buildFilters(filters: unknown[]): unknown {,
+    const where: unknown = {,};
 
     filters?.forEach((filter) => {
       const { field, operator, value } = filter;
 
       switch (operator) {
         case 'EQUALS':
-          where[field] = value;\1\n    }\n    case 'NOT_EQUALS':
-          where[field] = { not: value };\1\n    }\n    case 'CONTAINS':
-          where[field] = { contains: value, mode: 'insensitive' };\1\n    }\n    case 'NOT_CONTAINS':
-          where[field] = { not: { contains: value, mode: 'insensitive' } };\1\n    }\n    case 'STARTS_WITH':
-          where[field] = { startsWith: value, mode: 'insensitive' };\1\n    }\n    case 'ENDS_WITH':
-          where[field] = { endsWith: value, mode: 'insensitive' };\1\n    }\n    case 'GREATER_THAN':
-          where[field] = { gt: Number.parseFloat(value) };\1\n    }\n    case 'LESS_THAN':
-          where[field] = { lt: Number.parseFloat(value) };\1\n    }\n    case 'GREATER_THAN_OR_EQUAL':
-          where[field] = { gte: Number.parseFloat(value) };\1\n    }\n    case 'LESS_THAN_OR_EQUAL':
-          where[field] = { lte: Number.parseFloat(value) };\1\n    }\n    case 'IN':
-          where[field] = { in: value.split(',') };\1\n    }\n    case 'NOT_IN':
-          where[field] = { notIn: value.split(',') };\1\n    }\n    case 'IS_NULL':
-          where[field] = null;\1\n    }\n    case 'IS_NOT_NULL':
-          where[field] = { not: null };
+          where[field] = value;\n    }\n    case 'NOT_EQUALS':
+          where[field] = { not: value ,};\n    }\n    case 'CONTAINS':
+          where[field] = { contains: value, mode: 'insensitive' ,};\n    }\n    case 'NOT_CONTAINS':
+          where[field] = { not: { contains: value, mode: 'insensitive' } ,};\n    }\n    case 'STARTS_WITH':
+          where[field] = { startsWith: value, mode: 'insensitive' ,};\n    }\n    case 'ENDS_WITH':
+          where[field] = { endsWith: value, mode: 'insensitive' ,};\n    }\n    case 'GREATER_THAN':
+          where[field] = { gt: Number.parseFloat(value) ,};\n    }\n    case 'LESS_THAN':
+          where[field] = { lt: Number.parseFloat(value) ,};\n    }\n    case 'GREATER_THAN_OR_EQUAL':
+          where[field] = { gte: Number.parseFloat(value) ,};\n    }\n    case 'LESS_THAN_OR_EQUAL':
+          where[field] = { lte: Number.parseFloat(value) ,};\n    }\n    case 'IN':
+          where[field] = { in: value.split(',') };\n    }\n    case 'NOT_IN':
+          where[field] = { notIn: value.split(',') };\n    }\n    case 'IS_NULL':
+          where[field] = null;\n    }\n    case 'IS_NOT_NULL':
+          where[field] = { not: null ,};
           break;
       }
     });
@@ -459,7 +459,7 @@ export const _baseResolvers = {
     return where;
   }
 
-  static buildOrderBy(sort: unknown[]): unknown {
+  static buildOrderBy(sort: unknown[]): unknown {,
     return sort?.map((s) => ({
       [s.field]: s.direction.toLowerCase(),
     })) || [];
@@ -468,13 +468,13 @@ export const _baseResolvers = {
   // Real-time notification utilities
   static async publishNotification(
     type: string,
-    \1,\2 string;
+     string;
     data?: unknown,
     userId?: string,
     priority: string = 'MEDIUM';
   ) {
     const notification = {
-      id: `notification-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1)}`,
+      id: `notification-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1),}`,
       type,
       title,
       message,
@@ -482,11 +482,11 @@ export const _baseResolvers = {
       priority,
       timestamp: new Date(),
       userId,
-      read: false
+      read: false,
     };
 
     const eventName = userId ? `NOTIFICATION_${userId}` : 'NOTIFICATION_GLOBAL';
-    await pubsub.publish(eventName, { notifications: notification });
+    await pubsub.publish(eventName, { notifications: notification ,});
 
     return notification;
   }
@@ -499,12 +499,12 @@ export const _baseResolvers = {
       details,
     };
 
-    await pubsub.publish('HEALTH_UPDATE', { healthUpdates: healthUpdate });
+    await pubsub.publish('HEALTH_UPDATE', { healthUpdates: healthUpdate ,});
     return healthUpdate;
   }
 
   // FHIR integration utilities
-  static fhirToGraphQL(fhirResource: unknown, resourceType: string) {
+  static fhirToGraphQL(fhirResource: unknown, resourceType: string) {,
     // Convert FHIR resource to GraphQL format
     const graphqlResource = {
       id: fhirResource.id;
@@ -514,22 +514,22 @@ export const _baseResolvers = {
     };
 
     // Convert FHIR dates to GraphQL DateTime format
-    \1 {\n  \2{
+     {\n  {
       graphqlResource.updatedAt = new Date(fhirResource.meta.lastUpdated);
     }
 
     return graphqlResource;
   }
 
-  static graphqlToFHIR(graphqlData: unknown, resourceType: string) {
+  static graphqlToFHIR(graphqlData: unknown, resourceType: string) {,
     // Convert GraphQL data to FHIR format
     const fhirResource = {
       resourceType,
       id: graphqlData.id,
-      meta: {
+      meta: {,
         versionId: '1',
         lastUpdated: new Date().toISOString(),
-        source: 'HMS-GraphQL'
+        source: 'HMS-GraphQL',
       },
       ...graphqlData,
     };

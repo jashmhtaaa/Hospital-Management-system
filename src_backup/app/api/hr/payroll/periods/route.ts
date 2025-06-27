@@ -23,7 +23,7 @@ const payrollPeriodSchema = z.object({
 });
 
 // POST handler for creating payroll period;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -63,8 +63,8 @@ export const _POST = async (request: any) => {
     const validationResult = payrollPeriodSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
 
     const { name, startDate, endDate, paymentDate, notes } = validationResult.data;
@@ -82,12 +82,12 @@ export const _POST = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to create payroll period", details: error.message },
-      { status: 500 }
+      { error: "Failed to create payroll period", details: error.message ,},
+      { status: 500 },
     );
 
 // GET handler for listing payroll periods;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -143,6 +143,6 @@ export const _GET = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to fetch payroll periods", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch payroll periods", details: error.message ,},
+      { status: 500 },
     );

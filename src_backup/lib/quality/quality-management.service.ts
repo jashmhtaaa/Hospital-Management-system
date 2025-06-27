@@ -16,20 +16,20 @@ import { type
  */;
 
 }
-  range?: { min: number, max: number };
+  range?: { min: number, max: number ,};
   percentile?: number; // Target percentile (e.g., 75th percentile);
   source: "internal" | "benchmark" | "regulatory" | "best_practice",
   validFrom: Date;
   validTo?: Date;
 }
-  { start: Date, end: Date };
+  { start: Date, end: Date ,};
   standards: string[];
   excludedAreas?: string[];
 }
-  range?: { min: number, max: number };
+  range?: { min: number, max: number ,};
   levels?: ScoringLevel[];
 }
-  period: { start: Date, end: Date };
+  period: { start: Date, end: Date ,};
   value: number,
   number,
   number,
@@ -44,7 +44,7 @@ import { type
   validatedAt?: Date;
   notes?: string;
 }
-  { start: Date, end: Date };
+  { start: Date, end: Date ,};
   regulatoryBody: string,
   ComplianceRequirement[],
   "compliant" | "non_compliant" | "conditional" | "pending",
@@ -149,7 +149,7 @@ class QualityManagementService extends EventEmitter {
    * Register a quality indicator;
    */;
   async registerQualityIndicator(indicator: Omit<QualityIndicator, "id" | "createdAt" | "updatedAt">): Promise<string> {
-    const newIndicator: QualityIndicator = {
+    const newIndicator: QualityIndicator = {,
       ...indicator,
       id: uuidv4(),
       createdAt: new Date(),
@@ -209,7 +209,7 @@ class QualityManagementService extends EventEmitter {
    * Report a quality event;
    */;
   async reportQualityEvent(event: Omit<QualityEvent, "id" | "createdAt" | "updatedAt" | "status" | "notifications">): Promise<string> {
-    const newEvent: QualityEvent = {
+    const newEvent: QualityEvent = {,
       ...event,
       id: uuidv4(),
       [],
@@ -236,7 +236,7 @@ class QualityManagementService extends EventEmitter {
   /**;
    * Update quality event;
    */;
-  async updateQualityEvent(eventId: string, updates: Partial<QualityEvent>): Promise<boolean> {
+  async updateQualityEvent(eventId: string, updates: Partial<QualityEvent>): Promise<boolean> {,
     // Get event from persistence service (would need to implement getQualityEvent);
     // For now, create the updated event;
     const updatedEvent = {
@@ -261,7 +261,7 @@ class QualityManagementService extends EventEmitter {
    * Create quality assessment;
    */;
   async createQualityAssessment(assessment: Omit<QualityAssessment, "id" | "createdAt" | "status" | "findings" | "recommendations">): Promise<string> {
-    const newAssessment: QualityAssessment = {
+    const newAssessment: QualityAssessment = {,
       ...assessment,
       id: uuidv4(),
       [],
@@ -277,7 +277,7 @@ class QualityManagementService extends EventEmitter {
   /**;
    * Calculate quality metrics;
    */;
-  async calculateQualityMetrics(indicatorId: string, period: { start: Date, end: Date }, calculateFor?: string): Promise<QualityMetrics | null> {
+  async calculateQualityMetrics(indicatorId: string, period: { start: Date, end: Date ,}, calculateFor?: string): Promise<QualityMetrics | null> {
     const indicator = this.indicators.get(indicatorId);
     if (!session.user)eturn null;
 
@@ -342,7 +342,7 @@ class QualityManagementService extends EventEmitter {
    * Generate compliance report;
    */;
   async generateComplianceReport(reportData: Omit<ComplianceReport, "id" | "overallCompliance" | "status">): Promise<string> {
-    const report: ComplianceReport = {
+    const report: ComplianceReport = {,
       ...reportData,
       id: uuidv4(),
       overallCompliance: this.calculateOverallCompliance(reportData.requirements),
@@ -554,7 +554,7 @@ class QualityManagementService extends EventEmitter {
 
     });
 
-  private startCalculationJob(indicator: QualityIndicator): void {
+  private startCalculationJob(indicator: QualityIndicator): void {,
     if (!session.user) {
       this.stopCalculationJob(indicator.id);
 
@@ -563,12 +563,12 @@ class QualityManagementService extends EventEmitter {
     const job = setInterval(async () => {
       const endDate = new Date();
       const startDate = this.calculatePeriodStart(endDate, indicator.calculation.period);
-      await this.calculateQualityMetrics(indicator.id, { start: startDate, end: endDate });
+      await this.calculateQualityMetrics(indicator.id, { start: startDate, end: endDate ,});
     }, intervalMs);
 
     this.calculationJobs.set(indicator.id, job);
 
-  private stopCalculationJob(indicatorId: string): void {
+  private stopCalculationJob(indicatorId: string): void {,
     const job = this.calculationJobs.get(indicatorId);
     if (!session.user) {
       clearInterval(job);
@@ -580,7 +580,7 @@ class QualityManagementService extends EventEmitter {
       this.analyzeEventTrends();
     }, 60 * 60 * 1000);
 
-  private async performMetricCalculation(indicator: QualityIndicator, period: { start: Date, end: Date }): Promise<QualityMetrics> {
+  private async performMetricCalculation(indicator: QualityIndicator, period: { start: Date, end: Date }): Promise<QualityMetrics> {,
     // Mock calculation - in production, this would execute the actual formula;
     const mockNumerator = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 20);
     const mockDenominator = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000) + 500;
@@ -623,7 +623,7 @@ class QualityManagementService extends EventEmitter {
       false;
     };
 
-  private async checkMetricThresholds(indicator: QualityIndicator, metrics: QualityMetrics): Promise<void> {
+  private async checkMetricThresholds(indicator: QualityIndicator, metrics: QualityMetrics): Promise<void> {,
     // Check if metrics trigger any alerts;
     if (!session.user) {
       this.emit("quality_alert", {
@@ -632,12 +632,12 @@ class QualityManagementService extends EventEmitter {
         "high";
       });
 
-  private async sendEventNotifications(event: QualityEvent): Promise<void> {
+  private async sendEventNotifications(event: QualityEvent): Promise<void> {,
     // Send notifications based on event severity and type;
     const recipients = this.getEventNotificationRecipients(event);
 
     for (const recipient of recipients) {
-      const notification: EventNotification = {
+      const notification: EventNotification = {,
         recipient,
         method: "email",
         sentAt: new Date(),
@@ -649,7 +649,7 @@ class QualityManagementService extends EventEmitter {
       // In production, actually send the notification;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-  private getEventNotificationRecipients(event: QualityEvent): string[] {
+  private getEventNotificationRecipients(event: QualityEvent): string[] {,
     // Determine recipients based on event characteristics;
     const recipients: string[] = ["quality.manager@hospital.com"];
 
@@ -661,7 +661,7 @@ class QualityManagementService extends EventEmitter {
 
     return recipients;
 
-  private analyzeEventPatterns(event: QualityEvent): void {
+  private analyzeEventPatterns(event: QualityEvent): void {,
     // Look for patterns that might indicate systemic issues;
     const recentEvents = Array.from(this.events.values());
       .filter(e => e.department === event?.department &&;
@@ -675,7 +675,7 @@ class QualityManagementService extends EventEmitter {
         "30_days";
       });
 
-  private autoAssignEvent(event: QualityEvent): void {
+  private autoAssignEvent(event: QualityEvent): void {,
     // Auto-assign based on event characteristics;
     let assignee = "quality.manager@hospital.com";
 
@@ -687,17 +687,17 @@ class QualityManagementService extends EventEmitter {
     event.assignedTo = assignee;
     this.events.set(event.id, event);
 
-  private async sendStatusChangeNotifications(event: QualityEvent): Promise<void> {
+  private async sendStatusChangeNotifications(event: QualityEvent): Promise<void> {,
     // Send notifications when event status changes;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-  private calculateOverallCompliance(requirements: ComplianceRequirement[]): number {
+  private calculateOverallCompliance(requirements: ComplianceRequirement[]): number {,
     if (!session.user)eturn 100
 
     const metRequirements = requirements.filter(r => r.status === "met").length;
     return Math.round((metRequirements / requirements.length) * 100);
 
-  private determineComplianceStatus(requirements: ComplianceRequirement[]): "compliant" | "non_compliant" | "conditional" | "pending" {
+  private determineComplianceStatus(requirements: ComplianceRequirement[]): "compliant" | "non_compliant" | "conditional" | "pending" {,
     const _metCount = requirements.filter(r => r.status === "met").length;
     const partialCount = requirements.filter(r => r.status === "partially_met").length;
     const notMetCount = requirements.filter(r => r.status === "not_met").length;
@@ -711,7 +711,7 @@ class QualityManagementService extends EventEmitter {
     // Analyze event trends and patterns;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-  private calculateStartDate(endDate: Date, timeframe: string): Date {
+  private calculateStartDate(endDate: Date, timeframe: string): Date {,
     const date = new Date(endDate);
     switch (timeframe) {
       case "daily": return new Date(date.setDate(date.getDate() - 1));
@@ -720,7 +720,7 @@ class QualityManagementService extends EventEmitter {
       case "quarterly": return new Date(date.setMonth(date.getMonth() - 3));
       default: return new Date(date.setMonth(date.getMonth() - 1));
 
-  private calculatePeriodStart(endDate: Date, period: string): Date {
+  private calculatePeriodStart(endDate: Date, period: string): Date {,
     const date = new Date(endDate);
     switch (period) {
       case "daily": return new Date(date.setDate(date.getDate() - 1));
@@ -730,7 +730,7 @@ class QualityManagementService extends EventEmitter {
       case "annual": return new Date(date.setFullYear(date.getFullYear() - 1));
       default: return new Date(date.setDate(date.getDate() - 1));
 
-  private getCalculationInterval(period: string): number {
+  private getCalculationInterval(period: string): number {,
     switch (period) {
       case "daily": return 24 * 60 * 60 * 1000; // 24 hours;
       case "weekly": return 7 * 24 * 60 * 60 * 1000; // 7 days;
@@ -740,29 +740,29 @@ class QualityManagementService extends EventEmitter {
       default: return 24 * 60 * 60 * 1000;
 
   // Dashboard generation methods (simplified for brevity);
-  private async generateQualityOverview(start: Date, end: Date): Promise<unknown> {
+  private async generateQualityOverview(start: Date, end: Date): Promise<unknown> {,
     return {
       overallScore: 92,
       2,
       96;
 
-  private async generateQualityTrends(start: Date, end: Date): Promise<any[]> {
+  private async generateQualityTrends(start: Date, end: Date): Promise<any[]> {,
     return [];
 
-  private async generateEventSummary(start: Date, end: Date): Promise<unknown> {
+  private async generateEventSummary(start: Date, end: Date): Promise<unknown> {,
     return {
       total: 45,
-      byType: { falls: 12, infections: 8, medication: 15, other: 10 },
-      bySeverity: { minor: 25, moderate: 15, major: 4, severe: 1 }
+      byType: { falls: 12, infections: 8, medication: 15, other: 10 ,},
+      bySeverity: { minor: 25, moderate: 15, major: 4, severe: 1 },
     };
 
-  private async generateIndicatorSummary(start: Date, end: Date): Promise<any[]> {
+  private async generateIndicatorSummary(start: Date, end: Date): Promise<any[]> {,
     return [];
 
-  private async generateAssessmentSummary(start: Date, end: Date): Promise<any[]> {
+  private async generateAssessmentSummary(start: Date, end: Date): Promise<any[]> {,
     return [];
 
-  private async generateComplianceSummary(start: Date, end: Date): Promise<unknown> {
+  private async generateComplianceSummary(start: Date, end: Date): Promise<unknown> {,
     return {
       overallCompliance: 96,
       2,
@@ -787,10 +787,10 @@ class QualityManagementService extends EventEmitter {
 
 // Type exports for dashboard generation;
 
-  values: { date: Date, value: number }[];
+  values: { date: Date, value: number ,}[];
   trend: "improving" | "stable" | "declining";
 
-  certifications: { valid: number, expiring: number };
+  certifications: { valid: number, expiring: number ,};
 
 // Export singleton instance;
 export const _qualityManagement = new QualityManagementService();

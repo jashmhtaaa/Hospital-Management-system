@@ -8,7 +8,7 @@ interface D1Database {
   prepare(query: string): D1PreparedStatement;
   dump(): Promise<ArrayBuffer>;
   batch(statements: D1PreparedStatement[]): Promise<D1Result<unknown>[]>;
-  exec(query: string): Promise<D1ExecResult>
+  exec(query: string): Promise<D1ExecResult>,
 }
 
 // Define the type for D1 prepared statements
@@ -31,7 +31,7 @@ interface D1Result<T = unknown> {
 // Define the type for D1 exec results
 interface D1ExecResult {
   count: number,
-  duration: number
+  duration: number,
 }
 
 // Define the type for Cloudflare Fetcher binding (assuming standard type)
@@ -45,8 +45,8 @@ interface CloudflareEnv {
   ASSETS: Fetcher;
   [key: string]: unknown; // Index signature to satisfy Record<string, unknown> constraint
   // Add other bindings (KV, R2, etc.) here if needed
-  // MY_KV_NAMESPACE: KVNamespace
-  // MY_R2_BUCKET: R2Bucket
+  // MY_KV_NAMESPACE: KVNamespace,
+  // MY_R2_BUCKET: R2Bucket,
 }
 
 // It might also be necessary to declare the types for process.env if used

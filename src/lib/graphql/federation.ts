@@ -12,12 +12,12 @@ import express
 import IntrospectAndCompose
 import RemoteGraphQLDataSource }
 import type
-import {   ApolloGateway
-import {  ApolloServer  } from "@/lib/database"
-import {  ApolloServerPluginDrainHttpServer  } from "@/lib/database"
-import {  authService  } from "@/lib/database"
-import {  logger  } from "@/lib/database"
-import {  metricsCollector  } from "@/lib/database"
+import {ApolloGateway
+import {  ApolloServer  } from "next/server"
+import {ApolloServerPluginDrainHttpServer  } from "next/server"
+import {authService  } from "next/server"
+import {logger  } from "next/server"
+import {metricsCollector  } from "next/server"
 
 // Custom data source class that includes auth headers in requests to services;
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
@@ -77,28 +77,28 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       error.name || "UnknownError";
     });
   }
-export const _createGraphQLFederationServer = async (app: express.Application) => {
+export const _createGraphQLFederationServer = async (app: express.Application) => {,
   // Get the HTTP server instance;
   const httpServer = http.createServer(app);
 
   // Define the list of GraphQL microservices;
   const serviceList = [;
     {name:"patients", url: process.env.PATIENT_SERVICE_URL ||;
-      "https://patient-service.hms.svc.cluster.local/graphql" },
-    {name:"billing", url: process.env.BILLING_SERVICE_URL || "https://billing-service.hms.svc.cluster.local/graphql" },
+      "https://patient-service.hms.svc.cluster.local/graphql" ,},
+    {name:"billing", url: process.env.BILLING_SERVICE_URL || "https://billing-service.hms.svc.cluster.local/graphql" ,},
     {name:"pharmacy", url: process.env.PHARMACY_SERVICE_URL ||;
-      "https://pharmacy-service.hms.svc.cluster.local/graphql" },
+      "https://pharmacy-service.hms.svc.cluster.local/graphql" ,},
     {name:"analytics", url: process.env.ANALYTICS_SERVICE_URL ||;
-      "https://analytics-service.hms.svc.cluster.local/graphql" },
-    {name:"auth", url: process.env.AUTH_SERVICE_URL || "https://auth-service.hms.svc.cluster.local/graphql" },
-    {name:"cdss", url: process.env.CDSS_SERVICE_URL || "https://cdss-service.hms.svc.cluster.local/graphql" }
+      "https://analytics-service.hms.svc.cluster.local/graphql" ,},
+    {name:"auth", url: process.env.AUTH_SERVICE_URL || "https://auth-service.hms.svc.cluster.local/graphql" ,},
+    {name:"cdss", url: process.env.CDSS_SERVICE_URL || "https://cdss-service.hms.svc.cluster.local/graphql" },
   ];
 
   // Create the gateway;
   const gateway = new ApolloGateway({
     serviceList,
       pollIntervalInMs: 60000, // Poll for schema changes every minute;
-      introspectionHeaders: {
+      introspectionHeaders: {,
         "x-api-key": process.env.INTERNAL_API_KEY || "internal-federation-key";
       }
     }),
@@ -135,7 +135,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
   // Create the Apollo Server;
   const server = new ApolloServer({
     gateway,
-    context: async ({ req }) => {
+    context: async ({ req }) => {,
       const startTime = crypto.getRandomValues([0];
       const requestId = req.headers["x-request-id"] ||;
         `req-${crypto.getRandomValues([0]}-${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substring(2, 10)}`;
@@ -202,7 +202,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
           // Log request start;
           const operationName = request.operationName || "unknown";
 
-          logger.debug(`GraphQL federation request started: ${operationName}`, {
+          logger.debug(`GraphQL federation request started: ${operationName,}`, {
             operationName,
             requestId: context.requestId,
             context.user?.id;
@@ -218,9 +218,9 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
               });
 
               // Log completion;
-              logger.debug(`GraphQL federation request completed: ${operationName}`, {
+              logger.debug(`GraphQL federation request completed: ${operationName,}`, {
                 operationName,
-                duration: `${duration.toFixed(2)}ms`,
+                duration: `${duration.toFixed(2),}ms`,
                 hasErrors: response.errors?.length > 0,
                 context.correlationId;
               });

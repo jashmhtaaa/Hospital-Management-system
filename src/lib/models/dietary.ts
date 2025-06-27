@@ -4,7 +4,7 @@ import Meal
 import MealPlan
 import NutritionalProfile }
 import type
-import {  type
+import {type
 
 // FHIR-compliant interfaces for Dietary Management;
 
@@ -13,7 +13,7 @@ import {  type
  * Maps to FHIR NutritionOrder resource;
  */;
 
-   } from "@/lib/database";
+   } from "next/server";
   encounter?: {reference:string;
   };
   dateTime: string;
@@ -189,7 +189,7 @@ export const _toFHIRDietaryRequest = (unknown,
   }));
 
   // Map allergies to FHIR allergyIntolerance references;
-  const _allergyIntolerances = request.allergies.map((allergy, index) => ({reference:`AllergyIntolerance/${request.patientId}-${index}`,
+  const _allergyIntolerances = request.allergies.map((allergy, index) => ({reference:`AllergyIntolerance/${request.patientId}-${index,}`,
     display: allergy;
   }));
 
@@ -216,7 +216,7 @@ export const _toFHIRDietaryRequest = (unknown,
 /**;
  * Convert database MealPlan to FHIR CarePlan;
  */;
-export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown };
+export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown ,};
   meals?: Meal[];
   createdByUser: unknown;
 }): FHIRMealPlan {
@@ -235,7 +235,7 @@ export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown };
               meal.status === "CANCELLED" ? "cancelled" : any;
               meal.status === "DELIVERED" ? "in-progress" : any;
               meal.status === "PREPARED" ? "scheduled" : "not-started",
-      description: `${meal.mealType} - ${meal.menuItems?.length || 0} items`,
+      description: `${meal.mealType} - ${meal.menuItems?.length || 0,} items`,
       [meal.deliveryTime?.toISOString() || mealPlan.date.toISOString()],
         [{system:"https://hms.local/fhir/CodeSystem/meal-type",
             code: meal.mealType.toLowerCase(),
@@ -251,7 +251,7 @@ export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown };
         "Diet";
       }];
     }],
-    title: `Meal Plan for ${mealPlan.date.toISOString().split("T")[0]}`,
+    title: `Meal Plan for ${mealPlan.date.toISOString().split("T")[0],}`,
     description: `Meal plan for ${mealPlan.request.patient?.name ||;
       "patient"} on $mealPlan.date.toISOString().split("T")[0]`,
     `Patient/$mealPlan.request.patientId`,
@@ -265,7 +265,7 @@ export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown };
       display: mealPlan.createdByUser?.name || "Unknown User";
     },
     activity: activities,
-    note: mealPlan.notes ? [{text:mealPlan.notes }] : [];
+    note: mealPlan.notes ? [{text:mealPlan.notes ,}] : [];
 
 /**;
  * Convert database NutritionalProfile to FHIR Observation;
@@ -375,4 +375,4 @@ export const _toFHIRNutritionalProfile = (unknown,
       display: profile.lastUpdatedByUser?.name || "Unknown User";
     }],
     component: components,
-    note: profile.notes ? [{text:profile.notes }] : [];
+    note: profile.notes ? [{text:profile.notes ,}] : [];

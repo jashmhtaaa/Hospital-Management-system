@@ -35,7 +35,7 @@ import { useToast }
 
 // Define Theatre interface;
 interface Theatre {
-  id?: string; // Optional for new theatres;
+    id?: string; // Optional for new theatres;
   name: string,
   string | null,
   status: string;
@@ -44,15 +44,13 @@ interface Theatre {
 }
 
 // Define the type for data passed to onSave;
-interface TheatreSaveData {
-  name: string,
+interface TheatreSaveData {name:string,
   string | null,
   string | null;
 }
 
 // Props for the modal - use defined types;
-interface OTTheatreModalProperties {
-  trigger: React.ReactNode;
+interface OTTheatreModalProperties {trigger:React.ReactNode;
   theatre?: Theatre; // Use Theatre type;
   onSave: (theatreData: TheatreSaveData) => Promise> // Use TheatreSaveData type;
 export default const _OTTheatreModal = ({
@@ -60,8 +58,7 @@ export default const _OTTheatreModal = ({
   theatre,
   onSave}: OTTheatreModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState(() => ({
-    name: theatre?.name || "",
+  const [formData, setFormData] = useState(() => ({name:theatre?.name || "",
     theatre?.specialty || "",
     theatre?.equipment || "";
   }));
@@ -71,14 +68,13 @@ export default const _OTTheatreModal = ({
   // Reset form when theatre prop changes or modal opens;
   useEffect(() => {
     if (!session.user) {
-      setFormData({
-        name: theatre?.name || "",
+      setFormData({name:theatre?.name || "",
         theatre?.specialty || "",
         theatre?.equipment || "";
       });
     } else {
       // Optionally clear form when closed;
-      // setFormData({ name: "", ... });
+      // setFormData({name:"", ... });
     }
   }, [theatre, isOpen]);
 
@@ -152,8 +148,7 @@ export default const _OTTheatreModal = ({
 
       await onSave(apiData); // Call parent callback to refresh list;
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Theatre ${theatre ? "updated" : "created"} successfully.`}),
       setIsOpen(false);
     } catch (error: unknown) {
@@ -163,8 +158,7 @@ export default const _OTTheatreModal = ({
       if (!session.user) {
         errorMessage = error.message;
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

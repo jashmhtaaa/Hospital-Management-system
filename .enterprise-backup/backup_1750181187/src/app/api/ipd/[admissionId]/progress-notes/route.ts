@@ -8,7 +8,7 @@ import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Impor
 // Zod schema for creating a progress note
 const progressNoteCreateSchema = z.object({
     note_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid note datetime format"
+        message: "Invalid note datetime format",
     }),
     notes: z.string().min(1, "Progress note content cannot be empty"),
     // Assuming doctor_id is derived from the session
@@ -17,18 +17,18 @@ const progressNoteCreateSchema = z.object({
 // GET /api/ipd/[admissionId]/progress-notes - Fetch progress notes for an admission
 export const _GET = async (
     request: NextRequest;
-    { params }: { params: Promise<{ admissionId: string }> }
+    { params }: { params: Promise<{ admissionId: string }> },
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const { admissionId } = await params;
-    \1 {\n  \2{
+     {\n  {
         return NextResponse.json(
-            { message: "Admission ID is required" },
-            { status: 400 }
+            { message: "Admission ID is required" ,},
+            { status: 400 },
         );
     }
 
@@ -49,10 +49,10 @@ export const _GET = async (
             "SELECT id FROM IPDAdmissions WHERE id = ?";
         ).bind(admissionId).first<id: number >();
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Admission not found" },
-                { status: 404 }
+                { message: "Admission not found" ,},
+                { status: 404 },
             );
         }
 
@@ -64,12 +64,12 @@ export const _GET = async (
             FROM ProgressNotes pn;
             JOIN Users u ON pn.doctor_id = u.id;
             WHERE pn.admission_id = ?;
-            ORDER BY pn./* SECURITY: Template literal eliminated */
+            ORDER BY pn./* SECURITY: Template literal eliminated */,
         const countQuery = `SELECT COUNT(*) as total FROM ProgressNotes WHERE admission_id = ?`;
 
         const [notesResult, countResult] = await Promise.all([
             (DB as D1Database).prepare(query).bind(admissionId, limit, offset).all(),
-            (DB as D1Database).prepare(countQuery).bind(admissionId).first<{ total: number }>();
+            (DB as D1Database).prepare(countQuery).bind(admissionId).first<{ total: number ,}>();
         ]);
 
         const results = notesResult.results || [];
@@ -77,23 +77,23 @@ export const _GET = async (
 
         return NextResponse.json({
             data: results,
-            pagination: {
+            pagination: {,
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit)
+                totalPages: Math.ceil(total / limit),
             },
         });
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error fetching progress notes", details: errorMessage },
-            { status: 500 }
+            { message: "Error fetching progress notes", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
@@ -101,21 +101,21 @@ export const _GET = async (
 // POST /api/ipd/[admissionId]/progress-notes - Create a new progress note
 export const _POST = async (
     request: NextRequest;
-    { params }: { params: Promise<{ admissionId: string }> }
+    { params }: { params: Promise<{ admissionId: string }> },
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
-    \1 {\n  \2{ // Ensure user exists if logged in
-        return NextResponse.json({ message: "User not found in session" }, { status: 500 });
+     {\n  { // Ensure user exists if logged in
+        return NextResponse.json({ message: "User not found in session" ,}, { status: 500 ,});
     }
 
     const { admissionId } = await params;
-    \1 {\n  \2{
+     {\n  {
         return NextResponse.json(
-            { message: "Admission ID is required" },
-            { status: 400 }
+            { message: "Admission ID is required" ,},
+            { status: 400 },
         );
     }
 
@@ -124,20 +124,20 @@ export const _POST = async (
             "SELECT id FROM IPDAdmissions WHERE id = ?";
         ).bind(admissionId).first<id: number >();
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Admission not found" },
-                { status: 404 }
+                { message: "Admission not found" ,},
+                { status: 404 },
             );
         }
 
         const body = await request.json();
         const validationResult = progressNoteCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
         }
 
@@ -159,7 +159,7 @@ export const _POST = async (
 
         const result = await insertStmt.run() as D1ResultWithMeta;
 
-        \1 {\n  \2{
+         {\n  {
 
             throw new Error("Failed to create progress note record");
         }
@@ -167,18 +167,18 @@ export const _POST = async (
         const progressNoteId = result.meta.last_row_id;
 
         return NextResponse.json(
-            { message: "Progress note created successfully", progressNoteId: progressNoteId },
-            { status: 201 }
+            { message: "Progress note created successfully", progressNoteId: progressNoteId ,},
+            { status: 201 },
         );
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error creating progress note", details: errorMessage },
-            { status: 500 }
+            { message: "Error creating progress note", details: errorMessage ,},
+            { status: 500 },
         );
     }

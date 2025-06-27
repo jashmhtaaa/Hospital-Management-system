@@ -1,5 +1,5 @@
 import "./pharmacy.ts"
-import {  MedicationAdministrationRecord  } from "@/lib/database"
+import {MedicationAdministrationRecord  } from "next/server"
 
 // src/types/api.ts;
 

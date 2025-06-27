@@ -15,12 +15,12 @@ const createTripRequestSchema = z.object({
   pickupLocation: z.string().min(3).max(200),
   dropoffLocation: z.string().min(3).max(200),
   patientId: z.string().uuid().optional(),
-  \1,\2 z.string().max(1000).optional(),
+   z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
   contactName: z.string().min(2).max(100).optional(),
   contactPhone: z.string().min(5).max(20).optional(),
   medicalEquipmentNeeded: z.array(z.string()).optional(),
-  specialInstructions: z.string().max(500).optional()
+  specialInstructions: z.string().max(500).optional(),
 });
 
 const updateTripRequestSchema = z.object({
@@ -35,11 +35,11 @@ const updateTripRequestSchema = z.object({
   contactName: z.string().min(2).max(100).optional(),
   contactPhone: z.string().min(5).max(20).optional(),
   medicalEquipmentNeeded: z.array(z.string()).optional(),
-  specialInstructions: z.string().max(500).optional()
+  specialInstructions: z.string().max(500).optional(),
 });
 
 // GET /api/support-services/ambulance/trips
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -47,10 +47,10 @@ export const _GET = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        \1,\2 searchParams.get('requestType') || undefined,
-        \1,\2 searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
-        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
-        limit: parseInt(searchParams.get('limit') || '10')
+         searchParams.get('requestType') || undefined,
+         searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
+         Number.parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10'),
       };
 
       // Get ambulance trips with filters
@@ -60,13 +60,13 @@ export const _GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'ambulance:read',
-      auditAction: 'AMBULANCE_TRIPS_VIEW'
+      auditAction: 'AMBULANCE_TRIPS_VIEW',
     }
   );
 }
 
 // POST /api/support-services/ambulance/trips
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -80,17 +80,17 @@ export const _POST = async (request: NextRequest) => {
       // Create ambulance trip request
       const result = await ambulanceService.createAmbulanceTrip(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       requiredPermission: 'ambulance:create',
-      auditAction: 'AMBULANCE_TRIP_CREATE'
+      auditAction: 'AMBULANCE_TRIP_CREATE',
     }
   );
 }
 
 // GET /api/support-services/ambulance/trips/:id
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -102,13 +102,13 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     },
     {
       requiredPermission: 'ambulance:read',
-      auditAction: 'AMBULANCE_TRIP_VIEW'
+      auditAction: 'AMBULANCE_TRIP_VIEW',
     }
   );
 }
 
 // PATCH /api/support-services/ambulance/trips/:id
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -126,30 +126,30 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
     },
     {
       requiredPermission: 'ambulance:update',
-      auditAction: 'AMBULANCE_TRIP_UPDATE'
+      auditAction: 'AMBULANCE_TRIP_UPDATE',
     }
   );
 }
 
 // DELETE /api/support-services/ambulance/trips/:id
-export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
       // Delete ambulance trip
       await ambulanceService.deleteAmbulanceTrip(params.id);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true ,});
     },
     {
       requiredPermission: 'ambulance:delete',
-      auditAction: 'AMBULANCE_TRIP_DELETE'
+      auditAction: 'AMBULANCE_TRIP_DELETE',
     }
   );
 }
 
 // POST /api/support-services/ambulance/trips/:id/assign
-export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -157,8 +157,8 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       const body = await req.json();
       const { ambulanceId, crewIds } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Ambulance ID is required' }, { status: 400 });
+       {\n  {
+        return NextResponse.json({ error: 'Ambulance ID is required' ,}, { status: 400 ,});
       }
 
       // Assign ambulance and crew to trip
@@ -172,13 +172,13 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
     },
     {
       requiredPermission: 'ambulance:assign',
-      auditAction: 'AMBULANCE_TRIP_ASSIGN'
+      auditAction: 'AMBULANCE_TRIP_ASSIGN',
     }
   );
 }
 
 // POST /api/support-services/ambulance/trips/:id/status
-export const _UPDATE_STATUS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _UPDATE_STATUS = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -186,8 +186,8 @@ export const _UPDATE_STATUS = async (request: NextRequest, { params }: { params:
       const body = await req.json();
       const { status, notes, latitude, longitude } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Status is required' }, { status: 400 });
+       {\n  {
+        return NextResponse.json({ error: 'Status is required' ,}, { status: 400 ,});
       }
 
       // Update ambulance trip status
@@ -203,13 +203,13 @@ export const _UPDATE_STATUS = async (request: NextRequest, { params }: { params:
     },
     {
       requiredPermission: 'ambulance:update',
-      auditAction: 'AMBULANCE_TRIP_STATUS_UPDATE'
+      auditAction: 'AMBULANCE_TRIP_STATUS_UPDATE',
     }
   );
 }
 
 // GET /api/support-services/ambulance/vehicles
-export const _GET_VEHICLES = async (request: NextRequest) => {
+export const _GET_VEHICLES = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -217,8 +217,8 @@ export const _GET_VEHICLES = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        \1,\2 searchParams.get('available') === 'true',
-        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
+         searchParams.get('available') === 'true',
+         Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance vehicles with filters
@@ -228,13 +228,13 @@ export const _GET_VEHICLES = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'ambulance:read',
-      auditAction: 'AMBULANCE_VEHICLES_VIEW'
+      auditAction: 'AMBULANCE_VEHICLES_VIEW',
     }
   );
 }
 
 // GET /api/support-services/ambulance/crews
-export const _GET_CREWS = async (request: NextRequest) => {
+export const _GET_CREWS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -242,8 +242,8 @@ export const _GET_CREWS = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        \1,\2 searchParams.get('available') === 'true',
-        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
+         searchParams.get('available') === 'true',
+         Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get ambulance crews with filters
@@ -253,13 +253,13 @@ export const _GET_CREWS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'ambulance:read',
-      auditAction: 'AMBULANCE_CREWS_VIEW'
+      auditAction: 'AMBULANCE_CREWS_VIEW',
     }
   );
 }
 
 // GET /api/support-services/ambulance/analytics
-export const _GET_ANALYTICS = async (request: NextRequest) => {
+export const _GET_ANALYTICS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -275,6 +275,6 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'ambulance:analytics',
-      auditAction: 'AMBULANCE_ANALYTICS_VIEW'
+      auditAction: 'AMBULANCE_ANALYTICS_VIEW',
     }
   );

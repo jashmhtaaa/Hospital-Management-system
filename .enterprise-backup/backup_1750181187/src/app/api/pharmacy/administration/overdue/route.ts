@@ -15,13 +15,13 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {
@@ -32,10 +32,10 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
-const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
+const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {,
   findById: () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
@@ -44,19 +44,19 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findOverdue: (overdueThreshold: number) => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 /**
  * GET /api/pharmacy/administration/overdue;
  * List medications that are overdue for administration;
  */
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {,
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -81,7 +81,7 @@ export const GET = async (req: NextRequest) => {
 
     // Get active prescriptions
     let activePrescriptions = [];
-    \1 {\n  \2{
+     {\n  {
       // If patient ID is provided, get prescriptions for that patient
       activePrescriptions = await prescriptionRepository.findByPatientId(patientId);
     } else {
@@ -97,16 +97,16 @@ export const GET = async (req: NextRequest) => {
 
     for (const prescription of activePrescriptions) {
       // Skip PRN medications
-      \1 {\n  \2| prescription.dosage.frequency.includes('as needed')) {
+       {\n  | prescription.dosage.frequency.includes('as needed')) {
         continue;
       }
 
       // Get medication
       const medication = await medicationRepository.findById(prescription.medicationId);
-      \1 {\n  \2ontinue;
+       {\n  ontinue;
 
       // Skip non-critical medications if criticalOnly is true
-      \1 {\n  \2{
+       {\n  {
         continue;
       }
 
@@ -121,7 +121,7 @@ export const GET = async (req: NextRequest) => {
 
       for (const scheduleTime of scheduleTimes) {
         // Skip if scheduled time is not yet overdue
-        \1 {\n  \2ontinue;
+         {\n  ontinue;
 
         // Check if this dose has already been administered
         const isAdministered = previousAdministrations.some(a => {
@@ -131,32 +131,32 @@ export const GET = async (req: NextRequest) => {
         });
 
         // Skip if already administered
-        \1 {\n  \2ontinue;
+         {\n  ontinue;
 
         // Calculate how overdue in minutes
         const overdueMinutes = Math.floor((now.getTime() - scheduleTime.getTime()) / (60 * 1000));
 
         // Determine severity based on how overdue
         let severity = 'normal';
-        \1 {\n  \2{
+         {\n  {
           severity = 'critical',
-        } else \1 {\n  \2{
+        } else  {\n  {
           severity = 'high',
-        } else \1 {\n  \2{
+        } else  {\n  {
           severity = 'medium',
         }
 
         // Add to overdue administrations
         overdueAdministrations.push({
           prescriptionId: prescription.id,
-          \1,\2 medication.id,
-          \1,\2 prescription.dosage.value,
-          \1,\2 prescription.dosage.route,
+           medication.id,
+           prescription.dosage.value,
+           prescription.dosage.route,
           scheduledTime: scheduleTime;
           overdueMinutes,
           severity,
           isHighAlert: medication.isHighAlert,
-          status: 'overdue'
+          status: 'overdue',
         });
       }
     }
@@ -164,9 +164,9 @@ export const GET = async (req: NextRequest) => {
     // Sort by severity (critical first) and then by how overdue
     overdueAdministrations.sort((a, b) => {
       // Sort by severity first
-      const severityOrder = { critical: 0, high: 1, medium: 2, normal: 3 };
+      const severityOrder = { critical: 0, high: 1, medium: 2, normal: 3 ,};
       const severityDiff = severityOrder[a.severity] - severityOrder[b.severity];
-      \1 {\n  \2eturn severityDiff;
+       {\n  eturn severityDiff;
 
       // Then sort by how overdue (most overdue first)
       return b.overdueMinutes - a.overdueMinutes
@@ -179,15 +179,15 @@ export const GET = async (req: NextRequest) => {
     // Group by severity for reporting
     const severityCounts = {
       critical: overdueAdministrations.filter(a => a.severity === 'critical').length,
-      \1,\2 overdueAdministrations.filter(a => a.severity === 'medium').length,
-      normal: overdueAdministrations.filter(a => a.severity === 'normal').length
+       overdueAdministrations.filter(a => a.severity === 'medium').length,
+      normal: overdueAdministrations.filter(a => a.severity === 'normal').length,
     };
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'LIST_OVERDUE',
-      \1,\2 userId,
-      details: {
+       userId,
+      details: {,
         overdueThreshold,
         locationId,
         patientId,
@@ -203,13 +203,13 @@ export const GET = async (req: NextRequest) => {
       overdueAdministrations: paginatedAdministrations;
       severityCounts,
       overdueThreshold,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit),
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error retrieving overdue medications');
   }
@@ -218,97 +218,97 @@ export const GET = async (req: NextRequest) => {
 /**
  * Helper function to generate schedule times based on frequency;
  */
-const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
+const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {,
   const times: Date[] = [];
 
   // Parse frequency
-  \1 {\n  \2 {
+   {\n   {
     // Once daily - default to 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(time);
     }
-  } else \1 {\n  \2| frequency.includes('BID')) {
+  } else  {\n  | frequency.includes('BID')) {
     // Twice daily - 9 AM and 5 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(morning);
     }
 
     const evening = new Date(start);
     evening.setHours(17, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(evening);
     }
-  } else \1 {\n  \2| frequency.includes('TID')) {
+  } else  {\n  | frequency.includes('TID')) {
     // Three times daily - 9 AM, 1 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(morning);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(13, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(evening);
     }
-  } else \1 {\n  \2| frequency.includes('QID')) {
+  } else  {\n  | frequency.includes('QID')) {
     // Four times daily - 9 AM, 1 PM, 5 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(morning);
     }
 
     const noon = new Date(start);
     noon.setHours(13, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(noon);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(17, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(evening);
     }
-  } else \1 {\n  \2& frequency.includes('hours')) {
+  } else  {\n  & frequency.includes('hours')) {
     // Every X hours
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
-    \1 {\n  \2{
+     {\n  {
       const hours = Number.parseInt(match[1], 10);
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
 
       while (time <= end) {
-        \1 {\n  \2{
+         {\n  {
           times.push(new Date(time));
         }
         time.setHours(time.getHours() + hours);
       }
     }
-  } else \1 {\n  \2| frequency.includes('as needed')) {
+  } else  {\n  | frequency.includes('as needed')) {
     // PRN - no scheduled times
   } else {
     // Default to once daily at 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(time);
     }
   }

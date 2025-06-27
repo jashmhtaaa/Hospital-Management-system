@@ -16,9 +16,9 @@ const createDietaryRequestSchema = z.object({
   customDietDetails: z.string().max(500).optional(),
   allergies: z.array(z.string()).optional(),
   preferences: z.array(z.string()).optional(),
-  \1,\2 z.string().max(1000).optional(),
+   z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
-  locationId: z.string().uuid()
+  locationId: z.string().uuid(),
 });
 
 const updateDietaryRequestSchema = z.object({
@@ -30,11 +30,11 @@ const updateDietaryRequestSchema = z.object({
   scheduledTime: z.string().transform(val => new Date(val)).optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'PREPARING', 'READY', 'DELIVERED', 'COMPLETED', 'CANCELLED']).optional(),
-  locationId: z.string().uuid().optional()
+  locationId: z.string().uuid().optional(),
 });
 
 // GET /api/support-services/dietary/requests
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -42,10 +42,10 @@ export const _GET = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        \1,\2 searchParams.get('mealType') || undefined,
-        \1,\2 searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
-        \1,\2 searchParams.get('locationId') || undefined,
-        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
+         searchParams.get('mealType') || undefined,
+         searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
+         searchParams.get('locationId') || undefined,
+         Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get dietary requests with filters
@@ -55,13 +55,13 @@ export const _GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'dietary:read',
-      auditAction: 'DIETARY_REQUESTS_VIEW'
+      auditAction: 'DIETARY_REQUESTS_VIEW',
     }
   );
 }
 
 // POST /api/support-services/dietary/requests
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -75,17 +75,17 @@ export const _POST = async (request: NextRequest) => {
       // Create dietary request
       const result = await dietaryService.createDietaryRequest(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       requiredPermission: 'dietary:create',
-      auditAction: 'DIETARY_REQUEST_CREATE'
+      auditAction: 'DIETARY_REQUEST_CREATE',
     }
   );
 }
 
 // GET /api/support-services/dietary/requests/:id
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -97,13 +97,13 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     },
     {
       requiredPermission: 'dietary:read',
-      auditAction: 'DIETARY_REQUEST_VIEW'
+      auditAction: 'DIETARY_REQUEST_VIEW',
     }
   );
 }
 
 // PATCH /api/support-services/dietary/requests/:id
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -121,30 +121,30 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
     },
     {
       requiredPermission: 'dietary:update',
-      auditAction: 'DIETARY_REQUEST_UPDATE'
+      auditAction: 'DIETARY_REQUEST_UPDATE',
     }
   );
 }
 
 // DELETE /api/support-services/dietary/requests/:id
-export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
       // Delete dietary request
       await dietaryService.deleteDietaryRequest(params.id);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true ,});
     },
     {
       requiredPermission: 'dietary:delete',
-      auditAction: 'DIETARY_REQUEST_DELETE'
+      auditAction: 'DIETARY_REQUEST_DELETE',
     }
   );
 }
 
 // POST /api/support-services/dietary/requests/:id/prepare
-export const _PREPARE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PREPARE = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -152,8 +152,8 @@ export const _PREPARE = async (request: NextRequest, { params }: { params: { id:
       const body = await req.json();
       const { staffId, notes } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Staff ID is required' }, { status: 400 });
+       {\n  {
+        return NextResponse.json({ error: 'Staff ID is required' ,}, { status: 400 ,});
       }
 
       // Mark dietary request as preparing
@@ -167,13 +167,13 @@ export const _PREPARE = async (request: NextRequest, { params }: { params: { id:
     },
     {
       requiredPermission: 'dietary:update',
-      auditAction: 'DIETARY_REQUEST_PREPARE'
+      auditAction: 'DIETARY_REQUEST_PREPARE',
     }
   );
 }
 
 // POST /api/support-services/dietary/requests/:id/deliver
-export const _DELIVER = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELIVER = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -181,8 +181,8 @@ export const _DELIVER = async (request: NextRequest, { params }: { params: { id:
       const body = await req.json();
       const { staffId, notes } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Staff ID is required' }, { status: 400 });
+       {\n  {
+        return NextResponse.json({ error: 'Staff ID is required' ,}, { status: 400 ,});
       }
 
       // Mark dietary request as delivered
@@ -196,13 +196,13 @@ export const _DELIVER = async (request: NextRequest, { params }: { params: { id:
     },
     {
       requiredPermission: 'dietary:update',
-      auditAction: 'DIETARY_REQUEST_DELIVER'
+      auditAction: 'DIETARY_REQUEST_DELIVER',
     }
   );
 }
 
 // GET /api/support-services/dietary/menus
-export const _GET_MENUS = async (request: NextRequest) => {
+export const _GET_MENUS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -210,8 +210,8 @@ export const _GET_MENUS = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         dietType: searchParams.get('dietType') || undefined,
-        \1,\2 searchParams.get('isActive') === 'true',
-        \1,\2 Number.parseInt(searchParams.get('limit') || '10')
+         searchParams.get('isActive') === 'true',
+         Number.parseInt(searchParams.get('limit') || '10')
       };
 
       // Get dietary menus with filters
@@ -221,13 +221,13 @@ export const _GET_MENUS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'dietary:read',
-      auditAction: 'DIETARY_MENUS_VIEW'
+      auditAction: 'DIETARY_MENUS_VIEW',
     }
   );
 }
 
 // GET /api/support-services/dietary/analytics
-export const _GET_ANALYTICS = async (request: NextRequest) => {
+export const _GET_ANALYTICS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -243,6 +243,6 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'dietary:analytics',
-      auditAction: 'DIETARY_ANALYTICS_VIEW'
+      auditAction: 'DIETARY_ANALYTICS_VIEW',
     }
   );

@@ -18,7 +18,7 @@ import { type
  *;
  * Get clinical documents based on filters;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -54,7 +54,7 @@ export const GET = async (request: any) => {
     // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get query parameters;
@@ -62,7 +62,7 @@ export const GET = async (request: any) => {
     const patientId = searchParams.get("patientId");
 
     if (!session.user) {
-      return NextResponse.json({ error: "Patient ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "Patient ID is required" ,}, { status: 400 ,});
     }
 
     // Build filters;
@@ -84,18 +84,18 @@ export const GET = async (request: any) => {
   } catch (error) {
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
     }
 
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" ,}, { status: 500 ,});
   }
 }
 
@@ -104,7 +104,7 @@ export const GET = async (request: any) => {
  *;
  * Create a new clinical document;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -140,39 +140,39 @@ export const POST = async (request: any) => {
     // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Parse request body;
     const body = await request.json();
 
     // Validate required fields;
     if (!session.user) {
-      return NextResponse.json({ error: "Patient ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "Patient ID is required" ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: "Document type is required" }, { status: 400 });
+      return NextResponse.json({ error: "Document type is required" ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: "Document title is required" }, { status: 400 });
+      return NextResponse.json({ error: "Document title is required" ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: "Content is required" }, { status: 400 });
+      return NextResponse.json({ error: "Content is required" ,}, { status: 400 ,});
 
     // Create document;
     const document = await clinicalDocumentationService.createDocument(body, session.user.id);
 
-    return NextResponse.json(document, { status: 201 });
+    return NextResponse.json(document, { status: 201 ,});
   } catch (error) {
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
 
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" ,}, { status: 500 ,});
 
 export async function GET() { return new Response("OK"); }

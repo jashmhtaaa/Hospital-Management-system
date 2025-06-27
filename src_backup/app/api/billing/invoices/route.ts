@@ -61,7 +61,7 @@ const invoiceQuerySchema = z.object({
   format: z.enum(["json", "fhir"]).optional().default("json")});
 
 // GET handler for retrieving all invoices with filtering and pagination;
-export const _GET = withErrorHandling(async (req: any) => {
+export const _GET = withErrorHandling(async (req: any) => {,
   // Validate query parameters;
   const query = validateQuery(invoiceQuerySchema)(req);
 
@@ -69,7 +69,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "read", "invoice")(req);
 
   // Build filter conditions;
-  const where: unknown = {};
+  const where: unknown = {,};
 
   if (!session.user) {
     where.patientId = query.patientId;
@@ -139,7 +139,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   const [invoices, total] = await Promise.all([;
     prisma.bill.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
@@ -162,7 +162,7 @@ export const _GET = withErrorHandling(async (req: any) => {
 });
 
 // POST handler for creating a new invoice;
-export const _POST = withErrorHandling(async (req: any) => {
+export const _POST = withErrorHandling(async (req: any) => {,
   // Validate request body;
   const data = await validateBody(createInvoiceSchema)(req);
 
@@ -214,7 +214,7 @@ export const _POST = withErrorHandling(async (req: any) => {
     true,
       true,
           true,
-          mrn: true}});
+          mrn: true},});
 
   logger.info("Invoice created", { invoiceId: invoice.id, invoiceNumber });
 

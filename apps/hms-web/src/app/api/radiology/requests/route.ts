@@ -18,125 +18,125 @@ const createRadiologyRequestSchema = z.object({
   status: z.nativeEnum(RadiologyRequestStatus).default(RadiologyRequestStatus.PENDING_SCHEDULE).optional(),
   reason: z.string().max(2000).optional().nullable(),
   notes: z.string().max(2000).optional().nullable(),
-  scheduledDate: z.string().datetime({ offset: true, message: "Invalid scheduled date format. ISO 8601 expected." }).optional().nullable(),
+  scheduledDate: z.string().datetime({ offset: true, message: "Invalid scheduled date format. ISO 8601 expected." ,}).optional().nullable(),
 });
 
-export const \1 = async = (request: NextRequest) => {
-  const start = crypto.getRandomValues(\1[0];
+export const  = async = (request: NextRequest) => {,
+  const start = crypto.getRandomValues([0];
   let userId: string | undefined;
 
   try {
     const currentUser = await getCurrentUser(request);
     userId = currentUser?.id;
 
-    \1 {\n  \2{
+     {\n  {
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canCreateRequest = await hasPermission(userId, "RADIOLOGY_CREATE_REQUEST");
-    \1 {\n  \2{
-      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
+     {\n  {
+      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_ATTEMPT_DENIED", { path: request.nextUrl.pathname ,});
       return sendErrorResponse("Forbidden: You do not have permission to create radiology requests.", 403)
     }
 
     const body: unknown = await request.json();
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const validation = createRadiologyRequestSchema.safeParse(body)
-    \1 {\n  \2{
+     {\n  {
       // Debug logging removed)
-      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() });
+      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_VALIDATION_FAILED", { path: request.nextUrl.pathname, errors: validation.error.flatten() ,});
       return sendErrorResponse("Invalid input", 400, validation.error.flatten().fieldErrors);
     }
 
     const { patientId, orderedById, procedureIds, status, reason, notes, scheduledDate } = validation.data;
 
     const [patient, orderedByUser, procedures] = await Promise.all([
-        prisma.patient.findUnique({ where: { id: patientId } }),
-        prisma.user.findUnique({ where: { id: orderedById } }),
-        prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } })
+        prisma.patient.findUnique({ where: { id: patientId } ,}),
+        prisma.user.findUnique({ where: { id: orderedById } ,}),
+        prisma.radiologyProcedure.findMany({ where: { id: { in: procedureIds } } }),
     ]);
 
-    \1 {\n  \2{
+     {\n  {
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_PATIENT_NOT_FOUND", { patientId });
       return sendErrorResponse("Patient not found.", 404, { patientId });
     }
-    \1 {\n  \2{
+     {\n  {
       await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_ORDERER_NOT_FOUND", { orderedById });
       return sendErrorResponse("Ordering user not found.", 404, { orderedById });
     }
-    \1 {\n  \2{
+     {\n  {
       const foundIds = procedures.map(p => p.id);
       const notFoundIds = procedureIds.filter(id => !foundIds.includes(id));
-      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_PROCEDURE_NOT_FOUND", { notFoundProcedureIds: notFoundIds });
-      return sendErrorResponse("One or more procedures not found.", 404, { notFoundProcedureIds: notFoundIds });
+      await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED_PROCEDURE_NOT_FOUND", { notFoundProcedureIds: notFoundIds ,});
+      return sendErrorResponse("One or more procedures not found.", 404, { notFoundProcedureIds: notFoundIds ,});
     }
 
-    const \1,\2 { connect: { id: patientId } },
-        orderedBy: { connect: { id: orderedById } },
+    const  { connect: { id: patientId } ,},
+        orderedBy: { connect: { id: orderedById } ,},
         status: status || RadiologyRequestStatus.PENDING_SCHEDULE,
         reason: reason,
         notes: notes,
         scheduledDate: scheduledDate ? new Date(scheduledDate) : null,
-        \1,\2 procedureIds.map((id: string) => ({ id })),
+         procedureIds.map((id: string) => ({ id ,})),
         },
       };
 
     const newRadiologyRequest = await prisma.radiologyRequest.create({
       data: dataToCreate,
-      \1,\2 { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
-        orderedBy: { select: { id: true, name: true } },
-        procedures: { select: { id: true, name: true, code: true } },
+       { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } ,},
+        orderedBy: { select: { id: true, name: true } ,},
+        procedures: { select: { id: true, name: true, code: true } ,},
       },
     });
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_SUCCESS", { path: request.nextUrl.pathname, requestId: newRadiologyRequest.id, data: newRadiologyRequest })
-    const _duration = crypto.getRandomValues(\1[0] - start;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_SUCCESS", { path: request.nextUrl.pathname, requestId: newRadiologyRequest.id, data: newRadiologyRequest }),
+    const _duration = crypto.getRandomValues([0] - start;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     return sendSuccessResponse(newRadiologyRequest, 201)
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errStatus = 500;
     let errMessage = "Internal Server Error";
     let errDetails: string | undefined = error.message;
 
-    \1 {\n  \2{
+     {\n  {
       const meta = error.meta as { target?: string[] | string; cause?: string };
-      \1 {\n  \2{
+       {\n  {
         errStatus = 409;
         errMessage = "Conflict: This radiology request cannot be created due to a conflict.";
         const target = Array.isArray(meta?.target) ? meta.target.join(", ") : String(meta?.target),
-        errDetails = `A unique constraint was violated. Fields: ${target}`;
-      } else \1 {\n  \2{
+        errDetails = `A unique constraint was violated. Fields: ${target,}`;
+      } else  {\n  {
         errStatus = 400;
         errMessage = "Bad Request: A related record was not found.";
         errDetails = meta?.cause || "Failed to find a related entity for the request.";
       }
     }
-    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) });
-    const _duration = crypto.getRandomValues(\1[0] - start;
+    await auditLogService.logEvent(userId, "RADIOLOGY_CREATE_REQUEST_FAILED", { path: request.nextUrl.pathname, error: errMessage, details: String(errDetails) ,});
+    const _duration = crypto.getRandomValues([0] - start;
 
     return sendErrorResponse(errMessage, errStatus, String(errDetails));
   }
-export const \1 = async = (request: NextRequest) => {
-  const start = crypto.getRandomValues(\1[0];
+export const  = async = (request: NextRequest) => {,
+  const start = crypto.getRandomValues([0];
   let userId: string | undefined;
 
   try {
     const currentUser = await getCurrentUser(request);
     userId = currentUser?.id;
 
-    \1 {\n  \2{
+     {\n  {
       return sendErrorResponse("Unauthorized: User not authenticated.", 401)
     }
 
     const canViewAll = await hasPermission(userId, "RADIOLOGY_VIEW_ALL_REQUESTS");
     const canViewPatient = await hasPermission(userId, "RADIOLOGY_VIEW_PATIENT_REQUESTS");
 
-    \1 {\n  \2{
-      await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname });
+     {\n  {
+      await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_ATTEMPT_DENIED", { path: request.nextUrl.pathname ,});
       return sendErrorResponse("Forbidden: You do not have permission to view radiology requests.", 403)
     }
 
@@ -148,63 +148,63 @@ export const \1 = async = (request: NextRequest) => {
     const limit = Number.parseInt(searchParams.get("limit") || "20");
     const skip = (page - 1) * limit;
 
-    const whereClause: Prisma.RadiologyRequestWhereInput = {};
-    \1 {\n  \2{
-      \1 {\n  \2cuid().safeParse(patientIdParam).success) return sendErrorResponse("Invalid patientId format.", 400);
+    const whereClause: Prisma.RadiologyRequestWhereInput = {,};
+     {\n  {
+       {\n  cuid().safeParse(patientIdParam).success) return sendErrorResponse("Invalid patientId format.", 400);
       whereClause.patientId = patientIdParam;
     }
-    \1 {\n  \2{
-      \1 {\n  \2includes(statusParam)) {
+     {\n  {
+       {\n  includes(statusParam)) {
         return sendErrorResponse(`Invalid status value. Must be one of: ${radiologyRequestStatusValues.join(", ")}`, 400);
       }
       whereClause.status = statusParam as RadiologyRequestStatus;
     }
-    \1 {\n  \2{
-      \1 {\n  \2cuid().safeParse(orderedByIdParam).success) return sendErrorResponse("Invalid orderedById format.", 400);
+     {\n  {
+       {\n  cuid().safeParse(orderedByIdParam).success) return sendErrorResponse("Invalid orderedById format.", 400);
       whereClause.orderedById = orderedByIdParam;
     }
 
-    \1 {\n  \2{
-        \1 {\n  \2{
+     {\n  {
+         {\n  {
             whereClause.orderedById = userId;
         }
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const [radiologyRequests, totalCount] = await prisma.$transaction([
       prisma.radiologyRequest.findMany({
         where: whereClause,
-        \1,\2 { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } },
-          orderedBy: { select: { id: true, name: true } },
-          procedures: { select: { id: true, name: true, code: true } },
-          RadiologyReport: { select: { id: true, reportDate: true, status: true } }
+         { select: { id: true, firstName: true, lastName: true, dateOfBirth: true } ,},
+          orderedBy: { select: { id: true, name: true } ,},
+          procedures: { select: { id: true, name: true, code: true } ,},
+          RadiologyReport: { select: { id: true, reportDate: true, status: true } },
         },
-        orderBy: { requestDate: "desc" },
+        orderBy: { requestDate: "desc" ,},
         skip,
-        take: limit
+        take: limit,
       }),
-      prisma.radiologyRequest.count({ where: whereClause })
+      prisma.radiologyRequest.count({ where: whereClause }),
     ])
 
     await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_SUCCESS", { path: request.nextUrl.pathname, filters: whereClause, count: radiologyRequests.length, totalCount });
-    const _duration = crypto.getRandomValues(\1[0] - start;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    const _duration = crypto.getRandomValues([0] - start;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     return sendSuccessResponse({
       data: radiologyRequests,
-      pagination: {
+      pagination: {,
         page,
         limit,
         totalCount,
-        totalPages: Math.ceil(totalCount / limit)
+        totalPages: Math.ceil(totalCount / limit),
       }
     })
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
-    await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) });
-    const _duration = crypto.getRandomValues(\1[0] - start;
+    await auditLogService.logEvent(userId, "RADIOLOGY_VIEW_REQUESTS_FAILED", { path: request.nextUrl.pathname, error: String(error.message) ,});
+    const _duration = crypto.getRandomValues([0] - start;
 
     return sendErrorResponse("Internal Server Error", 500, String(error.message));
   }

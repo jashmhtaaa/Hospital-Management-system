@@ -19,7 +19,7 @@
 export const DB = (): DBConnection => {
   return {
 
-    query: async (sql: string, params: unknown[] = []) => {
+    query: async (sql: string, params: unknown[] = []) => {,
       try {
 } catch (error) {
   console.error(error);
@@ -70,7 +70,7 @@ export const DB = (): DBConnection => {
         throw error;
 
     },
-    close: async () => {}
+    close: async () => {},
       // Close the connection;
       return Promise.resolve();
   };

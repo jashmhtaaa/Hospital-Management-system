@@ -13,8 +13,7 @@ import { toggleVariants }
 
 const ToggleGroupContext = React.createContext<;
   VariantProps<typeof toggleVariants>;
->({
-  size: "default",
+>({size:"default",
   variant: "default";
 });
 
@@ -47,8 +46,7 @@ const ToggleGroupItem = React.forwardRef<;
     <ToggleGroupPrimitive.Item;
       ref={ref}
       className={cn();
-        toggleVariants({
-          variant: context.variant || variant,
+        toggleVariants({variant:context.variant || variant,
           size: context.size || size;
         }),
         className;

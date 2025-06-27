@@ -38,7 +38,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Get a template by ID;
    */;
-  async getTemplateById(id: string): Promise<MarketingTemplate> {
+  async getTemplateById(id: string): Promise<MarketingTemplate> {,
     try {
 } catch (error) {
   console.error(error);
@@ -72,7 +72,7 @@ import {  prisma  } from "@/lib/database"
 } catch (error) {
 }
       const template = await prisma.marketingTemplate.findUnique({
-        where: { id },
+        where: { id ,},
         {
             true,
               name: true;
@@ -97,13 +97,13 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Get all templates with optional filtering;
    */;
-  async getTemplates(filters: {
+  async getTemplates(filters: {,
     type?: string;
     isActive?: boolean;
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{ data: MarketingTemplate[], pagination: total: number, number, totalPages: number }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -145,7 +145,7 @@ import {  prisma  } from "@/lib/database"
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.type = type;
@@ -157,8 +157,8 @@ import {  prisma  } from "@/lib/database"
 
       if (!session.user) {
         where.OR = [;
-          { name: { contains: search, mode: "insensitive" } },
-          { description: { contains: search, mode: "insensitive" } }
+          { name: { contains: search, mode: "insensitive" } ,},
+          { description: { contains: search, mode: "insensitive" } },
         ];
       }
 
@@ -180,7 +180,7 @@ import {  prisma  } from "@/lib/database"
 
       return {
         data: templates,
-        pagination: {
+        pagination: {,
           total,
           page,
           limit,
@@ -193,7 +193,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Update a template;
    */;
-  async updateTemplate(id: string, data: Partial<MarketingTemplate>, userId: string): Promise<MarketingTemplate> {
+  async updateTemplate(id: string, data: Partial<MarketingTemplate>, userId: string): Promise<MarketingTemplate> {,
     try {
 } catch (error) {
   console.error(error);
@@ -228,7 +228,7 @@ import {  prisma  } from "@/lib/database"
 
       // Check if template exists;
       const existingTemplate = await prisma.marketingTemplate.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!session.user) {
@@ -236,7 +236,7 @@ import {  prisma  } from "@/lib/database"
 
       // Update template;
       const updatedTemplate = await prisma.marketingTemplate.update({
-        where: { id },
+        where: { id ,},
         data;
       });
 
@@ -259,7 +259,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Delete a template;
    */;
-  async deleteTemplate(id: string, userId: string): Promise<void> {
+  async deleteTemplate(id: string, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -294,7 +294,7 @@ import {  prisma  } from "@/lib/database"
 
       // Check if template exists;
       const existingTemplate = await prisma.marketingTemplate.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!session.user) {
@@ -302,7 +302,7 @@ import {  prisma  } from "@/lib/database"
 
       // Delete template;
       await prisma.marketingTemplate.delete({
-        where: { id }
+        where: { id },
       });
 
       // Log audit event;
@@ -378,7 +378,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Validate template data;
    */;
-  private validateTemplateData(data: Partial<MarketingTemplate>): void {
+  private validateTemplateData(data: Partial<MarketingTemplate>): void {,
     const errors: string[] = [];
 
     // Name is required;

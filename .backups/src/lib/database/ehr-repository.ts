@@ -69,7 +69,7 @@ import {  PrismaClient  } from "@/lib/database"
   }
 
   // Clinical Notes Operations;
-  async createClinicalNote(note: ClinicalNote): Promise<ClinicalNote> {
+  async createClinicalNote(note: ClinicalNote): Promise<ClinicalNote> {,
     try {
 } catch (error) {
   console.error(error);
@@ -109,7 +109,7 @@ import {  PrismaClient  } from "@/lib/database"
       );
 
       const created = await this.prisma.clinicalNote.create({
-        data: {
+        data: {,
           ...encryptedNote,
           vital_signs: note.vital_signs ? JSON.stringify(note.vital_signs) : null,
           note.snomed_codes ? JSON.stringify(note.snomed_codes) : null,
@@ -121,11 +121,11 @@ import {  PrismaClient  } from "@/lib/database"
 
       return this.decryptClinicalNote(created);
     } catch (error) {
-      throw new Error(`Failed to create clinical note: ${}`;
+      throw new Error(`Failed to create clinical note: ${,}`;
     }
   }
 
-  async getClinicalNote(id: string): Promise<ClinicalNote | null> {
+  async getClinicalNote(id: string): Promise<ClinicalNote | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -159,17 +159,17 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 }
       const note = await this.prisma.clinicalNote.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!session.user)eturn null;
       return this.decryptClinicalNote(note);
     } catch (error) {
-      throw new Error(`Failed to get clinical note: ${}`;
+      throw new Error(`Failed to get clinical note: ${,}`;
     }
   }
 
-  async getClinicalNotesByPatient(patientId: string): Promise<ClinicalNote[]> {
+  async getClinicalNotesByPatient(patientId: string): Promise<ClinicalNote[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -203,17 +203,17 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 }
       const notes = await this.prisma.clinicalNote.findMany({
-        where: { patient_id: patientId },
-        orderBy: { created_at: "desc" }
+        where: { patient_id: patientId ,},
+        orderBy: { created_at: "desc" },
       });
 
       return Promise.all(notes.map(note => this.decryptClinicalNote(note)));
     } catch (error) {
-      throw new Error(`Failed to get clinical notes for patient: ${}`;
+      throw new Error(`Failed to get clinical notes for patient: ${,}`;
     }
   }
 
-  async updateClinicalNote(id: string, updates: Partial<ClinicalNote>): Promise<ClinicalNote> {
+  async updateClinicalNote(id: string, updates: Partial<ClinicalNote>): Promise<ClinicalNote> {,
     try {
 } catch (error) {
   console.error(error);
@@ -253,8 +253,8 @@ import {  PrismaClient  } from "@/lib/database"
       );
 
       const updated = await this.prisma.clinicalNote.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           ...encryptedUpdates,
           vital_signs: updates.vital_signs ? JSON.stringify(updates.vital_signs) : undefined,
           updates.snomed_codes ? JSON.stringify(updates.snomed_codes) : undefined,
@@ -265,9 +265,9 @@ import {  PrismaClient  } from "@/lib/database"
 
       return this.decryptClinicalNote(updated);
     } catch (error) {
-      throw new Error(`Failed to update clinical note: ${}`;
+      throw new Error(`Failed to update clinical note: ${,}`;
 
-  async deleteClinicalNote(id: string): Promise<void> {
+  async deleteClinicalNote(id: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -301,13 +301,13 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       await this.prisma.clinicalNote.delete({
-        where: { id }
+        where: { id },
       });
     } catch (error) {
-      throw new Error(`Failed to delete clinical note: ${}`;
+      throw new Error(`Failed to delete clinical note: ${,}`;
 
   // Care Plans Operations;
-  async createCarePlan(carePlan: CarePlan): Promise<CarePlan> {
+  async createCarePlan(carePlan: CarePlan): Promise<CarePlan> {,
     try {
 } catch (error) {
   console.error(error);
@@ -341,7 +341,7 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       const created = await this.prisma.carePlan.create({
-        data: {
+        data: {,
           ...carePlan,
           goals: JSON.stringify(carePlan.goals),
           activities: JSON.stringify(carePlan.activities),
@@ -354,9 +354,9 @@ import {  PrismaClient  } from "@/lib/database"
 
       return this.deserializeCarePlan(created);
     } catch (error) {
-      throw new Error(`Failed to create care plan: ${}`;
+      throw new Error(`Failed to create care plan: ${,}`;
 
-  async getCarePlan(id: string): Promise<CarePlan | null> {
+  async getCarePlan(id: string): Promise<CarePlan | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -390,15 +390,15 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       const carePlan = await this.prisma.carePlan.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!session.user)eturn null;
       return this.deserializeCarePlan(carePlan);
     } catch (error) {
-      throw new Error(`Failed to get care plan: ${}`;
+      throw new Error(`Failed to get care plan: ${,}`;
 
-  async getCarePlansByPatient(patientId: string): Promise<CarePlan[]> {
+  async getCarePlansByPatient(patientId: string): Promise<CarePlan[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -432,16 +432,16 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       const carePlans = await this.prisma.carePlan.findMany({
-        where: { patient_id: patientId },
-        orderBy: { created_at: "desc" }
+        where: { patient_id: patientId ,},
+        orderBy: { created_at: "desc" },
       });
 
       return carePlans.map(cp => this.deserializeCarePlan(cp));
     } catch (error) {
-      throw new Error(`Failed to get care plans for patient: ${}`;
+      throw new Error(`Failed to get care plans for patient: ${,}`;
 
   // Problem List Operations;
-  async createProblemListItem(item: ProblemListItem): Promise<ProblemListItem> {
+  async createProblemListItem(item: ProblemListItem): Promise<ProblemListItem> {,
     try {
 } catch (error) {
   console.error(error);
@@ -481,7 +481,7 @@ import {  PrismaClient  } from "@/lib/database"
       );
 
       const created = await this.prisma.problemListItem.create({
-        data: {
+        data: {,
           ...encryptedItem,
           created_at: new Date(),
           updated_at: new Date();
@@ -490,9 +490,9 @@ import {  PrismaClient  } from "@/lib/database"
 
       return this.decryptProblemListItem(created);
     } catch (error) {
-      throw new Error(`Failed to create problem list item: ${}`;
+      throw new Error(`Failed to create problem list item: ${,}`;
 
-  async getProblemListByPatient(patientId: string): Promise<ProblemListItem[]> {
+  async getProblemListByPatient(patientId: string): Promise<ProblemListItem[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -526,16 +526,16 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       const items = await this.prisma.problemListItem.findMany({
-        where: { patient_id: patientId },
-        orderBy: { created_at: "desc" }
+        where: { patient_id: patientId ,},
+        orderBy: { created_at: "desc" },
       });
 
       return Promise.all(items.map(item => this.decryptProblemListItem(item)));
     } catch (error) {
-      throw new Error(`Failed to get problem list for patient: ${}`;
+      throw new Error(`Failed to get problem list for patient: ${,}`;
 
   // Clinical Guidelines Operations;
-  async createClinicalGuideline(guideline: ClinicalGuideline): Promise<ClinicalGuideline> {
+  async createClinicalGuideline(guideline: ClinicalGuideline): Promise<ClinicalGuideline> {,
     try {
 } catch (error) {
   console.error(error);
@@ -569,7 +569,7 @@ import {  PrismaClient  } from "@/lib/database"
 } catch (error) {
 
       const created = await this.prisma.clinicalGuideline.create({
-        data: {
+        data: {,
           ...guideline,
           icd10_codes: guideline.icd10_codes ? JSON.stringify(guideline.icd10_codes) : null,
           JSON.stringify(guideline.decision_support_rules),
@@ -580,7 +580,7 @@ import {  PrismaClient  } from "@/lib/database"
 
       return this.deserializeClinicalGuideline(created);
     } catch (error) {
-      throw new Error(`Failed to create clinical guideline: ${}`;
+      throw new Error(`Failed to create clinical guideline: ${,}`;
 
   async getClinicalGuidelines(filters?: {
     status?: string;
@@ -618,22 +618,22 @@ import {  PrismaClient  } from "@/lib/database"
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.status = filters.status;
 
       const guidelines = await this.prisma.clinicalGuideline.findMany({
         where,
-        orderBy: { created_at: "desc" }
+        orderBy: { created_at: "desc" },
       });
 
       return guidelines.map(g => this.deserializeClinicalGuideline(g));
     } catch (error) {
-      throw new Error(`Failed to get clinical guidelines: ${}`;
+      throw new Error(`Failed to get clinical guidelines: ${,}`;
 
   // Helper methods for decryption and deserialization;
-  private async decryptClinicalNote(note: unknown): Promise<ClinicalNote> {
+  private async decryptClinicalNote(note: unknown): Promise<ClinicalNote> {,
     const decrypted = await this.encryptionService.decryptObject(note, this.encryptedFields);
 
     return {
@@ -643,10 +643,10 @@ import {  PrismaClient  } from "@/lib/database"
       cpt_codes: note.cpt_codes ? JSON.parse(note.cpt_codes) : undefined;
     };
 
-  private async decryptProblemListItem(item: unknown): Promise<ProblemListItem> {
+  private async decryptProblemListItem(item: unknown): Promise<ProblemListItem> {,
     return this.encryptionService.decryptObject(item, this.encryptedFields);
 
-  private deserializeCarePlan(carePlan: unknown): CarePlan {
+  private deserializeCarePlan(carePlan: unknown): CarePlan {,
     return {
       ...carePlan,
       goals: JSON.parse(carePlan.goals),
@@ -655,7 +655,7 @@ import {  PrismaClient  } from "@/lib/database"
       carePlan.snomed_codes ? JSON.parse(carePlan.snomed_codes) : undefined;
     };
 
-  private deserializeClinicalGuideline(guideline: unknown): ClinicalGuideline {
+  private deserializeClinicalGuideline(guideline: unknown): ClinicalGuideline {,
     return {
       ...guideline,
       icd10_codes: guideline.icd10_codes ? JSON.parse(guideline.icd10_codes) : undefined,

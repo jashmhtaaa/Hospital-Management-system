@@ -20,8 +20,7 @@ import { useState
 "use client";
 
 export default const _OTDashboardStats = () {
-  const [stats, setStats] = useState({
-    todayBookings: 0,
+  const [stats, setStats] = useState({todayBookings:0,
     0,
     0;
   });
@@ -86,8 +85,7 @@ export default const _OTDashboardStats = () {
         // const _checklistsData = await checklistsRes.json();
 
         // Mock data for demonstration;
-        setStats({
-          todayBookings: 5,
+        setStats({todayBookings:5,
           3,
           4;
         }),

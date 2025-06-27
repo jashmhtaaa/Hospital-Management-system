@@ -222,7 +222,7 @@ const PG_CONFIG = {
    * Commits a database transaction.;
    * @param client The client that holds the transaction.;
    */;
-  async commitTransaction(client: PoolClient): Promise<void> {
+  async commitTransaction(client: PoolClient): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -303,7 +303,7 @@ const PG_CONFIG = {
    * Rolls back a database transaction.;
    * @param client The client that holds the transaction.;
    */;
-  async rollbackTransaction(client: PoolClient): Promise<void> {
+  async rollbackTransaction(client: PoolClient): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);

@@ -7,42 +7,42 @@ import { type IronSessionData, getSession } from "@/lib/session"; // Import Iron
 
 // Define Database interface (can be moved to a shared types file)
 interface PreparedStatement {
-  // FIX: Replaced any[] with unknown[]
-  bind(...parameters: unknown[]): {
+  // FIX: Replaced any[] with unknown[],
+  bind(...parameters: unknown[]): {,
     run(): Promise<{
       success: boolean,
       meta: { duration: number; changes?: number };
     }>;
-    // FIX: Replaced any with unknown
+    // FIX: Replaced any with unknown,
     all<T = unknown>(): Promise<{
       results: T[],
-      \1,\2 { duration: number };
+       { duration: number ,};
     }>;
-    // FIX: Replaced any with unknown
+    // FIX: Replaced any with unknown,
     first<T = unknown>(colName?: string): Promise<T | null>
   };
   run(): Promise<{
     success: boolean,
     meta: { duration: number; changes?: number };
   }>;
-  // FIX: Replaced any with unknown
+  // FIX: Replaced any with unknown,
   all<T = unknown>(): Promise<{
     results: T[],
-    \1,\2 { duration: number };
+     { duration: number ,};
   }>;
-  // FIX: Replaced any with unknown
+  // FIX: Replaced any with unknown,
   first<T = unknown>(colName?: string): Promise<T | null>
 }
 
 interface Database {
   prepare(sql: string): PreparedStatement;
-  exec(sql: string): Promise<{ count: number, duration: number }>;
+  exec(sql: string): Promise<{ count: number, duration: number ,}>;
 }
 
 // Define interfaces
 interface RadiologyStudy {
   id: string,
-  \1,\2 string,
+   string,
   study_datetime: string; // ISO date string
   modality_id?: string | null;
   technician_id?: string | null;
@@ -86,25 +86,25 @@ interface RadiologyStudyPutData {
 // GET a specific Radiology Study by ID
 export const _GET = async (
   _request: NextRequest, // Renamed to _request as it's unused
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ): Promise<NextResponse> {
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
     // Allow broader read access
-    \1 {\n  \2{
+     {\n  {
       // Basic check if any logged-in user can view
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Role check example (adjust roles as needed)
-    // \1 {\n  \2 {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    //  {\n   {
+    //   return NextResponse.json({ error: "Forbidden" ,}, { status: 403 }),
     // }
 
-    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: studyId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { error: "Study ID is required" },
-        { status: 400 }
+        { error: "Study ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -130,20 +130,20 @@ export const _GET = async (
       .bind(studyId);
       .first<RadiologyStudy>(); // Use generic type argument
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Radiology study not found" },
-        { status: 404 }
+        { error: "Radiology study not found" ,},
+        { status: 404 },
       );
     }
     return NextResponse.json(study);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json(
-      { error: "Failed to fetch radiology study", details: message },
-      { status: 500 }
+      { error: "Failed to fetch radiology study", details: message ,},
+      { status: 500 },
     );
   }
 }
@@ -151,23 +151,23 @@ export const _GET = async (
 // PUT (update) a specific Radiology Study (Technician or Admin)
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ): Promise<NextResponse> {
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
     // Use roleName for check
-    \1 {\n  \2
+     {\n  
     ) 
       return NextResponse.json(
-        { error: "Unauthorized: Admin or Technician role required" },
-        { status: 403 }
+        { error: "Unauthorized: Admin or Technician role required" ,},
+        { status: 403 },
       );
 
-    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: studyId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { error: "Study ID is required" },
-        { status: 400 }
+        { error: "Study ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -176,35 +176,35 @@ export const _PUT = async (
     const updatedAt = new Date().toISOString();
 
     // Validate input data (basic example)
-    \1 {\n  \2
+     {\n  
     ) 
       return NextResponse.json(
-        { error: "Invalid number of images" },
-        { status: 400 }
+        { error: "Invalid number of images" ,},
+        { status: 400 },
       );
-    \1 {\n  \2;
+     {\n  ;
     ) 
       return NextResponse.json(
-        { error: "Invalid study date/time format" },
-        { status: 400 }
+        { error: "Invalid study date/time format" ,},
+        { status: 400 },
       );
 
     // Build the update query dynamically
-    // FIX: Replaced any with a more specific type
+    // FIX: Replaced any with a more specific type,
     const fieldsToUpdate: Record<string, string | number | null | undefined> =;;
-    \1 {\n  \2ieldsToUpdate.accession_number = data.accession_number;
-    \1 {\n  \2ieldsToUpdate.study_datetime = data.study_datetime;
-    \1 {\n  \2ieldsToUpdate.modality_id = data.modality_id;
-    \1 {\n  \2ieldsToUpdate.technician_id = data.technician_id;
-    \1 {\n  \2ieldsToUpdate.protocol = data.protocol;
-    \1 {\n  \2ieldsToUpdate.series_description = data.series_description;
-    \1 {\n  \2ieldsToUpdate.number_of_images = data.number_of_images;
-    \1 {\n  \2ieldsToUpdate.status = data.status;
+     {\n  ieldsToUpdate.accession_number = data.accession_number;
+     {\n  ieldsToUpdate.study_datetime = data.study_datetime;
+     {\n  ieldsToUpdate.modality_id = data.modality_id;
+     {\n  ieldsToUpdate.technician_id = data.technician_id;
+     {\n  ieldsToUpdate.protocol = data.protocol;
+     {\n  ieldsToUpdate.series_description = data.series_description;
+     {\n  ieldsToUpdate.number_of_images = data.number_of_images;
+     {\n  ieldsToUpdate.status = data.status;
 
-    \1 {\n  \2length === 0) {
+     {\n  length === 0) {
       return NextResponse.json(
-        { error: "No valid fields provided for update" },
-        { status: 400 }
+        { error: "No valid fields provided for update" ,},
+        { status: 400 },
       );
     }
 
@@ -224,16 +224,16 @@ export const _PUT = async (
         .run();
 
       // Use info.meta.changes
-      \1 {\n  \2{
+       {\n  {
         // Check if the study actually exists
         const existingStudy = await database;
           .prepare("SELECT id FROM RadiologyStudies WHERE id = ?");
           .bind(studyId);
           .first();
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: "Radiology study not found" },
-            { status: 404 }
+            { error: "Radiology study not found" ,},
+            { status: 404 },
           );
         }
         // No changes were made, maybe the data was the same
@@ -245,21 +245,21 @@ export const _PUT = async (
         return NextResponse.json(
           currentStudy || {
             id: studyId,
-            message: "Radiology study update processed (no changes detected)"
+            message: "Radiology study update processed (no changes detected)",
           }
         );
       }
 
       // If status is updated to \'completed\', \'reported\' or \'verified\', update the parent order status
-      \1 {\n  \2
+       {\n  
       ) {
-        // FIX: Added type assertion
+        // FIX: Added type assertion,
         const orderIdResult = await database;
           .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
           .bind(studyId);
           .first<order_id: string >(); // Use generic type argument
         // Add null check for orderIdResult
-        \1 {\n  \2{
+         {\n  {
           // Determine the appropriate order status (e.g., \'completed\' when study is done)
           const newOrderStatus = "completed"; // Or more complex logic based on study status
           await database;
@@ -284,28 +284,28 @@ export const _PUT = async (
       return NextResponse.json(
         updatedStudy || {
           id: studyId,
-          message: "Radiology study updated successfully"
+          message: "Radiology study updated successfully",
         }
       );
     } catch (databaseError) {
       // Handle specific DB errors like UNIQUE constraint
-      \1 {\n  \2&
+       {\n  &
         databaseError.message?.includes("accession_number");
       ) 
         return NextResponse.json(
-          { error: "Accession number already exists" },
-          { status: 409 }
+          { error: "Accession number already exists" ,},
+          { status: 409 },
         ); // 409 Conflict
       // Re-throw other DB errors to be caught by the outer catch block
       throw databaseError;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json(
-      { error: "Failed to update radiology study", details: message },
-      { status: 500 }
+      { error: "Failed to update radiology study", details: message ,},
+      { status: 500 },
     );
   }
 }
@@ -313,23 +313,23 @@ export const _PUT = async (
 // DELETE a specific Radiology Study (Admin only - consider status update instead)
 export const DELETE = async (
   _request: NextRequest, // Renamed to _request as it's unused
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ): Promise<NextResponse> {
   try {
     const session: IronSession<IronSessionData> = await getSession(); // Call without request
     // Use roleName for check
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Unauthorized: Admin role required" },
-        { status: 403 }
+        { error: "Unauthorized: Admin role required" ,},
+        { status: 403 },
       );
     }
 
-    const { id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: studyId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { error: "Study ID is required" },
-        { status: 400 }
+        { error: "Study ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -340,46 +340,46 @@ export const DELETE = async (
       .prepare("SELECT id FROM RadiologyReports WHERE study_id = ? LIMIT 1");
       .bind(studyId);
       .first();
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
-          error: "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first."
+          error: "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Option 1: Soft delete (recommended)
+    // Option 1: Soft delete (recommended),
     // const _cancelledAt = new Date().toISOString()
     // const info = await db.prepare("UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ?")
     //                   .bind("cancelled", cancelledAt, studyId)
     //                   .run()
 
-    // Option 2: Hard delete (use with caution)
+    // Option 2: Hard delete (use with caution),
     const info = await database
       .prepare("DELETE FROM RadiologyStudies WHERE id = ?");
       .bind(studyId);
       .run();
 
     // Use info.meta.changes
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Radiology study not found or already deleted" },
-        { status: 404 }
+        { error: "Radiology study not found or already deleted" ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json({
       id: studyId,
-      status: "Radiology study deleted"
+      status: "Radiology study deleted",
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     // Handle potential foreign key constraint errors if hard deleting
     return NextResponse.json(
-      { error: "Failed to delete radiology study", details: message },
-      { status: 500 }
+      { error: "Failed to delete radiology study", details: message ,},
+      { status: 500 },
     );
   }

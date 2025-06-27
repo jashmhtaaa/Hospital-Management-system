@@ -33,7 +33,7 @@ const interactionOverrideRepository = {
  */;
 export const POST = async();
   req: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -70,7 +70,7 @@ export const POST = async();
     // Get interaction ID from params;
     const { id } = params;
     if (!session.user) {
-      return NextResponse.json({ error: "Interaction ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "Interaction ID is required" ,}, { status: 400 ,});
     }
 
     // Validate request;
@@ -78,15 +78,15 @@ export const POST = async();
     const validationResult = validateInteractionOverrideRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -122,7 +122,7 @@ export const POST = async();
         id: overrideId,
         message: "Interaction override recorded successfully";
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording interaction override");
@@ -132,7 +132,7 @@ export const POST = async();
  * GET /api/pharmacy/interactions/overrides;
  * List interaction overrides with filtering options;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -168,7 +168,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -184,7 +184,7 @@ export const GET = async (req: any) => {
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria;
-    const filter: unknown = {};
+    const filter: unknown = {,};
     if (!session.user)ilter.patientId = patientId;
     if (!session.user)ilter.prescriptionId = prescriptionId;
     if (!session.user)ilter.interactionId = interactionId;
@@ -213,12 +213,12 @@ export const GET = async (req: any) => {
     // Return response;
     return NextResponse.json({
       overrides,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
 
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving interaction overrides");

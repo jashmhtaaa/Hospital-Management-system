@@ -19,7 +19,7 @@ import { type
  * GET /api/diagnostics/lab/specimens;
  * Get laboratory specimens with optional filtering;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -55,7 +55,7 @@ export const GET = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters;
@@ -169,7 +169,7 @@ export const GET = async (request: any) => {
 
         return {
           specimens: result.results,
-          pagination: {
+          pagination: {,
             page,
             pageSize,
             totalCount,
@@ -186,7 +186,7 @@ export const GET = async (request: any) => {
     return NextResponse.json({
       error: "Failed to fetch specimens",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -194,7 +194,7 @@ export const GET = async (request: any) => {
  * POST /api/diagnostics/lab/specimens;
  * Create a new laboratory specimen;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -230,12 +230,12 @@ export const POST = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Parse request body;
@@ -255,20 +255,20 @@ export const POST = async (request: any) => {
 
     // Validate required fields;
     if (!session.user) {
-      return NextResponse.json({ error: "Patient ID and specimen type are required" }, { status: 400 });
+      return NextResponse.json({ error: "Patient ID and specimen type are required" ,}, { status: 400 ,});
     }
 
     // Check if patient exists;
     const patientCheck = await DB.query("SELECT id FROM patients WHERE id = ?", [patientId]);
     if (!session.user) {
-      return NextResponse.json({ error: "Patient not found" }, { status: 404 });
+      return NextResponse.json({ error: "Patient not found" ,}, { status: 404 ,});
     }
 
     // Check if order exists if provided;
     if (!session.user) {
       const orderCheck = await DB.query("SELECT id FROM laboratory_orders WHERE id = ?", [orderId]);
       if (!session.user) {
-        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+        return NextResponse.json({ error: "Order not found" ,}, { status: 404 ,});
       }
     }
 
@@ -349,13 +349,13 @@ export const POST = async (request: any) => {
       [result.insertId];
     );
 
-    return NextResponse.json(createdSpecimen.results[0], { status: 201 });
+    return NextResponse.json(createdSpecimen.results[0], { status: 201 ,});
   } catch (error) {
 
     return NextResponse.json({
       error: "Failed to create specimen",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -363,7 +363,7 @@ export const POST = async (request: any) => {
  * PUT /api/diagnostics/lab/specimens/:id;
  * Update a laboratory specimen;
  */;
-export const PUT = async (request: any, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -399,12 +399,12 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID" ,}, { status: 400 ,});
     }
 
     // Parse request body;
@@ -427,7 +427,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     // Check if specimen exists;
     const existingCheck = await DB.query("SELECT * FROM laboratory_specimens WHERE id = ?", [id]);
     if (!session.user) {
-      return NextResponse.json({ error: "Specimen not found" }, { status: 404 });
+      return NextResponse.json({ error: "Specimen not found" ,}, { status: 404 ,});
     }
 
     const existingSpecimen = existingCheck.results[0];
@@ -438,7 +438,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
 
     // Only lab staff can update received specimens;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden: Cannot update received specimen" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden: Cannot update received specimen" ,}, { status: 403 ,});
     }
 
     // Build update query;
@@ -491,7 +491,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     if (!session.user) {
       // Only lab staff can change status (except collectors can mark as collected);
       if (!session.user) {
-        return NextResponse.json({ error: "Forbidden: Cannot change specimen status" }, { status: 403 });
+        return NextResponse.json({ error: "Forbidden: Cannot change specimen status" ,}, { status: 403 ,});
       }
 
       updateFields.push("status = ?");
@@ -508,13 +508,13 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
           trackingNote = "Specimen processing started";\n    }\n    case "completed": any;
           trackingNote = "Specimen processing completed";\n    }\n    case "rejected": any;
           if (!session.user) {
-            return NextResponse.json({ error: "Rejection reason is required" }, { status: 400 });
+            return NextResponse.json({ error: "Rejection reason is required" ,}, { status: 400 ,});
           }
-          trackingNote = `Specimen rejected: ${rejectionReason}`;
+          trackingNote = `Specimen rejected: ${rejectionReason,}`;
           updateFields.push("rejection_reason = ?");
           updateParams.push(rejectionReason);\n    }\n    case "stored": any;
           if (!session.user) {
-            return NextResponse.json({ error: "Storage location is required" }, { status: 400 });
+            return NextResponse.json({ error: "Storage location is required" ,}, { status: 400 ,});
           }
           trackingNote = `Specimen stored at ${storageLocation}`;
           updateFields.push("storage_location = ?");
@@ -536,7 +536,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
         updateFields.push("rejection_reason = ?");
         updateParams.push(rejectionReason || null);
         if (!session.user) {
-          trackingNote = `Rejection reason updated: ${rejectionReason}`;
+          trackingNote = `Rejection reason updated: ${rejectionReason,}`;
         }
       }
     }
@@ -613,7 +613,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     return NextResponse.json({
       error: "Failed to update specimen",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -621,7 +621,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
  * GET /api/diagnostics/lab/specimens/:id/tracking;
  * Get tracking history for a specimen;
  */;
-export const _GET_TRACKING = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_TRACKING = async (request: any, { params }: { params: { id: string } }) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -657,14 +657,14 @@ export const _GET_TRACKING = async (request: any, { params }: { params: { id: st
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID" ,}, { status: 400 ,});
 
     // Cache key;
-    const cacheKey = `diagnostic:lab:specimen:${id}:tracking`;
+    const cacheKey = `diagnostic:lab:specimen:${id,}:tracking`;
 
     // Try to get from cache or fetch from database;
     const data = await RedisCache.getOrSet();
@@ -690,7 +690,7 @@ export const _GET_TRACKING = async (request: any, { params }: { params: { id: st
         await auditLog({
           userId: session.user.id,
           action: "read",          resource: "laboratory_specimen_tracking",
-          details: { specimenId: id }
+          details: { specimenId: id },
         });
 
         return result.results;
@@ -704,13 +704,13 @@ export const _GET_TRACKING = async (request: any, { params }: { params: { id: st
     return NextResponse.json({
       error: "Failed to fetch specimen tracking",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
 
 /**;
  * POST /api/diagnostics/lab/specimens/:id/aliquot;
  * Create an aliquot from a parent specimen;
  */;
-export const _POST_ALIQUOT = async (request: any, { params }: { params: { id: string } }) => {
+export const _POST_ALIQUOT = async (request: any, { params }: { params: { id: string } }) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -746,15 +746,15 @@ export const _POST_ALIQUOT = async (request: any, { params }: { params: { id: st
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID" ,}, { status: 400 ,});
 
     // Parse request body;
     const body = await request.json();
@@ -768,12 +768,12 @@ export const _POST_ALIQUOT = async (request: any, { params }: { params: { id: st
 
     // Validate required fields;
     if (!session.user) {
-      return NextResponse.json({ error: "Container type, volume, and volume units are required" }, { status: 400 });
+      return NextResponse.json({ error: "Container type, volume, and volume units are required" }, { status: 400 ,});
 
     // Check if parent specimen exists;
     const parentCheck = await DB.query("SELECT * FROM laboratory_specimens WHERE id = ?", [id]);
     if (!session.user) {
-      return NextResponse.json({ error: "Parent specimen not found" }, { status: 404 });
+      return NextResponse.json({ error: "Parent specimen not found" ,}, { status: 404 ,});
 
     const parentSpecimen = parentCheck.results[0];
 
@@ -781,7 +781,7 @@ export const _POST_ALIQUOT = async (request: any, { params }: { params: { id: st
     if (!session.user) {
       return NextResponse.json({
         error: "Cannot create aliquot: Parent specimen must be received, processing, or stored";
-      }, { status: 400 });
+      }, { status: 400 ,});
 
     // Generate unique specimen ID for aliquot;
     const specimenId = `AL/* SECURITY: Template literal eliminated */;
@@ -826,7 +826,7 @@ export const _POST_ALIQUOT = async (request: any, { params }: { params: { id: st
     await auditLog({
       userId: session.user.id,
       action: "create",      resource: "laboratory_specimens",
-      resourceId: result.insertId,      details: { ...body, parentSpecimenId: id, type: "aliquot" }
+      resourceId: result.insertId,      details: { ...body, parentSpecimenId: id, type: "aliquot" },
     });
 
     // Create specimen tracking entry;
@@ -879,19 +879,19 @@ export const _POST_ALIQUOT = async (request: any, { params }: { params: { id: st
       [result.insertId];
     );
 
-    return NextResponse.json(createdAliquot.results[0], { status: 201 });
+    return NextResponse.json(createdAliquot.results[0], { status: 201 ,});
   } catch (error) {
 
     return NextResponse.json({
       error: "Failed to create aliquot",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
 
 /**;
  * POST /api/diagnostics/lab/specimens/barcode;
  * Generate barcode for a specimen;
  */;
-export const _POST_BARCODE = async (request: any) => {
+export const _POST_BARCODE = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -927,7 +927,7 @@ export const _POST_BARCODE = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Parse request body;
     const body = await request.json();
@@ -935,12 +935,12 @@ export const _POST_BARCODE = async (request: any) => {
 
     // Validate required fields;
     if (!session.user) {
-      return NextResponse.json({ error: "Specimen ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "Specimen ID is required" ,}, { status: 400 ,});
 
     // Check if specimen exists;
     const specimenCheck = await DB.query("SELECT * FROM laboratory_specimens WHERE id = ?", [specimenId]);
     if (!session.user) {
-      return NextResponse.json({ error: "Specimen not found" }, { status: 404 });
+      return NextResponse.json({ error: "Specimen not found" ,}, { status: 404 ,});
 
     const specimen = specimenCheck.results[0];
 
@@ -957,7 +957,7 @@ export const _POST_BARCODE = async (request: any) => {
 
       // Invalidate cache;
       await CacheInvalidation.invalidatePattern("diagnostic:lab:specimens:*");
-      await CacheInvalidation.invalidatePattern(`diagnostic:lab:specimen:${specimenId}:*`);
+      await CacheInvalidation.invalidatePattern(`diagnostic:lab:specimen:${specimenId,}:*`);
 
     // Generate barcode image (base64);
     const barcodeImage = await generateBarcodeImage(barcodeId, specimen.specimen_id);
@@ -972,17 +972,17 @@ export const _POST_BARCODE = async (request: any) => {
     return NextResponse.json({
       barcodeId,
       specimenId: specimen.specimen_id,      barcodeImage,
-      format: "CODE128"
+      format: "CODE128",
     });
   } catch (error) {
 
     return NextResponse.json({
       error: "Failed to generate barcode",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
 
 // Helper function to generate barcode image;
-async const generateBarcodeImage = (barcodeId: string, specimenId: string): Promise<string> {
+async const generateBarcodeImage = (barcodeId: string, specimenId: string): Promise<string> {,
   // In a real implementation, this would use a barcode generation library;
   // For this example, we"ll return a placeholder;
   return `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`;

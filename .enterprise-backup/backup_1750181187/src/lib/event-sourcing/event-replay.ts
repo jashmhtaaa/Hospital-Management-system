@@ -9,7 +9,7 @@ import type { EventStore } from './event-store.ts';
  * This service enables disaster recovery through event replay mechanisms.
  * It provides the ability to rebuild system state by replaying events from the event store.
  */
-\1
+
 }
   ) {}
 
@@ -22,17 +22,17 @@ import type { EventStore } from './event-store.ts';
    */
   async replayAggregate(
     aggregateId: string,
-    \1,\2 (event: unknown) => Promise<void>;
+     (event: unknown) => Promise<void>;
   ): Promise<void> {
     try {
-      logger.info(`Starting event replay for aggregate: ${aggregateType}:${\1}`;
+      logger.info(`Starting event replay for aggregate: ${aggregateType}:${}`;
 
       // Use distributed lock to prevent concurrent replays of the same aggregate
-      const lockKey = `replay:${aggregateType}:${aggregateId}`;
+      const lockKey = `replay:${aggregateType}:${aggregateId,}`;
       const lockResult = await this.lockManager.acquireLock(lockKey, 300000); // 5 minute timeout
 
-      \1 {\n  \2{
-        throw new Error(`Replay already in progress for ${aggregateType}:${\1}`;
+       {\n  {
+        throw new Error(`Replay already in progress for ${aggregateType}:${}`;
       }
 
       try {
@@ -48,15 +48,15 @@ import type { EventStore } from './event-store.ts';
           aggregateType,
         });
 
-        logger.info(`Completed event replay for aggregate: ${aggregateType}:${aggregateId}`, {
-          duration: `${duration.toFixed(2)}ms`;
+        logger.info(`Completed event replay for aggregate: ${aggregateType}:${aggregateId,}`, {
+          duration: `${duration.toFixed(2),}ms`;
         });
       } finally {
         // Release lock when done
         await this.lockManager.releaseLock(lockKey, lockResult.token);
       }
     } catch (error) {
-      logger.error(`Error replaying events for aggregate: ${aggregateType}:${aggregateId}`, {
+      logger.error(`Error replaying events for aggregate: ${aggregateType}:${aggregateId,}`, {
         error,
         aggregateType,
         aggregateId;
@@ -65,7 +65,7 @@ import type { EventStore } from './event-store.ts';
       // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
 
       throw error;
@@ -82,7 +82,7 @@ import type { EventStore } from './event-store.ts';
   async replayAllAggregates(
     aggregateType: string,
     handler: (event: unknown) => Promise<void>,
-    options: {
+    options: {,
       batchSize?: number;
       concurrency?: number;
       notifyProgress?: (progress: { processed: number; total?: number }) => Promise<void>;
@@ -95,14 +95,14 @@ import type { EventStore } from './event-store.ts';
     } = options;
 
     try {
-      logger.info(`Starting full event replay for aggregate type: ${\1}`;
+      logger.info(`Starting full event replay for aggregate type: ${}`;
 
       // Use distributed lock to prevent concurrent replays of the same aggregate type
-      const lockKey = `replay:${aggregateType}:all`;
+      const lockKey = `replay:${aggregateType,}:all`;
       const lockResult = await this.lockManager.acquireLock(lockKey, 3600000); // 1 hour timeout
 
-      \1 {\n  \2{
-        throw new Error(`Full replay already in progress for ${\1}`;
+       {\n  {
+        throw new Error(`Full replay already in progress for ${}`;
       }
 
       try {
@@ -118,15 +118,15 @@ import type { EventStore } from './event-store.ts';
           aggregateType,
         });
 
-        logger.info(`Completed full event replay for aggregate type: ${aggregateType}`, {
-          duration: `${duration.toFixed(2)}ms`;
+        logger.info(`Completed full event replay for aggregate type: ${aggregateType,}`, {
+          duration: `${duration.toFixed(2),}ms`;
         });
       } finally {
         // Release lock when done
         await this.lockManager.releaseLock(lockKey, lockResult.token);
       }
     } catch (error) {
-      logger.error(`Error in full replay for aggregate type: ${aggregateType}`, {
+      logger.error(`Error in full replay for aggregate type: ${aggregateType,}`, {
         error,
         aggregateType;
       });
@@ -135,7 +135,7 @@ import type { EventStore } from './event-store.ts';
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
         errorType: error.name || 'unknown',
-        replayType: 'full'
+        replayType: 'full',
       });
 
       throw error;
@@ -151,17 +151,17 @@ import type { EventStore } from './event-store.ts';
    */
   async rebuildMaterializedView(
     viewName: string,
-    \1,\2 (event: unknown) => Promise<void>;
+     (event: unknown) => Promise<void>;
   ): Promise<void> {
     try {
-      logger.info(`Starting materialized view rebuild: ${\1}`;
+      logger.info(`Starting materialized view rebuild: ${}`;
 
       // Use distributed lock to prevent concurrent rebuilds of the same view
-      const lockKey = `view-rebuild:${viewName}`;
+      const lockKey = `view-rebuild:${viewName,}`;
       const lockResult = await this.lockManager.acquireLock(lockKey, 3600000); // 1 hour timeout
 
-      \1 {\n  \2{
-        throw new Error(`View rebuild already in progress for ${\1}`;
+       {\n  {
+        throw new Error(`View rebuild already in progress for ${}`;
       }
 
       try {
@@ -176,7 +176,7 @@ import type { EventStore } from './event-store.ts';
           while (hasMoreEvents) {
             const events = await this.eventStore.getEventsByType(eventType, limit, offset);
 
-            \1 {\n  \2{
+             {\n  {
               hasMoreEvents = false;
               break;
             }
@@ -189,7 +189,7 @@ import type { EventStore } from './event-store.ts';
             offset += events.length;
 
             // Log progress
-            logger.debug(`Processed ${offset} events of type ${eventType} for view ${\1}`;
+            logger.debug(`Processed ${offset} events of type ${eventType} for view ${}`;
           }
         }
 
@@ -200,15 +200,15 @@ import type { EventStore } from './event-store.ts';
           viewName,
         });
 
-        logger.info(`Completed materialized view rebuild: ${viewName}`, {
-          duration: `${duration.toFixed(2)}ms`;
+        logger.info(`Completed materialized view rebuild: ${viewName,}`, {
+          duration: `${duration.toFixed(2),}ms`;
         });
       } finally {
         // Release lock when done
         await this.lockManager.releaseLock(lockKey, lockResult.token);
       }
     } catch (error) {
-      logger.error(`Error rebuilding materialized view: ${viewName}`, {
+      logger.error(`Error rebuilding materialized view: ${viewName,}`, {
         error,
         viewName;
       });
@@ -217,7 +217,7 @@ import type { EventStore } from './event-store.ts';
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         viewName,
         errorType: error.name || 'unknown',
-        replayType: 'view'
+        replayType: 'view',
       });
 
       throw error;
@@ -233,8 +233,8 @@ import type { EventStore } from './event-store.ts';
   async performDisasterRecovery(
     aggregateTypes: string[],
     handlers: Record<string, (event: unknown) => Promise<void>>,
-    options: {
-      notifyProgress?: (progress: { step: string, \1,\2 number; total?: number }) => Promise<void>;
+    options: {,
+      notifyProgress?: (progress: { step: string,  number; total?: number }) => Promise<void>;
     } = {}
   ): Promise<void> {
     const { notifyProgress } = options;
@@ -246,7 +246,7 @@ import type { EventStore } from './event-store.ts';
       const lockKey = 'disaster-recovery';
       const lockResult = await this.lockManager.acquireLock(lockKey, 86400000); // 24 hour timeout
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Disaster recovery process already in progress');
       }
 
@@ -255,19 +255,19 @@ import type { EventStore } from './event-store.ts';
 
         // Process each aggregate type in order
         for (const aggregateType of aggregateTypes) {
-          \1 {\n  \2{
-            logger.warn(`No handler defined for aggregate type: ${aggregateType}, skipping`);
+           {\n  {
+            logger.warn(`No handler defined for aggregate type: ${aggregateType,}, skipping`);
             continue;
           }
 
-          logger.info(`Disaster recovery: Processing aggregate type ${\1}`;
+          logger.info(`Disaster recovery: Processing aggregate type ${}`;
 
           // Notify progress if callback provided
-          \1 {\n  \2{
+           {\n  {
             await notifyProgress({
               step: 'start';
               aggregateType,
-              processed: 0
+              processed: 0,
             });
           }
 
@@ -277,8 +277,8 @@ import type { EventStore } from './event-store.ts';
             handlers[aggregateType],
             {
               batchSize: 100,
-              \1,\2 async (progress) => {
-                \1 {\n  \2{
+               async (progress) => {
+                 {\n  {
                   await notifyProgress({
                     step: 'progress';
                     aggregateType,
@@ -290,15 +290,15 @@ import type { EventStore } from './event-store.ts';
           );
 
           // Notify completion of this aggregate type
-          \1 {\n  \2{
+           {\n  {
             await notifyProgress({
               step: 'complete';
               aggregateType,
-              processed: 0
+              processed: 0,
             });
           }
 
-          logger.info(`Disaster recovery: Completed aggregate type ${\1}`;
+          logger.info(`Disaster recovery: Completed aggregate type ${}`;
         }
 
         const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
@@ -307,8 +307,8 @@ import type { EventStore } from './event-store.ts';
         metricsCollector.recordTimer('event_replay.disaster_recovery_time', duration);
 
         logger.info(`Completed disaster recovery process`, {
-          duration: `${duration.toFixed(2)}ms`,
-          aggregateTypesProcessed: aggregateTypes.length
+          duration: `${duration.toFixed(2),}ms`,
+          aggregateTypesProcessed: aggregateTypes.length,
         });
       } finally {
         // Release lock when done
@@ -323,7 +323,7 @@ import type { EventStore } from './event-store.ts';
       // Track error metrics
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         errorType: error.name || 'unknown',
-        replayType: 'disaster-recovery'
+        replayType: 'disaster-recovery',
       });
 
       throw error;
@@ -341,12 +341,12 @@ import type { EventStore } from './event-store.ts';
    */
   async validateConsistency<T>(
     aggregateId: string,
-    \1,\2 () => Promise<T>,
+     () => Promise<T>,
     buildState: (events: unknown[]) => Promise<T>,
     compareStates: (current: T, rebuilt: T) => { isConsistent: boolean; differences?: unknown }
   ): Promise<{ isConsistent: boolean; differences?: unknown }> {
     try {
-      logger.info(`Starting consistency validation for ${aggregateType}:${\1}`;
+      logger.info(`Starting consistency validation for ${aggregateType}:${}`;
 
       // Get current state from data store
       const currentState = await getCurrentState();
@@ -363,12 +363,12 @@ import type { EventStore } from './event-store.ts';
       // Track metrics
       metricsCollector.incrementCounter('event_replay.consistency_checks', 1, {
         aggregateType,
-        isConsistent: result.isConsistent.toString()
+        isConsistent: result.isConsistent.toString(),
       });
 
       logger.info(`Completed consistency validation for ${aggregateType}:${aggregateId}`, {
         isConsistent: result.isConsistent,
-        hasDifferences: !!result.differences
+        hasDifferences: !!result.differences,
       });
 
       return result;
@@ -383,7 +383,7 @@ import type { EventStore } from './event-store.ts';
       metricsCollector.incrementCounter('event_replay.errors', 1, {
         aggregateType,
         errorType: error.name || 'unknown',
-        operationType: 'consistency-validation'
+        operationType: 'consistency-validation',
       });
 
       throw error;

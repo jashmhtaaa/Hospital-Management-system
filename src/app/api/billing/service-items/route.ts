@@ -1,4 +1,4 @@
 import "next/server";
-import { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-import { getCurrentUser, hasPermission } from "@/lib/auth";
+import {NextRequest } from "next/server";
+import {NextResponse } from "next/server";
+import {getCurrentUser, hasPermission } from "next/server";

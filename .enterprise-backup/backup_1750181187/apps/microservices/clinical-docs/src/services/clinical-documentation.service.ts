@@ -44,7 +44,7 @@ export interface ClinicalDocument {
   attachments: DocumentAttachment[],
   version: number;
   parentDocumentId?: string;
-  relatedDocuments: string[]
+  relatedDocuments: string[],
 export enum DocumentType {
   // Progress Notes
   PROGRESS_NOTE = 'PROGRESS_NOTE',
@@ -84,7 +84,7 @@ export interface DocumentContent {
   freeText?: string;
   templates: TemplateInstance[],
   multimedia: MultimediaElement[];
-  structuredFields: StructuredField[]
+  structuredFields: StructuredField[],
 export interface DocumentSection {
   id: string,
   sectionType: SectionType;
@@ -94,7 +94,7 @@ export interface DocumentSection {
   required: boolean,
   order: number;
   lastModified: Date,
-  modifiedBy: string
+  modifiedBy: string,
 export enum SectionType {
   // Clinical Sections
   CHIEF_COMPLAINT = 'CHIEF_COMPLAINT',
@@ -134,7 +134,7 @@ export interface TemplateInstance {
   templateName: string;
   variables: Record<string, any>,
   generatedContent: string;
-  lastGenerated: Date
+  lastGenerated: Date,
 export interface MultimediaElement {
   id: string,
   type: MediaType;
@@ -153,7 +153,7 @@ export interface MediaMetadata {
   filename: string,
   fileSize: number;
   mimeType: string;
-  dimensions?: { width: number, height: number };
+  dimensions?: { width: number, height: number ,};
   duration?: number; // for video/audio
   capturedAt?: Date;
   capturedBy?: string;
@@ -167,7 +167,7 @@ export interface StructuredField {
   normalRange?: string;
   validationRules: ValidationRule[],
   isRequired: boolean;
-  isModifiable: boolean
+  isModifiable: boolean,
 export enum FieldType {
   TEXT = 'TEXT',
   NUMBER = 'NUMBER',
@@ -184,7 +184,7 @@ export enum FieldType {
 export interface ValidationRule {
   type: 'REQUIRED' | 'MIN_LENGTH' | 'MAX_LENGTH' | 'PATTERN' | 'RANGE' | 'CUSTOM';
   value?: unknown;
-  message: string
+  message: string,
 export enum DocumentStatus {
   DRAFT = 'DRAFT',
   IN_PROGRESS = 'IN_PROGRESS',
@@ -228,14 +228,14 @@ export interface DocumentMetadata {
   collaborators: string[];
   tags: string[],
   keywords: string[];
-  clinicalConcepts: ClinicalConcept[]
+  clinicalConcepts: ClinicalConcept[],
 export interface ClinicalConcept {
   concept: string;
   conceptId?: string;
   terminology: 'SNOMED' | 'ICD10' | 'LOINC' | 'RXNORM' | 'CPT',
   confidence: number; // 0-100
-  position: { start: number, end: number };
-  context: string
+  position: { start: number, end: number ,};
+  context: string,
 export interface StructuredClinicalData {
   // Problems/Diagnoses
   problems: Problem[];
@@ -252,7 +252,7 @@ export interface StructuredClinicalData {
   // Social Determinants
   socialDeterminants: SocialDeterminant[];
   // Clinical Assessments
-  assessments: ClinicalAssessment[]
+  assessments: ClinicalAssessment[],
 export interface Problem {
   problemId: string,
   description: string;
@@ -274,7 +274,7 @@ export interface MedicationEntry {
   endDate?: Date;
   prescriber: string,
   indication: string;
-  status: 'ACTIVE' | 'DISCONTINUED' | 'HELD' | 'COMPLETED'
+  status: 'ACTIVE' | 'DISCONTINUED' | 'HELD' | 'COMPLETED',
 export interface AllergyEntry {
   allergyId: string,
   allergen: string;
@@ -282,7 +282,7 @@ export interface AllergyEntry {
   reaction: string;
   severity: 'MILD' | 'MODERATE' | 'SEVERE' | 'LIFE_THREATENING';
   onsetDate?: Date;
-  verificationStatus: 'CONFIRMED' | 'UNCONFIRMED' | 'REFUTED'
+  verificationStatus: 'CONFIRMED' | 'UNCONFIRMED' | 'REFUTED',
 export interface VitalSignEntry {
   vitalSignId: string,
   type: 'TEMPERATURE' | 'BLOOD_PRESSURE' | 'HEART_RATE' | 'RESPIRATORY_RATE' | 'OXYGEN_SATURATION' | 'WEIGHT' | 'HEIGHT' | 'BMI' | 'PAIN_SCORE';
@@ -303,7 +303,7 @@ export interface LabResult {
   abnormalFlag?: string;
   status: 'FINAL' | 'PRELIMINARY' | 'CORRECTED',
   collectedAt: Date;
-  resultedAt: Date
+  resultedAt: Date,
 export interface ProcedureEntry {
   procedureId: string,
   description: string;
@@ -319,7 +319,7 @@ export interface SocialDeterminant {
   description: string;
   status: string,
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
-  interventionsNeeded: string[]
+  interventionsNeeded: string[],
 export interface ClinicalAssessment {
   assessmentId: string,
   type: 'NURSING' | 'PHYSICIAN' | 'THERAPY' | 'SOCIAL_WORK' | 'MENTAL_HEALTH';
@@ -328,36 +328,36 @@ export interface ClinicalAssessment {
   interpretation: string,
   performedAt: Date;
   performedBy: string,
-  recommendations: string[]
+  recommendations: string[],
 export interface QualityMetrics {
   completeness: CompletenessMetrics,
   accuracy: AccuracyMetrics;
   timeliness: TimelinessMetrics,
-  compliance: ComplianceMetrics
+  compliance: ComplianceMetrics,
 export interface CompletenessMetrics {
   overallScore: number; // 0-100
   requiredSectionsComplete: number,
   totalRequiredSections: number;
   missingElements: string[],
   optionalSectionsComplete: number;
-  totalOptionalSections: number
+  totalOptionalSections: number,
 export interface AccuracyMetrics {
   spellingErrors: number,
   grammarErrors: number;
   medicalTerminologyErrors: number,
   inconsistencies: Inconsistency[];
-  factualErrors: FactualError[]
+  factualErrors: FactualError[],
 export interface Inconsistency {
   type: string,
   description: string;
   location: string,
-  suggestion: string
+  suggestion: string,
 export interface FactualError {
   type: string,
   description: string;
   location: string,
   expectedValue: string;
-  actualValue: string
+  actualValue: string,
 export interface TimelinessMetrics {
   createdWithinTarget: boolean,
   targetTime: number; // hours
@@ -368,29 +368,29 @@ export interface TimelinessMetrics {
 export interface ComplianceMetrics {
   regulatoryCompliance: RegulatoryCompliance[],
   institutionalCompliance: InstitutionalCompliance[];
-  specialtyCompliance: SpecialtyCompliance[]
+  specialtyCompliance: SpecialtyCompliance[],
 export interface RegulatoryCompliance {
   regulation: string,
   requirement: string;
   status: 'COMPLIANT' | 'NON_COMPLIANT' | 'PARTIAL',
-  details: string
+  details: string,
 export interface InstitutionalCompliance {
   policy: string,
   requirement: string;
   status: 'COMPLIANT' | 'NON_COMPLIANT' | 'PARTIAL',
-  details: string
+  details: string,
 export interface SpecialtyCompliance {
   specialty: string,
   guideline: string;
   requirement: string,
   status: 'COMPLIANT' | 'NON_COMPLIANT' | 'PARTIAL';
-  details: string
+  details: string,
 export interface ComplianceFlag {
   type: 'REGULATORY' | 'INSTITUTIONAL' | 'SPECIALTY' | 'QUALITY',
   severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
   description: string,
   recommendation: string;
-  autoResolvable: boolean
+  autoResolvable: boolean,
 export interface DocumentAttachment {
   id: string,
   filename: string;
@@ -416,7 +416,7 @@ export interface DocumentTemplate {
   createdBy: string;
   createdAt: Date,
   lastModified: Date;
-  usage: TemplateUsage
+  usage: TemplateUsage,
 export interface TemplateSection {
   id: string,
   sectionType: SectionType;
@@ -425,7 +425,7 @@ export interface TemplateSection {
   isRequired: boolean,
   order: number;
   conditionalDisplay?: ConditionalRule[];
-  structuredElements: StructuredElement[]
+  structuredElements: StructuredElement[],
 export interface StructuredElement {
   id: string,
   type: FieldType;
@@ -439,13 +439,13 @@ export interface ConditionalRule {
   condition: string,
   operator: 'EQUALS' | 'NOT_EQUALS' | 'CONTAINS' | 'GREATER_THAN' | 'LESS_THAN';
   value: unknown,
-  action: 'SHOW' | 'HIDE' | 'REQUIRE' | 'DISABLE'
+  action: 'SHOW' | 'HIDE' | 'REQUIRE' | 'DISABLE',
 export interface TemplateVariable {
   name: string,
   type: 'STRING' | 'NUMBER' | 'DATE' | 'BOOLEAN';
   source: 'USER_INPUT' | 'PATIENT_DATA' | 'ENCOUNTER_DATA' | 'SYSTEM_DATA';
   defaultValue?: unknown;
-  description: string
+  description: string,
 export interface TemplateRule {
   id: string,
   name: string;
@@ -453,14 +453,14 @@ export interface TemplateRule {
   trigger: RuleTrigger;
   action: RuleAction,
   priority: number;
-  isActive: boolean
+  isActive: boolean,
 export interface RuleTrigger {
   event: 'ON_CREATE' | 'ON_UPDATE' | 'ON_SIGN' | 'ON_FIELD_CHANGE',
-  conditions: TriggerCondition[]
+  conditions: TriggerCondition[],
 export interface TriggerCondition {
   field: string,
   operator: string;
-  value: unknown
+  value: unknown,
 export interface RuleAction {
   type: 'POPULATE_FIELD' | 'SHOW_WARNING' | 'REQUIRE_FIELD' | 'RUN_CALCULATION' | 'SEND_ALERT',
   parameters: Record<string, any>;
@@ -470,12 +470,12 @@ export interface TemplateUsage {
   averageCompletionTime: number; // minutes
   averageQualityScore: number,
   userSatisfaction: number;
-  lastUsed: Date
+  lastUsed: Date,
 export interface ClinicalDecisionSupport {
   alerts: CDSAlert[],
   reminders: CDSReminder[];
   orderSets: OrderSet[],
-  guidelines: ClinicalGuideline[]
+  guidelines: ClinicalGuideline[],
 export interface CDSAlert {
   id: string,
   type: 'DRUG_INTERACTION' | 'ALLERGY' | 'DUPLICATE_ORDER' | 'CRITICAL_VALUE' | 'CLINICAL_RULE';
@@ -512,7 +512,7 @@ export interface OrderSet {
   orders: PreferenceOrder[];
   evidenceLevel: 'A' | 'B' | 'C' | 'D',
   lastReviewed: Date;
-  usage: OrderSetUsage
+  usage: OrderSetUsage,
 export interface PreferenceOrder {
   type: 'MEDICATION' | 'LABORATORY' | 'IMAGING' | 'PROCEDURE' | 'NURSING' | 'DIET',
   description: string;
@@ -524,13 +524,13 @@ export interface OrderSetUsage {
   monthlyUsage: number;
   completionRate: number,
   modificationRate: number;
-  outcomeData: OutcomeMetric[]
+  outcomeData: OutcomeMetric[],
 export interface OutcomeMetric {
   metric: string,
   value: number;
   unit: string;
   comparisonValue?: number;
-  trend: 'IMPROVING' | 'STABLE' | 'DECLINING'
+  trend: 'IMPROVING' | 'STABLE' | 'DECLINING',
 export interface ClinicalGuideline {
   id: string,
   title: string;
@@ -543,7 +543,7 @@ export interface ClinicalGuideline {
   conditions: string[];
   recommendations: GuidelineRecommendation[],
   evidenceLevel: 'A' | 'B' | 'C' | 'D';
-  implementation: ImplementationGuide
+  implementation: ImplementationGuide,
 export interface GuidelineRecommendation {
   id: string,
   recommendation: string;
@@ -552,20 +552,20 @@ export interface GuidelineRecommendation {
   applicableTo: string[],
   contraindications: string[];
   monitoring: string[],
-  alternatives: string[]
+  alternatives: string[],
 export interface ImplementationGuide {
   triggers: string[],
   workflow: WorkflowStep[];
   measures: QualityMeasure[],
   barriers: ImplementationBarrier[];
-  facilitators: string[]
+  facilitators: string[],
 export interface WorkflowStep {
   step: number,
   description: string;
   responsible: string,
   timeframe: string;
   dependencies: string[],
-  outputs: string[]
+  outputs: string[],
 export interface QualityMeasure {
   name: string,
   description: string;
@@ -573,17 +573,17 @@ export interface QualityMeasure {
   denominator: string;
   target: number,
   unit: string;
-  reportingFrequency: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY'
+  reportingFrequency: 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY',
 export interface ImplementationBarrier {
   type: 'TECHNICAL' | 'WORKFLOW' | 'FINANCIAL' | 'CULTURAL' | 'REGULATORY',
   description: string;
   impact: 'LOW' | 'MEDIUM' | 'HIGH',
-  mitigation: string
+  mitigation: string,
 }
 
 @Injectable();
 export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObservation> {
-  constructor(private prisma: PrismaService) {
+  constructor(private prisma: PrismaService) {,
     super('DocumentReference')
   }
 
@@ -620,8 +620,8 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       const complianceFlags = await this.checkCompliance(content, documentType, structuredData);
 
       // Create document
-      const document: ClinicalDocument = {
-        id: `doc-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const document: ClinicalDocument = {,
+        id: `doc-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         documentType,
         patientId,
         encounterId,
@@ -645,7 +645,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
         complianceFlags,
         attachments: [],
         version: 1;
-        relatedDocuments: []
+        relatedDocuments: [],
       };
 
       // Save document
@@ -656,7 +656,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
 
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.CLINICAL_NOTE_CREATED, {
-        clinicalNoteCreated: document
+        clinicalNoteCreated: document,
       });
 
       // Record metrics
@@ -665,7 +665,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       metricsCollector.incrementCounter('clinical_docs.notes_generated', 1, {
         documentType: documentType,
         qualityScore: Math.round(qualityMetrics.completeness.overallScore).toString(),
-        aiAssisted: 'true'
+        aiAssisted: 'true',
       });
 
       return document;
@@ -678,10 +678,10 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
   /**
    * Advanced natural language processing for clinical text;
    */
-  async extractClinicalConcepts(text: string): Promise<ClinicalConcept[]> 
+  async extractClinicalConcepts(text: string): Promise<ClinicalConcept[]> ,
     try {
       // Cache check
-      const cacheKey = `clinical_concepts:${this.hashText(text)}`;
+      const cacheKey = `clinical_concepts:${this.hashText(text),}`;
       const cached = await cacheService.getCachedResult('nlp:', cacheKey);
       if (cached != null) return cached;
 
@@ -717,7 +717,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       // Record metrics
       metricsCollector.incrementCounter('clinical_docs.concept_extractions', 1, {
         conceptCount: concepts.length.toString(),
-        textLength: text.length.toString()
+        textLength: text.length.toString(),
       });
 
       return concepts;
@@ -731,7 +731,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
    */
   async checkDocumentationCompliance(
     documentId: string;
-  ): Promise<compliant: boolean, flags: ComplianceFlag[]; score: number > 
+  ): Promise<compliant: boolean, flags: ComplianceFlag[]; score: number > ,
     try {
       const document = await this.getDocument(documentId);
       if (!document) {
@@ -773,7 +773,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       metricsCollector.incrementCounter('clinical_docs.compliance_checks', 1, {
         documentType: document.documentType,
         compliant: compliant.toString(),
-        criticalFlags: criticalFlags.length.toString()
+        criticalFlags: criticalFlags.length.toString(),
       });
 
       return { compliant, flags, score };
@@ -812,7 +812,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       // Record metrics
       metricsCollector.incrementCounter('clinical_docs.template_recommendations', 1, {
         documentType: documentType,
-        recommendationCount: recommendations.length.toString()
+        recommendationCount: recommendations.length.toString(),
       });
 
       return recommendations;
@@ -828,7 +828,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
     audioData: Buffer,
     documentId: string;
     sectionId?: string;
-  ): Promise<text: string, confidence: number; concepts: ClinicalConcept[] > 
+  ): Promise<text: string, confidence: number; concepts: ClinicalConcept[] > ,
     try {
       // Speech-to-text conversion
       const speechResult = await this.convertSpeechToText(audioData);
@@ -850,7 +850,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       metricsCollector.incrementCounter('clinical_docs.voice_inputs', 1, {
         confidence: Math.round(speechResult.confidence).toString(),
         conceptCount: concepts.length.toString(),
-        textLength: processedText.length.toString()
+        textLength: processedText.length.toString(),
       });
 
       return {
@@ -863,12 +863,12 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
   }
 
   // Private helper methods
-  private async getPatientData(patientId: string): Promise<any> {
+  private async getPatientData(patientId: string): Promise<any> {,
     // Implementation to fetch comprehensive patient data
     return {};
   }
 
-  private async getEncounterData(encounterId: string): Promise<any> {
+  private async getEncounterData(encounterId: string): Promise<any> {,
     // Implementation to fetch encounter data
     return {};
   }
@@ -887,7 +887,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       labResults: [],
       procedures: [];
       socialDeterminants: [],
-      assessments: []
+      assessments: [],
     };
   }
 
@@ -901,7 +901,7 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
       sections: [],
       templates: [];
       multimedia: [],
-      structuredFields: []
+      structuredFields: [],
     };
   }
 
@@ -911,38 +911,38 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
   ): Promise<QualityMetrics> {
     // Quality analysis implementation
     return {
-      completeness: {
+      completeness: {,
         overallScore: 85,
         requiredSectionsComplete: 8;
         totalRequiredSections: 10,
         missingElements: ['Social History', 'Follow-up Plan'],
         optionalSectionsComplete: 5,
-        totalOptionalSections: 8
+        totalOptionalSections: 8,
       },
-      accuracy: {
+      accuracy: {,
         spellingErrors: 0,
         grammarErrors: 2;
         medicalTerminologyErrors: 0,
         inconsistencies: [];
-        factualErrors: []
+        factualErrors: [],
       },
-      timeliness: {
+      timeliness: {,
         createdWithinTarget: true,
         targetTime: 24;
         actualTime: 2,
         signedWithinTarget: false;
         signatureTargetTime: 48,
-        actualSignatureTime: 72
+        actualSignatureTime: 72,
       },
-      compliance: {
+      compliance: {,
         regulatoryCompliance: [],
         institutionalCompliance: [];
-        specialtyCompliance: []
+        specialtyCompliance: [],
       },
     };
   }
 
-  private hashText(text: string): string {
+  private hashText(text: string): string {,
     // Simple hash implementation for caching
     let hash = 0;
     for (let i = 0; i < text.length; i++) {
@@ -956,25 +956,25 @@ export class ClinicalDocumentationService extends FHIRResourceManager<FHIRObserv
   // Additional helper methods would be implemented here...
 
   // Required abstract methods
-  validate(resource: FHIRObservation): boolean {
+  validate(resource: FHIRObservation): boolean {,
     return !!(resource?.resourceType && resource?.status && resource.code)
   }
 
-  toFHIR(document: ClinicalDocument): FHIRObservation {
+  toFHIR(document: ClinicalDocument): FHIRObservation {,
     return {
       resourceType: 'Observation',
       id: document.id;
       status: 'final',
-      code: this.createCodeableConcept([
+      code: this.createCodeableConcept([,
         this.createCoding(FHIR_SYSTEMS.SNOMED_CT, '371530004', 'Clinical consultation report'),
       ]),
       subject: this.createReference('Patient', document.patientId),
     };
   }
 
-  fromFHIR(fhirResource: FHIRObservation): Partial<ClinicalDocument> {
+  fromFHIR(fhirResource: FHIRObservation): Partial<ClinicalDocument> {,
     return {
       id: fhirResource.id,
-      patientId: fhirResource.subject?.reference?.split('/')[1] || ''
+      patientId: fhirResource.subject?.reference?.split('/')[1] || '',
     };
   }

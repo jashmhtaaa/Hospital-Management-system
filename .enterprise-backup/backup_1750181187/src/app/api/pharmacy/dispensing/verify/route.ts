@@ -16,13 +16,13 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {
@@ -33,7 +33,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 const dispensingRepository = {
@@ -43,29 +43,29 @@ const dispensingRepository = {
   findByStatus: (status: string) => Promise.resolve([]),
   save: (dispensing: unknown) => Promise.resolve(dispensing.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 /**
  * POST /api/pharmacy/dispensing/verify;
  * Verify medication dispensing with barcode scanning;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateDispensingVerificationRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -73,53 +73,53 @@ export const POST = async (req: NextRequest) => {
 
     // Verify prescription exists
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Prescription not found' ,}, { status: 404 ,});
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(prescription.medicationId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Medication not found' ,}, { status: 404 ,});
     }
 
     // Verify medication barcode matches prescription
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           error: 'Medication barcode does not match prescription',
-          \1,\2 data.medicationBarcode
-        },status: 400 
+           data.medicationBarcode
+        },status: 400 ,
       );
     }
 
     // Verify patient barcode matches prescription
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           error: 'Patient barcode does not match prescription',
-          \1,\2 data.patientBarcode
-        },status: 400 
+           data.patientBarcode
+        },status: 400 ,
       );
     }
 
     // Create verification record
     const verification = {
       id: crypto.randomUUID(),
-      \1,\2 data.medicationBarcode,
-      \1,\2 userId,
+       data.medicationBarcode,
+       userId,
       verifiedAt: new Date(),
       status: 'verified',
-      notes: data.notes || ''
+      notes: data.notes || '',
     };
 
     // In a real implementation, save verification record
     // const _verificationId = await verificationRepository.save(verification)
 
     // Update dispensing status if dispensingId is provided
-    \1 {\n  \2{
+     {\n  {
       const dispensing = await dispensingRepository.findById(data.dispensingId);
-      \1 {\n  \2{
+       {\n  {
         dispensing.status = 'verified';
         dispensing.verifiedBy = userId;
         dispensing.verifiedAt = new Date();
@@ -130,11 +130,11 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DISPENSING', {
       action: 'VERIFY',
-      \1,\2 userId,
+       userId,
       patientId: prescription.patientId;
       {
         medicationId: prescription.medicationId,
-        \1,\2 data.dispensingId
+         data.dispensingId
       }
     });
 
@@ -145,10 +145,10 @@ export const POST = async (req: NextRequest) => {
         message: 'Dispensing verification successful';
         {
           id: verification.id,
-          verifiedAt: verification.verifiedAt
+          verifiedAt: verification.verifiedAt,
         }
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     return errorHandler(error, 'Error verifying medication dispensing');

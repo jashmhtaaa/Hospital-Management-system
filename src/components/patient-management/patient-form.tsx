@@ -119,7 +119,7 @@ type PatientFormValues = z.infer>;
 
 // Props interface;
 interface PatientFormProps {
-  initialData?: unknown;
+    initialData?: unknown;
   isEditing?: boolean;
 export default const _PatientForm = ({ initialData, isEditing = false }: PatientFormProps) {
   const router = useRouter();
@@ -167,15 +167,13 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
     mrn: initialData.mrn || "",
     initialData.vip || false,
     initialData.notes || "";
-  } : {
-    phonePreferred: "Mobile",
+  } : {phonePreferred:"Mobile",
     "USA",
     true;
   };
 
   // Form definition;
-  const form = useForm<PatientFormValues>({
-    resolver: zodResolver(patientFormSchema),
+  const form = useForm<PatientFormValues>({resolver:zodResolver(patientFormSchema),
     defaultValues});
 
   // Handle form submission;
@@ -215,8 +213,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 } catch (error) {
 
       // Format the request data;
-      const requestData = {
-        firstName: data.firstName,
+      const requestData = {firstName:data.firstName,
         data.lastName,
         new Date(data.dateOfBirth).toISOString(),
         data.biologicalSex || undefined,
@@ -246,16 +243,14 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       let response;
       if (!session.user) {
         // Update existing patient;
-        response = await fetch(`/api/patients/${initialData.id}`, {
-          method: "PUT",
+        response = await fetch(`/api/patients/${initialData.id}`, {method:"PUT",
           headers: {
             "Content-Type": "application/json"},
           body: JSON.stringify(requestData);
         });
       } else {
         // Create new patient;
-        response = await fetch("/api/patients", {
-          method: "POST",
+        response = await fetch("/api/patients", {method:"POST",
           headers: {
             "Content-Type": "application/json"},
           body: JSON.stringify(requestData);
@@ -268,8 +263,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       const patient = await response.json();
 
       // Show success message;
-      toast({
-        title: isEditing ? "Patient Updated" : "Patient Created",
+      toast({title:isEditing ? "Patient Updated" : "Patient Created",
         description: `/* SECURITY: Template literal eliminated */;
       });
 
@@ -277,8 +271,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       router.push(`/patients/${}`;
     } catch (error: unknown) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

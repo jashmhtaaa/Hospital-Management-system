@@ -66,7 +66,7 @@ const supplierRepository = {
  * GET /api/pharmacy/inventory/reorder;
  * List items that need reordering based on threshold levels;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -102,7 +102,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -171,7 +171,7 @@ export const GET = async (req: any) => {
 
     // Sort by stock status (critical first);
     reorderItems.sort((a, b) => {
-      const statusOrder = { critical: 0, low: 1, normal: 2 }
+      const statusOrder = { critical: 0, low: 1, normal: 2 },
       return statusOrder[a.stockStatus] - statusOrder[b.stockStatus];
     });
 
@@ -190,7 +190,7 @@ export const GET = async (req: any) => {
     await auditLog("INVENTORY", {
       action: "LIST_REORDER",
       userId,
-      details: {
+      details: {,
         locationId,
         includeOnOrder,
         criticalOnly,
@@ -203,13 +203,13 @@ export const GET = async (req: any) => {
     return NextResponse.json({
       reorderItems: paginatedItems;
       statusCounts,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving reorder items");
   }
@@ -219,7 +219,7 @@ export const GET = async (req: any) => {
  * POST /api/pharmacy/inventory/reorder;
  * Create a new reorder request;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -257,14 +257,14 @@ export const POST = async (req: any) => {
     const validationResult = validateReorderRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -272,7 +272,7 @@ export const POST = async (req: any) => {
     // Verify medication exists;
     const medication = await medicationRepository.findById(data.medicationId);
     if (!session.user) {
-      return NextResponse.json({ error: "Medication not found" }, { status: 404 });
+      return NextResponse.json({ error: "Medication not found" ,}, { status: 404 ,});
 
     // Check for existing pending reorder for this medication;
     const existingReorders = await reorderRepository.findByMedicationId(data.medicationId);
@@ -284,7 +284,7 @@ export const POST = async (req: any) => {
           error: "Pending reorder already exists for this medication",
           existingReorderId: pendingReorder.id;
         },
-        { status: 409 }
+        { status: 409 },
       );
 
     // Create reorder record;
@@ -335,7 +335,7 @@ export const POST = async (req: any) => {
         reorder.requiresApproval,
         message: "Reorder request created successfully";
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, "Error creating reorder request");
@@ -343,7 +343,7 @@ export const POST = async (req: any) => {
 /**;
  * Helper function to determine stock status based on quantity and reorder level;
  */;
-const getStockStatus = (quantity: number, reorderLevel: number): "critical" | "low" | "normal" {
+const getStockStatus = (quantity: number, reorderLevel: number): "critical" | "low" | "normal" {,
   const ratio = quantity / reorderLevel;
 
   if (!session.user) {

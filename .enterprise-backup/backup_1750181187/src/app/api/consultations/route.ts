@@ -17,28 +17,28 @@ const ListConsultationsQuerySchema = z.object({
     doctorId: z.coerce.number().int().positive().optional(),
     opdVisitId: z.coerce.number().int().positive().optional(),
     admissionId: z.coerce.number().int().positive().optional(),
-    dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-    dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+    dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/).optional(),
+    dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/).optional(),
     limit: z.coerce.number().int().positive().optional().default(50),
-    offset: z.coerce.number().int().nonnegative().optional().default(0)
+    offset: z.coerce.number().int().nonnegative().optional().default(0),
 });
 
 // Define type for the query result row
 interface ConsultationListQueryResult {
     consultation_id: number,
-    \1,\2 number,
-    \1,\2 number | null,
-    \1,\2 string | null,
-    \1,\2 string,
-    \1,\2 string,
-    \1,\2 string
-export const _GET = async (request: Request) => {
+     number,
+     number | null,
+     string | null,
+     string,
+     string,
+     string
+export const _GET = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
     try {
@@ -46,15 +46,15 @@ export const _GET = async (request: Request) => {
         const queryParams = Object.fromEntries(url.searchParams.entries());
         const validation = ListConsultationsQuerySchema.safeParse(queryParams);
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invalid query parameters", details: validation.error.errors }), { status: 400 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invalid query parameters", details: validation.error.errors ,}), { status: 400 ,});
         }
 
         const filters = validation.data;
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
-        \1 {\n  \2{
+         {\n  {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
@@ -74,43 +74,43 @@ export const _GET = async (request: Request) => {
         const queryParamsList: (string | number)[] = [];
 
         // Apply filters
-        \1 {\n  \2{
+         {\n  {
             query += " AND c.patient_id = ?";
             queryParamsList.push(filters.patientId);
         }
-        \1 {\n  \2{
-            \1 {\n  \2{
-                const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-                \1 {\n  \2 {
-                    return new Response(JSON.stringify({ error: "Forbidden: Doctors can only view their own consultations" }), { status: 403 });
+         {\n  {
+             {\n  {
+                const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+                 {\n   {
+                    return new Response(JSON.stringify({ error: "Forbidden: Doctors can only view their own consultations" ,}), { status: 403 ,});
                 }
                 query += " AND c.doctor_id = ?";
                 queryParamsList.push(userDoctorProfile.doctor_id);
-            } else \1 {\n  \2{
+            } else  {\n  {
                  query += " AND c.doctor_id = ?";
                  queryParamsList.push(filters.doctorId);
             }
-        } else \1 {\n  \2{
-             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-             \1 {\n  \2{
+        } else  {\n  {
+             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+              {\n  {
                  query += " AND c.doctor_id = ?";
                  queryParamsList.push(userDoctorProfile.doctor_id);
              }
         }
 
-        \1 {\n  \2{
+         {\n  {
             query += " AND c.opd_visit_id = ?";
             queryParamsList.push(filters.opdVisitId);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND c.admission_id = ?";
             queryParamsList.push(filters.admissionId);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND DATE(c.consultation_datetime) >= ?";
             queryParamsList.push(filters.dateFrom);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND DATE(c.consultation_datetime) <= ?";
             queryParamsList.push(filters.dateTo);
         }
@@ -122,25 +122,25 @@ export const _GET = async (request: Request) => {
         const results = await DB.prepare(query).bind(...queryParamsList).all<ConsultationListQueryResult>();
 
         // 4. Format Response
-        const consultations: Consultation[] = results.results?.map((row: ConsultationListQueryResult) => ({
+        const consultations: Consultation[] = results.results?.map((row: ConsultationListQueryResult) => ({,
             consultation_id: row.consultation_id,
-            \1,\2 row.doctor_id,
-            \1,\2 row.admission_id,
-            \1,\2 row.chief_complaint,
-            \1,\2 row.created_at,
-            \1,\2 row.patient_id,
-                \1,\2 row.patient_last_name,
-            doctor: 
+             row.doctor_id,
+             row.admission_id,
+             row.chief_complaint,
+             row.created_at,
+             row.patient_id,
+                 row.patient_last_name,
+            doctor: ,
                 doctor_id: row.doctor_id,
-                user: fullName: row.doctor_full_name 
+                user: fullName: row.doctor_full_name ,
         })) || [];
 
-        return new Response(JSON.stringify(consultations), { status: 200 });
+        return new Response(JSON.stringify(consultations), { status: 200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), { status: 500 ,});
     }
 }
 
@@ -156,60 +156,60 @@ const CreateConsultationSchema = z.object({
     diagnosis: z.string().optional().nullable(),
     treatment_plan: z.string().optional().nullable(),
     follow_up_instructions: z.string().optional().nullable(),
-    notes: z.string().optional().nullable()
+    notes: z.string().optional().nullable(),
 }).refine(data => data.opd_visit_id || data.admission_id, {
     message: "Consultation must be linked to either an OPD Visit or an Admission.",
     path: ["opd_visit_id", "admission_id"],
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
     try {
         const body = await request.json();
         const validation = CreateConsultationSchema.safeParse(body);
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), { status: 400 ,});
         }
 
         const consultData = validation.data;
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
 
-        \1 {\n  \2{
+         {\n  {
             throw new Error("Database binding not found in Cloudflare environment.");
         }
 
         // 2. Get Doctor ID from session user
-        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
+        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+         {\n  {
+            return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" ,}), { status: 404 ,});
         }
         const doctorId = doctorProfile.doctor_id;
 
         // 3. Check if patient exists and if visit/admission exists and belongs to patient
-        const checks: D1PreparedStatement[] = [
+        const checks: D1PreparedStatement[] = [,
             DB.prepare("SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE").bind(consultData.patient_id);
         ];
-        \1 {\n  \2{
+         {\n  {
             checks.push(DB.prepare("SELECT opd_visit_id FROM OPDVisits WHERE opd_visit_id = ? AND patient_id = ?").bind(consultData.opd_visit_id, consultData.patient_id));
         }
 
         const results = await DB.batch(checks);
         const [patientCheck, visitCheck] = results;
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Patient not found or inactive" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Patient not found or inactive" ,}), { status: 404 ,});
         }
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "OPD Visit not found or does not belong to this patient" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "OPD Visit not found or does not belong to this patient" ,}), { status: 404 ,});
         }
 
         // 4. Insert the new consultation
@@ -234,34 +234,34 @@ export const _POST = async (request: Request) => {
             consultData.notes;
         ).run();
 
-        \1 {\n  \2{
-            throw new Error(`Failed to create consultation: ${\1}`;
+         {\n  {
+            throw new Error(`Failed to create consultation: ${}`;
         }
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newConsultationId = meta.last_row_id;
-        \1 {\n  \2{
+         {\n  {
 
             throw new Error("Failed to retrieve consultation ID after creation.");
         }
 
-        \1 {\n  \2{
+         {\n  {
             await DB.prepare("UPDATE OPDVisits SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE opd_visit_id = ? AND status = ?");
                   .bind("WithDoctor", consultData.opd_visit_id, "Waiting");
                   .run();
         }
 
         // 5. Return the newly created consultation ID
-        return new Response(JSON.stringify({ message: "Consultation created successfully", consultation_id: newConsultationId }), {
+        return new Response(JSON.stringify({ message: "Consultation created successfully", consultation_id: newConsultationId ,}), {
             status: 201,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }

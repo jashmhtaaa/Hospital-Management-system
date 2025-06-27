@@ -4,9 +4,9 @@ import { type NextRequest, NextResponse } from "next/server";
 // Define interface for ER Visit data
 interface ERVisit {
   id: string,
-  \1,\2 string; // ISO string
+   string; // ISO string
   chief_complaint: string;
-  // FIX: Allow null for optional fields based on TS errors in related files
+  // FIX: Allow null for optional fields based on TS errors in related files,
   assigned_physician_id?: string | number | null;
   assigned_nurse_id?: string | number | null;
   current_location?: string | null;
@@ -19,7 +19,7 @@ interface ERVisit {
 }
 
 // Mock data store for ER visits (replace with actual DB interaction)
-let mockVisits: ERVisit[] = []
+let mockVisits: ERVisit[] = [],
 
 // Define interface for ER visit update data
 interface ERVisitUpdateInput {
@@ -35,17 +35,17 @@ interface ERVisitUpdateInput {
 // Removed the duplicate GET handler for listing visits, as it belongs in /api/er/visits/route.ts
 
 // POST /api/er/visits - Create a new ER visit (patient arrival)
-// ... (Assuming POST handler exists in the correct file: /api/er/visits/route.ts)
+// ... (Assuming POST handler exists in the correct file: /api/er/visits/route.ts),
 
 // GET /api/er/visits/[id] - Get details of a specific ER visit
 export const _GET = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific
     // const db = env.DB; // Cloudflare specific
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     // Placeholder for database query
     /*
@@ -54,10 +54,10 @@ export const _GET = async (
       .bind(visitId);
       .all<ERVisit>(); // Specify type if possible
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
     }
     return NextResponse.json(results[0]);
@@ -65,32 +65,32 @@ export const _GET = async (
 
     // Mock implementation
     const visit = mockVisits.find((v) => v.id === visitId);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
     }
     // FIX: Return type matches ERVisit, no 'any' needed
     return NextResponse.json(visit)
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
-      { error: "Failed to fetch ER visit details", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch ER visit details", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // PUT /api/er/visits/[id] - Update a specific ER visit
 export const _PUT = async (
-  request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  request: NextRequest, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific
     // const db = env.DB; // Cloudflare specific
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
     const body = await request.json();
     // Apply type assertion
     const updateData = body as ERVisitUpdateInput;
@@ -105,17 +105,17 @@ export const _PUT = async (
       "discharge_timestamp",
     ]);
 
-    // FIX: Use keyof ERVisitUpdateInput for better type safety
+    // FIX: Use keyof ERVisitUpdateInput for better type safety,
     const updateFields = (
       Object.keys(updateData) as (keyof ERVisitUpdateInput)[]
     ).filter(
       (field) => allowedFields.has(field) && updateData[field] !== undefined;
     );
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "No valid fields to update" },
-        { status: 400 }
+        { error: "No valid fields to update" ,},
+        { status: 400 },
       );
     }
 
@@ -132,18 +132,18 @@ export const _PUT = async (
 
     // Mock implementation
     const visitIndex = mockVisits.findIndex((v) => v.id === visitId);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
     }
 
-    // FIX: Update mock data with better type safety
-    const updatedVisit: ERVisit = { ...mockVisits[visitIndex] };
+    // FIX: Update mock data with better type safety,
+    const updatedVisit: ERVisit = { ...mockVisits[visitIndex] ,};
     for (const field of updateFields) {
-      // FIX: Ensure field exists on updatedVisit before assignment and cast field type
-      \1 {\n  \2{
+      // FIX: Ensure field exists on updatedVisit before assignment and cast field type,
+       {\n  {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (updatedVisit as any)[field] = updateData[field]; // Use 'as any' to bypass strict index check after 'in' guard
       }
@@ -152,31 +152,31 @@ export const _PUT = async (
     mockVisits[visitIndex] = updatedVisit;
 
     // If status or location changed, log the change (mock)
-    \1 {\n  \2{
-      // FIX: Define type for log entry
+     {\n  {
+      // FIX: Define type for log entry,
       interface StatusLogEntry {
         id: string,
-        \1,\2 string | null | undefined,
-        \1,\2 string | number | undefined,
-        timestamp: string
+         string | null | undefined,
+         string | number | undefined,
+        timestamp: string,
       }
-      const _logEntry: StatusLogEntry = {
+      const _logEntry: StatusLogEntry = {,
         id: uuidv4(),
-        \1,\2 updateData.current_status,
-        \1,\2 updateData.updated_by_id, // Assuming updated_by_id is passed
-        timestamp: new Date().toISOString()
+         updateData.current_status,
+         updateData.updated_by_id, // Assuming updated_by_id is passed
+        timestamp: new Date().toISOString(),
       };
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     }
 
     // Return the updated visit
     return NextResponse.json(updatedVisit);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
-      { error: "Failed to update ER visit", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update ER visit", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -184,12 +184,12 @@ export const _PUT = async (
 // DELETE /api/er/visits/[id] - Delete a specific ER visit (rarely used in production)
 export const DELETE = async (
   _request: NextRequest, // FIX: Prefixed as unused, changed Request to NextRequest
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific
     // const db = env.DB; // Cloudflare specific
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     // Placeholder for database delete
     /*
@@ -198,10 +198,10 @@ export const DELETE = async (
       .bind(visitId);
       .all();
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
     }
 
@@ -231,24 +231,24 @@ export const DELETE = async (
     // Mock implementation
     const initialLength = mockVisits.length;
     mockVisits = mockVisits.filter((v) => v.id !== visitId);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     return NextResponse.json(
-      { message: "ER visit deleted successfully" },
-      { status: 200 }
+      { message: "ER visit deleted successfully" ,},
+      { status: 200 },
     )
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
-      { error: "Failed to delete ER visit", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to delete ER visit", details: errorMessage ,},
+      { status: 500 },
     );
   }

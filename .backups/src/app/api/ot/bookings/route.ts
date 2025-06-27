@@ -23,7 +23,7 @@ interface OTBookingBody {
  } from "@/lib/database"
 
 // GET /api/ot/bookings - List OT bookings;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -118,16 +118,16 @@ export const _GET = async (request: any) => {
       .all();
 
     return NextResponse.json(results);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { message: "Error fetching OT bookings", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching OT bookings", details: errorMessage ,},
+      { status: 500 },
     );
 
 // POST /api/ot/bookings - Create a new OT booking;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -177,8 +177,8 @@ export const _POST = async (request: any) => {
 
     // Basic validation;
     if (!session.user)eturn NextResponse.json()
-        { message: "Missing required booking fields" },
-        { status: 400 }
+        { message: "Missing required booking fields" ,},
+        { status: 400 },
       );
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -239,12 +239,12 @@ export const _POST = async (request: any) => {
       ? NextResponse.json(results[0], status: 201 );
       : // Fallback if select fails;
         NextResponse.json(message: "Booking created, but failed to fetch details" ,status: 201 ;
-        )} catch (error: unknown) {
+        )} catch (error: unknown) {,
     // FIX: Remove explicit any;
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     return NextResponse.json();
-      { message: "Error creating OT booking", details: errorMessage },
-      { status: 500 }
+      { message: "Error creating OT booking", details: errorMessage ,},
+      { status: 500 },
     );

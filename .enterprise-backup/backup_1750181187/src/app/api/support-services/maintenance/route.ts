@@ -14,7 +14,7 @@ const createRequestSchema = z.object({
   requestType: z.enum(['PREVENTIVE', 'CORRECTIVE', 'EMERGENCY', 'INSPECTION', 'INSTALLATION', 'OTHER']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
   description: z.string().min(5).max(500),
-  \1,\2 z.string().max(1000).optional(),
+   z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
   departmentId: z.string().uuid().optional(),
   estimatedDuration: z.number().min(1).optional(), // in minutes
@@ -29,14 +29,14 @@ const updateRequestSchema = z.object({
   status: z.enum(['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'ON_HOLD', 'COMPLETED', 'CANCELLED']).optional(),
   assignedToId: z.string().uuid().optional(),
   estimatedDuration: z.number().min(1).optional(),
-  partsRequired: z.array(z.object({
+  partsRequired: z.array(z.object({,
     partId: z.string().uuid(),
-    quantity: z.number().min(1)
+    quantity: z.number().min(1),
   })).optional(),
 });
 
 // GET /api/support-services/maintenance/requests
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -44,11 +44,11 @@ export const _GET = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        \1,\2 searchParams.get('assetId') || undefined,
-        \1,\2 searchParams.get('departmentId') || undefined,
-        \1,\2 searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined,
-        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
-        limit: parseInt(searchParams.get('limit') || '10')
+         searchParams.get('assetId') || undefined,
+         searchParams.get('departmentId') || undefined,
+         searchParams.get('toDate') ? new Date(searchParams.get('toDate')!) : undefined,
+         Number.parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10'),
       };
 
       // Get maintenance requests with filters
@@ -58,13 +58,13 @@ export const _GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'maintenance:read',
-      auditAction: 'MAINTENANCE_REQUESTS_VIEW'
+      auditAction: 'MAINTENANCE_REQUESTS_VIEW',
     }
   );
 }
 
 // POST /api/support-services/maintenance/requests
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -78,17 +78,17 @@ export const _POST = async (request: NextRequest) => {
       // Create maintenance request
       const result = await maintenanceService.createMaintenanceRequest(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       requiredPermission: 'maintenance:create',
-      auditAction: 'MAINTENANCE_REQUEST_CREATE'
+      auditAction: 'MAINTENANCE_REQUEST_CREATE',
     }
   );
 }
 
 // GET /api/support-services/maintenance/requests/:id
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -100,13 +100,13 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     },
     {
       requiredPermission: 'maintenance:read',
-      auditAction: 'MAINTENANCE_REQUEST_VIEW'
+      auditAction: 'MAINTENANCE_REQUEST_VIEW',
     }
   );
 }
 
 // PATCH /api/support-services/maintenance/requests/:id
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -124,30 +124,30 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
     },
     {
       requiredPermission: 'maintenance:update',
-      auditAction: 'MAINTENANCE_REQUEST_UPDATE'
+      auditAction: 'MAINTENANCE_REQUEST_UPDATE',
     }
   );
 }
 
 // DELETE /api/support-services/maintenance/requests/:id
-export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
       // Delete maintenance request
       await maintenanceService.deleteMaintenanceRequest(params.id);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true ,});
     },
     {
       requiredPermission: 'maintenance:delete',
-      auditAction: 'MAINTENANCE_REQUEST_DELETE'
+      auditAction: 'MAINTENANCE_REQUEST_DELETE',
     }
   );
 }
 
 // POST /api/support-services/maintenance/requests/:id/assign
-export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -155,8 +155,8 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       const body = await req.json();
       const { technicianId } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
+       {\n  {
+        return NextResponse.json({ error: 'Technician ID is required' ,}, { status: 400 ,});
       }
 
       // Assign maintenance request
@@ -166,13 +166,13 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
     },
     {
       requiredPermission: 'maintenance:assign',
-      auditAction: 'MAINTENANCE_REQUEST_ASSIGN'
+      auditAction: 'MAINTENANCE_REQUEST_ASSIGN',
     }
   );
 }
 
 // POST /api/support-services/maintenance/requests/:id/start
-export const _START = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _START = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -180,8 +180,8 @@ export const _START = async (request: NextRequest, { params }: { params: { id: s
       const body = await req.json();
       const { technicianId, notes } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
+       {\n  {
+        return NextResponse.json({ error: 'Technician ID is required' ,}, { status: 400 ,});
       }
 
       // Start maintenance work
@@ -195,13 +195,13 @@ export const _START = async (request: NextRequest, { params }: { params: { id: s
     },
     {
       requiredPermission: 'maintenance:update',
-      auditAction: 'MAINTENANCE_WORK_START'
+      auditAction: 'MAINTENANCE_WORK_START',
     }
   );
 }
 
 // POST /api/support-services/maintenance/requests/:id/complete
-export const _COMPLETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _COMPLETE = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -209,8 +209,8 @@ export const _COMPLETE = async (request: NextRequest, { params }: { params: { id
       const body = await req.json();
       const { technicianId, notes, partsUsed, laborHours } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Technician ID is required' }, { status: 400 });
+       {\n  {
+        return NextResponse.json({ error: 'Technician ID is required' ,}, { status: 400 ,});
       }
 
       // Complete maintenance request
@@ -226,13 +226,13 @@ export const _COMPLETE = async (request: NextRequest, { params }: { params: { id
     },
     {
       requiredPermission: 'maintenance:update',
-      auditAction: 'MAINTENANCE_REQUEST_COMPLETE'
+      auditAction: 'MAINTENANCE_REQUEST_COMPLETE',
     }
   );
 }
 
 // GET /api/support-services/maintenance/assets
-export const _GET_ASSETS = async (request: NextRequest) => {
+export const _GET_ASSETS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -240,9 +240,9 @@ export const _GET_ASSETS = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         type: searchParams.get('type') || undefined,
-        \1,\2 searchParams.get('locationId') || undefined,
-        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
-        limit: parseInt(searchParams.get('limit') || '10')
+         searchParams.get('locationId') || undefined,
+         Number.parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10'),
       };
 
       // Get maintenance assets with filters
@@ -252,13 +252,13 @@ export const _GET_ASSETS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'maintenance:read',
-      auditAction: 'MAINTENANCE_ASSETS_VIEW'
+      auditAction: 'MAINTENANCE_ASSETS_VIEW',
     }
   );
 }
 
 // GET /api/support-services/maintenance/analytics
-export const _GET_ANALYTICS = async (request: NextRequest) => {
+export const _GET_ANALYTICS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -274,6 +274,6 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'maintenance:analytics',
-      auditAction: 'MAINTENANCE_ANALYTICS_VIEW'
+      auditAction: 'MAINTENANCE_ANALYTICS_VIEW',
     }
   );

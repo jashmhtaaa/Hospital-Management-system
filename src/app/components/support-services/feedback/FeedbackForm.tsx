@@ -69,24 +69,22 @@ const feedbackFormSchema = z.object({
 type FeedbackFormValues = z.infer>;
 
 interface FeedbackFormProps {
-  departments?: { id: string, name: string }[];
+    departments?: {id:string, name: string }[];
   serviceTypes?: string[];
   onSuccess?: (data: unknown) => void;
   defaultValues?: Partial>;
 export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
-  const { data: session } = useSession();
+  const {data:session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
 
   // Initialize form;
-  const form = useForm<FeedbackFormValues>({
-    resolver: zodResolver(feedbackFormSchema),
+  const form = useForm<FeedbackFormValues>({resolver:zodResolver(feedbackFormSchema),
     defaultValues?.type || "",
       defaultValues?.rating || 0,
       defaultValues?.departmentId || "",
       defaultValues?.serviceId || "",
-      defaultValues?.contactInfo || {
-        name: "",
+      defaultValues?.contactInfo || {name:"",
         "";
       }}});
 
@@ -131,8 +129,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 
 } catch (error) {
 
-      const response = await fetch("/api/support-services/feedback", {
-        method: "POST",
+      const response = await fetch("/api/support-services/feedback", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(values);
@@ -143,8 +140,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
         throw new Error(error.error || "Failed to submit feedback");
 
       const data = await response.json(),
-      toast({
-        title: "Feedback Submitted",
+      toast({title:"Feedback Submitted",
         description: "Thank you for your feedback!";
       });
 
@@ -156,8 +152,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
         onSuccess(data);
 
     } catch (error: unknown) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

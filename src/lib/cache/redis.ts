@@ -1,7 +1,7 @@
 import "@/config"
 import "redis"
-import {  config  } from "@/lib/database"
-import {  createClient  } from "@/lib/database"
+import {config  } from "next/server"
+import {createClient  } from "next/server"
 
 // Create Redis client;
 const redisClient = createClient({url:config.redis.url,
@@ -62,7 +62,7 @@ redisClient.on("error", (err) => {
 }
 } catch (error) {
 }
-      await redisClient.set(key, JSON.stringify(data), {EX:ttlSeconds });
+      await redisClient.set(key, JSON.stringify(data), {EX:ttlSeconds ,});
     } catch (error) {
 
     }
@@ -71,7 +71,7 @@ redisClient.on("error", (err) => {
   /**;
    * Delete data from cache;
    */;
-  static async delete(key: string): Promise<void> {
+  static async delete(key: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -110,7 +110,7 @@ redisClient.on("error", (err) => {
   /**;
    * Delete multiple keys matching a pattern;
    */;
-  static async deletePattern(pattern: string): Promise<void> {
+  static async deletePattern(pattern: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);

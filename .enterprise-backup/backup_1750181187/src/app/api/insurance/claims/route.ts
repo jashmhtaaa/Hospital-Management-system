@@ -22,22 +22,22 @@ import { logger } from '@/lib/core/logging';
 const createClaimSchema = z.object({
   invoiceId: z.string().uuid(),
   insurancePolicyId: z.string().uuid(),
-  diagnoses: z.array(z.object({
+  diagnoses: z.array(z.object({,
     code: icd10CodeSchema,
     description: z.string(),
-    primary: z.boolean().default(false)
+    primary: z.boolean().default(false),
   })).min(1),
-  items: z.array(z.object({
+  items: z.array(z.object({,
     serviceItemId: z.string().uuid(),
     serviceDate: z.coerce.date(),
     cptCode: cptCodeSchema.optional(),
     unitPrice: z.number().positive(),
     quantity: z.number().int().positive(),
     totalPrice: z.number().positive(),
-    notes: z.string().optional()
+    notes: z.string().optional(),
   })).min(1),
   preAuthorizationNumber: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // Schema for claim query parameters
@@ -56,7 +56,7 @@ const claimQuerySchema = z.object({
 });
 
 // GET handler for retrieving all claims with filtering and pagination
-export const _GET = withErrorHandling(async (req: NextRequest) => {
+export const _GET = withErrorHandling(async (req: NextRequest) => {,
   // Validate query parameters
   const query = validateQuery(claimQuerySchema)(req);
 
@@ -64,38 +64,38 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   await checkPermission(permissionService, 'read', 'claim')(req);
 
   // Build filter conditions
-  const where: unknown = {};
+  const where: unknown = {,};
 
-  \1 {\n  \2{
+   {\n  {
     where.invoice = {
-      patientId: query.patientId
+      patientId: query.patientId,
     };
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.invoiceId = query.invoiceId;
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.insurancePolicyId = query.insurancePolicyId;
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.status = query.status;
   }
 
-  \1 {\n  \2{
+   {\n  {
     try {
       const startDate = new Date(query.startDate);
       const endDate = new Date(query.endDate);
 
-      \1 {\n  \2{
+       {\n  {
         throw new ValidationError('Start date must be before end date', 'INVALID_DATE_RANGE');
       }
 
       where.createdAt = {
         gte: startDate,
-        lte: endDate
+        lte: endDate,
       };
     } catch (error) {
       throw new ValidationError('Invalid date range', 'INVALID_DATE_RANGE');
@@ -106,49 +106,49 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   const [claims, total] = await Promise.all([
     prisma.insuranceClaim.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      \1,\2 {
-        invoice: {
-          select: {
+       {
+        invoice: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            patient: {
-              select: {
+             true,
+            patient: {,
+              select: {,
                 id: true,
-                \1,\2 true,
-                mrn: true
+                 true,
+                mrn: true,
               },
             },
           },
         },
-        insurancePolicy: {
-          select: {
+        insurancePolicy: {,
+          select: {,
             id: true,
-            \1,\2 {
-              select: {
+             {
+              select: {,
                 id: true,
-                name: true
+                name: true,
               },
             },
           },
         },
         diagnoses: true,
-        items: {
-          include: {
-            serviceItem: true
+        items: {,
+          include: {,
+            serviceItem: true,
           },
         },
-        followUps: true
+        followUps: true,
       },
     }),
     prisma.insuranceClaim.count(where ),
   ]);
 
   // Convert to FHIR format if requested
-  \1 {\n  \2{
+   {\n  {
     const fhirClaims = claims.map(claim => convertToFHIRClaim(claim));
     return createPaginatedResponse(fhirClaims, query.page, query.pageSize, total);
   }
@@ -158,7 +158,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 });
 
 // POST handler for creating a new claim
-export const _POST = withErrorHandling(async (req: NextRequest) => {
+export const _POST = withErrorHandling(async (req: NextRequest) => {,
   // Validate request body
   const data = await validateBody(createClaimSchema)(req);
 
@@ -167,51 +167,51 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   // Retrieve invoice
   const invoice = await prisma.bill.findUnique({
-    where: { id: data.invoiceId },
+    where: { id: data.invoiceId ,},
   });
 
-  \1 {\n  \2{
+   {\n  {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
   }
 
   // Check if invoice is in a valid state for claim
-  \1 {\n  \2 {
+   {\n   {
     throw new BusinessLogicError(
       'Claims can only be created for approved or paid invoices',
       'INVALID_INVOICE_STATUS',
-      { currentStatus: invoice.status }
+      { currentStatus: invoice.status },
     );
   }
 
   // Check if insurance policy exists
   const insurancePolicy = await prisma.insurancePolicy.findUnique({
-    where: { id: data.insurancePolicyId },
-    include: {
-      insuranceProvider: true
+    where: { id: data.insurancePolicyId ,},
+    include: {,
+      insuranceProvider: true,
     },
   });
 
-  \1 {\n  \2{
+   {\n  {
     throw new NotFoundError(`Insurance policy with ID ${data.insurancePolicyId} not found`);
   }
 
   // Check if policy is active
-  \1 {\n  \2{
+   {\n  {
     throw new BusinessLogicError(
       'Insurance policy is not active',
       'INACTIVE_INSURANCE_POLICY',
-      { policyStatus: insurancePolicy.status }
+      { policyStatus: insurancePolicy.status },
     );
   }
 
   // Check if patient on invoice matches policy beneficiary
-  \1 {\n  \2{
+   {\n  {
     throw new BusinessLogicError(
       'Invoice patient does not match insurance policy beneficiary',
       'PATIENT_MISMATCH',
       {
         invoicePatientId: invoice.patientId,
-        policyPatientId: insurancePolicy.patientId
+        policyPatientId: insurancePolicy.patientId,
       }
     );
   }
@@ -227,40 +227,40 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   const claim = await prisma.$transaction(async (prisma) => {
     // Create claim record
     const newClaim = await prisma.insuranceClaim.create({
-      data: {
+      data: {,
         claimNumber,
         invoiceId: data.invoiceId,
-        \1,\2 'draft';
+         'draft';
         totalAmount,
         preAuthorizationNumber: data.preAuthorizationNumber,
-        \1,\2 data.diagnoses,
+         data.diagnoses,
         items: 
-          create: data.items.map(item => ({
+          create: data.items.map(item => ({,
             serviceItemId: item.serviceItemId,
-            \1,\2 item.cptCode,
-            \1,\2 item.quantity,
-            \1,\2 item.notes)),
+             item.cptCode,
+             item.quantity,
+             item.notes)),
         },
       },
-      include: {
-        invoice: {
-          select: {
+      include: {,
+        invoice: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            patient: {
+             true,
+            patient: {,
                 id: true,
-                \1,\2 true,
+                 true,
                 mrn: true,
             },
           },
         },
-        insurancePolicy: {
+        insurancePolicy: {,
             id: true,
-            \1,\2 true,
+             true,
                 name: true,,,
         },
         diagnoses: true,
-        items: {
+        items: {,
             serviceItem: true,
         },
       },
@@ -268,9 +268,9 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
     // Update invoice to link claim
     await prisma.bill.update({
-      where: { id: data.invoiceId },
-      data: {
-        insuranceClaimId: newClaim.id
+      where: { id: data.invoiceId ,},
+      data: {,
+        insuranceClaimId: newClaim.id,
       },
     });
 
@@ -281,7 +281,7 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
     claimId: claim.id;
     claimNumber,
     invoiceId: data.invoiceId,
-    insurancePolicyId: data.insurancePolicyId
+    insurancePolicyId: data.insurancePolicyId,
   });
 
   return createSuccessResponse(claim);

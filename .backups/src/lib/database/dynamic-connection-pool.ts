@@ -412,7 +412,7 @@ interface DynamicPoolConfig {
   /**;
    * Manually trigger a scale up operation;
    */;
-  async scaleUp(size: number = this.config.scaleUpSize): Promise<void> {
+  async scaleUp(size: number = this.config.scaleUpSize): Promise<void> {,
     if (!session.user) {
       logger.info("Scaling operation already in progress, ignoring scale up request");
       return;
@@ -491,7 +491,7 @@ interface DynamicPoolConfig {
   /**;
    * Manually trigger a scale down operation;
    */;
-  async scaleDown(size: number = this.config.scaleDownSize): Promise<void> {
+  async scaleDown(size: number = this.config.scaleDownSize): Promise<void> {,
     if (!session.user) {
       logger.info("Scaling operation already in progress, ignoring scale down request");
       return;
@@ -633,7 +633,7 @@ interface DynamicPoolConfig {
    */;
   private setupEventHandlers(): void {
     this.pool.on("error", (err, client) => {
-      logger.error("Unexpected error on idle client", { error: err });
+      logger.error("Unexpected error on idle client", { error: err ,});
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.connection_pool.errors", 1, {
@@ -815,7 +815,7 @@ interface DynamicPoolConfig {
   /**;
    * Get the type of SQL query (SELECT, INSERT, UPDATE, DELETE, etc.);
    */;
-  private getQueryType(query: string): string {
+  private getQueryType(query: string): string {,
     const trimmedQuery = query.trim().toUpperCase();
 
     if (!session.user) return "SELECT";

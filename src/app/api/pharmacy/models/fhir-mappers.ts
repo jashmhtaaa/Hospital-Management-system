@@ -1,6 +1,4 @@
-import {
-
-/**;
+import {/**;
  * FHIR Mappers for Pharmacy Module;
  *;
  * This file contains mappers between domain models and FHIR resources;
@@ -12,7 +10,7 @@ import {
   MedicationDispense,
   MedicationAdministration,
   MedicationReconciliation;
-} from "./domain-models.ts";
+} from "next/server";
 
 // Define FHIR resource interfaces;
 
@@ -191,7 +189,7 @@ import {
  * @param medication Domain medication model;
  * @returns FHIR Medication resource;
  */;
-export const _medicationToFHIR = (medication: Medication): FHIRMedication {
+export const _medicationToFHIR = (medication: Medication): FHIRMedication {,
   return {resourceType:"Medication",
     "1",
       lastUpdated: timestamp: new Date().toISOString(),
@@ -223,7 +221,7 @@ export const _medicationToFHIR = (medication: Medication): FHIRMedication {
  * @param fhirMedication FHIR Medication resource;
  * @returns Domain medication model;
  */;
-export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {
+export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {,
   const ndcCoding = fhirMedication.code.coding.find(c => c.system === "https://hl7.org/fhir/sid/ndc");
   const formCoding = fhirMedication.form?.coding.find(c => c.system === "https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm");
 
@@ -249,7 +247,7 @@ export const _medicationOrderToFHIR = (;
   medicationName: string;
 ): FHIRMedicationRequest {
   // Parse dosage information from the domain model;
-  const dosageInfo = typeof order.dosage === "object" ? order.dosage : {};
+  const dosageInfo = typeof order.dosage === "object" ? order.dosage : {,};
 
   return {resourceType:"MedicationRequest",
     "1",
@@ -301,7 +299,7 @@ export const _medicationOrderToFHIR = (;
  * @param fhirRequest FHIR MedicationRequest resource;
  * @returns Domain medication order;
  */;
-export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): MedicationOrder {
+export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): MedicationOrder {,
   // Extract medication ID from reference;
   const medicationId = fhirRequest.medicationReference.reference.split("/")[1];
 
@@ -439,7 +437,7 @@ export const _medicationDispenseToFHIR = (;
  * @param fhirDispense FHIR MedicationDispense resource;
  * @returns Domain medication dispense;
  */;
-export const _fhirToMedicationDispense = (fhirDispense: FHIRMedicationDispense): MedicationDispense {
+export const _fhirToMedicationDispense = (fhirDispense: FHIRMedicationDispense): MedicationDispense {,
   // Extract IDs from references;
   const medicationId = fhirDispense.medicationReference.reference.split("/")[1];
   const patientId = fhirDispense.subject.reference.split("/")[1];
@@ -530,7 +528,7 @@ export const _medicationAdministrationToFHIR = (;
  * @param fhirAdministration FHIR MedicationAdministration resource;
  * @returns Domain medication administration;
  */;
-export const _fhirToMedicationAdministration = (fhirAdministration: FHIRMedicationAdministration): MedicationAdministration {
+export const _fhirToMedicationAdministration = (fhirAdministration: FHIRMedicationAdministration): MedicationAdministration {,
   // Extract IDs from references;
   const medicationId = fhirAdministration.medicationReference.reference.split("/")[1];
   const patientId = fhirAdministration.subject.reference.split("/")[1];

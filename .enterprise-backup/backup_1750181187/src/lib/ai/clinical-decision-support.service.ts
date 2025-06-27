@@ -9,14 +9,14 @@ import { PrismaClient } from '@prisma/client';
  * Implements evidence-based medicine and clinical guidelines;
  */
 
-\1
+
 }
   };
   respiratoryRate?: number;
   oxygenSaturation?: number;
   pain?: number; // 0-10 scale
-  timestamp: Date
-\1
+  timestamp: Date,
+
 }
 }
 
@@ -51,7 +51,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
       this.isInitialized = true;
       this.emit('initialized');
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     } catch (error) {
 
       throw error
@@ -61,8 +61,8 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Process clinical data and generate recommendations;
    */
-  async processPatientData(context: ClinicalContext): Promise<CDSSRecommendation[]> {
-    \1 {\n  \2{
+  async processPatientData(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
+     {\n  {
       throw new Error('CDSS not initialized')
     }
 
@@ -112,10 +112,10 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
       // Emit events for critical recommendations
       const criticalRecs = recommendations.filter(r => r.priority === 'critical');
-      \1 {\n  \2{
+       {\n  {
         this.emit('critical_recommendations', {
           patientId: context.patientId,
-          \1,\2 criticalRecs
+           criticalRecs
         });
       }
 
@@ -130,7 +130,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Check for drug interactions;
    */
-  private async checkDrugInteractions(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async checkDrugInteractions(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
     const medications = context.medications;
 
@@ -138,29 +138,29 @@ class ClinicalDecisionSupportService extends EventEmitter {
       for (let j = i + 1; j < medications.length; j++) {
         const interaction = this.findDrugInteraction(medications[i].name, medications[j].name);
 
-        \1 {\n  \2{
-          const rec: CDSSRecommendation = {
-            id: `drug_interaction_${crypto.getRandomValues(new Uint32Array(1))[0]}_${i}_${j}`,
+         {\n  {
+          const rec: CDSSRecommendation = {,
+            id: `drug_interaction_${crypto.getRandomValues(new Uint32Array(1))[0]}_${i}_${j,}`,
             type: 'drug_interaction',
             priority: this.mapSeverityToPriority(interaction.severity),
-            title: `Drug Interaction: ${interaction.drug1} + ${interaction.drug2}`,
-            description: `${interaction.severity.toUpperCase()} interaction detected between ${interaction.drug1} and ${interaction.drug2}`,
+            title: `Drug Interaction: ${interaction.drug1} + ${interaction.drug2,}`,
+            description: `${interaction.severity.toUpperCase()} interaction detected between ${interaction.drug1} and ${interaction.drug2,}`,
             recommendation: interaction.management,
-            evidence: {
+            evidence: {,
               level: 'B',
-              \1,\2 'Drug Interaction Database',
+               'Drug Interaction Database',
               lastUpdated: new Date(),
-              strength: 'strong'
+              strength: 'strong',
             },
             clinicalContext: context,
-            \1,\2 95,
-            \1,\2 [{
+             95,
+             [{
               severity: interaction.severity === 'contraindicated' ? 'critical' : 'warning',
-              \1,\2 true,
-              category: 'safety'
+               true,
+              category: 'safety',
             }],
             references: interaction.references,
-            createdAt: new Date()
+            createdAt: new Date(),
           };
 
           recommendations.push(rec);
@@ -174,33 +174,33 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Check for medication allergies;
    */
-  private async checkAllergies(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async checkAllergies(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
 
     for (const medication of context.medications) {
       for (const allergy of context.allergies) {
-        \1 {\n  \2 {
-          const rec: CDSSRecommendation = {
-            id: `allergy_alert_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name}`,
+         {\n   {
+          const rec: CDSSRecommendation = {,
+            id: `allergy_alert_${crypto.getRandomValues(new Uint32Array(1))[0]}_${medication.name,}`,
             type: 'allergy_alert',
-            \1,\2 `Allergy Alert: ${medication.name}`,
+             `Allergy Alert: ${medication.name,}`,
             description: `Patient has documented $allergy.severityallergy to $allergy.allergen`,
             recommendation: `STOP $medication.nameimmediately. Consider alternative therapy.`,
-            evidence: {
+            evidence: {,
               level: 'A',
-              \1,\2 new Date(),
-              strength: 'strong'
+               new Date(),
+              strength: 'strong',
             },
             clinicalContext: context,
-            \1,\2 100,
-            \1,\2 [{
+             100,
+             [{
               severity: 'critical',
               message: `ALLERGY ALERT: $allergy.reaction`,
               actionRequired: true,
-              category: 'safety'
+              category: 'safety',
             }],
             references: [],
-            createdAt: new Date()
+            createdAt: new Date(),
           };
 
           recommendations.push(rec);
@@ -214,36 +214,36 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Check for required dosage adjustments;
    */
-  private async checkDosageAdjustments(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async checkDosageAdjustments(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
 
     for (const medication of context.medications) {
       const adjustment = this.calculateDosageAdjustment(medication, context);
 
-      \1 {\n  \2{
-        const rec: CDSSRecommendation = {
+       {\n  {
+        const rec: CDSSRecommendation = {,
           id: `dosage_adjustment_$crypto.getRandomValues(new Uint32Array(1))[0]_$medication.name`,
           type: 'dosage_adjustment',
-          \1,\2 `Dosage Adjustment: $medication.name`,
+           `Dosage Adjustment: $medication.name`,
           description: `Current dose may need adjustment based on $adjustment.reason`,
-          recommendation: `Consider adjusting dose from $adjustment.currentDoseto $adjustment.recommendedDose. $adjustment.calculation ||
+          recommendation: `Consider adjusting dose from $adjustment.currentDoseto $adjustment.recommendedDose. $adjustment.calculation ||,
             ''`,
-          evidence: {
+          evidence: {,
             level: 'B',
-            \1,\2 'Dosing Guidelines',
+             'Dosing Guidelines',
             lastUpdated: new Date(),
-            strength: 'moderate'
+            strength: 'moderate',
           },
           clinicalContext: context,
-          \1,\2 85,
-          \1,\2 [{
+           85,
+           [{
             severity: 'warning',
-            message: `Dosage adjustment recommended for ${medication.name}`,
+            message: `Dosage adjustment recommended for ${medication.name,}`,
             actionRequired: false,
-            category: 'efficacy'
+            category: 'efficacy',
           }],
           references: [],
-          createdAt: new Date()
+          createdAt: new Date(),
         };
 
         recommendations.push(rec);
@@ -256,13 +256,13 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Generate lab monitoring recommendations;
    */
-  private async checkLabMonitoring(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async checkLabMonitoring(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
 
     for (const medication of context.medications) {
       const monitoring = this.getLabMonitoringRequirements(medication.name);
 
-      \1 {\n  \2{
+       {\n  {
         const overdueLabs = monitoring.filter(lab =>
           !context.labResults?.some(result =>
             result.test === lab?.test &&;
@@ -270,29 +270,29 @@ class ClinicalDecisionSupportService extends EventEmitter {
           );
         );
 
-        \1 {\n  \2{
-          const rec: CDSSRecommendation = {
-            id: `lab_monitoring_${crypto.getRandomValues(new Uint32Array(1))[0]}_$medication.name`,
+         {\n  {
+          const rec: CDSSRecommendation = {,
+            id: `lab_monitoring_${crypto.getRandomValues(new Uint32Array(1))[0],}_$medication.name`,
             type: 'lab_monitoring',
-            \1,\2 `Lab Monitoring: $medication.name`,
-            description: `Laboratory monitoring required for ${medication.name}`,
+             `Lab Monitoring: $medication.name`,
+            description: `Laboratory monitoring required for ${medication.name,}`,
             recommendation: `Order the following labs: $overdueLabs.map(lab => lab.test).join(', ')`,
-            evidence: {
+            evidence: {,
               level: 'B',
-              \1,\2 'Drug Monitoring Guidelines',
+               'Drug Monitoring Guidelines',
               lastUpdated: new Date(),
-              strength: 'strong'
+              strength: 'strong',
             },
             clinicalContext: context,
-            \1,\2 90,
-            \1,\2 [{
+             90,
+             [{
               severity: 'info',
-              message: `Lab monitoring due for ${medication.name}`,
+              message: `Lab monitoring due for ${medication.name,}`,
               actionRequired: false,
-              category: 'safety'
+              category: 'safety',
             }],
             references: [],
-            createdAt: new Date()
+            createdAt: new Date(),
           };
 
           recommendations.push(rec);
@@ -306,7 +306,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Generate diagnostic suggestions based on symptoms and context;
    */
-  private async generateDiagnosticSuggestions(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async generateDiagnosticSuggestions(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
 
     // AI-powered diagnostic suggestions would go here
@@ -318,35 +318,35 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Recommend treatment protocols;
    */
-  private async recommendTreatmentProtocols(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async recommendTreatmentProtocols(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
 
     for (const condition of context.conditions) {
       const protocol = this.getTreatmentProtocol(condition);
 
-      \1 {\n  \2{
-        const rec: CDSSRecommendation = {
-          id: `treatment_protocol_${crypto.getRandomValues(new Uint32Array(1))[0]}_$condition`,
+       {\n  {
+        const rec: CDSSRecommendation = {,
+          id: `treatment_protocol_${crypto.getRandomValues(new Uint32Array(1))[0],}_$condition`,
           type: 'treatment_protocol',
-          \1,\2 `Treatment Protocol: $condition`,
-          description: `Evidence-based treatment protocol available for ${condition}`,
-          recommendation: `Consider following $protocol.protocolprotocol for ${condition}`,
-          evidence: {
+           `Treatment Protocol: $condition`,
+          description: `Evidence-based treatment protocol available for ${condition,}`,
+          recommendation: `Consider following $protocol.protocolprotocol for ${condition,}`,
+          evidence: {,
             level: 'A',
-            \1,\2 protocol.protocol,
+             protocol.protocol,
             lastUpdated: new Date(),
-            strength: 'strong'
+            strength: 'strong',
           },
           clinicalContext: context,
-          \1,\2 90,
-          \1,\2 [{
+           90,
+           [{
             severity: 'info',
-            message: `Treatment protocol available for ${condition}`,
+            message: `Treatment protocol available for ${condition,}`,
             actionRequired: false,
-            category: 'quality'
+            category: 'quality',
           }],
           references: [],
-          createdAt: new Date()
+          createdAt: new Date(),
         };
 
         recommendations.push(rec);
@@ -359,35 +359,35 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Check preventive care requirements;
    */
-  private async checkPreventiveCare(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async checkPreventiveCare(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
 
     const preventiveServices = this.getPreventiveServices(context.age, context.gender);
 
     for (const service of preventiveServices) {
-      \1 {\n  \2{
-        const rec: CDSSRecommendation = {
-          id: `preventive_care_${crypto.getRandomValues(new Uint32Array(1))[0]}_$service.service`,
+       {\n  {
+        const rec: CDSSRecommendation = {,
+          id: `preventive_care_${crypto.getRandomValues(new Uint32Array(1))[0],}_$service.service`,
           type: 'preventive_care',
-          \1,\2 `Preventive Care: $service.service`,
+           `Preventive Care: $service.service`,
           description: `$service.serviceis overdue for this patient`,
           recommendation: `Schedule $service.service. $service.indication`,
-          evidence: {
+          evidence: {,
             level: 'A',
-            \1,\2 'USPSTF Guidelines',
+             'USPSTF Guidelines',
             lastUpdated: new Date(),
-            strength: 'strong'
+            strength: 'strong',
           },
           clinicalContext: context,
-          \1,\2 95,
-          \1,\2 [{
+           95,
+           [{
             severity: 'info',
             message: `$service.serviceoverdue`,
             actionRequired: false,
-            category: 'quality'
+            category: 'quality',
           }],
           references: [],
-          createdAt: new Date()
+          createdAt: new Date(),
         };
 
         recommendations.push(rec);
@@ -400,7 +400,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Check quality measures compliance;
    */
-  private async checkQualityMeasures(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async checkQualityMeasures(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
 
     // Quality measures logic would go here
@@ -411,7 +411,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Perform risk assessments;
    */
-  private async performRiskAssessments(context: ClinicalContext): Promise<CDSSRecommendation[]> {
+  private async performRiskAssessments(context: ClinicalContext): Promise<CDSSRecommendation[]> {,
     const recommendations: CDSSRecommendation[] = [];
 
     // Risk assessment logic would go here
@@ -422,14 +422,14 @@ class ClinicalDecisionSupportService extends EventEmitter {
   /**
    * Get recommendation by ID;
    */
-  getRecommendation(id: string): CDSSRecommendation | undefined {
+  getRecommendation(id: string): CDSSRecommendation | undefined {,
     return this.recommendations.get(id)
   }
 
   /**
    * Get all recommendations for a patient;
    */
-  getPatientRecommendations(patientId: string): CDSSRecommendation[] {
+  getPatientRecommendations(patientId: string): CDSSRecommendation[] {,
     return Array.from(this.recommendations.values());
       .filter(rec => rec.clinicalContext.patientId === patientId);
       .filter(rec => !rec?.dismissed && (!rec.expiresAt || rec.expiresAt > new Date()));
@@ -441,7 +441,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   async acknowledgeRecommendation(id: string, providerId: string, action?: string): Promise<boolean> {
     const recommendation = this.recommendations.get(id);
 
-    \1 {\n  \2{
+     {\n  {
       return false;
     }
 
@@ -452,7 +452,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
     // Store in database
     try {
       // In production, update database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
       this.emit('recommendation_acknowledged', {
         recommendationId: id;
@@ -473,7 +473,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
   async dismissRecommendation(id: string, providerId: string, reason?: string): Promise<boolean> {
     const recommendation = this.recommendations.get(id);
 
-    \1 {\n  \2{
+     {\n  {
       return false;
     }
 
@@ -484,7 +484,7 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
     try {
       // In production, update database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
       this.emit('recommendation_dismissed', {
         recommendationId: id;
@@ -504,8 +504,8 @@ class ClinicalDecisionSupportService extends EventEmitter {
    */
   getStatistics(): {
     totalRecommendations: number,
-    \1,\2 number,
-    \1,\2 number,
+     number,
+     number,
     byType: Record<CDSSRecommendationType, number>
   } {
     const all = Array.from(this.recommendations.values());
@@ -521,8 +521,8 @@ class ClinicalDecisionSupportService extends EventEmitter {
 
     return {
       totalRecommendations: all.length,
-      \1,\2 critical.length,
-      \1,\2 dismissed.length;
+       critical.length,
+       dismissed.length;
       byType
     };
   }
@@ -532,12 +532,12 @@ class ClinicalDecisionSupportService extends EventEmitter {
   private async loadDrugDatabase(): Promise<void> {
     // Load drug database from external source or file
     // This would typically integrate with a drug database like First DataBank or Lexicomp
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
   private async loadClinicalGuidelines(): Promise<void> {
     // Load clinical guidelines from medical societies
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
   private async loadInteractionDatabase(): Promise<void> {
@@ -545,21 +545,21 @@ class ClinicalDecisionSupportService extends EventEmitter {
     this.interactionDatabase = [
       {
         drug1: 'warfarin',
-        \1,\2 'major',
-        \1,\2 'Increased bleeding risk',
-        \1,\2 []
+         'major',
+         'Increased bleeding risk',
+         []
       },
       {
         drug1: 'simvastatin',
-        \1,\2 'contraindicated',
-        \1,\2 'Increased statin levels, rhabdomyolysis risk',
+         'contraindicated',
+         'Increased statin levels, rhabdomyolysis risk',
         management: 'Avoid combination. Use alternative antibiotic or suspend statin.',
-        references: []
+        references: [],
       }
     ];
   }
 
-  private findDrugInteraction(drug1: string, drug2: string): DrugInteractionCheck | undefined {
+  private findDrugInteraction(drug1: string, drug2: string): DrugInteractionCheck | undefined {,
     return this.interactionDatabase.find(interaction =>
       (interaction.drug1.toLowerCase() === drug1.toLowerCase() &&;
        interaction.drug2.toLowerCase() === drug2.toLowerCase()) ||;
@@ -568,38 +568,38 @@ class ClinicalDecisionSupportService extends EventEmitter {
     );
   }
 
-  private checkAllergyMatch(medication: string, allergen: string): boolean {
+  private checkAllergyMatch(medication: string, allergen: string): boolean {,
     // Simplified allergy matching - in production, this would use drug class mappings
     return medication.toLowerCase().includes(allergen.toLowerCase()) ||;
            allergen.toLowerCase().includes(medication.toLowerCase());
   }
 
-  private calculateDosageAdjustment(medication: MedicationContext, context: ClinicalContext): DosageAdjustment | null {
+  private calculateDosageAdjustment(medication: MedicationContext, context: ClinicalContext): DosageAdjustment | null {,
     // Simplified dosage calculation - in production, this would use comprehensive dosing algorithms
-    \1 {\n  \2{
+     {\n  {
       return {
         medication: medication.name,
-        \1,\2 '50% of current dose',
-        \1,\2 'kidney',
-        calculation: `eGFR $context.kidneyFunctionmL/min/1.73m²`
+         '50% of current dose',
+         'kidney',
+        calculation: `eGFR $context.kidneyFunctionmL/min/1.73m²`,
       };
     }
 
     return null;
   }
 
-  private getLabMonitoringRequirements(medication: string): Array<test: string, frequency: string> {
+  private getLabMonitoringRequirements(medication: string): Array<test: string, frequency: string> {,
     // Sample monitoring requirements
-    const monitoringMap: Record<string, Array<{test: string, frequency: string}>> = {
-      'warfarin': [{ test: 'INR', frequency: 'weekly' }],
-      'lithium': [{ test: 'lithium level', frequency: 'monthly' }],
-      'digoxin': [{ test: 'digoxin level', frequency: 'monthly' }]
+    const monitoringMap: Record<string, Array<{test: string, frequency: string}>> = {,
+      'warfarin': [{ test: 'INR', frequency: 'weekly' ,}],
+      'lithium': [{ test: 'lithium level', frequency: 'monthly' ,}],
+      'digoxin': [{ test: 'digoxin level', frequency: 'monthly' }],
     };
 
     return monitoringMap[medication.toLowerCase()] || [];
   }
 
-  private isRecentEnough(timestamp: Date, frequency: string): boolean {
+  private isRecentEnough(timestamp: Date, frequency: string): boolean {,
     const now = new Date();
     const daysDiff = (now.getTime() - timestamp.getTime()) / (1000 * 60 * 60 * 24);
 
@@ -607,71 +607,71 @@ class ClinicalDecisionSupportService extends EventEmitter {
       case 'daily': return daysDiff < 1;
       case 'weekly': return daysDiff < 7;
       case 'monthly': return daysDiff < 30;
-      default: return false
+      default: return false,
     }
   }
 
-  private getTreatmentProtocol(condition: string): TreatmentProtocol | null {
+  private getTreatmentProtocol(condition: string): TreatmentProtocol | null {,
     // Sample treatment protocols
     const protocols: Record<string, TreatmentProtocol> = {
       'pneumonia': {
         condition: 'Community-Acquired Pneumonia',
-        \1,\2 [
-          { order: 1, action: 'Assess severity (CURB-65)', timing: 'Initial assessment' },
-          { order: 2, action: 'Start empiric antibiotics', timing: 'Within 4 hours' },
-          { order: 3, action: 'Monitor clinical response', timing: '48-72 hours' }
+         [
+          { order: 1, action: 'Assess severity (CURB-65)', timing: 'Initial assessment' ,},
+          { order: 2, action: 'Start empiric antibiotics', timing: 'Within 4 hours' ,},
+          { order: 3, action: 'Monitor clinical response', timing: '48-72 hours' },
         ],
         duration: '5-7 days',
         monitoring: ['Temperature', 'White blood count', 'Chest X-ray'],
-        alternatives: ['Outpatient management for low-risk patients']
+        alternatives: ['Outpatient management for low-risk patients'],
       }
     };
 
     return protocols[condition.toLowerCase()] || null;
   }
 
-  private getPreventiveServices(age: number, gender: string): PreventiveCare[] {
+  private getPreventiveServices(age: number, gender: string): PreventiveCare[] {,
     const services: PreventiveCare[] = [];
 
     // Sample preventive care recommendations
-    \1 {\n  \2{
+     {\n  {
       services.push({
         service: 'Colonoscopy',
-        \1,\2 new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+         new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // 30 days from now
         overdue: true,
-        priority: 'high'
+        priority: 'high',
       });
     }
 
-    \1 {\n  \2{
+     {\n  {
       services.push({
         service: 'Mammography',
-        \1,\2 new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000), // 30 days ago
+         new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000), // 30 days ago
         overdue: true,
-        priority: 'high'
+        priority: 'high',
       });
     }
 
     return services;
   }
 
-  private mapSeverityToPriority(severity: string): 'low' | 'medium' | 'high' | 'critical' {
+  private mapSeverityToPriority(severity: string): 'low' | 'medium' | 'high' | 'critical' {,
     switch (severity) {
       case 'contraindicated': return 'critical';
       case 'major': return 'high';
       case 'moderate': return 'medium';
       case 'minor': return 'low';
-      default: return 'low'
+      default: return 'low',
     }
   }
 
-  private getPriorityWeight(priority: string): number {
+  private getPriorityWeight(priority: string): number {,
     switch (priority) {
       case 'critical': return 4;
       case 'high': return 3;
       case 'medium': return 2;
       case 'low': return 1;
-      default: return 0
+      default: return 0,
     }
   }
 

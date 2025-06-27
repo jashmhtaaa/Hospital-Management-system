@@ -6,23 +6,23 @@ import { biomedicalService } from '@/lib/hr/biomedical-service';
 // Schema for calibration record
 const calibrationSchema = z.object({
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format",
   }),
   performedBy: z.string().optional(),
   result: z.enum(['PASS', 'FAIL', 'ADJUSTED'], {
-    errorMap: () => ({ message: "Invalid result" }),
+    errorMap: () => ({ message: "Invalid result" ,}),
   }),
   notes: z.string().optional(),
   nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {
-    message: "Invalid date format"
+    message: "Invalid date format",
   }),
-  attachments: z.array(z.string()).optional()
+  attachments: z.array(z.string()).optional(),
 });
 
 // POST handler for recording calibration
 export const _POST = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     // Parse request body
@@ -30,10 +30,10 @@ export const _POST = async (
 
     // Validate request data
     const validationResult = calibrationSchema.safeParse(body);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
     }
 
@@ -44,8 +44,8 @@ export const _POST = async (
       biomedicalEquipmentId: params.id,
       date: new Date(data.date),
       performedBy: data.performedBy,
-      \1,\2 data.notes,
-      \1,\2 data.attachments
+       data.notes,
+       data.attachments
     };
 
     // Record calibration
@@ -55,8 +55,8 @@ export const _POST = async (
   } catch (error) {
 
     return NextResponse.json(
-      { error: "Failed to record calibration", details: error.message },
-      { status: 500 }
+      { error: "Failed to record calibration", details: error.message ,},
+      { status: 500 },
     );
   }
 }
@@ -64,7 +64,7 @@ export const _POST = async (
 // GET handler for listing calibration records
 export const _GET = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const calibrationRecords = await biomedicalService.getCalibrationRecords(params.id);
@@ -73,7 +73,7 @@ export const _GET = async (
   } catch (error) {
 
     return NextResponse.json(
-      { error: "Failed to fetch calibration records", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch calibration records", details: error.message ,},
+      { status: 500 },
     );
   }

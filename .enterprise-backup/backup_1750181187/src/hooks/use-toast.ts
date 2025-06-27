@@ -37,29 +37,29 @@ const genId = () {
 type Action =
   | {
       type: "ADD_TOAST" // Use string literal,
-      toast: ToasterToast
+      toast: ToasterToast,
     }
   | {
       type: "UPDATE_TOAST" // Use string literal,
-      toast: Partial<ToasterToast>
+      toast: Partial<ToasterToast>,
     }
   | {
-      type: "DISMISS_TOAST" // Use string literal
+      type: "DISMISS_TOAST" // Use string literal,
       toastId?: ToasterToast["id"]
     }
   | {
-      type: "REMOVE_TOAST" // Use string literal
+      type: "REMOVE_TOAST" // Use string literal,
       toastId?: ToasterToast["id"]
     }
 
 interface State {
-  toasts: ToasterToast[]
+  toasts: ToasterToast[],
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
-const addToRemoveQueue = (toastId: string) => {
-  \1 {\n  \2 {
+const addToRemoveQueue = (toastId: string) => {,
+   {\n   {
     return
   }
 
@@ -67,12 +67,12 @@ const addToRemoveQueue = (toastId: string) => {
     toastTimeouts.delete(toastId),
     dispatch({
       type: "REMOVE_TOAST",
-      toastId: toastId
+      toastId: toastId,
     });
   }, TOAST_REMOVE_DELAY);
 
   toastTimeouts.set(toastId, timeout);
-export const reducer = (state: State, action: Action): State => {
+export const reducer = (state: State, action: Action): State => {,
   switch (action.type) {
     case "ADD_TOAST":
       return {
@@ -83,7 +83,7 @@ export const reducer = (state: State, action: Action): State => {
     case "UPDATE_TOAST":
       return {
         ...state,
-        toasts: state.toasts.map((t) =>
+        toasts: state.toasts.map((t) =>,
           t.id === action.toast.id ? { ...t, ...action.toast } : t;
         ),
       }
@@ -93,7 +93,7 @@ export const reducer = (state: State, action: Action): State => {
 
       // ! Side effects ! - This could be extracted into a dismissToast() action,
       // but I'll keep it here for simplicity
-      \1 {\n  \2{
+       {\n  {
         addToRemoveQueue(toastId);
       } else {
         state.toasts.forEach((toast) => {
@@ -103,34 +103,34 @@ export const reducer = (state: State, action: Action): State => {
 
       return {
         ...state,
-        toasts: state.toasts.map((t) =>
+        toasts: state.toasts.map((t) =>,
           t.id === toastId || toastId === undefined;
             ? 
                 ...t,
-                open: false
+                open: false,
             : t;
         ),
       }
     }
     case "REMOVE_TOAST":
-      \1 {\n  \2{
+       {\n  {
         return {
           ...state,
-          toasts: []
+          toasts: [],
         }
       }
       return {
         ...state,
-        toasts: state.toasts.filter((t) => t.id !== action.toastId)
+        toasts: state.toasts.filter((t) => t.id !== action.toastId),
       }
   }
 }
 
-const listeners: Array<(state: State) => void> = []
+const listeners: Array<(state: State) => void> = [],
 
-let memoryState: State = { toasts: [] }
+let memoryState: State = { toasts: [] },
 
-const dispatch = (action: Action) {
+const dispatch = (action: Action) {,
   memoryState = reducer(memoryState, action);
   listeners.forEach((listener) => {
     listener(memoryState);
@@ -142,20 +142,20 @@ type Toast = Omit<ToasterToast, "id">
 const toast = ({ ...props }: Toast) {
   const id = genId();
 
-  const update = (props: ToasterToast) =>
+  const update = (props: ToasterToast) =>,
     dispatch({
       type: "UPDATE_TOAST",
       toast: { ...props, id },
     }),
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id }),
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id ,}),
   dispatch({
     type: "ADD_TOAST",
-    toast: {
+    toast: {,
       ...props,
       id,
       open: true,
-      onOpenChange: (open) => {
-        \1 {\n  \2ismiss()
+      onOpenChange: (open) => {,
+         {\n  ismiss()
       },
     },
   });
@@ -174,7 +174,7 @@ const useToast = () {
     listeners.push(setState);
     return () => {
       const index = listeners.indexOf(setState);
-      \1 {\n  \2{
+       {\n  {
         listeners.splice(index, 1);
       }
     }

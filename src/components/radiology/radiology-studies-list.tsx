@@ -28,8 +28,7 @@ import { Loader2 }
 import { useRouter }
 
 // Define interface for Radiology Study data;
-interface RadiologyStudy {
-  id: string,
+interface RadiologyStudy {id:string,
   string,
   string; // Assuming ISO string format;
   status: "scheduled" | "acquired" | "reported" | "verified";
@@ -104,8 +103,7 @@ export default const _RadiologyStudiesList = () {
   const getStatusBadge = (;
     status: RadiologyStudy["status"];
   ): React.ReactNode => {
-    const statusStyles: { [key in RadiologyStudy["status"]]: string } = {
-      scheduled: "bg-yellow-100 text-yellow-800",
+    const statusStyles: { [key in RadiologyStudy["status"]]: string } = {scheduled:"bg-yellow-100 text-yellow-800",
       "bg-purple-100 text-purple-800",
       verified: "bg-green-100 text-green-800";
     };

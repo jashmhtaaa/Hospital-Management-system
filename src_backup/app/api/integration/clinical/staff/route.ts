@@ -9,7 +9,7 @@ import { type
  * API route for clinical module integration;
  * Provides staff data to clinical modules;
  */;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -46,8 +46,8 @@ export const _GET = async (request: any) => {
 
     return NextResponse.json({
       success: true,
-      data: employees});
+      data: employees,});
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch employees", details: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch employees", details: error.message ,}, { status: 500 ,});
 
 };

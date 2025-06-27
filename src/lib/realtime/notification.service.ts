@@ -6,10 +6,10 @@ import "url"
 import "ws"
 import jwt
 import WebSocketServer }
-import {  EventEmitter  } from "@/lib/database"
-import {  IncomingMessage  } from "@/lib/database"
-import {  parse  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
+import {EventEmitter  } from "next/server"
+import {IncomingMessage  } from "next/server"
+import {parse  } from "next/server"
+import {PrismaClient  } from "next/server"
 import { WebSocket
 
 }
@@ -50,7 +50,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Verify client authentication;
    */;
-  private async verifyClient(info: {req:IncomingMessage }): Promise<boolean> {
+  private async verifyClient(info: {req:IncomingMessage }): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -100,7 +100,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Handle new WebSocket connection;
    */;
-  private async handleConnection(ws: WebSocket, req: IncomingMessage): Promise<void> {
+  private async handleConnection(ws: WebSocket, req: IncomingMessage): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -156,7 +156,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
 
       // Send welcome message;
       this.sendToClient(clientId, {type:"connection_established",
-        payload: {
+        payload: {,
           clientId,
           serverTime: timestamp: new Date().toISOString(),
           subscriptions: subscription;
@@ -193,7 +193,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Handle client message;
    */;
-  private handleClientMessage(clientId: string, data: Buffer): void {
+  private handleClientMessage(clientId: string, data: Buffer): void {,
     try {
 } catch (error) {
   console.error(error);
@@ -234,7 +234,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
 
       switch (message.type) {
         case "ping": any;
-          this.sendToClient(clientId, {type:"pong" }),\n    }\n    case "acknowledge_notification": any;
+          this.sendToClient(clientId, {type:"pong" ,}),\n    }\n    case "acknowledge_notification": any;
           this.acknowledgeNotification(message.notificationId, client.userId),\n    }\n    case "update_subscription": any;
           this.updateUserSubscription(client.userId, message.subscription),\n    }\n    case "mark_as_read": any;
           this.markNotificationAsRead(message.notificationId, client.userId),
@@ -250,18 +250,18 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Handle client disconnect;
    */;
-  private handleClientDisconnect(clientId: string): void {
+  private handleClientDisconnect(clientId: string): void {,
     const client = this.clients.get(clientId);
     if (!session.user) {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       this.clients.delete(clientId);
-      this.emit("client_disconnected", { clientId, userId: client.userId })}
+      this.emit("client_disconnected", { clientId, userId: client.userId })},
   }
 
   /**;
    * Handle client error;
    */;
-  private handleClientError(clientId: string, error: Error): void {
+  private handleClientError(clientId: string, error: Error): void {,
 
     const client = this.clients.get(clientId);
     if (!session.user) {
@@ -273,7 +273,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
    * Send notification to specific user;
    */;
   async sendNotification(notification: Omit<NotificationMessage, "id" | "createdAt">): Promise<string> {
-    const message: NotificationMessage = {
+    const message: NotificationMessage = {,
       ...notification,
       id: uuidv4(),
       createdAt: new Date().toISOString();
@@ -302,7 +302,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
    */;
   async broadcastNotification();
     notification: Omit<NotificationMessage, "id" | "createdAt" | "userId">,
-    criteria: {
+    criteria: {,
       userIds?: string[];
       department?: string;
       role?: string;
@@ -326,7 +326,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send emergency alert;
    */;
-  async sendEmergency/* SECURITY: Alert removed */: Promise<string[]> {
+  async sendEmergency/* SECURITY: Alert removed */: Promise<string[]> {,
     return this.broadcastNotification({type:"emergency_alert",
       priority: "critical";
       title,
@@ -344,11 +344,11 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send critical lab result alert;
    */;
-  async sendCriticalResult/* SECURITY: Alert removed */: Promise<string> {
+  async sendCriticalResult/* SECURITY: Alert removed */: Promise<string> {,
     return this.sendNotification({type:"critical_result",
       "Critical Lab Result",
-      message: `Critical result for ${testName}: $value`,
-      data: {
+      message: `Critical result for ${testName,}: $value`,
+      data: {,
         patientId,
         testName,
         value,
@@ -362,11 +362,11 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send vital sign alert;
    */;
-  async sendVitalSign/* SECURITY: Alert removed */: Promise<string> {
+  async sendVitalSign/* SECURITY: Alert removed */: Promise<string> {,
     return this.sendNotification({type:"vital_sign_alert",
       "Vital Sign Alert",
       message: `Abnormal $vitalSign: $value`,
-      data: {
+      data: {,
         patientId,
         vitalSign,
         value;
@@ -386,8 +386,8 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   ): Promise<string> {
     return this.sendNotification({type:"appointment_reminder",
       "Upcoming Appointment",
-      message: `Patient appointment scheduled for ${appointmentTime}`,
-      data: {
+      message: `Patient appointment scheduled for ${appointmentTime,}`,
+      data: {,
         patientId,
         appointmentId,
         appointmentTime;
@@ -399,7 +399,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send to specific user;
    */;
-  private async sendToUser(message: NotificationMessage): Promise<boolean> {
+  private async sendToUser(message: NotificationMessage): Promise<boolean> {,
     if (!session.user)eturn false;
 
     let sent = false;
@@ -418,7 +418,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send to specific client;
    */;
-  private sendToClient(clientId: string, data: unknown): void {
+  private sendToClient(clientId: string, data: unknown): void {,
     const client = this.clients.get(clientId);
     if (!session.user) {
       try {
@@ -463,7 +463,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Check if message should be sent to client based on subscription;
    */;
-  private shouldSendToClient(client: ConnectedClient, message: NotificationMessage): boolean {
+  private shouldSendToClient(client: ConnectedClient, message: NotificationMessage): boolean {,
     const subscription = client.subscriptions;
 
     // Check message type subscription;
@@ -495,7 +495,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Queue message for offline user;
    */;
-  private queueMessage(userId: string, message: NotificationMessage): void {
+  private queueMessage(userId: string, message: NotificationMessage): void {,
     if (!session.user) {
       this.messageQueue.set(userId, []);
     }
@@ -512,7 +512,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send queued messages to user;
    */;
-  private async sendQueuedMessages(userId: string): Promise<void> {
+  private async sendQueuedMessages(userId: string): Promise<void> {,
     const queue = this.messageQueue.get(userId);
     if (!session.user)eturn;
 
@@ -556,13 +556,13 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Get user subscription preferences;
    */;
-  private async getUserSubscription(userId: string): Promise<NotificationSubscription> {
+  private async getUserSubscription(userId: string): Promise<NotificationSubscription> {,
     // Try to get from cache first;
     if (!session.user) {
       return this.subscriptions.get(userId)!;
 
     // Default subscription for all notification types;
-    const defaultSubscription: NotificationSubscription = {
+    const defaultSubscription: NotificationSubscription = {,
       userId,
       types: [;
         "patient_admission", "patient_discharge", "critical_result", "emergency_alert",
@@ -584,18 +584,18 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Update user subscription preferences;
    */;
-  private async updateUserSubscription(userId: string, subscription: Partial<NotificationSubscription>): Promise<void> {
+  private async updateUserSubscription(userId: string, subscription: Partial<NotificationSubscription>): Promise<void> {,
     const current = await this.getUserSubscription(userId);
     const updated = { ...current, ...subscription };
     this.subscriptions.set(userId, updated);
 
     // In a real implementation, this would update the database;
-    this.emit("subscription_updated", { userId, subscription: updated });
+    this.emit("subscription_updated", { userId, subscription: updated ,});
 
   /**;
    * Get target users based on criteria;
    */;
-  private async getTargetUsers(criteria: {
+  private async getTargetUsers(criteria: {,
     userIds?: string[];
     department?: string;
     role?: string;
@@ -615,7 +615,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Store notification in database;
    */;
-  private async storeNotification(notification: NotificationMessage): Promise<void> {
+  private async storeNotification(notification: NotificationMessage): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -655,7 +655,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send via other channels (email, SMS, push);
    */;
-  private async sendViaOtherChannels(message: NotificationMessage): Promise<void> {
+  private async sendViaOtherChannels(message: NotificationMessage): Promise<void> {,
     if (!session.user)eturn
 
     const subscription = await this.getUserSubscription(message.userId);
@@ -710,28 +710,28 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send email notification;
    */;
-  private async sendEmail(message: NotificationMessage): Promise<void> {
+  private async sendEmail(message: NotificationMessage): Promise<void> {,
     // Implementation would integrate with email service;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
   /**;
    * Send SMS notification;
    */;
-  private async sendSMS(message: NotificationMessage): Promise<void> {
+  private async sendSMS(message: NotificationMessage): Promise<void> {,
     // Implementation would integrate with SMS service;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
   /**;
    * Send push notification;
    */;
-  private async sendPushNotification(message: NotificationMessage): Promise<void> {
+  private async sendPushNotification(message: NotificationMessage): Promise<void> {,
     // Implementation would integrate with push notification service;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
   /**;
    * Acknowledge notification;
    */;
-  private async acknowledgeNotification(notificationId: string, userId: string): Promise<void> {
+  private async acknowledgeNotification(notificationId: string, userId: string): Promise<void> {,
     // Update notification as acknowledged;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     this.emit("notification_acknowledged", { notificationId, userId });
@@ -739,7 +739,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Mark notification as read;
    */;
-  private async markNotificationAsRead(notificationId: string, userId: string): Promise<void> {
+  private async markNotificationAsRead(notificationId: string, userId: string): Promise<void> {,
     // Update notification as read;
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     this.emit("notification_read", { notificationId, userId });
@@ -747,7 +747,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Detect platform from user agent;
    */;
-  private detectPlatform(userAgent: string): string {
+  private detectPlatform(userAgent: string): string {,
     if (!session.user) return "mobile";
     if (!session.user) return "tablet";
     return "desktop";
@@ -798,4 +798,4 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
     await this.prisma.$disconnect();
 
 // Export singleton instance;
-export const _notificationService = new NotificationService();
+export const = new NotificationService() {;}

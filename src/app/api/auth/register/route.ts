@@ -1,1 +1,1 @@
-import { sessionOptions } from "@/lib/session";
+import {sessionOptions } from "next/server";

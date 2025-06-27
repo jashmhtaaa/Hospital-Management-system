@@ -10,7 +10,7 @@ import {  z  } from "@/lib/database"
 // GET handler for retrieving a specific asset;
 export const _GET = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -48,8 +48,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Asset not found" },
-        { status: 404 }
+        { error: "Asset not found" ,},
+        { status: 404 },
       );
     }
 
@@ -57,8 +57,8 @@ export const _GET = async();
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to fetch asset", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch asset", details: error.message ,},
+      { status: 500 },
     );
   }
 }
@@ -67,7 +67,7 @@ export const _GET = async();
 const assetUpdateSchema = z.object({
   name: z.string().min(1, "Name is required").optional(),
   assetType: z.enum(["EQUIPMENT", "FURNITURE", "IT", "VEHICLE", "BUILDING", "OTHER"], {
-    errorMap: () => ({ message: "Invalid asset type" })}).optional(),
+    errorMap: () => ({ message: "Invalid asset type" }),}).optional(),
   serialNumber: z.string().optional(),
   manufacturer: z.string().optional(),
   model: z.string().optional(),
@@ -82,7 +82,7 @@ const assetUpdateSchema = z.object({
   departmentId: z.string().optional().nullable(),
   assignedToId: z.string().optional().nullable(),
   status: z.enum(["AVAILABLE", "IN_USE", "UNDER_MAINTENANCE", "DISPOSED", "LOST"], {
-    errorMap: () => ({ message: "Invalid status" })}).optional(),
+    errorMap: () => ({ message: "Invalid status" }),}).optional(),
   notes: z.string().optional(),
   tags: z.array(z.string()).optional();
 });
@@ -90,7 +90,7 @@ const assetUpdateSchema = z.object({
 // PUT handler for updating an asset;
 export const _PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -131,8 +131,8 @@ export const _PUT = async();
     const validationResult = assetUpdateSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
 
     const data = validationResult.data;
@@ -151,14 +151,14 @@ export const _PUT = async();
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to update asset", details: error.message },
-      { status: 500 }
+      { error: "Failed to update asset", details: error.message ,},
+      { status: 500 },
     );
 
 // DELETE handler for deleting an asset;
 export const _DELETE = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -194,10 +194,10 @@ export const _DELETE = async();
 
     await assetService.deleteAsset(params.id);
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true ,});
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to delete asset", details: error.message },
-      { status: 500 }
+      { error: "Failed to delete asset", details: error.message ,},
+      { status: 500 },
     );

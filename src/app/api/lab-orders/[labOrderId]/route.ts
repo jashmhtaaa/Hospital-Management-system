@@ -5,13 +5,13 @@ import "next/headers"
 import "zod"
 import IronSessionData
 import sessionOptions }
-import {  cookies  } from "@/lib/database"
-import {  getCloudflareContext  } from "@/lib/database"
-import {  getIronSession  } from "@/lib/database"
-import {   type
-import {  z  } from "@/lib/database"
+import {cookies  } from "next/server"
+import {getCloudflareContext  } from "next/server"
+import {getIronSession  } from "next/server"
+import {type
+import {  z  } from "next/server"
 
-import { type LabOrder, LabOrderItem, type LabOrderItemStatus, LabOrderStatus } from "@/types/opd"; // Added LabOrderItemStatus;
+import {type LabOrder, LabOrderItem, type LabOrderItemStatus, LabOrderStatus } from "next/server"; // Added LabOrderItemStatus;
 // app/api/lab-orders/[labOrderId]/route.ts;
 // Removed unused D1Result import;
 
@@ -19,7 +19,8 @@ import { type LabOrder, LabOrderItem, type LabOrderItemStatus, LabOrderStatus } 
 const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse", "LabTechnician", "Patient"]; // Patient can view own;
 const ALLOWED_ROLES_UPDATE = ["Admin", "Doctor", "Nurse", "LabTechnician"]; // Roles involved in the lab process;
 
-// Define interface for lab order query result;
+// Define interface for {
+    lab order query result;
 interface LabOrderQueryResult {lab_order_id:number,
     number,
     string,
@@ -29,7 +30,8 @@ interface LabOrderQueryResult {lab_order_id:number,
     doctor_full_name: string | null;
 }
 
-// Define interface for lab order item query result;
+// Define interface for {
+    lab order item query result;
 interface LabOrderItemQueryResult {lab_order_item_id:number,
     number,
     string | null,
@@ -41,20 +43,20 @@ interface LabOrderItemQueryResult {lab_order_item_id:number,
     string,
     string | null,
     result_verified_by_user_full_name: string | null;
-export const _GET = async (_request: Request, { params }: {params:Promise<{labOrderId:string }> }) => {
+export const _GET = async (_request: Request, { params }: {params:Promise<{labOrderId:string }> }) => {,
     // Pass cookies() directly;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
-    const {labOrderId:labOrderIdString } = await params;
+    const {labOrderId:labOrderIdString ,} = await params;
     const labOrderId = Number.parseInt(labOrderIdString, 10);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Unauthorized" }), {status:401 });
+        return new Response(JSON.stringify({error:"Unauthorized" ,}), {status:401 ,});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Invalid Lab Order ID" }), {status:400 });
+        return new Response(JSON.stringify({error:"Invalid Lab Order ID" ,}), {status:400 ,});
     }
 
     try {
@@ -107,21 +109,21 @@ export const _GET = async (_request: Request, { params }: {params:Promise<{labOr
         ).bind(labOrderId).first<LabOrderQueryResult>();
 
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Lab Order not found" }), {status:404 });
+            return new Response(JSON.stringify({error:"Lab Order not found" ,}), {status:404 ,});
         }
 
         // 3. Authorization check for Patients and Doctors;
         if (!session.user) {
-            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{patient_id:number }>();
+            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{patient_id:number ,}>();
             if (!session.user) {
-                return new Response(JSON.stringify({error:"Forbidden: You can only view your own lab orders" }), {status:403 });
+                return new Response(JSON.stringify({error:"Forbidden: You can only view your own lab orders" ,}), {status:403 ,});
             }
         }
         if (!session.user) {
-            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{doctor_id:number }>();
+            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{doctor_id:number ,}>();
             if (!session.user) {
                  // Allow viewing if not the ordering doctor? Or restrict? For now, restrict.;
-                return new Response(JSON.stringify({error:"Forbidden: Doctors can generally only view their own lab orders" }), {status:403 });
+                return new Response(JSON.stringify({error:"Forbidden: Doctors can generally only view their own lab orders" ,}), {status:403 ,});
             }
         }
 
@@ -165,35 +167,35 @@ export const _GET = async (_request: Request, { params }: {params:Promise<{labOr
                     full_name: item.result_verified_by_user_full_name: null;)) as LabOrderItem[] || []};
 
         // 6. Return the detailed lab order;
-        return new Response(JSON.stringify(labOrder), {status:200 });
+        return new Response(JSON.stringify(labOrder), {status:200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500 });
+        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage ,}), {status:500 ,});
     }
 }
 
 // PUT handler for updating a lab order (e.g., overall status);
-const UpdateLabOrderSchema = z.object({status:z.nativeEnum(LabOrderStatus).optional(),
+const UpdateLabOrderSchema = z.object({{status:z.nativeEnum(LabOrderStatus,}).optional(),
     notes: z.string().optional().nullable();
     // Other fields? Usually status is updated based on item statuses;
 });
 
-export const _PUT = async (request: Request, { params }: {params:Promise<{labOrderId:string }> }) => {
+export const _PUT = async (request: Request, { params }: {params:Promise<{labOrderId:string }> }) => {,
     // Pass cookies() directly;
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
-    const {labOrderId:labOrderIdString } = await params;
+    const {labOrderId:labOrderIdString ,} = await params;
     const labOrderId = Number.parseInt(labOrderIdString, 10);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Unauthorized" }), {status:401 });
+        return new Response(JSON.stringify({error:"Unauthorized" ,}), {status:401 ,});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Invalid Lab Order ID" }), {status:400 });
+        return new Response(JSON.stringify({error:"Invalid Lab Order ID" ,}), {status:400 ,});
     }
 
     try {
@@ -232,13 +234,13 @@ export const _PUT = async (request: Request, { params }: {params:Promise<{labOrd
         const validation = UpdateLabOrderSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Invalid input", details: validation.error.errors }), {status:400 });
+            return new Response(JSON.stringify({error:"Invalid input", details: validation.error.errors ,}), {status:400 ,});
 
         const updateData = validation.data;
 
         // Check if there's anything to update;
         if (!session.user)length === 0) {
-             return new Response(JSON.stringify({message:"No update data provided" }), {status:200 });
+             return new Response(JSON.stringify({message:"No update data provided" ,}), {status:200 ,});
 
         // If we reach here, there is data to update;
         const context = await getCloudflareContext<CloudflareEnv>();
@@ -250,7 +252,7 @@ export const _PUT = async (request: Request, { params }: {params:Promise<{labOrd
                                    .bind(labOrderId);
                                    .first<lab_order_id: number >();
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Lab Order not found" }), {status:404 });
+            return new Response(JSON.stringify({error:"Lab Order not found" ,}), {status:404 ,});
 
         // Granular authorization: only LabTech can change status to Completed;
 
@@ -275,13 +277,13 @@ export const _PUT = async (request: Request, { params }: {params:Promise<{labOrd
             throw new Error("Failed to update lab order");
 
         // 5. Return success response;
-        return new Response(JSON.stringify({message:"Lab Order updated successfully" }), {status:200 });
+        return new Response(JSON.stringify({message:"Lab Order updated successfully" ,}), {status:200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
-            headers: { "Content-Type": "application/json" }});
+        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage ,}), {status:500,
+            headers: { "Content-Type": "application/json" },});
 
 // DELETE handler - Lab orders are generally not deleted, maybe cancelled (status update).;
 // Implement if hard deletion is truly required, but use with caution.;

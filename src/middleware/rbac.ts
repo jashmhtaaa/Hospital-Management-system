@@ -4,17 +4,17 @@ import "@prisma/client"
 import "next/server"
 import NextRequest
 import NextResponse }
-import {  AuthService  } from "@/lib/database"
-import {  logger  } from "@/lib/database"
-import {   type
-import {  UserRole  } from "@/lib/database"
+import {AuthService  } from "next/server"
+import {logger  } from "next/server"
+import {type
+import {  UserRole  } from "next/server"
 
 // src/middleware/rbac.ts;
 }
 }
 
-export function createRBACMiddleware(routePermission: RoutePermission): unknown {
-  return async (request: any) => {
+export function createRBACMiddleware(routePermission: RoutePermission): unknown {,
+  return async (request: any) => {,
     try {
 } catch (error) {
   console.error(error);
@@ -51,8 +51,8 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
       const authHeader = request.headers.get("authorization");
       if (!session.user) {
         return NextResponse.json();
-          {error:"Unauthorized - No token provided" },
-          {status:401 }
+          {error:"Unauthorized - No token provided" ,},
+          {status:401 },
         );
 
       const token = authHeader.substring(7);
@@ -60,8 +60,8 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Unauthorized - Invalid token" },
-          {status:401 }
+          {error:"Unauthorized - Invalid token" ,},
+          {status:401 },
         );
 
       // Check role-based access;
@@ -71,8 +71,8 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
         });
 
         return NextResponse.json();
-          {error:"Forbidden - Insufficient role" },
-          {status:403 }
+          {error:"Forbidden - Insufficient role" ,},
+          {status:403 },
         );
 
       // Check permission-based access;
@@ -87,8 +87,8 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
           });
 
           return NextResponse.json();
-            {error:"Forbidden - Insufficient permissions" },
-            {status:403 }
+            {error:"Forbidden - Insufficient permissions" ,},
+            {status:403 },
           );
 
       // Add user context to request headers for downstream handlers;
@@ -105,8 +105,8 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
     } catch (error) {
       logger.error("RBAC middleware error", { error });
       return NextResponse.json();
-        {error:"Internal server error" },
-        {status:500 }
+        {error:"Internal server error" ,},
+        {status:500 },
       );
 
   };

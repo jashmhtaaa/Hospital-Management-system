@@ -80,7 +80,7 @@ interface ERVisitFilters {
 }
 
 // Helper function to simulate DB interaction (GET);
-async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
+async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {,
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   // Apply filters if implemented (example);
   let filtered = [...mockVisits];
@@ -105,7 +105,7 @@ async const getERVisitsFromDB = (filters: ERVisitFilters = {}) {
 }
 
 // Helper function to simulate DB interaction (POST);
-async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
+async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {,
   // Added return type;
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   const now = new Date().toISOString();
@@ -129,7 +129,7 @@ async const createERVisitInDB = (data: ERVisitInput): Promise<ERVisit> {
  * GET /api/er/visits;
  * Retrieves a list of ER visits, potentially filtered.;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -169,22 +169,22 @@ export const GET = async (request: any) => {
 
     const visits = await getERVisitsFromDB(filters);
     return NextResponse.json({ visits });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json();
-      { error: "Failed to fetch ER visits", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch ER visits", details: errorMessage ,},
+      { status: 500 },
     );
 
 /**;
  * POST /api/er/visits;
  * Creates a new ER visit record (patient arrival).;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -225,22 +225,22 @@ export const POST = async (request: any) => {
     if (!session.user) {
       return NextResponse.json();
         { error: "Missing required fields (patient_id, chief_complaint)" },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Simulate creating the ER visit in the database;
     const newVisit = await createERVisitInDB(visitData);
 
-    return NextResponse.json({ visit: newVisit }, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json({ visit: newVisit ,}, { status: 201 ,});
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
 
     return NextResponse.json();
-      { error: "Failed to create ER visit", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create ER visit", details: errorMessage ,},
+      { status: 500 },
     );
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

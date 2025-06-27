@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 }
 
@@ -9,7 +9,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Billing Schemas;
-export const ServiceCatalogSchema = z.object({service_code:z.string().min(1, "Service code is required"),
+export const ServiceCatalogSchema = z.object({{service_code:z.string(,}).min(1, "Service code is required"),
   cpt_code: z.string().optional(),
   hcpcs_code: z.string().optional(),
   service_name: z.string().min(1, "Service name is required"),
@@ -29,7 +29,7 @@ export const ServiceCatalogSchema = z.object({service_code:z.string().min(1, "Se
   is_active: z.boolean().default(true);
 });
 
-export const ChargeSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const ChargeSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
   encounter_id: z.string().min(1, "Encounter ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
   service_code: z.string().min(1, "Service code is required"),
@@ -46,7 +46,7 @@ export const ChargeSchema = z.object({patient_id:z.string().min(1, "Patient ID i
   notes: z.string().optional();
 });
 
-export const InsuranceClaimSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const InsuranceClaimSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
   encounter_id: z.string().min(1, "Encounter ID is required"),
   insurance_plan_id: z.string().min(1, "Insurance plan ID is required"),
   claim_type: z.enum(["primary", "secondary", "tertiary"]).default("primary"),
@@ -62,7 +62,7 @@ export const InsuranceClaimSchema = z.object({patient_id:z.string().min(1, "Pati
   submission_method: z.enum(["electronic", "paper"]).default("electronic"),
   priority: z.enum(["normal", "urgent"]).default("normal")});
 
-export const PaymentSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const PaymentSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
   encounter_id: z.string().optional(),
   claim_id: z.string().optional(),
   payer_type: z.enum(["insurance", "patient", "government", "charity"]),
@@ -187,7 +187,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       }];
 
     services.forEach(serviceData => {
-      const service: ServiceCatalogItem = {
+      const service: ServiceCatalogItem = {,
         ...serviceData,
         id: uuidv4(),
         created_at: new Date(),
@@ -200,19 +200,19 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   /**;
    * Create charge;
    */;
-  async createCharge(chargeData: z.infer<typeof ChargeSchema>): Promise<Charge> {
+  async createCharge(chargeData: z.infer<typeof ChargeSchema>): Promise<Charge> {,
     const validatedData = ChargeSchema.parse(chargeData);
 
     // Validate service exists;
     const service = this.serviceCatalog.get(validatedData.service_code);
     if (!session.user) {
-      throw new Error(`Service not found: ${}`;
+      throw new Error(`Service not found: ${,}`;
     }
 
     const chargeId = uuidv4();
     const chargeNumber = this.generateChargeNumber();
 
-    const charge: Charge = {
+    const charge: Charge = {,
       ...validatedData,
       id: chargeId,
       new Date(),
@@ -238,7 +238,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   /**;
    * Create insurance claim;
    */;
-  async createInsuranceClaim(claimData: z.infer<typeof InsuranceClaimSchema>): Promise<InsuranceClaim> {
+  async createInsuranceClaim(claimData: z.infer<typeof InsuranceClaimSchema>): Promise<InsuranceClaim> {,
     const validatedData = InsuranceClaimSchema.parse(claimData);
 
     // Validate charges exist;
@@ -252,7 +252,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
     const claimId = uuidv4();
     const claimNumber = this.generateClaimNumber();
 
-    const claim: InsuranceClaim = {
+    const claim: InsuranceClaim = {,
       ...validatedData,
       id: claimId,
       "draft",
@@ -278,7 +278,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   /**;
    * Submit insurance claim;
    */;
-  async submitInsuranceClaim(claimId: string): Promise<InsuranceClaim> {
+  async submitInsuranceClaim(claimId: string): Promise<InsuranceClaim> {,
     const claim = this.claims.get(claimId);
     if (!session.user) {
       throw new Error("Claim not found");
@@ -366,13 +366,13 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   /**;
    * Create payment;
    */;
-  async createPayment(paymentData: z.infer<typeof PaymentSchema>): Promise<Payment> {
+  async createPayment(paymentData: z.infer<typeof PaymentSchema>): Promise<Payment> {,
     const validatedData = PaymentSchema.parse(paymentData);
 
     const paymentId = uuidv4();
     const paymentNumber = this.generatePaymentNumber();
 
-    const payment: Payment = {
+    const payment: Payment = {,
       ...validatedData,
       id: paymentId,
       "pending",
@@ -396,7 +396,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   /**;
    * Process payment;
    */;
-  async processPayment(paymentId: string): Promise<Payment> {
+  async processPayment(paymentId: string): Promise<Payment> {,
     const payment = this.payments.get(paymentId);
     if (!session.user) {
       throw new Error("Payment not found");
@@ -417,7 +417,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   /**;
    * Post payment to charges;
    */;
-  async postPayment(paymentId: string): Promise<Payment> {
+  async postPayment(paymentId: string): Promise<Payment> {,
     const payment = this.payments.get(paymentId);
     if (!session.user) {
       throw new Error("Payment not found");
@@ -455,7 +455,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   /**;
    * Get patient financial summary;
    */;
-  async getPatientFinancialSummary(patientId: string): Promise<FinancialSummary> {
+  async getPatientFinancialSummary(patientId: string): Promise<FinancialSummary> {,
     const patientCharges = Array.from(this.charges.values());
       .filter(charge => charge.patient_id === patientId);
 
@@ -485,7 +485,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       }
 
       return acc;
-    }, {current:0, days_30: 0, days_60: 0, days_90: 0, days_120_plus: 0 });
+    }, {current:0, days_30: 0, days_60: 0, days_90: 0, days_120_plus: 0 ,});
 
     // Estimate insurance vs patient balance (simplified);
     const insuranceBalance = currentBalance * 0.8; // Assume 80% insurance responsibility;
@@ -562,7 +562,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       const service = this.serviceCatalog.get(charge.service_code);
       if (!session.user) {
         const category = service.category;
-        const current = serviceStats.get(category) || {volume:0, charges: 0, payments: 0 };
+        const current = serviceStats.get(category) || {volume:0, charges: 0, payments: 0 ,};
         current.volume += charge.quantity;
         current.charges += charge.total_charge;
         current.payments += charge.payments_received;
@@ -587,7 +587,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
         Math.round(p.adjustments * 100) / 100,
         net_revenue: Math.round(p.net_revenue * 100) / 100;
       })),
-      by_service: byService.map(s => ({
+      by_service: byService.map(s => ({,
         ...s,
         charges: Math.round(s.charges * 100) / 100,
         Math.round(s.net_revenue * 100) / 100;
@@ -640,7 +640,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   /**;
    * Get service catalog;
    */;
-  async getServiceCatalog(category?: string, activeOnly: boolean = true): Promise<ServiceCatalogItem[]> {
+  async getServiceCatalog(category?: string, activeOnly: boolean = true): Promise<ServiceCatalogItem[]> {,
     let services = Array.from(this.serviceCatalog.values());
 
     if (!session.user) {
@@ -740,10 +740,10 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
     const averagePaymentTime = paidCharges.length > 0 ? totalPaymentDays / paidCharges.length : 0;
 
     // Top services by volume and revenue;
-    const serviceStats = new Map<string, {volume:number, revenue: number }>();
+    const serviceStats = new Map<string, {volume:number, revenue: number ,}>();
     filteredCharges.forEach(charge => {
       const serviceName = charge.service_name || charge.service_code;
-      const current = serviceStats.get(serviceName) || {volume:0, revenue: 0 };
+      const current = serviceStats.get(serviceName) || {volume:0, revenue: 0 ,};
       current.volume += charge.quantity;
       current.revenue += charge.payments_received;
       serviceStats.set(serviceName, current);

@@ -19,7 +19,7 @@ import { type
  */;
 export const GET = async();
   request: any;
-  { params }: { patientId: string }
+  { params }: { patientId: string },
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
@@ -46,7 +46,7 @@ export const GET = async();
  */;
 export const GET = async();
   request: any;
-  { params }: { locationId: string }
+  { params }: { locationId: string },
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
@@ -71,7 +71,7 @@ export const GET = async();
  * POST /api/integration/support-services/notification;
  * Sends a notification through the HMS Notification System;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || "anonymous";
@@ -90,7 +90,7 @@ export const POST = async (request: any) => {
             ["recipientId", "type", "title", "message"];
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -116,7 +116,7 @@ export const POST = async (request: any) => {
  * POST /api/integration/support-services/report;
  * Submits data to the HMS Reporting System;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
     const userId = req.userId || "anonymous";
@@ -135,7 +135,7 @@ export const POST = async (request: any) => {
             ["reportType", "reportData"];
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -160,7 +160,7 @@ export const POST = async (request: any) => {
  */;
 export const POST = async();
   request: any;
-  { params }: { serviceType: string, requestId: string }
+  { params }: { serviceType: string, requestId: string },
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
@@ -180,7 +180,7 @@ export const POST = async();
             ["patientId"];
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -197,7 +197,7 @@ export const POST = async();
               validServiceTypes;
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -222,7 +222,7 @@ export const POST = async();
  */;
 export const POST = async();
   request: any;
-  { params }: { serviceType: string, requestId: string }
+  { params }: { serviceType: string, requestId: string },
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context;
@@ -242,7 +242,7 @@ export const POST = async();
             ["locationId"];
 
         },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Validate service type;
@@ -258,7 +258,7 @@ export const POST = async();
               validServiceTypes;
 
         },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Link request to location;

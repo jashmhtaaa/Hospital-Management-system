@@ -22,14 +22,14 @@ interface ChecklistTemplateUpdateBody {
 // GET /api/ot/checklist-templates/[id] - Get details of a specific checklist template
 export const _GET = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: templateId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Template ID is required" },
-        { status: 400 }
+        { message: "Template ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -40,17 +40,17 @@ export const _GET = async (
       .bind(templateId);
       .all();
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "Checklist template not found" },
-        { status: 404 }
+        { message: "Checklist template not found" ,},
+        { status: 404 },
       );
     }
 
     const template = results[0];
     // Parse items JSON before sending response
     try {
-      \1 {\n  \2{
+       {\n  {
         template.items = JSON.parse(template.items);
       }
     } catch (parseError) {
@@ -59,15 +59,15 @@ export const _GET = async (
     }
 
     return NextResponse.json(template);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
         message: "Error fetching checklist template details",
-        details: errorMessage
+        details: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -75,14 +75,14 @@ export const _GET = async (
 // PUT /api/ot/checklist-templates/[id] - Update an existing checklist template
 export const _PUT = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: templateId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Template ID is required" },
-        { status: 400 }
+        { message: "Template ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -90,10 +90,10 @@ export const _PUT = async (
     const { name, phase, items } = body;
 
     // Basic validation
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "No update fields provided" },
-        { status: 400 }
+        { message: "No update fields provided" ,},
+        { status: 400 },
       );
     }
 
@@ -101,19 +101,19 @@ export const _PUT = async (
     const now = new Date().toISOString();
 
     // Construct the update query dynamically
-    // FIX: Use specific type for fieldsToUpdate
-    const fieldsToUpdate: { [key: string]: string } = {};
-    \1 {\n  \2ieldsToUpdate.name = name;
-    \1 {\n  \2{
+    // FIX: Use specific type for fieldsToUpdate,
+    const fieldsToUpdate: { [key: string]: string } = {,};
+     {\n  ieldsToUpdate.name = name;
+     {\n  {
       const validPhases = ["pre-op", "intra-op", "post-op"];
-      \1 {\n  \2 {
-        return NextResponse.json({ message: "Invalid phase" }, { status: 400 });
+       {\n   {
+        return NextResponse.json({ message: "Invalid phase" ,}, { status: 400 ,});
       }
       fieldsToUpdate.phase = phase;
     }
-    \1 {\n  \2{
+     {\n  {
       // Add more robust validation for items structure if needed
-      \1 {\n  \2|
+       {\n  |
         !items.every(
           (item) =>
             typeof item === "object" &&
@@ -127,7 +127,7 @@ export const _PUT = async (
           {
             message: "Invalid items format. Each item must have id, text, and type.",
           },
-          { status: 400 }
+          { status: 400 },
         );
       fieldsToUpdate.items = JSON.stringify(items);
     }
@@ -145,17 +145,17 @@ export const _PUT = async (
       .bind(...values);
       .run();
 
-    \1 {\n  \2{
+     {\n  {
       // Check if the template actually exists before returning 404
-      const { results: checkExists } = await DB.prepare(
+      const { results: checkExists } = await DB.prepare(,
         "SELECT id FROM OTChecklistTemplates WHERE id = ?";
       );
         .bind(templateId);
         .all();
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { message: "Checklist template not found" },
-          { status: 404 }
+          { message: "Checklist template not found" ,},
+          { status: 404 },
         );
       }
       // If it exists but no changes were made (e.g., same data sent), return 200 OK with current data
@@ -168,18 +168,18 @@ export const _PUT = async (
       .bind(templateId);
       .all();
 
-    \1 {\n  \2{
+     {\n  {
       // This case should ideally not happen if the update was successful or the check above passed
       return NextResponse.json(
-        { message: "Failed to fetch updated template details after update" },
-        { status: 500 }
+        { message: "Failed to fetch updated template details after update" ,},
+        { status: 500 },
       );
     }
 
     const updatedTemplate = results[0];
     // Parse items JSON before sending response
     try {
-      \1 {\n  \2{
+       {\n  {
         updatedTemplate.items = JSON.parse(updatedTemplate.items);
       }
     } catch (parseError) {
@@ -187,23 +187,23 @@ export const _PUT = async (
     }
 
     return NextResponse.json(updatedTemplate);
-  } catch (error: unknown) {
-    // FIX: Remove explicit any
+  } catch (error: unknown) {,
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
-      // FIX: Check errorMessage instead of error.message
+     {\n   {
+      // FIX: Check errorMessage instead of error.message,
       return NextResponse.json(
         {
           message: "Checklist template name must be unique",
-          details: errorMessage
+          details: errorMessage,
         },
-        { status: 409 }
+        { status: 409 },
       ),
     }
     return NextResponse.json(
-      { message: "Error updating checklist template", details: errorMessage },
-      { status: 500 }
+      { message: "Error updating checklist template", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -211,18 +211,18 @@ export const _PUT = async (
 // DELETE /api/ot/checklist-templates/[id] - Delete a checklist template
 export const DELETE = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: templateId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Template ID is required" },
-        { status: 400 }
+        { message: "Template ID is required" ,},
+        { status: 400 },
       );
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database
     const info = await DB.prepare(
@@ -231,34 +231,34 @@ export const DELETE = async (
       .bind(templateId);
       .run();
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "Checklist template not found" },
-        { status: 404 }
+        { message: "Checklist template not found" ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json(
-      { message: "Checklist template deleted successfully" },
-      { status: 200 }
+      { message: "Checklist template deleted successfully" ,},
+      { status: 200 },
     );
-  } catch (error: unknown) {
-    // FIX: Remove explicit any
+  } catch (error: unknown) {,
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // Handle potential foreign key constraint errors if responses exist
-    \1 {\n  \2 {
-      // FIX: Check errorMessage instead of error.message
+     {\n   {
+      // FIX: Check errorMessage instead of error.message,
       return NextResponse.json(
         {
           message: "Cannot delete template with existing responses",
-          details: errorMessage
+          details: errorMessage,
         },
-        { status: 409 }
+        { status: 409 },
       ),
     }
     return NextResponse.json(
-      { message: "Error deleting checklist template", details: errorMessage },
-      { status: 500 }
+      { message: "Error deleting checklist template", details: errorMessage ,},
+      { status: 500 },
     );
   }

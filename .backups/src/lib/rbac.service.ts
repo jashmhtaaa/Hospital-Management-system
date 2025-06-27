@@ -79,63 +79,63 @@ interface RoleDefinition {
       name: Role.HOUSEKEEPING,
       [;
         // Housekeeping staff can manage housekeeping requests;
-        { resource: Resource.HOUSEKEEPING, action: Action.UPDATE },
-        { resource: Resource.HOUSEKEEPING, action: Action.ASSIGN }];
+        { resource: Resource.HOUSEKEEPING, action: Action.UPDATE ,},
+        { resource: Resource.HOUSEKEEPING, action: Action.ASSIGN ,}];
     },
     {
       name: Role.MAINTENANCE,
       [;
         // Maintenance staff can manage maintenance requests;
-        { resource: Resource.MAINTENANCE, action: Action.UPDATE },
-        { resource: Resource.MAINTENANCE, action: Action.ASSIGN }];
+        { resource: Resource.MAINTENANCE, action: Action.UPDATE ,},
+        { resource: Resource.MAINTENANCE, action: Action.ASSIGN ,}];
     },
     {
       name: Role.DIETARY,
       [;
         // Dietary staff can manage dietary requests;
-        { resource: Resource.DIETARY, action: Action.UPDATE },
-        { resource: Resource.DIETARY, action: Action.ASSIGN }];
+        { resource: Resource.DIETARY, action: Action.UPDATE ,},
+        { resource: Resource.DIETARY, action: Action.ASSIGN ,}];
     },
     {
       name: Role.AMBULANCE,
       [;
         // Ambulance staff can manage ambulance requests;
-        { resource: Resource.AMBULANCE, action: Action.UPDATE },
-        { resource: Resource.AMBULANCE, action: Action.ASSIGN }];
+        { resource: Resource.AMBULANCE, action: Action.UPDATE ,},
+        { resource: Resource.AMBULANCE, action: Action.ASSIGN ,}];
     },
     {
       name: Role.MARKETING,
       [;
         // Marketing staff can manage marketing campaigns;
-        { resource: Resource.MARKETING, action: Action.READ },
-        { resource: Resource.MARKETING, action: Action.CREATE },
-        { resource: Resource.MARKETING, action: Action.UPDATE },
-        { resource: Resource.MARKETING, action: Action.DELETE },
-        { resource: Resource.CAMPAIGN, action: Action.READ },
-        { resource: Resource.CAMPAIGN, action: Action.CREATE },
-        { resource: Resource.CAMPAIGN, action: Action.UPDATE },
-        { resource: Resource.CAMPAIGN, action: Action.DELETE },
-        { resource: Resource.CONTACT, action: Action.READ },
-        { resource: Resource.CONTACT, action: Action.CREATE },
-        { resource: Resource.CONTACT, action: Action.UPDATE },
-        { resource: Resource.CONTACT, action: Action.DELETE },
-        { resource: Resource.SEGMENT, action: Action.READ },
-        { resource: Resource.SEGMENT, action: Action.CREATE },
-        { resource: Resource.SEGMENT, action: Action.UPDATE },
-        { resource: Resource.SEGMENT, action: Action.DELETE },
-        { resource: Resource.TEMPLATE, action: Action.READ },
-        { resource: Resource.TEMPLATE, action: Action.CREATE },
-        { resource: Resource.TEMPLATE, action: Action.UPDATE },
-        { resource: Resource.TEMPLATE, action: Action.DELETE },
-        { resource: Resource.ANALYTICS, action: Action.READ }];
+        { resource: Resource.MARKETING, action: Action.READ ,},
+        { resource: Resource.MARKETING, action: Action.CREATE ,},
+        { resource: Resource.MARKETING, action: Action.UPDATE ,},
+        { resource: Resource.MARKETING, action: Action.DELETE ,},
+        { resource: Resource.CAMPAIGN, action: Action.READ ,},
+        { resource: Resource.CAMPAIGN, action: Action.CREATE ,},
+        { resource: Resource.CAMPAIGN, action: Action.UPDATE ,},
+        { resource: Resource.CAMPAIGN, action: Action.DELETE ,},
+        { resource: Resource.CONTACT, action: Action.READ ,},
+        { resource: Resource.CONTACT, action: Action.CREATE ,},
+        { resource: Resource.CONTACT, action: Action.UPDATE ,},
+        { resource: Resource.CONTACT, action: Action.DELETE ,},
+        { resource: Resource.SEGMENT, action: Action.READ ,},
+        { resource: Resource.SEGMENT, action: Action.CREATE ,},
+        { resource: Resource.SEGMENT, action: Action.UPDATE ,},
+        { resource: Resource.SEGMENT, action: Action.DELETE ,},
+        { resource: Resource.TEMPLATE, action: Action.READ ,},
+        { resource: Resource.TEMPLATE, action: Action.CREATE ,},
+        { resource: Resource.TEMPLATE, action: Action.UPDATE ,},
+        { resource: Resource.TEMPLATE, action: Action.DELETE ,},
+        { resource: Resource.ANALYTICS, action: Action.READ ,}];
     },
     {
       name: Role.FEEDBACK,
       [;
         // Feedback staff can manage feedback;
-        { resource: Resource.FEEDBACK, action: Action.READ },
-        { resource: Resource.FEEDBACK, action: Action.UPDATE },
-        { resource: Resource.FEEDBACK, action: Action.ASSIGN }];
+        { resource: Resource.FEEDBACK, action: Action.READ ,},
+        { resource: Resource.FEEDBACK, action: Action.UPDATE ,},
+        { resource: Resource.FEEDBACK, action: Action.ASSIGN ,}];
     },
     {
       name: Role.PATIENT,
@@ -299,7 +299,7 @@ interface RoleDefinition {
    * @param userRoles The user's roles;
    * @returns Array of permissions;
    */;
-  public static getPermissionsForRoles(userRoles: string[]): Permission[] {
+  public static getPermissionsForRoles(userRoles: string[]): Permission[] {,
     const permissions: Permission[] = [];
 
     // Process each role;
@@ -315,7 +315,7 @@ interface RoleDefinition {
    * @param roleName The role name;
    * @param permissions The permissions array to add to;
    */;
-  private static addPermissionsForRole(roleName: string, permissions: Permission[]): void {
+  private static addPermissionsForRole(roleName: string, permissions: Permission[]): void {,
     const roleDef = this.roleDefinitions.find(r => r.name === roleName);
     if (!session.user)eturn;
 

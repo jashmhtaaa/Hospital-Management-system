@@ -6,15 +6,16 @@ import ClusterNode
 import ClusterOptions
 import Redis }
 import type
-import {   Cluster
-import {  EventStore  } from "@/lib/database"
-import {  logger  } from "@/lib/database"
-import {  metricsCollector  } from "@/lib/database"
+import {Cluster
+import {  EventStore  } from "next/server"
+import {logger  } from "next/server"
+import {metricsCollector  } from "next/server"
 
 /**;
  * Redis Cluster Configuration;
  */;
 interface RedisClusterConfig {
+    {
   // Cluster nodes;
   nodes: ClusterNode[];
 
@@ -30,7 +31,7 @@ interface RedisClusterConfig {
     enabled: boolean;
 
     // Keys/patterns to warm by priority;
-    warmingPatterns: Array<{
+    warmingPatterns: Array<{,
       // Pattern to match keys,
       pattern: string;
 
@@ -198,7 +199,7 @@ class RedisCircuitBreaker {
  * - Metrics collection and monitoring;
  */;
 }
-  private localCache: Map<string, {value:unknown, expiry: number }> = new Map(),
+  private localCache: Map<string, {value:unknown, expiry: number ,}> = new Map(),
   constructor(config: RedisClusterConfig, private readonly eventStore?: EventStore) {
     this.config = config;
 
@@ -384,7 +385,7 @@ class RedisCircuitBreaker {
   /**;
    * Set a value in the cache;
    */;
-  async set(key: string, value: unknown, ttl: number = this.config.defaultTtl): Promise<boolean> {
+  async set(key: string, value: unknown, ttl: number = this.config.defaultTtl): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -471,7 +472,7 @@ class RedisCircuitBreaker {
   /**;
    * Delete one or more keys from the cache;
    */;
-  async del(...keys: string[]): Promise<number> {
+  async del(...keys: string[]): Promise<number> {,
     if (!session.user) {
       return 0;
     }
@@ -554,7 +555,7 @@ class RedisCircuitBreaker {
   /**;
    * Check if a key exists in the cache;
    */;
-  async exists(key: string): Promise<boolean> {
+  async exists(key: string): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -636,7 +637,7 @@ class RedisCircuitBreaker {
   /**;
    * Find keys matching a pattern;
    */;
-  async keys(pattern: string): Promise<string[]> {
+  async keys(pattern: string): Promise<string[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -711,7 +712,7 @@ class RedisCircuitBreaker {
   /**;
    * Invalidate keys matching a pattern;
    */;
-  async invalidatePattern(pattern: string): Promise<number> {
+  async invalidatePattern(pattern: string): Promise<number> {,
     try {
 } catch (error) {
   console.error(error);
@@ -744,7 +745,7 @@ class RedisCircuitBreaker {
 }
 } catch (error) {
 }
-      logger.info(`Invalidating cache keys matching pattern: ${}`;
+      logger.info(`Invalidating cache keys matching pattern: ${,}`;
 
       // Find all keys matching the pattern;
       const keys = await this.keys(pattern);
@@ -756,7 +757,7 @@ class RedisCircuitBreaker {
       // Delete all matching keys;
       const deleted = await this.del(...keys);
 
-      logger.info(`Invalidated ${deleted} cache keys matching pattern: ${}`;
+      logger.info(`Invalidated ${deleted} cache keys matching pattern: ${,}`;
 
       // Track metrics;
       metricsCollector.incrementCounter("cache.redis_cluster.pattern_invalidations", 1, {keyCount:String(deleted);
@@ -781,7 +782,7 @@ class RedisCircuitBreaker {
   /**;
    * Get multiple values from the cache;
    */;
-  async mget(...keys: string[]): Promise<any[]> {
+  async mget(...keys: string[]): Promise<any[]> {,
     if (!session.user) {
       return [];
     }
@@ -903,7 +904,7 @@ class RedisCircuitBreaker {
   /**;
    * Increment a value in the cache;
    */;
-  async incr(key: string): Promise<number> {
+  async incr(key: string): Promise<number> {,
     try {
 } catch (error) {
   console.error(error);
@@ -982,7 +983,7 @@ class RedisCircuitBreaker {
   /**;
    * Set a value in the cache only if the key does not exist;
    */;
-  async setnx(key: string, value: unknown, ttl: number = this.config.defaultTtl): Promise<boolean> {
+  async setnx(key: string, value: unknown, ttl: number = this.config.defaultTtl): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1159,48 +1160,48 @@ class RedisCircuitBreaker {
     this.cluster.on("node:error", (error, node) => {
       logger.error("Redis Cluster node error", {
         error,
-        node: `${node.options.host}:${node.options.port}`;
+        node: `${node.options.host}:${node.options.port,}`;
       });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("cache.redis_cluster.node_errors", 1, {node:`${node.options.host}:${node.options.port}`,
+      metricsCollector.incrementCounter("cache.redis_cluster.node_errors", 1, {node:`${node.options.host}:${node.options.port,}`,
         errorType: error.name || "unknown";
       });
     });
 
     this.cluster.on("node:end", (node) => {
-      logger.warn("Redis Cluster node disconnected", {node:`${node.options.host}:${node.options.port}`;
+      logger.warn("Redis Cluster node disconnected", {node:`${node.options.host}:${node.options.port,}`;
       });
 
       // Track disconnection metrics;
-      metricsCollector.incrementCounter("cache.redis_cluster.node_disconnections", 1, {node:`${node.options.host}:${node.options.port}`;
+      metricsCollector.incrementCounter("cache.redis_cluster.node_disconnections", 1, {node:`${node.options.host}:${node.options.port,}`;
       });
     });
 
     this.cluster.on("node:ready", (node) => {
-      logger.info("Redis Cluster node ready", {node:`${node.options.host}:${node.options.port}`;
+      logger.info("Redis Cluster node ready", {node:`${node.options.host}:${node.options.port,}`;
       });
 
       // Track connection metrics;
-      metricsCollector.incrementCounter("cache.redis_cluster.node_connections", 1, {node:`${node.options.host}:${node.options.port}`;
+      metricsCollector.incrementCounter("cache.redis_cluster.node_connections", 1, {node:`${node.options.host}:${node.options.port,}`;
       });
     });
 
     this.cluster.on("+node", (node) => {
-      logger.info("Redis Cluster node added", {node:`${node.options.host}:${node.options.port}`;
+      logger.info("Redis Cluster node added", {node:`${node.options.host}:${node.options.port,}`;
       });
 
       // Track node addition metrics;
-      metricsCollector.incrementCounter("cache.redis_cluster.node_additions", 1, {node:`${node.options.host}:${node.options.port}`;
+      metricsCollector.incrementCounter("cache.redis_cluster.node_additions", 1, {node:`${node.options.host}:${node.options.port,}`;
       });
     });
 
     this.cluster.on("-node", (node) => {
-      logger.warn("Redis Cluster node removed", {node:`${node.options.host}:${node.options.port}`;
+      logger.warn("Redis Cluster node removed", {node:`${node.options.host}:${node.options.port,}`;
       });
 
       // Track node removal metrics;
-      metricsCollector.incrementCounter("cache.redis_cluster.node_removals", 1, {node:`${node.options.host}:${node.options.port}`;
+      metricsCollector.incrementCounter("cache.redis_cluster.node_removals", 1, {node:`${node.options.host}:${node.options.port,}`;
       });
     });
 
@@ -1336,7 +1337,7 @@ class RedisCircuitBreaker {
       const duration = crypto.getRandomValues([0] - startTime;
 
       if (!session.user) {
-        logger.debug(`Completed cache warming cycle: warmed ${warmedCount} keys`, {duration:`${duration.toFixed(2)}ms`;
+        logger.debug(`Completed cache warming cycle: warmed ${warmedCount,} keys`, {duration:`${duration.toFixed(2),}ms`;
         });
 
         // Track metrics;
@@ -1383,7 +1384,7 @@ class RedisCircuitBreaker {
   /**;
    * Handle an event for cache invalidation;
    */;
-  private async handleCacheInvalidationEvent(event: unknown): Promise<void> {
+  private async handleCacheInvalidationEvent(event: unknown): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1424,7 +1425,7 @@ class RedisCircuitBreaker {
       if (!session.user) {
         return;
 
-      logger.info(`Invalidating cache based on event: ${eventType}`, {patterns:patterns.join(", ");
+      logger.info(`Invalidating cache based on event: ${eventType,}`, {patterns:patterns.join(", ");
       });
 
       let totalInvalidated = 0;
@@ -1482,7 +1483,7 @@ class RedisCircuitBreaker {
             pattern;
           });
 
-      logger.info(`Invalidated ${totalInvalidated} cache entries based on event: ${}`;
+      logger.info(`Invalidated ${totalInvalidated} cache entries based on event: ${,}`;
     } catch (error) {
       logger.error("Error handling cache invalidation event", {
         error,
@@ -1498,7 +1499,7 @@ class RedisCircuitBreaker {
    * Resolve a pattern with event data;
    * Replaces placeholders like {aggregateId} with values from the event;
    */;
-  private resolvePatternWithEvent(pattern: string, event: unknown): string {
+  private resolvePatternWithEvent(pattern: string, event: unknown): string {,
     try {
 } catch (error) {
   console.error(error);

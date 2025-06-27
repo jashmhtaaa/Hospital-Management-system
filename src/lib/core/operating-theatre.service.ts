@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 }
 
@@ -9,7 +9,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Operating Theatre Schemas;
-export const SurgicalProcedureSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const SurgicalProcedureSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
   surgeon_id: z.string().min(1, "Primary surgeon is required"),
   anesthesiologist_id: z.string().optional(),
   procedure_name: z.string().min(1, "Procedure name is required"),
@@ -42,7 +42,7 @@ export const SurgicalProcedureSchema = z.object({patient_id:z.string().min(1, "P
   surgeon_notes: z.string().optional();
 });
 
-export const ORScheduleSchema = z.object({or_room_id:z.string().min(1, "OR room ID is required"),
+export const ORScheduleSchema = z.object({{or_room_id:z.string(,}).min(1, "OR room ID is required"),
   date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid date"),
   start_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
   end_time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
@@ -55,7 +55,7 @@ export const ORScheduleSchema = z.object({or_room_id:z.string().min(1, "OR room 
   notes: z.string().optional();
 });
 
-export const SurgicalTeamSchema = z.object({surgery_id:z.string().min(1, "Surgery ID is required"),
+export const SurgicalTeamSchema = z.object({{surgery_id:z.string(,}).min(1, "Surgery ID is required"),
   primary_surgeon: z.string().min(1, "Primary surgeon is required"),
   assistant_surgeons: z.array(z.string()).default([]),
   anesthesiologist: z.string().optional(),
@@ -69,7 +69,7 @@ export const SurgicalTeamSchema = z.object({surgery_id:z.string().min(1, "Surger
   observers: z.array(z.string()).default([]);
 });
 
-export const SurgicalInstrumentSchema = z.object({instrument_name:z.string().min(1, "Instrument name is required"),
+export const SurgicalInstrumentSchema = z.object({{instrument_name:z.string(,}).min(1, "Instrument name is required"),
   instrument_id: z.string().min(1, "Instrument ID is required"),
   category: z.enum(["cutting", "grasping", "hemostatic", "retractor", "suction", "electrocautery", "specialized"]),
   manufacturer: z.string().optional(),
@@ -88,7 +88,7 @@ export const SurgicalInstrumentSchema = z.object({instrument_name:z.string().min
   requires_count: z.boolean().default(true);
 });
 
-export const AnesthesiaRecordSchema = z.object({surgery_id:z.string().min(1, "Surgery ID is required"),
+export const AnesthesiaRecordSchema = z.object({{surgery_id:z.string(,}).min(1, "Surgery ID is required"),
   anesthesiologist_id: z.string().min(1, "Anesthesiologist ID is required"),
   anesthesia_type: z.enum(["general", "regional", "local", "sedation", "combination"]),
   asa_classification: z.enum(["I", "II", "III", "IV", "V", "VI"]),
@@ -187,13 +187,13 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
   private initializeORRooms(): void {
     const rooms = [;
       {id:"OR-01", name: "OR 1", type: "general", capacity: 8, equipment: ["laparoscopic_tower", "c_arm"] },
-      {id:"OR-02", name: "OR 2", type: "general", capacity: 8, equipment: ["microscope"] },
+      {id:"OR-02", name: "OR 2", type: "general", capacity: 8, equipment: ["microscope"] ,},
       {id:"OR-03", name: "OR 3", type: "cardiac", capacity: 10, equipment: ["heart_lung_machine", "tee"] },
       {id:"OR-04", name: "OR 4", type: "neuro", capacity: 8, equipment: ["neuro_microscope", "neuro_monitoring"] },
       {id:"OR-05", name: "OR 5", type: "orthopedic", capacity: 8, equipment: ["c_arm", "traction_table"] },
-      {id:"OR-06", name: "OR 6", type: "general", capacity: 8, equipment: ["laparoscopic_tower"] },
+      {id:"OR-06", name: "OR 6", type: "general", capacity: 8, equipment: ["laparoscopic_tower"] ,},
       {id:"OR-07", name: "OR 7", type: "trauma", capacity: 12, equipment: ["c_arm", "rapid_infuser"] },
-      {id:"OR-08", name: "OR 8", type: "general", capacity: 8, equipment: [] }];
+      {id:"OR-08", name: "OR 8", type: "general", capacity: 8, equipment: [] ,}];
 
     rooms.forEach(room => {
       this.orRooms.set(room.id, {
@@ -245,7 +245,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
       }];
 
     instruments.forEach(instrumentData => {
-      const instrument: SurgicalInstrument = {
+      const instrument: SurgicalInstrument = {,
         ...instrumentData,
         id: uuidv4(),
         created_at: new Date(),
@@ -258,7 +258,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
   /**;
    * Schedule surgical procedure;
    */;
-  async scheduleSurgicalProcedure(procedureData: z.infer<typeof SurgicalProcedureSchema>): Promise<SurgicalProcedure> {
+  async scheduleSurgicalProcedure(procedureData: z.infer<typeof SurgicalProcedureSchema>): Promise<SurgicalProcedure> {,
     const validatedData = SurgicalProcedureSchema.parse(procedureData);
 
     const procedureId = uuidv4();
@@ -272,7 +272,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
       validatedData.or_room_preference;
     );
 
-    const procedure: SurgicalProcedure = {
+    const procedure: SurgicalProcedure = {,
       ...validatedData,
       id: procedureId,
       "scheduled",
@@ -377,7 +377,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
   /**;
    * Assign surgical team;
    */;
-  async assignSurgicalTeam(teamData: z.infer<typeof SurgicalTeamSchema>): Promise<SurgicalTeam> {
+  async assignSurgicalTeam(teamData: z.infer<typeof SurgicalTeamSchema>): Promise<SurgicalTeam> {,
     const validatedData = SurgicalTeamSchema.parse(teamData);
 
     const teamId = uuidv4();
@@ -389,7 +389,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
       validatedData.scrub_nurse;
     );
 
-    const team: SurgicalTeam = {
+    const team: SurgicalTeam = {,
       ...validatedData,
       id: teamId,
       new Date(),
@@ -403,7 +403,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
   /**;
    * Start surgical procedure;
    */;
-  async startSurgicalProcedure(procedureId: string): Promise<SurgicalProcedure> {
+  async startSurgicalProcedure(procedureId: string): Promise<SurgicalProcedure> {,
     const procedure = this.surgicalProcedures.get(procedureId);
     if (!session.user) {
       throw new Error("Surgical procedure not found");
@@ -444,7 +444,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
    */;
   async completeSurgicalProcedure();
     procedureId: string,
-    completionData: {
+    completionData: {,
       complications?: string[];
       estimated_blood_loss?: number;
       notes?: string;
@@ -499,7 +499,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
       counted_by: string;
     }[];
   ): Promise<InstrumentCount[]> {
-    const counts: InstrumentCount[] = countData.map(data => {
+    const counts: InstrumentCount[] = countData.map(data => {,
       const instrument = this.instruments.get(data.instrument_id),
 
       return {instrument_id:data.instrument_id,
@@ -539,12 +539,12 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
   /**;
    * Create anesthesia record;
    */;
-  async createAnesthesiaRecord(recordData: z.infer<typeof AnesthesiaRecordSchema>): Promise<AnesthesiaRecord> {
+  async createAnesthesiaRecord(recordData: z.infer<typeof AnesthesiaRecordSchema>): Promise<AnesthesiaRecord> {,
     const validatedData = AnesthesiaRecordSchema.parse(recordData);
 
     const recordId = uuidv4();
 
-    const record: AnesthesiaRecord = {
+    const record: AnesthesiaRecord = {,
       ...validatedData,
       id: recordId,
       created_at: new Date(),
@@ -558,7 +558,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
   /**;
    * Sign anesthesia record;
    */;
-  async signAnesthesiaRecord(recordId: string, anesthesiologistId: string): Promise<AnesthesiaRecord> {
+  async signAnesthesiaRecord(recordId: string, anesthesiologistId: string): Promise<AnesthesiaRecord> {,
     const record = this.anesthesiaRecords.get(recordId);
     if (!session.user) {
       throw new Error("Anesthesia record not found");
@@ -603,7 +603,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
     const roomsByStatus = rooms.reduce((acc, room) => {
       acc[room.status as keyof typeof acc]++;
       return acc;
-    }, {available:0, occupied: 0, cleaning: 0, setup: 0, maintenance: 0 });
+    }, {available:0, occupied: 0, cleaning: 0, setup: 0, maintenance: 0 ,});
 
     // Get upcoming cases (next 4 hours);
     const now = new Date();
@@ -737,7 +737,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
         average_duration: Math.round(s.average_duration * 100) / 100,
         Math.round(s.on_time_rate * 100) / 100;
       })),
-      room_efficiency: roomEfficiency.map(r => ({
+      room_efficiency: roomEfficiency.map(r => ({,
         ...r,
         utilization_rate: Math.round(r.utilization_rate * 100) / 100,
         average_turnover: Math.round(r.average_turnover * 100) / 100;
@@ -791,7 +791,7 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
   /**;
    * Get OR schedule for room and date;
    */;
-  async getORSchedule(roomId: string, date: string): Promise<ORSchedule[]> {
+  async getORSchedule(roomId: string, date: string): Promise<ORSchedule[]> {,
     const roomSchedule = this.orSchedules.get(roomId) || [];
     return roomSchedule.filter(schedule => schedule.date === date);
 
@@ -812,13 +812,13 @@ export type AnesthesiaRecord = z.infer<typeof AnesthesiaRecordSchema> & {id:stri
   /**;
    * Get instrument counts for surgery;
    */;
-  async getInstrumentCounts(surgeryId: string): Promise<InstrumentCount[]> {
+  async getInstrumentCounts(surgeryId: string): Promise<InstrumentCount[]> {,
     return this.instrumentCounts.get(surgeryId) || [];
 
   /**;
    * Get safety checklists for surgery;
    */;
-  async getSafetyChecklists(surgeryId: string): Promise<SafetyChecklist[]> {
+  async getSafetyChecklists(surgeryId: string): Promise<SafetyChecklist[]> {,
     return this.safetyChecklists.get(surgeryId) || [];
 
 // Export singleton instance;

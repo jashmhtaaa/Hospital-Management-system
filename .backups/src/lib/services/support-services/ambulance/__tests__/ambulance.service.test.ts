@@ -44,7 +44,7 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/lib/security.service", () => ({
   vi.fn(input => input),
     sanitizeObject: vi.fn(obj => obj),
-    encryptSensitiveData: vi.fn(data => `encrypted_${}`,
+    encryptSensitiveData: vi.fn(data => `encrypted_${,}`,
     decryptSensitiveData: vi.fn(data => data.replace("encrypted_", "")),
     validateHipaaCompliance: vi.fn(() => true);
 
@@ -177,8 +177,8 @@ describe("AmbulanceService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.patient.findUnique as any).mockResolvedValue({ id: "patient1", name: "John Doe" });
-      (prisma.user.findUnique as any).mockResolvedValue({ id: "user1", name: "Dr. Smith" });
+      (prisma.patient.findUnique as any).mockResolvedValue({ id: "patient1", name: "John Doe" ,});
+      (prisma.user.findUnique as any).mockResolvedValue({ id: "user1", name: "Dr. Smith" ,});
       (prisma.ambulanceTrip.create as any).mockResolvedValue(mockCreatedTrip);
 
       // Call the service method;
@@ -237,7 +237,7 @@ describe("AmbulanceService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.user.findUnique as any).mockResolvedValue({ id: "user1", name: "Dr. Smith" });
+      (prisma.user.findUnique as any).mockResolvedValue({ id: "user1", name: "Dr. Smith" ,});
       (prisma.ambulanceTrip.create as any).mockResolvedValue(mockCreatedTrip);
 
       // Call the service method;
@@ -276,7 +276,7 @@ describe("AmbulanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.findUnique).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         include: expect.any(Object);
       });
 
@@ -359,7 +359,7 @@ describe("AmbulanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         data: mockUpdateData,
         include: expect.any(Object);
       });
@@ -373,7 +373,7 @@ describe("AmbulanceService", () => {
       (prisma.ambulanceTrip.findUnique as any).mockResolvedValue(null);
 
       // Expect the update to throw an error;
-      await expect(ambulanceService.updateAmbulanceTrip("invalid-id", { priority: "MEDIUM" })).rejects.toThrow();
+      await expect(ambulanceService.updateAmbulanceTrip("invalid-id", { priority: "MEDIUM" ,})).rejects.toThrow();
     });
   });
 
@@ -397,8 +397,8 @@ describe("AmbulanceService", () => {
       };
 
       const mockCrews = [;
-        { id: "crew1", name: "John Driver", role: "DRIVER", status: "AVAILABLE" },
-        { id: "crew2", name: "Jane Medic", role: "PARAMEDIC", status: "AVAILABLE" }
+        { id: "crew1", name: "John Driver", role: "DRIVER", status: "AVAILABLE" ,},
+        { id: "crew2", name: "Jane Medic", role: "PARAMEDIC", status: "AVAILABLE" },
       ];
 
       const mockUpdatedTrip = {
@@ -414,8 +414,8 @@ describe("AmbulanceService", () => {
       (prisma.ambulanceCrew.findUnique as any);
         .mockResolvedValueOnce(mockCrews[0]);
         .mockResolvedValueOnce(mockCrews[1]);
-      (prisma.ambulance.update as any).mockResolvedValue({ ...mockAmbulance, status: "ASSIGNED" });
-      (prisma.ambulanceCrew.update as any).mockResolvedValue({ status: "ASSIGNED" });
+      (prisma.ambulance.update as any).mockResolvedValue({ ...mockAmbulance, status: "ASSIGNED" ,});
+      (prisma.ambulanceCrew.update as any).mockResolvedValue({ status: "ASSIGNED" ,});
       (prisma.ambulanceTrip.update as any).mockResolvedValue(mockUpdatedTrip);
       (prisma.ambulanceTripLog.create as any).mockResolvedValue({});
 
@@ -424,11 +424,11 @@ describe("AmbulanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         "ASSIGNED",
           ambulanceId: "amb1";
           {
-            connect: [{ id: "crew1" }, { id: "crew2" }];
+            connect: [{ id: "crew1" ,}, { id: "crew2" ,}];
 
         },
         include: expect.any(Object);
@@ -436,8 +436,8 @@ describe("AmbulanceService", () => {
 
       // Verify ambulance status was updated;
       expect(prisma.ambulance.update).toHaveBeenCalledWith({
-        where: { id: "amb1" },
-        data: { status: "ASSIGNED" }
+        where: { id: "amb1" ,},
+        data: { status: "ASSIGNED" },
       });
 
       // Verify crew status was updated;
@@ -539,7 +539,7 @@ describe("AmbulanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         "EN_ROUTE_TO_PICKUP",
           -74.0060;
         },
@@ -583,8 +583,8 @@ describe("AmbulanceService", () => {
       (prisma.ambulanceTrip.findUnique as any).mockResolvedValue(mockExistingTrip);
       (prisma.ambulanceTrip.update as any).mockResolvedValue(mockUpdatedTrip);
       (prisma.ambulanceTripLog.create as any).mockResolvedValue({});
-      (prisma.ambulance.update as any).mockResolvedValue({ status: "AVAILABLE" });
-      (prisma.ambulanceCrew.update as any).mockResolvedValue({ status: "AVAILABLE" });
+      (prisma.ambulance.update as any).mockResolvedValue({ status: "AVAILABLE" ,});
+      (prisma.ambulanceCrew.update as any).mockResolvedValue({ status: "AVAILABLE" ,});
 
       // Call the service method;
       const result = await ambulanceService.updateAmbulanceTripStatus();
@@ -595,7 +595,7 @@ describe("AmbulanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.ambulanceTrip.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         "COMPLETED",
           completedAt: expect.any(Date);
         },
@@ -604,8 +604,8 @@ describe("AmbulanceService", () => {
 
       // Verify ambulance status was updated;
       expect(prisma.ambulance.update).toHaveBeenCalledWith({
-        where: { id: "amb1" },
-        data: { status: "AVAILABLE" }
+        where: { id: "amb1" ,},
+        data: { status: "AVAILABLE" },
       });
 
       // Verify crew status was updated;
@@ -738,30 +738,30 @@ describe("AmbulanceService", () => {
     it("should return analytics data", async () => {
       // Mock data for status counts;
       const mockStatusCounts = [;
-        { status: "PENDING", count: 5 },
-        { status: "ASSIGNED", count: 3 },
-        { status: "EN_ROUTE_TO_PICKUP", count: 2 },
-        { status: "AT_PICKUP", count: 1 },
-        { status: "EN_ROUTE_TO_DROPOFF", count: 2 },
-        { status: "COMPLETED", count: 10 },
-        { status: "CANCELLED", count: 1 }
+        { status: "PENDING", count: 5 ,},
+        { status: "ASSIGNED", count: 3 ,},
+        { status: "EN_ROUTE_TO_PICKUP", count: 2 ,},
+        { status: "AT_PICKUP", count: 1 ,},
+        { status: "EN_ROUTE_TO_DROPOFF", count: 2 ,},
+        { status: "COMPLETED", count: 10 ,},
+        { status: "CANCELLED", count: 1 },
       ];
 
       // Mock data for request types;
       const mockRequestTypes = [;
-        { requestType: "EMERGENCY", count: 8 },
-        { requestType: "NON_EMERGENCY", count: 5 },
-        { requestType: "TRANSFER", count: 7 },
-        { requestType: "DISCHARGE", count: 3 },
-        { requestType: "SCHEDULED", count: 1 }
+        { requestType: "EMERGENCY", count: 8 ,},
+        { requestType: "NON_EMERGENCY", count: 5 ,},
+        { requestType: "TRANSFER", count: 7 ,},
+        { requestType: "DISCHARGE", count: 3 ,},
+        { requestType: "SCHEDULED", count: 1 },
       ];
 
       // Mock data for priority distribution;
       const mockPriorities = [;
-        { priority: "LOW", count: 2 },
-        { priority: "MEDIUM", count: 8 },
-        { priority: "HIGH", count: 6 },
-        { priority: "URGENT", count: 8 }
+        { priority: "LOW", count: 2 ,},
+        { priority: "MEDIUM", count: 8 ,},
+        { priority: "HIGH", count: 6 ,},
+        { priority: "URGENT", count: 8 },
       ];
 
       // Mock Prisma response for each query;
@@ -784,18 +784,18 @@ describe("AmbulanceService", () => {
 
       // Verify specific data;
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
-        { status: "PENDING", count: 5 },
-        { status: "COMPLETED", count: 10 }
+        { status: "PENDING", count: 5 ,},
+        { status: "COMPLETED", count: 10 },
       ]));
 
       expect(result.requestTypeDistribution).toEqual(expect.arrayContaining([;
-        { requestType: "EMERGENCY", count: 8 },
-        { requestType: "TRANSFER", count: 7 }
+        { requestType: "EMERGENCY", count: 8 ,},
+        { requestType: "TRANSFER", count: 7 },
       ]));
 
       expect(result.priorityDistribution).toEqual(expect.arrayContaining([;
-        { priority: "MEDIUM", count: 8 },
-        { priority: "URGENT", count: 8 }
+        { priority: "MEDIUM", count: 8 ,},
+        { priority: "URGENT", count: 8 },
       ]));
     });
 

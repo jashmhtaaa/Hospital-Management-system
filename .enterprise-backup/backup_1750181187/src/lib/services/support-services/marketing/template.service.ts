@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing templates;
  */
-\1
+
 }
         }
       });
@@ -16,15 +16,15 @@ import { prisma } from '@/lib/prisma';
         action: 'template.create',
         resourceId: template.id;
         userId,
-        details: {
+        details: {,
           templateName: template.name,
-          templateType: template.type
+          templateType: template.type,
         }
       });
 
       return template;
     } catch (error) {
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
       throw new DatabaseError('Failed to create marketing template', error);
@@ -34,27 +34,27 @@ import { prisma } from '@/lib/prisma';
   /**
    * Get a template by ID;
    */
-  async getTemplateById(id: string): Promise<MarketingTemplate> {
+  async getTemplateById(id: string): Promise<MarketingTemplate> {,
     try {
       const template = await prisma.marketingTemplate.findUnique({
-        where: { id },
-        include: {
-          createdByUser: {
-            select: {
+        where: { id ,},
+        include: {,
+          createdByUser: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             }
           }
         }
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
 
       return template;
     } catch (error) {
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
       throw new DatabaseError('Failed to retrieve marketing template', error);
@@ -64,13 +64,13 @@ import { prisma } from '@/lib/prisma';
   /**
    * Get all templates with optional filtering;
    */
-  async getTemplates(filters: {
+  async getTemplates(filters: {,
     type?: string;
     isActive?: boolean;
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: MarketingTemplate[], pagination: total: number, \1,\2 number, totalPages: number }> {
+  }): Promise<{ data: MarketingTemplate[], pagination: total: number,  number, totalPages: number }> {,
     try {
       const {
         type,
@@ -81,20 +81,20 @@ import { prisma } from '@/lib/prisma';
       } = filters;
 
       // Build where clause based on filters
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
+       {\n  {
         where.type = type;
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.isActive = isActive;
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.OR = [
-          { name: { contains: search, mode: 'insensitive' } },
-          { description: { contains: search, mode: 'insensitive' } }
+          { name: { contains: search, mode: 'insensitive' } ,},
+          { description: { contains: search, mode: 'insensitive' } },
         ];
       }
 
@@ -104,25 +104,25 @@ import { prisma } from '@/lib/prisma';
       // Get templates with pagination
       const templates = await prisma.marketingTemplate.findMany({
         where,
-        include: {
-          createdByUser: {
-            select: {
+        include: {,
+          createdByUser: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             }
           }
         },
         skip: (page - 1) * limit,
-        \1,\2 'desc'
+         'desc'
       });
 
       return {
         data: templates,
-        pagination: {
+        pagination: {,
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit)
+          totalPages: Math.ceil(total / limit),
         }
       };
     } catch (error) {
@@ -133,20 +133,20 @@ import { prisma } from '@/lib/prisma';
   /**
    * Update a template;
    */
-  async updateTemplate(id: string, data: Partial<MarketingTemplate>, userId: string): Promise<MarketingTemplate> {
+  async updateTemplate(id: string, data: Partial<MarketingTemplate>, userId: string): Promise<MarketingTemplate> {,
     try {
       // Check if template exists
       const existingTemplate = await prisma.marketingTemplate.findUnique({
-        where: { id }
+        where: { id },
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
 
       // Update template
       const updatedTemplate = await prisma.marketingTemplate.update({
-        where: { id },
+        where: { id ,},
         data;
       });
 
@@ -155,14 +155,14 @@ import { prisma } from '@/lib/prisma';
         action: 'template.update',
         resourceId: id;
         userId,
-        details: 
+        details: ,
           templateName: updatedTemplate.name,
-          updatedFields: Object.keys(data)
+          updatedFields: Object.keys(data),
       });
 
       return updatedTemplate;
     } catch (error) {
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
       throw new DatabaseError('Failed to update marketing template', error);
@@ -172,20 +172,20 @@ import { prisma } from '@/lib/prisma';
   /**
    * Delete a template;
    */
-  async deleteTemplate(id: string, userId: string): Promise<void> {
+  async deleteTemplate(id: string, userId: string): Promise<void> {,
     try {
       // Check if template exists
       const existingTemplate = await prisma.marketingTemplate.findUnique({
-        where: { id }
+        where: { id },
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new NotFoundError(`Marketing template with ID ${id} not found`);
       }
 
       // Delete template
       await prisma.marketingTemplate.delete({
-        where: { id }
+        where: { id },
       });
 
       // Log audit event
@@ -193,12 +193,12 @@ import { prisma } from '@/lib/prisma';
         action: 'template.delete',
         resourceId: id;
         userId,
-        details: 
+        details: ,
           templateName: existingTemplate.name,
-          templateType: existingTemplate.type
+          templateType: existingTemplate.type,
       });
     } catch (error) {
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
       throw new DatabaseError('Failed to delete marketing template', error);
@@ -217,7 +217,7 @@ import { prisma } from '@/lib/prisma';
       let renderedContent = template.content;
 
       // Simple variable replacement
-      \1 {\n  \2{
+       {\n  {
         Object.entries(variables).forEach(([key, value]) => {
           const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
           renderedContent = renderedContent.replace(regex, String(value));
@@ -226,7 +226,7 @@ import { prisma } from '@/lib/prisma';
 
       return renderedContent;
     } catch (error) {
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
       throw new DatabaseError('Failed to render template', error);
@@ -236,30 +236,30 @@ import { prisma } from '@/lib/prisma';
   /**
    * Validate template data;
    */
-  private validateTemplateData(data: Partial<MarketingTemplate>): void {
+  private validateTemplateData(data: Partial<MarketingTemplate>): void {,
     const errors: string[] = [];
 
     // Name is required
-    \1 {\n  \2{
+     {\n  {
       errors.push('Template name is required');
     }
 
     // Type is required
-    \1 {\n  \2{
+     {\n  {
       errors.push('Template type is required');
     }
 
     // Content is required
-    \1 {\n  \2{
+     {\n  {
       errors.push('Template content is required');
     }
 
     // Validate variables if provided
-    \1 {\n  \2{
+     {\n  {
       errors.push('Template variables must be a valid object');
     }
 
-    \1 {\n  \2{
+     {\n  {
       throw new ValidationError('Template validation failed', errors);
     }
   }

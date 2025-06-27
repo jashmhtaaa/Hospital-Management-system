@@ -9,22 +9,22 @@ import { getSession } from "@/lib/session";
 // GET /api/ipd/admissions/[id]/discharge - Get discharge summary for an admission
 export const _GET = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
     const session = await getSession(); // Removed request argument
 
     // Check authentication
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
-    const { id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: admissionId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
 
-    const database = await getDB(); // Fixed: Await the promise returned by getDB()
+    const database = await getDB(); // Fixed: Await the promise returned by getDB(),
 
     // Check if admission exists using db.query
-    // Assuming db.query exists and returns { results: [...] } based on db.ts mock
+    // Assuming db.query exists and returns { results: [...] } based on db.ts mock,
     const admissionResult = await database.query(
       `;
       SELECT a.*, p.first_name as patient_first_name, p.last_name as patient_last_name;
@@ -39,10 +39,10 @@ export const _GET = async (
         ? admissionResult.results[0] // Changed .rows to .results
         : undefined;
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Admission not found" },
-        { status: 404 }
+        { error: "Admission not found" ,},
+        { status: 404 },
       );
     }
 
@@ -54,8 +54,8 @@ export const _GET = async (
     const canViewDischarge =;
       session.user.permissions?.includes("discharge_summary:view") ?? false;
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+     {\n  {
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Get discharge summary using db.query
@@ -75,14 +75,14 @@ export const _GET = async (
 
     return NextResponse.json({
       admission,
-      discharge_summary: dischargeSummary || undefined
+      discharge_summary: dischargeSummary || undefined,
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to fetch discharge summary", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch discharge summary", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }

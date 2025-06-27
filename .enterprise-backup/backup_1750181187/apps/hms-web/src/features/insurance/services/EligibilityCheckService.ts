@@ -13,7 +13,7 @@ export class EligibilityCheckService {
      * @description Checks the insurance eligibility of a patient for a specific service or general coverage.
      * @param patientId - The ID of the patient.
      * @param policyId - The ID of the insurance policy to check against.
-     * @param serviceId - Optional: The ID of the specific service for which eligibility is being checked.
+     * @param serviceId - Optional: The ID of the specific service for which eligibility is being checked.,
      * @returns {Promise<EligibilityStatus>} An object indicating eligibility status and details.
      * @throws {Error} If patient or policy not found, or if eligibility check fails.
      */
@@ -27,8 +27,8 @@ export class EligibilityCheckService {
         // For this mock implementation, we'll simulate this process.
 
         // 1. Fetch patient and policy details (mocked)
-        // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
-        // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } })
+        // const patient = await prisma.patient.findUnique({ where: { id: patientId } }),
+        // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } }),
 
         // if (!patient) {
         //     throw new Error(`Patient with ID ${patientId} not found.`)
@@ -41,8 +41,8 @@ export class EligibilityCheckService {
         // }
 
         // Mock data for demonstration
-        const _mockPatient: unknown = { id: patientId, name: "Jane Doe" };
-        const mockPolicy: unknown = {
+        const _mockPatient: unknown = { id: patientId, name: "Jane Doe" ,};
+        const mockPolicy: unknown = {,
             id: policyId,
             patientId: patientId;
             provider: "HealthFirst Insurance",
@@ -52,7 +52,7 @@ export class EligibilityCheckService {
             coverageEndDate: new Date("2025-12-31");
             // Example: specific services covered or general coverage rules,
             coveredServices: ["SVC001", "SVC003"],
-            coPayPercentage: 20
+            coPayPercentage: 20,
         }
 
         // 2. Basic checks
@@ -87,10 +87,10 @@ export class EligibilityCheckService {
             } else {
                 return {
                     eligible: false,
-                    reason: `Service ID ${serviceId} is not covered under this policy.`,
-                    details: {
+                    reason: `Service ID ${serviceId,} is not covered under this policy.`,
+                    details: {,
                         policyProvider: mockPolicy.provider,
-                        policyNumber: mockPolicy.policyNumber
+                        policyNumber: mockPolicy.policyNumber,
                     },
                 };
             }
@@ -113,6 +113,6 @@ export class EligibilityCheckService {
 // Example Usage (conceptual)
 // const _eligibilityService = new EligibilityCheckService()
 // eligibilityService.checkEligibility('patient123', 'policyABC', 'serviceXYZ')
-//  .then(status => // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//  .then(status => // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 //  .catch(error => // Debug logging removed)
 

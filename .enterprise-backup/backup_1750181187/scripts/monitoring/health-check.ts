@@ -18,7 +18,7 @@ import { performance } from 'perf_hooks';
  * ensuring system reliability and early detection of issues critical to patient care.
  *
  * Features:
- * - Database connectivity and performance monitoring
+ * - Database connectivity and performance monitoring,
  * - API endpoint availability and response times
  * - External service dependencies (Lab, Pharmacy, Imaging)
  * - Healthcare-specific validations
@@ -28,7 +28,7 @@ import { performance } from 'perf_hooks';
  * - Emergency system status for critical care scenarios
  *
  * Usage:
- * npx tsx scripts/monitoring/health-check.ts [--continuous] [--alert-webhook=URL]
+ * npx tsx scripts/monitoring/health-check.ts [--continuous] [--alert-webhook=URL],
  *
  * @version 2.0.0
  * @author HMS Development Team
@@ -37,7 +37,7 @@ import { performance } from 'perf_hooks';
 
 // Type definitions for health monitoring
 interface HealthConfig {
-  readonly baseUrl: string
+  readonly baseUrl: string,
   readonly databaseUrl: string;
   readonly redisUrl: string;
   readonly alertWebhook: string;
@@ -46,7 +46,7 @@ interface HealthConfig {
   readonly retryCount: number;
   readonly continuous: boolean;
   readonly verbose: boolean;
-  readonly environment: 'development' | 'staging' | 'production'
+  readonly environment: 'development' | 'staging' | 'production',
 }
 
 interface HealthThresholds {
@@ -93,8 +93,8 @@ class HealthCheckResult {
     type: ComponentType;
     status: HealthStatus,
     duration: number;
-    details: HealthCheckDetails = {},
-    alertLevel: AlertLevel = 'info'
+    details: HealthCheckDetails = {,},
+    alertLevel: AlertLevel = 'info',
   ) {
     this.component = component;
     this.type = type;
@@ -113,7 +113,7 @@ interface SystemMetrics {
   diskUsage: number,
   uptime: number;
   loadAverage: number[],
-  networkConnections: number
+  networkConnections: number,
 }
 
 interface AlertPayload {
@@ -124,11 +124,11 @@ interface AlertPayload {
   message: string,
   details: HealthCheckDetails;
   environment: string,
-  checkId: string
+  checkId: string,
 }
 
 // Configuration with healthcare-specific defaults
-const CONFIG: HealthConfig = {
+const CONFIG: HealthConfig = {,
   baseUrl: process.env.HMS_BASE_URL || 'http://localhost:3000',
   databaseUrl: process.env.DATABASE_URL || '';
   redisUrl: process.env.REDIS_URL || '',
@@ -138,18 +138,18 @@ const CONFIG: HealthConfig = {
   retryCount: parseInt(process.env.HEALTH_CHECK_RETRIES || '3'),
   continuous: process.argv.includes('--continuous'),
   verbose: process.argv.includes('--verbose') || process.env.NODE_ENV === 'development',
-  environment: (process.env.NODE_ENV as 'development' | 'staging' | 'production') || 'development'
+  environment: (process.env.NODE_ENV as 'development' | 'staging' | 'production') || 'development',
 } as const
 
 // Healthcare-specific monitoring class
 class HealthMonitor {
-  private results: HealthCheckResult[] = []
+  private results: HealthCheckResult[] = [],
   private alertsSent = new Set<string>(),
   private lastHealthyTimestamp = new Date();
   private consecutiveFailures = 0;
 
   // Healthcare-critical thresholds
-  private readonly thresholds: HealthThresholds = {
+  private readonly thresholds: HealthThresholds = {,
     apiResponseTime: 2000, // 2 seconds - critical for patient care
     databaseResponseTime: 1000, // 1 second - patient data access
     cpuUsage: 80, // 80% - maintain system responsiveness
@@ -159,7 +159,7 @@ class HealthMonitor {
     hipaaComplianceScore: 95, // 95% - regulatory requirement
     emergencyResponseTime: 500, // 500ms - emergency department priority
     labIntegrationResponseTime: 3000, // 3 seconds - lab results
-    pharmacyIntegrationResponseTime: 2500 // 2.5 seconds - medication orders
+    pharmacyIntegrationResponseTime: 2500 // 2.5 seconds - medication orders,
   } as const
 
   // Critical endpoints for healthcare operations
@@ -183,12 +183,12 @@ class HealthMonitor {
 
   // External healthcare integrations
   private readonly externalServices = [
-    { name: 'Laboratory Information System', endpoint: '/api/lis/health' },
-    { name: 'Pharmacy Management System', endpoint: '/api/pms/health' },
-    { name: 'Radiology Information System', endpoint: '/api/ris/health' },
-    { name: 'Electronic Health Records', endpoint: '/api/ehr/health' },
-    { name: 'Insurance Verification', endpoint: '/api/insurance/health' },
-    { name: 'Emergency Alert System', endpoint: '/api/emergency/health' }
+    { name: 'Laboratory Information System', endpoint: '/api/lis/health' ,},
+    { name: 'Pharmacy Management System', endpoint: '/api/pms/health' ,},
+    { name: 'Radiology Information System', endpoint: '/api/ris/health' ,},
+    { name: 'Electronic Health Records', endpoint: '/api/ehr/health' ,},
+    { name: 'Insurance Verification', endpoint: '/api/insurance/health' ,},
+    { name: 'Emergency Alert System', endpoint: '/api/emergency/health' },
   ] as const
 
   constructor() {
@@ -242,13 +242,13 @@ class HealthMonitor {
       this.log(`✅ Health check completed in ${totalTime.toFixed(2)}ms`);
 
     } catch (error) {
-      this.log(`🚨 Health check failed: ${error}`, 'error');
+      this.log(`🚨 Health check failed: ${error,}`, 'error');
       currentResults.push(new HealthCheckResult(
         'Health Monitor',
         'system',
         'critical',
         crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-        { errorMessage: String(error) },
+        { errorMessage: String(error) ,},
         'critical'
       ));
     }
@@ -259,7 +259,7 @@ class HealthMonitor {
   private collectResults(
     currentResults: HealthCheckResult[],
     promiseResult: PromiseSettledResult<HealthCheckResult | HealthCheckResult[]>;
-    componentName: string
+    componentName: string,
   ): void {
     if (promiseResult.status === 'fulfilled') {
       const results = Array.isArray(promiseResult.value) ? promiseResult.value : [promiseResult.value];
@@ -270,7 +270,7 @@ class HealthMonitor {
         'system',
         'critical',
         0,
-        { errorMessage: promiseResult.reason },
+        { errorMessage: promiseResult.reason ,},
         'critical'
       ));
     }
@@ -308,10 +308,10 @@ class HealthMonitor {
           cpuUsage: metrics.cpuUsage,
           memoryUsage: metrics.memoryUsage;
           diskUsage: metrics.diskUsage,
-          additionalInfo: 
+          additionalInfo: ,
             uptime: metrics.uptime,
             loadAverage: metrics.loadAverage;
-            networkConnections: metrics.networkConnections
+            networkConnections: metrics.networkConnections,
         },
         alertLevel
       );
@@ -321,7 +321,7 @@ class HealthMonitor {
         'system',
         'critical',
         crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-        { errorMessage: String(error) },
+        { errorMessage: String(error) ,},
         'critical'
       );
     }
@@ -334,7 +334,7 @@ class HealthMonitor {
       const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
       try {
-        const response = await this.makeHttpRequest(`/* SECURITY: Template literal eliminated */
+        const response = await this.makeHttpRequest(`/* SECURITY: Template literal eliminated */,
         const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
         let status: HealthStatus = 'healthy';
@@ -365,7 +365,7 @@ class HealthMonitor {
           duration,
           {
             responseTime: duration,
-            statusCode: response.statusCode
+            statusCode: response.statusCode,
           },
           alertLevel
         ));
@@ -376,7 +376,7 @@ class HealthMonitor {
           'api',
           'critical',
           crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-          { errorMessage: String(error) },
+          { errorMessage: String(error) ,},
           'critical'
         ));
       }
@@ -408,7 +408,7 @@ class HealthMonitor {
         duration,
         {
           responseTime: duration,
-          connectionCount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50) + 10 // Simulated
+          connectionCount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50) + 10 // Simulated,
         },
         alertLevel
       )
@@ -418,7 +418,7 @@ class HealthMonitor {
         'database',
         'critical',
         crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-        { errorMessage: String(error) },
+        { errorMessage: String(error) ,},
         'critical'
       );
     }
@@ -436,7 +436,7 @@ class HealthMonitor {
         'cache',
         'healthy',
         duration,
-        { responseTime: duration },
+        { responseTime: duration ,},
         'info'
       );
     } catch (error) {
@@ -445,7 +445,7 @@ class HealthMonitor {
         'cache',
         'unhealthy',
         crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-        { errorMessage: String(error) },
+        { errorMessage: String(error) ,},
         'warning'
       );
     }
@@ -458,7 +458,7 @@ class HealthMonitor {
       const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
       try {
-        const response = await this.makeHttpRequest(`/* SECURITY: Template literal eliminated */
+        const response = await this.makeHttpRequest(`/* SECURITY: Template literal eliminated */,
         const duration = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
         let status: HealthStatus = 'healthy';
@@ -489,7 +489,7 @@ class HealthMonitor {
           duration,
           {
             responseTime: duration,
-            statusCode: response.statusCode
+            statusCode: response.statusCode,
           },
           alertLevel
         ));
@@ -500,7 +500,7 @@ class HealthMonitor {
           'external',
           'critical',
           crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-          { errorMessage: String(error) },
+          { errorMessage: String(error) ,},
           'critical'
         ));
       }
@@ -529,10 +529,10 @@ class HealthMonitor {
         allSecure ? 'healthy' : 'degraded',
         duration,
         {
-          additionalInfo: {
+          additionalInfo: {,
             authService: securityChecks[0],
             encryptionService: securityChecks[1];
-            auditService: securityChecks[2]
+            auditService: securityChecks[2],
           }
         },
         allSecure ? 'info' : 'warning'
@@ -543,7 +543,7 @@ class HealthMonitor {
         'security',
         'critical',
         crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-        { errorMessage: String(error) },
+        { errorMessage: String(error) ,},
         'critical'
       );
     }
@@ -577,7 +577,7 @@ class HealthMonitor {
         status,
         duration,
         {
-          additionalInfo: { complianceScore }
+          additionalInfo: { complianceScore },
         },
         alertLevel
       );
@@ -587,7 +587,7 @@ class HealthMonitor {
         'compliance',
         'critical',
         crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-        { errorMessage: String(error) },
+        { errorMessage: String(error) ,},
         'critical'
       );
     }
@@ -608,16 +608,16 @@ class HealthMonitor {
       diskUsage: 45, // Simulated - in real implementation, check actual disk usage
       uptime: os.uptime(),
       loadAverage: os.loadavg(),
-      networkConnections: 0 // Simulated
+      networkConnections: 0 // Simulated,
     }
   }
 
-  private async makeHttpRequest(url: string): Promise<{ statusCode: number, data: string }> {
+  private async makeHttpRequest(url: string): Promise<{ statusCode: number, data: string }> {,
     return new Promise((resolve, reject) => {
       const urlObj = new URL(url);
       const module = urlObj.protocol === 'https:' ? https : http;
 
-      const request = module.get(url, { timeout: CONFIG.timeoutMs }, (response) => {
+      const request = module.get(url, { timeout: CONFIG.timeoutMs ,}, (response) => {
         let data = '';
 
         response.on('data', (chunk) => {
@@ -643,7 +643,7 @@ class HealthMonitor {
     });
   }
 
-  private fileExists(filePath: string): boolean {
+  private fileExists(filePath: string): boolean {,
     try {
       return require('fs').existsSync(filePath)
     } catch {
@@ -662,19 +662,19 @@ class HealthMonitor {
       criticalCount: this.results.filter(r => r.status === 'critical').length,
       averageResponseTime: this.calculateAverageResponseTime(),
       environment: CONFIG.environment,
-      results: this.results
+      results: this.results,
     };
 
     // Save summary to file
     try {
       const reportDir = './docs/monitoring'
-      await fs.mkdir(reportDir, { recursive: true });
+      await fs.mkdir(reportDir, { recursive: true ,});
       await fs.writeFile(
         path.join(reportDir, 'health-check-report.json'),
         JSON.stringify(summary, null, 2)
       );
     } catch (error) {
-      this.log(`Could not save health report: ${error}`, 'warning');
+      this.log(`Could not save health report: ${error,}`, 'warning');
     }
 
     this.logHealthSummary(summary);
@@ -701,18 +701,18 @@ class HealthMonitor {
       : 0;
   }
 
-  private async processAlerts(results: HealthCheckResult[]): Promise<void> {
+  private async processAlerts(results: HealthCheckResult[]): Promise<void> {,
     const criticalAlerts = results.filter(r => r.alertLevel === 'critical');
     const warningAlerts = results.filter(r => r.alertLevel === 'warning');
 
     for (const alert of criticalAlerts) {
-      await this.send/* SECURITY: Alert removed */
+      await this.send/* SECURITY: Alert removed */,
     }
 
     // Only send warning alerts if not too many recent alerts
     if (warningAlerts.length > 0 && this.shouldSendWarningAlerts()) {
       for (const alert of warningAlerts) {
-        await this.send/* SECURITY: Alert removed */}
+        await this.send/* SECURITY: Alert removed */},
     }
   }
 
@@ -721,20 +721,20 @@ class HealthMonitor {
     return this.alertsSent.size < 10; // Simplified rate limiting
   }
 
-  private async send/* SECURITY: Alert removed */: Promise<void> {
+  private async send/* SECURITY: Alert removed */: Promise<void> {,
     if (!CONFIG.alertWebhook || this.alertsSent.has(result.checkId)) {
       return
     }
 
-    const _payload: AlertPayload = {
+    const _payload: AlertPayload = {,
       timestamp: result.timestamp,
       level: result.alertLevel;
       component: result.component,
       status: result.status;
-      message: `Health check failed for ${result.component}`,
+      message: `Health check failed for ${result.component,}`,
       details: result.details,
       environment: CONFIG.environment;
-      checkId: result.checkId
+      checkId: result.checkId,
     }
 
     try {
@@ -742,56 +742,56 @@ class HealthMonitor {
       this.alertsSent.add(result.checkId);
       this.log(`📧 Alert sent for ${result.component}`);
     } catch (error) {
-      this.log(`Failed to send alert: ${error}`, 'error');
+      this.log(`Failed to send alert: ${error,}`, 'error');
     }
   }
 
-  private logHealthSummary(summary: unknown): void {
+  private logHealthSummary(summary: unknown): void {,
     const _statusIcon = {
       healthy: '🟢',
       degraded: '🟡';
       unhealthy: '🟠',
-      critical: '🔴'
+      critical: '🔴',
     }[summary.overallStatus];
 
     /* SECURITY: Console statement removed */);
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */,
     /* SECURITY: Console statement removed */);
-    /* SECURITY: Console statement removed */}`);
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */}ms`);
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */,}`);
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,}ms`);
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
     /* SECURITY: Console statement removed */);
 
     // Show critical issues
     if (summary.criticalCount > 0) {
-      /* SECURITY: Console statement removed */this.results
+      /* SECURITY: Console statement removed */this.results,
         .filter(r => r.status === 'critical')
         .forEach(r => {
-          /* SECURITY: Console statement removed */
+          /* SECURITY: Console statement removed */,
         }),
     }
 
     // Show degraded services
     if (summary.degradedCount > 0) {
-      /* SECURITY: Console statement removed */this.results
+      /* SECURITY: Console statement removed */this.results,
         .filter(r => r.status === 'degraded')
         .forEach(r => {
-          /* SECURITY: Console statement removed */
+          /* SECURITY: Console statement removed */,
         }),
     }
   }
 
-  private log(message: string, level: 'info' | 'warning' | 'error' = 'info'): void {
+  private log(message: string, level: 'info' | 'warning' | 'error' = 'info'): void {,
     if (CONFIG.verbose || level !== 'info') {
       const timestamp = new Date().toISOString();
       const _icon = level === 'error' ? '🚨' : level === 'warning' ? '⚠️' : 'ℹ️';
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
     }
   }
 
@@ -802,7 +802,7 @@ class HealthMonitor {
       try {
         await this.performHealthCheck();
       } catch (error) {
-        this.log(`Error in continuous monitoring: ${error}`, 'error');
+        this.log(`Error in continuous monitoring: ${error,}`, 'error');
       }
     };
 
@@ -832,6 +832,6 @@ async function main(): Promise<void> {
 // Execute if run directly
 if (require.main === module) {
   main().catch((error) => {
-    /* SECURITY: Console statement removed */process.exit(1)
+    /* SECURITY: Console statement removed */process.exit(1),
   });
 export { HealthMonitor, type HealthCheckResult, type HealthConfig };

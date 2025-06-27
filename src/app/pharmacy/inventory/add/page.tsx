@@ -15,16 +15,14 @@ import { useRouter }
 export const dynamic = "force-dynamic";
 
 // Define interfaces for data structures;
-interface Medication {
-  id: string,
+interface Medication {id:string,
   generic_name: string;
   brand_name?: string;
   strength: string,
   dosage_form: string;
 }
 
-interface InventoryFormData {
-  medication_id: string,
+interface InventoryFormData {medication_id:string,
   string,
   string,
   purchase_price: string; // Keep as string for input;
@@ -39,8 +37,7 @@ type InventorySubmitData= {};
   extends Omit<;
     InventoryFormData,
     "purchase_price" | "selling_price" | "initial_quantity";
-  > {
-  purchase_price: number,
+  > {purchase_price:number,
   number;
 }
 
@@ -50,8 +47,7 @@ const AddInventoryPage: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [medications, setMedications] = useState<Medication[]>([]);
-  const [formData, setFormData] = useState<InventoryFormData>({
-    medication_id: "",
+  const [formData, setFormData] = useState<InventoryFormData>({medication_id:"",
     "",
     new Date().toISOString().split("T")[0],
     "",
@@ -105,13 +101,11 @@ const AddInventoryPage: React.FC = () => {
         // const _data = await response.json();
         // setMedications(data.medications || []);
         const simulatedMedications: Medication[] = [;
-          {
-            id: "med_001",
+          {id:"med_001",
             "Calpol",
             "Tablet";
           },
-          {
-            id: "med_002",
+          {id:"med_002",
             "Amoxil",
             "Capsule";
           },
@@ -256,8 +250,7 @@ const AddInventoryPage: React.FC = () => {
       setSubmitSuccess(true);
 
       // Reset form;
-      setFormData({
-        medication_id: "",
+      setFormData({medication_id:"",
         "",
         new Date().toISOString().split("T")[0],
         "",

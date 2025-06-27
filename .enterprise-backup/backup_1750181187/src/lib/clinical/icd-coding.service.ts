@@ -7,7 +7,7 @@ import { AuditService } from '../audit.service';
  * Advanced ICD Coding Service
  *
  * Provides comprehensive ICD-10 and ICD-11 coding support with:
- * - Code lookup and validation
+ * - Code lookup and validation,
  * - Hierarchical browsing
  * - Clinical decision support
  * - Integration with EHR workflows
@@ -35,7 +35,7 @@ export const ICDCodeSchema = z.object({
   modifiers: z.array(z.string()).default([]),
   billable: z.boolean().default(true),
   sex: z.enum(['male', 'female', 'both']).default('both'),
-  ageRange: z.object({
+  ageRange: z.object({,
     min: z.number().optional(),
     max: z.number().optional(),
     units: z.enum(['days', 'months', 'years']).default('years')
@@ -52,12 +52,12 @@ export const CodingRequestSchema = z.object({
   requestDate: z.date().default(() => new Date()),
   dueDate: z.date().optional(),
   status: z.enum(['pending', 'in_progress', 'completed', 'rejected']).default('pending'),
-  specialInstructions: z.string().optional()
+  specialInstructions: z.string().optional(),
 });
 
 export const CodingResultSchema = z.object({
   requestId: z.string(),
-  \1,\2 z.array(z.string()).default([]),
+   z.array(z.string()).default([]),
   coderId: z.string(),
   codingDate: z.date(),
   confidence: z.number().min(0).max(1).default(1),
@@ -66,57 +66,57 @@ export const CodingResultSchema = z.object({
   notes: z.string().optional(),
   validationStatus: z.enum(['pending', 'validated', 'rejected']).default('pending'),
   validatedBy: z.string().optional(),
-  validationDate: z.date().optional()
+  validationDate: z.date().optional(),
 });
 
 export type ICDCode = z.infer<typeof ICDCodeSchema>;
 export type CodingRequest = z.infer<typeof CodingRequestSchema>;
 export type CodingResult = z.infer<typeof CodingResultSchema>;
 
-\1
+
 }
   }
 
   /**
    * Search ICD codes with advanced filtering
    */
-  async searchCodes(options: ICDSearchOptions): Promise<ICDCode[]> {
+  async searchCodes(options: ICDSearchOptions): Promise<ICDCode[]> {,
     try {
       const { query, version = 'ICD-10', category, billableOnly, validOnly, limit = 50, offset = 0 } = options;
 
       // In production, this would query the actual ICD database
       // For now, providing mock results with realistic data
-      const mockResults: ICDCode[] = [
+      const mockResults: ICDCode[] = [,
         {
           code: 'I25.10',
-          \1,\2 'Atherosclerotic heart disease of native coronary artery without angina pectoris',
-          \1,\2 'Diseases of the circulatory system',
-          \1,\2 'I25.1',
-          \1,\2 true,
-          \1,\2 'both',
+           'Atherosclerotic heart disease of native coronary artery without angina pectoris',
+           'Diseases of the circulatory system',
+           'I25.1',
+           true,
+           'both',
           synonyms: ['Coronary atherosclerosis', 'CAD'],
           excludes: ['I25.11'],
-          \1,\2 ['I25.11', 'I25.700']
+           ['I25.11', 'I25.700']
         },
         {
           code: 'E11.9',
-          \1,\2 'Type 2 diabetes mellitus without complications',
-          \1,\2 'Endocrine, nutritional and metabolic diseases',
+           'Type 2 diabetes mellitus without complications',
+           'Endocrine, nutritional and metabolic diseases',
           subcategory: 'Diabetes mellitus',
-          \1,\2 true,
-          \1,\2 true,
-          \1,\2 ['DM Type 2', 'NIDDM'],
+           true,
+           true,
+           ['DM Type 2', 'NIDDM'],
           excludes: ['E11.0', 'E11.1'],
-          includes: ['Adult-onset diabetes']
+          includes: ['Adult-onset diabetes'],
         }
       ]
 
       // Filter results based on search criteria
       let filteredResults = mockResults.filter(code => {
-        \1 {\n  \2eturn false
-        \1 {\n  \2eturn false;
-        \1 {\n  \2eturn false;
-        \1 {\n  \2eturn false;
+         {\n  eturn false
+         {\n  eturn false;
+         {\n  eturn false;
+         {\n  eturn false;
 
         // Text search in code or description
         const searchText = query.toLowerCase()
@@ -131,13 +131,13 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
       // Log search activity
       await this.auditService.logAuditEvent({
         action: 'icd_code_search',
-        \1,\2 query,
-        userId: 'system';query, version, resultsCount: filteredResults.length 
+         query,
+        userId: 'system';query, version, resultsCount: filteredResults.length ,
       })
 
       return filteredResults;
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       throw new Error('Failed to search ICD codes')
     }
   }
@@ -145,39 +145,39 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
   /**
    * Get ICD code hierarchy (parent/child relationships)
    */
-  async getCodeHierarchy(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{
+  async getCodeHierarchy(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{,
     parents: ICDCode[],
-    \1,\2 ICDCode[]
+     ICDCode[]
   }> {
     try {
       // Mock hierarchy data
       const mockHierarchy = {
-        parents: [{
+        parents: [{,
           code: 'I25',
-          \1,\2 'Chronic ischemic heart disease',
-          \1,\2 false,
-          \1,\2 false,
-          sex: 'both' as const
+           'Chronic ischemic heart disease',
+           false,
+           false,
+          sex: 'both' as const,
         }],
         children: [],
-        siblings: [{
+        siblings: [{,
           code: 'I25.11',
-          \1,\2 'Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm',
-          \1,\2 true,
-          \1,\2 true,
-          sex: 'both' as const
+           'Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm',
+           true,
+           true,
+          sex: 'both' as const,
         }]
       }
 
       await this.auditService.logAuditEvent({
         action: 'icd_hierarchy_lookup',
-        \1,\2 code,
+         code,
         userId: 'system';code, version 
       });
 
       return mockHierarchy;
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       throw new Error('Failed to get code hierarchy')
     }
   }
@@ -185,42 +185,42 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
   /**
    * Validate ICD code
    */
-  async validateCode(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{
+  async validateCode(code: string, version: 'ICD-10' | 'ICD-11' = 'ICD-10'): Promise<{,
     isValid: boolean,
-    \1,\2 string[],
-    suggestions: string[]
+     string[],
+    suggestions: string[],
   }> {
     try {
-      const searchResults = await this.searchCodes({ query: code, version, limit: 1 });
+      const searchResults = await this.searchCodes({ query: code, version, limit: 1 ,});
       const foundCode = searchResults.find(c => c.code === code);
 
       const result = {
         isValid: !!foundCode && foundCode.isValid,
-        \1,\2 [] as string[],
-        suggestions: [] as string[]
+         [] as string[],
+        suggestions: [] as string[],
       };
 
-      \1 {\n  \2{
+       {\n  {
         result.validationErrors.push('Code not found in database');
         // Suggest similar codes
-        const similarCodes = await this.searchCodes({ query: code.substring(0, 3), version, limit: 5 })
+        const similarCodes = await this.searchCodes({ query: code.substring(0, 3), version, limit: 5 }),
         result.suggestions = similarCodes.map(c => c.code);
-      } else \1 {\n  \2{
+      } else  {\n  {
         result.validationErrors.push('Code is no longer valid');
-        \1 {\n  \2{
+         {\n  {
           result.suggestions = foundCode.seeAlso;
         }
       }
 
       await this.auditService.logAuditEvent({
         action: 'icd_code_validation',
-        \1,\2 code,
-        userId: 'system';code, version, isValid: result.isValid 
+         code,
+        userId: 'system';code, version, isValid: result.isValid ,
       });
 
       return result;
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       throw new Error('Failed to validate ICD code')
     }
   }
@@ -228,22 +228,22 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
   /**
    * Submit coding request
    */
-  async submitCodingRequest(request: CodingRequest): Promise<string> {
+  async submitCodingRequest(request: CodingRequest): Promise<string> {,
     try {
       const validatedRequest = CodingRequestSchema.parse(request);
       const requestId = `cr_${crypto.getRandomValues(new Uint32Array(1))[0]}_${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
 
       // In production, store in database
-      /* SECURITY: Console statement removed */await this.auditService.logAuditEvent({
+      /* SECURITY: Console statement removed */await this.auditService.logAuditEvent({,
         action: 'coding_request_submitted',
-        \1,\2 requestId,
-        \1,\2 validatedRequest.patientId,
-          \1,\2 validatedRequest.codeType
+         requestId,
+         validatedRequest.patientId,
+           validatedRequest.codeType
       }),
 
       return requestId;
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       throw new Error('Failed to submit coding request')
     }
   }
@@ -256,15 +256,15 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
       const validatedResult = CodingResultSchema.parse({ ...result, requestId });
 
       // In production, update database record
-      /* SECURITY: Console statement removed */await this.auditService.logAuditEvent({
+      /* SECURITY: Console statement removed */await this.auditService.logAuditEvent({,
         action: 'coding_request_completed',
-        \1,\2 requestId,
-        \1,\2 validatedResult.primaryCodes,
-          \1,\2 validatedResult.methodology,
-          confidence: validatedResult.confidence
+         requestId,
+         validatedResult.primaryCodes,
+           validatedResult.methodology,
+          confidence: validatedResult.confidence,
       }),
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       throw new Error('Failed to complete coding request')
     }
   }
@@ -274,14 +274,14 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
    */
   async getCodingSuggestions(
     clinicalText: string,
-    \1,\2 CodingAssistanceOptions = {}
+     CodingAssistanceOptions = {}
   ): Promise<{
-    suggestions: Array<{
+    suggestions: Array<{,
       code: string,
-      \1,\2 number,
-      reasoning: string
+       number,
+      reasoning: string,
     }>;
-    confidence: number
+    confidence: number,
   }> {
     try {
       const { suggestionLimit = 5, confidenceThreshold = 0.7 } = options;
@@ -290,7 +290,7 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
       const mockSuggestions = [
         {
           code: 'I25.10',
-          \1,\2 0.85,
+           0.85,
           reasoning: 'Keywords: "coronary", "atherosclerotic", "without angina" found in clinical text'
         },
         {
@@ -311,19 +311,19 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
 
       await this.auditService.logAuditEvent({
         action: 'coding_assistance_requested',
-        \1,\2 'suggestion_request',
+         'suggestion_request',
         userId: 'system';
           codeType,
           textLength: clinicalText.length,
-          \1,\2 overallConfidence
+           overallConfidence
       });
 
       return {
         suggestions: filteredSuggestions,
-        confidence: overallConfidence
+        confidence: overallConfidence,
       };
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       throw new Error('Failed to get coding suggestions')
     }
   }
@@ -331,37 +331,37 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
   /**
    * Get coding statistics and metrics
    */
-  async getCodingMetrics(dateRange: { from: Date, to: Date }): Promise<{
+  async getCodingMetrics(dateRange: { from: Date, to: Date }): Promise<{,
     totalRequests: number,
-    \1,\2 number,
-    topCodes: Array<code: string, \1,\2 string >;
-    coderPerformance: Array<{ coderId: string, \1,\2 number }>;
+     number,
+    topCodes: Array<code: string,  string >;
+    coderPerformance: Array<{ coderId: string,  number }>;
       validationRate: number,
-      \1,\2 number;
+       number;
   }> {
     try {
       // Mock metrics data
       const mockMetrics = {
         totalRequests: 245,
-        \1,\2 2.5, // hours
-        topCodes: [code: 'I25.10', count: 15, description: 'Atherosclerotic heart disease of native coronary artery without angina pectoris' ,code: 'E11.9', count: 12, description: 'Type 2 diabetes mellitus without complications' ,code: 'J44.1', count: 10, description: 'Chronic obstructive pulmonary disease with acute exacerbation' 
+         2.5, // hours
+        topCodes: [code: 'I25.10', count: 15, description: 'Atherosclerotic heart disease of native coronary artery without angina pectoris' ,code: 'E11.9', count: 12, description: 'Type 2 diabetes mellitus without complications' ,code: 'J44.1', count: 10, description: 'Chronic obstructive pulmonary disease with acute exacerbation' ,
         ],
-        coderPerformance: [coderId: 'coder001', requestsCompleted: 45, averageConfidence: 0.87 ,coderId: 'coder002', requestsCompleted: 38, averageConfidence: 0.82 ,coderId: 'coder003', requestsCompleted: 35, averageConfidence: 0.89 
+        coderPerformance: [coderId: 'coder001', requestsCompleted: 45, averageConfidence: 0.87 ,coderId: 'coder002', requestsCompleted: 38, averageConfidence: 0.82 ,coderId: 'coder003', requestsCompleted: 35, averageConfidence: 0.89 ,
         ],
-        qualityMetrics: 
+        qualityMetrics: ,
           validationRate: 0.94,
-          \1,\2 0.85
+           0.85
       }
 
       await this.auditService.logAuditEvent({
         action: 'coding_metrics_accessed',
-        \1,\2 'metrics',
+         'metrics',
         userId: 'system';dateRange 
       });
 
       return mockMetrics;
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       throw new Error('Failed to get coding metrics')
     }
   }
@@ -375,10 +375,10 @@ export type CodingResult = z.infer<typeof CodingResultSchema>;
 }
 
 // Singleton instance for application use
-let icdCodingServiceInstance: ICDCodingService | null = null
+let icdCodingServiceInstance: ICDCodingService | null = null,
 
 export const _getICDCodingService = (): ICDCodingService => {
-  \1 {\n  \2{
+   {\n  {
     icdCodingServiceInstance = new ICDCodingService();
   }
   return icdCodingServiceInstance

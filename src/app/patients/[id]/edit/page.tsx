@@ -14,7 +14,7 @@ import { Suspense }
 
 export default async const _PatientEditPage = ({
   params;
-}: {id: string ;
+}: {id:string ;
 }) {
   // Get session;
   const session = await getServerSession(authOptions);
@@ -64,8 +64,7 @@ export default async const _PatientEditPage = ({
 }
 } catch (error) {
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients/${params.id}`, {
-      cache: "no-store",
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients/${params.id}`, {cache:"no-store",
       `next-auth.session-token=${session.user.id}`;
 
     });

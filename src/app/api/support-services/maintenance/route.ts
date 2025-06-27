@@ -3,19 +3,19 @@ import "@/lib/security.service"
 import "@/lib/services/support-services/maintenance/maintenance.service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  MaintenanceService  } from "@/lib/database"
-import {  SecurityService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {MaintenanceService  } from "next/server"
+import {SecurityService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
+import {z  } from "next/server"
 
 // Initialize service;
 const maintenanceService = new MaintenanceService();
 
 // Request validation schemas;
-const createRequestSchema = z.object({assetId:z.string().uuid(),
+const createRequestSchema = z.object({{assetId:z.string(,}).uuid(),
   requestType: z.enum(["PREVENTIVE", "CORRECTIVE", "EMERGENCY", "INSPECTION", "INSTALLATION", "OTHER"]),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
   description: z.string().min(5).max(500),
@@ -25,7 +25,7 @@ const createRequestSchema = z.object({assetId:z.string().uuid(),
   estimatedDuration: z.number().min(1).optional(), // in minutes;
 });
 
-const updateRequestSchema = z.object({requestType:z.enum(["PREVENTIVE", "CORRECTIVE", "EMERGENCY", "INSPECTION", "INSTALLATION", "OTHER"]).optional(),
+const updateRequestSchema = z.object({{requestType:z.enum(["PREVENTIVE", "CORRECTIVE", "EMERGENCY", "INSPECTION", "INSTALLATION", "OTHER"]}).optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
   description: z.string().min(5).max(500).optional(),
   scheduledTime: z.string().transform(val => .optional(),
@@ -38,7 +38,7 @@ const updateRequestSchema = z.object({requestType:z.enum(["PREVENTIVE", "CORRECT
   })).optional()});
 
 // GET /api/support-services/maintenance/requests;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -64,7 +64,7 @@ export const _GET = async (request: any) => {
 }
 
 // POST /api/support-services/maintenance/requests;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -78,7 +78,7 @@ export const _POST = async (request: any) => {
       // Create maintenance request;
       const result = await maintenanceService.createMaintenanceRequest(sanitizedData);
 
-      return NextResponse.json(result, {status:201 });
+      return NextResponse.json(result, {status:201 ,});
     },
     {requiredPermission:"maintenance:create",
       auditAction: "MAINTENANCE_REQUEST_CREATE";
@@ -87,7 +87,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/maintenance/requests/:id;
-export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -104,7 +104,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
 }
 
 // PATCH /api/support-services/maintenance/requests/:id;
-export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {
+export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -127,14 +127,14 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
 }
 
 // DELETE /api/support-services/maintenance/requests/:id;
-export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {
+export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
       // Delete maintenance request;
       await maintenanceService.deleteMaintenanceRequest(params.id);
 
-      return NextResponse.json({success:true });
+      return NextResponse.json({success:true ,});
     },
     {requiredPermission:"maintenance:delete",
       auditAction: "MAINTENANCE_REQUEST_DELETE";
@@ -143,7 +143,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
 }
 
 // POST /api/support-services/maintenance/requests/:id/assign;
-export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }) => {
+export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -152,7 +152,7 @@ export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }
       const { technicianId } = body;
 
       if (!session.user) {
-        return NextResponse.json({error:"Technician ID is required" }, {status:400 });
+        return NextResponse.json({error:"Technician ID is required" ,}, {status:400 ,});
       }
 
       // Assign maintenance request;
@@ -167,7 +167,7 @@ export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }
 }
 
 // POST /api/support-services/maintenance/requests/:id/start;
-export const _START = async (request: any, { params }: {params:{ id: string } }) => {
+export const _START = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -176,7 +176,7 @@ export const _START = async (request: any, { params }: {params:{ id: string } })
       const { technicianId, notes } = body;
 
       if (!session.user) {
-        return NextResponse.json({error:"Technician ID is required" }, {status:400 });
+        return NextResponse.json({error:"Technician ID is required" ,}, {status:400 ,});
       }
 
       // Start maintenance work;
@@ -195,7 +195,7 @@ export const _START = async (request: any, { params }: {params:{ id: string } })
 }
 
 // POST /api/support-services/maintenance/requests/:id/complete;
-export const _COMPLETE = async (request: any, { params }: {params:{ id: string } }) => {
+export const _COMPLETE = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -204,7 +204,7 @@ export const _COMPLETE = async (request: any, { params }: {params:{ id: string }
       const { technicianId, notes, partsUsed, laborHours } = body;
 
       if (!session.user) {
-        return NextResponse.json({error:"Technician ID is required" }, {status:400 });
+        return NextResponse.json({error:"Technician ID is required" ,}, {status:400 ,});
       }
 
       // Complete maintenance request;
@@ -225,7 +225,7 @@ export const _COMPLETE = async (request: any, { params }: {params:{ id: string }
 }
 
 // GET /api/support-services/maintenance/assets;
-export const _GET_ASSETS = async (request: any) => {
+export const _GET_ASSETS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -249,7 +249,7 @@ export const _GET_ASSETS = async (request: any) => {
 }
 
 // GET /api/support-services/maintenance/analytics;
-export const _GET_ANALYTICS = async (request: any) => {
+export const _GET_ANALYTICS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {

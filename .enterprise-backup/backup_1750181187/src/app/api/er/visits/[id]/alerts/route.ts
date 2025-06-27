@@ -5,7 +5,7 @@ import { type NextRequest, NextResponse } from "next/server";
 interface AlertInput {
   alert_type: string; // e.g., "Code Blue", "Stroke Alert", "Sepsis Alert"
   activated_by_id: string | number; // User ID who activated the alert
-  details?: string | null; // FIX: Changed to allow null to match usage
+  details?: string | null; // FIX: Changed to allow null to match usage,
   activation_timestamp?: string; // Optional, defaults to now if not provided
   status?: string; // Optional, defaults to "Active"
 }
@@ -13,26 +13,26 @@ interface AlertInput {
 // Define interface for alert data (including generated fields)
 interface Alert {
   id: string,
-  visit_id: string
+  visit_id: string,
   alert_type: string,
   activated_by_id: string | number;
   details?: string | null; // FIX: Changed to allow null to match usage,
   activation_timestamp: string; // ISO 8601 date string
-  status: string
+  status: string,
 }
 
 // Mock data store for alerts (replace with actual DB interaction)
-const mockAlerts: Alert[] = []
+const mockAlerts: Alert[] = [],
 
 // GET /api/er/visits/[id]/alerts - Get alerts for a specific ER visit
 export const _GET = async (
   _request: NextRequest, // Prefixed as unused
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific
     // const db = env.DB; // Cloudflare specific
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     // Placeholder for database query
     /*
@@ -52,15 +52,15 @@ export const _GET = async (
       );
 
     return NextResponse.json(visitAlerts);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     // Debug logging removed,
     })
     return NextResponse.json(
       {
         error: "Failed to fetch critical alerts",
-        details: error instanceof Error ? error.message : String(error)
+        details: error instanceof Error ? error.message : String(error),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -68,22 +68,22 @@ export const _GET = async (
 // POST /api/er/visits/[id]/alerts - Create a new critical alert for an ER visit
 export const _POST = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
     // const { env } = getRequestContext(); // Cloudflare specific
     // const db = env.DB; // Cloudflare specific
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
     const body = await request.json();
     // Apply type assertion
     const alertData = body as AlertInput;
     const alertId = uuidv4();
 
     // Basic validation
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         { error: "Missing required fields (alert_type, activated_by_id)" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -105,36 +105,36 @@ export const _POST = async (
       .run();
     */
 
-    // FIX: Explicitly type newAlert to match interface Alert
-    const newAlert: Alert = {
+    // FIX: Explicitly type newAlert to match interface Alert,
+    const newAlert: Alert = {,
       id: alertId,
-      \1,\2 alertData.alert_type,
-      \1,\2 alertData.details ?? undefined, // Use nullish coalescing
+       alertData.alert_type,
+       alertData.details ?? undefined, // Use nullish coalescing
       activation_timestamp: alertData.activation_timestamp || new Date().toISOString(),
-      status: alertData.status || "Active"
+      status: alertData.status || "Active",
     };
 
     // Mock implementation
     mockAlerts.push(newAlert); // This should now be type-compatible
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
-    return NextResponse.json(newAlert, { status: 201 })
-  } catch (error: unknown) {
+    return NextResponse.json(newAlert, { status: 201 }),
+  } catch (error: unknown) {,
     // Debug logging removed,
     })
     return NextResponse.json(
       {
         error: "Failed to create critical alert",
-        details: error instanceof Error ? error.message : String(error)
+        details: error instanceof Error ? error.message : String(error),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-// Note: Updating alert status (acknowledge/resolve) might be better handled
+// Note: Updating alert status (acknowledge/resolve) might be better handled,
 // in a separate route like /api/er/visits/[visitId]/alerts/[alertId] (PUT)
 // or potentially via the main visit update PUT endpoint if simpler.
 

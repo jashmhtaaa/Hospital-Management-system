@@ -11,25 +11,25 @@ import { cache } from '@/lib/cache';
 
 interface CacheHealth {
   status: 'healthy' | 'degraded' | 'unhealthy',
-  \1,\2 number,
-  operations: {
-    read: { success: boolean, time: number };
-    write: { success: boolean, time: number };
-    delete: { success: boolean, time: number }
+   number,
+  operations: {,
+    read: { success: boolean, time: number ,};
+    write: { success: boolean, time: number ,};
+    delete: { success: boolean, time: number },
   };
-  memory: {
+  memory: {,
     used: string,
-    \1,\2 number
+     number
   };
-  connections: {
+  connections: {,
     active: number,
-    blocked: number
+    blocked: number,
   };
-  keyspace: {
+  keyspace: {,
     keys: number,
-    expires: number
+    expires: number,
   };
-export const _GET = async (request: NextRequest): Promise<NextResponse> {
+export const _GET = async (request: NextRequest): Promise<NextResponse> {,
   const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
   try {
@@ -41,13 +41,13 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
 
     const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
-    const cacheHealth: CacheHealth = {
+    const cacheHealth: CacheHealth = {,
       status: determineCacheStatus(operations, responseTime),
       timestamp: new Date().toISOString(),
       responseTime,
       operations,
       memory: stats.memory,
-      \1,\2 stats.keyspace
+       stats.keyspace
     };
 
     const httpStatus = cacheHealth.status === 'healthy' ? 200 :
@@ -55,7 +55,7 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json(cacheHealth, {
       status: httpStatus,
-      headers: {
+      headers: {,
         'Cache-Control': 'no-cache',
         'X-Response-Time': `${responseTime}ms`;
       }
@@ -67,8 +67,8 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
       responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-      \1,\2 process.env.NODE_ENV === 'development' ? error.message : undefined
-    }, { status: 503 });
+       process.env.NODE_ENV === 'development' ? error.message : undefined,
+    }, { status: 503 ,});
   }
 }
 
@@ -112,15 +112,15 @@ async const testCacheOperations = (): Promise<CacheHealth['operations']> {
   const deleteTime = crypto.getRandomValues(new Uint32Array(1))[0] - deleteStart;
 
   return {
-    read: { success: readSuccess, time: readTime },
-    write: { success: writeSuccess, time: writeTime },
-    delete: { success: deleteSuccess, time: deleteTime }
+    read: { success: readSuccess, time: readTime ,},
+    write: { success: writeSuccess, time: writeTime ,},
+    delete: { success: deleteSuccess, time: deleteTime },
   };
 }
 
 async const getCacheStats = (): Promise<{
   memory: CacheHealth['memory'],
-  \1,\2 CacheHealth['keyspace']
+   CacheHealth['keyspace']
 }> {
   try {
     // These stats would come from your actual cache implementation
@@ -128,31 +128,31 @@ async const getCacheStats = (): Promise<{
 
     // Simulated stats - replace with actual cache metrics
     return {
-      memory: {
+      memory: {,
         used: '45.2MB',
-        \1,\2 1.15
+         1.15
       },
-      connections: 
+      connections: ,
         active: 12,
         blocked: 0,
-      keyspace: 
+      keyspace: ,
         keys: 2847,
-        expires: 1234
+        expires: 1234,
     };
   } catch (error) {
 
     return {
-      memory: {
+      memory: {,
         used: 'unknown',
-        \1,\2 0
+         0
       },
-      connections: {
+      connections: {,
         active: 0,
-        blocked: 0
+        blocked: 0,
       },
-      keyspace: {
+      keyspace: {,
         keys: 0,
-        expires: 0
+        expires: 0,
       }
     };
   }
@@ -167,7 +167,7 @@ const determineCacheStatus = (
                            !operations.write.success ||
                            !operations.delete.success;
 
-  \1 {\n  \2{
+   {\n  {
     return 'unhealthy';
   }
 
@@ -179,7 +179,7 @@ const determineCacheStatus = (
   );
 
   // Cache is degraded if any operation takes more than 500ms
-  \1 {\n  \2{
+   {\n  {
     return 'degraded';
   }
 

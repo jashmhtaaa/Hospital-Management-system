@@ -15,7 +15,7 @@ import {  z  } from "@/lib/database"
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"];
 
 // Helper function to get invoice ID from URL;
-const getInvoiceId = (pathname: string): number | null {
+const getInvoiceId = (pathname: string): number | null {,
     // Pathname might be /api/invoices/123/items;
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part;
@@ -34,7 +34,7 @@ const AddInvoiceItemSchema = z.object({
     description: z.string().optional(), // Optional override;
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     const cookieStore = await cookies(); // FIX: Add await;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
@@ -42,15 +42,15 @@ export const _POST = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
+        return new Response(JSON.stringify({ error: "Invalid Invoice ID" ,}), {
             status: 400,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -89,9 +89,9 @@ export const _POST = async (request: Request) => {
         const validation = AddInvoiceItemSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
         }
 
         const itemData = validation.data;
@@ -113,15 +113,15 @@ export const _POST = async (request: Request) => {
         const [invoiceCheck, itemCheck, batchCheck] = results;
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invoice not found" }), { status: 404 });
+            return new Response(JSON.stringify({ error: "Invoice not found" ,}), { status: 404 ,});
         }
-        const invoiceStatus = (invoiceCheck.results[0] as { status: string }).status;
+        const invoiceStatus = (invoiceCheck.results[0] as { status: string ,}).status;
         if (!session.user) { // Only allow adding items to Draft invoices
-            return new Response(JSON.stringify({ error: `Cannot add items to invoice with status: ${invoiceStatus}` }), { status: 400 });
+            return new Response(JSON.stringify({ error: `Cannot add items to invoice with status: ${invoiceStatus}` ,}), { status: 400 ,});
         }
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Billable item not found or inactive" }), { status: 404 });
+            return new Response(JSON.stringify({ error: "Billable item not found or inactive" ,}), { status: 404 ,});
         }
         const billableItem = itemCheck.results[0] as { item_id: number, boolean };
 
@@ -136,11 +136,11 @@ export const _POST = async (request: Request) => {
         // Check batch quantity if applicable;
         if (!session.user) {
             if (!session.user) {
-                return new Response(JSON.stringify({ error: "Stock batch not found or does not belong to the specified billable item" }), { status: 404 });
+                return new Response(JSON.stringify({ error: "Stock batch not found or does not belong to the specified billable item" ,}), { status: 404 ,});
             }
-            const batchQuantity = (batchCheck.results[0] as { current_quantity: number }).current_quantity;
+            const batchQuantity = (batchCheck.results[0] as { current_quantity: number ,}).current_quantity;
             if (!session.user) {
-                return new Response(JSON.stringify({ error: `Insufficient stock in batch ${itemData.batch_id}. Available: ${batchQuantity}` }), { status: 400 });
+                return new Response(JSON.stringify({ error: `Insufficient stock in batch ${itemData.batch_id}. Available: ${batchQuantity}` ,}), { status: 400 ,});
 
         // 5. Perform insertions and updates within a transaction;
         const batchActions: D1PreparedStatement[] = [];
@@ -188,17 +188,17 @@ export const _POST = async (request: Request) => {
         // We might need to query it separately if needed, or just return success.;
 
         // 6. Return success response;
-        return new Response(JSON.stringify({ message: "Item added to invoice successfully" }), {
+        return new Response(JSON.stringify({ message: "Item added to invoice successfully" ,}), {
             status: 201, // Created;
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
 // Note: DELETE for removing an item would follow a similar pattern: any;
 // - Check invoice status (Draft);

@@ -18,7 +18,7 @@ import { type
  *;
  * Get document templates based on filters;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -54,7 +54,7 @@ export const GET = async (request: any) => {
     // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get query parameters;
@@ -76,18 +76,18 @@ export const GET = async (request: any) => {
   } catch (error) {
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
     }
 
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" ,}, { status: 500 ,});
   }
 }
 
@@ -96,7 +96,7 @@ export const GET = async (request: any) => {
  *;
  * Create a new document template;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -132,36 +132,36 @@ export const POST = async (request: any) => {
     // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Parse request body;
     const body = await request.json();
 
     // Validate required fields;
     if (!session.user) {
-      return NextResponse.json({ error: "Template name is required" }, { status: 400 });
+      return NextResponse.json({ error: "Template name is required" ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: "Template type is required" }, { status: 400 });
+      return NextResponse.json({ error: "Template type is required" ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: "Content is required" }, { status: 400 });
+      return NextResponse.json({ error: "Content is required" ,}, { status: 400 ,});
 
     // Create template;
     const template = await clinicalDocumentationService.createDocumentTemplate(body, session.user.id);
 
-    return NextResponse.json(template, { status: 201 });
+    return NextResponse.json(template, { status: 201 ,});
   } catch (error) {
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
 
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" ,}, { status: 500 ,});
 
 export async function GET() { return new Response("OK"); }

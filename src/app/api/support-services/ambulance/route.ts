@@ -3,19 +3,19 @@ import "@/lib/security.service"
 import "@/lib/services/support-services/ambulance/ambulance.service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  AmbulanceService  } from "@/lib/database"
-import {  SecurityService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {AmbulanceService  } from "next/server"
+import {SecurityService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
+import {z  } from "next/server"
 
 // Initialize service;
 const ambulanceService = new AmbulanceService();
 
 // Request validation schemas;
-const createTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]),
+const createTripRequestSchema = z.object({{requestType:z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]}),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
   pickupLocation: z.string().min(3).max(200),
   dropoffLocation: z.string().min(3).max(200),
@@ -28,7 +28,7 @@ const createTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_
   specialInstructions: z.string().max(500).optional();
 });
 
-const updateTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]).optional(),
+const updateTripRequestSchema = z.object({{requestType:z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]}).optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]).optional(),
   pickupLocation: z.string().min(3).max(200).optional(),
   dropoffLocation: z.string().min(3).max(200).optional(),
@@ -43,7 +43,7 @@ const updateTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_
 });
 
 // GET /api/support-services/ambulance/trips;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -68,7 +68,7 @@ export const _GET = async (request: any) => {
 }
 
 // POST /api/support-services/ambulance/trips;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -82,7 +82,7 @@ export const _POST = async (request: any) => {
       // Create ambulance trip request;
       const result = await ambulanceService.createAmbulanceTrip(sanitizedData);
 
-      return NextResponse.json(result, {status:201 });
+      return NextResponse.json(result, {status:201 ,});
     },
     {requiredPermission:"ambulance:create",
       auditAction: "AMBULANCE_TRIP_CREATE";
@@ -91,7 +91,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/ambulance/trips/:id;
-export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -108,7 +108,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
 }
 
 // PATCH /api/support-services/ambulance/trips/:id;
-export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {
+export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -131,14 +131,14 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
 }
 
 // DELETE /api/support-services/ambulance/trips/:id;
-export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {
+export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
       // Delete ambulance trip;
       await ambulanceService.deleteAmbulanceTrip(params.id);
 
-      return NextResponse.json({success:true });
+      return NextResponse.json({success:true ,});
     },
     {requiredPermission:"ambulance:delete",
       auditAction: "AMBULANCE_TRIP_DELETE";
@@ -147,7 +147,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
 }
 
 // POST /api/support-services/ambulance/trips/:id/assign;
-export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }) => {
+export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -156,7 +156,7 @@ export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }
       const { ambulanceId, crewIds } = body;
 
       if (!session.user) {
-        return NextResponse.json({error:"Ambulance ID is required" }, {status:400 });
+        return NextResponse.json({error:"Ambulance ID is required" ,}, {status:400 ,});
       }
 
       // Assign ambulance and crew to trip;
@@ -175,7 +175,7 @@ export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }
 }
 
 // POST /api/support-services/ambulance/trips/:id/status;
-export const _UPDATE_STATUS = async (request: any, { params }: {params:{ id: string } }) => {
+export const _UPDATE_STATUS = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -184,7 +184,7 @@ export const _UPDATE_STATUS = async (request: any, { params }: {params:{ id: str
       const { status, notes, latitude, longitude } = body;
 
       if (!session.user) {
-        return NextResponse.json({error:"Status is required" }, {status:400 });
+        return NextResponse.json({error:"Status is required" ,}, {status:400 ,});
       }
 
       // Update ambulance trip status;
@@ -205,7 +205,7 @@ export const _UPDATE_STATUS = async (request: any, { params }: {params:{ id: str
 }
 
 // GET /api/support-services/ambulance/vehicles;
-export const _GET_VEHICLES = async (request: any) => {
+export const _GET_VEHICLES = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -228,7 +228,7 @@ export const _GET_VEHICLES = async (request: any) => {
 }
 
 // GET /api/support-services/ambulance/crews;
-export const _GET_CREWS = async (request: any) => {
+export const _GET_CREWS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -251,7 +251,7 @@ export const _GET_CREWS = async (request: any) => {
 }
 
 // GET /api/support-services/ambulance/analytics;
-export const _GET_ANALYTICS = async (request: any) => {
+export const _GET_ANALYTICS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {

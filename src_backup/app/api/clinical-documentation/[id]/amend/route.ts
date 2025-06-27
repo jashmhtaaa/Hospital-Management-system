@@ -20,7 +20,7 @@ import { type
  */;
 export const POST = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -57,7 +57,7 @@ export const POST = async();
     // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse request body;
@@ -65,15 +65,15 @@ export const POST = async();
 
     // Validate required fields;
     if (!session.user) {
-      return NextResponse.json({ error: "Amendment type is required" }, { status: 400 });
+      return NextResponse.json({ error: "Amendment type is required" ,}, { status: 400 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: "Amendment reason is required" }, { status: 400 });
+      return NextResponse.json({ error: "Amendment reason is required" ,}, { status: 400 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: "Content is required" }, { status: 400 });
+      return NextResponse.json({ error: "Content is required" ,}, { status: 400 ,});
     }
 
     // Create amendment;
@@ -87,18 +87,18 @@ export const POST = async();
       session.user.id;
     );
 
-    return NextResponse.json(amendment, { status: 201 });
+    return NextResponse.json(amendment, { status: 201 ,});
   } catch (error) {
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
 
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" ,}, { status: 500 ,});
 
 export async function GET() { return new Response("OK"); }

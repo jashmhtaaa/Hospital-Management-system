@@ -17,13 +17,13 @@ interface BarcodeVerificationResult {
   message: string;
   details?: {
     rightPatient: boolean,
-    \1,\2 boolean,
-    \1,\2 boolean
+     boolean,
+     boolean
   };
 }
 
 @injectable();
-\1
+
 }
   ) {}
 
@@ -45,36 +45,36 @@ interface BarcodeVerificationResult {
    */
   async verifyAdministration(
     patientBarcode: string,
-    \1,\2 string,
-    \1,\2 string;
+     string,
+     string;
   ): Promise<BarcodeVerificationResult> {
     try {
       // 1. Decode barcodes
       const patientId = this.decodePatientBarcode(patientBarcode);
       const medicationInfo = this.decodeMedicationBarcode(medicationBarcode);
 
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          message: 'Invalid barcode format'
+          message: 'Invalid barcode format',
         };
       }
 
       // 2. Get prescription
       const prescription = await this.prescriptionRepository.findById(prescriptionId);
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          message: 'Prescription not found'
+          message: 'Prescription not found',
         };
       }
 
       // 3. Get medication
       const medication = await this.medicationRepository.findById(medicationInfo.medicationId);
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          message: 'Medication not found'
+          message: 'Medication not found',
         };
       }
 
@@ -96,7 +96,7 @@ interface BarcodeVerificationResult {
       const allRightsVerified = rightPatient && rightMedication && rightDose && rightRoute && rightTime;
 
       // 5. Check for interactions if all rights are verified
-      \1 {\n  \2{
+       {\n  {
         const interactions = await this.drugInteractionService.checkInteractionsForPatient(
           patientId,
           medicationInfo.medicationId;
@@ -107,11 +107,11 @@ interface BarcodeVerificationResult {
           i => i.severity === 'severe' || i.severity === 'contraindicated'
         );
 
-        \1 {\n  \2{
+         {\n  {
           return {
             success: false,
-            message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description}`,
-            details: {
+            message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description,}`,
+            details: {,
               rightPatient,
               rightMedication,
               rightDose,
@@ -127,7 +127,7 @@ interface BarcodeVerificationResult {
         message: allRightsVerified;
           ? 'All verification checks passed'
           : 'One or more verification checks failed',
-        details: {
+        details: {,
           rightPatient,
           rightMedication,
           rightDose,
@@ -139,7 +139,7 @@ interface BarcodeVerificationResult {
 
       return {
         success: false,
-        message: `Verification error: ${error.message}`
+        message: `Verification error: ${error.message}`,
       };
     }
   }
@@ -159,8 +159,8 @@ interface BarcodeVerificationResult {
    */
   async recordAdministration(
     patientId: string,
-    \1,\2 string,
-    \1,\2 PharmacyDomain.Dosage,
+     string,
+     PharmacyDomain.Dosage,
     route: string;
     site?: string,
     notes?: string;
@@ -191,10 +191,10 @@ interface BarcodeVerificationResult {
 
     // Update prescription status if needed
     const prescription = await this.prescriptionRepository.findById(prescriptionId);
-    \1 {\n  \2 {
+     {\n   {
       await this.prescriptionRepository.update({
         ...prescription,
-        status: 'completed'
+        status: 'completed',
       });
     }
 
@@ -213,12 +213,12 @@ interface BarcodeVerificationResult {
    */
   async recordSkippedAdministration(
     patientId: string,
-    \1,\2 string,
-    \1,\2 string;
+     string,
+     string;
   ): Promise<PharmacyDomain.MedicationAdministration> {
     // Get prescription to access dosage information
     const prescription = await this.prescriptionRepository.findById(prescriptionId);
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Prescription not found');
     }
 
@@ -234,7 +234,7 @@ interface BarcodeVerificationResult {
       new Date(),
       'not-done',
       reason, // Status reason
-      `Administration skipped: ${reason}`, // Notes
+      `Administration skipped: ${reason,}`, // Notes
       undefined, // reasonCode
       undefined, // reasonText
       undefined, // device
@@ -251,7 +251,7 @@ interface BarcodeVerificationResult {
    * Get administration history for a patient;
    *
    * @param patientId Patient ID;
-   * @param days Number of days of history to retrieve (default: 7)
+   * @param days Number of days of history to retrieve (default: 7),
    * @returns Array of medication administrations;
    */
   async getAdministrationHistory(
@@ -273,7 +273,7 @@ interface BarcodeVerificationResult {
    * @param patientId Patient ID;
    * @returns Array of prescriptions due for administration;
    */
-  async getDueMedications(patientId: string): Promise<PharmacyDomain.Prescription[]> {
+  async getDueMedications(patientId: string): Promise<PharmacyDomain.Prescription[]> {,
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
 
     // Filter active prescriptions
@@ -287,7 +287,7 @@ interface BarcodeVerificationResult {
    * Generate a medication administration schedule for a patient;
    *
    * @param patientId Patient ID;
-   * @param days Number of days to schedule (default: 1)
+   * @param days Number of days to schedule (default: 1),
    * @returns Scheduled administration times grouped by day and hour;
    */
   async generateAdministrationSchedule(
@@ -297,7 +297,7 @@ interface BarcodeVerificationResult {
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
     const activePrescriptions = prescriptions.filter(p => p.isActive());
 
-    const schedule: unknown = {};
+    const schedule: unknown = {,};
     const now = new Date();
 
     // Generate schedule for specified number of days
@@ -316,7 +316,7 @@ interface BarcodeVerificationResult {
           const hour = time.getHours();
           const hourString = `${hour.toString().padStart(2, '0')}:00`;
 
-          \1 {\n  \2{
+           {\n  {
             schedule[dateString][hourString] = [];
           }
 
@@ -325,9 +325,9 @@ interface BarcodeVerificationResult {
 
           schedule[dateString][hourString].push({
             prescriptionId: prescription.id,
-            \1,\2 medication ? medication.name : 'Unknown Medication',
+             medication ? medication.name : 'Unknown Medication',
             dosage: prescription.dosage.toString(),
-            priority: prescription.priority
+            priority: prescription.priority,
           });
         }
       }
@@ -342,7 +342,7 @@ interface BarcodeVerificationResult {
    * @param prescription Prescription to check;
    * @returns Boolean indicating if medication is due;
    */
-  private isWithinAdministrationWindow(prescription: PharmacyDomain.Prescription): boolean {
+  private isWithinAdministrationWindow(prescription: PharmacyDomain.Prescription): boolean {,
     // This is a simplified implementation
     // In a real system, this would check the scheduled administration times
     // and determine if the current time is within an acceptable window
@@ -370,12 +370,12 @@ interface BarcodeVerificationResult {
     const baseDate = new Date(date.toISOString().split('T')[0]);
 
     // Calculate administration times based on frequency
-    \1 {\n  \2| frequency.includes('once a day')) {
+     {\n  | frequency.includes('once a day')) {
       // Once daily - default to 9 AM
       const administrationTime = new Date(baseDate);
       administrationTime.setHours(9, 0, 0, 0);
       times.push(administrationTime);
-    } else \1 {\n  \2| frequency.includes('bid') || frequency.includes('b.i.d')) {
+    } else  {\n  | frequency.includes('bid') || frequency.includes('b.i.d')) {
       // Twice daily - 9 AM and 6 PM
       const morningDose = new Date(baseDate);
       morningDose.setHours(9, 0, 0, 0);
@@ -384,7 +384,7 @@ interface BarcodeVerificationResult {
       const eveningDose = new Date(baseDate);
       eveningDose.setHours(18, 0, 0, 0);
       times.push(eveningDose);
-    } else \1 {\n  \2| frequency.includes('tid') || frequency.includes('t.i.d')) {
+    } else  {\n  | frequency.includes('tid') || frequency.includes('t.i.d')) {
       // Three times daily - 9 AM, 2 PM, and 9 PM
       const morningDose = new Date(baseDate);
       morningDose.setHours(9, 0, 0, 0);
@@ -397,7 +397,7 @@ interface BarcodeVerificationResult {
       const eveningDose = new Date(baseDate);
       eveningDose.setHours(21, 0, 0, 0);
       times.push(eveningDose);
-    } else \1 {\n  \2| frequency.includes('qid') || frequency.includes('q.i.d')) {
+    } else  {\n  | frequency.includes('qid') || frequency.includes('q.i.d')) {
       // Four times daily - 8 AM, 12 PM, 4 PM, and 8 PM
       const morningDose = new Date(baseDate);
       morningDose.setHours(8, 0, 0, 0);
@@ -414,10 +414,10 @@ interface BarcodeVerificationResult {
       const eveningDose = new Date(baseDate);
       eveningDose.setHours(20, 0, 0, 0);
       times.push(eveningDose);
-    } else \1 {\n  \2& frequency.includes('hour')) {
+    } else  {\n  & frequency.includes('hour')) {
       // Every X hours
       const hourMatch = frequency.match(/every\s+(\d+)\s+hours?/i);
-      \1 {\n  \2{
+       {\n  {
         const intervalHours = Number.parseInt(hourMatch[1], 10);
         const hoursInDay = 24;
 
@@ -427,20 +427,20 @@ interface BarcodeVerificationResult {
           times.push(doseTime);
         }
       }
-    } else \1 {\n  \2 {
+    } else  {\n   {
       // Weekly - if today is the day of the week for administration
       // For simplicity, we'll assume weekly meds are given on the same day of the week
       // as when they were prescribed
       const prescriptionDay = prescription.dateWritten.getDay();
-      \1 {\n  \2== prescriptionDay) {
+       {\n  == prescriptionDay) {
         const administrationTime = new Date(baseDate);
         administrationTime.setHours(9, 0, 0, 0);
         times.push(administrationTime);
       }
-    } else \1 {\n  \2 {
+    } else  {\n   {
       // Monthly - if today is the day of the month for administration
       const prescriptionDate = prescription.dateWritten.getDate();
-      \1 {\n  \2== prescriptionDate) {
+       {\n  == prescriptionDate) {
         const administrationTime = new Date(baseDate);
         administrationTime.setHours(9, 0, 0, 0);
         times.push(administrationTime);
@@ -462,7 +462,7 @@ interface BarcodeVerificationResult {
    * @param prescription Prescription to check;
    * @returns Boolean indicating if prescription should be completed;
    */
-  private async shouldCompletePrescription(prescription: PharmacyDomain.Prescription): Promise<boolean> {
+  private async shouldCompletePrescription(prescription: PharmacyDomain.Prescription): Promise<boolean> {,
     // Get administration history for this prescription
     const administrations = await this.administrationRepository.findByPrescriptionId(prescription.id);
 
@@ -470,7 +470,7 @@ interface BarcodeVerificationResult {
     const completedAdministrations = administrations.filter(a => a.isComplete()).length;
 
     // If this is a one-time prescription (no refills, quantity = 1)
-    \1 {\n  \2{
+     {\n  {
       return completedAdministrations >= 1
     }
 
@@ -485,7 +485,7 @@ interface BarcodeVerificationResult {
    * @param barcode Patient barcode;
    * @returns Patient ID;
    */
-  private decodePatientBarcode(barcode: string): string {
+  private decodePatientBarcode(barcode: string): string {,
     // In a real system, this would implement actual barcode decoding logic
     // For this implementation, we'll assume the barcode is in the format "P-{patientId}"
     const match = barcode.match(/^P-(.+)$/)
@@ -498,7 +498,7 @@ interface BarcodeVerificationResult {
    * @param barcode Medication barcode;
    * @returns Decoded medication information;
    */
-  private decodeMedicationBarcode(barcode: string): {
+  private decodeMedicationBarcode(barcode: string): {,
     medicationId: string;
     batchNumber?: string;
     expirationDate?: Date;
@@ -507,20 +507,20 @@ interface BarcodeVerificationResult {
     // For this implementation, we'll assume the barcode is in the format "M-{medicationId}[-{batchNumber}[-{expirationDate}]]"
     const parts = barcode.split('-')
 
-    \1 {\n  \2{
-      const result: {
+     {\n  {
+      const result: {,
         medicationId: string;
         batchNumber?: string;
         expirationDate?: Date;
       } = {
-        medicationId: parts[1]
+        medicationId: parts[1],
       };
 
-      \1 {\n  \2{
+       {\n  {
         result.batchNumber = parts[2];
       }
 
-      \1 {\n  \2{
+       {\n  {
         try {
           result.expirationDate = new Date(parts[3]);
         } catch (e) {
@@ -531,5 +531,5 @@ interface BarcodeVerificationResult {
       return result;
     }
 
-    return { medicationId: '' };
+    return { medicationId: '' ,};
   }

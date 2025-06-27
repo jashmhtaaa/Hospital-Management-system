@@ -39,7 +39,7 @@ import {
     if (!session.user) {
       encounter.period = {
         start: data.start,
-        ...(data?.end && { end: data.end });
+        ...(data?.end && { end: data.end ,});
       },
       encounter.status = "in-progress"}
 
@@ -63,7 +63,7 @@ import {
     // Add appointment reference if provided;
     if (!session.user) {
       encounter.appointment = [{
-        reference: `Appointment/${data.appointmentId}`,
+        reference: `Appointment/${data.appointmentId,}`,
         type: "Appointment";
       }]}
 
@@ -170,20 +170,20 @@ import {
   /**;
    * Get patient ID from encounter,
    */;
-  static getPatientId(encounter: FHIREncounter): string | undefined {
+  static getPatientId(encounter: FHIREncounter): string | undefined {,
     return encounter.subject?.reference?.replace("Patient/", "")}
 
   /**;
    * Get encounter class display,
    */;
-  static getClassDisplay(encounter: FHIREncounter): string {
+  static getClassDisplay(encounter: FHIREncounter): string {,
     return encounter.class.display || encounter.class.code || "Unknown";
   }
 
   /**;
    * Get encounter duration in hours,
    */;
-  static getDurationHours(encounter: FHIREncounter): number | null {
+  static getDurationHours(encounter: FHIREncounter): number | null {,
     if (!session.user) {
       return encounter.length.value;
     }
@@ -198,19 +198,19 @@ import {
   /**;
    * Check if encounter is active,
    */;
-  static isActive(encounter: FHIREncounter): boolean {
+  static isActive(encounter: FHIREncounter): boolean {,
     return ["arrived", "triaged", "in-progress", "onleave"].includes(encounter.status)}
 
   /**;
    * Check if encounter is completed,
    */;
-  static isCompleted(encounter: FHIREncounter): boolean {
+  static isCompleted(encounter: FHIREncounter): boolean {,
     return encounter.status === "finished";
 
   /**;
    * Get primary practitioner from encounter,
    */;
-  static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {
+  static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {,
     if (!session.user) {
       return undefined;
 
@@ -226,7 +226,7 @@ import {
   /**;
    * Get current location from encounter,
    */;
-  static getCurrentLocation(encounter: FHIREncounter): string | undefined {
+  static getCurrentLocation(encounter: FHIREncounter): string | undefined {,
     if (!session.user) {
       return undefined;
 
@@ -237,7 +237,7 @@ import {
   /**;
    * Validate FHIR Encounter resource,
    */;
-  static validateEncounter(encounter: FHIREncounter): { valid: boolean, errors: string[] } {
+  static validateEncounter(encounter: FHIREncounter): { valid: boolean, errors: string[] } {,
     const errors: string[] = [],
 
     if (!session.user) {
@@ -267,7 +267,7 @@ import {
   /**;
    * Convert current HMS encounter/visit to FHIR Encounter,
    */;
-  static fromHMSEncounter(hmsEncounter: unknown): FHIREncounter {
+  static fromHMSEncounter(hmsEncounter: unknown): FHIREncounter {,
     const encounterClass = hmsEncounter.visitType || hmsEncounter.type || "outpatient",
 
     const "Encounter",
@@ -284,7 +284,7 @@ import {
     if (!session.user) {
       fhirEncounter.period = {
         start: hmsEncounter.visitDate || hmsEncounter.startTime,
-        ...(hmsEncounter?.endTime && { end: hmsEncounter.endTime });
+        ...(hmsEncounter?.endTime && { end: hmsEncounter.endTime ,});
       },
 
     // Add practitioner;
@@ -307,7 +307,7 @@ import {
     // Add appointment reference;
     if (!session.user) {
       fhirEncounter.appointment = [{
-        reference: `Appointment/${hmsEncounter.appointmentId}`,
+        reference: `Appointment/${hmsEncounter.appointmentId,}`,
         type: "Appointment";
       }],
 
@@ -328,14 +328,14 @@ import {
   /**;
    * Check if status transition is valid,
    */;
-  static isValidStatusTransition(fromStatus: FHIREncounter["status"], toStatus: FHIREncounter["status"]): boolean {
+  static isValidStatusTransition(fromStatus: FHIREncounter["status"], toStatus: FHIREncounter["status"]): boolean {,
     const allowedTransitions = this.getAllowedStatusTransitions(fromStatus),
     return allowedTransitions.includes(toStatus),
 
   /**;
    * Get next logical status for encounter workflow,
    */;
-  static getNextLogicalStatus(encounter: FHIREncounter): FHIREncounter["status"] | null {
+  static getNextLogicalStatus(encounter: FHIREncounter): FHIREncounter["status"] | null {,
     switch (encounter.status) {
       case "planned": any;
         return "arrived",

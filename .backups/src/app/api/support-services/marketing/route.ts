@@ -52,7 +52,7 @@ const updateCampaignSchema = z.object({
 });
 
 // GET /api/support-services/marketing/campaigns;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -76,7 +76,7 @@ export const _GET = async (request: any) => {
 }
 
 // POST /api/support-services/marketing/campaigns;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -99,7 +99,7 @@ export const _POST = async (request: any) => {
         userId;
       );
 
-      return NextResponse.json(campaign, { status: 201 });
+      return NextResponse.json(campaign, { status: 201 ,});
     },
     {
       requiredPermission: "marketing:create",
@@ -109,7 +109,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/marketing/campaigns/:id;
-export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -127,7 +127,7 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
 }
 
 // PATCH /api/support-services/marketing/campaigns/:id;
-export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -161,7 +161,7 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
 }
 
 // DELETE /api/support-services/marketing/campaigns/:id;
-export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -172,7 +172,7 @@ export const _DELETE = async (request: any, { params }: { params: { id: string }
       // Delete campaign;
       await marketingService.deleteCampaign(params.id, userId);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true ,});
     },
     {
       requiredPermission: "marketing:delete",
@@ -182,7 +182,7 @@ export const _DELETE = async (request: any, { params }: { params: { id: string }
 }
 
 // GET /api/support-services/marketing/campaigns/:id/analytics;
-export const _GET_ANALYTICS = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_ANALYTICS = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -199,7 +199,7 @@ export const _GET_ANALYTICS = async (request: any, { params }: { params: { id: s
 }
 
 // POST /api/support-services/marketing/campaigns/:id/channels;
-export const _POST_CHANNEL = async (request: any, { params }: { params: { id: string } }) => {
+export const _POST_CHANNEL = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -220,7 +220,7 @@ export const _POST_CHANNEL = async (request: any, { params }: { params: { id: st
         userId;
       );
 
-      return NextResponse.json(channel, { status: 201 });
+      return NextResponse.json(channel, { status: 201 ,});
     },
     {
       requiredPermission: "marketing:update",
@@ -230,7 +230,7 @@ export const _POST_CHANNEL = async (request: any, { params }: { params: { id: st
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId;
-export const _POST_SEGMENT = async (request: any, { params }: { params: { id: string, segmentId: string } }) => {
+export const _POST_SEGMENT = async (request: any, { params }: { params: { id: string, segmentId: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -245,7 +245,7 @@ export const _POST_SEGMENT = async (request: any, { params }: { params: { id: st
         userId;
       );
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       requiredPermission: "marketing:update",
@@ -255,7 +255,7 @@ export const _POST_SEGMENT = async (request: any, { params }: { params: { id: st
 }
 
 // GET /api/support-services/marketing/contacts;
-export const _GET_CONTACTS = async (request: any) => {
+export const _GET_CONTACTS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -281,7 +281,7 @@ export const _GET_CONTACTS = async (request: any) => {
 }
 
 // GET /api/support-services/marketing/analytics/overview;
-export const _GET_OVERVIEW_ANALYTICS = async (request: any) => {
+export const _GET_OVERVIEW_ANALYTICS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {

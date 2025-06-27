@@ -19,7 +19,7 @@ interface TheatreUpdateBody {
 // GET /api/ot/theatres/[id] - Get details of a specific operation theatre;
 export const _GET = async();
   _request: any;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -53,11 +53,11 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: theatreId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        { message: "Theatre ID is required" },
-        { status: 400 }
+        { message: "Theatre ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -70,13 +70,13 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { message: "Operation theatre not found" },
-        { status: 404 }
+        { message: "Operation theatre not found" ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json(results[0]);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
@@ -84,7 +84,7 @@ export const _GET = async();
         message: "Error fetching operation theatre details",
         details: errorMessage;
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -92,7 +92,7 @@ export const _GET = async();
 // PUT /api/ot/theatres/[id] - Update an existing operation theatre;
 export const _PUT = async();
   _request: any;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -126,11 +126,11 @@ export const _PUT = async();
 }
 } catch (error) {
 }
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: theatreId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        { message: "Theatre ID is required" },
-        { status: 400 }
+        { message: "Theatre ID is required" ,},
+        { status: 400 },
       );
 
     const body = (await _request.json()) as TheatreUpdateBody;
@@ -138,8 +138,8 @@ export const _PUT = async();
 
     // Basic validation - ensure at least one field is being updated;
     if (!session.user)eturn NextResponse.json()
-        { message: "No update fields provided" },
-        { status: 400 }
+        { message: "No update fields provided" ,},
+        { status: 400 },
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -147,7 +147,7 @@ export const _PUT = async();
 
     // Construct the update query dynamically;
     // FIX: Use specific type for fieldsToUpdate;
-    const fieldsToUpdate: { [key: string]: string | null } = {};
+    const fieldsToUpdate: { [key: string]: string | null } = {,};
     if (!session.user)ieldsToUpdate.name = name;
     if (!session.user)ieldsToUpdate.location = location;
     if (!session.user)ieldsToUpdate.specialty = specialty;
@@ -169,15 +169,15 @@ export const _PUT = async();
 
     if (!session.user) {
       // Check if the theatre actually exists before returning 404;
-      const { results: checkExists } = await DB.prepare();
+      const { results: checkExists ,} = await DB.prepare();
         "SELECT id FROM OperationTheatres WHERE id = ?";
       );
         .bind(theatreId);
         .all();
       if (!session.user) {
         return NextResponse.json();
-          { message: "Operation theatre not found" },
-          { status: 404 }
+          { message: "Operation theatre not found" ,},
+          { status: 404 },
         );
 
       // If it exists but no changes were made, return 200 OK with current data;
@@ -191,12 +191,12 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { message: "Failed to fetch updated theatre details after update" },
-        { status: 500 }
+        { message: "Failed to fetch updated theatre details after update" ,},
+        { status: 500 },
       );
 
     return NextResponse.json(results[0]);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     // FIX: Remove explicit any;
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -207,17 +207,17 @@ export const _PUT = async();
           message: "Operation theatre name must be unique",
           details: errorMessage;
         },
-        { status: 409 }
+        { status: 409 },
       )}
     return NextResponse.json();
-      { message: "Error updating operation theatre", details: errorMessage },
-      { status: 500 }
+      { message: "Error updating operation theatre", details: errorMessage ,},
+      { status: 500 },
     );
 
 // DELETE /api/ot/theatres/[id] - Delete an operation theatre;
 export const DELETE = async();
   _request: any;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -251,11 +251,11 @@ export const DELETE = async();
 
 } catch (error) {
 
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: theatreId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        { message: "Theatre ID is required" },
-        { status: 400 }
+        { message: "Theatre ID is required" ,},
+        { status: 400 },
       );
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -267,15 +267,15 @@ export const DELETE = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { message: "Operation theatre not found" },
-        { status: 404 }
+        { message: "Operation theatre not found" ,},
+        { status: 404 },
       );
 
     return NextResponse.json();
-      { message: "Operation theatre deleted successfully" },
-      { status: 200 }
+      { message: "Operation theatre deleted successfully" ,},
+      { status: 200 },
     );
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     // FIX: Remove explicit any;
 
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -287,9 +287,9 @@ export const DELETE = async();
           message: "Cannot delete theatre with existing bookings",
           details: errorMessage;
         },
-        { status: 409 }
+        { status: 409 },
       )}
     return NextResponse.json();
-      { message: "Error deleting operation theatre", details: errorMessage },
-      { status: 500 }
+      { message: "Error deleting operation theatre", details: errorMessage ,},
+      { status: 500 },
     );

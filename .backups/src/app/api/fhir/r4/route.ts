@@ -18,7 +18,7 @@ import {  type
 /**;
  * POST /fhir/r4 - Process FHIR Bundle (batch or transaction);
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -64,7 +64,7 @@ export const POST = async (request: any) => {
         },
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
         }
       );
     }
@@ -80,7 +80,7 @@ export const POST = async (request: any) => {
         },
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
         }
       );
     }
@@ -90,15 +90,15 @@ export const POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        result.issues || { error: result.error },
+        result.issues || { error: result.error ,},
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
         }
       );
 
     return NextResponse.json(result.data, {
-      headers: { "Content-Type": "application/fhir+json" }
+      headers: { "Content-Type": "application/fhir+json" },
     });
 
   } catch (error) {
@@ -112,7 +112,7 @@ export const POST = async (request: any) => {
       },
       {
         status: 500,
-        headers: { "Content-Type": "application/fhir+json" }
+        headers: { "Content-Type": "application/fhir+json" },
 
     );
 
@@ -210,7 +210,7 @@ export const GET = async () => {
         ]];
 
     return NextResponse.json(capabilityStatement, {
-      headers: { "Content-Type": "application/fhir+json" }
+      headers: { "Content-Type": "application/fhir+json" },
     });
 
   } catch (error) {
@@ -224,7 +224,7 @@ export const GET = async () => {
       },
       {
         status: 500,
-        headers: { "Content-Type": "application/fhir+json" }
+        headers: { "Content-Type": "application/fhir+json" },
 
     );
 
@@ -234,7 +234,7 @@ export const GET = async () => {
 export const OPTIONS = async () => {
   return new NextResponse(null, {
     status: 200,
-    headers: {
+    headers: {,
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept, X-Requested-With",

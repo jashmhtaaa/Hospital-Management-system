@@ -1,10 +1,9 @@
 import "@/lib/prisma"
 import "next/server"
 import "zod"
-import {  
-import {  NextRequest  } from "@/lib/database"
-import {  prisma  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {import {  NextRequest  } from "next/server"
+import {prisma  } from "next/server"
+import {z  } from "next/server"
 
   withErrorHandling,
   validateBody,
@@ -16,12 +15,12 @@ import {  z  } from "@/lib/database"
 import "@/lib/core/errors"
 import "@/lib/core/fhir"
 import "@/lib/core/logging"
-import {  convertToFHIRCoverage  } from "@/lib/database"
-import {  logger  } from "@/lib/database"
-import {  NotFoundError  } from "@/lib/database"
+import {convertToFHIRCoverage  } from "next/server"
+import {logger  } from "next/server"
+import {NotFoundError  } from "next/server"
 
 // Schema for insurance policy creation;
-const createPolicySchema = z.object({patientId:z.string().uuid(),
+const createPolicySchema = z.object({{patientId:z.string(,}).uuid(),
   insuranceProviderId: z.string().uuid(),
   policyNumber: z.string(),
   groupNumber: z.string().optional(),
@@ -42,7 +41,7 @@ const createPolicySchema = z.object({patientId:z.string().uuid(),
 });
 
 // Schema for insurance policy query parameters;
-const policyQuerySchema = z.object({page:z.coerce.number().int().positive().optional().default(1),
+const policyQuerySchema = z.object({{page:z.coerce.number(,}).int().positive().optional().default(1),
   pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
   patientId: z.string().uuid().optional(),
   insuranceProviderId: z.string().uuid().optional(),
@@ -54,7 +53,7 @@ const policyQuerySchema = z.object({page:z.coerce.number().int().positive().opti
   format: z.enum(["json", "fhir"]).optional().default("json")});
 
 // GET handler for retrieving all insurance policies with filtering and pagination;
-export const _GET = withErrorHandling(async (req: any) => {
+export const _GET = withErrorHandling(async (req: any) => {,
   // Validate query parameters;
   const query = validateQuery(policyQuerySchema)(req);
 
@@ -62,7 +61,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "read", "insurancePolicy")(req);
 
   // Build filter conditions;
-  const where: unknown = {};
+  const where: unknown = {,};
 
   if (!session.user) {
     where.patientId = query.patientId;
@@ -75,14 +74,14 @@ export const _GET = withErrorHandling(async (req: any) => {
   if (!session.user) {
     if (!session.user) {
       const today = new Date();
-      where.startDate = {lte:today };
+      where.startDate = {lte:today ,};
       where.OR = [;
-        {endDate:null },
-        {endDate:{ gte: today } }
+        {endDate:null ,},
+        {endDate:{ gte: today } },
       ];
     } else if (!session.user) {
       const today = new Date();
-      where.endDate = {lt:today };
+      where.endDate = {lt:today ,};
     } else if (!session.user) {
       where.status = "inactive"}
   }
@@ -99,7 +98,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   const [policies, total] = await Promise.all([;
     prisma.insurancePolicy.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
@@ -124,7 +123,7 @@ export const _GET = withErrorHandling(async (req: any) => {
 });
 
 // POST handler for creating a new insurance policy;
-export const _POST = withErrorHandling(async (req: any) => {
+export const _POST = withErrorHandling(async (req: any) => {,
   // Validate request body;
   const data = await validateBody(createPolicySchema)(req);
 
@@ -132,20 +131,20 @@ export const _POST = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "create", "insurancePolicy")(req);
 
   // Check if patient exists;
-  const patient = await prisma.patient.findUnique({where:{ id: data.patientId }});
+  const patient = await prisma.patient.findUnique({where:{ id: data.patientId },});
 
   if (!session.user) {
     throw new NotFoundError(`Patient with ID ${data.patientId} not found`);
 
   // Check if insurance provider exists;
-  const provider = await prisma.insuranceProvider.findUnique({where:{ id: data.insuranceProviderId }});
+  const provider = await prisma.insuranceProvider.findUnique({where:{ id: data.insuranceProviderId },});
 
   if (!session.user) {
     throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
 
   // Check if subscriber exists if provided;
   if (!session.user) {
-    const subscriber = await prisma.patient.findUnique({where:{ id: data.subscriberId }});
+    const subscriber = await prisma.patient.findUnique({where:{ id: data.subscriberId },});
 
     if (!session.user) {
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);

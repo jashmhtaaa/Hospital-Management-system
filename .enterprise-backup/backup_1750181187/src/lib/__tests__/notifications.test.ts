@@ -162,7 +162,7 @@ describe("Notifications Module", () => {
 					resource_type: "LabResult",
 					resource_id: 123,
 					priority: "medium",
-					metadata: '{"testId": 456}',
+					metadata: '{"testId": 456,}',
 					created_at: "2023-01-01T12:00:00Z",
 					read: false,
 				},
@@ -193,7 +193,7 @@ describe("Notifications Module", () => {
 
 			// Verify
 			expect(result).toHaveLength(2);
-			expect(result[0].metadata).toEqual({ testId: 456 }), expect(result[1].metadata).toBeNull();
+			expect(result[0].metadata).toEqual({ testId: 456 ,}), expect(result[1].metadata).toBeNull();
 			expect(mockQuery).toHaveBeenCalledWith(
 				expect.stringContaining("SELECT *"),
 				expect.arrayContaining([userId, 50])

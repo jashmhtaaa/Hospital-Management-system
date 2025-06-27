@@ -27,7 +27,7 @@ import { Loader2 }
 
 // Define interfaces for data structures;
 interface VitalSigns {
-  temperature?: string;
+    temperature?: string;
   pulse?: string;
   respiratory_rate?: string;
   blood_pressure?: string;
@@ -36,14 +36,13 @@ interface VitalSigns {
 }
 
 interface IntakeOutput {
-  oral_intake?: string;
+    oral_intake?: string;
   iv_fluids?: string;
   urine_output?: string;
   other_output?: string;
 }
 
-interface NursingNote {
-  id: string,
+interface NursingNote {id:string,
   string; // Assuming this comes from a join;
   nurse_last_name: string; // Assuming this comes from a join;
   vital_signs?: string; // JSON string;
@@ -53,22 +52,19 @@ interface NursingNote {
   notes: string;
 }
 
-interface AdmissionInfo {
-  admission_number: string,
+interface AdmissionInfo {admission_number:string,
   string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
-interface FormData {
-  vital_signs: string; // JSON string;
+interface FormData {vital_signs:string; // JSON string;
   intake_output: string; // JSON string;
   medication_given: string,
   string;
 }
 
-interface NursingNotesProperties {
-  admissionId: string | null;
+interface NursingNotesProperties {admissionId:string | null;
 }
 
 const "",
@@ -86,8 +82,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
   const [nursingNotes, setNursingNotes] = useState<NursingNote[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
-  const [formData, setFormData] = useState<FormData>({
-    vital_signs: JSON.stringify(defaultVitalSigns, undefined, 2),
+  const [formData, setFormData] = useState<FormData>({vital_signs:JSON.stringify(defaultVitalSigns, undefined, 2),
     intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
     medication_given: "",
     "";
@@ -153,12 +148,10 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         // Mock data;
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockNotes: NursingNote[] = [;
-          {
-            id: "nn_001",
+          {id:"nn_001",
             note_date: [0] - 7_200_000).toISOString(), // 2 hours ago;
             nurse_first_name: "Bob",
-            JSON.stringify({
-              temperature: "37.1 C",
+            JSON.stringify({temperature:"37.1 C",
               "122/78 mmHg",
               oxygen_saturation: "98%";
             }),
@@ -350,8 +343,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       setNursingNotes((previous) => [newNote, ...previous]);
 
       // Reset form;
-      setFormData({
-        vital_signs: JSON.stringify(defaultVitalSigns, undefined, 2),
+      setFormData({vital_signs:JSON.stringify(defaultVitalSigns, undefined, 2),
         intake_output: JSON.stringify(defaultIntakeOutput, undefined, 2),
         medication_given: "",
         "";

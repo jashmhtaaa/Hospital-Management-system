@@ -15,18 +15,15 @@ import { useRouter }
 export const dynamic = "force-dynamic";
 
 // Define interfaces for data structures;
-interface Category {
-  id: string,
+interface Category {id:string,
   name: string;
 }
 
-interface Manufacturer {
-  id: string,
+interface Manufacturer {id:string,
   name: string;
 }
 
-interface MedicationFormData {
-  item_code: string,
+interface MedicationFormData {item_code:string,
   string,
   string,
   string,
@@ -42,8 +39,7 @@ const AddMedicationPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
-  const [formData, setFormData] = useState<MedicationFormData>({
-    item_code: "",
+  const [formData, setFormData] = useState<MedicationFormData>({item_code:"",
     "",
     "",
     "",
@@ -92,20 +88,20 @@ const AddMedicationPage: React.FC = () => {
 }
         // Simulate fetching data;
         const simulatedCategories: Category[] = [;
-          { id: "cat_001", name: "Antibiotics" },
-          { id: "cat_002", name: "Analgesics" },
-          { id: "cat_003", name: "Antipyretics" },
-          { id: "cat_004", name: "Antihypertensives" },
-          { id: "cat_005", name: "Antidiabetics" },
-          { id: "cat_006", name: "Antihistamines" },
-          { id: "cat_007", name: "Antacids" },
-          { id: "cat_008", name: "Vitamins & Supplements" }];
+          {id:"cat_001", name: "Antibiotics" },
+          {id:"cat_002", name: "Analgesics" },
+          {id:"cat_003", name: "Antipyretics" },
+          {id:"cat_004", name: "Antihypertensives" },
+          {id:"cat_005", name: "Antidiabetics" },
+          {id:"cat_006", name: "Antihistamines" },
+          {id:"cat_007", name: "Antacids" },
+          {id:"cat_008", name: "Vitamins & Supplements" }];
         const simulatedManufacturers: Manufacturer[] = [;
-          { id: "mfr_001", name: "Cipla Ltd." },
-          { id: "mfr_002", name: "Sun Pharmaceutical Industries Ltd." },
-          { id: "mfr_003", name: "Lupin Limited" },
-          { id: "mfr_004", name: "Dr. Reddy"s Laboratories" },
-          { id: "mfr_005", name: "Zydus Cadila" }];
+          {id:"mfr_001", name: "Cipla Ltd." },
+          {id:"mfr_002", name: "Sun Pharmaceutical Industries Ltd." },
+          {id:"mfr_003", name: "Lupin Limited" },
+          {id:"mfr_004", name: "Dr. Reddy"s Laboratories" },
+          {id:"mfr_005", name: "Zydus Cadila" }];
         setCategories(simulatedCategories),
         setManufacturers(simulatedManufacturers);
       } catch (error) {
@@ -215,8 +211,7 @@ const AddMedicationPage: React.FC = () => {
       setSubmitSuccess(true);
 
       // Reset form;
-      setFormData({
-        item_code: "",
+      setFormData({item_code:"",
         "",
         "",
         "",

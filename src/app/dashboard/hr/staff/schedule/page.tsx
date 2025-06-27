@@ -64,8 +64,7 @@ export default const _StaffScheduling = () {
   const [search, setSearch] = useState("");
   const [departmentFilter, setDepartmentFilter] = useState("");
   const [departments, setDepartments] = useState<any[]>([]);
-  const [pagination, setPagination] = useState({
-    skip: 0,
+  const [pagination, setPagination] = useState({skip:0,
     0;
   });
   const [scheduleView, setScheduleView] = useState("week");
@@ -108,8 +107,7 @@ export default const _StaffScheduling = () {
 } catch (error) {
 
         setLoading(true);
-        const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
+        const queryParams = new URLSearchParams({skip:pagination.skip.toString(),
           take: pagination.take.toString();
         });
 
@@ -193,8 +191,7 @@ export default const _StaffScheduling = () {
       const shifts = ["Morning (7AM-3PM)", "Evening (3PM-11PM)", "Night (11PM-7AM)", "Off"];
 
       employees.forEach(employee => {
-        const employeeSchedule = {
-          employeeId: employee.id,
+        const employeeSchedule = {employeeId:employee.id,
           employee.department?.name || "Unassigned",
           position: employee.positions?.length > 0;
             ? (employee.positions.find(p => p.isPrimary)?.position.title || employee.positions[0].position.title);
@@ -256,8 +253,7 @@ export default const _StaffScheduling = () {
     for (let i = 0; i < 7; i++) {
       const date = new Date(startOfWeek);
       date.setDate(date.getDate() + i);
-      days.push({
-        name: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][i],
+      days.push({name:["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"][i],
         date: date;
       });
 

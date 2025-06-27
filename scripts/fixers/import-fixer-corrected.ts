@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-function fixImports(filePath: string) {
+function fixImports(filePath: string) {,
   let content = fs.readFileSync(filePath, 'utf8');
   
   // Fix import statements
@@ -15,7 +15,7 @@ function fixImports(filePath: string) {
     .replace(/import \{ type/g, '');
 
   // Fix multiple empty try-catch blocks
-  const errorResponse = `\n    console.error(error);\n    return NextResponse.json({\n      error: "Internal server error"\n    }, {\n      status: 500\n    });\n  `;
+  const errorResponse = `\n    console.error(error);\n    return NextResponse.json({\n      error: "Internal server error"\n    ,}, {\n      status: 500\n    ,});\n  `;
   content = content.replace(/\} catch \(error\) \{[^}]*\}(\s*\} catch \(error\) \{[^}]*\})+/g, `} catch (error) {${errorResponse}}`);
 
   fs.writeFileSync(filePath, content);

@@ -6,48 +6,48 @@ import { prisma } from '@/lib/prisma';
 /**
  * Service for managing marketing analytics;
  */
-\1
+
 }
-  async recordAnalytics(campaignId: string, data: { date: Date, metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
+  async recordAnalytics(campaignId: string, data: { date: Date, metrics: unknown ,}, userId: string): Promise<CampaignAnalytics> {,
     try {
       // Validate analytics data
       this.validateAnalyticsData(data);
 
       // Check if campaign exists
       const existingCampaign = await prisma.marketingCampaign.findUnique({
-        where: { id: campaignId }
+        where: { id: campaignId },
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
       // Check if analytics for this date already exists
       const existingAnalytics = await prisma.campaignAnalytics.findFirst({
-        where: {
+        where: {,
           campaignId,
-          date: data.date
+          date: data.date,
         }
       });
 
       let analytics;
 
-      \1 {\n  \2{
+       {\n  {
         // Update existing analytics
         analytics = await prisma.campaignAnalytics.update({
-          where: { id: existingAnalytics.id },
-          data: {
+          where: { id: existingAnalytics.id ,},
+          data: {,
             metrics: data.metrics,
-            updatedAt: new Date()
+            updatedAt: new Date(),
           }
         });
       } else {
         // Create new analytics
         analytics = await prisma.campaignAnalytics.create({
-          data: {
+          data: {,
             campaignId,
             date: data.date,
-            metrics: data.metrics
+            metrics: data.metrics,
           }
         });
       }
@@ -57,14 +57,14 @@ import { prisma } from '@/lib/prisma';
         action: existingAnalytics ? 'analytics.update' : 'analytics.create',
         resourceId: campaignId;
         userId,
-        details: 
+        details: ,
           analyticsId: analytics.id,
-          \1,\2 Object.keys(data.metrics)
+           Object.keys(data.metrics)
       });
 
       return analytics;
     } catch (error) {
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
       throw new DatabaseError('Failed to record campaign analytics', error);
@@ -74,7 +74,7 @@ import { prisma } from '@/lib/prisma';
   /**
    * Get analytics for a campaign;
    */
-  async getCampaignAnalytics(campaignId: string, filters: {
+  async getCampaignAnalytics(campaignId: string, filters: {,
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
@@ -84,22 +84,22 @@ import { prisma } from '@/lib/prisma';
 
       // Check if campaign exists
       const existingCampaign = await prisma.marketingCampaign.findUnique({
-        where: { id: campaignId }
+        where: { id: campaignId },
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new NotFoundError(`Marketing campaign with ID ${campaignId} not found`);
       }
 
       // Build where clause based on filters
-      const where: unknown = { campaignId };
+      const where: unknown = { campaignId ,};
 
-      \1 {\n  \2{
+       {\n  {
         where.date = {};
-        \1 {\n  \2{
+         {\n  {
           where.date.gte = startDate;
         }
-        \1 {\n  \2{
+         {\n  {
           where.date.lte = endDate;
         }
       }
@@ -107,13 +107,13 @@ import { prisma } from '@/lib/prisma';
       // Get analytics data
       const analyticsData = await prisma.campaignAnalytics.findMany({
         where,
-        orderBy: {
-          date: 'asc'
+        orderBy: {,
+          date: 'asc',
         }
       });
 
       // Filter metrics if specified
-      \1 {\n  \2{
+       {\n  {
         return analyticsData.map(item => ({
           ...item,
           metrics: this.filterMetrics(item.metrics, metrics)
@@ -122,7 +122,7 @@ import { prisma } from '@/lib/prisma';
 
       return analyticsData;
     } catch (error) {
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
       throw new DatabaseError('Failed to retrieve campaign analytics', error);
@@ -132,7 +132,7 @@ import { prisma } from '@/lib/prisma';
   /**
    * Get aggregated analytics for a campaign;
    */
-  async getAggregatedAnalytics(campaignId: string, filters: {
+  async getAggregatedAnalytics(campaignId: string, filters: {,
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
@@ -167,7 +167,7 @@ import { prisma } from '@/lib/prisma';
         trends
       };
     } catch (error) {
-      \1 {\n  \2{
+       {\n  {
         throw error;
       }
       throw new DatabaseError('Failed to retrieve aggregated analytics', error);
@@ -177,7 +177,7 @@ import { prisma } from '@/lib/prisma';
   /**
    * Get comparative analytics for multiple campaigns;
    */
-  async getComparativeAnalytics(campaignIds: string[], filters: {
+  async getComparativeAnalytics(campaignIds: string[], filters: {,
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
@@ -190,15 +190,15 @@ import { prisma } from '@/lib/prisma';
         campaignIds.map(async (campaignId) => {
           try {
             const campaign = await prisma.marketingCampaign.findUnique({
-              where: { id: campaignId },
-              select: {
+              where: { id: campaignId ,},
+              select: {,
                 id: true,
-                \1,\2 true,
-                status: true
+                 true,
+                status: true,
               }
             });
 
-            \1 {\n  \2{
+             {\n  {
               return null;
             }
 
@@ -213,7 +213,7 @@ import { prisma } from '@/lib/prisma';
             return {
               campaign,
               totals,
-              analyticsCount: analytics.length
+              analyticsCount: analytics.length,
             };
           } catch (error) {
 
@@ -230,7 +230,7 @@ import { prisma } from '@/lib/prisma';
 
       return {
         campaigns: sortedData,
-        comparisonDate: new Date()
+        comparisonDate: new Date(),
       };
     } catch (error) {
       throw new DatabaseError('Failed to retrieve comparative analytics', error);
@@ -240,15 +240,15 @@ import { prisma } from '@/lib/prisma';
   /**
    * Filter metrics to include only specified keys;
    */
-  private filterMetrics(metrics: unknown, keys: string[]): unknown {
-    \1 {\n  \2{
+  private filterMetrics(metrics: unknown, keys: string[]): unknown {,
+     {\n  {
       return {};
     }
 
-    const filteredMetrics: unknown = {};
+    const filteredMetrics: unknown = {,};
 
     keys.forEach(key => {
-      \1 {\n  \2{
+       {\n  {
         filteredMetrics[key] = metrics[key];
       }
     });
@@ -259,8 +259,8 @@ import { prisma } from '@/lib/prisma';
   /**
    * Group analytics data by time interval;
    */
-  private groupAnalyticsByInterval(analytics: CampaignAnalytics[], interval: 'day' | 'week' | 'month'): unknown[] {
-    \1 {\n  \2{
+  private groupAnalyticsByInterval(analytics: CampaignAnalytics[], interval: 'day' | 'week' | 'month'): unknown[] {,
+     {\n  {
       return []
     }
 
@@ -272,30 +272,30 @@ import { prisma } from '@/lib/prisma';
 
       switch (interval) {
         case 'day':
-          groupKey = date.toISOString().split('T')[0]; // YYYY-MM-DD\1\n    }\n    case 'week':
+          groupKey = date.toISOString().split('T')[0]; // YYYY-MM-DD\n    }\n    case 'week':
           // Get the Monday of the week
           const day = date.getDay(),
           const diff = date.getDate() - day + (day === 0 ? -6 : 1);
           const monday = new Date(date);
           monday.setDate(diff);
-          groupKey = monday.toISOString().split('T')[0]; // YYYY-MM-DD of Monday\1\n    }\n    case 'month':
+          groupKey = monday.toISOString().split('T')[0]; // YYYY-MM-DD of Monday\n    }\n    case 'month':
           groupKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`; // YYYY-MM
           break;
         default:
           groupKey = date.toISOString().split('T')[0]; // Default to day
       }
 
-      \1 {\n  \2 {
+       {\n   {
         groupedData.set(groupKey, {
           interval: groupKey,
-          metrics: { ...item.metrics }
+          metrics: { ...item.metrics },
         });
       } else {
         const existing = groupedData.get(groupKey);
         const updatedMetrics = this.mergeMetrics(existing.metrics, item.metrics);
         groupedData.set(groupKey, {
           ...existing,
-          metrics: updatedMetrics
+          metrics: updatedMetrics,
         });
       }
     });
@@ -307,13 +307,13 @@ import { prisma } from '@/lib/prisma';
   /**
    * Merge metrics objects, summing numeric values;
    */
-  private mergeMetrics(metrics1: unknown, metrics2: unknown): unknown {
-    const result: unknown = { ...metrics1 };
+  private mergeMetrics(metrics1: unknown, metrics2: unknown): unknown {,
+    const result: unknown = { ...metrics1 ,};
 
     Object.entries(metrics2).forEach(([key, value]) => {
-      \1 {\n  \2{
+       {\n  {
         result[key] = (result[key] || 0) + value;
-      } else \1 {\n  \2{
+      } else  {\n  {
         result[key] = value;
       }
     });
@@ -324,16 +324,16 @@ import { prisma } from '@/lib/prisma';
   /**
    * Calculate totals for analytics metrics;
    */
-  private calculateAnalyticsTotals(analytics: CampaignAnalytics[]): unknown {
-    \1 {\n  \2{
+  private calculateAnalyticsTotals(analytics: CampaignAnalytics[]): unknown {,
+     {\n  {
       return {};
     }
 
-    const totals: unknown = {};
+    const totals: unknown = {,};
 
     analytics.forEach(item => {
       Object.entries(item.metrics).forEach(([key, value]) => {
-        \1 {\n  \2{
+         {\n  {
           totals[key] = (totals[key] || 0) + value;
         }
       });
@@ -345,18 +345,18 @@ import { prisma } from '@/lib/prisma';
   /**
    * Calculate averages for analytics metrics;
    */
-  private calculateAnalyticsAverages(analytics: CampaignAnalytics[]): unknown {
-    \1 {\n  \2{
+  private calculateAnalyticsAverages(analytics: CampaignAnalytics[]): unknown {,
+     {\n  {
       return {};
     }
 
     const totals = this.calculateAnalyticsTotals(analytics);
     const count = analytics.length;
 
-    const averages: unknown = {};
+    const averages: unknown = {,};
 
     Object.entries(totals).forEach(([key, value]) => {
-      \1 {\n  \2{
+       {\n  {
         averages[key] = value / count;
       }
     });
@@ -367,8 +367,8 @@ import { prisma } from '@/lib/prisma';
   /**
    * Calculate trends for analytics metrics;
    */
-  private calculateAnalyticsTrends(analytics: CampaignAnalytics[]): unknown {
-    \1 {\n  \2{
+  private calculateAnalyticsTrends(analytics: CampaignAnalytics[]): unknown {,
+     {\n  {
       return {};
     }
 
@@ -381,17 +381,17 @@ import { prisma } from '@/lib/prisma';
     const first = sortedAnalytics[0];
     const last = sortedAnalytics[sortedAnalytics.length - 1];
 
-    const trends: unknown = {};
+    const trends: unknown = {,};
 
     // Calculate percentage change for each metric
     Object.entries(last.metrics).forEach(([key, value]) => {
-      \1 {\n  \2{
+       {\n  {
         const change = value - first.metrics[key];
         const percentChange = (change / first.metrics[key]) * 100;
         trends[key] = {
           change,
           percentChange,
-          direction: change > 0 ? 'up' : change < 0 ? 'down' : 'stable'
+          direction: change > 0 ? 'up' : change < 0 ? 'down' : 'stable',
         };
       }
     });
@@ -402,8 +402,8 @@ import { prisma } from '@/lib/prisma';
   /**
    * Sort campaigns by performance;
    */
-  private sortCampaignsByPerformance(campaignsData: unknown[]): unknown[] {
-    \1 {\n  \2{
+  private sortCampaignsByPerformance(campaignsData: unknown[]): unknown[] {,
+     {\n  {
       return []
     }
 
@@ -411,7 +411,7 @@ import { prisma } from '@/lib/prisma';
     const firstCampaign = campaignsData[0];
     const metrics = firstCampaign.totals ? Object.keys(firstCampaign.totals) : [];
 
-    \1 {\n  \2{
+     {\n  {
       return campaignsData;
     }
 
@@ -429,20 +429,20 @@ import { prisma } from '@/lib/prisma';
   /**
    * Validate analytics data;
    */
-  private validateAnalyticsData(data: { date: Date, metrics: unknown }): void {
+  private validateAnalyticsData(data: { date: Date, metrics: unknown }): void {,
     const errors: string[] = [];
 
     // Date is required
-    \1 {\n  \2{
+     {\n  {
       errors.push('Analytics date is required');
     }
 
     // Metrics is required and must be an object
-    \1 {\n  \2{
+     {\n  {
       errors.push('Analytics metrics must be a valid object');
     }
 
-    \1 {\n  \2{
+     {\n  {
       throw new ValidationError('Analytics validation failed', errors);
     }
   }

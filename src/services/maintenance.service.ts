@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 // Create enums to match Prisma schema;
 export enum MaintenanceRequestStatus {
@@ -14,7 +14,7 @@ export enum MaintenanceRequestStatus {
   URGENT = "URGENT"}
 
 // Validation schemas;
-export const createMaintenanceRequestSchema = z.object({equipmentId:z.string().optional(),
+export const createMaintenanceRequestSchema = z.object({{equipmentId:z.string(,}).optional(),
   description: z.string().min(1, "Description is required"),
   reportedBy: z.string().min(1, "Reporter ID is required"),
   assignedToId: z.string().optional().nullable(),
@@ -32,7 +32,7 @@ export type UpdateMaintenanceRequestInput = z.infer>;
 
 // Import prisma client;
 import "../lib/prisma"
-import {  prisma  } from "@/lib/database"
+import {prisma  } from "next/server"
 
 /**;
  * Service class for managing maintenance requests;
@@ -43,7 +43,7 @@ import {  prisma  } from "@/lib/database"
       return request;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
       }
       throw error;
     }
@@ -93,7 +93,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         if (!session.user) {
@@ -114,8 +114,8 @@ import {  prisma  } from "@/lib/database"
       const requests = await prisma.maintenanceRequest.findMany({
         where,
         orderBy: [;
-          {priority:"desc" },
-          {requestedAt:"asc" }],
+          {priority:"desc" ,},
+          {requestedAt:"asc" ,}],
         {
             true,
               name: true;
@@ -130,7 +130,7 @@ import {  prisma  } from "@/lib/database"
    * @param id Request ID;
    * @returns The request or null if not found;
    */;
-  async getRequestById(id: string) {
+  async getRequestById(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -163,7 +163,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.findUnique({where:{ id },
+      const request = await prisma.maintenanceRequest.findUnique({where:{ id ,},
         {
             true,
               name: true;
@@ -179,7 +179,7 @@ import {  prisma  } from "@/lib/database"
    * @param data Updated request data;
    * @returns The updated request;
    */;
-  async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {
+  async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -219,7 +219,7 @@ import {  prisma  } from "@/lib/database"
       const {id:_, ...updateData } = validatedData;
 
       // Update the request;
-      const request = await prisma.maintenanceRequest.update({where:{ id },
+      const request = await prisma.maintenanceRequest.update({where:{ id ,},
         data: updateData,
         {
             true,
@@ -229,7 +229,7 @@ import {  prisma  } from "@/lib/database"
       return request;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -238,7 +238,7 @@ import {  prisma  } from "@/lib/database"
    * @param id Request ID;
    * @returns The deleted request;
    */;
-  async deleteRequest(id: string) {
+  async deleteRequest(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -271,7 +271,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.delete({where:{ id }});
+      const request = await prisma.maintenanceRequest.delete({where:{ id },});
 
       return request;
     } catch (error) {
@@ -283,7 +283,7 @@ import {  prisma  } from "@/lib/database"
    * @param userId User ID;
    * @returns The updated request;
    */;
-  async assignRequest(requestId: string, userId: string) {
+  async assignRequest(requestId: string, userId: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -316,7 +316,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.update({where:{ id: requestId },
+      const request = await prisma.maintenanceRequest.update({where:{ id: requestId ,},
         userId,
           status: MaintenanceRequestStatus.IN_PROGRESS;
         },
@@ -334,7 +334,7 @@ import {  prisma  } from "@/lib/database"
    * @param requestId Request ID;
    * @returns The updated request;
    */;
-  async completeRequest(requestId: string) {
+  async completeRequest(requestId: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -367,7 +367,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.update({where:{ id: requestId },
+      const request = await prisma.maintenanceRequest.update({where:{ id: requestId ,},
         MaintenanceRequestStatus.COMPLETED,
           completedAt: new Date();
         },
@@ -385,7 +385,7 @@ import {  prisma  } from "@/lib/database"
    * @param requestId Request ID;
    * @returns The updated request;
    */;
-  async cancelRequest(requestId: string) {
+  async cancelRequest(requestId: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -418,7 +418,7 @@ import {  prisma  } from "@/lib/database"
 
 } catch (error) {
 
-      const request = await prisma.maintenanceRequest.update({where:{ id: requestId },
+      const request = await prisma.maintenanceRequest.update({where:{ id: requestId ,},
         MaintenanceRequestStatus.CANCELLED;
         },
         {

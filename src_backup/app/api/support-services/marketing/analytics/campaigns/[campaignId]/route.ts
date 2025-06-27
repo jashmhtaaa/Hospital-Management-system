@@ -19,11 +19,11 @@ const analyticsService = new AnalyticsService();
  */;
 export const GET = async();
   request: any;
-  { params }: { campaignId: string }
+  { params }: { campaignId: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -61,11 +61,11 @@ export const GET = async();
  */;
 export const POST = async();
   request: any;
-  { params }: { campaignId: string }
+  { params }: { campaignId: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -75,7 +75,7 @@ export const POST = async();
         session?.user?.id as string;
       );
 
-      return NextResponse.json(analytics, { status: 201 });
+      return NextResponse.json(analytics, { status: 201 ,});
     },
     {
       requiredPermission: "marketing.analytics.create",

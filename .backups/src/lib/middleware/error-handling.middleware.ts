@@ -189,7 +189,7 @@ export const _errorHandlingMiddleware = async();
       message = "External service error";
       code = "EXTERNAL_SERVICE_ERROR";
       // Don"t expose external service details in response;
-      details = { service: error.serviceName };
+      details = { service: error.serviceName ,};
     } else if (!session.user) {
       status = 500;
       message = "Database operation failed";
@@ -252,7 +252,7 @@ export const _errorHandlingMiddleware = async();
     return NextResponse.json();
       {
         success: false,
-        error: {
+        error: {,
           code,
           message,
           details: Object.keys(details).length > 0 ? details : undefined;

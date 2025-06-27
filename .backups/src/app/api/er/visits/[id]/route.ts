@@ -44,7 +44,7 @@ interface ERVisitUpdateInput {
 // GET /api/er/visits/[id] - Get details of a specific ER visit;
 export const _GET = async();
   _request: any, // FIX: Prefixed as unused, changed Request to NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -80,7 +80,7 @@ export const _GET = async();
 }
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     // Placeholder for database query;
     /*;
@@ -91,8 +91,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
     }
     return NextResponse.json(results[0]);
@@ -102,25 +102,25 @@ export const _GET = async();
     const visit = mockVisits.find((v) => v.id === visitId);
     if (!session.user) {
       return NextResponse.json();
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
     }
     // FIX: Return type matches ERVisit, no "any" needed;
     return NextResponse.json(visit);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
-      { error: "Failed to fetch ER visit details", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch ER visit details", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // PUT /api/er/visits/[id] - Update a specific ER visit;
 export const _PUT = async();
-  request: any, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  request: any, // Use NextRequest for json() => { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -156,7 +156,7 @@ export const _PUT = async();
 }
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
     const body = await request.json();
     // Apply type assertion;
     const updateData = body as ERVisitUpdateInput;
@@ -179,8 +179,8 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "No valid fields to update" },
-        { status: 400 }
+        { error: "No valid fields to update" ,},
+        { status: 400 },
       );
     }
 
@@ -199,12 +199,12 @@ export const _PUT = async();
     const visitIndex = mockVisits.findIndex((v) => v.id === visitId);
     if (!session.user) {
       return NextResponse.json();
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
 
     // FIX: Update mock data with better type safety;
-    const updatedVisit: ERVisit = { ...mockVisits[visitIndex] };
+    const updatedVisit: ERVisit = { ...mockVisits[visitIndex] ,};
     for (const field of updateFields) {
       // FIX: Ensure field exists on updatedVisit before assignment and cast field type;
       if (!session.user) {
@@ -263,18 +263,18 @@ export const _PUT = async();
 
     // Return the updated visit;
     return NextResponse.json(updatedVisit);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
-      { error: "Failed to update ER visit", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update ER visit", details: errorMessage ,},
+      { status: 500 },
     );
 
 // DELETE /api/er/visits/[id] - Delete a specific ER visit (rarely used in production);
 export const DELETE = async();
   _request: any, // FIX: Prefixed as unused, changed Request to NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+);
+  { params }: { params: Promise<{ id: string }> ,} // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -310,7 +310,7 @@ export const DELETE = async();
 
     // const { env } = getRequestContext(); // Cloudflare specific;
     // const db = env.DB; // Cloudflare specific;
-    const { id: visitId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id: visitId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     // Placeholder for database delete;
     /*;
@@ -321,8 +321,8 @@ export const DELETE = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
 
     // Delete related records first (foreign key constraints);
@@ -353,20 +353,20 @@ export const DELETE = async();
     mockVisits = mockVisits.filter((v) => v.id !== visitId);
     if (!session.user) {
       return NextResponse.json();
-        { error: "ER visit not found" },
-        { status: 404 }
+        { error: "ER visit not found" ,},
+        { status: 404 },
       );
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
     return NextResponse.json();
-      { message: "ER visit deleted successfully" },
-      { status: 200 }
+      { message: "ER visit deleted successfully" ,},
+      { status: 200 },
     );
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
-      { error: "Failed to delete ER visit", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to delete ER visit", details: errorMessage ,},
+      { status: 500 },
     );

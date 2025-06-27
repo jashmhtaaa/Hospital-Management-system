@@ -32,8 +32,7 @@ import { useRouter }
 import { toast } from "@/components/ui/use-toast"; // Import toast for notifications;
 
 // Define interface for the order data;
-interface RadiologyOrder {
-  id: string;
+interface RadiologyOrder {id:string;
   patient_name?: string; // Make optional if not always present;
   procedure_name?: string; // Make optional if not always present;
   order_datetime: string; // Or Date if API returns Date object;
@@ -92,7 +91,7 @@ export default const _RadiologyOrderList = () {
         );
       }
       // Assume API returns an object with a "results" array or the array directly;
-      const data: { results: RadiologyOrder[] } | RadiologyOrder[] =;
+      const data: {results:RadiologyOrder[] } | RadiologyOrder[] =;
         await response.json();
       const fetchedOrders = Array.isArray(data) ? data : data.results || [];
       setOrders(fetchedOrders);
@@ -150,8 +149,7 @@ export default const _RadiologyOrderList = () {
 
 } catch (error) {
 
-      const response = await fetch("/api/radiology/orders", {
-        method: "POST",
+      const response = await fetch("/api/radiology/orders", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(orderData);
@@ -201,8 +199,7 @@ export default const _RadiologyOrderList = () {
 
         throw new Error(errorMessage);
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Radiology order created successfully.";
       }),
       setShowCreateModal(false);
@@ -211,8 +208,7 @@ export default const _RadiologyOrderList = () {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
-      toast({
-        title: "Error Creating Order",
+      toast({title:"Error Creating Order",
         "destructive";
       });
       // Keep the modal open on error so the user can retry or correct input;
@@ -222,8 +218,7 @@ export default const _RadiologyOrderList = () {
   // Type the parameter and add index signature to statusStyles;
   const getStatusBadge = (status: RadiologyOrder["status"]) => {
     // Define styles for specific statuses;
-    const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
-      pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
+    const statusStyles: { [key in RadiologyOrder["status"]]: string } = {pending:"bg-yellow-100 text-yellow-800 border-yellow-200",
       "bg-purple-100 text-purple-800 border-purple-200",
       "bg-red-100 text-red-800 border-red-200";
     };

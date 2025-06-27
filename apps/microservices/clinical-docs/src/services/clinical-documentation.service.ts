@@ -14,23 +14,23 @@ import type { PrismaService } from '@/lib/prisma';
  * AI-powered clinical note generation with structured data extraction;
  */
 
-\1
+
 }
-  dimensions?: { width: number, height: number };
+  dimensions?: { width: number, height: number ,};
   duration?: number; // for video/audio
   capturedAt?: Date;
   capturedBy?: string;
   equipment?: string;
-\1
+
 }
-  position: { start: number, end: number };
-  context: string
-\1
+  position: { start: number, end: number ,};
+  context: string,
+
 }
 }
 
 @Injectable();
-\1
+
 }
   }
 
@@ -39,11 +39,11 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async generateClinicalNote(
     documentType: DocumentType,
-    \1,\2 string;
+     string;
     templateId?: string,
     inputData?: unknown;
   ): Promise<ClinicalDocument> {
-    const startTime = crypto.getRandomValues(\1[0];
+    const startTime = crypto.getRandomValues([0];
 
     try {
       // Get patient data and context
@@ -66,13 +66,13 @@ import type { PrismaService } from '@/lib/prisma';
       const complianceFlags = await this.checkCompliance(content, documentType, structuredData);
 
       // Create document
-      const \1,\2 `doc-${crypto.getRandomValues(\1[0]}`,
+      const  `doc-${crypto.getRandomValues([0]}`,
         documentType,
         patientId,
         encounterId,
         authorId: inputData?.authorId || 'system',
-        \1,\2 inputData?.departmentId || '',
-        \1,\2 template?.id,
+         inputData?.departmentId || '',
+         template?.id,
         title: this.generateDocumentTitle(documentType, patientData, encounterData),
         content,
         status: DocumentStatus.DRAFT,
@@ -80,13 +80,13 @@ import type { PrismaService } from '@/lib/prisma';
         createdAt: new Date(),
         updatedAt: new Date(),
         lastModifiedBy: inputData?.authorId || 'system',
-        \1,\2 [],
+         [],
         metadata: this.generateMetadata(content),
         structuredData,
         qualityMetrics,
         complianceFlags,
         attachments: [],
-        \1,\2 []
+         []
       };
 
       // Save document
@@ -97,16 +97,16 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.CLINICAL_NOTE_CREATED, {
-        clinicalNoteCreated: document
+        clinicalNoteCreated: document,
       });
 
       // Record metrics
-      const duration = crypto.getRandomValues(\1[0] - startTime;
+      const duration = crypto.getRandomValues([0] - startTime;
       metricsCollector.recordTimer('clinical_docs.note_generation_time', duration);
       metricsCollector.incrementCounter('clinical_docs.notes_generated', 1, {
         documentType: documentType,
         qualityScore: Math.round(qualityMetrics.completeness.overallScore).toString(),
-        aiAssisted: 'true'
+        aiAssisted: 'true',
       });
 
       return document;
@@ -119,12 +119,12 @@ import type { PrismaService } from '@/lib/prisma';
   /**
    * Advanced natural language processing for clinical text;
    */
-  async extractClinicalConcepts(text: string): Promise<ClinicalConcept[]> 
+  async extractClinicalConcepts(text: string): Promise<ClinicalConcept[]> ,
     try {
       // Cache check
-      const cacheKey = `clinical_concepts:${this.hashText(text)}`;
+      const cacheKey = `clinical_concepts:${this.hashText(text),}`;
       const cached = await cacheService.getCachedResult('nlp:', cacheKey);
-      \1 {\n  \2eturn cached;
+       {\n  eturn cached;
 
       const concepts: ClinicalConcept[] = [];
 
@@ -158,7 +158,7 @@ import type { PrismaService } from '@/lib/prisma';
       // Record metrics
       metricsCollector.incrementCounter('clinical_docs.concept_extractions', 1, {
         conceptCount: concepts.length.toString(),
-        textLength: text.length.toString()
+        textLength: text.length.toString(),
       });
 
       return concepts;
@@ -172,10 +172,10 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async checkDocumentationCompliance(
     documentId: string;
-  ): Promise<compliant: boolean, \1,\2 number > 
+  ): Promise<compliant: boolean,  number > 
     try {
       const document = await this.getDocument(documentId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Document ${documentId} not found`);
       }
 
@@ -206,7 +206,7 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Send alerts for critical issues
       const criticalFlags = flags.filter(f => f.severity === 'CRITICAL');
-      \1 {\n  \2{
+       {\n  {
         await this.sendComplianceAlerts(document, criticalFlags);
       }
 
@@ -214,7 +214,7 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('clinical_docs.compliance_checks', 1, {
         documentType: document.documentType,
         compliant: compliant.toString(),
-        criticalFlags: criticalFlags.length.toString()
+        criticalFlags: criticalFlags.length.toString(),
       });
 
       return { compliant, flags, score };
@@ -228,7 +228,7 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async recommendTemplate(
     documentType: DocumentType,
-    \1,\2 unknown;
+     unknown;
     userPreferences?: unknown;
   ): Promise<DocumentTemplate[]> 
     try {
@@ -252,7 +252,7 @@ import type { PrismaService } from '@/lib/prisma';
       // Record metrics
       metricsCollector.incrementCounter('clinical_docs.template_recommendations', 1, {
         documentType: documentType,
-        recommendationCount: recommendations.length.toString()
+        recommendationCount: recommendations.length.toString(),
       });
 
       return recommendations;
@@ -268,7 +268,7 @@ import type { PrismaService } from '@/lib/prisma';
     audioData: Buffer,
     documentId: string;
     sectionId?: string;
-  ): Promise<text: string, \1,\2 ClinicalConcept[] > 
+  ): Promise<text: string,  ClinicalConcept[] > 
     try {
       // Speech-to-text conversion
       const speechResult = await this.convertSpeechToText(audioData);
@@ -280,7 +280,7 @@ import type { PrismaService } from '@/lib/prisma';
       const concepts = await this.extractClinicalConcepts(processedText);
 
       // Update document with voice input
-      \1 {\n  \2{
+       {\n  {
         await this.updateDocumentSection(documentId, sectionId, processedText);
       } else {
         await this.appendToDocument(documentId, processedText);
@@ -290,7 +290,7 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('clinical_docs.voice_inputs', 1, {
         confidence: Math.round(speechResult.confidence).toString(),
         conceptCount: concepts.length.toString(),
-        textLength: processedText.length.toString()
+        textLength: processedText.length.toString(),
       });
 
       return {
@@ -303,12 +303,12 @@ import type { PrismaService } from '@/lib/prisma';
   }
 
   // Private helper methods
-  private async getPatientData(patientId: string): Promise<any> {
+  private async getPatientData(patientId: string): Promise<any> {,
     // Implementation to fetch comprehensive patient data
     return {};
   }
 
-  private async getEncounterData(encounterId: string): Promise<any> {
+  private async getEncounterData(encounterId: string): Promise<any> {,
     // Implementation to fetch encounter data
     return {};
   }
@@ -321,10 +321,10 @@ import type { PrismaService } from '@/lib/prisma';
     // Implementation to extract and structure clinical data
     return {
       problems: [],
-      \1,\2 [],
-      \1,\2 [],
-      \1,\2 [],
-      assessments: []
+       [],
+       [],
+       [],
+      assessments: [],
     };
   }
 
@@ -336,8 +336,8 @@ import type { PrismaService } from '@/lib/prisma';
     // AI-powered content generation implementation
     return {
       sections: [],
-      \1,\2 [],
-      structuredFields: []
+       [],
+      structuredFields: [],
     };
   }
 
@@ -347,28 +347,28 @@ import type { PrismaService } from '@/lib/prisma';
   ): Promise<QualityMetrics> {
     // Quality analysis implementation
     return {
-      \1,\2 85,
-        \1,\2 10,
+       85,
+         10,
         missingElements: ['Social History', 'Follow-up Plan'],
         optionalSectionsComplete: 5,
-        totalOptionalSections: 8
+        totalOptionalSections: 8,
       },
-      \1,\2 0,
-        \1,\2 0,
-        \1,\2 []
+       0,
+         0,
+         []
       },
-      \1,\2 true,
-        \1,\2 2,
-        \1,\2 48,
-        actualSignatureTime: 72
+       true,
+         2,
+         48,
+        actualSignatureTime: 72,
       },
-      \1,\2 [],
-        \1,\2 []
+       [],
+         []
       },
     };
   }
 
-  private hashText(text: string): string {
+  private hashText(text: string): string {,
     // Simple hash implementation for caching
     let hash = 0;
     for (let i = 0; i < text.length; i++) {
@@ -382,24 +382,24 @@ import type { PrismaService } from '@/lib/prisma';
   // Additional helper methods would be implemented here...
 
   // Required abstract methods
-  validate(resource: FHIRObservation): boolean {
+  validate(resource: FHIRObservation): boolean {,
     return !!(resource?.resourceType && resource?.status && resource.code)
   }
 
-  toFHIR(document: ClinicalDocument): FHIRObservation {
+  toFHIR(document: ClinicalDocument): FHIRObservation {,
     return {
       resourceType: 'Observation',
-      \1,\2 'final',
-      code: this.createCodeableConcept([
+       'final',
+      code: this.createCodeableConcept([,
         this.createCoding(FHIR_SYSTEMS.SNOMED_CT, '371530004', 'Clinical consultation report'),
       ]),
       subject: this.createReference('Patient', document.patientId),
     };
   }
 
-  fromFHIR(fhirResource: FHIRObservation): Partial<ClinicalDocument> {
+  fromFHIR(fhirResource: FHIRObservation): Partial<ClinicalDocument> {,
     return {
       id: fhirResource.id,
-      patientId: fhirResource.subject?.reference?.split('/')[1] || ''
+      patientId: fhirResource.subject?.reference?.split('/')[1] || '',
     };
   }

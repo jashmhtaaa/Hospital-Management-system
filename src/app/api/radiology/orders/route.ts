@@ -1,13 +1,14 @@
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import { type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {type
 
 // src/app/api/radiology/orders/route.ts;
-// import { getRequestContext } from "@cloudflare/next-on-pages"; // Import when ready to use D1;
+// import { getRequestContext } from "next/server"; // Import when ready to use D1;
 
 // Define interfaces;
 interface RadiologyOrderFilters {
+    {
   status?: string | null;
   modality?: string | null;
   priority?: string | null;
@@ -18,7 +19,8 @@ interface RadiologyOrderFilters {
   search?: string | null;
 }
 
-interface RadiologyOrderInput {patient_id:number,
+interface RadiologyOrderInput {
+    {patient_id:number,
   string,
   body_part: string;
   order_date?: string;
@@ -28,6 +30,7 @@ interface RadiologyOrderInput {patient_id:number,
 }
 
 interface RadiologyOrderUpdateInput {
+    {
   status?: string;
   priority?: string;
   scheduled_date?: string | null;
@@ -45,7 +48,7 @@ interface RadiologyOrderUpdateInput {
 }
 
 // Placeholder function to simulate database interaction;
-async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
+async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {,
   // Use interface;
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   // Replace with actual D1 query when DB is configured;
@@ -146,7 +149,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {
 }
 
 // Placeholder function to simulate creating a radiology order;
-async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
+async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {,
   // Use interface;
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   // Replace with actual D1 insert query when DB is configured;
@@ -170,7 +173,7 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {
 // Placeholder function to simulate getting a single radiology order;
 // FIX: Commented out unused function;
 /*;
-async const getRadiologyOrderByIdFromDB = (id: number) {
+async const getRadiologyOrderByIdFromDB = (id: number) {,
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   // Replace with actual D1 query when DB is configured;
   // ... (D1 query logic);
@@ -242,7 +245,7 @@ async const updateRadiologyOrderInDB = (;
  * GET /api/radiology/orders;
  * Retrieves a list of radiology orders, potentially filtered.;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -286,7 +289,7 @@ export const GET = async (request: any) => {
     const search = searchParams.get("search");
     // Add other filters as needed;
 
-    const filters: RadiologyOrderFilters = {
+    const filters: RadiologyOrderFilters = {,
       status,
       modality,
       priority,
@@ -307,7 +310,7 @@ export const GET = async (request: any) => {
       if (!session.user) {
         const order = await getRadiologyOrderByIdFromDB(id);
         if (!session.user) {
-          return NextResponse.json({error:"Radiology order not found" }, {status:404 });
+          return NextResponse.json({error:"Radiology order not found" ,}, {status:404 ,});
         }
         return NextResponse.json({ order });
       }
@@ -318,21 +321,21 @@ export const GET = async (request: any) => {
     const orders = await getRadiologyOrdersFromDB(filters);
 
     return NextResponse.json({ orders });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     // Add type annotation;
 
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to fetch radiology orders", details: message },
-      {status:500 }
+      {error:"Failed to fetch radiology orders", details: message ,},
+      {status:500 },
     );
 
 /**;
  * POST /api/radiology/orders;
  * Creates a new radiology order.;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -371,21 +374,21 @@ export const POST = async (request: any) => {
     if (!session.user) {
       return NextResponse.json();
         {error:"Missing required fields (patient_id, ordering_doctor_id, modality, body_part)"},
-        {status:400 }
+        {status:400 },
       );
 
     // Simulate creating the radiology order in the database;
     const newOrder = await createRadiologyOrderInDB(orderData);
 
-    return NextResponse.json({order:newOrder }, {status:201 });
-  } catch (error: unknown) {
+    return NextResponse.json({order:newOrder ,}, {status:201 ,});
+  } catch (error: unknown) {,
     // Add type annotation;
 
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to create radiology order", details: message },
-      {status:500 }
+      {error:"Failed to create radiology order", details: message ,},
+      {status:500 },
     );
 
 /**;
@@ -395,7 +398,7 @@ export const POST = async (request: any) => {
  * It should likely be in /orders/[id]/route.ts.;
  * Keeping it here for now to fix TS errors, but should be refactored.;
  */;
-export const PUT = async (request: any) => {
+export const PUT = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -437,8 +440,8 @@ export const PUT = async (request: any) => {
     if (!session.user) {
       // Check for NaN;
       return NextResponse.json();
-        {error:"Invalid or missing radiology order ID in URL path" },
-        {status:400 }
+        {error:"Invalid or missing radiology order ID in URL path" ,},
+        {status:400 },
       );
 
     const updateData = (await request.json()) as RadiologyOrderUpdateInput; // Cast to interface;
@@ -446,13 +449,13 @@ export const PUT = async (request: any) => {
     // Simulate updating the radiology order in the database;
     const updatedOrder = await updateRadiologyOrderInDB(id, updateData);
 
-    return NextResponse.json({order:updatedOrder });
-  } catch (error: unknown) {
+    return NextResponse.json({order:updatedOrder ,});
+  } catch (error: unknown) {,
     // Add type annotation;
 
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to update radiology order", details: message },
-      {status:500 }
+      {error:"Failed to update radiology order", details: message ,},
+      {status:500 },
     );

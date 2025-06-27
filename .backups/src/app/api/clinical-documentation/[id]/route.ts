@@ -20,7 +20,7 @@ import { type
  */;
 export const GET = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -57,7 +57,7 @@ export const GET = async();
     // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get document;
@@ -70,18 +70,18 @@ export const GET = async();
   } catch (error) {
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
     }
 
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" ,}, { status: 500 ,});
   }
 }
 
@@ -92,7 +92,7 @@ export const GET = async();
  */;
 export const PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -129,7 +129,7 @@ export const PUT = async();
     // Get session;
     const session = await getServerSession(authOptions);
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Parse request body;
     const body = await request.json();
@@ -145,14 +145,14 @@ export const PUT = async();
   } catch (error) {
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
 
     if (!session.user) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
 
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error" ,}, { status: 500 ,});
 
 export async function GET() { return new Response("OK"); }

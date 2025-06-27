@@ -45,7 +45,7 @@ const interactionService = new DrugInteractionService();
  * POST /api/pharmacy/interactions/drug-lab;
  * Check for drug-lab result interactions;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -83,14 +83,14 @@ export const POST = async (req: any) => {
     const validationResult = validateDrugLabInteractionRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -129,6 +129,6 @@ export const POST = async (req: any) => {
           interactions.filter(i => i.severity === "moderate").length,
           minor: interactions.filter(i => i.severity === "minor").length;
 
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, "Error checking drug-lab interactions");

@@ -65,7 +65,7 @@ import {
     // Add encounter if provided;
     if (!session.user) {
       medicationRequest.encounter = {
-        reference: `Encounter/${data.encounterId}`,
+        reference: `Encounter/${data.encounterId,}`,
         type: "Encounter";
       };
     }
@@ -83,7 +83,7 @@ import {
         medicationRequest.dispenseRequest.quantity = {
           value: data.quantity,
           "https://unitsofmeasure.org",
-          code: "{tbl}";
+          code: "{tbl,}";
         };
       }
 
@@ -149,7 +149,7 @@ import {
   /**;
    * Get medication display name;
    */;
-  static getMedicationDisplay(medication: FHIRCodeableConcept | FHIRReference): string {
+  static getMedicationDisplay(medication: FHIRCodeableConcept | FHIRReference): string {,
     if (!session.user) {
       return medication.coding[0]?.display || medication.coding[0]?.code || "Unknown Medication";
 
@@ -161,7 +161,7 @@ import {
   /**;
    * Get dosage instructions as readable text;
    */;
-  static getDosageText(dosageInstructions: FHIRDosage[]): string {
+  static getDosageText(dosageInstructions: FHIRDosage[]): string {,
     if (!session.user) {
       return "No dosage instructions";
 
@@ -172,7 +172,7 @@ import {
   /**;
    * Check if medication request is active;
    */;
-  static isActiveMedicationRequest(medicationRequest: FHIRMedicationRequest): boolean {
+  static isActiveMedicationRequest(medicationRequest: FHIRMedicationRequest): boolean {,
     return medicationRequest.status === "active";
 
   /**;
@@ -195,7 +195,7 @@ import {
   /**;
    * Validate FHIR MedicationRequest;
    */;
-  static validateMedicationRequest(medicationRequest: FHIRMedicationRequest): { valid: boolean, errors: string[] } {
+  static validateMedicationRequest(medicationRequest: FHIRMedicationRequest): { valid: boolean, errors: string[] } {,
     const errors: string[] = [];
 
     if (!session.user) {
@@ -221,7 +221,7 @@ import {
   /**;
    * Convert HMS prescription to FHIR MedicationRequest;
    */;
-  static fromHMSPrescription(hmsPrescription: unknown): FHIRMedicationRequest {
+  static fromHMSPrescription(hmsPrescription: unknown): FHIRMedicationRequest {,
     const "MedicationRequest",
       hmsPrescription.status || "active",
       [{
@@ -244,7 +244,7 @@ import {
     // Add encounter if available;
     if (!session.user) {
       fhirMedicationRequest.encounter = {
-        reference: `Encounter/${hmsPrescription.encounterId || hmsPrescription.visitId}`,
+        reference: `Encounter/${hmsPrescription.encounterId || hmsPrescription.visitId,}`,
         type: "Encounter";
       };
 
@@ -311,7 +311,7 @@ import {
   static async checkDrugInteractions();
     medications: FHIRMedicationRequest[],
     newMedication: FHIRMedicationRequest;
-  ): Promise<{ hasInteractions: boolean, interactions: unknown[] }> {
+  ): Promise<{ hasInteractions: boolean, interactions: unknown[] }> {,
     // This would integrate with a drug interaction database;
     // For now, return a placeholder implementation;
     return {

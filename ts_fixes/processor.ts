@@ -13,7 +13,7 @@ const DASHBOARD_FILE = path.join(REPORTS_DIR, 'dashboard.json');
 const project = new Project({
     tsConfigFilePath: './tsconfig.json',
     skipAddingFilesFromTsConfig: false,
-    skipFileDependencyResolution: false
+    skipFileDependencyResolution: false,
 });
 
 // Process files in batches with error handling
@@ -25,7 +25,7 @@ const errorReport: Record<string, string[]> = {};
 
 // Create processing directories
 [REPORTS_DIR, SNAPSHOTS_DIR].forEach(dir => {
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true ,});
 });
 
 // Batch processing loop
@@ -37,7 +37,7 @@ for (let i = 0; i < allFiles.length; i += BATCH_SIZE) {
     const snapshotPath = path.join(SNAPSHOTS_DIR, `batch_${batchNum}.json`);
     fs.writeFileSync(snapshotPath, JSON.stringify({
         files: batch.map(f => f.getFilePath()),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
     }, null, 2));
     
     // Process batch
@@ -62,7 +62,7 @@ for (let i = 0; i < allFiles.length; i += BATCH_SIZE) {
         files_processed: processedFiles,
         remaining_files: allFiles.length - processedFiles,
         error_summary: Object.keys(errorReport).length,
-        last_snapshot: snapshotPath
+        last_snapshot: snapshotPath,
     };
     fs.writeFileSync(DASHBOARD_FILE, JSON.stringify(dashboard, null, 2));
 }

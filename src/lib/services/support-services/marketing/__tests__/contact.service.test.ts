@@ -132,7 +132,7 @@ describe("ContactService", () => {
       const result = await service.getContactById("contact-123");
 
       // Assert;
-      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" },
+      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" ,},
         include: expect.any(Object);
       });
 
@@ -187,7 +187,7 @@ describe("ContactService", () => {
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockContacts);
 
       // Act;
-      const result = await service.getContacts({page:1, limit: 10 });
+      const result = await service.getContacts({page:1, limit: 10 ,});
 
       // Assert;
       expect(prisma.contact.count).toHaveBeenCalled(),
@@ -229,8 +229,8 @@ describe("ContactService", () => {
       expect(prisma.contact.count).toHaveBeenCalledWith({
         filters.status,
           expect.arrayContaining([;
-            {name:{ contains: filters.search, mode: "insensitive" } },
-            {email:{ contains: filters.search, mode: "insensitive" } }])})});
+            {name:{ contains: filters.search, mode: "insensitive" } ,},
+            {email:{ contains: filters.search, mode: "insensitive" } }])}),});
 
       expect(prisma.contact.findMany).toHaveBeenCalledWith();
         expect.objectContaining({
@@ -267,14 +267,14 @@ describe("ContactService", () => {
       (prisma.contact.update as jest.Mock).mockResolvedValue({
         ...mockContact,
         ...updateData,
-        phone: `encrypted_${updateData.phone}`});
+        phone: `encrypted_${updateData.phone}`,});
 
       // Act;
       const result = await service.updateContact("contact-123", updateData, mockUserId);
 
       // Assert;
-      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" }}),
-      expect(prisma.contact.update).toHaveBeenCalledWith({where:{ id: "contact-123" },
+      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" },}),
+      expect(prisma.contact.update).toHaveBeenCalledWith({where:{ id: "contact-123" ,},
         updateData.name,
           phone: expect.stringContaining("encrypted_"),
           status: updateData.status,
@@ -304,7 +304,7 @@ describe("ContactService", () => {
       (prisma.contact.update as jest.Mock).mockResolvedValue({
         ...mockContact,
         ...updateData,
-        phone: `encrypted_${updateData.phone}`});
+        phone: `encrypted_${updateData.phone}`,});
 
       // Act;
       await service.updateContact("contact-123", updateData, mockUserId);
@@ -339,7 +339,7 @@ describe("ContactService", () => {
       );
 
       // Assert;
-      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" }}),
+      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" },}),
       expect(prisma.contactNote.create).toHaveBeenCalledWith({
         "contact-123",
           mockUserId;
@@ -401,9 +401,9 @@ describe("ContactService", () => {
       );
 
       // Assert;
-      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" }}),
+      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" },}),
       expect(service["getPatientById"]).toHaveBeenCalledWith("patient-123"),
-      expect(prisma.contact.update).toHaveBeenCalledWith({where:{ id: "contact-123" },
+      expect(prisma.contact.update).toHaveBeenCalledWith({where:{ id: "contact-123" ,},
         "patient-123",
           updatedById: mockUserId;
         }}),

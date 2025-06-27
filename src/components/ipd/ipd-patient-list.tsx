@@ -16,8 +16,7 @@ import useState }
 import { useEffect
 
 // FIX: Define an interface for the patient data structure;
-interface Inpatient {
-  id: string; // Assuming this is the admission ID (string);
+interface Inpatient {id:string; // Assuming this is the admission ID (string);
   patient_id: string; // FIX: Add patient_id field,
   string,
   string;
@@ -30,12 +29,12 @@ interface Inpatient {
 
 // FIX: Define type for API response;
 // Assuming the API returns an array of Inpatient objects directly;
-// Adjust if the structure is different (e.g., { results: Inpatient[] });
+// Adjust if the structure is different (e.g., {results:Inpatient[] });
 type InpatientsApiResponse = Inpatient[];
 
 // FIX: Define props for IPDPatientList;
 interface IPDPatientListProperties {
-  // (admissionId: number, patientId: number) => void;
+    // (admissionId: number, patientId: number) => void;
 }
 
 // FIX: Update component to accept props;

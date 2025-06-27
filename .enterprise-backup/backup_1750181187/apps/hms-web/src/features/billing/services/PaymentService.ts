@@ -17,16 +17,16 @@ export class PaymentService {
      * @returns {Promise<Payment>} The recorded payment object.
      * @throws {Error} If invoice not found, payment amount mismatch, or payment gateway error.
      */
-    async processPayment(invoiceId: string, paymentInput: PaymentInput): Promise<Payment> {
+    async processPayment(invoiceId: string, paymentInput: PaymentInput): Promise<Payment> {,
         // 1. Fetch Invoice Details
-        // const invoice = await prisma.invoice.findUnique({ where: { id: invoiceId } })
+        // const invoice = await prisma.invoice.findUnique({ where: { id: invoiceId } }),
         // if (!invoice) {
         //     throw new Error(`Invoice with ID ${invoiceId} not found.`)
         // }
         // if (invoice.status === 'PAID') {
         //     throw new Error(`Invoice ${invoiceId} is already paid.`)
         // }
-        const mockInvoice: Invoice | null = await this.findMockInvoice(invoiceId)
+        const mockInvoice: Invoice | null = await this.findMockInvoice(invoiceId),
         if (!mockInvoice) {
             throw new Error(`Invoice with ID ${invoiceId} not found or already paid.`);
         }
@@ -42,27 +42,27 @@ export class PaymentService {
 
         // 3. Integrate with Payment Gateway (placeholder)
         // In a real scenario, you would call the payment gateway API here.
-        // const _gatewayResponse: PaymentGatewayResponse = await this.callPaymentGateway(
+        // const _gatewayResponse: PaymentGatewayResponse = await this.callPaymentGateway(,
         //     paymentInput.paymentToken, // Or card details, etc.
         //     paymentInput.amount,
         //     paymentInput.currency || 'USD'
         // )
 
         // Mocking gateway response
-        const mockGatewayResponse: PaymentGatewayResponse = {
+        const mockGatewayResponse: PaymentGatewayResponse = {,
             success: true,
-            transactionId: `txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+            transactionId: `txn_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
             message: 'Payment processed successfully by mock gateway.',
-            amountProcessed: paymentInput.amount
+            amountProcessed: paymentInput.amount,
         };
 
         if (!mockGatewayResponse.success) {
-            throw new Error(`Payment gateway error: ${mockGatewayResponse.message}`);
+            throw new Error(`Payment gateway error: ${mockGatewayResponse.message,}`);
         }
 
         // 4. Record the Payment in the Database
-        const newPayment: Payment = {
-            id: `pay_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const newPayment: Payment = {,
+            id: `pay_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
             invoiceId: mockInvoice.id,
             patientId: mockInvoice.patientId;
             paymentDate: new Date(),
@@ -70,18 +70,18 @@ export class PaymentService {
             paymentMode: paymentInput.paymentMode,
             transactionReference: mockGatewayResponse.transactionId;
             status: 'COMPLETED',
-            notes: paymentInput.notes
+            notes: paymentInput.notes,
         };
 
-        // const _savedPayment = await prisma.payment.create({ data: newPayment })
+        // const _savedPayment = await prisma.payment.create({ data: newPayment }),
 
         // 5. Update Invoice Status and Amount Paid
         // const _updatedAmountPaid = mockInvoice.amountPaid + savedPayment.amount
         // const _newInvoiceStatus = updatedAmountPaid >= mockInvoice.totalAmount ? 'PAID' : 'PARTIALLY_PAID'
 
         // await prisma.invoice.update({
-        //     where: { id: invoiceId },
-        //     data: {
+        //     where: { id: invoiceId ,},
+        //     data: {,
         //         amountPaid: updatedAmountPaid;
         //         status: newInvoiceStatus;
         //     },
@@ -91,8 +91,8 @@ export class PaymentService {
         mockInvoice.amountPaid += newPayment.amount;
         mockInvoice.status = mockInvoice.amountPaid >= mockInvoice.totalAmount ? 'PAID' : 'PARTIALLY_PAID';
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
         return newPayment; // Return the mock payment for now
     }
@@ -102,14 +102,14 @@ export class PaymentService {
      * @param invoiceId - The ID of the invoice.
      * @returns {Promise<Payment[]>} A list of payments for the invoice.
      */
-    async getPaymentsForInvoice(invoiceId: string): Promise<Payment[]> {
-        // return prisma.payment.findMany({ where: { invoiceId } })
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    async getPaymentsForInvoice(invoiceId: string): Promise<Payment[]> {,
+        // return prisma.payment.findMany({ where: { invoiceId } }),
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return []; // Return empty array for now
     }
 
     // Helper for mock invoice data
-    private async findMockInvoice(invoiceId: string): Promise<Invoice | null> {
+    private async findMockInvoice(invoiceId: string): Promise<Invoice | null> {,
         // In a real app, this would be a DB call. Here we simulate finding an invoice.
         // This is a very simplified mock. You'd likely have a mock DB or service.
         if (invoiceId === 'inv_123_unpaid') {
@@ -126,21 +126,21 @@ export class PaymentService {
                 totalAmount: 550;
                 amountPaid: 0,
                 status: 'DRAFT';
-                invoiceType: 'FINAL'
+                invoiceType: 'FINAL',
             }
         }
         return null;
     }
 
     // Placeholder for actual payment gateway integration
-    // private async callPaymentGateway(token: string, amount: number, currency: string): Promise<PaymentGatewayResponse> {
+    // private async callPaymentGateway(token: string, amount: number, currency: string): Promise<PaymentGatewayResponse> {,
     //     // Actual implementation to call Stripe, PayPal, etc.
-    //     // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    //     // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     //     // Simulate a successful response
     //     return {
     //         success: true;
-    //         transactionId: `gw_txn_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+    //         transactionId: `gw_txn_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
     //         message: 'Gateway processed successfully.';
-    //         amountProcessed: amount
+    //         amountProcessed: amount,
     //     }
     // }

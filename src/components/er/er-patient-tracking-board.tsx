@@ -40,8 +40,7 @@ import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for load
   TooltipTrigger} from "@/components/ui/tooltip"; // Import Tooltip;
 
 // Interface for API data;
-interface ERPatient {
-  id: string; // visit_id;
+interface ERPatient {id:string; // visit_id;
   patient_id: string,
   string,
   string,
@@ -187,8 +186,7 @@ export default const _ERPatientTrackingBoard = () {
         // Simulating API fetch with mock data for now;
         await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay;
         const mockData: ERPatient[] = [;
-          {
-            id: "visit_1",
+          {id:"visit_1",
             "John Doe",
             45,
             "Chest Pain",
@@ -199,8 +197,7 @@ export default const _ERPatientTrackingBoard = () {
             true,
               "STEMI";
             }},
-          {
-            id: "visit_2",
+          {id:"visit_2",
             "Jane Smith",
             68,
             "Shortness of Breath",
@@ -208,9 +205,8 @@ export default const _ERPatientTrackingBoard = () {
             location: "Room 5",
             "Dr. Jones",
             "Assessment",
-            indicators: { lab_ready: true, fall_risk: true }},
-          {
-            id: "visit_3",
+            indicators: {lab_ready:true, fall_risk: true }},
+          {id:"visit_3",
             "Peter Pan",
             32,
             "Abdominal Pain",
@@ -218,9 +214,8 @@ export default const _ERPatientTrackingBoard = () {
             location: "Hallway Bed 1",
             null,
             "Awaiting Disposition",
-            indicators: { rad_ready: true, consult_pending: true }},
-          {
-            id: "visit_4",
+            indicators: {rad_ready:true, consult_pending: true }},
+          {id:"visit_4",
             "Alice Wonderland",
             75,
             "Weakness",
@@ -228,9 +223,8 @@ export default const _ERPatientTrackingBoard = () {
             location: "Triage Room 2",
             null,
             "Triage",
-            indicators: { critical_alert: "Stroke" }},
-          {
-            id: "visit_5",
+            indicators: {critical_alert:"Stroke" }},
+          {id:"visit_5",
             "Bob Builder",
             50,
             "Laceration",
@@ -360,7 +354,7 @@ export default const _ERPatientTrackingBoard = () {
             <TableBody>;
               {isLoading ? (;
                 // Loading Skeleton Rows;
-                (Array.from({ length: 5 }).map((_, index) => (;
+                (Array.from({length:5 }).map((_, index) => (;
                   <TableRow>;
                     key={`skeleton-${index}`}
                     className="border-b dark:border-gray-700 last:border-b-0";

@@ -48,13 +48,13 @@ export const _POST = async () => {
     ),
     session.destroy(); // Clear the session data;
 
-    return new Response(JSON.stringify({ message: "Logout successful" }), {
+    return new Response(JSON.stringify({ message: "Logout successful" ,}), {
       status: 200,
-      headers: { "Content-Type": "application/json" }});
+      headers: { "Content-Type": "application/json" },});
 
   } catch (error) {
 
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-    return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+    return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
       status: 500,
-      headers: { "Content-Type": "application/json" }});
+      headers: { "Content-Type": "application/json" },});

@@ -36,7 +36,7 @@ export default async const _DocumentCreatePage = ({
 
   // Check if patient exists (would use real check in production);
   // const _patient = await prisma.patient.findUnique({
-  //   where: { id: patientId }
+  //   where: {id:patientId }
   // });
 
   // if (!session.user) {

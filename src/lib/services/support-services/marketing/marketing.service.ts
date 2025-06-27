@@ -12,11 +12,11 @@ import Lead
 import MarketingCampaign }
 import NotFoundError
 import ValidationError }
-import {  AuditLogger  } from "@/lib/database"
-import {  CampaignChannel
+import {AuditLogger  } from "next/server"
+import {CampaignChannel
 import { DatabaseError
 import { decryptData
-import { FhirResourceGenerator  } from "@/lib/database"
+import { FhirResourceGenerator  } from "next/server"
 import { NotificationService }
 import { prisma }
 
@@ -30,14 +30,14 @@ import { prisma }
       await this.auditLogger.log({action:"campaign.create",
         resourceId: campaign.id;
         userId,
-        details: {campaignName:campaign.name, campaignType: campaign.type }
+        details: {campaignName:campaign.name, campaignType: campaign.type },
       });
 
       // Notify relevant users;
       await this.notificationService.sendNotification({type:"CAMPAIGN_CREATED",
         `A new marketing campaign "${campaign.name}" has been created`,
         recipientRoles: ["MARKETING_MANAGER", "MARKETING_STAFF"],
-        metadata: {campaignId:campaign.id }
+        metadata: {campaignId:campaign.id },
       });
 
       return campaign;
@@ -85,7 +85,7 @@ import { prisma }
 }
 } catch (error) {
 }
-      const campaign = await prisma.marketingCampaign.findUnique({where:{ id },
+      const campaign = await prisma.marketingCampaign.findUnique({where:{ id ,},
         true,
           {segment:true;
             }
@@ -127,7 +127,7 @@ import { prisma }
   /**;
    * Get all marketing campaigns with optional filtering;
    */;
-  async getCampaigns(filters: {
+  async getCampaigns(filters: {,
     type?: string;
     status?: string;
     startDateFrom?: Date;
@@ -136,7 +136,7 @@ import { prisma }
     endDateTo?: Date;
     page?: number;
     limit?: number;
-  }): Promise<{data:MarketingCampaign[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{data:MarketingCampaign[], pagination: total: number, number, totalPages: number }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -181,7 +181,7 @@ import { prisma }
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.type = type;
@@ -235,7 +235,7 @@ import { prisma }
       });
 
       return {data:campaigns,
-        pagination: {
+        pagination: {,
           total,
           page,
           limit,
@@ -250,7 +250,7 @@ import { prisma }
   /**;
    * Update a marketing campaign;
    */;
-  async updateCampaign(id: string, data: Partial<MarketingCampaign>, userId: string): Promise<MarketingCampaign> {
+  async updateCampaign(id: string, data: Partial<MarketingCampaign>, userId: string): Promise<MarketingCampaign> {,
     try {
 } catch (error) {
   console.error(error);
@@ -284,7 +284,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id },
       });
 
       if (!session.user) {
@@ -292,8 +292,8 @@ import { prisma }
       }
 
       // Update campaign;
-      const updatedCampaign = await prisma.marketingCampaign.update({where:{ id },
-        data: {
+      const updatedCampaign = await prisma.marketingCampaign.update({where:{ id ,},
+        data: {,
           ...data,
           updatedById: userId;
         }
@@ -319,7 +319,7 @@ import { prisma }
   /**;
    * Delete a marketing campaign;
    */;
-  async deleteCampaign(id: string, userId: string): Promise<void> {
+  async deleteCampaign(id: string, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -353,7 +353,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id },
       });
 
       if (!session.user) {
@@ -361,7 +361,7 @@ import { prisma }
       }
 
       // Delete campaign;
-      await prisma.marketingCampaign.delete({where:{ id }
+      await prisma.marketingCampaign.delete({where:{ id },
       });
 
       // Log audit event;
@@ -382,7 +382,7 @@ import { prisma }
   /**;
    * Add a channel to a campaign;
    */;
-  async addCampaignChannel(campaignId: string, channelData: Omit<CampaignChannel, "id" | "campaignId" | "createdAt" | "updatedAt">, userId: string): Promise<CampaignChannel> {
+  async addCampaignChannel(campaignId: string, channelData: Omit<CampaignChannel, "id" | "campaignId" | "createdAt" | "updatedAt">, userId: string): Promise<CampaignChannel> {,
     try {
 } catch (error) {
   console.error(error);
@@ -416,7 +416,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId },
       });
 
       if (!session.user) {
@@ -424,7 +424,7 @@ import { prisma }
       }
 
       // Create channel;
-      const channel = await prisma.campaignChannel.create({data:{
+      const channel = await prisma.campaignChannel.create({data:{,
           campaignId,
           channelType: channelData.channelType,
           channelData.content,
@@ -454,7 +454,7 @@ import { prisma }
   /**;
    * Get campaign analytics;
    */;
-  async getCampaignAnalytics(campaignId: string): Promise<unknown> {
+  async getCampaignAnalytics(campaignId: string): Promise<unknown> {,
     try {
 } catch (error) {
   console.error(error);
@@ -488,7 +488,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId },
       });
 
       if (!session.user) {
@@ -496,12 +496,12 @@ import { prisma }
       }
 
       // Get analytics data;
-      const analytics = await prisma.campaignAnalytics.findMany({where:{ campaignId },
-        orderBy: {date:"asc" }
+      const analytics = await prisma.campaignAnalytics.findMany({where:{ campaignId ,},
+        orderBy: {date:"asc" },
       });
 
       // Get channel metrics;
-      const channels = await prisma.campaignChannel.findMany({where:{ campaignId },
+      const channels = await prisma.campaignChannel.findMany({where:{ campaignId ,},
         {
             {
                 true;
@@ -513,7 +513,7 @@ import { prisma }
       });
 
       // Get lead conversion metrics;
-      const leads = await prisma.lead.findMany({where:{ campaignId },
+      const leads = await prisma.lead.findMany({where:{ campaignId ,},
         true,
           true;
         }
@@ -557,7 +557,7 @@ import { prisma }
   /**;
    * Add a segment to a campaign;
    */;
-  async addCampaignSegment(campaignId: string, segmentId: string, userId: string): Promise<unknown> {
+  async addCampaignSegment(campaignId: string, segmentId: string, userId: string): Promise<unknown> {,
     try {
 } catch (error) {
   console.error(error);
@@ -591,7 +591,7 @@ import { prisma }
 } catch (error) {
 }
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId },
       });
 
       if (!session.user) {
@@ -599,7 +599,7 @@ import { prisma }
       }
 
       // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId }
+      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId },
       });
 
       if (!session.user) {
@@ -607,7 +607,7 @@ import { prisma }
       }
 
       // Check if segment is already added to campaign;
-      const existingRelation = await prisma.campaignSegment.findFirst({where:{
+      const existingRelation = await prisma.campaignSegment.findFirst({where:{,
           campaignId,
           segmentId;
         }
@@ -618,7 +618,7 @@ import { prisma }
       }
 
       // Add segment to campaign;
-      const campaignSegment = await prisma.campaignSegment.create({data:{
+      const campaignSegment = await prisma.campaignSegment.create({data:{,
           campaignId,
           segmentId;
         }
@@ -628,7 +628,7 @@ import { prisma }
       await this.auditLogger.log({action:"campaign.segment.add",
         resourceId: campaignId;
         userId,
-        details: {
+        details: {,
           segmentId,
           segmentName: existingSegment.name;
         }
@@ -647,10 +647,10 @@ import { prisma }
    * Generate FHIR representation of a marketing campaign;
    * Maps to FHIR Communication and CommunicationRequest resources;
    */;
-  private generateCampaignFHIR(campaign: unknown): unknown {
+  private generateCampaignFHIR(campaign: unknown): unknown {,
     // Create FHIR Communication resource for the campaign;
     const communicationResource = {resourceType:"Communication",
-      id: `marketing-campaign-${campaign.id}`,
+      id: `marketing-campaign-${campaign.id,}`,
       status: this.mapCampaignStatusToFHIR(campaign.status),
       category: [;
         {coding:[;
@@ -669,13 +669,13 @@ import { prisma }
         display: "Hospital Marketing Department",
       campaign.description;
       ],
-      `Marketing campaign: ${campaign.name}`;
+      `Marketing campaign: ${campaign.name,}`;
       ];
     };
 
     // Create FHIR CommunicationRequest resource for campaign planning;
     const communicationRequestResource = {resourceType:"CommunicationRequest",
-      id: `marketing-campaign-request-${campaign.id}`,
+      id: `marketing-campaign-request-${campaign.id,}`,
       status: this.mapCampaignStatusToFHIRRequest(campaign.status),
       category: [;
         {coding:[;
@@ -711,7 +711,7 @@ import { prisma }
   /**;
    * Map campaign status to FHIR Communication status;
    */;
-  private mapCampaignStatusToFHIR(status: string): string {
+  private mapCampaignStatusToFHIR(status: string): string {,
     switch (status) {
       case "DRAFT": any;
         return "preparation";
@@ -732,7 +732,7 @@ import { prisma }
   /**;
    * Map campaign status to FHIR CommunicationRequest status;
    */;
-  private mapCampaignStatusToFHIRRequest(status: string): string {
+  private mapCampaignStatusToFHIRRequest(status: string): string {,
     switch (status) {
       case "DRAFT": any;
         return "draft";
@@ -771,7 +771,7 @@ import { prisma }
   /**;
    * Aggregate time series data from analytics;
    */;
-  private aggregateTimeSeriesData(analytics: unknown[]): unknown {
+  private aggregateTimeSeriesData(analytics: unknown[]): unknown {,
     // Implementation depends on the structure of metrics in analytics;
     // This is a simplified example;
     return analytics.map(item => ({date:item.date;
@@ -782,7 +782,7 @@ import { prisma }
   /**;
    * Validate campaign data;
    */;
-  private validateCampaignData(data: unknown): void {
+  private validateCampaignData(data: unknown): void {,
     const errors = [];
 
     if (!session.user)== "") {
@@ -833,7 +833,7 @@ import { prisma }
   /**;
    * Get a contact by ID;
    */;
-  async getContactById(id: string): Promise<Contact> {
+  async getContactById(id: string): Promise<Contact> {,
     try {
 } catch (error) {
   console.error(error);
@@ -866,7 +866,7 @@ import { prisma }
 }
 } catch (error) {
 }
-      const contact = await prisma.contact.findUnique({where:{ id },
+      const contact = await prisma.contact.findUnique({where:{ id ,},
         {
             true,
               true,
@@ -902,14 +902,14 @@ import { prisma }
   /**;
    * Get all contacts with optional filtering;
    */;
-  async getContacts(filters: {
+  async getContacts(filters: {,
     search?: string;
     status?: string;
     source?: string;
     tags?: string[];
     page?: number;
     limit?: number;
-  }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -952,14 +952,14 @@ import { prisma }
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.OR = [;
-          {firstName:{ contains: search, mode: "insensitive" } },
-          {lastName:{ contains: search, mode: "insensitive" } },
-          {email:{ contains: search, mode: "insensitive" } },
-          {phone:{ contains: search } }
+          {firstName:{ contains: search, mode: "insensitive" } ,},
+          {lastName:{ contains: search, mode: "insensitive" } ,},
+          {email:{ contains: search, mode: "insensitive" } ,},
+          {phone:{ contains: search } },
         ];
       }
 
@@ -1002,7 +1002,7 @@ import { prisma }
       const decryptedContacts = contacts.map(contact => this.decryptSensitiveData(contact));
 
       return {data:decryptedContacts,
-        pagination: {
+        pagination: {,
           total,
           page,
           limit,
@@ -1017,7 +1017,7 @@ import { prisma }
   /**;
    * Update a contact;
    */;
-  async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {
+  async updateContact(id: string, data: Partial<Contact>, userId: string): Promise<Contact> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1051,7 +1051,7 @@ import { prisma }
 } catch (error) {
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({where:{ id }
+      const existingContact = await prisma.contact.findUnique({where:{ id },
       });
 
       if (!session.user) {
@@ -1061,7 +1061,7 @@ import { prisma }
       const encryptedData = this.encryptSensitiveData(data);
 
       // Update contact;
-      const updatedContact = await prisma.contact.update({where:{ id },
+      const updatedContact = await prisma.contact.update({where:{ id ,},
         data: encryptedData;
       });
 
@@ -1082,7 +1082,7 @@ import { prisma }
   /**;
    * Delete a contact;
    */;
-  async deleteContact(id: string, userId: string): Promise<void> {
+  async deleteContact(id: string, userId: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1116,14 +1116,14 @@ import { prisma }
 } catch (error) {
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({where:{ id }
+      const existingContact = await prisma.contact.findUnique({where:{ id },
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${id} not found`);
 
       // Delete contact;
-      await prisma.contact.delete({where:{ id }
+      await prisma.contact.delete({where:{ id },
       });
 
       // Log audit event;
@@ -1141,7 +1141,7 @@ import { prisma }
   /**;
    * Add a note to a contact;
    */;
-  async addContactNote(contactId: string, content: string, userId: string): Promise<unknown> {
+  async addContactNote(contactId: string, content: string, userId: string): Promise<unknown> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1175,14 +1175,14 @@ import { prisma }
 } catch (error) {
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({where:{ id: contactId }
+      const existingContact = await prisma.contact.findUnique({where:{ id: contactId },
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
 
       // Create note;
-      const note = await prisma.contactNote.create({data:{
+      const note = await prisma.contactNote.create({data:{,
           contactId,
           content,
           createdById: userId;
@@ -1210,7 +1210,7 @@ import { prisma }
   /**;
    * Create a new contact segment;
    */;
-  async createSegment(data: Omit<ContactSegment, "id" | "createdAt" | "updatedAt">, userId: string): Promise<ContactSegment> {
+  async createSegment(data: Omit<ContactSegment, "id" | "createdAt" | "updatedAt">, userId: string): Promise<ContactSegment> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1273,11 +1273,11 @@ import { prisma }
   /**;
    * Get all segments with optional filtering;
    */;
-  async getSegments(filters: {
+  async getSegments(filters: {,
     isActive?: boolean;
     page?: number;
     limit?: number;
-  }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1317,7 +1317,7 @@ import { prisma }
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.isActive = isActive;
@@ -1342,7 +1342,7 @@ import { prisma }
       });
 
       return {data:segments,
-        pagination: {
+        pagination: {,
           total,
           page,
           limit,
@@ -1355,7 +1355,7 @@ import { prisma }
   /**;
    * Add a contact to a segment;
    */;
-  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {
+  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1389,21 +1389,21 @@ import { prisma }
 } catch (error) {
 
       // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId }
+      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId },
       });
 
       if (!session.user) {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({where:{ id: contactId }
+      const existingContact = await prisma.contact.findUnique({where:{ id: contactId },
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
 
       // Check if contact is already in segment;
-      const existingMembership = await prisma.segmentMember.findFirst({where:{
+      const existingMembership = await prisma.segmentMember.findFirst({where:{,
           segmentId,
           contactId,
           isActive: true;
@@ -1414,7 +1414,7 @@ import { prisma }
         return existingMembership;
 
       // If contact was previously removed from segment, reactivate;
-      const inactiveMemebership = await prisma.segmentMember.findFirst({where:{
+      const inactiveMemebership = await prisma.segmentMember.findFirst({where:{,
           segmentId,
           contactId,
           isActive: false;
@@ -1422,7 +1422,7 @@ import { prisma }
       });
 
       if (!session.user) {
-        const updatedMembership = await prisma.segmentMember.update({where:{ id: inactiveMemebership.id },
+        const updatedMembership = await prisma.segmentMember.update({where:{ id: inactiveMemebership.id ,},
           true,
             removedAt: null;
 
@@ -1440,7 +1440,7 @@ import { prisma }
         return updatedMembership;
 
       // Add contact to segment;
-      const membership = await prisma.segmentMember.create({data:{
+      const membership = await prisma.segmentMember.create({data:{,
           segmentId,
           contactId,
           isActive: true;
@@ -1466,7 +1466,7 @@ import { prisma }
   /**;
    * Remove a contact from a segment;
    */;
-  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {
+  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<unknown> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1500,21 +1500,21 @@ import { prisma }
 } catch (error) {
 
       // Check if segment exists;
-      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId }
+      const existingSegment = await prisma.contactSegment.findUnique({where:{ id: segmentId },
       });
 
       if (!session.user) {
         throw new NotFoundError(`Segment with ID ${segmentId} not found`);
 
       // Check if contact exists;
-      const existingContact = await prisma.contact.findUnique({where:{ id: contactId }
+      const existingContact = await prisma.contact.findUnique({where:{ id: contactId },
       });
 
       if (!session.user) {
         throw new NotFoundError(`Contact with ID ${contactId} not found`);
 
       // Check if contact is in segment;
-      const membership = await prisma.segmentMember.findFirst({where:{
+      const membership = await prisma.segmentMember.findFirst({where:{,
           segmentId,
           contactId,
           isActive: true;
@@ -1525,7 +1525,7 @@ import { prisma }
         throw new NotFoundError(`Contact is not a member of this segment`);
 
       // Remove contact from segment (soft delete);
-      const updatedMembership = await prisma.segmentMember.update({where:{ id: membership.id },
+      const updatedMembership = await prisma.segmentMember.update({where:{ id: membership.id ,},
         false,
           removedAt: new Date();
 
@@ -1550,7 +1550,7 @@ import { prisma }
   /**;
    * Encrypt sensitive contact data;
    */;
-  private encryptSensitiveData(data: unknown): unknown {
+  private encryptSensitiveData(data: unknown): unknown {,
     const result = { ...data };
 
     // Encrypt address if present;
@@ -1566,7 +1566,7 @@ import { prisma }
   /**;
    * Decrypt sensitive contact data;
    */;
-  private decryptSensitiveData(data: unknown): unknown {
+  private decryptSensitiveData(data: unknown): unknown {,
     const result = { ...data };
 
     // Decrypt address if present;
@@ -1648,7 +1648,7 @@ import { prisma }
   /**;
    * Validate contact data;
    */;
-  private validateContactData(data: unknown): void {
+  private validateContactData(data: unknown): void {,
     const errors = [];
 
     // Either email or phone is required;
@@ -1665,7 +1665,7 @@ import { prisma }
   /**;
    * Validate email format;
    */;
-  private isValidEmail(email: string): boolean {
+  private isValidEmail(email: string): boolean {,
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 
@@ -1692,7 +1692,7 @@ import { prisma }
       if (!session.user) {
         await this.notificationService.sendNotification({type:"LEAD_ASSIGNED",
           `A new lead has been assigned to [lead.assignedToId],
-          metadata: {leadId:lead.id }
+          metadata: {leadId:lead.id },
         });
 
       return lead;
@@ -1705,7 +1705,7 @@ import { prisma }
   /**;
    * Get a lead by ID;
    */;
-  async getLeadById(id: string): Promise<Lead> {
+  async getLeadById(id: string): Promise<Lead> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1738,7 +1738,7 @@ import { prisma }
 
 } catch (error) {
 
-      const lead = await prisma.lead.findUnique({where:{ id },
+      const lead = await prisma.lead.findUnique({where:{ id ,},
         true,
           {
             true,
@@ -1772,14 +1772,14 @@ import { prisma }
   /**;
    * Get all leads with optional filtering;
    */;
-  async getLeads(filters: {
+  async getLeads(filters: {,
     status?: string;
     source?: string;
     campaignId?: string;
     assignedToId?: string;
     page?: number;
     limit?: number;
-  }): Promise<{data:Lead[], pagination: {total:number, number, totalPages: number } }> {
+  }): Promise<{data:Lead[], pagination: {total:number, number, totalPages: number } }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1822,7 +1822,7 @@ import { prisma }
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.status = status;
@@ -1865,7 +1865,7 @@ import { prisma }
       });
 
       return {data:leads,
-        pagination: {
+        pagination: {,
           total,
           page,
           limit,
@@ -1878,7 +1878,7 @@ import { prisma }
   /**;
    * Update a lead;
    */;
-  async updateLead(id: string, data: Partial<Lead>, userId: string): Promise<Lead> {
+  async updateLead(id: string, data: Partial<Lead>, userId: string): Promise<Lead> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1912,7 +1912,7 @@ import { prisma }
 } catch (error) {
 
       // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({where:{ id },
+      const existingLead = await prisma.lead.findUnique({where:{ id ,},
         {
             true,
               true;
@@ -1927,7 +1927,7 @@ import { prisma }
         data.conversionDate = new Date();
 
       // Update lead;
-      const updatedLead = await prisma.lead.update({where:{ id },
+      const updatedLead = await prisma.lead.update({where:{ id ,},
         data,
         true,
           {
@@ -2002,14 +2002,14 @@ import { prisma }
 } catch (error) {
 
       // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({where:{ id: leadId }
+      const existingLead = await prisma.lead.findUnique({where:{ id: leadId },
       });
 
       if (!session.user) {
         throw new NotFoundError(`Lead with ID ${leadId} not found`);
 
       // Create activity;
-      const activity = await prisma.leadActivity.create({data:{
+      const activity = await prisma.leadActivity.create({data:{,
           leadId,
           activityType: data.activityType,
           data.performedById,
@@ -2037,7 +2037,7 @@ import { prisma }
   /**;
    * Convert a lead to a patient;
    */;
-  async convertLeadToPatient(leadId: string, patientData: unknown, userId: string): Promise<unknown> {
+  async convertLeadToPatient(leadId: string, patientData: unknown, userId: string): Promise<unknown> {,
     try {
 } catch (error) {
   console.error(error);
@@ -2071,7 +2071,7 @@ import { prisma }
 } catch (error) {
 
       // Check if lead exists;
-      const existingLead = await prisma.lead.findUnique({where:{ id: leadId },
+      const existingLead = await prisma.lead.findUnique({where:{ id: leadId ,},
         true;
 
       });
@@ -2094,7 +2094,7 @@ import { prisma }
       });
 
       // Update lead with conversion data;
-      const updatedLead = await prisma.lead.update({where:{ id: leadId },
+      const updatedLead = await prisma.lead.update({where:{ id: leadId ,},
         "CONVERTED",
           new Date();
 
@@ -2111,7 +2111,7 @@ import { prisma }
       // Add lead activity;
       await this.addLeadActivity(leadId, {activityType:"CONVERSION",
         userId,
-        metadata: {patientId:patient.id }
+        metadata: {patientId:patient.id },
       });
 
       return {lead:updatedLead;
@@ -2126,7 +2126,7 @@ import { prisma }
   /**;
    * Validate lead data;
    */;
-  private validateLeadData(data: unknown): void {
+  private validateLeadData(data: unknown): void {,
     const errors = [];
 
     if (!session.user) {

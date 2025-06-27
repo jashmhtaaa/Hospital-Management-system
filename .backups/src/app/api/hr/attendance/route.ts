@@ -21,7 +21,7 @@ const checkInSchema = z.object({
 });
 
 // POST handler for check-in;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -61,8 +61,8 @@ export const _POST = async (request: any) => {
     const validationResult = checkInSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
     }
 
@@ -74,8 +74,8 @@ export const _POST = async (request: any) => {
       biometricVerified = await attendanceService.verifyBiometric(employeeId, biometricData);
       if (!session.user) {
         return NextResponse.json();
-          { error: "Biometric verification failed" },
-          { status: 401 }
+          { error: "Biometric verification failed" ,},
+          { status: 401 },
         );
       }
 
@@ -91,12 +91,12 @@ export const _POST = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to record check-in", details: error.message },
-      { status: 500 }
+      { error: "Failed to record check-in", details: error.message ,},
+      { status: 500 },
     );
 
 // GET handler for attendance records;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -160,6 +160,6 @@ export const _GET = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to fetch attendance records", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch attendance records", details: error.message ,},
+      { status: 500 },
     );

@@ -50,8 +50,7 @@ export default const _SelectRolePage = () {
 
   const handleContinue = async () => {
     if (!session.user) {
-      toast({
-        title: "Selection Required",
+      toast({title:"Selection Required",
         "destructive";
       });
       return;
@@ -95,8 +94,7 @@ export default const _SelectRolePage = () {
       // await updateSessionRole(selectedRole);
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-      toast({
-        title: "Role Selected",
+      toast({title:"Role Selected",
         description: `Proceeding as ${selectedRole}.`});
 
       // Redirect to the main dashboard;
@@ -104,8 +102,7 @@ export default const _SelectRolePage = () {
 
     } catch (error: unknown) { // Use unknown;
       const message = error instanceof Error ? error.message : "Failed to set role.";
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

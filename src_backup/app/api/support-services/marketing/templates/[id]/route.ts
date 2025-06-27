@@ -19,11 +19,11 @@ const templateService = new TemplateService();
  */;
 export const GET = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
 
       const template = await templateService.getTemplateById(params.id);
@@ -43,11 +43,11 @@ export const GET = async();
  */;
 export const PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -72,11 +72,11 @@ export const PUT = async();
  */;
 export const DELETE = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
 
       await templateService.deleteTemplate();
@@ -84,7 +84,7 @@ export const DELETE = async();
         session?.user?.id as string;
       );
 
-      return NextResponse.json({ success: true }, { status: 200 });
+      return NextResponse.json({ success: true ,}, { status: 200 ,});
     },
     {
       requiredPermission: "marketing.templates.delete",

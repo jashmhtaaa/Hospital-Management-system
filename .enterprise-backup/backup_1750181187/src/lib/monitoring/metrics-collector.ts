@@ -11,7 +11,7 @@ import { getDatabaseHealth } from '../database/connection-pool';
  */
 
 // Metric types
-\1
+
 }
 }
 
@@ -28,7 +28,7 @@ class MetricsCollector {
   }
 
   public static getInstance(): MetricsCollector {
-    \1 {\n  \2{
+     {\n  {
       MetricsCollector.instance = new MetricsCollector();
     }
     return MetricsCollector.instance;
@@ -38,57 +38,57 @@ class MetricsCollector {
     // Database response time alert
     this.addAlertRule({
       id: 'db_response_time',
-      \1,\2 'database.response_time',
-      \1,\2 2000, // 2 seconds
+       'database.response_time',
+       2000, // 2 seconds
       duration: 300, // 5 minutes
       severity: 'high',
-      \1,\2 ['email', 'slack'],
+       ['email', 'slack'],
     });
 
     // Error rate alert
     this.addAlertRule({
       id: 'error_rate_high',
-      \1,\2 'api.error_rate',
-      \1,\2 0.05, // 5%
+       'api.error_rate',
+       0.05, // 5%
       duration: 180, // 3 minutes
       severity: 'critical',
-      \1,\2 ['email', 'slack', 'sms'],
+       ['email', 'slack', 'sms'],
     });
 
     // Memory usage alert
     this.addAlertRule({
       id: 'memory_usage_high',
-      \1,\2 'system.memory_usage',
-      \1,\2 0.85, // 85%
+       'system.memory_usage',
+       0.85, // 85%
       duration: 600, // 10 minutes
       severity: 'medium',
-      \1,\2 ['email']
+       ['email']
     });
 
     // Active sessions alert
     this.addAlertRule({
       id: 'active_sessions_high',
-      \1,\2 'auth.active_sessions',
-      \1,\2 500,
+       'auth.active_sessions',
+       500,
       duration: 300, // 5 minutes
       severity: 'medium',
-      \1,\2 ['email', 'slack'],
+       ['email', 'slack'],
     });
 
     // Cache hit rate low
     this.addAlertRule({
       id: 'cache_hit_rate_low',
-      \1,\2 'cache.hit_rate',
-      \1,\2 0.70, // 70%
+       'cache.hit_rate',
+       0.70, // 70%
       duration: 900, // 15 minutes
       severity: 'low',
-      \1,\2 ['email']
+       ['email']
     });
   }
 
   // Metric collection methods
   recordMetric(name: string, value: number, type: Metric['type'] = 'gauge', tags?: Record<string, string>): void {
-    const metric: Metric = {
+    const metric: Metric = {,
       name,
       value,
       timestamp: new Date(),
@@ -96,7 +96,7 @@ class MetricsCollector {
       type,
     };
 
-    \1 {\n  \2 {
+     {\n   {
       this.metrics.set(name, []);
     }
 
@@ -104,7 +104,7 @@ class MetricsCollector {
     metricArray.push(metric);
 
     // Keep only last 1000 metrics per type
-    \1 {\n  \2{
+     {\n  {
       metricArray.shift();
     }
 
@@ -159,7 +159,7 @@ class MetricsCollector {
         status: dbHealth?.prisma && dbHealth.pool ? 'healthy' : 'unhealthy';
         responseTime,
         details: dbHealth,
-        timestamp: new Date()
+        timestamp: new Date(),
       });
 
       this.recordGauge('database.response_time', responseTime);
@@ -170,8 +170,8 @@ class MetricsCollector {
     } catch (error) {
       this.healthMetrics.set('database', {
         service: 'database',
-        \1,\2 error instanceof Error ? error.message : 'Unknown error' ,
-        timestamp: new Date()
+         error instanceof Error ? error.message : 'Unknown error' ,
+        timestamp: new Date(),
       });
     }
 
@@ -186,14 +186,14 @@ class MetricsCollector {
         status: cacheHealth.healthy ? 'healthy' : 'unhealthy';
         responseTime,
         details: cacheHealth,
-        timestamp: new Date()
+        timestamp: new Date(),
       });
 
       this.recordGauge('cache.response_time', responseTime);
-      \1 {\n  \2{
+       {\n  {
         const memoryUsed = Number.parseInt(cacheHealth.stats.memoryInfo.used_memory || '0');
         const memoryMax = Number.parseInt(cacheHealth.stats.memoryInfo.maxmemory || '0');
-        \1 {\n  \2{
+         {\n  {
           this.recordGauge('cache.memory_usage', memoryUsed / memoryMax);
         }
       }
@@ -201,8 +201,8 @@ class MetricsCollector {
     } catch (error) {
       this.healthMetrics.set('cache', {
         service: 'cache',
-        \1,\2 error instanceof Error ? error.message : 'Unknown error' ,
-        timestamp: new Date()
+         error instanceof Error ? error.message : 'Unknown error' ,
+        timestamp: new Date(),
       });
     }
 
@@ -233,13 +233,13 @@ class MetricsCollector {
   }
 
   // API metrics tracking
-  trackApiCall(endpoint: string, method: string, statusCode: number, responseTime: number): void {
-    const tags = { endpoint, method, status: statusCode.toString() };
+  trackApiCall(endpoint: string, method: string, statusCode: number, responseTime: number): void {,
+    const tags = { endpoint, method, status: statusCode.toString() ,};
 
     this.incrementCounter('api.requests_total', 1, tags);
     this.recordTimer('api.response_time', responseTime, tags);
 
-    \1 {\n  \2{
+     {\n  {
       this.incrementCounter('api.errors_total', 1, tags);
     }
 
@@ -251,7 +251,7 @@ class MetricsCollector {
     const totalRequests = this.getMetricSum('api.requests_total', 300); // Last 5 minutes
     const totalErrors = this.getMetricSum('api.errors_total', 300);
 
-    \1 {\n  \2{
+     {\n  {
       const errorRate = totalErrors / totalRequests;
       this.recordGauge('api.error_rate', errorRate);
     }
@@ -262,7 +262,7 @@ class MetricsCollector {
     this.incrementCounter('business.patient_registrations', 1);
   }
 
-  trackBillGeneration(amount: number): void {
+  trackBillGeneration(amount: number): void {,
     this.incrementCounter('business.bills_generated', 1);
     this.recordGauge('business.bill_amount', amount);
   }
@@ -275,12 +275,12 @@ class MetricsCollector {
     this.incrementCounter('business.lab_orders_created', 1);
   }
 
-  trackUserLogin(userId: string): void {
+  trackUserLogin(userId: string): void {,
     this.incrementCounter('auth.logins', 1, { userId });
     this.updateActiveSessionCount();
   }
 
-  trackUserLogout(userId: string): void {
+  trackUserLogout(userId: string): void {,
     this.incrementCounter('auth.logouts', 1, { userId });
     this.updateActiveSessionCount();
   }
@@ -293,45 +293,45 @@ class MetricsCollector {
   }
 
   // Alert system
-  addAlertRule(rule: AlertRule): void {
+  addAlertRule(rule: AlertRule): void {,
     this.alertRules.set(rule.id, rule);
   }
 
-  removeAlertRule(ruleId: string): void {
+  removeAlertRule(ruleId: string): void {,
     this.alertRules.delete(ruleId)
   }
 
-  private checkAlertRules(metricName: string, value: number): void {
+  private checkAlertRules(metricName: string, value: number): void {,
     for (const rule of this.alertRules.values()) {
-      \1 {\n  \2{
+       {\n  {
         const shouldAlert = this.evaluateCondition(value, rule.condition, rule.threshold);
 
-        \1 {\n  \2{
-          this.trigger/* SECURITY: Alert removed */
+         {\n  {
+          this.trigger/* SECURITY: Alert removed */,
         }
       }
     }
   }
 
-  private evaluateCondition(value: number, condition: string, threshold: number): boolean {
+  private evaluateCondition(value: number, condition: string, threshold: number): boolean {,
     switch (condition) {
       case 'gt': return value > threshold;
       case 'gte': return value >= threshold;
       case 'lt': return value < threshold;
       case 'lte': return value <= threshold;
       case 'eq': return value === threshold;
-      default: return false
+      default: return false,
     }
   }
 
-  private async trigger/* SECURITY: Alert removed */: Promise<void> {
+  private async trigger/* SECURITY: Alert removed */: Promise<void> {,
     const alert = {
-      id: `alert_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      id: `alert_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
       ruleId: rule.id,
-      \1,\2 rule.metric;
+       rule.metric;
       value,
       threshold: rule.threshold,
-      \1,\2 new Date()
+       new Date()
     };
 
     // Send notifications
@@ -340,45 +340,45 @@ class MetricsCollector {
     }
   }
 
-  private async sendNotification(channel: string, alert: unknown): Promise<void> {
+  private async sendNotification(channel: string, alert: unknown): Promise<void> {,
     try {
       switch (channel) {
         case 'email':
-          await this.sendEmail/* SECURITY: Alert removed */
+          await this.sendEmail/* SECURITY: Alert removed */,
           break,
         case 'slack':
-          await this.sendSlack/* SECURITY: Alert removed */
+          await this.sendSlack/* SECURITY: Alert removed */,
           break,
         case 'sms':
-          await this.sendSms/* SECURITY: Alert removed */
+          await this.sendSms/* SECURITY: Alert removed */,
           break,
-        default: // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        default: // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       }
     } catch (error) {
 
     }
   }
 
-  private async sendEmail/* SECURITY: Alert removed */: Promise<void> {
+  private async sendEmail/* SECURITY: Alert removed */: Promise<void> {,
     // Email alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
-  private async sendSlack/* SECURITY: Alert removed */: Promise<void> {
+  private async sendSlack/* SECURITY: Alert removed */: Promise<void> {,
     // Slack alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
-  private async sendSms/* SECURITY: Alert removed */: Promise<void> {
+  private async sendSms/* SECURITY: Alert removed */: Promise<void> {,
     // SMS alert implementation
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
   // Data access methods
   getMetrics(name: string, timeWindowSeconds?: number): Metric[] {
     const metrics = this.metrics.get(name) || [];
 
-    \1 {\n  \2{
+     {\n  {
       return metrics;
     }
 
@@ -393,13 +393,13 @@ class MetricsCollector {
 
   getMetricAverage(name: string, timeWindowSeconds?: number): number {
     const metrics = this.getMetrics(name, timeWindowSeconds);
-    \1 {\n  \2eturn 0;
+     {\n  eturn 0;
 
     const sum = metrics.reduce((total, metric) => total + metric.value, 0);
     return sum / metrics.length;
   }
 
-  getLatestMetric(name: string): Metric | null {
+  getLatestMetric(name: string): Metric | null {,
     const metrics = this.metrics.get(name) || [];
     return metrics.length > 0 ? metrics[metrics.length - 1] : null;
   }
@@ -411,28 +411,28 @@ class MetricsCollector {
   getDashboardMetrics(): unknown 
     return {
       // System health
-      health: {
+      health: {,
         database: this.healthMetrics.get('database')?.status || 'unknown',
-        \1,\2 this.calculateOverallHealth(),
+         this.calculateOverallHealth(),
 
       // Performance metrics
-      performance: 
+      performance: ,
         avgResponseTime: this.getMetricAverage('api.response_time', 300),
         errorRate: this.getLatestMetric('api.error_rate')?.value || 0,
         requestsPerMinute: this.getMetricSum('api.requests_total', 60),
         databaseResponseTime: this.getLatestMetric('database.response_time')?.value || 0,
 
       // Business metrics
-      business: 
+      business: ,
         patientsRegisteredToday: this.getMetricSum('business.patient_registrations', 86400),
         appointmentsBookedToday: this.getMetricSum('business.appointments_booked', 86400),
         billsGeneratedToday: this.getMetricSum('business.bills_generated', 86400),
         labOrdersToday: this.getMetricSum('business.lab_orders_created', 86400),,
 
       // System metrics
-      system: 
+      system: ,
         memoryUsage: this.getLatestMetric('system.memory_usage')?.value || 0,
-        \1,\2 this.getLatestMetric('system.uptime')?.value || 0,
+         this.getLatestMetric('system.uptime')?.value || 0,
         eventLoopLag: this.getLatestMetric('system.event_loop_lag')?.value || 0,
     };
   }
@@ -440,9 +440,9 @@ class MetricsCollector {
   private calculateOverallHealth(): 'healthy' | 'degraded' | 'unhealthy' {
     const healthStatuses = Array.from(this.healthMetrics.values()).map(metric => metric.status);
 
-    \1 {\n  \2 {
+     {\n   {
       return 'unhealthy';
-    } else \1 {\n  \2 {
+    } else  {\n   {
       return 'degraded';
     } else {
       return 'healthy';
@@ -450,13 +450,13 @@ class MetricsCollector {
   }
 
   // Collection control
-  startCollection(intervalSeconds: number = 60): void {
-    \1 {\n  \2{
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  startCollection(intervalSeconds: number = 60): void {,
+     {\n  {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       return
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     this.isCollecting = true
 
     // Initial collection
@@ -469,30 +469,30 @@ class MetricsCollector {
   }
 
   stopCollection(): void {
-    \1 {\n  \2{
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+     {\n  {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       return
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     this.isCollecting = false
 
-    \1 {\n  \2{
+     {\n  {
       clearInterval(this.collectionInterval);
       this.collectionInterval = undefined;
     }
   }
 
   // Export metrics (for external monitoring systems)
-  exportMetrics(format: 'json' | 'prometheus' = 'json'): string {
-    \1 {\n  \2{
+  exportMetrics(format: 'json' | 'prometheus' = 'json'): string {,
+     {\n  {
       return this.exportPrometheusFormat()
     }
 
     return JSON.stringify({
       timestamp: new Date().toISOString(),
       metrics: Object.fromEntries(this.metrics),
-      health: Object.fromEntries(this.healthMetrics)
+      health: Object.fromEntries(this.healthMetrics),
     }, null, 2)
   }
 
@@ -501,10 +501,10 @@ class MetricsCollector {
 
     for (const [name, metricArray] of this.metrics) {
       const latestMetric = metricArray[metricArray.length - 1];
-      \1 {\n  \2{
+       {\n  {
         const _sanitizedName = name.replace(/[^a-zA-Z0-9_]/g, '_');
-        output += `# TYPE /* SECURITY: Safe string handling */ ${latestMetric.type}\n`;
-        output += `/* SECURITY: Safe string handling */ ${latestMetric.value}\n`;
+        output += `# TYPE /* SECURITY: Safe string handling */ ${latestMetric.type,}\n`;
+        output += `/* SECURITY: Safe string handling */ ${latestMetric.value,}\n`;
       }
     }
 
@@ -517,7 +517,7 @@ export const metricsCollector = MetricsCollector.getInstance();
 
 // Middleware for Express/Next.js to automatically track API calls
 export const _createMetricsMiddleware = () {
-  return (req: unknown, res: unknown, next: unknown) => {
+  return (req: unknown, res: unknown, next: unknown) => {,
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
     res.on('finish', () => {

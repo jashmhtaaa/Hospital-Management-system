@@ -3,13 +3,13 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {  TemplateService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {authOptions  } from "next/server"
+import {getServerSession  } from "next/server"
+import {TemplateService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
 
 const templateService = new TemplateService();
 
@@ -19,11 +19,11 @@ const templateService = new TemplateService();
  */;
 export const GET = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
 
       const template = await templateService.getTemplateById(params.id);
@@ -42,11 +42,11 @@ export const GET = async();
  */;
 export const PUT = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -70,11 +70,11 @@ export const PUT = async();
  */;
 export const DELETE = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
 
       await templateService.deleteTemplate();
@@ -82,7 +82,7 @@ export const DELETE = async();
         session?.user?.id as string;
       );
 
-      return NextResponse.json({success:true }, {status:200 });
+      return NextResponse.json({success:true ,}, {status:200 ,});
     },
     {requiredPermission:"marketing.templates.delete",
       auditAction: "TEMPLATE_DELETE";

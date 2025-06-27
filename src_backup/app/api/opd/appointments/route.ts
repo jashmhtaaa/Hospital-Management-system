@@ -40,7 +40,7 @@ interface AppointmentFilters {
 }
 
 // Placeholder function to simulate database interaction;
-async const getAppointmentsFromDB = (filters: AppointmentFilters) {
+async const getAppointmentsFromDB = (filters: AppointmentFilters) {,
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   // Replace with actual D1 query when DB is configured;
   // const { env } = getRequestContext();
@@ -146,7 +146,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
 }
 
 // Placeholder function to simulate creating an appointment;
-async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
+async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {,
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   // Replace with actual D1 insert query when DB is configured;
   // const { env } = getRequestContext();
@@ -180,7 +180,7 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
 }
 
 // Placeholder function to simulate getting a single appointment;
-async const getAppointmentByIdFromDB = (id: number) {
+async const getAppointmentByIdFromDB = (id: number) {,
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   // Replace with actual D1 query when DB is configured;
   // const { env } = getRequestContext();
@@ -254,7 +254,7 @@ async const updateAppointmentInDB = (;
  * GET /api/opd/appointments;
  * Retrieves a list of appointments, potentially filtered.;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -296,7 +296,7 @@ export const GET = async (request: any) => {
     const search = searchParams.get("search");
     // Add other filters as needed;
 
-    const filters: AppointmentFilters = {
+    const filters: AppointmentFilters = {,
       startDate,
       endDate,
       status,
@@ -312,8 +312,8 @@ export const GET = async (request: any) => {
         const appointment = await getAppointmentByIdFromDB(id);
         if (!session.user) {
           return NextResponse.json();
-            { error: "Appointment not found" },
-            { status: 404 }
+            { error: "Appointment not found" ,},
+            { status: 404 },
           );
         }
         return NextResponse.json({ appointment });
@@ -324,7 +324,7 @@ export const GET = async (request: any) => {
     const appointments = await getAppointmentsFromDB(filters);
 
     return NextResponse.json({ appointments });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
@@ -332,7 +332,7 @@ export const GET = async (request: any) => {
         error: "Failed to fetch appointments",
         details: errorMessage;
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -340,7 +340,7 @@ export const GET = async (request: any) => {
  * POST /api/opd/appointments;
  * Creates a new appointment.;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -380,14 +380,14 @@ export const POST = async (request: any) => {
       return NextResponse.json();
         {
           error: "Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)"},
-        { status: 400 }
+        { status: 400 },
       );
 
     // Simulate creating the appointment in the database;
     const newAppointment = await createAppointmentInDB(appointmentData);
 
-    return NextResponse.json({ appointment: newAppointment }, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json({ appointment: newAppointment ,}, { status: 201 ,});
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
@@ -395,14 +395,14 @@ export const POST = async (request: any) => {
         error: "Failed to create appointment",
         details: errorMessage;
       },
-      { status: 500 }
+      { status: 500 },
     );
 
 /**;
  * PUT /api/opd/appointments/[id];
  * Updates an existing appointment.;
  */;
-export const PUT = async (request: any) => {
+export const PUT = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -440,8 +440,8 @@ export const PUT = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid appointment ID" },
-        { status: 400 }
+        { error: "Invalid appointment ID" ,},
+        { status: 400 },
       );
 
     const updateData = (await request.json()) as AppointmentUpdateBody;
@@ -449,8 +449,8 @@ export const PUT = async (request: any) => {
     // Simulate updating the appointment in the database;
     const updatedAppointment = await updateAppointmentInDB(id, updateData);
 
-    return NextResponse.json({ appointment: updatedAppointment });
-  } catch (error: unknown) {
+    return NextResponse.json({ appointment: updatedAppointment ,});
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
@@ -458,5 +458,5 @@ export const PUT = async (request: any) => {
         error: "Failed to update appointment",
         details: errorMessage;
       },
-      { status: 500 }
+      { status: 500 },
     );

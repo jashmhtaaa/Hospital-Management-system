@@ -19,7 +19,7 @@ const interactionOverrideRepository = {
   findByInteractionId: (interactionId: string) => Promise.resolve([]),
   save: (override: unknown) => Promise.resolve(override.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 /**
@@ -28,29 +28,29 @@ const interactionOverrideRepository = {
  */
 export const POST = async (
   req: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     // Get interaction ID from params
     const { id } = params;
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Interaction ID is required' }, { status: 400 });
+     {\n  {
+      return NextResponse.json({ error: 'Interaction ID is required' ,}, { status: 400 ,});
     }
 
     // Validate request
     const data = await req.json();
     const validationResult = validateInteractionOverrideRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -59,11 +59,11 @@ export const POST = async (
     // Create override record
     const override = {
       id: crypto.randomUUID(),
-      \1,\2 data.reason,
-      \1,\2 userId,
+       data.reason,
+       userId,
       overriddenAt: new Date(),
       patientId: data.patientId,
-      prescriptionId: data.prescriptionId
+      prescriptionId: data.prescriptionId,
     };
 
     // Save override record
@@ -72,21 +72,21 @@ export const POST = async (
     // Audit logging (critical for controlled substances and high-risk medications)
     await auditLog('DRUG_INTERACTION', {
       action: 'OVERRIDE',
-      \1,\2 id,
-      \1,\2 data.patientId,
-      details: 
+       id,
+       data.patientId,
+      details: ,
         overrideId,
         reason: data.reason,
-        prescriptionId: data.prescriptionId
+        prescriptionId: data.prescriptionId,
     })
 
     // Return response
     return NextResponse.json(
       {
         id: overrideId,
-        message: 'Interaction override recorded successfully'
+        message: 'Interaction override recorded successfully',
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, 'Error recording interaction override');
@@ -97,12 +97,12 @@ export const POST = async (
  * GET /api/pharmacy/interactions/overrides;
  * List interaction overrides with filtering options;
  */
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {,
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -119,16 +119,16 @@ export const GET = async (req: NextRequest) => {
     const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
-    const filter: unknown = {};
-    \1 {\n  \2ilter.patientId = patientId;
-    \1 {\n  \2ilter.prescriptionId = prescriptionId;
-    \1 {\n  \2ilter.interactionId = interactionId;
+    const filter: unknown = {,};
+     {\n  ilter.patientId = patientId;
+     {\n  ilter.prescriptionId = prescriptionId;
+     {\n  ilter.interactionId = interactionId;
 
     // Add date range if provided
-    \1 {\n  \2{
+     {\n  {
       filter.overriddenAt = {};
-      \1 {\n  \2ilter.overriddenAt.gte = new Date(startDate);
-      \1 {\n  \2ilter.overriddenAt.lte = new Date(endDate);
+       {\n  ilter.overriddenAt.gte = new Date(startDate);
+       {\n  ilter.overriddenAt.lte = new Date(endDate);
     }
 
     // Get overrides (mock implementation)
@@ -138,24 +138,24 @@ export const GET = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'LIST_OVERRIDES',
-      \1,\2 userId,
-      details: 
+       userId,
+      details: ,
         filter,
         page,
         limit,
-        resultCount: overrides.length
+        resultCount: overrides.length,
     });
 
     // Return response
     return NextResponse.json({
       overrides,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit),
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error retrieving interaction overrides');
   }

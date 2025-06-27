@@ -20,11 +20,11 @@ import { logger } from '@/lib/core/logging';
 // Schema for payment creation
 const createPaymentSchema = z.object({
   invoiceId: z.string().uuid(),
-  \1,\2 paymentMethodSchema,
-  \1,\2 z.string().optional(),
+   paymentMethodSchema,
+   z.string().optional(),
   notes: z.string().optional(),
   paidBy: z.string().optional(),
-  receiptRequired: z.boolean().default(true)
+  receiptRequired: z.boolean().default(true),
 });
 
 // Schema for payment query parameters
@@ -44,7 +44,7 @@ const paymentQuerySchema = z.object({
 });
 
 // GET handler for retrieving all payments with filtering and pagination
-export const _GET = withErrorHandling(async (req: NextRequest) => {
+export const _GET = withErrorHandling(async (req: NextRequest) => {,
   // Validate query parameters
   const query = validateQuery(paymentQuerySchema)(req);
 
@@ -52,55 +52,55 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   await checkPermission(permissionService, 'read', 'payment')(req);
 
   // Build filter conditions
-  const where: unknown = {};
+  const where: unknown = {,};
 
-  \1 {\n  \2{
+   {\n  {
     where.invoiceId = query.invoiceId;
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.invoice = {
-      patientId: query.patientId
+      patientId: query.patientId,
     };
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.paymentMethod = query.paymentMethod;
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.status = query.status;
   }
 
-  \1 {\n  \2{
+   {\n  {
     try {
       const startDate = new Date(query.startDate);
       const endDate = new Date(query.endDate);
 
-      \1 {\n  \2{
+       {\n  {
         throw new ValidationError('Start date must be before end date', 'INVALID_DATE_RANGE');
       }
 
       where.paymentDate = {
         gte: startDate,
-        lte: endDate
+        lte: endDate,
       };
     } catch (error) {
       throw new ValidationError('Invalid date range', 'INVALID_DATE_RANGE');
     }
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.amount = {
       ...(where.amount || {}),
-      gte: query.minAmount
+      gte: query.minAmount,
     };
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.amount = {
       ...(where.amount || {}),
-      lte: query.maxAmount
+      lte: query.maxAmount,
     };
   }
 
@@ -108,20 +108,20 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   const [payments, total] = await Promise.all([
     prisma.payment.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      \1,\2 {
-        invoice: {
-          select: {
+       {
+        invoice: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            patient: {
-              select: {
+             true,
+            patient: {,
+              select: {,
                 id: true,
-                \1,\2 true,
-                mrn: true
+                 true,
+                mrn: true,
               },
             },
           },
@@ -135,7 +135,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 });
 
 // POST handler for creating a new payment
-export const _POST = withErrorHandling(async (req: NextRequest) => {
+export const _POST = withErrorHandling(async (req: NextRequest) => {,
   // Validate request body
   const data = await validateBody(createPaymentSchema)(req);
 
@@ -144,34 +144,34 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   // Retrieve invoice
   const invoice = await prisma.bill.findUnique({
-    where: { id: data.invoiceId },
+    where: { id: data.invoiceId ,},
   });
 
-  \1 {\n  \2{
+   {\n  {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
   }
 
   // Check if invoice is in a valid state for payment
-  \1 {\n  \2 {
+   {\n   {
     throw new BusinessLogicError(
       'Payment can only be made for approved, partially paid, or overdue invoices',
       'INVALID_INVOICE_STATUS',
-      { currentStatus: invoice.status }
+      { currentStatus: invoice.status },
     );
   }
 
   // Check if payment amount is valid
-  \1 {\n  \2{
+   {\n  {
     throw new ValidationError('Payment amount must be greater than zero', 'INVALID_PAYMENT_AMOUNT');
   }
 
-  \1 {\n  \2{
+   {\n  {
     throw new ValidationError(
       'Payment amount cannot exceed outstanding amount',
       'PAYMENT_EXCEEDS_OUTSTANDING',
       {
         paymentAmount: data.amount,
-        outstandingAmount: invoice.outstandingAmount
+        outstandingAmount: invoice.outstandingAmount,
       }
     );
   }
@@ -184,13 +184,13 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   const payment = await prisma.$transaction(async (prisma) => {
     // Create payment record
     const newPayment = await prisma.payment.create({
-      data: {
+      data: {,
         invoiceId: data.invoiceId,
-        \1,\2 data.paymentMethod,
+         data.paymentMethod,
         paymentDate: data.paymentDate;
         referenceNumber,
         notes: data.notes,
-        \1,\2 'completed'
+         'completed'
       },
     });
 
@@ -200,17 +200,17 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
     // Determine new invoice status
     let newStatus = invoice.status;
-    \1 {\n  \2{
+     {\n  {
       newStatus = 'paid',
-    } else \1 {\n  \2{
+    } else  {\n  {
       newStatus = 'partial',
     }
 
     await prisma.bill.update({
-      where: { id: data.invoiceId },
-      data: {
+      where: { id: data.invoiceId ,},
+      data: {,
         paidAmount: newPaidAmount,
-        \1,\2 newStatus
+         newStatus
       },
     });
 
@@ -219,13 +219,13 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   logger.info('Payment created', {
     paymentId: payment.id,
-    \1,\2 data.amount,
-    method: data.paymentMethod
+     data.amount,
+    method: data.paymentMethod,
   });
 
   // Generate receipt if required
   let receiptUrl = null;
-  \1 {\n  \2{
+   {\n  {
     // In a real implementation, this would generate a receipt
     // For now, we'll just simulate it
     receiptUrl = `/api/billing/receipts/${payment.id}`;

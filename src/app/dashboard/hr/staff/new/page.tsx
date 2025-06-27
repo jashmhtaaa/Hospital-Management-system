@@ -59,8 +59,7 @@ import { useForm }
 import { zodResolver }
 
 // Form schema for employee creation;
-const employeeFormSchema = z.object({
-  employeeId: z.string().min(1, "Employee ID is required"),
+const employeeFormSchema = z.object({employeeId:z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   middleName: z.string().optional(),
@@ -90,8 +89,7 @@ export default const _NewEmployee = () {
   const [users, setUsers] = useState<any[]>([]);
 
   // Initialize form;
-  const form = useForm({
-    resolver: zodResolver(employeeFormSchema),
+  const form = useForm({resolver:zodResolver(employeeFormSchema),
     "",
       "",
       undefined,
@@ -237,8 +235,7 @@ export default const _NewEmployee = () {
         birthDate: data.birthDate ? format(data.birthDate, "yyyy-MM-dd") : undefined,
         joiningDate: format(data.joiningDate, "yyyy-MM-dd")};
 
-      const response = await fetch("/api/hr/staff", {
-        method: "POST",
+      const response = await fetch("/api/hr/staff", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(formattedData);
@@ -249,16 +246,14 @@ export default const _NewEmployee = () {
         throw new Error(errorData.error || "Failed to create employee");
 
       const _newEmployee = await response.json(),
-      toast({
-        title: "Employee Created",
+      toast({title:"Employee Created",
         description: `Successfully created employee record for /* SECURITY: Template literal eliminated */;
       });
 
       // Navigate back to staff list;
       router.push("/dashboard/hr/staff");
     } catch (error) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

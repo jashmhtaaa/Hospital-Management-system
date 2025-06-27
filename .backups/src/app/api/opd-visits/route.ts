@@ -30,10 +30,10 @@ const opdVisitCreateSchema = z.object({
 });
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination);
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
     try {
@@ -136,7 +136,7 @@ export const _GET = async (request: any) => {
 
         const [visitsResult, countResult] = await Promise.all([;
             (DB as D1Database).prepare(query).bind(...queryParameters).all<Consultation>(),
-            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
+            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number ,}>();
         ]);
 
         const results = visitsResult.results || [];
@@ -144,34 +144,34 @@ export const _GET = async (request: any) => {
 
         return NextResponse.json({
             data: results,
-            pagination: {
+            pagination: {,
                 page,
                 limit,
                 total,
                 totalPages: Math.ceil(total / limit);
             }});
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json();
-            { message: "Error fetching OPD visits", details: errorMessage },
-            { status: 500 }
+            { message: "Error fetching OPD visits", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
 
 // POST /api/opd-visits - Create a new OPD visit (Consultation record);
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
     if (!session.user) { // Ensure user exists if logged in
-        return NextResponse.json({ message: "User not found in session" }, { status: 500 });
+        return NextResponse.json({ message: "User not found in session" ,}, { status: 500 ,});
     }
 
     try {
@@ -211,8 +211,8 @@ export const _POST = async (request: any) => {
 
         if (!session.user) {
             return NextResponse.json();
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
 
         const visitData = validationResult.data;
@@ -250,19 +250,19 @@ export const _POST = async (request: any) => {
         const newVisitId = insertResult.meta.last_row_id;
 
         return NextResponse.json();
-            { message: "OPD visit created successfully", consultationId: newVisitId },
-            { status: 201 }
+            { message: "OPD visit created successfully", consultationId: newVisitId ,},
+            { status: 201 },
         );
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
 
         return NextResponse.json();
-            { message: "Error creating OPD visit", details: errorMessage },
-            { status: 500 }
+            { message: "Error creating OPD visit", details: errorMessage ,},
+            { status: 500 },
         );
 
 export async function GET() { return new Response("OK"); }

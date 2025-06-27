@@ -6,40 +6,40 @@ import { prisma } from '@/lib/prisma';
 import { createAppointmentSchema, validateRequest } from '@/lib/validation/schemas';
 import { ApiResponseBuilder, PaginationBuilder } from '@/utils/api-response';
 // apps/hms-web/src/app/api/opd-management/appointments/route.ts
-export async function POST(request: NextRequest): unknown {
+export async function POST(request: NextRequest): unknown {,
   try {
     const body = await request.json();
     const validatedData = validateRequest(createAppointmentSchema)(body);
 
     // Check for scheduling conflicts
     const conflictingAppointment = await prisma.appointment.findFirst({
-      \1,\2 validatedData.doctorId,
+       validatedData.doctorId,
         appointmentDate: validatedData.appointmentDate,
         appointmentTime: validatedData.appointmentTime,
-        status: { not: 'CANCELLED' }
+        status: { not: 'CANCELLED' },
       }
     });
 
-    \1 {\n  \2{
+     {\n  {
       return ApiResponseBuilder.error('Doctor is not available at this time', 409);
     }
 
     const appointment = await prisma.appointment.create({
       data: validatedData,
-      \1,\2 true,
-        \1,\2 {
+       true,
+         {
             firstName: true,
-            \1,\2 true
+             true
           }
         },
-        department: true
+        department: true,
       }
     });
 
     await AuditService.logUserAction(
       {
         userId: request.headers.get('x-user-id') || undefined,
-        ipAddress: request.ip
+        ipAddress: request.ip,
       },
       'CREATE',
       'APPOINTMENT',
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest): unknown {
   }
 }
 
-export async function GET(request: NextRequest): unknown {
+export async function GET(request: NextRequest): unknown {,
   try {
     const { searchParams } = new URL(request.url);
     const page = Number.parseInt(searchParams.get('page') || '1');
@@ -65,10 +65,10 @@ export async function GET(request: NextRequest): unknown {
 
     const { skip, take, orderBy } = PaginationBuilder.buildPrismaArgs({ page, limit });
 
-    const where: unknown = {};
-    \1 {\n  \2here.doctorId = doctorId;
-    \1 {\n  \2here.appointmentDate = new Date(date);
-    \1 {\n  \2here.status = status;
+    const where: unknown = {,};
+     {\n  here.doctorId = doctorId;
+     {\n  here.appointmentDate = new Date(date);
+     {\n  here.status = status;
 
     const [appointments, total] = await Promise.all([
       prisma.appointment.findMany({
@@ -76,19 +76,19 @@ export async function GET(request: NextRequest): unknown {
         skip,
         take,
         orderBy,
-        \1,\2 {
-            \1,\2 true,
-              \1,\2 true,
-              phone: true
+         {
+             true,
+               true,
+              phone: true,
             }
           },
-          \1,\2 {
+           {
               firstName: true,
-              \1,\2 true
+               true
             }
           },
-          \1,\2 {
-              name: true
+           {
+              name: true,
             }
           }
         }

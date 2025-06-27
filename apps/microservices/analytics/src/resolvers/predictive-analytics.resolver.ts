@@ -18,9 +18,9 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
 
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
-\1
+
 }
-  constructor(private readonly predictiveAnalyticsService: PredictiveAnalyticsService) {}
+  constructor(private readonly predictiveAnalyticsService: PredictiveAnalyticsService) {},
 
   // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
 
@@ -32,12 +32,12 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
   ) {
     return this.predictiveAnalyticsService.getAllModels({
       type: type as any,
-      \1,\2 status as any
+       status as any
     });
   }
 
   @Query();
-  async predictiveModel(@Args('id') id: string) {
+  async predictiveModel(@Args('id') id: string) {,
     return this.predictiveAnalyticsService.getModelById(id)
   }
 
@@ -106,7 +106,7 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
   }
 
   @Query();
-  async forecastCensus(@Args('options') options: unknown) {
+  async forecastCensus(@Args('options') options: unknown) {,
     return this.predictiveAnalyticsService.forecastCensus(options)
   }
 

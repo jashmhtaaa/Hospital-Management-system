@@ -14,12 +14,12 @@ import type { PrismaService } from '@/lib/prisma';
  * AI-powered triage scoring with real-time capacity management;
  */
 
-\1
+
 }
 }
 
 @Injectable();
-\1
+
 }
   }
 
@@ -28,14 +28,14 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async performTriageAssessment(
     patientId: string,
-    \1,\2 string;
+     string;
   ): Promise<TriageAssessment> {
-    const startTime = crypto.getRandomValues(\1[0];
+    const startTime = crypto.getRandomValues([0];
 
     try {
       // Get patient information
       const patient = await this.getPatient(patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Patient ${patientId} not found`);
       }
 
@@ -55,19 +55,19 @@ import type { PrismaService } from '@/lib/prisma';
       // Determine immediate interventions
       const immediateInterventions = this.determineImmediateInterventions(redFlags, triageData);
 
-      const \1,\2 `triage-${crypto.getRandomValues(\1[0]}`,
+      const  `triage-${crypto.getRandomValues([0]}`,
         patientId,
         triageNurse,
         triageTime: new Date(),
-        \1,\2 triageData.presentIllness || '',
+         triageData.presentIllness || '',
         painScore: triageData.painScore || 0;
         triageLevel,
         esiScore,
         canadianTriageScore,
         aiTriageScore,
         vitalSigns: triageData.vitalSigns!,
-        \1,\2 triageData.traumaAssessment,
-        \1,\2 triageData.cardiovascularAssessment!,
+         triageData.traumaAssessment,
+         triageData.cardiovascularAssessment!,
         reassessmentRequired: this.requiresReassessment(triageLevel, redFlags),
         reassessmentTime: this.calculateReassessmentTime(triageLevel),
         notes: triageData.notes || '';
@@ -93,17 +93,17 @@ import type { PrismaService } from '@/lib/prisma';
       });
 
       // Send critical alerts if necessary
-      \1 {\n  \2 {
-        await this.sendCritical/* SECURITY: Alert removed */
+       {\n   {
+        await this.sendCritical/* SECURITY: Alert removed */,
       }
 
       // Record metrics
-      const duration = crypto.getRandomValues(\1[0] - startTime;
+      const duration = crypto.getRandomValues([0] - startTime;
       metricsCollector.recordTimer('emergency.triage_assessment_time', duration);
       metricsCollector.incrementCounter('emergency.triage_assessments', 1, {
         triageLevel: triageLevel,
         redFlagsCount: redFlags.length.toString(),
-        aiConfidence: Math.round(aiTriageScore?.confidence || 0).toString()
+        aiConfidence: Math.round(aiTriageScore?.confidence || 0).toString(),
       });
 
       return assessment;
@@ -120,7 +120,7 @@ import type { PrismaService } from '@/lib/prisma';
     try {
       // Try cache first
       const cached = await cacheService.getCachedResult('ed_capacity:', 'current');
-      \1 {\n  \2[0] - cached.timestamp.getTime() < 60000) { // 1 minute cache
+       {\n  [0] - cached.timestamp.getTime() < 60000) { // 1 minute cache
         return cached;
       }
 
@@ -144,17 +144,17 @@ import type { PrismaService } from '@/lib/prisma';
         this.getDivertStatus(),
       ]);
 
-      const metrics: CapacityMetrics = {
+      const metrics: CapacityMetrics = {,
         totalBeds,
         occupiedBeds,
         availableBeds: totalBeds - occupiedBeds,
         occupancyRate: (occupiedBeds / totalBeds) * 100;
         averageWaitTime,
         averageLengthOfStay: averageLOS,
-        \1,\2 triageStats,
+         triageStats,
         staffingLevels: staffingData;
         divertStatus,
-        timestamp: new Date()
+        timestamp: new Date(),
       };
 
       // Cache for 1 minute
@@ -162,7 +162,7 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Publish real-time updates
       await pubsub.publish(SUBSCRIPTION_EVENTS.ED_CAPACITY_ALERT, {
-        edCapacityUpdate: metrics
+        edCapacityUpdate: metrics,
       });
 
       // Check for capacity alerts
@@ -182,13 +182,13 @@ import type { PrismaService } from '@/lib/prisma';
   ): Promise<BedAssignment | null> 
     try {
       const patient = await this.getPatient(patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Patient ${patientId} not found`);
       }
 
       // Get available beds
       const availableBeds = await this.getAvailableBeds(preferredArea, requiredSpecialtyBed);
-      \1 {\n  \2{
+       {\n  {
         return null;
       }
 
@@ -196,11 +196,11 @@ import type { PrismaService } from '@/lib/prisma';
       const selectedBed = await this.selectOptimalBed(patient, availableBeds);
 
       // Create bed assignment
-      const \1,\2 selectedBed.id,
-        \1,\2 selectedBed.room,
-        \1,\2 new Date(),
+      const  selectedBed.id,
+         selectedBed.room,
+         new Date(),
         assignedBy: 'SYSTEM', // Could be user ID
-        estimatedDuration: this.estimateBedDuration(patient)
+        estimatedDuration: this.estimateBedDuration(patient),
       };
 
       // Update bed status and patient location
@@ -217,7 +217,7 @@ import type { PrismaService } from '@/lib/prisma';
       // Record metrics
       metricsCollector.incrementCounter('emergency.bed_assignments', 1, {
         area: selectedBed.area,
-        triageLevel: patient.triageData?.triageLevel || 'UNKNOWN'
+        triageLevel: patient.triageData?.triageLevel || 'UNKNOWN',
       });
 
       return assignment;catch (error) 
@@ -241,8 +241,8 @@ import type { PrismaService } from '@/lib/prisma';
       // Auto-implement low-risk optimizations
       const implementedActions = await this.implementAutomaticOptimizations(recommendations);
 
-      const \1,\2 new Date(),
-        \1,\2 bottlenecks;
+      const  new Date(),
+         bottlenecks;
         recommendations,
         implementedActions,
         projectedImpact: this.calculateProjectedImpact(recommendations, implementedActions),
@@ -251,7 +251,7 @@ import type { PrismaService } from '@/lib/prisma';
       // Record optimization metrics
       metricsCollector.incrementCounter('emergency.flow_optimizations', 1, {
         bottleneckCount: bottlenecks.length.toString(),
-        implementedActions: implementedActions.length.toString()
+        implementedActions: implementedActions.length.toString(),
       });
 
       return result;
@@ -262,25 +262,25 @@ import type { PrismaService } from '@/lib/prisma';
   }
 
   // Private helper methods
-  private calculateESIScore(triageData: Partial<TriageAssessment>): number {
+  private calculateESIScore(triageData: Partial<TriageAssessment>): number {,
     // Emergency Severity Index algorithm implementation
     let score = 5; // Start with lowest acuity
 
     // Life-threatening conditions (ESI 1)
-    \1 {\n  \2 {
+     {\n   {
       return 1
     }
 
     // High-risk situations (ESI 2)
-    \1 {\n  \2 {
+     {\n   {
       return 2
     }
 
     // Resource requirements (ESI 3-5)
     const resourceCount = this.estimateResourceRequirements(triageData)
-    \1 {\n  \2{
+     {\n  {
       score = 3;
-    } else \1 {\n  \2{
+    } else  {\n  {
       score = 4;
     } else {
       score = 5;
@@ -289,7 +289,7 @@ import type { PrismaService } from '@/lib/prisma';
     return score;
   }
 
-  private calculateCTASScore(triageData: Partial<TriageAssessment>): number {
+  private calculateCTASScore(triageData: Partial<TriageAssessment>): number {,
     // Canadian Triage and Acuity Scale implementation
     // Similar logic to ESI but with different criteria
     return 3; // Placeholder
@@ -303,10 +303,10 @@ import type { PrismaService } from '@/lib/prisma';
     // For now, return a placeholder
     return {
       score: 75,
-      \1,\2 ['Age > 65', 'Chest pain', 'Elevated heart rate'],
+       ['Age > 65', 'Chest pain', 'Elevated heart rate'],
       recommendations: ['ECG within 10 minutes', 'Cardiac enzymes', 'Monitor continuously'],
       modelVersion: '1.0.0',
-      calculatedAt: new Date()
+      calculatedAt: new Date(),
     };
   }
 
@@ -326,37 +326,37 @@ import type { PrismaService } from '@/lib/prisma';
       case 3:
         return TriageLevel.LEVEL_3;
       case 4: return TriageLevel.LEVEL_4,
-      default: return TriageLevel.LEVEL_5
+      default: return TriageLevel.LEVEL_5,
     }
   }
 
-  private identifyRedFlags(triageData: Partial<TriageAssessment>, patient: unknown): RedFlag[] {
+  private identifyRedFlags(triageData: Partial<TriageAssessment>, patient: unknown): RedFlag[] {,
     const redFlags: RedFlag[] = [];
 
     // Airway compromise
-    \1 {\n  \2{
+     {\n  {
       redFlags.push({
         category: RedFlagCategory.BREATHING_DIFFICULTY,
-        \1,\2 'HIGH',
-        \1,\2 'Immediate oxygen therapy and respiratory assessment'
+         'HIGH',
+         'Immediate oxygen therapy and respiratory assessment'
       });
     }
 
     // Shock indicators
-    \1 {\n  \2{
+     {\n  {
       redFlags.push({
         category: RedFlagCategory.CIRCULATION_SHOCK,
-        \1,\2 'HIGH',
-        \1,\2 'IV access, fluid resuscitation, continuous monitoring',
+         'HIGH',
+         'IV access, fluid resuscitation, continuous monitoring',
       });
     }
 
     // Neurological concerns
-    \1 {\n  \2{
+     {\n  {
       redFlags.push({
         category: RedFlagCategory.DISABILITY_NEURO,
-        \1,\2 'HIGH',
-        \1,\2 'Neurological assessment, glucose check, consider CT',
+         'HIGH',
+         'Neurological assessment, glucose check, consider CT',
       });
     }
 
@@ -365,32 +365,32 @@ import type { PrismaService } from '@/lib/prisma';
 
   // Additional helper methods would be implemented here...
 
-  private async getPatient(id: string): Promise<EmergencyPatient | null> {
+  private async getPatient(id: string): Promise<EmergencyPatient | null> {,
     // Implementation to fetch patient data
     return null; // Placeholder
   }
 
   // Required abstract methods from FHIRResourceManager
-  validate(resource: FHIRObservation): boolean {
+  validate(resource: FHIRObservation): boolean {,
     return !!(resource?.resourceType && resource?.status && resource.code)
   }
 
-  toFHIR(triageData: TriageAssessment): FHIRObservation {
+  toFHIR(triageData: TriageAssessment): FHIRObservation {,
     return {
       resourceType: 'Observation',
-      \1,\2 'final',
-      code: this.createCodeableConcept([
+       'final',
+      code: this.createCodeableConcept([,
         this.createCoding(FHIR_SYSTEMS.SNOMED_CT, '225162004', 'Triage assessment'),
       ]),
       subject: this.createReference('Patient', triageData.patientId),
-      valueInteger: triageData.esiScore
+      valueInteger: triageData.esiScore,
     };
   }
 
-  fromFHIR(fhirResource: FHIRObservation): Partial<TriageAssessment> {
+  fromFHIR(fhirResource: FHIRObservation): Partial<TriageAssessment> {,
     return {
       id: fhirResource.id,
-      \1,\2 fhirResource.valueInteger || 5
+       fhirResource.valueInteger || 5
     };
   }
 }
@@ -398,28 +398,28 @@ import type { PrismaService } from '@/lib/prisma';
 // Supporting interfaces
 interface FlowOptimizationResult {
   timestamp: Date,
-  \1,\2 Bottleneck[],
-  \1,\2 ImplementedAction[],
-  projectedImpact: ProjectedImpact
+   Bottleneck[],
+   ImplementedAction[],
+  projectedImpact: ProjectedImpact,
 }
 
 interface Bottleneck {
   type: string,
-  \1,\2 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
-  \1,\2 number; // minutes
+   'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
+   number; // minutes
 }
 
 interface FlowRecommendation {
   type: string,
-  \1,\2 'LOW' | 'MEDIUM' | 'HIGH',
-  \1,\2 boolean,
-  requiredApproval: boolean
+   'LOW' | 'MEDIUM' | 'HIGH',
+   boolean,
+  requiredApproval: boolean,
 }
 
 interface ImplementedAction {
   type: string,
-  \1,\2 Date,
-  expectedOutcome: string
+   Date,
+  expectedOutcome: string,
 }
 
 interface ProjectedImpact {

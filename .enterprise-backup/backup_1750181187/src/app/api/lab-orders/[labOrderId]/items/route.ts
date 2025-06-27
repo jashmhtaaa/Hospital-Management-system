@@ -11,7 +11,7 @@ import { z } from "zod";
 const ALLOWED_ROLES_ADD = ["Doctor"]
 
 // Helper function to get lab order ID from URL
-const getLabOrderId = (pathname: string): number | null {
+const getLabOrderId = (pathname: string): number | null {,
     // Pathname might be /api/lab-orders/123/items
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part
@@ -27,19 +27,19 @@ const AddLabOrderItemSchema = z.object({
     notes: z.string().optional().nullable(), // Specific notes for this test
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
     const labOrderId = getLabOrderId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
-    \1 {\n  \2{
-        return new Response(JSON.stringify({ error: "Invalid Lab Order ID" }), { status: 400 });
+     {\n  {
+        return new Response(JSON.stringify({ error: "Invalid Lab Order ID" ,}), { status: 400 ,});
     }
 
     try {
@@ -48,8 +48,8 @@ export const _POST = async (request: Request) => {
         const itemsArraySchema = z.array(AddLabOrderItemSchema).min(1);
         const validation = itemsArraySchema.safeParse(body);
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), { status: 400 ,});
         }
 
         const itemsData = validation.data;
@@ -57,9 +57,9 @@ export const _POST = async (request: Request) => {
         const { DB } = env;
 
         // 2. Get Doctor ID from session user
-        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
+        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+         {\n  {
+            return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" ,}), { status: 404 ,});
         }
         const doctorId = doctorProfile.doctor_id;
 
@@ -68,26 +68,26 @@ export const _POST = async (request: Request) => {
                                    .bind(labOrderId);
                                    .first<lab_order_id: number, doctor_id: number >();
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Lab Order not found" ,}), { status: 404 ,});
         }
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Forbidden: Cannot add items to another doctor's lab order" }), { status: 403 });        }
+         {\n  {
+            return new Response(JSON.stringify({ error: "Forbidden: Cannot add items to another doctor's lab order" ,}), { status: 403 ,});        }
 
         // 4. Validate all billable items (tests) exist and get their names/details
         const billableItemIds = itemsData.map(item => item.billable_item_id);
         const billableCheckQuery = `SELECT item_id, item_name, default_sample_type FROM BillableItems WHERE item_id IN (${billableItemIds.map(() => "?").join(",")}) AND is_active = TRUE AND category = ?`; // Assuming category distinguishes lab tests
-        const billableResults = await DB.prepare(billableCheckQuery).bind(...billableItemIds, "Laboratory").all<{ item_id: number, item_name: string, default_sample_type: string | null }>();
+        const billableResults = await DB.prepare(billableCheckQuery).bind(...billableItemIds, "Laboratory").all<{ item_id: number, item_name: string, default_sample_type: string | null ,}>();
 
-        const foundBillableItems = new Map(billableResults.results?.map(item => [item.item_id, { name: item.item_name, sampleType: item.default_sample_type }]));
+        const foundBillableItems = new Map(billableResults.results?.map(item => [item.item_id, { name: item.item_name, sampleType: item.default_sample_type ,}]));
 
         const missingItems = billableItemIds.filter(id => !foundBillableItems.has(id));
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: `Billable lab test item(s) not found, inactive, or not in Laboratory category: ${missingItems.join(", ")}` }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: `Billable lab test item(s) not found, inactive, or not in Laboratory category: ${missingItems.join(", ")}` }), { status: 404 ,});
         }
 
         // 5. Prepare batch insert for all items
-        const batchActions: D1PreparedStatement[] = itemsData.map(item => {
+        const batchActions: D1PreparedStatement[] = itemsData.map(item => {,
             const billableDetails = foundBillableItems.get(item.billable_item_id),
             const testName = item.test_name || billableDetails?.name || "Unknown Test";
             const sampleType = item.sample_type || billableDetails?.sampleType || null;
@@ -109,21 +109,21 @@ export const _POST = async (request: Request) => {
         // 6. Execute the batch insert
         const _insertResults = await DB.batch(batchActions);
 
-        // Basic check for success (optional: check insertResults)
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // Basic check for success (optional: check insertResults),
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
         // 7. Return success response
-        return new Response(JSON.stringify({ message: `${itemsData.length} test(s) added to lab order successfully` }), {
+        return new Response(JSON.stringify({ message: `${itemsData.length} test(s) added to lab order successfully` ,}), {
             status: 201, // Created
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 }

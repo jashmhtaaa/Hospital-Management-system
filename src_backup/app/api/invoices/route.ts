@@ -38,14 +38,14 @@ const invoiceCreateSchema = z.object({
   ).min(1, "At least one invoice item is required")});
 
 // Helper function to generate the next invoice number (example implementation);
-async const generateInvoiceNumber = (db: D1Database): Promise<string> {
-  const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{ maxId: number | null }>();
+async const generateInvoiceNumber = (db: D1Database): Promise<string> {,
+  const result = await db.prepare("SELECT MAX(id) as maxId FROM Invoices").first<{ maxId: number | null ,}>();
   const nextId = (result?.maxId || 0) + 1;
   return `INV-${String(nextId).padStart(6, "0")}`;
 }
 
 // GET /api/invoices - Fetch list of invoices (with filtering/pagination);
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -80,7 +80,7 @@ export const _GET = async (request: any) => {
 }
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const { searchParams } = new URL(request.url);
@@ -142,7 +142,7 @@ export const _GET = async (request: any) => {
 
     const [invoicesResult, countResult] = await Promise.all([;
       (DB as D1Database).prepare(query).bind(...queryParameters).all<Invoice>(),
-      (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
+      (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number ,}>();
     ]);
 
     const results = invoicesResult.results || [];
@@ -150,34 +150,34 @@ export const _GET = async (request: any) => {
 
     return NextResponse.json({
       data: results,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
         totalPages: Math.ceil(total / limit);
       }});
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
     }
     return NextResponse.json();
-      { message: "Error fetching invoices", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching invoices", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/invoices - Create a new invoice;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
     if (!session.user) { // Ensure user exists if logged in
-        return NextResponse.json({ message: "User not found in session" }, { status: 500 });
+        return NextResponse.json({ message: "User not found in session" ,}, { status: 500 ,});
     }
 
     try {
@@ -217,8 +217,8 @@ export const _POST = async (request: any) => {
 
         if (!session.user) {
             return NextResponse.json();
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
 
         const invoiceData = validationResult.data;
@@ -255,7 +255,7 @@ export const _POST = async (request: any) => {
 
         const newInvoiceId = insertResult.meta.last_row_id;
 
-        const itemInsertStmts: D1PreparedStatement[] = invoiceData.items.map((item) => {}
+        const itemInsertStmts: D1PreparedStatement[] = invoiceData.items.map((item) => {},
             (DB as D1Database).prepare();
                 `INSERT INTO InvoiceItems (invoice_id, billable_item_id, description, quantity, unit_price, total_price, created_at),
                  VALUES (?, ?, ?, ?, ?, ?, ?)`;
@@ -279,19 +279,19 @@ export const _POST = async (request: any) => {
             throw new Error("Failed to create invoice items");
 
         return NextResponse.json();
-            { message: "Invoice created successfully", invoiceId: newInvoiceId },
-            { status: 201 }
+            { message: "Invoice created successfully", invoiceId: newInvoiceId ,},
+            { status: 201 },
         );
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
 
         return NextResponse.json();
-            { message: "Error creating invoice", details: errorMessage },
-            { status: 500 }
+            { message: "Error creating invoice", details: errorMessage ,},
+            { status: 500 },
         );
 
 export async function GET() { return new Response("OK"); }

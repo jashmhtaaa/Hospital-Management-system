@@ -26,7 +26,7 @@ async const bootstrap = () {
   app.enableCors({
     origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true
+    credentials: true,
   });
 
   // Set up global validation pipe
@@ -35,7 +35,7 @@ async const bootstrap = () {
       transform: true,
       whitelist: true;
       forbidNonWhitelisted: true,
-      transformOptions: 
+      transformOptions: ,
         enableImplicitConversion: true,
     }),
   );
@@ -59,7 +59,7 @@ async const bootstrap = () {
   // Start the application
   const port = process.env.PORT || 3002;
   await app.listen(port);
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
   // Register startup metric
   metricsCollector.incrementCounter('analytics.service_starts', 1);
@@ -68,7 +68,7 @@ async const bootstrap = () {
   const signals = ['SIGTERM', 'SIGINT'];
   signals.forEach(signal => {
     process.on(signal, async () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
       // Record shutdown metric
       metricsCollector.incrementCounter('analytics.service_shutdowns', 1);

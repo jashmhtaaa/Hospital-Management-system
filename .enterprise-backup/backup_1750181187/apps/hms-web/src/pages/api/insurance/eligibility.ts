@@ -12,58 +12,58 @@ const eligibilityService = new EligibilityCheckService();
  *   description: API for checking patient insurance eligibility;
  *
  * /api/insurance/eligibility:
- *   post:
+ *   post:,
  *     summary: Check insurance eligibility for a patient;
- *     tags: [Insurance Eligibility]
+ *     tags: [Insurance Eligibility],
  *     requestBody:
  *       required: true;
  *       content:
- *         application/json:
+ *         application/json:,
  *           schema:
  *             type: object;
  *             required:
  *               - patientId;
  *               - policyId;
  *             properties:
- *               patientId:
+ *               patientId:,
  *                 type: string;
  *               policyId:
  *                 type: string;
  *               serviceId:
  *                 type: string;
- *                 description: Optional service ID for specific eligibility check.
+ *                 description: Optional service ID for specific eligibility check.,
  *     responses:
- *       200:
- *         description: Eligibility status retrieved successfully.
+ *       200:,
+ *         description: Eligibility status retrieved successfully.,
  *         content:
- *           application/json:
+ *           application/json:,
  *             schema:
- *               $ref: "#/components/schemas/EligibilityStatus" // Assuming EligibilityStatus schema is defined
+ *               $ref: "#/components/schemas/EligibilityStatus" // Assuming EligibilityStatus schema is defined,
  *       400:
- *         description: Invalid input.
+ *         description: Invalid input.,
  *       404:
- *         description: Patient or policy not found.
+ *         description: Patient or policy not found.,
  *       500:
- *         description: Server error during eligibility check.
+ *         description: Server error during eligibility check.,
  */
-export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {
+export default async const _handler = (req: NextApiRequest, res: NextApiResponse) {,
     if (req.method === "POST") {
         try {
             const { patientId, policyId, serviceId } = req.body as { patientId: string, policyId: string, serviceId?: string };
 
             if (!patientId || !policyId) {
-                return res.status(400).json({ message: "Patient ID and Policy ID are required." });
+                return res.status(400).json({ message: "Patient ID and Policy ID are required." ,});
             }
 
             const eligibilityStatus = await eligibilityService.checkEligibility(patientId, policyId, serviceId);
             return res.status(200).json(eligibilityStatus);
 
-        } catch (error: unknown) {
+        } catch (error: unknown) {,
 
             if (error.message.includes("not found")) {
-                return res.status(404).json({ message: error.message });
+                return res.status(404).json({ message: error.message ,});
             }
-            return res.status(500).json({ message: "Error checking insurance eligibility", error: error.message });
+            return res.status(500).json({ message: "Error checking insurance eligibility", error: error.message ,});
         }
     } else {
         res.setHeader("Allow", ["POST"]);

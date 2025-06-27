@@ -32,7 +32,7 @@ import { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts"; // Or 
       eventType,
       entityType,
       entityId: entityId || "N/A",      status,
-      details: details || {}};
+      details: details || {},};
 
     // Placeholder: Log to console as structured JSON.;
     // In production, this would write to a secure audit log store.;
@@ -103,7 +103,7 @@ async const testAuditLogService = () {
     "Auth",
     "user123",
     "SUCCESS",
-    { ipAddress: "192.168.1.100" }
+    { ipAddress: "192.168.1.100" },
   );
 
   await auditService.logEvent();
@@ -112,7 +112,7 @@ async const testAuditLogService = () {
     "Patient",
     "patient-uuid-789",
     "SUCCESS",
-    { patientName: "encrypted_placeholder_John Doe" } // Note: sensitive details should be handled carefully;
+    { patientName: "encrypted_placeholder_John Doe" ,} // Note: sensitive details should be handled carefully;
   );
 
   await auditService.logEvent();
@@ -121,7 +121,7 @@ async const testAuditLogService = () {
     "System",
     null,
     "SUCCESS",
-    { backupFile: "/mnt/backups/db_20231027.bak" }
+    { backupFile: "/mnt/backups/db_20231027.bak" },
   );
 
    await auditService.logEvent();
@@ -130,7 +130,7 @@ async const testAuditLogService = () {
     "Patient",
     "patient-uuid-abc",
     "FAILURE",
-    { reason: "User not authorized" }
+    { reason: "User not authorized" },
   );
 
 testAuditLogService();

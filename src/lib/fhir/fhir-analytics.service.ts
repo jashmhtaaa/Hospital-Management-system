@@ -1,7 +1,7 @@
 import "@/lib/cache/redis-cache"
 import "@/lib/monitoring/metrics-collector"
-import {  cacheService  } from "@/lib/database"
-import {  metricsCollector  } from "@/lib/database"
+import {cacheService  } from "next/server"
+import {metricsCollector  } from "next/server"
 
 /**;
  * FHIR Analytics Service,
@@ -26,7 +26,7 @@ import {  metricsCollector  } from "@/lib/database"
   /**;
    * Generate patient-specific analytics from FHIR data,
    */;
-  async getPatientAnalytics(patientId: string): Promise<PatientFHIRAnalytics> {
+  async getPatientAnalytics(patientId: string): Promise<PatientFHIRAnalytics> {,
     try {
 } catch (error) {
   console.error(error);
@@ -67,7 +67,7 @@ import {  metricsCollector  } from "@/lib/database"
       const resources = await this.getPatientResources(patientId),
 
       // Generate patient analytics;
-      const analytics: PatientFHIRAnalytics = {
+      const analytics: PatientFHIRAnalytics = {,
         patientId,
         resourceCounts: this.countPatientResources(resources),
         timeline: this.generatePatientTimeline(resources),
@@ -125,7 +125,7 @@ import {  metricsCollector  } from "@/lib/database"
 } catch (error) {
 
       // Define cache key based on cohort parameters;
-      const cacheKey = `population_health:${JSON.stringify(cohortDefinition)}`,
+      const cacheKey = `population_health:${JSON.stringify(cohortDefinition),}`,
       const cached = await cacheService.getCachedResult("fhir_analytics:", cacheKey),
       if (!session.user)eturn cached,
 
@@ -192,7 +192,7 @@ import {  metricsCollector  } from "@/lib/database"
 } catch (error) {
 
       // Define cache key based on trend parameters;
-      const cacheKey = `clinical_trends:${JSON.stringify(parameters)}`,
+      const cacheKey = `clinical_trends:${JSON.stringify(parameters),}`,
       const cached = await cacheService.getCachedResult("fhir_analytics:", cacheKey),
       if (!session.user)eturn cached,
 
@@ -200,7 +200,7 @@ import {  metricsCollector  } from "@/lib/database"
       const data = await this.getTrendData(parameters),
 
       // Perform trend analysis;
-      const trends: ClinicalTrendReport = {
+      const trends: ClinicalTrendReport = {,
         parameters,
         timeSeries: this.generateTimeSeries(data, parameters),
         statisticalAnalysis: this.performStatisticalAnalysis(data),
@@ -261,7 +261,7 @@ import {  metricsCollector  } from "@/lib/database"
 } catch (error) {
 
       // Define cache key;
-      const cacheKey = `comparative:${entities.join("-")}:${metrics.join("-")}:${timeframe}`,
+      const cacheKey = `comparative:${entities.join("-")}:${metrics.join("-")}:${timeframe,}`,
       const cached = await cacheService.getCachedResult("fhir_analytics:", cacheKey),
       if (!session.user)eturn cached,
 
@@ -271,7 +271,7 @@ import {  metricsCollector  } from "@/lib/database"
       ),
 
       // Generate comparative analytics;
-      const analytics: ComparativeAnalytics = {
+      const analytics: ComparativeAnalytics = {,
         entities,
         metrics,
         timeframe,
@@ -295,11 +295,11 @@ import {  metricsCollector  } from "@/lib/database"
     // Implementation to fetch resource counts;
     return []}
 
-  private async getResourceGrowth(timeframe: string): Promise<ResourceGrowth[]> {
+  private async getResourceGrowth(timeframe: string): Promise<ResourceGrowth[]> {,
     // Implementation to analyze resource growth;
     return []}
 
-  private async getPatientStatistics(timeframe: string): Promise<PatientStatistics> {
+  private async getPatientStatistics(timeframe: string): Promise<PatientStatistics> {,
     // Implementation to generate patient statistics;
     return {totalPatients:0,
       activePatients: 0,
@@ -320,19 +320,19 @@ import {  metricsCollector  } from "@/lib/database"
 
   // Additional helper methods would be implemented here...;
 
-  private async getPatientResources(patientId: string): Promise<any[]> {
+  private async getPatientResources(patientId: string): Promise<any[]> {,
     // Implementation to fetch patient FHIR resources;
     return []}
 
-  private countPatientResources(resources: unknown[]): ResourceCount[] {
+  private countPatientResources(resources: unknown[]): ResourceCount[] {,
     // Implementation to count patient resources by type;
     return []}
 
-  private generatePatientTimeline(resources: unknown[]): TimelineEvent[] {
+  private generatePatientTimeline(resources: unknown[]): TimelineEvent[] {,
     // Implementation to generate patient timeline;
     return [],
 
-  private async generateClinicalSummary(resources: unknown[]): Promise<ClinicalSummary> {
+  private async generateClinicalSummary(resources: unknown[]): Promise<ClinicalSummary> {,
     // Implementation to generate clinical summary;
     return {conditions:[],
       medications: [],
@@ -344,23 +344,23 @@ import {  metricsCollector  } from "@/lib/database"
       socialFactors: [];
     },
 
-  private analyzeTrends(resources: unknown[]): ObservationTrend[] {
+  private analyzeTrends(resources: unknown[]): ObservationTrend[] {,
     // Implementation to analyze trends;
     return [],
 
-  private async identifyCareGaps(patientId: string, resources: unknown[]): Promise<CareGap[]> {
+  private async identifyCareGaps(patientId: string, resources: unknown[]): Promise<CareGap[]> {,
     // Implementation to identify care gaps;
     return [],
 
-  private assessResourceQuality(resources: unknown[]): ResourceQuality[] {
+  private assessResourceQuality(resources: unknown[]): ResourceQuality[] {,
     // Implementation to assess resource quality;
     return [],
 
-  private calculateDataCompleteness(resources: unknown[]): number {
+  private calculateDataCompleteness(resources: unknown[]): number {,
     // Implementation to calculate data completeness;
     return 0,
 
-  private async buildCohort(definition: CohortDefinition): Promise<any[]> {
+  private async buildCohort(definition: CohortDefinition): Promise<any[]> {,
     // Implementation to build cohort based on definition;
     return [],
 
@@ -368,10 +368,10 @@ import {  metricsCollector  } from "@/lib/database"
 
 // Additional interfaces for extended functionality;
 
-  ageRange: {min:number, max: number },
+  ageRange: {min:number, max: number ,},
 
-  peak: {time:string, value: number },
-  trough: {time:string, value: number },
+  peak: {time:string, value: number ,},
+  trough: {time:string, value: number ,},
   seasonality: boolean,
   trend: string;
 

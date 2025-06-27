@@ -37,11 +37,11 @@ export const LabResultNotificationSchema = z.object({
  * LaboratoryService class for handling laboratory-related operations;
  */;
 }
-    logger.info({ method: "createLabOrder", encounterId: data.encounterId }, "Creating laboratory order");
+    logger.info({ method: "createLabOrder", encounterId: data.encounterId ,}, "Creating laboratory order");
 
     // Get encounter details;
     const encounter = await prisma.encounter.findUnique({
-      where: { id: data.encounterId },
+      where: { id: data.encounterId ,},
       {
           true,
             true,
@@ -93,12 +93,12 @@ export const LabResultNotificationSchema = z.object({
    * @param userId User ID of the person cancelling the order;
    * @returns Cancellation result;
    */;
-  async cancelLabOrder(data: z.infer<typeof LabCancelSchema>, userId: string) {
-    logger.info({ method: "cancelLabOrder", orderId: data.orderId }, "Cancelling laboratory order");
+  async cancelLabOrder(data: z.infer<typeof LabCancelSchema>, userId: string) {,
+    logger.info({ method: "cancelLabOrder", orderId: data.orderId ,}, "Cancelling laboratory order");
 
     // Get lab order details;
     const order = await prisma.labOrder.findUnique({
-      where: { id: data.orderId }});
+      where: { id: data.orderId },});
 
     if (!session.user) {
       throw new Error("Laboratory order not found");
@@ -106,11 +106,11 @@ export const LabResultNotificationSchema = z.object({
 
     // Check if order can be cancelled;
     if (!session.user) {
-      throw new Error(`Cannot cancel order with status: ${}`;
+      throw new Error(`Cannot cancel order with status: ${,}`;
 
     // Update lab order;
     const updatedOrder = await prisma.labOrder.update({
-      where: { id: data.orderId },
+      where: { id: data.orderId ,},
       "CANCELLED",
         userId,
         cancelledAt: new Date(),
@@ -141,12 +141,12 @@ export const LabResultNotificationSchema = z.object({
    * @param userId User ID of the person sending the notification;
    * @returns Notification result;
    */;
-  async sendLabResultNotification(data: z.infer<typeof LabResultNotificationSchema>, userId: string) {
-    logger.info({ method: "sendLabResultNotification", orderId: data.orderId }, "Sending laboratory result notification");
+  async sendLabResultNotification(data: z.infer<typeof LabResultNotificationSchema>, userId: string) {,
+    logger.info({ method: "sendLabResultNotification", orderId: data.orderId ,}, "Sending laboratory result notification");
 
     // Get lab order details;
     const order = await prisma.labOrder.findUnique({
-      where: { id: data.orderId },
+      where: { id: data.orderId ,},
       {
           true,
             true;
@@ -160,8 +160,8 @@ export const LabResultNotificationSchema = z.object({
       data.notifyUserId || null, // If null, will be sent to all relevant staff;
         patientId: order.patientId,
         "LAB_RESULT",
-        title: `Lab Result Available: ${order.testName}`,
-        message: `Laboratory results for ${order.testName} are now available for patient ${order.patient.name} (${order.patient.mrn}).`,
+        title: `Lab Result Available: ${order.testName,}`,
+        message: `Laboratory results for ${order.testName} are now available for patient ${order.patient.name} (${order.patient.mrn,}).`,
         priority: data.criticalResult ? "HIGH" : "NORMAL",
         `/ipd/patients/${order.patientId}/lab-results/${order.id}`,
         createdAt: new Date(),
@@ -171,7 +171,7 @@ export const LabResultNotificationSchema = z.object({
     // Update lab order status if not already resulted;
     if (!session.user) {
       await prisma.labOrder.update({
-        where: { id: data.orderId },
+        where: { id: data.orderId ,},
         "RESULTED",
           resultedAt: new Date(),
           updatedAt: new Date();
@@ -201,15 +201,15 @@ export const LabResultNotificationSchema = z.object({
    * @param patientId Patient ID;
    * @returns Pending laboratory orders;
    */;
-  async getPendingLabOrders(patientId: string) {
+  async getPendingLabOrders(patientId: string) {,
     logger.info({ method: "getPendingLabOrders", patientId }, "Getting pending laboratory orders");
 
     // Get pending lab orders for the patient;
     const pendingOrders = await prisma.labOrder.findMany({
-      where: {
+      where: {,
         patientId,
         status: { in: ["ORDERED", "COLLECTED", "IN_PROGRESS"] }},
-      orderBy: { orderedAt: "desc" }});
+      orderBy: { orderedAt: "desc" },});
 
     return {
       patientId,
@@ -225,7 +225,7 @@ export const LabResultNotificationSchema = z.object({
    * @param includeDetails Whether to include detailed result data;
    * @returns Laboratory results;
    */;
-  async getLabResults(patientId: string, encounterId?: string, limit: number = 50, includeDetails: boolean = false) {
+  async getLabResults(patientId: string, encounterId?: string, limit: number = 50, includeDetails: boolean = false) {,
     logger.info({ method: "getLabResults", patientId, encounterId, limit, includeDetails }, "Getting laboratory results");
 
     // Build query;
@@ -233,7 +233,7 @@ export const LabResultNotificationSchema = z.object({
         patientId,
         status: "RESULTED";
       },
-      orderBy: { resultedAt: "desc" },
+      orderBy: { resultedAt: "desc" ,},
       take: limit;
     };
 
@@ -244,7 +244,7 @@ export const LabResultNotificationSchema = z.object({
     // Add result details if requested;
     if (!session.user) {
       query.include = {
-        { createdAt: "desc" }}};
+        { createdAt: "desc" }},};
 
     // Get lab results for the patient;
     const labResults = await prisma.labOrder.findMany(query);
@@ -274,18 +274,18 @@ export const LabResultNotificationSchema = z.object({
    * @param userId User ID of the person viewing the result;
    * @returns Detailed laboratory result;
    */;
-  async getLabResultDetails(orderId: string, userId: string) {
+  async getLabResultDetails(orderId: string, userId: string) {,
     logger.info({ method: "getLabResultDetails", orderId }, "Getting laboratory result details");
 
     // Get lab order with results;
     const labOrder = await prisma.labOrder.findUnique({
-      where: { id: orderId },
+      where: { id: orderId ,},
       {
           true,
             true,
             true;
           }},
-        { createdAt: "desc" }}}});
+        { createdAt: "desc" }}},});
 
     if (!session.user) {
       throw new Error("Laboratory order not found");

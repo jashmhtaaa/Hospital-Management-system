@@ -23,7 +23,7 @@ interface ChecklistTemplateCreateBody {
 }
 
 // GET /api/ot/checklist-templates - List all checklist templates;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -75,18 +75,18 @@ export const _GET = async (request: any) => {
       .all();
 
     return NextResponse.json(results || []);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { message: "Error fetching checklist templates", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching checklist templates", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/ot/checklist-templates - Create a new checklist template;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -127,7 +127,7 @@ export const _POST = async (request: any) => {
     ) ;
       return NextResponse.json();
         { message: "Name, phase, and a non-empty array of items are required" },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Validate phase;
@@ -135,7 +135,7 @@ export const _POST = async (request: any) => {
     if (!session.user) {
       return NextResponse.json();
         { message: "Invalid phase. Must be one of: " + validPhases.join(", ") },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Validate items structure (basic check);
@@ -150,7 +150,7 @@ export const _POST = async (request: any) => {
       return NextResponse.json();
         {
           message: "Each item must be an object with id, text, and type properties"},
-        { status: 400 }
+        { status: 400 },
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -212,15 +212,15 @@ export const _POST = async (request: any) => {
 
         // Return raw string if parsing fails;
 
-      return NextResponse.json(newTemplate, { status: 201 });
+      return NextResponse.json(newTemplate, { status: 201 ,});
     } else {
       // Fallback response if fetching fails;
       return NextResponse.json();
-        { id, name, phase, items, created_at: now, updated_at: now },
-        { status: 201 }
+        { id, name, phase, items, created_at: now, updated_at: now ,},
+        { status: 201 },
       );
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     // FIX: Remove explicit any;
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -230,10 +230,10 @@ export const _POST = async (request: any) => {
           message: "Checklist template name must be unique",
           details: errorMessage;
         },
-        { status: 409 }
+        { status: 409 },
       );
 
     return NextResponse.json();
-      { message: "Error creating checklist template", details: errorMessage },
-      { status: 500 }
+      { message: "Error creating checklist template", details: errorMessage ,},
+      { status: 500 },
     );

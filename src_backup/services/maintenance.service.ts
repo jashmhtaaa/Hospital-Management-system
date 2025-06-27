@@ -45,7 +45,7 @@ import { prisma }
       return request;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
       }
       throw error;
     }
@@ -95,7 +95,7 @@ import { prisma }
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         if (!session.user) {
@@ -116,8 +116,8 @@ import { prisma }
       const requests = await prisma.maintenanceRequest.findMany({
         where,
         orderBy: [;
-          { priority: "desc" },
-          { requestedAt: "asc" }],
+          { priority: "desc" ,},
+          { requestedAt: "asc" ,}],
         {
             true,
               name: true;
@@ -132,7 +132,7 @@ import { prisma }
    * @param id Request ID;
    * @returns The request or null if not found;
    */;
-  async getRequestById(id: string) {
+  async getRequestById(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -166,7 +166,7 @@ import { prisma }
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.findUnique({
-        where: { id },
+        where: { id ,},
         {
             true,
               name: true;
@@ -182,7 +182,7 @@ import { prisma }
    * @param data Updated request data;
    * @returns The updated request;
    */;
-  async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {
+  async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -223,7 +223,7 @@ import { prisma }
 
       // Update the request;
       const request = await prisma.maintenanceRequest.update({
-        where: { id },
+        where: { id ,},
         data: updateData,
         {
             true,
@@ -233,7 +233,7 @@ import { prisma }
       return request;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -242,7 +242,7 @@ import { prisma }
    * @param id Request ID;
    * @returns The deleted request;
    */;
-  async deleteRequest(id: string) {
+  async deleteRequest(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -276,7 +276,7 @@ import { prisma }
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.delete({
-        where: { id }});
+        where: { id },});
 
       return request;
     } catch (error) {
@@ -288,7 +288,7 @@ import { prisma }
    * @param userId User ID;
    * @returns The updated request;
    */;
-  async assignRequest(requestId: string, userId: string) {
+  async assignRequest(requestId: string, userId: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -322,7 +322,7 @@ import { prisma }
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.update({
-        where: { id: requestId },
+        where: { id: requestId ,},
         userId,
           status: MaintenanceRequestStatus.IN_PROGRESS;
         },
@@ -340,7 +340,7 @@ import { prisma }
    * @param requestId Request ID;
    * @returns The updated request;
    */;
-  async completeRequest(requestId: string) {
+  async completeRequest(requestId: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -374,7 +374,7 @@ import { prisma }
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.update({
-        where: { id: requestId },
+        where: { id: requestId ,},
         MaintenanceRequestStatus.COMPLETED,
           completedAt: new Date();
         },
@@ -392,7 +392,7 @@ import { prisma }
    * @param requestId Request ID;
    * @returns The updated request;
    */;
-  async cancelRequest(requestId: string) {
+  async cancelRequest(requestId: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -426,7 +426,7 @@ import { prisma }
 } catch (error) {
 
       const request = await prisma.maintenanceRequest.update({
-        where: { id: requestId },
+        where: { id: requestId ,},
         MaintenanceRequestStatus.CANCELLED;
         },
         {

@@ -19,18 +19,18 @@ const contactService = new ContactService();
  */;
 export const POST = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { patientId } = await req.json();
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "Patient ID is required" },
-          { status: 400 }
+          { error: "Patient ID is required" ,},
+          { status: 400 },
         );
       }
 

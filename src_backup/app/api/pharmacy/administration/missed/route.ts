@@ -54,7 +54,7 @@ const () => Promise.resolve(null),
  * POST /api/pharmacy/administration/missed;
  * Record a missed medication dose with reason and documentation;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -91,14 +91,14 @@ export const POST = async (req: any) => {
     const data = await req.json();
     if (!session.user) {
       return NextResponse.json();
-        { error: "Missing required fields" },
-        { status: 400 }
+        { error: "Missing required fields" ,},
+        { status: 400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -106,7 +106,7 @@ export const POST = async (req: any) => {
     // Verify prescription exists;
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
-      return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
+      return NextResponse.json({ error: "Prescription not found" ,}, { status: 404 ,});
 
     // Create missed dose record;
     const administration = new PharmacyDomain.MedicationAdministration();
@@ -151,7 +151,7 @@ export const POST = async (req: any) => {
         id: administrationId,
         message: "Missed dose recorded successfully";
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording missed dose");

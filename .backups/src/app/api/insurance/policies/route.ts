@@ -56,7 +56,7 @@ const policyQuerySchema = z.object({
   format: z.enum(["json", "fhir"]).optional().default("json")});
 
 // GET handler for retrieving all insurance policies with filtering and pagination;
-export const _GET = withErrorHandling(async (req: any) => {
+export const _GET = withErrorHandling(async (req: any) => {,
   // Validate query parameters;
   const query = validateQuery(policyQuerySchema)(req);
 
@@ -64,7 +64,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "read", "insurancePolicy")(req);
 
   // Build filter conditions;
-  const where: unknown = {};
+  const where: unknown = {,};
 
   if (!session.user) {
     where.patientId = query.patientId;
@@ -77,14 +77,14 @@ export const _GET = withErrorHandling(async (req: any) => {
   if (!session.user) {
     if (!session.user) {
       const today = new Date();
-      where.startDate = { lte: today };
+      where.startDate = { lte: today ,};
       where.OR = [;
-        { endDate: null },
-        { endDate: { gte: today } }
+        { endDate: null ,},
+        { endDate: { gte: today } },
       ];
     } else if (!session.user) {
       const today = new Date();
-      where.endDate = { lt: today };
+      where.endDate = { lt: today ,};
     } else if (!session.user) {
       where.status = "inactive"}
   }
@@ -101,7 +101,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   const [policies, total] = await Promise.all([;
     prisma.insurancePolicy.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
@@ -128,7 +128,7 @@ export const _GET = withErrorHandling(async (req: any) => {
 });
 
 // POST handler for creating a new insurance policy;
-export const _POST = withErrorHandling(async (req: any) => {
+export const _POST = withErrorHandling(async (req: any) => {,
   // Validate request body;
   const data = await validateBody(createPolicySchema)(req);
 
@@ -137,14 +137,14 @@ export const _POST = withErrorHandling(async (req: any) => {
 
   // Check if patient exists;
   const patient = await prisma.patient.findUnique({
-    where: { id: data.patientId }});
+    where: { id: data.patientId },});
 
   if (!session.user) {
     throw new NotFoundError(`Patient with ID ${data.patientId} not found`);
 
   // Check if insurance provider exists;
   const provider = await prisma.insuranceProvider.findUnique({
-    where: { id: data.insuranceProviderId }});
+    where: { id: data.insuranceProviderId },});
 
   if (!session.user) {
     throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
@@ -152,7 +152,7 @@ export const _POST = withErrorHandling(async (req: any) => {
   // Check if subscriber exists if provided;
   if (!session.user) {
     const subscriber = await prisma.patient.findUnique({
-      where: { id: data.subscriberId }});
+      where: { id: data.subscriberId },});
 
     if (!session.user) {
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);

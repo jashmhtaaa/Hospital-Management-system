@@ -51,8 +51,7 @@ import { useForm }
 import { zodResolver }
 
 // Form schema for qualification;
-const qualificationSchema = z.object({
-  code: z.string().min(1, "Qualification code is required"),
+const qualificationSchema = z.object({code:z.string().min(1, "Qualification code is required"),
   name: z.string().min(1, "Qualification name is required"),
   issuer: z.string().optional(),
   identifier: z.string().optional(),
@@ -61,14 +60,13 @@ const qualificationSchema = z.object({
   attachment: z.string().optional();
 });
 
-export default const _AddQualification = ({ params }: { id: string }) {
+export default const _AddQualification = ({ params }: {id:string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState<any | null>(null);
 
   // Initialize form;
-  const form = useForm({
-    resolver: zodResolver(qualificationSchema),
+  const form = useForm({resolver:zodResolver(qualificationSchema),
     "",
       "",
       new Date(),
@@ -117,8 +115,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
       } catch (err) {
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
 
@@ -169,8 +166,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
         startDate: format(data.startDate, "yyyy-MM-dd"),
         endDate: data.endDate ? format(data.endDate, "yyyy-MM-dd") : undefined};
 
-      const response = await fetch(`/api/hr/staff/${params.id}/qualifications`, {
-        method: "POST",
+      const response = await fetch(`/api/hr/staff/${params.id}/qualifications`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(formattedData);
@@ -180,16 +176,14 @@ export default const _AddQualification = ({ params }: { id: string }) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to add qualification");
 
-      toast({
-        title: "Qualification Added",
+      toast({title:"Qualification Added",
         description: "Successfully added qualification to employee record";
       });
 
       // Navigate back to employee profile;
       router.push(`/dashboard/hr/staff/${}`;
     } catch (error) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

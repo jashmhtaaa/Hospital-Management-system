@@ -15,10 +15,10 @@ describe("InsurancePolicyService", () => {
       // Arrange
       const _policyData = {
         _patientId: "patient-policy-123",
-        \1,\2 "HG123456789",
+         "HG123456789",
         coverageStartDate: new Date("2024-01-01"),
         coverageEndDate: new Date("2024-12-31"),
-        coverageDetails: "Comprehensive plan covering hospital visits and specialist consultations."
+        coverageDetails: "Comprehensive plan covering hospital visits and specialist consultations.",
       };
       // Mock repository to save the policy
 

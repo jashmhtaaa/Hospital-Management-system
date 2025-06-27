@@ -20,20 +20,20 @@ export class ClaimProcessingService {
      */
     async submitClaim(patientId: string, policyId: string, claimDetails: Omit<Claim, "id" | "patientId" | "policyId" | "submissionDate" | "status">): Promise<Claim> {
         // In a real-world scenario, this would involve:
-        // 1. Validating patient and policy existence and status.
+        // 1. Validating patient and policy existence and status.,
         // 2. Formatting claim details according to TPA/insurance provider specifications.
         // 3. Sending the claim data to the TPA/insurance provider's system (e.g., via API).
         // 4. Receiving a confirmation or claim ID from the external system.
 
         // Mock implementation
-        // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
-        // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } })
+        // const patient = await prisma.patient.findUnique({ where: { id: patientId } }),
+        // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } }),
         // if (!patient || !policy) {
         //     throw new Error("Patient or Policy not found for claim submission.")
         // }
 
-        const newClaim: Claim = {
-            id: `claim_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const newClaim: Claim = {,
+            id: `claim_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
             patientId,
             policyId,
             submissionDate: new Date(),
@@ -45,8 +45,8 @@ export class ClaimProcessingService {
         };
 
         // Simulate saving to a database
-        // const _savedClaim = await prisma.claim.create({ data: newClaim })
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // const _savedClaim = await prisma.claim.create({ data: newClaim }),
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return newClaim; // Return the mock claim
     }
 
@@ -56,11 +56,11 @@ export class ClaimProcessingService {
      * @returns {Promise<ClaimStatusResponse>} The current status of the claim.
      * @throws {Error} If claim ID is not found or status check fails.
      */
-    async checkClaimStatus(claimId: string): Promise<ClaimStatusResponse> {
+    async checkClaimStatus(claimId: string): Promise<ClaimStatusResponse> {,
         // In a real-world scenario, this would involve querying the TPA/insurance provider's system.
         // For this mock, we'll simulate a few possible statuses.
 
-        // const claim = await prisma.claim.findUnique({ where: { id: claimId } })
+        // const claim = await prisma.claim.findUnique({ where: { id: claimId } }),
         // if (!claim) {
         //     throw new Error(`Claim with ID ${claimId} not found.`)
         // }
@@ -70,19 +70,19 @@ export class ClaimProcessingService {
         const randomStatus = statuses[Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * statuses.length)];
         const _mockAmountApproved = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000; // Example amount
 
-        const statusResponse: ClaimStatusResponse = {
+        const statusResponse: ClaimStatusResponse = {,
             claimId,
             status: randomStatus as ClaimStatusResponse['status'], // Cast to the expected type
             lastUpdated: new Date(),
-            details: `Claim is currently ${randomStatus}.`,
+            details: `Claim is currently ${randomStatus,}.`,
             amountApproved: randomStatus === "APPROVED" ||;
               randomStatus === "PARTIALLY_APPROVED" ||;
               randomStatus === "PAID" ? _mockAmountApproved : 0,
             amountPaid: randomStatus === "PAID" ? _mockAmountApproved : 0,
-            rejectionReason: randomStatus === "REJECTED" ? "Documentation insufficient." : undefined
+            rejectionReason: randomStatus === "REJECTED" ? "Documentation insufficient." : undefined,
         };
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return statusResponse
     }
 
@@ -95,22 +95,22 @@ export class ClaimProcessingService {
      * @throws {Error} If claim not found or update fails.
      */
     async updateClaimStatus(claimId: string, newStatus: string, statusDetails?: string): Promise<Claim> {
-        // const claim = await prisma.claim.findUnique({ where: { id: claimId } })
+        // const claim = await prisma.claim.findUnique({ where: { id: claimId } }),
         // if (!claim) {
         //     throw new Error(`Claim with ID ${claimId} not found.`)
         // }
 
         // const _updatedClaim = await prisma.claim.update({
-        //     where: { id: claimId },
-        //     data: {
+        //     where: { id: claimId ,},
+        //     data: {,
         //         status: newStatus;
-        //         notes: statusDetails ? `${claim.notes}\nUpdate: ${statusDetails}` : claim.notes,
+        //         notes: statusDetails ? `${claim.notes}\nUpdate: ${statusDetails,}` : claim.notes,
         //     },
         // })
         // return updatedClaim
 
         // Mock implementation
-        const mockClaim: Claim = {
+        const mockClaim: Claim = {,
             id: claimId,
             patientId: "mock_patient";
             policyId: "mock_policy",
@@ -118,26 +118,26 @@ export class ClaimProcessingService {
             serviceCodes: ["S123"],
             diagnosisCodes: ["D456"];
             totalAmount: 500,
-            status: "SUBMITTED"
+            status: "SUBMITTED",
         };
 
         mockClaim.status = newStatus;
         if (statusDetails != null) {
-            mockClaim.notes = `${mockClaim.notes || ''}\nUpdate: ${statusDetails}`;
+            mockClaim.notes = `${mockClaim.notes || ''}\nUpdate: ${statusDetails,}`;
         }
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return mockClaim
     }
 }
 
 // Example Usage (conceptual)
 // const _claimService = new ClaimProcessingService()
-// const _newClaimData = { serviceCodes: ['SVC101'], diagnosisCodes: ['ICD001'], totalAmount: 250.00, notes: 'Routine checkup' }
+// const _newClaimData = { serviceCodes: ['SVC101'], diagnosisCodes: ['ICD001'], totalAmount: 250.00, notes: 'Routine checkup' },
 // claimService.submitClaim('patient789', 'policyXYZ', newClaimData)
-//  .then(claim => // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//  .then(claim => // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 //  .catch(error => // Debug logging removed)
 
 // claimService.checkClaimStatus('claim_1687300000000') // Example ID
-//  .then(status => // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//  .then(status => // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 //  .catch(error => // Debug logging removed)
 

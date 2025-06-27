@@ -12,7 +12,7 @@ import { NextResponse } from "next/server";
  * @returns A NextResponse object with the error payload.
  */
 export const _sendErrorResponse = (message: string, status: number, details?: unknown) => {
-  return NextResponse.json({ error: message, details: details || null }, { status })
+  return NextResponse.json({ error: message, details: details || null ,}, { status })
 };
 
 /**

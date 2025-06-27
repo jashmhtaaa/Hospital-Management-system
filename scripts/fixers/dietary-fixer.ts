@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-function fixDietaryDashboard(filePath: string) {
+function fixDietaryDashboard(filePath: string) {,
   let content = fs.readFileSync(filePath, 'utf8');
   
   // Fix missing JSX closing tags

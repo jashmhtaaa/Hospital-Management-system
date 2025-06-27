@@ -41,7 +41,7 @@ const PatientSchema = z.object({
   deceasedReason: z.string().optional(),
   vip: z.boolean().default(false),
   confidential: z.boolean().default(false),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // Define schema for contact information
@@ -55,7 +55,7 @@ const ContactSchema = z.object({
   smsOptIn: z.boolean().default(false),
   mailOptIn: z.boolean().default(true),
   doNotContact: z.boolean().default(false),
-  doNotContactReason: z.string().optional()
+  doNotContactReason: z.string().optional(),
 });
 
 // Define schema for address
@@ -73,7 +73,7 @@ const AddressSchema = z.object({
   validTo: z.date().optional(),
   isBilling: z.boolean().default(false),
   isShipping: z.boolean().default(false),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // Define schema for identification
@@ -86,7 +86,7 @@ const IdentificationSchema = z.object({
   expirationDate: z.date().optional(),
   isPrimary: z.boolean().default(false),
   documentImageUrl: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // Define schema for emergency contact
@@ -108,7 +108,7 @@ const EmergencyContactSchema = z.object({
   country: z.string().optional(),
   isLegalGuardian: z.boolean().default(false),
   hasDecisionMaking: z.boolean().default(false),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // Define schema for insurance
@@ -131,13 +131,13 @@ const InsuranceSchema = z.object({
   outOfPocketMet: z.number().optional(),
   cardFrontImageUrl: z.string().optional(),
   cardBackImageUrl: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 /**
  * Service class for patient management;
  */
-\1
+
 }
   }
 
@@ -155,9 +155,9 @@ const InsuranceSchema = z.object({
     today.setHours(0, 0, 0, 0);
 
     const patientCount = await prisma.patient.count({
-      where: {
-        createdAt: {
-          gte: today
+      where: {,
+        createdAt: {,
+          gte: today,
         }
       }
     });
@@ -165,7 +165,7 @@ const InsuranceSchema = z.object({
     // Generate sequential number with padding
     const sequentialNumber = (patientCount + 1).toString().padStart(4, '0');
 
-    // Combine to create MRN: YY-MM-XXXX
+    // Combine to create MRN: YY-MM-XXXX,
     const mrn = `${year}-${month}-${sequentialNumber}`;
 
     return mrn;
@@ -174,7 +174,7 @@ const InsuranceSchema = z.object({
   /**
    * Create a new patient;
    */
-  async createPatient(patientData: unknown, userId: string): Promise<Patient> {
+  async createPatient(patientData: unknown, userId: string): Promise<Patient> {,
     try {
       // Validate patient data
       const validatedPatient = PatientSchema.parse(patientData);
@@ -184,63 +184,63 @@ const InsuranceSchema = z.object({
 
       // Create patient record
       const patient = await prisma.patient.create({
-        data: {
+        data: {,
           ...validatedPatient,
           mrn,
         }
       });
 
       // Create contact information if provided
-      \1 {\n  \2{
+       {\n  {
         const validatedContact = ContactSchema.parse(patientData.contact);
         await prisma.patientContact.create({
-          data: {
+          data: {,
             ...validatedContact,
-            patientId: patient.id
+            patientId: patient.id,
           }
         });
       }
 
       // Create address if provided
-      \1 {\n  \2{
+       {\n  {
         const validatedAddress = AddressSchema.parse(patientData.address);
         await prisma.patientAddress.create({
-          data: {
+          data: {,
             ...validatedAddress,
-            patientId: patient.id
+            patientId: patient.id,
           }
         });
       }
 
       // Create identification if provided
-      \1 {\n  \2{
+       {\n  {
         const validatedIdentification = IdentificationSchema.parse(patientData.identification);
         await prisma.patientIdentification.create({
-          data: {
+          data: {,
             ...validatedIdentification,
-            patientId: patient.id
+            patientId: patient.id,
           }
         });
       }
 
       // Create emergency contact if provided
-      \1 {\n  \2{
+       {\n  {
         const validatedEmergencyContact = EmergencyContactSchema.parse(patientData.emergencyContact);
         await prisma.emergencyContact.create({
-          data: {
+          data: {,
             ...validatedEmergencyContact,
-            patientId: patient.id
+            patientId: patient.id,
           }
         });
       }
 
       // Create insurance if provided
-      \1 {\n  \2{
+       {\n  {
         const validatedInsurance = InsuranceSchema.parse(patientData.insurance);
         await prisma.patientInsurance.create({
-          data: {
+          data: {,
             ...validatedInsurance,
-            patientId: patient.id
+            patientId: patient.id,
           }
         });
       }
@@ -252,9 +252,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'Patient',        resourceId: patient.id,
-        description: `Created patient record for /* SECURITY: Template literal eliminated */
+        description: `Created patient record for /* SECURITY: Template literal eliminated */,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return patient;
@@ -267,42 +267,42 @@ const InsuranceSchema = z.object({
   /**
    * Get patient by ID;
    */
-  async getPatientById(patientId: string, userId: string): Promise<unknown> {
+  async getPatientById(patientId: string, userId: string): Promise<unknown> {,
     try {
       // Check if user has permission to view this patient
       const hasPermission = await this.authService.hasPermission(userId, 'view', 'patient', patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to view this patient');
       }
 
       // Get patient with related data
       const patient = await prisma.patient.findUnique({
-        where: { id: patientId },
-        include: {
+        where: { id: patientId ,},
+        include: {,
           contact: true,
           addresses: true,          identifications: true,
           contacts: true,          insurances: true,
           allergies: true,          conditions: true,
-          documents: true,          appointments: {
+          documents: true,          appointments: {,
             take: 5,
-            orderBy: { startDateTime: 'desc' }
+            orderBy: { startDateTime: 'desc' },
           },
-          visits: {
+          visits: {,
             take: 5,
-            orderBy: { startDate: 'desc' }
+            orderBy: { startDate: 'desc' },
           },
-          vitalSigns: {
+          vitalSigns: {,
             take: 10,
-            orderBy: { recordedAt: 'desc' }
+            orderBy: { recordedAt: 'desc' },
           },
-          immunizations: {
+          immunizations: {,
             take: 10,
-            orderBy: { administeredDate: 'desc' }
+            orderBy: { administeredDate: 'desc' },
           }
         }
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Patient not found');
       }
 
@@ -310,9 +310,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'Patient',        resourceId: patientId,
-        description: `Viewed patient record for /* SECURITY: Template literal eliminated */
+        description: `Viewed patient record for /* SECURITY: Template literal eliminated */,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return patient;
@@ -325,20 +325,20 @@ const InsuranceSchema = z.object({
   /**
    * Update patient information;
    */
-  async updatePatient(patientId: string, patientData: unknown, userId: string): Promise<Patient> {
+  async updatePatient(patientId: string, patientData: unknown, userId: string): Promise<Patient> {,
     try {
       // Check if user has permission to update this patient
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to update this patient');
       }
 
       // Get current patient data
       const existingPatient = await prisma.patient.findUnique({
-        where: { id: patientId }
+        where: { id: patientId },
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Patient not found');
       }
 
@@ -350,17 +350,17 @@ const InsuranceSchema = z.object({
 
       // Update patient record
       const patient = await prisma.patient.update({
-        where: { id: patientId },
-        data: validatedPatient
+        where: { id: patientId ,},
+        data: validatedPatient,
       });
 
       // Update contact information if provided
-      \1 {\n  \2{
+       {\n  {
         const validatedContact = ContactSchema.parse(patientData.contact);
         await prisma.patientContact.upsert({
-          where: { patientId },
+          where: { patientId ,},
           update: validatedContact,
-          create: {
+          create: {,
             ...validatedContact,
             patientId;
           }
@@ -374,9 +374,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'Update',
         resourceType: 'Patient',        resourceId: patientId,
-        description: `Updated patient record for /* SECURITY: Template literal eliminated */
+        description: `Updated patient record for /* SECURITY: Template literal eliminated */,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return patient;
@@ -389,11 +389,11 @@ const InsuranceSchema = z.object({
   /**
    * Add patient address;
    */
-  async addPatientAddress(patientId: string, addressData: unknown, userId: string): Promise<PatientAddress> {
+  async addPatientAddress(patientId: string, addressData: unknown, userId: string): Promise<PatientAddress> {,
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -401,22 +401,22 @@ const InsuranceSchema = z.object({
       const validatedAddress = AddressSchema.parse(addressData);
 
       // If this is a primary address, unset primary flag on other addresses of same type
-      \1 {\n  \2{
+       {\n  {
         await prisma.patientAddress.updateMany({
-          where: {
+          where: {,
             patientId,
             addressType: validatedAddress.addressType,
-            isPrimary: true
+            isPrimary: true,
           },
-          data: {
-            isPrimary: false
+          data: {,
+            isPrimary: false,
           }
         });
       }
 
       // Create address
       const address = await prisma.patientAddress.create({
-        data: {
+        data: {,
           ...validatedAddress,
           patientId;
         }
@@ -426,9 +426,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'PatientAddress',        resourceId: address.id,
-        description: `Added address for patient ${patientId}`,
+        description: `Added address for patient ${patientId,}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return address;
@@ -441,11 +441,11 @@ const InsuranceSchema = z.object({
   /**
    * Add patient identification;
    */
-  async addPatientIdentification(patientId: string, identificationData: unknown, userId: string): Promise<PatientIdentification> {
+  async addPatientIdentification(patientId: string, identificationData: unknown, userId: string): Promise<PatientIdentification> {,
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -453,34 +453,34 @@ const InsuranceSchema = z.object({
       const validatedIdentification = IdentificationSchema.parse(identificationData);
 
       // If this is a primary ID, unset primary flag on other IDs of same type
-      \1 {\n  \2{
+       {\n  {
         await prisma.patientIdentification.updateMany({
-          where: {
+          where: {,
             patientId,
             idType: validatedIdentification.idType,
-            isPrimary: true
+            isPrimary: true,
           },
-          data: {
-            isPrimary: false
+          data: {,
+            isPrimary: false,
           }
         });
       }
 
       // Check for existing ID with same number
       const existingId = await prisma.patientIdentification.findFirst({
-        where: {
+        where: {,
           idType: validatedIdentification.idType,
-          idNumber: validatedIdentification.idNumber
+          idNumber: validatedIdentification.idNumber,
         }
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`This ${validatedIdentification.idType} is already associated with another patient`);
       }
 
       // Create identification
       const identification = await prisma.patientIdentification.create({
-        data: {
+        data: {,
           ...validatedIdentification,
           patientId;
         }
@@ -490,9 +490,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'PatientIdentification',        resourceId: identification.id,
-        description: `Added identification for patient ${patientId}`,
+        description: `Added identification for patient ${patientId,}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return identification;
@@ -505,11 +505,11 @@ const InsuranceSchema = z.object({
   /**
    * Add emergency contact;
    */
-  async addEmergencyContact(patientId: string, contactData: unknown, userId: string): Promise<EmergencyContact> {
+  async addEmergencyContact(patientId: string, contactData: unknown, userId: string): Promise<EmergencyContact> {,
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -517,21 +517,21 @@ const InsuranceSchema = z.object({
       const validatedContact = EmergencyContactSchema.parse(contactData);
 
       // If this is a primary contact, unset primary flag on other contacts
-      \1 {\n  \2{
+       {\n  {
         await prisma.emergencyContact.updateMany({
-          where: {
+          where: {,
             patientId,
-            isPrimary: true
+            isPrimary: true,
           },
-          data: {
-            isPrimary: false
+          data: {,
+            isPrimary: false,
           }
         });
       }
 
       // Create contact
       const contact = await prisma.emergencyContact.create({
-        data: {
+        data: {,
           ...validatedContact,
           patientId;
         }
@@ -541,9 +541,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'EmergencyContact',        resourceId: contact.id,
-        description: `Added emergency contact for patient ${patientId}`,
+        description: `Added emergency contact for patient ${patientId,}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return contact;
@@ -556,11 +556,11 @@ const InsuranceSchema = z.object({
   /**
    * Add insurance;
    */
-  async addInsurance(patientId: string, insuranceData: unknown, userId: string): Promise<PatientInsurance> {
+  async addInsurance(patientId: string, insuranceData: unknown, userId: string): Promise<PatientInsurance> {,
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to update this patient');
       }
 
@@ -568,34 +568,34 @@ const InsuranceSchema = z.object({
       const validatedInsurance = InsuranceSchema.parse(insuranceData);
 
       // If there's an existing insurance of the same type, update its status based on priority
-      \1 {\n  \2{
+       {\n  {
         // Find existing primary insurance
         const existingPrimary = await prisma.patientInsurance.findFirst({
-          where: {
+          where: {,
             patientId,
-            insuranceType: 'Primary'
+            insuranceType: 'Primary',
           }
         });
 
         // If found, change it to secondary
-        \1 {\n  \2{
+         {\n  {
           await prisma.patientInsurance.update({
-            where: { id: existingPrimary.id },
-            data: { insuranceType: 'Secondary' }
+            where: { id: existingPrimary.id ,},
+            data: { insuranceType: 'Secondary' },
           });
 
           // Find existing secondary and change to tertiary if needed
           const existingSecondary = await prisma.patientInsurance.findFirst({
-            where: {
+            where: {,
               patientId,
-              insuranceType: 'Secondary'
+              insuranceType: 'Secondary',
             }
           });
 
-          \1 {\n  \2{
+           {\n  {
             await prisma.patientInsurance.update({
-              where: { id: existingSecondary.id },
-              data: { insuranceType: 'Tertiary' }
+              where: { id: existingSecondary.id ,},
+              data: { insuranceType: 'Tertiary' },
             });
           }
         }
@@ -603,7 +603,7 @@ const InsuranceSchema = z.object({
 
       // Create insurance
       const insurance = await prisma.patientInsurance.create({
-        data: {
+        data: {,
           ...validatedInsurance,
           patientId;
         }
@@ -613,9 +613,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'Create',
         resourceType: 'PatientInsurance',        resourceId: insurance.id,
-        description: `Added insurance for patient ${patientId}`,
+        description: `Added insurance for patient ${patientId,}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return insurance;
@@ -628,63 +628,63 @@ const InsuranceSchema = z.object({
   /**
    * Search patients;
    */
-  async searchPatients(searchParams: unknown, userId: string): Promise<unknown> {
+  async searchPatients(searchParams: unknown, userId: string): Promise<unknown> {,
     try {
       // Check if user has permission to search patients
       const hasPermission = await this.authService.hasPermission(userId, 'search', 'patient');
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to search patients');
       }
 
       // Build where clause based on search parameters
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
+       {\n  {
         where.mrn = {
           contains: searchParams.mrn,
-          mode: 'insensitive'
+          mode: 'insensitive',
         };
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.firstName = {
           contains: searchParams.firstName,
-          mode: 'insensitive'
+          mode: 'insensitive',
         };
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.lastName = {
           contains: searchParams.lastName,
-          mode: 'insensitive'
+          mode: 'insensitive',
         };
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.dateOfBirth = new Date(searchParams.dateOfBirth);
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.contact = {
-          OR: [
-            { phoneHome: { contains: searchParams.phone } },
-            { phoneMobile: { contains: searchParams.phone } },
-            { phoneWork: { contains: searchParams.phone } }
+          OR: [,
+            { phoneHome: { contains: searchParams.phone } ,},
+            { phoneMobile: { contains: searchParams.phone } ,},
+            { phoneWork: { contains: searchParams.phone } },
           ]
         };
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.contact = {
           ...where.contact,
-          email: {
+          email: {,
             contains: searchParams.email,
-            mode: 'insensitive'
+            mode: 'insensitive',
           }
         };
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.status = searchParams.status;
       }
 
@@ -696,15 +696,15 @@ const InsuranceSchema = z.object({
       const [patients, total] = await Promise.all([
         prisma.patient.findMany({
           where,
-          include: {
+          include: {,
             contact: true,
-            addresses: {
-              where: { isPrimary: true }
+            addresses: {,
+              where: { isPrimary: true },
             }
           },
           skip,
           take,
-          orderBy: { lastName: 'asc' }
+          orderBy: { lastName: 'asc' },
         }),
         prisma.patient.count({ where })
       ]);
@@ -713,14 +713,14 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'Search',
         resourceType: 'Patient',        description: 'Performed patient search',
-        performedBy: userId,        performerRole: await this.authService.getUserRole(userId)
+        performedBy: userId,        performerRole: await this.authService.getUserRole(userId),
       });
 
       return {
         patients,
         total,
         page: searchParams.page || 1,
-        limit: take,        totalPages: Math.ceil(total / take)
+        limit: take,        totalPages: Math.ceil(total / take),
       };
     } catch (error) {
 
@@ -731,20 +731,20 @@ const InsuranceSchema = z.object({
   /**
    * Mark patient as deceased;
    */
-  async markPatientDeceased(patientId: string, data: { deceasedDate: Date, deceasedReason?: string }, userId: string): Promise<Patient> {
+  async markPatientDeceased(patientId: string, data: { deceasedDate: Date, deceasedReason?: string }, userId: string): Promise<Patient> {,
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'update', 'patient', patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to update this patient');
       }
 
       // Update patient record
       const patient = await prisma.patient.update({
-        where: { id: patientId },
-        data: {
+        where: { id: patientId ,},
+        data: {,
           status: 'Deceased',
-          deceasedDate: data.deceasedDate,          deceasedReason: data.deceasedReason
+          deceasedDate: data.deceasedDate,          deceasedReason: data.deceasedReason,
         }
       });
 
@@ -755,9 +755,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'Update',
         resourceType: 'Patient',        resourceId: patientId,
-        description: `Marked patient ${patientId} as deceased`,
+        description: `Marked patient ${patientId,} as deceased`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return patient;
@@ -770,11 +770,11 @@ const InsuranceSchema = z.object({
   /**
    * Merge patient records (for duplicate records)
    */
-  async mergePatients(sourcePatientId: string, targetPatientId: string, userId: string): Promise<Patient> {
+  async mergePatients(sourcePatientId: string, targetPatientId: string, userId: string): Promise<Patient> {,
     try {
       // Check if user has permission (requires admin or specific merge permission)
       const hasPermission = await this.authService.hasPermission(userId, 'merge', 'patient')
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to merge patient records');
       }
 
@@ -783,30 +783,30 @@ const InsuranceSchema = z.object({
         // Get source and target patients
         const [sourcePatient, targetPatient] = await Promise.all([
           tx.patient.findUnique({
-            where: { id: sourcePatientId },
-            include: {
+            where: { id: sourcePatientId ,},
+            include: {,
               contact: true,
               addresses: true,              identifications: true,
               contacts: true,              insurances: true,
               allergies: true,              conditions: true,
               documents: true,              appointments: true,
               visits: true,              vitalSigns: true,
-              immunizations: true
+              immunizations: true,
             }
           }),
           tx.patient.findUnique({
-            where: { id: targetPatientId }
+            where: { id: targetPatientId },
           })
         ]);
 
-        \1 {\n  \2{
+         {\n  {
           throw new Error('Source or target patient not found');
         }
 
         // Transfer addresses
         for (const address of sourcePatient.addresses) {
           await tx.patientAddress.create({
-            data: {
+            data: {,
               addressType: address.addressType,
               isPrimary: false, // Don't override target's primary addresses
               addressLine1: address.addressLine1,
@@ -815,8 +815,8 @@ const InsuranceSchema = z.object({
               country: address.country,              county: address.county,
               validFrom: address.validFrom,              validTo: address.validTo,
               isBilling: address.isBilling,              isShipping: address.isShipping,
-              notes: `Merged from patient ${sourcePatientId}: ${address.notes || ''}`,
-              patientId: targetPatientId
+              notes: `Merged from patient ${sourcePatientId}: ${address.notes || '',}`,
+              patientId: targetPatientId,
             }
           });
         }
@@ -825,22 +825,22 @@ const InsuranceSchema = z.object({
         for (const id of sourcePatient.identifications) {
           // Check if this ID already exists for target patient
           const existingId = await tx.patientIdentification.findFirst({
-            where: {
+            where: {,
               patientId: targetPatientId,
-              idType: id.idType,              idNumber: id.idNumber
+              idType: id.idType,              idNumber: id.idNumber,
             }
           });
 
-          \1 {\n  \2{
+           {\n  {
             await tx.patientIdentification.create({
-              data: {
+              data: {,
                 idType: id.idType,
                 idNumber: id.idNumber,                issuingCountry: id.issuingCountry,
                 issuingState: id.issuingState,                issueDate: id.issueDate,
                 expirationDate: id.expirationDate,                isPrimary: false, // Don't override target's primary IDs
                 documentImageUrl: id.documentImageUrl,
-                notes: `Merged from patient ${sourcePatientId}: ${id.notes || ''}`,
-                patientId: targetPatientId
+                notes: `Merged from patient ${sourcePatientId}: ${id.notes || '',}`,
+                patientId: targetPatientId,
               }
             });
           }
@@ -849,7 +849,7 @@ const InsuranceSchema = z.object({
         // Transfer emergency contacts
         for (const contact of sourcePatient.contacts) {
           await tx.emergencyContact.create({
-            data: {
+            data: {,
               firstName: contact.firstName,
               lastName: contact.lastName,              relationship: contact.relationship,
               isPrimary: false, // Don't override target's primary contacts
@@ -860,8 +860,8 @@ const InsuranceSchema = z.object({
               city: contact.city,              state: contact.state,
               postalCode: contact.postalCode,              country: contact.country,
               isLegalGuardian: contact.isLegalGuardian,              hasDecisionMaking: contact.hasDecisionMaking,
-              notes: `Merged from patient ${sourcePatientId}: ${contact.notes || ''}`,
-              patientId: targetPatientId
+              notes: `Merged from patient ${sourcePatientId}: ${contact.notes || '',}`,
+              patientId: targetPatientId,
             }
           });
         }
@@ -870,15 +870,15 @@ const InsuranceSchema = z.object({
         for (const insurance of sourcePatient.insurances) {
           // Check if this insurance already exists for target patient
           const existingInsurance = await tx.patientInsurance.findFirst({
-            where: {
+            where: {,
               patientId: targetPatientId,
-              payerName: insurance.payerName,              policyNumber: insurance.policyNumber
+              payerName: insurance.payerName,              policyNumber: insurance.policyNumber,
             }
           });
 
-          \1 {\n  \2{
+           {\n  {
             await tx.patientInsurance.create({
-              data: {
+              data: {,
                 insuranceType: 'Secondary', // Don't override primary insurance
                 payerName: insurance.payerName,
                 planName: insurance.planName,                policyNumber: insurance.policyNumber,
@@ -889,8 +889,8 @@ const InsuranceSchema = z.object({
                 deductibleAmount: insurance.deductibleAmount,                deductibleMet: insurance.deductibleMet,
                 outOfPocketMax: insurance.outOfPocketMax,                outOfPocketMet: insurance.outOfPocketMet,
                 cardFrontImageUrl: insurance.cardFrontImageUrl,                cardBackImageUrl: insurance.cardBackImageUrl,
-                notes: `Merged from patient ${sourcePatientId}: ${insurance.notes || ''}`,
-                patientId: targetPatientId
+                notes: `Merged from patient ${sourcePatientId}: ${insurance.notes || '',}`,
+                patientId: targetPatientId,
               }
             });
           }
@@ -900,13 +900,13 @@ const InsuranceSchema = z.object({
         // Allergies
         for (const allergy of sourcePatient.allergies) {
           await tx.patientAllergy.create({
-            data: {
+            data: {,
               allergyType: allergy.allergyType,
               allergen: allergy.allergen,              reaction: allergy.reaction,
               severity: allergy.severity,              status: allergy.status,
               onsetDate: allergy.onsetDate,              endDate: allergy.endDate,
-              recordedBy: allergy.recordedBy,              notes: `Merged from patient ${sourcePatientId}: ${allergy.notes || ''}`,
-              patientId: targetPatientId
+              recordedBy: allergy.recordedBy,              notes: `Merged from patient ${sourcePatientId}: ${allergy.notes || '',}`,
+              patientId: targetPatientId,
             }
           });
         }
@@ -914,55 +914,55 @@ const InsuranceSchema = z.object({
         // Conditions
         for (const condition of sourcePatient.conditions) {
           await tx.patientCondition.create({
-            data: {
+            data: {,
               conditionName: condition.conditionName,
               conditionCode: condition.conditionCode,              category: condition.category,
               status: condition.status,              onsetDate: condition.onsetDate,
               endDate: condition.endDate,              severity: condition.severity,
               bodySite: condition.bodySite,              stage: condition.stage,
-              recordedBy: condition.recordedBy,              notes: `Merged from patient ${sourcePatientId}: ${condition.notes || ''}`,
+              recordedBy: condition.recordedBy,              notes: `Merged from patient ${sourcePatientId}: ${condition.notes || '',}`,
               isConfidential: condition.isConfidential,
-              patientId: targetPatientId
+              patientId: targetPatientId,
             }
           });
         }
 
         // Update appointments with new patientId
         await tx.appointment.updateMany({
-          where: { patientId: sourcePatientId },
-          data: { patientId: targetPatientId }
+          where: { patientId: sourcePatientId ,},
+          data: { patientId: targetPatientId },
         });
 
         // Update visits with new patientId
         await tx.patientVisit.updateMany({
-          where: { patientId: sourcePatientId },
-          data: { patientId: targetPatientId }
+          where: { patientId: sourcePatientId ,},
+          data: { patientId: targetPatientId },
         });
 
         // Update vital signs with new patientId
         await tx.vitalSign.updateMany({
-          where: { patientId: sourcePatientId },
-          data: { patientId: targetPatientId }
+          where: { patientId: sourcePatientId ,},
+          data: { patientId: targetPatientId },
         });
 
         // Update immunizations with new patientId
         await tx.immunization.updateMany({
-          where: { patientId: sourcePatientId },
-          data: { patientId: targetPatientId }
+          where: { patientId: sourcePatientId ,},
+          data: { patientId: targetPatientId },
         });
 
         // Mark source patient as inactive and add note about merge
         await tx.patient.update({
-          where: { id: sourcePatientId },
-          data: {
+          where: { id: sourcePatientId ,},
+          data: {,
             status: 'Inactive',
-            notes: `This patient record was merged into patient ${targetPatientId} on ${new Date().toISOString()} by ${userId}`,          }
+            notes: `This patient record was merged into patient ${targetPatientId} on ${new Date().toISOString()} by ${userId,}`,          }
         });
 
         // Update target patient with note about merge
         const updatedTargetPatient = await tx.patient.update({
-          where: { id: targetPatientId },
-          data: {
+          where: { id: targetPatientId ,},
+          data: {,
             notes: targetPatient.notes,              ? `${targetPatient.notes}\nMerged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`
               : `Merged with patient ${sourcePatientId} on ${new Date().toISOString()} by ${userId}`;
           }
@@ -972,9 +972,9 @@ const InsuranceSchema = z.object({
         await this.auditService.logAction({
           action: 'Merge',
           resourceType: 'Patient',          resourceId: targetPatientId,
-          description: `Merged patient ${sourcePatientId} into patient ${targetPatientId}`,
+          description: `Merged patient ${sourcePatientId} into patient ${targetPatientId,}`,
           performedBy: userId,
-          performerRole: await this.authService.getUserRole(userId)
+          performerRole: await this.authService.getUserRole(userId),
         });
 
         return updatedTargetPatient;
@@ -989,25 +989,25 @@ const InsuranceSchema = z.object({
    * Get patient MPI (Master Patient Index) summary;
    * This is a comprehensive patient summary for interoperability;
    */
-  async getPatientMPI(patientId: string, userId: string): Promise<unknown> {
+  async getPatientMPI(patientId: string, userId: string): Promise<unknown> {,
     try {
       // Check if user has permission
       const hasPermission = await this.authService.hasPermission(userId, 'view', 'patient', patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unauthorized to view this patient');
       }
 
       // Get patient with all related data for MPI
       const patient = await prisma.patient.findUnique({
-        where: { id: patientId },
-        include: {
+        where: { id: patientId ,},
+        include: {,
           contact: true,
           addresses: true,          identifications: true,
-          contacts: true,          insurances: true
+          contacts: true,          insurances: true,
         }
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Patient not found');
       }
 
@@ -1018,9 +1018,9 @@ const InsuranceSchema = z.object({
       await this.auditService.logAction({
         action: 'View',
         resourceType: 'PatientMPI',        resourceId: patientId,
-        description: `Viewed MPI for patient ${patientId}`,
+        description: `Viewed MPI for patient ${patientId,}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId)
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return {

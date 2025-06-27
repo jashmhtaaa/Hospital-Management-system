@@ -19,91 +19,91 @@ import {
   FHIRAttachment;
 } from './types.ts';
 
-\1
+
 }
 }
 
 // Observation Search Parameters
-\1
+
 }
 }
 
 // Helper functions for FHIR Observation operations
-\1
+
 }
-    value: number | { systolic: number, diastolic: number };
+    value: number | { systolic: number, diastolic: number ,};
     unit: string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
   }): FHIRObservation {
-    const observation: FHIRObservation = {
+    const observation: FHIRObservation = {,
       resourceType: 'Observation',
-      \1,\2 [{
-        coding: [{
+       [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/observation-category',
-          \1,\2 'Vital Signs'
+           'Vital Signs'
         }]
       }],
       code: this.getVitalSignCode(data.vitalSign),
       subject: 
-        reference: `Patient/${data.patientId}`,
+        reference: `Patient/${data.patientId,}`,
         type: 'Patient',
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString()
+      issued: new Date().toISOString(),
     }
 
     // Add encounter if provided
-    \1 {\n  \2{
+     {\n  {
       observation.encounter = {
-        reference: `Encounter/${data.encounterId}`,
-        type: 'Encounter'
+        reference: `Encounter/${data.encounterId,}`,
+        type: 'Encounter',
       };
     }
 
     // Add performer if provided
-    \1 {\n  \2{
+     {\n  {
       observation.performer = [{
-        reference: `Practitioner/${data.practitionerId}`,
-        type: 'Practitioner'
+        reference: `Practitioner/${data.practitionerId,}`,
+        type: 'Practitioner',
       }];
     }
 
     // Handle blood pressure (compound observation)
-    \1 {\n  \2{
+     {\n  {
       observation.component = [
         {
-          code: {
-            coding: [{
+          code: {,
+            coding: [{,
               system: 'https://loinc.org',
-              \1,\2 'Systolic blood pressure'
+               'Systolic blood pressure'
             }]
           },
-          value: {
+          value: {,
             value: data.value.systolic,
-            \1,\2 'https://unitsofmeasure.org',
-            code: data.unit
+             'https://unitsofmeasure.org',
+            code: data.unit,
           }
         },
         {
-          code: {
-            coding: [{
+          code: {,
+            coding: [{,
               system: 'https://loinc.org',
-              \1,\2 'Diastolic blood pressure'
+               'Diastolic blood pressure'
             }]
           },
-          value: {
+          value: {,
             value: data.value.diastolic,
-            \1,\2 'https://unitsofmeasure.org',
-            code: data.unit
+             'https://unitsofmeasure.org',
+            code: data.unit,
           }
         }
       ]
-    } else \1 {\n  \2{
+    } else  {\n  {
       // Single value observation
       observation.value = {
         value: data.value,
-        \1,\2 'https://unitsofmeasure.org',
-        code: data.unit
+         'https://unitsofmeasure.org',
+        code: data.unit,
       }
     }
 
@@ -113,12 +113,12 @@ import {
   /**
    * Create a lab result observation;
    */
-  static createLabResultObservation(data: {
+  static createLabResultObservation(data: {,
     patientId: string;
     practitionerId?: string;
     encounterId?: string;
     testCode: string,
-    \1,\2 number | string;
+     number | string;
     unit?: string;
     referenceRange?: { low?: number; high?: number };
     interpretation?: 'normal' | 'high' | 'low' | 'critical';
@@ -126,86 +126,86 @@ import {
     status?: 'preliminary' | 'final';
     specimenId?: string;
   }): FHIRObservation {
-    const observation: FHIRObservation = {
+    const observation: FHIRObservation = {,
       resourceType: 'Observation',
-      \1,\2 [{
-        coding: [{
+       [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/observation-category',
-          \1,\2 'Laboratory'
+           'Laboratory'
         }]
       }],
       code: 
-        coding: [{
+        coding: [{,
           system: 'https://loinc.org',
-          \1,\2 data.testName
+           data.testName
         }],
       subject: 
-        reference: `Patient/${data.patientId}`,
+        reference: `Patient/${data.patientId,}`,
         type: 'Patient',
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString()
+      issued: new Date().toISOString(),
     }
 
     // Add encounter if provided
-    \1 {\n  \2{
+     {\n  {
       observation.encounter = {
-        reference: `Encounter/${data.encounterId}`,
-        type: 'Encounter'
+        reference: `Encounter/${data.encounterId,}`,
+        type: 'Encounter',
       };
     }
 
     // Add performer if provided
-    \1 {\n  \2{
+     {\n  {
       observation.performer = [{
-        reference: `Practitioner/${data.practitionerId}`,
-        type: 'Practitioner'
+        reference: `Practitioner/${data.practitionerId,}`,
+        type: 'Practitioner',
       }];
     }
 
     // Add specimen if provided
-    \1 {\n  \2{
+     {\n  {
       observation.specimen = {
-        reference: `Specimen/${data.specimenId}`,
-        type: 'Specimen'
+        reference: `Specimen/${data.specimenId,}`,
+        type: 'Specimen',
       };
     }
 
     // Add value
-    \1 {\n  \2{
+     {\n  {
       observation.value = {
         value: data.value,
-        \1,\2 'https://unitsofmeasure.org',
-        code: data.unit
+         'https://unitsofmeasure.org',
+        code: data.unit,
       }
     } else {
       observation.value = data.value;
     }
 
     // Add interpretation
-    \1 {\n  \2{
+     {\n  {
       observation.interpretation = [{
-        coding: [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation',
           code: data.interpretation.toUpperCase(),
-          display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1)
+          display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1),
         }]
       }]
     }
 
     // Add reference range
-    \1 {\n  \2{
+     {\n  {
       observation.referenceRange = [{
         ...(data.referenceRange?.low && {
-          low: {
+          low: {,
             value: data.referenceRange.low,
-            \1,\2 'https://unitsofmeasure.org',
-            code: data.unit || ''
+             'https://unitsofmeasure.org',
+            code: data.unit || '',
           }
         }),
         ...(data.referenceRange?.high && 
             value: data.referenceRange.high,
-            \1,\2 'https://unitsofmeasure.org',
-            code: data.unit || '')
+             'https://unitsofmeasure.org',
+            code: data.unit || ''),
       }];
     }
 
@@ -215,63 +215,63 @@ import {
   /**
    * Create a clinical assessment observation;
    */
-  static createClinicalAssessmentObservation(data: {
+  static createClinicalAssessmentObservation(data: {,
     patientId: string,
     practitionerId: string;
     encounterId?: string;
     assessmentCode: string,
-    \1,\2 string,
+     string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
   }): FHIRObservation {
     return {
       resourceType: 'Observation',
-      \1,\2 [{
-        coding: [{
+       [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/observation-category',
-          \1,\2 'Exam'
+           'Exam'
         }]
       }],
       code: 
-        coding: [{
+        coding: [{,
           system: 'https://snomed.info/sct',
-          \1,\2 data.assessmentName
+           data.assessmentName
         }],
       subject: 
-        reference: `Patient/${data.patientId}`,
+        reference: `Patient/${data.patientId,}`,
         type: 'Patient',
-      performer: [
-        reference: `Practitioner/${data.practitionerId}`,
+      performer: [,
+        reference: `Practitioner/${data.practitionerId,}`,
         type: 'Practitioner'],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
       value: data.finding;
       ...(data?.encounterId && 
-          reference: `Encounter/${data.encounterId}`,
-          type: 'Encounter')
+          reference: `Encounter/${data.encounterId,}`,
+          type: 'Encounter'),
     };
   }
 
   /**
    * Get vital sign code mapping;
    */
-  private static getVitalSignCode(vitalSign: string): FHIRCodeableConcept {
-    const vitalSignCodes: Record<string, { code: string, display: string }> = {
-      'blood-pressure': { code: '85354-9', display: 'Blood pressure panel with all children optional' },
-      'heart-rate': { code: '8867-4', display: 'Heart rate' },
-      'respiratory-rate': { code: '9279-1', display: 'Respiratory rate' },
-      'body-temperature': { code: '8310-5', display: 'Body temperature' },
-      'body-weight': { code: '29463-7', display: 'Body weight' },
-      'body-height': { code: '8302-2', display: 'Body height' },
-      'oxygen-saturation': { code: '2708-6', display: 'Oxygen saturation in Arterial blood' }
+  private static getVitalSignCode(vitalSign: string): FHIRCodeableConcept {,
+    const vitalSignCodes: Record<string, { code: string, display: string }> = {,
+      'blood-pressure': { code: '85354-9', display: 'Blood pressure panel with all children optional' ,},
+      'heart-rate': { code: '8867-4', display: 'Heart rate' ,},
+      'respiratory-rate': { code: '9279-1', display: 'Respiratory rate' ,},
+      'body-temperature': { code: '8310-5', display: 'Body temperature' ,},
+      'body-weight': { code: '29463-7', display: 'Body weight' ,},
+      'body-height': { code: '8302-2', display: 'Body height' ,},
+      'oxygen-saturation': { code: '2708-6', display: 'Oxygen saturation in Arterial blood' },
     };
 
-    const codeInfo = vitalSignCodes[vitalSign] || { code: 'unknown', display: 'Unknown vital sign' };
+    const codeInfo = vitalSignCodes[vitalSign] || { code: 'unknown', display: 'Unknown vital sign' ,};
 
     return {
-      coding: [{
+      coding: [{,
         system: 'https://loinc.org',
-        \1,\2 codeInfo.display
+         codeInfo.display
       }]
     }
   }
@@ -279,11 +279,11 @@ import {
   /**
    * Get observation value as number;
    */
-  static getNumericValue(observation: FHIRObservation): number | null {
-    \1 {\n  \2{
+  static getNumericValue(observation: FHIRObservation): number | null {,
+     {\n  {
       return observation.value.value || null
     }
-    \1 {\n  \2{
+     {\n  {
       return observation.value;
     }
     return null;
@@ -292,14 +292,14 @@ import {
   /**
    * Get observation value as string;
    */
-  static getStringValue(observation: FHIRObservation): string {
-    \1 {\n  \2{
+  static getStringValue(observation: FHIRObservation): string {,
+     {\n  {
       return observation.value
     }
-    \1 {\n  \2{
+     {\n  {
       return observation.value.value?.toString() || '';
     }
-    \1 {\n  \2{
+     {\n  {
       return observation.value.toString();
     }
     return '';
@@ -308,8 +308,8 @@ import {
   /**
    * Get observation unit;
    */
-  static getUnit(observation: FHIRObservation): string {
-    \1 {\n  \2{
+  static getUnit(observation: FHIRObservation): string {,
+     {\n  {
       return observation.value.unit || ''
     }
     return '';
@@ -318,7 +318,7 @@ import {
   /**
    * Check if observation is critical;
    */
-  static isCritical(observation: FHIRObservation): boolean {
+  static isCritical(observation: FHIRObservation): boolean {,
     return observation.interpretation?.some(interp =>
       interp.coding?.some(code =>
         code.code === 'CRITICAL' || code.code === 'H' || code.code === 'L';
@@ -329,7 +329,7 @@ import {
   /**
    * Get observation category display;
    */
-  static getCategoryDisplay(observation: FHIRObservation): string {
+  static getCategoryDisplay(observation: FHIRObservation): string {,
     const category = observation.category?.[0];
     return category?.coding?.[0]?.display || category?.text || 'Unknown';
   }
@@ -337,16 +337,16 @@ import {
   /**
    * Get observation code display;
    */
-  static getCodeDisplay(observation: FHIRObservation): string {
+  static getCodeDisplay(observation: FHIRObservation): string {,
     return observation.code.coding?.[0]?.display || observation.code.text || 'Unknown Test'
   }
 
   /**
    * Check if observation is within normal range;
    */
-  static isWithinNormalRange(observation: FHIRObservation): boolean | null {
+  static isWithinNormalRange(observation: FHIRObservation): boolean | null {,
     const numericValue = this.getNumericValue(observation);
-    \1 {\n  \2{
+     {\n  {
       return null;
     }
 
@@ -354,10 +354,10 @@ import {
     const low = range.low?.value;
     const high = range.high?.value;
 
-    \1 {\n  \2{
+     {\n  {
       return false;
     }
-    \1 {\n  \2{
+     {\n  {
       return false;
     }
 
@@ -367,10 +367,10 @@ import {
   /**
    * Format observation for display;
    */
-  static formatForDisplay(observation: FHIRObservation): {
+  static formatForDisplay(observation: FHIRObservation): {,
     test: string,
-    \1,\2 string,
-    \1,\2 boolean;
+     string,
+     boolean;
     interpretation?: string;
   } {
     const value = this.getStringValue(observation);
@@ -384,40 +384,40 @@ import {
       value,
       unit,
       status: observation.status,
-      \1,\2 observation.interpretation?.[0]?.coding?.[0]?.display
+       observation.interpretation?.[0]?.coding?.[0]?.display
     };
   }
 
   /**
    * Validate FHIR Observation resource;
    */
-  static validateObservation(observation: FHIRObservation): { valid: boolean, errors: string[] } {
+  static validateObservation(observation: FHIRObservation): { valid: boolean, errors: string[] } {,
     const errors: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('resourceType must be "Observation"');
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('status is required');
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('code is required');
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('subject is required');
     }
 
     // Validate status values
     const validStatuses = ['registered', 'preliminary', 'final', 'amended', 'corrected', 'cancelled', 'entered-in-error', 'unknown'];
-    \1 {\n  \2 {
-      errors.push(`status must be one of: ${\1}`;
+     {\n   {
+      errors.push(`status must be one of: ${}`;
     }
 
     // Either value or component must be present (unless status is entered-in-error)
-    \1 {\n  \2{
+     {\n  {
       errors.push('Either value, component, or dataAbsentReason must be present')
     }
 
@@ -430,76 +430,76 @@ import {
   /**
    * Convert HMS lab result to FHIR Observation;
    */
-  static fromHMSLabResult(hmsLabResult: unknown): FHIRObservation {
+  static fromHMSLabResult(hmsLabResult: unknown): FHIRObservation {,
     return this.createLabResultObservation({
       patientId: hmsLabResult.patientId,
-      \1,\2 hmsLabResult.encounterId,
-      \1,\2 hmsLabResult.testName || hmsLabResult.name,
-      \1,\2 hmsLabResult.unit,
-      referenceRange: hmsLabResult.referenceRange ? 
+       hmsLabResult.encounterId,
+       hmsLabResult.testName || hmsLabResult.name,
+       hmsLabResult.unit,
+      referenceRange: hmsLabResult.referenceRange ? ,
         low: hmsLabResult.referenceRange.min,
         high: hmsLabResult.referenceRange.max: undefined,
       interpretation: hmsLabResult.interpretation || hmsLabResult.flag,
-      \1,\2 hmsLabResult.status === 'completed' ? 'final' : 'preliminary',
-      specimenId: hmsLabResult.specimenId
+       hmsLabResult.status === 'completed' ? 'final' : 'preliminary',
+      specimenId: hmsLabResult.specimenId,
     });
   }
 
   /**
    * Convert HMS vital signs to FHIR Observation;
    */
-  static fromHMSVitalSigns(hmsVitalSigns: unknown): FHIRObservation[] {
+  static fromHMSVitalSigns(hmsVitalSigns: unknown): FHIRObservation[] {,
     const observations: FHIRObservation[] = [];
 
     // Handle different vital signs
-    \1 {\n  \2{
+     {\n  {
       observations.push(this.createVitalSignsObservation({
         patientId: hmsVitalSigns.patientId,
-        \1,\2 hmsVitalSigns.encounterId,
-        \1,\2 hmsVitalSigns.bloodPressure.systolic,
+         hmsVitalSigns.encounterId,
+         hmsVitalSigns.bloodPressure.systolic,
           diastolic: hmsVitalSigns.bloodPressure.diastolic,
         unit: 'mmHg',
-        \1,\2 'final'
+         'final'
       }));
     }
 
-    \1 {\n  \2{
+     {\n  {
       observations.push(this.createVitalSignsObservation({
         patientId: hmsVitalSigns.patientId,
-        \1,\2 hmsVitalSigns.encounterId,
-        \1,\2 hmsVitalSigns.heartRate,
-        \1,\2 hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final'
+         hmsVitalSigns.encounterId,
+         hmsVitalSigns.heartRate,
+         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
+        status: 'final',
       }));
     }
 
-    \1 {\n  \2{
+     {\n  {
       observations.push(this.createVitalSignsObservation({
         patientId: hmsVitalSigns.patientId,
-        \1,\2 hmsVitalSigns.encounterId,
-        \1,\2 hmsVitalSigns.temperature,
-        \1,\2 hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final'
+         hmsVitalSigns.encounterId,
+         hmsVitalSigns.temperature,
+         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
+        status: 'final',
       }));
     }
 
-    \1 {\n  \2{
+     {\n  {
       observations.push(this.createVitalSignsObservation({
         patientId: hmsVitalSigns.patientId,
-        \1,\2 hmsVitalSigns.encounterId,
-        \1,\2 hmsVitalSigns.respiratoryRate,
-        \1,\2 hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final'
+         hmsVitalSigns.encounterId,
+         hmsVitalSigns.respiratoryRate,
+         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
+        status: 'final',
       }));
     }
 
-    \1 {\n  \2{
+     {\n  {
       observations.push(this.createVitalSignsObservation({
         patientId: hmsVitalSigns.patientId,
-        \1,\2 hmsVitalSigns.encounterId,
-        \1,\2 hmsVitalSigns.oxygenSaturation,
-        \1,\2 hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: 'final'
+         hmsVitalSigns.encounterId,
+         hmsVitalSigns.oxygenSaturation,
+         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
+        status: 'final',
       }));
     }
 
@@ -508,7 +508,7 @@ import {
 }
 
 // Lab result categories and common test codes
-\1
+
 }
   };
 
@@ -517,11 +517,11 @@ import {
    */
   static getReferenceRange(testCode: string): { low?: number; high?: number; unit?: string } | null {
     const ranges: Record<string, { low?: number; high?: number; unit?: string }> = {
-      [this.COMMON_LAB_CODES.GLUCOSE]: { low: 70, high: 100, unit: 'mg/dL' },
-      [this.COMMON_LAB_CODES.HEMOGLOBIN]: { low: 12.0, high: 16.0, unit: 'g/dL' },
-      [this.COMMON_LAB_CODES.WBC]: { low: 4.0, high: 11.0, unit: '10*3/uL' },
-      [this.COMMON_LAB_CODES.CREATININE]: { low: 0.6, high: 1.2, unit: 'mg/dL' },
-      [this.COMMON_LAB_CODES.CHOLESTEROL_TOTAL]: { high: 200, unit: 'mg/dL' }
+      [this.COMMON_LAB_CODES.GLUCOSE]: { low: 70, high: 100, unit: 'mg/dL' ,},
+      [this.COMMON_LAB_CODES.HEMOGLOBIN]: { low: 12.0, high: 16.0, unit: 'g/dL' ,},
+      [this.COMMON_LAB_CODES.WBC]: { low: 4.0, high: 11.0, unit: '10*3/uL' ,},
+      [this.COMMON_LAB_CODES.CREATININE]: { low: 0.6, high: 1.2, unit: 'mg/dL' ,},
+      [this.COMMON_LAB_CODES.CHOLESTEROL_TOTAL]: { high: 200, unit: 'mg/dL' },
     };
 
     return ranges[testCode] || null;

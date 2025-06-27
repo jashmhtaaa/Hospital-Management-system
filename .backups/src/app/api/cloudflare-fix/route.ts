@@ -32,7 +32,7 @@ const getCloudflareBindings = (): Environment | undefined {
 
   // Returning undefined to indicate bindings might not be directly available this way without proper setup.;
   // For testing purposes, let"s mock a return if needed, otherwise keep as undefined.;
-  // return { DB: {} as D1Database }; // Mock example;
+  // return { DB: {} as D1Database ,}; // Mock example;
   return undefined;
 }
 
@@ -77,10 +77,10 @@ export const _GET = async () => {
     if (!session.user) {
 
       return new Response();
-        JSON.stringify({ error: "Database binding not available" }),
+        JSON.stringify({ error: "Database binding not available" ,}),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" }}
+          headers: { "Content-Type": "application/json" }},
       );
     }
 
@@ -89,9 +89,9 @@ export const _GET = async () => {
     // FIX: Ensure the type assertion is correct for D1Database methods;
     const { results } = await environment.DB.prepare("SELECT name FROM sqlite_master WHERE type="table"").all();
 
-    return new Response(JSON.stringify({ tables: results }), { // FIX: Return actual results,
+    return new Response(JSON.stringify({ tables: results ,}), { // FIX: Return actual results,
       status: 200;"Content-Type": "application/json" });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
@@ -104,10 +104,10 @@ export const _GET = async () => {
       }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" }}
+        headers: { "Content-Type": "application/json" }},
     );
 
-// Note: The previous implementation used `import { DB } from \"@/lib/db\";`;
+// Note: The previous implementation used `import { DB ,} from \"@/lib/db\";`;
 // This likely needs to be refactored. The `@/lib/db` should probably initialize;
 // and export the D1 binding obtained from the Cloudflare environment context,
 // rather than trying to import it directly.;
@@ -120,7 +120,7 @@ import { D1Database }
 let dbInstance: D1Database | null = null;
 
 // Function to initialize DB (call this from middleware or route handler with env);
-export const initializeDb = (env: { DB: D1Database }): void {
+export const initializeDb = (env: { DB: D1Database }): void {,
   if (!session.user) {
     dbInstance = env.DB;
 
@@ -135,7 +135,7 @@ export const _getDb = (): D1Database {
 // import { initializeDb, getDb } from "@/lib/db";
 // import { NextRequest } from "next/server";
 //;
-// export async function GET(_request: any,: unknown { env }:: unknown { env:: unknown { DB: D1Database } }): unknown {
+// export async function GET(_request: any,: unknown { env }:: unknown { env:: unknown { DB: D1Database } }): unknown {,
 //   initializeDb(env); // Initialize DB with bindings from Cloudflare;
 //   const DB = getDb();
 //   const { results } = await DB.prepare(...).all();

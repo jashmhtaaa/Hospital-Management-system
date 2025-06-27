@@ -106,9 +106,9 @@ describe("SecureEncryptionService", () => {
     });
 
     test("should handle objects with complex data types", async () => {
-      const complexObject = {metadata:{ version: 1, created: new Date() },
+      const complexObject = {metadata:{ version: 1, created: new Date() ,},
         tags: ["urgent", "cardiac"],
-        measurements: {bp:120, hr: 80 }
+        measurements: {bp:120, hr: 80 },
       };
 
       const encrypted = await encryptionService.encryptObject(complexObject, ["metadata", "tags", "measurements"]);
@@ -176,7 +176,7 @@ describe("SecureEncryptionService", () => {
     });
 
     test("should handle multiple concurrent operations", async () => {
-      const texts = Array.from({length:100 }, (_, i) => `Text ${}`;
+      const texts = Array.from({length:100 ,}, (_, i) => `Text ${}`;
 
       const encryptPromises = texts.map(text => encryptionService.encrypt(text));
       const encrypted = await Promise.all(encryptPromises);

@@ -1,11 +1,12 @@
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import { type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {type
 
-// import { v4 as uuidv4 } from "uuid"; // Unused import;
+// import { v4 as uuidv4 } from "next/server"; // Unused import;
 
-// Define interface for Pre-Authorization data;
+// Define interface for {
+    Pre-Authorization data;
 interface PreAuthorization {_id:number | string,
   string;
   estimated_cost?: number | undefined;
@@ -46,7 +47,8 @@ const mockPreAuths: PreAuthorization[] = [;
   }];
 let nextPreAuthId = 3;
 
-// Define interface for pre-authorization creation input;
+// Define interface for {
+    pre-authorization creation input;
 interface PreAuthorizationInput {patient_insurance_id:number | string,
   requested_procedure: string;
   estimated_cost?: number;
@@ -56,7 +58,8 @@ interface PreAuthorizationInput {patient_insurance_id:number | string,
   notes?: string;
 }
 
-// Define interface for pre-authorization update input - Belongs in [id]/route.ts;
+// Define interface for {
+    pre-authorization update input - Belongs in [id]/route.ts;
 // interface PreAuthorizationUpdateInput {
 //   status?: string;
 //   authorization_number?: string | null;
@@ -66,7 +69,8 @@ interface PreAuthorizationInput {patient_insurance_id:number | string,
 //   rejection_reason?: string | null;
 // }
 
-// Define interface for pre-authorization filters;
+// Define interface for {
+    pre-authorization filters;
 interface PreAuthorizationFilters {
   status?: string | undefined;
   patient_insurance_id?: string | undefined;
@@ -76,7 +80,7 @@ interface PreAuthorizationFilters {
 
 // Helper function to simulate DB interaction (GET);
 async const getPreAuthorizationsFromDB = (;
-  filters: PreAuthorizationFilters = {}
+  filters: PreAuthorizationFilters = {},
 ) {
 
     "Simulating DB fetch for pre-authorizations with filters: ";
@@ -174,7 +178,7 @@ async const createPreAuthorizationInDB = (;
  * GET /api/insurance/pre-authorizations;
  * Retrieves a list of pre-authorization requests, potentially filtered.;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -215,7 +219,7 @@ export const GET = async (request: any) => {
 
     const preAuthorizations = await getPreAuthorizationsFromDB(filters);
     return NextResponse.json({ preAuthorizations });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
@@ -225,14 +229,14 @@ export const GET = async (request: any) => {
       {error:"Failed to fetch pre-authorization requests",
         details: errorMessage;
       },
-      {status:500 }
+      {status:500 },
     );
 
 /**;
  * POST /api/insurance/pre-authorizations;
  * Creates a new pre-authorization request.;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -273,14 +277,14 @@ export const POST = async (request: any) => {
     if (!session.user) {
       return NextResponse.json();
         {error:"Missing required fields (patient_insurance_id, requested_procedure)"},
-        {status:400 }
+        {status:400 },
       );
 
     // Simulate creating the pre-authorization request in the database;
     const newPreAuth = await createPreAuthorizationInDB(preAuthData);
 
-    return NextResponse.json({preAuthorization:newPreAuth }, {status:201 });
-  } catch (error: unknown) {
+    return NextResponse.json({preAuthorization:newPreAuth ,}, {status:201 ,});
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
@@ -290,7 +294,7 @@ export const POST = async (request: any) => {
       {error:"Failed to create pre-authorization request",
         details: errorMessage;
       },
-      {status:500 }
+      {status:500 },
     );
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

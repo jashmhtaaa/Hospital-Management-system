@@ -26,7 +26,7 @@ interface TestPanelCreateBody {
  } from "@/lib/database"
 
 // GET /api/diagnostics/lab/test-panels - Get all test panels;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -63,7 +63,7 @@ export const _GET = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters;
@@ -168,25 +168,25 @@ export const _GET = async (request: any) => {
     // Return panels with pagination metadata;
     return NextResponse.json({
       data: panelsWithItems,
-      pagination: {
+      pagination: {,
         page,
         pageSize,
         totalCount,
         totalPages: Math.ceil(totalCount / pageSize);
       }
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to fetch test panels", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch test panels", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/diagnostics/lab/test-panels - Create a new test panel;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -223,12 +223,12 @@ export const _POST = async (request: any) => {
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can create test panels;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Parse request body;
@@ -247,8 +247,8 @@ export const _POST = async (request: any) => {
     for (const field of requiredFields) {
       if (!session.user)| body[field] === undefined || body[field] === "") {
         return NextResponse.json();
-          { error: `Missing or invalid required field: ${field}` },
-          { status: 400 }
+          { error: `Missing or invalid required field: ${field}` ,},
+          { status: 400 },
         );
       }
     }
@@ -257,16 +257,16 @@ export const _POST = async (request: any) => {
     const loincRegex = /^\d+-\d+$/;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid LOINC code format. Expected format: #####-#" },
-        { status: 400 }
+        { error: "Invalid LOINC code format. Expected format: #####-#" ,},
+        { status: 400 },
       );
     }
 
     // Validate panel items;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Panel must include at least one test" },
-        { status: 400 }
+        { error: "Panel must include at least one test" ,},
+        { status: 400 },
       );
     }
 
@@ -395,18 +395,18 @@ export const _POST = async (request: any) => {
       };
 
       // Return the created panel;
-      return NextResponse.json(completePanel, { status: 201 });
+      return NextResponse.json(completePanel, { status: 201 ,});
     } catch (error) {
       // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to create test panel", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create test panel", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -414,7 +414,7 @@ export const _POST = async (request: any) => {
 // GET /api/diagnostics/lab/test-panels/:id - Get a specific test panel;
 export const _GET_BY_ID = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -452,7 +452,7 @@ export const _GET_BY_ID = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const panelId = params.id;
@@ -475,8 +475,8 @@ export const _GET_BY_ID = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Test panel not found" },
-        { status: 404 }
+        { error: "Test panel not found" ,},
+        { status: 404 },
       );
     }
 
@@ -510,12 +510,12 @@ export const _GET_BY_ID = async();
 
     // Return the panel;
     return NextResponse.json(completePanel);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to fetch test panel", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch test panel", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -523,7 +523,7 @@ export const _GET_BY_ID = async();
 // PUT /api/diagnostics/lab/test-panels/:id - Update a test panel;
 export const _PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -561,12 +561,12 @@ export const _PUT = async();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can update test panels;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const panelId = params.id;
@@ -579,8 +579,8 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Test panel not found" },
-        { status: 404 }
+        { error: "Test panel not found" ,},
+        { status: 404 },
       );
     }
 
@@ -772,18 +772,18 @@ export const _PUT = async();
       await DB.query("ROLLBACK", []);
       throw error;
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to update test panel", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update test panel", details: errorMessage ,},
+      { status: 500 },
     );
 
 // DELETE /api/diagnostics/lab/test-panels/:id - Delete a test panel;
 export const DELETE = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -821,11 +821,11 @@ export const DELETE = async();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Only lab managers and admins can delete test panels;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     const panelId = params.id;
 
@@ -837,8 +837,8 @@ export const DELETE = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Test panel not found" },
-        { status: 404 }
+        { error: "Test panel not found" ,},
+        { status: 404 },
       );
 
     // Check if panel is used in any orders;
@@ -916,10 +916,10 @@ export const DELETE = async();
       await DB.query("ROLLBACK", []);
       throw error;
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to delete test panel", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to delete test panel", details: errorMessage ,},
+      { status: 500 },
     );

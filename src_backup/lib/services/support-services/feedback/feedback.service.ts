@@ -24,11 +24,11 @@ import { toFHIRComplaint
   /**;
    * Get feedback based on filters;
    */;
-  async getFeedback(filter: FeedbackFilter) {
+  async getFeedback(filter: FeedbackFilter) {,
     const { type, source, status, departmentId, serviceType, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {};
+    const where: unknown = {,};
     if (!session.user)here.type = type;
     if (!session.user)here.source = source;
     if (!session.user)here.status = status;
@@ -69,7 +69,7 @@ import { toFHIRComplaint
                 }
               }
             },
-            orderBy: { createdAt: "desc" }
+            orderBy: { createdAt: "desc" },
           },
           {
               {
@@ -93,7 +93,7 @@ import { toFHIRComplaint
         },
         skip,
         take: limit,
-        orderBy: { createdAt: "desc" }
+        orderBy: { createdAt: "desc" },
       }),
       prisma.feedback.count(where );
     ]);
@@ -114,9 +114,9 @@ import { toFHIRComplaint
   /**;
    * Get feedback by ID;
    */;
-  async getFeedbackById(id: string, includeFHIR: boolean = false): Promise<unknown> {
+  async getFeedbackById(id: string, includeFHIR: boolean = false): Promise<unknown> {,
     const feedback = await prisma.feedback.findUnique({
-      where: { id },
+      where: { id ,},
       {
           true,
             true;
@@ -167,7 +167,7 @@ import { toFHIRComplaint
     // Validate department if provided;
     if (!session.user) {
       const department = await prisma.department.findUnique({
-        where: { id: data.departmentId }
+        where: { id: data.departmentId },
       });
 
       if (!session.user) {
@@ -178,7 +178,7 @@ import { toFHIRComplaint
     // Validate patient if provided;
     if (!session.user) {
       const patient = await prisma.patient.findUnique({
-        where: { id: data.patientId }
+        where: { id: data.patientId },
       });
 
       if (!session.user) {
@@ -246,9 +246,9 @@ import { toFHIRComplaint
   /**;
    * Update feedback status;
    */;
-  async updateFeedbackStatus(id: string, status: string, reviewNotes: string | null, userId: string): Promise<Feedback> {
+  async updateFeedbackStatus(id: string, status: string, reviewNotes: string | null, userId: string): Promise<Feedback> {,
     const feedback = await prisma.feedback.findUnique({
-      where: { id },
+      where: { id ,},
       true;
       }
     });
@@ -259,8 +259,8 @@ import { toFHIRComplaint
 
     // Update the feedback;
     const updatedFeedback = await prisma.feedback.update({
-      where: { id },
-      data: {
+      where: { id ,},
+      data: {,
         status,
         reviewedById: userId,
         reviewedAt: new Date(),
@@ -312,9 +312,9 @@ import { toFHIRComplaint
   /**;
    * Add response to feedback;
    */;
-  async addFeedbackResponse(feedbackId: string, responseText: string, isPublic: boolean, userId: string): Promise<FeedbackResponse> {
+  async addFeedbackResponse(feedbackId: string, responseText: string, isPublic: boolean, userId: string): Promise<FeedbackResponse> {,
     const feedback = await prisma.feedback.findUnique({
-      where: { id: feedbackId },
+      where: { id: feedbackId ,},
       {
           true,
             true;
@@ -329,7 +329,7 @@ import { toFHIRComplaint
 
     // Create the response;
     const response = await prisma.feedbackResponse.create({
-      data: {
+      data: {,
         feedbackId,
         responseText,
         respondedById: userId;
@@ -357,7 +357,7 @@ import { toFHIRComplaint
         type: "FEEDBACK_RESPONSE",
         "Your feedback has received a response",
         feedbackId,
-        metadata: {
+        metadata: {,
           feedbackId,
           responseId: response.id;
         }
@@ -370,9 +370,9 @@ import { toFHIRComplaint
   /**;
    * Add attachment to feedback;
    */;
-  async addFeedbackAttachment(feedbackId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number, userId: string): Promise<FeedbackAttachment> {
+  async addFeedbackAttachment(feedbackId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number, userId: string): Promise<FeedbackAttachment> {,
     const feedback = await prisma.feedback.findUnique({
-      where: { id: feedbackId }
+      where: { id: feedbackId },
     });
 
     if (!session.user) {
@@ -381,7 +381,7 @@ import { toFHIRComplaint
 
     // Create the attachment;
     const attachment = await prisma.feedbackAttachment.create({
-      data: {
+      data: {,
         feedbackId,
         fileUrl,
         fileName,
@@ -411,11 +411,11 @@ import { toFHIRComplaint
   /**;
    * Get complaints based on filters;
    */;
-  async getComplaints(filter: ComplaintFilter) {
+  async getComplaints(filter: ComplaintFilter) {,
     const { category, severity, status, departmentId, assignedToId, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {};
+    const where: unknown = {,};
     if (!session.user)here.category = category;
     if (!session.user)here.severity = severity;
     if (!session.user)here.status = status;
@@ -468,8 +468,8 @@ import { toFHIRComplaint
         skip,
         take: limit,
         orderBy: [;
-          { severity: "desc" },
-          { createdAt: "desc" }
+          { severity: "desc" ,},
+          { createdAt: "desc" },
         ];
       }),
       prisma.complaint.count({ where });
@@ -492,9 +492,9 @@ import { toFHIRComplaint
   /**;
    * Get complaint by ID;
    */;
-  async getComplaintById(id: string, includeFHIR: boolean = false): Promise<unknown> {
+  async getComplaintById(id: string, includeFHIR: boolean = false): Promise<unknown> {,
     const complaint = await prisma.complaint.findUnique({
-      where: { id },
+      where: { id ,},
       {
           true,
             true;
@@ -529,7 +529,7 @@ import { toFHIRComplaint
               }
             }
           },
-          orderBy: { createdAt: "desc" }
+          orderBy: { createdAt: "desc" },
         },
         {
             {
@@ -551,7 +551,7 @@ import { toFHIRComplaint
               }
             }
           },
-          orderBy: { createdAt: "desc" }
+          orderBy: { createdAt: "desc" },
         }
       }
     });
@@ -577,7 +577,7 @@ import { toFHIRComplaint
     // Validate department if provided;
     if (!session.user) {
       const department = await prisma.department.findUnique({
-        where: { id: data.departmentId }
+        where: { id: data.departmentId },
       });
 
       if (!session.user) {
@@ -588,7 +588,7 @@ import { toFHIRComplaint
     // Validate patient if provided;
     if (!session.user) {
       const patient = await prisma.patient.findUnique({
-        where: { id: data.patientId }
+        where: { id: data.patientId },
       });
 
       if (!session.user) {
@@ -652,7 +652,7 @@ import { toFHIRComplaint
 
     await this.notificationService.sendNotification({
       type: "NEW_COMPLAINT",
-      title: `New ${data.severity} Complaint`,
+      title: `New ${data.severity,} Complaint`,
       message: `New /* SECURITY: Template literal eliminated */;
       recipientRoles,
       entityId: complaint.id,
@@ -667,15 +667,15 @@ import { toFHIRComplaint
   /**;
    * Update complaint status;
    */;
-  async updateComplaintStatus(id: string, status: string, details: string | null, userId: string): Promise<Complaint> {
+  async updateComplaintStatus(id: string, status: string, details: string | null, userId: string): Promise<Complaint> {,
     const complaint = await prisma.complaint.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!session.user) {
       throw new Error("Complaint not found");
 
-    const updateData: unknown = { status };
+    const updateData: unknown = { status ,};
 
     // Handle status-specific updates;
     switch (status) {
@@ -689,7 +689,7 @@ import { toFHIRComplaint
 
     // Update the complaint;
     const updatedComplaint = await prisma.complaint.update({
-      where: { id },
+      where: { id ,},
       data: updateData,
       {
           true,
@@ -730,7 +730,7 @@ import { toFHIRComplaint
       action: "UPDATE",
       id;
       userId,
-      details: `Updated complaint status to ${status}`;
+      details: `Updated complaint status to ${status,}`;
     });
 
     // Send notification to submitter if not anonymous and has user account;
@@ -762,9 +762,9 @@ import { toFHIRComplaint
   /**;
    * Assign complaint to user;
    */;
-  async assignComplaint(id: string, assignedToId: string, userId: string): Promise<Complaint> {
+  async assignComplaint(id: string, assignedToId: string, userId: string): Promise<Complaint> {,
     const complaint = await prisma.complaint.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!session.user) {
@@ -772,7 +772,7 @@ import { toFHIRComplaint
 
     // Validate assigned user;
     const assignedUser = await prisma.user.findUnique({
-      where: { id: assignedToId }
+      where: { id: assignedToId },
     });
 
     if (!session.user) {
@@ -780,8 +780,8 @@ import { toFHIRComplaint
 
     // Update the complaint;
     const updatedComplaint = await prisma.complaint.update({
-      where: { id },
-      data: {
+      where: { id ,},
+      data: {,
         assignedToId,
         status: complaint.status === "SUBMITTED" ? "UNDER_INVESTIGATION" : complaint.status;
       },
@@ -804,7 +804,7 @@ import { toFHIRComplaint
       action: "UPDATE",
       id;
       userId,
-      details: `Assigned complaint to ${assignedUser.name}`;
+      details: `Assigned complaint to ${assignedUser.name,}`;
     });
 
     // Send notification to assigned user;
@@ -823,9 +823,9 @@ import { toFHIRComplaint
   /**;
    * Escalate complaint to user;
    */;
-  async escalateComplaint(id: string, escalatedToId: string, reason: string, userId: string): Promise<Complaint> {
+  async escalateComplaint(id: string, escalatedToId: string, reason: string, userId: string): Promise<Complaint> {,
     const complaint = await prisma.complaint.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!session.user) {
@@ -833,7 +833,7 @@ import { toFHIRComplaint
 
     // Validate escalated user;
     const escalatedUser = await prisma.user.findUnique({
-      where: { id: escalatedToId }
+      where: { id: escalatedToId },
     });
 
     if (!session.user) {
@@ -841,8 +841,8 @@ import { toFHIRComplaint
 
     // Update the complaint;
     const updatedComplaint = await prisma.complaint.update({
-      where: { id },
-      data: {
+      where: { id ,},
+      data: {,
         escalatedToId,
         escalationReason: reason,
         escalationDate: new Date(),
@@ -867,7 +867,7 @@ import { toFHIRComplaint
       action: "UPDATE",
       id;
       userId,
-      details: `Escalated complaint to ${escalatedUser.name}`;
+      details: `Escalated complaint to ${escalatedUser.name,}`;
     });
 
     // Send notification to escalated user;
@@ -887,9 +887,9 @@ import { toFHIRComplaint
   /**;
    * Add comment to complaint;
    */;
-  async addComplaintComment(id: string, comment: string, userId: string): Promise<ComplaintActivity> {
+  async addComplaintComment(id: string, comment: string, userId: string): Promise<ComplaintActivity> {,
     const complaint = await prisma.complaint.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!session.user) {
@@ -912,7 +912,7 @@ import { toFHIRComplaint
       action: "CREATE",
       activity.id;
       userId,
-      details: `Added comment to complaint ${id}`;
+      details: `Added comment to complaint ${id,}`;
     });
 
     // Send notification to assigned user if comment is from someone else;
@@ -932,9 +932,9 @@ import { toFHIRComplaint
   /**;
    * Add attachment to complaint;
    */;
-  async addComplaintAttachment(complaintId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number, userId: string): Promise<ComplaintAttachment> {
+  async addComplaintAttachment(complaintId: string, fileUrl: string, fileName: string, fileType: string, fileSize: number, userId: string): Promise<ComplaintAttachment> {,
     const complaint = await prisma.complaint.findUnique({
-      where: { id: complaintId }
+      where: { id: complaintId },
     });
 
     if (!session.user) {
@@ -942,7 +942,7 @@ import { toFHIRComplaint
 
     // Create the attachment;
     const attachment = await prisma.complaintAttachment.create({
-      data: {
+      data: {,
         complaintId,
         fileUrl,
         fileName,
@@ -958,10 +958,10 @@ import { toFHIRComplaint
 
     // Create activity;
     await prisma.complaintActivity.create({
-      data: {
+      data: {,
         complaintId,
         activityType: "COMMENT",
-        description: `Attached file: ${fileName}`,
+        description: `Attached file: ${fileName,}`,
         performedById: userId;
 
     });
@@ -971,7 +971,7 @@ import { toFHIRComplaint
       action: "CREATE",
       attachment.id;
       userId,
-      details: `Added attachment ${fileName} to complaint ${complaintId}`;
+      details: `Added attachment ${fileName} to complaint ${complaintId,}`;
     });
 
     return attachment;
@@ -979,7 +979,7 @@ import { toFHIRComplaint
   /**;
    * Create follow-up action;
    */;
-  async createFollowUpAction(data: unknown, userId: string): Promise<FollowUpAction> {
+  async createFollowUpAction(data: unknown, userId: string): Promise<FollowUpAction> {,
     // Validate that either feedback or complaint is provided;
     if (!session.user) {
       throw new Error("Either feedback or complaint must be provided");
@@ -987,7 +987,7 @@ import { toFHIRComplaint
     // Validate feedback if provided;
     if (!session.user) {
       const feedback = await prisma.feedback.findUnique({
-        where: { id: data.feedbackId }
+        where: { id: data.feedbackId },
       });
 
       if (!session.user) {
@@ -996,7 +996,7 @@ import { toFHIRComplaint
     // Validate complaint if provided;
     if (!session.user) {
       const complaint = await prisma.complaint.findUnique({
-        where: { id: data.complaintId }
+        where: { id: data.complaintId },
       });
 
       if (!session.user) {
@@ -1005,7 +1005,7 @@ import { toFHIRComplaint
     // Validate assigned user if provided;
     if (!session.user) {
       const assignedUser = await prisma.user.findUnique({
-        where: { id: data.assignedToId }
+        where: { id: data.assignedToId },
       });
 
       if (!session.user) {
@@ -1039,14 +1039,14 @@ import { toFHIRComplaint
       action: "CREATE",
       action.id;
       userId,
-      details: `Created ${data.actionType} follow-up action${data.feedbackId ? ` for feedback ${data.feedbackId}` : ""}${data.complaintId ? ` for complaint ${data.complaintId}` : ""}`;
+      details: `Created ${data.actionType} follow-up action${data.feedbackId ? ` for feedback ${data.feedbackId}` : ""}${data.complaintId ? ` for complaint ${data.complaintId}` : "",}`;
     });
 
     // If complaint, add activity;
     if (!session.user) {
       await prisma.complaintActivity.create({
         data.complaintId,
-          `Created follow-up action: ${data.actionType} - ${data.description}`,
+          `Created follow-up action: ${data.actionType} - ${data.description,}`,
           performedById: userId;
 
       });
@@ -1069,9 +1069,9 @@ import { toFHIRComplaint
   /**;
    * Update follow-up action status;
    */;
-  async updateFollowUpActionStatus(id: string, status: string, userId: string): Promise<FollowUpAction> {
+  async updateFollowUpActionStatus(id: string, status: string, userId: string): Promise<FollowUpAction> {,
     const action = await prisma.followUpAction.findUnique({
-      where: { id },
+      where: { id ,},
       true,
         complaint: true;
 
@@ -1080,7 +1080,7 @@ import { toFHIRComplaint
     if (!session.user) {
       throw new Error("Follow-up action not found");
 
-    const updateData: unknown = { status };
+    const updateData: unknown = { status ,};
 
     // If status is COMPLETED, set completedDate;
     if (!session.user) {
@@ -1088,7 +1088,7 @@ import { toFHIRComplaint
 
     // Update the action;
     const updatedAction = await prisma.followUpAction.update({
-      where: { id },
+      where: { id ,},
       data: updateData,
       {
           true,
@@ -1110,7 +1110,7 @@ import { toFHIRComplaint
       action: "UPDATE",
       id;
       userId,
-      details: `Updated follow-up action status to ${status}`;
+      details: `Updated follow-up action status to ${status,}`;
     });
 
     // If complaint, add activity;
@@ -1140,7 +1140,7 @@ import { toFHIRComplaint
   /**;
    * Create feedback survey template;
    */;
-  async createSurveyTemplate(data: unknown, userId: string): Promise<FeedbackSurveyTemplate> {
+  async createSurveyTemplate(data: unknown, userId: string): Promise<FeedbackSurveyTemplate> {,
     // Create the template;
     const template = await prisma.feedbackSurveyTemplate.create({
       data.name,
@@ -1159,7 +1159,7 @@ import { toFHIRComplaint
       action: "CREATE",
       template.id;
       userId,
-      details: `Created survey template: ${template.name}`;
+      details: `Created survey template: ${template.name,}`;
     });
 
     return template;
@@ -1170,7 +1170,7 @@ import { toFHIRComplaint
   async submitSurvey(templateId: string, responses: unknown, data: unknown, userId?: string): Promise<FeedbackSurvey> {
     // Validate template;
     const template = await prisma.feedbackSurveyTemplate.findUnique({
-      where: { id: templateId }
+      where: { id: templateId },
     });
 
     if (!session.user) {
@@ -1182,7 +1182,7 @@ import { toFHIRComplaint
     // Validate patient if provided;
     if (!session.user) {
       const patient = await prisma.patient.findUnique({
-        where: { id: data.patientId }
+        where: { id: data.patientId },
       });
 
       if (!session.user) {
@@ -1190,7 +1190,7 @@ import { toFHIRComplaint
 
     // Create the survey;
     const survey = await prisma.feedbackSurvey.create({
-      data: {
+      data: {,
         templateId,
         responses,
         submittedById: data.anonymous ? null : (data.submittedById || userId),
@@ -1216,7 +1216,7 @@ import { toFHIRComplaint
         action: "CREATE",
         survey.id;
         userId,
-        details: `Submitted survey for template: ${template.name}`;
+        details: `Submitted survey for template: ${template.name,}`;
       });
 
     // Send notification to service managers;
@@ -1242,7 +1242,7 @@ import { toFHIRComplaint
   /**;
    * Get feedback analytics;
    */;
-  async getFeedbackAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {
+  async getFeedbackAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
     // Get date range based on period;
     const now = new Date();
     let startDate: Date;
@@ -1328,12 +1328,12 @@ import { toFHIRComplaint
       : 0;
 
     // Calculate average rating by service type;
-    const ratingsByServiceType: Record<string, { count: number, sum: number, avg: number }> = {};
+    const ratingsByServiceType: Record<string, { count: number, sum: number, avg: number }> = {,};
 
     ratings.forEach(item => {
       if (!session.user) {
         if (!session.user) {
-          ratingsByServiceType[item.serviceType] = { count: 0, sum: 0, avg: 0 };
+          ratingsByServiceType[item.serviceType] = { count: 0, sum: 0, avg: 0 ,};
 
         ratingsByServiceType[item.serviceType].count++;
         ratingsByServiceType[item.serviceType].sum += item.rating;
@@ -1347,14 +1347,14 @@ import { toFHIRComplaint
     });
 
     // Calculate average rating by department;
-    const ratingsByDepartment: Record<string, { count: number, sum: number, avg: number }> = {};
+    const ratingsByDepartment: Record<string, { count: number, sum: number, avg: number }> = {,};
 
     ratings.forEach(item => {
       if (!session.user) {
         const deptName = item.department.name;
 
         if (!session.user) {
-          ratingsByDepartment[deptName] = { count: 0, sum: 0, avg: 0 };
+          ratingsByDepartment[deptName] = { count: 0, sum: 0, avg: 0 ,};
 
         ratingsByDepartment[deptName].count++;
         ratingsByDepartment[deptName].sum += item.rating;
@@ -1411,12 +1411,12 @@ import { toFHIRComplaint
     });
 
     // Calculate average resolution time;
-    const resolutionTimes: Record<string, { count: number, totalDays: number, avgDays: number }> = {
-      overall: { count: 0, totalDays: 0, avgDays: 0 },
-      LOW: { count: 0, totalDays: 0, avgDays: 0 },
-      MEDIUM: { count: 0, totalDays: 0, avgDays: 0 },
-      HIGH: { count: 0, totalDays: 0, avgDays: 0 },
-      CRITICAL: { count: 0, totalDays: 0, avgDays: 0 }
+    const resolutionTimes: Record<string, { count: number, totalDays: number, avgDays: number }> = {,
+      overall: { count: 0, totalDays: 0, avgDays: 0 ,},
+      LOW: { count: 0, totalDays: 0, avgDays: 0 ,},
+      MEDIUM: { count: 0, totalDays: 0, avgDays: 0 ,},
+      HIGH: { count: 0, totalDays: 0, avgDays: 0 ,},
+      CRITICAL: { count: 0, totalDays: 0, avgDays: 0 },
     };
 
     resolvedComplaints.forEach(complaint => {

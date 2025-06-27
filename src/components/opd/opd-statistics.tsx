@@ -9,12 +9,10 @@ import { useState
 
 "use client";
 
-interface OPDStatisticsProperties {
-  date: Date;
+interface OPDStatisticsProperties {date:Date;
 }
 
-interface StatisticsData {
-  totalAppointments: number,
+interface StatisticsData {totalAppointments:number,
   number,
   number; // in minutes;
   string,
@@ -27,7 +25,7 @@ interface StatisticsData {
 type StatisticsApiResponse = StatisticsData;
 
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
 export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
   const [statistics, setStatistics] = useState<StatisticsData | null>();
   const [loading, setLoading] = useState(true);
@@ -213,8 +211,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
                     ? "bg-yellow-500";
                     : "bg-red-500";
               }`}
-              style={{
-                width: `${Math.min(100, (statistics.averageWaitTime / 60) * 100)}%`}}
+              style={{width:`${Math.min(100, (statistics.averageWaitTime / 60) * 100)}%`}}
             ></div>;
           </div>;
           >;

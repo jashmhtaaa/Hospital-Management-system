@@ -9,57 +9,57 @@ import { prisma } from "@/lib/prisma";
  * Authentication integration for HR & Asset Management module;
  * This connects the HR module with the central HMS authentication system;
  */
-export const _authOptions: NextAuthOptions = {
+export const _authOptions: NextAuthOptions = {,
   adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "jwt"
+  session: {,
+    strategy: "jwt",
   },
-  pages: {
-    signIn: "/login"
+  pages: {,
+    signIn: "/login",
   },
-  providers: [
+  providers: [,
     CredentialsProvider({
       name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+      credentials: {,
+        email: { label: "Email", type: "email" ,},
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        \1 {\n  \2{
+         {\n  {
           return null;
         }
 
         const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email
+          where: {,
+            email: credentials.email,
           },
-          include: {
+          include: {,
             employee: true,
-            roles: true
+            roles: true,
           }
         });
 
-        \1 {\n  \2{
+         {\n  {
           return null;
         }
 
         const passwordValid = await compare(credentials.password, user.password);
 
-        \1 {\n  \2{
+         {\n  {
           return null;
         }
 
         return {
           id: user.id,
-          \1,\2 user.name,
-          \1,\2 user.roles.map(role => role.name)
+           user.name,
+           user.roles.map(role => role.name)
         };
       }
     });
   ],
-  callbacks: {
+  callbacks: {,
     async session({ session, token }) 
-      \1 {\n  \2{
+       {\n  {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
@@ -68,7 +68,7 @@ export const _authOptions: NextAuthOptions = {
       }
       return session;,
     async jwt(token, user ) 
-      \1 {\n  \2{
+       {\n  {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;

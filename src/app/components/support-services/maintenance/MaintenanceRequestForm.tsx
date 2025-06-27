@@ -59,28 +59,26 @@ const formSchema = z.object({
   "Please select a request type";
   }),
   description: z.string();
-    .min(10, { message: "Description must be at least 10 characters" });
-    .max(500, { message: "Description must not exceed 500 characters" }),
+    .min(10, {message:"Description must be at least 10 characters" });
+    .max(500, {message:"Description must not exceed 500 characters" }),
   "Please select a priority level";
   }),
   scheduledDate: z.date().optional(),
   estimatedHours: z.number().optional(),
-  notes: z.string().max(1000, { message: "Notes must not exceed 1000 characters" }).optional()});
+  notes: z.string().max(1000, {message:"Notes must not exceed 1000 characters" }).optional()});
 
 type FormValues = z.infer>;
 
-interface Location {
-  id: string,
+interface Location {id:string,
   name: string;
 }
 
-interface Asset {
-  id: string,
+interface Asset {id:string,
   string;
 }
 
 interface MaintenanceRequestFormProps {
-  onSuccess?: () => void;
+    onSuccess?: () => void;
   initialData?: unknown;
   isEditing?: boolean;
 export const _MaintenanceRequestForm = ({ onSuccess,
@@ -96,8 +94,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
   const router = useRouter();
 
   // Initialize the form with react-hook-form;
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues>({resolver:zodResolver(formSchema),
     "",
       "";
     }});
@@ -143,8 +140,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
         setLocations(data);
       } catch (error) {
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
 
@@ -203,8 +199,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
 
       } catch (error) {
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
 
@@ -277,8 +272,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
       if (!session.user) {
         throw new Error("Failed to submit request");
 
-      toast({
-        title: isEditing ? "Request Updated" : "Request Created",
+      toast({title:isEditing ? "Request Updated" : "Request Created",
         description: isEditing;
           ? "The maintenance request has been updated successfully.";
           : "Your maintenance request has been submitted successfully."});
@@ -291,8 +285,7 @@ export const _MaintenanceRequestForm = ({ onSuccess,
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

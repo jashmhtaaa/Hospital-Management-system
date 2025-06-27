@@ -6,22 +6,22 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from '@prisma/cl
  * FHIR-compliant Maintenance Request;
  * Maps to FHIR ServiceRequest resource;
  */
-\1
+
 }
     }[];
   }[];
-  code: {
-    coding: {
+  code: {,
+    coding: {,
       system: string,
-      \1,\2 string
+       string
     }[];
-    text: string
+    text: string,
   };
-  subject: {
+  subject: {,
     reference: string;
     display?: string
   };
-  requester: {
+  requester: {,
     reference: string;
     display?: string
   };
@@ -29,14 +29,14 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from '@prisma/cl
     reference: string;
     display?: string;
   }[];
-  locationReference: {
+  locationReference: {,
     reference: string;
     display?: string;
   }[];
   occurrenceDateTime?: string;
   authoredOn: string;
   note?: {
-    text: string
+    text: string,
   }[];
 }
 
@@ -44,19 +44,19 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from '@prisma/cl
  * FHIR-compliant Maintenance Work Order;
  * Maps to FHIR Task resource;
  */
-\1
+
 }
   }[];
   status: 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error',
-  \1,\2 'routine' | 'urgent' | 'asap' | 'stat',
-  \1,\2 {
-    reference: string
+   'routine' | 'urgent' | 'asap' | 'stat',
+   {
+    reference: string,
   };
-  for: {
-    reference: string
+  for: {,
+    reference: string,
   };
   authoredOn: string,
-  \1,\2 {
+   {
     reference: string;
     display?: string
   };
@@ -65,7 +65,7 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from '@prisma/cl
     display?: string
   };
   note?: {
-    text: string
+    text: string,
   }[];
   executionPeriod?: {
     start?: string;
@@ -77,26 +77,26 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from '@prisma/cl
  * FHIR-compliant Asset;
  * Maps to FHIR Device resource;
  */
-\1
+
 }
   }[];
   status: 'active' | 'inactive' | 'entered-in-error' | 'unknown';
   manufacturer?: string;
   model?: string;
   serialNumber?: string;
-  type: {
-    coding: {
+  type: {,
+    coding: {,
       system: string,
-      \1,\2 string
+       string
     }[];
-    text: string
+    text: string,
   };
   location?: {
     reference: string;
     display?: string
   };
   note?: {
-    text: string
+    text: string,
   }[];
   manufactureDate?: string;
   expirationDate?: string;
@@ -105,7 +105,7 @@ import type { Asset, MaintenanceRequest, MaintenanceWorkOrder } from '@prisma/cl
 /**
  * Convert database MaintenanceRequest to FHIR ServiceRequest;
  */
-export const _toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
+export const _toFHIRMaintenanceRequest = (request: MaintenanceRequest & {,
   location: unknown;
   asset?: unknown;
   requestedByUser: unknown;
@@ -130,56 +130,56 @@ export const _toFHIRMaintenanceRequest = (request: MaintenanceRequest & {
   };
 
   // Map request type to FHIR coding
-  const requestTypeMap: Record<string, { code: string, display: string }> = {
-    'REPAIR': { code: 'repair', display: 'Repair' },
-    'PREVENTIVE': { code: 'preventive', display: 'Preventive Maintenance' },
-    'INSTALLATION': { code: 'installation', display: 'Installation' },
-    'INSPECTION': { code: 'inspection', display: 'Inspection' }
+  const requestTypeMap: Record<string, { code: string, display: string }> = {,
+    'REPAIR': { code: 'repair', display: 'Repair' ,},
+    'PREVENTIVE': { code: 'preventive', display: 'Preventive Maintenance' ,},
+    'INSTALLATION': { code: 'installation', display: 'Installation' ,},
+    'INSPECTION': { code: 'inspection', display: 'Inspection' },
   };
 
   return {
     resourceType: 'ServiceRequest',
-    \1,\2 statusMap[request.status] || 'unknown',
-    \1,\2 priorityMap[request.priority] || 'routine',
-    category: [
-      coding: [{
+     statusMap[request.status] || 'unknown',
+     priorityMap[request.priority] || 'routine',
+    category: [,
+      coding: [{,
         system: 'https://terminology.hl7.org/CodeSystem/service-category',
-        \1,\2 'Maintenance'
+         'Maintenance'
       }]],
     code: 
-      coding: [{
+      coding: [{,
         system: 'https://hms.local/fhir/CodeSystem/maintenance-request-type',
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
-        display: requestTypeMap[request.requestType]?.display || request.requestType
+        display: requestTypeMap[request.requestType]?.display || request.requestType,
       }],
       text: request.description,
-    subject: request.assetId ? 
-      reference: `Device/${request.assetId}`,
-      display: request.asset?.name || 'Unknown Asset': 
-      reference: `Location/${request.locationId}`,
+    subject: request.assetId ? ,
+      reference: `Device/${request.assetId,}`,
+      display: request.asset?.name || 'Unknown Asset': ,
+      reference: `Location/${request.locationId,}`,
       display: request.location?.name || 'Unknown Location',
     requester: 
-      reference: `User/${request.requestedById}`,
+      reference: `User/${request.requestedById,}`,
       display: request.requestedByUser?.name || 'Unknown User',
-    performer: request.workOrders?.filter(wo => wo.assignedToId)?.map(wo => (
-      reference: `User/${wo.assignedToId}`,
+    performer: request.workOrders?.filter(wo => wo.assignedToId)?.map(wo => (,
+      reference: `User/${wo.assignedToId,}`,
       display: wo.assignedToUser?.name || 'Unknown User')) || [],
-    locationReference: [
-      reference: `Location/${request.locationId}`,
+    locationReference: [,
+      reference: `Location/${request.locationId,}`,
       display: request.location?.name || 'Unknown Location'],
     occurrenceDateTime: request.scheduledDate?.toISOString(),
     authoredOn: request.createdAt.toISOString(),
-    note: request.notes ? [text: request.notes ] : []
+    note: request.notes ? [text: request.notes ] : [],
   }
 }
 
 /**
  * Convert database MaintenanceWorkOrder to FHIR Task;
  */
-export const _toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
+export const _toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {,
   request: MaintenanceRequest;
   assignedToUser?: unknown;
-  createdByUser: unknown
+  createdByUser: unknown,
 }): FHIRMaintenanceWorkOrder {
   // Map status from internal to FHIR status
   const statusMap: Record<string, 'draft' | 'requested' | 'received' | 'accepted' | 'rejected' | 'ready' | 'cancelled' | 'in-progress' | 'on-hold' | 'failed' | 'completed' | 'entered-in-error'> = {
@@ -200,36 +200,36 @@ export const _toFHIRMaintenanceWorkOrder = (workOrder: MaintenanceWorkOrder & {
 
   return {
     resourceType: 'Task',
-    \1,\2 [{
-      reference: `ServiceRequest/${workOrder.requestId}`;
+     [{
+      reference: `ServiceRequest/${workOrder.requestId,}`;
     }],
     status: statusMap[workOrder.status] || 'requested',
-    \1,\2 priorityMap[workOrder.request?.priority] || 'routine',
-    \1,\2 `ServiceRequest/${workOrder.requestId}`;,
+     priorityMap[workOrder.request?.priority] || 'routine',
+     `ServiceRequest/${workOrder.requestId}`;,
     for: 
-      reference: workOrder.request?.assetId
+      reference: workOrder.request?.assetId,
         ? `Device/${workOrder.request.assetId}`
         : `Location/${workOrder.request?.locationId}`,
     authoredOn: workOrder.createdAt.toISOString(),
     lastModified: workOrder.updatedAt.toISOString(),
     requester: 
-      reference: `User/${workOrder.createdById}`,
+      reference: `User/${workOrder.createdById,}`,
       display: workOrder.createdByUser?.name || 'Unknown User',
-    owner: workOrder.assignedToId ? 
-      reference: `User/${workOrder.assignedToId}`,
+    owner: workOrder.assignedToId ? ,
+      reference: `User/${workOrder.assignedToId,}`,
       display: workOrder.assignedToUser?.name || 'Unknown User': undefined,
     note: workOrder.notes ? [text: workOrder.notes ] : [],
-    executionPeriod: 
+    executionPeriod: ,
       start: workOrder.startTime?.toISOString(),
-      end: workOrder.endTime?.toISOString()
+      end: workOrder.endTime?.toISOString(),
   };
 }
 
 /**
  * Convert database Asset to FHIR Device;
  */
-export const _toFHIRAsset = (asset: Asset & {
-  location: unknown
+export const _toFHIRAsset = (asset: Asset & {,
+  location: unknown,
 }): FHIRAsset {
   // Map status from internal to FHIR status
   const statusMap: Record<string, 'active' | 'inactive' | 'entered-in-error' | 'unknown'> = {
@@ -240,37 +240,37 @@ export const _toFHIRAsset = (asset: Asset & {
   };
 
   // Map asset type to FHIR coding
-  const assetTypeMap: Record<string, { code: string, display: string }> = {
-    'EQUIPMENT': { code: 'equipment', display: 'Medical Equipment' },
-    'FACILITY': { code: 'facility', display: 'Facility Asset' },
-    'VEHICLE': { code: 'vehicle', display: 'Vehicle' },
-    'IT': { code: 'it', display: 'IT Equipment' }
+  const assetTypeMap: Record<string, { code: string, display: string }> = {,
+    'EQUIPMENT': { code: 'equipment', display: 'Medical Equipment' ,},
+    'FACILITY': { code: 'facility', display: 'Facility Asset' ,},
+    'VEHICLE': { code: 'vehicle', display: 'Vehicle' ,},
+    'IT': { code: 'it', display: 'IT Equipment' },
   };
 
   return {
     resourceType: 'Device',
-    \1,\2 [
+     [
       {
         system: 'https://hms.local/identifier/asset',
-        value: asset.id
+        value: asset.id,
       },
       ...(asset.serialNumber ? [{
         system: 'https://hms.local/identifier/serial-number',
-        value: asset.serialNumber
+        value: asset.serialNumber,
       }] : [])
     ],
     status: statusMap[asset.status] || 'unknown',
-    \1,\2 asset.model,
-    \1,\2 [{
+     asset.model,
+     [{
         system: 'https://hms.local/fhir/CodeSystem/asset-type',
         code: assetTypeMap[asset.assetType]?.code || asset.assetType.toLowerCase(),
-        display: assetTypeMap[asset.assetType]?.display || asset.assetType
+        display: assetTypeMap[asset.assetType]?.display || asset.assetType,
       }],
       text: asset.name,
     location: 
-      reference: `Location/${asset.locationId}`,
+      reference: `Location/${asset.locationId,}`,
       display: asset.location?.name || 'Unknown Location',
     note: [],
     manufactureDate: asset.purchaseDate?.toISOString(),
-    expirationDate: asset.warrantyExpiry?.toISOString()
+    expirationDate: asset.warrantyExpiry?.toISOString(),
   }

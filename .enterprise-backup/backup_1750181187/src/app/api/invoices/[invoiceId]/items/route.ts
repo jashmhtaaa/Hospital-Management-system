@@ -2,7 +2,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 
-import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData
+import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Import IronSessionData,
 // app/api/invoices/[invoiceId]/items/route.ts
 // import { InvoiceItem } from "@/types/billing"
 import { z } from "zod";
@@ -11,7 +11,7 @@ import { z } from "zod";
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"]
 
 // Helper function to get invoice ID from URL
-const getInvoiceId = (pathname: string): number | null {
+const getInvoiceId = (pathname: string): number | null {,
     // Pathname might be /api/invoices/123/items
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part
@@ -30,24 +30,24 @@ const AddInvoiceItemSchema = z.object({
     description: z.string().optional(), // Optional override
 });
 
-export const _POST = async (request: Request) => {
-    const cookieStore = await cookies(); // FIX: Add await
+export const _POST = async (request: Request) => {,
+    const cookieStore = await cookies(); // FIX: Add await,
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const invoiceId = getInvoiceId(url.pathname);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 
-    \1 {\n  \2{
-        return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
+     {\n  {
+        return new Response(JSON.stringify({ error: "Invalid Invoice ID" ,}), {
             status: 400,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 
@@ -55,16 +55,16 @@ export const _POST = async (request: Request) => {
         const body = await request.json();
         const validation = AddInvoiceItemSchema.safeParse(body);
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json" ,},
             });
         }
 
         const itemData = validation.data;
 
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type,
         const { env } = context;
         const { DB } = env;
 
@@ -74,41 +74,41 @@ export const _POST = async (request: Request) => {
             DB.prepare("SELECT status FROM Invoices WHERE invoice_id = ?").bind(invoiceId),
             // 3. Check if billable item exists and is active
             DB.prepare("SELECT item_id, unit_price, is_taxable FROM BillableItems WHERE item_id = ? AND is_active = TRUE").bind(itemData.billable_item_id),
-            // 4. Optional: Check if batch exists and has sufficient quantity if batch_id is provided
+            // 4. Optional: Check if batch exists and has sufficient quantity if batch_id is provided,
             itemData.batch_id ? DB.prepare("SELECT current_quantity FROM StockBatches WHERE batch_id = ? AND inventory_item_id = (SELECT inventory_item_id FROM InventoryItems WHERE billable_item_id = ?)").bind(itemData.batch_id, itemData.billable_item_id) : null;
         ].filter(Boolean) as D1PreparedStatement[]); // Filter out null for optional batch check
 
         const [invoiceCheck, itemCheck, batchCheck] = results;
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invoice not found" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invoice not found" ,}), { status: 404 ,});
         }
-        const invoiceStatus = (invoiceCheck.results[0] as { status: string }).status;
-        \1 {\n  \2{ // Only allow adding items to Draft invoices
-            return new Response(JSON.stringify({ error: `Cannot add items to invoice with status: ${invoiceStatus}` }), { status: 400 });
+        const invoiceStatus = (invoiceCheck.results[0] as { status: string ,}).status;
+         {\n  { // Only allow adding items to Draft invoices
+            return new Response(JSON.stringify({ error: `Cannot add items to invoice with status: ${invoiceStatus}` ,}), { status: 400 ,});
         }
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Billable item not found or inactive" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Billable item not found or inactive" ,}), { status: 404 ,});
         }
-        const billableItem = itemCheck.results[0] as { item_id: number, \1,\2 boolean };
+        const billableItem = itemCheck.results[0] as { item_id: number,  boolean };
 
         // Use provided unit_price or fetch from billable item
         const unitPrice = itemData.unit_price !== undefined ? itemData.unit_price : billableItem.unit_price;
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         const calculatedTaxAmount = itemData.tax_amount; // Placeholder
 
         const totalAmount = (itemData.quantity * unitPrice) - itemData.discount_amount + calculatedTaxAmount;
 
         // Check batch quantity if applicable
-        \1 {\n  \2{
-            \1 {\n  \2{
-                return new Response(JSON.stringify({ error: "Stock batch not found or does not belong to the specified billable item" }), { status: 404 });
+         {\n  {
+             {\n  {
+                return new Response(JSON.stringify({ error: "Stock batch not found or does not belong to the specified billable item" ,}), { status: 404 ,});
             }
-            const batchQuantity = (batchCheck.results[0] as { current_quantity: number }).current_quantity;
-            \1 {\n  \2{
-                return new Response(JSON.stringify({ error: `Insufficient stock in batch ${itemData.batch_id}. Available: ${batchQuantity}` }), { status: 400 });
+            const batchQuantity = (batchCheck.results[0] as { current_quantity: number ,}).current_quantity;
+             {\n  {
+                return new Response(JSON.stringify({ error: `Insufficient stock in batch ${itemData.batch_id}. Available: ${batchQuantity}` ,}), { status: 400 ,});
             }
         }
 
@@ -131,14 +131,14 @@ export const _POST = async (request: Request) => {
         ));
 
         // 5b. Update stock batch quantity if batch_id is provided
-        \1 {\n  \2{
+         {\n  {
             batchActions.push(DB.prepare(
                 "UPDATE StockBatches SET current_quantity = current_quantity - ? WHERE batch_id = ?";
             ).bind(itemData.quantity, itemData.batch_id));
         }
 
         // 5c. Update the invoice totals (total_amount, tax_amount, discount_amount)
-        // Note: This recalculates the entire invoice total. More complex logic might sum incrementally.
+        // Note: This recalculates the entire invoice total. More complex logic might sum incrementally.,
         batchActions.push(DB.prepare(
             `UPDATE Invoices
              SET;
@@ -149,7 +149,7 @@ export const _POST = async (request: Request) => {
         ).bind(invoiceId, invoiceId, invoiceId, invoiceId));
 
         // Execute the batch transaction
-        // const _transactionResults = await DB.batch(batchActions); // Commented out: Unused variable
+        // const _transactionResults = await DB.batch(batchActions); // Commented out: Unused variable,
 
         // Check if all operations in the transaction succeeded
         // Note: D1 batch doesn't automatically roll back on failure, need careful checking or separate calls.
@@ -159,23 +159,23 @@ export const _POST = async (request: Request) => {
         // We might need to query it separately if needed, or just return success.
 
         // 6. Return success response
-        return new Response(JSON.stringify({ message: "Item added to invoice successfully" }), {
+        return new Response(JSON.stringify({ message: "Item added to invoice successfully" ,}), {
             status: 201, // Created
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         })
     }
 }
 
-// Note: DELETE for removing an item would follow a similar pattern:
+// Note: DELETE for removing an item would follow a similar pattern:,
 // - Check invoice status (Draft)
 // - Find the InvoiceItem
 // - If batch_id exists, *increase* StockBatches.current_quantity

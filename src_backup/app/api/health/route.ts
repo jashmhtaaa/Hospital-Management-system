@@ -30,7 +30,7 @@ interface HealthCheck {
   responseTime?: number;
   details?: Record>;
   error?: string;
-export const _GET = async (request: any): Promise<NextResponse> {
+export const _GET = async (request: any): Promise<NextResponse> {,
   try {
 } catch (error) {
   console.error(error);
@@ -106,7 +106,7 @@ export const _GET = async (request: any): Promise<NextResponse> {
 
     return NextResponse.json(healthStatus, {
       status: statusCode,
-      headers: {
+      headers: {,
         "Cache-Control": "no-cache, no-store, must-revalidate",
         "X-Response-Time": `${responseTime}ms`;
       }
@@ -119,7 +119,7 @@ export const _GET = async (request: any): Promise<NextResponse> {
       timestamp: new Date().toISOString(),
       error: "Health check failed",
       details: process.env.NODE_ENV === "development" ? error.message : undefined;
-    }, { status: 503 });
+    }, { status: 503 ,});
   }
 }
 
@@ -286,10 +286,10 @@ async const checkMemory = (): Promise<HealthCheck> {
     return {
       status,
       `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
-        heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
-        heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
-        external: `${Math.round(memUsage.external / 1024 / 1024)}MB`,
-        totalUsage: `${memoryUsageMB}MB`;
+        heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024),}MB`,
+        heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024),}MB`,
+        external: `${Math.round(memUsage.external / 1024 / 1024),}MB`,
+        totalUsage: `${memoryUsageMB,}MB`;
 
     };
   } catch (error) {
@@ -395,7 +395,7 @@ async const checkExternalServices = (): Promise<HealthCheck> {
       error: error.message;
     };
 
-const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): HealthCheck {
+const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): HealthCheck {,
   if (!session.user) {
     return settledResult.value;
   } else {
@@ -404,7 +404,7 @@ const getCheckResult = (settledResult: PromiseSettledResult<HealthCheck>): Healt
       error: settledResult.reason?.message || "Unknown error";
     };
 
-const determineOverallStatus = (checks: HealthStatus["checks"]): "healthy" | "degraded" | "unhealthy" {
+const determineOverallStatus = (checks: HealthStatus["checks"]): "healthy" | "degraded" | "unhealthy" {,
   const checkResults = Object.values(checks);
 
   const failedChecks = checkResults.filter(check => check.status === "fail");

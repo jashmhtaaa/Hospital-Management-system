@@ -50,14 +50,12 @@ export default const _AmbulanceTripRequestForm = () {
   const [patients, setPatients] = useState<any[]>([]);
   const [selectedDate, setSelectedDate] = useState(;
   const [selectedTime, setSelectedTime] = useState("");
-  const [formData, setFormData] = useState({
-    tripType: "NON_EMERGENCY",
+  const [formData, setFormData] = useState({tripType:"NON_EMERGENCY",
     "",
     "",
     "",
     medicalDetails: null});
-  const [medicalDetails, setMedicalDetails] = useState({
-    chiefComplaint: "",
+  const [medicalDetails, setMedicalDetails] = useState({chiefComplaint:"",
     "",
       "",
       "";
@@ -112,15 +110,13 @@ export default const _AmbulanceTripRequestForm = () {
       if (!session.user) {
         setAmbulances(data.data);
       } else {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       }
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -167,15 +163,13 @@ export default const _AmbulanceTripRequestForm = () {
       if (!session.user) {
         setLocations(data.data);
       } else {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       }
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     }
@@ -220,15 +214,13 @@ export default const _AmbulanceTripRequestForm = () {
       if (!session.user) {
         setPatients(data.data);
       } else {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -266,29 +258,25 @@ export default const _AmbulanceTripRequestForm = () {
     e.preventDefault();
 
     if (!session.user) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
       return;
 
     if (!session.user) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
       return;
 
     if (!session.user) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
       return;
 
     if (!session.user) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
       return;
@@ -338,8 +326,7 @@ export default const _AmbulanceTripRequestForm = () {
         medicalDetails: formData.tripType === "EMERGENCY" || formData.tripType === "NON_EMERGENCY" ? medicalDetails : {}
       };
 
-      const response = await fetch("/api/support-services/ambulance/trips", {
-        method: "POST",
+      const response = await fetch("/api/support-services/ambulance/trips", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(payload);
@@ -348,21 +335,18 @@ export default const _AmbulanceTripRequestForm = () {
       const data = await response.json();
 
       if (!session.user) {
-        toast({
-          title: "Success",
+        toast({title:"Success",
           description: "Ambulance trip scheduled successfully";
         });
         router.push("/support-services/ambulance");
       } else {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -372,8 +356,7 @@ export default const _AmbulanceTripRequestForm = () {
 
   const handleFindAvailableAmbulances = async () => {
     if (!session.user) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         description: "Please select date, time, trip type, and pickup location",
         variant: "destructive";
       });
@@ -425,24 +408,20 @@ export default const _AmbulanceTripRequestForm = () {
         setAmbulances(data.data);
 
         if (!session.user) {
-          toast({
-            title: "No Ambulances Available",
+          toast({title:"No Ambulances Available",
             "destructive";
           });
         } else {
-          toast({
-            title: "Success",
+          toast({title:"Success",
             description: `Found ${data.data.length} available ambulance(s)`});
 
       } else ;
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive");
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

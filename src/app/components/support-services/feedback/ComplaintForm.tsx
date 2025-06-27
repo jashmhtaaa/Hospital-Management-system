@@ -56,12 +56,9 @@ import { useSession }
 import { zodResolver }
 
 // Form schema;
-const complaintFormSchema = z.object({
-  title: z.string().min(5, {
-    message: "Title must be at least 5 characters";
+const complaintFormSchema = z.object({title:z.string().min(5, {message:"Title must be at least 5 characters";
   }),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters";
+  description: z.string().min(10, {message:"Description must be at least 10 characters";
   }),
   "Please select a complaint category";
   }),
@@ -77,11 +74,11 @@ const complaintFormSchema = z.object({
 type ComplaintFormValues = z.infer>;
 
 interface ComplaintFormProps {
-  departments?: { id: string, name: string }[];
+    departments?: {id:string, name: string }[];
   onSuccess?: (data: unknown) => void;
   defaultValues?: Partial>;
 export default const _ComplaintForm = ({ departments = [], onSuccess, defaultValues }: ComplaintFormProps) {
-  const { data: session } = useSession();
+  const {data:session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -89,13 +86,11 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
   const [formValues, setFormValues] = useState<ComplaintFormValues | null>(null);
 
   // Initialize form;
-  const form = useForm<ComplaintFormValues>({
-    resolver: zodResolver(complaintFormSchema),
+  const form = useForm<ComplaintFormValues>({resolver:zodResolver(complaintFormSchema),
     defaultValues?.title || "",
       defaultValues?.category || "",
       defaultValues?.departmentId || "",
-      defaultValues?.contactInfo || {
-        name: "",
+      defaultValues?.contactInfo || {name:"",
         "";
       }}});
 
@@ -153,8 +148,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 } catch (error) {
 
       // Submit complaint;
-      const response = await fetch("/api/support-services/feedback/complaint", {
-        method: "POST",
+      const response = await fetch("/api/support-services/feedback/complaint", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(values);
@@ -170,8 +164,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       if (!session.user) {
         await uploadFiles(data.id);
 
-      toast({
-        title: "Complaint Submitted",
+      toast({title:"Complaint Submitted",
         description: "Your complaint has been submitted successfully.";
       });
 
@@ -184,8 +177,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
         onSuccess(data);
 
     } catch (error: unknown) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -231,8 +223,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
 } catch (error) {
 
-        await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {
-          method: "POST",
+        await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {method:"POST",
           body: formData;
         });
       } catch (error) {

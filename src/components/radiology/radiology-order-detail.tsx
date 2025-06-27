@@ -34,8 +34,7 @@ import { Loader2
 // import RadiologyReportsList from "./RadiologyReportsList.ts";
 
 // Define interface for Radiology Order data;
-interface RadiologyOrder {
-  id: string,
+interface RadiologyOrder {id:string,
   string,
   string; // Assuming ISO string format;
   status: "pending" | "scheduled" | "in_progress" | "completed" | "cancelled",
@@ -45,7 +44,7 @@ interface RadiologyOrder {
 
 // FIX: Remove unused CreateStudyData interface;
 // interface CreateStudyData {
-//   orderId: string;
+    //   orderId: string;
 //   modality_id: string;
 //   scheduled_datetime: string;
 //   notes?: string;
@@ -166,8 +165,7 @@ interface RadiologyOrder {
 
 } catch (error) {
 
-      const response = await fetch("/api/radiology/studies", {
-        method: "POST",
+      const response = await fetch("/api/radiology/studies", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         // Ensure studyData includes the orderId;
@@ -230,8 +228,7 @@ interface RadiologyOrder {
 
 } catch (error) {
 
-      const response = await fetch(`/api/radiology/orders/${orderId}`, {
-        method: "DELETE";
+      const response = await fetch(`/api/radiology/orders/${orderId}`, {method:"DELETE";
       });
       if (!session.user) {
         // FIX: Type the error data using type assertion;
@@ -254,8 +251,7 @@ interface RadiologyOrder {
   const getStatusBadge = (;
     status: RadiologyOrder["status"];
   ): React.ReactNode => {
-    const statusStyles: { [key in RadiologyOrder["status"]]: string } = {
-      pending: "bg-yellow-100 text-yellow-800",
+    const statusStyles: { [key in RadiologyOrder["status"]]: string } = {pending:"bg-yellow-100 text-yellow-800",
       "bg-purple-100 text-purple-800",
       "bg-red-100 text-red-800";
     };
@@ -389,7 +385,7 @@ interface RadiologyOrder {
           >;
             Studies associated with this order will appear here.;
           </p>;
-          {/* Example: <RadiologyStudiesList filter={{ orderId: order.id }} /> */}
+          {/* Example: <RadiologyStudiesList filter={{orderId:order.id }} /> */}
         </CardContent>;
       </Card>;
 
@@ -403,7 +399,7 @@ interface RadiologyOrder {
           >;
             Reports associated with this order will appear here.;
           </p>;
-          {/* Example: <RadiologyReportsList filter={{ orderId: order.id }} /> */}
+          {/* Example: <RadiologyReportsList filter={{orderId:order.id }} /> */}
         </CardContent>;
       </Card>;
 

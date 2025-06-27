@@ -9,8 +9,8 @@ import { cn }
 
 "use client";
 
-// Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const;
+// Format: {THEME_NAME:CSS_SELECTOR }
+const THEMES = {light:"", dark: ".dark" } as const;
 
 export type ChartConfig = {
   [k in string]: {
@@ -22,8 +22,7 @@ export type ChartConfig = {
   );
 }
 
-type ChartContextProps = {
-  config: ChartConfig;
+type ChartContextProps = {config:ChartConfig;
 }
 
 const ChartContext = React.createContext<ChartContextProps | null>(null);
@@ -40,8 +39,7 @@ const useChart = () {
 
 const ChartContainer = React.forwardRef<;
   HTMLDivElement,
-  React.ComponentProps<"div"> & {
-    config: ChartConfig,
+  React.ComponentProps<"div"> & {config:ChartConfig,
     children: React.ComponentProps<;
       typeof RechartsPrimitive.ResponsiveContainer;
     >["children"];
@@ -71,7 +69,7 @@ const ChartContainer = React.forwardRef<;
 });
 ChartContainer.displayName = "Chart";
 
-const ChartStyle = ({ id, config }: { id: string, config: ChartConfig }) => {
+const ChartStyle = ({ id, config }: {id:string, config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter();
     ([ config]) => config.theme || config.color;
   );
@@ -141,7 +139,7 @@ const ChartTooltipContent = React.forwardRef<;
       }
 
       const [item] = payload;
-      const key = `${labelKey || item.dataKey || item.name || "value"}`;
+      const key = `${ labelKey || item.dataKey || item.name || "value" }`;
       const itemConfig = getPayloadConfigFromPayload(config, item, key);
       const value =;
         !labelKey && typeof label === "string";
@@ -187,7 +185,7 @@ const ChartTooltipContent = React.forwardRef<;
         {!nestLabel ? _tooltipLabel : null}
         >;
           {payload.map((item, index) => {
-            const key = `${nameKey || item.name || item.dataKey || "value"}`;
+            const key = `${ nameKey || item.name || item.dataKey || "value" }`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
             const indicatorColor = color || item.payload.fill || item.color;
 
@@ -285,7 +283,7 @@ const ChartLegendContent = React.forwardRef<;
         )}
       >;
         {payload.map((item) => {
-          const key = `${nameKey || item.dataKey || "value"}`;
+          const key = `${ nameKey || item.dataKey || "value" }`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
           return();

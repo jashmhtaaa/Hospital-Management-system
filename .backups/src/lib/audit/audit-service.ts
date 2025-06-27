@@ -71,7 +71,7 @@ import {  prisma  } from "@/lib/database"
     userId?: string,
     limit: number = 100;
   ) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
     if (!session.user)here.resource = resourceType;
     if (!session.user)here.resourceId = resourceId;
@@ -84,16 +84,16 @@ import {  prisma  } from "@/lib/database"
             true;
 
       },
-      orderBy: { timestamp: "desc" },
+      orderBy: { timestamp: "desc" ,},
       take: limit;
     });
 
 // Audit decorator for automatic logging;
-export function withAudit(resource: string): unknown {
-  return function (target: unknown, propertyName: string, descriptor: PropertyDescriptor) {
+export function withAudit(resource: string): unknown {,
+  return function (target: unknown, propertyName: string, descriptor: PropertyDescriptor) {,
     const method = descriptor.value;
 
-    descriptor.value = async function (...args: unknown[]) {
+    descriptor.value = async function (...args: unknown[]) {,
       const context = this.getAuditContext?.() || {};
 
       try {

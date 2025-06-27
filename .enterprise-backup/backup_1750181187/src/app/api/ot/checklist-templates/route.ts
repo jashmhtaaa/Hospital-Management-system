@@ -15,11 +15,11 @@ interface ChecklistItem {
 // Interface for the POST request body
 interface ChecklistTemplateCreateBody {
   name: string,
-  \1,\2 ChecklistItem[]
+   ChecklistItem[]
 }
 
 // GET /api/ot/checklist-templates - List all checklist templates
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
     const phase = searchParams.get("phase");
@@ -28,7 +28,7 @@ export const _GET = async (request: NextRequest) => {
     let query = "SELECT id, name, phase, updated_at FROM OTChecklistTemplates";
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE phase = ?";
       parameters.push(phase);
     }
@@ -40,41 +40,41 @@ export const _GET = async (request: NextRequest) => {
       .all();
 
     return NextResponse.json(results || []);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { message: "Error fetching checklist templates", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching checklist templates", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/ot/checklist-templates - Create a new checklist template
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const body = (await request.json()) as ChecklistTemplateCreateBody;
     const { name, phase, items } = body;
 
-    \1 {\n  \2|
+     {\n  |
       items.length === 0;
     ) 
       return NextResponse.json(
         { message: "Name, phase, and a non-empty array of items are required" },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Validate phase
     const validPhases = ["pre-op", "intra-op", "post-op"]; // Add specific intra-op phases if needed
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
         { message: "Invalid phase. Must be one of: " + validPhases.join(", ") },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Validate items structure (basic check)
-    \1 {\n  \2>
+     {\n  >
           typeof item === "object" &&
           item !== undefined &&
           item?.id &&
@@ -86,7 +86,7 @@ export const _POST = async (request: NextRequest) => {
         {
           message: "Each item must be an object with id, text, and type properties",
         },
-        { status: 400 }
+        { status: 400 },
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -106,40 +106,40 @@ export const _POST = async (request: NextRequest) => {
       .bind(id);
       .all();
 
-    \1 {\n  \2{
+     {\n  {
       const newTemplate = results[0];
       // Parse items JSON before sending response
       try {
-        \1 {\n  \2{
+         {\n  {
           newTemplate.items = JSON.parse(newTemplate.items);
         }
       } catch (parseError) {
 
         // Return raw string if parsing fails
       }
-      return NextResponse.json(newTemplate, { status: 201 });
+      return NextResponse.json(newTemplate, { status: 201 ,});
     } else {
       // Fallback response if fetching fails
       return NextResponse.json(
-        { id, name, phase, items, created_at: now, updated_at: now },
-        { status: 201 }
+        { id, name, phase, items, created_at: now, updated_at: now ,},
+        { status: 201 },
       );
     }
-  } catch (error: unknown) {
-    // FIX: Remove explicit any
+  } catch (error: unknown) {,
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
         {
           message: "Checklist template name must be unique",
-          details: errorMessage
+          details: errorMessage,
         },
-        { status: 409 }
+        { status: 409 },
       );
     }
     return NextResponse.json(
-      { message: "Error creating checklist template", details: errorMessage },
-      { status: 500 }
+      { message: "Error creating checklist template", details: errorMessage ,},
+      { status: 500 },
     );
   }

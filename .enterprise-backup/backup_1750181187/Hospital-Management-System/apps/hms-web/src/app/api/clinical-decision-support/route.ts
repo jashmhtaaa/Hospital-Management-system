@@ -19,23 +19,23 @@ class ClinicalDecisionSupport {
     'aspirin': ['ibuprofen', 'naproxen', 'diclofenac']
   };
 
-  static async analyzePrescription(patientId: string, medications: unknown[]) {
+  static async analyzePrescription(patientId: string, medications: unknown[]) {,
     // Get patient data including allergies, current medications, lab results
     const patient = await prisma.patient.findUnique({
-      where: { id: patientId },
-      include: {
+      where: { id: patientId ,},
+      include: {,
         allergies: true,
-        prescriptions: {
-          where: { status: 'ACTIVE' },
-          include: { items: true }
+        prescriptions: {,
+          where: { status: 'ACTIVE' ,},
+          include: { items: true },
         },
-        labResults: {
-          orderBy: { resultDate: 'desc' },
-          take: 10
+        labResults: {,
+          orderBy: { resultDate: 'desc' ,},
+          take: 10,
         },
-        vitals: {
-          orderBy: { recordedAt: 'desc' },
-          take: 5
+        vitals: {,
+          orderBy: { recordedAt: 'desc' ,},
+          take: 5,
         }
       }
     });
@@ -57,8 +57,8 @@ class ClinicalDecisionSupport {
           alerts.push({
             type: 'DRUG_INTERACTION',
             severity: 'HIGH';
-            message: `Potential interaction between ${med1} and ${med2}`,
-            recommendation: 'Monitor patient closely or consider alternative medication'
+            message: `Potential interaction between ${med1} and ${med2,}`,
+            recommendation: 'Monitor patient closely or consider alternative medication',
           });
         }
       }
@@ -71,8 +71,8 @@ class ClinicalDecisionSupport {
           alerts.push({
             type: 'ALLERGY_ALERT',
             severity: 'CRITICAL';
-            message: `Patient is allergic to ${allergy.allergen}. ${medication.name} may cause allergic reaction`,
-            recommendation: 'Do not prescribe. Find alternative medication'
+            message: `Patient is allergic to ${allergy.allergen}. ${medication.name,} may cause allergic reaction`,
+            recommendation: 'Do not prescribe. Find alternative medication',
           });
         }
       }
@@ -94,11 +94,11 @@ class ClinicalDecisionSupport {
       alerts,
       recommendations,
       riskScore: this.calculateRiskScore(alerts),
-      confidence: 0.85 // ML model confidence
+      confidence: 0.85 // ML model confidence,
     };
   }
 
-  static async analyzeDosage(patient: unknown, medications: unknown[]) {
+  static async analyzeDosage(patient: unknown, medications: unknown[]) {,
     const recommendations = [];
 
     // Age-based dosage adjustments
@@ -109,8 +109,8 @@ class ClinicalDecisionSupport {
         if (['digoxin', 'warfarin', 'metformin'].includes(med.name.toLowerCase())) {
           recommendations.push({
             type: 'DOSAGE_ADJUSTMENT',
-            message: `Consider reduced dosage of ${med.name} for elderly patient`,
-            suggestion: 'Start with 50% of standard adult dose'
+            message: `Consider reduced dosage of ${med.name,} for elderly patient`,
+            suggestion: 'Start with 50% of standard adult dose',
           });
         }
       }
@@ -123,8 +123,8 @@ class ClinicalDecisionSupport {
         if (['metformin', 'digoxin', 'lisinopril'].includes(med.name.toLowerCase())) {
           recommendations.push({
             type: 'RENAL_ADJUSTMENT',
-            message: `Adjust ${med.name} dosage for impaired kidney function (Cr: ${latestCreatinine.value})`,
-            suggestion: 'Consider dose reduction or alternative medication'
+            message: `Adjust ${med.name} dosage for impaired kidney function (Cr: ${latestCreatinine.value,})`,
+            suggestion: 'Consider dose reduction or alternative medication',
           });
         }
       }
@@ -133,7 +133,7 @@ class ClinicalDecisionSupport {
     return recommendations;
   }
 
-  static async analyzeLabResults(labResults: unknown[], medications: unknown[]) {
+  static async analyzeLabResults(labResults: unknown[], medications: unknown[]) {,
     const alerts = [];
 
     for (const result of labResults) {
@@ -147,7 +147,7 @@ class ClinicalDecisionSupport {
           alerts.push({
             type: 'LAB_CONTRAINDICATION',
             severity: 'HIGH';
-            message: `High potassium level (${result.value}) with potassium-sparing medications`,
+            message: `High potassium level (${result.value,}) with potassium-sparing medications`,
             recommendation: 'Monitor potassium closely, consider alternative ACE inhibitor'
           });
         }
@@ -163,7 +163,7 @@ class ClinicalDecisionSupport {
           alerts.push({
             type: 'HYPOGLYCEMIA_RISK',
             severity: 'HIGH';
-            message: `Low glucose (${result.value}) with diabetes medications`,
+            message: `Low glucose (${result.value,}) with diabetes medications`,
             recommendation: 'Adjust diabetes medication dosage, monitor blood sugar'
           });
         }
@@ -173,7 +173,7 @@ class ClinicalDecisionSupport {
     return alerts;
   }
 
-  static async generateDiagnosticSuggestions(patient: unknown) {
+  static async generateDiagnosticSuggestions(patient: unknown) {,
     const suggestions = [];
 
     // Analyze vital signs patterns
@@ -218,7 +218,7 @@ class ClinicalDecisionSupport {
 
         suggestions.push({
           type: 'DIAGNOSTIC_SUGGESTION',
-          condition: `Anemia - ${anemiaType}`,
+          condition: `Anemia - ${anemiaType,}`,
           confidence: 0.9,
           recommendation: 'Investigate underlying cause of anemia';
           tests: ['Iron studies', 'B12', 'Folate', 'Reticulocyte count', 'Peripheral smear']
@@ -229,7 +229,7 @@ class ClinicalDecisionSupport {
     return suggestions;
   }
 
-  static calculateRiskScore(alerts: unknown[]) {
+  static calculateRiskScore(alerts: unknown[]) {,
     let score = 0;
     for (const alert of alerts) {
       switch (alert.severity) {
@@ -244,33 +244,33 @@ class ClinicalDecisionSupport {
 }
 
 // GET /api/clinical-decision-support/analyze
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
     const patientId = searchParams.get('patientId');
 
     if (!patientId) {
-      return NextResponse.json({ error: 'Patient ID required' }, { status: 400 });
+      return NextResponse.json({ error: 'Patient ID required' ,}, { status: 400 ,});
     }
 
     const { user } = await authService.verifyToken(request);
     if (!user || !['Doctor', 'Nurse', 'Pharmacist'].includes(user.role)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
     }
 
     // Get patient's active prescriptions for analysis
     const prescriptions = await prisma.prescription.findMany({
-      where: {
+      where: {,
         patientId,
-        status: 'ACTIVE'
+        status: 'ACTIVE',
       },
-      include: { items: true }
+      include: { items: true },
     });
 
     const medications = prescriptions.flatMap(p => p.items.map(item => ({
       name: item.medicationName,
       dosage: item.dosage;
-      frequency: item.frequency
+      frequency: item.frequency,
     })));
 
     const analysis = await ClinicalDecisionSupport.analyzePrescription(patientId, medications);
@@ -278,44 +278,44 @@ export const _GET = async (request: NextRequest) => {
     return NextResponse.json({
       patientId,
       analysis,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
   } catch (error) {
-    /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Analysis failed' }, { status: 500 }),
+    /* SECURITY: Console statement removed */,
+    return NextResponse.json({ error: 'Analysis failed' ,}, { status: 500 ,}),
   }
 };
 
 // POST /api/clinical-decision-support/prescription-check
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const { patientId, medications } = await request.json();
 
     const { user } = await authService.verifyToken(request);
     if (!user || !['Doctor', 'Pharmacist'].includes(user.role)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 403 ,});
     }
 
     const analysis = await ClinicalDecisionSupport.analyzePrescription(patientId, medications);
 
     // Log the clinical decision support usage
     await prisma.auditLog.create({
-      data: {
+      data: {,
         action: 'CLINICAL_DECISION_SUPPORT',
         userId: user.id;
         resourceType: 'PRESCRIPTION',
         resourceId: patientId;
           medications: medications.map(m => m.name),
           alertCount: analysis.alerts.length;
-          riskScore: analysis.riskScore
+          riskScore: analysis.riskScore,
       }
     });
 
     return NextResponse.json({ analysis });
 
   } catch (error) {
-    /* SECURITY: Console statement removed */
-    return NextResponse.json({ error: 'Prescription check failed' }, { status: 500 }),
+    /* SECURITY: Console statement removed */,
+    return NextResponse.json({ error: 'Prescription check failed' ,}, { status: 500 ,}),
   }
 };

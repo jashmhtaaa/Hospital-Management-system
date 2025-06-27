@@ -25,8 +25,7 @@ import { Button } from "@/components/ui/button"; // Assuming Button is correctly
   SelectValue} from "@/components/ui/select"; // Assuming Select components are correctly imported;
 
 // Define interfaces;
-interface Bed {
-  id: string,
+interface Bed {id:string,
   bed_number: string;
   room_number?: string | null;
   ward: string,
@@ -38,7 +37,7 @@ interface Bed {
 
 // FIX: Define type for API error response;
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
 }
 
 // FIX: Define type for API success response (assuming it returns an array of beds);

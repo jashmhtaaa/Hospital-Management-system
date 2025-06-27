@@ -18,7 +18,7 @@ async const main = () {
     switch (command) {
       case 'up':
       case 'migrate':
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         await migrate(),
         break;
 
@@ -26,15 +26,15 @@ async const main = () {
       case 'rollback':
         const version = args[0];
         if (version != null) {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+          // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         } else {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+          // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         }
         await rollback(version)
         break;
 
       case 'status':
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         await status(),
         break;
 
@@ -42,19 +42,19 @@ async const main = () {
         const name = args[0];
         if (!name) {
           // Debug logging removed
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+          // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
           process.exit(1)
         }
         await createMigration(name);
         break;
 
       case 'reset':
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         await resetDatabase(),
         break;
 
       case 'seed':
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         await seedDatabase(),
         break;
 
@@ -68,14 +68,14 @@ async const main = () {
   }
 }
 
-async const createMigration = (name: string) {
+async const createMigration = (name: string) {,
   const manager = new MigrationManager();
 
   try {
     await manager.initialize();
 
     // Template for new migration
-\1;
+;
 -- Add your migration SQL here;
 -- Example:
 -- CREATE TABLE example_table (;
@@ -84,15 +84,15 @@ async const createMigration = (name: string) {
 --   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 -- );
 `;
-\1;
+;
 -- Add your rollback SQL here;
 -- Example:
 -- DROP TABLE IF EXISTS example_table;
 `;
 
     const version = await manager.createMigration(name, upSql, downSql);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   } finally {
     await manager.cleanup()
   }
@@ -119,12 +119,12 @@ async const resetDatabase = () {
       END $$;
     `;
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     // Run migrations from scratch
     await migrate();
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   } finally {
     await prisma.$disconnect()
   }
@@ -135,55 +135,55 @@ async const seedDatabase = () {
   const prisma = new PrismaClient();
 
   try {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     // Create admin user
-\1,
+
         password: process.env.MIGRATION_PASSWORD || 'secure-migration-password', // Should be properly hashed
         firstName: 'System',
         lastName: 'Administrator';
         role: 'ADMIN',
         department: 'IT';
-        isActive: true
+        isActive: true,
       },
     });
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     // Create sample service items
-\1
+
     });
-\1;
+;
     ];
 
     for (const test of labTests) {
       await prisma.labTest.upsert({
-        where: { code: test.code },
-        update: {},
-        create: test
+        where: { code: test.code ,},
+        update: {,},
+        create: test,
       });
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     // Create sample insurance provider
     await prisma.insuranceProvider.upsert({
-      where: { code: 'SAMPLE_INSURANCE' },
-      update: {},
-      create: {
+      where: { code: 'SAMPLE_INSURANCE' ,},
+      update: {,},
+      create: {,
         name: 'Sample Insurance Company',
         code: 'SAMPLE_INSURANCE';
         address: '123 Insurance St, City, State',
         phone: '+1-800-INSURANCE',
         email: 'claims@sampleinsurance.com';
         contactPerson: 'Claims Manager',
-        active: true
+        active: true,
       },
     });
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   } catch (error) {
     // Debug logging removed
   } finally {
@@ -196,13 +196,13 @@ const showHelp = () {
   seed                        Seed database with sample data;
 
 Examples:
-  npm run migrate up;
-  npm run migrate status;
-  npm run migrate create "add_patient_indexes";
-  npm run migrate rollback;
-  npm run migrate rollback 2025-01-01T00-00-00_initial_schema;
-  npm run migrate reset;
-  npm run migrate seed;
+  // npm run migrate up;
+  // npm run migrate status;
+  // npm run migrate create "add_patient_indexes";
+  // npm run migrate rollback;
+  // npm run migrate rollback 2025-01-01T00-00-00_initial_schema;
+  // npm run migrate reset;
+  // npm run migrate seed;
 
 Environment Variables:
   DATABASE_URL               Database connection string;

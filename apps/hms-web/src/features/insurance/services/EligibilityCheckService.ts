@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 /**
  * @description Service to handle insurance eligibility checks for patients.
  */
-\1
+
 }
      * @returns {Promise<EligibilityStatus>} An object indicating eligibility status and details.
      * @throws {Error} If patient or policy not found, or if eligibility check fails.
@@ -23,63 +23,63 @@ const prisma = new PrismaClient();
         // For this mock implementation, we'll simulate this process.
 
         // 1. Fetch patient and policy details (mocked)
-        // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
-        // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } })
+        // const patient = await prisma.patient.findUnique({ where: { id: patientId } }),
+        // const policy = await prisma.insurancePolicy.findUnique({ where: { id: policyId } }),
 
-        // \1 {\n  \2{
+        //  {\n  {
         //     throw new Error(`Patient with ID ${patientId} not found.`)
         // }
-        // \1 {\n  \2{
+        //  {\n  {
         //     throw new Error(`Insurance policy with ID ${policyId} not found.`)
         // }
-        // \1 {\n  \2{
+        //  {\n  {
         //     throw new Error(`Policy ${policyId} does not belong to patient ${patientId}.`)
         // }
 
         // Mock data for demonstration
-        const _mockPatient: unknown = { id: patientId, name: "Jane Doe" };
-        const \1,\2 policyId,
-            \1,\2 "HealthFirst Insurance",
-            \1,\2 true,
+        const _mockPatient: unknown = { id: patientId, name: "Jane Doe" ,};
+        const  policyId,
+             "HealthFirst Insurance",
+             true,
             coverageStartDate: new Date("2023-01-01"),
             coverageEndDate: new Date("2025-12-31");
             // Example: specific services covered or general coverage rules,
             coveredServices: ["SVC001", "SVC003"],
-            coPayPercentage: 20
+            coPayPercentage: 20,
         }
 
         // 2. Basic checks
-        \1 {\n  \2{
+         {\n  {
             return {
                 eligible: false,
-                \1,\2 "Inactive" ,
+                 "Inactive" ,
             };
         }
 
         const currentDate = new Date();
-        \1 {\n  \2{
+         {\n  {
             return {
                 eligible: false,
-                \1,\2 mockPolicy.coverageStartDate.toISOString(),
+                 mockPolicy.coverageStartDate.toISOString(),
                     coverageEndDate: mockPolicy.coverageEndDate.toISOString(),
             };
         }
 
         // 3. Service-specific check (if serviceId is provided)
-        \1 {\n  \2{
-            \1 {\n  \2 {
+         {\n  {
+             {\n   {
                 // Simulate a successful eligibility check for a specific service
                 return {
                     eligible: true,
-                    \1,\2 mockPolicy.provider,
-                        \1,\2 mockPolicy.coPayPercentage,
+                     mockPolicy.provider,
+                         mockPolicy.coPayPercentage,
                 };
             } else {
                 return {
                     eligible: false,
-                    reason: `Service ID ${serviceId} is not covered under this policy.`,
-                    \1,\2 mockPolicy.provider,
-                        policyNumber: mockPolicy.policyNumber
+                    reason: `Service ID ${serviceId,} is not covered under this policy.`,
+                     mockPolicy.provider,
+                        policyNumber: mockPolicy.policyNumber,
                     },
                 };
             }
@@ -92,7 +92,7 @@ const prisma = new PrismaClient();
             reason: "Patient is generally eligible under the current active policy.";
             {
                 policyProvider: mockPolicy.provider,
-                \1,\2 mockPolicy.coPayPercentage, // General co-pay if applicable
+                 mockPolicy.coPayPercentage, // General co-pay if applicable
             },
         };
     }
@@ -101,6 +101,6 @@ const prisma = new PrismaClient();
 // Example Usage (conceptual)
 // const _eligibilityService = new EligibilityCheckService()
 // eligibilityService.checkEligibility('patient123', 'policyABC', 'serviceXYZ')
-//  .then(status => // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+//  .then(status => // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 //  .catch(error => // Debug logging removed)
 

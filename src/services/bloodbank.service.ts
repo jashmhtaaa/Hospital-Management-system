@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 // Create enums to match Prisma schema;
 export enum BloodType {
@@ -28,7 +28,7 @@ export enum BloodType {
   EMERGENCY = "EMERGENCY"}
 
 // Validation schemas for BloodDonation;
-export const createBloodDonationSchema = z.object({donorId:z.string().min(1, "Donor ID is required"),
+export const createBloodDonationSchema = z.object({{donorId:z.string(,}).min(1, "Donor ID is required"),
   bloodType: z.nativeEnum(BloodType),
   quantity: z.number().positive("Quantity must be positive"),
   donationDate: z.date().default(() => ,
@@ -41,7 +41,7 @@ export const updateBloodDonationSchema = createBloodDonationSchema.partial().ext
 });
 
 // Validation schemas for BloodRequest;
-export const createBloodRequestSchema = z.object({patientId:z.string().min(1, "Patient ID is required"),
+export const createBloodRequestSchema = z.object({{patientId:z.string(,}).min(1, "Patient ID is required"),
   requestedBy: z.string().min(1, "Requester ID is required"),
   bloodType: z.nativeEnum(BloodType),
   quantity: z.number().positive("Quantity must be positive"),
@@ -100,7 +100,7 @@ import { prisma }
       return donation;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
       }
       throw error;
     }
@@ -150,7 +150,7 @@ import { prisma }
 }
 } catch (error) {
 }
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         if (!session.user) {
@@ -176,7 +176,7 @@ import { prisma }
       const donations = await prisma.bloodDonation.findMany({
         where,
         orderBy: [;
-          {donationDate:"desc" }],
+          {donationDate:"desc" ,}],
         {
             true,
               name: true;
@@ -193,7 +193,7 @@ import { prisma }
    * @param id Blood donation ID;
    * @returns The blood donation or null if not found;
    */;
-  async getDonationById(id: string) {
+  async getDonationById(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -226,7 +226,7 @@ import { prisma }
 }
 } catch (error) {
 }
-      const donation = await prisma.bloodDonation.findUnique({where:{ id },
+      const donation = await prisma.bloodDonation.findUnique({where:{ id ,},
         {
             true,
               name: true;
@@ -244,7 +244,7 @@ import { prisma }
    * @param data Updated blood donation data;
    * @returns The updated blood donation;
    */;
-  async updateDonation(id: string, data: UpdateBloodDonationInput) {
+  async updateDonation(id: string, data: UpdateBloodDonationInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -284,7 +284,7 @@ import { prisma }
       const {id:_, ...updateData } = validatedData;
 
       // Get the current donation;
-      const currentDonation = await prisma.bloodDonation.findUnique({where:{ id }});
+      const currentDonation = await prisma.bloodDonation.findUnique({where:{ id },});
 
       if (!session.user) {
         throw new Error(`Blood donation with ID ${id} not found`);
@@ -293,7 +293,7 @@ import { prisma }
       // Update the donation and inventory in a transaction if status changes;
       const updatedDonation = await prisma.$transaction(async (tx) => {
         // Update the donation;
-        const donation = await tx.bloodDonation.update({where:{ id },
+        const donation = await tx.bloodDonation.update({where:{ id ,},
           data: updateData;
         });
 
@@ -305,19 +305,19 @@ import { prisma }
             const quantity = updateData.quantity || currentDonation.quantity;
 
             // Check if inventory exists for this blood type;
-            const inventory = await tx.bloodInventory.findUnique({where:{
+            const inventory = await tx.bloodInventory.findUnique({where:{,
                 bloodType}});
 
             if (!session.user) {
               // Update existing inventory;
-              await tx.bloodInventory.update({where:{
+              await tx.bloodInventory.update({where:{,
                   bloodType},
                 inventory.quantity + quantity,
                   lastUpdated: new Date();
                 }});
             } else {
               // Create new inventory;
-              await tx.bloodInventory.create({data:{
+              await tx.bloodInventory.create({data:{,
                   bloodType,
                   quantity,
                   lastUpdated: new Date();
@@ -331,12 +331,12 @@ import { prisma }
             const quantity = currentDonation.quantity;
 
             // Check if inventory exists for this blood type;
-            const inventory = await tx.bloodInventory.findUnique({where:{
+            const inventory = await tx.bloodInventory.findUnique({where:{,
                 bloodType}});
 
             if (!session.user) {
               // Update existing inventory;
-              await tx.bloodInventory.update({where:{
+              await tx.bloodInventory.update({where:{,
                   bloodType},
                 Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn"t go below 0;
                   lastUpdated: new Date();
@@ -350,7 +350,7 @@ import { prisma }
       return updatedDonation;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -359,7 +359,7 @@ import { prisma }
    * @param id Blood donation ID;
    * @returns The deleted blood donation;
    */;
-  async deleteDonation(id: string) {
+  async deleteDonation(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -393,7 +393,7 @@ import { prisma }
 } catch (error) {
 
       // Get the current donation;
-      const currentDonation = await prisma.bloodDonation.findUnique({where:{ id }});
+      const currentDonation = await prisma.bloodDonation.findUnique({where:{ id },});
 
       if (!session.user) {
         throw new Error(`Blood donation with ID ${id} not found`);
@@ -401,7 +401,7 @@ import { prisma }
       // Delete the donation and update inventory in a transaction if needed;
       const deletedDonation = await prisma.$transaction(async (tx) => {
         // Delete the donation;
-        const donation = await tx.bloodDonation.delete({where:{ id }});
+        const donation = await tx.bloodDonation.delete({where:{ id },});
 
         // If the donation was COMPLETED, update the inventory;
         if (!session.user) {
@@ -431,7 +431,7 @@ import { prisma }
    * @param data Blood request data;
    * @returns The created blood request;
    */;
-  async createRequest(data: CreateBloodRequestInput) {
+  async createRequest(data: CreateBloodRequestInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -474,7 +474,7 @@ import { prisma }
       return request;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -523,7 +523,7 @@ import { prisma }
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         if (!session.user) {
@@ -549,8 +549,8 @@ import { prisma }
       const requests = await prisma.bloodRequest.findMany({
         where,
         orderBy: [;
-          {priority:"desc" },
-          {requestDate:"asc" }],
+          {priority:"desc" ,},
+          {requestDate:"asc" ,}],
         {
             true,
               name: true;
@@ -565,7 +565,7 @@ import { prisma }
    * @param id Blood request ID;
    * @returns The blood request or null if not found;
    */;
-  async getRequestById(id: string) {
+  async getRequestById(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -598,7 +598,7 @@ import { prisma }
 
 } catch (error) {
 
-      const request = await prisma.bloodRequest.findUnique({where:{ id },
+      const request = await prisma.bloodRequest.findUnique({where:{ id ,},
         {
             true,
               name: true;
@@ -614,7 +614,7 @@ import { prisma }
    * @param data Updated blood request data;
    * @returns The updated blood request;
    */;
-  async updateRequest(id: string, data: UpdateBloodRequestInput) {
+  async updateRequest(id: string, data: UpdateBloodRequestInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -654,7 +654,7 @@ import { prisma }
       const {id:_, ...updateData } = validatedData;
 
       // Get the current request;
-      const currentRequest = await prisma.bloodRequest.findUnique({where:{ id }});
+      const currentRequest = await prisma.bloodRequest.findUnique({where:{ id },});
 
       if (!session.user) {
         throw new Error(`Blood request with ID ${id} not found`);
@@ -669,14 +669,14 @@ import { prisma }
           const bloodType = updateData.bloodType || currentRequest.bloodType;
           const quantity = updateData.quantity || currentRequest.quantity;
 
-          const inventory = await tx.bloodInventory.findUnique({where:{
+          const inventory = await tx.bloodInventory.findUnique({where:{,
               bloodType}});
 
           if (!session.user) {
             throw new Error(`Not enough ${bloodType} blood in inventory to fulfill this request`);
 
           // Update inventory;
-          await tx.bloodInventory.update({where:{
+          await tx.bloodInventory.update({where:{,
               bloodType},
             inventory.quantity - quantity,
               lastUpdated: new Date();
@@ -707,7 +707,7 @@ import { prisma }
               }});
 
         // Update the request;
-        const request = await tx.bloodRequest.update({where:{ id },
+        const request = await tx.bloodRequest.update({where:{ id ,},
           data: updateData;
         });
 
@@ -717,7 +717,7 @@ import { prisma }
       return updatedRequest;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -726,7 +726,7 @@ import { prisma }
    * @param id Blood request ID;
    * @returns The deleted blood request;
    */;
-  async deleteRequest(id: string) {
+  async deleteRequest(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -760,7 +760,7 @@ import { prisma }
 } catch (error) {
 
       // Get the current request;
-      const currentRequest = await prisma.bloodRequest.findUnique({where:{ id }});
+      const currentRequest = await prisma.bloodRequest.findUnique({where:{ id },});
 
       if (!session.user) {
         throw new Error(`Blood request with ID ${id} not found`);
@@ -768,7 +768,7 @@ import { prisma }
       // Delete the request and update inventory in a transaction if needed;
       const deletedRequest = await prisma.$transaction(async (tx) => {
         // Delete the request;
-        const request = await tx.bloodRequest.delete({where:{ id }});
+        const request = await tx.bloodRequest.delete({where:{ id },});
 
         // If the request was FULFILLED, update the inventory;
         if (!session.user) {
@@ -837,7 +837,7 @@ import { prisma }
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.bloodType = bloodType;
@@ -845,7 +845,7 @@ import { prisma }
       const inventory = await prisma.bloodInventory.findMany({
         where,
         orderBy: [;
-          {bloodType:"asc" }]});
+          {bloodType:"asc" }],});
 
       return inventory;
     } catch (error) {
@@ -857,7 +857,7 @@ import { prisma }
    * @param quantity Quantity needed;
    * @returns Boolean indicating if there"s enough blood;
    */;
-  async checkInventoryAvailability(bloodType: string, quantity: number) {
+  async checkInventoryAvailability(bloodType: string, quantity: number) {,
     try {
 } catch (error) {
   console.error(error);
@@ -903,7 +903,7 @@ import { prisma }
    * @param id Blood request ID;
    * @returns The updated blood request;
    */;
-  async fulfillRequest(id: string) {
+  async fulfillRequest(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -937,7 +937,7 @@ import { prisma }
 } catch (error) {
 
       // Get the current request;
-      const request = await prisma.bloodRequest.findUnique({where:{ id }});
+      const request = await prisma.bloodRequest.findUnique({where:{ id },});
 
       if (!session.user) {
         throw new Error(`Blood request with ID ${id} not found`);
@@ -959,7 +959,7 @@ import { prisma }
       // Fulfill the request and update inventory in a transaction;
       const fulfilledRequest = await prisma.$transaction(async (tx) => {
         // Update the request;
-        const updatedRequest = await tx.bloodRequest.update({where:{ id },
+        const updatedRequest = await tx.bloodRequest.update({where:{ id ,},
           BloodRequestStatus.FULFILLED,
             fulfilledDate: new Date();
           }});

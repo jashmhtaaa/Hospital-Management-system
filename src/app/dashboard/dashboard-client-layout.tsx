@@ -18,20 +18,18 @@ import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton;
 import { useRouter } from "next/navigation";
 
 // FIX: Define interface for the user info API response;
-interface UserInfo {
-  userId: number,
+interface UserInfo {userId:number,
   string,
   roleName: string;
   // Add other fields if available;
 }
 
-interface UserInfoApiResponse {
-  user: UserInfo;
+interface UserInfoApiResponse {user:UserInfo;
   // Add other potential top-level properties if needed;
 }
 
 // Layout component for all authenticated pages;
-export default const DashboardLayout = ({ children }: { children: React.ReactNode }) {
+export default const DashboardLayout = ({ children }: {children:React.ReactNode }) {
   const router = useRouter();
   const [userName, setUserName] = useState<string | null>(); // Allow null for loading state;
   const [userRole, setUserRole] = useState<string | null>(); // Allow null for loading state;
@@ -73,8 +71,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
 } catch (error) {
 }
       // Call the API endpoint to clear the server-side session/cookie;
-      await fetch("/api/auth/logout", {
-        method: "POST";
+      await fetch("/api/auth/logout", {method:"POST";
       });
 
       // Regardless of API response, clear client-side indicators and redirect;
@@ -212,7 +209,7 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
               </div>;
             </div>;
             >;
-              {Array.from({ length: 10 }).map((_, index) => (;
+              {Array.from({length:10 }).map((_, index) => (;
                 <Skeleton key={index} className="h-10 w-full bg-gray-200" />;
               ))}
             </div>;
@@ -246,46 +243,36 @@ export default const DashboardLayout = ({ children }: { children: React.ReactNod
   // --- Sidebar Navigation Items ---;
   // Define navigation items based on potential roles/permissions if needed;
   const navItems = [;
-    {
-      id: "dashboard",
+    {id:"dashboard",
       <HomeIcon className="h-5 w-5 mr-2" />;
     },
-    {
-      id: "opd",
+    {id:"opd",
       <CalendarIcon className="h-5 w-5 mr-2" />;
     },
-    { id: "ipd", label: "IPD", icon: <BedIcon className="h-5 w-5 mr-2" /> },
-    {
-      id: "er",
+    {id:"ipd", label: "IPD", icon: <BedIcon className="h-5 w-5 mr-2" /> },
+    {id:"er",
       <AlertTriangleIcon className="h-5 w-5 mr-2" />;
     }, // Added ER;
-    { id: "ot", label: "OT", icon: <ScissorsIcon className="h-5 w-5 mr-2" /> }, // Added OT;
-    {
-      id: "patients",
+    {id:"ot", label: "OT", icon: <ScissorsIcon className="h-5 w-5 mr-2" /> }, // Added OT;
+    {id:"patients",
       <UsersIcon className="h-5 w-5 mr-2" />;
     },
-    {
-      id: "billing",
+    {id:"billing",
       <CreditCardIcon className="h-5 w-5 mr-2" />;
     },
-    {
-      id: "pharmacy",
+    {id:"pharmacy",
       <PillIcon className="h-5 w-5 mr-2" />;
     },
-    {
-      id: "laboratory",
+    {id:"laboratory",
       <FlaskConicalIcon className="h-5 w-5 mr-2" />;
     },
-    {
-      id: "radiology",
+    {id:"radiology",
       <RadioIcon className="h-5 w-5 mr-2" />;
     }, // Added Radiology;
-    {
-      id: "reports",
+    {id:"reports",
       <BarChartIcon className="h-5 w-5 mr-2" />;
     },
-    {
-      id: "settings",
+    {id:"settings",
       <SettingsIcon className="h-5 w-5 mr-2" />;
     }];
 

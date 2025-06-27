@@ -1,12 +1,12 @@
 import "@/lib/core/patient-management.service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
 import patientManagementService }
-import {  PatientCreateSchema
+import {PatientCreateSchema
 import { type
-import { z  } from "@/lib/database"
+import { z  } from "next/server"
 
 }
 
@@ -15,7 +15,7 @@ import { z  } from "@/lib/database"
  */;
 
 // Search query schema;
-const SearchQuerySchema = z.object({firstName:z.string().optional(),
+const SearchQuerySchema = z.object({{firstName:z.string(,}).optional(),
   lastName: z.string().optional(),
   dateOfBirth: z.string().optional(),
   ssn: z.string().optional(),
@@ -30,7 +30,7 @@ const SearchQuerySchema = z.object({firstName:z.string().optional(),
 /**;
  * GET /api/v2/patients - Search and list patients with enhanced features;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -91,13 +91,13 @@ export const GET = async (request: any) => {
       {success:false,
         "Failed to search patients";
       },
-      {status:500 }
+      {status:500 },
     );
 
 /**;
  * POST /api/v2/patients - Create new patient with enhanced validation;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -159,12 +159,12 @@ export const POST = async (request: any) => {
         {success:false,
           error.message;
         },
-        {status:409 }
+        {status:409 },
       );
 
     return NextResponse.json();
       {success:false,
         "Failed to create patient";
       },
-      {status:500 }
+      {status:500 },
     );

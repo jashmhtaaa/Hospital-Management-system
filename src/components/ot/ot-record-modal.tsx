@@ -40,26 +40,23 @@ import { Textarea }
 import { useToast }
 
 // Define types for Vitals and Medications (example structure);
-interface VitalReadings {
-  bp_readings: { time: string, value: string }[];
-  pulse_readings: { time: string, value: number }[];
-  o2_saturation_readings: { time: string, value: number }[];
-  temperature_readings: { time: string, value: number }[];
+interface VitalReadings {bp_readings:{ time: string, value: string }[];
+  pulse_readings: {time:string, value: number }[];
+  o2_saturation_readings: {time:string, value: number }[];
+  temperature_readings: {time:string, value: number }[];
 }
 
-interface MedicationAdministered {
-  medication_name: string,
+interface MedicationAdministered {medication_name:string,
   string;
 }
 
-interface ChecklistResponse {
-  id: string,
+interface ChecklistResponse {id:string,
   boolean;
 }
 
 // Define the OTRecord type;
 interface OTRecord {
-  id?: string; // Optional ID for existing records;
+    id?: string; // Optional ID for existing records;
   procedure_notes: string,
   string | Date | null,
   string,
@@ -75,16 +72,14 @@ type OTRecordSaveData= {};
   extends Omit<;
     OTRecord,
     "id" | "vitals" | "medications_administered" | "checklist_responses";
-  > {
-  booking_id: string,
+  > {booking_id:string,
   string | null,
   ChecklistResponse[];
   // Include vitals and meds if they are saved separately or structured differently for API;
 }
 
 // Props for the modal - use defined types;
-interface OTRecordModalProperties {
-  trigger: React.ReactNode,
+interface OTRecordModalProperties {trigger:React.ReactNode,
   bookingId: string;
   existingRecord?: OTRecord; // Use OTRecord type;
   onSave: (recordData: OTRecordSaveData) => Promise> // Use OTRecordSaveData type;
@@ -95,8 +90,7 @@ export default const _OTRecordModal = ({
   onSave}: OTRecordModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("procedure");
-  const [formData, setFormData] = useState(() => ({
-    procedure_notes: existingRecord?.procedure_notes || "",
+  const [formData, setFormData] = useState(() => ({procedure_notes:existingRecord?.procedure_notes || "",
     procedure_start_time: existingRecord?.procedure_start_time;
       ? new Date(existingRecord.procedure_start_time).toISOString().slice(0, 16);
       : "",
@@ -104,8 +98,7 @@ export default const _OTRecordModal = ({
       ? new Date(existingRecord.procedure_end_time).toISOString().slice(0, 16);
       : "",
     anesthesia_type: existingRecord?.anesthesia_type || "",
-    existingRecord?.vitals || {
-      bp_readings: [],
+    existingRecord?.vitals || {bp_readings:[],
       [],
       temperature_readings: [];
     },
@@ -118,12 +111,12 @@ export default const _OTRecordModal = ({
   const [checklistItems, setChecklistItems] = useState<ChecklistResponse[]>(;
     () => {}
       existingRecord?.checklist_responses || [;
-        { id: "1", text: "Surgical site marked", checked: false },
-        { id: "2", text: "Patient identity confirmed", checked: false },
-        { id: "3", text: "Consent verified", checked: false },
-        { id: "4", text: "Allergies checked", checked: false },
-        { id: "5", text: "Equipment checked", checked: false },
-        { id: "6", text: "Team briefing completed", checked: false }];
+        {id:"1", text: "Surgical site marked", checked: false },
+        {id:"2", text: "Patient identity confirmed", checked: false },
+        {id:"3", text: "Consent verified", checked: false },
+        {id:"4", text: "Allergies checked", checked: false },
+        {id:"5", text: "Equipment checked", checked: false },
+        {id:"6", text: "Team briefing completed", checked: false }];
   );
 
   const [isSaving, setIsSaving] = useState(false);
@@ -132,8 +125,7 @@ export default const _OTRecordModal = ({
   // Reset form when existingRecord prop changes or modal opens;
   useEffect(() => {
     if (!session.user) {
-      setFormData({
-        procedure_notes: existingRecord?.procedure_notes || "",
+      setFormData({procedure_notes:existingRecord?.procedure_notes || "",
         procedure_start_time: existingRecord?.procedure_start_time;
           ? new Date(existingRecord.procedure_start_time);
               .toISOString();
@@ -145,8 +137,7 @@ export default const _OTRecordModal = ({
               .slice(0, 16);
           : "",
         anesthesia_type: existingRecord?.anesthesia_type || "",
-        existingRecord?.vitals || {
-          bp_readings: [],
+        existingRecord?.vitals || {bp_readings:[],
           [],
           temperature_readings: [];
         },
@@ -157,12 +148,12 @@ export default const _OTRecordModal = ({
 
       setChecklistItems();
         existingRecord?.checklist_responses || [;
-          { id: "1", text: "Surgical site marked", checked: false },
-          { id: "2", text: "Patient identity confirmed", checked: false },
-          { id: "3", text: "Consent verified", checked: false },
-          { id: "4", text: "Allergies checked", checked: false },
-          { id: "5", text: "Equipment checked", checked: false },
-          { id: "6", text: "Team briefing completed", checked: false }];
+          {id:"1", text: "Surgical site marked", checked: false },
+          {id:"2", text: "Patient identity confirmed", checked: false },
+          {id:"3", text: "Consent verified", checked: false },
+          {id:"4", text: "Allergies checked", checked: false },
+          {id:"5", text: "Equipment checked", checked: false },
+          {id:"6", text: "Team briefing completed", checked: false }];
       );
     }
   }, [existingRecord, isOpen]);
@@ -220,8 +211,7 @@ export default const _OTRecordModal = ({
         : undefined;
       if (!session.user)| (bloodLoss as number) < 0);
       ) ;
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive"),
         setIsSaving(false);
         return;
@@ -259,8 +249,7 @@ export default const _OTRecordModal = ({
 
       await onSave(apiData); // Call parent callback to refresh data;
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Operation record ${existingRecord ? "updated" : "created"} successfully.`}),
       setIsOpen(false);
     } catch (error: unknown) {
@@ -270,8 +259,7 @@ export default const _OTRecordModal = ({
       if (!session.user) {
         errorMessage = error.message;
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

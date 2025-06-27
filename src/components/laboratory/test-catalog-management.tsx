@@ -32,13 +32,11 @@ import { FilterValue
 const { Option } = Select;
 
 // Define interfaces;
-interface TestCategory {
-  id: string,
+interface TestCategory {id:string,
   name: string;
 }
 
-interface Test {
-  id: string,
+interface Test {id:string,
   string,
   category_id: string;
   category_name?: string; // Joined field;
@@ -52,21 +50,20 @@ interface Test {
 
 // Define API response types;
 interface CategoriesApiResponse {
-  results?: TestCategory[];
+    results?: TestCategory[];
 }
 
 interface TestsApiResponse {
-  results?: Test[];
+    results?: Test[];
   totalCount?: number; // Optional total count for pagination;
 }
 
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
   message?: string; // Add message for flexibility;
 }
 
-interface AddTestFormValues {
-  code: string,
+interface AddTestFormValues {code:string,
   string;
   description?: string;
   sample_type: string;
@@ -78,7 +75,7 @@ interface AddTestFormValues {
 
 // Define Table parameters type;
 interface TableParameters {
-  pagination?: TablePaginationConfig; // Use imported type;
+    pagination?: TablePaginationConfig; // Use imported type;
   sorter?: SorterResult<Test> | SorterResult<Test>[]; // Sorter can be single or array;
   filters?: Record>;
 }
@@ -428,8 +425,7 @@ const TestCatalogManagement: React.FC = () => {
         values.is_active ?? true, // Default to true if not provided;
       };
 
-      const response = await fetch("/api/laboratory/tests", {
-        method: "POST",
+      const response = await fetch("/api/laboratory/tests", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(payload);
@@ -496,39 +492,34 @@ const TestCatalogManagement: React.FC = () => {
 
   // Table columns definition with types;
   const columns: TableColumnsType<Test> = [;
-    {
-      title: "Code",
+    {title:"Code",
       "code",
       true, // Enable server-side sorting;
       sortOrder: null,
         getCurrentSorter()?.field === "code";
           ? getCurrentSorter()?.order;
           : undefined},
-    {
-      title: "Name",
+    {title:"Name",
       "name",
       true,
       sortOrder: null,
         getCurrentSorter()?.field === "name";
           ? getCurrentSorter()?.order;
           : undefined},
-    {
-      title: "Category",
+    {title:"Category",
       "category_name",
       (categoryName: string | undefined) => categoryName || "N/A",
       getCurrentSorter()?.field === "category_name";
           ? getCurrentSorter()?.order;
           : undefined},
-    {
-      title: "Sample Type",
+    {title:"Sample Type",
       "sample_type",
       true,
       sortOrder: null,
         getCurrentSorter()?.field === "sample_type";
           ? getCurrentSorter()?.order;
           : undefined},
-    {
-      title: "Processing Time",
+    {title:"Processing Time",
       "processing_time",
       (time: number | null | undefined) => {}
         time === undefined ? "N/A" : `${time} minutes`,
@@ -537,8 +528,7 @@ const TestCatalogManagement: React.FC = () => {
         getCurrentSorter()?.field === "processing_time";
           ? getCurrentSorter()?.order;
           : undefined},
-    {
-      title: "Price",
+    {title:"Price",
       "price",
       (price: number | undefined) => {}
         price === undefined ? "N/A" : `$${price.toFixed(2)}`,
@@ -547,8 +537,7 @@ const TestCatalogManagement: React.FC = () => {
         getCurrentSorter()?.field === "price";
           ? getCurrentSorter()?.order;
           : undefined},
-    {
-      title: "Status",
+    {title:"Status",
       "is_active",
       (active: boolean | undefined) => (;
         >;
@@ -556,13 +545,12 @@ const TestCatalogManagement: React.FC = () => {
         </span>;
       ),
       filters: [;
-        { text: "Active", value: true },
-        { text: "Inactive", value: false }],
+        {text:"Active", value: true },
+        {text:"Inactive", value: false }],
       filteredValue: tableParameters.filters?.is_active || undefined;
       // onFilter: (value, record) => record.is_active === (value as boolean), // Use server-side filtering if API supports it;
     },
-    {
-      title: "Actions",
+    {title:"Actions",
       "10%",
       render: (_, record: Test) => (;
         (<Button>;
@@ -576,8 +564,7 @@ const TestCatalogManagement: React.FC = () => {
 
   // View test details;
   const handleViewTest = (test: Test): void => {
-    Modal.info({
-      title: `Test Details: ${test.name}`,
+    Modal.info({title:`Test Details: ${test.name}`,
       content: (;
 <div;
           <p>;
@@ -635,14 +622,14 @@ const TestCatalogManagement: React.FC = () => {
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {}
               setSearchText(event.target.value);
 
-            style={{ width: 250 }}
+            style={{width:250 }}
             allowClear;
           />;
 
           <Select<string | undefined>;
             placeholder="Filter by category";
             allowClear;
-            style={{ width: 200 }}
+            style={{width:200 }}
             value={categoryFilter}
             onChange={(value: string | undefined) => setCategoryFilter(value)}
             loading={categories.length === 0} // Show loading indicator if categories aren"t loaded;
@@ -692,7 +679,7 @@ const TestCatalogManagement: React.FC = () => {
             pagination={tableParameters.pagination} // Controlled pagination;
             loading={loading} // Pass loading state to Table;
             onChange={handleTableChange} // Handle table changes;
-            scroll={{ x: "max-content" }} // Enable horizontal scroll if needed;
+            scroll={{x:"max-content" }} // Enable horizontal scroll if needed;
           />;
         </Spin>;
       </Card>;
@@ -712,26 +699,26 @@ const TestCatalogManagement: React.FC = () => {
           form={form}
           layout="vertical";
           onFinish={handleAddTest}
-          initialValues={{ is_active: true }} // Default is_active to true;
+          initialValues={{is_active:true }} // Default is_active to true;
         >;
           <Form.Item;
             name="code";
             label="Test Code";
-            rules={[{ required: true, message: "Please input the test code!" }]}
+            rules={[{required:true, message: "Please input the test code!" }]}
           >;
             <Input />;
           </Form.Item>;
           <Form.Item;
             name="name";
             label="Test Name";
-            rules={[{ required: true, message: "Please input the test name!" }]}
+            rules={[{required:true, message: "Please input the test name!" }]}
           >;
             <Input />;
           </Form.Item>;
           <Form.Item;
             name="category_id";
             label="Category";
-            rules={[{ required: true, message: "Please select a category!" }]}
+            rules={[{required:true, message: "Please select a category!" }]}
           >;
             <Select>;
               placeholder="Select Category";
@@ -748,7 +735,7 @@ const TestCatalogManagement: React.FC = () => {
             name="sample_type";
             label="Sample Type";
             rules={[;
-              { required: true, message: "Please input the sample type!" }]}
+              {required:true, message: "Please input the sample type!" }]}
           >;
             <Input placeholder="e.g., Blood, Urine, Serum" />;
           </Form.Item>;
@@ -756,9 +743,8 @@ const TestCatalogManagement: React.FC = () => {
             name="price";
             label="Price";
             rules={[;
-              { required: true, message: "Please input the price!" },
-              {
-                pattern: /^\d+(\.\d{1,2})?$/,
+              {required:true, message: "Please input the price!" },
+              {pattern:/^\d+(\.\d{1,2})?$/,
                 message: "Please enter a valid price (e.g., 10.50)"}]}
           >;
             <Input prefix="$" />;
@@ -773,8 +759,7 @@ const TestCatalogManagement: React.FC = () => {
             name="processing_time";
             label="Processing Time (minutes)";
             rules={[;
-              {
-                pattern: /^\d+$/,
+              {pattern:/^\d+$/,
                 message: "Please enter a valid number of minutes";
               }]}
           >;
@@ -793,7 +778,7 @@ const TestCatalogManagement: React.FC = () => {
                 setIsModalVisible(false);
                 form.resetFields();
               }}
-              style={{ marginRight: 8 }}
+              style={{marginRight:8 }}
             >;
               Cancel;
             </Button>;

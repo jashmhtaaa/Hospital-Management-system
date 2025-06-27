@@ -30,16 +30,16 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
  */
 
 @Module({
-  imports: [
+  imports: [,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.local', '.env'],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      \1,\2 true,
-      \1,\2 ({ req, connection }) =>
-        connection ? { req: { headers: connection.context } } : { req },
+       true,
+       ({ req, connection }) =>
+        connection ? { req: { headers: connection.context } } : { req ,},
     }),
     PrismaModule,
     SecurityModule,
@@ -47,12 +47,12 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
     CacheModule,
     CoreGraphQLModule,
   ],
-  controllers: [
+  controllers: [,
     PredictiveAnalyticsController,
     CustomReportController,
     DashboardController,
   ],
-  providers: [
+  providers: [,
     PredictiveAnalyticsService,
     CustomReportService,
     DashboardService,
@@ -60,11 +60,11 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
     CustomReportResolver,
     DashboardResolver,
   ],
-  exports: [
+  exports: [,
     PredictiveAnalyticsService,
     CustomReportService,
     DashboardService,
   ],
 });
-\1
+
 }

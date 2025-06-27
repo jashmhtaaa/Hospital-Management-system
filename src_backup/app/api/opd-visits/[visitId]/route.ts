@@ -37,7 +37,7 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Nurse"];
 const ALLOWED_ROLES_UPDATE = ["Admin", "Receptionist", "Doctor", "Nurse"]; // Adjust based on which fields can be updated by whom;
 
 // Helper function to get visit ID from URL;
-const getVisitId = (pathname: string): number | null {
+const getVisitId = (pathname: string): number | null {,
     // Pathname might be /api/opd-visits/123;
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 1]; // Last part;
@@ -46,22 +46,22 @@ const getVisitId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific OPD visit;
-export const _GET = async (request: Request) => {
+export const _GET = async (request: Request) => {,
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions);
     const url = new URL(request.url);
     const visitId = getVisitId(url.pathname);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Visit ID" }), {
+        return new Response(JSON.stringify({ error: "Invalid Visit ID" ,}), {
             status: 400,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -113,9 +113,9 @@ export const _GET = async (request: Request) => {
         ).bind(visitId).first<OPDVisitQueryResult>(); // Use the defined interface;
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
+            return new Response(JSON.stringify({ error: "OPD Visit not found" ,}), {
                 status: 404,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
         }
 
         // 3. Format the response;
@@ -136,14 +136,14 @@ export const _GET = async (request: Request) => {
         // 4. Return the detailed visit;
         return new Response(JSON.stringify(visit), {
             status: 200,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 }
 
@@ -154,22 +154,22 @@ const UpdateVisitSchema = z.object({
     // Add other updatable fields if necessary (e.g., doctor_id, department - requires careful consideration);
 });
 
-export const _PUT = async (request: Request) => {
+export const _PUT = async (request: Request) => {,
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions);
     const url = new URL(request.url);
     const visitId = getVisitId(url.pathname);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Visit ID" }), {
+        return new Response(JSON.stringify({ error: "Invalid Visit ID" ,}), {
             status: 400,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -208,17 +208,17 @@ export const _PUT = async (request: Request) => {
         const validation = UpdateVisitSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         const updateData = validation.data;
 
         // Check if there's anything to update;
         if (!session.user)length === 0) {
-             return new Response(JSON.stringify({ message: "No update data provided" }), {
+             return new Response(JSON.stringify({ message: "No update data provided" ,}), {
                 status: 200, // Or 304 Not Modified;
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         const { env } = await getCloudflareContext();
         const { DB } = env;
@@ -228,9 +228,9 @@ export const _PUT = async (request: Request) => {
                                    .bind(visitId);
                                    .first<opd_visit_id: number >();
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "OPD Visit not found" }), {
+            return new Response(JSON.stringify({ error: "OPD Visit not found" ,}), {
                 status: 404,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
@@ -255,16 +255,16 @@ export const _PUT = async (request: Request) => {
             throw new Error("Failed to update OPD visit");
 
         // 5. Return success response;
-        return new Response(JSON.stringify({ message: "OPD Visit updated successfully" }), {
+        return new Response(JSON.stringify({ message: "OPD Visit updated successfully" ,}), {
             status: 200,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
 // DELETE handler - Typically visits are cancelled (status update) rather than deleted;
 // Implement if hard deletion is truly required, but use with caution.;

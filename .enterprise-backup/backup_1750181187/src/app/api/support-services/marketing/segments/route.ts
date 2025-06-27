@@ -11,10 +11,10 @@ const segmentService = new SegmentService();
  * GET /api/support-services/marketing/segments;
  * Get all segments with optional filtering;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -38,7 +38,7 @@ export const GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'marketing.segments.read',
-      auditAction: 'SEGMENTS_LIST'
+      auditAction: 'SEGMENTS_LIST',
     }
   );
 }
@@ -47,10 +47,10 @@ export const GET = async (request: NextRequest) => {
  * POST /api/support-services/marketing/segments;
  * Create a new segment;
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -59,10 +59,10 @@ export const POST = async (request: NextRequest) => {
         session?.user?.id as string;
       );
 
-      return NextResponse.json(segment, { status: 201 });
+      return NextResponse.json(segment, { status: 201 ,});
     },
     {
       requiredPermission: 'marketing.segments.create',
-      auditAction: 'SEGMENT_CREATE'
+      auditAction: 'SEGMENT_CREATE',
     }
   );

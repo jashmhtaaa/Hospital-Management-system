@@ -34,7 +34,7 @@ const inventoryRepository = {
  * GET /api/pharmacy/inventory/expiring;
  * List medications approaching expiry date;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -70,7 +70,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -84,7 +84,7 @@ export const GET = async (req: any) => {
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria;
-    const filter: unknown = { daysThreshold };
+    const filter: unknown = { daysThreshold ,};
     if (!session.user)ilter.locationId = locationId;
     if (!session.user)ilter.medicationId = medicationId;
 
@@ -110,13 +110,13 @@ export const GET = async (req: any) => {
     // Group by expiry timeframe for reporting;
     const expiryGroups = {
       expired: filteredItems.filter(item => new Date(item.expiryDate) < .length,
-      next30Days: filteredItems.filter(item => {
+      next30Days: filteredItems.filter(item => {,
         const expiryDate = new Date(item.expiryDate),
         const thirtyDaysFromNow = new Date();
         thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
         return expiryDate >= new Date() && expiryDate <= thirtyDaysFromNow;
       }).length,
-      next90Days: filteredItems.filter(item => {
+      next90Days: filteredItems.filter(item => {,
         const expiryDate = new Date(item.expiryDate),
         const thirtyDaysFromNow = new Date();
         thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
@@ -148,7 +148,7 @@ export const GET = async (req: any) => {
         limit,
         total,
         pages: Math.ceil(total / limit);
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving expiring medications");
 

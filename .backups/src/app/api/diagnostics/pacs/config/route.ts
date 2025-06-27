@@ -20,7 +20,7 @@ import {  type
  * GET /api/diagnostics/pacs/config;
  * Get PACS configuration settings;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
  } from "@/lib/database" catch (error) {
   console.error(error);
@@ -56,12 +56,12 @@ export const GET = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Cache key;
@@ -119,7 +119,7 @@ export const GET = async (request: any) => {
     return NextResponse.json({
       error: "Failed to fetch PACS configuration",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -127,7 +127,7 @@ export const GET = async (request: any) => {
  * POST /api/diagnostics/pacs/config;
  * Create or update PACS configuration;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -163,12 +163,12 @@ export const POST = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Parse request body;
@@ -192,7 +192,7 @@ export const POST = async (request: any) => {
     if (!session.user) {
       return NextResponse.json({
         error: "AE Title, hostname, and port are required";
-      }, { status: 400 });
+      }, { status: 400 ,});
     }
 
     // Encrypt sensitive data;
@@ -280,13 +280,13 @@ export const POST = async (request: any) => {
     return NextResponse.json({
       config,
       connectionTest;
-    }, { status: 201 });
+    }, { status: 201 ,});
   } catch (error) {
 
     return NextResponse.json({
       error: "Failed to create PACS configuration",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -294,7 +294,7 @@ export const POST = async (request: any) => {
  * POST /api/diagnostics/pacs/config/test;
  * Test PACS connection;
  */;
-export const _POST_TEST = async (request: any) => {
+export const _POST_TEST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -330,11 +330,11 @@ export const _POST_TEST = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     // Parse request body;
     const body = await request.json();
@@ -363,7 +363,7 @@ export const _POST_TEST = async (request: any) => {
       if (!session.user) {
         return NextResponse.json({
           error: "No active PACS configuration found";
-        }, { status: 404 });
+        }, { status: 404 ,});
 
       const config = configResult.results[0];
 
@@ -378,7 +378,7 @@ export const _POST_TEST = async (request: any) => {
       if (!session.user) {
         return NextResponse.json({
           error: "AE Title, hostname, and port are required";
-        }, { status: 400 });
+        }, { status: 400 ,});
 
       connectionParams = {
         aetitle,
@@ -395,7 +395,7 @@ export const _POST_TEST = async (request: any) => {
     await auditLog({
       userId: session.user.id,
       "pacs_connection",
-      details: {
+      details: {,
         useExisting,
         success: connectionTest.success;
 
@@ -407,7 +407,7 @@ export const _POST_TEST = async (request: any) => {
     return NextResponse.json({
       error: "Failed to test PACS connection",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
 
 /**;
  * Helper function to test PACS connection;

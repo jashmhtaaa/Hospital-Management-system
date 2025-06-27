@@ -13,24 +13,24 @@ const LoginSchema = z.object({
   identifier: z.string().min(1, "Username or email is required"), // Can be username or email
   password: z.string().min(1, "Password is required"),
 });
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
   try {
     const body = await request.json();
     const validation = LoginSchema.safeParse(body);
 
-    \1 {\n  \2{
-      return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+     {\n  {
+      return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
         status: 400,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" ,},
       });
     }
 
     const { identifier, password } = validation.data;
 
-    const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
-    const DB = context.env.DB; // FIX: Access DB via context.env
+    const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic,
+    const DB = context.env.DB; // FIX: Access DB via context.env,
 
-    \1 {\n  \2{
+     {\n  {
         throw new Error("Database binding not found in Cloudflare environment.");
     }
 
@@ -45,25 +45,25 @@ export const _POST = async (request: Request) => {
       // Define the expected result type more accurately
       .first<
           userId: number,
-          \1,\2 string,
-          \1,\2 string | null,
-          \1,\2 boolean,
+           string,
+           string | null,
+           boolean,
           roleName: string>();
 
-    \1 {\n  \2{
-      return new Response(JSON.stringify({ error: "Invalid credentials or user inactive" }), {
+     {\n  {
+      return new Response(JSON.stringify({ error: "Invalid credentials or user inactive" ,}), {
         status: 401, // Unauthorized
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" ,},
       });
     }
 
     // 2. Compare password
     const isPasswordValid = await comparePassword(password, userResult.password_hash);
 
-    \1 {\n  \2{
-      return new Response(JSON.stringify({ error: "Invalid credentials" }), {
+     {\n  {
+      return new Response(JSON.stringify({ error: "Invalid credentials" ,}), {
         status: 401, // Unauthorized
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json" ,},
       });
     }
 
@@ -73,10 +73,10 @@ export const _POST = async (request: Request) => {
 
     // Prepare user data for session (exclude sensitive info)
     // Initialize permissions as empty array for now
-    const sessionUser: User = {
+    const sessionUser: User = {,
         userId: userResult.userId,
-        \1,\2 userResult.email,
-        \1,\2 userResult.roleId,
+         userResult.email,
+         userResult.roleId,
         roleName: userResult.roleName, // Include roleName from query
         isActive: userResult.isActive,
         permissions: [], // Initialize permissions as empty array
@@ -86,16 +86,16 @@ export const _POST = async (request: Request) => {
     await session.save();
 
     // 4. Return success response (maybe with user info, excluding sensitive data)
-    return new Response(JSON.stringify({ message: "Login successful", user: sessionUser }), {
+    return new Response(JSON.stringify({ message: "Login successful", user: sessionUser ,}), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" ,},
     })
 
   } catch (error) {
 
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-    return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+    return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
       status: 500,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" ,},
     });
   }

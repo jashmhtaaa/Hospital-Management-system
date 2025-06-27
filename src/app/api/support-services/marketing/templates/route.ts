@@ -3,13 +3,13 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {  TemplateService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {authOptions  } from "next/server"
+import {getServerSession  } from "next/server"
+import {TemplateService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
 
 const templateService = new TemplateService();
 
@@ -17,10 +17,10 @@ const templateService = new TemplateService();
  * GET /api/support-services/marketing/templates;
  * Get all templates with optional filtering;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -51,10 +51,10 @@ export const GET = async (request: any) => {
  * POST /api/support-services/marketing/templates;
  * Create a new template;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -63,7 +63,7 @@ export const POST = async (request: any) => {
         session?.user?.id as string;
       );
 
-      return NextResponse.json(template, {status:201 });
+      return NextResponse.json(template, {status:201 ,});
     },
     {requiredPermission:"marketing.templates.create",
       auditAction: "TEMPLATE_CREATE";

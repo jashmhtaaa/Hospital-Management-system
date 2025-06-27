@@ -64,7 +64,7 @@ import "date-fns"
 import { format }
 import { toast }
 
-export default const _AssetDetail = ({ params }: { id: string }) {
+export default const _AssetDetail = ({ params }: {id:string }) {
   const router = useRouter();
   const [asset, setAsset] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -120,8 +120,7 @@ export default const _AssetDetail = ({ params }: { id: string }) {
         setAsset(data);
       } catch (err) {
         setError(err.message),
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       } finally ;
@@ -170,22 +169,19 @@ export default const _AssetDetail = ({ params }: { id: string }) {
 
 } catch (error) {
 
-      const response = await fetch(`/api/hr/assets/${params.id}`, {
-        method: "DELETE";
+      const response = await fetch(`/api/hr/assets/${params.id}`, {method:"DELETE";
       });
 
       if (!session.user) {
         throw new Error("Failed to delete asset");
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Asset has been deleted";
       });
 
       router.push("/dashboard/hr/assets");
     } catch (err) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -226,8 +222,7 @@ export default const _AssetDetail = ({ params }: { id: string }) {
   // Format currency;
   const formatCurrency = (amount: unknown) => {
     if (!session.user)eturn "—";
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
+    return new Intl.NumberFormat("en-US", {style:"currency",
       currency: "USD";
     }).format(amount);
   };

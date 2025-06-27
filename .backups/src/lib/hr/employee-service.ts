@@ -82,8 +82,8 @@ const prisma = new PrismaClient();
    * Get employee by ID with related data;
    * Enhanced with caching for improved performance;
    */;
-  async getEmployeeById(id: string) {
-    const cacheKey = `${this.CACHE_PREFIX}id:${id}`;
+  async getEmployeeById(id: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}id:${id,}`;
 
     // Try to get from cache first;
     const cachedEmployee = await cache.get(cacheKey);
@@ -92,7 +92,7 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const employee = await prisma.employee.findUnique({
-      where: { id },
+      where: { id ,},
       true,
         {
             position: true;
@@ -116,8 +116,8 @@ const prisma = new PrismaClient();
    * Get employee by employee ID with related data;
    * Enhanced with caching for improved performance;
    */;
-  async getEmployeeByEmployeeId(employeeId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}employeeId:${employeeId}`;
+  async getEmployeeByEmployeeId(employeeId: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}employeeId:${employeeId,}`;
 
     // Try to get from cache first;
     const cachedEmployee = await cache.get(cacheKey);
@@ -126,7 +126,7 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const employee = await prisma.employee.findUnique({
-      where: { employeeId },
+      where: { employeeId ,},
       true,
         {
             position: true;

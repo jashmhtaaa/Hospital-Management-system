@@ -69,17 +69,16 @@ const formSchema = z.object({
   mealPreferences: z.array(z.string()).default([]),
   dietaryRestrictions: z.array(z.string()).default([]),
   allergies: z.array(z.string()).default([]),
-  specialInstructions: z.string().max(1000, { message: "Special instructions must not exceed 1000 characters" }).optional()});
+  specialInstructions: z.string().max(1000, {message:"Special instructions must not exceed 1000 characters" }).optional()});
 
 type FormValues = z.infer>;
 
-interface Patient {
-  id: string,
+interface Patient {id:string,
   name: string;
 }
 
 interface DietaryRequestFormProps {
-  onSuccess?: () => void;
+    onSuccess?: () => void;
   initialData?: unknown;
   isEditing?: boolean;
 }
@@ -136,8 +135,7 @@ export const _DietaryRequestForm = ({ onSuccess,
   const router = useRouter();
 
   // Initialize the form with react-hook-form;
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues>({resolver:zodResolver(formSchema),
     [],
       [],
       specialInstructions: "";
@@ -184,8 +182,7 @@ export const _DietaryRequestForm = ({ onSuccess,
         setPatients(data);
       } catch (error) {
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       }
@@ -248,8 +245,7 @@ export const _DietaryRequestForm = ({ onSuccess,
       if (!session.user) {
         throw new Error("Failed to submit request");
 
-      toast({
-        title: isEditing ? "Request Updated" : "Request Created",
+      toast({title:isEditing ? "Request Updated" : "Request Created",
         description: isEditing;
           ? "The dietary request has been updated successfully.";
           : "Your dietary request has been submitted successfully."});
@@ -262,8 +258,7 @@ export const _DietaryRequestForm = ({ onSuccess,
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

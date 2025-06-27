@@ -224,8 +224,7 @@ export const _HousekeepingDashboard = () => {
         setTotalPages(data.pagination.totalPages);
       } catch (error) {
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       } finally ;

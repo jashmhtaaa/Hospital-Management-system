@@ -48,8 +48,7 @@ import { Select
 import { Textarea }
 import { useToast }
 
-interface DocumentSection {
-  id: string,
+interface DocumentSection {id:string,
   string,
   number,
   string,
@@ -60,8 +59,7 @@ interface DocumentSection {
   updatedAt: string;
 }
 
-interface DocumentSignature {
-  id: string,
+interface DocumentSignature {id:string,
   string,
   string,
   signatureType: string;
@@ -72,8 +70,7 @@ interface DocumentSignature {
   createdAt: string;
 }
 
-interface DocumentAmendment {
-  id: string,
+interface DocumentAmendment {id:string,
   string,
   string,
   string,
@@ -84,8 +81,7 @@ interface DocumentAmendment {
   updatedAt: string;
 }
 
-interface Document {
-  id: string,
+interface Document {id:string,
   string;
   encounterId?: string;
   documentType: string,
@@ -103,8 +99,7 @@ interface Document {
   amendments: DocumentAmendment[];
 }
 
-interface DocumentViewerProps {
-  documentId: string;
+interface DocumentViewerProps {documentId:string;
 export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -115,13 +110,11 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const [activeTab, setActiveTab] = useState("content");
   const [signatureDialogOpen, setSignatureDialogOpen] = useState(false);
   const [amendmentDialogOpen, setAmendmentDialogOpen] = useState(false);
-  const [signatureData, setSignatureData] = useState({
-    signerRole: "",
+  const [signatureData, setSignatureData] = useState({signerRole:"",
     "",
     false;
   });
-  const [amendmentData, setAmendmentData] = useState({
-    amendmentType: "Addendum",
+  const [amendmentData, setAmendmentData] = useState({amendmentType:"Addendum",
     "",
     status: "Draft";
   });
@@ -173,8 +166,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       setDocument(data);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -223,8 +215,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
 } catch (error) {
 
-      const response = await fetch(`/api/clinical-documentation/${documentId}/sign`, {
-        method: "POST",
+      const response = await fetch(`/api/clinical-documentation/${documentId}/sign`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(signatureData);
@@ -234,15 +225,13 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to sign document");
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Document signed successfully";
       });
 
       // Close dialog and reset form;
       setSignatureDialogOpen(false),
-      setSignatureData({
-        signerRole: "",
+      setSignatureData({signerRole:"",
         "",
         false;
       });
@@ -251,8 +240,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       fetchDocument();
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -296,8 +284,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
 } catch (error) {
 
-      const response = await fetch(`/api/clinical-documentation/${documentId}/amend`, {
-        method: "POST",
+      const response = await fetch(`/api/clinical-documentation/${documentId}/amend`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(amendmentData);
@@ -307,15 +294,13 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to create amendment");
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Amendment created successfully";
       });
 
       // Close dialog and reset form;
       setAmendmentDialogOpen(false),
-      setAmendmentData({
-        amendmentType: "Addendum",
+      setAmendmentData({amendmentType:"Addendum",
         "",
         status: "Draft";
       });
@@ -324,8 +309,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       fetchDocument();
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

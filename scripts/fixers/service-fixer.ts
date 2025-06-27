@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
 
-export function createServiceFixer(context: ts.TransformationContext) {
-  return (sourceFile: ts.SourceFile) => {
-    const visitor = (node: ts.Node): ts.Node => {
+export function createServiceFixer(context: ts.TransformationContext) {,
+  return (sourceFile: ts.SourceFile) => {,
+    const visitor = (node: ts.Node): ts.Node => {,
       // Fix missing try-catch for service methods
       if (ts.isMethodDeclaration(node) && 
           node.body && 

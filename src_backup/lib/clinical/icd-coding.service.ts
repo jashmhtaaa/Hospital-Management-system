@@ -80,7 +80,7 @@ export type CodingResult = z.infer>;
   /**;
    * Search ICD codes with advanced filtering;
    */;
-  async searchCodes(options: ICDSearchOptions): Promise<ICDCode[]> {
+  async searchCodes(options: ICDSearchOptions): Promise<ICDCode[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -277,7 +277,7 @@ export type CodingResult = z.infer>;
 
 } catch (error) {
 
-      const searchResults = await this.searchCodes({ query: code, version, limit: 1 });
+      const searchResults = await this.searchCodes({ query: code, version, limit: 1 ,});
       const foundCode = searchResults.find(c => c.code === code);
 
       const result = {
@@ -289,7 +289,7 @@ export type CodingResult = z.infer>;
       if (!session.user) {
         result.validationErrors.push("Code not found in database");
         // Suggest similar codes;
-        const similarCodes = await this.searchCodes({ query: code.substring(0, 3), version, limit: 5 });
+        const similarCodes = await this.searchCodes({ query: code.substring(0, 3), version, limit: 5 ,});
         result.suggestions = similarCodes.map(c => c.code);
       } else if (!session.user) {
         result.validationErrors.push("Code is no longer valid");
@@ -310,7 +310,7 @@ export type CodingResult = z.infer>;
   /**;
    * Submit coding request;
    */;
-  async submitCodingRequest(request: CodingRequest): Promise<string> {
+  async submitCodingRequest(request: CodingRequest): Promise<string> {,
     try {
 } catch (error) {
   console.error(error);
@@ -492,7 +492,7 @@ export type CodingResult = z.infer>;
   /**;
    * Get coding statistics and metrics;
    */;
-  async getCodingMetrics(dateRange: { from: Date, to: Date }): Promise>;
+  async getCodingMetrics(dateRange: { from: Date, to: Date ,}): Promise>;
     number,
       number;
   }> {

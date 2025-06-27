@@ -19,7 +19,7 @@ interface RadiologyReportPostData {
 // Interface for GET response items (adjust based on actual query results)
 interface RadiologyReportListItem {
   id: string,
-  study_id: string
+  study_id: string,
   report_datetime: string,
   status: string;
   accession_number?: string;
@@ -31,17 +31,17 @@ interface RadiologyReportListItem {
 }
 
 // GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status)
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
+    const session: IronSession<IronSessionData> = await getSession(),
     // Check session and user existence first
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Role check example (adjust roles as needed)
-    // \1 {\n  \2 {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    //  {\n   {
+    //   return NextResponse.json({ error: "Forbidden" ,}, { status: 403 }),
     // }
 
     const { searchParams } = new URL(request.url)
@@ -70,61 +70,61 @@ export const _GET = async (request: NextRequest) => {
     const parameters: string[] = [];
     const conditions: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("rr.study_id = ?");
       parameters.push(studyId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("ro.patient_id = ?");
       parameters.push(patientId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("rr.radiologist_id = ?");
       parameters.push(radiologistId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("rr.status = ?");
       parameters.push(status);
     }
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY rr.report_datetime DESC";
 
     // Use direct type argument for .all() if supported, or assert structure
-    // Assuming .all<T>() returns { results: T[] }
+    // Assuming .all<T>() returns { results: T[] },
     const result = await database
       .prepare(query);
       .bind(...parameters);
       .all<RadiologyReportListItem>();
     return NextResponse.json(result.results || []);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json(
-      { error: "Failed to fetch radiology reports", details: message },
-      { status: 500 }
+      { error: "Failed to fetch radiology reports", details: message ,},
+      { status: 500 },
     );
   }
 }
 
 // POST a new Radiology Report (Radiologist or Admin)
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
+    const session: IronSession<IronSessionData> = await getSession(),
     // Check session and user existence first
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Use the user directly from session
     const currentUser = session.user;
     // Use roleName for check
-    \1 {\n  \2eturn NextResponse.json(
-        { error: "Forbidden: Admin or Radiologist role required" },
-        { status: 403 }
+     {\n  eturn NextResponse.json(
+        { error: "Forbidden: Admin or Radiologist role required" ,},
+        { status: 403 },
       );
 
     const database = await getDB();
@@ -138,12 +138,12 @@ export const _POST = async (request: NextRequest) => {
       status,
     } = (await request.json()) as RadiologyReportPostData;
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           error: "Missing required fields (study_id, radiologist_id, impression)",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -153,17 +153,17 @@ export const _POST = async (request: NextRequest) => {
       .prepare("SELECT id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
       .first<id: string >();
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Associated radiology study not found" },
-        { status: 404 }
+        { error: "Associated radiology study not found" ,},
+        { status: 404 },
       );
     }
 
     // Check if a report already exists for this study (optional, depends on workflow - allow addendums?)
     // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != \'addendum\'").bind(study_id).first()
-    // \1 {\n  \2{
-    //     return NextResponse.json({ error: "A report already exists for this study. Create an addendum instead?" }, { status: 409 })
+    //  {\n  {
+    //     return NextResponse.json({ error: "A report already exists for this study. Create an addendum instead?" ,}, { status: 409 }),
     // }
 
     const id = nanoid()
@@ -202,7 +202,7 @@ export const _POST = async (request: NextRequest) => {
       .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
       .first<order_id: string >();
-    \1 {\n  \2{
+     {\n  {
       await database;
         .prepare(
           "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -219,25 +219,25 @@ export const _POST = async (request: NextRequest) => {
       .first<RadiologyReportListItem>(); // Use existing interface
 
     return NextResponse.json(
-      createdReport || { id, message: "Radiology report created" },
-      { status: 201 }
+      createdReport || { id, message: "Radiology report created" ,},
+      { status: 201 },
     );
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     // Provide more specific error details if possible
-    \1 {\n  \2
+     {\n  
     ) 
       return NextResponse.json(
         {
           error: "Failed to create radiology report: A report for this study might already exist.",
-          details: message
+          details: message,
         },
-        { status: 409 }
+        { status: 409 },
       );
     return NextResponse.json(
-      { error: "Failed to create radiology report", details: message },
-      { status: 500 }
+      { error: "Failed to create radiology report", details: message ,},
+      { status: 500 },
     );
   }

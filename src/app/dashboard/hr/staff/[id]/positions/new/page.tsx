@@ -57,22 +57,20 @@ import { useForm }
 import { zodResolver }
 
 // Form schema for position assignment;
-const positionAssignmentSchema = z.object({
-  positionId: z.string().min(1, "Position is required"),
+const positionAssignmentSchema = z.object({positionId:z.string().min(1, "Position is required"),
   isPrimary: z.boolean().default(false),
   startDate: z.date(),
   endDate: z.date().optional();
 });
 
-export default const _AssignPosition = ({ params }: { id: string }) {
+export default const _AssignPosition = ({ params }: {id:string }) {
   const router = useRouter();
   const [positions, setPositions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [employee, setEmployee] = useState<any | null>(null);
 
   // Initialize form;
-  const form = useForm({
-    resolver: zodResolver(positionAssignmentSchema),
+  const form = useForm({resolver:zodResolver(positionAssignmentSchema),
     "",
       new Date(),
       endDate: undefined;
@@ -127,8 +125,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
 
       } catch (err) {
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
 
@@ -179,8 +176,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
         startDate: format(data.startDate, "yyyy-MM-dd"),
         endDate: data.endDate ? format(data.endDate, "yyyy-MM-dd") : undefined};
 
-      const response = await fetch(`/api/hr/staff/${params.id}/positions`, {
-        method: "POST",
+      const response = await fetch(`/api/hr/staff/${params.id}/positions`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(formattedData);
@@ -190,16 +186,14 @@ export default const _AssignPosition = ({ params }: { id: string }) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to assign position");
 
-      toast({
-        title: "Position Assigned",
+      toast({title:"Position Assigned",
         description: "Successfully assigned position to employee";
       });
 
       // Navigate back to employee profile;
       router.push(`/dashboard/hr/staff/${}`;
     } catch (error) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

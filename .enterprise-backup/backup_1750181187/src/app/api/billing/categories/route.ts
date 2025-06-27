@@ -24,15 +24,15 @@ export const GET = async () => {
       "Other",
     ];
 
-    return NextResponse.json({ categories: mockCategories });
+    return NextResponse.json({ categories: mockCategories ,});
   } catch (error) {
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+     {\n  {
       errorMessage = error.message;
     }
     return NextResponse.json(
-      { error: "Failed to fetch categories", details: errorMessage }, // Safely access error message
-      { status: 500 }
+      { error: "Failed to fetch categories", details: errorMessage ,}, // Safely access error message
+      { status: 500 },
     );
   }

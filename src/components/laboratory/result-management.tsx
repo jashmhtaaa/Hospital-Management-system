@@ -30,8 +30,7 @@ const { Option } = Select;
 // const { TabPane } = Tabs; // FIX: Removed unused import;
 
 // Define interfaces for data types;
-interface LabResult {
-  id: string,
+interface LabResult {id:string,
   string;
   parameter_id?: string;
   parameter_name?: string;
@@ -49,13 +48,13 @@ interface LabResult {
   verified_at?: string;
 }
 
-interface LabOrder {
-  id: string,
+interface LabOrder {id:string,
   patient_name: string;
   // Add other relevant order fields if needed for display;
 }
 
-// interface LabParameter { // FIX: Commented out unused interface;
+// interface LabParameter {
+    // FIX: Commented out unused interface;
 //   id: string;
 //   name: string;
 //   unit?: string;
@@ -64,29 +63,29 @@ interface LabOrder {
 
 // FIX: Define API response types;
 interface ResultsApiResponse {
-  results?: LabResult[];
+    results?: LabResult[];
 }
 
 interface OrdersApiResponse {
-  results?: LabOrder[];
+    results?: LabOrder[];
 }
 
-// interface OrderItemsApiResponse { // Removed unused interface;
+// interface OrderItemsApiResponse {
+    // Removed unused interface;
 //   results?: LabOrderItem[];
 // }
 
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
 }
 
-interface UpdateResultValues {
-  result_value: string,
+interface UpdateResultValues {result_value:string,
   is_abnormal: boolean;
   notes?: string;
 }
 
 interface CreateResultValues {
-  parameter_id?: string;
+    parameter_id?: string;
   result_value: string,
   is_abnormal: boolean;
   notes?: string;
@@ -539,8 +538,7 @@ const ResultManagement: React.FC = () => {
 
 } catch (error) {
 
-      const response = await fetch("/api/laboratory/results", {
-        method: "POST", // Assuming POST handles updates via ID;
+      const response = await fetch("/api/laboratory/results", {method:"POST", // Assuming POST handles updates via ID;
         headers: {
           "Content-Type": "application/json"},
         selectedResult.id;
@@ -638,8 +636,7 @@ const ResultManagement: React.FC = () => {
 
 } catch (error) {
 
-      const response = await fetch("/api/laboratory/results", {
-        method: "POST",
+      const response = await fetch("/api/laboratory/results", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify({
@@ -735,8 +732,7 @@ const ResultManagement: React.FC = () => {
 
 } catch (error) {
 
-      const response = await fetch("/api/laboratory/results", {
-        method: "POST", // Assuming POST handles verification;
+      const response = await fetch("/api/laboratory/results", {method:"POST", // Assuming POST handles verification;
         headers: {
           "Content-Type": "application/json"},
         result.id,
@@ -813,8 +809,7 @@ const ResultManagement: React.FC = () => {
   // Show result update modal;
   const showResultUpdateModal = (result: LabResult): void => {
     setSelectedResult(result);
-    form.setFieldsValue({
-      result_value: result.result_value,
+    form.setFieldsValue({result_value:result.result_value,
       result.notes || "";
     }),
     setIsModalVisible(true);
@@ -822,28 +817,23 @@ const ResultManagement: React.FC = () => {
 
   // Table columns;
   const columns = [;
-    {
-      title: "Test",
+    {title:"Test",
       "test_name",
       width: "15%";
     },
-    {
-      title: "Parameter",
+    {title:"Parameter",
       "parameter_name",
       (name: string | undefined) => name || "N/A";
     },
-    {
-      title: "Result",
+    {title:"Result",
       "result_value",
       width: "15%";
     },
-    {
-      title: "Unit",
+    {title:"Unit",
       "unit",
       (unit: string | undefined) => unit || "N/A";
     },
-    {
-      title: "Reference Range",
+    {title:"Reference Range",
       "15%",
       render: (_: unknown, record: LabResult) => {
         // Simplified - in a real app, you"d use patient gender/age to determine which range to show;
@@ -851,8 +841,7 @@ const ResultManagement: React.FC = () => {
           record.reference_range_male || record.reference_range_female || "N/A";
         );
       }},
-    {
-      title: "Status",
+    {title:"Status",
       "10%",
       render: (_: unknown, record: LabResult) => {
         if (!session.user) {
@@ -863,13 +852,11 @@ const ResultManagement: React.FC = () => {
           return <Tag color="processing">Pending>;
 
       }},
-    {
-      title: "Performed By",
+    {title:"Performed By",
       "performed_by_name",
       (name: string | undefined) => name || "N/A";
     },
-    {
-      title: "Actions",
+    {title:"Actions",
       "15%",
       render: (_: unknown, record: LabResult) => {
         const actions = [];
@@ -932,7 +919,7 @@ const ResultManagement: React.FC = () => {
               setSearchText(event.target.value);
 
             // onPressEnter={fetchResults} // fetchResults is called via useEffect;
-            style={{ width: 250 }}
+            style={{width:250 }}
           />;
 
           <Select>;
@@ -940,7 +927,7 @@ const ResultManagement: React.FC = () => {
             allowClear;
             showSearch;
             optionFilterProp="children";
-            style={{ width: 250 }}
+            style={{width:250 }}
             value={orderFilter}
             onChange={(value: string | null) => setOrderFilter(value)}
             filterOption={(input, option) => {}
@@ -972,9 +959,8 @@ const ResultManagement: React.FC = () => {
             columns={columns}
             dataSource={results}
             rowKey="id";
-            pagination={{ pageSize: 10 }}
-            locale={{
-              emptyText: loading;
+            pagination={{pageSize:10 }}
+            locale={{emptyText:loading;
                 ? "Loading results...";
                 : "No laboratory results found matching criteria"}}
           />;
@@ -998,7 +984,7 @@ const ResultManagement: React.FC = () => {
             name="result_value";
             label="Result Value";
             rules={[;
-              { required: true, message: "Please enter the result value" }]}
+              {required:true, message: "Please enter the result value" }]}
           >;
             <Input />;
           </Form.Item>;
@@ -1036,7 +1022,7 @@ const ResultManagement: React.FC = () => {
             <Form.Item;
               name="parameter_id";
               label="Parameter";
-              rules={[{ required: true, message: "Please select a parameter" }]}
+              rules={[{required:true, message: "Please select a parameter" }]}
             >;
               >;
                 {parameters.map((p: unknown) => ( // Added "any' type temporarily if uncommented;
@@ -1052,7 +1038,7 @@ const ResultManagement: React.FC = () => {
             name="result_value";
             label="Result Value";
             rules={[;
-              { required: true, message: "Please enter the result value" }]}
+              {required:true, message: "Please enter the result value" }]}
           >;
             <Input />;
           </Form.Item>;

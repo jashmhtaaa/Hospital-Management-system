@@ -11,12 +11,12 @@ import { prisma } from './connection-pool.ts';
  */
 
 // Query optimization patterns for common scenarios
-\1
+
 }
   }
 
   public static getInstance(): QueryOptimizer {
-    \1 {\n  \2{
+     {\n  {
       QueryOptimizer.instance = new QueryOptimizer();
     }
     return QueryOptimizer.instance;
@@ -26,90 +26,90 @@ import { prisma } from './connection-pool.ts';
    * OPTIMIZED PATIENT QUERIES (Addresses N+1 issues #1-8)
    */
 
-  // Instead of: patients.forEach(p => getBillsForPatient(p.id))
+  // Instead of: patients.forEach(p => getBillsForPatient(p.id)),
   async getPatientsWithBills(filters?: {
     active?: boolean
     limit?: number;
     offset?: number;
   }) {
-    const cacheKey = `patients_with_bills:${JSON.stringify(filters)}`;
+    const cacheKey = `patients_with_bills:${JSON.stringify(filters),}`;
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+     {\n  eturn cached;
 
     const result = await this.client.patient.findMany({
-      where: {
-        isActive: filters?.active ?? true
+      where: {,
+        isActive: filters?.active ?? true,
       },
-      include: {
-        bills: {
-          select: {
+      include: {,
+        bills: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
-            billDate: true
+             true,
+             true,
+            billDate: true,
           },
-          orderBy: { billDate: 'desc' },
+          orderBy: { billDate: 'desc' ,},
           take: 10, // Limit related records
         },
-        _count: {
+        _count: {,
             bills: true,
-            \1,\2 true,
+             true,
         },
       },
       take: filters?.limit ?? 50,
       skip: filters?.offset ?? 0;
-      { createdAt: 'desc' },
+      { createdAt: 'desc' ,},
     });
 
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes
     return result;
   }
 
-  // Instead of: patients.forEach(p => getAppointmentsForPatient(p.id))
-  async getPatientsWithUpcomingAppointments(days: number = 30) {
-    const cacheKey = `patients_upcoming_appointments:${days}`
+  // Instead of: patients.forEach(p => getAppointmentsForPatient(p.id)),
+  async getPatientsWithUpcomingAppointments(days: number = 30) {,
+    const cacheKey = `patients_upcoming_appointments:${days}`,
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+     {\n  eturn cached;
 
     const futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + days);
 
     const result = await this.client.patient.findMany({
-      where: {
+      where: {,
         isActive: true,
-        appointments: {
-          some: {
-            appointmentDate: {
+        appointments: {,
+          some: {,
+            appointmentDate: {,
               gte: new Date(),
-              lte: futureDate
+              lte: futureDate,
             },
-            status: {
+            status: {,
               in: ['SCHEDULED', 'CONFIRMED'],
             },
           },
         },
       },
-      include: {
-        appointments: {
-          where: {
-            appointmentDate: {
+      include: {,
+        appointments: {,
+          where: {,
+            appointmentDate: {,
               gte: new Date(),
-              lte: futureDate
+              lte: futureDate,
             },
-            status: {
+            status: {,
               in: ['SCHEDULED', 'CONFIRMED'],
             },
           },
-          select: {
+          select: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true
+             true,
+             true,
+             true
           },
-          orderBy: { appointmentDate: 'asc' },
+          orderBy: { appointmentDate: 'asc' ,},
         },
       },
-      orderBy: { lastName: 'asc' },
+      orderBy: { lastName: 'asc' ,},
     });
 
     await cache.set(cacheKey, result, 600); // Cache for 10 minutes
@@ -120,7 +120,7 @@ import { prisma } from './connection-pool.ts';
    * OPTIMIZED BILLING QUERIES (Addresses N+1 issues #9-15)
    */
 
-  // Instead of: bills.forEach(b => getBillItemsForBill(b.id))
+  // Instead of: bills.forEach(b => getBillItemsForBill(b.id)),
   async getBillsWithItems(filters?: {
     patientId?: string
     status?: string;
@@ -129,37 +129,37 @@ import { prisma } from './connection-pool.ts';
     limit?: number;
   }) {
     const result = await this.client.bill.findMany({
-      where: {
-        ...(filters?.patientId && { patientId: filters.patientId }),
-        ...(filters?.status && { status: filters.status as any }),
+      where: {,
+        ...(filters?.patientId && { patientId: filters.patientId ,}),
+        ...(filters?.status && { status: filters.status as any ,}),
         ...(filters?.dateFrom && {
-          billDate: {
+          billDate: {,
             gte: filters.dateFrom;
             ...(filters?.dateTo && lte: filters.dateTo ),
           },
         }),
       },
-      include: {
+      include: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,,
-        billItems: 
+             true,
+             true,,
+        billItems: ,
                 id: true,
-                \1,\2 true,
+                 true,
                 category: true,,,
           orderBy: createdAt: 'asc' ,,
-        payments: 
+        payments: ,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
+             true,
+             true,
           orderBy: paymentDate: 'desc' ,,
-        insuranceClaim: 
+        insuranceClaim: ,
             id: true,
-            \1,\2 true,
-            \1,\2 true,,
+             true,
+             true,,
       },
       take: filters?.limit ?? 100,
-      orderBy: { billDate: 'desc' },
+      orderBy: { billDate: 'desc' ,},
     });
 
     return result;
@@ -169,7 +169,7 @@ import { prisma } from './connection-pool.ts';
   async getOutstandingBillsSummary() {
     const cacheKey = 'outstanding_bills_summary';
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+     {\n  eturn cached;
 
     // Use raw SQL for better performance on aggregations
     const result = await this.client.$queryRaw`;
@@ -190,7 +190,7 @@ import { prisma } from './connection-pool.ts';
    * OPTIMIZED APPOINTMENT QUERIES (Addresses N+1 issues #16-22)
    */
 
-  // Instead of: appointments.forEach(a => getPatientForAppointment(a.patientId))
+  // Instead of: appointments.forEach(a => getPatientForAppointment(a.patientId)),
   async getAppointmentsWithDetails(filters?: {
     doctorId?: string
     date?: Date;
@@ -198,28 +198,28 @@ import { prisma } from './connection-pool.ts';
     departmentId?: string;
   }) {
     const result = await this.client.appointment.findMany({
-      where: {
-        ...(filters?.doctorId && { doctorId: filters.doctorId }),
-        ...(filters?.departmentId && { departmentId: filters.departmentId }),
-        ...(filters?.status && { status: filters.status as any }),
+      where: {,
+        ...(filters?.doctorId && { doctorId: filters.doctorId ,}),
+        ...(filters?.departmentId && { departmentId: filters.departmentId ,}),
+        ...(filters?.status && { status: filters.status as any ,}),
         ...(filters?.date && {
-          appointmentDate: {
+          appointmentDate: {,
             gte: filters.date,
-            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000)
+            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000),
           },
         }),
       },
-      include: {
-        patient: {
-          select: {
+      include: {,
+        patient: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true
+             true,
+             true,
+             true
           },
         },
       },
-      orderBy: { startTime: 'asc' },
+      orderBy: { startTime: 'asc' ,},
     });
 
     return result;
@@ -228,33 +228,33 @@ import { prisma } from './connection-pool.ts';
   // Doctor's schedule optimization
   async getDoctorScheduleOptimized(
     doctorId: string,
-    \1,\2 Date;
+     Date;
   ) {
-    const cacheKey = `doctor_schedule:${doctorId}:${startDate.toISOString()}:${endDate.toISOString()}`;
+    const cacheKey = `doctor_schedule:${doctorId}:${startDate.toISOString()}:${endDate.toISOString(),}`;
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+     {\n  eturn cached;
 
     const result = await this.client.appointment.findMany({
-      where: {
+      where: {,
         doctorId,
-        appointmentDate: {
+        appointmentDate: {,
           gte: startDate,
-          lte: endDate
+          lte: endDate,
         },
-        status: {
+        status: {,
           notIn: ['CANCELLED', 'NO_SHOW'],
         },
       },
-      include: {
-        patient: {
-          select: {
+      include: {,
+        patient: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true
+             true,
+             true
           },
         },
       },
-      orderBy: { startTime: 'asc' },
+      orderBy: { startTime: 'asc' ,},
     });
 
     await cache.set(cacheKey, result, 1800); // Cache for 30 minutes
@@ -265,7 +265,7 @@ import { prisma } from './connection-pool.ts';
    * OPTIMIZED IPD QUERIES (Addresses N+1 issues #23-29)
    */
 
-  // Instead of: admissions.forEach(a => getVitalSignsForAdmission(a.id))
+  // Instead of: admissions.forEach(a => getVitalSignsForAdmission(a.id)),
   async getAdmissionsWithDetails(filters?: {
     wardId?: string
     doctorId?: string;
@@ -273,45 +273,45 @@ import { prisma } from './connection-pool.ts';
     limit?: number;
   }) {
     const result = await this.client.admission.findMany({
-      where: {
-        ...(filters?.wardId && { wardId: filters.wardId }),
-        ...(filters?.doctorId && { doctorId: filters.doctorId }),
-        ...(filters?.status && { status: filters.status as any }),
+      where: {,
+        ...(filters?.wardId && { wardId: filters.wardId ,}),
+        ...(filters?.doctorId && { doctorId: filters.doctorId ,}),
+        ...(filters?.status && { status: filters.status as any ,}),
       },
-      include: {
-        patient: {
-          select: {
+      include: {,
+        patient: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
-            allergies: true
+             true,
+             true,
+             true,
+            allergies: true,
           },
         },
-        vitalSigns: {
+        vitalSigns: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+             true,
+             true,
+             true,
             oxygenSaturation: true,
           orderBy: recordedAt: 'desc' ,
           take: 5, // Latest 5 vital signs
         },
-        medications: {
+        medications: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
+             true,
+             true,
           orderBy: administeredAt: 'desc' ,
           take: 10, // Latest 10 medications
         },
-        _count: {
+        _count: {,
             vitalSigns: true,
-            \1,\2 true,
+             true,
             progressNotes: true,
         },
       },
       take: filters?.limit ?? 50,
-      orderBy: { admissionDate: 'desc' },
+      orderBy: { admissionDate: 'desc' ,},
     });
 
     return result;
@@ -321,7 +321,7 @@ import { prisma } from './connection-pool.ts';
   async getWardOccupancyOptimized() {
     const cacheKey = 'ward_occupancy';
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+     {\n  eturn cached;
 
     const result = await this.client.$queryRaw`;
       SELECT;
@@ -343,7 +343,7 @@ import { prisma } from './connection-pool.ts';
    * OPTIMIZED LAB QUERIES (Addresses N+1 issues #30-35)
    */
 
-  // Instead of: labOrders.forEach(o => getLabResultsForOrder(o.id))
+  // Instead of: labOrders.forEach(o => getLabResultsForOrder(o.id)),
   async getLabOrdersWithResults(filters?: {
     patientId?: string
     doctorId?: string;
@@ -352,76 +352,76 @@ import { prisma } from './connection-pool.ts';
     dateTo?: Date;
   }) {
     const result = await this.client.labOrder.findMany({
-      where: {
-        ...(filters?.patientId && { patientId: filters.patientId }),
-        ...(filters?.doctorId && { doctorId: filters.doctorId }),
-        ...(filters?.status && { status: filters.status as any }),
+      where: {,
+        ...(filters?.patientId && { patientId: filters.patientId ,}),
+        ...(filters?.doctorId && { doctorId: filters.doctorId ,}),
+        ...(filters?.status && { status: filters.status as any ,}),
         ...(filters?.dateFrom && {
-          orderDate: {
+          orderDate: {,
             gte: filters.dateFrom;
             ...(filters?.dateTo && lte: filters.dateTo ),
           },
         }),
       },
-      include: {
+      include: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
+             true,
+             true,
             gender: true,,
-        labTests: 
+        labTests: ,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
+             true,
+             true,
             unit: true,,
-        labResults: 
+        labResults: ,
                 id: true,
-                \1,\2 true,
-                \1,\2 true,,,
+                 true,
+                 true,,,
           orderBy: reportedDate: 'desc' ,,
       },
-      orderBy: { orderDate: 'desc' },
+      orderBy: { orderDate: 'desc' ,},
     });
 
     return result;
   }
 
   // Critical lab results optimization
-  async getCriticalLabResults(hours: number = 24) {
-    const cacheKey = `critical_lab_results:${hours}`;
+  async getCriticalLabResults(hours: number = 24) {,
+    const cacheKey = `critical_lab_results:${hours,}`;
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+     {\n  eturn cached;
 
     const sinceDate = new Date(crypto.getRandomValues(new Uint32Array(1))[0] - hours * 60 * 60 * 1000);
 
     const result = await this.client.labResult.findMany({
-      where: {
-        flag: {
+      where: {,
+        flag: {,
           in: ['CRITICAL_HIGH', 'CRITICAL_LOW'],
         },
-        reportedDate: {
-          gte: sinceDate
+        reportedDate: {,
+          gte: sinceDate,
         },
-        status: 'VERIFIED'
+        status: 'VERIFIED',
       },
-      include: {
-        labOrder: {
-          include: {
-            patient: {
-              select: {
+      include: {,
+        labOrder: {,
+          include: {,
+            patient: {,
+              select: {,
                 id: true,
-                \1,\2 true,
-                \1,\2 true
+                 true,
+                 true
               },
             },
           },
         },
-        labTest: {
+        labTest: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
+             true,
+             true,
         },
       },
-      orderBy: { reportedDate: 'desc' },
+      orderBy: { reportedDate: 'desc' ,},
     });
 
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes
@@ -432,48 +432,48 @@ import { prisma } from './connection-pool.ts';
    * OPTIMIZED INSURANCE QUERIES (Addresses N+1 issues #36-37)
    */
 
-  // Instead of: policies.forEach(p => getClaimsForPolicy(p.id))
+  // Instead of: policies.forEach(p => getClaimsForPolicy(p.id)),
   async getInsurancePoliciesWithClaims(patientId?: string) {
     const result = await this.client.insurancePolicy.findMany({
-      where: {
+      where: {,
         ...(patientId && { patientId }),
-        status: 'active'
+        status: 'active',
       },
-      include: {
-        patient: {
-          select: {
+      include: {,
+        patient: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            lastName: true
+             true,
+            lastName: true,
           },
         },
-        insuranceProvider: {
+        insuranceProvider: {,
             id: true,
-            \1,\2 true,
+             true,
             phone: true,
         },
-        claims: {
+        claims: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,
+             true,
+             true,
+             true,
             lastResponseDate: true,
           orderBy: submittedAt: 'desc' ,
           take: 10, // Latest 10 claims
         },
-        verifications: {
+        verifications: {,
             id: true,
-            \1,\2 true,
+             true,
             verifiedBy: true,
           orderBy: verifiedAt: 'desc' ,
           take: 3, // Latest 3 verifications
         },
-        _count: {
+        _count: {,
             claims: true,
             verifications: true,
         },
       },
-      orderBy: { startDate: 'desc' },
+      orderBy: { startDate: 'desc' ,},
     });
 
     return result;
@@ -485,23 +485,23 @@ import { prisma } from './connection-pool.ts';
 
   async bulkUpdateBillStatus(
     billIds: string[],
-    \1,\2 string;
+     string;
   ) {
     return this.client.bill.updateMany({
-      where: {
-        id: { in: billIds },
+      where: {,
+        id: { in: billIds ,},
       },
-      data: {
+      data: {,
         status: status as any,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
     });
   }
 
-  async bulkCreateBillItems(billItems: unknown[]) {
+  async bulkCreateBillItems(billItems: unknown[]) {,
     return this.client.billItem.createMany({
       data: billItems,
-      skipDuplicates: true
+      skipDuplicates: true,
     });
   }
 
@@ -511,16 +511,16 @@ import { prisma } from './connection-pool.ts';
 
   private patientLoader = new Map<string, Promise<unknown>>();
 
-  async getPatientOptimized(patientId: string) {
-    \1 {\n  \2 {
+  async getPatientOptimized(patientId: string) {,
+     {\n   {
       const promise = this.client.patient.findUnique({
-        where: { id: patientId },
-        include: {
-          _count: {
-            select: {
+        where: { id: patientId ,},
+        include: {,
+          _count: {,
+            select: {,
               bills: true,
-              \1,\2 true,
-              labOrders: true
+               true,
+              labOrders: true,
             },
           },
         },
@@ -561,12 +561,12 @@ import { prisma } from './connection-pool.ts';
   async getQueryPerformanceStats() {
     const cacheKey = 'query_performance_stats';
     const cached = await cache.get(cacheKey);
-    \1 {\n  \2eturn cached;
+     {\n  eturn cached;
 
     const stats = {
       totalQueries: 0,
-      \1,\2 0,
-      cacheHitRate: 0
+       0,
+      cacheHitRate: 0,
     };
 
     // This would be populated with actual metrics
@@ -579,7 +579,7 @@ import { prisma } from './connection-pool.ts';
 export const queryOptimizer = QueryOptimizer.getInstance();
 
 // Utility functions for common optimized patterns
-export const _getOptimizedPatientData = async (patientId: string) => {
+export const _getOptimizedPatientData = async (patientId: string) => {,
   return queryOptimizer.getPatientOptimized(patientId)
 export const _getOptimizedBillsForPatient = async (
   patientId: string,

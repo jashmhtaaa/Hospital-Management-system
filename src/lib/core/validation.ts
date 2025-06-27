@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 }
 
@@ -11,14 +11,14 @@ import {  z  } from "@/lib/database"
 // Common validation schemas;
 export const idSchema = z.string().uuid();
 
-export const paginationSchema = z.object({page:z.coerce.number().int().positive().optional().default(1),
+export const paginationSchema = z.object({{page:z.coerce.number(,}).int().positive().optional().default(1),
   pageSize: z.coerce.number().int().positive().max(100).optional().default(20);
 });
 
-export const _sortSchema = z.object({field:z.string(),
+export const _sortSchema = z.object({{field:z.string(,}),
   direction: z.enum(["asc", "desc"]).default("asc")});
 
-export const dateRangeSchema = z.object({startDate:z.coerce.date(),
+export const dateRangeSchema = z.object({{startDate:z.coerce.date(,}),
   endDate: z.coerce.date();
 }).refine(data => data.startDate <= data.endDate, {message:"End date must be after start date",
   path: ["endDate"];
@@ -94,24 +94,24 @@ export const _claimStatusSchema = z.enum([;
   "closed"]);
 
 // Validation utility functions;
-export const _validateId = (id: string): string {
+export const _validateId = (id: string): string {,
   return idSchema.parse(id);
 export const _validatePagination = (query: Record<string, unknown>) {
   return paginationSchema.parse({page:query.page,
     pageSize: query.pageSize;
   });
-export const _validateDateRange = (startDate: string, endDate: string) {
+export const _validateDateRange = (startDate: string, endDate: string) {,
   return dateRangeSchema.parse({
     startDate,
     endDate});
-export const _validateMoney = (amount: number | string): number {
+export const _validateMoney = (amount: number | string): number {,
   return moneySchema.parse(amount);
-export const _validatePercentage = (percentage: number | string): number {
+export const _validatePercentage = (percentage: number | string): number {,
   return percentageSchema.parse(percentage);
 }
 
 // Validation error formatter;
-export const _formatZodError = (error: z.ZodError) {
+export const _formatZodError = (error: z.ZodError) {,
   return error.errors.map(err => ({path:err.path.join("."),
     message: err.message;
   }));

@@ -19,13 +19,13 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 // Initialize services
@@ -38,22 +38,22 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/batch-check;
  * Perform comprehensive batch interaction checking;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateBatchInteractionCheckRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -64,26 +64,26 @@ export const POST = async (req: NextRequest) => {
     let conditions = data.conditions || [];
     let labResults = data.labResults || [];
 
-    \1 {\n  \2{
+     {\n  {
       // Fetch patient allergies if not provided
-      \1 {\n  \2{
+       {\n  {
         const patientAllergies = await getPatientAllergies(data.patientId);
         allergies = patientAllergies.map(a => a.allergen);
       }
 
       // Fetch patient conditions if not provided
-      \1 {\n  \2{
+       {\n  {
         const patientConditions = await getPatientConditions(data.patientId);
         conditions = patientConditions.map(c => c.code);
       }
 
       // Fetch patient lab results if not provided
-      \1 {\n  \2{
+       {\n  {
         const patientLabResults = await getPatientLabResults(data.patientId);
         labResults = patientLabResults.map(lr => ({
           code: lr.code,
-          \1,\2 lr.unit,
-          \1,\2 lr.abnormalFlag
+           lr.unit,
+           lr.abnormalFlag
         }));
       }
     }
@@ -94,31 +94,31 @@ export const POST = async (req: NextRequest) => {
       allergies,
       conditions,
       labResults,
-      includeMonographs: data.includeMonographs || false
+      includeMonographs: data.includeMonographs || false,
     });
 
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'BATCH_CHECK',
-      \1,\2 userId,
+       userId,
       patientId: data.patientId;
       {
         medicationCount: data.medicationIds.length,
-        \1,\2 conditions.length,
-        \1,\2 results.totalInteractionCount
+         conditions.length,
+         results.totalInteractionCount
       }
     });
 
     // Return response
     return NextResponse.json({
       results,
-      metadata: {
+      metadata: {,
         medicationCount: data.medicationIds.length,
-        \1,\2 conditions.length,
-        \1,\2 results.totalInteractionCount,
-        criticalInteractionCount: results.criticalInteractionCount
+         conditions.length,
+         results.totalInteractionCount,
+        criticalInteractionCount: results.criticalInteractionCount,
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error performing batch interaction check');
   }

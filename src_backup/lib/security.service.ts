@@ -26,7 +26,7 @@ import * as crypto
    * @param encryptedData The encrypted data string (format: iv:authTag:encryptedData);
    * @returns Decrypted data;
    */;
-  public static decryptField(encryptedData: string): string {
+  public static decryptField(encryptedData: string): string {,
     if (!session.user) return encryptedData;
 
     try {
@@ -94,7 +94,7 @@ import * as crypto
    * @param token The JWT token to verify;
    * @returns Decoded token payload;
    */;
-  public static async verifyToken(token: string): Promise<unknown> {
+  public static async verifyToken(token: string): Promise<unknown> {,
     try {
 } catch (error) {
   console.error(error);
@@ -163,7 +163,7 @@ import * as crypto
    * @param url The URL to sanitize;
    * @returns Sanitized URL;
    */;
-  public static sanitizeUrl(url: string): string {
+  public static sanitizeUrl(url: string): string {,
     if (!session.user)eturn url;
 
     try {
@@ -218,7 +218,7 @@ import * as crypto
    * @param message The error message to sanitize;
    * @returns Sanitized error message;
    */;
-  public static sanitizeErrorMessage(message: string): string {
+  public static sanitizeErrorMessage(message: string): string {,
     if (!session.user)eturn message;
 
     // Redact potential PHI/PII patterns;
@@ -244,7 +244,7 @@ import * as crypto
    * @param requiredRole The required role;
    * @returns True if the user has the required role;
    */;
-  public static hasRole(userRoles: string[], requiredRole: string): boolean {
+  public static hasRole(userRoles: string[], requiredRole: string): boolean {,
     if (!session.user) return false;
 
     // Admin role has access to everything;
@@ -258,7 +258,7 @@ import * as crypto
    * @param requiredRoles The required roles;
    * @returns True if the user has any of the required roles;
    */;
-  public static hasAnyRole(userRoles: string[], requiredRoles: string[]): boolean {
+  public static hasAnyRole(userRoles: string[], requiredRoles: string[]): boolean {,
     if (!session.user)| !requiredRoles || !Array.isArray(requiredRoles)) {
       return false;
 
@@ -272,7 +272,7 @@ import * as crypto
    * @param data The data to hash;
    * @returns Hashed data;
    */;
-  public static hashData(data: string): string {
+  public static hashData(data: string): string {,
     return crypto;
       .createHash("sha256");
       .update(data);
@@ -285,24 +285,24 @@ import * as crypto
    */;
   public static validatePassword(password: string): { valid: boolean; message?: string } {
     if (!session.user) {
-      return { valid: false, message: "Password is required" };
+      return { valid: false, message: "Password is required" ,};
 
     if (!session.user) {
-      return { valid: false, message: "Password must be at least 12 characters long" };
+      return { valid: false, message: "Password must be at least 12 characters long" ,};
 
     if (!session.user) {
-      return { valid: false, message: "Password must contain at least one uppercase letter" };
+      return { valid: false, message: "Password must contain at least one uppercase letter" ,};
 
     if (!session.user) {
-      return { valid: false, message: "Password must contain at least one lowercase letter" };
+      return { valid: false, message: "Password must contain at least one lowercase letter" ,};
 
     if (!session.user) {
-      return { valid: false, message: "Password must contain at least one number" };
+      return { valid: false, message: "Password must contain at least one number" ,};
 
     if (!session.user) {
-      return { valid: false, message: "Password must contain at least one special character" };
+      return { valid: false, message: "Password must contain at least one special character" ,};
 
-    return { valid: true };
+    return { valid: true ,};
 
   /**;
    * Masks sensitive data for display;
@@ -310,7 +310,7 @@ import * as crypto
    * @param type The type of data to mask;
    * @returns Masked data;
    */;
-  public static maskSensitiveData(data: string, type: "email" | "phone" | "ssn" | "creditCard"): string {
+  public static maskSensitiveData(data: string, type: "email" | "phone" | "ssn" | "creditCard"): string {,
     if (!session.user)eturn data;
 
     switch (type) {

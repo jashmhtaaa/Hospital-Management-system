@@ -30,8 +30,7 @@ import Link
 import { toast } from "@/components/ui/use-toast"; // Import toast;
 
 // Define the structure for a surgery booking;
-interface Surgery {
-  id: string,
+interface Surgery {id:string,
   scheduled_start_time: string; // ISO string or Date object;
   scheduled_end_time: string; // ISO string or Date object;
   status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
@@ -39,8 +38,7 @@ interface Surgery {
   surgeon_name: string;
 }
 
-interface OTPatientSurgeriesProperties {
-  patientId: string;
+interface OTPatientSurgeriesProperties {patientId:string;
 export default const _OTPatientSurgeries = ({
   patientId}: OTPatientSurgeriesProperties) {
   // FIX: Use the Surgery interface for state typing;
@@ -90,21 +88,19 @@ export default const _OTPatientSurgeries = ({
         // if (!session.user) {
         //   throw new Error(`Failed to fetch patient surgeries: ${}`;
         // }
-        // const _data: { results: Surgery[] } | Surgery[] = await response.json();
+        // const _data: {results:Surgery[] } | Surgery[] = await response.json();
         // const _fetchedSurgeries = Array.isArray(data) ? _data : data.results || [];
         // setSurgeries(fetchedSurgeries);
 
         // Mock data for demonstration - Ensure it matches the Surgery interface;
         const mockData: Surgery[] = [;
-          {
-            id: "booking-1",
+          {id:"booking-1",
             scheduled_start_time: "2025-05-02T09:00:00Z",
             scheduled_end_time: "2025-05-02T11:30:00Z",
             "Appendectomy",
             "Dr. Alice Brown";
           },
-          {
-            id: "booking-2",
+          {id:"booking-2",
             scheduled_start_time: "2025-04-28T14:00:00Z",
             scheduled_end_time: "2025-04-28T16:00:00Z",
             status: "completed", // Example of a past surgery;
@@ -125,8 +121,7 @@ export default const _OTPatientSurgeries = ({
             : "An unknown error occurred";
 
         setError(message),
-        toast({
-          title: "Error",
+        toast({title:"Error",
           description: `Failed to load surgeries: ${message}`,
           variant: "destructive";
         });
@@ -210,8 +205,7 @@ export default const _OTPatientSurgeries = ({
 } catch (error) {
 
       const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", {
-        year: "numeric",
+      return date.toLocaleDateString("en-US", {year:"numeric",
         "numeric";
       });
     } catch ;
@@ -252,8 +246,7 @@ export default const _OTPatientSurgeries = ({
 } catch (error) {
 
       const date = new Date(dateString);
-      return date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
+      return date.toLocaleTimeString("en-US", {hour:"2-digit",
         true;
       });
     } catch {

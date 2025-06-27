@@ -3,19 +3,19 @@ import "@/lib/security.service"
 import "@/lib/services/support-services/feedback/feedback.service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  FeedbackService  } from "@/lib/database"
-import {  SecurityService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {FeedbackService  } from "next/server"
+import {SecurityService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
+import {z  } from "next/server"
 
 // Initialize service;
 const feedbackService = new FeedbackService();
 
 // Validation schemas;
-const createFeedbackSchema = z.object({type:z.enum(["GENERAL", "SERVICE", "STAFF", "FACILITY", "CARE", "OTHER"]),
+const createFeedbackSchema = z.object({{type:z.enum(["GENERAL", "SERVICE", "STAFF", "FACILITY", "CARE", "OTHER"]}),
   subject: z.string().min(3).max(100),
   description: z.string().min(10).max(2000),
   rating: z.number().min(1).max(5).optional(),
@@ -28,7 +28,7 @@ const createFeedbackSchema = z.object({type:z.enum(["GENERAL", "SERVICE", "STAFF
   isAnonymous: z.boolean().default(false);
 });
 
-const createComplaintSchema = z.object({category:z.enum(["CARE_QUALITY", "STAFF_BEHAVIOR", "BILLING", "FACILITY", "SAFETY", "PRIVACY", "OTHER"]),
+const createComplaintSchema = z.object({{category:z.enum(["CARE_QUALITY", "STAFF_BEHAVIOR", "BILLING", "FACILITY", "SAFETY", "PRIVACY", "OTHER"]}),
   subject: z.string().min(3).max(100),
   description: z.string().min(10).max(2000),
   severity: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
@@ -42,13 +42,13 @@ const createComplaintSchema = z.object({category:z.enum(["CARE_QUALITY", "STAFF_
   desiredResolution: z.string().max(1000).optional();
 });
 
-const updateFeedbackSchema = z.object({status:z.enum(["NEW", "UNDER_REVIEW", "ACKNOWLEDGED", "RESOLVED", "CLOSED"]).optional(),
+const updateFeedbackSchema = z.object({{status:z.enum(["NEW", "UNDER_REVIEW", "ACKNOWLEDGED", "RESOLVED", "CLOSED"]}).optional(),
   response: z.string().max(2000).optional(),
   assignedToId: z.string().uuid().optional(),
   internalNotes: z.string().max(1000).optional();
 });
 
-const updateComplaintSchema = z.object({status:z.enum(["NEW", "UNDER_INVESTIGATION", "IN_PROGRESS", "RESOLVED", "CLOSED"]).optional(),
+const updateComplaintSchema = z.object({{status:z.enum(["NEW", "UNDER_INVESTIGATION", "IN_PROGRESS", "RESOLVED", "CLOSED"]}).optional(),
   response: z.string().max(2000).optional(),
   assignedToId: z.string().uuid().optional(),
   internalNotes: z.string().max(1000).optional(),
@@ -56,7 +56,7 @@ const updateComplaintSchema = z.object({status:z.enum(["NEW", "UNDER_INVESTIGATI
   escalationLevel: z.enum(["DEPARTMENT", "MANAGEMENT", "EXECUTIVE", "EXTERNAL"]).optional()});
 
 // GET /api/support-services/feedback;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -82,7 +82,7 @@ export const _GET = async (request: any) => {
 }
 
 // POST /api/support-services/feedback;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -96,7 +96,7 @@ export const _POST = async (request: any) => {
       // Create feedback;
       const result = await feedbackService.createFeedback(sanitizedData);
 
-      return NextResponse.json(result, {status:201 });
+      return NextResponse.json(result, {status:201 ,});
     },
     {
       // Allow anonymous feedback submission;
@@ -107,7 +107,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/feedback/:id;
-export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -124,7 +124,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
 }
 
 // PATCH /api/support-services/feedback/:id;
-export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {
+export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -147,7 +147,7 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
 }
 
 // GET /api/support-services/complaints;
-export const _GET_COMPLAINTS = async (request: any) => {
+export const _GET_COMPLAINTS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -173,7 +173,7 @@ export const _GET_COMPLAINTS = async (request: any) => {
 }
 
 // POST /api/support-services/complaints;
-export const _POST_COMPLAINT = async (request: any) => {
+export const _POST_COMPLAINT = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -187,7 +187,7 @@ export const _POST_COMPLAINT = async (request: any) => {
       // Create complaint;
       const result = await feedbackService.createComplaint(sanitizedData);
 
-      return NextResponse.json(result, {status:201 });
+      return NextResponse.json(result, {status:201 ,});
     },
     {
       // Allow anonymous complaint submission;
@@ -198,7 +198,7 @@ export const _POST_COMPLAINT = async (request: any) => {
 }
 
 // GET /api/support-services/complaints/:id;
-export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
+export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -215,7 +215,7 @@ export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: {params:{ i
 }
 
 // PATCH /api/support-services/complaints/:id;
-export const _PATCH_COMPLAINT = async (request: any, { params }: {params:{ id: string } }) => {
+export const _PATCH_COMPLAINT = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -238,7 +238,7 @@ export const _PATCH_COMPLAINT = async (request: any, { params }: {params:{ id: s
 }
 
 // POST /api/support-services/complaints/:id/escalate;
-export const _ESCALATE_COMPLAINT = async (request: any, { params }: {params:{ id: string } }) => {
+export const _ESCALATE_COMPLAINT = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -247,7 +247,7 @@ export const _ESCALATE_COMPLAINT = async (request: any, { params }: {params:{ id
       const { escalationLevel, reason, escalatedById } = body;
 
       if (!session.user) {
-        return NextResponse.json({error:"Escalation level is required" }, {status:400 });
+        return NextResponse.json({error:"Escalation level is required" ,}, {status:400 ,});
       }
 
       // Escalate complaint;
@@ -267,7 +267,7 @@ export const _ESCALATE_COMPLAINT = async (request: any, { params }: {params:{ id
 }
 
 // GET /api/support-services/feedback/analytics;
-export const _GET_ANALYTICS = async (request: any) => {
+export const _GET_ANALYTICS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {

@@ -27,8 +27,7 @@ const Form = FormProvider;
 type FormFieldContextValue<;
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath>;
-> = {
-  name: TName;
+> = {name:TName;
 }
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(;
@@ -69,8 +68,7 @@ const useFormField = () => {
     ...fieldState}
 }
 
-type FormItemContextValue = {
-  id: string;
+type FormItemContextValue = {id:string;
 }
 
 const FormItemContext = React.createContext<FormItemContextValue>(;
@@ -120,7 +118,7 @@ const FormControl = React.forwardRef<;
       id={formItemId}
       aria-describedby={
         !error;
-          ? `${formDescriptionId}`;
+          ? `${ formDescriptionId }`;
           : `/* SECURITY: Template literal eliminated */;
       }
       aria-invalid={!!error}

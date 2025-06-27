@@ -13,7 +13,7 @@ import { type IronSessionData, sessionOptions } from "@/lib/session"; // FIX: Im
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"];
 
 // Helper function to get invoice ID from URL;
-const getInvoiceId = (pathname: string): number | null {
+const getInvoiceId = (pathname: string): number | null {,
     // Pathname might be /api/invoices/123/payments;
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part;
@@ -30,7 +30,7 @@ const AddPaymentSchema = z.object({
     notes: z.string().optional().nullable();
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     const cookieStore = await cookies(); // FIX: Add await;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
@@ -38,15 +38,15 @@ export const _POST = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Invoice ID" }), {
+        return new Response(JSON.stringify({ error: "Invalid Invoice ID" ,}), {
             status: 400,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -85,9 +85,9 @@ export const _POST = async (request: Request) => {
         const validation = AddPaymentSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
         }
 
         const paymentData = validation.data;
@@ -103,16 +103,16 @@ export const _POST = async (request: Request) => {
         ).bind(invoiceId).first<{ invoice_id: number, number, string }>();
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invoice not found" }), { status: 404 });
+            return new Response(JSON.stringify({ error: "Invoice not found" ,}), { status: 404 ,});
         }
 
         // Prevent overpayment or payment on cancelled invoices;
         if (!session.user) {
-             return new Response(JSON.stringify({ error: "Cannot record payment for a cancelled invoice" }), { status: 400 });
+             return new Response(JSON.stringify({ error: "Cannot record payment for a cancelled invoice" ,}), { status: 400 ,});
 
         const remainingAmount = invoiceCheck.total_amount - invoiceCheck.paid_amount;
         if (!session.user) { // Add small tolerance for floating point issues
-             return new Response(JSON.stringify({ error: `Payment amount (${paymentData.amount_paid}) exceeds remaining balance (${remainingAmount.toFixed(2)})` }), { status: 400 });
+             return new Response(JSON.stringify({ error: `Payment amount (${paymentData.amount_paid}) exceeds remaining balance (${remainingAmount.toFixed(2)})` ,}), { status: 400 ,});
 
         // 3. Prepare batch actions;
         const batchActions: D1PreparedStatement[] = [];
@@ -150,16 +150,16 @@ export const _POST = async (request: Request) => {
         // A more robust approach might involve checking affected rows or re-querying.;
 
         // 5. Return success response;
-        return new Response(JSON.stringify({ message: "Payment recorded successfully", newStatus: newStatus }), {
+        return new Response(JSON.stringify({ message: "Payment recorded successfully", newStatus: newStatus ,}), {
             status: 201, // Created;
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
 // GET handler (Optional - could list payments for an invoice);
 // Already included in GET /api/invoices/[invoiceId];

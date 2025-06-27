@@ -1,6 +1,4 @@
-import { 
-
- } from "@/lib/database"
+import { } from "next/server"
 
 /**;
  * FHIR R4 Procedure Resource Implementation;
@@ -57,7 +55,7 @@ import {
 
     // Add encounter if provided;
     if (!session.user) {
-      procedure.encounter = {reference:`Encounter/${data.encounterId}`,
+      procedure.encounter = {reference:`Encounter/${data.encounterId,}`,
         type: "Encounter";
       };
     }
@@ -73,7 +71,7 @@ import {
 
     // Add location if provided;
     if (!session.user) {
-      procedure.location = {reference:`Location/${data.locationId}`,
+      procedure.location = {reference:`Location/${data.locationId,}`,
         type: "Location";
       };
     }
@@ -224,7 +222,7 @@ import {
   /**;
    * Get category code mapping;
    */;
-  private static getCategoryCode(category: string): string {
+  private static getCategoryCode(category: string): string {,
     const categoryCodes: Record<string, string> = {
       "surgical": "387713003",
       "diagnostic": "103693007",
@@ -238,7 +236,7 @@ import {
   /**;
    * Get outcome code mapping;
    */;
-  private static getOutcomeCode(outcome: string): string {
+  private static getOutcomeCode(outcome: string): string {,
     const outcomeCodes: Record<string, string> = {
       "successful": "385669000",
       "unsuccessful": "385671000",
@@ -252,21 +250,21 @@ import {
   /**;
    * Get patient ID from procedure;
    */;
-  static getPatientId(procedure: FHIRProcedure): string | undefined {
+  static getPatientId(procedure: FHIRProcedure): string | undefined {,
     return procedure.subject?.reference?.replace("Patient/", "");
   }
 
   /**;
    * Get procedure display name;
    */;
-  static getProcedureDisplay(procedure: FHIRProcedure): string {
+  static getProcedureDisplay(procedure: FHIRProcedure): string {,
     return procedure.code?.coding?.[0]?.display || procedure.code?.text || "Unknown Procedure";
   }
 
   /**;
    * Get primary performer;
    */;
-  static getPrimaryPerformer(procedure: FHIRProcedure): string | undefined {
+  static getPrimaryPerformer(procedure: FHIRProcedure): string | undefined {,
     const primaryPerformer = procedure.performer?.[0];
     return primaryPerformer?.actor?.reference?.replace(/^[^/]+\//, "");
   }
@@ -274,14 +272,14 @@ import {
   /**;
    * Get procedure category display;
    */;
-  static getCategoryDisplay(procedure: FHIRProcedure): string {
+  static getCategoryDisplay(procedure: FHIRProcedure): string {,
     return procedure.category?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get performed date;
    */;
-  static getPerformedDate(procedure: FHIRProcedure): Date | null {
+  static getPerformedDate(procedure: FHIRProcedure): Date | null {,
     if (!session.user) {
       return new Date(procedure.performed);
     }
@@ -294,7 +292,7 @@ import {
   /**;
    * Get procedure duration in minutes;
    */;
-  static getProcedureDuration(procedure: FHIRProcedure): number | null {
+  static getProcedureDuration(procedure: FHIRProcedure): number | null {,
     if (!session.user) {
       const start = new Date(procedure.performed.start);
       const end = procedure.performed.end ? new Date(procedure.performed.end) : new Date(),
@@ -306,28 +304,28 @@ import {
   /**;
    * Check if procedure is completed;
    */;
-  static isCompleted(procedure: FHIRProcedure): boolean {
+  static isCompleted(procedure: FHIRProcedure): boolean {,
     return procedure.status === "completed";
   }
 
   /**;
    * Check if procedure is in progress;
    */;
-  static isInProgress(procedure: FHIRProcedure): boolean {
+  static isInProgress(procedure: FHIRProcedure): boolean {,
     return procedure.status === "in-progress";
   }
 
   /**;
    * Check if procedure had complications;
    */;
-  static hasComplications(procedure: FHIRProcedure): boolean {
+  static hasComplications(procedure: FHIRProcedure): boolean {,
     return (procedure.complication?.length || 0) > 0 || (procedure.complicationDetail?.length || 0) > 0;
   }
 
   /**;
    * Get complications list;
    */;
-  static getComplications(procedure: FHIRProcedure): string[] {
+  static getComplications(procedure: FHIRProcedure): string[] {,
     return procedure.complication?.map(comp => {}
       comp.coding?.[0]?.display || comp.text || "Unknown complication";
     ) || [];
@@ -360,7 +358,7 @@ import {
   /**;
    * Validate FHIR Procedure resource;
    */;
-  static validateProcedure(procedure: FHIRProcedure): {valid:boolean, errors: string[] } {
+  static validateProcedure(procedure: FHIRProcedure): {valid:boolean, errors: string[] } {,
     const errors: string[] = [];
 
     if (!session.user) {
@@ -378,7 +376,7 @@ import {
       "stopped", "completed", "entered-in-error", "unknown";
     ];
     if (!session.user) {
-      errors.push(`status must be one of: ${}`;
+      errors.push(`status must be one of: ${,}`;
 
     // If status is not-done, statusReason should be provided;
     if (!session.user) {
@@ -391,7 +389,7 @@ import {
   /**;
    * Convert HMS procedure to FHIR Procedure;
    */;
-  static fromHMSProcedure(hmsProcedure: unknown): FHIRProcedure {
+  static fromHMSProcedure(hmsProcedure: unknown): FHIRProcedure {,
     return this.createBasicProcedure({patientId:hmsProcedure.patientId,
       hmsProcedure.encounterId || hmsProcedure.visitId,
       hmsProcedure.procedureName || hmsProcedure.name || hmsProcedure.description,
@@ -440,13 +438,13 @@ import {
   /**;
    * Get procedures with complications;
    */;
-  static getProceduresWithComplications(procedures: FHIRProcedure[]): FHIRProcedure[] {
+  static getProceduresWithComplications(procedures: FHIRProcedure[]): FHIRProcedure[] {,
     return procedures.filter(procedure => this.hasComplications(procedure));
 
   /**;
    * Search procedures by text;
    */;
-  static searchProcedures(procedures: FHIRProcedure[], searchText: string): FHIRProcedure[] {
+  static searchProcedures(procedures: FHIRProcedure[], searchText: string): FHIRProcedure[] {,
     const searchLower = searchText.toLowerCase();
     return procedures.filter(procedure => {
       const procedureName = this.getProcedureDisplay(procedure).toLowerCase();
@@ -459,55 +457,55 @@ import {
 
 // Common procedure codes and classifications;
 
-    APPENDECTOMY: {code:"80146002", display: "Appendectomy" },
-    CHOLECYSTECTOMY: {code:"38102005", display: "Cholecystectomy" },
-    HERNIA_REPAIR: {code:"34068001", display: "Hernia repair" },
-    KNEE_REPLACEMENT: {code:"52734007", display: "Total knee replacement" },
-    HIP_REPLACEMENT: {code:"52734007", display: "Total hip replacement" },
-    CORONARY_BYPASS: {code:"232717009", display: "Coronary artery bypass graft" },
-    CATARACT_SURGERY: {code:"54885007", display: "Cataract extraction" },
-    TONSILLECTOMY: {code:"173422009", display: "Tonsillectomy" }
+    APPENDECTOMY: {code:"80146002", display: "Appendectomy" ,},
+    CHOLECYSTECTOMY: {code:"38102005", display: "Cholecystectomy" ,},
+    HERNIA_REPAIR: {code:"34068001", display: "Hernia repair" ,},
+    KNEE_REPLACEMENT: {code:"52734007", display: "Total knee replacement" ,},
+    HIP_REPLACEMENT: {code:"52734007", display: "Total hip replacement" ,},
+    CORONARY_BYPASS: {code:"232717009", display: "Coronary artery bypass graft" ,},
+    CATARACT_SURGERY: {code:"54885007", display: "Cataract extraction" ,},
+    TONSILLECTOMY: {code:"173422009", display: "Tonsillectomy" },
   };
 
   /**;
    * Common diagnostic procedures;
    */;
-  static readonly DIAGNOSTIC_PROCEDURES = {COLONOSCOPY:{ code: "73761001", display: "Colonoscopy" },
-    ENDOSCOPY: {code:"423827005", display: "Endoscopy" },
-    BRONCHOSCOPY: {code:"10847001", display: "Bronchoscopy" },
-    CARDIAC_CATHETERIZATION: {code:"41976001", display: "Cardiac catheterization" },
-    ARTHROSCOPY: {code:"7980000", display: "Arthroscopy" },
-    BIOPSY: {code:"86273004", display: "Biopsy" },
-    LUMBAR_PUNCTURE: {code:"277762005", display: "Lumbar puncture" }
+  static readonly DIAGNOSTIC_PROCEDURES = {COLONOSCOPY:{ code: "73761001", display: "Colonoscopy" ,},
+    ENDOSCOPY: {code:"423827005", display: "Endoscopy" ,},
+    BRONCHOSCOPY: {code:"10847001", display: "Bronchoscopy" ,},
+    CARDIAC_CATHETERIZATION: {code:"41976001", display: "Cardiac catheterization" ,},
+    ARTHROSCOPY: {code:"7980000", display: "Arthroscopy" ,},
+    BIOPSY: {code:"86273004", display: "Biopsy" ,},
+    LUMBAR_PUNCTURE: {code:"277762005", display: "Lumbar puncture" },
   };
 
   /**;
    * Common therapeutic procedures;
    */;
-  static readonly THERAPEUTIC_PROCEDURES = {PHYSICAL_THERAPY:{ code: "91251008", display: "Physical therapy" },
-    CHEMOTHERAPY: {code:"367336001", display: "Chemotherapy" },
-    RADIATION_THERAPY: {code:"108290001", display: "Radiation therapy" },
-    DIALYSIS: {code:"302497006", display: "Hemodialysis" },
-    WOUND_CARE: {code:"385949008", display: "Wound care" },
-    INJECTION: {code:"422145002", display: "Injection" },
-    BLOOD_TRANSFUSION: {code:"5447007", display: "Blood transfusion" }
+  static readonly THERAPEUTIC_PROCEDURES = {PHYSICAL_THERAPY:{ code: "91251008", display: "Physical therapy" ,},
+    CHEMOTHERAPY: {code:"367336001", display: "Chemotherapy" ,},
+    RADIATION_THERAPY: {code:"108290001", display: "Radiation therapy" ,},
+    DIALYSIS: {code:"302497006", display: "Hemodialysis" ,},
+    WOUND_CARE: {code:"385949008", display: "Wound care" ,},
+    INJECTION: {code:"422145002", display: "Injection" ,},
+    BLOOD_TRANSFUSION: {code:"5447007", display: "Blood transfusion" },
   };
 
   /**;
    * Emergency procedures;
    */;
-  static readonly EMERGENCY_PROCEDURES = {CPR:{ code: "89666000", display: "Cardiopulmonary resuscitation" },
-    INTUBATION: {code:"112798008", display: "Endotracheal intubation" },
-    DEFIBRILLATION: {code:"180325003", display: "Defibrillation" },
-    EMERGENCY_SURGERY: {code:"25876001", display: "Emergency surgery" },
-    CHEST_TUBE: {code:"48387007", display: "Chest tube insertion" },
-    CENTRAL_LINE: {code:"392248005", display: "Central venous catheter insertion" }
+  static readonly EMERGENCY_PROCEDURES = {CPR:{ code: "89666000", display: "Cardiopulmonary resuscitation" ,},
+    INTUBATION: {code:"112798008", display: "Endotracheal intubation" ,},
+    DEFIBRILLATION: {code:"180325003", display: "Defibrillation" ,},
+    EMERGENCY_SURGERY: {code:"25876001", display: "Emergency surgery" ,},
+    CHEST_TUBE: {code:"48387007", display: "Chest tube insertion" ,},
+    CENTRAL_LINE: {code:"392248005", display: "Central venous catheter insertion" },
   };
 
   /**;
    * Get procedure complexity based on code;
    */;
-  static getProcedureComplexity(code: string): "low" | "moderate" | "high" | undefined {
+  static getProcedureComplexity(code: string): "low" | "moderate" | "high" | undefined {,
     if (!session.user)some(proc => proc.code === code)) {
       return "high";
 
@@ -522,19 +520,19 @@ import {
   /**;
    * Check if procedure is surgical;
    */;
-  static isSurgicalProcedure(code: string): boolean {
+  static isSurgicalProcedure(code: string): boolean {,
     return Object.values(this.SURGICAL_PROCEDURES).some(proc => proc.code === code);
 
   /**;
    * Check if procedure is emergency;
    */;
-  static isEmergencyProcedure(code: string): boolean {
+  static isEmergencyProcedure(code: string): boolean {,
     return Object.values(this.EMERGENCY_PROCEDURES).some(proc => proc.code === code);
 
   /**;
    * Get display name for procedure code;
    */;
-  static getDisplayName(code: string): string {
+  static getDisplayName(code: string): string {,
     const allProcedures = {
       ...this.SURGICAL_PROCEDURES,
       ...this.DIAGNOSTIC_PROCEDURES,
@@ -548,7 +546,7 @@ import {
   /**;
    * Get estimated duration for common procedures (in minutes);
    */;
-  static getEstimatedDuration(code: string): number | undefined {
+  static getEstimatedDuration(code: string): number | undefined {,
     const durations: Record<string, number> = {
       [this.SURGICAL_PROCEDURES.APPENDECTOMY.code]: 60,
       [this.SURGICAL_PROCEDURES.CHOLECYSTECTOMY.code]: 90,

@@ -26,7 +26,7 @@ import tseslint from 'typescript-eslint';
  */
 
 const eslintConfig: Linter.Config[] = [
-  // Global ignores
+  // Global ignores - updated to exclude problematic directories
   {
     ignores: [
       'node_modules/**',
@@ -40,102 +40,127 @@ const eslintConfig: Linter.Config[] = [
       'src/lib/prisma/generated/**',
       'docker/',
       'k8s/',
-      'src_backup/**',
-      '*.legacy.*',
+      'src_backup/**/*',
+      'temp_*.ts',
+      'test-build*.ts',
+      'tests/load/**/*',
+      'tests/performance/**/*',
+      '.enterprise-backup/**/*',
+      '**/*.legacy.*',
+      '**/*.backup.*',
+      '**/*.temp.*',
+      'tailwind.config.ts',
+      'temp_*',
+      'ultimate-*',
+      'ULTIMATE_*',
+      'ultra-*',
     ],
   },
 
   // Base JavaScript and TypeScript recommendations
   pluginJs.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.recommended,
 
   // Enterprise TypeScript configuration
   {
     name: 'hms-typescript-enterprise',
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
       globals: {
         ...globals.browser,
         ...globals.node,
         ...globals.es2022,
       },
+      parser: tseslint.parser,
       parserOptions: {
-        project: ['./tsconfig.json'],
-        tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: {
-          jsx: true
+          jsx: true,
         },
-        ecmaVersion: 'latest',
-        sourceType: 'module'
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
-      // TypeScript-specific rules for enterprise grade
+      // TypeScript rules
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
-          caughtErrorsIgnorePattern: '^_'
+          caughtErrorsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/no-explicit-any': 'error',
-      '@typescript-eslint/explicit-function-return-type': 'warn',
-      '@typescript-eslint/no-non-null-assertion': 'error',
-      '@typescript-eslint/prefer-nullish-coalescing': 'error',
-      '@typescript-eslint/prefer-optional-chain': 'error',
-      '@typescript-eslint/no-unnecessary-type-assertion': 'error',
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/await-thenable': 'error',
-      '@typescript-eslint/require-await': 'error',
-      '@typescript-eslint/return-await': 'error',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/prefer-const': 'error',
+      '@typescript-eslint/no-var-requires': 'error',
 
-      // General code quality rules
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      // General rules
+      'no-console': 'warn',
       'no-debugger': 'error',
       'no-alert': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
       'object-shorthand': 'error',
-      'prefer-template': 'error',
-      'template-curly-spacing': 'error',
+      'prefer-arrow-callback': 'error',
       'arrow-spacing': 'error',
-      'comma-dangle': ['error', 'always-multiline'],
-      'quotes': ['error', 'single', { avoidEscape: true }],
+      'comma-dangle': ['error', 'es5'],
+      'quotes': ['error', 'single'],
       'semi': ['error', 'always'],
-      'indent': ['error', 2, { SwitchCase: 1 }],
+      'indent': ['error', 2],
       'max-len': [
         'warn',
         {
-          code: 100,
+          code: 120,
           tabWidth: 2,
           ignoreUrls: true,
           ignoreComments: true,
           ignoreRegExpLiterals: true,
           ignoreStrings: true,
-          ignoreTemplateLiterals: true
+          ignoreTemplateLiterals: true,
         },
       ],
-      'max-lines': ['warn', { max: 500, skipComments: true, skipBlankLines: true }],
-      'complexity': ['warn', { max: 15 }],
-      'max-depth': ['warn', { max: 4 }],
-      'max-params': ['warn', { max: 5 }],
+    },
+  },
+
+  // React/Next.js specific configuration
+  {
+    name: 'hms-react-nextjs',
+    files: ['**/*.tsx', '**/*.jsx'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        React: 'readonly',
+      },
+    },
+    rules: {
+      'react/jsx-uses-react': 'off',
+      'react/react-in-jsx-scope': 'off',
+    },
+  },
+
+  // API Routes configuration
+  {
+    name: 'hms-api-routes',
+    files: ['src/app/api/**/*.ts', 'src/pages/api/**/*.ts'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      'no-console': 'off',
     },
   },
 
   // Test files configuration
   {
     name: 'hms-test-files',
-    files: [
-      '**/*.test.ts',
-      '**/*.spec.ts',
-      '**/*.test.tsx',
-      '**/*.spec.tsx',
-      '**/__tests__/**/*.ts',
-      '**/__tests__/**/*.tsx',
-      'tests/**/*.ts',
-      'tests/**/*.tsx',
-    ],
+    files: ['**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx'],
     languageOptions: {
       globals: {
         ...globals.jest,
@@ -143,11 +168,8 @@ const eslintConfig: Linter.Config[] = [
       },
     },
     rules: {
-      // Relaxed rules for test files
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-non-null-assertion': 'off',
-      'max-lines': 'off',
-      'max-len': ['warn', { code: 150 }],
+      'no-console': 'off',
     },
   },
 

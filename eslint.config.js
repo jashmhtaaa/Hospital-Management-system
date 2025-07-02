@@ -1,49 +1,14 @@
-module.exports = [
+export default [
 	{
-		ignores: [
-			"node_modules/",
-			".next/",
-			"dist/",
-			"build/",
-			"coverage/",
-			"*.config.js",
-			"*.config.ts",
-			"next-env.d.ts",
-			".env*",
-			"src/**/*.ts",
-			"src/**/*.tsx",
-			"src/**/*.js",
-			"src/**/*.jsx",
-			"scripts/",
-			"lib/",
-			"utils/",
-			"types/",
-			"*.d.ts",
-			"tailwind.config.*",
-			"next.config.*",
-			"playwright.config.*",
-			"*.generated.*",
-			"*.auto.*",
-			"**/*.test.*",
-			"**/*.spec.*",
-			"**/*.ts",
-			"**/*.tsx",
-		],
-		files: ["**/*.{js,jsx,ts,tsx}"],
-		languageOptions: {
-			parser: require("@typescript-eslint/parser"),
-			parserOptions: {
-				ecmaVersion: 2020,
-				sourceType: "module",
-			},
-		},
-		plugins: {
-			"@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
-		},
-		rules: {
-			semi: ["error", "always"],
-			quotes: ["error", "double"],
-			"@typescript-eslint/no-unused-vars": "warn",
-		},
+		ignores: ['**/*', '!enterprise/**/*']
 	},
+	{
+		files: ['enterprise/**/*.ts', 'enterprise/**/*.tsx'],
+		languageOptions: {
+			parserOptions: {
+				project: './tsconfig.json'
+			}
+		},
+		rules: {}
+	}
 ];

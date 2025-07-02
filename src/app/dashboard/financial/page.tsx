@@ -1,6 +1,5 @@
-import "react"
-import React
-import useEffect }
+import { React
+import useEffect } from "react"
 import {
 import { useState
 
@@ -19,8 +18,7 @@ import { useState
   TabsList,
   TabsTrigger;
 } from "@/components/ui/tabs";
-import "@/components/ui/button"
-import { Button }
+import { { Button } from "@/components/ui/button"
 
   Select,
   SelectContent,
@@ -28,23 +26,20 @@ import { Button }
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import "@/components/ui/date-picker"
-import { DatePicker }
+import { { DatePicker } from "@/components/ui/date-picker"
 
   BarChart,
   LineChart,
   PieChart,
   DonutChart;
 } from "@/components/ui/charts";
-import "@/components/ui/alert"
-import "@/components/ui/badge"
-import "@/components/ui/data-table"
-import "@/components/ui/spinner"
-import "@/lib/formatters"
-import AlertDescription }
-import formatDate
-import formatNumber }
-import { Alert
+import { } from "@/components/ui/alert"
+import { } from "@/components/ui/data-table"
+import "@/components/ui/spinner";
+import "@/lib/formatters";
+import AlertDescription, formatDate
+import formatNumber } from "@/components/ui/badge"
+import  } Alert
 import { Badge }
 import { DataTable }
 import { formatCurrency
@@ -54,7 +49,7 @@ export default const _FinancialDashboard = () {
   const [activeTab, setActiveTab] = useState("overview");
   const [dateRange, setDateRange] = useState({
     startDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
-    endDate: new Date();
+    endDate: new Date(),
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -116,7 +111,7 @@ export default const _FinancialDashboard = () {
           data = generateInsuranceData(),\n    }\n    case "reports": any;
           data = generateReportsData(),
           break;
-        default: data = generateOverviewData();
+        default: data = generateOverviewData(),
       }
 
       setDashboardData(data);
@@ -130,9 +125,7 @@ export default const _FinancialDashboard = () {
 
   // Simulated data generators;
   const generateOverviewData = () => {
-    return {
-      kpis: [;
-        { title: "Total Revenue", value: 1250000, change: 5.2, changeType: "increase" },
+    return { kpis: [, { title: "Total Revenue", value: 1250000, change: 5.2, changeType: "increase"  },
         { title: "Outstanding Amount", value: 320000, change: -2.1, changeType: "decrease" },
         { title: "Average Collection Period", value: 32, unit: "days", change: -3, changeType: "decrease" },
         { title: "Claim Approval Rate", value: 87.5, unit: "%", change: 1.5, changeType: "increase" }
@@ -319,9 +312,7 @@ export default const _FinancialDashboard = () {
   };
 
   const generateReportsData = () => {
-    return {
-      availableReports: [;
-        { id: "REP-001", name: "Revenue Report", description: "Detailed breakdown of revenue by department, service, and time period", lastRun: "2025-05-20" },
+    return { availableReports: [, { id: "REP-001", name: "Revenue Report", description: "Detailed breakdown of revenue by department, service, and time period", lastRun: "2025-05-20"  },
         { id: "REP-002", name: "Expenses Report", description: "Analysis of expenses by category and department", lastRun: "2025-05-19" },
         { id: "REP-003", name: "Profit & Loss Statement", description: "Financial performance summary with revenue, expenses, and profit", lastRun: "2025-05-18" },
         { id: "REP-004", name: "Accounts Receivable Aging", description: "Outstanding invoices categorized by age", lastRun: "2025-05-25" },
@@ -470,7 +461,7 @@ export default const _FinancialDashboard = () {
                           const statusColors = {
                             paid: "bg-green-100 text-green-800",
                             "bg-yellow-100 text-yellow-800",
-                            overdue: "bg-red-100 text-red-800";
+                            overdue: "bg-red-100 text-red-800",
                           };
 
                           return();
@@ -590,7 +581,7 @@ export default const _FinancialDashboard = () {
                     <BarChart>;
                       data={{
                         labels: dashboardData.agingAnalysis.labels,
-                        datasets: dashboardData.agingAnalysis.datasets;
+                        datasets: dashboardData.agingAnalysis.datasets,
                       }}
                       height={300}
                     />;
@@ -627,7 +618,7 @@ export default const _FinancialDashboard = () {
                               "bg-blue-100 text-blue-800",
                               "bg-pink-100 text-pink-800",
                               "bg-green-100 text-green-800",
-                              overdue: "bg-red-100 text-red-800";
+                              overdue: "bg-red-100 text-red-800",
                             };
 
                             return();
@@ -772,7 +763,7 @@ export default const _FinancialDashboard = () {
                               "bg-yellow-100 text-yellow-800",
                               "bg-green-100 text-green-800",
                               "bg-red-100 text-red-800",
-                              appealed: "bg-pink-100 text-pink-800";
+                              appealed: "bg-pink-100 text-pink-800",
                             };
 
                             return();

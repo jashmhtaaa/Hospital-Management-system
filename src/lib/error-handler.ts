@@ -40,7 +40,7 @@
     VALIDATION_ERROR: "VALIDATION_ERROR",
     "PERMISSION_DENIED",
     "INTERNAL_SERVER_ERROR",
-    INTEGRATION_ERROR: "INTEGRATION_ERROR";
+    INTEGRATION_ERROR: "INTEGRATION_ERROR",
   };
 
   /**;
@@ -50,7 +50,7 @@
    */;
   public static processError(number,
     string,
-    shouldLog: boolean;
+    shouldLog: boolean,
   } {
     // Default values;
     let status = 500;

@@ -1,11 +1,10 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/patient/patient.service"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../../lib/validation/pharmacy-validation"
-import "../../../models/domain-models"
-import "next/server"
-import getPrescriptionById }
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/patient/patient.service";
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../../lib/validation/pharmacy-validation";
+import "../../../models/domain-models";
+import "next/server";
+import getPrescriptionById } from "../../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -31,7 +30,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {findById:getPrescriptionById,
@@ -41,7 +40,7 @@ const prescriptionRepository = {findById:getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const reactionRepository = {findById:(id: string) => Promise.resolve(null),
@@ -49,7 +48,7 @@ const reactionRepository = {findById:(id: string) => Promise.resolve(null),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   save: (reaction: unknown) => Promise.resolve(reaction.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 /**;
@@ -148,7 +147,7 @@ export const POST = async (req: any) => {
     // Create alert for serious reactions;
     if (!session.user) {
       // In a real implementation, create alert for clinical staff;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       // In a real implementation, update patient allergies if needed;
       if (!session.user) {
@@ -162,7 +161,7 @@ export const POST = async (req: any) => {
       data.patientId,
       data.medicationId,
         data.severity,
-        isSerious: data.isSerious;
+        isSerious: data.isSerious,
     });
 
     // Return response;
@@ -268,21 +267,21 @@ export const GET = async (req: any, { params }: {params:{ patientId: string } })
     // Audit logging;
     await auditLog("MEDICATION_REACTION", {action:"LIST",
       userId,
-      patientId: patientId;
+      patientId: patientId,
         medicationId,
         severity,
-        resultCount: paginatedRecords.length;
+        resultCount: paginatedRecords.length,
         severityCounts;
     });
 
     // Return response;
-    return NextResponse.json({reactionRecords:paginatedRecords;
+    return NextResponse.json({reactionRecords:paginatedRecords,
       severityCounts,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
 
     }, {status:200 });
   } catch (error) {

@@ -1,5 +1,5 @@
-import "@/components/radiology/radiology-study-detail"
-import "react"
+import "@/components/radiology/radiology-study-detail";
+import "react";
 import RadiologyStudyDetail
 import React
 

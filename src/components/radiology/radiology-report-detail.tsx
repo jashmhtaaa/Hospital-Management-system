@@ -1,10 +1,8 @@
-import type React from "react"; // FIX: Add useCallback;
-import "next/navigation"
-import "react"
-import useCallback }
-import useEffect
-import useRouter }
-import {
+import { type React from "react"; // FIX: Add useCallback,
+import { } from "react"
+import useCallback, useEffect
+import useRouter } from "next/navigation"
+import  }
 import { useParams
 import { useState
 
@@ -17,15 +15,13 @@ import { useState
   CardHeader,
   CardTitle,
   CardDescription} from "@/components/ui/card";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "lucide-react"
-import "next-auth/react"
+import { } from "@/components/ui/badge"
+import { } from "lucide-react"
+import "next-auth/react";
 import ArrowLeft
-import CheckCircle }
-import Edit
+import CheckCircle, Edit
 import Printer
-import { Badge }
+import  } from "@/components/ui/button" Badge }
 import { Button }
 import { Loader2
 import { useSession }
@@ -44,14 +40,14 @@ interface RadiologyReport {
   verified_by_name?: string; // Assuming this comes from a join or is added;
   verified_datetime?: string;
   findings?: string;
-  impression: string;
+  impression: string,
   recommendations?: string;
 }
 
 interface SessionUser {
   id: string,
   role: string; // Define specific roles if possible, e.g., "Admin" | "Radiologist" | "Technician";
-  // FIX: Assuming userId is available in the session user object for comparison;
+  // FIX: Assuming userId is available in the session user object for comparison,
   userId?: string | number;
   roleName?: string; // Assuming roleName is used for checks;
 }
@@ -81,7 +77,7 @@ const RadiologyReportDetail: React.FC = () => {
   const [error, setError] = useState<string | null>();
   const [/*showEditModal*/, setShowEditModal] = useState<boolean>(false); // Added state for edit modal - RE-ADDED;
 
-  // FIX: Wrap fetchReportDetails in useCallback;
+  // FIX: Wrap fetchReportDetails in useCallback,
   const fetchReportDetails = useCallback(async (): Promise<void> => {
     setLoading(true),
     setError(undefined);
@@ -141,7 +137,7 @@ const RadiologyReportDetail: React.FC = () => {
         status: "preliminary",
         "Dr. Emily Carter",
         "No acute findings.",
-        recommendations: "Clinical correlation recommended.";
+        recommendations: "Clinical correlation recommended.",
       };
       setReport(mockReport);
     } catch (error_) {
@@ -158,7 +154,7 @@ const RadiologyReportDetail: React.FC = () => {
     if (!session.user) {
       fetchReportDetails();
 
-    // FIX: Add fetchReportDetails to dependency array;
+    // FIX: Add fetchReportDetails to dependency array,
   }, [reportId, fetchReportDetails]);
 
   const handleVerifyReport = async (): Promise<void> => {
@@ -218,13 +214,13 @@ const RadiologyReportDetail: React.FC = () => {
         `Simulating verification of report ${reportId} by user ${}`;
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       fetchReportDetails(); // Refresh details;
     } catch (error_) {
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       setLoading(false); // Stop loading indicator on error;
 
     // No finally setLoading(false) here, as fetchReportDetails will handle it on success;
@@ -269,7 +265,7 @@ const RadiologyReportDetail: React.FC = () => {
     );
 
   // Determine permissions based on user role and report status/ownership;
-  // FIX: Use roleName and userId from SessionUser type;
+  // FIX: Use roleName and userId from SessionUser type,
   const canEdit =;
     user &&;
     (user.roleName === "Admin" ||;
@@ -282,7 +278,7 @@ const RadiologyReportDetail: React.FC = () => {
   return();
     >;
       <Button>;
-        variant="outline";
+        variant = "outline",
         onClick={() => router.back()}
         className="mb-4 print:hidden";
       >;
@@ -299,8 +295,8 @@ const RadiologyReportDetail: React.FC = () => {
             >;
               {canEdit && (;
                 <Button>;
-                  variant="outline";
-                  size="icon";
+                  variant = "outline",
+                  size = "icon",
                   onClick={() => setShowEditModal(true)}
                   title="Edit Report";
                 >;
@@ -309,8 +305,8 @@ const RadiologyReportDetail: React.FC = () => {
               )}
               {report.status === "preliminary" && canVerify && (;
                 <Button>;
-                  variant="outline";
-                  size="icon";
+                  variant = "outline",
+                  size = "icon",
                   onClick={handleVerifyReport}
                   title="Verify Report";
                   disabled={loading}
@@ -323,8 +319,8 @@ const RadiologyReportDetail: React.FC = () => {
                 </Button>;
               )}
               <Button>;
-                variant="outline";
-                size="icon";
+                variant = "outline",
+                size = "icon",
                 onClick={handlePrintReport}
                 title="Print Report";
               >;
@@ -346,8 +342,8 @@ const RadiologyReportDetail: React.FC = () => {
 <div;
               <strong>Study ID:</strong>{" "}
               <Button>;
-                variant="link";
-                className="p-0 h-auto text-base print:text-black print:no-underline";
+                variant = "link",
+                className="p-0 h-auto text-base print:text-black print:no-underline",
                 onClick={() => {}
                   router.push(`/dashboard/radiology/studies/${}`;
 

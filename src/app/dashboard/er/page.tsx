@@ -1,11 +1,10 @@
-import "@/components/ui/tabs"
-import "react"
+import { "@/components/ui/tabs";
+import "react";
 import React
 import TabsContent
 import TabsList
-import TabsTrigger }
-import useEffect }
-import {
+import TabsTrigger, useEffect }
+import  }
 import { Tabs
 import { useState
 
@@ -20,12 +19,12 @@ export const dynamic = "force-dynamic";
   CardDescription,
   CardHeader,
   CardTitle} from "@/components/ui/card";
-import "@/components/er/er-critical-alerts"
-import "@/components/er/er-dashboard-stats"
-import "@/components/er/er-patient-tracking-board"
-import "@/components/er/er-registration-modal"
-import "@/components/er/er-triage-form"
-import "@/components/ui/button"
+import "@/components/er/er-critical-alerts";
+import "@/components/er/er-dashboard-stats";
+import "@/components/er/er-patient-tracking-board";
+import "@/components/er/er-registration-modal";
+import "@/components/er/er-triage-form";
+import "@/components/ui/button";
 import ERCriticalAlerts
 import ERDashboardStats
 import ERPatientTrackingBoard

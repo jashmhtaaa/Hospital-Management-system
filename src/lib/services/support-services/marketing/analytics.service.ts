@@ -1,9 +1,8 @@
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/models/marketing"
-import "@/lib/prisma"
+import { } from "@/lib/errors"
+import "@/lib/models/marketing";
+import "@/lib/prisma";
 import NotFoundError
-import ValidationError }
+import ValidationError } from "@/lib/audit"
 import {  AuditLogger  } from "@/lib/database"
 import {  CampaignAnalytics  } from "@/lib/database"
 import {   DatabaseError
@@ -60,7 +59,7 @@ import {  prisma  } from "@/lib/database"
       // Check if analytics for this date already exists;
       const existingAnalytics = await prisma.campaignAnalytics.findFirst({where:{
           campaignId,
-          date: data.date;
+          date: data.date,
         }
       });
 
@@ -70,7 +69,7 @@ import {  prisma  } from "@/lib/database"
         // Update existing analytics;
         analytics = await prisma.campaignAnalytics.update({where:{ id: existingAnalytics.id },
           data.metrics,
-            updatedAt: new Date();
+            updatedAt: new Date(),
           }
         });
       } else {
@@ -78,14 +77,14 @@ import {  prisma  } from "@/lib/database"
         analytics = await prisma.campaignAnalytics.create({data:{
             campaignId,
             date: data.date,
-            metrics: data.metrics;
+            metrics: data.metrics,
           }
         });
       }
 
       // Log audit event;
       await this.auditLogger.log({action:existingAnalytics ? "analytics.update" : "analytics.create",
-        resourceId: campaignId;
+        resourceId: campaignId,
         userId,
         analytics.id,
           Object.keys(data.metrics);
@@ -105,8 +104,7 @@ import {  prisma  } from "@/lib/database"
    */;
   async getCampaignAnalytics(campaignId: string, filters: {
     startDate?: Date;
-    endDate?: Date;
-    metrics?: string[];
+    endDate?: Date, metrics?: string[];
   } = {}): Promise<CampaignAnalytics[]> {
     try {
 } catch (error) {
@@ -194,8 +192,7 @@ import {  prisma  } from "@/lib/database"
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
-    groupBy?: "day" | "week" | "month";
-  } = {}): Promise<unknown> {
+    groupBy?: "day" | "week" | "month", } = {}): Promise<unknown> {
     try {
 } catch (error) {
   console.error(error);
@@ -249,7 +246,7 @@ import {  prisma  } from "@/lib/database"
       // Calculate trends;
       const trends = this.calculateAnalyticsTrends(analyticsData);
 
-      return {timeSeriesData:groupedData;
+      return {timeSeriesData:groupedData,
         totals,
         averages,
         trends;
@@ -267,8 +264,7 @@ import {  prisma  } from "@/lib/database"
    */;
   async getComparativeAnalytics(campaignIds: string[], filters: {
     startDate?: Date;
-    endDate?: Date;
-    metrics?: string[];
+    endDate?: Date, metrics?: string[];
   } = {}): Promise<unknown> {
     try {
 } catch (error) {
@@ -342,7 +338,7 @@ import {  prisma  } from "@/lib/database"
             const campaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId },
               true,
                 true,
-                status: true;
+                status: true,
 
             });
 
@@ -360,7 +356,7 @@ import {  prisma  } from "@/lib/database"
             return {
               campaign,
               totals,
-              analyticsCount: analytics.length;
+              analyticsCount: analytics.length,
             };
           } catch (error) {
 
@@ -376,7 +372,7 @@ import {  prisma  } from "@/lib/database"
       const sortedData = this.sortCampaignsByPerformance(validCampaignsData);
 
       return {campaigns:sortedData,
-        comparisonDate: new Date();
+        comparisonDate: new Date(),
       };
     } catch (error) {
       throw new DatabaseError("Failed to retrieve comparative analytics", error);
@@ -409,7 +405,7 @@ import {  prisma  } from "@/lib/database"
 
     analytics.forEach(item => {
       const date = new Date(item.date);
-      let groupKey: string;
+      let groupKey: string,
 
       switch (interval) {
         case "day":
@@ -434,7 +430,7 @@ import {  prisma  } from "@/lib/database"
         const updatedMetrics = this.mergeMetrics(existing.metrics, item.metrics);
         groupedData.set(groupKey, {
           ...existing,
-          metrics: updatedMetrics;
+          metrics: updatedMetrics,
         });
 
     });
@@ -523,7 +519,7 @@ import {  prisma  } from "@/lib/database"
         trends[key] = {
           change,
           percentChange,
-          direction: change > 0 ? "up" : change < 0 ? "down" : "stable";
+          direction: change > 0 ? "up" : change < 0 ? "down" : "stable",
         };
 
     });

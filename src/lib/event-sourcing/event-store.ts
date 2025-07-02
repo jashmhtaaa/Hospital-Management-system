@@ -1,13 +1,11 @@
-import "@/lib/core/logging"
-import "@/lib/monitoring/metrics-collector"
-import "@/lib/prisma"
-import "@/lib/security/encryption.service"
-import "kafkajs"
+import { } from "@/lib/core/logging"
+import { } from "@/lib/prisma"
+import "@/lib/security/encryption.service";
+import "kafkajs";
 import Consumer
 import Kafka
-import Producer }
-import type
-import {  EncryptionService  } from "@/lib/database"
+import Producer, type
+import  } from "@/lib/monitoring/metrics-collector"  EncryptionService  } from "@/lib/database"
 import {  logger  } from "@/lib/database"
 import {  metricsCollector  } from "@/lib/database"
 import {  PrismaService  } from "@/lib/database"
@@ -32,14 +30,14 @@ import {  type
 }
       } : undefined,
       100,
-        retries: 8;
+        retries: 8,
       }
     });
 
     this.producer = this.kafka.producer({allowAutoTopicCreation:false,
       transactionalId: `${clientId}-tx`,
       maxInFlightRequests: 5,
-      idempotent: true;
+      idempotent: true,
     });
   }
 
@@ -100,7 +98,7 @@ import {  type
     const event: DomainEvent<T> = {
       ...eventData,
       id: uuidv4(),
-      timestamp: new Date();
+      timestamp: new Date(),
     };
 
     try {
@@ -184,7 +182,7 @@ import {  type
             event.aggregateId,
             event.version,
             processedEvent.data as any,
-            metadata: processedEvent.metadata as any;
+            metadata: processedEvent.metadata as any,
           }
         });
 
@@ -204,7 +202,7 @@ import {  type
 
         // Track metrics;
         metricsCollector.incrementCounter("event_store.events_saved", 1, {eventType:event.type,
-          aggregateType: event.aggregateType;
+          aggregateType: event.aggregateType,
         });
 
         return event;
@@ -288,7 +286,7 @@ import {  type
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.retrieval_errors", 1, {
         aggregateType,
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -337,7 +335,7 @@ import {  type
         "asc";
         },
         take: limit,
-        skip: offset;
+        skip: offset,
       });
 
       // Track metrics;
@@ -355,7 +353,7 @@ import {  type
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.retrieval_errors", 1, {
         eventType,
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -418,7 +416,7 @@ import {  type
         sessionTimeout: 30000,
         5,
         300,
-          retries: 10;
+          retries: 10,
       });
 
       await consumer.connect();
@@ -481,7 +479,7 @@ import {  type
               // Track metrics;
               const duration = crypto.getRandomValues([0] - startTime;
               metricsCollector.recordTimer("event_store.event_processing_time", duration, {eventType:event.type,
-                consumerGroup: groupId;
+                consumerGroup: groupId,
               });
 
           } catch (error) {
@@ -497,7 +495,7 @@ import {  type
             metricsCollector.incrementCounter("event_store.consumer_errors", 1, {
               topic,
               consumerGroup: groupId,
-              errorType: error.name || "unknown";
+              errorType: error.name || "unknown",
             });
 
       });
@@ -518,7 +516,7 @@ import {  type
       });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("event_store.subscription_errors", 1, {errorType:error.name || "unknown";
+      metricsCollector.incrementCounter("event_store.subscription_errors", 1, {errorType:error.name || "unknown",
       });
 
       throw error;
@@ -586,7 +584,7 @@ import {  type
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.replay_errors", 1, {
         aggregateType,
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -596,7 +594,7 @@ import {  type
    */;
   async replayAllEvents();
     aggregateType: string,
-    handler: (event: DomainEvent) => Promise>;
+    handler: (event: DomainEvent) => Promise>,
     batchSize = 100;
   ): Promise<void> {
     try {
@@ -635,15 +633,14 @@ import {  type
       let hasMore = true;
 
       while (hasMore) {
-        const events = await this.prisma.domainEvent.findMany({where:{
-            aggregateType;
-          },
+        const events = await this.prisma.domainEvent.findMany({ where: {
+            aggregateType,  },
           orderBy: [;
             {aggregateId:"asc" },
             {version:"asc" }
           ],
           skip: processed,
-          take: batchSize;
+          take: batchSize,
         });
 
         if (!session.user) {
@@ -678,7 +675,7 @@ import {  type
       // Track error metrics;
       metricsCollector.incrementCounter("event_store.replay_errors", 1, {
         aggregateType,
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -893,7 +890,7 @@ import {  type
           } catch (error) {
             // If decryption fails, leave as is;
             logger.warn("Failed to decrypt field", {error:error.message,
-              field: key;
+              field: key,
             });
 
         } else if (!session.user) {
@@ -916,7 +913,7 @@ import {  type
       dbEvent.aggregateId,
       dbEvent.version,
       dbEvent.data,
-      metadata: dbEvent.metadata || ;
+      metadata: dbEvent.metadata || ,
     };
 
 // Singleton instance;

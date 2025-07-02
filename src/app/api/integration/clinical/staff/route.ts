@@ -1,5 +1,5 @@
-import "@/lib/hr/integration-service"
-import "next/server"
+import "@/lib/hr/integration-service";
+import "next/server";
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  integrationService  } from "@/lib/database"

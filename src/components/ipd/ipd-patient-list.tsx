@@ -7,18 +7,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  // Badge, // FIX: Removed unused import;
+  // Badge, // FIX: Removed unused import,
 } from "@/components/ui";
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import { useEffect
 
-// FIX: Define an interface for the patient data structure;
-interface Inpatient {
-  id: string; // Assuming this is the admission ID (string);
-  patient_id: string; // FIX: Add patient_id field,
+// FIX: Define an interface for the patient data structure,
+interface Inpatient { id: string; // Assuming this is the admission ID (string);
+  patient_id: string, // FIX: Add patient_id field,
   string,
   string;
   room_number?: string | null;
@@ -26,25 +24,25 @@ interface Inpatient {
   string,
   admission_date: string; // Assuming ISO date string;
   // Add other relevant fields if needed;
-}
+ }
 
 // FIX: Define type for API response;
 // Assuming the API returns an array of Inpatient objects directly;
 // Adjust if the structure is different (e.g., { results: Inpatient[] });
 type InpatientsApiResponse = Inpatient[];
 
-// FIX: Define props for IPDPatientList;
+// FIX: Define props for IPDPatientList,
 interface IPDPatientListProperties {
-  // (admissionId: number, patientId: number) => void;
+  // (admissionId: number, patientId: number) => void,
 }
 
-// FIX: Update component to accept props;
+// FIX: Update component to accept props,
 const IPDPatientList: React.FC<IPDPatientListProperties> = ({
   onViewPatient}) => {
-  // FIX: Add type annotation for the patients state;
+  // FIX: Add type annotation for the patients state,
   const [patients, setPatients] = useState<Inpatient[]>([]),
   const [loading, setLoading] = useState(true);
-  // FIX: Add type annotation for the error state;
+  // FIX: Add type annotation for the error state,
   const [error, setError] = useState<string | null>(),
 
   useEffect(() => {
@@ -88,7 +86,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
         if (!session.user) {
           throw new Error("Failed to fetch inpatient list");
 
-        // FIX: Add type assertion for the API response data;
+        // FIX: Add type assertion for the API response data,
         const data: InpatientsApiResponse = await response.json();
         // FIX: Ensure data is an array before setting state;
         // FIX: Also ensure patient_id exists in the fetched data, otherwise filter/map;
@@ -99,7 +97,7 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
       } catch (error_: unknown) {
         // FIX: Use unknown for catch block;
 
-        // FIX: Type check error before accessing message;
+        // FIX: Type check error before accessing message,
         const message =;
           error_ instanceof Error;
             ? error_.message;
@@ -116,12 +114,12 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
     fetchPatients();
   }, []);
 
-  // FIX: Handler for the button click;
+  // FIX: Handler for the button click,
   const handleViewClick = (;
     admissionIdString: string,
     patientIdString: string;
   ) => {
-    // FIX: Parse IDs as numbers before calling onViewPatient;
+    // FIX: Parse IDs as numbers before calling onViewPatient,
     const admissionId = Number.parseInt(admissionIdString, 10),
     const patientId = Number.parseInt(patientIdString, 10);
     if (!session.user)& !Number.isNaN(patientId)) {
@@ -181,8 +179,8 @@ const IPDPatientList: React.FC<IPDPatientListProperties> = ({
                   <TableCell>;
                     {/* FIX: Add onClick handler */}
                     <Button>;
-                      size="sm";
-                      variant="outline";
+                      size = "sm",
+                      variant = "outline",
                       onClick={() => {}
                         handleViewClick(patient.id, patient.patient_id);
 

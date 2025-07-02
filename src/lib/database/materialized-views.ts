@@ -1,9 +1,8 @@
-import "@/lib/cache/redis"
-import "@/lib/core/logging"
-import "@/lib/event-sourcing/event-store"
-import "@/lib/monitoring/metrics-collector"
-import "@/lib/prisma"
-import {  EventStore  } from "@/lib/database"
+import { } from "@/lib/core/logging"
+import "@/lib/event-sourcing/event-store";
+import "@/lib/monitoring/metrics-collector";
+import "@/lib/prisma";
+import {  EventStore  } from "@/lib/cache/redis"
 import {  LockManager  } from "@/lib/database"
 import {  logger  } from "@/lib/database"
 import {  metricsCollector  } from "@/lib/database"
@@ -25,13 +24,11 @@ interface MaterializedViewDefinition {
 
   // Event types that should trigger a refresh of this view;
   triggerEvents?: string[];
-
   // Refresh strategy;
   refreshStrategy: "complete" | "incremental";
 
   // SQL to create indexes on the materialized view;
   indexSql?: string[];
-
   // Optional SQL to create the incremental refresh function;
   incrementalRefreshSql?: string;
 
@@ -40,7 +37,6 @@ interface MaterializedViewDefinition {
 
   // Dependent views that must be refreshed after this one;
   dependentViews?: string[];
-
   // Refresh schedule (cron expression);
   refreshSchedule?: string;
 
@@ -104,7 +100,7 @@ interface MaterializedViewDefinition {
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"register",
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
     }
   }
@@ -162,7 +158,7 @@ interface MaterializedViewDefinition {
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"createAll",
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -238,9 +234,9 @@ interface MaterializedViewDefinition {
       logger.error(`Error creating materialized view: ${viewName}`, { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"create";
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"create",
         viewName,
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -309,7 +305,7 @@ interface MaterializedViewDefinition {
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"refreshAll",
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -442,9 +438,9 @@ interface MaterializedViewDefinition {
       logger.error(`Error refreshing materialized view: ${viewName}`, { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"refresh";
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"refresh",
         viewName,
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -514,7 +510,7 @@ interface MaterializedViewDefinition {
     } catch (error) {
       logger.error("Error processing event for materialized views", {
         error,
-        eventType: event.type;
+        eventType: event.type,
       });
 
       // Track error metrics;
@@ -607,9 +603,9 @@ interface MaterializedViewDefinition {
       logger.error(`Error querying materialized view: ${viewName}`, { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"query";
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"query",
         viewName,
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
       throw error;
@@ -667,9 +663,9 @@ interface MaterializedViewDefinition {
       logger.error(`Error invalidating cache for view: ${viewName}`, { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"invalidateCache";
+      metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"invalidateCache",
         viewName,
-        errorType: error.name || "unknown";
+        errorType: error.name || "unknown",
       });
 
   /**;
@@ -735,7 +731,7 @@ interface MaterializedViewDefinition {
 
       // Track error metrics;
       metricsCollector.incrementCounter("database.materialized_views.errors", 1, {operation:"setupSubscriptions",
-        errorType: error.name || "unknown';
+        errorType: error.name || "unknown',
       });
 
   /**;
@@ -765,7 +761,7 @@ interface MaterializedViewDefinition {
     // Perform topological sort;
     const visited = new Set<string>();
     const temp = new Set<string>();
-    const result: MaterializedViewDefinition[] = [];
+    const result: MaterializedViewDefinition[] = [],
 
     const visit = (viewName: string): void => {
       if (!session.user) {

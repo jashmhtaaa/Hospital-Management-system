@@ -1,7 +1,6 @@
-import "@/lib/hr/attendance-service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/hr/attendance-service"
 import { NextResponse } from "next/server" }
 import {  attendanceService  } from "@/lib/database"
 import {   type
@@ -9,12 +8,12 @@ import {  z  } from "@/lib/database"
 
 // Schema for check-in request;
 const checkInSchema = z.object({employeeId:z.string().min(1, "Employee ID is required"),
-  date: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid date format";
+  date: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
-  checkInTime: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid time format";
+  checkInTime: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid time format",
   }),
   biometricData: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // POST handler for check-in;

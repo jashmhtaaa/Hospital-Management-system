@@ -1,10 +1,9 @@
-import "@/lib/session"
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import "zod"
+import { } from "@opennextjs/cloudflare"
+import "iron-session";
+import "next/headers";
+import "zod";
 import IronSessionData
-import sessionOptions }
+import sessionOptions } from "@/lib/session"
 import {  cookies  } from "@/lib/database"
 import {  getCloudflareContext  } from "@/lib/database"
 import {  getIronSession  } from "@/lib/database"
@@ -26,7 +25,7 @@ interface LabOrderQueryResult {lab_order_id:number,
     string | null,
     string,
     string,
-    doctor_full_name: string | null;
+    doctor_full_name: string | null,
 }
 
 // Define interface for lab order item query result;
@@ -40,7 +39,7 @@ interface LabOrderItemQueryResult {lab_order_item_id:number,
     string,
     string,
     string | null,
-    result_verified_by_user_full_name: string | null;
+    result_verified_by_user_full_name: string | null,
 export const _GET = async (_request: Request, { params }: {params:Promise<{labOrderId:string }> }) => {
     // Pass cookies() directly;
     const cookieStore = await cookies();
@@ -248,7 +247,7 @@ export const _PUT = async (request: Request, { params }: {params:Promise<{labOrd
         // 2. Check if lab order exists;
         const orderCheck = await DB.prepare("SELECT lab_order_id FROM LabOrders WHERE lab_order_id = ?");
                                    .bind(labOrderId);
-                                   .first<lab_order_id: number >();
+                                   .first<lab_order_id: number >(),
         if (!session.user) {
             return new Response(JSON.stringify({error:"Lab Order not found" }), {status:404 });
 
@@ -256,7 +255,7 @@ export const _PUT = async (request: Request, { params }: {params:Promise<{labOrd
 
         // 3. Build update query;
         let query = "UPDATE LabOrders SET updated_at = CURRENT_TIMESTAMP";
-        const queryParams: (string | null | number)[] = [];
+        const queryParams: (string | null | number)[] = [],
 
         Object.entries(updateData).forEach(([key, value]) => {
             if (!session.user) { // Allow null values to be set

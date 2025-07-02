@@ -1,7 +1,6 @@
-import "@/lib/audit/audit-service"
-import "@/lib/prisma"
-import "@prisma/client"
-import {  AuditService  } from "@/lib/database"
+import { } from "@/lib/prisma"
+import "@prisma/client";
+import {  AuditService  } from "@/lib/audit/audit-service"
 import {  Prisma  } from "@/lib/database"
 import {  prisma  } from "@/lib/database"
 
@@ -50,7 +49,7 @@ import {  prisma  } from "@/lib/database"
       throw new Error("Patient not found");
 
     const patient = await prisma.patient.update({where:{ id },
-      data: updateData;
+      data: updateData,
     });
 
     // Audit log;

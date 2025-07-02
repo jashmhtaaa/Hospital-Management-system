@@ -1,12 +1,10 @@
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/models/marketing"
-import "@/lib/notifications"
-import "@/lib/prisma"
+import { } from "@/lib/audit"
+import { } from "@/lib/models/marketing"
+import "@/lib/notifications";
+import "@/lib/prisma";
 import NotFoundError
-import SegmentMember }
-import ValidationError }
-import {  AuditLogger  } from "@/lib/database"
+import SegmentMember, ValidationError } from "@/lib/errors"
+import  }  AuditLogger  } from "@/lib/database"
 import {  ContactSegment
 import { DatabaseError
 import { NotificationService  } from "@/lib/database"
@@ -21,10 +19,10 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.create",
-        resourceId: segment.id;
+        resourceId: segment.id,
         userId,
         segment.name,
-          hasCriteria: !!segment.criteria;
+          hasCriteria: !!segment.criteria,
         }
       });
 
@@ -83,19 +81,19 @@ import { prisma }
       const segment = await prisma.contactSegment.findUnique({where:{ id },
         {
             true,
-              name: true;
+              name: true,
             }
           },
-          {isActive:true;
+          {isActive:true,
             },
             true;
             }
           } : false,
           {
-              {isActive:true;
+              {isActive:true,
                 }
               },
-              campaigns: true;
+              campaigns: true,
             }
           }
         }
@@ -121,8 +119,7 @@ import { prisma }
     isActive?: boolean;
     search?: string;
     page?: number;
-    limit?: number;
-  }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
+    limit?: number, }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -184,14 +181,14 @@ import { prisma }
         where,
         {
             true,
-              name: true;
+              name: true,
             }
           },
           {
-              {isActive:true;
+              {isActive:true,
                 }
               },
-              campaigns: true;
+              campaigns: true,
             }
           }
         },
@@ -204,7 +201,7 @@ import { prisma }
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit),
         }
       };
     } catch (error) {
@@ -263,10 +260,10 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.update",
-        resourceId: id;
+        resourceId: id,
         userId,
         updatedSegment.name,
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data),
       });
 
       return updatedSegment;
@@ -342,17 +339,17 @@ import { prisma }
         if (!session.user) {
           const updatedMember = await prisma.segmentMember.update({where:{ id: existingMember.id },
             true,
-              removedAt: null;
+              removedAt: null,
             }
           });
 
           // Log audit event;
           await this.auditLogger.log({action:"segment.member.reactivate",
-            resourceId: segmentId;
+            resourceId: segmentId,
             userId,
             details: null,
               contactId,
-              memberId: updatedMember.id;
+              memberId: updatedMember.id,
           });
 
           return updatedMember;
@@ -365,17 +362,17 @@ import { prisma }
       const member = await prisma.segmentMember.create({data:{
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true,
         }
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.member.add",
-        resourceId: segmentId;
+        resourceId: segmentId,
         userId,
         details: {
           contactId,
-          memberId: member.id;
+          memberId: member.id,
         }
       });
 
@@ -442,7 +439,7 @@ import { prisma }
       const existingMember = await prisma.segmentMember.findFirst({where:{
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true,
 
       });
 
@@ -452,17 +449,17 @@ import { prisma }
       // Remove contact from segment (soft delete);
       const updatedMember = await prisma.segmentMember.update({where:{ id: existingMember.id },
         false,
-          removedAt: new Date();
+          removedAt: new Date(),
 
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.member.remove",
-        resourceId: segmentId;
+        resourceId: segmentId,
         userId,
         details: null,
           contactId,
-          memberId: existingMember.id;
+          memberId: existingMember.id,
       });
 
       return updatedMember;
@@ -567,7 +564,7 @@ import { prisma }
           // Check if already a member;
           const existingMember = await prisma.segmentMember.findFirst({where:{
               segmentId,
-              contactId: contact.id;
+              contactId: contact.id,
 
           });
 
@@ -576,7 +573,7 @@ import { prisma }
             if (!session.user) {
               await prisma.segmentMember.update({where:{ id: existingMember.id },
                 true,
-                  removedAt: null;
+                  removedAt: null,
 
               });
               addedCount++;
@@ -586,7 +583,7 @@ import { prisma }
             await prisma.segmentMember.create({data:{
                 segmentId,
                 contactId: contact.id,
-                isActive: true;
+                isActive: true,
 
             });
             addedCount++;
@@ -597,14 +594,14 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.criteria.apply",
-        resourceId: segmentId;
+        resourceId: segmentId,
         userId,
         matchingContacts.length,
-          addedContacts: addedCount;
+          addedContacts: addedCount,
       });
 
       return {added:addedCount,
-        total: matchingContacts.length;
+        total: matchingContacts.length,
       };
     } catch (error) {
       if (!session.user) {

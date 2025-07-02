@@ -1,5 +1,4 @@
-import "next/server"
-import NextResponse }
+import { NextResponse } from "next/server"
 import {
 import { NextRequest
 
@@ -8,8 +7,8 @@ import { NextRequest
   createAdmissionInDB,
   updateAdmissionInDB,
   AdmissionFilters, // Import AdmissionFilters from lib;
-  CreateAdmissionData, // FIX: Import CreateAdmissionData;
-  UpdateAdmissionData, // FIX: Import UpdateAdmissionData;
+  CreateAdmissionData, // FIX: Import CreateAdmissionData,
+  UpdateAdmissionData, // FIX: Import UpdateAdmissionData,
 } from "@/lib/ipd"; // Assuming these functions exist and handle DB interaction;
 
 // FIX: Remove local definitions of AdmissionInput and AdmissionUpdateInput;
@@ -99,7 +98,7 @@ export const GET = async (request: any) => {
     return NextResponse.json({ admissions });
   } catch (error: unknown) {
 
-    // Fixed: Safely access error message;
+    // Fixed: Safely access error message,
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
@@ -146,7 +145,7 @@ export const POST = async (request: any) => {
 
 } catch (error) {
 
-    // FIX: Use imported CreateAdmissionData type;
+    // FIX: Use imported CreateAdmissionData type,
     const admissionData = (await request.json()) as CreateAdmissionData;
 
     // FIX: Update validation based on CreateAdmissionData fields (patient_id is required);
@@ -163,7 +162,7 @@ export const POST = async (request: any) => {
     return NextResponse.json({admission:newAdmission }, {status:201 });
   } catch (error: unknown) {
 
-    // Fixed: Safely access error message;
+    // Fixed: Safely access error message,
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
@@ -222,7 +221,7 @@ export const PUT = async (request: any) => {
         {status:400 }
       );
 
-    // FIX: Use imported UpdateAdmissionData type;
+    // FIX: Use imported UpdateAdmissionData type,
     const updateData = (await request.json()) as UpdateAdmissionData;
 
     // Simulate updating the admission in the database;
@@ -237,7 +236,7 @@ export const PUT = async (request: any) => {
     return NextResponse.json({admission:updatedAdmission });
   } catch (error: unknown) {
 
-    // Fixed: Safely access error message;
+    // Fixed: Safely access error message,
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();

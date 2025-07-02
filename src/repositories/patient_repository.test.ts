@@ -1,12 +1,11 @@
-import "../lib/database/postgresql_adapter.ts"
-import "./patient_repository.ts"
-import "pg"
+import { "../lib/database/postgresql_adapter.ts";
+import "./patient_repository.ts";
+import "pg";
 import IPatientRepository
 import Patient
 import PatientInputData
-import PatientRepository }
-import type
-import { IDatabaseAdapter }
+import PatientRepository, type
+import  } IDatabaseAdapter }
 import { QueryResult }
 import { type
 

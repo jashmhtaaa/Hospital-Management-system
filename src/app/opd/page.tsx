@@ -1,27 +1,24 @@
-import "@/components/opd/opd-appointment-list"
-import "@/components/opd/opd-consultation-form"
-import "@/components/opd/opd-patient-queue"
-import "@/components/opd/opd-statistics"
-import "@/components/ui/button"
-import "@/components/ui/calendar"
-import "@/components/ui/card"
-import "@/components/ui/tabs"
-import "next/navigation"
-import "react"
+import { } from "@/components/opd/opd-appointment-list"
+import { } from "@/components/opd/opd-patient-queue"
+import { "@/components/opd/opd-statistics";
+import "@/components/ui/button";
+import "@/components/ui/calendar";
+import "@/components/ui/card";
+import "@/components/ui/tabs";
+import "next/navigation";
+import "react";
 import CardContent
 import CardHeader
-import CardTitle }
-import OPDAppointmentList
+import CardTitle, OPDAppointmentList
 import OPDConsultationForm
 import OPDPatientQueue
 import OPDStatistics
 import React
 import TabsContent
 import TabsList
-import TabsTrigger }
-import useEffect }
-import { Button }
-import { Calendar }
+import TabsTrigger } from "@/components/opd/opd-consultation-form"
+import useEffect, } Button }
+import  } Calendar }
 import { Card
 import { Tabs
 import { useRouter }
@@ -38,20 +35,18 @@ export const dynamic = "force-dynamic";
 // import { hasPermission } from "@/lib/session"; // Direct permission check might be better done server-side or via dedicated hook;
 
 // --- INTERFACES ---;
-// FIX: Define interface for the permission check API response;
-interface PermissionCheckResponse {
-  hasPermission: boolean;
+// FIX: Define interface for the permission check API response,
+interface PermissionCheckResponse { hasPermission: boolean;
   // Add other potential properties if the API returns more;
 export default const _OPDDashboard = () {
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState("appointments");
+  const router = useRouter(), const [activeTab, setActiveTab] = useState("appointments");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(;
     new Date();
   ); // Allow undefined for calendar;
   const [permissions, setPermissions] = useState({
     canCreateAppointment: false,
-    canViewStatistics: false;
-  });
+    canViewStatistics: false,
+   });
   const [loadingPermissions, setLoadingPermissions] = useState(true);
   const [permissionError, setPermissionError] = useState<string | null>();
 
@@ -103,14 +98,14 @@ export default const _OPDDashboard = () {
             `Failed to fetch permissions: ${failedResponse.statusText} (${failedResponse.status})`;
           );
 
-        // FIX: Cast JSON responses to the defined type;
+        // FIX: Cast JSON responses to the defined type,
         const createData = (await createResponse.json()) as PermissionCheckResponse;
         const statsData = (await statsResponse.json()) as PermissionCheckResponse;
 
-        // FIX: Safely access hasPermission property;
+        // FIX: Safely access hasPermission property,
         setPermissions({
           canCreateAppointment: createData?.hasPermission ?? false,
-          canViewStatistics: statsData?.hasPermission ?? false;
+          canViewStatistics: statsData?.hasPermission ?? false,
         })} catch (error) {
 
         setPermissionError();
@@ -119,7 +114,7 @@ export default const _OPDDashboard = () {
         // Set permissions to false on error;
         setPermissions({
           canCreateAppointment: false,
-          canViewStatistics: false;
+          canViewStatistics: false,
         });
       } finally {
         setLoadingPermissions(false);
@@ -168,7 +163,7 @@ export default const _OPDDashboard = () {
             </CardHeader>;
             <CardContent>;
               <Calendar>;
-                mode="single";
+                mode = "single",
                 selected={selectedDate}
                 onSelect={handleDateChange}
                 className="rounded-md border p-0" // Remove default padding if needed;
@@ -219,7 +214,7 @@ export default const _OPDDashboard = () {
           <Tabs>;
             value={activeTab}
             onValueChange={setActiveTab}
-            defaultValue="appointments";
+            defaultValue = "appointments",
           >;
             >;
               <TabsTrigger value="appointments">Appointments>;

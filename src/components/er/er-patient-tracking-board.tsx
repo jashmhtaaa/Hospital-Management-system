@@ -1,6 +1,5 @@
-import "react"
-import React
-import useEffect }
+import { React
+import useEffect } from "react"
 import {
 import { useState
 
@@ -15,9 +14,8 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "@/components/ui/input"
-import { Badge }
+import { } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
 import { Input }
 
   Select,
@@ -40,9 +38,7 @@ import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton for load
   TooltipTrigger} from "@/components/ui/tooltip"; // Import Tooltip;
 
 // Interface for API data;
-interface ERPatient {
-  id: string; // visit_id;
-  patient_id: string,
+interface ERPatient { id: string; // visit_id, patient_id: string,
   string,
   string,
   string,
@@ -59,7 +55,7 @@ interface ERPatient {
     critical_alert?: string; // e.g., Sepsis, Stroke;
     isolation?: string; // e.g., Contact, Droplet;
     fall_risk?: boolean;
-  };
+   };
 }
 
 // Helper function to calculate time difference;
@@ -113,7 +109,7 @@ const calculateTimeDiff = (startTime: string): string => {
 
 };
 
-// FIX: Adjust return type and values to match allowed Badge variants;
+// FIX: Adjust return type and values to match allowed Badge variants,
 const getEsiBadgeVariant = (;
   esi: number;
 ): "destructive" | "secondary" | "default" | "outline" => {

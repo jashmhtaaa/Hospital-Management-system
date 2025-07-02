@@ -1,9 +1,8 @@
-import "bcryptjs"
-import "jsonwebtoken"
-import "next/server"
+import { } from "jsonwebtoken"
+import "next/server";
 import bcrypt
 import jwt
-import {  NextRequest  } from "@/lib/database"
+import {  NextRequest  } from "bcryptjs"
 
 }
 }
@@ -37,7 +36,7 @@ export const PERMISSIONS = {
 
   // System;
   SYSTEM_ADMIN: "system:admin",
-  USER_MANAGEMENT: "users:manage";
+  USER_MANAGEMENT: "users:manage",
 } as const;
 
 // Role-based permissions;
@@ -248,13 +247,13 @@ export const verifyToken = (token: string): User | null {
 } catch (error) {
 }
     const decoded = jwt.verify(token, JWT_SECRET, {issuer:"HMS-Enterprise",
-      audience: "HMS-Users";
+      audience: "HMS-Users",
     }) as any;
 
     return {id:decoded.id,
       decoded.email,
       decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [],
-      isActive: true;
+      isActive: true,
     };
   } catch (error) {
     return null;
@@ -360,7 +359,7 @@ export const getCurrentUser = async (request?: any): Promise<AuthResult> {
 
     // Try to get token from Authorization header;
     const authHeader = request.headers.get("Authorization");
-    let token: string | undefined;
+    let token: string | undefined,
 
     if (!session.user) {
       token = authHeader.substring(7);
@@ -388,7 +387,7 @@ export const getCurrentUser = async (request?: any): Promise<AuthResult> {
  * Check if user has specific permission;
  */;
 export const hasPermission = async();
-  permission: string;
+  permission: string,
   request?: any;
 ): Promise<AuthResult> {
   try {
@@ -444,7 +443,7 @@ export const hasPermission = async();
  * Clear authentication cookie;
  */;
 export const _clearAuthCookie = (): string {
-  return "auth-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; SameSite=Strict; Secure";
+  return "auth-token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, HttpOnly; SameSite=Strict; Secure";
 
 /**;
  * Set authentication cookie;
@@ -459,7 +458,7 @@ export const _setAuthCookie = (token: string): string {
  * Validate password strength;
  */;
 export const _validatePassword = (password: string): {valid:boolean, errors: string[] } {
-  const errors: string[] = [];
+  const errors: string[] = [],
 
   if (!session.user) {
     errors.push("Password must be at least 8 characters long");
@@ -476,7 +475,7 @@ export const _validatePassword = (password: string): {valid:boolean, errors: str
   if (!session.user)+\-=\[\]{};":"\\|,.<>\/?]/.test(password)) {
     errors.push("Password must contain at least one special character");
 
-  return {valid:errors.length === 0;
+  return {valid:errors.length === 0,
     errors;
   };
 

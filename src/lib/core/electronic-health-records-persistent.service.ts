@@ -1,7 +1,6 @@
-import "../../services/encryption_service_secure"
-import "@prisma/client"
-import "zod"
-import {  getEncryptionService  } from "@/lib/database"
+import { } from "@prisma/client"
+import "zod";
+import {  getEncryptionService  } from "../../services/encryption_service_secure"
 import {  PrismaClient  } from "@/lib/database"
 import {  z  } from "@/lib/database"
 
@@ -42,7 +41,7 @@ export const ClinicalNoteSchema = z.object({patient_id:z.string().min(1, "Patien
     oxygen_saturation: z.number().optional(),
     weight: z.number().optional(),
     height: z.number().optional(),
-    bmi: z.number().optional();
+    bmi: z.number().optional(),
   }).optional(),
 
   // Clinical coding;
@@ -82,7 +81,7 @@ export const CarePlanSchema = z.object({patient_id:z.string().min(1, "Patient ID
   z.string(),
     role: z.string(),
     period_start: z.date(),
-    period_end: z.date().optional();
+    period_end: z.date().optional(),
   })).default([]),
 
   // Clinical coding;
@@ -92,7 +91,7 @@ export const CarePlanSchema = z.object({patient_id:z.string().min(1, "Patient ID
   // Metadata;
   created_by: z.string(),
   period_start: z.date(),
-  period_end: z.date().optional();
+  period_end: z.date().optional(),
 });
 
 export const ProblemListSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
@@ -105,7 +104,7 @@ export const ProblemListSchema = z.object({patient_id:z.string().min(1, "Patient
   onset_date: z.date().optional(),
   resolution_date: z.date().optional(),
   notes: z.string().optional(),
-  created_by: z.string();
+  created_by: z.string(),
 });
 
 export const ClinicalGuidelineSchema = z.object({title:z.string().min(1, "Title is required"),
@@ -127,7 +126,7 @@ export const ClinicalGuidelineSchema = z.object({title:z.string().min(1, "Title 
   // Metadata;
   created_by: z.string(),
   published_date: z.date().optional(),
-  review_date: z.date().optional();
+  review_date: z.date().optional(),
 });
 
 // Type definitions;
@@ -141,12 +140,12 @@ export type ClinicalGuideline = z.infer>;
     medication_interactions?: string[];
   };
   "alert" | "suggestion" | "warning" | "info",
-    message: string;
+    message: string,
     actions?: string[];
   }[];
   status: "active" | "inactive",
   Date,
-  updated_at: Date;
+  updated_at: Date,
 }
 
 /**;
@@ -214,13 +213,13 @@ export type ClinicalGuideline = z.infer>;
         encryptedData.assessment || "",
         encryptedData.free_text_content,
         data.created_by,
-        signatureDateTime: data.status === "final" ? new Date() : null;
+        signatureDateTime: data.status === "final" ? new Date() : null,
       }
     });
 
     return {
       ...data,
-      id: soapNote.id;
+      id: soapNote.id,
     };
   }
 
@@ -240,7 +239,7 @@ export type ClinicalGuideline = z.infer>;
 
     return {
       ...data,
-      id: progressNote.id;
+      id: progressNote.id,
     };
   }
 
@@ -414,13 +413,13 @@ export type ClinicalGuideline = z.infer>;
           carePlan.id,
             activity.description,
             activity.scheduled_date,
-            category: activity.category;
+            category: activity.category,
 
         });
 
       return {
         ...validated,
-        id: carePlan.id;
+        id: carePlan.id,
       };
     } catch (error) {
       throw new Error(`Failed to create care plan: ${}`;
@@ -460,7 +459,7 @@ export type ClinicalGuideline = z.infer>;
 
       const carePlan = await this.prisma.carePlan.findUnique({where:{ id },
         true,
-          interventions: true;
+          interventions: true,
 
       });
 
@@ -521,7 +520,7 @@ export type ClinicalGuideline = z.infer>;
 
       const carePlans = await this.prisma.carePlan.findMany({where:{ patientId },
         true,
-          interventions: true;
+          interventions: true,
         },
         orderBy: {createdAt:"desc" }
       });
@@ -540,7 +539,7 @@ export type ClinicalGuideline = z.infer>;
         care_team: [],
         undefined,
         carePlan.periodStart,
-        period_end: carePlan.periodEnd || undefined;
+        period_end: carePlan.periodEnd || undefined,
       }));
     } catch (error) {
       throw new Error(`Failed to get care plans for patient: ${}`;
@@ -594,7 +593,7 @@ export type ClinicalGuideline = z.infer>;
 
       return {
         ...validated,
-        id: problem.id;
+        id: problem.id,
       };
     } catch (error) {
       throw new Error(`Failed to create problem list item: ${}`;
@@ -697,7 +696,7 @@ export type ClinicalGuideline = z.infer>;
 
       return {
         ...validated,
-        id: guideline.id;
+        id: guideline.id,
       };
     } catch (error) {
       throw new Error(`Failed to create clinical guideline: ${}`;
@@ -786,7 +785,7 @@ export type ClinicalGuideline = z.infer>;
       ...decrypted,
       created_by: note.signedBy || note.createdBy,
       note.createdAt,
-      updated_at: note.updatedAt;
+      updated_at: note.updatedAt,
     };
 
   // Search and Query Operations;
@@ -796,8 +795,7 @@ export type ClinicalGuideline = z.infer>;
     dateFrom?: Date;
     dateTo?: Date;
     noteType?: string;
-    status?: string;
-  }): Promise<ClinicalNote[]> {
+    status?: string, }): Promise<ClinicalNote[]> {
     try {
 } catch (error) {
   console.error(error);
@@ -873,7 +871,6 @@ export type ClinicalGuideline = z.infer>;
       snomed_codes?: string[];
       lab_values?: {name:string, value: number }[];
       medications?: string[];
-
   ): Promise<ClinicalDecisionSupport[]> {
     try {
 } catch (error) {
@@ -910,7 +907,7 @@ export type ClinicalGuideline = z.infer>;
       const rules = await this.prisma.clinicalDecisionSupport.findMany({where:{ status: "active" }
       });
 
-      const triggeredRules: ClinicalDecisionSupport[] = [];
+      const triggeredRules: ClinicalDecisionSupport[] = [],
 
       for (const rule of rules) {
         const triggerConditions = JSON.parse(rule.triggerConditions);
@@ -947,7 +944,7 @@ export type ClinicalGuideline = z.infer>;
     await this.prisma.$disconnect();
 
 // Export singleton instance;
-let ehrServiceInstance: PersistentElectronicHealthRecordsService | null = null;
+let ehrServiceInstance: PersistentElectronicHealthRecordsService | null = null,
 
 export const _getEHRService = (prismaClient?: PrismaClient): PersistentElectronicHealthRecordsService => {
   if (!session.user) {

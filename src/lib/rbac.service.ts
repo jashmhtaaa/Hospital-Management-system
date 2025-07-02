@@ -1,6 +1,5 @@
-import "@/lib/audit"
-import "@/lib/errors"
-import {  AuditLogger  } from "@/lib/database"
+import { } from "@/lib/errors"
+import {  AuditLogger  } from "@/lib/audit"
 import {  AuthorizationError  } from "@/lib/database"
 
 }
@@ -55,21 +54,21 @@ export enum Action {
 
 // Permission definition type;
 interface Permission {resource:Resource,
-  action: Action;
+  action: Action,
   constraints?: Record>;
 }
 
 // Role definition with permissions;
-interface RoleDefinition {name:Role;
+interface RoleDefinition {name:Role,
   inherits?: Role[];
-  permissions: Permission[];
+  permissions: Permission[],
 }
     },
     {name:Role.MANAGER,
-      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.APPROVE ,resource: Resource.HOUSEKEEPING, action: Action.REPORT ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.APPROVE ,resource: Resource.MAINTENANCE, action: Action.REPORT ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.DIETARY, action: Action.APPROVE ,resource: Resource.DIETARY, action: Action.REPORT ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.APPROVE ,resource: Resource.AMBULANCE, action: Action.REPORT ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.APPROVE ,resource: Resource.FEEDBACK, action: Action.REPORT ,resource: Resource.MARKETING, action: Action.READ ,resource: Resource.MARKETING, action: Action.APPROVE ,resource: Resource.MARKETING, action: Action.REPORT ,resource: Resource.USER, action: Action.READ ,resource: Resource.USER, action: Action.CREATE ,resource: Resource.USER, action: Action.UPDATE ];
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.APPROVE ,resource: Resource.HOUSEKEEPING, action: Action.REPORT ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.APPROVE ,resource: Resource.MAINTENANCE, action: Action.REPORT ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.DIETARY, action: Action.APPROVE ,resource: Resource.DIETARY, action: Action.REPORT ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.APPROVE ,resource: Resource.AMBULANCE, action: Action.REPORT ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.APPROVE ,resource: Resource.FEEDBACK, action: Action.REPORT ,resource: Resource.MARKETING, action: Action.READ ,resource: Resource.MARKETING, action: Action.APPROVE ,resource: Resource.MARKETING, action: Action.REPORT ,resource: Resource.USER, action: Action.READ ,resource: Resource.USER, action: Action.CREATE ,resource: Resource.USER, action: Action.UPDATE ],
     },
     {name:Role.STAFF,
-      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.CREATE ];
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.CREATE ],
     },
     {name:Role.HOUSEKEEPING,
       [;
@@ -128,10 +127,10 @@ interface RoleDefinition {name:Role;
         {resource:Resource.FEEDBACK, action: Action.ASSIGN }];
     },
     {name:Role.PATIENT,
-      permissions: [resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.HOUSEKEEPING, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.FEEDBACK, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.READ, constraints: ownedByUser: true ];
+      permissions: [resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.HOUSEKEEPING, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.FEEDBACK, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.READ, constraints: ownedByUser: true ],
     },
     {name:Role.GUEST,
-      permissions: [resource: Resource.FEEDBACK, action: Action.CREATE ];
+      permissions: [resource: Resource.FEEDBACK, action: Action.CREATE ],
     }
   ];
 
@@ -265,13 +264,13 @@ interface RoleDefinition {name:Role;
         });
 
         auditLogger.log({action:"authorization.denied",
-          resourceId: resourceId || "unknown";
+          resourceId: resourceId || "unknown",
           userId,
-          details: any;
+          details: any,
             resource,
             action,
             constraints;,
-          severity: "warning";
+          severity: "warning",
         }).catch(err => );
       }
 

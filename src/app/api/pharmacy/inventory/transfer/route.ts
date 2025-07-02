@@ -1,8 +1,7 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/validation/pharmacy-validation"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/validation/pharmacy-validation";
+import "next/server";
+import { NextRequest } from "../../../../../lib/audit"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
 import {  errorHandler  } from "@/lib/database"
@@ -27,7 +26,7 @@ const inventoryRepository = {findById:(id: string) => Promise.resolve(null),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true),
-  transferStock: () => Promise.resolve(true);
+  transferStock: () => Promise.resolve(true),
 }
 
 const transferRepository = {findById:(id: string) => Promise.resolve(null),
@@ -35,7 +34,7 @@ const transferRepository = {findById:(id: string) => Promise.resolve(null),
   findByDestinationLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (transfer: unknown) => Promise.resolve(transfer.id || "new-id");
+  save: (transfer: unknown) => Promise.resolve(transfer.id || "new-id"),
 };
 
 /**;
@@ -113,7 +112,7 @@ export const POST = async (req: any) => {
       userId,
       transferredAt: new Date(),
       notes: data.notes || "",
-      status: "completed";
+      status: "completed",
     };
 
     // Save transfer record;
@@ -131,11 +130,11 @@ export const POST = async (req: any) => {
       // Additional logging for controlled substances;
       await auditLog("CONTROLLED_SUBSTANCE", {action:"TRANSFER",
         data.sourceInventoryId,
-        userId: userId;
+        userId: userId,
           transferId,
           medicationId: sourceInventory.medicationId,
           data.destinationLocationId,
-          quantity: data.quantity;
+          quantity: data.quantity,
       });
 
     // Regular audit logging;
@@ -144,14 +143,14 @@ export const POST = async (req: any) => {
       userId: userId;
       {sourceInventoryId:data.sourceInventoryId,
         sourceInventory.medicationId,
-        quantity: data.quantity;
+        quantity: data.quantity,
 
     });
 
     // Return response;
     return NextResponse.json();
       {id:transferId,
-        message: "Inventory transferred successfully";
+        message: "Inventory transferred successfully",
       },
       {status:201 }
     );

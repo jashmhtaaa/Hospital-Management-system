@@ -1,7 +1,6 @@
-import "next/navigation"
-import "react"
+import { } from "react"
 import React
-import useEffect }
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -24,19 +23,18 @@ import { useState
   SelectItem,
   SelectTrigger,
   SelectValue} from "../ui/select";
-import "../../hooks/use-toast"
-import "../ui/button"
-import "../ui/input"
-import "../ui/switch"
-import "../ui/tabs"
-import "../ui/textarea"
-import "@hookform/resolvers/zod"
-import "react-hook-form"
-import "zod"
+import { } from "../ui/button"
+import "../ui/input";
+import "../ui/switch";
+import "../ui/tabs";
+import "../ui/textarea";
+import "@hookform/resolvers/zod";
+import "react-hook-form";
+import "zod";
 import * as z
 import TabsContent
 import TabsList
-import TabsTrigger }
+import TabsTrigger } from "../../hooks/use-toast"
 import { Button }
 import { Input }
 import { Switch }
@@ -52,24 +50,24 @@ const documentFormSchema = z.object({
   documentType: z.string().min(1, "Document type is required"),
   content: z.string().min(1, "Content is required"),
   isConfidential: z.boolean().default(false),
-  sections: z.array();
+  sections: z.array(),
     z.object({
       id: z.string().optional(),
       sectionTitle: z.string().min(1, "Section title is required"),
       sectionType: z.string().min(1, "Section type is required"),
       content: z.string().min(1, "Section content is required"),
-      sectionOrder: z.number().optional();
+      sectionOrder: z.number().optional(),
     });
   ).optional(),
   tags: z.array(z.string()).optional(),
-  attachmentUrls: z.array(z.string()).optional();
+  attachmentUrls: z.array(z.string()).optional(),
 });
 
 // Type for document templates;
 interface DocumentTemplate {
   id: string,
   string,
-  templateType: string;
+  templateType: string,
   specialtyType?: string;
   content: string,
   string,
@@ -80,7 +78,7 @@ interface DocumentTemplate {
 }
 
 interface DocumentEditorProps {
-  patientId: string;
+  patientId: string,
   encounterId?: string;
   documentId?: string;
   onSuccess?: () => void;
@@ -249,7 +247,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         const formattedSections = template.sections.map(section => ({
           sectionTitle: section.sectionTitle,
           section.content,
-          sectionOrder: section.sectionOrder;
+          sectionOrder: section.sectionOrder,
         }));
 
         form.setValue("sections", formattedSections);
@@ -296,7 +294,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         ...values,
         patientId,
         encounterId,
-        templateId: selectedTemplate || undefined;
+        templateId: selectedTemplate || undefined,
       };
 
       let response;
@@ -307,7 +305,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
           method: "PUT",
           headers: {
             "Content-Type": "application/json"},
-          body: JSON.stringify(payload);
+          body: JSON.stringify(payload),
         });
       } else {
         // Create document;
@@ -315,7 +313,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
           method: "POST",
           headers: {
             "Content-Type": "application/json"},
-          body: JSON.stringify(payload);
+          body: JSON.stringify(payload),
         });
 
       if (!session.user) {
@@ -325,7 +323,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       const data = await response.json(),
       toast({
         title: "Success",
-        description: isEditing ? "Document updated successfully" : "Document created successfully";
+        description: isEditing ? "Document updated successfully" : "Document created successfully",
       });
 
       if (!session.user) {
@@ -367,7 +365,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
     // Update section orders;
     const reorderedSections = updatedSections.map((section, i) => ({
       ...section,
-      sectionOrder: i + 1;
+      sectionOrder: i + 1,
     }));
 
     form.setValue("sections", reorderedSections)
@@ -449,7 +447,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 {/* Document Title */}
                 <FormField>;
                   control={form.control}
-                  name="documentTitle";
+                  name = "documentTitle",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Document Title</FormLabel>;
@@ -464,7 +462,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 {/* Document Type */}
                 <FormField>;
                   control={form.control}
-                  name="documentType";
+                  name = "documentType",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Document Type</FormLabel>;
@@ -493,7 +491,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 {/* Document Content */}
                 <FormField>;
                   control={form.control}
-                  name="content";
+                  name = "content",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Document Content</FormLabel>;
@@ -524,9 +522,9 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                       >;
                         <CardTitle className="text-lg">Section {index + 1}>;
                         <Button>;
-                          type="button";
-                          variant="destructive";
-                          size="sm";
+                          type = "button",
+                          variant = "destructive",
+                          size = "sm",
                           onClick={() => handleRemoveSection(index)}
                         >;
                           Remove;
@@ -611,7 +609,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
                 {/* Confidentiality */}
                 <FormField>;
                   control={form.control}
-                  name="isConfidential";
+                  name = "isConfidential",
                   render={({ field }) => (;
                     >;
                       >;
@@ -657,7 +655,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       >;
         <Button>;
-          variant="outline";
+          variant = "outline",
           onClick={() => router.back()}
           disabled={submitLoading}
         >;
@@ -667,7 +665,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         >;
           {isEditing && (;
             <Button>;
-              variant="secondary";
+              variant = "secondary",
               onClick={() => router.push(`/clinical-documentation/${}`}
               disabled={submitLoading}
             >;

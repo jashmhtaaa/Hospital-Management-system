@@ -1,5 +1,4 @@
-import "./errors.ts"
-import {  DatabaseError  } from "@/lib/database"
+import { {  DatabaseError  } from "./errors.ts"
 
 }
 
@@ -25,7 +24,7 @@ import {  DatabaseError  } from "@/lib/database"
 
 // Prisma repository implementation;
 export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
-  protected abstract model: unknown;
+  protected abstract model: unknown,
 
   async findById(id: ID): Promise<T | null> {
     try {
@@ -345,27 +344,27 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
   async findById(id: ID): Promise<T | null> {
     const _cacheKey = `${this.cachePrefix}:${String(id)}`;
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     // For now, just pass through to the repository;
     return this.repository.findById(id);
 
   async findAll(options?: QueryOptions): Promise<T[]> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     return this.repository.findAll(options);
 
   async create(data: Partial<T>): Promise<T> {
     const result = await this.repository.create(data);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     return result;
 
   async update(id: ID, data: Partial<T>): Promise<T> {
     const result = await this.repository.update(id, data);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     return result;
 
   async delete(id: ID): Promise<boolean> {
     const result = await this.repository.delete(id);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     return result;
 
   async count(options?: QueryOptions): Promise<number> {

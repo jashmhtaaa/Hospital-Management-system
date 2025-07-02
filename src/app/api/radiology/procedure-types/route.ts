@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/session"
-import "@cloudflare/workers-types"
-import "nanoid"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/session"
+import "@cloudflare/workers-types";
+import "nanoid";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  checkUserRole  } from "@/lib/database"
 import {  D1Database  } from "@/lib/database"
@@ -64,12 +63,12 @@ export const _GET = async (request: any) => {
     ).all();
     return NextResponse.json(results);
   } catch (error: unknown) {
-    // FIX: Replaced any with unknown;
+    // FIX: Replaced any with unknown,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
       {error:"Failed to fetch radiology procedure types",
-        details: errorMessage;
+        details: errorMessage,
       },
       {status:500 }
     );
@@ -151,19 +150,19 @@ export const _POST = async (request: any) => {
       {status:201 }
     );
   } catch (error: unknown) {
-    // FIX: Replaced any with unknown;
+    // FIX: Replaced any with unknown,
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     // Handle potential unique constraint violation if check fails due to race condition;
     if (!session.user) {
-      // FIX: Check errorMessage instead of e.message;
+      // FIX: Check errorMessage instead of e.message,
       return NextResponse.json();
         {error:"Procedure type with this name already exists" },
         {status:409 }
       )}
     return NextResponse.json();
       {error:"Failed to create radiology procedure type",
-        details: errorMessage;
+        details: errorMessage,
       },
       {status:500 }
     );

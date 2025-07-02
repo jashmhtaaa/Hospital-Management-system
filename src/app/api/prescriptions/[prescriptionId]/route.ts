@@ -1,8 +1,7 @@
-import "@/types/opd"
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import {  cookies  } from "@/lib/database"
+import { } from "@opennextjs/cloudflare"
+import "iron-session";
+import "next/headers";
+import {  cookies  } from "@/types/opd"
 import {  getCloudflareContext  } from "@/lib/database"
 import {  getIronSession  } from "@/lib/database"
 import {  Prescription  } from "@/lib/database"
@@ -20,7 +19,7 @@ interface PrescriptionQueryResult {prescription_id:number,
     notes: string | null,
     string,
     string,
-    doctor_full_name: string;
+    doctor_full_name: string,
 }
 
 // Define the expected shape of the prescription items query result;
@@ -30,7 +29,7 @@ interface PrescriptionItemQueryResult {prescription_item_id:number,
     string,
     string | null,
     string,
-    inventory_unit_of_measure: string;
+    inventory_unit_of_measure: string,
 }
 
 // Helper function to get prescription ID from URL;
@@ -147,7 +146,7 @@ export const _GET = async (request: Request) => {
                 item.instructions,
                 item.created_at,
                 item.inventory_item_id,
-                    unit_of_measure: item.inventory_unit_of_measure;
+                    unit_of_measure: item.inventory_unit_of_measure,
             })) || []}
 
         // 6. Return the detailed prescription;

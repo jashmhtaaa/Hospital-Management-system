@@ -1,8 +1,7 @@
-import "react"
-import React
+import { React
 import type
 import useEffect
-import useState }
+import useState } from "react"
 import {
 import { useCallback
 
@@ -19,9 +18,8 @@ export const dynamic = "force-dynamic";
   TableHeader,
   TableRow} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge"; // Import BadgeProps;
-import "@/components/ui/button"
-import "@/components/ui/input"
-import { Button }
+import { } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Input }
 
   Dialog,
@@ -36,12 +34,11 @@ import { Input }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/checkbox"
-import "@/components/ui/label"
-import "@/components/ui/skeleton"
-import "lucide-react"
+import { } from "@/components/ui/label"
+import "@/components/ui/skeleton";
+import "lucide-react";
 import PlusCircle
-import Search }
+import Search } from "@/components/ui/checkbox"
 import { Checkbox }
 import { Edit
 import { Label }
@@ -57,23 +54,20 @@ interface ServiceItem {
   boolean;
 }
 
-// FIX: Define interface for API response;
-interface ServiceItemsApiResponse {
-  serviceItems: ServiceItem[];
-  // Add other potential properties if the API returns more data;
-}
+// FIX: Define interface for API response,
+interface ServiceItemsApiResponse { serviceItems: ServiceItem[];
+  // Add other potential properties if the API returns more data,  }
 
-// FIX: Define interface for error response;
+// FIX: Define interface for error response,
 interface ErrorResponse {
   error?: string;
   message?: string;
 }
 
-// FIX: Define props type for ServiceItemForm;
-interface ServiceItemFormProperties {
-  item: ServiceItem | null; // Item being edited, or null for new item;
+// FIX: Define props type for ServiceItemForm,
+interface ServiceItemFormProperties { item: ServiceItem | null, // Item being edited, or null for new item;
   () => void; // Function to handle cancellation;
-}
+ }
 
 // --- ServiceItemForm Component ---;
 const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
@@ -86,7 +80,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
       "",
       0,
       true,
-      is_active: true;
+      is_active: true,
     }
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,7 +96,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         "",
         0,
         true,
-        is_active: true;
+        is_active: true,
       });
     }
   }, [item]);
@@ -181,8 +175,8 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 <div;
           <Label htmlFor="item_code">Item Code>;
           <Input>;
-            id="item_code";
-            name="item_code";
+            id = "item_code",
+            name = "item_code",
             value={formData.item_code || ""}
             onChange={handleChange}
             required;
@@ -191,8 +185,8 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 <div;
           <Label htmlFor="item_name">Item Name>;
           <Input>;
-            id="item_name";
-            name="item_name";
+            id = "item_name",
+            name = "item_name",
             value={formData.item_name || ""}
             onChange={handleChange}
             required;
@@ -202,8 +196,8 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 <div;
         <Label htmlFor="description">Description>;
         <Input>;
-          id="description";
-          name="description";
+          id = "description",
+          name = "description",
           value={formData.description || ""}
           onChange={handleChange}
         />;
@@ -214,7 +208,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 <div;
           <Label htmlFor="category">Category>;
           <Select>;
-            name="category";
+            name = "category",
             value={formData.category || ""}
             onValueChange={(value) => handleSelectChange("category", value)}
             required;
@@ -236,11 +230,11 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
 <div;
           <Label htmlFor="unit_price">Unit Price (₹)>;
           <Input>;
-            id="unit_price";
-            name="unit_price";
-            type="number";
+            id = "unit_price",
+            name = "unit_price",
+            type = "number",
             step="0.01";
-            min="0";
+            min = "0",
             value={formData.unit_price || 0}
             onChange={handleChange}
             required;
@@ -252,8 +246,8 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         {/* Responsive flex wrap */}
         >;
           <Checkbox>;
-            id="is_taxable";
-            name="is_taxable";
+            id = "is_taxable",
+            name = "is_taxable",
             checked={formData.is_taxable}
             onCheckedChange={(checked) => {}
               handleSelectChange("is_taxable", checked as boolean);
@@ -263,8 +257,8 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         </div>;
         >;
           <Checkbox>;
-            id="is_discountable";
-            name="is_discountable";
+            id = "is_discountable",
+            name = "is_discountable",
             checked={formData.is_discountable}
             onCheckedChange={(checked) => {}
               handleSelectChange("is_discountable", checked as boolean);
@@ -274,8 +268,8 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
         </div>;
         >;
           <Checkbox>;
-            id="is_active";
-            name="is_active";
+            id = "is_active",
+            name = "is_active",
             checked={formData.is_active}
             onCheckedChange={(checked) => {}
               handleSelectChange("is_active", checked as boolean);
@@ -347,7 +341,7 @@ export default const _ServiceItemsPage = () {
       const response = await fetch("/api/billing/service-items");
       if (!session.user) {
         throw as ServiceItemsApiResponse;
-      // FIX: Ensure data.serviceItems is an array;
+      // FIX: Ensure data.serviceItems is an array,
       setServiceItems();
         Array.isArray(data?.serviceItems) ? data.serviceItems : [];
       );
@@ -408,7 +402,7 @@ export default const _ServiceItemsPage = () {
       const response = await fetch(url, {
         method: method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData),
       });
 
       if (!session.user) {
@@ -445,7 +439,7 @@ export default const _ServiceItemsPage = () {
 
 } catch (error) {
 
-          // FIX: Cast error response JSON to defined type;
+          // FIX: Cast error response JSON to defined type,
           const errorData = (await response.json()) as ErrorResponse;
           errorMessage =;
             errorData?.error ||;
@@ -534,7 +528,7 @@ export default const _ServiceItemsPage = () {
           {/* Adjusted max-width */}
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />;
           <Input>;
-            type="search";
+            type = "search",
             placeholder="Search by name, code, or category...";
             value={searchTerm}
             onChange={(_event_) => setSearchTerm(_event_.target.value)}
@@ -613,8 +607,8 @@ export default const _ServiceItemsPage = () {
                   </TableCell>;
                   >;
                     <Button>;
-                      variant="ghost";
-                      size="icon";
+                      variant = "ghost",
+                      size = "icon",
                       onClick={() => openEditModal(item)}
                       title="Edit Item";
                     >;

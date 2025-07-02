@@ -1,29 +1,26 @@
-import "@/components/layout/DashboardLayout"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/components/ui/textarea"
-import "@/hooks/use-toast"
-import "@/types/doctor"
-import "@/types/patient"
-import "date-fns"
-import "next/navigation"
-import "react"
-import "zod"
+import { } from "@/components/layout/DashboardLayout"
+import { } from "@/components/ui/card"
+import { "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/components/ui/textarea";
+import "@/hooks/use-toast";
+import "@/types/doctor";
+import "@/types/patient";
+import "date-fns";
+import "next/navigation";
+import "react";
+import "zod";
 import CardContent
 import CardHeader
-import CardTitle }
-import React
+import CardTitle, React
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "@/components/ui/button"
 import type
-import useState }
-import { Button }
-import { Card
+import useState, } Button }
+import  } Card
 import { DashboardLayout }
 import { Doctor }
 import { format }
@@ -50,7 +47,7 @@ const BookAppointmentSchema = z.object({
   appointment_date: z.string().min(1, "Date is required"), // YYYY-MM-DD;
   appointment_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH: MM format"),
   duration_minutes: z.number().int().positive().optional().default(15),
-  reason: z.string().optional();
+  reason: z.string().optional(),
 });
 
 type FormData = z.infer>;
@@ -122,7 +119,7 @@ export default const _BookAppointmentPage = () {
           title: "Error Fetching Data",
           "destructive";
         }),
-        setErrors([code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." ]);
+        setErrors([code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." ]),
       } finally ;
         setIsFetchingData(false);
     };
@@ -200,7 +197,7 @@ export default const _BookAppointmentPage = () {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(dataToSend);
+        body: JSON.stringify(dataToSend),
       });
 
       const result: { error?: string } = await response.json(); // Add type annotation;
@@ -210,7 +207,7 @@ export default const _BookAppointmentPage = () {
 
       toast({
         title: "Appointment Booked",
-        description: `Appointment scheduled successfully.`;
+        description: `Appointment scheduled successfully.`,
       });
 
       router.push("/dashboard/appointments"); // Redirect to appointment list;

@@ -44,7 +44,7 @@ import { cn } from "@/lib/utils"; // Assuming you have this utility;
 interface Patient {
   id: number,
   name: string; // Combined first/last or display name;
-  mrn: string;
+  mrn: string,
   first_name?: string; // Optional if "name" is primary display;
   last_name?: string; // Optional if "name" is primary display;
 }
@@ -57,19 +57,15 @@ interface ServiceItem {
 
 interface InvoiceItem extends ServiceItem {
   quantity: number,
-  subtotal: number;
+  subtotal: number,
 }
 
 // --- API Response Interfaces ---;
-interface PatientsApiResponse {
-  patients: Patient[];
-  // Add other potential properties if known;
-}
+interface PatientsApiResponse { patients: Patient[];
+  // Add other potential properties if known,  }
 
-interface ServiceItemsApiResponse {
-  serviceItems: ServiceItem[];
-  // Add other potential properties if known;
-}
+interface ServiceItemsApiResponse { serviceItems: ServiceItem[];
+  // Add other potential properties if known,  }
 
 interface ErrorResponse {
   error?: string;
@@ -138,7 +134,7 @@ export default const _CreateInvoicePage = () {
         `/api/patients?search=/* SECURITY: Safe parameter encoding */`;
       );
       if (!session.user)hrow new Error("Failed to fetch patients");
-      // FIX: Cast response JSON to defined type;
+      // FIX: Cast response JSON to defined type,
       const data = (await response.json()) as PatientsApiResponse;
       // Ensure data.patients is an array before setting state;
       setPatients(Array.isArray(data?.patients) ? data.patients : []);
@@ -193,7 +189,7 @@ export default const _CreateInvoicePage = () {
         `/api/billing/service-items?search=/* SECURITY: Safe parameter encoding */`;
       );
       if (!session.user)hrow new Error("Failed to fetch service items");
-      // FIX: Cast response JSON to defined type;
+      // FIX: Cast response JSON to defined type,
       const data = (await response.json()) as ServiceItemsApiResponse;
       // Ensure data.serviceItems is an array before setting state;
       setServiceItems();
@@ -273,7 +269,7 @@ export default const _CreateInvoicePage = () {
         return {
           ...item,
           quantity: newQuantity,
-          subtotal: newQuantity * item.unit_price;
+          subtotal: newQuantity * item.unit_price,
         };
 
       return item;
@@ -348,7 +344,7 @@ export default const _CreateInvoicePage = () {
       const response = await fetch("/api/billing/invoices", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(invoiceData);
+        body: JSON.stringify(invoiceData),
       });
 
       if (!session.user) {
@@ -385,7 +381,7 @@ export default const _CreateInvoicePage = () {
 
 } catch (error) {
 
-          // FIX: Cast error response JSON to defined type;
+          // FIX: Cast error response JSON to defined type,
           const errorData = (await response.json()) as ErrorResponse;
           errorMessage =;
             errorData?.error ||;
@@ -447,8 +443,8 @@ export default const _CreateInvoicePage = () {
           >;
             <PopoverTrigger asChild>;
               <Button>;
-                variant="outline";
-                role="combobox";
+                variant = "outline",
+                role = "combobox",
                 aria-expanded={isPatientPopoverOpen}
                 className="w-full justify-between mt-1";
                 disabled={!!selectedPatient} // Disable if patient already selected;
@@ -506,7 +502,7 @@ export default const _CreateInvoicePage = () {
                       {patients.map((patient) => (;
                         <CommandItem>;
                           key={patient.id}
-                          value={`/* SECURITY: Template literal eliminated */;
+                          value={`/* SECURITY: Template literal eliminated */,
                             setIsPatientPopoverOpen(false),
                             setPatientSearchTerm(""); // Clear search after selection;
                           }}
@@ -551,8 +547,8 @@ export default const _CreateInvoicePage = () {
               >;
                 <PopoverTrigger asChild>;
                   <Button>;
-                    variant="outline";
-                    role="combobox";
+                    variant = "outline",
+                    role = "combobox",
                     aria-expanded={isServicePopoverOpen}
                     className="w-full justify-between mt-1";
                   >;
@@ -638,13 +634,13 @@ export default const _CreateInvoicePage = () {
                       </TableCell>;
                       >;
                         <Input>;
-                          type="number";
+                          type = "number",
                           value={item.quantity}
                           onChange={(e) => {}
                             updateItemQuantity(item.id, parseInt(e.target.value, 10) || 1);
 
                           className="w-20 text-center mx-auto";
-                          min="1";
+                          min = "1",
                         />;
                       </TableCell>;
                       >;
@@ -652,8 +648,8 @@ export default const _CreateInvoicePage = () {
                       </TableCell>;
                       <TableCell>;
                         <Button>;
-                          variant="ghost";
-                          size="icon";
+                          variant = "ghost",
+                          size = "icon",
                           onClick={() => removeInvoiceItem(item.id)}
                         >;
                           <X className="h-4 w-4" />;

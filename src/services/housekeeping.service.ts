@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 // Create enums to match Prisma schema;
 export enum HousekeepingTaskStatus {
@@ -21,18 +20,17 @@ export const createHousekeepingTaskSchema = z.object({taskName:z.string().min(1,
   status: z.nativeEnum(HousekeepingTaskStatus).default(HousekeepingTaskStatus.PENDING),
   priority: z.nativeEnum(HousekeepingTaskPriority).default(HousekeepingTaskPriority.MEDIUM),
   requestedAt: z.date().default(() => ,  completedAt: z.date().optional().nullable(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
-export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial().extend({id:z.string();
+export const updateHousekeepingTaskSchema = createHousekeepingTaskSchema.partial().extend({id:z.string(),
 });
 
 export type CreateHousekeepingTaskInput = z.infer>;
 export type UpdateHousekeepingTaskInput = z.infer>;
 
 // Import prisma client;
-import "../lib/prisma"
-import {  prisma  } from "@/lib/database"
+import { {  prisma  } from "../lib/prisma"
 
 /**;
  * Service class for managing housekeeping tasks;
@@ -114,7 +112,7 @@ import {  prisma  } from "@/lib/database"
           {requestedAt:"asc" }],
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return tasks;
@@ -162,7 +160,7 @@ import {  prisma  } from "@/lib/database"
       const task = await prisma.housekeepingTask.findUnique({where:{ id },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return task;
@@ -219,7 +217,7 @@ import {  prisma  } from "@/lib/database"
         data: updateData,
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return task;
@@ -314,11 +312,11 @@ import {  prisma  } from "@/lib/database"
 
       const task = await prisma.housekeepingTask.update({where:{ id: taskId },
         userId,
-          status: HousekeepingTaskStatus.IN_PROGRESS;
+          status: HousekeepingTaskStatus.IN_PROGRESS,
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return task;
@@ -365,11 +363,11 @@ import {  prisma  } from "@/lib/database"
 
       const task = await prisma.housekeepingTask.update({where:{ id: taskId },
         HousekeepingTaskStatus.COMPLETED,
-          completedAt: new Date();
+          completedAt: new Date(),
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return task;
@@ -419,7 +417,7 @@ import {  prisma  } from "@/lib/database"
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return task;

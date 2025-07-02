@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  getServerSession  } from "@/lib/database"
@@ -34,7 +33,7 @@ export const GET = async();
       return NextResponse.json(segment);
     },
     {requiredPermission:"marketing.segments.read",
-      auditAction: "SEGMENT_VIEW";
+      auditAction: "SEGMENT_VIEW",
     }
   );
 }
@@ -62,7 +61,7 @@ export const PUT = async();
       return NextResponse.json(segment);
     },
     {requiredPermission:"marketing.segments.update",
-      auditAction: "SEGMENT_UPDATE";
+      auditAction: "SEGMENT_UPDATE",
     }
   );
 

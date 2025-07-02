@@ -1,9 +1,8 @@
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/security.service"
-import "@/lib/services/support-services/ambulance/ambulance.service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "@/lib/security.service"
+import "@/lib/services/support-services/ambulance/ambulance.service";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/middleware/error-handling.middleware"
 import { NextResponse } from "next/server" }
 import {  AmbulanceService  } from "@/lib/database"
 import {  SecurityService  } from "@/lib/database"
@@ -25,7 +24,7 @@ const createTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_
   contactName: z.string().min(2).max(100).optional(),
   contactPhone: z.string().min(5).max(20).optional(),
   medicalEquipmentNeeded: z.array(z.string()).optional(),
-  specialInstructions: z.string().max(500).optional();
+  specialInstructions: z.string().max(500).optional(),
 });
 
 const updateTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_EMERGENCY", "TRANSFER", "DISCHARGE", "SCHEDULED"]).optional(),
@@ -39,7 +38,7 @@ const updateTripRequestSchema = z.object({requestType:z.enum(["EMERGENCY", "NON_
   contactName: z.string().min(2).max(100).optional(),
   contactPhone: z.string().min(5).max(20).optional(),
   medicalEquipmentNeeded: z.array(z.string()).optional(),
-  specialInstructions: z.string().max(500).optional();
+  specialInstructions: z.string().max(500).optional(),
 });
 
 // GET /api/support-services/ambulance/trips;
@@ -53,7 +52,7 @@ export const _GET = async (request: any) => {
         searchParams.get("requestType") || undefined,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10");
+        limit: parseInt(searchParams.get("limit") || "10"),
       };
 
       // Get ambulance trips with filters;
@@ -62,7 +61,7 @@ export const _GET = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"ambulance:read",
-      auditAction: "AMBULANCE_TRIPS_VIEW";
+      auditAction: "AMBULANCE_TRIPS_VIEW",
     }
   );
 }
@@ -85,7 +84,7 @@ export const _POST = async (request: any) => {
       return NextResponse.json(result, {status:201 });
     },
     {requiredPermission:"ambulance:create",
-      auditAction: "AMBULANCE_TRIP_CREATE";
+      auditAction: "AMBULANCE_TRIP_CREATE",
     }
   );
 }
@@ -102,7 +101,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
       return NextResponse.json(result);
     },
     {requiredPermission:"ambulance:read",
-      auditAction: "AMBULANCE_TRIP_VIEW";
+      auditAction: "AMBULANCE_TRIP_VIEW",
     }
   );
 }
@@ -125,7 +124,7 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
       return NextResponse.json(result);
     },
     {requiredPermission:"ambulance:update",
-      auditAction: "AMBULANCE_TRIP_UPDATE";
+      auditAction: "AMBULANCE_TRIP_UPDATE",
     }
   );
 }
@@ -141,7 +140,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
       return NextResponse.json({success:true });
     },
     {requiredPermission:"ambulance:delete",
-      auditAction: "AMBULANCE_TRIP_DELETE";
+      auditAction: "AMBULANCE_TRIP_DELETE",
     }
   );
 }
@@ -169,7 +168,7 @@ export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }
       return NextResponse.json(result);
     },
     {requiredPermission:"ambulance:assign",
-      auditAction: "AMBULANCE_TRIP_ASSIGN";
+      auditAction: "AMBULANCE_TRIP_ASSIGN",
     }
   );
 }
@@ -199,7 +198,7 @@ export const _UPDATE_STATUS = async (request: any, { params }: {params:{ id: str
       return NextResponse.json(result);
     },
     {requiredPermission:"ambulance:update",
-      auditAction: "AMBULANCE_TRIP_STATUS_UPDATE";
+      auditAction: "AMBULANCE_TRIP_STATUS_UPDATE",
     }
   );
 }
@@ -222,7 +221,7 @@ export const _GET_VEHICLES = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"ambulance:read",
-      auditAction: "AMBULANCE_VEHICLES_VIEW";
+      auditAction: "AMBULANCE_VEHICLES_VIEW",
     }
   );
 }
@@ -245,7 +244,7 @@ export const _GET_CREWS = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"ambulance:read",
-      auditAction: "AMBULANCE_CREWS_VIEW";
+      auditAction: "AMBULANCE_CREWS_VIEW",
     }
   );
 }
@@ -266,7 +265,7 @@ export const _GET_ANALYTICS = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"ambulance:analytics",
-      auditAction: "AMBULANCE_ANALYTICS_VIEW";
+      auditAction: "AMBULANCE_ANALYTICS_VIEW",
     }
   );
 

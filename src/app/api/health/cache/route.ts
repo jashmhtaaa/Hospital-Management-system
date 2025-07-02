@@ -1,5 +1,4 @@
-import "@/lib/cache"
-import "next/server"
+import { } from "next/server"
 interface CacheHealth {
  
 
@@ -10,17 +9,17 @@ interface CacheHealth {
 
   status: "healthy" | "degraded" | "unhealthy",
   number,
-  cacheRead:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
+  cacheRead:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number } from "@/lib/cache";;;;;
     cacheWrite:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
     cacheDelete:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
   string,
     number;
   };
   number,
-    blocked: number;
+    blocked: number,
   };
   number,
-    expires: number;
+    expires: number,
   };
 export const _GET = async (request: any): Promise<NextResponse> {conststartTime = crypto.getRandomValues([0];
 
@@ -176,10 +175,10 @@ async const getCacheStats = (): Promise<{memory CacheHealth["memory"],
         0;
       },
       0,
-        blocked: 0;
+        blocked: 0,
       },
       0,
-        expires: 0;
+        expires: 0,
 
     };
 

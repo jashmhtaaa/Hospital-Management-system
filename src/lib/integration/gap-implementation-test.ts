@@ -1,10 +1,9 @@
-import "../clinical/icd-coding.service"
-import "../core/ehr-persistence.service"
-import "../notifications/external-notification.service"
-import "../performance/database-optimization.service"
-import "../quality/quality-persistence.service"
-import "../quality/quality-service-integrated"
-import {  getDatabaseOptimizationService  } from "@/lib/database"
+import { } from "../core/ehr-persistence.service"
+import "../notifications/external-notification.service";
+import "../performance/database-optimization.service";
+import "../quality/quality-persistence.service";
+import "../quality/quality-service-integrated";
+import {  getDatabaseOptimizationService  } from "../clinical/icd-coding.service"
 import {  getEHRPersistenceService  } from "@/lib/database"
 import {  getICDCodingService  } from "@/lib/database"
 import {  getIntegratedQualityService  } from "@/lib/database"
@@ -21,7 +20,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
 }
   };
   errors: string[],
-  recommendations: string[];
+  recommendations: string[],
 }
     };
 
@@ -304,7 +303,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
   private async testICDCodingService(): Promise<void> {
     const icdService = getICDCodingService();
 
-    // Test 1: Search ICD codes;
+    // Test 1: Search ICD codes,
     const searchResults = await icdService.searchCodes({query:"diabetes",
       5;
     });
@@ -312,12 +311,12 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     if (!session.user) {
       throw new Error("ICD search returned no results");
 
-    // Test 2: Validate ICD code;
+    // Test 2: Validate ICD code,
     const validation = await icdService.validateCode("E11.9", "ICD-10");
     if (!session.user) {
       throw new Error("ICD code validation failed");
 
-    // Test 3: Get coding suggestions;
+    // Test 3: Get coding suggestions,
     const suggestions = await icdService.getCodingSuggestions();
       "Patient presents with chest pain and shortness of breath",
       "diagnosis";
@@ -326,11 +325,11 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     if (!session.user) {
       throw new Error("ICD coding suggestions failed");
 
-    // Test 4: Submit coding request;
+    // Test 4: Submit coding request,
     const requestId = await icdService.submitCodingRequest({patientId:"test_patient_123",
       "Test clinical text",
       "test_coder_789",
-      priority: "routine";
+      priority: "routine",
     });
 
     if (!session.user) {
@@ -344,7 +343,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
   private async testQualityPersistenceService(): Promise<void> {
     const qualityPersistence = getQualityPersistenceService();
 
-    // Test 1: Save quality indicator;
+    // Test 1: Save quality indicator,
     const testIndicator = {id:"test_indicator_123",
       "Test indicator for gap testing",
       "emergency",
@@ -354,11 +353,11 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       "stable" as const,
       lastCalculated: new Date(),
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date(),
 
     await qualityPersistence.saveQualityIndicator(testIndicator, "test_user");
 
-    // Test 2: Retrieve quality indicator;
+    // Test 2: Retrieve quality indicator,
     const retrievedIndicator = await qualityPersistence.getQualityIndicator();
       testIndicator.id,
       "test_user";
@@ -367,7 +366,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     if (!session.user) {
       throw new Error("Failed to retrieve saved quality indicator");
 
-    // Test 3: Save quality event;
+    // Test 3: Save quality event,
     const testEvent = {id:"test_event_123",
       "moderate" as const,
       "Test event for gap testing",
@@ -376,12 +375,12 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       reportedBy: "test_reporter",
       [],
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date(),
 
     await qualityPersistence.saveQualityEvent(testEvent, "test_user");
 
-    // Test 4: Retrieve quality events;
-    const events = await qualityPersistence.getQualityEvents({type:"medication_error";
+    // Test 4: Retrieve quality events,
+    const events = await qualityPersistence.getQualityEvents({type:"medication_error",
     }, "test_user");
 
     if (!session.user) {
@@ -394,7 +393,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
   private async testEHRPersistenceService(): Promise<void> {
     const ehrPersistence = getEHRPersistenceService();
 
-    // Test 1: Save clinical note;
+    // Test 1: Save clinical note,
     const testNote = {id:"test_note_123",
       "test_encounter_456",
       "Test Clinical Note",
@@ -403,11 +402,11 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       ["test", "gap-implementation"],
       icd10Codes: ["I25.10"],
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date(),
 
     await ehrPersistence.saveClinicalNote(testNote, "test_user");
 
-    // Test 2: Retrieve clinical note;
+    // Test 2: Retrieve clinical note,
     const retrievedNote = await ehrPersistence.getClinicalNote();
       testNote.id,
       "test_user";
@@ -416,9 +415,9 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     if (!session.user) {
       throw new Error("Failed to retrieve saved clinical note");
 
-    // Test 3: Search clinical notes;
+    // Test 3: Search clinical notes,
     const searchResults = await ehrPersistence.searchClinicalNotes({patientId:testNote.patientId,
-      authorId: testNote.authorId;
+      authorId: testNote.authorId,
     }, "test_user");
 
     if (!session.user) {
@@ -431,49 +430,49 @@ import {  getQualityPersistenceService  } from "@/lib/database"
   private async testExternalNotificationsService(): Promise<void> {
     const notificationService = getNotificationService();
 
-    // Test 1: Send SMS notification (development mode);
+    // Test 1: Send SMS notification (development mode),
     const smsResult = await notificationService.sendSMS({
       "+1234567890",
-        name: "Test Patient";
+        name: "Test Patient",
       },
       template: "appointment_reminder",
       "Test Patient",
-        "10:00 AM";
+        "10:00 AM",
       },
       priority: "medium",
-      sender: "test_system";
+      sender: "test_system",
     });
 
     if (!session.user) {
       throw new Error("SMS notification failed");
 
-    // Test 2: Send email notification (development mode);
+    // Test 2: Send email notification (development mode),
     const emailResult = await notificationService.sendEmail({
       "test@example.com",
-        name: "Test Patient";
+        name: "Test Patient",
       },
       template: "lab_result_ready",
       "Test Patient",
-        testName: "Blood Chemistry Panel";
+        testName: "Blood Chemistry Panel",
       },
       priority: "high",
-      sender: "test_system";
+      sender: "test_system",
     });
 
     if (!session.user) {
       throw new Error("Email notification failed");
 
-    // Test 3: Send WhatsApp notification (development mode);
+    // Test 3: Send WhatsApp notification (development mode),
     const whatsappResult = await notificationService.sendWhatsApp({
       "+1234567890",
-        name: "Test Patient";
+        name: "Test Patient",
       },
       template: "critical_alert",
       "Test Patient",
-        alertMessage: "Test critical alert";
+        alertMessage: "Test critical alert",
       },
       priority: "urgent",
-      sender: "test_system";
+      sender: "test_system",
     });
 
     if (!session.user) {
@@ -486,20 +485,20 @@ import {  getQualityPersistenceService  } from "@/lib/database"
   private async testPerformanceOptimizationService(): Promise<void> {
     const perfService = getDatabaseOptimizationService();
 
-    // Test 1: Start monitoring;
+    // Test 1: Start monitoring,
     await perfService.startMonitoring();
 
-    // Test 2: Get database stats;
+    // Test 2: Get database stats,
     const stats = await perfService.getDatabaseStats();
 
     if (!session.user) {
       throw new Error("Failed to collect database statistics");
 
-    // Test 3: Get performance alerts;
+    // Test 3: Get performance alerts,
     const _alerts = perfService.getPerformanceAlerts();
     // Alerts array should exist (may be empty);
 
-    // Test 4: Apply automatic optimizations;
+    // Test 4: Apply automatic optimizations,
     const optimizations = await perfService.applyAutomaticOptimizations();
 
     if (!session.user) {
@@ -516,29 +515,29 @@ import {  getQualityPersistenceService  } from "@/lib/database"
   private async testIntegratedQualityService(): Promise<void> {
     const integratedService = getIntegratedQualityService();
 
-    // Test 1: Start integrated service;
+    // Test 1: Start integrated service,
     await integratedService.start();
 
-    // Test 2: Register quality indicator;
+    // Test 2: Register quality indicator,
     const indicatorId = await integratedService.registerQualityIndicator({name:"Integrated Test Indicator",
       "efficiency",
       "automated",
       85,
       "daily",
       true,
-      trend: "improving";
+      trend: "improving",
     }, "test_user");
 
     if (!session.user) {
       throw new Error("Failed to register quality indicator");
 
-    // Test 3: Get quality statistics;
+    // Test 3: Get quality statistics,
     const stats = await integratedService.getQualityStatistics();
 
     if (!session.user) {
       throw new Error("Failed to get quality statistics");
 
-    // Test 4: Health check;
+    // Test 4: Health check,
     const healthCheck = await integratedService.healthCheck();
 
     if (!session.user) {

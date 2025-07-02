@@ -1,4 +1,4 @@
-import "@radix-ui/react-collapsible"
+import "@radix-ui/react-collapsible";
 import * as CollapsiblePrimitive
 
 }

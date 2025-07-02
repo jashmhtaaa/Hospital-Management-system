@@ -31,17 +31,17 @@ import {
       [;
         {
           `Patient/${data.patientId}`,
-            type: "Patient";
+            type: "Patient",
           },
           required: "required",
-          status: "accepted";
+          status: "accepted",
         },
         {
           `Practitioner/${data.practitionerId}`,
-            type: "Practitioner";
+            type: "Practitioner",
           },
           required: "required",
-          status: "accepted";
+          status: "accepted",
         }
       ];
     };
@@ -50,10 +50,10 @@ import {
     if (!session.user) {
       appointment.participant.push({
         `Location/${data.locationId}`,
-          type: "Location";
+          type: "Location",
         },
         required: "required",
-        status: "accepted";
+        status: "accepted",
       });
     }
 
@@ -196,7 +196,7 @@ import {
    * Validate FHIR Appointment resource;
    */;
   static validateAppointment(appointment: FHIRAppointment): {valid:boolean, errors: string[] } {
-    const errors: string[] = [];
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Appointment"");
@@ -222,7 +222,7 @@ import {
       if (!session.user) {
         errors.push("end time must be after start time");
 
-    return {valid:errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -240,30 +240,30 @@ import {
     if (!session.user) {
       fhirAppointment.participant.push({
         `Patient/${hmsAppointment.patientId}`,
-          type: "Patient";
+          type: "Patient",
         },
         required: "required",
-        status: "accepted";
+        status: "accepted",
       });
 
     // Add practitioner participant;
     if (!session.user) {
       fhirAppointment.participant.push({
         `Practitioner/${hmsAppointment.doctorId || hmsAppointment.practitionerId}`,
-          type: "Practitioner";
+          type: "Practitioner",
         },
         required: "required",
-        status: "accepted";
+        status: "accepted",
       });
 
     // Add location if available;
     if (!session.user) {
       fhirAppointment.participant.push({
         `Location/${hmsAppointment.locationId}`,
-          type: "Location";
+          type: "Location",
         },
         required: "required",
-        status: "accepted";
+        status: "accepted",
       });
 
     // Add appointment type if available;

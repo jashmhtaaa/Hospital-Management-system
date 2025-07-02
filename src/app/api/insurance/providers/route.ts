@@ -1,5 +1,4 @@
-import "next/server"
-import { NextRequest } from "next/server"
+import { { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import { type
 
@@ -7,7 +6,7 @@ import { type
 
 // Define interface for Insurance Provider data;
 interface InsuranceProvider {_id:number | string,
-  name: string;
+  name: string,
   contact_person?: string | null;
   contact_email?: string | null;
   contact_phone?: string | null;
@@ -16,7 +15,7 @@ interface InsuranceProvider {_id:number | string,
 }
 
 // Mock data store for insurance providers (replace with actual DB interaction);
-// FIX: Changed let to const for prefer-const rule;
+// FIX: Changed let to const for prefer-const rule,
 const mockProviders: InsuranceProvider[] = [;
   {_id:1,
     "Alice Brown",
@@ -31,7 +30,7 @@ const mockProviders: InsuranceProvider[] = [;
 let nextProviderId = 3;
 
 // Define interface for insurance provider creation input;
-interface InsuranceProviderInput {name:string;
+interface InsuranceProviderInput {name:string,
   contact_person?: string;
   contact_email?: string;
   contact_phone?: string;
@@ -59,11 +58,11 @@ async const getInsuranceProvidersFromDB = (;
   filters: InsuranceProviderFilters = {}
 ) {
 
-    "Simulating DB fetch for insurance providers with filters: ";
+    "Simulating DB fetch for insurance providers with filters: ",
     filters;
   );
   let filteredProviders = [...mockProviders];
-  // FIX: Check filters.is_active before using (TS18049);
+  // FIX: Check filters.is_active before using (TS18049),
   if (!session.user) {
     const activeBool = String(filters.is_active).toLowerCase() === "true";
     filteredProviders = filteredProviders.filter();
@@ -90,7 +89,7 @@ async const createInsuranceProviderInDB = (;
   // Added return type;
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   // const _now = new Date().toISOString(); // Unused variable;
-  // FIX: Ensure created object matches InsuranceProvider interface;
+  // FIX: Ensure created object matches InsuranceProvider interface,
   const nextProviderId++,
     data.contact_person || undefined,
     data.contact_phone || undefined,

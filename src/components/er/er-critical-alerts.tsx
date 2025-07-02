@@ -1,6 +1,5 @@
-import "react"
-import React
-import useEffect }
+import { React
+import useEffect } from "react"
 import {
 import { useState
 
@@ -15,10 +14,9 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "lucide-react"
-import { AlertTriangle }
+import { } from "@/components/ui/button"
+import "lucide-react";
+import { AlertTriangle } from "@/components/ui/badge"
 import { Badge }
 import { Button }
 
@@ -63,10 +61,10 @@ const mockAlerts: CriticalAlert[] = [;
     "Jane Smith",
     "Room 5",
     [0] - 5 * 60 * 1000).toISOString(),
-    "Potassium: 6.8 mmol/L";
+    "Potassium: 6.8 mmol/L",
   }];
 
-// FIX: Adjust return type to match allowed Badge variants;
+// FIX: Adjust return type to match allowed Badge variants,
 const getAlertBadgeVariant = (;
   status: string;
 ): "destructive" | "secondary" | "default" => {
@@ -88,18 +86,18 @@ export default const _ERCriticalAlerts = () {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast(); // Added hook call;
 
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
   // useEffect(() => {
   //   fetch("/api/er/alerts?status=active") // Example: fetch only active alerts;
   //     .then(res => res.json());
   //     .then(data => setAlerts(data));
   // }, []);
 
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
   const handleAcknowledge = async (alertId: string) => {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     try {
 } catch (error) {
@@ -280,8 +278,8 @@ export default const _ERCriticalAlerts = () {
                     >;
                       {alert.status === "Active" && (;
                         <Button>;
-                          variant="outline";
-                          size="sm";
+                          variant = "outline",
+                          size = "sm",
                           onClick={() => handleAcknowledge(alert.id)}
                           disabled={isLoading}
                         >;
@@ -289,8 +287,8 @@ export default const _ERCriticalAlerts = () {
                         </Button>;
                       )}
                       <Button>;
-                        variant="outline";
-                        size="sm";
+                        variant = "outline",
+                        size = "sm",
                         onClick={() => handleResolve(alert.id)}
                         disabled={isLoading}
                       >;

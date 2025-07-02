@@ -1,14 +1,12 @@
-import "./appointment.ts"
-import "./encounter.ts"
-import "./medication.ts"
-import "./patient.ts"
-import "./types.ts"
-import "@/lib/database/fhir-adapter"
-import "@prisma/client"
+import { } from "./appointment.ts"
+import { } from "./medication.ts"
+import { "./patient.ts";
+import "./types.ts";
+import "@/lib/database/fhir-adapter";
+import "@prisma/client";
 import FHIRAppointment
 import FHIRAppointmentSearchParams
-import FHIRAppointmentUtils }
-import FHIRBundle }
+import FHIRAppointmentUtils, FHIRBundle } from "./encounter.ts"
 import FHIREncounter
 import FHIREncounterSearchParams
 import FHIREncounterUtils }
@@ -16,9 +14,8 @@ import FHIRMedicationRequest
 import FHIRMedicationUtils }
 import FHIRPatient
 import FHIRPatientSearchParams
-import FHIRPatientUtils }
-import {   FHIRBase
-import {  FHIRDatabaseAdapter  } from "@/lib/database"
+import FHIRPatientUtils, }   FHIRBase
+import  }  FHIRDatabaseAdapter  } from "@/lib/database"
 import {  PrismaClient  } from "@/lib/database"
 import {  type
 
@@ -107,14 +104,14 @@ import {  type
       resource.meta = {
         ...resource.meta,
         lastUpdated: timestamp: new Date().toISOString(),
-        versionId: "1";
+        versionId: "1",
       };
 
       // Store resource in database;
       await this.dbAdapter.storeResource(resource);
 
       return {success:true,
-        data: resource;
+        data: resource,
       };
     } catch (error) {
       return {success:false,
@@ -170,7 +167,7 @@ import {  type
       }
 
       return {success:true,
-        data: resource;
+        data: resource,
       };
     } catch (error) {
       return {success:false,
@@ -239,14 +236,14 @@ import {  type
       resource.meta = {
         ...resource.meta,
         lastUpdated: timestamp: new Date().toISOString(),
-        versionId: (currentVersion + 1).toString();
+        versionId: (currentVersion + 1).toString(),
       };
 
       // Update resource;
       await this.dbAdapter.updateResource(resourceType, id, resource);
 
       return {success:true,
-        data: resource;
+        data: resource,
       };
     } catch (error) {
       return {success:false,
@@ -298,7 +295,7 @@ import {  type
           this.createOperationOutcome("error", [`${resourceType}/${id} not found`])};
       }
 
-      return {success:true;
+      return {success:true,
       };
     } catch (error) {
       return {success:false,
@@ -355,7 +352,7 @@ import {  type
       };
 
       return {success:true,
-        data: bundle;
+        data: bundle,
       };
     } catch (error) {
       return {success:false,
@@ -469,7 +466,7 @@ import {  type
           continue;
 
         const { method, url } = entry.request;
-        let result: FHIROperationResult>;
+        let result: FHIROperationResult>,
 
         switch (method) {
           case "POST": any;
@@ -487,18 +484,18 @@ import {  type
         responseEntries.push({
           result.success ? "200 OK" : "400 Bad Request";
             ...(result?.data && resource: result.data ),
-            ...(result?.issues && outcome: result.issues );
+            ...(result?.issues && outcome: result.issues ),
 
         });
 
       const "Bundle",
         id: uuidv4(),
         type: bundle.type === "batch" ? "batch-response" : "transaction-response",
-        entry: responseEntries;
+        entry: responseEntries,
       };
 
       return {success:true,
-        data: responseBundle;
+        data: responseBundle,
       };
     } catch (error) {
       return {success:false,
@@ -551,7 +548,7 @@ import {  type
       const fhirPatient = FHIRPatientUtils.fromHMSPatient(hmsPatient);
 
       return {success:true,
-        data: fhirPatient;
+        data: fhirPatient,
       };
     } catch (error) {
       return {success:false,
@@ -596,7 +593,7 @@ import {  type
       await this.updateHMSPatient(hmsPatient);
 
       return {success:true,
-        data: hmsPatient;
+        data: hmsPatient,
       };
     } catch (error) {
       return {success:false,
@@ -607,7 +604,7 @@ import {  type
    * Validation helpers;
    */;
   private validateResource(resource: FHIRBase): {valid:boolean, errors: string[] } {
-    const errors: string[] = [];
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType is required");
@@ -625,7 +622,7 @@ import {  type
         errors.push(...medicationValidation.errors);
         break;
 
-    return {valid:errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -634,7 +631,7 @@ import {  type
       issue: diagnostics.map(diagnostic => ({
         severity,
         code: "processing",
-        diagnostics: diagnostic;
+        diagnostics: diagnostic,
       }));
     };
 
@@ -717,7 +714,7 @@ import {  type
 } catch (error) {
 
       await prisma.patient.update({where:{ id: patient.id },
-        data: patient;
+        data: patient,
       });
     } finally {
       await prisma.$disconnect();
@@ -732,7 +729,7 @@ import {  type
       firstName: officialName?.given?.[0] || "",
       fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
       phone || "",
-      email: email || "";
+      email: email || "",
     };
 
 /**;

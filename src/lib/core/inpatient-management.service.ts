@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 }
 
@@ -32,7 +31,7 @@ export const AdmissionSchema = z.object({patient_id:z.string().min(1, "Patient I
   z.string(),
     relationship: z.string(),
     phone: z.string(),
-    address: z.string().optional();
+    address: z.string().optional(),
   }),
   insurance_verification: z.boolean().default(false),
   estimated_length_of_stay: z.number().optional(),
@@ -44,7 +43,7 @@ export const AdmissionSchema = z.object({patient_id:z.string().min(1, "Patient I
   diet_restrictions: z.array(z.string()).default([]),
   activity_restrictions: z.string().optional(),
   precautions: z.array(z.string()).default([]),
-  nursing_instructions: z.string().optional();
+  nursing_instructions: z.string().optional(),
 });
 
 export const BedAssignmentSchema = z.object({admission_id:z.string().min(1, "Admission ID is required"),
@@ -75,7 +74,7 @@ export const NursingAssessmentSchema = z.object({admission_id:z.string().min(1, 
     oxygen_saturation: z.number().optional(),
     pain_scale: z.number().min(0).max(10).optional(),
     weight: z.number().optional(),
-    height: z.number().optional();
+    height: z.number().optional(),
   }),
 
   // Nursing assessments;
@@ -83,60 +82,60 @@ export const NursingAssessmentSchema = z.object({admission_id:z.string().min(1, 
     orientation: z.enum(["oriented_x3", "oriented_x2", "oriented_x1", "disoriented"]).optional(),
     pupils: z.string().optional(),
     motor_response: z.string().optional(),
-    speech: z.string().optional();
+    speech: z.string().optional(),
   }).optional(),
 
   z.string().optional(),
     peripheral_pulses: z.string().optional(),
     capillary_refill: z.string().optional(),
     edema: z.string().optional(),
-    chest_pain: z.boolean().optional();
+    chest_pain: z.boolean().optional(),
   }).optional(),
 
   z.string().optional(),
     lung_sounds: z.string().optional(),
     cough: z.string().optional(),
     sputum: z.string().optional(),
-    shortness_of_breath: z.boolean().optional();
+    shortness_of_breath: z.boolean().optional(),
   }).optional(),
 
   z.enum(["good", "fair", "poor", "none"]).optional(),
     nausea_vomiting: z.boolean().optional(),
     bowel_sounds: z.string().optional(),
     last_bowel_movement: z.string().optional(),
-    abdominal_distension: z.boolean().optional();
+    abdominal_distension: z.boolean().optional(),
   }).optional(),
 
   z.string().optional(),
     urine_characteristics: z.string().optional(),
     catheter_present: z.boolean().optional(),
-    catheter_type: z.string().optional();
+    catheter_type: z.string().optional(),
   }).optional(),
 
   z.string().optional(),
     wounds_present: z.boolean().optional(),
     wound_description: z.string().optional(),
     pressure_areas: z.string().optional(),
-    braden_score: z.number().min(6).max(23).optional();
+    braden_score: z.number().min(6).max(23).optional(),
   }).optional(),
 
   z.enum(["independent", "assist_1", "assist_2", "total_care"]).optional(),
     gait: z.string().optional(),
     fall_risk_score: z.number().optional(),
-    assistive_devices: z.array(z.string()).default([]);
+    assistive_devices: z.array(z.string()).default([]),
   }).optional(),
 
   z.string().optional(),
     anxiety_level: z.enum(["none", "mild", "moderate", "severe"]).optional(),
     support_system: z.string().optional(),
-    coping_mechanisms: z.string().optional();
+    coping_mechanisms: z.string().optional(),
   }).optional(),
 
   z.boolean().default(false),
     suicide_risk: z.boolean().default(false),
     confusion: z.boolean().default(false),
     restraints_needed: z.boolean().default(false),
-    isolation_precautions: z.array(z.string()).default([]);
+    isolation_precautions: z.array(z.string()).default([]),
   }),
 
   nursing_diagnosis: z.array(z.string()).default([]),
@@ -145,7 +144,7 @@ export const NursingAssessmentSchema = z.object({admission_id:z.string().min(1, 
   patient_education_provided: z.array(z.string()).default([]),
   family_education_provided: z.array(z.string()).default([]),
   discharge_planning_needs: z.array(z.string()).default([]),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export const DischargePlanningSchema = z.object({admission_id:z.string().min(1, "Admission ID is required"),
@@ -161,7 +160,7 @@ export const DischargePlanningSchema = z.object({admission_id:z.string().min(1, 
   z.string(),
     timeframe: z.string(),
     provider: z.string().optional(),
-    scheduled: z.boolean().default(false);
+    scheduled: z.boolean().default(false),
   })).default([]),
 
   // Medication reconciliation;
@@ -169,7 +168,7 @@ export const DischargePlanningSchema = z.object({admission_id:z.string().min(1, 
     dosage: z.string(),
     frequency: z.string(),
     duration: z.string(),
-    new_medication: z.boolean().default(false);
+    new_medication: z.boolean().default(false),
   })).default([]),
 
   discontinued_medications: z.array(z.string()).default([]),
@@ -177,7 +176,7 @@ export const DischargePlanningSchema = z.object({admission_id:z.string().min(1, 
     change_type: z.enum(["dose_change", "frequency_change", "formulation_change"]),
     old_value: z.string(),
     new_value: z.string(),
-    reason: z.string();
+    reason: z.string(),
   })).default([]),
 
   // Care coordination;
@@ -200,7 +199,7 @@ export const DischargePlanningSchema = z.object({admission_id:z.string().min(1, 
 
   barriers_to_discharge: z.array(z.string()).default([]),
   discharge_readiness_score: z.number().min(1).max(10).optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export const TransferSchema = z.object({admission_id:z.string().min(1, "Admission ID is required"),
@@ -220,7 +219,7 @@ export const TransferSchema = z.object({admission_id:z.string().min(1, "Admissio
   accepting_nurse: z.string().optional(),
   transport_method: z.enum(["wheelchair", "stretcher", "bed", "walking"]),
   accompanist: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export type Admission = z.infer<typeof AdmissionSchema> & {id:string,
@@ -233,7 +232,7 @@ export type Admission = z.infer<typeof AdmissionSchema> & {id:string,
   discharge_time?: Date;
   total_charges?: number;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
   patient_name?: string;
   admitting_physician_name?: string;
   attending_physician_name?: string;
@@ -243,7 +242,7 @@ export type BedAssignment = z.infer<typeof BedAssignmentSchema> & {id:string,
   Date;
   end_time?: Date;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
 };
 
 export type NursingAssessment = z.infer<typeof NursingAssessmentSchema> & {id:string,
@@ -254,7 +253,7 @@ export type NursingAssessment = z.infer<typeof NursingAssessmentSchema> & {id:st
 export type DischargePlanning = z.infer<typeof DischargePlanningSchema> & {id:string,
   boolean,
   Date,
-  updated_at: Date;
+  updated_at: Date,
 };
 
 export type Transfer = z.infer<typeof TransferSchema> & {id:string,
@@ -262,7 +261,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
   actual_transfer_time?: Date;
   completed_by?: string;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
 };
 
 }
@@ -270,7 +269,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
   number,
     number,
     number,
-    ama: number;
+    ama: number,
   };
 }
   }
@@ -329,7 +328,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
       id: admissionId,
       "active",
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.admissions.set(admissionId, admission);
@@ -352,14 +351,14 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
   private generateAdmissionNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `ADM/* SECURITY: Template literal eliminated */;
+    return `ADM/* SECURITY: Template literal eliminated */,
   }
 
   /**;
    * Assign bed to patient;
    */;
   private async assignBed();
-    admissionId: string;
+    admissionId: string,
     roomPreference?: string,
     bedPreference?: string;
   ): Promise<BedOccupancy | null> {
@@ -407,7 +406,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
       throw new Error("Admission not found");
     }
 
-    bed.occupancy_status = "occupied";
+    bed.occupancy_status = "occupied",
     bed.patient_id = admission.patient_id;
     bed.patient_name = admission.patient_name;
     bed.admission_date = new Date();
@@ -425,7 +424,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
       "active",
       start_time: new Date(),
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     const admissionAssignments = this.bedAssignments.get(admissionId) || [];
@@ -449,7 +448,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
       id: transferId,
       "pending",
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.transfers.set(transferId, transfer);
@@ -468,7 +467,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
   private generateTransferNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, "0");
-    return `TXF/* SECURITY: Template literal eliminated */;
+    return `TXF/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -489,7 +488,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
     if (!session.user) {
       const currentBed = this.beds.get(admission.current_bed);
       if (!session.user) {
-        currentBed.occupancy_status = "available";
+        currentBed.occupancy_status = "available",
         currentBed.patient_id = undefined;
         currentBed.patient_name = undefined;
         currentBed.admission_date = undefined;
@@ -500,7 +499,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
         const assignments = this.bedAssignments.get(transfer.admission_id) || [];
         const currentAssignment = assignments.find(a => a.status === "active");
         if (!session.user) {
-          currentAssignment.status = "completed";
+          currentAssignment.status = "completed",
           currentAssignment.end_time = new Date();
           currentAssignment.updated_at = new Date();
         }
@@ -518,9 +517,9 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
     this.admissions.set(admission.id, admission);
 
     // Update transfer;
-    transfer.status = "completed";
+    transfer.status = "completed",
     transfer.actual_transfer_time = new Date();
-    transfer.completed_by = "system";
+    transfer.completed_by = "system",
     transfer.updated_at = new Date();
     this.transfers.set(transferId, transfer);
 
@@ -539,7 +538,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
       ...validatedData,
       id: assessmentId,
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     const admissionAssessments = this.nursingAssessments.get(validatedData.admission_id) || [];
@@ -569,7 +568,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
       planning_started_date: new Date(),
       discharge_ready: dischargeReady,
       new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.dischargePlans.set(planningId, planning);
@@ -596,12 +595,12 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
       throw new Error("Admission is not active");
     }
 
-    const dischargeDateTime = new Date(`/* SECURITY: Template literal eliminated */;
-    const admissionDateTime = new Date(`/* SECURITY: Template literal eliminated */;
+    const dischargeDateTime = new Date(`/* SECURITY: Template literal eliminated */,
+    const admissionDateTime = new Date(`/* SECURITY: Template literal eliminated */,
     const lengthOfStay = Math.ceil((dischargeDateTime.getTime() - admissionDateTime.getTime()) / (1000 * 60 * 60 * 24));
 
     // Update admission;
-    admission.status = "discharged";
+    admission.status = "discharged",
     admission.discharge_date = dischargeDateTime;
     admission.discharge_time = dischargeDateTime;
     admission.actual_length_of_stay = lengthOfStay;
@@ -611,7 +610,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
     if (!session.user) {
       const bed = this.beds.get(admission.current_bed);
       if (!session.user) {
-        bed.occupancy_status = "available";
+        bed.occupancy_status = "available",
         bed.patient_id = undefined;
         bed.patient_name = undefined;
         bed.admission_date = undefined;
@@ -622,7 +621,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
         const assignments = this.bedAssignments.get(admissionId) || [];
         const currentAssignment = assignments.find(a => a.status === "active");
         if (!session.user) {
-          currentAssignment.status = "completed";
+          currentAssignment.status = "completed",
           currentAssignment.end_time = dischargeDateTime;
           currentAssignment.updated_at = new Date();
 
@@ -688,7 +687,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
     // Admission type breakdown;
     const byAdmissionType = {elective:todaysAdmissions.filter(a => a.admission_type === "elective").length,
       todaysAdmissions.filter(a => a.admission_type === "urgent").length,
-      observation: todaysAdmissions.filter(a => a.admission_type === "observation").length;
+      observation: todaysAdmissions.filter(a => a.admission_type === "observation").length,
     };
 
     // Discharge disposition breakdown;
@@ -705,10 +704,10 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
       Array.from(unitStats.values()).map(u => ({
         ...u,
         occupancy_rate: Math.round(u.occupancy_rate * 100) / 100,
-        average_length_of_stay: Math.round(u.average_length_of_stay * 100) / 100;
+        average_length_of_stay: Math.round(u.average_length_of_stay * 100) / 100,
       })),
       by_admission_type: byAdmissionType,
-      by_discharge_disposition: byDischargeDisposition;
+      by_discharge_disposition: byDischargeDisposition,
     };
 
   /**;
@@ -774,7 +773,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
 
     // Sort by admission date (newest first);
     filteredAdmissions.sort((a, b) => {
-      const dateA = new Date(`/* SECURITY: Template literal eliminated */;
+      const dateA = new Date(`/* SECURITY: Template literal eliminated */,
       return dateB.getTime() - dateA.getTime();
     });
 
@@ -832,7 +831,7 @@ export type Transfer = z.infer<typeof TransferSchema> & {id:string,
 
     // Sort by transfer date (newest first);
     filteredTransfers.sort((a, b) => {
-      const dateA = new Date(`/* SECURITY: Template literal eliminated */;
+      const dateA = new Date(`/* SECURITY: Template literal eliminated */,
       return dateB.getTime() - dateA.getTime();
     });
 

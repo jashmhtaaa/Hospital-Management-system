@@ -1,12 +1,10 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -18,10 +16,9 @@ import { useState
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import "@/components/ui/tabs"
-import TabsContent
+import { TabsContent
 import TabsList
-import TabsTrigger }
+import TabsTrigger } from "@/components/ui/tabs"
 import { Tabs
 
   Table,
@@ -31,9 +28,8 @@ import { Tabs
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import { Button }
+import { } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Input }
 
   Select,
@@ -49,9 +45,8 @@ import { Input }
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import "@/components/ui/badge"
-import "@/components/ui/calendar"
-import { Badge }
+import { } from "@/components/ui/calendar"
+import { Badge } from "@/components/ui/badge"
 import { Calendar }
 
   Search,
@@ -66,9 +61,8 @@ import { Calendar }
   Building,
   Tag;
 } from "lucide-react";
-import "@/components/ui/use-toast"
-import "date-fns"
-import { format }
+import { } from "date-fns"
+import { format } from "@/components/ui/use-toast"
 import { toast }
 
 export default const _AssetManagement = () {
@@ -85,7 +79,7 @@ export default const _AssetManagement = () {
   const [locations, setLocations] = useState<any[]>([]);
   const [dateRange, setDateRange] = useState({
     from: null,
-    to: null;
+    to: null,
   });
   const [pagination, setPagination] = useState({
     skip: 0,
@@ -132,7 +126,7 @@ export default const _AssetManagement = () {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString();
+          take: pagination.take.toString(),
         });
 
         if (!session.user)ueryParams.append("search", search);
@@ -159,7 +153,7 @@ export default const _AssetManagement = () {
         setAssets(data.assets || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0;
+          total: data.total || 0,
         }));
       } catch (err) {
         setError(err.message),
@@ -283,7 +277,7 @@ export default const _AssetManagement = () {
     if (!session.user) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take,
       }));
 
   };
@@ -292,7 +286,7 @@ export default const _AssetManagement = () {
     if (!session.user) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take,
       }));
 
   };
@@ -303,7 +297,7 @@ export default const _AssetManagement = () {
     // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0,
     }));
   };
 
@@ -313,7 +307,7 @@ export default const _AssetManagement = () {
     // Reset pagination when changing tabs;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0,
     }));
 
     // Set appropriate filters based on tab;
@@ -366,14 +360,14 @@ export default const _AssetManagement = () {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
       toast({
         title: "Export Started",
-        description: "Your asset report is being generated and will download shortly.";
+        description: "Your asset report is being generated and will download shortly.",
       });
 
       // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
-          description: "Asset report has been downloaded.";
+          description: "Asset report has been downloaded.",
         });
       }, 2000);
     } catch (error) {
@@ -397,7 +391,7 @@ export default const _AssetManagement = () {
         return "destructive";
       case "LOST": any;
         return "outline";
-      default: return "default";
+      default: return "default",
 
   };
 
@@ -414,7 +408,7 @@ export default const _AssetManagement = () {
         return <Truck className="h-4 w-4" />;
       case "BUILDING": any;
         return <Building className="h-4 w-4" />;
-      default: return <Package className="h-4 w-4" />;
+      default: return <Package className="h-4 w-4" />,
 
   };
 
@@ -423,7 +417,7 @@ export default const _AssetManagement = () {
     if (!session.user)eturn "—";
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD";
+      currency: "USD",
     }).format(amount);
   };
 
@@ -472,9 +466,9 @@ export default const _AssetManagement = () {
                     >;
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
                       <Input>;
-                        type="search";
+                        type = "search",
                         placeholder="Search assets...";
-                        className="pl-8 w-full md:w-[300px]";
+                        className="pl-8 w-full md:w-[300px]",
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                       />;
@@ -585,8 +579,8 @@ export default const _AssetManagement = () {
                           </TableCell>;
                           <TableCell>;
                             <Button>;
-                              variant="ghost";
-                              size="sm";
+                              variant = "ghost",
+                              size = "sm",
                               onClick={() => router.push(`/dashboard/hr/assets/${}`}
                             >;
                               View;

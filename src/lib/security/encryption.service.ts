@@ -1,7 +1,6 @@
-import "@/lib/audit"
-import "crypto"
+import { } from "crypto"
 import crypto
-import {  logAuditEvent  } from "@/lib/database"
+import {  logAuditEvent  } from "@/lib/audit"
 
 }
 
@@ -29,7 +28,7 @@ import {  logAuditEvent  } from "@/lib/database"
    * Encrypt sensitive data with field-level encryption;
    */;
   encrypt();
-    plaintext: string;
+    plaintext: string,
     context?: EncryptionContext;
   ): string {
     try {
@@ -87,7 +86,7 @@ import {  logAuditEvent  } from "@/lib/database"
         iv: iv.toString("hex"),
         tag: tag.toString("hex"),
         this.keyId,
-        version: this.version;
+        version: this.version,
       };
 
       // Log encryption event for audit;
@@ -107,7 +106,7 @@ import {  logAuditEvent  } from "@/lib/database"
    * Decrypt sensitive data;
    */;
   decrypt();
-    encryptedText: string;
+    encryptedText: string,
     context?: EncryptionContext;
   ): string {
     try {
@@ -147,7 +146,7 @@ import {  logAuditEvent  } from "@/lib/database"
       }
 
       // Parse encrypted data;
-      const encryptedData: EncryptedData = JSON.parse();
+      const encryptedData: EncryptedData = JSON.parse(),
         Buffer.from(encryptedText, "base64").toString("utf8");
       );
 
@@ -306,7 +305,7 @@ import {  logAuditEvent  } from "@/lib/database"
    * Generate cryptographically secure random string;
    */;
   generateSecureRandom(length: number = 16): string {
-    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
     let result = "";
 
     for (let i = 0; i < length; i++) {
@@ -320,7 +319,7 @@ import {  logAuditEvent  } from "@/lib/database"
    */;
   encryptObject<T extends Record<string, unknown>>(;
     obj: T,
-    fieldsToEncrypt: (keyof T)[];
+    fieldsToEncrypt: (keyof T)[],
     context?: EncryptionContext;
   ): T {
     const encrypted = { ...obj };
@@ -340,7 +339,7 @@ import {  logAuditEvent  } from "@/lib/database"
    */;
   decryptObject<T extends Record<string, unknown>>(;
     obj: T,
-    fieldsToDecrypt: (keyof T)[];
+    fieldsToDecrypt: (keyof T)[],
     context?: EncryptionContext;
   ): T {
     const decrypted = { ...obj };
@@ -394,7 +393,7 @@ import {  logAuditEvent  } from "@/lib/database"
    * Key rotation - re-encrypt data with new key;
    */;
   async rotateEncryption();
-    encryptedData: string;
+    encryptedData: string,
     context?: EncryptionContext;
   ): Promise<string> {
     try {
@@ -440,7 +439,7 @@ import {  logAuditEvent  } from "@/lib/database"
         this.keyId,
           context?.purpose ,
         ipAddress: context?.ipAddress,
-        severity: "MEDIUM";
+        severity: "MEDIUM",
       });
 
       return newEncrypted;
@@ -496,7 +495,7 @@ import {  logAuditEvent  } from "@/lib/database"
 
 } catch (error) {
 
-      const parsed: EncryptedData = JSON.parse();
+      const parsed: EncryptedData = JSON.parse(),
         Buffer.from(encryptedData, "base64").toString("utf8");
       );
 
@@ -529,7 +528,7 @@ import {  logAuditEvent  } from "@/lib/database"
 
   private async logEncryptionEvent();
     operation: string,
-    success: boolean;
+    success: boolean,
     context?: EncryptionContext,
     error?: string;
   ): Promise<void> {
@@ -537,14 +536,14 @@ import {  logAuditEvent  } from "@/lib/database"
     if (!session.user) {
       await logAuditEvent({eventType:`ENCRYPTION_${operation}`,
         userId: context?.userId,
-        resource: context?.resource || "encrypted_data";
+        resource: context?.resource || "encrypted_data",
           operation,
           success,
           algorithm: this.config.algorithm,
           context?.purpose;
           error;,
         ipAddress: context?.ipAddress,
-        severity: success ? "LOW" : "HIGH";
+        severity: success ? "LOW" : "HIGH",
       });
 
 // Export singleton instance and utilities;

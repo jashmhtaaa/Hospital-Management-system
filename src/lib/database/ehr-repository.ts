@@ -1,6 +1,5 @@
-import "../../services/encryption_service_secure"
-import "@prisma/client"
-import {  getEncryptionService  } from "@/lib/database"
+import { } from "@prisma/client"
+import {  getEncryptionService  } from "../../services/encryption_service_secure"
 import {  PrismaClient  } from "@/lib/database"
 
 /**;
@@ -16,26 +15,25 @@ import {  PrismaClient  } from "@/lib/database"
   icd10_codes?: string[];
   snomed_codes?: string[];
   cpt_codes?: string[];
-
   // Metadata;
   free_text_content?: string;
   audio_recording_id?: string;
   created_at?: Date;
   updated_at?: Date;
-  created_by: string;
+  created_by: string,
   updated_by?: string;
   status: "draft" | "final" | "amended" | "corrected",
-  version: number;
+  version: number,
 }
   }[];
 
   // Activities;
   string,
-    title: string;
+    title: string,
     description?: string,
-    status: "not_started" | "scheduled" | "in_progress" | "on_hold" | "completed" | "cancelled";
+    status: "not_started" | "scheduled" | "in_progress" | "on_hold" | "completed" | "cancelled",
     scheduled_date?: Date;
-    category: "medication" | "procedure" | "encounter" | "observation" | "other";
+    category: "medication" | "procedure" | "encounter" | "observation" | "other",
   }[];
 
   // Care team;
@@ -47,13 +45,12 @@ import {  PrismaClient  } from "@/lib/database"
   // Clinical coding;
   icd10_codes?: string[];
   snomed_codes?: string[];
-
   // Metadata;
   created_at?: Date;
   updated_at?: Date;
-  created_by: string;
+  created_by: string,
   updated_by?: string;
-  period_start: Date;
+  period_start: Date,
   period_end?: Date;
 }
   }[];
@@ -61,7 +58,7 @@ import {  PrismaClient  } from "@/lib/database"
   // Metadata;
   created_at?: Date;
   updated_at?: Date;
-  created_by: string;
+  created_by: string,
   updated_by?: string;
   published_date?: Date;
   review_date?: Date;
@@ -114,7 +111,7 @@ import {  PrismaClient  } from "@/lib/database"
           note.snomed_codes ? JSON.stringify(note.snomed_codes) : null,
           new Date(),
           updated_at: new Date(),
-          version: 1;
+          version: 1,
         }
       });
 
@@ -255,7 +252,7 @@ import {  PrismaClient  } from "@/lib/database"
           vital_signs: updates.vital_signs ? JSON.stringify(updates.vital_signs) : undefined,
           updates.snomed_codes ? JSON.stringify(updates.snomed_codes) : undefined,
           new Date(),
-          version: increment: 1 ;
+          version: increment: 1 ,
 
       });
 
@@ -342,7 +339,7 @@ import {  PrismaClient  } from "@/lib/database"
           care_team: JSON.stringify(carePlan.care_team),
           carePlan.snomed_codes ? JSON.stringify(carePlan.snomed_codes) : null,
           created_at: new Date(),
-          updated_at: new Date();
+          updated_at: new Date(),
 
       });
 
@@ -475,7 +472,7 @@ import {  PrismaClient  } from "@/lib/database"
       const created = await this.prisma.problemListItem.create({data:{
           ...encryptedItem,
           created_at: new Date(),
-          updated_at: new Date();
+          updated_at: new Date(),
 
       });
 
@@ -563,7 +560,7 @@ import {  PrismaClient  } from "@/lib/database"
           icd10_codes: guideline.icd10_codes ? JSON.stringify(guideline.icd10_codes) : null,
           JSON.stringify(guideline.decision_support_rules),
           created_at: new Date(),
-          updated_at: new Date();
+          updated_at: new Date(),
 
       });
 
@@ -629,7 +626,7 @@ import {  PrismaClient  } from "@/lib/database"
       ...decrypted,
       vital_signs: note.vital_signs ? JSON.parse(note.vital_signs) : undefined,
       note.snomed_codes ? JSON.parse(note.snomed_codes) : undefined,
-      cpt_codes: note.cpt_codes ? JSON.parse(note.cpt_codes) : undefined;
+      cpt_codes: note.cpt_codes ? JSON.parse(note.cpt_codes) : undefined,
     };
 
   private async decryptProblemListItem(item: unknown): Promise<ProblemListItem> {

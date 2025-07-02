@@ -1,13 +1,11 @@
 <>;
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -26,10 +24,9 @@ import { useState
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/separator"
-import { Badge }
+import { } from "@/components/ui/button"
+import "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge"
 import { Button }
 import { Separator }
 
@@ -51,9 +48,8 @@ import { Separator }
   AlertCircle,
   Download;
 } from "lucide-react";
-import "@/components/ui/use-toast"
-import "date-fns"
-import { format }
+import { } from "date-fns"
+import { format } from "@/components/ui/use-toast"
 import { toast }
 
 export default const _PayrollPeriodDetail = ({ params }: { params: { id: string } }) {
@@ -154,7 +150,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 
       setProcessingAction(true),
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/generate`, {
-        method: "POST";
+        method: "POST",
       }),
 
       if (!session.user) {
@@ -214,7 +210,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 
       setProcessingAction(true),
       const response = await fetch(`/api/hr/payroll/periods/${params.id}/approve`, {
-        method: "POST";
+        method: "POST",
       }),
 
       if (!session.user) {
@@ -338,14 +334,14 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
       toast({
         title: "Export Started",
-        description: "Your payroll report is being generated and will download shortly.";
+        description: "Your payroll report is being generated and will download shortly.",
       }),
 
       // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
-          description: "Payroll report has been downloaded.";
+          description: "Payroll report has been downloaded.",
         })}, 2000)} catch (error) {
       toast({
         title: "Export Failed",
@@ -364,7 +360,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         return "default";
       case "PAID": any;
         return "success";
-      default: return "default";
+      default: return "default",
 
   };
 
@@ -372,7 +368,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
   const formatCurrency = (amount: unknown) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD";
+      currency: "USD",
     }).format(amount);
   };
 
@@ -381,8 +377,8 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick={() => router.push("/dashboard/hr/payroll")}
           >;
             <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -400,8 +396,8 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick={() => router.push("/dashboard/hr/payroll")}
           >;
             <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -431,8 +427,8 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
     <div className="flex flex-col gap-4 p-4 md:p-8">;
       <div className="flex items-center gap-2">;
         <Button>;
-          variant="ghost";
-          size="sm";
+          variant = "ghost",
+          size = "sm",
           onClick={() => router.push("/dashboard/hr/payroll")}
         >;
           <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -612,8 +608,8 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
                         </TableCell>;
                         <TableCell>;
                           <Button>;
-                            variant="ghost";
-                            size="sm";
+                            variant = "ghost",
+                            size = "sm",
                             onClick={() => router.push(`/dashboard/hr/payroll/entries/${}`}
                           >;
                             View;

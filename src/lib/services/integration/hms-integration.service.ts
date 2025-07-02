@@ -1,12 +1,10 @@
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/prisma"
-import "@/lib/rbac.service"
+import { } from "@/lib/audit"
+import { } from "@/lib/prisma"
+import "@/lib/rbac.service";
 import ExternalServiceError
-import NotFoundError }
-import RBACService
-import Resource }
-import {   Action
+import NotFoundError, RBACService
+import Resource } from "@/lib/errors"
+import  }   Action
 import {  AuditLogger  } from "@/lib/database"
 import {   AuthorizationError
 import {  prisma  } from "@/lib/database"
@@ -62,9 +60,9 @@ import {  prisma  } from "@/lib/database"
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.patient.info.request",
-        resourceId: patientId;
+        resourceId: patientId,
         userId,
-        details: patientId ;
+        details: patientId ,
       });
 
       // In a real implementation, this would call the HMS Patient Management API;
@@ -89,7 +87,7 @@ import {  prisma  } from "@/lib/database"
 
       // Audit the successful retrieval;
       await auditLogger.log({action:"integration.patient.info.success",
-        resourceId: patientId;
+        resourceId: patientId,
         userId,
         details: { patientId }
       });
@@ -161,9 +159,9 @@ import {  prisma  } from "@/lib/database"
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.location.info.request",
-        resourceId: locationId;
+        resourceId: locationId,
         userId,
-        details: locationId ;
+        details: locationId ,
       });
 
       // In a real implementation, this would call the HMS Location Management API;
@@ -173,7 +171,7 @@ import {  prisma  } from "@/lib/database"
           true,
           true,
           true,
-          currentOccupancy: true;
+          currentOccupancy: true,
         }
       });
 
@@ -183,7 +181,7 @@ import {  prisma  } from "@/lib/database"
 
       // Audit the successful retrieval;
       await auditLogger.log({action:"integration.location.info.success",
-        resourceId: locationId;
+        resourceId: locationId,
         userId,
         details: { locationId }
       });
@@ -262,7 +260,7 @@ import {  prisma  } from "@/lib/database"
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.notification.send.request",
-        resourceId: recipientId;
+        resourceId: recipientId,
         userId,
         details: null,
           recipientId,
@@ -274,23 +272,23 @@ import {  prisma  } from "@/lib/database"
       // For this example, we"ll simulate the API call with a database insert;
       const notification = await prisma.notification.create({data:{
           recipientId,
-          type: notificationType;
+          type: notificationType,
           title,
           message,
           metadata,
           status: "PENDING",
-          createdById: userId;
+          createdById: userId,
         }
       });
 
       // Audit the successful notification creation;
       await auditLogger.log({action:"integration.notification.send.success",
-        resourceId: notification.id;
+        resourceId: notification.id,
         userId,
         details: {
           recipientId,
           notificationType,
-          notificationId: notification.id;
+          notificationId: notification.id,
 
       });
 
@@ -358,9 +356,9 @@ import {  prisma  } from "@/lib/database"
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.user.info.request",
-        resourceId: targetUserId;
+        resourceId: targetUserId,
         userId,
-        details: targetUserId ;
+        details: targetUserId ,
       });
 
       // In a real implementation, this would call the HMS User Management API;
@@ -385,7 +383,7 @@ import {  prisma  } from "@/lib/database"
 
       // Audit the successful retrieval;
       await auditLogger.log({action:"integration.user.info.success",
-        resourceId: targetUserId;
+        resourceId: targetUserId,
         userId,
         details: { targetUserId }
       });
@@ -466,17 +464,17 @@ import {  prisma  } from "@/lib/database"
       const report = await prisma.report.create({
         reportType,
           "SUBMITTED",
-          submittedById: userId;
+          submittedById: userId,
 
       });
 
       // Audit the successful report submission;
       await auditLogger.log({action:"integration.report.submit.success",
-        resourceId: report.id;
+        resourceId: report.id,
         userId,
         details: {
           reportType,
-          reportId: report.id;
+          reportId: report.id,
 
       });
 
@@ -558,7 +556,7 @@ import {  prisma  } from "@/lib/database"
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.request.patient.link.request",
-        resourceId: requestId;
+        resourceId: requestId,
         userId,
         details: null,
           serviceType,
@@ -577,13 +575,13 @@ import {  prisma  } from "@/lib/database"
       const request = await prisma[tableName].update({where:{ id: requestId },
         data: {
           patientId,
-          updatedById: userId;
+          updatedById: userId,
 
       });
 
       // Audit the successful link;
       await auditLogger.log({action:"integration.request.patient.link.success",
-        resourceId: requestId;
+        resourceId: requestId,
         userId,
         details: null,
           serviceType,
@@ -668,7 +666,7 @@ import {  prisma  } from "@/lib/database"
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.request.location.link.request",
-        resourceId: requestId;
+        resourceId: requestId,
         userId,
         details: null,
           serviceType,
@@ -687,13 +685,13 @@ import {  prisma  } from "@/lib/database"
       const request = await prisma[tableName].update({where:{ id: requestId },
         data: {
           locationId,
-          updatedById: userId;
+          updatedById: userId,
 
       });
 
       // Audit the successful link;
       await auditLogger.log({action:"integration.request.location.link.success",
-        resourceId: requestId;
+        resourceId: requestId,
         userId,
         details: null,
           serviceType,

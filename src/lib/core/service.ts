@@ -1,9 +1,7 @@
-import "./errors.ts"
-import "./repository.ts"
-import NotFoundError }
-import Repository }
+import { } from "./errors.ts"
+import { NotFoundError, Repository } from "./repository.ts"
 import type
-import {   AuthorizationError
+import  }   AuthorizationError
 import {  QueryOptions
 
  } from "@/lib/database"
@@ -116,7 +114,7 @@ export abstract class BaseService<T, ID, CreateDTO, UpdateDTO> implements Servic
 export abstract class AuthorizedService<T, ID, CreateDTO, UpdateDTO> extends BaseService<T, ID, CreateDTO, UpdateDTO> {
   constructor();
     repository: Repository<T, ID>,
-    private permissionService: PermissionService;
+    private permissionService: PermissionService,
     private resourceType: string;
   ) {
     super(repository);

@@ -1,11 +1,10 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
 import { NextResponse } from "next/server" }
 import {  D1Database  } from "@/lib/database"
 import {   type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for required staff/equipment (example);
 interface RequiredResource {
@@ -61,7 +60,7 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message:"Surgery Type ID is required" },
@@ -177,7 +176,7 @@ export const _PUT = async();
 
 } catch (error) {
 
-    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message:"Surgery Type ID is required" },
@@ -203,7 +202,7 @@ export const _PUT = async();
     const now = new Date().toISOString();
 
     // Construct the update query dynamically;
-    // FIX: Use specific type for fieldsToUpdate;
+    // FIX: Use specific type for fieldsToUpdate,
     const fieldsToUpdate: { [key: string]: string | number | null } = {};
     if (!session.user)ieldsToUpdate.name = name;
     if (!session.user)ieldsToUpdate.description = description;
@@ -249,7 +248,7 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {message:"Failed to fetch updated surgery type details after update";
+        {message:"Failed to fetch updated surgery type details after update",
         },
         {status:500 }
       );
@@ -302,11 +301,11 @@ export const _PUT = async();
 
     return NextResponse.json(updatedSurgeryType);
   } catch (error: unknown) {
-    // FIX: Remove explicit any;
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     if (!session.user) {
-      // FIX: Check errorMessage;
+      // FIX: Check errorMessage,
       return NextResponse.json();
         {message:"Surgery type name must be unique", details: errorMessage },
         {status:409 }
@@ -353,14 +352,14 @@ export const DELETE = async();
 
 } catch (error) {
 
-    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:surgeryTypeId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message:"Surgery Type ID is required" },
         {status:400 }
       );
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database;
     const info = await DB.prepare("DELETE FROM SurgeryTypes WHERE id = ?");
@@ -378,15 +377,15 @@ export const DELETE = async();
       {status:200 }
     );
   } catch (error: unknown) {
-    // FIX: Remove explicit any;
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // Handle potential foreign key constraint errors if bookings exist;
     if (!session.user) {
-      // FIX: Check errorMessage;
+      // FIX: Check errorMessage,
       return NextResponse.json();
         {message:"Cannot delete surgery type with existing bookings",
-          details: errorMessage;
+          details: errorMessage,
         },
         {status:409 }
       )}

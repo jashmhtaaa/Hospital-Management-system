@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 }
 
@@ -26,7 +25,7 @@ export const ServiceCatalogSchema = z.object({service_code:z.string().min(1, "Se
   requires_authorization: z.boolean().default(false),
   bundled_services: z.array(z.string()).default([]),
   modifiers: z.array(z.string()).default([]),
-  is_active: z.boolean().default(true);
+  is_active: z.boolean().default(true),
 });
 
 export const ChargeSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
@@ -43,7 +42,7 @@ export const ChargeSchema = z.object({patient_id:z.string().min(1, "Patient ID i
   referring_provider_id: z.string().optional(),
   authorization_number: z.string().optional(),
   charge_status: z.enum(["pending", "submitted", "paid", "denied", "appealed", "written_off"]).default("pending"),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export const InsuranceClaimSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
@@ -72,11 +71,11 @@ export const PaymentSchema = z.object({patient_id:z.string().min(1, "Patient ID 
   payment_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid payment date"),
   reference_number: z.string().optional(),
   z.string(),
-    applied_amount: z.number().min(0);
+    applied_amount: z.number().min(0),
   })),
   adjustment_amount: z.number().default(0),
   adjustment_reason: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export type ServiceCatalogItem = z.infer<typeof ServiceCatalogSchema> & {id:string,
@@ -85,12 +84,12 @@ export type ServiceCatalogItem = z.infer<typeof ServiceCatalogSchema> & {id:stri
 
 export type Charge = z.infer<typeof ChargeSchema> & {id:string,
   Date,
-  updated_at: Date;
+  updated_at: Date,
   submitted_date?: Date;
   paid_date?: Date;
   payments_received: number,
   number,
-  aging_days: number;
+  aging_days: number,
   service_name?: string;
   patient_name?: string;
   provider_name?: string;
@@ -113,7 +112,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   processed_date?: Date;
   posted_date?: Date;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
 };
 
 }
@@ -173,7 +172,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
         true,
         ["ANES-GEN", "OR-TIME"],
         modifiers: [],
-        is_active: true;
+        is_active: true,
       },
       {service_code:"ER-LEVEL4",
         "Emergency Department Visit - Level 4",
@@ -191,7 +190,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
         ...serviceData,
         id: uuidv4(),
         created_at: new Date(),
-        updated_at: new Date();
+        updated_at: new Date(),
       };
       this.serviceCatalog.set(service.service_code, service);
     });
@@ -232,7 +231,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   private generateChargeNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `CHG/* SECURITY: Template literal eliminated */;
+    return `CHG/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -259,7 +258,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       0,
       0,
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.claims.set(claimId, claim);
@@ -272,7 +271,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   private generateClaimNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, "0");
-    return `CLM/* SECURITY: Template literal eliminated */;
+    return `CLM/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -288,7 +287,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       throw new Error("Only draft claims can be submitted");
     }
 
-    claim.status = "submitted";
+    claim.status = "submitted",
     claim.submission_date = new Date();
     claim.updated_at = new Date();
 
@@ -296,7 +295,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
     claim.charges.forEach(chargeId => {
       const charge = this.charges.get(chargeId);
       if (!session.user) {
-        charge.charge_status = "submitted";
+        charge.charge_status = "submitted",
         charge.submitted_date = new Date();
         charge.updated_at = new Date();
         this.charges.set(chargeId, charge);
@@ -340,7 +339,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       claim.charges.forEach(chargeId => {
         const charge = this.charges.get(chargeId);
         if (!session.user) {
-          charge.charge_status = "paid";
+          charge.charge_status = "paid",
           charge.paid_date = new Date();
           charge.payments_received += paymentPerCharge;
           charge.balance = Math.max(0, charge.total_charge - charge.payments_received - charge.adjustments);
@@ -352,7 +351,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       claim.charges.forEach(chargeId => {
         const charge = this.charges.get(chargeId);
         if (!session.user) {
-          charge.charge_status = "denied";
+          charge.charge_status = "denied",
           charge.updated_at = new Date();
           this.charges.set(chargeId, charge);
         }
@@ -377,7 +376,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       id: paymentId,
       "pending",
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.payments.set(paymentId, payment);
@@ -390,7 +389,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
   private generatePaymentNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `PAY/* SECURITY: Template literal eliminated */;
+    return `PAY/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -406,7 +405,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       throw new Error("Payment has already been processed");
     }
 
-    payment.payment_status = "processed";
+    payment.payment_status = "processed",
     payment.processed_date = new Date();
     payment.updated_at = new Date();
 
@@ -436,7 +435,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
         charge.updated_at = new Date();
 
         if (!session.user) {
-          charge.charge_status = "paid";
+          charge.charge_status = "paid",
           charge.paid_date = new Date();
         }
 
@@ -444,7 +443,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
       }
     });
 
-    payment.payment_status = "posted";
+    payment.payment_status = "posted",
     payment.posted_date = new Date();
     payment.updated_at = new Date();
 
@@ -585,7 +584,7 @@ export type Payment = z.infer<typeof PaymentSchema> & {id:string,
         ...p,
         charges: Math.round(p.charges * 100) / 100,
         Math.round(p.adjustments * 100) / 100,
-        net_revenue: Math.round(p.net_revenue * 100) / 100;
+        net_revenue: Math.round(p.net_revenue * 100) / 100,
       })),
       by_service: byService.map(s => ({
         ...s,

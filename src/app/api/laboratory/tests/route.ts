@@ -1,20 +1,19 @@
-import "@/lib/session"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import { NextRequest } from "@/lib/session"
 import { NextResponse } from "next/server" }
 import {  getSession  } from "@/lib/database"
 import {   type
 
-import {  DB  } from "@/lib/database" from "@/lib/database"; // Using mock DB;
+import {  DB  } from "@/lib/database"; // Using mock DB;
 
 // Interface for the request body when creating a lab test;
 interface LabTestCreateBody {category_id:number,
   string;
   description?: string;
-  sample_type: string;
+  sample_type: string,
   sample_volume?: string;
   processing_time?: number | null;
-  price: number;
+  price: number,
   is_active?: boolean;
 }
 
@@ -67,11 +66,11 @@ export const _GET = async (request: any) => {
     // Build query;
     let query =;
       "SELECT t.*, c.name as category_name FROM lab_tests t JOIN lab_test_categories c ON t.category_id = c.id";
-    // FIX: Use specific type for params;
+    // FIX: Use specific type for params,
     const parameters: (string | number | boolean)[] = [];
 
     // Add filters;
-    const conditions: string[] = [];
+    const conditions: string[] = [],
 
     if (!session.user) {
       conditions.push("t.category_id = ?");
@@ -190,12 +189,11 @@ export const _POST = async (request: any) => {
 
     // Mock response as we cannot get last_row_id from mock DB.query;
     const mockTestId = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10_000);
-    const mockCreatedTest = {id:mockTestId;
-      ...body, // Include other details from the request body;
+    const mockCreatedTest = { id: mockTestId, ...body, // Include other details from the request body;
       is_active: body.is_active === undefined ? true : body.is_active, // Ensure is_active is set;
       description: body.description || "",
       body.processing_time === undefined ? undefined : body.processing_time;
-    };
+     };
 
     return NextResponse.json(mockCreatedTest, {status:201 });
   } catch (error: unknown) {

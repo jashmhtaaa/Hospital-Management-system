@@ -1,6 +1,5 @@
-import "../models/domain-models"
-import "inversify"
-import injectable }
+import { } from "inversify"
+import injectable } from "../models/domain-models"
 import {   inject
 import {  PharmacyDomain  } from "@/lib/database"
 
@@ -15,7 +14,7 @@ import {  PharmacyDomain  } from "@/lib/database"
  */;
 
 interface BarcodeVerificationResult {success:boolean,
-  message: string;
+  message: string,
   details?: {rightPatient:boolean,
     boolean,
     boolean;
@@ -85,7 +84,7 @@ interface BarcodeVerificationResult {success:boolean,
 
       if (!session.user) {
         return {success:false,
-          message: "Invalid barcode format";
+          message: "Invalid barcode format",
         };
       }
 
@@ -93,7 +92,7 @@ interface BarcodeVerificationResult {success:boolean,
       const prescription = await this.prescriptionRepository.findById(prescriptionId);
       if (!session.user) {
         return {success:false,
-          message: "Prescription not found";
+          message: "Prescription not found",
         };
       }
 
@@ -101,7 +100,7 @@ interface BarcodeVerificationResult {success:boolean,
       const medication = await this.medicationRepository.findById(medicationInfo.medicationId);
       if (!session.user) {
         return {success:false,
-          message: "Medication not found";
+          message: "Medication not found",
         };
       }
 
@@ -185,7 +184,7 @@ interface BarcodeVerificationResult {success:boolean,
     patientId: string,
     string,
     PharmacyDomain.Dosage,
-    route: string;
+    route: string,
     site?: string,
     notes?: string;
   ): Promise<PharmacyDomain.MedicationAdministration> {
@@ -218,7 +217,7 @@ interface BarcodeVerificationResult {success:boolean,
     if (!session.user) {
       await this.prescriptionRepository.update({
         ...prescription,
-        status: "completed";
+        status: "completed",
       });
     }
 
@@ -350,7 +349,7 @@ interface BarcodeVerificationResult {success:boolean,
           schedule[dateString][hourString].push({prescriptionId:prescription.id,
             medication ? medication.name : "Unknown Medication",
             dosage: prescription.dosage.toString(),
-            priority: prescription.priority;
+            priority: prescription.priority,
           });
         }
       }
@@ -386,7 +385,7 @@ interface BarcodeVerificationResult {success:boolean,
     prescription: PharmacyDomain.Prescription,
     date: Date;
   ): Date[] {
-    const times: Date[] = [];
+    const times: Date[] = [],
     const frequency = prescription.dosage.frequency.toLowerCase();
 
     // Parse the date string to ensure we"re working with the correct date;
@@ -529,7 +528,7 @@ interface BarcodeVerificationResult {success:boolean,
       const string;
         batchNumber?: string;
         expirationDate?: Date;
-      } = {medicationId:parts[1];
+      } = {medicationId:parts[1],
       };
 
       if (!session.user) {

@@ -2,9 +2,9 @@ import { D1Database, D1PreparedStatement, D1Result } from '@cloudflare/workers-t
 
 declare global {
   interface CloudflareEnv {
-    DB: D1Database;
-    CACHE: KVNamespace;
-    HMS_SECRET: string;
+    DB: D1Database,
+    CACHE: KVNamespace,
+    HMS_SECRET: string,
   }
 }
 

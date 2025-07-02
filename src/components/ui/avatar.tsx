@@ -1,6 +1,6 @@
-import "@/lib/utils"
-import "@radix-ui/react-avatar"
-import "react"
+import "@/lib/utils";
+import "@radix-ui/react-avatar";
+import "react";
 import * as AvatarPrimitive
 import * as React
 import { cn }

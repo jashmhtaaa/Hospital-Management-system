@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 }
 
@@ -23,17 +22,17 @@ export const LabTestSchema = z.object({code:z.string().min(1, "Test code is requ
     range_min: z.number().optional(),
     range_max: z.number().optional(),
     unit: z.string(),
-    normal_text: z.string().optional();
+    normal_text: z.string().optional(),
   })),
   z.number().optional(),
     high_critical: z.number().optional(),
     panic_low: z.number().optional(),
-    panic_high: z.number().optional();
+    panic_high: z.number().optional(),
   }).optional(),
   cost: z.number().min(0),
   cpt_code: z.string().optional(),
   loinc_code: z.string().optional(),
-  is_active: z.boolean().default(true);
+  is_active: z.boolean().default(true),
 });
 
 export const LabOrderSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
@@ -44,7 +43,7 @@ export const LabOrderSchema = z.object({patient_id:z.string().min(1, "Patient ID
   diagnosis_code: z.string().optional(),
   collection_date: z.string().optional(),
   fasting_required: z.boolean().default(false),
-  special_instructions: z.string().optional();
+  special_instructions: z.string().optional(),
 });
 
 export const SampleCollectionSchema = z.object({order_id:z.string().min(1, "Order ID is required"),
@@ -58,7 +57,7 @@ export const SampleCollectionSchema = z.object({order_id:z.string().min(1, "Orde
   fasting_status: z.boolean().optional(),
   patient_condition: z.string().optional(),
   quality_issues: z.array(z.string()).default([]),
-  barcode: z.string().optional();
+  barcode: z.string().optional(),
 });
 
 export const LabResultSchema = z.object({order_id:z.string(),
@@ -117,7 +116,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
         critical_values: {low_critical:7.0, high_critical: 20.0 },
         cost: 25.00,
         "58410-2",
-        is_active: true;
+        is_active: true,
       },
       {code:"BMP",
         "Basic metabolic panel (8 tests)",
@@ -130,7 +129,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
         critical_values: {low_critical:50, high_critical: 400 },
         cost: 35.00,
         "24323-8",
-        is_active: true;
+        is_active: true,
       },
       {code:"LIPID",
         "Total cholesterol, HDL, LDL, triglycerides",
@@ -142,7 +141,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
           {gender:"both", range_min: 40, range_max: 999, unit: "mg/dL", normal_text: "HDL" }],
         cost: 45.00,
         "24331-1",
-        is_active: true;
+        is_active: true,
       },
       {code:"UA",
         "Complete urinalysis with microscopy",
@@ -152,7 +151,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
           {gender:"both", normal_text: "Negative for protein, glucose, blood" }],
         cost: 20.00,
         "24357-6",
-        is_active: true;
+        is_active: true,
       }];
 
     defaultTests.forEach(test => {
@@ -160,7 +159,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
         ...test,
         id: uuidv4(),
         created_at: new Date(),
-        updated_at: new Date();
+        updated_at: new Date(),
       };
       this.labTests.set(labTest.code, labTest);
     });
@@ -177,7 +176,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
         supported_tests: ["CBC", "DIFF"],
         last_calibration: [0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago;
         next_maintenance: [0] + 23 * 24 * 60 * 60 * 1000), // 23 days from now;
-        connection_status: "connected";
+        connection_status: "connected",
       },
       {id:uuidv4(),
         "Roche Cobas 6000",
@@ -185,7 +184,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
         supported_tests: ["BMP", "LIPID", "LFT"],
         last_calibration: [0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago;
         next_maintenance: [0] + 27 * 24 * 60 * 60 * 1000), // 27 days from now;
-        connection_status: "connected";
+        connection_status: "connected",
       }];
 
     defaultEquipment.forEach(equipment => {
@@ -207,7 +206,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
       ...validatedData,
       id: uuidv4(),
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.labTests.set(labTest.code, labTest);
@@ -247,7 +246,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
       id: orderId,
       "pending",
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.labOrders.set(orderId, labOrder);
@@ -260,7 +259,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
   private generateOrderNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `LAB/* SECURITY: Template literal eliminated */;
+    return `LAB/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -332,13 +331,13 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
       id: uuidv4(),
       "collected",
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.sampleCollections.set(sampleCollection.id, sampleCollection);
 
     // Update order status;
-    order.status = "collected";
+    order.status = "collected",
     order.updated_at = new Date();
     this.labOrders.set(order.id, order);
 
@@ -351,14 +350,14 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
   private generateSampleId(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `S/* SECURITY: Template literal eliminated */;
+    return `S/* SECURITY: Template literal eliminated */,
   }
 
   /**;
    * Enter lab results;
    */;
   async enterResults(resultsData: z.infer<typeof LabResultSchema>[]): Promise<LabResult[]> {
-    const results: LabResult[] = [];
+    const results: LabResult[] = [],
 
     for (const resultData of resultsData) {
       const validatedData = LabResultSchema.parse(resultData);
@@ -380,7 +379,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
         ...validatedData,
         id: uuidv4(),
         new Date(),
-        updated_at: new Date();
+        updated_at: new Date(),
       };
 
       // Store result;
@@ -392,7 +391,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
 
       // Check for critical values and send alerts;
       if (!session.user)| abnormalFlag === "panic") {
-        await this.sendCritical/* SECURITY: Alert removed */;
+        await this.sendCritical/* SECURITY: Alert removed */,
       }
     }
 
@@ -401,7 +400,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
     if (!session.user) {
       const orderResults = this.labResults.get(order.id) || [];
       if (!session.user) {
-        order.status = "completed";
+        order.status = "completed",
         order.updated_at = new Date();
         this.labOrders.set(order.id, order);
       }
@@ -476,7 +475,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
   ): Promise<QualityControlResult> {
     const variance = Math.abs((actualValue - expectedValue) / expectedValue) * 100;
 
-    let status: QualityControlResult["status"] = "pass";
+    let status: QualityControlResult["status"] = "pass",
     if (!session.user) {
       status = "fail"} else if (!session.user) {
       status = "warning"}
@@ -487,7 +486,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
       variance;
       status,
       performed_by: performedBy,
-      performed_date: new Date();
+      performed_date: new Date(),
     };
 
     const equipmentQC = this.qcResults.get(equipmentId) || [];
@@ -503,7 +502,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
   async getLabStatistics(dateFrom?: string, dateTo?: string): Promise<{totalOrders:number,
     number,
     number,
-    qcFailures: number;
+    qcFailures: number,
   }> {
     const orders = Array.from(this.labOrders.values());
 
@@ -550,7 +549,7 @@ export type LabResult = z.infer<typeof LabResultSchema> & {id:string,
       totalOrders,
       completedOrders,
       pendingOrders,
-      averageTurnaroundTime: Math.round(averageTurnaroundTime * 100) / 100;
+      averageTurnaroundTime: Math.round(averageTurnaroundTime * 100) / 100,
       criticalResults,
       qcFailures};
 

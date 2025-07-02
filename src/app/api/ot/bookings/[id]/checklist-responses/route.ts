@@ -1,16 +1,15 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
 import { NextResponse } from "next/server" }
 import {  D1Database  } from "@/lib/database"
 import {  type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for the POST request body;
-interface ChecklistResponseBody {checklist_template_id:string; // Assuming ID is string;
-  phase: string; // e.g., "Pre-Op", "Intra-Op", "Post-Op";
-  responses: Record> // JSON object { "itemId": responseValue, ...  } from "@/lib/database"
+interface ChecklistResponseBody { checklist_template_id: string; // Assuming ID is string;
+  phase: string, // e.g., "Pre-Op", "Intra-Op", "Post-Op";
+  responses: Record> // JSON object { "itemId": responseValue, ...   } from "@/lib/database"
   completed_by_id?: string; // Optional, assuming ID is string;
 }
 
@@ -51,7 +50,7 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message:"Booking ID is required" },
@@ -73,7 +72,7 @@ export const _GET = async();
         LEFT JOIN Users u ON r.completed_by_id = u.id;
         WHERE r.booking_id = ?;
     `;
-    const queryParameters: string[] = [bookingId];
+    const queryParameters: string[] = [bookingId],
 
     if (!session.user) {
       query += " AND r.phase = ?";
@@ -180,7 +179,7 @@ export const _POST = async();
 
 } catch (error) {
 
-    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message:"Booking ID is required" },
@@ -238,7 +237,7 @@ export const _POST = async();
       .bind(bookingId, checklist_template_id);
       .all();
 
-    let responseId: string;
+    let responseId: string,
     if (!session.user) {
       // Update existing response;
       responseId = existing[0].id as string;
@@ -325,7 +324,7 @@ export const _POST = async();
 
         // Keep responses as original string if parsing fails;
 
-      return NextResponse.json(finalResult[0], {status:existing && existing.length > 0 ? 200 : 201;
+      return NextResponse.json(finalResult[0], {status:existing && existing.length > 0 ? 200 : 201,
       });
     } else {
       return NextResponse.json();

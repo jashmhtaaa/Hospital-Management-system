@@ -1,11 +1,10 @@
-import "../repositories/patient_repository.ts"
-import "./encryption_service.ts"
+import { } from "./encryption_service.ts"
 import Patient
-import PatientInputData }
+import PatientInputData } from "../repositories/patient_repository.ts"
 import {  IEncryptionService  } from "@/lib/database"
 import {   IPatientRepository
 
-import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.ts"; // Import AuditLogService interface;
+import {  IAuditLogService   } from "@/lib/database"; // Import AuditLogService interface;
 
 }
 
@@ -25,8 +24,8 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
    * @returns The newly registered patient (with PHI fields still in their repository/encrypted form).;
    */;
   async registerPatient(patientInputData: PatientInputData, performingUserId: string): Promise<Patient> {
-    let _auditStatus = "FAILURE";
-    let _createdPatientId: string | null = null;
+    let _auditStatus = "FAILURE",
+    let _createdPatientId: string | null = null,
     try {
 } catch (error) {
   console.error(error);
@@ -68,7 +67,7 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
 
       const newPatientFromRepo = await this.patientRepository.create(encryptedPatientData);
       _createdPatientId = newPatientFromRepo.id;
-      _auditStatus = "SUCCESS";
+      _auditStatus = "SUCCESS",
       await this.auditLogService.logEvent();
         performingUserId,
         "PATIENT_REGISTERED",
@@ -145,7 +144,7 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
       const decryptedPatient: Patient = {
         ...patientFromRepo,
         name: this.encryptionService.decrypt(patientFromRepo.name),
-        dateOfBirth: );
+        dateOfBirth: ),
       };
 
       await this.auditLogService.logEvent();

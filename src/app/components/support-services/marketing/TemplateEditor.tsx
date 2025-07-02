@@ -1,32 +1,29 @@
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/editor"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/components/ui/switch"
-import "@/components/ui/tabs"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import "next/navigation"
-import "react"
+import { } from "@/components/ui/badge"
+import { } from "@/components/ui/card"
+import { "@/components/ui/editor";
+import "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/components/ui/switch";
+import "@/components/ui/tabs";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
+import "next/navigation";
+import "react";
 import CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
-import React
+import CardTitle, React
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "@/components/ui/button"
 import TabsContent
 import TabsList
 import TabsTrigger }
 import type
-import useState }
-import { Badge }
-import { Button }
+import useState, } Badge }
+import  } Button }
 import { Card
 import { Editor }
 import { Input }
@@ -41,7 +38,7 @@ import { useRouter }
 
 interface TemplateEditorProps {
   templateId?: string;
-  onSuccess?: (template: unknown) => void;
+  onSuccess?: (template: unknown) => void,
 export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEditorProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -52,7 +49,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
     "EMAIL",
     content: "";,
     previewImage: "",
-    isActive: true;
+    isActive: true,
   });
   const [previewData, setPreviewData] = useState<Record<string, string>>({});
   const [renderedContent, setRenderedContent] = useState<string>("");
@@ -109,7 +106,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
           data.type || "EMAIL",
           data.variables || {},
           previewImage: data.previewImage || "",
-          isActive: data.isActive !== undefined ? data.isActive : true;
+          isActive: data.isActive !== undefined ? data.isActive : true,
         });
 
         // Initialize preview data from variables;
@@ -154,7 +151,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
-      isActive: checked;
+      isActive: checked,
     });
   };
 
@@ -201,7 +198,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     setFormData({
       ...formData,
-      variables: newVariables;
+      variables: newVariables,
     });
 
     // Add to preview data;
@@ -222,7 +219,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
     setFormData({
       ...formData,
-      variables: newVariables;
+      variables: newVariables,
     });
 
     // Remove from preview data;
@@ -341,7 +338,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
         method,
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData),
       });
 
       if (!session.user)hrow new Error("Failed to save template");
@@ -391,8 +388,8 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                 >;
                   <Label htmlFor="name">Template Name>;
                   <Input>;
-                    id="name";
-                    name="name";
+                    id = "name",
+                    name = "name",
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter template name";
@@ -403,8 +400,8 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                 >;
                   <Label htmlFor="description">Description>;
                   <Textarea>;
-                    id="description";
-                    name="description";
+                    id = "description",
+                    name = "description",
                     value={formData.description}
                     onChange={handleInputChange}
                     placeholder="Enter template description";
@@ -435,8 +432,8 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                 >;
                   <Label htmlFor="previewImage">Preview Image URL (Optional)>;
                   <Input>;
-                    id="previewImage";
-                    name="previewImage";
+                    id = "previewImage",
+                    name = "previewImage",
                     value={formData.previewImage}
                     onChange={handleInputChange}
                     placeholder="Enter preview image URL";
@@ -445,7 +442,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
                 >;
                   <Switch>;
-                    id="isActive";
+                    id = "isActive",
                     checked={formData.isActive}
                     onCheckedChange={handleSwitchChange}
                   />;
@@ -484,8 +481,8 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                           )}
                         </div>;
                         <Button>;
-                          variant="ghost";
-                          size="sm";
+                          variant = "ghost",
+                          size = "sm",
                           onClick={() => handleRemoveVariable(key)}
                         >;
                           Remove;
@@ -502,8 +499,8 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => router.back()}
                 >;
                   Cancel;
@@ -528,21 +525,21 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
                     value={formData.content}
                     onChange={handleContentChange}
                     placeholder="Enter your template content here...";
-                    minHeight="400px";
+                    minHeight = "400px",
                   />;
                 </div>;
               </div>;
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => setActiveTab("details")}
                 >;
                   Back;
                 </Button>;
                 <Button>;
-                  type="button";
+                  type = "button",
                   onClick={handleSubmit}
                   disabled={isLoading}
                 >;
@@ -588,7 +585,7 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
                 >;
                   <Button>;
-                    type="button";
+                    type = "button",
                     onClick={handleRenderPreview}
                   >;
                     Generate Preview;
@@ -610,14 +607,14 @@ export default const _TemplateEditor = ({ templateId, onSuccess }: TemplateEdito
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => setActiveTab("content")}
                 >;
                   Back;
                 </Button>;
                 <Button>;
-                  type="button";
+                  type = "button",
                   onClick={handleSubmit}
                   disabled={isLoading}
                 >;

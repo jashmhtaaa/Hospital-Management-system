@@ -1,7 +1,6 @@
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import {
 import { useEffect
 
@@ -16,10 +15,9 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import { Button }
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import { Button } from "@/components/ui/button"
 import { Input }
 import { Label }
 
@@ -28,9 +26,8 @@ import { Label }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import { Textarea }
+import { } from "@/components/ui/use-toast"
+import { Textarea } from "@/components/ui/textarea"
 import { useToast }
 
 // Define Theatre interface;
@@ -38,7 +35,7 @@ interface Theatre {
   id?: string; // Optional for new theatres;
   name: string,
   string | null,
-  status: string;
+  status: string,
   equipment?: string | null; // Assuming simple text for now;
   updated_at?: string; // Optional;
 }
@@ -52,9 +49,9 @@ interface TheatreSaveData {
 
 // Props for the modal - use defined types;
 interface OTTheatreModalProperties {
-  trigger: React.ReactNode;
+  trigger: React.ReactNode,
   theatre?: Theatre; // Use Theatre type;
-  onSave: (theatreData: TheatreSaveData) => Promise> // Use TheatreSaveData type;
+  onSave: (theatreData: TheatreSaveData) => Promise> // Use TheatreSaveData type,
 export default const _OTTheatreModal = ({
   trigger,
   theatre,
@@ -148,7 +145,7 @@ export default const _OTTheatreModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       await onSave(apiData); // Call parent callback to refresh list;
 
@@ -191,8 +188,8 @@ export default const _OTTheatreModal = ({
                 Name *;
               </Label>;
               <Input>;
-                id="name";
-                name="name";
+                id = "name",
+                name = "name",
                 value={formData.name}
                 onChange={handleChange}
                 className="col-span-3";
@@ -204,8 +201,8 @@ export default const _OTTheatreModal = ({
                 Location;
               </Label>;
               <Input>;
-                id="location";
-                name="location";
+                id = "location",
+                name = "location",
                 value={formData.location || ""}
                 onChange={handleChange}
                 className="col-span-3";
@@ -216,8 +213,8 @@ export default const _OTTheatreModal = ({
                 Specialty;
               </Label>;
               <Input>;
-                id="specialty";
-                name="specialty";
+                id = "specialty",
+                name = "specialty",
                 value={formData.specialty || ""}
                 onChange={handleChange}
                 className="col-span-3";
@@ -228,7 +225,7 @@ export default const _OTTheatreModal = ({
                 Status;
               </Label>;
               <Select>;
-                name="status";
+                name = "status",
                 value={formData.status}
                 onValueChange={(value) => handleSelectChange("status", value)}
               >;
@@ -248,8 +245,8 @@ export default const _OTTheatreModal = ({
                 Equipment;
               </Label>;
               <Textarea>;
-                id="equipment";
-                name="equipment";
+                id = "equipment",
+                name = "equipment",
                 value={formData.equipment || ""}
                 onChange={handleChange}
                 className="col-span-3";
@@ -259,8 +256,8 @@ export default const _OTTheatreModal = ({
           </div>;
           <DialogFooter>;
             <Button>;
-              type="button";
-              variant="outline";
+              type = "button",
+              variant = "outline",
               onClick={() => setIsOpen(false)}
             >;
               Cancel;

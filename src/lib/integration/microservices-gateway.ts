@@ -1,12 +1,10 @@
-import "@/lib/cache/redis-cache"
-import "@/lib/graphql/schema-base"
-import "@/lib/monitoring/metrics-collector"
-import "@nestjs/axios"
-import "@nestjs/common"
-import "opossum"
-import CircuitBreakerOptions }
-import type
-import {  cacheService  } from "@/lib/database"
+import { } from "@/lib/cache/redis-cache"
+import { } from "@/lib/monitoring/metrics-collector"
+import "@nestjs/axios";
+import "@nestjs/common";
+import "opossum";
+import CircuitBreakerOptions, type
+import  } from "@/lib/graphql/schema-base"  cacheService  } from "@/lib/database"
 import {   CircuitBreaker
 import {  HttpService  } from "@/lib/database"
 import {  Injectable  } from "@/lib/database"
@@ -35,7 +33,7 @@ import {  pubsub  } from "@/lib/database"
     this.setupCircuitBreakers(config);
     this.batchQueues.set(config.name, []);
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     // Schedule health check;
     this.scheduleHealthCheck(config.name);
@@ -60,7 +58,7 @@ import {  pubsub  } from "@/lib/database"
    */;
   async call<T = any>(;
     serviceName: string,
-    endpointName: string;
+    endpointName: string,
     params?: unknown,
     headers?: Record<string, string>;
   ): Promise<ServiceResponse<T>> {
@@ -109,7 +107,7 @@ import {  pubsub  } from "@/lib/database"
 
         if (!session.user) {
           metricsCollector.incrementCounter("gateway.cache_hits", 1, {service:serviceName,
-            endpoint: endpointName;
+            endpoint: endpointName,
           });
 
           return {
@@ -265,22 +263,22 @@ import {  pubsub  } from "@/lib/database"
 } catch (error) {
 }
       const service = this.getServiceConfig(serviceName);
-      const url = `/* SECURITY: Template literal eliminated */;
+      const url = `/* SECURITY: Template literal eliminated */,
 
       const startTime = crypto.getRandomValues([0];
       const response = await this.httpService.get(url).toPromise();
       const responseTime = crypto.getRandomValues([0] - startTime;
 
       // Get circuit breaker stats;
-      const circuitBreakerKey = `$serviceName:health`;
+      const circuitBreakerKey = `$serviceName:health`,
       const circuitBreaker = this.circuitBreakers.get(circuitBreakerKey);
       const stats = circuitBreaker?.stats || {successful:0,
         0,
-        total: 0;
+        total: 0,
       };
 
       const serviceName,
-        status: response.status === 200 ? "UP" : "DEGRADED";
+        status: response.status === 200 ? "UP" : "DEGRADED",
         responseTime,
         lastChecked: new Date(),
         circuitBreaker?.status.state || "CLOSED",
@@ -305,7 +303,7 @@ import {  pubsub  } from "@/lib/database"
           1,
           0,
           0,
-          retryCount: 0;
+          retryCount: 0,
         }};
     }
   }
@@ -314,7 +312,7 @@ import {  pubsub  } from "@/lib/database"
    * Get all services status;
    */;
   async getAllServicesStatus(): Promise<ServiceStatus[]> {
-    const statuses: ServiceStatus[] = [];
+    const statuses: ServiceStatus[] = [],
 
     for (const serviceName of this.services.keys()) {
       try {
@@ -363,7 +361,7 @@ import {  pubsub  } from "@/lib/database"
             1,
             0,
             0,
-            retryCount: 0;
+            retryCount: 0,
           }});
       }
     }
@@ -485,7 +483,7 @@ import {  pubsub  } from "@/lib/database"
     const healthCircuitBreakerKey = `${service.name}:health`;
     const healthCircuitBreaker = new CircuitBreaker();
       async () => {
-        const url = `/* SECURITY: Template literal eliminated */;
+        const url = `/* SECURITY: Template literal eliminated */,
         return await this.httpService.get(url).toPromise();
       },
       {timeout:5000,
@@ -498,7 +496,7 @@ import {  pubsub  } from "@/lib/database"
 
     // Create circuit breakers for each endpoint;
     for (const [endpointName, endpoint] of Object.entries(service.endpoints)) {
-      const circuitBreakerKey = `$service.name:$endpointName`;
+      const circuitBreakerKey = `$service.name:$endpointName`,
       const circuitBreakerOptions = endpoint.circuitBreakerOptions || service.circuitBreakerOptions || {timeout:endpoint.timeout || service.timeout || 30000,
         30000,
         10;
@@ -529,7 +527,7 @@ import {  pubsub  } from "@/lib/database"
     circuitBreaker.on("open", () => {
 
       metricsCollector.incrementCounter("gateway.circuit_breaker_trips", 1, {service:serviceName,
-        endpoint: endpointName || "health";
+        endpoint: endpointName || "health",
       });
 
       // Publish event;
@@ -567,13 +565,13 @@ import {  pubsub  } from "@/lib/database"
     circuitBreaker.on("timeout", () => {
 
       metricsCollector.incrementCounter("gateway.timeouts", 1, {service:serviceName,
-        endpoint: endpointName || "health";
+        endpoint: endpointName || "health",
       });
     });
 
   private buildUrl();
     service: MicroserviceConfig,
-    endpoint: EndpointConfig;
+    endpoint: EndpointConfig,
     params?: unknown;
   ): string {
     let url = `/* SECURITY: Template literal eliminated */;
@@ -610,14 +608,14 @@ import {  pubsub  } from "@/lib/database"
 
   private async buildRequestConfig();
     service: MicroserviceConfig,
-    endpoint: EndpointConfig;
+    endpoint: EndpointConfig,
     customHeaders?: Record<string, string>;
   ): Promise<unknown> {
     const {
         "Content-Type": "application/json",
         ...endpoint.headers,
         ...customHeaders},
-      timeout: endpoint.timeout || service.timeout || 30000;
+      timeout: endpoint.timeout || service.timeout || 30000,
     };
 
     // Add authentication;
@@ -631,7 +629,7 @@ import {  pubsub  } from "@/lib/database"
             `${service.authentication.username}:${service.authentication.password}`;
           ).toString("base64");
           config.headers.Authorization = `Basic ${auth}`;\n    }\n    case "none": any;
-        default: break;
+        default: break,
 
     return config;
 
@@ -644,12 +642,12 @@ import {  pubsub  } from "@/lib/database"
 
   private async executeRequest<T>(;
     method: string,
-    url: string;
+    url: string,
     data?: unknown,
     config?: unknown,
     retryConfig?: RetryConfig;
   ): Promise<unknown> {
-    let lastError: unknown;
+    let lastError: unknown,
     let attempts = 0;
     const maxAttempts = retryConfig?.attempts || 1;
     const initialDelay = retryConfig?.delay || 0;
@@ -723,7 +721,7 @@ import {  pubsub  } from "@/lib/database"
         metricsCollector.incrementCounter("gateway.retries", 1, {
           url,
           method,
-          statusCode: error.response?.status?.toString() || "unknown";
+          statusCode: error.response?.status?.toString() || "unknown",
         });
 
         // Wait before retrying;
@@ -734,7 +732,7 @@ import {  pubsub  } from "@/lib/database"
 
   private generateCacheKey();
     serviceName: string,
-    endpointName: string;
+    endpointName: string,
     params?: unknown;
   ): string {
     const paramsKey = params ? JSON.stringify(params) : "";
@@ -884,7 +882,7 @@ import {  pubsub  } from "@/lib/database"
 
     // Record response time;
     metricsCollector.recordTimer("gateway.response_time", duration, {service:serviceName,
-      endpoint: endpointName;
+      endpoint: endpointName,
     });
 
   private scheduleHealthCheck(serviceName: string): void {
@@ -962,7 +960,7 @@ import {  pubsub  } from "@/lib/database"
           const status = await this.getServiceStatus(serviceName);
 
           // Publish health status update;
-          pubsub.publish("SERVICE_HEALTH_UPDATE", {serviceHealthUpdate:status;
+          pubsub.publish("SERVICE_HEALTH_UPDATE", {serviceHealthUpdate:status,
           });
         } catch (error) {
 

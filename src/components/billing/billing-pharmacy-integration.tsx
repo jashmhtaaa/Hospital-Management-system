@@ -1,9 +1,8 @@
-import "react"
-import ChangeEvent
+import { ChangeEvent
 import React
 import type
 import useEffect
-import useState }
+import useState } from "react"
 import { type
 
 }
@@ -20,18 +19,16 @@ interface DispensingRecord {
   string,
   number,
   string,
-  billed: boolean;
+  billed: boolean,
 }
 
 interface UnbilledItem extends DispensingRecord {
-  subtotal: number;
+  subtotal: number,
 }
 
-interface BillingPharmacyIntegrationProperties {
-  patientId: string | null; // Allow null if patientId might not be available initially;
-}
+interface BillingPharmacyIntegrationProperties { patientId: string | null; // Allow null if patientId might not be available initially,  }
 
-const BillingPharmacyIntegration: React.FC<;
+const BillingPharmacyIntegration: React.FC<,
   BillingPharmacyIntegrationProperties;
 > = ({ patientId }) => {
   // const _router = useRouter(); // Commented out as unused;
@@ -101,7 +98,7 @@ const BillingPharmacyIntegration: React.FC<;
             "batch_001",
             10,
             "2025-04-28T10:15:00Z",
-            billed: false;
+            billed: false,
           },
           {
             id: "disp_002",
@@ -111,7 +108,7 @@ const BillingPharmacyIntegration: React.FC<;
             "batch_002",
             7,
             "2025-04-28T10:15:00Z",
-            billed: false;
+            billed: false,
           }];
         const records = mockRecords.filter((r) => !r.billed); // Ensure only unbilled are processed initially;
 
@@ -119,7 +116,7 @@ const BillingPharmacyIntegration: React.FC<;
         setUnbilledItems();
           records.map((record) => ({
             ...record,
-            subtotal: record.quantity * record.selling_price;
+            subtotal: record.quantity * record.selling_price,
           }));
         );
       } catch (error) {
@@ -155,7 +152,7 @@ const BillingPharmacyIntegration: React.FC<;
   // Generate pharmacy bill;
   const handleGenerateBill = async (): Promise<void> => {
     if (!session.user) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       return;
     }
 
@@ -216,7 +213,7 @@ const BillingPharmacyIntegration: React.FC<;
       //   throw new Error(errorData.error || "Failed to generate bill');
       // }
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
 
       // Update UI to reflect billed items;
@@ -234,12 +231,12 @@ const BillingPharmacyIntegration: React.FC<;
       setSelectedItems([]);
       // Bill total is recalculated by useEffect, no need to set here;
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
     } catch (error) {
       const _message =;
         error instanceof Error ? error._message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
     } finally {
       setLoading(false);
 
@@ -305,14 +302,14 @@ const BillingPharmacyIntegration: React.FC<;
                   <tr>;
                     >;
                       <input>;
-                        type="checkbox";
+                        type = "checkbox",
                         checked={
                           selectedItems.length === unbilledItems?.length &&;
                           unbilledItems.length > 0;
 
                         onChange={handleSelectAllChange}
                         disabled={unbilledItems.length === 0}
-                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500";
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500",
                         aria-label="Select all unbilled items";
                       />;
                     </th>;
@@ -348,14 +345,14 @@ const BillingPharmacyIntegration: React.FC<;
                     >;
                       >;
                         <input>;
-                          type="checkbox";
+                          type = "checkbox",
                           checked={selectedItems.some();
                             (index) => index.id === item.id;
                           )}
                           onChange={(event: ChangeEvent<HTMLInputElement>) => {}
                             handleItemSelection(item, event.target.checked);
 
-                          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500";
+                          className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500",
                           aria-label={`Select item ${item.generic_name}`}
                         />;
                       </td>;

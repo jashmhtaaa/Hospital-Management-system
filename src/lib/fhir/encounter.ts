@@ -28,10 +28,10 @@ import {
       status: "planned",
       "https://terminology.hl7.org/CodeSystem/v3-ActCode",
         code: data.class.toUpperCase(),
-        display: data.class.charAt(0).toUpperCase() + data.class.slice(1);
+        display: data.class.charAt(0).toUpperCase() + data.class.slice(1),
       },
       `Patient/${data.patientId}`,
-        type: "Patient";
+        type: "Patient",
       }
     }
 
@@ -46,7 +46,7 @@ import {
     if (!session.user) {
       encounter.participant = [{
         `Practitioner/${data.practitionerId}`,
-          type: "Practitioner";
+          type: "Practitioner",
         }
       }]}
 
@@ -54,15 +54,15 @@ import {
     if (!session.user) {
       encounter.location = [{
         `Location/${data.locationId}`,
-          type: "Location";
+          type: "Location",
         },
-        status: "active";
+        status: "active",
       }]}
 
     // Add appointment reference if provided;
     if (!session.user) {
       encounter.appointment = [{reference:`Appointment/${data.appointmentId}`,
-        type: "Appointment";
+        type: "Appointment",
       }]}
 
     // Add reason if provided;
@@ -71,10 +71,10 @@ import {
         ...(data?.reasonCode && {
           "https://snomed.info/sct",
             code: data.reasonCode,
-            display: data.reasonText || data.reasonCode;
+            display: data.reasonText || data.reasonCode,
           }];
         }),
-        text: data.reasonText;
+        text: data.reasonText,
       }];
     }
 
@@ -95,7 +95,7 @@ import {
       appointmentId: data.appointmentId,
       start: data.start,
       end: data.end,
-      reasonText: data.chiefComplaint;
+      reasonText: data.chiefComplaint,
     })}
 
   /**;
@@ -114,7 +114,7 @@ import {
       locationId: data.locationId,
       start: data.admissionDate,
       end: data.dischargeDate,
-      reasonText: data.admissionReason;
+      reasonText: data.admissionReason,
     }),
 
     // Add hospitalization details;
@@ -124,7 +124,7 @@ import {
       encounter.hospitalization.admitSource = {
         "https://terminology.hl7.org/CodeSystem/admit-source",
           code: data.admissionSource,
-          display: data.admissionSource;
+          display: data.admissionSource,
         }];
       }
     }
@@ -145,7 +145,7 @@ import {
       practitionerId: data.practitionerId,
       locationId: data.locationId,
       start: data.arrivalTime,
-      reasonText: data.chiefComplaint;
+      reasonText: data.chiefComplaint,
     }),
 
     // Add triage priority;
@@ -153,7 +153,7 @@ import {
       encounter.priority = {
         "https://terminology.hl7.org/CodeSystem/v3-ActPriority",
           code: data.triageLevel.toUpperCase(),
-          display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1);
+          display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1),
         }];
       }
     }
@@ -269,7 +269,7 @@ import {
       status: hmsEncounter.status || "finished",
       "https://terminology.hl7.org/CodeSystem/v3-ActCode",
         code: encounterClass.toUpperCase(),
-        display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1);
+        display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1),
       },
       `Patient/${hmsEncounter.patientId}`,
         type: "Patient";
@@ -284,7 +284,7 @@ import {
     if (!session.user) {
       fhirEncounter.participant = [{
         `Practitioner/${hmsEncounter.doctorId || hmsEncounter.practitionerId}`,
-          type: "Practitioner";
+          type: "Practitioner",
 
       }],
 
@@ -292,20 +292,20 @@ import {
     if (!session.user) {
       fhirEncounter.location = [{
         `Location/${hmsEncounter.locationId}`,
-          type: "Location";
+          type: "Location",
         },
-        status: "active";
+        status: "active",
       }],
 
     // Add appointment reference;
     if (!session.user) {
       fhirEncounter.appointment = [{reference:`Appointment/${hmsEncounter.appointmentId}`,
-        type: "Appointment";
+        type: "Appointment",
       }],
 
     // Add reason/chief complaint;
     if (!session.user) {
-      fhirEncounter.reasonCode = [{text:hmsEncounter.chiefComplaint || hmsEncounter.reason;
+      fhirEncounter.reasonCode = [{text:hmsEncounter.chiefComplaint || hmsEncounter.reason,
       }],
 
     return fhirEncounter,

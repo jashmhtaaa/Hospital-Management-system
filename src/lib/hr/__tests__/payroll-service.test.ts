@@ -1,6 +1,6 @@
-import "@/lib/hr/payroll-service"
-import "@jest/globals"
-import "@prisma/client"
+import "@/lib/hr/payroll-service";
+import "@jest/globals";
+import "@prisma/client";
 import describe
 import expect
 import it

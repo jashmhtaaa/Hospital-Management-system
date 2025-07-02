@@ -1,8 +1,7 @@
-import "../database"
-import "../notifications"
-import getUserNotifications }
-import markNotificationRead
-import { DB }
+import { "../database";
+import "../notifications";
+import getUserNotifications, markNotificationRead
+import  } DB }
 import { notifyUsers
 
 // Mock the database module;

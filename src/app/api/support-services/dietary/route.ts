@@ -1,9 +1,8 @@
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/security.service"
-import "@/lib/services/support-services/dietary/dietary.service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "@/lib/security.service"
+import "@/lib/services/support-services/dietary/dietary.service";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/middleware/error-handling.middleware"
 import { NextResponse } from "next/server" }
 import {  DietaryService  } from "@/lib/database"
 import {  SecurityService  } from "@/lib/database"
@@ -23,7 +22,7 @@ const createDietaryRequestSchema = z.object({patientId:z.string().uuid(),
   preferences: z.array(z.string()).optional(),
   z.string().max(1000).optional(),
   requestedById: z.string().uuid(),
-  locationId: z.string().uuid();
+  locationId: z.string().uuid(),
 });
 
 const updateDietaryRequestSchema = z.object({mealType:z.enum(["BREAKFAST", "LUNCH", "DINNER", "SNACK"]).optional(),
@@ -34,7 +33,7 @@ const updateDietaryRequestSchema = z.object({mealType:z.enum(["BREAKFAST", "LUNC
   scheduledTime: z.string().transform(val => .optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(["PENDING", "PREPARING", "READY", "DELIVERED", "COMPLETED", "CANCELLED"]).optional(),
-  locationId: z.string().uuid().optional();
+  locationId: z.string().uuid().optional(),
 });
 
 // GET /api/support-services/dietary/requests;
@@ -57,7 +56,7 @@ export const _GET = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"dietary:read",
-      auditAction: "DIETARY_REQUESTS_VIEW";
+      auditAction: "DIETARY_REQUESTS_VIEW",
     }
   );
 }
@@ -80,7 +79,7 @@ export const _POST = async (request: any) => {
       return NextResponse.json(result, {status:201 });
     },
     {requiredPermission:"dietary:create",
-      auditAction: "DIETARY_REQUEST_CREATE";
+      auditAction: "DIETARY_REQUEST_CREATE",
     }
   );
 }
@@ -97,7 +96,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
       return NextResponse.json(result);
     },
     {requiredPermission:"dietary:read",
-      auditAction: "DIETARY_REQUEST_VIEW";
+      auditAction: "DIETARY_REQUEST_VIEW",
     }
   );
 }
@@ -120,7 +119,7 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
       return NextResponse.json(result);
     },
     {requiredPermission:"dietary:update",
-      auditAction: "DIETARY_REQUEST_UPDATE";
+      auditAction: "DIETARY_REQUEST_UPDATE",
     }
   );
 }
@@ -136,7 +135,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
       return NextResponse.json({success:true });
     },
     {requiredPermission:"dietary:delete",
-      auditAction: "DIETARY_REQUEST_DELETE";
+      auditAction: "DIETARY_REQUEST_DELETE",
     }
   );
 }
@@ -164,7 +163,7 @@ export const _PREPARE = async (request: any, { params }: {params:{ id: string } 
       return NextResponse.json(result);
     },
     {requiredPermission:"dietary:update",
-      auditAction: "DIETARY_REQUEST_PREPARE";
+      auditAction: "DIETARY_REQUEST_PREPARE",
     }
   );
 }
@@ -192,7 +191,7 @@ export const _DELIVER = async (request: any, { params }: {params:{ id: string } 
       return NextResponse.json(result);
     },
     {requiredPermission:"dietary:update",
-      auditAction: "DIETARY_REQUEST_DELIVER";
+      auditAction: "DIETARY_REQUEST_DELIVER",
     }
   );
 }
@@ -215,7 +214,7 @@ export const _GET_MENUS = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"dietary:read",
-      auditAction: "DIETARY_MENUS_VIEW";
+      auditAction: "DIETARY_MENUS_VIEW",
     }
   );
 }
@@ -236,7 +235,7 @@ export const _GET_ANALYTICS = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"dietary:analytics",
-      auditAction: "DIETARY_ANALYTICS_VIEW";
+      auditAction: "DIETARY_ANALYTICS_VIEW",
     }
   );
 

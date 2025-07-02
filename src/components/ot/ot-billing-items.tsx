@@ -1,12 +1,10 @@
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "react"
+import { } from "@/components/ui/button"
+import { } from "react"
 import CardContent
 import CardHeader
-import CardTitle }
-import React
-import useEffect }
-import {
+import CardTitle, React
+import useEffect } from "@/components/ui/card"
+import  }
 import { Button }
 import { Card
 import { useState
@@ -21,23 +19,22 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "date-fns"
-import "lucide-react"
-import { Badge }
+import { } from "date-fns"
+import "lucide-react";
+import { Badge } from "@/components/ui/badge"
 import { Calculator }
 import { format }
 
 // This component integrates OT module with Billing module;
 // It shows surgery-related billing items for a patient;
 
-// FIX: Define interface for billing item;
+// FIX: Define interface for billing item,
 interface BillingItem {
   id: string,
   string,
   number,
   status: "billed" | "unbilled" | "cancelled"; // Define possible statuses;
-  surgery_id: string;
+  surgery_id: string,
   invoice_id?: string;
 }
 
@@ -49,8 +46,8 @@ interface BillingItem {
 // }
 
 interface OTBillingItemsProperties {
-  patientId: string;
-  invoiceId?: string; // Optional: if creating/editing a specific invoice;
+  patientId: string,
+  invoiceId?: string; // Optional: if creating/editing a specific invoice,
   onAddToBill?: (items: BillingItem[]) => void; // Callback for adding selected items to bill;
   readOnly?: boolean; // If true, just displays items without selection capability;
 }
@@ -86,7 +83,7 @@ export default const _OTBillingItems = ({
   invoiceId,
   onAddToBill,
   readOnly = false}: OTBillingItemsProperties) {
-  // FIX: Type the state correctly;
+  // FIX: Type the state correctly,
   const [billingItems, setBillingItems] = useState<BillingItem[]>([]),
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -133,7 +130,7 @@ export default const _OTBillingItems = ({
         // const _response = await fetch(`/api/ot/billing-items?patientId=/* "2025-04-28T09:00:00Z",
             "Surgery",
             "unbilled",
-            surgery_id: "booking-1";
+            surgery_id: "booking-1",
           },
             id: "bill-item-2",
             date: "2025-04-28T09:00:00Z",
@@ -153,7 +150,7 @@ export default const _OTBillingItems = ({
         setBillingItems(mockData),
         setLoading(false);
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown,
         const messageText =;
           error_ instanceof Error;
             ? error_.message;
@@ -178,7 +175,7 @@ export default const _OTBillingItems = ({
 
   const handleAddToBill = () => {
     if (!session.user) {
-      // FIX: Use BillingItem type;
+      // FIX: Use BillingItem type,
       const itemsToAdd = billingItems.filter((item: BillingItem) => {}
         selectedItems.includes(item.id);
       );
@@ -224,7 +221,7 @@ export default const _OTBillingItems = ({
                     {!readOnly && (;
                       <TableCell>;
                         <input>;
-                          type="checkbox";
+                          type = "checkbox",
                           checked={selectedItems.includes(item.id)}
                           onChange={() => handleSelectItem(item.id)}
                           disabled={item.status !== "unbilled"}

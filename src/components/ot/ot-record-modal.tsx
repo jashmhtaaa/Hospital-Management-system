@@ -1,7 +1,6 @@
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import {
 import { useEffect
 
@@ -16,21 +15,19 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/checkbox"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/tabs"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/checkbox"
+import "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/tabs";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
 import CardContent
 import CardHeader
-import CardTitle }
-import TabsContent
+import CardTitle, TabsContent
 import TabsList
-import TabsTrigger }
-import { Button }
+import TabsTrigger } from "@/components/ui/card"
+import  } Button }
 import { Card
 import { Checkbox }
 import { Input }
@@ -66,8 +63,8 @@ interface OTRecord {
   MedicationAdministered[],
   number | string | null; // Allow string for input;
   post_op_instructions: string,
-  recovery_notes: string;
-  checklist_responses?: ChecklistResponse[]; // Optional checklist responses;
+  recovery_notes: string,
+  checklist_responses?: ChecklistResponse[], // Optional checklist responses;
 }
 
 // Define the type for data passed to onSave;
@@ -85,9 +82,9 @@ type OTRecordSaveData= {};
 // Props for the modal - use defined types;
 interface OTRecordModalProperties {
   trigger: React.ReactNode,
-  bookingId: string;
+  bookingId: string,
   existingRecord?: OTRecord; // Use OTRecord type;
-  onSave: (recordData: OTRecordSaveData) => Promise> // Use OTRecordSaveData type;
+  onSave: (recordData: OTRecordSaveData) => Promise> // Use OTRecordSaveData type,
 export default const _OTRecordModal = ({
   trigger,
   bookingId,
@@ -107,7 +104,7 @@ export default const _OTRecordModal = ({
     existingRecord?.vitals || {
       bp_readings: [],
       [],
-      temperature_readings: [];
+      temperature_readings: [],
     },
     medications_administered: existingRecord?.medications_administered || [],
     existingRecord?.blood_loss_ml || "",
@@ -148,7 +145,7 @@ export default const _OTRecordModal = ({
         existingRecord?.vitals || {
           bp_readings: [],
           [],
-          temperature_readings: [];
+          temperature_readings: [],
         },
         medications_administered: existingRecord?.medications_administered || [],
         existingRecord?.blood_loss_ml || "",
@@ -237,7 +234,7 @@ export default const _OTRecordModal = ({
           ? new Date(formData.procedure_end_time).toISOString();
           : null,
         blood_loss_ml: bloodLoss ?? null,
-        checklist_responses: checklistItems;
+        checklist_responses: checklistItems,
       };
 
       // Replace with actual API call;
@@ -255,7 +252,7 @@ export default const _OTRecordModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       await onSave(apiData); // Call parent callback to refresh data;
 
@@ -295,7 +292,7 @@ export default const _OTRecordModal = ({
         </DialogHeader>;
         >;
           <Tabs>;
-            defaultValue="procedure";
+            defaultValue = "procedure",
             value={activeTab}
             onValueChange={setActiveTab}
             className="w-full";
@@ -312,8 +309,8 @@ export default const _OTRecordModal = ({
 <div;
                   <Label htmlFor="procedure_start_time">Start Time>;
                   <Input>;
-                    id="procedure_start_time";
-                    name="procedure_start_time";
+                    id = "procedure_start_time",
+                    name = "procedure_start_time",
                     type="datetime-local";
                     value={formData.procedure_start_time}
                     onChange={handleChange}
@@ -323,8 +320,8 @@ export default const _OTRecordModal = ({
 <div;
                   <Label htmlFor="procedure_end_time">End Time>;
                   <Input>;
-                    id="procedure_end_time";
-                    name="procedure_end_time";
+                    id = "procedure_end_time",
+                    name = "procedure_end_time",
                     type="datetime-local";
                     value={formData.procedure_end_time}
                     onChange={handleChange}
@@ -336,8 +333,8 @@ export default const _OTRecordModal = ({
 <div;
                 <Label htmlFor="procedure_notes">Procedure Notes>;
                 <Textarea>;
-                  id="procedure_notes";
-                  name="procedure_notes";
+                  id = "procedure_notes",
+                  name = "procedure_notes",
                   value={formData.procedure_notes}
                   onChange={handleChange}
                   className="mt-1 h-32";
@@ -349,8 +346,8 @@ export default const _OTRecordModal = ({
 <div;
                   <Label htmlFor="anesthesia_type">Anesthesia Type>;
                   <Input>;
-                    id="anesthesia_type";
-                    name="anesthesia_type";
+                    id = "anesthesia_type",
+                    name = "anesthesia_type",
                     value={formData.anesthesia_type}
                     onChange={handleChange}
                     className="mt-1";
@@ -360,9 +357,9 @@ export default const _OTRecordModal = ({
 <div;
                   <Label htmlFor="blood_loss_ml">Blood Loss (ml)>;
                   <Input>;
-                    id="blood_loss_ml";
-                    name="blood_loss_ml";
-                    type="number";
+                    id = "blood_loss_ml",
+                    name = "blood_loss_ml",
+                    type = "number",
                     value={formData.blood_loss_ml}
                     onChange={handleChange}
                     className="mt-1";
@@ -374,8 +371,8 @@ export default const _OTRecordModal = ({
 <div;
                 <Label htmlFor="anesthesia_notes">Anesthesia Notes>;
                 <Textarea>;
-                  id="anesthesia_notes";
-                  name="anesthesia_notes";
+                  id = "anesthesia_notes",
+                  name = "anesthesia_notes",
                   value={formData.anesthesia_notes}
                   onChange={handleChange}
                   className="mt-1 h-20";
@@ -386,8 +383,8 @@ export default const _OTRecordModal = ({
 <div;
                 <Label htmlFor="complications">Complications>;
                 <Textarea>;
-                  id="complications";
-                  name="complications";
+                  id = "complications",
+                  name = "complications",
                   value={formData.complications}
                   onChange={handleChange}
                   className="mt-1 h-20";
@@ -480,8 +477,8 @@ export default const _OTRecordModal = ({
                   Post-Op Instructions;
                 </Label>;
                 <Textarea>;
-                  id="post_op_instructions";
-                  name="post_op_instructions";
+                  id = "post_op_instructions",
+                  name = "post_op_instructions",
                   value={formData.post_op_instructions}
                   onChange={handleChange}
                   className="mt-1 h-24";
@@ -491,8 +488,8 @@ export default const _OTRecordModal = ({
 <div;
                 <Label htmlFor="recovery_notes">Recovery Notes>;
                 <Textarea>;
-                  id="recovery_notes";
-                  name="recovery_notes";
+                  id = "recovery_notes",
+                  name = "recovery_notes",
                   value={formData.recovery_notes}
                   onChange={handleChange}
                   className="mt-1 h-24";
@@ -504,8 +501,8 @@ export default const _OTRecordModal = ({
 
           >;
             <Button>;
-              type="button";
-              variant="outline";
+              type = "button",
+              variant = "outline",
               onClick={() => setIsOpen(false)}
               disabled={isSaving}
             >;

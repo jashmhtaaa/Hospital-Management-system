@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 // Define sub-schemas if vital_signs and medication_given have specific structures;
 // For now, using z.record(z.string(), z.any()) as a placeholder;

@@ -1,8 +1,7 @@
-import "@/lib/logger"
-import "@/lib/prisma"
-import "dataloader"
+import { } from "@/lib/prisma"
+import "dataloader";
 import DataLoader
-import {  logger  } from "@/lib/database"
+import {  logger  } from "@/lib/logger"
 import {  prisma  } from "@/lib/database"
 
 /**;

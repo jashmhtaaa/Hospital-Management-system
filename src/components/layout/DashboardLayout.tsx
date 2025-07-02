@@ -1,10 +1,9 @@
-import "react"
-import React
-import ReactNode }
+import { React
+import ReactNode } from "react"
 import { type
 
 interface DashboardLayoutProps {
-  children: ReactNode;
+  children: ReactNode,
 }
 
 /**;

@@ -1,11 +1,10 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../../lib/validation/pharmacy-validation"
-import "../../../models/domain-models"
-import "../../../services/barcode-administration-service"
-import "next/server"
-import getPrescriptionById }
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../../lib/validation/pharmacy-validation";
+import "../../../models/domain-models";
+import "../../../services/barcode-administration-service";
+import "next/server";
+import getPrescriptionById } from "../../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -31,7 +30,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const getPrescriptionById,
@@ -41,7 +40,7 @@ const getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const () => Promise.resolve(null),
@@ -51,7 +50,7 @@ const () => Promise.resolve(null),
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 // Initialize services;
@@ -128,7 +127,7 @@ export const POST = async (req: any) => {
     if (!session.user) {
       return NextResponse.json();
         {error:"Verification failed",
-          details: verificationResult.errors;
+          details: verificationResult.errors,
           verificationResult;
         },status: 400 ;
       );
@@ -147,7 +146,7 @@ export const POST = async (req: any) => {
       patientId: verificationResult.patientId;
       {medicationId:verificationResult.medicationId,
         verificationResult.success,
-        warningCount: verificationResult.warnings?.length || 0;
+        warningCount: verificationResult.warnings?.length || 0,
 
     });
 

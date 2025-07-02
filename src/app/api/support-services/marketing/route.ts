@@ -1,9 +1,8 @@
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/security.service"
-import "@/lib/services/support-services/marketing/marketing.service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "@/lib/security.service"
+import "@/lib/services/support-services/marketing/marketing.service";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/middleware/error-handling.middleware"
 import { NextResponse } from "next/server" }
 import {  MarketingCampaignService  } from "@/lib/database"
 import {  SecurityService  } from "@/lib/database"
@@ -20,7 +19,7 @@ const campaignFilterSchema = z.object({type:z.string().optional(),
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().default("1").transform(Number),
-  limit: z.string().default("10").transform(Number);
+  limit: z.string().default("10").transform(Number),
 });
 
 // Create campaign schema;
@@ -32,7 +31,7 @@ const createCampaignSchema = z.object({name:z.string().min(3, "Campaign name mus
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional();
+  kpis: z.any().optional(),
 });
 
 // Update campaign schema;
@@ -45,7 +44,7 @@ const updateCampaignSchema = z.object({name:z.string().min(3, "Campaign name mus
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional();
+  kpis: z.any().optional(),
 });
 
 // GET /api/support-services/marketing/campaigns;
@@ -66,7 +65,7 @@ export const _GET = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"marketing:read",
-      auditAction: "MARKETING_CAMPAIGNS_VIEW";
+      auditAction: "MARKETING_CAMPAIGNS_VIEW",
     }
   );
 }
@@ -98,7 +97,7 @@ export const _POST = async (request: any) => {
       return NextResponse.json(campaign, {status:201 });
     },
     {requiredPermission:"marketing:create",
-      auditAction: "MARKETING_CAMPAIGN_CREATE";
+      auditAction: "MARKETING_CAMPAIGN_CREATE",
     }
   );
 }
@@ -115,7 +114,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
       return NextResponse.json(campaign);
     },
     {requiredPermission:"marketing:read",
-      auditAction: "MARKETING_CAMPAIGN_VIEW";
+      auditAction: "MARKETING_CAMPAIGN_VIEW",
     }
   );
 }
@@ -148,7 +147,7 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
       return NextResponse.json(campaign);
     },
     {requiredPermission:"marketing:update",
-      auditAction: "MARKETING_CAMPAIGN_UPDATE";
+      auditAction: "MARKETING_CAMPAIGN_UPDATE",
     }
   );
 }
@@ -168,7 +167,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
       return NextResponse.json({success:true });
     },
     {requiredPermission:"marketing:delete",
-      auditAction: "MARKETING_CAMPAIGN_DELETE";
+      auditAction: "MARKETING_CAMPAIGN_DELETE",
     }
   );
 }
@@ -184,7 +183,7 @@ export const _GET_ANALYTICS = async (request: any, { params }: {params:{ id: str
       return NextResponse.json(analytics);
     },
     {requiredPermission:"marketing:analytics",
-      auditAction: "MARKETING_CAMPAIGN_ANALYTICS_VIEW";
+      auditAction: "MARKETING_CAMPAIGN_ANALYTICS_VIEW",
     }
   );
 }
@@ -214,7 +213,7 @@ export const _POST_CHANNEL = async (request: any, { params }: {params:{ id: stri
       return NextResponse.json(channel, {status:201 });
     },
     {requiredPermission:"marketing:update",
-      auditAction: "MARKETING_CAMPAIGN_CHANNEL_ADD";
+      auditAction: "MARKETING_CAMPAIGN_CHANNEL_ADD",
     }
   );
 }
@@ -238,7 +237,7 @@ export const _POST_SEGMENT = async (request: any, { params }: {params:{ id: stri
       return NextResponse.json(result, {status:201 });
     },
     {requiredPermission:"marketing:update",
-      auditAction: "MARKETING_CAMPAIGN_SEGMENT_ADD";
+      auditAction: "MARKETING_CAMPAIGN_SEGMENT_ADD",
     }
   );
 }
@@ -253,7 +252,7 @@ export const _GET_CONTACTS = async (request: any) => {
       const filters = {status:searchParams.get("status") || undefined,
         searchParams.get("segmentId") || undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10");
+        limit: parseInt(searchParams.get("limit") || "10"),
       };
 
       // Get marketing contacts with filters;
@@ -262,7 +261,7 @@ export const _GET_CONTACTS = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"marketing:read",
-      auditAction: "MARKETING_CONTACTS_VIEW";
+      auditAction: "MARKETING_CONTACTS_VIEW",
     }
   );
 }
@@ -283,7 +282,7 @@ export const _GET_OVERVIEW_ANALYTICS = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"marketing:analytics",
-      auditAction: "MARKETING_OVERVIEW_ANALYTICS_VIEW";
+      auditAction: "MARKETING_OVERVIEW_ANALYTICS_VIEW",
     }
   );
 

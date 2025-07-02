@@ -1,7 +1,6 @@
-import "next/navigation"
-import "react"
+import { } from "react"
 import React
-import useEffect }
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -27,18 +26,17 @@ import { useState
   TabsContent,
   TabsList,
   TabsTrigger} from "../ui/tabs";
-import "../../hooks/use-toast"
-import "../ui/badge"
-import "../ui/button"
-import "../ui/checkbox"
-import "../ui/label"
-import "../ui/select"
-import "../ui/textarea"
-import "date-fns"
+import { } from "../ui/badge"
+import "../ui/button";
+import "../ui/checkbox";
+import "../ui/label";
+import "../ui/select";
+import "../ui/textarea";
+import "date-fns";
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "../../hooks/use-toast"
 import { Badge }
 import { Button }
 import { Checkbox }
@@ -53,23 +51,23 @@ interface DocumentSection {
   string,
   number,
   string,
-  authoredDate: string;
+  authoredDate: string,
   updatedById?: string;
   updatedDate?: string;
   createdAt: string,
-  updatedAt: string;
+  updatedAt: string,
 }
 
 interface DocumentSignature {
   id: string,
   string,
   string,
-  signatureType: string;
+  signatureType: string,
   attestation?: string;
   ipAddress?: string;
   deviceInfo?: string;
   notes?: string;
-  createdAt: string;
+  createdAt: string,
 }
 
 interface DocumentAmendment {
@@ -81,7 +79,7 @@ interface DocumentAmendment {
   finalizedDate?: string;
   finalizedById?: string;
   createdAt: string,
-  updatedAt: string;
+  updatedAt: string,
 }
 
 interface Document {
@@ -94,17 +92,17 @@ interface Document {
   finalizedDate?: string;
   finalizedById?: string;
   version: number,
-  content: string;
+  content: string,
   templateId?: string;
   isConfidential: boolean,
   string[],
   string,
   DocumentSignature[],
-  amendments: DocumentAmendment[];
+  amendments: DocumentAmendment[],
 }
 
 interface DocumentViewerProps {
-  documentId: string;
+  documentId: string,
 export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -123,7 +121,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
   const [amendmentData, setAmendmentData] = useState({
     amendmentType: "Addendum",
     "",
-    status: "Draft";
+    status: "Draft",
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -227,7 +225,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(signatureData);
+        body: JSON.stringify(signatureData),
       });
 
       if (!session.user) {
@@ -236,7 +234,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
       toast({
         title: "Success",
-        description: "Document signed successfully";
+        description: "Document signed successfully",
       });
 
       // Close dialog and reset form;
@@ -300,7 +298,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(amendmentData);
+        body: JSON.stringify(amendmentData),
       });
 
       if (!session.user) {
@@ -309,7 +307,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
       toast({
         title: "Success",
-        description: "Amendment created successfully";
+        description: "Amendment created successfully",
       });
 
       // Close dialog and reset form;
@@ -317,7 +315,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
       setAmendmentData({
         amendmentType: "Addendum",
         "",
-        status: "Draft";
+        status: "Draft",
       });
 
       // Refresh document;
@@ -346,7 +344,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
         return "info";
       case "Canceled": any;
         return "destructive";
-      default: return "default";
+      default: return "default",
 
   };
 
@@ -357,7 +355,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
   // Helper function to format date;
   const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "MMM dd, yyyy h: mm a");
+    return format(new Date(dateString), "MMM dd, yyyy h: mm a"),
   };
 
   if (!session.user) {
@@ -648,7 +646,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                   >;
                     <Label htmlFor="attestation">Attestation Statement>;
                     <Textarea>;
-                      id="attestation";
+                      id = "attestation",
                       placeholder="I attest that this document is accurate and complete to the best of my knowledge.";
                       value={signatureData.attestation}
                       onChange={(e) => setSignatureData({...signatureData, attestation: e.target.value})}
@@ -658,7 +656,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                   >;
                     <Label htmlFor="notes">Notes>;
                     <Textarea>;
-                      id="notes";
+                      id = "notes",
                       placeholder="Additional notes";
                       value={signatureData.notes}
                       onChange={(e) => setSignatureData({...signatureData, notes: e.target.value})}
@@ -668,14 +666,14 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
                   {document.status === "Preliminary" && (;
                     >;
                       <Checkbox>;
-                        id="finalize";
+                        id = "finalize",
                         checked={signatureData.finalize}
                         onCheckedChange={(checked) => {}
                           setSignatureData({...signatureData, finalize: checked as boolean});
 
                       />;
                       <label>;
-                        htmlFor="finalize";
+                        htmlFor = "finalize",
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
                       >;
                         Finalize document upon signing;
@@ -686,7 +684,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
                 <DialogFooter>;
                   <Button>;
-                    variant="outline";
+                    variant = "outline",
                     onClick={() => setSignatureDialogOpen(false)}
                     disabled={submitting}
                   >;
@@ -815,7 +813,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
                 <DialogFooter>;
                   <Button>;
-                    variant="outline";
+                    variant = "outline",
                     onClick={() => setAmendmentDialogOpen(false)}
                     disabled={submitting}
                   >;
@@ -841,7 +839,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
       >;
         <Button>;
-          variant="outline";
+          variant = "outline",
           onClick={() => router.push("/clinical-documentation")}
         >;
           Back to Documents;
@@ -851,7 +849,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
           {/* Only show Edit button for Draft or Preliminary documents */}
           {["Draft", "Preliminary"].includes(document.status) && (;
             <Button>;
-              variant="secondary";
+              variant = "secondary",
               onClick={handleEditDocument}
             >;
               Edit Document;
@@ -861,7 +859,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
           {/* Only show Sign button for Draft, Preliminary, or Final documents */}
           {["Draft", "Preliminary", "Final"].includes(document.status) && (;
             <Button>;
-              variant="secondary";
+              variant = "secondary",
               onClick={() => setSignatureDialogOpen(true)}
             >;
               Sign Document;
@@ -871,7 +869,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
           {/* Only show Amend button for Final documents */}
           {document.status === "Final" && (;
             <Button>;
-              variant="secondary";
+              variant = "secondary",
               onClick={() => setAmendmentDialogOpen(true)}
             >;
               Amend Document;
@@ -880,7 +878,7 @@ export const _DocumentViewer = ({ documentId }: DocumentViewerProps) => {
 
           {/* Print button */}
           <Button>;
-            variant="outline";
+            variant = "outline",
             onClick={() => window.print()}
           >;
             Print;

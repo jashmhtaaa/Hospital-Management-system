@@ -1,7 +1,6 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "../../../../../lib/error-handler"
+import "next/server";
+import { NextRequest } from "../../../../../lib/audit"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
 import {  errorHandler  } from "@/lib/database"
@@ -28,7 +27,7 @@ const administrationRepository = {findById:(id: string) => Promise.resolve(null)
   generateReport: (criteria: unknown) => Promise.resolve({data:[], summary: {} }),
   save: (administration: unknown) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 /**;
@@ -137,7 +136,7 @@ export const GET = async (req: any) => {
           reportType,
           format,
           criteria,
-          recordCount: report.data.length;
+          recordCount: report.data.length,
       });
 
       // Return CSV response;
@@ -157,7 +156,7 @@ export const GET = async (req: any) => {
           reportType,
           format,
           criteria,
-          recordCount: report.data.length;
+          recordCount: report.data.length,
       });
 
       // Return JSON response;

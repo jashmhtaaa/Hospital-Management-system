@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  AnalyticsService  } from "@/lib/database"
 import {  authOptions  } from "@/lib/database"
@@ -34,15 +33,14 @@ export const GET = async (request: any) => {
         );
       }
 
-      const filters = {startDate:searchParams.has("startDate");
-          ? new Date(searchParams.get("startDate") as string);
-          : undefined,
+      const filters = { startDate: searchParams.has("startDate");
+          ? new Date(searchParams.get("startDate") as string), : undefined,
         endDate: searchParams.has("endDate");
           ? new Date(searchParams.get("endDate") as string);
           : undefined,
         metrics: searchParams.has("metrics");
           ? (searchParams.get("metrics") as string).split(",");
-          : undefined};
+          : undefined };
 
       const result = await analyticsService.getComparativeAnalytics();
         campaignIds,
@@ -52,7 +50,7 @@ export const GET = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"marketing.analytics.read",
-      auditAction: "CAMPAIGN_ANALYTICS_COMPARATIVE";
+      auditAction: "CAMPAIGN_ANALYTICS_COMPARATIVE",
     }
   );
 

@@ -1,5 +1,4 @@
-import "next/server"
-import { NextRequest } from "next/server"
+import { { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import { type
 
@@ -52,7 +51,7 @@ async const authenticatePatient = (email: string, password: string) {
       "123 Main St, Anytown",
       medical_record_number: "MRN00101",
       "+91-9876543210",
-      created_at: "2025-01-01T10:00:00Z";
+      created_at: "2025-01-01T10:00:00Z",
     };
   }
 
@@ -70,7 +69,7 @@ async const registerPatient = (patientData: RegisterData) {
   // const _passwordHash = await bcrypt.hash(patientData.password, 10);
   //;
   // // Generate a unique medical record number;
-  // const _mrnPrefix = "MRN";
+  // const _mrnPrefix = "MRN",
   // const {results:lastMRN } = await env.DB.prepare();
   //   `SELECT medical_record_number FROM patients;
   //    WHERE medical_record_number LIKE ?;

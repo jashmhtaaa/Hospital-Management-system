@@ -1,12 +1,10 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -31,23 +29,21 @@ import { useState
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import "@/components/ui/button"
-import "@/components/ui/calendar"
-import "@/components/ui/input"
-import "@/components/ui/popover"
-import "@/components/ui/separator"
-import "@/components/ui/use-toast"
-import "@hookform/resolvers/zod"
-import "date-fns"
-import "lucide-react"
-import "react-hook-form"
-import "zod"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/input"
+import "@/components/ui/popover";
+import "@/components/ui/separator";
+import "@/components/ui/use-toast";
+import "@hookform/resolvers/zod";
+import "date-fns";
+import "lucide-react";
+import "react-hook-form";
+import "zod";
 import * as z
-import ArrowLeft }
-import PopoverContent
-import PopoverTrigger }
+import ArrowLeft, PopoverContent
+import PopoverTrigger } from "@/components/ui/calendar"
 import Save
-import { Button }
+import  } Button }
 import { Calendar }
 import { CalendarIcon
 import { format }
@@ -71,7 +67,7 @@ const employeeFormSchema = z.object({
     city: z.string().optional(),
     state: z.string().optional(),
     postalCode: z.string().optional(),
-    country: z.string().optional();
+    country: z.string().optional(),
   }).optional(),
   joiningDate: z.date(),
   departmentId: z.string().optional(),
@@ -80,7 +76,7 @@ const employeeFormSchema = z.object({
   z.string().optional(),
     relationship: z.string().optional(),
     phone: z.string().optional(),
-    email: z.string().optional();
+    email: z.string().optional(),
   }).optional()});
 
 export default const _NewEmployee = () {
@@ -241,7 +237,7 @@ export default const _NewEmployee = () {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(formattedData);
+        body: JSON.stringify(formattedData),
       });
 
       if (!session.user) {
@@ -251,7 +247,7 @@ export default const _NewEmployee = () {
       const _newEmployee = await response.json(),
       toast({
         title: "Employee Created",
-        description: `Successfully created employee record for /* SECURITY: Template literal eliminated */;
+        description: `Successfully created employee record for /* SECURITY: Template literal eliminated */,
       });
 
       // Navigate back to staff list;
@@ -270,8 +266,8 @@ export default const _NewEmployee = () {
     >;
       >;
         <Button>;
-          variant="ghost";
-          size="sm";
+          variant = "ghost",
+          size = "sm",
           onClick={() => router.push("/dashboard/hr/staff")}
         >;
           <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -300,7 +296,7 @@ export default const _NewEmployee = () {
                 {/* Basic Information */}
                 <FormField>;
                   control={form.control}
-                  name="employeeId";
+                  name = "employeeId",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Employee ID*</FormLabel>;
@@ -317,7 +313,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="userId";
+                  name = "userId",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>System User</FormLabel>;
@@ -349,7 +345,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="firstName";
+                  name = "firstName",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>First Name*</FormLabel>;
@@ -363,7 +359,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="lastName";
+                  name = "lastName",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Last Name*</FormLabel>;
@@ -377,7 +373,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="middleName";
+                  name = "middleName",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Middle Name</FormLabel>;
@@ -391,7 +387,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="gender";
+                  name = "gender",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Gender</FormLabel>;
@@ -418,7 +414,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="birthDate";
+                  name = "birthDate",
                   render={({ field }) => (;
                     >;
                       <FormLabel>Date of Birth</FormLabel>;
@@ -440,7 +436,7 @@ export default const _NewEmployee = () {
                         </PopoverTrigger>;
                         >;
                           <Calendar>;
-                            mode="single";
+                            mode = "single",
                             selected={field.value}
                             onSelect={field.onChange}
                             disabled={(date) => {}
@@ -457,7 +453,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="joiningDate";
+                  name = "joiningDate",
                   render={({ field }) => (;
                     >;
                       <FormLabel>Joining Date*</FormLabel>;
@@ -479,7 +475,7 @@ export default const _NewEmployee = () {
                         </PopoverTrigger>;
                         >;
                           <Calendar>;
-                            mode="single";
+                            mode = "single",
                             selected={field.value}
                             onSelect={field.onChange}
                             disabled={(date) => {}
@@ -496,7 +492,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="departmentId";
+                  name = "departmentId",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Department</FormLabel>;
@@ -536,7 +532,7 @@ export default const _NewEmployee = () {
               >;
                 <FormField>;
                   control={form.control}
-                  name="email";
+                  name = "email",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Email</FormLabel>;
@@ -550,7 +546,7 @@ export default const _NewEmployee = () {
 
                 <FormField>;
                   control={form.control}
-                  name="phone";
+                  name = "phone",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Phone</FormLabel>;
@@ -702,8 +698,8 @@ export default const _NewEmployee = () {
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => router.push("/dashboard/hr/staff")}
                 >;
                   Cancel;

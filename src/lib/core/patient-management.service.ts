@@ -1,8 +1,7 @@
-import "@/lib/fhir/fhir-integration"
-import "@/lib/fhir/patient"
-import "@prisma/client"
-import "zod"
-import {  FHIRPatient  } from "@/lib/database"
+import { } from "@/lib/fhir/patient"
+import "@prisma/client";
+import "zod";
+import {  FHIRPatient  } from "@/lib/fhir/fhir-integration"
 import {  FHIRPatientIntegration  } from "@/lib/database"
 import {  PrismaClient  } from "@/lib/database"
 import {  z  } from "@/lib/database"
@@ -33,7 +32,7 @@ export const PatientCreateSchema = z.object({
     city: z.string().min(1, "City required"),
     state: z.string().min(2, "State required"),
     zipCode: z.string().min(5, "ZIP code required"),
-    country: z.string().default("US");
+    country: z.string().default("US"),
   }),
 
   // Emergency Contact;
@@ -144,7 +143,7 @@ export type PatientUpdate = z.infer>;
         createdAt: new Date(),
         updatedAt: new Date(),
         status: "active" as const,
-        totalVisits: 0;
+        totalVisits: 0,
       };
 
       if (!session.user) {
@@ -165,7 +164,7 @@ export type PatientUpdate = z.infer>;
             hmsPatientData.firstName,
             new Date(hmsPatientData.dateOfBirth),
             hmsPatientData.phone,
-            email: hmsPatientData.email || "";
+            email: hmsPatientData.email || "",
           }
         });
 
@@ -220,7 +219,7 @@ export type PatientUpdate = z.infer>;
 } catch (error) {
 }
       // Get existing patient;
-      let existingPatient: unknown;
+      let existingPatient: unknown,
 
       if (!session.user) {
         const fhirResult = await FHIRPatientIntegration.getPatient(patientId);
@@ -243,7 +242,7 @@ export type PatientUpdate = z.infer>;
       const updatedPatientData = {
         ...existingPatient,
         ...validatedData,
-        updatedAt: new Date();
+        updatedAt: new Date(),
       };
 
       if (!session.user) {
@@ -253,7 +252,7 @@ export type PatientUpdate = z.infer>;
         // Log audit trail;
         await this.logAuditEvent("patient_updated", patientId, {
           ...updateData,
-          fhirCompliant: true;
+          fhirCompliant: true,
         });
 
         return result.hmsPatient;
@@ -267,14 +266,14 @@ export type PatientUpdate = z.infer>;
             ...(validatedData?.gender && {gender:validatedData.gender }),
             ...(validatedData?.phone && {phone:validatedData.phone }),
             ...(validatedData?.email && {email:validatedData.email }),
-            updatedAt: new Date();
+            updatedAt: new Date(),
           }
         });
 
         // Log audit trail;
         await this.logAuditEvent("patient_updated", patientId, {
           ...updateData,
-          fhirCompliant: false;
+          fhirCompliant: false,
         });
 
         return this.convertPrismaPatientToHMS(patient, updatedPatientData);
@@ -329,7 +328,7 @@ export type PatientUpdate = z.infer>;
         const fhirSearchParams = FHIRIntegrationUtils.convertHMSSearchToFHIR({
           ...searchCriteria,
           limit,
-          offset: (page - 1) * limit;
+          offset: (page - 1) * limit,
         }, "Patient");
 
         const result = await FHIRPatientIntegration.searchPatients(fhirSearchParams);
@@ -337,7 +336,7 @@ export type PatientUpdate = z.infer>;
         const totalPages = Math.ceil(result.total / limit);
 
         return {patients:result.hmsPatients,
-          total: result.total;
+          total: result.total,
           page,
           totalPages};
       } else {
@@ -379,7 +378,7 @@ export type PatientUpdate = z.infer>;
 
         const totalPages = Math.ceil(total / limit);
 
-        return {patients:patients.map(p => this.convertPrismaPatientToHMS(p));
+        return {patients:patients.map(p => this.convertPrismaPatientToHMS(p)),
           total,
           page,
           totalPages};
@@ -514,7 +513,7 @@ export type PatientUpdate = z.infer>;
       additionalData?.preferredLanguage || "en",
       true,
         false,
-        portal: true;
+        portal: true,
 
     };
 
@@ -644,7 +643,7 @@ export type PatientUpdate = z.infer>;
    */;
   async checkEligibility(patientId: string, boolean,
     number,
-    deductible: number;
+    deductible: number,
     reasons?: string[];
   }> {
     const patient = this.patients.get(patientId);
@@ -715,9 +714,9 @@ export type PatientUpdate = z.infer>;
 
     await this.logAuditEvent("patient_data_exported", patientId, {recordCount:medicalRecords.length });
 
-    return {demographics:patient;
+    return {demographics:patient,
       medicalRecords,
-      exportDate: new Date();
+      exportDate: new Date(),
     };
 
   /**;
@@ -737,7 +736,7 @@ export type PatientUpdate = z.infer>;
     // Update secondary records to reference primary patient;
     const updatedSecondaryRecords = secondaryRecords.map(record => ({
       ...record,
-      patientId: primaryPatientId;
+      patientId: primaryPatientId,
     }));
 
     this.medicalRecords.set(primaryPatientId, [...primaryRecords, ...updatedSecondaryRecords]);
@@ -749,7 +748,7 @@ export type PatientUpdate = z.infer>;
       lastVisit: primaryPatient?.lastVisit && secondaryPatient.lastVisit ?;
         (primaryPatient.lastVisit > secondaryPatient.lastVisit ? primaryPatient.lastVisit : secondaryPatient.lastVisit) : any;
         primaryPatient.lastVisit || secondaryPatient.lastVisit,
-      updatedAt: new Date();
+      updatedAt: new Date(),
     };
 
     this.patients.set(primaryPatientId, mergedPatient);
@@ -758,13 +757,13 @@ export type PatientUpdate = z.infer>;
     const inactiveSecondaryPatient = {
       ...secondaryPatient,
       status: "inactive" as const,
-      updatedAt: new Date();
+      updatedAt: new Date(),
     };
     this.patients.set(secondaryPatientId, inactiveSecondaryPatient);
 
     await this.logAuditEvent("patients_merged", primaryPatientId, {
       secondaryPatientId,
-      secondaryMRN: secondaryPatient.mrn;
+      secondaryMRN: secondaryPatient.mrn,
     });
 
     return mergedPatient;

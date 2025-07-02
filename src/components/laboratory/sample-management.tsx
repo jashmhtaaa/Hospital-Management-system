@@ -11,13 +11,12 @@ import {
   Table,
   Tag,
   message} from "antd";
-import "react"
-import ChangeEvent
+import { ChangeEvent
 import React
 import type
 import useCallback
 import useEffect
-import useState }
+import useState } from "react"
 import { type
 
   SearchOutlined,
@@ -25,10 +24,9 @@ import { type
   PrinterOutlined,
   CheckOutlined,
   CloseOutlined} from "@ant-design/icons";
-import "antd/es/table"
-import "moment"
+import { } from "moment"
 import moment
-import { ColumnsType }
+import { ColumnsType } from "antd/es/table"
 
 const { Option } = Select;
 
@@ -46,18 +44,16 @@ interface Sample {
   received_by_user_id?: string | null;
   rejection_reason?: string | null;
   notes?: string | null;
-  created_at: string;
+  created_at: string,
 }
 
 interface ScanFormValues {
-  barcode: string;
+  barcode: string,
 }
 
-interface UpdateFormValues {
-  status: "rejected"; // Only handling rejection in this modal;
-  rejection_reason: string;
+interface UpdateFormValues { status: "rejected"; // Only handling rejection in this modal, rejection_reason: string,
   notes?: string;
-}
+ }
 
 const SampleManagement: React.FC = () => {
   const [samples, setSamples] = useState<Sample[]>([]);
@@ -128,7 +124,7 @@ const SampleManagement: React.FC = () => {
           "p001",
           "ord_001",
           "pending",
-          created_at: new Date().toISOString();
+          created_at: new Date().toISOString(),
         },
         {
           id: "smp_002",
@@ -364,7 +360,7 @@ const SampleManagement: React.FC = () => {
     {
       title: "Barcode",
       "barcode",
-      width: "15%";
+      width: "15%",
     },
     {
       title: "Patient",
@@ -374,17 +370,17 @@ const SampleManagement: React.FC = () => {
     {
       title: "Sample Type",
       "sample_type",
-      width: "10%";
+      width: "10%",
     },
     {
       title: "Status",
       "status",
       (status: Sample["status"]) => {
-        let color = "default";
-        if (!session.user)olor = "processing";
-        if (!session.user)olor = "success";
-        if (!session.user)olor = "error";
-        if (!session.user)olor = "warning"; // Example for processed
+        let color = "default",
+        if (!session.user)olor = "processing",
+        if (!session.user)olor = "success",
+        if (!session.user)olor = "error",
+        if (!session.user)olor = "warning", // Example for processed
         return <Tag color={color}>{status.toUpperCase()}>;
       }},
     {
@@ -396,7 +392,7 @@ const SampleManagement: React.FC = () => {
     {
       title: "Collected At",
       "collected_at",
-      (date: string | null | undefined, record: Sample) => // Added record here;
+      (date: string | null | undefined, record: Sample) => // Added record here,
         date;
           ? moment(date).format("YYYY-MM-DD HH:mm");
           : record.status === "pending" // Changed status to record.status;
@@ -406,15 +402,15 @@ const SampleManagement: React.FC = () => {
       title: "Actions",
       "20%",
       render: (_, record: Sample) => {
-        const actions: React.ReactNode[] = [];
+        const actions: React.ReactNode[] = [],
 
         actions.push();
           <Button>;
-            key="print";
-            type="link";
+            key = "print",
+            type = "link",
             icon={<PrinterOutlined />}
             onClick={() => handlePrintBarcode(record)}
-            size="small";
+            size = "small",
           >;
             Print;
           </Button>;
@@ -424,11 +420,11 @@ const SampleManagement: React.FC = () => {
           case "pending": {
             actions.push();
               <Button>;
-                key="collect";
-                type="link";
+                key = "collect",
+                type = "link",
                 icon={<CheckOutlined />}
                 onClick={() => handleCollectSample(record)}
-                size="small";
+                size = "small",
               >;
                 Collect;
               </Button>;
@@ -439,21 +435,21 @@ const SampleManagement: React.FC = () => {
           case "collected": {
             actions.push();
               <Button>;
-                key="receive";
-                type="link";
+                key = "receive",
+                type = "link",
                 icon={<CheckOutlined />}
                 onClick={() => handleReceiveSample(record)}
-                size="small";
+                size = "small",
               >;
                 Receive;
               </Button>,
               <Button>;
-                key="reject";
-                type="link";
+                key = "reject",
+                type = "link",
                 danger;
                 icon={<CloseOutlined />}
                 onClick={() => showRejectModal(record)}
-                size="small";
+                size = "small",
               >;
                 Reject;
               </Button>;
@@ -477,7 +473,7 @@ const SampleManagement: React.FC = () => {
         title="Laboratory Sample Management";
         extra={
           <Button>;
-            type="primary";
+            type = "primary",
             icon={<BarcodeOutlined />}
             onClick={() => setIsScanModalVisible(true)}
           >;
@@ -520,7 +516,7 @@ const SampleManagement: React.FC = () => {
           <Table<Sample>;
             columns={columns}
             dataSource={samples}
-            rowKey="id";
+            rowKey = "id",
             pagination={{ pageSize: 10, showSizeChanger: true }}
             scroll={{ x: "max-content" }} // Ensure horizontal scroll on smaller screens;
           />;
@@ -536,12 +532,12 @@ const SampleManagement: React.FC = () => {
       >;
         <Form<ScanFormValues>;
           form={form}
-          layout="vertical";
+          layout = "vertical",
           onFinish={handleScanSubmit}
         >;
           <Form.Item;
-            name="barcode";
-            label="Barcode";
+            name = "barcode",
+            label = "Barcode",
             rules={[;
               { required: true, message: "Please enter or scan barcode" }]}
           >;
@@ -569,7 +565,7 @@ const SampleManagement: React.FC = () => {
       >;
         <Form<UpdateFormValues>;
           form={updateForm}
-          layout="vertical";
+          layout = "vertical",
           onFinish={handleUpdateSample}
           initialValues={{ status: "rejected" }} // Set initial status;
         >;
@@ -580,7 +576,7 @@ const SampleManagement: React.FC = () => {
           </Form.Item>;
 
           <Form.Item;
-            name="rejection_reason";
+            name = "rejection_reason",
             label="Rejection Reason";
             rules={[;
               { required: true, message: "Please provide rejection reason" }]}

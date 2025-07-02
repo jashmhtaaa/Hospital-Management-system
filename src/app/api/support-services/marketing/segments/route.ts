@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  getServerSession  } from "@/lib/database"
@@ -25,23 +24,22 @@ export const GET = async (request: any) => {
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters;
-      const filters = {isActive:searchParams.has("isActive");
-          ? searchParams.get("isActive") === "true";
-          : undefined,
+      const filters = { isActive: searchParams.has("isActive");
+          ? searchParams.get("isActive") === "true", : undefined,
         search: searchParams.get("search") || undefined,
         page: searchParams.has("page");
           ? parseInt(searchParams.get("page") || "1", 10);
           : 1,
         limit: searchParams.has("limit");
           ? parseInt(searchParams.get("limit") || "10", 10);
-          : 10};
+          : 10 };
 
       const result = await segmentService.getSegments(filters);
 
       return NextResponse.json(result);
     },
     {requiredPermission:"marketing.segments.read",
-      auditAction: "SEGMENTS_LIST";
+      auditAction: "SEGMENTS_LIST",
     }
   );
 }
@@ -65,7 +63,7 @@ export const POST = async (request: any) => {
       return NextResponse.json(segment, {status:201 });
     },
     {requiredPermission:"marketing.segments.create",
-      auditAction: "SEGMENT_CREATE";
+      auditAction: "SEGMENT_CREATE",
     }
   );
 

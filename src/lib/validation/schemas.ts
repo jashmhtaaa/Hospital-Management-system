@@ -1,7 +1,6 @@
-import "@prisma/client"
-import "zod"
+import { } from "zod"
 import Gender
-import UserRole }
+import UserRole } from "@prisma/client"
 import {   BloodGroup
 import {  z  } from "@/lib/database"
 
@@ -17,7 +16,7 @@ export const _registerSchema = z.object({email:z.string().email("Invalid email f
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain uppercase, lowercase, and number"),
   firstName: z.string().min(2, "First name must be at least 2 characters"),
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
-  role: z.nativeEnum(UserRole).optional();
+  role: z.nativeEnum(UserRole).optional(),
 });
 
 export const _updateUserSchema = z.object({firstName:z.string().min(2).optional(),
@@ -25,7 +24,7 @@ export const _updateUserSchema = z.object({firstName:z.string().min(2).optional(
   phone: z.string().optional(),
   departmentId: z.string().cuid().optional(),
   designation: z.string().optional(),
-  specialization: z.string().optional();
+  specialization: z.string().optional(),
 });
 
 // Patient validation schemas;
@@ -41,7 +40,7 @@ export const createPatientSchema = z.object({firstName:z.string().min(2, "First 
   emergencyContact: z.string().min(1, "Emergency contact is required"),
   emergencyPhone: z.string().min(1, "Emergency phone is required"),
   insuranceProvider: z.string().optional(),
-  insuranceNumber: z.string().optional();
+  insuranceNumber: z.string().optional(),
 });
 
 export const _updatePatientSchema = createPatientSchema.partial();
@@ -53,7 +52,7 @@ export const _createAppointmentSchema = z.object({patientId:z.string().cuid("Inv
   z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
   type: z.enum(["CONSULTATION", "FOLLOW_UP", "EMERGENCY", "PROCEDURE", "SURGERY"]),
   chiefComplaint: z.string().optional(),
-  consultationFee: z.number().positive().optional();
+  consultationFee: z.number().positive().optional(),
 });
 
 // Validation middleware;
@@ -95,7 +94,7 @@ export function validateRequest<T>(schema: z.ZodSchema<T>) {
     } catch (error) {
       if (!session.user) {
         const formattedErrors = error.errors.map(err => ({field:err.path.join("."),
-          message: err.message;
+          message: err.message,
         }));
         throw new Error(`Validation failed: ${}`;
 

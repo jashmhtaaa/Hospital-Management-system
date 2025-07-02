@@ -1,8 +1,7 @@
-import "@/lib/database"
-import "@/lib/session"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "@/lib/session"
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/database"
 import { NextResponse } from "next/server" }
 import {  DB  } from "@/lib/database"
 import {  getSession  } from "@/lib/database"
@@ -11,7 +10,7 @@ import {  z  } from "@/lib/database"
 
 import { D1Database, D1ResultWithMeta  } from "@/types/cloudflare"; // Import D1Database;
 // Zod schema for creating a progress note;
-const progressNoteCreateSchema = z.object({note_datetime:z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid note datetime format";
+const progressNoteCreateSchema = z.object({note_datetime:z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid note datetime format",
     }),
     notes: z.string().min(1, "Progress note content cannot be empty"),
     // Assuming doctor_id is derived from the session;
@@ -81,7 +80,7 @@ export const _GET = async();
 
         const admissionCheck = await (DB as D1Database).prepare();
             "SELECT id FROM IPDAdmissions WHERE id = ?";
-        ).bind(admissionId).first<id: number >();
+        ).bind(admissionId).first<id: number >(),
 
         if (!session.user) {
             return NextResponse.json();
@@ -98,7 +97,7 @@ export const _GET = async();
             FROM ProgressNotes pn;
             JOIN Users u ON pn.doctor_id = u.id;
             WHERE pn.admission_id = ?;
-            ORDER BY pn./* SECURITY: Template literal eliminated */;
+            ORDER BY pn./* SECURITY: Template literal eliminated */,
         const countQuery = `SELECT COUNT(*) as total FROM ProgressNotes WHERE admission_id = ?`;
 
         const [notesResult, countResult] = await Promise.all([;
@@ -114,7 +113,7 @@ export const _GET = async();
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit),
             }});
 
     } catch (error: unknown) {
@@ -185,7 +184,7 @@ export const _POST = async();
 
         const admissionCheck = await (DB as D1Database).prepare();
             "SELECT id FROM IPDAdmissions WHERE id = ?";
-        ).bind(admissionId).first<id: number >();
+        ).bind(admissionId).first<id: number >(),
 
         if (!session.user) {
             return NextResponse.json();

@@ -1,13 +1,11 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "@/components/ui/badge"
-import "@/components/ui/button"
+import { } from "@/components/ui/button"
 import {
-import { Badge }
+import { Badge } from "@/components/ui/badge"
 import { Button }
 
   Card,
@@ -16,15 +14,13 @@ import { Button }
   CardFooter,
   CardHeader,
   CardTitle} from "@/components/ui/card";
-import "@/components/ui/separator"
-import "@/components/ui/tabs"
-import "next/navigation"
-import "react"
+import { } from "@/components/ui/separator"
+import { } from "next/navigation"
+import "react";
 import TabsContent
 import TabsList
-import TabsTrigger }
-import useState }
-import { Separator }
+import TabsTrigger, useState } from "@/components/ui/tabs"
+import  } Separator }
 import { Tabs
 import { useEffect
 import { useRouter }
@@ -57,9 +53,8 @@ import { useRouter }
   Plus,
   AlertCircle;
 } from "lucide-react";
-import "@/components/ui/use-toast"
-import "date-fns"
-import { format }
+import { } from "date-fns"
+import { format } from "@/components/ui/use-toast"
 import { toast }
 
 export default _EmployeeProfile = ({ params }: { id: string }) {
@@ -157,7 +152,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
 
       setDeleting(true);
       const response = await fetch(`/api/hr/staff/${params.id}`, {
-        method: "DELETE";
+        method: "DELETE",
       }),
 
       if (!session.user) {
@@ -165,7 +160,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
 
       toast({
         title: "Employee Deactivated",
-        description: "The employee has been successfully deactivated.";
+        description: "The employee has been successfully deactivated.",
       }),
 
       // Navigate back to staff list;
@@ -197,8 +192,8 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick={() => router.push("/dashboard/hr/staff")}
           >;
             <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -216,8 +211,8 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
       <div className="flex flex-col gap-4 p-4 md:p-8">;
         <div className="flex items-center gap-2">;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick={() => router.push("/dashboard/hr/staff")}
           >;
             <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -247,8 +242,8 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
     <div className="flex flex-col gap-4 p-4 md:p-8">;
       <div className="flex items-center gap-2">;
         <Button>;
-          variant="ghost";
-          size="sm";
+          variant = "ghost",
+          size = "sm",
           onClick={() => router.push("/dashboard/hr/staff")}
         >;
           <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -466,8 +461,8 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                           </TableCell>;
                           <TableCell>;
                             <Button>;
-                              variant="ghost";
-                              size="sm";
+                              variant = "ghost",
+                              size = "sm",
                               onClick={() => router.push(`/dashboard/hr/staff/${params.id}/positions/${}`}
                             >;
                               Edit;
@@ -481,7 +476,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                   <div className="text-center py-4 border rounded-md bg-muted/20">;
                     <p className="text-muted-foreground">No positions assigned yet</p>;
                     <Button>;
-                      variant="link";
+                      variant = "link",
                       className="mt-2";
                       onClick={handleAddPosition}
                     >;
@@ -544,8 +539,8 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                           </TableCell>;
                           <TableCell>;
                             <Button>;
-                              variant="ghost";
-                              size="sm";
+                              variant = "ghost",
+                              size = "sm",
                               onClick={() => router.push(`/dashboard/hr/staff/${params.id}/qualifications/${}`}
                             >;
                               Edit;
@@ -559,7 +554,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                   <div className="text-center py-4 border rounded-md bg-muted/20">;
                     <p className="text-muted-foreground">No qualifications added yet</p>;
                     <Button>;
-                      variant="link";
+                      variant = "link",
                       className="mt-2";
                       onClick={handleAddQualification}
                     >;
@@ -603,7 +598,7 @@ export default _EmployeeProfile = ({ params }: { id: string }) {
                       <div className="text-center py-4">;
                         <p className="text-muted-foreground">No emergency contact information provided</p>;
                         <Button>;
-                          variant="link";
+                          variant = "link",
                           className="mt-2";
                           onClick=handleEdit;
                         >;

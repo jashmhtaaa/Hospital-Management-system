@@ -1,10 +1,9 @@
-import "react"
-import ChangeEvent
+import { ChangeEvent
 import FormEvent
 import React
 import type
 import useEffect
-import useState }
+import useState } from "react"
 import {
 import { type
 
@@ -25,10 +24,9 @@ import { type
   TableCell,
   Input,
   Label,
-  // Textarea, // FIX: Removed unused import;
+  // Textarea, // FIX: Removed unused import,
 } from "@/components/ui"; // Assuming Select components are also here or adjust import;
-import "lucide-react"
-import { Loader2 }
+import { { Loader2 } from "lucide-react"
 
 // Define interfaces for data structures;
 interface MedicationRecord {
@@ -44,27 +42,27 @@ interface Medication {
   id: string,
   item_name: string; // Assuming this is the display name;
   dosage_form: string,
-  strength: string;
+  strength: string,
 }
 
 interface AdmissionInfo {
   admission_number: string,
   string,
-  patient_last_name: string;
+  patient_last_name: string,
   diagnosis?: string;
 }
 
 interface FormData {
   medication_id: string,
   string,
-  notes: string;
+  notes: string,
 }
 
 interface MedicationAdministrationProperties {
-  admissionId: string | null;
+  admissionId: string | null,
 }
 
-const MedicationAdministration: React.FC<;
+const MedicationAdministration: React.FC<,
   MedicationAdministrationProperties;
 > = ({ admissionId }) => {
   const [medicationRecords, setMedicationRecords] = useState<;
@@ -77,7 +75,7 @@ const MedicationAdministration: React.FC<;
   const [formData, setFormData] = useState<FormData>({
     medication_id: "",
     "",
-    notes: "";
+    notes: "",
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>();
@@ -146,7 +144,7 @@ const MedicationAdministration: React.FC<;
             medication_name: "Paracetamol 500mg Tablet",
             "oral",
             "Smith",
-            notes: "Patient tolerated well.";
+            notes: "Patient tolerated well.",
           },
           {
             id: "mar_002",
@@ -226,17 +224,17 @@ const MedicationAdministration: React.FC<;
           {
             id: "med_001",
             "Tablet",
-            strength: "500mg";
+            strength: "500mg",
           },
           {
             id: "med_002",
             "Capsule",
-            strength: "250mg";
+            strength: "250mg",
           },
           {
             id: "med_003",
             "Tablet",
-            strength: "200mg";
+            strength: "200mg",
           }];
         setMedications(mockMeds);
       } catch (error_) {
@@ -336,7 +334,7 @@ const MedicationAdministration: React.FC<;
           ? `/* formData.dosage,
         "Current", // Replace with actual user data;
         administered_by_last_name: "User",
-        notes: formData.notes;
+        notes: formData.notes,
       };
 
       // Update the medication records list with the new record;
@@ -346,7 +344,7 @@ const MedicationAdministration: React.FC<;
       setFormData({
         medication_id: "",
         "",
-        notes: "";
+        notes: "",
       }),
       setSubmitSuccess(true);
 
@@ -401,7 +399,7 @@ const MedicationAdministration: React.FC<;
       const "numeric",
         "numeric",
         "2-digit",
-        hour12: true;
+        hour12: true,
       };
       return new Intl.DateTimeFormat(undefined, options).format();
         new Date(dateString);
@@ -462,14 +460,14 @@ const MedicationAdministration: React.FC<;
                   Medication <span className="text-red-500">*</span>;
                 </Label>;
                 <select>;
-                  id="medication_id";
-                  name="medication_id";
+                  id = "medication_id",
+                  name = "medication_id",
                   value={formData.medication_id}
                   onChange={handleChange}
-                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                   required;
                   disabled={loadingMedications || submitting}
-                  aria-required="true";
+                  aria-required = "true",
                 >;
                   >;
                     {loadingMedications ? "Loading..." : "Select Medication"}
@@ -487,15 +485,15 @@ const MedicationAdministration: React.FC<;
                   Dosage <span className="text-red-500">*</span>;
                 </Label>;
                 <Input>;
-                  id="dosage";
-                  name="dosage";
-                  type="text";
+                  id = "dosage",
+                  name = "dosage",
+                  type = "text",
                   placeholder="e.g., 500mg, 1 tablet, 10ml";
                   value={formData.dosage}
                   onChange={handleChange}
                   required;
                   disabled={submitting}
-                  aria-required="true";
+                  aria-required = "true",
                 />;
               </div>;
 
@@ -504,14 +502,14 @@ const MedicationAdministration: React.FC<;
                   Administration Route <span className="text-red-500">*</span>;
                 </Label>;
                 <select>;
-                  id="route";
-                  name="route";
+                  id = "route",
+                  name = "route",
                   value={formData.route}
                   onChange={handleChange}
-                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
+                  className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                   required;
                   disabled={submitting}
-                  aria-required="true";
+                  aria-required = "true",
                 >;
                   <option value="">Select Route>;
                   {routeOptions.map((route) => (;
@@ -527,8 +525,8 @@ const MedicationAdministration: React.FC<;
                 <Input></Input>;
                 />;
                 {/* <Textarea>;
-                  id="notes";
-                  name="notes";
+                  id = "notes",
+                  name = "notes",
                   placeholder="Any additional information (optional)";
                   value={formData.notes}
                   onChange={handleChange}

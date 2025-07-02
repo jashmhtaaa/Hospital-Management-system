@@ -1,14 +1,12 @@
-import "@/lib/audit-logging"
-import "@/lib/models/housekeeping"
-import "@/lib/prisma"
-import "@/lib/services/notification.service"
-import "@prisma/client"
+import { } from "@/lib/audit-logging"
+import { } from "@/lib/prisma"
+import "@/lib/services/notification.service";
+import "@prisma/client";
 import HousekeepingInventory
 import HousekeepingRequest
 import HousekeepingSchedule
-import HousekeepingTask }
-import toFHIRHousekeepingRequest }
-import {  createAuditLog  } from "@/lib/database"
+import HousekeepingTask, toFHIRHousekeepingRequest } from "@/lib/models/housekeeping"
+import  }  createAuditLog  } from "@/lib/database"
 import {   HousekeepingInspection
 import {  NotificationService  } from "@/lib/database"
 import {  prisma  } from "@/lib/database"
@@ -64,11 +62,11 @@ import {  toFHIRHousekeepingInspection
     const fhirRequests = requests.map(request => toFHIRHousekeepingRequest(request));
 
     return {data:requests,
-      fhir: fhirRequests;
+      fhir: fhirRequests,
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
     };
   }
 
@@ -93,7 +91,7 @@ import {  toFHIRHousekeepingInspection
         description,
         priority,
         status: "PENDING",
-        requestedById: requestedBy;
+        requestedById: requestedBy,
         scheduledDate,
         notes;
       },
@@ -145,7 +143,7 @@ import {  toFHIRHousekeepingInspection
 
     if (!session.user) {
       return {data:request,
-        fhir: toFHIRHousekeepingRequest(request);
+        fhir: toFHIRHousekeepingRequest(request),
       };
     }
 
@@ -314,7 +312,7 @@ import {  toFHIRHousekeepingInspection
             true;
           }
         },
-        {location:true;
+        {location:true,
           }
         }
       }
@@ -337,7 +335,7 @@ import {  toFHIRHousekeepingInspection
       if (!session.user) {
         await prisma.housekeepingRequest.update({where:{ id: task.requestId },
           "COMPLETED",
-            completedDate: new Date();
+            completedDate: new Date(),
           }
         });
 
@@ -346,7 +344,7 @@ import {  toFHIRHousekeepingInspection
           `Request for ${updatedTask.request.location.name} has been completed`,
           recipientIds: [updatedTask.request.requestedById],
           {requestId:task.requestId,
-            locationId: updatedTask.request.locationId;
+            locationId: updatedTask.request.locationId,
           }
         });
       }
@@ -398,9 +396,9 @@ import {  toFHIRHousekeepingInspection
         dayOfWeek,
         timeOfDay,
         taskTemplate,
-        isActive: true;
+        isActive: true,
         nextRun,
-        createdById: userId;
+        createdById: userId,
       },
       true,
         {id:true,
@@ -585,7 +583,7 @@ import {  toFHIRHousekeepingInspection
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
 
     };
 
@@ -605,12 +603,12 @@ import {  toFHIRHousekeepingInspection
     const inspection = await prisma.housekeepingInspection.create({data:{
         locationId,
         inspectionType,
-        inspectorId: inspectorId || userId;
+        inspectorId: inspectorId || userId,
         score,
         status,
         findings,
         recommendations,
-        inspectionDate: inspectionDate || new Date();
+        inspectionDate: inspectionDate || new Date(),
       },
       true,
         {id:true,
@@ -656,7 +654,7 @@ import {  toFHIRHousekeepingInspection
     const where: unknown = {};
     if (!session.user)here.itemType = itemType;
     if (!session.user) {
-      where.currentStock = {lte:prisma.housekeepingInventory.fields.minimumStock;
+      where.currentStock = {lte:prisma.housekeepingInventory.fields.minimumStock,
       };
 
     const [items, total] = await Promise.all([;
@@ -674,7 +672,7 @@ import {  toFHIRHousekeepingInspection
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
 
     };
 
@@ -722,7 +720,7 @@ import {  toFHIRHousekeepingInspection
   async getHousekeepingAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {
     // Get date range based on period;
     const now = new Date();
-    let startDate: Date;
+    let startDate: Date,
 
     switch (period) {
       case "DAILY": any;
@@ -736,18 +734,18 @@ import {  toFHIRHousekeepingInspection
 
     // Get request counts by status;
     const requestsByStatus = await prisma.housekeepingRequest.groupBy({by:["status"],
-      {gte:startDate;
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get request counts by type;
     const requestsByType = await prisma.housekeepingRequest.groupBy({by:["requestType"],
-      {gte:startDate;
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get average completion time;
@@ -761,7 +759,7 @@ import {  toFHIRHousekeepingInspection
 
     // Get inspection scores over time;
     const inspectionScores = await prisma.housekeepingInspection.findMany({
-      {gte:startDate;
+      {gte:startDate,
         },
         null;
 
@@ -776,23 +774,23 @@ import {  toFHIRHousekeepingInspection
 
     // Get top 5 locations with most requests;
     const topLocations = await prisma.housekeepingRequest.groupBy({by:["locationId"],
-      {gte:startDate;
+      {gte:startDate,
 
       },
       _count: true,
-      {locationId:"desc";
+      {locationId:"desc",
 
       },
-      take: 5;
+      take: 5,
     });
 
     // Get location details for top locations;
     const locationDetails = await prisma.location.findMany({
-      {in:topLocations.map(loc => loc.locationId);
+      {in:topLocations.map(loc => loc.locationId),
 
       },
       true,
-        name: true;
+        name: true,
 
     });
 
@@ -806,7 +804,7 @@ import {  toFHIRHousekeepingInspection
       requestsByType,
       completionTime,
       inspectionScores,
-      topLocations: topLocationsWithNames;
+      topLocations: topLocationsWithNames,
       period;
     };
 
@@ -827,7 +825,7 @@ import {  toFHIRHousekeepingInspection
       result.setSeconds(0);
       result.setMilliseconds(0);
     } else {
-      // Default to 8:00 AM;
+      // Default to 8:00 AM,
       result.setHours(8),
       result.setMinutes(0);
       result.setSeconds(0);

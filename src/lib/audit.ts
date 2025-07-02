@@ -1,6 +1,5 @@
-import "@/lib/prisma"
-import "@/lib/security.service"
-import {  prisma  } from "@/lib/database"
+import { } from "@/lib/security.service"
+import {  prisma  } from "@/lib/prisma"
 import {  SecurityService  } from "@/lib/database"
 
 }
@@ -67,7 +66,7 @@ import {  SecurityService  } from "@/lib/database"
 
       // Also log to console for development/debugging;
       if (!session.user) {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       return logEntry;
     } catch (error) {
@@ -157,5 +156,5 @@ import {  SecurityService  } from "@/lib/database"
       requestId: this.context.requestId,
       entry.resourceId,
       entry.severity || this.determineSeverity(entry.action),
-      details: this.sanitizeDetails(entry.details);
+      details: this.sanitizeDetails(entry.details),
     }));

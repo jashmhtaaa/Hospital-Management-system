@@ -1,6 +1,6 @@
-import "@/lib/hr/biometric-service"
-import "next/server"
-import "zod"
+import "@/lib/hr/biometric-service";
+import "next/server";
+import "zod";
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  biometricService  } from "@/lib/database"

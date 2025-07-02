@@ -1,10 +1,9 @@
-import "@/lib/prisma"
-import "@next-auth/prisma-adapter"
-import "bcrypt"
-import "next-auth"
-import "next-auth/providers/credentials"
+import { } from "@next-auth/prisma-adapter"
+import "bcrypt";
+import "next-auth";
+import "next-auth/providers/credentials";
 import CredentialsProvider
-import {  compare  } from "@/lib/database"
+import {  compare  } from "@/lib/prisma"
 import {  NextAuthOptions  } from "@/lib/database"
 import {  prisma  } from "@/lib/database"
 import {  PrismaAdapter  } from "@/lib/database"
@@ -18,7 +17,7 @@ export const PrismaAdapter(prisma),
   },
   "/login";
   },
-  providers: [;
+  providers: [,
     CredentialsProvider({name:"Credentials",
       {label:"Email", type: "email" },
         password: {label:"Password", type: "password" }
@@ -32,7 +31,7 @@ export const PrismaAdapter(prisma),
           credentials.email;
           },
           true,
-            roles: true;
+            roles: true,
           }
         });
 

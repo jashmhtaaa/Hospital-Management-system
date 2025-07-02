@@ -52,15 +52,15 @@ export const DB = (): DBConnection => {
 
         // In a real implementation, this would execute the query against a database;
         // For testing purposes, we"re returning a mock result;
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
         return {results:[],
           insertId: 0,
-          affectedRows: 0;
+          affectedRows: 0,
 
           insertId: 0,
-          affectedRows: 0;
+          affectedRows: 0,
         };
       } catch (error) {
         throw error;
@@ -79,10 +79,10 @@ export const DB = (): DBConnection => {
  * @returns Promise resolving to array of query results;
  */;
 export const executeTransaction = async();
-  queries: {sql:string; params?: unknown[] }[];
+  queries: {sql:string, params?: unknown[] }[];
 ): Promise<any[]> => {
   const db = DB();
-  const results: unknown[] = [];
+  const results: unknown[] = [],
 
   try {
 } catch (error) {

@@ -1,7 +1,6 @@
-import "next/navigation"
-import "react"
+import { } from "react"
 import React
-import useEffect }
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -16,8 +15,7 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table"; // Assuming these will be created;
-import "@/components/ui/button"
-import { Button }
+import { { Button } from "@/components/ui/button"
 
 import { Badge } from "@/components/ui/badge"; // Assuming this exists or will be created;
   Dialog,
@@ -37,10 +35,10 @@ interface Appointment {
     | "completed";
     | "cancelled";
   appointmentType: string,
-  reason: string;
+  reason: string,
 }
 
-// FIX: Define API response types;
+// FIX: Define API response types,
 interface PermissionApiResponse {
   hasPermission?: boolean;
   error?: string;
@@ -54,7 +52,7 @@ interface ApiErrorResponse {
 }
 
 interface OPDAppointmentListProperties {
-  date: Date;
+  date: Date,
 export default const _OPDAppointmentList = ({
   date}: OPDAppointmentListProperties) {
   const router = useRouter();
@@ -102,7 +100,7 @@ export default const _OPDAppointmentList = ({
 }
         const [checkInResponse, cancelResponse] = await Promise.all([;
           fetch("/api/auth/check-permission?permission=appointment:check-in"),
-          fetch("/api/auth/check-permission?permission=appointment:cancel")]);
+          fetch("/api/auth/check-permission?permission=appointment:cancel")]),
 
         if (!session.user) {
 
@@ -111,7 +109,7 @@ export default const _OPDAppointmentList = ({
           return;
         }
 
-        // FIX: Type the response data;
+        // FIX: Type the response data,
         const checkInData: PermissionApiResponse = await checkInResponse.json(),
         const cancelData: PermissionApiResponse = await cancelResponse.json(),
         setCanCheckIn(checkInData.hasPermission || false);
@@ -210,7 +208,7 @@ export default const _OPDAppointmentList = ({
           throw new Error(errorMessage);
         }
 
-        // FIX: Type the response data;
+        // FIX: Type the response data,
         const data: AppointmentsApiResponse = await response.json();
         // Ensure data is an array before setting state;
         if (!session.user) {
@@ -221,7 +219,7 @@ export default const _OPDAppointmentList = ({
           setAppointments([]); // Default to empty array on unexpected format;
         }
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown,
         const messageText =;
           error_ instanceof Error;
             ? error_.message;
@@ -272,15 +270,13 @@ export default const _OPDAppointmentList = ({
 
       const response = await fetch();
         `/api/appointments/${appointmentId}/check-in`,
-        {
-          method: "POST";
+        { method: "POST";
 
       );
 
       if (!session.user) {
-        const errorMessage = "Failed to check in patient";
-        try {
-} catch (error) {
+        const errorMessage = "Failed to check in patient", try {
+ } catch (error) {
   console.error(error);
 }
 } catch (error) {
@@ -327,12 +323,12 @@ export default const _OPDAppointmentList = ({
         );
       );
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      /* SECURITY: Console statement removed */ // Placeholder alert;
+      /* SECURITY: Console statement removed */ // Placeholder alert,
 
   };
 
@@ -371,15 +367,13 @@ export default const _OPDAppointmentList = ({
 
       const response = await fetch();
         `/api/appointments/${appointmentId}/cancel`,
-        {
-          method: "POST";
+        { method: "POST";
 
       );
 
       if (!session.user) {
-        const errorMessage = "Failed to cancel appointment";
-        try {
-} catch (error) {
+        const errorMessage = "Failed to cancel appointment", try {
+ } catch (error) {
   console.error(error);
 }
 } catch (error) {
@@ -426,12 +420,12 @@ export default const _OPDAppointmentList = ({
         );
       );
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      /* SECURITY: Console statement removed */ // Placeholder alert;
+      /* SECURITY: Console statement removed */ // Placeholder alert,
 
   };
 
@@ -454,7 +448,7 @@ export default const _OPDAppointmentList = ({
         // Assuming a "success" variant exists for Badge;
         return();
           <Badge>;
-            variant="default";
+            variant = "default",
             className="bg-green-500 text-white hover:bg-green-600";
           >;
             Completed;
@@ -501,7 +495,7 @@ export default const _OPDAppointmentList = ({
               <TableCell>;
                 {new Date(appointment.appointmentTime).toLocaleTimeString([], {
                   hour: "2-digit",
-                  minute: "2-digit";
+                  minute: "2-digit",
                 })}
               </TableCell>;
               <TableCell>{appointment.patientName}</TableCell>;
@@ -547,7 +541,7 @@ export default const _OPDAppointmentList = ({
 
                         >;
                           <Button>;
-                            variant="outline";
+                            variant = "outline",
                             onClick={() => handleViewDetails(appointment.id)}
                           >;
                             Full Details;
@@ -559,8 +553,8 @@ export default const _OPDAppointmentList = ({
 
                   {canCheckIn && appointment.status === "scheduled" && (;
                     <Button>;
-                      variant="default";
-                      size="sm";
+                      variant = "default",
+                      size = "sm",
                       onClick={() => handleCheckIn(appointment.id)}
                     >;
                       Check In;
@@ -571,8 +565,8 @@ export default const _OPDAppointmentList = ({
                     (appointment.status === "scheduled" ||;
                       appointment.status === "checked-in") && (;
                       <Button>;
-                        variant="destructive";
-                        size="sm";
+                        variant = "destructive",
+                        size = "sm",
                         onClick={() => handleCancel(appointment.id)}
                       >;
                         Cancel;

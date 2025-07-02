@@ -1,11 +1,10 @@
-import "next/navigation"
-import "react"
+import { } from "react"
 import ChangeEvent
 import FormEvent
 import React
 import type
 import useEffect
-import useState }
+import useState } from "next/navigation"
 import { type
 import { useRouter }
 
@@ -17,10 +16,10 @@ export const dynamic = "force-dynamic";
 // Define interfaces for data structures;
 interface Medication {
   id: string,
-  generic_name: string;
+  generic_name: string,
   brand_name?: string;
   strength: string,
-  dosage_form: string;
+  dosage_form: string,
 }
 
 interface InventoryFormData {
@@ -32,7 +31,7 @@ interface InventoryFormData {
   initial_quantity: string; // Keep as string for input;
   supplier: string,
   string,
-  notes: string;
+  notes: string,
 }
 
 type InventorySubmitData= {};
@@ -57,7 +56,7 @@ const AddInventoryPage: React.FC = () => {
     "",
     "",
     "Main Pharmacy",
-    notes: "";
+    notes: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>("");
@@ -250,7 +249,7 @@ const AddInventoryPage: React.FC = () => {
       //   throw new Error(errorData.error || "Failed to add inventory batch");
       // }
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay;
 
       setSubmitSuccess(true);
@@ -263,7 +262,7 @@ const AddInventoryPage: React.FC = () => {
         "",
         "",
         "Main Pharmacy",
-        notes: "";
+        notes: "",
       });
       setErrors({}); // Clear errors on success;
 
@@ -287,7 +286,7 @@ const AddInventoryPage: React.FC = () => {
           Add New Inventory Batch;
         </h1>;
         <button>;
-          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md";
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md",
           onClick={() => router.push("/pharmacy/inventory")}
         >;
           Back to Inventory;
@@ -312,14 +311,14 @@ const AddInventoryPage: React.FC = () => {
             {/* Medication Selection */}
 <div;
               <label>;
-                htmlFor="medication_id";
+                htmlFor = "medication_id",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Medication <span className="text-red-500">*</span>;
               </label>;
               <select>;
-                id="medication_id";
-                name="medication_id";
+                id = "medication_id",
+                name = "medication_id",
                 value={formData.medication_id}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.medication_id ? "border-red-500" : "border-gray-300"}`}
@@ -352,15 +351,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Batch Number */}
 <div;
               <label>;
-                htmlFor="batch_number";
+                htmlFor = "batch_number",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Batch Number <span className="text-red-500">*</span>;
               </label>;
               <input>;
-                type="text";
-                id="batch_number";
-                name="batch_number";
+                type = "text",
+                id = "batch_number",
+                name = "batch_number",
                 value={formData.batch_number}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.batch_number ? "border-red-500" : "border-gray-300"}`}
@@ -384,15 +383,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Expiry Date */}
 <div;
               <label>;
-                htmlFor="expiry_date";
+                htmlFor = "expiry_date",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Expiry Date <span className="text-red-500">*</span>;
               </label>;
               <input>;
-                type="date";
-                id="expiry_date";
-                name="expiry_date";
+                type = "date",
+                id = "expiry_date",
+                name = "expiry_date",
                 value={formData.expiry_date}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.expiry_date ? "border-red-500" : "border-gray-300"}`}
@@ -413,15 +412,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Manufacturing Date */}
 <div;
               <label>;
-                htmlFor="manufacturing_date";
+                htmlFor = "manufacturing_date",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Manufacturing Date;
               </label>;
               <input>;
-                type="date";
-                id="manufacturing_date";
-                name="manufacturing_date";
+                type = "date",
+                id = "manufacturing_date",
+                name = "manufacturing_date",
                 value={formData.manufacturing_date}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md";
@@ -432,15 +431,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Purchase Date */}
 <div;
               <label>;
-                htmlFor="purchase_date";
+                htmlFor = "purchase_date",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Purchase Date <span className="text-red-500">*</span>;
               </label>;
               <input>;
-                type="date";
-                id="purchase_date";
-                name="purchase_date";
+                type = "date",
+                id = "purchase_date",
+                name = "purchase_date",
                 value={formData.purchase_date}
                 onChange={handleChange}
                 className={`w-full p-2 border rounded-md ${errors.purchase_date ? "border-red-500" : "border-gray-300"}`}
@@ -464,15 +463,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Purchase Price */}
 <div;
               <label>;
-                htmlFor="purchase_price";
+                htmlFor = "purchase_price",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Purchase Price (₹) <span className="text-red-500">*</span>;
               </label>;
               <input>;
-                type="number";
-                id="purchase_price";
-                name="purchase_price";
+                type = "number",
+                id = "purchase_price",
+                name = "purchase_price",
                 value={formData.purchase_price}
                 onChange={handleChange}
                 step="0.01";
@@ -498,15 +497,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Selling Price */}
 <div;
               <label>;
-                htmlFor="selling_price";
+                htmlFor = "selling_price",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Selling Price (₹) <span className="text-red-500">*</span>;
               </label>;
               <input>;
-                type="number";
-                id="selling_price";
-                name="selling_price";
+                type = "number",
+                id = "selling_price",
+                name = "selling_price",
                 value={formData.selling_price}
                 onChange={handleChange}
                 step="0.01";
@@ -532,18 +531,18 @@ const AddInventoryPage: React.FC = () => {
             {/* Initial Quantity */}
 <div;
               <label>;
-                htmlFor="initial_quantity";
+                htmlFor = "initial_quantity",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Initial Quantity <span className="text-red-500">*</span>;
               </label>;
               <input>;
-                type="number";
-                id="initial_quantity";
-                name="initial_quantity";
+                type = "number",
+                id = "initial_quantity",
+                name = "initial_quantity",
                 value={formData.initial_quantity}
                 onChange={handleChange}
-                min="1";
+                min = "1",
                 step="1" // Ensure integer input;
                 className={`w-full p-2 border rounded-md ${errors.initial_quantity ? "border-red-500" : "border-gray-300"}`}
                 disabled={loading}
@@ -566,15 +565,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Supplier */}
 <div;
               <label>;
-                htmlFor="supplier";
+                htmlFor = "supplier",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Supplier;
               </label>;
               <input>;
-                type="text";
-                id="supplier";
-                name="supplier";
+                type = "text",
+                id = "supplier",
+                name = "supplier",
                 value={formData.supplier}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md";
@@ -585,15 +584,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Invoice Number */}
 <div;
               <label>;
-                htmlFor="invoice_number";
+                htmlFor = "invoice_number",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Invoice Number;
               </label>;
               <input>;
-                type="text";
-                id="invoice_number";
-                name="invoice_number";
+                type = "text",
+                id = "invoice_number",
+                name = "invoice_number",
                 value={formData.invoice_number}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md";
@@ -604,15 +603,15 @@ const AddInventoryPage: React.FC = () => {
             {/* Storage Location */}
 <div;
               <label>;
-                htmlFor="storage_location";
+                htmlFor = "storage_location",
                 className="block text-sm font-medium text-gray-700 mb-1";
               >;
                 Storage Location;
               </label>;
               <input>;
-                type="text";
-                id="storage_location";
-                name="storage_location";
+                type = "text",
+                id = "storage_location",
+                name = "storage_location",
                 value={formData.storage_location}
                 onChange={handleChange}
                 className="w-full p-2 border border-gray-300 rounded-md";
@@ -624,14 +623,14 @@ const AddInventoryPage: React.FC = () => {
           {/* Notes */}
           >;
             <label>;
-              htmlFor="notes";
+              htmlFor = "notes",
               className="block text-sm font-medium text-gray-700 mb-1";
             >;
               Notes;
             </label>;
             <textarea>;
-              id="notes";
-              name="notes";
+              id = "notes",
+              name = "notes",
               value={formData.notes}
               onChange={handleChange}
               rows={3}
@@ -642,16 +641,16 @@ const AddInventoryPage: React.FC = () => {
 
           >;
             <button>;
-              type="button";
+              type = "button",
               onClick={() => router.push("/pharmacy/inventory")}
-              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50";
+              className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50",
               disabled={loading}
             >;
               Cancel;
             </button>;
             <button>;
-              type="submit";
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50";
+              type = "submit",
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50",
               disabled={loading}
             >;
               {loading ? "Saving..." : "Save Inventory Batch"}

@@ -1,15 +1,13 @@
-import "@/types/billing"
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import "zod"
+import { } from "@/types/billing"
+import { } from "iron-session"
+import "next/headers";
+import "zod";
 import Invoice
 import InvoiceItem
 import InvoiceStatus
 import ItemType
-import Payment }
-import type
-import {  cookies  } from "@/lib/database"
+import Payment, type
+import  } from "@opennextjs/cloudflare"  cookies  } from "@/lib/database"
 import {  getCloudflareContext  } from "@/lib/database"
 import {  getIronSession  } from "@/lib/database"
 import {   type
@@ -46,7 +44,7 @@ interface InvoiceQueryResult {invoice_id:number,
     created_at: string; // ISO String;
     updated_at: string; // ISO String;
     patient_first_name: string,
-    patient_last_name: string;
+    patient_last_name: string,
 }
 
 interface InvoiceItemQueryResult {invoice_item_id:number,
@@ -61,7 +59,7 @@ interface InvoiceItemQueryResult {invoice_item_id:number,
 
 // GET handler for retrieving a specific invoice with details;
 export const _GET = async (request: Request) => {
-    const cookieStore = await cookies(); // FIX: Add await;
+    const cookieStore = await cookies(); // FIX: Add await,
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const invoiceId = getInvoiceId(url.pathname);
@@ -109,7 +107,7 @@ export const _GET = async (request: Request) => {
 }
 } catch (error) {
 }
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type;
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type,
         const { env } = context;
         const { DB } = env;
 
@@ -169,7 +167,7 @@ export const _GET = async (request: Request) => {
                 item.created_at,
                 item.billable_item_id,
                     item.billable_item_type as ItemType, // Cast to ItemType enum)) as InvoiceItem[] || [],
-            payments: paymentsResult.results || [];
+            payments: paymentsResult.results || [],
         };
 
         // 7. Return the detailed invoice;
@@ -261,7 +259,7 @@ export const _PUT = async (request: Request) => {
         // 2. Check if invoice exists;
         const invoiceCheck = await DB.prepare("SELECT invoice_id, status FROM Invoices WHERE invoice_id = ?");
                                    .bind(invoiceId);
-                                   .first<invoice_id: number, status: string >();
+                                   .first<invoice_id: number, status: string >(),
         if (!session.user) {
             return new Response(JSON.stringify({error:"Invoice not found" }), {status:404,
                 headers: { "Content-Type": "application/json" }});
@@ -271,7 +269,7 @@ export const _PUT = async (request: Request) => {
 
         // 3. Build update query;
         let query = "UPDATE Invoices SET updated_at = CURRENT_TIMESTAMP";
-        const queryParams: (string | null | number)[] = [];
+        const queryParams: (string | null | number)[] = [],
 
         Object.entries(updateData).forEach(([key, value]) => {
             if (!session.user) { // Allow null values to be set
@@ -285,7 +283,7 @@ export const _PUT = async (request: Request) => {
 
         // 4. Execute update;
         // Use as any to bypass the type mismatch between D1Result implementations;
-        const updateResult = await DB.prepare(query).bind(...queryParams).run() as {success:boolean; meta?: unknown };
+        const updateResult = await DB.prepare(query).bind(...queryParams).run() as {success:boolean, meta?: unknown };
 
         // Check success property directly;
         if (!session.user) {

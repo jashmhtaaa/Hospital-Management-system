@@ -1,14 +1,12 @@
-import "@/lib/fhir/appointment"
-import "@/lib/fhir/encounter"
-import "@/lib/fhir/medication"
-import "@/lib/fhir/patient"
-import "@/lib/fhir/types"
-import "@prisma/client"
+import { } from "@/lib/fhir/appointment"
+import { } from "@/lib/fhir/medication"
+import "@/lib/fhir/patient";
+import "@/lib/fhir/types";
+import "@prisma/client";
 import FHIRAppointment
-import FHIRAppointmentUtils }
-import FHIRPatient
-import FHIRPatientUtils }
-import {  FHIRBase  } from "@/lib/database"
+import FHIRAppointmentUtils, FHIRPatient
+import FHIRPatientUtils } from "@/lib/fhir/encounter"
+import  }  FHIRBase  } from "@/lib/database"
 import {  FHIREncounter  } from "@/lib/database"
 import {  FHIRMedicationRequest  } from "@/lib/database"
 import {  PrismaClient  } from "@/lib/database"
@@ -37,7 +35,7 @@ import {  type
     resource.meta = {
       ...resource.meta,
       lastUpdated: timestamp: new Date().toISOString(),
-      versionId: resource.meta?.versionId || "1";
+      versionId: resource.meta?.versionId || "1",
     };
 
     switch (resourceType) {
@@ -49,7 +47,7 @@ import {  type
         return this.storeEncounter(resource as FHIREncounter) as Promise>;
       case "MedicationRequest": any;
         return this.storeMedicationRequest(resource as FHIRMedicationRequest) as Promise>;
-      default: return this.storeGenericResource(resource);
+      default: return this.storeGenericResource(resource),
     }
   }
 
@@ -87,7 +85,7 @@ import {  type
     resource.meta = {
       ...resource.meta,
       lastUpdated: timestamp: new Date().toISOString(),
-      versionId: (currentVersion + 1).toString();
+      versionId: (currentVersion + 1).toString(),
     };
 
     return this.storeResource(resource);
@@ -162,7 +160,7 @@ import {  type
         lastName,
         dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
         phone || "",
-        email: email || "";
+        email: email || "",
       }
     });
 
@@ -185,7 +183,7 @@ import {  type
       patient.firstName,
       patient.dateOfBirth.toISOString().split("T")[0],
       patient.phone,
-      email: patient.email;
+      email: patient.email,
     });
 
     // Get stored FHIR resource for additional data;
@@ -195,7 +193,7 @@ import {  type
       return {
         ...storedFhir,
         ...fhirPatient,
-        meta: storedFhir.meta;
+        meta: storedFhir.meta,
       };
     }
 
@@ -298,9 +296,9 @@ import {  type
       patients.map(patient => this.retrievePatient(patient.id));
     );
 
-    return {resources:fhirPatients.filter(Boolean) as FHIRPatient[];
+    return {resources:fhirPatients.filter(Boolean) as FHIRPatient[],
       total,
-      hasMore: _offset + _count < total;
+      hasMore: _offset + _count < total,
     };
   }
 
@@ -587,9 +585,9 @@ import {  type
 
       const total = Number.parseInt(totalResult[0]?.count || "0");
 
-      return {resources:resources.map(r => r.content) as T[];
+      return {resources:resources.map(r => r.content) as T[],
         total,
-        hasMore: _offset + _count < total;
+        hasMore: _offset + _count < total,
       };
     } catch (error) {
       return {resources:[],

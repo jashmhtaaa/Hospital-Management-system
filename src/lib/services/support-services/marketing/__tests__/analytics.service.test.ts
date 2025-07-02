@@ -1,7 +1,7 @@
-import "../analytics.service"
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/prisma"
+import "../analytics.service";
+import "@/lib/audit";
+import "@/lib/errors";
+import "@/lib/prisma";
 import ValidationError }
 import { AnalyticsService }
 import { AuditLogger }

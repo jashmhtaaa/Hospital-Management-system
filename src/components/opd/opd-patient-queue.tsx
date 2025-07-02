@@ -11,22 +11,19 @@ import {
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import { Badge }
+import { } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Button }
 
 import { useToast } from "@/hooks/use-toast"; // Added useToast;
 
 // Define Patient interface (assuming structure based on usage);
-interface Patient {
-  id: string; // Changed to string based on usage in handlers;
-  name: string,
+interface Patient { id: string; // Changed to string based on usage in handlers, name: string,
   string; // Keep as string, format on display;
   waitingTime: number; // in minutes;
   status: "waiting" | "in-progress" | "completed" | "cancelled",
   doctorName: string; // Assuming this comes from API;
-}
+ }
 
 // Define API response types;
 // interface PermissionApiResponse {
@@ -41,13 +38,12 @@ interface Patient {
 //   error?: string;
 // }
 
-interface OPDPatientQueueProperties {
-  date: Date; // Keep date prop if needed, though unused in current logic;
-}
+interface OPDPatientQueueProperties { date: Date, // Keep date prop if needed, though unused in current logic;
+ }
 
 // Mock permission check function (replace with actual API call);
 const checkPermission = async (permission: string): Promise<boolean> => {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
   // Replace with actual API call to /api/session/check-permission;
   await ; // Simulate network delay;
   // For now, grant permissions for testing;
@@ -59,7 +55,7 @@ const checkPermission = async (permission: string): Promise<boolean> => {
 
 // Mock fetch patients function (replace with actual API call);
 const fetchPatientsQueue = async (): Promise<Patient[]> => {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
   // Replace with actual API call to /api/opd-visits?status=waiting,in-progress or similar;
   await ; // Simulate network delay;
   // Return mock data for testing;
@@ -71,14 +67,14 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
 };
 
 // Mock API call function (replace with actual fetch calls);
-const callPatientApi = async (patientId: string): Promise<{ success: boolean; error?: string }> => {
+const callPatientApi = async (patientId: string): Promise<{ success: boolean, error?: string }> => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     // Replace with actual API call, e.g., POST /api/opd-visits/${patientId}/call;
     await ;
     return { success: true }
 };
 
-const completeConsultationApi = async (patientId: string): Promise<{ success: boolean; error?: string }> => {
+const completeConsultationApi = async (patientId: string): Promise<{ success: boolean, error?: string }> => {
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
     // Replace with actual API call, e.g., POST /api/opd-visits/${patientId}/complete;
     await ;
@@ -99,7 +95,7 @@ const getStatusBadge = (status: Patient["status"]) => {
   switch (status) {
     case "waiting": return <Badge variant="outline">Waiting>;
     case "in-progress": return <Badge variant="default">In Progress>;
-    case "completed": return <Badge variant="default" className="bg-green-500 text-white hover:bg-green-600">Completed>;
+    case "completed": return <Badge variant="default" className="bg-green-500 text-white hover:bg-green-600">Completed>,
     case "cancelled": return <Badge variant="destructive">Cancelled>;
     default: return <Badge variant="outline">{status}>;
   }
@@ -120,7 +116,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      // setLoadingPermissions(true); // FIX: Removed call to undefined function;
+      // setLoadingPermissions(true); // FIX: Removed call to undefined function,
       setError(null),
       try {
 } catch (error) {
@@ -178,7 +174,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
     };
     fetchData();
 
-    // Optional: Set up interval polling to refresh the queue;
+    // Optional: Set up interval polling to refresh the queue,
     const intervalId = setInterval(fetchData, 30000); // Refresh every 30 seconds;
     return () => clearInterval(intervalId); // Cleanup interval on unmount;
 
@@ -328,7 +324,7 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
               <TableCell>;
                 {new Date(patient.checkInTime).toLocaleTimeString([], {
                   hour: "2-digit",
-                  minute: "2-digit";
+                  minute: "2-digit",
                 })}
               </TableCell>;
               <TableCell>{formatWaitingTime(patient.waitingTime)}</TableCell>;
@@ -338,8 +334,8 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
                 >;
                   {canCallPatient && patient.status === "waiting" && (;
                     <Button>;
-                      variant="default";
-                      size="sm";
+                      variant = "default",
+                      size = "sm",
                       onClick={() => handleCallPatient(patient.id)}
                       disabled={loading} // Disable buttons during actions if needed;
                     >;
@@ -348,9 +344,9 @@ export default const _OPDPatientQueue = (_props: OPDPatientQueueProperties) {
                   )}
                   {canMarkComplete && patient.status === "in-progress" && (;
                     <Button>;
-                      variant="default";
-                      className="bg-green-500 hover:bg-green-600 text-white";
-                      size="sm";
+                      variant = "default",
+                      className="bg-green-500 hover:bg-green-600 text-white",
+                      size = "sm",
                       onClick={() => handleCompleteConsultation(patient.id)}
                       disabled={loading} // Disable buttons during actions if needed;
                     >;

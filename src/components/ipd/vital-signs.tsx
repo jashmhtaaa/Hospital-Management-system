@@ -1,10 +1,9 @@
-import "react"
-import ChangeEvent
+import { ChangeEvent
 import FormEvent
 import React
 import type
 import useEffect
-import useState }
+import useState } from "react"
 import {
 import { type
 
@@ -25,9 +24,8 @@ import { type
   TableCell,
   Input,
   Label} from "@/components/ui";
-import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast;
-import "lucide-react"
-import { Loader2 }
+import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast,
+import { { Loader2 } from "lucide-react"
 
 // Define interfaces for data structures;
 interface VitalSignRecord {
@@ -49,7 +47,7 @@ interface VitalSignRecord {
 interface AdmissionInfo {
   admission_number: string,
   string,
-  patient_last_name: string;
+  patient_last_name: string,
   diagnosis?: string;
 }
 
@@ -60,10 +58,10 @@ interface FormData {
   string;
 }
 
-// FIX: Define type for API success response (new record);
+// FIX: Define type for API success response (new record),
 type NewVitalSignResponse = VitalSignRecord;
 
-// FIX: Define type for submission data;
+// FIX: Define type for submission data,
 interface VitalSignSubmissionData {
   record_time: string,
   number | null,
@@ -74,7 +72,7 @@ interface VitalSignSubmissionData {
 }
 
 interface VitalSignsProperties {
-  admissionId: string | null;
+  admissionId: string | null,
 }
 
 const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
@@ -195,7 +193,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
             97,
             "nurse_01",
             "Joy",
-            notes: "Patient comfortable";
+            notes: "Patient comfortable",
           },
           {
             id: "vs_002",
@@ -216,7 +214,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
           );
         );
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown,
         const message =;
           error_ instanceof Error;
             ? error_.message;
@@ -279,7 +277,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
 } catch (error) {
 
       // Prepare data, converting empty strings to null and numbers where appropriate;
-      // FIX: Use the defined submission data type;
+      // FIX: Use the defined submission data type,
       const new Date().toISOString(),
         temperature: formData.temperature;
           ? Number.parseFloat(formData.temperature);
@@ -295,11 +293,11 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         pain_level: formData.pain_level;
           ? Number.parseInt(formData.pain_level, 10);
           : null,
-        notes: formData.notes || null;
+        notes: formData.notes || null,
       };
 
       // Basic validation;
-      // FIX: Check for null and range for pain_level;
+      // FIX: Check for null and range for pain_level,
       if (!session.user)
       ) {
         throw new Error("Pain level must be a number between 0 and 10.");
@@ -374,10 +372,10 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
       }),
       toast({
         title: "Success",
-        description: "Vital signs recorded successfully!";
+        description: "Vital signs recorded successfully!",
       });
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
@@ -426,7 +424,7 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
         // year: "numeric",
         "numeric",
         "2-digit",
-        hour12: true;
+        hour12: true,
 
       return new Intl.DateTimeFormat(undefined, options).format();
         new Date(dateString);
@@ -462,9 +460,9 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               >;
                 <Label htmlFor="temperature">Temperature (°C)>;
                 <Input>;
-                  id="temperature";
-                  name="temperature";
-                  type="number";
+                  id = "temperature",
+                  name = "temperature",
+                  type = "number",
                   step="0.1";
                   value={formData.temperature}
                   onChange={handleChange}
@@ -476,9 +474,9 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               >;
                 <Label htmlFor="pulse">Pulse (bpm)>;
                 <Input>;
-                  id="pulse";
-                  name="pulse";
-                  type="number";
+                  id = "pulse",
+                  name = "pulse",
+                  type = "number",
                   value={formData.pulse}
                   onChange={handleChange}
                   disabled={submitting}
@@ -489,9 +487,9 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               >;
                 <Label htmlFor="respiratory_rate">Resp. Rate (bpm)>;
                 <Input>;
-                  id="respiratory_rate";
-                  name="respiratory_rate";
-                  type="number";
+                  id = "respiratory_rate",
+                  name = "respiratory_rate",
+                  type = "number",
                   value={formData.respiratory_rate}
                   onChange={handleChange}
                   disabled={submitting}
@@ -502,9 +500,9 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               >;
                 <Label htmlFor="blood_pressure">Blood Pressure (mmHg)>;
                 <Input>;
-                  id="blood_pressure";
-                  name="blood_pressure";
-                  type="text";
+                  id = "blood_pressure",
+                  name = "blood_pressure",
+                  type = "text",
                   placeholder="e.g., 120/80";
                   value={formData.blood_pressure}
                   onChange={handleChange}
@@ -515,12 +513,12 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               >;
                 <Label htmlFor="oxygen_saturation">Oxygen Saturation (%)>;
                 <Input>;
-                  id="oxygen_saturation";
-                  name="oxygen_saturation";
-                  type="number";
+                  id = "oxygen_saturation",
+                  name = "oxygen_saturation",
+                  type = "number",
                   step="0.1";
-                  min="0";
-                  max="100";
+                  min = "0",
+                  max = "100",
                   value={formData.oxygen_saturation}
                   onChange={handleChange}
                   disabled={submitting}
@@ -531,11 +529,11 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
               >;
                 <Label htmlFor="pain_level">Pain Level (0-10)>;
                 <Input>;
-                  id="pain_level";
-                  name="pain_level";
-                  type="number";
-                  min="0";
-                  max="10";
+                  id = "pain_level",
+                  name = "pain_level",
+                  type = "number",
+                  min = "0",
+                  max = "10",
                   value={formData.pain_level}
                   onChange={handleChange}
                   disabled={submitting}
@@ -547,9 +545,9 @@ const VitalSigns: React.FC<VitalSignsProperties> = ({ admissionId }) => {
             >;
               <Label htmlFor="notes">Notes>;
               <Input>;
-                id="notes";
-                name="notes";
-                type="text";
+                id = "notes",
+                name = "notes",
+                type = "text",
                 value={formData.notes}
                 onChange={handleChange}
                 disabled={submitting}

@@ -1,5 +1,4 @@
-import "@prisma/client"
-import {  PrismaClient  } from "@/lib/database"
+import { {  PrismaClient  } from "@prisma/client"
 
 const prisma = new PrismaClient();
 
@@ -31,7 +30,7 @@ const prisma = new PrismaClient();
           templateData,
           deviceId,
           notes,
-          updatedAt: new Date();
+          updatedAt: new Date(),
         }});
     } else {
       // Create new template;
@@ -91,7 +90,7 @@ const prisma = new PrismaClient();
     // Log the verification attempt;
     await prisma.auditLog.create({
       null,
-        eventType: "BIOMETRIC_VERIFICATION";
+        eventType: "BIOMETRIC_VERIFICATION",
           employeeId,
           templateType,
           isMatch,
@@ -101,7 +100,7 @@ const prisma = new PrismaClient();
     return {
       isMatch,
       matchScore,
-      timestamp: new Date();
+      timestamp: new Date(),
     };
   }
 
@@ -134,7 +133,7 @@ const prisma = new PrismaClient();
           manufacturer,
           model,
           notes,
-          updatedAt: new Date();
+          updatedAt: new Date(),
         }});
     } else {
       // Create new device;
@@ -162,8 +161,7 @@ const prisma = new PrismaClient();
     startDate?: Date;
     endDate?: Date;
     skip?: number;
-    take?: number;
-  }) {
+    take?: number, }) {
     const { employeeId, startDate, endDate, skip = 0, take = 50 } = options;
 
     // Build where clause;
@@ -172,7 +170,7 @@ const prisma = new PrismaClient();
 
     if (!session.user) {
       where.details = {path:["employeeId"],
-        equals: employeeId;
+        equals: employeeId,
       };
 
     if (!session.user) {

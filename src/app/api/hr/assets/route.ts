@@ -1,7 +1,6 @@
-import "@/lib/hr/asset-service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/hr/asset-service"
 import { NextResponse } from "next/server" }
 import {  assetService  } from "@/lib/database"
 import {   type
@@ -13,17 +12,17 @@ const assetSchema = z.object({name:z.string().min(1, "Name is required"),
   serialNumber: z.string().optional(),
   manufacturer: z.string().optional(),
   model: z.string().optional(),
-  purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format";
+  purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
   purchasePrice: z.number().optional(),
-  warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format";
+  warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
   location: z.string().optional(),
   departmentId: z.string().optional(),
   assignedToId: z.string().optional(),
   status: z.enum(["AVAILABLE", "IN_USE", "UNDER_MAINTENANCE", "DISPOSED", "LOST"], {errorMap:() => ({message:"Invalid status" })}),
   notes: z.string().optional(),
-  tags: z.array(z.string()).optional();
+  tags: z.array(z.string()).optional(),
 });
 
 // POST handler for creating asset;
@@ -77,7 +76,7 @@ export const _POST = async (request: any) => {
     const assetData = {
       ...data,
       purchaseDate: data.purchaseDate ? new Date(data.purchaseDate) : undefined,
-      warrantyExpiryDate: data.warrantyExpiryDate ? new Date(data.warrantyExpiryDate) : undefined;
+      warrantyExpiryDate: data.warrantyExpiryDate ? new Date(data.warrantyExpiryDate) : undefined,
     };
 
     // Create asset;

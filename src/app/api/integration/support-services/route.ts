@@ -1,7 +1,6 @@
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/integration/hms-integration.service"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/services/integration/hms-integration.service"
+import "next/server";
+import { NextRequest } from "@/lib/middleware/error-handling.middleware"
 import { NextResponse } from "next/server" }
 import {  errorHandlingMiddleware  } from "@/lib/database"
 import {  HMSIntegrationService  } from "@/lib/database"
@@ -34,7 +33,7 @@ export const GET = async();
     );
 
     return NextResponse.json({success:true,
-      data: patientInfo;
+      data: patientInfo,
     });
   });
 }
@@ -60,7 +59,7 @@ export const GET = async();
     );
 
     return NextResponse.json({success:true,
-      data: locationInfo;
+      data: locationInfo,
     });
   });
 }
@@ -103,7 +102,7 @@ export const POST = async (request: any) => {
     );
 
     return NextResponse.json({success:true,
-      data: notification;
+      data: notification,
     });
   });
 }
@@ -143,7 +142,7 @@ export const POST = async (request: any) => {
     );
 
     return NextResponse.json({success:true,
-      data: report;
+      data: report,
     });
   });
 }
@@ -185,7 +184,7 @@ export const POST = async();
       return NextResponse.json();
         {success:false,
           "VALIDATION_ERROR",
-            message: "Invalid service type";
+            message: "Invalid service type",
               validServiceTypes;
           }
         },
@@ -203,7 +202,7 @@ export const POST = async();
     );
 
     return NextResponse.json({success:true,
-      data: request;
+      data: request,
     });
   });
 
@@ -243,7 +242,7 @@ export const POST = async();
       return NextResponse.json();
         {success:false,
           "VALIDATION_ERROR",
-            message: "Invalid service type";
+            message: "Invalid service type",
               validServiceTypes;
 
         },
@@ -260,6 +259,6 @@ export const POST = async();
     );
 
     return NextResponse.json({success:true,
-      data: request;
+      data: request,
     });
   });

@@ -1,10 +1,9 @@
-import "react"
-import ChangeEvent
+import { ChangeEvent
 import FormEvent
 import React
 import type
 import useEffect
-import useState }
+import useState } from "react"
 import {
 import { type
 
@@ -24,9 +23,8 @@ import { type
   TabsContent,
   Label, // Assuming Label is imported from ui;
 } from "@/components/ui";
-import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast;
-import "lucide-react"
-import { Loader2 }
+import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast,
+import { { Loader2 } from "lucide-react"
 
 // Define interfaces for data structures;
 interface ProgressNote {
@@ -43,14 +41,14 @@ interface ProgressNote {
 interface AdmissionInfo {
   admission_number: string,
   string,
-  patient_last_name: string;
+  patient_last_name: string,
   diagnosis?: string;
 }
 
 interface FormData {
   subjective: string,
   string,
-  plan: string;
+  plan: string,
 }
 
 // FIX: Define type for API error response;
@@ -58,14 +56,14 @@ interface FormData {
 //   error?: string;
 // }
 
-// FIX: Define type for API success response (new note);
+// FIX: Define type for API success response (new note),
 type NewNoteResponse = ProgressNote;
 
 interface PatientProgressNotesProperties {
-  admissionId: string | null;
+  admissionId: string | null,
 }
 
-// FIX: Create a sub-component to manage individual note tabs state;
+// FIX: Create a sub-component to manage individual note tabs state,
 interface NoteDisplayProperties {
   note: ProgressNote,
   formatDateTime: (dateString: string | undefined) => string
@@ -74,7 +72,7 @@ interface NoteDisplayProperties {
 const NoteDisplay: React.FC<NoteDisplayProperties> = ({
   note,
   formatDateTime}) => {
-  // FIX: Add state for the inner Tabs component;
+  // FIX: Add state for the inner Tabs component,
   const [activeNoteTab, setActiveNoteTab] = useState("subjective"),
 
   return();
@@ -102,28 +100,28 @@ const NoteDisplay: React.FC<NoteDisplayProperties> = ({
         </TabsList>;
 
         <TabsContent>;
-          value="subjective";
+          value = "subjective",
           className="mt-2 p-3 bg-gray-50 rounded border text-sm";
         >;
           <p className="whitespace-pre-wrap">{note.subjective || "-"}</p>;
         </TabsContent>;
 
         <TabsContent>;
-          value="objective";
+          value = "objective",
           className="mt-2 p-3 bg-gray-50 rounded border text-sm";
         >;
           <p className="whitespace-pre-wrap">{note.objective || "-"}</p>;
         </TabsContent>;
 
         <TabsContent>;
-          value="assessment";
+          value = "assessment",
           className="mt-2 p-3 bg-gray-50 rounded border text-sm";
         >;
           <p className="whitespace-pre-wrap">{note.assessment || "-"}</p>;
         </TabsContent>;
 
         <TabsContent>;
-          value="plan";
+          value = "plan",
           className="mt-2 p-3 bg-gray-50 rounded border text-sm";
         >;
           <p className="whitespace-pre-wrap">{note.plan || "-"}</p>;
@@ -141,7 +139,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   const [formData, setFormData] = useState<FormData>({
     subjective: "",
     "",
-    plan: "";
+    plan: "",
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [patientInfo, setPatientInfo] = useState<AdmissionInfo | null>();
@@ -252,7 +250,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             assessment: "Improving pneumonia.",
             "doc_101",
             "Smith",
-            created_at: new Date().toISOString();
+            created_at: new Date().toISOString(),
           },
           {
             id: "pn_002",
@@ -263,7 +261,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             assessment: "Community-acquired pneumonia.",
             "doc_102",
             "Johnson",
-            created_at: [0] - 86_400_000).toISOString();
+            created_at: [0] - 86_400_000).toISOString(),
           }];
 
         setPatientInfo(mockPatientInfo),
@@ -274,7 +272,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           );
         );
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown,
         const message =;
           error_ instanceof Error;
             ? error_.message;
@@ -410,14 +408,14 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       setFormData({
         subjective: "",
         "",
-        plan: "";
+        plan: "",
       }),
       toast({
         title: "Success",
-        description: "Progress note added successfully!";
+        description: "Progress note added successfully!",
       });
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
@@ -465,7 +463,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       const "numeric",
         "numeric",
         "2-digit",
-        hour12: true;
+        hour12: true,
       };
       return new Intl.DateTimeFormat(undefined, options).format();
         new Date(dateString);
@@ -502,8 +500,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
                 Subjective (Patient reported);
               </Label>;
               <Textarea>;
-                id="subjective";
-                name="subjective";
+                id = "subjective",
+                name = "subjective",
                 value={formData.subjective}
                 onChange={handleChange}
                 // required - Removed, allow partial notes;
@@ -518,8 +516,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
                 Objective (Findings);
               </Label>;
               <Textarea>;
-                id="objective";
-                name="objective";
+                id = "objective",
+                name = "objective",
                 value={formData.objective}
                 onChange={handleChange}
                 // required;
@@ -534,8 +532,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
                 Assessment (Diagnosis/Impression);
               </Label>;
               <Textarea>;
-                id="assessment";
-                name="assessment";
+                id = "assessment",
+                name = "assessment",
                 value={formData.assessment}
                 onChange={handleChange}
                 // required;
@@ -550,8 +548,8 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
                 Plan (Treatment/Management);
               </Label>;
               <Textarea>;
-                id="plan";
-                name="plan";
+                id = "plan",
+                name = "plan",
                 value={formData.plan}
                 onChange={handleChange}
                 // required;

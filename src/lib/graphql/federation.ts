@@ -1,18 +1,16 @@
-import http
+import { http
 
-import "@/lib/core/logging"
-import "@/lib/monitoring/metrics-collector"
-import "@/lib/security/auth.service"
-import "@apollo/gateway"
-import "apollo-server-core"
-import "apollo-server-express"
-import "express"
-import "http"
+import { } from "@/lib/monitoring/metrics-collector"
+import "@/lib/security/auth.service";
+import "@apollo/gateway";
+import "apollo-server-core";
+import "apollo-server-express";
+import "express";
+import "http";
 import express
 import IntrospectAndCompose
-import RemoteGraphQLDataSource }
-import type
-import {   ApolloGateway
+import RemoteGraphQLDataSource, type
+import  } from "@/lib/core/logging"   ApolloGateway
 import {  ApolloServer  } from "@/lib/database"
 import {  ApolloServerPluginDrainHttpServer  } from "@/lib/database"
 import {  authService  } from "@/lib/database"
@@ -53,7 +51,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       "graphql.federation.service_response_time",
       context.startTime ? crypto.getRandomValues([0] - context.startTime : 0,
       {service:serviceName,
-        operation: operationName;
+        operation: operationName,
       }
     );
 
@@ -66,7 +64,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
     const serviceName = this.url.split("/").pop() || "unknown";
 
     logger.error(`GraphQL federation error in service ${serviceName} for operation ${operationName}:`, {error:error.message,
-      stack: error.stack;
+      stack: error.stack,
       operationName,
       serviceName,
       userId: context.user?.id,
@@ -110,11 +108,11 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
       logger.info(`GraphQL federation schema ${isInitialComposition ? "initialized" : "updated"}`, {
         graphRef,
         schemaLength: supergraphSdl.length,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString(),
       });
 
       // Track metrics;
-      metricsCollector.incrementCounter("graphql.federation.schema_updates", 1, {isInitial:isInitialComposition.toString();
+      metricsCollector.incrementCounter("graphql.federation.schema_updates", 1, {isInitial:isInitialComposition.toString(),
       });
     },
     experimental_didFailComposition: ({ graphRef, errors, isInitialComposition }) => {
@@ -123,11 +121,11 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
         graphRef,
         errors: errors.map(e => e.message),
         isInitialComposition,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString(),
       });
 
       // Track metrics;
-      metricsCollector.incrementCounter("graphql.federation.schema_errors", 1, {isInitial:isInitialComposition.toString();
+      metricsCollector.incrementCounter("graphql.federation.schema_errors", 1, {isInitial:isInitialComposition.toString(),
       });
     }
   });
@@ -183,7 +181,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
           logger.warn("Invalid auth token in GraphQL request", {
             requestId,
             correlationId,
-            error: error.message;
+            error: error.message,
           });
         }
 
@@ -195,7 +193,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
         startTime;
       };
     },
-    plugins: [;
+    plugins: [,
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
         async requestDidStart({ request, context }) {
@@ -214,7 +212,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
               const duration = crypto.getRandomValues([0] - context.startTime;
 
               metricsCollector.recordTimer("graphql.federation.request_time", duration, {operation:operationName,
-                hasErrors: (response.errors?.length > 0).toString();
+                hasErrors: (response.errors?.length > 0).toString(),
               });
 
               // Log completion;
@@ -231,7 +229,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
     introspection: process.env.NODE_ENV !== "production";
     // Cache control directives;
     csrfPrevention: true,
-    cache: "bounded";
+    cache: "bounded",
   });
 
   // Start the server;

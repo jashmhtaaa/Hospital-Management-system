@@ -28,7 +28,7 @@ import {
 
 // Helper functions for FHIR Procedure operations;
 }
-    performedPeriod?: {start:string; end?: string };
+    performedPeriod?: {start:string, end?: string };
     locationId?: string;
     reasonCode?: string;
     reasonDisplay?: string;
@@ -42,7 +42,7 @@ import {
       `Patient/${data.patientId}`,
         type: "Patient",
       `Practitioner/${data.practitionerId}`,
-          type: "Practitioner"];
+          type: "Practitioner"],
     }
 
     // Add category if provided;
@@ -50,7 +50,7 @@ import {
       procedure.category = {
         "https://snomed.info/sct",
           code: this.getCategoryCode(data.category),
-          display: data.category.charAt(0).toUpperCase() + data.category.slice(1);
+          display: data.category.charAt(0).toUpperCase() + data.category.slice(1),
         }];
       }
     }
@@ -58,7 +58,7 @@ import {
     // Add encounter if provided;
     if (!session.user) {
       procedure.encounter = {reference:`Encounter/${data.encounterId}`,
-        type: "Encounter";
+        type: "Encounter",
       };
     }
 
@@ -66,15 +66,14 @@ import {
     if (!session.user) {
       procedure.performed = data.performedDateTime;
     } else if (!session.user) {
-      procedure.performed = {start:data.performedPeriod.start;
-        ...(data.performedPeriod?.end && end: data.performedPeriod.end );
-      };
+      procedure.performed = { start: data.performedPeriod.start, ...(data.performedPeriod?.end && end: data.performedPeriod.end ),
+       };
     }
 
     // Add location if provided;
     if (!session.user) {
       procedure.location = {reference:`Location/${data.locationId}`,
-        type: "Location";
+        type: "Location",
       };
     }
 
@@ -92,7 +91,7 @@ import {
       procedure.outcome = {
         "https://snomed.info/sct",
           code: this.getOutcomeCode(data.outcome),
-          display: data.outcome;
+          display: data.outcome,
         }];
       }
     }
@@ -100,7 +99,7 @@ import {
     // Add notes if provided;
     if (!session.user) {
       procedure.note = [{text:data.notes,
-        time: new Date().toISOString();
+        time: new Date().toISOString(),
       }];
     }
 
@@ -127,7 +126,7 @@ import {
       data.startTime,
         end: data.endTime,
       locationId: data.operatingRoomId,
-      notes: data.operativeNotes;
+      notes: data.operativeNotes,
     });
 
     // Add surgeon role;
@@ -148,7 +147,7 @@ import {
             }];
           },
           `Practitioner/${assistantId}`,
-            type: "Practitioner";
+            type: "Practitioner",
           }
         });
       });
@@ -170,7 +169,7 @@ import {
    * Create a diagnostic procedure;
    */;
   static createDiagnosticProcedure(string,
-    practitionerId: string;
+    practitionerId: string,
     encounterId?: string;
     procedureCode: string,
     string;
@@ -191,12 +190,12 @@ import {
    * Create a therapeutic procedure;
    */;
   static createTherapeuticProcedure(string,
-    practitionerId: string;
+    practitionerId: string,
     encounterId?: string;
     procedureCode: string,
-    procedureDisplay: string;
+    procedureDisplay: string,
     sessions?: number;
-    performedDateTime: string;
+    performedDateTime: string,
     locationId?: string;
     treatmentResponse?: string;
     nextAppointment?: string;
@@ -206,7 +205,7 @@ import {
       data.procedureDisplay,
       "completed",
       data.locationId,
-      notes: data.treatmentResponse;
+      notes: data.treatmentResponse,
     });
 
     // Add follow-up if next appointment scheduled;
@@ -339,9 +338,9 @@ import {
     string;
     performedDate?: string;
     duration?: string;
-    performer: string;
+    performer: string,
     location?: string;
-    hasComplications: boolean;
+    hasComplications: boolean,
     outcome?: string;
   } {
     const performedDate = this.getPerformedDate(procedure);
@@ -354,14 +353,14 @@ import {
       performer: this.getPrimaryPerformer(procedure) || "Unknown",
       location: procedure.location?.reference?.replace("Location/", ""),
       hasComplications: this.hasComplications(procedure),
-      outcome: procedure.outcome?.coding?.[0]?.display;
+      outcome: procedure.outcome?.coding?.[0]?.display,
     };
 
   /**;
    * Validate FHIR Procedure resource;
    */;
   static validateProcedure(procedure: FHIRProcedure): {valid:boolean, errors: string[] } {
-    const errors: string[] = [];
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Procedure"");
@@ -384,7 +383,7 @@ import {
     if (!session.user) {
       errors.push("statusReason should be provided when status is not-done");
 
-    return {valid:errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 

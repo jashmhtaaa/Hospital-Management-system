@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 // Create enums to match Prisma schema;
 export enum DietType {
@@ -26,18 +25,17 @@ export const createDietOrderSchema = z.object({patientId:z.string().min(1, "Pati
   endDate: z.date().optional().nullable(),
   status: z.nativeEnum(DietOrderStatus).default(DietOrderStatus.ACTIVE),
   createdBy: z.string().min(1, "Creator ID is required"),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
-export const updateDietOrderSchema = createDietOrderSchema.partial().extend({id:z.string();
+export const updateDietOrderSchema = createDietOrderSchema.partial().extend({id:z.string(),
 });
 
 export type CreateDietOrderInput = z.infer>;
 export type UpdateDietOrderInput = z.infer>;
 
 // Import prisma client;
-import "../lib/prisma"
-import {  prisma  } from "@/lib/database"
+import { {  prisma  } from "../lib/prisma"
 
 /**;
  * Service class for managing dietary orders;
@@ -122,7 +120,7 @@ import {  prisma  } from "@/lib/database"
           {startDate:"desc" }],
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return orders;
@@ -170,7 +168,7 @@ import {  prisma  } from "@/lib/database"
       const order = await prisma.dietOrder.findUnique({where:{ id },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return order;
@@ -227,7 +225,7 @@ import {  prisma  } from "@/lib/database"
         data: updateData,
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return order;
@@ -321,11 +319,11 @@ import {  prisma  } from "@/lib/database"
 
       const order = await prisma.dietOrder.update({where:{ id },
         DietOrderStatus.CANCELLED,
-          endDate: new Date();
+          endDate: new Date(),
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return order;
@@ -372,11 +370,11 @@ import {  prisma  } from "@/lib/database"
 
       const order = await prisma.dietOrder.update({where:{ id },
         DietOrderStatus.COMPLETED,
-          endDate: new Date();
+          endDate: new Date(),
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return order;
@@ -426,11 +424,11 @@ import {  prisma  } from "@/lib/database"
           OR: [;
             {endDate:null },
             {endDate:{ gte: date } }],
-          status: DietOrderStatus.ACTIVE;
+          status: DietOrderStatus.ACTIVE,
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return orders;

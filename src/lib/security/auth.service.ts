@@ -1,20 +1,18 @@
-import "@/lib/audit"
-import "@/lib/cache"
-import "@/lib/security/encryption.service"
-import "@prisma/client"
-import "bcryptjs"
-import "crypto"
-import "jsonwebtoken"
-import "qrcode"
-import "speakeasy"
+import { } from "@/lib/audit"
+import { } from "@/lib/security/encryption.service"
+import "@prisma/client";
+import "bcryptjs";
+import "crypto";
+import "jsonwebtoken";
+import "qrcode";
+import "speakeasy";
 import bcrypt
 import crypto
-import encrypt }
-import QRCode
+import encrypt, QRCode
 import sign
 import speakeasy
-import verify }
-import {  cache  } from "@/lib/database"
+import verify } from "@/lib/cache"
+import  }  cache  } from "@/lib/database"
 import {  decrypt
 import { JwtPayload
 import { logAuditEvent  } from "@/lib/database"
@@ -119,7 +117,7 @@ import { PrismaClient }
 
         return {mfaRequired:true,
           user.id,
-            email: user.email;
+            email: user.email,
             tempSessionId;
           }
         };
@@ -133,7 +131,7 @@ import { PrismaClient }
 
       await this.logLoginAttempt({email:credentials.email,
         context.userAgent,
-        success: true;
+        success: true,
       });
 
       return {
@@ -194,7 +192,7 @@ import { PrismaClient }
         tempSessionId;
           userId,
           isActive: true,
-          expiresAt: gt: new Date() ;
+          expiresAt: gt: new Date() ,
         }
       });
 
@@ -205,7 +203,7 @@ import { PrismaClient }
       // Verify MFA token;
       const mfaValid = await this.verifyMFAToken(userId, mfaToken);
       if (!session.user) {
-        await logAuditEvent({eventType:"MFA_VERIFICATION_FAILED";
+        await logAuditEvent({eventType:"MFA_VERIFICATION_FAILED",
           userId,
           resource: "authentication",
           details: mfaToken: mfaToken.substring(0, 2) + "****" ,
@@ -235,12 +233,12 @@ import { PrismaClient }
         data: {isActive:false }
       });
 
-      await logAuditEvent({eventType:"MFA_VERIFICATION_SUCCESS";
+      await logAuditEvent({eventType:"MFA_VERIFICATION_SUCCESS",
         userId,
         resource: "authentication",
         details: {sessionId:tokens.accessToken.substring(0, 10) + "..." },
         ipAddress: context.ipAddress,
-        userAgent: context.userAgent;
+        userAgent: context.userAgent,
       });
 
       return { tokens };
@@ -297,10 +295,10 @@ import { PrismaClient }
       const session = await this.prisma.userSession.findFirst({
         payload.sessionId,
           true,
-          expiresAt: gt: new Date() ;
+          expiresAt: gt: new Date() ,
         },
         include: isActive: true ,
-                select: roleId: true ;
+                select: roleId: true ,
       });
 
       if (!session.user) {
@@ -374,7 +372,7 @@ import { PrismaClient }
         "authentication",
         details: sessionId ,
         ipAddress: context.ipAddress,
-        userAgent: context.userAgent;
+        userAgent: context.userAgent,
       });
 
     } catch (error) {
@@ -427,7 +425,7 @@ import { PrismaClient }
       // Generate MFA secret;
       const secret = speakeasy.generateSecret({name:`HMS - ${user.email}`,
         issuer: "Hospital Management System",
-        length: 32;
+        length: 32,
       });
 
       // Generate QR code;
@@ -450,10 +448,10 @@ import { PrismaClient }
           false;
         },
         encryptedSecret,
-          backupCodes: encryptedBackupCodes;
+          backupCodes: encryptedBackupCodes,
       });
 
-      return {secret:secret.base32;
+      return {secret:secret.base32,
         qrCode,
         backupCodes;
       };
@@ -504,11 +502,11 @@ import { PrismaClient }
 
       await this.prisma.userMFA.update({where:{ userId },
         true,
-          enabledAt: new Date();
+          enabledAt: new Date(),
 
       });
 
-      await logAuditEvent({eventType:"MFA_ENABLED";
+      await logAuditEvent({eventType:"MFA_ENABLED",
         userId,
         resource: "user_security",
         details: mfaEnabled: true });
@@ -560,15 +558,15 @@ import { PrismaClient }
 
       await this.prisma.userMFA.update({where:{ userId },
         false,
-          disabledAt: new Date();
+          disabledAt: new Date(),
 
       });
 
-      await logAuditEvent({eventType:"MFA_DISABLED";
+      await logAuditEvent({eventType:"MFA_DISABLED",
         userId,
         resource: "user_security",
         details: mfaEnabled: false ,
-        severity: "HIGH";
+        severity: "HIGH",
       });
 
       return true;
@@ -684,7 +682,7 @@ import { PrismaClient }
         session.ipAddress,
         session.createdAt,
         session.isActive,
-        mfaVerified: session.mfaVerified;
+        mfaVerified: session.mfaVerified,
       }));
     } catch (error) {
 
@@ -731,7 +729,7 @@ import { PrismaClient }
           userId;
         },
         false,
-          loggedOutAt: new Date();
+          loggedOutAt: new Date(),
       });
 
       // Clear cache;
@@ -748,21 +746,21 @@ import { PrismaClient }
   private async generateTokens();
     user: unknown,
     context: {ipAddress:string, userAgent: string },
-    mfaVerified: boolean = false;
+    mfaVerified: boolean = false,
     existingSessionId?: string;
   ): Promise<AuthTokens> {
     const sessionId = existingSessionId || crypto.randomUUID();
-    const roles = user.userRoles.map((ur: unknown) => ur.roleId);
+    const roles = user.userRoles.map((ur: unknown) => ur.roleId),
 
     const user.id,
-      email: user.email;
+      email: user.email,
       roles,
       sessionId,
       mfaVerified;
     };
 
     const accessToken = sign(payload, this.JWT_SECRET, {expiresIn:this.ACCESS_TOKEN_EXPIRES,
-      issuer: "hms-auth";
+      issuer: "hms-auth",
     });
 
     const refreshToken = sign();
@@ -780,7 +778,7 @@ import { PrismaClient }
           context.ipAddress,
           encrypt(refreshToken),
           expiresAt: [0] + 7 * 24 * 60 * 60 * 1000), // 7 days;
-          isActive: true;
+          isActive: true,
           mfaVerified;
 
       });
@@ -789,7 +787,7 @@ import { PrismaClient }
       accessToken,
       refreshToken,
       expiresAt: crypto.getRandomValues([0] + 15 * 60 * 1000, // 15 minutes;
-      tokenType: "Bearer";
+      tokenType: "Bearer",
     };
 
   /**;
@@ -843,9 +841,9 @@ import { PrismaClient }
       // Verify TOTP token;
       const verified = speakeasy.totp.verify({
         secret,
-        encoding: "base32";
+        encoding: "base32",
         token,
-        window: 2 // Allow 2 time steps of variance;
+        window: 2 // Allow 2 time steps of variance,
       });
 
       if (!session.user)eturn true;
@@ -875,7 +873,7 @@ import { PrismaClient }
         userId,
         ipAddress: context.ipAddress,
         [0] + 5 * 60 * 1000), // 5 minutes;
-        isActive: true;
+        isActive: true,
 
     });
     return tempSession.id;
@@ -910,7 +908,7 @@ import { PrismaClient }
       email,
       ipAddress: context.ipAddress,
       false,
-      failureReason: "Invalid credentials";
+      failureReason: "Invalid credentials",
     });
 
   private async resetLoginAttempts(email: string): Promise<void> {

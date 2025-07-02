@@ -1,6 +1,5 @@
-import "@/lib/monitoring/metrics-collector"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import { NextRequest } from "@/lib/monitoring/metrics-collector"
 import { NextResponse } from "next/server" }
 import {  metricsCollector  } from "@/lib/database"
 import {  type
@@ -71,8 +70,8 @@ export const _GET = async (request: any) => {
       // Return Prometheus format;
       const prometheusData = metricsCollector.exportMetrics("prometheus");
 
-      return new NextResponse(prometheusData, {headers:{
-          "Content-Type": "text/plain; charset=utf-8"}});
+      return new NextResponse(prometheusData, { headers: {
+          "Content-Type": "text/plain, charset=utf-8" }});
 
     // Return dashboard metrics;
     const dashboardMetrics = metricsCollector.getDashboardMetrics();
@@ -85,7 +84,7 @@ export const _GET = async (request: any) => {
 
     return NextResponse.json();
       {error:"Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error";
+        message: error instanceof Error ? error.message : "Unknown error",
       },
       {status:500 }
     );
@@ -151,7 +150,7 @@ export const _POST = async (request: any) => {
 
     return NextResponse.json();
       {error:"Internal server error",
-        message: error instanceof Error ? error.message : "Unknown error";
+        message: error instanceof Error ? error.message : "Unknown error",
       },
       {status:500 }
     );

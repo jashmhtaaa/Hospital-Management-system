@@ -1,6 +1,6 @@
-import "@/lib/hr/department-service"
-import "next/server"
-import "zod"
+import "@/lib/hr/department-service";
+import "next/server";
+import "zod";
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  departmentService  } from "@/lib/database"

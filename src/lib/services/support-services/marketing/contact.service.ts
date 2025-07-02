@@ -1,17 +1,14 @@
-import "@/lib/audit"
-import "@/lib/security/encryption.service"
-import "@/lib/errors"
-import "@/lib/fhir"
-import "@/lib/models/marketing"
-import "@/lib/notifications"
-import "@/lib/prisma"
+import { } from "@/lib/audit"
+import { } from "@/lib/errors"
+import { "@/lib/fhir";
+import "@/lib/models/marketing";
+import "@/lib/notifications";
+import "@/lib/prisma";
 import ContactNote
-import ContactStatus }
-import encryptData }
+import ContactStatus, encryptData } from "@/lib/security/encryption.service"
 import NotFoundError
-import ValidationError }
-import {  AuditLogger  } from "@/lib/database"
-import {  Contact
+import ValidationError, }  AuditLogger  } from "@/lib/database"
+import  }  Contact
 import { DatabaseError
 import { decryptData
 import { FhirResourceGenerator  } from "@/lib/database"
@@ -33,15 +30,15 @@ import { prisma }
           encryptedData.organization,
           encryptedData.status || ContactStatus.ACTIVE,
           encryptedData.preferences,
-          patientId: encryptedData.patientId;
+          patientId: encryptedData.patientId,
         }});
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.create",
-        resourceId: contact.id;
+        resourceId: contact.id,
         userId,
         contact.source,
-          hasPatientRecord: !!contact.patientId;
+          hasPatientRecord: !!contact.patientId,
         }
       });
 
@@ -98,13 +95,13 @@ import { prisma }
             take: 10,
             {
                 true,
-                  name: true;
+                  name: true,
                 }
               }
             }
           },
           patient: includeFHIR ? true : false,
-          {isActive:true;
+          {isActive:true,
             },
             true;
             }
@@ -124,7 +121,7 @@ import { prisma }
       const decryptedContact = this.decryptContactData(contact);
 
       // Generate FHIR representation if requested;
-      const result: unknown = decryptedContact;
+      const result: unknown = decryptedContact,
       if (!session.user) {
         result.fhir = this.generateContactFHIR(decryptedContact);
       }
@@ -148,8 +145,7 @@ import { prisma }
     segmentId?: string;
     hasPatient?: boolean;
     page?: number;
-    limit?: number;
-  }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {
+    limit?: number, }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -223,7 +219,7 @@ import { prisma }
         segmentFilter = {
           {
               segmentId,
-              isActive: true;
+              isActive: true,
             }
           }
         };
@@ -247,7 +243,7 @@ import { prisma }
         },
         skip: (page - 1) * limit,
         take: limit;
-        {createdAt:"desc";
+        {createdAt:"desc",
         }
       });
 
@@ -259,7 +255,7 @@ import { prisma }
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit),
         }
       };
     } catch (error) {
@@ -328,12 +324,12 @@ import { prisma }
 
       // Update contact;
       const updatedContact = await prisma.contact.update({where:{ id },
-        data: updateData;
+        data: updateData,
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.update",
-        resourceId: id;
+        resourceId: id,
         userId,
         Object.keys(data);
       });
@@ -395,17 +391,17 @@ import { prisma }
       const note = await prisma.contactNote.create({data:{
           contactId,
           content,
-          createdById: userId;
+          createdById: userId,
         },
         {
             true,
-              name: true;
+              name: true,
 
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.note.add",
-        resourceId: contactId;
+        resourceId: contactId,
         userId,
         note.id;
       });
@@ -480,7 +476,7 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.link.patient",
-        resourceId: contactId;
+        resourceId: contactId,
         userId,
         details: {
           patientId;
@@ -523,7 +519,7 @@ import { prisma }
 
         ],
         gender: contact.gender?.toLowerCase() || "unknown",
-        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined;
+        birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined,
       };
 
     // Otherwise use RelatedPerson resource;
@@ -548,7 +544,7 @@ import { prisma }
 
       ],
       gender: contact.gender?.toLowerCase() || "unknown",
-      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined;
+      birthDate: contact.dateOfBirth ? contact.dateOfBirth.toISOString().split("T")[0] : undefined,
     };
 
   /**;

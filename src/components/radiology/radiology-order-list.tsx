@@ -1,10 +1,8 @@
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "react"
-import CardContent }
-import React
-import useEffect }
-import {
+import { } from "@/components/ui/button"
+import { } from "react"
+import CardContent, React
+import useEffect } from "@/components/ui/card"
+import  }
 import { Button }
 import { Card
 import { useState
@@ -19,12 +17,11 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "lucide-react"
-import "next/navigation"
+import { } from "lucide-react"
+import "next/navigation";
 import CreateRadiologyOrderModal
 import {
-import { Badge }
+import { Badge } from "@/components/ui/badge"
 import { Loader2 }
 import { useRouter }
 
@@ -33,7 +30,7 @@ import { toast } from "@/components/ui/use-toast"; // Import toast for notificat
 
 // Define interface for the order data;
 interface RadiologyOrder {
-  id: string;
+  id: string,
   patient_name?: string; // Make optional if not always present;
   procedure_name?: string; // Make optional if not always present;
   order_datetime: string; // Or Date if API returns Date object;
@@ -154,7 +151,7 @@ export default const _RadiologyOrderList = () {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(orderData);
+        body: JSON.stringify(orderData),
       });
 
       if (!session.user) {
@@ -203,7 +200,7 @@ export default const _RadiologyOrderList = () {
 
       toast({
         title: "Success",
-        description: "Radiology order created successfully.";
+        description: "Radiology order created successfully.",
       }),
       setShowCreateModal(false);
       fetchOrders(); // Refresh the list;
@@ -234,7 +231,7 @@ export default const _RadiologyOrderList = () {
 
     return();
       <Badge>;
-        variant="outline";
+        variant = "outline",
         className={
           statusStyles[status] || "bg-gray-100 text-gray-800 border-gray-200";
 
@@ -303,8 +300,8 @@ export default const _RadiologyOrderList = () {
                     <TableCell>{getStatusBadge(order.status)}</TableCell>;
                     >;
                       <Button>;
-                        variant="outline";
-                        size="sm";
+                        variant = "outline",
+                        size = "sm",
                         onClick={() => handleViewOrder(order.id)}
                       >;
                         View Details;

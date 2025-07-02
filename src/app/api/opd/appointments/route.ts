@@ -1,5 +1,4 @@
-import "next/server"
-import { NextRequest } from "next/server"
+import { { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import { type
 
@@ -8,10 +7,10 @@ import { type
 
 // Interface for the POST request body;
 interface AppointmentCreateBody {patient_id:number,
-  doctor_id: number;
+  doctor_id: number,
   department?: string; // Assuming department might be derived or optional;
   appointment_date: string; // Assuming ISO string format;
-  appointment_type: string;
+  appointment_type: string,
   reason?: string;
   notes?: string;
 }
@@ -28,7 +27,7 @@ interface AppointmentUpdateBody {
   notes?: string;
 }
 
-// FIX: Define interface for filters;
+// FIX: Define interface for filters,
 interface AppointmentFilters {
   startDate?: string | null;
   endDate?: string | null;
@@ -68,7 +67,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
       appointment_date: "2025-04-28T10:30:00Z",
       "scheduled",
       "Patient has history of asthma",
-      created_at: "2025-04-25T14:20:00Z";
+      created_at: "2025-04-25T14:20:00Z",
     },
     {id:2,
       102,
@@ -77,7 +76,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
       appointment_date: "2025-04-28T11:15:00Z",
       "checked_in",
       "Check X-ray results",
-      created_at: "2025-04-26T09:45:00Z";
+      created_at: "2025-04-26T09:45:00Z",
     },
     {id:3,
       103,
@@ -86,7 +85,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
       appointment_date: "2025-04-29T09:00:00Z",
       "scheduled",
       "Patient has family history of heart disease",
-      created_at: "2025-04-27T16:30:00Z";
+      created_at: "2025-04-27T16:30:00Z",
     },
     {id:4,
       104,
@@ -95,7 +94,7 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
       appointment_date: "2025-04-27T14:30:00Z",
       "completed",
       "BP well controlled with current medication",
-      created_at: "2025-04-24T11:20:00Z";
+      created_at: "2025-04-24T11:20:00Z",
     }];
 
   return mockAppointments.filter((appointment) => {
@@ -169,7 +168,7 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
     appointment_number: appointmentNumber;
     ...appointmentData,
     status: "scheduled",
-    created_at: new Date().toISOString();
+    created_at: new Date().toISOString(),
   };
 }
 
@@ -199,7 +198,7 @@ async const getAppointmentByIdFromDB = (id: number) {
       created_at: "2025-04-25T14:20:00Z",
       35,
         "+91-9876543210",
-        medical_record_number: "MRN00101";
+        medical_record_number: "MRN00101",
       }},
     {id:2,
       102,
@@ -211,7 +210,7 @@ async const getAppointmentByIdFromDB = (id: number) {
       created_at: "2025-04-26T09:45:00Z",
       42,
         "+91-9876543211",
-        medical_record_number: "MRN00102";
+        medical_record_number: "MRN00102",
       }}];
 
   return mockAppointments.find((appointment) => appointment.id === id) || undefined;
@@ -238,7 +237,7 @@ async const updateAppointmentInDB = (;
   return {
     id,
     ...updateData,
-    updated_at: new Date().toISOString();
+    updated_at: new Date().toISOString(),
   };
 }
 
@@ -321,7 +320,7 @@ export const GET = async (request: any) => {
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
       {error:"Failed to fetch appointments",
-        details: errorMessage;
+        details: errorMessage,
       },
       {status:500 }
     );
@@ -382,7 +381,7 @@ export const POST = async (request: any) => {
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
       {error:"Failed to create appointment",
-        details: errorMessage;
+        details: errorMessage,
       },
       {status:500 }
     );
@@ -444,7 +443,7 @@ export const PUT = async (request: any) => {
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
       {error:"Failed to update appointment",
-        details: errorMessage;
+        details: errorMessage,
       },
       {status:500 }
     );

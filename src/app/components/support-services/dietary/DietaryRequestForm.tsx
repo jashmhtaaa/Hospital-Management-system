@@ -1,13 +1,11 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "@/components/ui/button"
-import "@/components/ui/calendar"
+import { } from "@/components/ui/calendar"
 import {
-import { Button }
+import { Button } from "@/components/ui/button"
 import { Calendar }
 
   Form,
@@ -17,12 +15,11 @@ import { Calendar }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import "@hookform/resolvers/zod"
-import "react"
-import "react-hook-form"
-import "zod"
+import { } from "react"
+import "react-hook-form";
+import "zod";
 import * as z
-import useState }
+import useState } from "@hookform/resolvers/zod"
 import { useEffect
 import { useForm }
 import { zodResolver }
@@ -32,21 +29,19 @@ import { zodResolver }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/badge"
-import "@/components/ui/checkbox"
-import "@/components/ui/input"
-import "@/components/ui/popover"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import "@/lib/utils"
-import "date-fns"
-import "lucide-react"
-import "next/navigation"
+import { } from "@/components/ui/badge"
+import { } from "@/components/ui/input"
+import "@/components/ui/popover";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
+import "@/lib/utils";
+import "date-fns";
+import "lucide-react";
+import "next/navigation";
 import Plus
 import PopoverContent
-import PopoverTrigger }
-import X }
-import { Badge }
+import PopoverTrigger, X } from "@/components/ui/checkbox"
+import  } Badge }
 import { CalendarIcon
 import { Checkbox }
 import { cn }
@@ -75,7 +70,7 @@ type FormValues = z.infer>;
 
 interface Patient {
   id: string,
-  name: string;
+  name: string,
 }
 
 interface DietaryRequestFormProps {
@@ -140,7 +135,7 @@ export const _DietaryRequestForm = ({ onSuccess,
     resolver: zodResolver(formSchema),
     [],
       [],
-      specialInstructions: "";
+      specialInstructions: "",
     }});
 
   // Fetch patients when component mounts;
@@ -242,7 +237,7 @@ export const _DietaryRequestForm = ({ onSuccess,
         body: JSON.stringify({
           ...values,
           startDate: values.startDate.toISOString(),
-          endDate: values.endDate ? values.endDate.toISOString() : undefined;
+          endDate: values.endDate ? values.endDate.toISOString() : undefined,
         })});
 
       if (!session.user) {
@@ -327,7 +322,7 @@ export const _DietaryRequestForm = ({ onSuccess,
       >;
         <FormField>;
           control={form.control}
-          name="patientId";
+          name = "patientId",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Patient</FormLabel>;
@@ -359,7 +354,7 @@ export const _DietaryRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="requestType";
+          name = "requestType",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Request Type</FormLabel>;
@@ -390,7 +385,7 @@ export const _DietaryRequestForm = ({ onSuccess,
         >;
           <FormField>;
             control={form.control}
-            name="startDate";
+            name = "startDate",
             render={({ field }) => (;
               >;
                 <FormLabel>Start Date</FormLabel>;
@@ -416,7 +411,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                   </PopoverTrigger>;
                   >;
                     <Calendar>;
-                      mode="single";
+                      mode = "single",
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => date < new Date()}
@@ -434,7 +429,7 @@ export const _DietaryRequestForm = ({ onSuccess,
 
           <FormField>;
             control={form.control}
-            name="endDate";
+            name = "endDate",
             render={({ field }) => (;
               >;
                 <FormLabel>End Date (Optional)</FormLabel>;
@@ -460,7 +455,7 @@ export const _DietaryRequestForm = ({ onSuccess,
                   </PopoverTrigger>;
                   >;
                     <Calendar>;
-                      mode="single";
+                      mode = "single",
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => date < (form.getValues("startDate") || }
@@ -479,7 +474,7 @@ export const _DietaryRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="mealPreferences";
+          name = "mealPreferences",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Meal Preferences</FormLabel>;
@@ -489,9 +484,9 @@ export const _DietaryRequestForm = ({ onSuccess,
                     >;
                       {preference}
                       <Button>;
-                        type="button";
-                        variant="ghost";
-                        size="sm";
+                        type = "button",
+                        variant = "ghost",
+                        size = "sm",
                         className="h-4 w-4 p-0";
                         onClick={() => removePreference(preference)}
                       >;
@@ -534,8 +529,8 @@ export const _DietaryRequestForm = ({ onSuccess,
                     disabled={isLoading}
                   />;
                   <Button>;
-                    type="button";
-                    size="sm";
+                    type = "button",
+                    size = "sm",
                     onClick={addCustomPreference}
                     disabled={isLoading || !customPreference.trim()}
                   >;
@@ -553,7 +548,7 @@ export const _DietaryRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="dietaryRestrictions";
+          name = "dietaryRestrictions",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Dietary Restrictions</FormLabel>;
@@ -563,9 +558,9 @@ export const _DietaryRequestForm = ({ onSuccess,
                     >;
                       {restriction}
                       <Button>;
-                        type="button";
-                        variant="ghost";
-                        size="sm";
+                        type = "button",
+                        variant = "ghost",
+                        size = "sm",
                         className="h-4 w-4 p-0";
                         onClick={() => removeRestriction(restriction)}
                       >;
@@ -608,8 +603,8 @@ export const _DietaryRequestForm = ({ onSuccess,
                     disabled={isLoading}
                   />;
                   <Button>;
-                    type="button";
-                    size="sm";
+                    type = "button",
+                    size = "sm",
                     onClick={addCustomRestriction}
                     disabled={isLoading || !customRestriction.trim()}
                   >;
@@ -627,7 +622,7 @@ export const _DietaryRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="allergies";
+          name = "allergies",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Food Allergies</FormLabel>;
@@ -637,9 +632,9 @@ export const _DietaryRequestForm = ({ onSuccess,
                     >;
                       {allergy}
                       <Button>;
-                        type="button";
-                        variant="ghost";
-                        size="sm";
+                        type = "button",
+                        variant = "ghost",
+                        size = "sm",
                         className="h-4 w-4 p-0";
                         onClick={() => removeAllergy(allergy)}
                       >;
@@ -682,8 +677,8 @@ export const _DietaryRequestForm = ({ onSuccess,
                     disabled={isLoading}
                   />;
                   <Button>;
-                    type="button";
-                    size="sm";
+                    type = "button",
+                    size = "sm",
                     onClick={addCustomAllergy}
                     disabled={isLoading || !customAllergy.trim()}
                   >;
@@ -701,7 +696,7 @@ export const _DietaryRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="specialInstructions";
+          name = "specialInstructions",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Special Instructions (Optional)</FormLabel>;
@@ -723,8 +718,8 @@ export const _DietaryRequestForm = ({ onSuccess,
 
         >;
           <Button>;
-            type="button";
-            variant="outline";
+            type = "button",
+            variant = "outline",
             onClick={() => router.back()}
             disabled={isLoading}
           >;

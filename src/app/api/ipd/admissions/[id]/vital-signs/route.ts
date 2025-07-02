@@ -1,11 +1,10 @@
-import "@/lib/session"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import { NextRequest } from "@/lib/session"
 import { NextResponse } from "next/server" }
 import {  getSession  } from "@/lib/database"
 import {   type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
 
 // Define interface for POST request body;
 interface VitalSignsInput {
@@ -63,7 +62,7 @@ export const _GET = async();
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
     }
 
-    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -96,7 +95,7 @@ export const _GET = async();
     const isAdmin = session.user.roleName === "Admin";
     // Assuming permissions are correctly populated in the mock session;
     const canViewVitals =;
-      session.user.permissions?.includes("vital_signs:view") ?? false;
+      session.user.permissions?.includes("vital_signs:view") ?? false,
 
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
@@ -177,13 +176,13 @@ export const _POST = async();
     const isDoctor = session.user.roleName === "Doctor";
     // Assuming permissions are correctly populated in the mock session;
     const canCreateVitals =;
-      session.user.permissions?.includes("vital_signs:create") ?? false;
+      session.user.permissions?.includes("vital_signs:create") ?? false,
 
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
 
     const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
-    // Fixed: Apply type assertion;
+    // Fixed: Apply type assertion,
     const data = (await request.json()) as VitalSignsInput;
 
     // Basic validation (using typed data);

@@ -1,11 +1,10 @@
-import "./postgresql_adapter.ts"
-import "pg"
+import { "./postgresql_adapter.ts";
+import "pg";
 import IDatabaseAdapter
 import PoolClient
 import PostgresqlAdapter }
-import QueryResult }
-import type
-import { Pool
+import QueryResult, type
+import  } Pool
 import { type
 
 // ARCH-1: Unit Tests for PostgresqlAdapter;

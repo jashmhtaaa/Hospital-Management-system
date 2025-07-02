@@ -1,10 +1,9 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../models/domain-models"
-import "../../../models/fhir-mappers"
-import "next/server"
-import getPrescriptionById }
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../models/domain-models";
+import "../../../models/fhir-mappers";
+import "next/server";
+import getPrescriptionById } from "../../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -29,7 +28,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {findById:getPrescriptionById,
@@ -39,7 +38,7 @@ const prescriptionRepository = {findById:getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const () => Promise.resolve(null),
@@ -50,7 +49,7 @@ const () => Promise.resolve(null),
   findDue: (timeWindow: number) => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 /**;
@@ -188,19 +187,19 @@ export const GET = async (req: any) => {
         locationId,
         patientId,
         unitId,
-        resultCount: paginatedAdministrations.length;
+        resultCount: paginatedAdministrations.length,
     });
 
     // Return response;
     return NextResponse.json({dueAdministrations:paginatedAdministrations,
       startTime,
-        end: endTime;
+        end: endTime,
       },
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
       }
     }, {status:200 });
   } catch (error) {

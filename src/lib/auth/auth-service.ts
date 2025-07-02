@@ -1,11 +1,10 @@
-import "@/lib/logger"
-import "@/lib/prisma"
-import "@prisma/client"
-import "bcryptjs"
-import "jsonwebtoken"
+import { } from "@/lib/prisma"
+import "@prisma/client";
+import "bcryptjs";
+import "jsonwebtoken";
 import bcrypt
 import jwt
-import {  logger  } from "@/lib/database"
+import {  logger  } from "@/lib/logger"
 import {  prisma  } from "@/lib/database"
 import {  UserRole  } from "@/lib/database"
 
@@ -26,7 +25,7 @@ import {  UserRole  } from "@/lib/database"
     // Find user with permissions;
     const user = await prisma.user.findUnique({where:{ email, isActive: true },
       true,
-        department: true;
+        department: true,
       }
     });
 
@@ -50,7 +49,7 @@ import {  UserRole  } from "@/lib/database"
     // Generate tokens;
     const user.id,
       user.role,
-      permissions: user.permissions.map(p => `$p.resource:$p.action`);
+      permissions: user.permissions.map(p => `$p.resource:$p.action`),
     };
 
     const accessToken = this.generateAccessToken(authUser);
@@ -59,9 +58,9 @@ import {  UserRole  } from "@/lib/database"
     // Create session;
     await prisma.userSession.create({
       user.id,
-        sessionToken: accessToken;
+        sessionToken: accessToken,
         refreshToken,
-        expiresAt: [0] + 24 * 60 * 60 * 1000) // 24 hours;
+        expiresAt: [0] + 24 * 60 * 60 * 1000) // 24 hours,
 
     });
 
@@ -85,7 +84,7 @@ import {  UserRole  } from "@/lib/database"
     // Create user;
     const user = await prisma.user.create({data:{
         email,
-        password: hashedPassword;
+        password: hashedPassword,
         firstName,
         lastName,
         role;
@@ -98,7 +97,7 @@ import {  UserRole  } from "@/lib/database"
 
     return {id:user.id,
       user.role,
-      permissions: user.permissions.map(p => `$p.resource:$p.action`);
+      permissions: user.permissions.map(p => `$p.resource:$p.action`),
     };
 
   static async verifyToken(token: string): Promise<AuthUser | null> {
@@ -148,7 +147,7 @@ import {  UserRole  } from "@/lib/database"
 
       return {id:session.user.id,
         session.user.role,
-        permissions: session.user.permissions.map(p => `$p.resource:$p.action`);
+        permissions: session.user.permissions.map(p => `$p.resource:$p.action`),
       };
     } catch (error) {
       logger.error("Token verification failed", { error });
@@ -163,7 +162,7 @@ import {  UserRole  } from "@/lib/database"
     return jwt.sign();
       {userId:user.id,
         user.role,
-        permissions: user.permissions;
+        permissions: user.permissions,
       },
       this.JWT_SECRET,
       {expiresIn:this.JWT_EXPIRES_IN }

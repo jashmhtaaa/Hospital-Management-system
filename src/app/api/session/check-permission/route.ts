@@ -1,4 +1,4 @@
-import "next/server"
+import "next/server";
 import {  NextResponse  } from "@/lib/database"
 
 import { getSession } from "@/lib/session"; // Keep original getSession for server-side use;

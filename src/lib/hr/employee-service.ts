@@ -1,7 +1,6 @@
-import "@/lib/cache"
-import "@/lib/hr/types"
-import "@prisma/client"
-import PractitionerRole }
+import { } from "@/lib/hr/types"
+import "@prisma/client";
+import PractitionerRole } from "@/lib/cache"
 import {  cache  } from "@/lib/database"
 import {   Practitioner
 import {  PrismaClient  } from "@/lib/database"
@@ -35,7 +34,7 @@ const prisma = new PrismaClient();
           departmentId: data.departmentId,
           userId: data.userId,
           photo: data.photo,
-          emergencyContact: data.emergencyContact;
+          emergencyContact: data.emergencyContact,
         }});
 
       // Add qualifications if provided;
@@ -50,7 +49,7 @@ const prisma = new PrismaClient();
                 identifier: qual.identifier,
                 startDate: qual.startDate,
                 endDate: qual.endDate,
-                attachment: qual.attachment;
+                attachment: qual.attachment,
               }});
           );
         );
@@ -64,7 +63,7 @@ const prisma = new PrismaClient();
                 positionId: pos.positionId,
                 isPrimary: pos.isPrimary,
                 startDate: pos.startDate,
-                endDate: pos.endDate;
+                endDate: pos.endDate,
               }});
           );
         );
@@ -92,14 +91,14 @@ const prisma = new PrismaClient();
     // If not in cache, fetch from database;
     const employee = await prisma.employee.findUnique({where:{ id },
       true,
-        {position:true;
+        {position:true,
           }},
         qualifications: true,
         {id:true,
             name: true,
             email: true,
             image: true,
-            role: true;
+            role: true,
           }}}});
 
     // Store in cache if found;
@@ -123,14 +122,14 @@ const prisma = new PrismaClient();
     // If not in cache, fetch from database;
     const employee = await prisma.employee.findUnique({where:{ employeeId },
       true,
-        {position:true;
+        {position:true,
           }},
         qualifications: true,
         {id:true,
             name: true,
             email: true,
             image: true,
-            role: true;
+            role: true,
           }}}});
 
     // Store in cache if found;

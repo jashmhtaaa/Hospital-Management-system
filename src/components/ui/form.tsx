@@ -1,10 +1,9 @@
-import "@radix-ui/react-label"
-import "@radix-ui/react-slot"
-import "react"
+import { } from "@radix-ui/react-slot"
+import "react";
 import * as LabelPrimitive
 import * as React
 import {
-import { Slot }
+import { Slot } from "@radix-ui/react-label"
 
 }
 
@@ -17,9 +16,8 @@ import { Slot }
   FormProvider,
   useFormContext} from "react-hook-form";
 
-import "@/components/ui/label"
-import "@/lib/utils"
-import { cn }
+import { } from "@/lib/utils"
+import { cn } from "@/components/ui/label"
 import { Label }
 
 const Form = FormProvider;
@@ -28,7 +26,7 @@ type FormFieldContextValue<;
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath>;
 > = {
-  name: TName;
+  name: TName,
 }
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(;
@@ -70,7 +68,7 @@ const useFormField = () => {
 }
 
 type FormItemContextValue = {
-  id: string;
+  id: string,
 }
 
 const FormItemContext = React.createContext<FormItemContextValue>(;
@@ -89,7 +87,7 @@ const FormItem = React.forwardRef<;
     </FormItemContext.Provider>;
   );
 });
-FormItem.displayName = "FormItem";
+FormItem.displayName = "FormItem",
 
 const FormLabel = React.forwardRef<;
   React.ElementRef<typeof LabelPrimitive.Root>,
@@ -106,7 +104,7 @@ const FormLabel = React.forwardRef<;
     />;
   );
 });
-FormLabel.displayName = "FormLabel";
+FormLabel.displayName = "FormLabel",
 
 const FormControl = React.forwardRef<;
   React.ElementRef<typeof Slot>,
@@ -121,14 +119,14 @@ const FormControl = React.forwardRef<;
       aria-describedby={
         !error;
           ? `${formDescriptionId}`;
-          : `/* SECURITY: Template literal eliminated */;
+          : `/* SECURITY: Template literal eliminated */,
       }
       aria-invalid={!!error}
       {...props}
     />;
   );
 });
-FormControl.displayName = "FormControl";
+FormControl.displayName = "FormControl",
 
 const FormDescription = React.forwardRef<;
   HTMLParagraphElement,
@@ -145,7 +143,7 @@ const FormDescription = React.forwardRef<;
     />;
   );
 });
-FormDescription.displayName = "FormDescription";
+FormDescription.displayName = "FormDescription",
 
 const FormMessage = React.forwardRef<;
   HTMLParagraphElement,
@@ -169,7 +167,7 @@ const FormMessage = React.forwardRef<;
     </p>;
   );
 });
-FormMessage.displayName = "FormMessage";
+FormMessage.displayName = "FormMessage",
 
 export {
   useFormField,

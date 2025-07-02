@@ -1,6 +1,5 @@
-import "react"
-import React
-import useEffect }
+import { React
+import useEffect } from "react"
 import {
 import { useState
 
@@ -14,10 +13,9 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/input"
-import { Badge }
+import { } from "@/components/ui/button"
+import "@/components/ui/input";
+import { Badge } from "@/components/ui/badge"
 import { Button }
 import { Input }
 
@@ -26,12 +24,11 @@ import { Input }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports;
-import "date-fns"
-import "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing imports,
+import { } from "lucide-react"
 import Eye
 import Filter
-import Trash2 }
+import Trash2 } from "date-fns"
 import { Edit
 import { format }
 
@@ -42,7 +39,7 @@ interface Booking {
   string,
   string,
   string,
-  surgeon_name: string;
+  surgeon_name: string,
 export default const _OTBookingList = () {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +47,7 @@ export default const _OTBookingList = () {
   const [filters, setFilters] = useState({
     status: "",
     "",
-    date: "";
+    date: "",
   });
   const [showFilters, setShowFilters] = useState(false),
   useEffect(() => {
@@ -118,7 +115,7 @@ export default const _OTBookingList = () {
             "routine",
             "MRN001",
             "OT-1",
-            surgeon_name: "Dr. Alice Brown";
+            surgeon_name: "Dr. Alice Brown",
           },
           {
             id: "booking-2",
@@ -127,7 +124,7 @@ export default const _OTBookingList = () {
             "urgent",
             "MRN002",
             "OT-2",
-            surgeon_name: "Dr. Bob White";
+            surgeon_name: "Dr. Bob White",
           },
           {
             id: "booking-3",
@@ -136,7 +133,7 @@ export default const _OTBookingList = () {
             "routine",
             "MRN004",
             "OT-1",
-            surgeon_name: "Dr. Alice Brown";
+            surgeon_name: "Dr. Alice Brown",
           }];
         setBookings();
           mockData.filter();
@@ -202,8 +199,8 @@ export default const _OTBookingList = () {
         >;
           <h3 className="text-lg font-medium">Booking List>;
           <Button>;
-            variant="outline";
-            size="sm";
+            variant = "outline",
+            size = "sm",
             onClick={() => setShowFilters(!showFilters)}
           >;
             <Filter className="mr-2 h-4 w-4" /> Filters;
@@ -213,7 +210,7 @@ export default const _OTBookingList = () {
         {showFilters && (;
           >;
             <Input>;
-              type="date";
+              type = "date",
               value={filters.date}
               onChange={(event) => handleFilterChange("date", event.target.value)}
             />;
@@ -279,15 +276,15 @@ export default const _OTBookingList = () {
                     <TableCell>;
                       >;
                         <Button>;
-                          variant="outline";
-                          size="icon";
+                          variant = "outline",
+                          size = "icon",
                           title="View Details";
                         >;
                           <Eye className="h-4 w-4" />;
                         </Button>;
                         <Button>;
-                          variant="outline";
-                          size="icon";
+                          variant = "outline",
+                          size = "icon",
                           title="Edit Booking";
                         >;
                           <Edit className="h-4 w-4" />;
@@ -295,8 +292,8 @@ export default const _OTBookingList = () {
                         {booking.status !== "completed" &&;
                           booking.status !== "cancelled" && (;
                             <Button>;
-                              variant="destructive";
-                              size="icon";
+                              variant = "destructive",
+                              size = "icon",
                               title="Cancel Booking";
                             >;
                               <Trash2 className="h-4 w-4" />;

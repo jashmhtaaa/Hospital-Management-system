@@ -1,5 +1,5 @@
-import "@/components/radiology/radiology-report-detail"
-import "react"
+import "@/components/radiology/radiology-report-detail";
+import "react";
 import RadiologyReportDetail
 import React
 

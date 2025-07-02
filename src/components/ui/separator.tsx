@@ -1,6 +1,6 @@
-import "@/lib/utils"
-import "@radix-ui/react-separator"
-import "react"
+import "@/lib/utils";
+import "@radix-ui/react-separator";
+import "react";
 import * as SeparatorPrimitive
 import * as React
 import { cn }

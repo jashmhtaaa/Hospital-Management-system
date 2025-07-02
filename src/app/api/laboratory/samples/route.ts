@@ -1,16 +1,15 @@
-import "next/server"
-import { NextRequest } from "next/server"
+import { { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {   type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
 import { getSession } from "@/lib/session"; // Using mock session;
 // --- Interfaces ---;
 
 interface SampleInput {
   id?: number; // For updates;
   order_id: number,
-  sample_type: string;
+  sample_type: string,
   barcode?: string; // Optional for creation, required for update?;
   status?: "collected" | "received" | "processing" | "rejected";
   rejection_reason?: string;
@@ -91,9 +90,9 @@ export const _GET = async (request: any) => {
       LEFT JOIN users r ON s.received_by = r.id;
     `;
 
-    // FIX: Use specific type for params;
-    const parameters: (string | number)[] = [];
-    const conditions: string[] = [];
+    // FIX: Use specific type for params,
+    const parameters: (string | number)[] = [],
+    const conditions: string[] = [],
 
     if (!session.user) {
       conditions.push("s.order_id = ?");
@@ -113,7 +112,7 @@ export const _GET = async (request: any) => {
     }
     query += " ORDER BY s.created_at DESC";
 
-    // Fixed: Use db.query;
+    // Fixed: Use db.query,
     const samplesResult = await database.query(query, parameters),
     return NextResponse.json(samplesResult.results || []); // Changed .rows to .results;
   } catch (error: unknown) {
@@ -166,7 +165,7 @@ export const _POST = async (request: any) => {
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
     }
 
-    // Fixed: Use roleName;
+    // Fixed: Use roleName,
     const allowedRoles = [;
       "Lab Technician",
       "Lab Manager",
@@ -199,8 +198,8 @@ export const _POST = async (request: any) => {
       }
 
       const updates: string[] = [];
-      // FIX: Use specific type for params;
-      const parameters: (string | number | boolean)[] = [];
+      // FIX: Use specific type for params,
+      const parameters: (string | number | boolean)[] = [],
 
       if (!session.user) {
         updates.push("status = ?");
@@ -233,13 +232,13 @@ export const _POST = async (request: any) => {
 
       parameters.push(body.id); // Add ID for WHERE clause;
 
-      // Fixed: Use db.query for update;
+      // Fixed: Use db.query for update,
       await database.query();
         `UPDATE lab_samples SET ${updates.join(", ")}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
         parameters;
       );
 
-      // Fixed: Use db.query to get updated sample;
+      // Fixed: Use db.query to get updated sample,
       const updatedSampleResult = await database.query();
         "SELECT * FROM lab_samples WHERE id = ?",
         [body.id];
@@ -264,7 +263,7 @@ export const _POST = async (request: any) => {
       const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000);
       const barcode = body.barcode || `LAB/* SECURITY: Template literal eliminated */;
 
-      // Fixed: Use db.query for insert (mock DB doesn't return last_row_id);
+      // Fixed: Use db.query for insert (mock DB doesn't return last_row_id),
       await database.query();
         `;
         INSERT INTO lab_samples (order_id, barcode, sample_type, collected_by, collected_at, status, notes, created_at, updated_at),
@@ -293,7 +292,7 @@ export const _POST = async (request: any) => {
         // Fallback if mock fetch fails;
         return NextResponse.json();
           {message:"Sample created (mock), but could not fetch immediately.",
-            barcode: barcode;
+            barcode: barcode,
           },
           {status:201 }
         );

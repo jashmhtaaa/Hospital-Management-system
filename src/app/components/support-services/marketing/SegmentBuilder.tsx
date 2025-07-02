@@ -1,30 +1,27 @@
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/components/ui/switch"
-import "@/components/ui/tabs"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import "next/navigation"
-import "react"
+import { } from "@/components/ui/badge"
+import { } from "@/components/ui/card"
+import { "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/components/ui/switch";
+import "@/components/ui/tabs";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
+import "next/navigation";
+import "react";
 import CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
-import React
+import CardTitle, React
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "@/components/ui/button"
 import TabsContent
 import TabsList
 import TabsTrigger }
-import useEffect }
-import { Badge }
-import { Button }
+import useEffect, } Badge }
+import  } Button }
 import { Card
 import { Input }
 import { Label }
@@ -38,7 +35,7 @@ import { useState
 
 interface SegmentBuilderProps {
   segmentId?: string;
-  onSuccess?: (segment: unknown) => void;
+  onSuccess?: (segment: unknown) => void,
 export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,7 +45,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     name: "",
     true,
     "AND",
-      conditions: [];
+      conditions: [],
   });
   const [members, setMembers] = useState<any[]>([]);
   const [availableContacts, setAvailableContacts] = useState<any[]>([]);
@@ -108,12 +105,12 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
           name: data.name || "",
           data.isActive !== undefined ? data.isActive : true,
           "AND",
-            conditions: [];
+            conditions: [],
         });
 
         // Set members;
         if (!session.user) {
-          setMembers(data.members.map((m: unknown) => m.contact));
+          setMembers(data.members.map((m: unknown) => m.contact)),
         }
 
         // Update criteria preview;
@@ -192,7 +189,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     const conditionStrings = criteria.conditions.map((condition: unknown) => {
       const _fieldLabel = getFieldLabel(condition.field);
       const _operatorLabel = getOperatorLabel(condition.operator);
-      return `/* SECURITY: Template literal eliminated */;
+      return `/* SECURITY: Template literal eliminated */,
     });
 
     const joinWord = criteria.type === "AND" ? "AND" : "OR";
@@ -270,7 +267,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         return "Country";
       case "createdAt": any;
         return "Created Date";
-      default: return field;
+      default: return field,
 
   };
 
@@ -301,7 +298,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         return "is empty";
       case "isNotNull": any;
         return "is not empty";
-      default: return operator;
+      default: return operator,
 
   };
 
@@ -318,7 +315,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const handleSwitchChange = (checked: boolean) => {
     setFormData({
       ...formData,
-      isActive: checked;
+      isActive: checked,
     });
   };
 
@@ -326,12 +323,12 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const handleCriteriaTypeChange = (value: string) => {
     const newCriteria = {
       ...formData.criteria,
-      type: value;
+      type: value,
     };
 
     setFormData({
       ...formData,
-      criteria: newCriteria;
+      criteria: newCriteria,
     }),
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
@@ -341,7 +338,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const handleConditionFieldChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      field: value;
+      field: value,
     });
   };
 
@@ -349,7 +346,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const handleConditionOperatorChange = (value: string) => {
     setNewCondition({
       ...newCondition,
-      operator: value;
+      operator: value,
     });
   };
 
@@ -357,7 +354,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const handleConditionValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewCondition({
       ...newCondition,
-      value: e.target.value;
+      value: e.target.value,
     });
   };
 
@@ -377,7 +374,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     setFormData({
       ...formData,
-      criteria: newCriteria;
+      criteria: newCriteria,
     });
 
     // Reset new condition;
@@ -396,12 +393,12 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     const newCriteria = {
       ...formData.criteria,
-      conditions: newConditions;
+      conditions: newConditions,
     };
 
     setFormData({
       ...formData,
-      criteria: newCriteria;
+      criteria: newCriteria,
     }),
     updateCriteriaPreview(newCriteria);
     fetchEstimatedSize(newCriteria);
@@ -454,7 +451,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         method,
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData),
       });
 
       if (!session.user)hrow new Error("Failed to save segment");
@@ -534,7 +531,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       if (!session.user) {
         const segmentData = await segmentResponse.json();
         if (!session.user) {
-          setMembers(segmentData.members.map((m: unknown) => m.contact));
+          setMembers(segmentData.members.map((m: unknown) => m.contact)),
 
     } catch (error) {
 
@@ -598,7 +595,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
       toast({
         title: "Success",
-        description: "Contact added to segment successfully.";
+        description: "Contact added to segment successfully.",
       });
     } catch (error) {
 
@@ -646,7 +643,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 } catch (error) {
 
       const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members/${contactId}`, {
-        method: "DELETE";
+        method: "DELETE",
       });
 
       if (!session.user)hrow new Error("Failed to remove contact");
@@ -656,7 +653,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
       toast({
         title: "Success",
-        description: "Contact removed from segment successfully.";
+        description: "Contact removed from segment successfully.",
       });
     } catch (error) {
 
@@ -691,8 +688,8 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
                 >;
                   <Label htmlFor="name">Segment Name>;
                   <Input>;
-                    id="name";
-                    name="name";
+                    id = "name",
+                    name = "name",
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter segment name";
@@ -703,8 +700,8 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
                 >;
                   <Label htmlFor="description">Description>;
                   <Textarea>;
-                    id="description";
-                    name="description";
+                    id = "description",
+                    name = "description",
                     value={formData.description}
                     onChange={handleInputChange}
                     placeholder="Enter segment description";
@@ -714,7 +711,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
                 >;
                   <Switch>;
-                    id="isActive";
+                    id = "isActive",
                     checked={formData.isActive}
                     onCheckedChange={handleSwitchChange}
                   />;
@@ -724,8 +721,8 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => router.back()}
                 >;
                   Cancel;
@@ -771,8 +768,8 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
                             {getFieldLabel(condition.field)} {getOperatorLabel(condition.operator)} {condition.value}
                           </span>;
                           <Button>;
-                            variant="ghost";
-                            size="sm";
+                            variant = "ghost",
+                            size = "sm",
                             onClick={() => handleRemoveCondition(index)}
                           >;
                             Remove;
@@ -860,7 +857,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
                     <p className="text-sm">Estimated size: <Badge>{estimatedSize} contacts</Badge>>;
                     {segmentId && (;
                       <Button>;
-                        type="button";
+                        type = "button",
                         onClick={handleApplyCriteria}
                         disabled={isLoading || formData.criteria.conditions.length === 0}
                       >;
@@ -873,14 +870,14 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => setActiveTab("details")}
                 >;
                   Back;
                 </Button>;
                 <Button>;
-                  type="button";
+                  type = "button",
                   onClick={handleSubmit}
                   disabled={isLoading}
                 >;
@@ -924,15 +921,15 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
                       </div>;
                       >;
                         <Button>;
-                          variant="outline";
-                          size="sm";
+                          variant = "outline",
+                          size = "sm",
                           onClick={() => router.push(`/marketing/contacts/${}`}
                         >;
                           View;
                         </Button>;
                         <Button>;
-                          variant="outline";
-                          size="sm";
+                          variant = "outline",
+                          size = "sm",
                           onClick={() => handleRemoveContact(member.id)}
                         >;
                           Remove;

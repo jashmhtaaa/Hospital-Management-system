@@ -1,5 +1,5 @@
-import "./encryption_service_secure"
-import "crypto"
+import "./encryption_service_secure";
+import "crypto";
 import * as crypto
 import getEncryptionService }
 import { SecureEncryptionService

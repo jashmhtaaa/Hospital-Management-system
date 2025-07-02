@@ -1,7 +1,5 @@
-import "crypto"
-import * as crypto
-
-}
+import { * as crypto
+ } from "crypto"
 
 /**;
  * Security Service for HMS Support Services;
@@ -283,7 +281,7 @@ import * as crypto
    * @param password The password to validate;
    * @returns Validation result with success flag and message;
    */;
-  public static validatePassword(password: string): {valid:boolean; message?: string } {
+  public static validatePassword(password: string): {valid:boolean, message?: string } {
     if (!session.user) {
       return {valid:false, message: "Password is required" };
 
@@ -316,7 +314,7 @@ import * as crypto
     switch (type) {
       case "email": any;
         const [username, domain] = data.split("@"),
-        return `/* SECURITY: Template literal eliminated */;
+        return `/* SECURITY: Template literal eliminated */,
 
       case "phone": any;
         return data.replace(/^(\d{3})\d{3}(\d{4})$/, "$1-***-$2");

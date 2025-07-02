@@ -1,8 +1,7 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/validation/pharmacy-validation"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/validation/pharmacy-validation";
+import "next/server";
+import { NextRequest } from "../../../../../lib/audit"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
 import {  errorHandler  } from "@/lib/database"
@@ -23,7 +22,7 @@ const interactionOverrideRepository = {findById:(id: string) => Promise.resolve(
   findByInteractionId: (interactionId: string) => Promise.resolve([]),
   save: (override: unknown) => Promise.resolve(override.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 /**;
@@ -97,7 +96,7 @@ export const POST = async();
       userId,
       overriddenAt: new Date(),
       patientId: data.patientId,
-      prescriptionId: data.prescriptionId;
+      prescriptionId: data.prescriptionId,
     };
 
     // Save override record;
@@ -110,13 +109,13 @@ export const POST = async();
       details: null,
         overrideId,
         reason: data.reason,
-        prescriptionId: data.prescriptionId;
+        prescriptionId: data.prescriptionId,
     });
 
     // Return response;
     return NextResponse.json();
       {id:overrideId,
-        message: "Interaction override recorded successfully";
+        message: "Interaction override recorded successfully",
       },
       {status:201 }
     );
@@ -202,7 +201,7 @@ export const GET = async (req: any) => {
         filter,
         page,
         limit,
-        resultCount: overrides.length;
+        resultCount: overrides.length,
     });
 
     // Return response;
@@ -212,7 +211,7 @@ export const GET = async (req: any) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
 
     }, {status:200 });
   } catch (error) {

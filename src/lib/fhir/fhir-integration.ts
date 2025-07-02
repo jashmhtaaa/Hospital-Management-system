@@ -1,18 +1,15 @@
-import "./appointment.ts"
-import "./encounter.ts"
-import "./fhir.service.ts"
-import "./medication.ts"
-import "./patient.ts"
+import { } from "./appointment.ts"
+import { } from "./fhir.service.ts"
+import { "./medication.ts";
+import "./patient.ts";
 import FHIRAppointment
-import FHIRAppointmentUtils }
-import FHIREncounter
-import FHIREncounterUtils }
+import FHIRAppointmentUtils, FHIREncounter
+import FHIREncounterUtils } from "./encounter.ts"
 import FHIRMedicationRequest
 import FHIRMedicationUtils }
 import FHIRPatient
-import FHIRPatientUtils }
-import {  fhirService  } from "@/lib/database"
-import {  type
+import FHIRPatientUtils, }  fhirService  } from "@/lib/database"
+import  }  type
 
  } from "@/lib/database"
 
@@ -42,7 +39,7 @@ import {  type
     const updatedHMSPatient = this.convertFHIRToHMS(result.data!);
 
     return {hmsPatient:updatedHMSPatient,
-      fhirPatient: result.data!;
+      fhirPatient: result.data!,
     };
   }
 
@@ -57,7 +54,7 @@ import {  type
     }
 
     return {hmsPatient:this.convertFHIRToHMS(result.data),
-      fhirPatient: result.data;
+      fhirPatient: result.data,
     };
   }
 
@@ -80,7 +77,7 @@ import {  type
     return {
       hmsPatients,
       fhirBundle: result.data,
-      total: result.data.total || 0;
+      total: result.data.total || 0,
     };
 
   private static convertFHIRToHMS(fhirPatient: FHIRPatient): unknown {
@@ -93,7 +90,7 @@ import {  type
       FHIRPatientUtils.getPrimaryPhone(fhirPatient) || "",
       fhirPatient.active !== false,
       createdAt: fhirPatient.meta?.lastUpdated ? new Date(fhirPatient.meta.lastUpdated) : new Date(),
-      updatedAt: fhirPatient.meta?.lastUpdated ? new Date(fhirPatient.meta.lastUpdated) : new Date();
+      updatedAt: fhirPatient.meta?.lastUpdated ? new Date(fhirPatient.meta.lastUpdated) : new Date(),
     };
 
 /**;
@@ -111,7 +108,7 @@ import {  type
       throw new Error(`FHIR Appointment creation failed: ${}`;
 
     return {hmsAppointment:this.convertFHIRToHMS(result.data!),
-      fhirAppointment: result.data!;
+      fhirAppointment: result.data!,
     };
 
   /**;
@@ -119,7 +116,7 @@ import {  type
    */;
   static async updateAppointmentStatus();
     appointmentId: string,
-    newStatus: string;
+    newStatus: string,
     notes?: string;
   ): Promise<{hmsAppointment:unknown, fhirAppointment: FHIRAppointment }> {
     const result = await fhirService.getAppointment(appointmentId);

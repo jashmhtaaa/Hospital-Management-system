@@ -1,9 +1,8 @@
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/security.service"
-import "@/lib/services/support-services/maintenance/maintenance.service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "@/lib/security.service"
+import "@/lib/services/support-services/maintenance/maintenance.service";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/middleware/error-handling.middleware"
 import { NextResponse } from "next/server" }
 import {  MaintenanceService  } from "@/lib/database"
 import {  SecurityService  } from "@/lib/database"
@@ -34,7 +33,7 @@ const updateRequestSchema = z.object({requestType:z.enum(["PREVENTIVE", "CORRECT
   assignedToId: z.string().uuid().optional(),
   estimatedDuration: z.number().min(1).optional(),
   z.string().uuid(),
-    quantity: z.number().min(1);
+    quantity: z.number().min(1),
   })).optional()});
 
 // GET /api/support-services/maintenance/requests;
@@ -49,7 +48,7 @@ export const _GET = async (request: any) => {
         searchParams.get("departmentId") || undefined,
         searchParams.get("toDate") ? new Date(searchParams.get("toDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10");
+        limit: parseInt(searchParams.get("limit") || "10"),
       };
 
       // Get maintenance requests with filters;
@@ -58,7 +57,7 @@ export const _GET = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"maintenance:read",
-      auditAction: "MAINTENANCE_REQUESTS_VIEW";
+      auditAction: "MAINTENANCE_REQUESTS_VIEW",
     }
   );
 }
@@ -81,7 +80,7 @@ export const _POST = async (request: any) => {
       return NextResponse.json(result, {status:201 });
     },
     {requiredPermission:"maintenance:create",
-      auditAction: "MAINTENANCE_REQUEST_CREATE";
+      auditAction: "MAINTENANCE_REQUEST_CREATE",
     }
   );
 }
@@ -98,7 +97,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
       return NextResponse.json(result);
     },
     {requiredPermission:"maintenance:read",
-      auditAction: "MAINTENANCE_REQUEST_VIEW";
+      auditAction: "MAINTENANCE_REQUEST_VIEW",
     }
   );
 }
@@ -121,7 +120,7 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
       return NextResponse.json(result);
     },
     {requiredPermission:"maintenance:update",
-      auditAction: "MAINTENANCE_REQUEST_UPDATE";
+      auditAction: "MAINTENANCE_REQUEST_UPDATE",
     }
   );
 }
@@ -137,7 +136,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
       return NextResponse.json({success:true });
     },
     {requiredPermission:"maintenance:delete",
-      auditAction: "MAINTENANCE_REQUEST_DELETE";
+      auditAction: "MAINTENANCE_REQUEST_DELETE",
     }
   );
 }
@@ -161,7 +160,7 @@ export const _ASSIGN = async (request: any, { params }: {params:{ id: string } }
       return NextResponse.json(result);
     },
     {requiredPermission:"maintenance:assign",
-      auditAction: "MAINTENANCE_REQUEST_ASSIGN";
+      auditAction: "MAINTENANCE_REQUEST_ASSIGN",
     }
   );
 }
@@ -189,7 +188,7 @@ export const _START = async (request: any, { params }: {params:{ id: string } })
       return NextResponse.json(result);
     },
     {requiredPermission:"maintenance:update",
-      auditAction: "MAINTENANCE_WORK_START";
+      auditAction: "MAINTENANCE_WORK_START",
     }
   );
 }
@@ -219,7 +218,7 @@ export const _COMPLETE = async (request: any, { params }: {params:{ id: string }
       return NextResponse.json(result);
     },
     {requiredPermission:"maintenance:update",
-      auditAction: "MAINTENANCE_REQUEST_COMPLETE";
+      auditAction: "MAINTENANCE_REQUEST_COMPLETE",
     }
   );
 }
@@ -234,7 +233,7 @@ export const _GET_ASSETS = async (request: any) => {
       const filters = {type:searchParams.get("type") || undefined,
         searchParams.get("locationId") || undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10");
+        limit: parseInt(searchParams.get("limit") || "10"),
       };
 
       // Get maintenance assets with filters;
@@ -243,7 +242,7 @@ export const _GET_ASSETS = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"maintenance:read",
-      auditAction: "MAINTENANCE_ASSETS_VIEW";
+      auditAction: "MAINTENANCE_ASSETS_VIEW",
     }
   );
 }
@@ -264,6 +263,6 @@ export const _GET_ANALYTICS = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"maintenance:analytics",
-      auditAction: "MAINTENANCE_ANALYTICS_VIEW";
+      auditAction: "MAINTENANCE_ANALYTICS_VIEW",
     }
   );

@@ -1,5 +1,4 @@
-import "next/image"
-import "react"
+import { } from "react"
 import Image
 import React
 import type
@@ -8,8 +7,7 @@ interface LogoProperties {
   variant?: "default" | "light" | "dark";
   showText?: boolean;
   size?: "sm" | "md" | "lg";
-  className?: string;
-}
+  className?: string; } from "next/image"
 
 const Logo: React.FC<LogoProperties> = ({
   variant = "default",
@@ -41,7 +39,7 @@ const Logo: React.FC<LogoProperties> = ({
       {showText && (;
         >;
 <span;
-            className={`font-bold /* SECURITY: Template literal eliminated */;
+            className={`font-bold /* SECURITY: Template literal eliminated */,
 };
 
 export default Logo;

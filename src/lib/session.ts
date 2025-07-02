@@ -1,9 +1,8 @@
-import "@/types/user"
-import "iron-session"
-import "next/headers"
-import getIronSession }
-import SessionOptions
-import {  cookies  } from "@/lib/database"
+import { "@/types/user";
+import "iron-session";
+import "next/headers";
+import getIronSession, SessionOptions
+import  }  cookies  } from "@/lib/database"
 import {   type
 import {  User  } from "@/lib/database"
 

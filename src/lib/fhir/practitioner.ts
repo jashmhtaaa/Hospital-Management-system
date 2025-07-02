@@ -43,7 +43,7 @@ import {
     };
 
     // Add identifiers;
-    const identifiers: FHIRIdentifier[] = [];
+    const identifiers: FHIRIdentifier[] = [],
 
     if (!session.user) {
       identifiers.push({use:"official",
@@ -52,7 +52,7 @@ import {
           }];
         },
         system: "https://hl7.org/fhir/sid/us-npi",
-        value: data.npiNumber;
+        value: data.npiNumber,
       });
     }
 
@@ -62,7 +62,7 @@ import {
             "Medical License number";
           }];
         },
-        value: data.licenseNumber;
+        value: data.licenseNumber,
       });
     }
 
@@ -71,7 +71,7 @@ import {
     }
 
     // Add contact information;
-    const telecom: FHIRContactPoint[] = [];
+    const telecom: FHIRContactPoint[] = [],
 
     if (!session.user) {
       telecom.push({system:"phone",
@@ -94,7 +94,7 @@ import {
       practitioner.address = [{use:"work",
         data.address.city,
         data.address.zipCode,
-        country: data.address.country || "US";
+        country: data.address.country || "US",
       }];
     }
 
@@ -112,7 +112,7 @@ import {
       practitioner.qualification = data.specialties.map(specialty => ({
         [{system:"https://nucc.org/provider-taxonomy",
             code: this.getSpecialtyCode(specialty),
-            display: specialty;
+            display: specialty,
           }];
         }
       }));
@@ -125,14 +125,14 @@ import {
    * Create a doctor practitioner;
    */;
   static createDoctor(string,
-    lastName: string;
+    lastName: string,
     middleName?: string;
     title?: string;
     specialty: string,
-    licenseNumber: string;
+    licenseNumber: string,
     npiNumber?: string;
     phone: string,
-    email: string;
+    email: string,
     hospitalAffiliation?: string;
     yearsExperience?: number;
     boardCertifications?: string[];
@@ -142,7 +142,7 @@ import {
       data.phone,
       data.licenseNumber,
       [data.specialty, ...(data.boardCertifications || [])],
-      active: true;
+      active: true,
     });
 
     // Add medical degree qualification;
@@ -167,7 +167,7 @@ import {
     string;
     specialty?: string;
     phone: string,
-    email: string;
+    email: string,
     department?: string;
     yearsExperience?: number;
   }): FHIRPractitioner {
@@ -336,7 +336,7 @@ import {
     licenseNumber?: string;
     npiNumber?: string;
     isActive: boolean,
-    type: "Doctor" | "Nurse" | "Other";
+    type: "Doctor" | "Nurse" | "Other",
   } {
     return {name:this.getDisplayName(practitioner),
       this.getPrimarySpecialty(practitioner),
@@ -345,7 +345,7 @@ import {
       licenseNumber: this.getLicenseNumber(practitioner),
       npiNumber: this.getNPINumber(practitioner),
       isActive: this.isActive(practitioner),
-      type: this.isDoctor(practitioner) ? "Doctor" : this.isNurse(practitioner) ? "Nurse" : "Other";
+      type: this.isDoctor(practitioner) ? "Doctor" : this.isNurse(practitioner) ? "Nurse" : "Other",
     };
   }
 
@@ -353,7 +353,7 @@ import {
    * Validate FHIR Practitioner resource;
    */;
   static validatePractitioner(practitioner: FHIRPractitioner): {valid:boolean, errors: string[] } {
-    const errors: string[] = [];
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Practitioner"");
@@ -391,7 +391,7 @@ import {
 
       });
 
-    return {valid:errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -409,7 +409,7 @@ import {
       } : undefined,
       licenseNumber: hmsPractitioner.licenseNumber,
       hmsPractitioner.specialties || (hmsPractitioner.specialty ? [hmsPractitioner.specialty] : []),
-      active: hmsPractitioner.isActive !== false;
+      active: hmsPractitioner.isActive !== false,
     });
 
   /**;
@@ -450,7 +450,7 @@ import {
           return this.isNurse(practitioner),
         case "Other": any;
           return !this.isDoctor(practitioner) && !this.isNurse(practitioner),
-        default: return false;
+        default: return false,
 
     });
 

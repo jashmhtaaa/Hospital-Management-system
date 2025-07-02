@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  getServerSession  } from "@/lib/database"
@@ -42,7 +41,7 @@ export const GET = async (request: any) => {
       return NextResponse.json(result);
     },
     {requiredPermission:"marketing.templates.read",
-      auditAction: "TEMPLATES_LIST";
+      auditAction: "TEMPLATES_LIST",
     }
   );
 }
@@ -66,7 +65,7 @@ export const POST = async (request: any) => {
       return NextResponse.json(template, {status:201 });
     },
     {requiredPermission:"marketing.templates.create",
-      auditAction: "TEMPLATE_CREATE";
+      auditAction: "TEMPLATE_CREATE",
     }
   );
 

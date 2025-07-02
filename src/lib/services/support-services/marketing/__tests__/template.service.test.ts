@@ -1,7 +1,7 @@
-import "../template.service"
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/prisma"
+import "../template.service";
+import "@/lib/audit";
+import "@/lib/errors";
+import "@/lib/prisma";
 import NotFoundError
 import ValidationError }
 import { AuditLogger }

@@ -1,5 +1,4 @@
-import "./redis.ts"
-import {  RedisCache  } from "@/lib/database"
+import { {  RedisCache  } from "./redis.ts"
 
 }
   }
@@ -27,11 +26,11 @@ import {  RedisCache  } from "@/lib/database"
    */;
   static getMetrics(): {hits:number,
     number,
-    hitRate: number;
+    hitRate: number,
   } {
     return {hits:this.hits,
       this.totalRequests,
-      hitRate: this.getHitRate();
+      hitRate: this.getHitRate(),
     };
   }
 

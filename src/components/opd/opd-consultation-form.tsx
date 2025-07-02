@@ -17,16 +17,14 @@ import { useRouter } from "next/navigation"; // Added useRouter;
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/input"
-import "@/components/ui/tabs"
-import "@/components/ui/textarea"
-import CardContent }
-import TabsContent
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/input"
+import "@/components/ui/tabs";
+import "@/components/ui/textarea";
+import CardContent, TabsContent
 import TabsList
-import TabsTrigger }
-import { Button }
+import TabsTrigger } from "@/components/ui/card"
+import  } Button }
 import { Card
 import { Input }
 import { Tabs
@@ -48,7 +46,7 @@ const consultationFormSchema = z.object({ // Uncommented;
     bloodPressure: z.string().optional(),
     oxygenSaturation: z.string().optional(),
     weight: z.string().optional(),
-    height: z.string().optional();
+    height: z.string().optional(),
   }).optional(), // Made optional to avoid issues if not filled initially;
   diagnosis: z.string().min(3, { message: "Diagnosis is required" }),
   treatmentPlan: z.string().min(3, { message: "Treatment plan is required" }),
@@ -59,13 +57,13 @@ const consultationFormSchema = z.object({ // Uncommented;
         dosage: z.string().min(1, message: "Dosage is required" ),
         frequency: z.string().min(1, message: "Frequency is required" ),
         duration: z.string().min(1, message: "Duration is required" ),
-        instructions: z.string().optional();
+        instructions: z.string().optional(),
       });
     );
     .optional(),
   labTests: z.array(z.string()).optional(), // Assuming lab tests are selected by ID;
   followUpDate: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 type ConsultationFormValues = z.infer> // Uncommented;
@@ -86,10 +84,8 @@ interface Patient {
 // Assuming the API returns an array directly, adjust if it returns { results: Patient[] }
 // type PatientsQueueApiResponse = Patient[];
 
-interface ConsultationApiResponse {
-  consultationId: string; // Assuming the API returns the ID of the created consultation;
-  error?: string;
-}
+interface ConsultationApiResponse { consultationId: string; // Assuming the API returns the ID of the created consultation;
+  error?: string,  }
 
 interface ApiErrorResponse {
   error?: string;
@@ -97,7 +93,7 @@ interface ApiErrorResponse {
 
 // Mock permission check function (replace with actual API call);
 const checkPermission = async (permission: string): Promise<boolean> => {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
   // Replace with actual API call to /api/session/check-permission;
   // Example: const response = await fetch(`/api/session/check-permission?permission=${}`;
   // const data: PermissionApiResponse = await response.json();
@@ -142,7 +138,7 @@ export default const _OPDConsultationForm = () {
       diagnosis: "",
       [],
       "",
-      notes: "";
+      notes: "",
     }});
 
   // Fetch permissions and patient queue on component mount;
@@ -273,7 +269,7 @@ export default const _OPDConsultationForm = () {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(data);
+        body: JSON.stringify(data),
       });
 
       if (!session.user) {
@@ -393,7 +389,7 @@ export default const _OPDConsultationForm = () {
                     >;
                       <FormField>;
                         control={form.control}
-                        name="chiefComplaint";
+                        name = "chiefComplaint",
                         render={({ field }) => (;
                           <FormItem>;
                             <FormLabel>Chief Complaint</FormLabel>;
@@ -407,7 +403,7 @@ export default const _OPDConsultationForm = () {
 
                       <FormField>;
                         control={form.control}
-                        name="presentIllness";
+                        name = "presentIllness",
                         render={({ field }) => (;
                           <FormItem>;
                             <FormLabel>History of Present Illness</FormLabel>;
@@ -453,7 +449,7 @@ export default const _OPDConsultationForm = () {
 
                       <FormField>;
                         control={form.control}
-                        name="diagnosis";
+                        name = "diagnosis",
                         render={({ field }) => (;
                           <FormItem>;
                             <FormLabel>Diagnosis</FormLabel>;
@@ -467,7 +463,7 @@ export default const _OPDConsultationForm = () {
 
                       <FormField>;
                         control={form.control}
-                        name="treatmentPlan";
+                        name = "treatmentPlan",
                         render={({ field }) => (;
                           <FormItem>;
                             <FormLabel>Treatment Plan</FormLabel>;
@@ -493,10 +489,10 @@ export default const _OPDConsultationForm = () {
                         className="grid gap-4 p-4 border rounded-md relative";
                       >;
                         <Button>;
-                          type="button";
-                          variant="ghost";
-                          size="sm";
-                          className="absolute top-2 right-2 text-destructive hover:bg-destructive/10";
+                          type = "button",
+                          variant = "ghost",
+                          size = "sm",
+                          className="absolute top-2 right-2 text-destructive hover:bg-destructive/10",
                           onClick={() => removeMedication(index)}
                         >;
                           Remove;
@@ -579,8 +575,8 @@ export default const _OPDConsultationForm = () {
                       </div>;
                     ))}
                     <Button>;
-                      type="button";
-                      variant="outline";
+                      type = "button",
+                      variant = "outline",
                       onClick={addMedication}
                     >;
                       Add Medication;
@@ -607,7 +603,7 @@ export default const _OPDConsultationForm = () {
                   >;
                     <FormField>;
                       control={form.control}
-                      name="followUpDate";
+                      name = "followUpDate",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Follow Up Date</FormLabel>;
@@ -621,7 +617,7 @@ export default const _OPDConsultationForm = () {
                     />;
                     <FormField>;
                       control={form.control}
-                      name="notes";
+                      name = "notes",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Additional Notes</FormLabel>;

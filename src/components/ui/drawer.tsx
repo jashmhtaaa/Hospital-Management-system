@@ -1,5 +1,5 @@
-import "@/lib/utils"
-import "react"
+import "@/lib/utils";
+import "react";
 import * as React
 import { cn }
 

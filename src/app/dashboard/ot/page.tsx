@@ -1,14 +1,12 @@
-import "@/components/ui/tabs"
-import "react"
-import */
+import { } from "@/components/ui/tabs"
+import { */
 import /*
 import React
 import TabsContent
 import TabsList
-import TabsTrigger }
-import useCallback }
+import TabsTrigger, useCallback } from "react"
 import useEffect
-import { Tabs
+import  } Tabs
 import { useState
 
 }
@@ -16,15 +14,14 @@ import { useState
 "use client";
 export const dynamic = "force-dynamic";
 
-import "@/components/ot/ot-booking-list"
-import "@/components/ot/ot-booking-modal"
-import "@/components/ot/ot-checklist-template-list"
-import "@/components/ot/ot-checklist-template-modal"
-import "@/components/ot/ot-dashboard-stats"
-import "@/components/ot/ot-surgery-type-list"
-import "@/components/ot/ot-surgery-type-modal"
-import "@/components/ot/ot-theatre-list"
-import "@/components/ot/ot-theatre-modal"
+import { } from "@/components/ot/ot-booking-modal"
+import "@/components/ot/ot-checklist-template-list";
+import "@/components/ot/ot-checklist-template-modal";
+import "@/components/ot/ot-dashboard-stats";
+import "@/components/ot/ot-surgery-type-list";
+import "@/components/ot/ot-surgery-type-modal";
+import "@/components/ot/ot-theatre-list";
+import "@/components/ot/ot-theatre-modal";
 import OTBookingList
 import OTBookingModal
 import OTChecklistTemplateList
@@ -35,10 +32,9 @@ import OTSurgeryTypeModal
 import OTTheatreList
 import OTTheatreModal
 
-// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import "@/components/ui/button"
-import "lucide-react"
-import { Button }
+// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ot/ot-booking-list";
+import { } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { PlusCircle }
 
 export default const _OTDashboardPage = () {
@@ -48,7 +44,7 @@ export default const _OTDashboardPage = () {
 
   const handleSave = useCallback(async (data: unknown) => {
     // In a real app, this might involve re-fetching data or updating state;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     setRefreshKey((previous) => previous + 1); // Increment key to trigger re-render/re-fetch in lists;
   }, []);
 
@@ -59,7 +55,7 @@ export default const _OTDashboardPage = () {
       </div>;
 
       <Tabs>;
-        defaultValue="dashboard";
+        defaultValue = "dashboard",
         value={activeTab}
         onValueChange={setActiveTab}
         className="w-full";

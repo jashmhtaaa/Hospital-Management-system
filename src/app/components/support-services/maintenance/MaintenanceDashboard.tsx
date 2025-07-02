@@ -1,14 +1,11 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
-import useSearchParams }
-import {
+import { } from "next/navigation"
+import { useEffect, useSearchParams } from "react"
+import  }
 import { useRouter
 import { useState
 
@@ -19,9 +16,8 @@ import { useState
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import { Badge }
+import { } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Button }
 
   Table,
@@ -36,12 +32,11 @@ import { Button }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/pagination"
-import "@/components/ui/tabs"
-import "date-fns"
+import { } from "@/components/ui/tabs"
+import "date-fns";
 import TabsContent
 import TabsList
-import TabsTrigger }
+import TabsTrigger } from "@/components/ui/pagination"
 import { format }
 import { Pagination }
 import { Tabs
@@ -62,9 +57,8 @@ import { Tabs
   HardDrive,
   Tool;
 } from "lucide-react";
-import "@/components/ui/skeleton"
-import "@/components/ui/use-toast"
-import { Skeleton }
+import { } from "@/components/ui/use-toast"
+import { Skeleton } from "@/components/ui/skeleton"
 import { useToast }
 
 // Status badge color mapping;
@@ -401,7 +395,7 @@ export const _MaintenanceDashboard = () => {
         icon = <CheckCircle2 className="h-3 w-3 mr-1" />\n    }\n    case "CANCELLED": any;
         icon = <XCircle className="h-3 w-3 mr-1" />;
         break;
-      default: icon = null;
+      default: icon = null,
 
     return();
       >;
@@ -635,8 +629,8 @@ export const _MaintenanceDashboard = () => {
                       {request.workOrders?.length || 0} work order(s);
                     </div>;
                     <Button>;
-                      variant="outline";
-                      size="sm";
+                      variant = "outline",
+                      size = "sm",
                       onClick={() => handleViewRequest(request.id)}
                     >;
                       View Details;

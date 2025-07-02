@@ -1,22 +1,21 @@
 import { IronSession  } from "iron-session"; // Import IronSession;
-import "next/server"
-import { NextRequest } from "next/server"
+import { { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {   type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Assuming db returns a promise;
+import {  getDB  } from "@/lib/database"; // Assuming db returns a promise;
 import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
 // Define interfaces for data structures;
 // interface _Medication {
  // FIX: Prefixed unused  - Removed as it"s unused;
 //   id: string;
 //   item_code: string;
-//   generic_name: string;
+//   generic_name: string,
 //   brand_name?: string | null;
 //   dosage_form: string;
-//   strength: string;
+//   strength: string,
 //   route?: string | null;
-//   unit_of_measure: string;
+//   unit_of_measure: string,
 //   prescription_required: boolean;
 //   narcotic: boolean;
 //   description?: string | null;
@@ -26,7 +25,7 @@ import { type IronSessionData, getSession } from "@/lib/session"; // Import Iron
 //   manufacturer_name?: string | null;
 //   created_at: string;
 //   updated_at: string;
-// } // FIX: Commented out body to fix parsing error;
+// } // FIX: Commented out body to fix parsing error,
 
 interface MedicationInput {item_code:string,
   generic_name: string;
@@ -87,7 +86,7 @@ export const GET = async (request: any) => {
 }
 } catch (error) {
 }
-    // FIX: Use IronSession<IronSessionData> type;
+    // FIX: Use IronSession<IronSessionData> type,
     const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user) {
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
@@ -119,7 +118,7 @@ export const GET = async (request: any) => {
       LEFT JOIN Manufacturers mf ON m.manufacturer_id = mf.id;
       WHERE 1=1;
     `;
-    const queryParameters: (string | number)[] = [];
+    const queryParameters: (string | number)[] = [],
 
     if (!session.user) {
       query += ` AND();
@@ -203,7 +202,7 @@ export const POST = async (request: any) => {
 
 } catch (error) {
 
-    // FIX: Use IronSession<IronSessionData> type;
+    // FIX: Use IronSession<IronSessionData> type,
     const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user);
     ) ;
@@ -261,7 +260,7 @@ export const POST = async (request: any) => {
       );
       .all(); // Use .all() for RETURNING clause;
 
-    // FIX: Cast results to expected type to access "id';
+    // FIX: Cast results to expected type to access "id',
     const newId = (results as Array<{id:number | string }>)?.[0]?.id;
 
     if (!session.user) {

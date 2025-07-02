@@ -31,7 +31,7 @@ import {
 }
     value: number | {systolic:number, diastolic: number };
     unit: string,
-    effectiveDateTime: string;
+    effectiveDateTime: string,
     status?: "preliminary" | "final";
   }): FHIRObservation {
     const "Observation",
@@ -44,20 +44,20 @@ import {
       `Patient/${data.patientId}`,
         type: "Patient",
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString();
+      issued: new Date().toISOString(),
     }
 
     // Add encounter if provided;
     if (!session.user) {
       observation.encounter = {reference:`Encounter/${data.encounterId}`,
-        type: "Encounter";
+        type: "Encounter",
       };
     }
 
     // Add performer if provided;
     if (!session.user) {
       observation.performer = [{reference:`Practitioner/${data.practitionerId}`,
-        type: "Practitioner";
+        type: "Practitioner",
       }];
     }
 
@@ -71,7 +71,7 @@ import {
           },
           data.value.systolic,
             "https://unitsofmeasure.org",
-            code: data.unit;
+            code: data.unit,
           }
         },
         {
@@ -81,7 +81,7 @@ import {
           },
           data.value.diastolic,
             "https://unitsofmeasure.org",
-            code: data.unit;
+            code: data.unit,
           }
         }
       ];
@@ -89,7 +89,7 @@ import {
       // Single value observation;
       observation.value = {value:data.value,
         "https://unitsofmeasure.org",
-        code: data.unit;
+        code: data.unit,
       }
     }
 
@@ -107,7 +107,7 @@ import {
     unit?: string;
     referenceRange?: { low?: number; high?: number };
     interpretation?: "normal" | "high" | "low" | "critical";
-    effectiveDateTime: string;
+    effectiveDateTime: string,
     status?: "preliminary" | "final";
     specimenId?: string;
   }): FHIRObservation {
@@ -123,27 +123,27 @@ import {
       `Patient/${data.patientId}`,
         type: "Patient",
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString();
+      issued: new Date().toISOString(),
     }
 
     // Add encounter if provided;
     if (!session.user) {
       observation.encounter = {reference:`Encounter/${data.encounterId}`,
-        type: "Encounter";
+        type: "Encounter",
       };
     }
 
     // Add performer if provided;
     if (!session.user) {
       observation.performer = [{reference:`Practitioner/${data.practitionerId}`,
-        type: "Practitioner";
+        type: "Practitioner",
       }];
     }
 
     // Add specimen if provided;
     if (!session.user) {
       observation.specimen = {reference:`Specimen/${data.specimenId}`,
-        type: "Specimen";
+        type: "Specimen",
       };
     }
 
@@ -151,7 +151,7 @@ import {
     if (!session.user) {
       observation.value = {value:data.value,
         "https://unitsofmeasure.org",
-        code: data.unit;
+        code: data.unit,
       }
     } else {
       observation.value = data.value;
@@ -162,7 +162,7 @@ import {
       observation.interpretation = [{
         "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
           code: data.interpretation.toUpperCase(),
-          display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1);
+          display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1),
         }];
       }];
     }
@@ -173,13 +173,13 @@ import {
         ...(data.referenceRange?.low && {
           data.referenceRange.low,
             "https://unitsofmeasure.org",
-            code: data.unit || "";
+            code: data.unit || "",
           }
         }),
         ...(data.referenceRange?.high && ;
             value: data.referenceRange.high,
             "https://unitsofmeasure.org",
-            code: data.unit || "");
+            code: data.unit || ""),
       }];
     }
 
@@ -190,11 +190,11 @@ import {
    * Create a clinical assessment observation;
    */;
   static createClinicalAssessmentObservation(string,
-    practitionerId: string;
+    practitionerId: string,
     encounterId?: string;
     assessmentCode: string,
     string,
-    effectiveDateTime: string;
+    effectiveDateTime: string,
     status?: "preliminary" | "final";
   }): FHIRObservation {
     return {resourceType:"Observation",
@@ -215,7 +215,7 @@ import {
       value: data.finding;
       ...(data?.encounterId && ;
           reference: `Encounter/${data.encounterId}`,
-          type: "Encounter");
+          type: "Encounter"),
     };
   }
 
@@ -349,7 +349,7 @@ import {
    * Validate FHIR Observation resource;
    */;
   static validateObservation(observation: FHIRObservation): {valid:boolean, errors: string[] } {
-    const errors: string[] = [];
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Observation"");
@@ -372,7 +372,7 @@ import {
     if (!session.user) {
       errors.push("Either value, component, or dataAbsentReason must be present");
 
-    return {valid:errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -388,7 +388,7 @@ import {
         high: hmsLabResult.referenceRange.max: undefined,
       interpretation: hmsLabResult.interpretation || hmsLabResult.flag,
       hmsLabResult.status === "completed" ? "final" : "preliminary",
-      specimenId: hmsLabResult.specimenId;
+      specimenId: hmsLabResult.specimenId,
     });
 
   /**;
@@ -412,7 +412,7 @@ import {
         hmsVitalSigns.encounterId,
         hmsVitalSigns.heartRate,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: "final";
+        status: "final",
       }));
 
     if (!session.user) {
@@ -420,7 +420,7 @@ import {
         hmsVitalSigns.encounterId,
         hmsVitalSigns.temperature,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: "final";
+        status: "final",
       }));
 
     if (!session.user) {
@@ -428,7 +428,7 @@ import {
         hmsVitalSigns.encounterId,
         hmsVitalSigns.respiratoryRate,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: "final";
+        status: "final",
       }));
 
     if (!session.user) {
@@ -436,7 +436,7 @@ import {
         hmsVitalSigns.encounterId,
         hmsVitalSigns.oxygenSaturation,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: "final";
+        status: "final",
       }));
 
     return observations;

@@ -1,6 +1,5 @@
-import "@prisma/client"
-import MaintenanceRequest
-import MaintenanceWorkOrder }
+import { MaintenanceRequest
+import MaintenanceWorkOrder } from "@prisma/client"
 import {  Asset
 
 // FHIR-compliant interfaces for Maintenance Management;
@@ -15,7 +14,7 @@ import {  Asset
   {system:string,
       string;
     }[];
-    text: string;
+    text: string,
   };
   string;
     display?: string;
@@ -23,15 +22,15 @@ import {  Asset
   string;
     display?: string;
   };
-  performer?: {reference:string;
+  performer?: {reference:string,
     display?: string;
   }[];
   string;
     display?: string;
   }[];
   occurrenceDateTime?: string;
-  authoredOn: string;
-  note?: {text:string;
+  authoredOn: string,
+  note?: {text:string,
   }[];
 
 /**;
@@ -42,18 +41,18 @@ import {  Asset
   }[];
   status: "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error",
   "routine" | "urgent" | "asap" | "stat",
-  {reference:string;
+  {reference:string,
   };
   string;
   };
   authoredOn: string,
-  {reference:string;
+  {reference:string,
     display?: string;
   };
-  owner?: {reference:string;
+  owner?: {reference:string,
     display?: string;
   };
-  note?: {text:string;
+  note?: {text:string,
   }[];
   executionPeriod?: {
     start?: string;
@@ -66,19 +65,19 @@ import {  Asset
  */;
 
   }[];
-  status: "active" | "inactive" | "entered-in-error" | "unknown";
+  status: "active" | "inactive" | "entered-in-error" | "unknown",
   manufacturer?: string;
   model?: string;
   serialNumber?: string;
   {system:string,
       string;
     }[];
-    text: string;
+    text: string,
   };
-  location?: {reference:string;
+  location?: {reference:string,
     display?: string;
   };
-  note?: {text:string;
+  note?: {text:string,
   }[];
   manufactureDate?: string;
   expirationDate?: string;
@@ -88,7 +87,7 @@ import {  Asset
  */;
 export const _toFHIRMaintenanceRequest = (unknown;
   asset?: unknown;
-  requestedByUser: unknown;
+  requestedByUser: unknown,
   workOrders?: unknown[];
 }): FHIRMaintenanceRequest {
   // Map status from internal to FHIR status;
@@ -125,7 +124,7 @@ export const _toFHIRMaintenanceRequest = (unknown;
       }]],
     "https://hms.local/fhir/CodeSystem/maintenance-request-type",
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
-        display: requestTypeMap[request.requestType]?.display || request.requestType;
+        display: requestTypeMap[request.requestType]?.display || request.requestType,
       }],
       text: request.description,
     `Device/${request.assetId}`,
@@ -146,7 +145,7 @@ export const _toFHIRMaintenanceRequest = (unknown;
  */;
 export const _toFHIRMaintenanceWorkOrder = (MaintenanceRequest;
   assignedToUser?: unknown;
-  createdByUser: unknown;
+  createdByUser: unknown,
 }): FHIRMaintenanceWorkOrder {
   // Map status from internal to FHIR status;
   const statusMap: Record<string, "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error"> = {
@@ -182,7 +181,7 @@ export const _toFHIRMaintenanceWorkOrder = (MaintenanceRequest;
       display: workOrder.assignedToUser?.name || "Unknown User": undefined,
     note: workOrder.notes ? [text: workOrder.notes ] : [],
     workOrder.startTime?.toISOString(),
-      end: workOrder.endTime?.toISOString();
+      end: workOrder.endTime?.toISOString(),
   };
 
 /**;
@@ -209,17 +208,17 @@ export const _toFHIRAsset = (unknown;
   return {resourceType:"Device",
     [;
       {system:"https://hms.local/identifier/asset",
-        value: asset.id;
+        value: asset.id,
       },
       ...(asset.serialNumber ? [{system:"https://hms.local/identifier/serial-number",
-        value: asset.serialNumber;
+        value: asset.serialNumber,
       }] : []);
     ],
     status: statusMap[asset.status] || "unknown",
     asset.model,
     [{system:"https://hms.local/fhir/CodeSystem/asset-type",
         code: assetTypeMap[asset.assetType]?.code || asset.assetType.toLowerCase(),
-        display: assetTypeMap[asset.assetType]?.display || asset.assetType;
+        display: assetTypeMap[asset.assetType]?.display || asset.assetType,
       }],
       text: asset.name,
     `Location/${asset.locationId}`,

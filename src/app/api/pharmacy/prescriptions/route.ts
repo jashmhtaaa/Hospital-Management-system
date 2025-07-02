@@ -1,14 +1,13 @@
-import "../../../../lib/audit"
-import "../../../../lib/error-handler"
-import "../../../../lib/security.service"
-import "../../../../lib/services/patient/patient.service"
-import "../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../lib/validation/pharmacy-validation"
-import "../../models/domain-models"
-import "../../models/fhir-mappers"
-import "../../services/drug-interaction-service"
-import "next/server"
-import getPatientById }
+import { } from "../../../../lib/error-handler"
+import "../../../../lib/security.service";
+import "../../../../lib/services/patient/patient.service";
+import "../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../lib/validation/pharmacy-validation";
+import "../../models/domain-models";
+import "../../models/fhir-mappers";
+import "../../services/drug-interaction-service";
+import "next/server";
+import getPatientById } from "../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -37,7 +36,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {findById:(id: string) => Promise.resolve(null),
@@ -48,7 +47,7 @@ const prescriptionRepository = {findById:(id: string) => Promise.resolve(null),
   findAll: () => Promise.resolve([]),
   save: (prescription: unknown) => Promise.resolve(prescription.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 // Initialize services;
@@ -157,11 +156,11 @@ export const GET = async (req: any) => {
     // Audit logging;
     await auditLog("PRESCRIPTION", {action:"LIST",
       userId,
-      details: any;
+      details: any,
         filter,
         page,
         limit,
-        resultCount: paginatedPrescriptions.length;
+        resultCount: paginatedPrescriptions.length,
     });
 
     // Return response;
@@ -170,7 +169,7 @@ export const GET = async (req: any) => {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
       }
     }, {status:200 });
   } catch (error) {
@@ -327,7 +326,7 @@ export const POST = async (req: any) => {
       data.patientId,
       data.medicationId,
         severeInteractions.length,
-        overrideProvided: !!data.interactionOverride;
+        overrideProvided: !!data.interactionOverride,
 
     });
 

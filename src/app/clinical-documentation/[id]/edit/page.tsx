@@ -1,10 +1,9 @@
-import "../../../../components/clinical-documentation/document-editor"
-import "../../../../lib/auth"
-import "@prisma/client"
-import "next-auth"
-import "next/navigation"
-import "react"
-import { authOptions }
+import { } from "../../../../lib/auth"
+import "@prisma/client";
+import "next-auth";
+import "next/navigation";
+import "react";
+import { authOptions } from "../../../../components/clinical-documentation/document-editor"
 import { DocumentEditor }
 import { getServerSession }
 import { PrismaClient }
@@ -15,7 +14,7 @@ const prisma = new PrismaClient();
 
 export default async const _DocumentEditPage = ({
   params;
-}: {id: string ;
+}: {id: string ,
 }) {
   // Get session;
   const session = await getServerSession(authOptions);

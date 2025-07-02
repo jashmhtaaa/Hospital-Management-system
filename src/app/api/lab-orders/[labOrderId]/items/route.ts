@@ -1,9 +1,8 @@
-import "@/lib/session"
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
+import { } from "@opennextjs/cloudflare"
+import "iron-session";
+import "next/headers";
 import IronSessionData
-import sessionOptions }
+import sessionOptions } from "@/lib/session"
 import {  cookies  } from "@/lib/database"
 import {  getCloudflareContext  } from "@/lib/database"
 import {  getIronSession  } from "@/lib/database"
@@ -11,8 +10,7 @@ import { type
 
 // app/api/lab-orders/[labOrderId]/items/route.ts;
 // import { LabOrderItem, LabOrderItemStatus } from "@/types/opd";
-import "zod"
-import { z }
+import { { z } from "zod"
 
 // Define roles allowed to add items to lab orders (adjust as needed);
 const ALLOWED_ROLES_ADD = ["Doctor"];
@@ -103,7 +101,7 @@ export const _POST = async (request: Request) => {
         // 3. Check if lab order exists and belongs to the doctor;
         const orderCheck = await DB.prepare("SELECT lab_order_id, doctor_id FROM LabOrders WHERE lab_order_id = ?");
                                    .bind(labOrderId);
-                                   .first<lab_order_id: number, doctor_id: number >();
+                                   .first<lab_order_id: number, doctor_id: number >(),
 
         if (!session.user) {
             return new Response(JSON.stringify({error:"Lab Order not found" }), {status:404 });

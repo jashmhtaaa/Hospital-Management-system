@@ -1,8 +1,8 @@
-import "../marketing.service"
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/notifications"
-import "@/lib/prisma"
+import "../marketing.service";
+import "@/lib/audit";
+import "@/lib/errors";
+import "@/lib/notifications";
+import "@/lib/prisma";
 import NotFoundError
 import ValidationError }
 import { AuditLogger }

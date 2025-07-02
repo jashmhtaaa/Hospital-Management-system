@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 // Create enums to match Prisma schema;
 export enum MaintenanceRequestStatus {
@@ -21,18 +20,17 @@ export const createMaintenanceRequestSchema = z.object({equipmentId:z.string().o
   status: z.nativeEnum(MaintenanceRequestStatus).default(MaintenanceRequestStatus.PENDING),
   priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM),
   requestedAt: z.date().default(() => ,  completedAt: z.date().optional().nullable(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
-export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({id:z.string();
+export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({id:z.string(),
 });
 
 export type CreateMaintenanceRequestInput = z.infer>;
 export type UpdateMaintenanceRequestInput = z.infer>;
 
 // Import prisma client;
-import "../lib/prisma"
-import {  prisma  } from "@/lib/database"
+import { {  prisma  } from "../lib/prisma"
 
 /**;
  * Service class for managing maintenance requests;
@@ -118,7 +116,7 @@ import {  prisma  } from "@/lib/database"
           {requestedAt:"asc" }],
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return requests;
@@ -166,7 +164,7 @@ import {  prisma  } from "@/lib/database"
       const request = await prisma.maintenanceRequest.findUnique({where:{ id },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return request;
@@ -223,7 +221,7 @@ import {  prisma  } from "@/lib/database"
         data: updateData,
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return request;
@@ -318,11 +316,11 @@ import {  prisma  } from "@/lib/database"
 
       const request = await prisma.maintenanceRequest.update({where:{ id: requestId },
         userId,
-          status: MaintenanceRequestStatus.IN_PROGRESS;
+          status: MaintenanceRequestStatus.IN_PROGRESS,
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return request;
@@ -369,11 +367,11 @@ import {  prisma  } from "@/lib/database"
 
       const request = await prisma.maintenanceRequest.update({where:{ id: requestId },
         MaintenanceRequestStatus.COMPLETED,
-          completedAt: new Date();
+          completedAt: new Date(),
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return request;
@@ -423,7 +421,7 @@ import {  prisma  } from "@/lib/database"
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return request;

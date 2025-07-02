@@ -1,10 +1,9 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../../lib/validation/pharmacy-validation"
-import "../../../models/domain-models"
-import "next/server"
-import getPrescriptionById }
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../../lib/validation/pharmacy-validation";
+import "../../../models/domain-models";
+import "next/server";
+import getPrescriptionById } from "../../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -29,7 +28,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {findById:getPrescriptionById,
@@ -39,7 +38,7 @@ const prescriptionRepository = {findById:getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const dispensingRepository = {findById:(id: string) => Promise.resolve(null),
@@ -48,13 +47,13 @@ const dispensingRepository = {findById:(id: string) => Promise.resolve(null),
   findByStatus: (status: string) => Promise.resolve([]),
   save: (dispensing: unknown) => Promise.resolve(dispensing.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const inventoryRepository = {findById:(id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true),
 };
 
 /**;
@@ -151,7 +150,7 @@ export const POST = async (req: any) => {
     // Check if this would exceed the prescribed amount;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Dispensing would exceed prescribed amount";
+        {error:"Dispensing would exceed prescribed amount",
           totalPrescribed,
           alreadyDispensed: totalDispensed,
           totalPrescribed - totalDispensed;
@@ -186,7 +185,7 @@ export const POST = async (req: any) => {
       prescription.medicationId,
         data.quantityDispensed,
         data.partialReason,
-        isLastDispensing: remainingAfterThisDispensing === 0;
+        isLastDispensing: remainingAfterThisDispensing === 0,
 
     });
 
@@ -194,7 +193,7 @@ export const POST = async (req: any) => {
     return NextResponse.json();
       {id:dispensingId,
         remainingAfterThisDispensing,
-        isLastDispensing: remainingAfterThisDispensing === 0;
+        isLastDispensing: remainingAfterThisDispensing === 0,
       },
       {status:201 }
     );

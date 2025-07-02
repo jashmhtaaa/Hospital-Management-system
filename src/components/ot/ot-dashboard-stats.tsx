@@ -1,17 +1,14 @@
-import "@/components/ui/badge"
-import "@/components/ui/card"
-import "lucide-react"
-import "react"
+import { } from "@/components/ui/badge"
+import { } from "lucide-react"
+import { "react";
 import AlertTriangle
 import Calendar
 import CardContent
 import CardHeader
-import CardTitle }
-import Clock }
+import CardTitle, Clock } from "@/components/ui/card"
 import React
-import useEffect }
-import { Activity
-import { Badge }
+import useEffect, } Activity
+import  } Badge }
 import { Card
 import { useState
 

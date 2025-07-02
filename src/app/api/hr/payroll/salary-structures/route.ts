@@ -1,7 +1,6 @@
-import "@/lib/hr/salary-service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/hr/salary-service"
 import { NextResponse } from "next/server" }
 import {  salaryService  } from "@/lib/database"
 import {   type
@@ -10,14 +9,14 @@ import {  z  } from "@/lib/database"
 // Schema for salary structure creation;
 const salaryStructureSchema = z.object({name:z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  components: z.array();
+  components: z.array(),
     z.object({name:z.string().min(1, "Component name is required"),
       type: z.enum(["EARNING", "DEDUCTION", "TAX"], {errorMap:() => ({message:"Type must be EARNING, DEDUCTION, or TAX" })}),
       calculationType: z.enum(["FIXED", "PERCENTAGE", "FORMULA"], {errorMap:() => ({message:"Calculation type must be FIXED, PERCENTAGE, or FORMULA" })}),
       value: z.number(),
       formula: z.string().optional(),
       taxable: z.boolean(),
-      isBase: z.boolean().optional();
+      isBase: z.boolean().optional(),
     });
   ).min(1, "At least one component is required")});
 

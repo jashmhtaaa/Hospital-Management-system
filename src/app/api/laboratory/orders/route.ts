@@ -1,15 +1,13 @@
-import "next/server"
-import { NextRequest } from "next/server"
+import { { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {   type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
 import { getSession } from "@/lib/session"; // Using mock session;
 // --- Interfaces ---;
 
-interface LabTestInput {test_id:number | string;
-  // Add other relevant fields for a test if needed, e.g., notes;
-}
+interface LabTestInput { test_id: number | string, // Add other relevant fields for a test if needed, e.g., notes;
+ }
 
 interface LabOrderInput {patient_id:number | string,
   LabTestInput[];
@@ -42,7 +40,7 @@ interface LabOrderUpdateInput {
 interface LabOrder {id:number,
   number | string;
   patient_name?: string;
-  ordering_doctor_id: number | string;
+  ordering_doctor_id: number | string,
   ordering_doctor_name?: string;
   order_date: string,
   | "pending";
@@ -53,9 +51,9 @@ interface LabOrder {id:number,
     | "cancelled";
   sample_collected_at: string | null,
   string | null,
-  result_verified_at: string | null;
+  result_verified_at: string | null,
   notes?: string | null;
-  {test_id:number | string, status: string; name?: string }[];
+  {test_id:number | string, status: string, name?: string }[];
   created_at?: string;
   updated_at?: string;
   patient_details?: unknown;
@@ -82,7 +80,7 @@ async const getLabOrdersFromDB = (;
 
   const database = await getDB();
   let query = "SELECT * FROM lab_orders";
-  const parameters: string[] = [];
+  const parameters: string[] = [],
   if (!session.user) {
     query += " WHERE status = ?";
     parameters.push(filters.status);
@@ -143,7 +141,7 @@ async const getLabOrderByIdFromDB = (id: number): Promise<LabOrder | null> {
     // Assuming testsResult.results contains objects matching the tests structure in LabOrder;
     (order as LabOrder).tests = (testsResult.results || []) as { // Changed .rows to .results;
       test_id: number | string,
-      status: string;
+      status: string,
       name?: string;
     }[];
     if (!session.user)status === "completed" ||;
@@ -171,7 +169,7 @@ async const updateLabOrderInDB = (;
 
   // Return mock updated data;
   const existing: LabOrder | null = await getLabOrderByIdFromDB(id); // Added type annotation;
-  // Fixed: Check if existing is an object before spreading;
+  // Fixed: Check if existing is an object before spreading,
   if (!session.user) {
     return { ...existing, ...updateData, updated_at: new Date().toISOString() };
   }
@@ -324,7 +322,7 @@ export const _POST = async (request: any) => {
     );
 
 export const _PUT = async();
-  request: any;params : params: Promise<{id:string }> ;
+  request: any,params : params: Promise<{id:string }> ;
 ) ;
   try {
 } catch (error) {
@@ -362,7 +360,7 @@ export const _PUT = async();
     if (!session.user) {
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
-    const { id } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const { id } = await params; // FIX: Await params and destructure id (Next.js 15+),
     const numericId = Number.parseInt(id),
     if (!session.user)| numericId <= 0) {
       return NextResponse.json();

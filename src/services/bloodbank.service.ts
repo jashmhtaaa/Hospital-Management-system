@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 // Create enums to match Prisma schema;
 export enum BloodType {
@@ -34,10 +33,10 @@ export const createBloodDonationSchema = z.object({donorId:z.string().min(1, "Do
   donationDate: z.date().default(() => ,
   expirationDate: z.date(),
   status: z.nativeEnum(BloodDonationStatus).default(BloodDonationStatus.PENDING),
-  notes: z.string().optional().nullable();
+  notes: z.string().optional().nullable(),
 });
 
-export const updateBloodDonationSchema = createBloodDonationSchema.partial().extend({id:z.string();
+export const updateBloodDonationSchema = createBloodDonationSchema.partial().extend({id:z.string(),
 });
 
 // Validation schemas for BloodRequest;
@@ -49,10 +48,10 @@ export const createBloodRequestSchema = z.object({patientId:z.string().min(1, "P
   requestDate: z.date().default(() => ,  requiredBy: z.date().optional().nullable(),
   status: z.nativeEnum(BloodRequestStatus).default(BloodRequestStatus.PENDING),
   fulfilledDate: z.date().optional().nullable(),
-  notes: z.string().optional().nullable();
+  notes: z.string().optional().nullable(),
 });
 
-export const updateBloodRequestSchema = createBloodRequestSchema.partial().extend({id:z.string();
+export const updateBloodRequestSchema = createBloodRequestSchema.partial().extend({id:z.string(),
 });
 
 export type CreateBloodDonationInput = z.infer>;
@@ -61,8 +60,7 @@ export type CreateBloodRequestInput = z.infer>;
 export type UpdateBloodRequestInput = z.infer>;
 
 // Import prisma client;
-import "../lib/prisma"
-import { prisma }
+import { { prisma } from "../lib/prisma"
 
 /**;
  * Service class for managing blood bank operations;
@@ -83,13 +81,13 @@ import { prisma }
               validatedData.bloodType;
               },
               inventory.quantity + validatedData.quantity,
-                lastUpdated: new Date();
+                lastUpdated: new Date(),
               }});
           } else {
             // Create new inventory;
             await tx.bloodInventory.create({
               validatedData.bloodType,
-                quantity: validatedData.quantity,                lastUpdated: new Date();
+                quantity: validatedData.quantity,                lastUpdated: new Date(),
               }});
           }
         }
@@ -179,7 +177,7 @@ import { prisma }
           {donationDate:"desc" }],
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return donations;
@@ -229,7 +227,7 @@ import { prisma }
       const donation = await prisma.bloodDonation.findUnique({where:{ id },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return donation;
@@ -294,7 +292,7 @@ import { prisma }
       const updatedDonation = await prisma.$transaction(async (tx) => {
         // Update the donation;
         const donation = await tx.bloodDonation.update({where:{ id },
-          data: updateData;
+          data: updateData,
         });
 
         // Handle inventory updates if status changes;
@@ -313,14 +311,14 @@ import { prisma }
               await tx.bloodInventory.update({where:{
                   bloodType},
                 inventory.quantity + quantity,
-                  lastUpdated: new Date();
+                  lastUpdated: new Date(),
                 }});
             } else {
               // Create new inventory;
               await tx.bloodInventory.create({data:{
                   bloodType,
                   quantity,
-                  lastUpdated: new Date();
+                  lastUpdated: new Date(),
                 }});
             }
           }
@@ -339,7 +337,7 @@ import { prisma }
               await tx.bloodInventory.update({where:{
                   bloodType},
                 Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn"t go below 0;
-                  lastUpdated: new Date();
+                  lastUpdated: new Date(),
                 }});
             }
           }
@@ -416,7 +414,7 @@ import { prisma }
               currentDonation.bloodType;
               },
               Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn"t go below 0;
-                lastUpdated: new Date();
+                lastUpdated: new Date(),
               }});
 
         return donation;
@@ -468,7 +466,7 @@ import { prisma }
       const validatedData = createBloodRequestSchema.parse(data);
 
       // Create the request;
-      const request = await prisma.bloodRequest.create({data:validatedData;
+      const request = await prisma.bloodRequest.create({data:validatedData,
       });
 
       return request;
@@ -553,7 +551,7 @@ import { prisma }
           {requestDate:"asc" }],
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return requests;
@@ -601,7 +599,7 @@ import { prisma }
       const request = await prisma.bloodRequest.findUnique({where:{ id },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return request;
@@ -679,7 +677,7 @@ import { prisma }
           await tx.bloodInventory.update({where:{
               bloodType},
             inventory.quantity - quantity,
-              lastUpdated: new Date();
+              lastUpdated: new Date(),
             }});
 
         // If changing from FULFILLED to something else, add back to inventory;
@@ -697,18 +695,18 @@ import { prisma }
               currentRequest.bloodType;
               },
               inventory.quantity + currentRequest.quantity,
-                lastUpdated: new Date();
+                lastUpdated: new Date(),
               }});
           } else {
             // Create new inventory;
             await tx.bloodInventory.create({
               currentRequest.bloodType,
-                quantity: currentRequest.quantity,                lastUpdated: new Date();
+                quantity: currentRequest.quantity,                lastUpdated: new Date(),
               }});
 
         // Update the request;
         const request = await tx.bloodRequest.update({where:{ id },
-          data: updateData;
+          data: updateData,
         });
 
         return request;
@@ -783,13 +781,13 @@ import { prisma }
               currentRequest.bloodType;
               },
               inventory.quantity + currentRequest.quantity,
-                lastUpdated: new Date();
+                lastUpdated: new Date(),
               }});
           } else {
             // Create new inventory;
             await tx.bloodInventory.create({
               currentRequest.bloodType,
-                quantity: currentRequest.quantity,                lastUpdated: new Date();
+                quantity: currentRequest.quantity,                lastUpdated: new Date(),
               }});
 
         return request;
@@ -961,7 +959,7 @@ import { prisma }
         // Update the request;
         const updatedRequest = await tx.bloodRequest.update({where:{ id },
           BloodRequestStatus.FULFILLED,
-            fulfilledDate: new Date();
+            fulfilledDate: new Date(),
           }});
 
         // Update inventory;
@@ -969,7 +967,7 @@ import { prisma }
           request.bloodType;
           },
           inventory.quantity - request.quantity,
-            lastUpdated: new Date();
+            lastUpdated: new Date(),
           }});
 
         return updatedRequest;

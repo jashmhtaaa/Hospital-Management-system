@@ -1,6 +1,5 @@
-import "@/lib/cache/redis-cache"
-import "@/lib/monitoring/metrics-collector"
-import {  cacheService  } from "@/lib/database"
+import { } from "@/lib/monitoring/metrics-collector"
+import {  cacheService  } from "@/lib/cache/redis-cache"
 import {  metricsCollector  } from "@/lib/database"
 
 /**;
@@ -76,7 +75,7 @@ import {  metricsCollector  } from "@/lib/database"
         careGaps: await this.identifyCareGaps(patientId, resources),
         resourceQuality: this.assessResourceQuality(resources),
         dataCompleteness: this.calculateDataCompleteness(resources),
-        lastUpdated: new Date();
+        lastUpdated: new Date(),
       },
 
       // Cache analytics;
@@ -143,7 +142,7 @@ import {  metricsCollector  } from "@/lib/database"
         outcomes: await this.analyzeOutcomes(cohort),
         costAnalysis: await this.analyzeCosts(cohort),
         interventionOpportunities: await this.identifyInterventionOpportunities(cohort),
-        timestamp: new Date();
+        timestamp: new Date(),
       },
 
       // Cache metrics;
@@ -210,7 +209,7 @@ import {  metricsCollector  } from "@/lib/database"
         anomalies: this.detectAnomalies(data),
         predictions: await this.generatePredictions(data, parameters),
         visualizationData: this.prepareVisualizationData(data),
-        timestamp: new Date();
+        timestamp: new Date(),
       },
 
       // Cache trend report;
@@ -308,14 +307,14 @@ import {  metricsCollector  } from "@/lib/database"
       [],
         genderDistribution: [],
         ethnicityDistribution: [],
-        locationDistribution: [];
+        locationDistribution: [],
       },
       conditionPrevalence: [],
       0,
         encountersByType: [],
         averageLengthOfStay: 0,
         readmissionRate: 0,
-        visitFrequency: 0;
+        visitFrequency: 0,
       }}}
 
   // Additional helper methods would be implemented here...;
@@ -341,7 +340,7 @@ import {  metricsCollector  } from "@/lib/database"
       vitalStats: [],
       labResults: [],
       immunizations: [],
-      socialFactors: [];
+      socialFactors: [],
     },
 
   private analyzeTrends(resources: unknown[]): ObservationTrend[] {
@@ -373,7 +372,7 @@ import {  metricsCollector  } from "@/lib/database"
   peak: {time:string, value: number },
   trough: {time:string, value: number },
   seasonality: boolean,
-  trend: string;
+  trend: string,
 
   linearTrend: {slope:number, number },
 

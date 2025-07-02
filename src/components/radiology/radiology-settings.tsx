@@ -1,15 +1,12 @@
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/tabs"
-import "react"
-import CardContent }
-import React
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/tabs"
+import { "react";
+import CardContent, React
 import TabsContent
 import TabsList
-import TabsTrigger }
-import useEffect }
-import {
-import { Button }
+import TabsTrigger } from "@/components/ui/card"
+import useEffect, }
+import  } Button }
 import { Card
 import { Tabs
 import { useState
@@ -24,9 +21,8 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "lucide-react"
-import CreateProcedureTypeModal
-import Plus }
+import { CreateProcedureTypeModal
+import Plus } from "lucide-react"
 import {
 import { Loader2
 
@@ -36,7 +32,7 @@ import CreateModalityModal, { type ModalityFormData } from "./create-modality-mo
 // Define interfaces;
 interface ProcedureType {
   id: string,
-  name: string;
+  name: string,
   modality_type?: string | null;
   description?: string | null;
   // Add other fields if available from API;
@@ -44,7 +40,7 @@ interface ProcedureType {
 
 interface Modality {
   id: string,
-  name: string;
+  name: string,
   location?: string | null;
   description?: string | null;
   // Add other fields if available from API;
@@ -282,7 +278,7 @@ export default const _RadiologySettings = () {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(procedureData);
+        body: JSON.stringify(procedureData),
       });
 
       if (!session.user) {
@@ -375,7 +371,7 @@ export default const _RadiologySettings = () {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(modalityData);
+        body: JSON.stringify(modalityData),
       });
 
       if (!session.user) {
@@ -425,7 +421,7 @@ export default const _RadiologySettings = () {
     } catch (err) { // Changed error to err;
       const message = err instanceof Error ? err.message : "Unknown error"; // Use err;
       // Debug logging removed // Use err;
-      /* SECURITY: Console statement removed */ // Replace alert with a better notification system;
+      /* SECURITY: Console statement removed */ // Replace alert with a better notification system,
 
   };
 

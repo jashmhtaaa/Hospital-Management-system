@@ -1,12 +1,11 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/laboratory/laboratory.service"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../../lib/validation/pharmacy-validation"
-import "../../../models/domain-models"
-import "../../../services/drug-interaction-service"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/laboratory/laboratory.service";
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../../lib/validation/pharmacy-validation";
+import "../../../models/domain-models";
+import "../../../services/drug-interaction-service";
+import "next/server";
+import { NextRequest } from "../../../../../lib/audit"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
 import {  DrugInteractionService  } from "@/lib/database"
@@ -32,7 +31,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 // Initialize services;
@@ -125,7 +124,7 @@ export const POST = async (req: any) => {
       interactions.length,
         interactions.filter(i => i.severity === "critical").length,
           interactions.filter(i => i.severity === "moderate").length,
-          minor: interactions.filter(i => i.severity === "minor").length;
+          minor: interactions.filter(i => i.severity === "minor").length,
 
     }, {status:200 });
   } catch (error) {

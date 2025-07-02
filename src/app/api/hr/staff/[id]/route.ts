@@ -1,7 +1,6 @@
-import "@/lib/hr/employee-service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/hr/employee-service"
 import { NextResponse } from "next/server" }
 import {  employeeService  } from "@/lib/database"
 import {   type
@@ -20,7 +19,7 @@ const updateEmployeeSchema = z.object({firstName:z.string().optional(),
   photo: z.string().optional(),
   emergencyContact: z.any().optional(),
   active: z.boolean().optional(),
-  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
 });
 
 // GET /api/hr/staff/[id];
@@ -185,7 +184,7 @@ export const _DELETE = async();
 
     // Soft delete by setting active to false and recording termination date;
     const employee = await employeeService.updateEmployee(params.id, {active:false,
-      terminationDate: new Date();
+      terminationDate: new Date(),
     });
 
     return NextResponse.json({success:true });

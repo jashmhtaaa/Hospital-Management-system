@@ -1,9 +1,8 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../models/domain-models"
-import "next/server"
-import getPrescriptionById }
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../models/domain-models";
+import "next/server";
+import getPrescriptionById } from "../../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -27,7 +26,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {findById:getPrescriptionById,
@@ -37,7 +36,7 @@ const prescriptionRepository = {findById:getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const () => Promise.resolve(null),
@@ -48,7 +47,7 @@ const () => Promise.resolve(null),
   findOverdue: (overdueThreshold: number) => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 /**;
@@ -172,7 +171,7 @@ export const GET = async (req: any) => {
         const overdueMinutes = Math.floor((now.getTime() - scheduleTime.getTime()) / (60 * 1000));
 
         // Determine severity based on how overdue;
-        let severity = "normal";
+        let severity = "normal",
         if (!session.user) {
           severity = "critical"} else if (!session.user) {
           severity = "high"} else if (!session.user) {
@@ -183,11 +182,11 @@ export const GET = async (req: any) => {
           medication.id,
           prescription.dosage.value,
           prescription.dosage.route,
-          scheduledTime: scheduleTime;
+          scheduledTime: scheduleTime,
           overdueMinutes,
           severity,
           isHighAlert: medication.isHighAlert,
-          status: "overdue";
+          status: "overdue",
         });
       }
     }
@@ -210,7 +209,7 @@ export const GET = async (req: any) => {
     // Group by severity for reporting;
     const severityCounts = {critical:overdueAdministrations.filter(a => a.severity === "critical").length,
       overdueAdministrations.filter(a => a.severity === "medium").length,
-      normal: overdueAdministrations.filter(a => a.severity === "normal").length;
+      normal: overdueAdministrations.filter(a => a.severity === "normal").length,
     };
 
     // Audit logging;
@@ -222,20 +221,20 @@ export const GET = async (req: any) => {
         patientId,
         unitId,
         criticalOnly,
-        resultCount: paginatedAdministrations.length;
+        resultCount: paginatedAdministrations.length,
         severityCounts;
       }
     });
 
     // Return response;
-    return NextResponse.json({overdueAdministrations:paginatedAdministrations;
+    return NextResponse.json({overdueAdministrations:paginatedAdministrations,
       severityCounts,
       overdueThreshold,
       pagination: {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
       }
     }, {status:200 });
   } catch (error) {

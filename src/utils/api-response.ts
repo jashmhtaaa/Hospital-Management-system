@@ -1,65 +1,91 @@
-import "@/lib/logger"
-import "next/server"
-import {  logger  } from "@/lib/database"
-import {  NextResponse  } from "@/lib/database"
+import { } from "next/server"
+import {  logger  } from "@/lib/logger"
+import { NextResponse } from 'next/server';
 
 // src/utils/api-response.ts;
-}
-  };
+
+export interface ApiResponse<T = unknown> {
+  success: boolean,
+  data?: T | undefined;
+  message?: string;
+  errors?: string[] | undefined;
+  meta?: {
+    page?: number;
+    limit?: number;
+    total?: number;
+    totalPages?: number;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
+  } | undefined;
 }
 
-}
+export class ApiResponseHelper {
+  static success<T>(
+    data?: T | undefined,
+    message: string = 'Success',
+    statusCode: number = 200,
+    meta?: ApiResponse<T>['meta']
+  ): NextResponse {
+    const response: ApiResponse<T> = {
+      success: true,
+      data,
+      message,
+      meta,
     };
 
-    return NextResponse.json(response);
+    return NextResponse.json(response, { status: statusCode });
   }
 
-  static error();
-    error: string,
-    statusCode: number = 400;
-    details?: unknown): NextResponse {
-    const false;
-      error,
-      new Date().toISOString();
+  static error(
+    message: string = 'An error occurred',
+    statusCode: number = 400,
+    details?: unknown
+  ): NextResponse {
+    const response: ApiResponse = {
+      success: false,
+      message,
+      errors: details ? [String(details)] : undefined,
     };
 
-    logger.error("API Error Response", { error, statusCode, details });
-
-    return NextResponse.json(response, {status:statusCode });
+    return NextResponse.json(response, { status: statusCode });
+  }
 
   static notFound(resource: string = "Resource"): NextResponse {
     return this.error(`${resource} not found`, 404);
+  }
 
   static unauthorized(message: string = "Unauthorized"): NextResponse {
     return this.error(message, 401);
+  }
 
   static forbidden(message: string = "Forbidden"): NextResponse {
     return this.error(message, 403);
+  }
 
   static validationError(message: string, details?: unknown): NextResponse {
-    return this.error(`Validation error: ${message}`, 422, details);
+    return this.error(message, 422, details);
+  }
 
   static internalError(message: string = "Internal server error"): NextResponse {
     return this.error(message, 500);
-
-// Pagination utilities;
-
-    const { page = 1, limit = 10, sortBy, sortOrder = "desc" } = options;
-
-    const skip = (page - 1) * limit;
-    const take = Math.min(limit, 100); // Max 100 items per page;
-
-    const orderBy = sortBy ? { [sortBy]: sortOrder } : {createdAt:"desc" };
-
-    return { skip, take, orderBy };
+  }
 
   static buildMeta(total: number, page: number, limit: number) {
+    const totalPages = Math.ceil(total / limit);
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 1;
+
     return {
       total,
       page,
       limit,
-      totalPages: Math.ceil(total / limit),
-      page > 1;
+      totalPages,
+      hasNextPage,
+      hasPrevPage,
     };
+  }
+}
 
-export async function GET() { return new Response("OK"); }
+export async function GET() { 
+  return new Response("OK"); 
+}

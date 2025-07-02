@@ -1,20 +1,17 @@
-import "react"
-import React
-import { useEffect }
+import { React
+import { useEffect } from "react"
 import { useState }
 
 "use client";
-import "./counter.ts"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/scroll-area"
-import "lucide-react"
-import "react"
-import incrementAndLog }
-import useOptimistic
+import { } from "./counter.ts"
+import { } from "@/components/ui/card"
+import "@/components/ui/scroll-area";
+import "lucide-react";
+import "react";
+import incrementAndLog, useOptimistic
 import useState
-import useTransition }
-import { Button }
+import useTransition } from "@/components/ui/button"
+import  } Button }
 import { Card }
 import { getStats
 import { Plus }
@@ -24,7 +21,7 @@ import { useEffect
 export default const _Home = () {
   const [stats, setStats] = useState<{ count: number, recentAccess: { accessed_at: string }[] }>({
     count: 0,
-    recentAccess: [];
+    recentAccess: [],
   });
   const [optimisticStats, setOptimisticStats] = useOptimistic(stats);
   const [ startTransition] = useTransition(),

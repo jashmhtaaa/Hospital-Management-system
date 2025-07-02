@@ -1,5 +1,4 @@
-import "crypto"
-import {  createHash  } from "@/lib/database"
+import { {  createHash  } from "crypto"
 
 }
 
@@ -34,7 +33,7 @@ export const _generateBarcodeData = async (specimenId: string): Promise<string> 
 export const _generateBarcodeImage = async (barcodeData: string, format: "CODE128" | "QR" | "DATA_MATRIX" = "CODE128"): Promise<string> {
   // In a real implementation, this would use a barcode generation library;
   // For this example, we"ll return a placeholder;
-  return `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`;
+  return `data:image/png,base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==`;
 }
 
 /**;
@@ -49,12 +48,12 @@ export const _parseBarcodeData = async ("specimen" | "unknown";
   // Check if this is a specimen barcode;
   if (!session.user)& barcodeData.length === 18) {
     return {type:"specimen",
-      id: barcodeData;
+      id: barcodeData,
     };
   }
 
   // Unknown barcode format;
-  return {type:"unknown";
+  return {type:"unknown",
   };
 
 /**;

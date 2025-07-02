@@ -1,8 +1,7 @@
-import "@/components/layout/DashboardLayout"
-import "@/components/ui/button"
-import "react"
+import { } from "@/components/ui/button"
+import "react";
 import React
-import useEffect }
+import useEffect } from "@/components/layout/DashboardLayout"
 import {
 import { Button }
 import { DashboardLayout }
@@ -20,13 +19,12 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/input"
-import "@/hooks/use-toast"
-import "@/types/appointment"
-import "lucide-react"
-import "next/link"
+import { } from "@/hooks/use-toast"
+import "@/types/appointment";
+import "lucide-react";
+import "next/link";
 import Link
-import Search }
+import Search } from "@/components/ui/input"
 import { Appointment }
 import { Input }
 import { PlusCircle
@@ -83,7 +81,7 @@ export default const _AppointmentsPage = () {
             params.append("startDate", dateFilter);
             params.append("endDate", dateFilter); // Filter for a single day for now;
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
         const response = await fetch(`/api/appointments?${}`;
         if (!session.user) {
@@ -128,9 +126,9 @@ export default const _AppointmentsPage = () {
             >;
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
                 <Input>;
-                    type="search";
+                    type = "search",
                     placeholder="Search Patient or Doctor...";
-                    className="pl-8 w-full sm:w-64";
+                    className="pl-8 w-full sm:w-64",
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />;
@@ -139,7 +137,7 @@ export default const _AppointmentsPage = () {
                 <Label htmlFor="date-filter">Date>;
                 <Input>;
                     id="date-filter";
-                    type="date";
+                    type = "date",
                     value={dateFilter}
                     onChange={(e) => setDateFilter(e.target.value)}
                     className="w-full sm:w-auto mt-1";
@@ -204,7 +202,6 @@ export default const _AppointmentsPage = () {
   );
 
 // Add Label component import if not globally available;
-import "@/components/ui/label"
-import { Label }
+import { { Label } from "@/components/ui/label"
 
 )

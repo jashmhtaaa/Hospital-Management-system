@@ -1,12 +1,10 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -18,10 +16,9 @@ import { useState
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/separator"
-import { Badge }
+import { } from "@/components/ui/button"
+import "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge"
 import { Button }
 import { Separator }
 
@@ -43,9 +40,8 @@ import { Separator }
   FileText,
   AlertCircle;
 } from "lucide-react";
-import "@/components/ui/use-toast"
-import "date-fns"
-import { format }
+import { } from "date-fns"
+import { format } from "@/components/ui/use-toast"
 import { toast }
 
 export default const _AttendanceDetail = ({ params }: { id: string }) {
@@ -131,13 +127,13 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
         return "secondary";
       case "ON_LEAVE": any;
         return "outline";
-      default: return "default";
+      default: return "default",
 
   };
 
   // Format time or show placeholder;
   const formatTimeOrPlaceholder = (time: unknown) => {
-    return time ? format(new Date(time), "h: mm: ss a") : "—";
+    return time ? format(new Date(time), "h: mm: ss a") : "—",
   };
 
   // Calculate hours worked;
@@ -157,8 +153,8 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
       >;
         >;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick={() => router.push("/dashboard/hr/attendance")}
           >;
             <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -176,8 +172,8 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
       >;
         >;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick={() => router.push("/dashboard/hr/attendance")}
           >;
             <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -207,8 +203,8 @@ export default const _AttendanceDetail = ({ params }: { id: string }) {
     >;
       >;
         <Button>;
-          variant="ghost";
-          size="sm";
+          variant = "ghost",
+          size = "sm",
           onClick={() => router.push("/dashboard/hr/attendance")}
         >;
           <ArrowLeft className="h-4 w-4 mr-2" />;

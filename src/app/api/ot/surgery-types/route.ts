@@ -1,11 +1,10 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
 import { NextResponse } from "next/server" }
 import {  D1Database  } from "@/lib/database"
 import { type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for required staff/equipment (re-used from [id] route, consider moving to a shared types file);
 interface RequiredResource {
@@ -15,7 +14,7 @@ interface RequiredResource {
 }
 
 // Interface for the POST request body;
-interface SurgeryTypeCreateBody {name:string;
+interface SurgeryTypeCreateBody {name:string,
   description?: string | null;
   specialty?: string | null;
   estimated_duration_minutes?: number | null;
@@ -59,12 +58,12 @@ export const _GET = async (request: any) => {
 }
     const { searchParams } = new URL(request.url);
     const specialty = searchParams.get("specialty");
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database;
     let query =;
       "SELECT id, name, description, specialty, estimated_duration_minutes, updated_at FROM SurgeryTypes";
-    const parameters: string[] = [];
+    const parameters: string[] = [],
 
     if (!session.user) {
       query += " WHERE specialty = ?";
@@ -72,7 +71,7 @@ export const _GET = async (request: any) => {
     }
 
     query += " ORDER BY name ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
@@ -227,17 +226,17 @@ export const _POST = async (request: any) => {
           required_staff,
           required_equipment,
           created_at: now,
-          updated_at: now;
+          updated_at: now,
         },
         {status:201 }
       );
 
   } catch (error: unknown) {
-    // FIX: Remove explicit any;
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     if (!session.user) {
-      // FIX: Check errorMessage;
+      // FIX: Check errorMessage,
       return NextResponse.json();
         {message:"Surgery type name must be unique", details: errorMessage },
         {status:409 }

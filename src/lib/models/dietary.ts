@@ -1,10 +1,9 @@
-import "@prisma/client"
+import { } from "@prisma/client"
 import DietaryRequest
 import Meal
 import MealPlan
-import NutritionalProfile }
-import type
-import {  type
+import NutritionalProfile, type
+import  }  type
 
 // FHIR-compliant interfaces for Dietary Management;
 
@@ -14,13 +13,13 @@ import {  type
  */;
 
    } from "@/lib/database";
-  encounter?: {reference:string;
+  encounter?: {reference:string,
   };
-  dateTime: string;
-  orderer?: {reference:string;
+  dateTime: string,
+  orderer?: {reference:string,
     display?: string;
   };
-  allergyIntolerance?: {reference:string;
+  allergyIntolerance?: {reference:string,
   }[];
   foodPreferenceModifier?: {
     string,
@@ -55,7 +54,7 @@ import {  type
       };
       number,
         string,
-        code: string;
+        code: string,
       };
     }[];
     texture?: {
@@ -77,7 +76,7 @@ import {  type
     }[];
     instruction?: string;
   };
-  note?: {text:string;
+  note?: {text:string,
   }[];
 
 /**;
@@ -87,7 +86,7 @@ import {  type
 
     }[];
   }[];
-  title: string;
+  title: string,
   description?: string;
   string;
     display?: string;
@@ -99,7 +98,7 @@ import {  type
   string;
     display?: string;
   };
-  {status:"not-started" | "scheduled" | "in-progress" | "on-hold" | "completed" | "cancelled";
+  {status:"not-started" | "scheduled" | "in-progress" | "on-hold" | "completed" | "cancelled",
       description?: string;
       scheduledTiming?: {
         event?: string[];
@@ -111,7 +110,7 @@ import {  type
 
     };
   }[];
-  note?: {text:string;
+  note?: {text:string,
   }[];
 
 /**;
@@ -124,41 +123,41 @@ import {  type
   {system:string,
       string;
     }[];
-    text: string;
+    text: string,
   };
   string;
     display?: string;
   };
   effectiveDateTime: string,
-  {reference:string;
+  {reference:string,
     display?: string;
   }[];
   {
       string,
         string;
       }[];
-      text: string;
+      text: string,
     };
     valueQuantity?: {value:number,
       string,
-      code: string;
+      code: string,
     };
     valueString?: string;
     valueCodeableConcept?: {
       string,
         string;
       }[];
-      text: string;
+      text: string,
     };
   }[];
-  note?: {text:string;
+  note?: {text:string,
   }[];
 
 /**;
  * Convert database DietaryRequest to FHIR NutritionOrder;
  */;
 export const _toFHIRDietaryRequest = (unknown,
-  requestedByUser: unknown;
+  requestedByUser: unknown,
   approvedByUser?: unknown;
   mealPlans?: unknown[];
 }): FHIRDietaryRequest {
@@ -176,7 +175,7 @@ export const _toFHIRDietaryRequest = (unknown,
   const excludeFoodModifiers = request.dietaryRestrictions.map(restriction => ({
     "https://hms.local/fhir/CodeSystem/food-type",
       code: restriction.toLowerCase().replace(/\s/g, "-"),
-      display: restriction;
+      display: restriction,
     }];
   }));
 
@@ -184,13 +183,13 @@ export const _toFHIRDietaryRequest = (unknown,
   const foodPreferenceModifiers = request.mealPreferences.map(preference => ({
     "https://hms.local/fhir/CodeSystem/food-preference",
       code: preference.toLowerCase().replace(/\s/g, "-"),
-      display: preference;
+      display: preference,
     }];
   }));
 
   // Map allergies to FHIR allergyIntolerance references;
   const _allergyIntolerances = request.allergies.map((allergy, index) => ({reference:`AllergyIntolerance/${request.patientId}-${index}`,
-    display: allergy;
+    display: allergy,
   }));
 
   return {resourceType:"NutritionOrder",
@@ -210,7 +209,7 @@ export const _toFHIRDietaryRequest = (unknown,
       request.startDate.toISOString(),
             end: request.endDate?.toISOString(),
       instruction: request.specialInstructions,
-    note: request.specialInstructions ? [text: request.specialInstructions ] : [];
+    note: request.specialInstructions ? [text: request.specialInstructions ] : [],
   };
 
 /**;
@@ -218,7 +217,7 @@ export const _toFHIRDietaryRequest = (unknown,
  */;
 export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown };
   meals?: Meal[];
-  createdByUser: unknown;
+  createdByUser: unknown,
 }): FHIRMealPlan {
   // Map status from internal to FHIR status;
   const statusMap: Record<string, "draft" | "active" | "on-hold" | "revoked" | "completed" | "entered-in-error" | "unknown"> = {
@@ -239,7 +238,7 @@ export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown };
       [meal.deliveryTime?.toISOString() || mealPlan.date.toISOString()],
         [{system:"https://hms.local/fhir/CodeSystem/meal-type",
             code: meal.mealType.toLowerCase(),
-            display: meal.mealType;
+            display: meal.mealType,
           }];
 
   })) || [];
@@ -255,14 +254,14 @@ export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown };
     description: `Meal plan for ${mealPlan.request.patient?.name ||;
       "patient"} on $mealPlan.date.toISOString().split("T")[0]`,
     `Patient/$mealPlan.request.patientId`,
-      display: mealPlan.request.patient?.name || "Unknown Patient";
+      display: mealPlan.request.patient?.name || "Unknown Patient",
     },
     mealPlan.date.toISOString(),
-      end: new Date(mealPlan.date.getTime() + 24 * 60 * 60 * 1000).toISOString() // Next day;
+      end: new Date(mealPlan.date.getTime() + 24 * 60 * 60 * 1000).toISOString() // Next day,
     },
     created: mealPlan.createdAt.toISOString(),
     `User/$mealPlan.createdById`,
-      display: mealPlan.createdByUser?.name || "Unknown User";
+      display: mealPlan.createdByUser?.name || "Unknown User",
     },
     activity: activities,
     note: mealPlan.notes ? [{text:mealPlan.notes }] : [];
@@ -271,7 +270,7 @@ export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown };
  * Convert database NutritionalProfile to FHIR Observation;
  */;
 export const _toFHIRNutritionalProfile = (unknown,
-  lastUpdatedByUser: unknown;
+  lastUpdatedByUser: unknown,
 }): FHIRNutritionalProfile {
   // Create components for each nutritional aspect;
   const components = [;
@@ -280,11 +279,11 @@ export const _toFHIRNutritionalProfile = (unknown,
       [{system:"https://loinc.org",
           "Body height";
         }],
-        text: "Height";
+        text: "Height",
       },
       profile.height,
         "https://unitsofmeasure.org",
-        code: "cm";
+        code: "cm",
 
     } : null,
 
@@ -293,11 +292,11 @@ export const _toFHIRNutritionalProfile = (unknown,
       [{system:"https://loinc.org",
           "Body weight";
         }],
-        text: "Weight";
+        text: "Weight",
       },
       profile.weight,
         "https://unitsofmeasure.org",
-        code: "kg";
+        code: "kg",
 
     } : null,
 
@@ -306,11 +305,11 @@ export const _toFHIRNutritionalProfile = (unknown,
       [{system:"https://loinc.org",
           "Body mass index (BMI)";
         }],
-        text: "BMI";
+        text: "BMI",
       },
       profile.bmi,
         "https://unitsofmeasure.org",
-        code: "kg/m2";
+        code: "kg/m2",
 
     } : null,
 
@@ -319,7 +318,7 @@ export const _toFHIRNutritionalProfile = (unknown,
       [{system:"https://hms.local/fhir/CodeSystem/nutritional-assessment",
           "Dietary Preferences";
         }],
-        text: "Dietary Preferences";
+        text: "Dietary Preferences",
       },
       valueString: profile.dietaryPreferences.join(", ");
     } : null,
@@ -329,7 +328,7 @@ export const _toFHIRNutritionalProfile = (unknown,
       [{system:"https://hms.local/fhir/CodeSystem/nutritional-assessment",
           "Dietary Restrictions";
         }],
-        text: "Dietary Restrictions";
+        text: "Dietary Restrictions",
       },
       valueString: profile.dietaryRestrictions.join(", ");
     } : null,
@@ -339,7 +338,7 @@ export const _toFHIRNutritionalProfile = (unknown,
       [{system:"https://hms.local/fhir/CodeSystem/nutritional-assessment",
           "Food Allergies";
         }],
-        text: "Food Allergies";
+        text: "Food Allergies",
       },
       valueString: profile.allergies.join(", ");
     } : null,
@@ -349,7 +348,7 @@ export const _toFHIRNutritionalProfile = (unknown,
       [{system:"https://hms.local/fhir/CodeSystem/nutritional-assessment",
           "Medical Conditions";
         }],
-        text: "Medical Conditions";
+        text: "Medical Conditions",
       },
       valueString: profile.medicalConditions.join(", ");
     } : null;
@@ -364,15 +363,15 @@ export const _toFHIRNutritionalProfile = (unknown,
     [{system:"https://hms.local/fhir/CodeSystem/observation-type",
         "Nutritional Profile";
       }],
-      text: "Nutritional Profile Assessment";
+      text: "Nutritional Profile Assessment",
     },
     `Patient/$profile.patientId`,
-      display: profile.patient?.name || "Unknown Patient";
+      display: profile.patient?.name || "Unknown Patient",
     },
     effectiveDateTime: profile.updatedAt.toISOString(),
     issued: profile.createdAt.toISOString(),
     `User/$profile.lastUpdatedById`,
-      display: profile.lastUpdatedByUser?.name || "Unknown User";
+      display: profile.lastUpdatedByUser?.name || "Unknown User",
     }],
     component: components,
     note: profile.notes ? [{text:profile.notes }] : [];

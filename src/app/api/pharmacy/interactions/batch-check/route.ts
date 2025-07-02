@@ -1,13 +1,12 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/laboratory/laboratory.service"
-import "../../../../../lib/services/patient/patient.service"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../../lib/validation/pharmacy-validation"
-import "../../../models/domain-models"
-import "../../../services/drug-interaction-service"
-import "next/server"
-import getPatientConditions }
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/laboratory/laboratory.service";
+import "../../../../../lib/services/patient/patient.service";
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../../lib/validation/pharmacy-validation";
+import "../../../models/domain-models";
+import "../../../services/drug-interaction-service";
+import "next/server";
+import getPatientConditions } from "../../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -35,7 +34,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 // Initialize services;
@@ -125,11 +124,11 @@ export const POST = async (req: any) => {
         }));
 
     // Perform batch interaction checks;
-    const results = await interactionService.batchCheckInteractions({medicationIds:data.medicationIds;
+    const results = await interactionService.batchCheckInteractions({medicationIds:data.medicationIds,
       allergies,
       conditions,
       labResults,
-      includeMonographs: data.includeMonographs || false;
+      includeMonographs: data.includeMonographs || false,
     });
 
     // Audit logging;
@@ -148,7 +147,7 @@ export const POST = async (req: any) => {
       data.medicationIds.length,
         conditions.length,
         results.totalInteractionCount,
-        criticalInteractionCount: results.criticalInteractionCount;
+        criticalInteractionCount: results.criticalInteractionCount,
 
     }, {status:200 });
   } catch (error) {

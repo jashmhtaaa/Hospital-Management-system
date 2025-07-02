@@ -1,10 +1,8 @@
-import type React from "react"; // Added FormEvent;
-import "@/components/ui/button"
-import "react"
-import FormEvent }
-import type
+import { type React from "react"; // Added FormEvent;
+import { } from "react"
+import FormEvent, type
 import useEffect
-import {
+import  } from "@/components/ui/button"
 import { Button }
 import { useState
 
@@ -19,17 +17,15 @@ import { useState
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
 // import { Input } from "@/components/ui/input"; // Unused;
-import "@/components/ui/label"
-import { Label }
+import { { Label } from "@/components/ui/label"
 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/textarea"
-import "lucide-react"
-import { Loader2 }
+import { } from "lucide-react"
+import { Loader2 } from "@/components/ui/textarea"
 import { Textarea }
 
 // Define interfaces for data types;
@@ -51,18 +47,16 @@ interface Doctor {
   // Add other relevant doctor fields if needed;
 }
 
-// FIX: Export the payload type;
+// FIX: Export the payload type,
 }
 }
 
-interface CreateRadiologyOrderModalProperties {
-  isOpen: boolean; // Add isOpen prop to control visibility from parent;
-  onClose: () => void,
-  onSubmit: (payload: OrderPayload) => Promise<void>;
+interface CreateRadiologyOrderModalProperties { isOpen: boolean; // Add isOpen prop to control visibility from parent, onClose: () => void,
+  onSubmit: (payload: OrderPayload) => Promise<void>,
 export default const _CreateRadiologyOrderModal = ({
   isOpen,
   onClose,
-  onSubmit}: CreateRadiologyOrderModalProperties) {
+  onSubmit }: CreateRadiologyOrderModalProperties) {
   const [patientId, setPatientId] = useState<string>("");
   const [procedureTypeId, setProcedureTypeId] = useState<string>("");
   const [clinicalIndication, setClinicalIndication] = useState<string>("");
@@ -317,7 +311,7 @@ export default const _CreateRadiologyOrderModal = ({
                   Clinical Indication *;
                 </Label>;
                 <Textarea>;
-                  id="clinicalIndication";
+                  id = "clinicalIndication",
                   value={clinicalIndication}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {}
                     setClinicalIndication(event.target.value);
@@ -385,8 +379,8 @@ export default const _CreateRadiologyOrderModal = ({
               <DialogClose asChild>;
                 {/* Ensure Cancel button calls onClose */}
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={onClose}
                   disabled={isSubmitting}
                 >;

@@ -1,6 +1,5 @@
-import "@prisma/client"
-import "events"
-import {  EventEmitter  } from "@/lib/database"
+import { } from "events"
+import {  EventEmitter  } from "@prisma/client"
 import {  PrismaClient  } from "@/lib/database"
 
 }
@@ -15,22 +14,22 @@ import {  PrismaClient  } from "@/lib/database"
   };
   headers?: Record>;
   queryParams?: Record>;
-  tls?: {enabled:boolean;
+  tls?: {enabled:boolean,
     certificate?: string;
     key?: string;
     ca?: string;
   };
   compression?: boolean;
   format: "json" | "xml" | "hl7" | "dicom" | "csv" | "pipe_delimited",
-  encoding: "utf8" | "utf16" | "ascii";
+  encoding: "utf8" | "utf16" | "ascii",
 }
 }
 
 class IntegrationHubService extends EventEmitter {
-  private prisma: PrismaClient;
+  private prisma: PrismaClient,
   private endpoints: Map<string, IntegrationEndpoint> = new Map(),
   private messages: Map<string, IntegrationMessage> = new Map(),
-  private events: IntegrationEvent[] = [];
+  private events: IntegrationEvent[] = [],
   private transformers: Map<string, MessageTransformer> = new Map(),
   private syncJobs: Map<string, NodeJS.Timeout> = new Map(),
   private healthChecks: Map<string, NodeJS.Timeout> = new Map(),
@@ -95,7 +94,7 @@ class IntegrationHubService extends EventEmitter {
       // Start message processing;
       this.startMessageProcessing();
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       this.emit("hub_started");
     } catch (error) {
 
@@ -119,7 +118,7 @@ class IntegrationHubService extends EventEmitter {
     this.healthChecks.forEach(check => clearInterval(check));
     this.healthChecks.clear();
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     this.emit("hub_stopped");
   }
 
@@ -133,7 +132,7 @@ class IntegrationHubService extends EventEmitter {
       0,
       [0] + config.syncFrequency * 60 * 1000),
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date(),
     };
 
     this.endpoints.set(endpoint.id, endpoint);
@@ -182,7 +181,7 @@ class IntegrationHubService extends EventEmitter {
 } catch (error) {
 }
       // In production, save to database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     } catch (error) {
 
     }
@@ -201,7 +200,7 @@ class IntegrationHubService extends EventEmitter {
     const updatedEndpoint = {
       ...endpoint,
       ...updates,
-      updatedAt: new Date();
+      updatedAt: new Date(),
     };
 
     this.endpoints.set(endpointId, updatedEndpoint);
@@ -274,7 +273,7 @@ class IntegrationHubService extends EventEmitter {
 } catch (error) {
 }
       // In production, delete from database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     } catch (error) {
 
     }
@@ -298,7 +297,7 @@ class IntegrationHubService extends EventEmitter {
 
     const uuidv4(),
       endpointId,
-      direction: "outbound";
+      direction: "outbound",
       messageType,
       status: "pending",
       data,
@@ -362,11 +361,11 @@ class IntegrationHubService extends EventEmitter {
         endpoint.type,
         endpointMessages.length,
         this.calculateAverageProcessingTime(endpointMessages),
-        lastActivity: endpoint.lastSync;
+        lastActivity: endpoint.lastSync,
       };
     });
 
-    const messageTypeStats: MessageTypeStats[] = [];
+    const messageTypeStats: MessageTypeStats[] = [],
     const messagesByType = allMessages.reduce((acc, message) => {
       acc[message.messageType] = acc[message.messageType] || [];
       acc[message.messageType].push(message);
@@ -390,7 +389,7 @@ class IntegrationHubService extends EventEmitter {
       allMessages.length > 0 ? (failedMessages.length / allMessages.length) * 100 : 0,
       throughput: this.calculateThroughput(allMessages),
       byEndpoint: endpointStats,
-      byMessageType: messageTypeStats;
+      byMessageType: messageTypeStats,
     };
   }
 
@@ -564,7 +563,7 @@ class IntegrationHubService extends EventEmitter {
 } catch (error) {
 }
       // In production, load from database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       // Sample endpoints for demo;
       await this.registerEndpoint({name:"Epic MyChart API",
@@ -582,7 +581,7 @@ class IntegrationHubService extends EventEmitter {
           "/api/health",
           10000,
           expectedStatus: [200],
-        version: "1.0.0";
+        version: "1.0.0",
       });
 
     } catch (error) {
@@ -703,7 +702,7 @@ class IntegrationHubService extends EventEmitter {
       // Update endpoint;
       await this.updateEndpoint(endpoint.id, {lastSync:new Date(),
         endpoint.successCount + result.recordsSuccess,
-        errorCount: endpoint.errorCount + result.recordsFailed;
+        errorCount: endpoint.errorCount + result.recordsFailed,
       });
 
       this.logEvent(endpoint.id, "sync_completed", `Sync completed: ${result.recordsProcessed} records processed`);
@@ -720,7 +719,7 @@ class IntegrationHubService extends EventEmitter {
         metadata: null};
 
       await this.updateEndpoint(endpoint.id, {errorCount:endpoint.errorCount + 1,
-        lastError: error.message;
+        lastError: error.message,
       });
 
       this.logEvent(endpoint.id, "sync_failed", "Synchronization failed", error.message);
@@ -738,10 +737,10 @@ class IntegrationHubService extends EventEmitter {
       150,
       2,
       ["2 records had validation warnings"],
-      metadata: syncType: "incremental" ;
+      metadata: syncType: "incremental" ,
     };
 
-  private async performHealthCheck(endpoint: IntegrationEndpoint): Promise<{success:boolean; error?: string }> {
+  private async performHealthCheck(endpoint: IntegrationEndpoint): Promise<{success:boolean, error?: string }> {
     try {
 } catch (error) {
   console.error(error);
@@ -826,7 +825,7 @@ class IntegrationHubService extends EventEmitter {
 
 } catch (error) {
 
-      message.status = "processing";
+      message.status = "processing",
       this.messages.set(message.id, message);
 
       // Transform data;
@@ -891,7 +890,7 @@ class IntegrationHubService extends EventEmitter {
 
 } catch (error) {
 
-      message.status = "processing";
+      message.status = "processing",
       this.messages.set(message.id, message);
 
       // Transform data;
@@ -913,7 +912,7 @@ class IntegrationHubService extends EventEmitter {
 
   private async sendToEndpoint(endpoint: IntegrationEndpoint, message: IntegrationMessage): Promise<void> {
     // Implement actual sending logic based on endpoint type;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
   private async processTransformedData(data: unknown, metadata: MessageMetadata): Promise<void> {
     // Process the transformed data (save to database, trigger workflows, etc.);
@@ -951,17 +950,17 @@ class IntegrationHubService extends EventEmitter {
         return data.resourceType || "Unknown";
       case "hl7_v2": any;
         return data.substring(0, 3) || "Unknown"; // MSH, ADT, etc.;
-      default: return "Unknown";
+      default: return "Unknown",
 
   private logEvent(endpointId: string, type: IntegrationEvent["type"], message: string, data?: unknown): void {
     const uuidv4(),
       endpointId,
       type,
-      severity: type === "error" || type === "sync_failed" ? "error" : "info";
+      severity: type === "error" || type === "sync_failed" ? "error" : "info",
       message,
       data,
       timestamp: new Date(),
-      resolved: false;
+      resolved: false,
     };
 
     this.events.push(event);

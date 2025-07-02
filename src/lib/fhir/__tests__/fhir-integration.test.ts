@@ -1,5 +1,5 @@
-import "../fhir-integration"
-import "@jest/globals"
+import "../fhir-integration";
+import "@jest/globals";
 import describe
 import test }
 import { beforeAll

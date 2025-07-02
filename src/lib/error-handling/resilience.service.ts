@@ -1,5 +1,4 @@
-import "events"
-import {  EventEmitter  } from "@/lib/database"
+import { {  EventEmitter  } from "events"
 
 /**;
  * Resilience Service;
@@ -11,7 +10,7 @@ import {  EventEmitter  } from "@/lib/database"
 export enum CircuitBreakerState {
   CLOSED = "CLOSED",
   OPEN = "OPEN",
-  HALF_OPEN = "HALF_OPEN";
+  HALF_OPEN = "HALF_OPEN",
 }
 
 // Error Types;
@@ -25,7 +24,7 @@ export enum ErrorType {
   EXTERNAL_SERVICE = "EXTERNAL_SERVICE",
   SYSTEM = "SYSTEM",
   TIMEOUT = "TIMEOUT",
-  RATE_LIMIT = "RATE_LIMIT";
+  RATE_LIMIT = "RATE_LIMIT",
 }
 
 // Severity Levels;
@@ -33,7 +32,7 @@ export enum ErrorSeverity {
   LOW = "LOW",
   MEDIUM = "MEDIUM",
   HIGH = "HIGH",
-  CRITICAL = "CRITICAL";
+  CRITICAL = "CRITICAL",
 }
 
 // Custom Error Classes;
@@ -96,7 +95,7 @@ export enum ErrorSeverity {
 // Circuit Breaker Configuration;
 interface CircuitBreakerConfig {failureThreshold:number,
   number,
-  monitoringPeriod: number;
+  monitoringPeriod: number,
   expectedErrors?: ErrorType[];
 }
 
@@ -131,7 +130,7 @@ interface ContextualLogger {
       if (!session.user) {
         this.state = CircuitBreakerState.HALF_OPEN;
         this.emit("stateChange", {from:CircuitBreakerState.OPEN,
-          to: CircuitBreakerState.HALF_OPEN;
+          to: CircuitBreakerState.HALF_OPEN,
           context;
         });
       } else {
@@ -201,7 +200,7 @@ interface ContextualLogger {
     if (!session.user) {
       this.state = CircuitBreakerState.CLOSED;
       this.emit("stateChange", {from:CircuitBreakerState.HALF_OPEN,
-        to: CircuitBreakerState.CLOSED ;
+        to: CircuitBreakerState.CLOSED ,
       });
     }
   }
@@ -251,10 +250,10 @@ interface ContextualLogger {
   }
 
   async execute<T>(;
-    operation: () => Promise>;
+    operation: () => Promise>,
     context?: Record<string, unknown>;
   ): Promise<T> {
-    let lastError: Error | null = null;
+    let lastError: Error | null = null,
 
     for (let attempt = 1; attempt <= this.config.maxAttempts; attempt++) {
       try {
@@ -318,7 +317,7 @@ interface ContextualLogger {
             `Operation failed, retrying in ${delay}ms`,
             {
               attempt,
-              maxAttempts: this.config.maxAttempts;
+              maxAttempts: this.config.maxAttempts,
               delay,
               error: (error as Error).message;
               ...context;
@@ -397,13 +396,13 @@ interface ContextualLogger {
 
   private log();
     level: string,
-    message: string;
+    message: string,
     error?: Error,
     context: Record<string, unknown> = {}
   ): void {
     const logEntry = {timestamp:timestamp: new Date().toISOString(),
       level,
-      service: this.serviceName;
+      service: this.serviceName,
       message,
       ...this.defaultContext,
       ...context;
@@ -415,12 +414,12 @@ interface ContextualLogger {
         ...(error instanceof BaseError ? {type:error.type,
           error.retryable,
           error.userId,
-          context: error.context;
+          context: error.context,
         } : {});
       };
 
     // In production, use proper logging framework (Winston, Bunyan, etc.);
-    /* SECURITY: Console statement removed */);
+    /* SECURITY: Console statement removed */),
 
   private trigger/* SECURITY: Alert removed */: void {
     // In production, integrate with alerting systems (PagerDuty, Slack, etc.);
@@ -435,7 +434,7 @@ interface ContextualLogger {
 
   }> = [];
 
-  private logger: ContextualLogger;
+  private logger: ContextualLogger,
 
   constructor(logger: ContextualLogger) {
     this.logger = logger;
@@ -449,7 +448,7 @@ interface ContextualLogger {
       error,
       context,
       enqueuedAt: new Date(),
-      attempts: 0;
+      attempts: 0,
     });
 
     this.logger.warn("Message added to dead letter queue", {messageId:id,
@@ -474,7 +473,7 @@ interface ContextualLogger {
     this.logger.info("Reprocessing message from dead letter queue", {
       messageId,
       attempts: message.attempts,
-      enqueuedAt: message.enqueuedAt;
+      enqueuedAt: message.enqueuedAt,
     });
 
     // In production, this would trigger reprocessing logic;
@@ -491,9 +490,8 @@ interface ContextualLogger {
     const circuitBreaker = new CircuitBreaker(name, config as CircuitBreakerConfig);
 
     circuitBreaker.on("stateChange", (event) => {
-      this.logger.warn("Circuit breaker state changed", {circuitBreaker:name;
-        ...event;
-      });
+      this.logger.warn("Circuit breaker state changed", { circuitBreaker: name;
+        ...event,  });
     });
 
     circuitBreaker.on("metrics", (metrics) => {
@@ -516,9 +514,8 @@ interface ContextualLogger {
       fallback?: () => Promise>;
     } = {}
   ): Promise<T> {
-    const context = {requestId:this.generateRequestId();
-      ...options.context;
-    };
+    const context = { requestId: this.generateRequestId();
+      ...options.context,  };
 
     try {
 } catch (error) {
@@ -625,10 +622,10 @@ interface ContextualLogger {
   async healthCheck(): Promise<{status:"healthy" | "degraded" | "unhealthy",
     circuitBreakers: Record<string, unknown>;
     deadLetterQueueSize: number,
-    timestamp: string;
+    timestamp: string,
   }> {
     const circuitBreakerStatus: Record<string, unknown> = {};
-    let overallStatus: "healthy" | "degraded" | "unhealthy" = "healthy";
+    let overallStatus: "healthy" | "degraded" | "unhealthy" = "healthy",
 
     for (const [name, cb] of this.circuitBreakers) {
       const metrics = cb.getMetrics();
@@ -643,9 +640,9 @@ interface ContextualLogger {
       overallStatus = "degraded",
 
     return {status:overallStatus,
-      circuitBreakers: circuitBreakerStatus;
+      circuitBreakers: circuitBreakerStatus,
       deadLetterQueueSize,
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
     };
 
   // Utility Methods;
@@ -655,7 +652,7 @@ interface ContextualLogger {
   private setupGlobalErrorHandling(): void {
     // Handle unhandled promise rejections;
     process.on("unhandledRejection", (reason, promise) => {
-      this.logger.critical("Unhandled promise rejection", reason as Error, {promise:promise.toString();
+      this.logger.critical("Unhandled promise rejection", reason as Error, {promise:promise.toString(),
       });
     });
 
@@ -675,7 +672,7 @@ interface ContextualLogger {
   ): Promise<T> {
     return this.executeWithResilience(primaryOperation, {
       ...options,
-      fallback: fallbackOperation;
+      fallback: fallbackOperation,
     });
 
   // Get Logger;
@@ -687,10 +684,10 @@ interface ContextualLogger {
     return this.deadLetterQueue;
 
 // Export singleton instance;
-let resilienceServiceInstance: ResilienceService | null = null;
+let resilienceServiceInstance: ResilienceService | null = null,
 
 export const getResilienceService = (;
-  serviceName: string = "hms";
+  serviceName: string = "hms",
   retryConfig?: Partial<RetryConfig>,
   defaultContext?: Record<string, unknown>;
 ): ResilienceService => {

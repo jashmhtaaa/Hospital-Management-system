@@ -1,6 +1,5 @@
-import "react"
-import React
-import useEffect }
+import { React
+import useEffect } from "react"
 import {
 import { useState
 
@@ -14,9 +13,8 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/button"
-import "lucide-react"
-import Trash2 }
+import { } from "lucide-react"
+import Trash2 } from "@/components/ui/button"
 import { Button }
 import { Edit
 
@@ -28,7 +26,7 @@ interface SurgeryType {
   id: string,
   string | null,
   number | null,
-  updated_at: string;
+  updated_at: string,
 export default const _OTSurgeryTypeList = () {
   const [surgeryTypes, setSurgeryTypes] = useState<SurgeryType[]>([]);
   const [loading, setLoading] = useState(true);
@@ -86,25 +84,25 @@ export default const _OTSurgeryTypeList = () {
             id: "st-1",
             "Surgical removal of the appendix.",
             60,
-            updated_at: "2025-04-27T10:00:00Z";
+            updated_at: "2025-04-27T10:00:00Z",
           },
           {
             id: "st-2",
             "Surgical removal of the gallbladder via laparoscopy.",
             90,
-            updated_at: "2025-04-27T11:00:00Z";
+            updated_at: "2025-04-27T11:00:00Z",
           },
           {
             id: "st-3",
             "Minimally invasive surgical procedure on a joint.",
             120,
-            updated_at: "2025-04-28T08:00:00Z";
+            updated_at: "2025-04-28T08:00:00Z",
           },
           {
             id: "st-4",
             "Surgical procedure to restore normal blood flow to an obstructed coronary artery.",
             240,
-            updated_at: "2025-04-26T14:00:00Z";
+            updated_at: "2025-04-26T14:00:00Z",
           }];
         setSurgeryTypes(mockData),
         setLoading(false);
@@ -158,15 +156,15 @@ export default const _OTSurgeryTypeList = () {
                     <TableCell>;
                       >;
                         <Button>;
-                          variant="outline";
-                          size="icon";
+                          variant = "outline",
+                          size = "icon",
                           title="Edit Surgery Type";
                         >;
                           <Edit className="h-4 w-4" />;
                         </Button>;
                         <Button>;
-                          variant="destructive";
-                          size="icon";
+                          variant = "destructive",
+                          size = "icon",
                           title="Delete Surgery Type";
                         >;
                           <Trash2 className="h-4 w-4" />;

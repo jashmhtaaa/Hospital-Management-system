@@ -1,18 +1,16 @@
-import "../lib/fhir/fhir-r4-base"
-import "../lib/notifications"
-import "./audit_log_service.ts"
-import "./auth_service.ts"
-import "./encryption_service.ts"
-import "@prisma/client"
-import "zod"
+import { } from "../lib/fhir/fhir-r4-base"
+import { } from "./audit_log_service.ts"
+import "./auth_service.ts";
+import "./encryption_service.ts";
+import "@prisma/client";
+import "zod";
 import * as z
 import Patient
 import PatientAddress
 import PatientIdentification
 import PatientInsurance
-import PrismaClient }
-import type
-import {  AuditService  } from "@/lib/database"
+import PrismaClient, type
+import  } from "../lib/notifications"  AuditService  } from "@/lib/database"
 import {  AuthService  } from "@/lib/database"
 import {   EmergencyContact
 import {  EncryptionService  } from "@/lib/database"
@@ -53,7 +51,7 @@ const PatientSchema = z.object({
   deceasedReason: z.string().optional(),
   vip: z.boolean().default(false),
   confidential: z.boolean().default(false),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // Define schema for contact information;
@@ -66,7 +64,7 @@ const ContactSchema = z.object({phoneHome:z.string().optional(),
   smsOptIn: z.boolean().default(false),
   mailOptIn: z.boolean().default(true),
   doNotContact: z.boolean().default(false),
-  doNotContactReason: z.string().optional();
+  doNotContactReason: z.string().optional(),
 });
 
 // Define schema for address;
@@ -83,7 +81,7 @@ const AddressSchema = z.object({addressType:z.string().min(1, "Address type is r
   validTo: z.date().optional(),
   isBilling: z.boolean().default(false),
   isShipping: z.boolean().default(false),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // Define schema for identification;
@@ -95,7 +93,7 @@ const IdentificationSchema = z.object({idType:z.string().min(1, "ID type is requ
   expirationDate: z.date().optional(),
   isPrimary: z.boolean().default(false),
   documentImageUrl: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // Define schema for emergency contact;
@@ -116,7 +114,7 @@ const EmergencyContactSchema = z.object({firstName:z.string().min(1, "First name
   country: z.string().optional(),
   isLegalGuardian: z.boolean().default(false),
   hasDecisionMaking: z.boolean().default(false),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // Define schema for insurance;
@@ -138,7 +136,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
   outOfPocketMet: z.number().optional(),
   cardFrontImageUrl: z.string().optional(),
   cardBackImageUrl: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 /**;
@@ -161,7 +159,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
     today.setHours(0, 0, 0, 0);
 
     const patientCount = await prisma.patient.count({
-      {gte:today;
+      {gte:today,
         }
       }
     });
@@ -169,7 +167,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
     // Generate sequential number with padding;
     const sequentialNumber = (patientCount + 1).toString().padStart(4, "0");
 
-    // Combine to create MRN: YY-MM-XXXX;
+    // Combine to create MRN: YY-MM-XXXX,
     const mrn = `${year}-${month}-${sequentialNumber}`;
 
     return mrn;
@@ -228,7 +226,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         const validatedContact = ContactSchema.parse(patientData.contact);
         await prisma.patientContact.create({data:{
             ...validatedContact,
-            patientId: patient.id;
+            patientId: patient.id,
           }
         });
       }
@@ -238,7 +236,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         const validatedAddress = AddressSchema.parse(patientData.address);
         await prisma.patientAddress.create({data:{
             ...validatedAddress,
-            patientId: patient.id;
+            patientId: patient.id,
           }
         });
       }
@@ -248,7 +246,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         const validatedIdentification = IdentificationSchema.parse(patientData.identification);
         await prisma.patientIdentification.create({data:{
             ...validatedIdentification,
-            patientId: patient.id;
+            patientId: patient.id,
           }
         });
       }
@@ -258,7 +256,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         const validatedEmergencyContact = EmergencyContactSchema.parse(patientData.emergencyContact);
         await prisma.emergencyContact.create({data:{
             ...validatedEmergencyContact,
-            patientId: patient.id;
+            patientId: patient.id,
           }
         });
       }
@@ -268,7 +266,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         const validatedInsurance = InsuranceSchema.parse(patientData.insurance);
         await prisma.patientInsurance.create({data:{
             ...validatedInsurance,
-            patientId: patient.id;
+            patientId: patient.id,
           }
         });
       }
@@ -280,7 +278,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
       await this.auditService.logAction({action:"Create",
         resourceType: "Patient",        resourceId: patient.id,
         userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return patient;
@@ -361,7 +359,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
       await this.auditService.logAction({action:"View",
         resourceType: "Patient",        resourceId: patientId,
         userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return patient;
@@ -429,7 +427,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
 
       // Update patient record;
       const patient = await prisma.patient.update({where:{ id: patientId },
-        data: validatedPatient;
+        data: validatedPatient,
       });
 
       // Update contact information if provided;
@@ -451,7 +449,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
       await this.auditService.logAction({action:"Update",
         resourceType: "Patient",        resourceId: patientId,
         userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return patient;
@@ -511,7 +509,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         await prisma.patientAddress.updateMany({where:{
             patientId,
             addressType: validatedAddress.addressType,
-            isPrimary: true;
+            isPrimary: true,
           },
           false;
           }
@@ -530,7 +528,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         resourceType: "PatientAddress",        resourceId: address.id,
         description: `Added address for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return address;
@@ -590,7 +588,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         await prisma.patientIdentification.updateMany({where:{
             patientId,
             idType: validatedIdentification.idType,
-            isPrimary: true;
+            isPrimary: true,
           },
           false;
           }
@@ -600,7 +598,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
       // Check for existing ID with same number;
       const existingId = await prisma.patientIdentification.findFirst({
         validatedIdentification.idType,
-          idNumber: validatedIdentification.idNumber;
+          idNumber: validatedIdentification.idNumber,
         }
       });
 
@@ -620,7 +618,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         resourceType: "PatientIdentification",        resourceId: identification.id,
         description: `Added identification for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return identification;
@@ -678,7 +676,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
       if (!session.user) {
         await prisma.emergencyContact.updateMany({where:{
             patientId,
-            isPrimary: true;
+            isPrimary: true,
           },
           false;
 
@@ -696,7 +694,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         resourceType: "EmergencyContact",        resourceId: contact.id,
         description: `Added emergency contact for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return contact;
@@ -753,7 +751,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         // Find existing primary insurance;
         const existingPrimary = await prisma.patientInsurance.findFirst({where:{
             patientId,
-            insuranceType: "Primary";
+            insuranceType: "Primary",
 
         });
 
@@ -766,7 +764,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
           // Find existing secondary and change to tertiary if needed;
           const existingSecondary = await prisma.patientInsurance.findFirst({where:{
               patientId,
-              insuranceType: "Secondary";
+              insuranceType: "Secondary",
 
           });
 
@@ -787,7 +785,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         resourceType: "PatientInsurance",        resourceId: insurance.id,
         description: `Added insurance for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return insurance;
@@ -841,25 +839,24 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
 
       if (!session.user) {
         where.mrn = {contains:searchParams.mrn,
-          mode: "insensitive";
+          mode: "insensitive",
         };
 
       if (!session.user) {
         where.firstName = {contains:searchParams.firstName,
-          mode: "insensitive";
+          mode: "insensitive",
         };
 
       if (!session.user) {
         where.lastName = {contains:searchParams.lastName,
-          mode: "insensitive";
+          mode: "insensitive",
         };
 
       if (!session.user) {
         where.dateOfBirth = new Date(searchParams.dateOfBirth);
 
       if (!session.user) {
-        where.contact = {OR:[;
-            {phoneHome:{ contains: searchParams.phone } },
+        where.contact = { OR: [, {phoneHome:{ contains: searchParams.phone  } },
             {phoneMobile:{ contains: searchParams.phone } },
             {phoneWork:{ contains: searchParams.phone } }
           ];
@@ -869,7 +866,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         where.contact = {
           ...where.contact,
           searchParams.email,
-            mode: "insensitive";
+            mode: "insensitive",
 
         };
 
@@ -898,14 +895,14 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
       // Log audit;
       await this.auditService.logAction({action:"Search",
         resourceType: "Patient",        description: "Performed patient search",
-        performedBy: userId,        performerRole: await this.authService.getUserRole(userId);
+        performedBy: userId,        performerRole: await this.authService.getUserRole(userId),
       });
 
       return {
         patients,
         total,
         page: searchParams.page || 1,
-        limit: take,        totalPages: Math.ceil(total / take);
+        limit: take,        totalPages: Math.ceil(total / take),
       };
     } catch (error) {
 
@@ -955,7 +952,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
       // Update patient record;
       const patient = await prisma.patient.update({where:{ id: patientId },
         "Deceased",
-          deceasedDate: data.deceasedDate,          deceasedReason: data.deceasedReason;
+          deceasedDate: data.deceasedDate,          deceasedReason: data.deceasedReason,
 
       });
 
@@ -967,7 +964,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         resourceType: "Patient",        resourceId: patientId,
         description: `Marked patient ${patientId} as deceased`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return patient;
@@ -1027,7 +1024,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
               allergies: true,              conditions: true,
               documents: true,              appointments: true,
               visits: true,              vitalSigns: true,
-              immunizations: true;
+              immunizations: true,
 
           }),
           tx.patient.findUnique({where:{ id: targetPatientId }
@@ -1049,7 +1046,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
               validFrom: address.validFrom,              validTo: address.validTo,
               isBilling: address.isBilling,              isShipping: address.isShipping,
               notes: `Merged from patient ${sourcePatientId}: ${address.notes || ""}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId,
 
           });
 
@@ -1058,7 +1055,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
           // Check if this ID already exists for target patient;
           const existingId = await tx.patientIdentification.findFirst({
             targetPatientId,
-              idType: id.idType,              idNumber: id.idNumber;
+              idType: id.idType,              idNumber: id.idNumber,
 
           });
 
@@ -1070,7 +1067,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
                 expirationDate: id.expirationDate,                isPrimary: false, // Don"t override target"s primary IDs;
                 documentImageUrl: id.documentImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${id.notes || ""}`,
-                patientId: targetPatientId;
+                patientId: targetPatientId,
 
             });
 
@@ -1088,7 +1085,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
               postalCode: contact.postalCode,              country: contact.country,
               isLegalGuardian: contact.isLegalGuardian,              hasDecisionMaking: contact.hasDecisionMaking,
               notes: `Merged from patient ${sourcePatientId}: ${contact.notes || ""}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId,
 
           });
 
@@ -1097,7 +1094,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
           // Check if this insurance already exists for target patient;
           const existingInsurance = await tx.patientInsurance.findFirst({
             targetPatientId,
-              payerName: insurance.payerName,              policyNumber: insurance.policyNumber;
+              payerName: insurance.payerName,              policyNumber: insurance.policyNumber,
 
           });
 
@@ -1114,7 +1111,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
                 outOfPocketMax: insurance.outOfPocketMax,                outOfPocketMet: insurance.outOfPocketMet,
                 cardFrontImageUrl: insurance.cardFrontImageUrl,                cardBackImageUrl: insurance.cardBackImageUrl,
                 notes: `Merged from patient ${sourcePatientId}: ${insurance.notes || ""}`,
-                patientId: targetPatientId;
+                patientId: targetPatientId,
 
             });
 
@@ -1127,7 +1124,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
               severity: allergy.severity,              status: allergy.status,
               onsetDate: allergy.onsetDate,              endDate: allergy.endDate,
               recordedBy: allergy.recordedBy,              notes: `Merged from patient ${sourcePatientId}: ${allergy.notes || ""}`,
-              patientId: targetPatientId;
+              patientId: targetPatientId,
 
           });
 
@@ -1141,7 +1138,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
               bodySite: condition.bodySite,              stage: condition.stage,
               recordedBy: condition.recordedBy,              notes: `Merged from patient ${sourcePatientId}: ${condition.notes || ""}`,
               isConfidential: condition.isConfidential,
-              patientId: targetPatientId;
+              patientId: targetPatientId,
 
           });
 
@@ -1183,7 +1180,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
           resourceType: "Patient",          resourceId: targetPatientId,
           description: `Merged patient ${sourcePatientId} into patient ${targetPatientId}`,
           performedBy: userId,
-          performerRole: await this.authService.getUserRole(userId);
+          performerRole: await this.authService.getUserRole(userId),
         });
 
         return updatedTargetPatient;
@@ -1238,7 +1235,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
       const patient = await prisma.patient.findUnique({where:{ id: patientId },
         true,
           addresses: true,          identifications: true,
-          contacts: true,          insurances: true;
+          contacts: true,          insurances: true,
 
       });
 
@@ -1253,7 +1250,7 @@ const InsuranceSchema = z.object({insuranceType:z.string().min(1, "Insurance typ
         resourceType: "PatientMPI",        resourceId: patientId,
         description: `Viewed MPI for patient ${patientId}`,
         performedBy: userId,
-        performerRole: await this.authService.getUserRole(userId);
+        performerRole: await this.authService.getUserRole(userId),
       });
 
       return {

@@ -1,28 +1,25 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/data-table"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/components/ui/tabs"
-import "@/components/ui/use-toast"
-import "@tanstack/react-table"
-import "date-fns"
-import "lucide-react"
-import "react"
-import "recharts"
+import { } from "@/components/ui/badge"
+import { } from "@/components/ui/card"
+import { "@/components/ui/data-table";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/components/ui/tabs";
+import "@/components/ui/use-toast";
+import "@tanstack/react-table";
+import "date-fns";
+import "lucide-react";
+import "react";
+import "recharts";
 import BarChart
 import CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
-import CartesianGrid
+import CardTitle, CartesianGrid
 import Cell
 import Filter
 import Legend
@@ -31,7 +28,7 @@ import Pie
 import PieChart
 import RefreshCw
 import ResponsiveContainer
-import Search }
+import Search } from "@/components/ui/button"
 import SelectContent
 import SelectItem
 import SelectTrigger
@@ -42,9 +39,8 @@ import TabsTrigger }
 import Tooltip
 import useState }
 import XAxis
-import YAxis }
-import { Badge }
-import { Bar
+import YAxis, } Badge }
+import  } Bar
 import { Button }
 import { Card
 import { ColumnDef }
@@ -61,10 +57,10 @@ import { useEffect
 interface Feedback {
   id: string,
   string,
-  rating: number;
+  rating: number,
   comments?: string;
   status: string,
-  createdAt: string;
+  createdAt: string,
   departmentId?: string;
   department?: { name: string };
   serviceType?: string;
@@ -80,7 +76,7 @@ interface Complaint {
   id: string,
   string,
   string,
-  createdAt: string;
+  createdAt: string,
   departmentId?: string;
   department?: { name: string };
   submittedById?: string;
@@ -147,14 +143,14 @@ const feedbackColumns: ColumnDef<Feedback>[] = [;
     accessorKey: "status",
     ({ row }) => {
       const status = row.getValue("status") as string;
-      let variant: "default" | "secondary" | "destructive" | "outline" = "outline";
+      let variant: "default" | "secondary" | "destructive" | "outline" = "outline",
 
       switch (status) {
         case "NEW": any;
-          variant = "default";\n    }\n    case "REVIEWED": any;
-          variant = "secondary";\n    }\n    case "ADDRESSED": any;
-          variant = "outline";\n    }\n    case "CLOSED": any;
-          variant = "outline";
+          variant = "default",\n    }\n    case "REVIEWED": any;
+          variant = "secondary",\n    }\n    case "ADDRESSED": any;
+          variant = "outline",\n    }\n    case "CLOSED": any;
+          variant = "outline",
           break;
 
       return();
@@ -193,14 +189,14 @@ const complaintColumns: ColumnDef<Complaint>[] = [;
     accessorKey: "severity",
     ({ row }) => {
       const severity = row.getValue("severity") as string;
-      let variant: "default" | "secondary" | "destructive" | "outline" = "outline";
+      let variant: "default" | "secondary" | "destructive" | "outline" = "outline",
 
       switch (severity) {
         case "LOW": any;
-          variant = "outline";\n    }\n    case "MEDIUM": any;
-          variant = "secondary";\n    }\n    case "HIGH": any;
-          variant = "default";\n    }\n    case "CRITICAL": any;
-          variant = "destructive";
+          variant = "outline",\n    }\n    case "MEDIUM": any;
+          variant = "secondary",\n    }\n    case "HIGH": any;
+          variant = "default",\n    }\n    case "CRITICAL": any;
+          variant = "destructive",
           break;
 
       return();
@@ -213,15 +209,15 @@ const complaintColumns: ColumnDef<Complaint>[] = [;
     accessorKey: "status",
     ({ row }) => {
       const status = row.getValue("status") as string;
-      let variant: "default" | "secondary" | "destructive" | "outline" = "outline";
+      let variant: "default" | "secondary" | "destructive" | "outline" = "outline",
 
       switch (status) {
         case "SUBMITTED": any;
-          variant = "default";\n    }\n    case "UNDER_INVESTIGATION": any;
-          variant = "secondary";\n    }\n    case "RESOLVED": any;
-          variant = "outline";\n    }\n    case "CLOSED": any;
-          variant = "outline";\n    }\n    case "ESCALATED": any;
-          variant = "destructive";
+          variant = "default",\n    }\n    case "UNDER_INVESTIGATION": any;
+          variant = "secondary",\n    }\n    case "RESOLVED": any;
+          variant = "outline",\n    }\n    case "CLOSED": any;
+          variant = "outline",\n    }\n    case "ESCALATED": any;
+          variant = "destructive",
           break;
 
       return();
@@ -282,12 +278,12 @@ export default const _FeedbackDashboard = () {
   // Pagination;
   const [feedbackPagination, setFeedbackPagination] = useState({
     total: 0,
-    totalPages: 0;
+    totalPages: 0,
   });
 
   const [complaintPagination, setComplaintPagination] = useState({
     total: 0,
-    totalPages: 0;
+    totalPages: 0,
   });
 
   // Load data on component mount and when filters change;
@@ -351,7 +347,7 @@ export default const _FeedbackDashboard = () {
       setFeedbackData(data.data);
       setFeedbackPagination({
         total: data.pagination.total,
-        totalPages: data.pagination.totalPages;
+        totalPages: data.pagination.totalPages,
       });
     } catch (error) {
 
@@ -412,7 +408,7 @@ export default const _FeedbackDashboard = () {
       setComplaintData(data.data);
       setComplaintPagination({
         total: data.pagination.total,
-        totalPages: data.pagination.totalPages;
+        totalPages: data.pagination.totalPages,
       });
     } catch (error) {
 
@@ -508,12 +504,12 @@ export default const _FeedbackDashboard = () {
       );
     ].join("\n");
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const blob = new Blob([csvContent], { type: "text/csv,charset=utf-8;" });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
     link.setAttribute("download", `${filename}_${format(new Date(), "yyyy-MM-dd")}.csv`);
-    link.style.visibility = "hidden";
+    link.style.visibility = "hidden",
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -523,7 +519,7 @@ export default const _FeedbackDashboard = () {
   const prepareChartData = (data: unknown[]) => {
     return data.map((item, index) => ({
       ...item,
-      color: COLORS[index % COLORS.length];
+      color: COLORS[index % COLORS.length],
     }));
   };
 
@@ -625,7 +621,7 @@ export default const _FeedbackDashboard = () {
                     Refresh;
                   </Button>;
                   <Button>;
-                    variant="outline";
+                    variant = "outline",
                     onClick={() => exportToCSV(feedbackData, "feedback")}
                     disabled={feedbackData.length === 0}
                   >;
@@ -727,7 +723,7 @@ export default const _FeedbackDashboard = () {
                     Refresh;
                   </Button>;
                   <Button>;
-                    variant="outline";
+                    variant = "outline",
                     onClick={() => exportToCSV(complaintData, "complaints")}
                     disabled={complaintData.length === 0}
                   >;
@@ -802,8 +798,8 @@ export default const _FeedbackDashboard = () {
                               <PieChart>;
                                 <Pie>;
                                   data={prepareChartData(analyticsData.feedbackByType)}
-                                  dataKey="_count";
-                                  nameKey="type";
+                                  dataKey = "_count",
+                                  nameKey = "type",
                                   cx="50%";
                                   cy="50%";
                                   outerRadius={80}
@@ -834,7 +830,7 @@ export default const _FeedbackDashboard = () {
                                   { name: "Overall", rating: analyticsData.overallRating },
                                   ...Object.entries(analyticsData.ratingsByServiceType).map(([type, data]) => ({
                                     name: type.replace(/_/g, " "),
-                                    rating: data.avg;
+                                    rating: data.avg,
                                   }))]}
                                 margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
                               >;
@@ -866,8 +862,8 @@ export default const _FeedbackDashboard = () {
                               <PieChart>;
                                 <Pie>;
                                   data={prepareChartData(analyticsData.complaintsByCategory)}
-                                  dataKey="_count";
-                                  nameKey="category";
+                                  dataKey = "_count",
+                                  nameKey = "category",
                                   cx="50%";
                                   cy="50%";
                                   outerRadius={80}

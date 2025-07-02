@@ -1,9 +1,8 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../models/domain-models"
-import "next/server"
-import getPrescriptionById }
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../models/domain-models";
+import "next/server";
+import getPrescriptionById } from "../../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -27,7 +26,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const getPrescriptionById,
@@ -37,7 +36,7 @@ const getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const () => Promise.resolve(null),
@@ -47,7 +46,7 @@ const () => Promise.resolve(null),
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 /**;
@@ -130,7 +129,7 @@ export const POST = async (req: any) => {
     // For certain reason codes, create alerts or notifications;
     if (!session.user) {
       // In a real implementation, notify pharmacy about stock issue;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     } else if (!session.user) {
       // In a real implementation, create alert for clinical staff;
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -141,13 +140,13 @@ export const POST = async (req: any) => {
       data.patientId,
       data.medicationId,
         data.reasonCode,
-        reason: data.reason;
+        reason: data.reason,
     });
 
     // Return response;
     return NextResponse.json();
       {id:administrationId,
-        message: "Missed dose recorded successfully";
+        message: "Missed dose recorded successfully",
       },
       {status:201 }
     );

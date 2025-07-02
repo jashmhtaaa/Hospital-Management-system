@@ -1,28 +1,25 @@
-import "@/components/layout/DashboardLayout"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/components/ui/textarea"
-import "@/hooks/use-toast"
-import "@/types/patient"
-import "next/navigation"
-import "react"
-import "zod"
+import { } from "@/components/layout/DashboardLayout"
+import { } from "@/components/ui/card"
+import { "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/components/ui/textarea";
+import "@/hooks/use-toast";
+import "@/types/patient";
+import "next/navigation";
+import "react";
+import "zod";
 import CardContent
 import CardHeader
-import CardTitle }
-import React
+import CardTitle, React
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "@/components/ui/button"
 import type
 import useRouter }
-import useState }
-import { Button }
-import { Card
+import useState, } Button }
+import  } Card
 import { DashboardLayout }
 import { Input }
 import { Label }
@@ -59,7 +56,7 @@ const PatientUpdateSchema = z.object({
     past_medical_history: z.string().optional(),
     current_medications: z.string().optional(),
     insurance_provider: z.string().optional(),
-    insurance_policy_number: z.string().optional();
+    insurance_policy_number: z.string().optional(),
 }).partial().refine(obj => Object.keys(obj).length > 0, { message: "At least one field must be provided for update" });
 
 type FormData = Partial> // Use Partial<Patient> for form state;
@@ -116,10 +113,10 @@ export default const _EditPatientPage = () {
           throw new Error(errorData.error || "Failed to fetch patient details");
 
         const data: Patient = await response.json();
-        // Format date for input type="date";
+        // Format date for input type = "date",
         const formattedData = {
             ...data,
-            date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "";
+            date_of_birth: data.date_of_birth ? data.date_of_birth.split("T")[0] : "",
 
         setFormData(formattedData);
       } catch (err: unknown) { // Use unknown;
@@ -220,7 +217,7 @@ export default const _EditPatientPage = () {
         method: "PUT",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(dataToSend);
+        body: JSON.stringify(dataToSend),
       });
 
       const result: { error?: string } = await response.json();
@@ -230,7 +227,7 @@ export default const _EditPatientPage = () {
 
       toast({
         title: "Patient Updated",
-        description: `/* SECURITY: Template literal eliminated */;
+        description: `/* SECURITY: Template literal eliminated */,
       });
 
       router.push(`/dashboard/patients/${}`; // Redirect back to patient detail view;

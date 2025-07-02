@@ -1,8 +1,7 @@
-import "@/lib/prisma"
-import "next/server"
-import "zod"
+import { } from "next/server"
+import "zod";
 import {  
-import {  NextRequest  } from "@/lib/database"
+import {  NextRequest  } from "@/lib/prisma"
 import {  prisma  } from "@/lib/database"
 import {  z  } from "@/lib/database"
 
@@ -13,18 +12,16 @@ import {  z  } from "@/lib/database"
   createSuccessResponse,
   createPaginatedResponse;
 } from "@/lib/core/middleware";
-import "@/lib/core/errors"
-import BusinessLogicError }
-import NotFoundError
-import { ValidationError
+import { } from "@/lib/core/errors"
+import BusinessLogicError, NotFoundError
+import  } ValidationError
 
   claimStatusSchema,
   icd10CodeSchema,
   cptCodeSchema;
 } from "@/lib/core/validation";
-import "@/lib/core/fhir"
-import "@/lib/core/logging"
-import {  convertToFHIRClaim  } from "@/lib/database"
+import { } from "@/lib/core/logging"
+import {  convertToFHIRClaim  } from "@/lib/core/fhir"
 import {  logger  } from "@/lib/database"
 
 // Schema for claim creation;
@@ -32,7 +29,7 @@ const createClaimSchema = z.object({invoiceId:z.string().uuid(),
   insurancePolicyId: z.string().uuid(),
   icd10CodeSchema,
     description: z.string(),
-    primary: z.boolean().default(false);
+    primary: z.boolean().default(false),
   })).min(1),
   z.string().uuid(),
     serviceDate: z.coerce.date(),
@@ -40,10 +37,10 @@ const createClaimSchema = z.object({invoiceId:z.string().uuid(),
     unitPrice: z.number().positive(),
     quantity: z.number().int().positive(),
     totalPrice: z.number().positive(),
-    notes: z.string().optional();
+    notes: z.string().optional(),
   })).min(1),
   preAuthorizationNumber: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // Schema for claim query parameters;
@@ -71,7 +68,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   const where: unknown = {};
 
   if (!session.user) {
-    where.invoice = {patientId:query.patientId;
+    where.invoice = {patientId:query.patientId,
     };
 
   if (!session.user) {
@@ -123,7 +120,7 @@ export const _GET = withErrorHandling(async (req: any) => {
         throw new ValidationError("Start date must be before end date", "INVALID_DATE_RANGE");
 
       where.createdAt = {gte:startDate,
-        lte: endDate;
+        lte: endDate,
       };
     } catch (error) {
       throw new ValidationError("Invalid date range", "INVALID_DATE_RANGE");
@@ -140,17 +137,17 @@ export const _GET = withErrorHandling(async (req: any) => {
             true,
             {id:true,
                 true,
-                mrn: true;
+                mrn: true,
               }}}},
         {id:true,
             {
               true,
-                name: true;
+                name: true,
               }}}},
         diagnoses: true,
-        {serviceItem:true;
+        {serviceItem:true,
           }},
-        followUps: true;
+        followUps: true,
       }}),
     prisma.insuranceClaim.count(where )]);
 
@@ -252,10 +249,10 @@ export const _POST = withErrorHandling(async (req: any) => {
     return newClaim;
   });
 
-  logger.info("Insurance claim created", {claimId:claim.id;
+  logger.info("Insurance claim created", {claimId:claim.id,
     claimNumber,
     invoiceId: data.invoiceId,
-    insurancePolicyId: data.insurancePolicyId;
+    insurancePolicyId: data.insurancePolicyId,
   });
 
   return createSuccessResponse(claim);

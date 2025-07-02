@@ -1,8 +1,7 @@
-import "@/lib/audit"
-import "@/lib/logger"
-import "@prisma/client"
-import "zod"
-import logAudit }
+import { } from "@/lib/logger"
+import "@prisma/client";
+import "zod";
+import logAudit } from "@/lib/audit"
 import {   AuditAction
 import {  logger  } from "@/lib/database"
 import {  PrismaClient  } from "@/lib/database"
@@ -34,19 +33,19 @@ export const MedicationReconciliationSchema = z.object({dischargeId:z.string().u
     startDate: z.date().optional(),
     endDate: z.date().optional(),
     instructions: z.string().optional(),
-    continuePrescription: z.boolean().optional();
+    continuePrescription: z.boolean().optional(),
   }))});
 
 export const MedicationAdministrationSchema = z.object({orderId:z.string().uuid(),
   z.string().optional(),
     route: z.string().optional(),
     administeredAt: z.date().optional(),
-    notes: z.string().optional();
+    notes: z.string().optional(),
   }),
   updateOrderStatus: z.enum(["ACTIVE", "COMPLETED", "DISCONTINUED"]).optional()});
 
 export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
-  reason: z.string().min(1);
+  reason: z.string().min(1),
 });
 
 /**;
@@ -61,7 +60,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
           true,
             true,
             true,
-            allergies: true;
+            allergies: true,
           }}}});
 
     if (!session.user) {
@@ -87,9 +86,9 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
 
     // If allergies found, return warning;
     if (!session.user) {
-      return {warning:"Potential allergic reaction detected";
+      return {warning:"Potential allergic reaction detected",
         allergicMedications,
-        message: "Patient may be allergic to one or more ordered medications";
+        message: "Patient may be allergic to one or more ordered medications",
       };
 
     // Create medication orders;
@@ -105,7 +104,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
           medication.instructions,
           medication.priority || "ROUTINE",
           new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date(),
         }});
 
       createdOrders.push(order);
@@ -139,7 +138,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
           true,
             true;
           }},
-        encounter: true;
+        encounter: true,
       }});
 
     if (!session.user) {
@@ -158,7 +157,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
         "COMPLETED",
         new Date(),
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date(),
       }});
 
     // Log the medication reconciliation;
@@ -205,14 +204,14 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
         administeredBy: userId,
         "COMPLETED",
         createdAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date(),
       }});
 
     // Update medication order status if needed;
     if (!session.user) {
       await prisma.medicationOrder.update({where:{ id: order.id },
         data.updateOrderStatus,
-          updatedAt: new Date();
+          updatedAt: new Date(),
         }});
 
     // Log the medication administration;
@@ -255,7 +254,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
       "DISCONTINUED",
         userId,
         discontinuedAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date(),
       }});
 
     // Log the medication discontinuation;
@@ -294,7 +293,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
     return {
       patientId,
       activeMedications,
-      count: activeMedications.length;
+      count: activeMedications.length,
     };
 
   /**;
@@ -311,7 +310,7 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
       orderBy: {createdAt:"desc" },
       take: limit,
       {orderBy:{ administeredAt: "desc" },
-          take: 5;
+          take: 5,
         }}});
 
     // Group by encounter;
@@ -326,5 +325,5 @@ export const MedicationDiscontinueSchema = z.object({orderId:z.string().uuid(),
       patientId,
       medicationHistory,
       groupedByEncounter,
-      count: medicationHistory.length;
+      count: medicationHistory.length,
     };

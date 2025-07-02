@@ -1,9 +1,8 @@
-import "@/components/ui/dialog"
-import "@/lib/utils"
-import "lucide-react"
-import "react"
+import { } from "@/lib/utils"
+import "lucide-react";
+import "react";
 import * as React
-import DialogContent }
+import DialogContent } from "@/components/ui/dialog"
 import { cn }
 import { Dialog
 import { Search }
@@ -48,7 +47,7 @@ const CommandInput = React.forwardRef<;
     <CommandPrimitive.Input;
       ref={ref}
       className={cn();
-        "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder: text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50";
+        "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder: text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
         className;
       )}
       {...props}
@@ -142,7 +141,7 @@ const CommandShortcut = ({
     />;
   );
 }
-CommandShortcut.displayName = "CommandShortcut";
+CommandShortcut.displayName = "CommandShortcut",
 
 export {
   Command,

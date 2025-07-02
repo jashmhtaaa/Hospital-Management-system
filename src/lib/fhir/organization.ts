@@ -38,7 +38,7 @@ import {
       data.name,
       [{system:"https://terminology.hl7.org/CodeSystem/organization-type",
           code: this.getOrganizationTypeCode(data.type),
-          display: this.getOrganizationTypeDisplay(data.type);
+          display: this.getOrganizationTypeDisplay(data.type),
         }]];
     }
 
@@ -46,12 +46,12 @@ import {
     if (!session.user) {
       organization.identifier = [{use:"official",
         system: "urn:oid:2.16.840.1.113883.4.7", // Healthcare organization identifier;
-        value: data.identifier;
+        value: data.identifier,
       }];
     }
 
     // Add contact information;
-    const telecom: FHIRContactPoint[] = [];
+    const telecom: FHIRContactPoint[] = [],
 
     if (!session.user) {
       telecom.push({system:"phone",
@@ -87,7 +87,7 @@ import {
     // Add parent organization reference;
     if (!session.user) {
       organization.partOf = {reference:`Organization/${data.parentOrganizationId}`,
-        type: "Organization";
+        type: "Organization",
       };
     }
 
@@ -100,10 +100,10 @@ import {
   static createHospital(string,
     string,
       string,
-      zipCode: string;
+      zipCode: string,
       country?: string;
     phone: string,
-    email: string;
+    email: string,
     website?: string;
     licenseNumber?: string;
     accreditation?: string[];
@@ -111,7 +111,7 @@ import {
     const hospital = this.createBasicOrganization({
       ...data,
       type: "hospital",
-      active: true;
+      active: true,
     });
 
     // Add additional identifiers for hospital;
@@ -123,7 +123,7 @@ import {
             "License number";
           }];
         },
-        value: data.licenseNumber;
+        value: data.licenseNumber,
       });
     }
 
@@ -147,7 +147,7 @@ import {
   static createDepartment(string;
     identifier?: string;
     hospitalId: string,
-    departmentType: "emergency" | "icu" | "surgery" | "cardiology" | "pediatrics" | "radiology" | "laboratory" | "pharmacy" | "administration";
+    departmentType: "emergency" | "icu" | "surgery" | "cardiology" | "pediatrics" | "radiology" | "laboratory" | "pharmacy" | "administration",
     phone?: string;
     email?: string;
     location?: string;
@@ -162,7 +162,7 @@ import {
     department.type!.push({
       "https://snomed.info/sct",
         code: this.getDepartmentCode(data.departmentType),
-        display: this.getDepartmentDisplay(data.departmentType);
+        display: this.getDepartmentDisplay(data.departmentType),
       }];
     });
 
@@ -184,7 +184,7 @@ import {
     const clinic = this.createBasicOrganization({
       ...data,
       type: "clinic",
-      active: true;
+      active: true,
     });
 
     // Add specialty type;
@@ -364,13 +364,13 @@ import {
    * Format organization for display;
    */;
   static formatForDisplay(string,
-    type: string;
+    type: string,
     phone?: string;
     email?: string;
     website?: string;
-    address: string;
+    address: string,
     identifier?: string;
-    isActive: boolean;
+    isActive: boolean,
     parentOrganization?: string;
   } {
     return {name:this.getDisplayName(organization),
@@ -381,7 +381,7 @@ import {
       address: this.getWorkAddress(organization),
       identifier: this.getPrimaryIdentifier(organization),
       isActive: this.isActive(organization),
-      parentOrganization: this.getParentOrganizationId(organization);
+      parentOrganization: this.getParentOrganizationId(organization),
     };
   }
 
@@ -389,7 +389,7 @@ import {
    * Validate FHIR Organization resource;
    */;
   static validateOrganization(organization: FHIROrganization): {valid:boolean, errors: string[] } {
-    const errors: string[] = [];
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Organization"");
@@ -418,7 +418,7 @@ import {
 
       });
 
-    return {valid:errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -466,7 +466,7 @@ import {
       const children = this.getChildOrganizations(organizations, org.id!);
       return {
         ...org,
-        children: children.map(child => buildHierarchy(child));
+        children: children.map(child => buildHierarchy(child)),
 
     };
 

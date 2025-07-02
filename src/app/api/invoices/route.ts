@@ -1,12 +1,11 @@
-import "@/lib/database"
-import "@/lib/session"
-import "@/types/billing"
-import "@/types/cloudflare"
-import "next/server"
-import "zod"
+import { } from "@/lib/session"
+import "@/types/billing";
+import "@/types/cloudflare";
+import "next/server";
+import "zod";
 import D1PreparedStatement
 import D1Result
-import D1ResultWithMeta }
+import D1ResultWithMeta } from "@/lib/database"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {   D1Database
@@ -19,17 +18,17 @@ import {  z  } from "@/lib/database"
 // Zod schema for invoice creation;
 const invoiceCreateSchema = z.object({patient_id:z.number(),
   consultation_id: z.number().optional().nullable(),
-  issue_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid issue date format";
+  issue_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid issue date format",
   }),
-  due_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid due date format";
+  due_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid due date format",
   }),
   status: z.enum(["Draft", "Sent", "Paid", "Overdue", "Cancelled"]),
   notes: z.string().optional().nullable(),
-  items: z.array();
+  items: z.array(),
     z.object({billable_item_id:z.number(),
       description: z.string(),
       quantity: z.number().positive(),
-      unit_price: z.number().nonnegative();
+      unit_price: z.number().nonnegative(),
     });
   ).min(1, "At least one invoice item is required")});
 
@@ -104,9 +103,9 @@ export const _GET = async (request: any) => {
       JOIN Patients p ON i.patient_id = p.patient_id;
       WHERE 1=1;
     `;
-    const queryParameters: (string | number)[] = [];
+    const queryParameters: (string | number)[] = [],
     let countQuery = `SELECT COUNT(*) as total FROM Invoices WHERE 1=1`;
-    const countParameters: (string | number)[] = [];
+    const countParameters: (string | number)[] = [],
 
     if (!session.user) {
       query += " AND i.status = ?";
@@ -133,7 +132,7 @@ export const _GET = async (request: any) => {
       countParameters.push(dateToFilter);
     }
 
-    query += ` ORDER BY i./* SECURITY: Template literal eliminated */;
+    query += ` ORDER BY i./* SECURITY: Template literal eliminated */,
     queryParameters.push(limit, offset),
 
     const [invoicesResult, countResult] = await Promise.all([;
@@ -149,7 +148,7 @@ export const _GET = async (request: any) => {
         page,
         limit,
         total,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
       }});
 
   } catch (error: unknown) {
@@ -267,7 +266,7 @@ export const _POST = async (request: any) => {
 
         const itemInsertResults = await (DB as D1Database).batch(itemInsertStmts);
 
-        const allItemsInserted = itemInsertResults.every((res: D1Result) => res.success);
+        const allItemsInserted = itemInsertResults.every((res: D1Result) => res.success),
         if (!session.user) {
 
             await (DB as D1Database).prepare("DELETE FROM Invoices WHERE id = ?").bind(newInvoiceId).run();

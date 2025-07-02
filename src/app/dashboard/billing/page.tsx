@@ -1,6 +1,5 @@
-import "react"
-import React
-import useEffect }
+import { React
+import useEffect } from "react"
 import {
 import { useState
 
@@ -19,8 +18,7 @@ import { useState
   TabsList,
   TabsTrigger;
 } from "@/components/ui/tabs";
-import "@/components/ui/button"
-import { Button }
+import { { Button } from "@/components/ui/button"
 
   Dialog,
   DialogContent,
@@ -29,9 +27,8 @@ import { Button }
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import "@/components/ui/input"
-import "@/components/ui/label"
-import { Input }
+import { } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { Label }
 
   Select,
@@ -40,15 +37,13 @@ import { Label }
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import "@/components/ui/alert"
-import "@/components/ui/badge"
-import "@/components/ui/data-table"
-import "@/components/ui/date-picker"
-import "@/components/ui/spinner"
-import "@/lib/formatters"
-import AlertDescription }
-import formatDate }
-import { Alert
+import { } from "@/components/ui/alert"
+import { } from "@/components/ui/data-table"
+import "@/components/ui/date-picker";
+import "@/components/ui/spinner";
+import "@/lib/formatters";
+import AlertDescription, formatDate } from "@/components/ui/badge"
+import  } Alert
 import { Badge }
 import { DataTable }
 import { DatePicker }
@@ -118,7 +113,7 @@ export default const _BillingDashboard = () {
           data = generatePackagesData(),\n    }\n    case "discounts": any;
           data = generateDiscountsData(),
           break;
-        default: data = generateInvoicesData();
+        default: data = generateInvoicesData(),
       }
 
       setBillingData(data);
@@ -132,9 +127,7 @@ export default const _BillingDashboard = () {
 
   // Simulated data generators;
   const generateInvoicesData = () => {
-    return {
-      invoices: [;
-        { id: "INV-2025-000123", patientId: "P-001", patientName: "John Smith", visitType: "OPD", billDate: "2025-05-25", totalAmount: 1250, paidAmount: 1250, outstandingAmount: 0, status: "paid" },
+    return { invoices: [, { id: "INV-2025-000123", patientId: "P-001", patientName: "John Smith", visitType: "OPD", billDate: "2025-05-25", totalAmount: 1250, paidAmount: 1250, outstandingAmount: 0, status: "paid"  },
         { id: "INV-2025-000124", patientId: "P-002", patientName: "Sarah Johnson", visitType: "IPD", billDate: "2025-05-24", totalAmount: 2340, paidAmount: 1500, outstandingAmount: 840, status: "partial" },
         { id: "INV-2025-000125", patientId: "P-003", patientName: "Michael Brown", visitType: "OPD", billDate: "2025-05-23", totalAmount: 890, paidAmount: 0, outstandingAmount: 890, status: "pending" },
         { id: "INV-2025-000126", patientId: "P-004", patientName: "Emily Davis", visitType: "ER", billDate: "2025-05-22", totalAmount: 1780, paidAmount: 0, outstandingAmount: 1780, status: "overdue" },
@@ -152,9 +145,7 @@ export default const _BillingDashboard = () {
   };
 
   const generatePaymentsData = () => {
-    return {
-      payments: [;
-        { id: "PAY-2025-000089", invoiceId: "INV-2025-000123", patientId: "P-001", patientName: "John Smith", paymentDate: "2025-05-25", amount: 1250, paymentMethod: "Credit Card", status: "completed", referenceNumber: "REF123456" },
+    return { payments: [, { id: "PAY-2025-000089", invoiceId: "INV-2025-000123", patientId: "P-001", patientName: "John Smith", paymentDate: "2025-05-25", amount: 1250, paymentMethod: "Credit Card", status: "completed", referenceNumber: "REF123456"  },
         { id: "PAY-2025-000090", invoiceId: "INV-2025-000124", patientId: "P-002", patientName: "Sarah Johnson", paymentDate: "2025-05-24", amount: 1500, paymentMethod: "Insurance", status: "completed", referenceNumber: "INS789012" },
         { id: "PAY-2025-000091", invoiceId: "INV-2025-000127", patientId: "P-005", patientName: "Robert Wilson", paymentDate: "2025-05-21", amount: 3450, paymentMethod: "Bank Transfer", status: "completed", referenceNumber: "BT345678" },
         { id: "PAY-2025-000092", invoiceId: "INV-2025-000133", patientId: "P-011", patientName: "Patricia Davis", paymentDate: "2025-05-23", amount: 1950, paymentMethod: "Cash", status: "completed", referenceNumber: "CSH901234" },
@@ -167,9 +158,7 @@ export default const _BillingDashboard = () {
   };
 
   const generateServiceItemsData = () => {
-    return {
-      serviceItems: [;
-        { id: "SVC-001", code: "CONS-GEN", name: "General Consultation", category: "Consultation", unitPrice: 500, taxRate: 5, active: true },
+    return { serviceItems: [, { id: "SVC-001", code: "CONS-GEN", name: "General Consultation", category: "Consultation", unitPrice: 500, taxRate: 5, active: true  },
         { id: "SVC-002", code: "CONS-SPE", name: "Specialist Consultation", category: "Consultation", unitPrice: 1000, taxRate: 5, active: true },
         { id: "SVC-003", code: "LAB-CBC", name: "Complete Blood Count", category: "Laboratory", unitPrice: 350, taxRate: 5, active: true },
         { id: "SVC-004", code: "LAB-LFT", name: "Liver Function Test", category: "Laboratory", unitPrice: 450, taxRate: 5, active: true },
@@ -189,9 +178,7 @@ export default const _BillingDashboard = () {
   };
 
   const generatePackagesData = () => {
-    return {
-      packages: [;
-        { id: "PKG-001", code: "HEALTH-BASIC", name: "Basic Health Checkup", description: "Includes general consultation, CBC, urine routine", totalPrice: 1200, discountPercentage: 10, active: true },
+    return { packages: [, { id: "PKG-001", code: "HEALTH-BASIC", name: "Basic Health Checkup", description: "Includes general consultation, CBC, urine routine", totalPrice: 1200, discountPercentage: 10, active: true  },
         { id: "PKG-002", code: "HEALTH-COMP", name: "Comprehensive Health Checkup", description: "Includes specialist consultation, CBC, LFT, KFT, lipid profile, chest X-ray", totalPrice: 3500, discountPercentage: 15, active: true },
         { id: "PKG-003", code: "HEALTH-EXEC", name: "Executive Health Checkup", description: "Includes specialist consultation, all blood tests, X-ray, ultrasound, ECG, stress test", totalPrice: 7500, discountPercentage: 20, active: true },
         { id: "PKG-004", code: "MATERNITY-BASIC", name: "Basic Maternity Package", description: "Includes all consultations, basic tests, normal delivery", totalPrice: 25000, discountPercentage: 10, active: true },
@@ -206,9 +193,7 @@ export default const _BillingDashboard = () {
   };
 
   const generateDiscountsData = () => {
-    return {
-      discounts: [;
-        { id: "DISC-001", code: "SENIOR", name: "Senior Citizen Discount", description: "Discount for patients above 60 years", discountType: "percentage", discountValue: 10, minBillAmount: 0, maxDiscountAmount: 5000, active: true },
+    return { discounts: [, { id: "DISC-001", code: "SENIOR", name: "Senior Citizen Discount", description: "Discount for patients above 60 years", discountType: "percentage", discountValue: 10, minBillAmount: 0, maxDiscountAmount: 5000, active: true  },
         { id: "DISC-002", code: "STAFF", name: "Staff Discount", description: "Discount for hospital staff and their family", discountType: "percentage", discountValue: 20, minBillAmount: 0, maxDiscountAmount: 10000, active: true },
         { id: "DISC-003", code: "COVID", name: "COVID Relief Discount", description: "Special discount for COVID patients", discountType: "percentage", discountValue: 15, minBillAmount: 0, maxDiscountAmount: 7500, active: true },
         { id: "DISC-004", code: "FESTIVE", name: "Festive Season Discount", description: "Special discount during festive season", discountType: "percentage", discountValue: 5, minBillAmount: 5000, maxDiscountAmount: 2500, active: true },
@@ -342,7 +327,7 @@ export default const _BillingDashboard = () {
         >;
           >;
             <Input>;
-              type="text";
+              type = "text",
               placeholder="Search...";
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -620,7 +605,7 @@ export default const _BillingDashboard = () {
                           "bg-blue-100 text-blue-800",
                           "bg-pink-100 text-pink-800",
                           "bg-green-100 text-green-800",
-                          overdue: "bg-red-100 text-red-800";
+                          overdue: "bg-red-100 text-red-800",
                         };
 
                         return();

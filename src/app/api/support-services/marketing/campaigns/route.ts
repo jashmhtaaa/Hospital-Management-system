@@ -1,10 +1,9 @@
-import "@/lib/auth"
-import "@/lib/permissions"
-import "@/lib/services/support-services/marketing/marketing.service"
-import "next-auth"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "@/lib/permissions"
+import "@/lib/services/support-services/marketing/marketing.service";
+import "next-auth";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  getServerSession  } from "@/lib/database"
@@ -21,7 +20,7 @@ const campaignFilterSchema = z.object({type:z.string().optional(),
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().default("1").transform(Number),
-  limit: z.string().default("10").transform(Number);
+  limit: z.string().default("10").transform(Number),
 });
 
 // Create campaign schema;
@@ -33,7 +32,7 @@ const createCampaignSchema = z.object({name:z.string().min(3, "Campaign name mus
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional();
+  kpis: z.any().optional(),
 });
 
 // Update campaign schema;
@@ -46,7 +45,7 @@ const updateCampaignSchema = z.object({name:z.string().min(3, "Campaign name mus
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional();
+  kpis: z.any().optional(),
 });
 
 // GET /api/support-services/marketing/campaigns;
@@ -90,7 +89,7 @@ export const _GET = async (request: any) => {
     }
 
     // Check permissions;
-    const hasPermission = await validatePermission(session.user.id, "marketing:read");
+    const hasPermission = await validatePermission(session.user.id, "marketing:read"),
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
     }
@@ -156,7 +155,7 @@ export const _POST = async (request: any) => {
     }
 
     // Check permissions;
-    const hasPermission = await validatePermission(session.user.id, "marketing:create");
+    const hasPermission = await validatePermission(session.user.id, "marketing:create"),
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
     }
@@ -224,7 +223,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
     }
 
     // Check permissions;
-    const hasPermission = await validatePermission(session.user.id, "marketing:read");
+    const hasPermission = await validatePermission(session.user.id, "marketing:read"),
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
     }
@@ -283,7 +282,7 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
     // Check permissions;
-    const hasPermission = await validatePermission(session.user.id, "marketing:update");
+    const hasPermission = await validatePermission(session.user.id, "marketing:update"),
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
 
@@ -348,7 +347,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
     // Check permissions;
-    const hasPermission = await validatePermission(session.user.id, "marketing:delete");
+    const hasPermission = await validatePermission(session.user.id, "marketing:delete"),
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
 
@@ -403,7 +402,7 @@ export const _GET_ANALYTICS = async (request: any, { params }: {params:{ id: str
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
     // Check permissions;
-    const hasPermission = await validatePermission(session.user.id, "marketing:analytics");
+    const hasPermission = await validatePermission(session.user.id, "marketing:analytics"),
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
 
@@ -458,7 +457,7 @@ export const _POST_CHANNEL = async (request: any, { params }: {params:{ id: stri
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
     // Check permissions;
-    const hasPermission = await validatePermission(session.user.id, "marketing:update");
+    const hasPermission = await validatePermission(session.user.id, "marketing:update"),
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
 
@@ -520,7 +519,7 @@ export const _POST_SEGMENT = async (request: any, { params }: {params:{ id: stri
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
 
     // Check permissions;
-    const hasPermission = await validatePermission(session.user.id, "marketing:update");
+    const hasPermission = await validatePermission(session.user.id, "marketing:update"),
     if (!session.user) {
       return NextResponse.json({error:"Forbidden" }, {status:403 });
 

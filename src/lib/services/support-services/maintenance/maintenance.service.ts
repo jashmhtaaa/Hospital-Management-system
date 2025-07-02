@@ -1,15 +1,13 @@
-import "@/lib/audit-logging"
-import "@/lib/models/maintenance"
-import "@/lib/prisma"
-import "@/lib/services/notification.service"
-import "@prisma/client"
+import { } from "@/lib/audit-logging"
+import { } from "@/lib/prisma"
+import "@/lib/services/notification.service";
+import "@prisma/client";
 import MaintenanceInventory
 import MaintenanceRequest
 import MaintenanceSchedule
 import MaintenanceVendor
-import MaintenanceWorkOrder }
-import toFHIRMaintenanceRequest }
-import {   Asset
+import MaintenanceWorkOrder, toFHIRMaintenanceRequest } from "@/lib/models/maintenance"
+import  }   Asset
 import {  createAuditLog  } from "@/lib/database"
 import {  NotificationService  } from "@/lib/database"
 import {  prisma  } from "@/lib/database"
@@ -67,11 +65,11 @@ import {  toFHIRAsset
     const fhirRequests = requests.map(request => toFHIRMaintenanceRequest(request));
 
     return {data:requests,
-      fhir: fhirRequests;
+      fhir: fhirRequests,
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
     };
   }
 
@@ -124,7 +122,7 @@ import {  toFHIRAsset
         description,
         priority,
         status: "PENDING",
-        requestedById: requestedBy;
+        requestedById: requestedBy,
         scheduledDate,
         estimatedHours,
         notes;
@@ -149,7 +147,7 @@ import {  toFHIRAsset
       entityId: request.id,
       request.id,
         assetId,
-        priority: priority;
+        priority: priority,
       }
     });
 
@@ -166,7 +164,7 @@ import {  toFHIRAsset
             true,
         true,
                 true,
-            parts: true;
+            parts: true,
       }
     });
 
@@ -176,7 +174,7 @@ import {  toFHIRAsset
 
     if (!session.user) {
       return {data:request,
-        fhir: toFHIRMaintenanceRequest(request);
+        fhir: toFHIRMaintenanceRequest(request),
       };
     }
 
@@ -189,7 +187,7 @@ import {  toFHIRAsset
   async updateMaintenanceRequest(id: string, data: Partial<MaintenanceRequest>, userId: string): Promise<MaintenanceRequest> {
     const request = await prisma.maintenanceRequest.findUnique({where:{ id },
       true,
-        asset: true;
+        asset: true,
       }
     });
 
@@ -219,7 +217,7 @@ import {  toFHIRAsset
       if (!session.user) {
         await prisma.asset.update({where:{ id: request.assetId },
           "OPERATIONAL",
-            lastMaintenanceDate: new Date();
+            lastMaintenanceDate: new Date(),
           }
         });
       }
@@ -261,7 +259,7 @@ import {  toFHIRAsset
   async createMaintenanceWorkOrder(requestId: string, data: unknown, userId: string): Promise<MaintenanceWorkOrder> {
     const request = await prisma.maintenanceRequest.findUnique({where:{ id: requestId },
       true,
-        asset: true;
+        asset: true,
       }
     });
 
@@ -314,7 +312,7 @@ import {  toFHIRAsset
         recipientIds: [data.assignedToId],
         {workOrderId:workOrder.id,
           request.locationId,
-          assetId: request.assetId;
+          assetId: request.assetId,
         }
       });
     }
@@ -380,10 +378,10 @@ import {  toFHIRAsset
           }
         },
         {location:true,
-            asset: true;
+            asset: true,
           }
         },
-        parts: true;
+        parts: true,
       }
     });
 
@@ -413,7 +411,7 @@ import {  toFHIRAsset
         if (!session.user) {
           await prisma.asset.update({where:{ id: workOrder.request.assetId },
             "OPERATIONAL",
-              lastMaintenanceDate: new Date();
+              lastMaintenanceDate: new Date(),
             }
           });
         }
@@ -481,7 +479,7 @@ import {  toFHIRAsset
           workOrderId,
           partName: part.partName,
           part.quantity,
-          unitCost: part.unitCost;
+          unitCost: part.unitCost,
           totalCost;
         }
       });
@@ -496,7 +494,7 @@ import {  toFHIRAsset
             true;
           }
         },
-        request: true;
+        request: true,
       }
     });
 
@@ -544,7 +542,7 @@ import {  toFHIRAsset
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
       }
     };
   }
@@ -558,7 +556,7 @@ import {  toFHIRAsset
         5,
           orderBy: {createdAt:"desc" }
         },
-        maintenanceSchedules: true;
+        maintenanceSchedules: true,
       }
     });
 
@@ -568,7 +566,7 @@ import {  toFHIRAsset
 
     if (!session.user) {
       return {data:asset,
-        fhir: toFHIRAsset(asset);
+        fhir: toFHIRAsset(asset),
       };
     }
 
@@ -715,9 +713,9 @@ import {  toFHIRAsset
         dayOfWeek,
         timeOfDay,
         taskTemplate,
-        isActive: true;
+        isActive: true,
         nextRun,
-        createdById: userId;
+        createdById: userId,
       },
       true,
         {
@@ -747,7 +745,7 @@ import {  toFHIRAsset
   async updateMaintenanceSchedule(id: string, data: unknown, userId: string): Promise<MaintenanceSchedule> {
     const schedule = await prisma.maintenanceSchedule.findUnique({where:{ id },
       true,
-        location: true;
+        location: true,
 
     });
 
@@ -802,7 +800,7 @@ import {  toFHIRAsset
 
       },
       true,
-        location: true;
+        location: true,
 
     });
 
@@ -894,7 +892,7 @@ import {  toFHIRAsset
 
     const where: unknown = {};
     if (!session.user) {
-      where.specialties = {has:specialty;
+      where.specialties = {has:specialty,
       };
 
     const [vendors, total] = await Promise.all([;
@@ -912,7 +910,7 @@ import {  toFHIRAsset
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
 
     };
 
@@ -943,7 +941,7 @@ import {  toFHIRAsset
     const where: unknown = {};
     if (!session.user)here.itemType = itemType;
     if (!session.user) {
-      where.currentStock = {lte:prisma.maintenanceInventory.fields.minimumStock;
+      where.currentStock = {lte:prisma.maintenanceInventory.fields.minimumStock,
       };
 
     const [items, total] = await Promise.all([;
@@ -961,7 +959,7 @@ import {  toFHIRAsset
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
 
     };
 
@@ -1009,7 +1007,7 @@ import {  toFHIRAsset
   async getMaintenanceAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {
     // Get date range based on period;
     const now = new Date();
-    let startDate: Date;
+    let startDate: Date,
 
     switch (period) {
       case "DAILY": any;
@@ -1023,18 +1021,18 @@ import {  toFHIRAsset
 
     // Get request counts by status;
     const requestsByStatus = await prisma.maintenanceRequest.groupBy({by:["status"],
-      {gte:startDate;
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get request counts by type;
     const requestsByType = await prisma.maintenanceRequest.groupBy({by:["requestType"],
-      {gte:startDate;
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get average completion time;
@@ -1048,21 +1046,21 @@ import {  toFHIRAsset
 
     // Get asset maintenance frequency;
     const assetMaintenance = await prisma.maintenanceRequest.groupBy({by:["assetId"],
-      {gte:startDate;
+      {gte:startDate,
         },
         null;
 
       },
       _count: true,
-      {assetId:"desc";
+      {assetId:"desc",
 
       },
-      take: 10;
+      take: 10,
     });
 
     // Get asset details for top assets;
     const assetDetails = await prisma.asset.findMany({
-      {in:assetMaintenance.map(am => am.assetId as string);
+      {in:assetMaintenance.map(am => am.assetId as string),
 
       },
       true,
@@ -1073,7 +1071,7 @@ import {  toFHIRAsset
     // Map asset names to the maintenance frequency;
     const assetMaintenanceWithNames = assetMaintenance.map(am => ({assetId:am.assetId,
       assetDetails.find(a => a.id === am.assetId)?.name || "Unknown",
-      assetType: assetDetails.find(a => a.id === am.assetId)?.assetType || "Unknown";
+      assetType: assetDetails.find(a => a.id === am.assetId)?.assetType || "Unknown",
     }));
 
     // Get cost analysis;
@@ -1092,7 +1090,7 @@ import {  toFHIRAsset
       requestsByStatus,
       requestsByType,
       completionTime,
-      assetMaintenance: assetMaintenanceWithNames;
+      assetMaintenance: assetMaintenanceWithNames,
       costAnalysis,
       period;
     };
@@ -1114,7 +1112,7 @@ import {  toFHIRAsset
       result.setSeconds(0);
       result.setMilliseconds(0);
     } else {
-      // Default to 9:00 AM;
+      // Default to 9:00 AM,
       result.setHours(9),
       result.setMinutes(0);
       result.setSeconds(0);

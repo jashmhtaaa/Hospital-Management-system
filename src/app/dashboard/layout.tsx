@@ -1,4 +1,4 @@
-import "react"
+import "react";
 import React
 
 import DashboardClientLayout from "./dashboard-client-layout.ts"; // Import the renamed client layout;
@@ -8,7 +8,7 @@ import DashboardClientLayout from "./dashboard-client-layout.ts"; // Import the 
 //   title: "Dashboard - HMS";
 // export default const _DashboardLayout = ({
   children}: {
-  children: React.ReactNode;
+  children: React.ReactNode,
 }) {
   return <DashboardClientLayout>{children}>;
 

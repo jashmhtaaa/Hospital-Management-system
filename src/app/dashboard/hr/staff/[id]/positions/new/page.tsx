@@ -1,12 +1,10 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -31,22 +29,20 @@ import { useState
   SelectTrigger,
   SelectValue;
 } from "@/components/ui/select";
-import "@/components/ui/button"
-import "@/components/ui/calendar"
-import "@/components/ui/checkbox"
-import "@/components/ui/popover"
-import "@/components/ui/use-toast"
-import "@hookform/resolvers/zod"
-import "date-fns"
-import "lucide-react"
-import "react-hook-form"
-import "zod"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/checkbox"
+import "@/components/ui/popover";
+import "@/components/ui/use-toast";
+import "@hookform/resolvers/zod";
+import "date-fns";
+import "lucide-react";
+import "react-hook-form";
+import "zod";
 import * as z
-import ArrowLeft }
-import PopoverContent
-import PopoverTrigger }
+import ArrowLeft, PopoverContent
+import PopoverTrigger } from "@/components/ui/calendar"
 import Save
-import { Button }
+import  } Button }
 import { Calendar }
 import { CalendarIcon
 import { Checkbox }
@@ -61,7 +57,7 @@ const positionAssignmentSchema = z.object({
   positionId: z.string().min(1, "Position is required"),
   isPrimary: z.boolean().default(false),
   startDate: z.date(),
-  endDate: z.date().optional();
+  endDate: z.date().optional(),
 });
 
 export default const _AssignPosition = ({ params }: { id: string }) {
@@ -75,7 +71,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
     resolver: zodResolver(positionAssignmentSchema),
     "",
       new Date(),
-      endDate: undefined;
+      endDate: undefined,
     }});
 
   // Fetch positions and employee data;
@@ -183,7 +179,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(formattedData);
+        body: JSON.stringify(formattedData),
       });
 
       if (!session.user) {
@@ -192,7 +188,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
 
       toast({
         title: "Position Assigned",
-        description: "Successfully assigned position to employee";
+        description: "Successfully assigned position to employee",
       });
 
       // Navigate back to employee profile;
@@ -211,8 +207,8 @@ export default const _AssignPosition = ({ params }: { id: string }) {
     >;
       >;
         <Button>;
-          variant="ghost";
-          size="sm";
+          variant = "ghost",
+          size = "sm",
           onClick={() => router.push(`/dashboard/hr/staff/${}`}
         >;
           <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -226,7 +222,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
           {employee ? `Assign a position to /* SECURITY: Template literal eliminated */;
               <FormField>;
                 control={form.control}
-                name="positionId";
+                name = "positionId",
                 render={({ field }) => (;
                   <FormItem>;
                     <FormLabel>Position*</FormLabel>;
@@ -257,7 +253,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
 
               <FormField>;
                 control={form.control}
-                name="isPrimary";
+                name = "isPrimary",
                 render={({ field }) => (;
                   >;
                     <FormControl>;
@@ -281,7 +277,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
               >;
                 <FormField>;
                   control={form.control}
-                  name="startDate";
+                  name = "startDate",
                   render={({ field }) => (;
                     >;
                       <FormLabel>Start Date*</FormLabel>;
@@ -303,7 +299,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                         </PopoverTrigger>;
                         >;
                           <Calendar>;
-                            mode="single";
+                            mode = "single",
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus;
@@ -320,7 +316,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
 
                 <FormField>;
                   control={form.control}
-                  name="endDate";
+                  name = "endDate",
                   render={({ field }) => (;
                     >;
                       <FormLabel>End Date</FormLabel>;
@@ -342,7 +338,7 @@ export default const _AssignPosition = ({ params }: { id: string }) {
                         </PopoverTrigger>;
                         >;
                           <Calendar>;
-                            mode="single";
+                            mode = "single",
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus;
@@ -360,8 +356,8 @@ export default const _AssignPosition = ({ params }: { id: string }) {
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => router.push(`/dashboard/hr/staff/${}`}
                 >;
                   Cancel;

@@ -1,9 +1,9 @@
-import "../../../components/clinical-documentation/document-editor"
-import "../../../lib/auth"
-import "@prisma/client"
-import "next-auth"
-import "next/navigation"
-import "react"
+import "../../../components/clinical-documentation/document-editor";
+import "../../../lib/auth";
+import "@prisma/client";
+import "next-auth";
+import "next/navigation";
+import "react";
 import { authOptions }
 import { DocumentEditor }
 import { getServerSession }

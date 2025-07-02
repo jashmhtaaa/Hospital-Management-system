@@ -1,7 +1,6 @@
-import "@/lib/hr/payroll-service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/hr/payroll-service"
 import { NextResponse } from "next/server" }
 import {  payrollService  } from "@/lib/database"
 import {   type
@@ -9,13 +8,13 @@ import {  z  } from "@/lib/database"
 
 // Schema for payroll period creation;
 const payrollPeriodSchema = z.object({name:z.string().min(1, "Name is required"),
-  startDate: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid start date format";
+  startDate: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid start date format",
   }),
-  endDate: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid end date format";
+  endDate: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid end date format",
   }),
-  paymentDate: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid payment date format";
+  paymentDate: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid payment date format",
   }),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // POST handler for creating payroll period;
@@ -71,7 +70,7 @@ export const _POST = async (request: any) => {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
       paymentDate: new Date(paymentDate),
-      status: "DRAFT";
+      status: "DRAFT",
       notes});
 
     return NextResponse.json(payrollPeriod);

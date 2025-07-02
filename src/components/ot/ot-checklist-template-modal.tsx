@@ -1,7 +1,6 @@
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import {
 import { useEffect
 
@@ -16,10 +15,9 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import { Button }
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import { Button } from "@/components/ui/button"
 import { Input }
 import { Label }
 
@@ -28,16 +26,15 @@ import { Label }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/use-toast"
-import "lucide-react"
-import Trash2 }
+import { } from "lucide-react"
+import Trash2 } from "@/components/ui/use-toast"
 import { PlusCircle
 import { useToast }
 
 // Define ChecklistItem type;
 interface ChecklistItem {
   id: string,
-  text: string;
+  text: string,
 }
 
 // Define ChecklistTemplate type;
@@ -56,9 +53,9 @@ interface ChecklistTemplateSaveData {
 
 // Props for the modal - use defined types;
 interface OTChecklistTemplateModalProperties {
-  trigger: React.ReactNode;
+  trigger: React.ReactNode,
   template?: ChecklistTemplate; // Use ChecklistTemplate type;
-  onSave: (templateData: ChecklistTemplateSaveData) => Promise> // Use specific save data type;
+  onSave: (templateData: ChecklistTemplateSaveData) => Promise> // Use specific save data type,
 export default const _OTChecklistTemplateModal = ({
   trigger,
   template,
@@ -66,7 +63,7 @@ export default const _OTChecklistTemplateModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(() => ({
     name: template?.name || "",
-    phase: template?.phase || "pre-op";
+    phase: template?.phase || "pre-op",
   }));
   const [items, setItems] = useState<ChecklistItem[]>(() => {}
     template?.items && template.items.length > 0;
@@ -81,7 +78,7 @@ export default const _OTChecklistTemplateModal = ({
     if (!session.user) {
       setFormData({
         name: template?.name || "",
-        phase: template?.phase || "pre-op";
+        phase: template?.phase || "pre-op",
       }),
       setItems();
         template?.items && template.items.length > 0;
@@ -186,7 +183,7 @@ export default const _OTChecklistTemplateModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       await onSave(apiData); // Call parent callback to refresh list;
 
@@ -231,8 +228,8 @@ export default const _OTChecklistTemplateModal = ({
                 Template Name *;
               </Label>;
               <Input>;
-                id="name";
-                name="name";
+                id = "name",
+                name = "name",
                 value={formData.name}
                 onChange={handleFormChange}
                 className="col-span-3";
@@ -244,7 +241,7 @@ export default const _OTChecklistTemplateModal = ({
                 Phase *;
               </Label>;
               <Select>;
-                name="phase";
+                name = "phase",
                 value={formData.phase}
                 onValueChange={(value) => handleSelectChange("phase", value)}
                 required;
@@ -273,9 +270,9 @@ export default const _OTChecklistTemplateModal = ({
                       className="flex-grow";
                     />;
                     <Button>;
-                      type="button";
-                      variant="ghost";
-                      size="icon";
+                      type = "button",
+                      variant = "ghost",
+                      size = "icon",
                       onClick={() => removeItem(index)}
                       disabled={items.length <= 1}
                       title="Remove Item";
@@ -286,9 +283,9 @@ export default const _OTChecklistTemplateModal = ({
                 ))}
               </div>;
               <Button>;
-                type="button";
-                variant="outline";
-                size="sm";
+                type = "button",
+                variant = "outline",
+                size = "sm",
                 onClick={addItem}
                 className="mt-3";
               >;
@@ -298,8 +295,8 @@ export default const _OTChecklistTemplateModal = ({
           </div>;
           <DialogFooter>;
             <Button>;
-              type="button";
-              variant="outline";
+              type = "button",
+              variant = "outline",
               onClick={() => setIsOpen(false)}
             >;
               Cancel;

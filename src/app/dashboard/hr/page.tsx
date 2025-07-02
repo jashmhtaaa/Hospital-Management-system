@@ -1,22 +1,21 @@
-import "react"
+import "react";
 import React
 import { useState }
 
 "use client";
 
-import "@/components/ui/card"
-import "@/components/ui/tabs"
-import "next/link"
-import "react"
+import { "@/components/ui/card";
+import "@/components/ui/tabs";
+import "next/link";
+import "react";
 import CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
-import Link
+import CardTitle, Link
 import TabsContent
 import TabsList
 import TabsTrigger }
-import {
+import  }
 import { Card
 import { Tabs
 import { useState }

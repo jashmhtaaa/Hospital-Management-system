@@ -1,12 +1,10 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -25,22 +23,20 @@ import { useState
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import "@/components/ui/button"
-import "@/components/ui/calendar"
-import "@/components/ui/input"
-import "@/components/ui/popover"
-import "@/components/ui/use-toast"
-import "@hookform/resolvers/zod"
-import "date-fns"
-import "lucide-react"
-import "react-hook-form"
-import "zod"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/input"
+import "@/components/ui/popover";
+import "@/components/ui/use-toast";
+import "@hookform/resolvers/zod";
+import "date-fns";
+import "lucide-react";
+import "react-hook-form";
+import "zod";
 import * as z
-import ArrowLeft }
-import PopoverContent
-import PopoverTrigger }
+import ArrowLeft, PopoverContent
+import PopoverTrigger } from "@/components/ui/calendar"
 import Save
-import { Button }
+import  } Button }
 import { Calendar }
 import { CalendarIcon
 import { format }
@@ -58,7 +54,7 @@ const qualificationSchema = z.object({
   identifier: z.string().optional(),
   startDate: z.date(),
   endDate: z.date().optional(),
-  attachment: z.string().optional();
+  attachment: z.string().optional(),
 });
 
 export default const _AddQualification = ({ params }: { id: string }) {
@@ -173,7 +169,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(formattedData);
+        body: JSON.stringify(formattedData),
       });
 
       if (!session.user) {
@@ -182,7 +178,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
       toast({
         title: "Qualification Added",
-        description: "Successfully added qualification to employee record";
+        description: "Successfully added qualification to employee record",
       });
 
       // Navigate back to employee profile;
@@ -201,8 +197,8 @@ export default const _AddQualification = ({ params }: { id: string }) {
     >;
       >;
         <Button>;
-          variant="ghost";
-          size="sm";
+          variant = "ghost",
+          size = "sm",
           onClick={() => router.push(`/dashboard/hr/staff/${}`}
         >;
           <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -217,7 +213,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
               >;
                 <FormField>;
                   control={form.control}
-                  name="name";
+                  name = "name",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Qualification Name*</FormLabel>;
@@ -234,7 +230,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
                 <FormField>;
                   control={form.control}
-                  name="code";
+                  name = "code",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Qualification Code*</FormLabel>;
@@ -251,7 +247,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
                 <FormField>;
                   control={form.control}
-                  name="issuer";
+                  name = "issuer",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Issuing Organization</FormLabel>;
@@ -268,7 +264,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
                 <FormField>;
                   control={form.control}
-                  name="identifier";
+                  name = "identifier",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>License/Certificate Number</FormLabel>;
@@ -285,7 +281,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
                 <FormField>;
                   control={form.control}
-                  name="startDate";
+                  name = "startDate",
                   render={({ field }) => (;
                     >;
                       <FormLabel>Issue Date*</FormLabel>;
@@ -307,7 +303,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
                         </PopoverTrigger>;
                         >;
                           <Calendar>;
-                            mode="single";
+                            mode = "single",
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus;
@@ -324,7 +320,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
                 <FormField>;
                   control={form.control}
-                  name="endDate";
+                  name = "endDate",
                   render={({ field }) => (;
                     >;
                       <FormLabel>Expiry Date</FormLabel>;
@@ -346,7 +342,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
                         </PopoverTrigger>;
                         >;
                           <Calendar>;
-                            mode="single";
+                            mode = "single",
                             selected={field.value}
                             onSelect={field.onChange}
                             initialFocus;
@@ -363,7 +359,7 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
                 <FormField>;
                   control={form.control}
-                  name="attachment";
+                  name = "attachment",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Certificate URL</FormLabel>;
@@ -381,8 +377,8 @@ export default const _AddQualification = ({ params }: { id: string }) {
 
               <div className="flex justify-end gap-2">;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => router.push(`/dashboard/hr/staff/${}`}
                 >;
                   Cancel;

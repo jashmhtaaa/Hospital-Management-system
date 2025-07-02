@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  getServerSession  } from "@/lib/database"
@@ -34,7 +33,7 @@ export const POST = async();
       return NextResponse.json(result);
     },
     {requiredPermission:"marketing.segments.update",
-      auditAction: "SEGMENT_CRITERIA_APPLY";
+      auditAction: "SEGMENT_CRITERIA_APPLY",
     }
   );
 

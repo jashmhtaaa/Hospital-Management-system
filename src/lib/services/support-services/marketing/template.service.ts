@@ -1,9 +1,8 @@
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/models/marketing"
-import "@/lib/prisma"
+import { } from "@/lib/errors"
+import "@/lib/models/marketing";
+import "@/lib/prisma";
 import NotFoundError
-import ValidationError }
+import ValidationError } from "@/lib/audit"
 import {  AuditLogger  } from "@/lib/database"
 import {   DatabaseError
 import {  MarketingTemplate  } from "@/lib/database"
@@ -18,10 +17,10 @@ import {  prisma  } from "@/lib/database"
 
       // Log audit event;
       await this.auditLogger.log({action:"template.create",
-        resourceId: template.id;
+        resourceId: template.id,
         userId,
         template.name,
-          templateType: template.type;
+          templateType: template.type,
         }
       });
 
@@ -73,7 +72,7 @@ import {  prisma  } from "@/lib/database"
       const template = await prisma.marketingTemplate.findUnique({where:{ id },
         {
             true,
-              name: true;
+              name: true,
             }
           }
         }
@@ -100,8 +99,7 @@ import {  prisma  } from "@/lib/database"
     isActive?: boolean;
     search?: string;
     page?: number;
-    limit?: number;
-  }): Promise<{data:MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
+    limit?: number, }): Promise<{data:MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -168,7 +166,7 @@ import {  prisma  } from "@/lib/database"
         where,
         {
             true,
-              name: true;
+              name: true,
             }
           }
         },
@@ -181,7 +179,7 @@ import {  prisma  } from "@/lib/database"
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit),
         }
       };
     } catch (error) {
@@ -237,10 +235,10 @@ import {  prisma  } from "@/lib/database"
 
       // Log audit event;
       await this.auditLogger.log({action:"template.update",
-        resourceId: id;
+        resourceId: id,
         userId,
         updatedTemplate.name,
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data),
       });
 
       return updatedTemplate;
@@ -299,10 +297,10 @@ import {  prisma  } from "@/lib/database"
 
       // Log audit event;
       await this.auditLogger.log({action:"template.delete",
-        resourceId: id;
+        resourceId: id,
         userId,
         existingTemplate.name,
-          templateType: existingTemplate.type;
+          templateType: existingTemplate.type,
       });
     } catch (error) {
       if (!session.user) {

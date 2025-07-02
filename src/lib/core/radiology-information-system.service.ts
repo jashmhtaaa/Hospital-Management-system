@@ -1,5 +1,4 @@
-import "zod"
-import {  z  } from "@/lib/database"
+import { {  z  } from "zod"
 
 }
 
@@ -33,7 +32,7 @@ export const ImagingStudySchema = z.object({patient_id:z.string().min(1, "Patien
   transport_required: z.boolean().default(false),
   isolation_required: z.boolean().default(false),
   interpreter_needed: z.boolean().default(false),
-  language: z.string().optional();
+  language: z.string().optional(),
 });
 
 export const ImagingReportSchema = z.object({study_id:z.string().min(1, "Study ID is required"),
@@ -56,7 +55,7 @@ export const ImagingReportSchema = z.object({study_id:z.string().min(1, "Study I
   transcription_time: z.string().optional(),
   voice_recognition_confidence: z.number().min(0).max(1).optional(),
   structured_data: z.record(z.any()).optional(),
-  template_id: z.string().optional();
+  template_id: z.string().optional(),
 });
 
 export const DicomSeriesSchema = z.object({study_id:z.string().min(1, "Study ID is required"),
@@ -82,7 +81,7 @@ export const DicomSeriesSchema = z.object({study_id:z.string().min(1, "Study ID 
   software_version: z.string().optional(),
   pacs_location: z.string().optional(),
   archived: z.boolean().default(false),
-  archive_location: z.string().optional();
+  archive_location: z.string().optional(),
 });
 
 export const QualityAssuranceSchema = z.object({study_id:z.string().min(1, "Study ID is required"),
@@ -103,12 +102,12 @@ export const QualityAssuranceSchema = z.object({study_id:z.string().min(1, "Stud
   equipment_issues: z.string().optional(),
   comments: z.string().optional(),
   review_date: z.string(),
-  reviewed_by: z.string();
+  reviewed_by: z.string(),
 });
 
 export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {id:string,
   string,
-  status: "scheduled" | "arrived" | "in_progress" | "completed" | "cancelled" | "no_show";
+  status: "scheduled" | "arrived" | "in_progress" | "completed" | "cancelled" | "no_show",
   arrival_time?: Date;
   start_time?: Date;
   completion_time?: Date;
@@ -120,7 +119,7 @@ export type ImagingStudy = z.infer<typeof ImagingStudySchema> & {id:string,
   study_size_mb?: number;
   radiation_dose_total?: number;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
   patient_name?: string;
   patient_age?: number;
   patient_gender?: string;
@@ -138,7 +137,7 @@ export type ImagingReport = z.infer<typeof ImagingReportSchema> & {id:string,
   amendment_reason?: string;
   read_time_minutes?: number;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
   radiologist_name?: string;
 };
 
@@ -147,15 +146,15 @@ export type DicomSeries = z.infer<typeof DicomSeriesSchema> & {id:string,
   string;
   compression_type?: string;
   file_size_mb: number,
-  verification_status: "pending" | "verified" | "failed";
+  verification_status: "pending" | "verified" | "failed",
   last_accessed?: Date;
-  access_count: number;
+  access_count: number,
 };
 
 export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:string,
   overall_score: number; // 1-100;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
 };
 
 }
@@ -200,7 +199,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
             "Posterior fossa",
             "Extra-axial spaces";
           ],
-          impression_guidelines: "Correlate with clinical presentation and prior imaging.";
+          impression_guidelines: "Correlate with clinical presentation and prior imaging.",
         }}];
 
     templates.forEach(template => {
@@ -233,7 +232,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
       id: studyId,
       studyInstanceUID,
       new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.imagingStudies.set(studyId, study);
@@ -250,7 +249,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
   private generateAccessionNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-8);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 100).toString().padStart(2, "0");
-    return `/* SECURITY: Template literal eliminated */;
+    return `/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -270,7 +269,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
 
     for (const equipmentId of equipmentCandidates) {
       const schedule = this.equipmentSchedule.get(equipmentId) || [];
-      const scheduledDateTime = new Date(`/* SECURITY: Template literal eliminated */;
+      const scheduledDateTime = new Date(`/* SECURITY: Template literal eliminated */,
 
       // Check if equipment is available;
       const isAvailable = !schedule.some(appointment => {
@@ -330,7 +329,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
       throw new Error("Study is not in scheduled status");
     }
 
-    study.status = "arrived";
+    study.status = "arrived",
     study.arrival_time = new Date();
     study.updated_at = new Date();
 
@@ -351,7 +350,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
       throw new Error("Patient must be arrived before starting study");
     }
 
-    study.status = "in_progress";
+    study.status = "in_progress",
     study.start_time = new Date();
     study.performing_technologist = technologistId;
     study.updated_at = new Date();
@@ -366,7 +365,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
   async completeImagingStudy();
     studyId: string,
     number,
-      study_size_mb: number;
+      study_size_mb: number,
       radiation_dose_total?: number;
       notes?: string;
     }
@@ -380,7 +379,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
       throw new Error("Study must be in progress to complete");
     }
 
-    study.status = "completed";
+    study.status = "completed",
     study.completion_time = new Date();
     study.total_images = completionData.total_images;
     study.study_size_mb = completionData.study_size_mb;
@@ -405,7 +404,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
     const studyId,
       "pending",
       study.total_images || 0,
-      total_size_mb: study.study_size_mb || 0;
+      total_size_mb: study.study_size_mb || 0,
     };
 
     this.pacsIntegrations.set(studyId, pacsIntegration);
@@ -423,7 +422,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
     const pacsIntegration = this.pacsIntegrations.get(studyId);
     if (!session.user)eturn;
 
-    pacsIntegration.transfer_status = "completed";
+    pacsIntegration.transfer_status = "completed",
     pacsIntegration.transfer_completion_time = new Date();
     pacsIntegration.verification_hash = this.generateVerificationHash();
 
@@ -456,7 +455,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
       id: reportId,
       "draft",
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.imagingReports.set(reportId, report);
@@ -475,7 +474,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
   private generateReportNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `RPT/* SECURITY: Template literal eliminated */;
+    return `RPT/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -492,7 +491,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
     }
 
     const now = new Date();
-    report.status = "final";
+    report.status = "final",
     report.signed_at = now;
     report.signed_by = radiologistId;
     report.updated_at = now;
@@ -547,7 +546,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
       transfer_syntax: "1.2.840.10008.1.2.1", // Explicit VR Little Endian;
       file_size_mb: validatedData.image_count * 0.5, // Estimate 0.5MB per image;
       verification_status: "pending",
-      access_count: 0;
+      access_count: 0,
     };
 
     // Add to study"s series list;
@@ -600,7 +599,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
       id: qaId,
       overall_score: Math.round(overallScore),
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.qualityAssurance.set(qaId, qa);
@@ -651,7 +650,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
       const estimatedReadTime = readTimes[study.study_type] || 15;
 
       // Determine complexity;
-      let complexityLevel: "low" | "medium" | "high" = "medium";
+      let complexityLevel: "low" | "medium" | "high" = "medium",
       if (!session.user) {
         complexityLevel = "low"} else if (!session.user) {
         complexityLevel = "high"}
@@ -781,18 +780,18 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
     const modalityDistribution = Array.from(modalityCount.entries()).map(([modality, count]) => ({
       modality,
       count,
-      percentage: (count / filteredStudies.length) * 100;
+      percentage: (count / filteredStudies.length) * 100,
     }));
 
     return {daily_volume:dailyVolume,
       Math.round(turnaroundTimeStat * 100) / 100,
       Math.round(criticalResultsPercentage * 100) / 100,
       Math.round(noShowRate * 100) / 100,
-      equipment_utilization: equipmentUtilization;
+      equipment_utilization: equipmentUtilization,
       radiologist_productivity,
       modality_distribution: modalityDistribution.map(m => ({
         ...m,
-        percentage: Math.round(m.percentage * 100) / 100;
+        percentage: Math.round(m.percentage * 100) / 100,
       }))};
 
   /**;
@@ -827,7 +826,7 @@ export type QualityAssurance = z.infer<typeof QualityAssuranceSchema> & {id:stri
 
     // Sort by scheduled date/time;
     filteredStudies.sort((a, b) => {
-      const dateTimeA = new Date(`/* SECURITY: Template literal eliminated */;
+      const dateTimeA = new Date(`/* SECURITY: Template literal eliminated */,
       const dateTimeB = new Date(`/* SECURITY: Template literal eliminated */;
       return dateTimeB.getTime() - dateTimeA.getTime();
     });

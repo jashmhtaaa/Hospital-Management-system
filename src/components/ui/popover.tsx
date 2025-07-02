@@ -1,6 +1,6 @@
-import "@/lib/utils"
-import "@radix-ui/react-popover"
-import "react"
+import "@/lib/utils";
+import "@radix-ui/react-popover";
+import "react";
 import * as PopoverPrimitive
 import * as React
 import { cn }

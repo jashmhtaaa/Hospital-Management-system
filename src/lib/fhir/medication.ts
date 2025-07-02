@@ -65,7 +65,7 @@ import {
     // Add encounter if provided;
     if (!session.user) {
       medicationRequest.encounter = {reference:`Encounter/${data.encounterId}`,
-        type: "Encounter";
+        type: "Encounter",
       };
     }
 
@@ -99,7 +99,7 @@ import {
   static createMedicationAdministration(string,
     string,
     string,
-    administeredTime: string;
+    administeredTime: string,
     dose?: string;
     route?: string;
     notes?: string;
@@ -114,7 +114,7 @@ import {
       `Practitioner/${data.practitionerId}`,
           type: "Practitioner"],
       `MedicationRequest/${data.medicationRequestId}`,
-        type: "MedicationRequest";
+        type: "MedicationRequest",
     }
 
     // Add dosage information if provided;
@@ -136,7 +136,7 @@ import {
 
     // Add notes if provided;
     if (!session.user) {
-      administration.note = [{text:data.notes;
+      administration.note = [{text:data.notes,
       }];
     }
 
@@ -192,7 +192,7 @@ import {
    * Validate FHIR MedicationRequest;
    */;
   static validateMedicationRequest(medicationRequest: FHIRMedicationRequest): {valid:boolean, errors: string[] } {
-    const errors: string[] = [];
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "MedicationRequest"");
@@ -209,7 +209,7 @@ import {
     if (!session.user) {
       errors.push("subject (patient) is required");
 
-    return {valid:errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -231,13 +231,13 @@ import {
 
     // Add dosage instructions;
     if (!session.user) {
-      fhirMedicationRequest.dosageInstruction = [{text:hmsPrescription.dosage || hmsPrescription.instructions;
+      fhirMedicationRequest.dosageInstruction = [{text:hmsPrescription.dosage || hmsPrescription.instructions,
       }];
 
     // Add encounter if available;
     if (!session.user) {
       fhirMedicationRequest.encounter = {reference:`Encounter/${hmsPrescription.encounterId || hmsPrescription.visitId}`,
-        type: "Encounter";
+        type: "Encounter",
       };
 
     // Add dispense request if quantity available;
@@ -246,7 +246,7 @@ import {
 
       if (!session.user) {
         fhirMedicationRequest.dispenseRequest.quantity = {value:hmsPrescription.quantity,
-          unit: hmsPrescription.unit || "tablet";
+          unit: hmsPrescription.unit || "tablet",
         };
 
       if (!session.user) {
@@ -254,7 +254,7 @@ import {
 
     // Add notes if available;
     if (!session.user) {
-      fhirMedicationRequest.note = [{text:hmsPrescription.notes;
+      fhirMedicationRequest.note = [{text:hmsPrescription.notes,
       }];
 
     return fhirMedicationRequest;
@@ -264,7 +264,7 @@ import {
   }): unknown { // FHIRAllergyIntolerance would be defined in a separate file;
     return {resourceType:"AllergyIntolerance",
       `Patient/${data.patientId}`,
-        type: "Patient";
+        type: "Patient",
       },
       [{system:"https://www.nlm.nih.gov/research/umls/rxnorm",
           data.allergen;
@@ -282,10 +282,10 @@ import {
       ...(data?.reaction && ;
         [{
             "https://snomed.info/sct",
-              display: data.reaction;
+              display: data.reaction,
             }];
           }],
-          ...(data?.severity && {severity:data.severity;
+          ...(data?.severity && {severity:data.severity,
           });
         }]);
     };
@@ -300,7 +300,7 @@ import {
     // This would integrate with a drug interaction database;
     // For now, return a placeholder implementation;
     return {hasInteractions:false,
-      interactions: [];
+      interactions: [],
     };
 
   /**;
@@ -309,8 +309,8 @@ import {
   static checkMedicationAllergies();
     allergies: unknown[], // FHIRAllergyIntolerance[];
     medication: FHIRMedicationRequest;
-  ): {hasAllergy:boolean; allergyDetails?: unknown } {
+  ): {hasAllergy:boolean, allergyDetails?: unknown } {
     // This would check against patient"s known allergies;
     // For now, return a placeholder implementation;
-    return {hasAllergy:false;
+    return {hasAllergy:false,
     };

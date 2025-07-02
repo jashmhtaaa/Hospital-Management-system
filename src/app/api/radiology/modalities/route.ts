@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/session"
-import "@cloudflare/workers-types"
-import "nanoid"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/session"
+import "@cloudflare/workers-types";
+import "nanoid";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  checkUserRole  } from "@/lib/database"
 import {  D1Database  } from "@/lib/database"
@@ -63,7 +62,7 @@ export const _GET = async (request: any) => {
     ).all();
     return NextResponse.json(results);
   } catch (error: unknown) {
-    // FIX: Use unknown instead of any;
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
@@ -148,7 +147,7 @@ export const _POST = async (request: any) => {
       {status:201 }
     );
   } catch (error: unknown) {
-    // FIX: Use unknown instead of any;
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     if (!session.user) {

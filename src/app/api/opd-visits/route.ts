@@ -1,9 +1,8 @@
-import "@/lib/database"
-import "@/lib/session"
-import "@/types/opd"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "@/lib/session"
+import "@/types/opd";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/database"
 import { NextResponse } from "next/server" }
 import {  Consultation  } from "@/lib/database"
 import {  DB  } from "@/lib/database"
@@ -16,7 +15,7 @@ import { D1Database, D1ResultWithMeta  } from "@/types/cloudflare"; // Import D1
 // Zod schema for creating an OPD visit;
 const opdVisitCreateSchema = z.object({patient_id:z.number(),
     doctor_id: z.number(),
-    consultation_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid consultation datetime format";
+    consultation_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid consultation datetime format",
     }),
     chief_complaint: z.string().min(1, "Chief complaint is required"),
     history_of_present_illness: z.string().optional().nullable(),
@@ -24,7 +23,7 @@ const opdVisitCreateSchema = z.object({patient_id:z.number(),
     physical_examination: z.string().optional().nullable(),
     diagnosis: z.string().optional().nullable(),
     treatment_plan: z.string().optional().nullable(),
-    follow_up_instructions: z.string().optional().nullable();
+    follow_up_instructions: z.string().optional().nullable(),
 });
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination);
@@ -66,12 +65,12 @@ export const _GET = async (request: any) => {
 }
 } catch (error) {
 }
-        const { searchParams } = new URL(request.url); // Corrected: searchParams was already defined;
+        const { searchParams } = new URL(request.url); // Corrected: searchParams was already defined,
         const page = Number.parseInt(searchParams.get("page") || "1");
         const limit = Number.parseInt(searchParams.get("limit") || "10");
         const offset = (page - 1) * limit;
         const patientIdFilter = searchParams.get("patient_id");
-        const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams;
+        const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams,
         const dateFromFilter = searchParams.get("date_from"),
         const dateToFilter = searchParams.get("date_to");
         const statusFilter = searchParams.get("status");
@@ -92,11 +91,11 @@ export const _GET = async (request: any) => {
             FROM Consultations c;
             JOIN Patients p ON c.patient_id = p.patient_id;
             JOIN Users u ON c.doctor_id = u.id;
-            WHERE c.visit_type = "OPD";
+            WHERE c.visit_type = "OPD",
         `;
-        const queryParameters: (string | number)[] = [];
+        const queryParameters: (string | number)[] = [],
         let countQuery = `SELECT COUNT(*) as total FROM Consultations WHERE visit_type = "OPD"`;
-        const countParameters: (string | number)[] = [];
+        const countParameters: (string | number)[] = [],
 
         if (!session.user) {
             query += " AND c.patient_id = ?";
@@ -129,7 +128,7 @@ export const _GET = async (request: any) => {
             countParameters.push(statusFilter);
         }
 
-        query += ` ORDER BY c./* SECURITY: Template literal eliminated */;
+        query += ` ORDER BY c./* SECURITY: Template literal eliminated */,
         queryParameters.push(limit, offset),
 
         const [visitsResult, countResult] = await Promise.all([;
@@ -145,7 +144,7 @@ export const _GET = async (request: any) => {
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit),
             }});
 
     } catch (error: unknown) {

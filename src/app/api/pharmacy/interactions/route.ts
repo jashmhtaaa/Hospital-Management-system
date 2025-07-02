@@ -1,12 +1,11 @@
-import "../../../../lib/audit"
-import "../../../../lib/error-handler"
-import "../../../../lib/services/patient/patient.service"
-import "../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../lib/validation/pharmacy-validation"
-import "../../models/domain-models"
-import "../../services/drug-interaction-service"
-import "next/server"
-import getPrescriptionById }
+import { } from "../../../../lib/error-handler"
+import "../../../../lib/services/patient/patient.service";
+import "../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../lib/validation/pharmacy-validation";
+import "../../models/domain-models";
+import "../../services/drug-interaction-service";
+import "next/server";
+import getPrescriptionById } from "../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -33,7 +32,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const getPrescriptionById,
@@ -43,7 +42,7 @@ const getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 // Initialize services;
@@ -114,7 +113,7 @@ export const POST = async (req: any) => {
     await auditLog("DRUG_INTERACTION", {action:"CHECK",
       userId,
       data.medicationIds,
-        interactionCount: interactions.length;
+        interactionCount: interactions.length,
     });
 
     // Return response;
@@ -191,7 +190,7 @@ export const GET = async (req: any, { params }: {params:{ patientId: string } })
     await auditLog("DRUG_INTERACTION", {action:"CHECK_PATIENT",
       userId,
       medicationIds.length,
-        interactionCount: interactions.length;
+        interactionCount: interactions.length,
     });
 
     // Return response;

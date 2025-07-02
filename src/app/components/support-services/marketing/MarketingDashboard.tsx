@@ -1,21 +1,19 @@
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/charts"
-import "@/components/ui/data-table"
-import "@/components/ui/input"
-import "@/components/ui/select"
-import "@/components/ui/tabs"
-import "@/components/ui/use-toast"
-import "@tanstack/react-table"
-import "next/navigation"
-import "react"
+import { } from "@/components/ui/badge"
+import { } from "@/components/ui/card"
+import { "@/components/ui/charts";
+import "@/components/ui/data-table";
+import "@/components/ui/input";
+import "@/components/ui/select";
+import "@/components/ui/tabs";
+import "@/components/ui/use-toast";
+import "@tanstack/react-table";
+import "next/navigation";
+import "react";
 import CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
-import LineChart
-import PieChart }
+import CardTitle, LineChart
+import PieChart } from "@/components/ui/button"
 import React
 import SelectContent
 import SelectItem
@@ -24,9 +22,8 @@ import SelectValue }
 import TabsContent
 import TabsList
 import TabsTrigger }
-import useEffect }
-import { Badge }
-import { BarChart
+import useEffect, } Badge }
+import  } BarChart
 import { Button }
 import { Card
 import { ColumnDef }
@@ -44,7 +41,7 @@ type Campaign = {
   string,
   string;
   endDate?: string;
-  segmentCount: number;
+  segmentCount: number,
   performance?: {
     opens?: number;
     clicks?: number;
@@ -94,15 +91,15 @@ export default const _MarketingDashboard = () {
       accessorKey: "status",
       ({ row }) => {
         const status = row.getValue("status") as string;
-        let variant: "default" | "outline" | "secondary" | "destructive" = "outline";
+        let variant: "default" | "outline" | "secondary" | "destructive" = "outline",
 
         switch (status) {
           case "ACTIVE": any;
-            variant = "default";\n    }\n    case "DRAFT": any;
-            variant = "secondary";\n    }\n    case "PAUSED": any;
-            variant = "outline";\n    }\n    case "COMPLETED": any;
-            variant = "outline";\n    }\n    case "CANCELLED": any;
-            variant = "destructive";
+            variant = "default",\n    }\n    case "DRAFT": any;
+            variant = "secondary",\n    }\n    case "PAUSED": any;
+            variant = "outline",\n    }\n    case "COMPLETED": any;
+            variant = "outline",\n    }\n    case "CANCELLED": any;
+            variant = "destructive",
             break;
         }
 
@@ -140,15 +137,15 @@ export default const _MarketingDashboard = () {
       cell: (row ) => (;
         >;
           <Button>;
-            variant="outline";
-            size="sm";
+            variant = "outline",
+            size = "sm",
             onClick={() => router.push(`/marketing/campaigns/${}`}
           >;
             View;
           </Button>;
           <Button>;
-            variant="outline";
-            size="sm";
+            variant = "outline",
+            size = "sm",
             onClick={() => router.push(`/marketing/campaigns/${row.original.id}/edit`)}
           >;
             Edit;
@@ -168,11 +165,11 @@ export default const _MarketingDashboard = () {
       )},
     {
       accessorKey: "email",
-      header: "Email";
+      header: "Email",
     },
     {
       accessorKey: "phone",
-      header: "Phone";
+      header: "Phone",
     },
     {
       accessorKey: "source",
@@ -183,13 +180,13 @@ export default const _MarketingDashboard = () {
       accessorKey: "status",
       ({ row }) => {
         const status = row.getValue("status") as string;
-        let variant: "default" | "outline" | "secondary" | "destructive" = "outline";
+        let variant: "default" | "outline" | "secondary" | "destructive" = "outline",
 
         switch (status) {
           case "ACTIVE": any;
-            variant = "default";\n    }\n    case "INACTIVE": any;
-            variant = "secondary";\n    }\n    case "UNSUBSCRIBED": any;
-            variant = "destructive";
+            variant = "default",\n    }\n    case "INACTIVE": any;
+            variant = "secondary",\n    }\n    case "UNSUBSCRIBED": any;
+            variant = "destructive",
             break;
 
         return <Badge variant={variant}>{status}>;
@@ -205,15 +202,15 @@ export default const _MarketingDashboard = () {
       cell: ({ row }) => (;
         >;
           <Button>;
-            variant="outline";
-            size="sm";
+            variant = "outline",
+            size = "sm",
             onClick={() => router.push(`/marketing/contacts/$row.original.id`)}
           >;
             View;
           </Button>;
           <Button>;
-            variant="outline";
-            size="sm";
+            variant = "outline",
+            size = "sm",
             onClick={() => router.push(`/marketing/contacts/$row.original.id/edit`)}
           >;
             Edit;
@@ -354,7 +351,7 @@ export default const _MarketingDashboard = () {
           "rgba(255, 206, 86, 0.5)",
           "rgba(75, 192, 192, 0.5)",
           "rgba(153, 102, 255, 0.5)"],
-        borderWidth: 1;
+        borderWidth: 1,
       }]};
 
   return();
@@ -363,7 +360,7 @@ export default const _MarketingDashboard = () {
         <h1 className="text-3xl font-bold">Marketing CRM Dashboard>;
         >;
           <Button>;
-            variant="outline";
+            variant = "outline",
             onClick={() => router.push("/marketing/campaigns/new")}
           >;
             New Campaign;
@@ -545,7 +542,7 @@ export default const _MarketingDashboard = () {
                   </SelectContent>;
                 </Select>;
                 <Button>;
-                  variant="outline";
+                  variant = "outline",
                   onClick={() => router.push("/marketing/campaigns/new")}
                   className="sm:ml-auto";
                 >;

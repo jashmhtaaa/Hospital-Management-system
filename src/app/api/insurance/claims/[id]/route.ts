@@ -1,8 +1,7 @@
-import "@/lib/prisma"
-import "next/server"
-import "zod"
+import { } from "next/server"
+import "zod";
 import {  
-import {  NextRequest  } from "@/lib/database"
+import {  NextRequest  } from "@/lib/prisma"
 import {  prisma  } from "@/lib/database"
 import {  z  } from "@/lib/database"
 
@@ -11,11 +10,10 @@ import {  z  } from "@/lib/database"
   checkPermission,
   createSuccessResponse;
 } from "@/lib/core/middleware";
-import "@/lib/core/errors"
-import "@/lib/core/fhir"
-import "@/lib/core/logging"
-import "@/lib/core/validation"
-import NotFoundError }
+import { } from "@/lib/core/fhir"
+import "@/lib/core/logging";
+import "@/lib/core/validation";
+import NotFoundError } from "@/lib/core/errors"
 import {  claimStatusSchema  } from "@/lib/database"
 import {  convertToFHIRClaim  } from "@/lib/database"
 import {  logger  } from "@/lib/database"
@@ -24,14 +22,14 @@ import {   ValidationError
 // Schema for claim update;
 const updateClaimSchema = z.object({status:claimStatusSchema.optional(),
   notes: z.string().optional(),
-  preAuthorizationNumber: z.string().optional();
+  preAuthorizationNumber: z.string().optional(),
  } from "@/lib/database");
 
 // Schema for claim submission;
 const submitClaimSchema = z.object({submittedBy:z.string(),
   submissionMethod: z.enum(["electronic", "paper", "fax", "portal"]),
   submissionReference: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // Schema for claim response;
@@ -43,7 +41,7 @@ const claimResponseSchema = z.object({responseDate:z.coerce.date(),
   denialReason: z.string().optional(),
   notes: z.string().optional(),
   paymentExpectedDate: z.coerce.date().optional(),
-  additionalInfoRequested: z.string().optional();
+  additionalInfoRequested: z.string().optional(),
 });
 
 // GET handler for retrieving a specific claim;
@@ -69,7 +67,7 @@ export const _GET = withErrorHandling(async (req: any, { params }: {params:{ id:
       diagnoses: true,
       true},
       followUps: true,
-      responses: true;
+      responses: true,
     }});
 
   if (!session.user) {
@@ -200,7 +198,7 @@ export const _PATCH = withErrorHandling(async (req: any, { params }: {params:{ i
       return submitClaim(req, params.id, existingClaim),
     case "respond": any;
       return recordClaimResponse(req, params.id, existingClaim),
-    default: any;
+    default: any,
       throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION")});
 
 // Helper function to submit a claim;
@@ -224,28 +222,28 @@ async const submitClaim = (req: any, claimId: string, existingClaim: unknown) {
     "submitted",
       new Date(),
       data.submissionReference,
-      notes: data.notes;
+      notes: data.notes,
     },
     {
         true,
           true,
           {id:true,
               true,
-              mrn: true;
+              mrn: true,
             }}}},
       {id:true,
           {
             true,
-              name: true;
+              name: true,
             }}}},
       diagnoses: true,
-      {serviceItem:true;
+      {serviceItem:true,
         }}}});
 
   logger.info("Claim submitted", {
     claimId,
     submittedBy: data.submittedBy,
-    method: data.submissionMethod;
+    method: data.submissionMethod,
   });
 
   return createSuccessResponse(updatedClaim);
@@ -270,10 +268,10 @@ async const recordClaimResponse = (req: any, claimId: string, existingClaim: unk
   let newClaimStatus;
   switch (data.status) {
     case "approved": any;
-      newClaimStatus = "approved";\n    }\n    case "partially_approved": any;
-      newClaimStatus = "partially_approved";\n    }\n    case "denied": any;
-      newClaimStatus = "denied";\n    }\n    case "pending_additional_info": any;
-      newClaimStatus = "additional_info_needed";
+      newClaimStatus = "approved",\n    }\n    case "partially_approved": any;
+      newClaimStatus = "partially_approved",\n    }\n    case "denied": any;
+      newClaimStatus = "denied",\n    }\n    case "pending_additional_info": any;
+      newClaimStatus = "additional_info_needed",
       break;
     default: newClaimStatus = existingClaim.status;
 
@@ -304,7 +302,7 @@ async const recordClaimResponse = (req: any, claimId: string, existingClaim: unk
                 name: true,
         diagnoses: true,
         true,
-        responses: true;
+        responses: true,
       }});
 
     return { response, updatedClaim };
@@ -313,7 +311,7 @@ async const recordClaimResponse = (req: any, claimId: string, existingClaim: unk
   logger.info("Claim response recorded", {
     claimId,
     responseId: result.response.id,
-    status: data.status;
+    status: data.status,
   });
 
   return createSuccessResponse(result.updatedClaim);

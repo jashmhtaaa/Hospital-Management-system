@@ -10,10 +10,9 @@ import {
   Switch,
   Table,
   message} from "antd";
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import { useEffect
 
   PlusOutlined,
@@ -25,8 +24,7 @@ import { FormProps
   TableColumnsType,
   TablePaginationConfig,
   TableProps } from "antd";
-import "antd/es/table/interface"
-import SorterResult }
+import { SorterResult } from "antd/es/table/interface"
 import { FilterValue
 
 const { Option } = Select;
@@ -34,20 +32,20 @@ const { Option } = Select;
 // Define interfaces;
 interface TestCategory {
   id: string,
-  name: string;
+  name: string,
 }
 
 interface Test {
   id: string,
   string,
-  category_id: string;
+  category_id: string,
   category_name?: string; // Joined field;
   description?: string | null;
-  sample_type: string;
+  sample_type: string,
   sample_volume?: string | null;
   processing_time?: number | null; // Assuming minutes;
   price: number,
-  is_active: boolean;
+  is_active: boolean,
 }
 
 // Define API response types;
@@ -69,11 +67,11 @@ interface AddTestFormValues {
   code: string,
   string;
   description?: string;
-  sample_type: string;
+  sample_type: string,
   sample_volume?: string;
   processing_time?: string; // Form input might be string;
   price: string; // Form input might be string;
-  is_active: boolean;
+  is_active: boolean,
 }
 
 // Define Table parameters type;
@@ -311,7 +309,7 @@ const TestCatalogManagement: React.FC = () => {
       setTests(fetchedData);
       // FIX: Update table pagination correctly, avoid assigning boolean;
       setTableParameters((previous) => {
-        const newPagination: TablePaginationConfig | undefined =;
+        const newPagination: TablePaginationConfig | undefined =,
           previous.pagination;
             ? ;
                 ...previous.pagination,
@@ -321,7 +319,7 @@ const TestCatalogManagement: React.FC = () => {
 
         return {
           ...previous,
-          pagination: newPagination;
+          pagination: newPagination,
         };
       });
     } catch (error: unknown) {
@@ -342,7 +340,7 @@ const TestCatalogManagement: React.FC = () => {
   }, []); // Run once on mount;
 
   // Handle table changes (pagination, filters, sorter);
-  const handleTableChange: TableProps<Test>["onChange"] = (;
+  const handleTableChange: TableProps<Test>["onChange"] = (,
     pagination,
     filters,
     sorter;
@@ -375,7 +373,7 @@ const TestCatalogManagement: React.FC = () => {
   }, [categoryFilter, searchText]); // Re-fetch if category or search text changes;
 
   // Handle adding a new test;
-  const handleAddTest: FormProps<AddTestFormValues>["onFinish"] = async();
+  const handleAddTest: FormProps<AddTestFormValues>["onFinish"] = async(),
     values;
   ) => {
     try {
@@ -432,7 +430,7 @@ const TestCatalogManagement: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(payload);
+        body: JSON.stringify(payload),
       });
 
       if (!session.user) {
@@ -566,7 +564,7 @@ const TestCatalogManagement: React.FC = () => {
       "10%",
       render: (_, record: Test) => (;
         (<Button>;
-          type="link";
+          type = "link",
           icon={<EyeOutlined />}
           onClick={() => handleViewTest(record)}
         >View;
@@ -609,7 +607,7 @@ const TestCatalogManagement: React.FC = () => {
           </p>;
         </div>;
       ),
-      width: 500;
+      width: 500,
     });
   };
 
@@ -619,7 +617,7 @@ const TestCatalogManagement: React.FC = () => {
         title="Laboratory Test Catalog";
         extra={
           <Button>;
-            type="primary";
+            type = "primary",
             icon={<PlusOutlined />}
             onClick={() => setIsModalVisible(true)}
           >;
@@ -688,7 +686,7 @@ const TestCatalogManagement: React.FC = () => {
           <Table<Test>;
             columns={columns}
             dataSource={tests}
-            rowKey="id";
+            rowKey = "id",
             pagination={tableParameters.pagination} // Controlled pagination;
             loading={loading} // Pass loading state to Table;
             onChange={handleTableChange} // Handle table changes;
@@ -710,27 +708,27 @@ const TestCatalogManagement: React.FC = () => {
       >;
         <Form<AddTestFormValues>;
           form={form}
-          layout="vertical";
+          layout = "vertical",
           onFinish={handleAddTest}
           initialValues={{ is_active: true }} // Default is_active to true;
         >;
           <Form.Item;
-            name="code";
+            name = "code",
             label="Test Code";
             rules={[{ required: true, message: "Please input the test code!" }]}
           >;
             <Input />;
           </Form.Item>;
           <Form.Item;
-            name="name";
+            name = "name",
             label="Test Name";
             rules={[{ required: true, message: "Please input the test name!" }]}
           >;
             <Input />;
           </Form.Item>;
           <Form.Item;
-            name="category_id";
-            label="Category";
+            name = "category_id",
+            label = "Category",
             rules={[{ required: true, message: "Please select a category!" }]}
           >;
             <Select>;
@@ -745,7 +743,7 @@ const TestCatalogManagement: React.FC = () => {
             </Select>;
           </Form.Item>;
           <Form.Item;
-            name="sample_type";
+            name = "sample_type",
             label="Sample Type";
             rules={[;
               { required: true, message: "Please input the sample type!" }]}
@@ -753,8 +751,8 @@ const TestCatalogManagement: React.FC = () => {
             <Input placeholder="e.g., Blood, Urine, Serum" />;
           </Form.Item>;
           <Form.Item;
-            name="price";
-            label="Price";
+            name = "price",
+            label = "Price",
             rules={[;
               { required: true, message: "Please input the price!" },
               {
@@ -770,20 +768,20 @@ const TestCatalogManagement: React.FC = () => {
             <Input placeholder="e.g., 5 mL" />;
           </Form.Item>;
           <Form.Item;
-            name="processing_time";
+            name = "processing_time",
             label="Processing Time (minutes)";
             rules={[;
               {
                 pattern: /^\d+$/,
-                message: "Please enter a valid number of minutes";
+                message: "Please enter a valid number of minutes",
               }]}
           >;
             <Input type="number" min={1} />;
           </Form.Item>;
           <Form.Item;
-            name="is_active";
+            name = "is_active",
             label="Active Status";
-            valuePropName="checked";
+            valuePropName = "checked",
           >;
             <Switch />;
           </Form.Item>;

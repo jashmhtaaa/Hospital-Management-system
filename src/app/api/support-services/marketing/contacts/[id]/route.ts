@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  ContactService  } from "@/lib/database"
@@ -34,7 +33,7 @@ export const GET = async();
       return NextResponse.json(contact);
     },
     {requiredPermission:"marketing.contacts.read",
-      auditAction: "CONTACT_VIEW";
+      auditAction: "CONTACT_VIEW",
     }
   );
 }
@@ -62,7 +61,7 @@ export const PUT = async();
       return NextResponse.json(contact);
     },
     {requiredPermission:"marketing.contacts.update",
-      auditAction: "CONTACT_UPDATE";
+      auditAction: "CONTACT_UPDATE",
     }
   );
 }
@@ -97,7 +96,7 @@ export const POST = async();
       return NextResponse.json(note, {status:201 });
     },
     {requiredPermission:"marketing.contacts.update",
-      auditAction: "CONTACT_NOTE_ADD";
+      auditAction: "CONTACT_NOTE_ADD",
     }
   );
 

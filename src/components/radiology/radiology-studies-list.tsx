@@ -1,11 +1,9 @@
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "react"
-import CardContent }
-import React
+import { } from "@/components/ui/button"
+import { } from "react"
+import CardContent, React
 import type
-import useEffect }
-import {
+import useEffect } from "@/components/ui/card"
+import  }
 import { Button }
 import { Card
 import { useState
@@ -20,10 +18,9 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "lucide-react"
-import "next/navigation"
-import { Badge }
+import { } from "lucide-react"
+import "next/navigation";
+import { Badge } from "@/components/ui/badge"
 import { Loader2 }
 import { useRouter }
 
@@ -32,7 +29,7 @@ interface RadiologyStudy {
   id: string,
   string,
   string; // Assuming ISO string format;
-  status: "scheduled" | "acquired" | "reported" | "verified";
+  status: "scheduled" | "acquired" | "reported" | "verified",
 export default const _RadiologyStudiesList = () {
   const [studies, setStudies] = useState<RadiologyStudy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -107,7 +104,7 @@ export default const _RadiologyStudiesList = () {
     const statusStyles: { [key in RadiologyStudy["status"]]: string } = {
       scheduled: "bg-yellow-100 text-yellow-800",
       "bg-purple-100 text-purple-800",
-      verified: "bg-green-100 text-green-800";
+      verified: "bg-green-100 text-green-800",
     };
 
     const statusText =;
@@ -162,8 +159,8 @@ export default const _RadiologyStudiesList = () {
                     <TableCell>{getStatusBadge(study.status)}</TableCell>;
                     >;
                       <Button>;
-                        variant="outline";
-                        size="sm";
+                        variant = "outline",
+                        size = "sm",
                         onClick={() => handleViewStudy(study.id)}
                       >;
                         View;

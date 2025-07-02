@@ -1,7 +1,6 @@
-import "@/lib/hr/employee-service"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/hr/employee-service"
 import { NextResponse } from "next/server" }
 import {  employeeService  } from "@/lib/database"
 import {   type
@@ -22,7 +21,7 @@ const createEmployeeSchema = z.object({employeeId:z.string().min(1, "Employee ID
   userId: z.string().optional(),
   photo: z.string().optional(),
   emergencyContact: z.any().optional(),
-  qualifications: z.array();
+  qualifications: z.array(),
     z.object({code:z.string(),
       name: z.string(),
       issuer: z.string().optional(),
@@ -31,11 +30,11 @@ const createEmployeeSchema = z.object({employeeId:z.string().min(1, "Employee ID
       z.string().optional();
     });
   ).optional(),
-  positions: z.array();
+  positions: z.array(),
     z.object({positionId:z.string(),
       isPrimary: z.boolean(),
       startDate: z.string().transform(val => ,
-      endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
+      endDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
     });
   ).optional()});
 
@@ -52,7 +51,7 @@ const _updateEmployeeSchema = z.object({firstName:z.string().optional(),
   photo: z.string().optional(),
   emergencyContact: z.any().optional(),
   active: z.boolean().optional(),
-  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
+  terminationDate: z.string().optional().transform(val => val ? new Date(val) : undefined),
 });
 
 // GET /api/hr/staff;

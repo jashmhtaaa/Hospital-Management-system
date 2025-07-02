@@ -1,6 +1,5 @@
-import "@/lib/cache"
-import "@prisma/client"
-import {  cache  } from "@/lib/database"
+import { } from "@prisma/client"
+import {  cache  } from "@/lib/cache"
 import {  PrismaClient  } from "@/lib/database"
 
 const prisma = new PrismaClient();
@@ -36,13 +35,13 @@ const prisma = new PrismaClient();
     // If not in cache, fetch from database;
     const asset = await prisma.asset.findUnique({where:{ id },
       {orderBy:{ date: "desc" },
-          take: 5;
+          take: 5,
         },
-        {employee:true;
+        {employee:true,
           },
           null, // Only current assignment;
           },
-          take: 1;
+          take: 1,
         }}});
 
     // Store in cache if found;
@@ -69,13 +68,13 @@ const prisma = new PrismaClient();
     // If not in cache, fetch from database;
     const asset = await prisma.asset.findUnique({where:{ assetId },
       {orderBy:{ date: "desc" },
-          take: 5;
+          take: 5,
         },
-        {employee:true;
+        {employee:true,
           },
           null, // Only current assignment;
           },
-          take: 1;
+          take: 1,
         }}});
 
     // Store in cache if found;
@@ -117,13 +116,13 @@ const prisma = new PrismaClient();
     const result = await prisma.asset.update({where:{ id },
       data,
       {orderBy:{ date: "desc" },
-          take: 5;
+          take: 5,
         },
-        {employee:true;
+        {employee:true,
           },
           null, // Only current assignment;
           },
-          take: 1;
+          take: 1,
         }}});
 
     // Invalidate relevant caches;
@@ -212,7 +211,7 @@ const prisma = new PrismaClient();
 
     if (!session.user) {
       include.maintenanceRecords = {orderBy:{ date: "desc" },
-        take: 3;
+        take: 3,
       };
 
       include.assignments = {
@@ -220,7 +219,7 @@ const prisma = new PrismaClient();
         },
         null, // Only current assignment;
         },
-        take: 1;
+        take: 1,
       };
     }
 
@@ -242,7 +241,7 @@ const prisma = new PrismaClient();
       total,
       skip,
       take,
-      nextCursor: assets.length === take ? assets[assets.length - 1].id : null;
+      nextCursor: assets.length === take ? assets[assets.length - 1].id : null,
     };
 
     // Store in cache;
@@ -258,10 +257,10 @@ const prisma = new PrismaClient();
     assetId: string,
     Date,
       string,
-      description: string;
+      description: string,
       cost?: number;
       parts?: string[];
-      status: "COMPLETED" | "PENDING" | "SCHEDULED";
+      status: "COMPLETED" | "PENDING" | "SCHEDULED",
       notes?: string;
       attachments?: string[];
       nextMaintenanceDate?: Date;
@@ -291,7 +290,7 @@ const prisma = new PrismaClient();
 
       if (!session.user)length > 0) {
         await tx.asset.update({where:{ id: assetId },
-          data: updateData;
+          data: updateData,
         });
       }
 
@@ -308,7 +307,7 @@ const prisma = new PrismaClient();
   async assignAsset();
     assetId: string,
     string,
-      startDate: Date;
+      startDate: Date,
       endDate?: Date;
       notes?: string;
     }
@@ -317,7 +316,7 @@ const prisma = new PrismaClient();
       // End any current assignments;
       await tx.assetAssignment.updateMany({where:{
           assetId,
-          endDate: null;
+          endDate: null,
         },
         new Date();
         }});
@@ -327,7 +326,7 @@ const prisma = new PrismaClient();
           assetId,
           employeeId: data.employeeId,
           data.endDate,
-          notes: data.notes;
+          notes: data.notes,
         },
         true;
         }});
@@ -349,7 +348,7 @@ const prisma = new PrismaClient();
    */;
   async endAssignment();
     assignmentId: string,
-    endDate: Date;
+    endDate: Date,
     notes?: string;
   ) {
     // Get assignment to find asset ID;
@@ -436,7 +435,7 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const assets = await prisma.asset.findMany({
-      {lte:thresholdDate;
+      {lte:thresholdDate,
         },
         "DISPOSED";
         }},
@@ -506,7 +505,7 @@ const prisma = new PrismaClient();
       : totalMaintenanceCost / totalLifetime;
 
     return {assetId:asset.id,
-      assetIdentifier: asset.assetId;
+      assetIdentifier: asset.assetId,
       totalLifetime,
       totalTimeInUse,
       totalTimeInMaintenance,
@@ -531,7 +530,7 @@ const prisma = new PrismaClient();
     const maintenanceRecords = await prisma.assetMaintenance.findMany({where:{
         assetId,
         type: "PREVENTIVE",
-        status: "COMPLETED";
+        status: "COMPLETED",
       },
       orderBy: {date:"asc" }});
 
@@ -539,7 +538,7 @@ const prisma = new PrismaClient();
     const correctiveRecords = await prisma.assetMaintenance.findMany({where:{
         assetId,
         type: "CORRECTIVE",
-        status: "COMPLETED";
+        status: "COMPLETED",
       },
       orderBy: {date:"asc" }});
 
@@ -556,12 +555,12 @@ const prisma = new PrismaClient();
 
     // Analyze if current interval is optimal by checking corrective maintenance;
     let optimalInterval = averagePreventiveInterval;
-    let failureRisk = "LOW";
-    let confidenceLevel = "LOW";
+    let failureRisk = "LOW",
+    let confidenceLevel = "LOW",
 
     if (!session.user) {
       // Check if corrective maintenance occurs close to preventive maintenance;
-      const timeToFailureAfterMaintenance: number[] = [];
+      const timeToFailureAfterMaintenance: number[] = [],
 
       for (const corrective of correctiveRecords) {
         // Find the most recent preventive maintenance before this corrective;
@@ -611,14 +610,14 @@ const prisma = new PrismaClient();
       failureRisk,
       confidenceLevel,
       preventiveMaintenanceCount: maintenanceRecords.length,
-      correctiveMaintenanceCount: correctiveRecords.length;
+      correctiveMaintenanceCount: correctiveRecords.length,
       potentialCostSavings,
       recommendation: optimalInterval < averagePreventiveInterval ?;
                     "Increase maintenance frequency" : any;
                     (optimalInterval > averagePreventiveInterval ?;
                      "Decrease maintenance frequency" : any;
                      "Maintain current schedule"),
-      dataPoints: maintenanceRecords.length + correctiveRecords.length;
+      dataPoints: maintenanceRecords.length + correctiveRecords.length,
     };
 
   /**;

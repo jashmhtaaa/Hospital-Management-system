@@ -1,6 +1,5 @@
-import "@/lib/audit/audit-service"
-import "@/lib/prisma"
-import {  AuditService  } from "@/lib/database"
+import { } from "@/lib/prisma"
+import {  AuditService  } from "@/lib/audit/audit-service"
 import {  prisma  } from "@/lib/database"
 
 // src/modules/opd-management/services/opd-service.ts;
@@ -60,7 +59,7 @@ import {  prisma  } from "@/lib/database"
 
   static async updateAppointmentStatus();
     appointmentId: string,
-    status: "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+    status: "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW",
     updatedBy?: string;
   ) {
     const oldAppointment = await prisma.appointment.findUnique({where:{ id: appointmentId }
@@ -95,22 +94,22 @@ import {  prisma  } from "@/lib/database"
     const [scheduled, completed, cancelled, inProgress] = await Promise.all([;
       prisma.appointment.count({
         {gte:startOfDay, lte: endOfDay },
-          status: "SCHEDULED";
+          status: "SCHEDULED",
 
       }),
       prisma.appointment.count({
         {gte:startOfDay, lte: endOfDay },
-          status: "COMPLETED";
+          status: "COMPLETED",
 
       }),
       prisma.appointment.count({
         {gte:startOfDay, lte: endOfDay },
-          status: "CANCELLED";
+          status: "CANCELLED",
 
       }),
       prisma.appointment.count({
         {gte:startOfDay, lte: endOfDay },
-          status: "IN_PROGRESS";
+          status: "IN_PROGRESS",
 
       });
     ]);

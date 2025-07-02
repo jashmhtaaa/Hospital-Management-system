@@ -1,11 +1,10 @@
-import "@/config"
-import "redis"
-import {  config  } from "@/lib/database"
+import { } from "redis"
+import {  config  } from "@/config"
 import {  createClient  } from "@/lib/database"
 
 // Create Redis client;
 const redisClient = createClient({url:config.redis.url,
-  password: config.redis.password;
+  password: config.redis.password,
 });
 
 // Connect to Redis;
@@ -154,7 +153,7 @@ redisClient.on("error", (err) => {
    */;
   static async getOrSet<T>(;
     key: string,
-    fetchFn: () => Promise>;
+    fetchFn: () => Promise>,
     ttlSeconds = 3600;
   ): Promise<T> {
     try {

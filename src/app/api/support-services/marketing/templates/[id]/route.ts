@@ -1,9 +1,8 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import { NextRequest } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
 import { NextResponse } from "next/server" }
 import {  authOptions  } from "@/lib/database"
 import {  getServerSession  } from "@/lib/database"
@@ -31,7 +30,7 @@ export const GET = async();
       return NextResponse.json(template);
     },
     {requiredPermission:"marketing.templates.read",
-      auditAction: "TEMPLATE_VIEW";
+      auditAction: "TEMPLATE_VIEW",
     }
   );
 }
@@ -59,7 +58,7 @@ export const PUT = async();
       return NextResponse.json(template);
     },
     {requiredPermission:"marketing.templates.update",
-      auditAction: "TEMPLATE_UPDATE";
+      auditAction: "TEMPLATE_UPDATE",
     }
   );
 }
@@ -85,7 +84,7 @@ export const DELETE = async();
       return NextResponse.json({success:true }, {status:200 });
     },
     {requiredPermission:"marketing.templates.delete",
-      auditAction: "TEMPLATE_DELETE";
+      auditAction: "TEMPLATE_DELETE",
     }
   );
 

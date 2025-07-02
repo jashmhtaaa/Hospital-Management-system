@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-interface ERVisit {id:string | number;
-  patient_id: string | number;
+interface ERVisit {id:string | number,
+  patient_id: string | number,
   patient_name?: string;
   mrn?: string;
-  arrival_timestamp: string;
-  chief_complaint: string;
+  arrival_timestamp: string,
+  chief_complaint: string,
   mode_of_arrival?: string;
   triage_level?: number | undefined;
   assigned_physician_id?: string | number | undefined;
@@ -46,8 +46,8 @@ const mockVisits: ERVisit[] = [
 
 let nextVisitId = 3;
 
-interface ERVisitInput {patient_id:number | string;
-  chief_complaint: string;
+interface ERVisitInput {patient_id:number | string,
+  chief_complaint: string,
   mode_of_arrival?: string;
   arrival_timestamp?: string;
 }

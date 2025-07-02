@@ -1,7 +1,7 @@
-import "../segment.service"
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/prisma"
+import "../segment.service";
+import "@/lib/audit";
+import "@/lib/errors";
+import "@/lib/prisma";
 import NotFoundError
 import ValidationError }
 import { AuditLogger }

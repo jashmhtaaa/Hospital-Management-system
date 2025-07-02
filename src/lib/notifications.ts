@@ -1,5 +1,4 @@
-import "./database"
-import {  DB  } from "@/lib/database"
+import { {  DB  } from "./database"
 
 /**;
  * Notifications module for HMS Diagnostics;
@@ -13,7 +12,7 @@ import {  DB  } from "@/lib/database"
  */;
 interface DBResult {
   number;
-  affectedRows: number;
+  affectedRows: number,
 }
 
 /**;
@@ -221,7 +220,7 @@ export const getUserNotifications = async();
       WHERE user_id = ?;
     `;
 
-    const params: unknown[] = [userId];
+    const params: unknown[] = [userId],
 
     if (!session.user) {
       query += " AND read = false";
@@ -233,7 +232,7 @@ export const getUserNotifications = async();
 
     return result.results.map((notification: any) => ({
       ...notification,
-      metadata: notification.metadata ? JSON.parse(notification.metadata) : null;
+      metadata: notification.metadata ? JSON.parse(notification.metadata) : null,
     }));
   } catch (error) {
     return [];

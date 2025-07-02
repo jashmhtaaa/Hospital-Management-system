@@ -1,8 +1,7 @@
-import "pg"
+import { } from "pg"
 import PoolClient
-import QueryResult }
-import type
-import {  Pool
+import QueryResult, type
+import  }  Pool
 
  } from "@/lib/database"
 
@@ -71,7 +70,7 @@ const PG_CONFIG = {user:process.env.DB_USER || "your_db_user", // Placeholder;
 } catch (error) {
 }
       const client = await this.pool.connect();
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       client.release();
     } catch (error) {
 
@@ -116,7 +115,7 @@ const PG_CONFIG = {user:process.env.DB_USER || "your_db_user", // Placeholder;
 } catch (error) {
 
       await this.pool.end();
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     } catch (error) {
 
       throw error;
@@ -128,7 +127,7 @@ const PG_CONFIG = {user:process.env.DB_USER || "your_db_user", // Placeholder;
    * @returns A Promise resolving to the query result.;
    */;
   async execute<T = any>(;
-    queryText: string;
+    queryText: string,
     params?: unknown[];
   ): Promise<QueryResult<T>> {
     const client = await this.pool.connect();
@@ -388,20 +387,20 @@ async const testAdapter = () {
     //     name VARCHAR(100) NOT NULL;
     //   )`;
     // );
-    // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     // Example: Insert data;
     // const _insertResult = await adapter.execute();
     //   "INSERT INTO test_items (name) VALUES ($1) RETURNING *",
     //   ["Test Item 1"];
     // );
-    // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     // Example: Select data;
     // const _selectResult = await adapter.execute("SELECT * FROM test_items");
     // // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-    // Example: Transaction;
+    // Example: Transaction,
     const client = await adapter.beginTransaction(),
     try {
 } catch (error) {

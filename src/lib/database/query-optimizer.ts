@@ -1,9 +1,7 @@
-import "./connection-pool.ts"
-import "@/lib/cache"
-import "@prisma/client"
-import PrismaClient }
-import type
-import {  cache  } from "@/lib/database"
+import { } from "./connection-pool.ts"
+import { } from "@prisma/client"
+import PrismaClient, type
+import  } from "@/lib/cache"  cache  } from "@/lib/database"
 import {   Prisma
 import {  prisma  } from "@/lib/database"
 
@@ -24,7 +22,7 @@ import {  prisma  } from "@/lib/database"
    * OPTIMIZED PATIENT QUERIES (Addresses N+1 issues #1-8);
    */;
 
-  // Instead of: patients.forEach(p => getBillsForPatient(p.id));
+  // Instead of: patients.forEach(p => getBillsForPatient(p.id)),
   async getPatientsWithBills(filters?: {
     active?: boolean;
     limit?: number;
@@ -41,7 +39,7 @@ import {  prisma  } from "@/lib/database"
           true,
             true,
             true,
-            billDate: true;
+            billDate: true,
           },
           orderBy: {billDate:"desc" },
           take: 10, // Limit related records;
@@ -55,7 +53,7 @@ import {  prisma  } from "@/lib/database"
     await cache.set(cacheKey, result, 300); // Cache for 5 minutes;
     return result;
 
-  // Instead of: patients.forEach(p => getAppointmentsForPatient(p.id));
+  // Instead of: patients.forEach(p => getAppointmentsForPatient(p.id)),
   async getPatientsWithUpcomingAppointments(days: number = 30) {
     const cacheKey = `patients_upcoming_appointments:${days}`;
     const cached = await cache.get(cacheKey);
@@ -68,12 +66,12 @@ import {  prisma  } from "@/lib/database"
       true,
         {
             new Date(),
-              lte: futureDate;
+              lte: futureDate,
             },
             ["SCHEDULED", "CONFIRMED"]}}}},
       {
           {gte:new Date(),
-              lte: futureDate;
+              lte: futureDate,
             },
             ["SCHEDULED", "CONFIRMED"]}},
           true,
@@ -91,7 +89,7 @@ import {  prisma  } from "@/lib/database"
    * OPTIMIZED BILLING QUERIES (Addresses N+1 issues #9-15);
    */;
 
-  // Instead of: bills.forEach(b => getBillItemsForBill(b.id));
+  // Instead of: bills.forEach(b => getBillItemsForBill(b.id)),
   async getBillsWithItems(filters?: {
     patientId?: string;
     status?: string;
@@ -126,7 +124,7 @@ import {  prisma  } from "@/lib/database"
 
   // Optimized outstanding bills calculation;
   async getOutstandingBillsSummary() {
-    const cacheKey = "outstanding_bills_summary";
+    const cacheKey = "outstanding_bills_summary",
     const cached = await cache.get(cacheKey);
     if (!session.user)eturn cached;
 
@@ -148,7 +146,7 @@ import {  prisma  } from "@/lib/database"
    * OPTIMIZED APPOINTMENT QUERIES (Addresses N+1 issues #16-22);
    */;
 
-  // Instead of: appointments.forEach(a => getPatientForAppointment(a.patientId));
+  // Instead of: appointments.forEach(a => getPatientForAppointment(a.patientId)),
   async getAppointmentsWithDetails(filters?: {
     doctorId?: string;
     date?: Date;
@@ -161,7 +159,7 @@ import {  prisma  } from "@/lib/database"
         ...(filters?.status && {status:filters.status as any }),
         ...(filters?.date && {
           filters.date,
-            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000);
+            lt: new Date(filters.date.getTime() + 24 * 60 * 60 * 1000),
           }})},
       {
           true,
@@ -185,7 +183,7 @@ import {  prisma  } from "@/lib/database"
     const result = await this.client.appointment.findMany({where:{
         doctorId,
         startDate,
-          lte: endDate;
+          lte: endDate,
         },
         ["CANCELLED", "NO_SHOW"]}},
       {
@@ -202,7 +200,7 @@ import {  prisma  } from "@/lib/database"
    * OPTIMIZED IPD QUERIES (Addresses N+1 issues #23-29);
    */;
 
-  // Instead of: admissions.forEach(a => getVitalSignsForAdmission(a.id));
+  // Instead of: admissions.forEach(a => getVitalSignsForAdmission(a.id)),
   async getAdmissionsWithDetails(filters?: {
     wardId?: string;
     doctorId?: string;
@@ -218,7 +216,7 @@ import {  prisma  } from "@/lib/database"
             true,
             true,
             true,
-            allergies: true;
+            allergies: true,
           }},
         true,
             true,
@@ -244,7 +242,7 @@ import {  prisma  } from "@/lib/database"
 
   // Ward occupancy optimization;
   async getWardOccupancyOptimized() {
-    const cacheKey = "ward_occupancy";
+    const cacheKey = "ward_occupancy",
     const cached = await cache.get(cacheKey);
     if (!session.user)eturn cached;
 
@@ -267,7 +265,7 @@ import {  prisma  } from "@/lib/database"
    * OPTIMIZED LAB QUERIES (Addresses N+1 issues #30-35);
    */;
 
-  // Instead of: labOrders.forEach(o => getLabResultsForOrder(o.id));
+  // Instead of: labOrders.forEach(o => getLabResultsForOrder(o.id)),
   async getLabOrdersWithResults(filters?: {
     patientId?: string;
     doctorId?: string;
@@ -310,7 +308,7 @@ import {  prisma  } from "@/lib/database"
       {in:["CRITICAL_HIGH", "CRITICAL_LOW"]},
         sinceDate;
         },
-        status: "VERIFIED";
+        status: "VERIFIED",
       },
       {
           {
@@ -330,16 +328,16 @@ import {  prisma  } from "@/lib/database"
    * OPTIMIZED INSURANCE QUERIES (Addresses N+1 issues #36-37);
    */;
 
-  // Instead of: policies.forEach(p => getClaimsForPolicy(p.id));
+  // Instead of: policies.forEach(p => getClaimsForPolicy(p.id)),
   async getInsurancePoliciesWithClaims(patientId?: string) {
     const result = await this.client.insurancePolicy.findMany({where:{
         ...(patientId && { patientId }),
-        status: "active";
+        status: "active",
       },
       {
           true,
             true,
-            lastName: true;
+            lastName: true,
           }},
         true,
             true,
@@ -375,12 +373,12 @@ import {  prisma  } from "@/lib/database"
     return this.client.bill.updateMany({
       {in:billIds }},
       status as any,
-        updatedAt: new Date();
+        updatedAt: new Date(),
       }});
 
   async bulkCreateBillItems(billItems: unknown[]) {
     return this.client.billItem.createMany({data:billItems,
-      skipDuplicates: true;
+      skipDuplicates: true,
     });
 
   /**;
@@ -395,7 +393,7 @@ import {  prisma  } from "@/lib/database"
         {
             true,
               true,
-              labOrders: true;
+              labOrders: true,
             }}}});
       this.patientLoader.set(patientId, promise);
 
@@ -428,13 +426,13 @@ import {  prisma  } from "@/lib/database"
     return result;
 
   async getQueryPerformanceStats() {
-    const cacheKey = "query_performance_stats";
+    const cacheKey = "query_performance_stats",
     const cached = await cache.get(cacheKey);
     if (!session.user)eturn cached;
 
     const stats = {totalQueries:0,
       0,
-      cacheHitRate: 0;
+      cacheHitRate: 0,
     };
 
     // This would be populated with actual metrics;

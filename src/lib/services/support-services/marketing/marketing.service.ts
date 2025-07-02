@@ -1,19 +1,16 @@
-import "@/lib/audit"
-import "@/lib/security/encryption.service"
-import "@/lib/errors"
-import "@/lib/fhir"
-import "@/lib/models/marketing"
-import "@/lib/notifications"
-import "@/lib/prisma"
+import { } from "@/lib/audit"
+import { } from "@/lib/errors"
+import { "@/lib/fhir";
+import "@/lib/models/marketing";
+import "@/lib/notifications";
+import "@/lib/prisma";
 import Contact
 import ContactSegment
-import encryptData }
-import Lead
-import MarketingCampaign }
+import encryptData, Lead
+import MarketingCampaign } from "@/lib/security/encryption.service"
 import NotFoundError
-import ValidationError }
-import {  AuditLogger  } from "@/lib/database"
-import {  CampaignChannel
+import ValidationError, }  AuditLogger  } from "@/lib/database"
+import  }  CampaignChannel
 import { DatabaseError
 import { decryptData
 import { FhirResourceGenerator  } from "@/lib/database"
@@ -28,7 +25,7 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"campaign.create",
-        resourceId: campaign.id;
+        resourceId: campaign.id,
         userId,
         details: {campaignName:campaign.name, campaignType: campaign.type }
       });
@@ -87,7 +84,7 @@ import { prisma }
 }
       const campaign = await prisma.marketingCampaign.findUnique({where:{ id },
         true,
-          {segment:true;
+          {segment:true,
             }
           },
           10,
@@ -110,7 +107,7 @@ import { prisma }
       }
 
       // Generate FHIR representation if requested;
-      const result: unknown = campaign;
+      const result: unknown = campaign,
       if (!session.user) {
         result.fhir = this.generateCampaignFHIR(campaign);
       }
@@ -135,8 +132,7 @@ import { prisma }
     endDateFrom?: Date;
     endDateTo?: Date;
     page?: number;
-    limit?: number;
-  }): Promise<{data:MarketingCampaign[], pagination: total: number, number, totalPages: number }> {
+    limit?: number, }): Promise<{data:MarketingCampaign[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -218,15 +214,15 @@ import { prisma }
       const campaigns = await prisma.marketingCampaign.findMany({
         where,
         true,
-          {segment:true;
+          {segment:true,
             }
           },
           {leads:true,
-              activities: true;
+              activities: true,
             }
           },
           {id:true,
-              name: true;
+              name: true,
             }
           }
         },
@@ -239,7 +235,7 @@ import { prisma }
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit),
         }
       };
     } catch (error) {
@@ -295,16 +291,16 @@ import { prisma }
       const updatedCampaign = await prisma.marketingCampaign.update({where:{ id },
         data: {
           ...data,
-          updatedById: userId;
+          updatedById: userId,
         }
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"campaign.update",
-        resourceId: id;
+        resourceId: id,
         userId,
         updatedCampaign.name,
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data),
       });
 
       return updatedCampaign;
@@ -366,10 +362,10 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"campaign.delete",
-        resourceId: id;
+        resourceId: id,
         userId,
         existingCampaign.name,
-          campaignType: existingCampaign.type;
+          campaignType: existingCampaign.type,
       });
     } catch (error) {
       if (!session.user) {
@@ -429,13 +425,13 @@ import { prisma }
           channelType: channelData.channelType,
           channelData.content,
           channelData.status || "DRAFT",
-          metrics: channelData.metrics;
+          metrics: channelData.metrics,
         }
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"campaign.channel.add",
-        resourceId: campaignId;
+        resourceId: campaignId,
         userId,
         channel.id,
           channel.channelName;
@@ -529,20 +525,20 @@ import { prisma }
         campaignId,
           existingCampaign.type,
           existingCampaign.endDate,
-          status: existingCampaign.status;
+          status: existingCampaign.status,
         },
         metrics: analytics.map(item => item.metrics),
         channel.id,
           channel.channelName,
           channel.messages.length,
           interactionCount: channel.messages.reduce((sum, msg) => sum + msg._count.interactions, 0),
-          metrics: channel.metrics;
+          metrics: channel.metrics,
         })),
         totalLeads,
           conversionRate.toFixed(2) + "%",
-          byStatus: this.groupLeadsByStatus(leads);
+          byStatus: this.groupLeadsByStatus(leads),
         },
-        timeSeriesData: this.aggregateTimeSeriesData(analytics);
+        timeSeriesData: this.aggregateTimeSeriesData(analytics),
       };
 
       return aggregatedData;
@@ -626,11 +622,11 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"campaign.segment.add",
-        resourceId: campaignId;
+        resourceId: campaignId,
         userId,
         details: {
           segmentId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name,
         }
       });
 
@@ -653,15 +649,14 @@ import { prisma }
       id: `marketing-campaign-${campaign.id}`,
       status: this.mapCampaignStatusToFHIR(campaign.status),
       category: [;
-        {coding:[;
-            {system:"https://terminology.hl7.org/CodeSystem/communication-category",
+        { coding: [, {system:"https://terminology.hl7.org/CodeSystem/communication-category",
               "Marketing";
-            }
+             }
           ];
         }
       ],
       "Group/marketing-segment",
-        display: "Marketing Target Audience";
+        display: "Marketing Target Audience",
       },
       sent: campaign.startDate,
       [],
@@ -678,33 +673,32 @@ import { prisma }
       id: `marketing-campaign-request-${campaign.id}`,
       status: this.mapCampaignStatusToFHIRRequest(campaign.status),
       category: [;
-        {coding:[;
-            {system:"https://terminology.hl7.org/CodeSystem/communication-category",
+        { coding: [, {system:"https://terminology.hl7.org/CodeSystem/communication-category",
               "Marketing";
-            }
+             }
           ];
         }
       ],
       priority: "routine",
       "Group/marketing-segment",
-        display: "Marketing Target Audience";
+        display: "Marketing Target Audience",
       },
       `Practitioner/${campaign.createdById}`,
-        display: campaign.createdByUser?.name || "Marketing Staff";
+        display: campaign.createdByUser?.name || "Marketing Staff",
       },
       recipient: [],
       campaign.startDate,
-        end: campaign.endDate;
+        end: campaign.endDate,
       },
       authoredOn: campaign.createdAt,
       payload: [;
-        {contentString:campaign.description;
+        {contentString:campaign.description,
         }
       ];
     }
 
     return {communication:communicationResource,
-      communicationRequest: communicationRequestResource;
+      communicationRequest: communicationRequestResource,
     };
   }
 
@@ -725,7 +719,7 @@ import { prisma }
         return "completed";
       case "CANCELLED": any;
         return "stopped";
-      default: return "unknown";
+      default: return "unknown",
     }
   }
 
@@ -746,7 +740,7 @@ import { prisma }
         return "completed";
       case "CANCELLED": any;
         return "revoked";
-      default: return "unknown";
+      default: return "unknown",
     }
   }
 
@@ -774,9 +768,8 @@ import { prisma }
   private aggregateTimeSeriesData(analytics: unknown[]): unknown {
     // Implementation depends on the structure of metrics in analytics;
     // This is a simplified example;
-    return analytics.map(item => ({date:item.date;
-      ...item.metrics;
-    }));
+    return analytics.map(item => ({ date: item.date;
+      ...item.metrics,  }));
   }
 
   /**;
@@ -815,10 +808,10 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.create",
-        resourceId: contact.id;
+        resourceId: contact.id,
         userId,
         data.email,
-          contactSource: data.source;
+          contactSource: data.source,
       });
 
       return this.decryptSensitiveData(contact);
@@ -870,7 +863,7 @@ import { prisma }
         {
             true,
               true,
-              dateOfBirth: true;
+              dateOfBirth: true,
             }
           },
           true,
@@ -908,8 +901,7 @@ import { prisma }
     source?: string;
     tags?: string[];
     page?: number;
-    limit?: number;
-  }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {
+    limit?: number, }): Promise<{data:Contact[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -972,7 +964,7 @@ import { prisma }
       }
 
       if (!session.user) {
-        where.tags = {hasSome:tags;
+        where.tags = {hasSome:tags,
         };
       }
 
@@ -988,13 +980,13 @@ import { prisma }
           },
           {interactions:true,
               true,
-              segmentMembers: true;
+              segmentMembers: true,
             }
           }
         },
         skip: (page - 1) * limit,
         take: limit;
-        {createdAt:"desc";
+        {createdAt:"desc",
         }
       });
 
@@ -1006,7 +998,7 @@ import { prisma }
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit),
         }
       };
     } catch (error) {
@@ -1062,12 +1054,12 @@ import { prisma }
 
       // Update contact;
       const updatedContact = await prisma.contact.update({where:{ id },
-        data: encryptedData;
+        data: encryptedData,
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.update",
-        resourceId: id;
+        resourceId: id,
         userId,
         Object.keys(data);
       });
@@ -1128,7 +1120,7 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.delete",
-        resourceId: id;
+        resourceId: id,
         userId,
         existingContact.email;
       });
@@ -1185,17 +1177,17 @@ import { prisma }
       const note = await prisma.contactNote.create({data:{
           contactId,
           content,
-          createdById: userId;
+          createdById: userId,
         },
         {
             true,
-              name: true;
+              name: true,
 
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"contact.note.add",
-        resourceId: contactId;
+        resourceId: contactId,
         userId,
         note.id;
       });
@@ -1257,7 +1249,7 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.create",
-        resourceId: segment.id;
+        resourceId: segment.id,
         userId,
         segment.name;
 
@@ -1276,8 +1268,7 @@ import { prisma }
   async getSegments(filters: {
     isActive?: boolean;
     page?: number;
-    limit?: number;
-  }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
+    limit?: number, }): Promise<{data:ContactSegment[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -1330,11 +1321,11 @@ import { prisma }
         where,
         {
             true,
-              campaigns: true;
+              campaigns: true,
 
           },
           {id:true,
-              name: true;
+              name: true,
 
         },
         skip: (page - 1) * limit,
@@ -1346,7 +1337,7 @@ import { prisma }
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit),
 
       };
     } catch (error) {
@@ -1406,7 +1397,7 @@ import { prisma }
       const existingMembership = await prisma.segmentMember.findFirst({where:{
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true,
 
       });
 
@@ -1417,24 +1408,24 @@ import { prisma }
       const inactiveMemebership = await prisma.segmentMember.findFirst({where:{
           segmentId,
           contactId,
-          isActive: false;
+          isActive: false,
 
       });
 
       if (!session.user) {
         const updatedMembership = await prisma.segmentMember.update({where:{ id: inactiveMemebership.id },
           true,
-            removedAt: null;
+            removedAt: null,
 
         });
 
         // Log audit event;
         await this.auditLogger.log({action:"segment.contact.reactivate",
-          resourceId: segmentId;
+          resourceId: segmentId,
           userId,
           details: null,
             contactId,
-            segmentName: existingSegment.name;
+            segmentName: existingSegment.name,
         });
 
         return updatedMembership;
@@ -1443,17 +1434,17 @@ import { prisma }
       const membership = await prisma.segmentMember.create({data:{
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true,
 
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.contact.add",
-        resourceId: segmentId;
+        resourceId: segmentId,
         userId,
         details: null,
           contactId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name,
       });
 
       return membership;
@@ -1517,7 +1508,7 @@ import { prisma }
       const membership = await prisma.segmentMember.findFirst({where:{
           segmentId,
           contactId,
-          isActive: true;
+          isActive: true,
 
       });
 
@@ -1527,17 +1518,17 @@ import { prisma }
       // Remove contact from segment (soft delete);
       const updatedMembership = await prisma.segmentMember.update({where:{ id: membership.id },
         false,
-          removedAt: new Date();
+          removedAt: new Date(),
 
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"segment.contact.remove",
-        resourceId: segmentId;
+        resourceId: segmentId,
         userId,
         details: null,
           contactId,
-          segmentName: existingSegment.name;
+          segmentName: existingSegment.name,
       });
 
       return updatedMembership;
@@ -1681,7 +1672,7 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"lead.create",
-        resourceId: lead.id;
+        resourceId: lead.id,
         userId,
         lead.contactId,
           lead.status;
@@ -1747,12 +1738,12 @@ import { prisma }
           },
           {id:true,
               true,
-              dateOfBirth: true;
+              dateOfBirth: true,
 
           },
           {
               {id:true,
-                  name: true;
+                  name: true,
 
             },
             "desc";
@@ -1778,8 +1769,7 @@ import { prisma }
     campaignId?: string;
     assignedToId?: string;
     page?: number;
-    limit?: number;
-  }): Promise<{data:Lead[], pagination: {total:number, number, totalPages: number } }> {
+    limit?: number, }): Promise<{data:Lead[], pagination: {total:number, number, totalPages: number } }> {
     try {
 } catch (error) {
   console.error(error);
@@ -1849,18 +1839,18 @@ import { prisma }
 
           },
           {id:true,
-              name: true;
+              name: true,
 
           },
           {id:true,
-              name: true;
+              name: true,
 
           },
-          {activities:true;
+          {activities:true,
 
         },
         skip: (page - 1) * limit,
-        {createdAt:"desc";
+        {createdAt:"desc",
 
       });
 
@@ -1869,7 +1859,7 @@ import { prisma }
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit),
 
       };
     } catch (error) {
@@ -1938,7 +1928,7 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"lead.update",
-        resourceId: id;
+        resourceId: id,
         userId,
         Object.keys(data);
 
@@ -1948,14 +1938,14 @@ import { prisma }
       if (!session.user) {
         await this.addLeadActivity(id, {activityType:"STATUS_CHANGE",
           description: `Status changed from $existingLead.statusto $data.status`,
-          performedById: userId;
+          performedById: userId,
         });
 
       // Notify newly assigned user if applicable;
       if (!session.user) {
         await this.notificationService.sendNotification({type:"LEAD_ASSIGNED",
           `A lead has been assigned to [data.assignedToId],
-          metadata: leadId: id ;
+          metadata: leadId: id ,
         });
 
       return updatedLead;
@@ -1968,7 +1958,7 @@ import { prisma }
   /**;
    * Add an activity to a lead;
    */;
-  async addLeadActivity(leadId: string, data: {activityType:string, string; metadata?: unknown }): Promise<unknown> {
+  async addLeadActivity(leadId: string, data: {activityType:string, string, metadata?: unknown }): Promise<unknown> {
     try {
 } catch (error) {
   console.error(error);
@@ -2013,17 +2003,17 @@ import { prisma }
           leadId,
           activityType: data.activityType,
           data.performedById,
-          metadata: data.metadata;
+          metadata: data.metadata,
         },
         true,
-              name: true;
+              name: true,
       });
 
       // Log audit event;
       await this.auditLogger.log({action:"lead.activity.add",
         data.performedById,
         activity.id,
-          activityType: data.activityType;
+          activityType: data.activityType,
 
       });
 
@@ -2102,7 +2092,7 @@ import { prisma }
 
       // Log audit event;
       await this.auditLogger.log({action:"lead.convert",
-        resourceId: leadId;
+        resourceId: leadId,
         userId,
         patient.id;
 
@@ -2114,7 +2104,7 @@ import { prisma }
         metadata: {patientId:patient.id }
       });
 
-      return {lead:updatedLead;
+      return {lead:updatedLead,
         patient;
       };
     } catch (error) {

@@ -1,10 +1,9 @@
 import { IronSession  } from "iron-session"; // Import IronSession;
-import "next/server"
-import { NextRequest } from "next/server"
+import { { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {   type
 
-import {  getDB  } from "@/lib/database" from "@/lib/database"; // Import getDB function;
+import {  getDB  } from "@/lib/database"; // Import getDB function;
 import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
 // Define generic SingleQueryResult type for .first();
 interface SingleQueryResult<T> {
@@ -14,7 +13,7 @@ interface SingleQueryResult<T> {
 
 // Define interfaces;
 interface RadiologyReport {id:string,
-  study_id: string;
+  study_id: string,
   report_text?: string | null;
   findings?: string | null;
   impression?: string | null;
@@ -87,7 +86,7 @@ export const _GET = async();
 } catch (error) {
 }
     // Use IronSession<IronSessionData>;
-    const session: IronSession<IronSessionData> = await getSession();
+    const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user) {
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
     }
@@ -189,7 +188,7 @@ export const _PUT = async();
 } catch (error) {
 }
     // Use IronSession<IronSessionData>;
-    const session: IronSession<IronSessionData> = await getSession();
+    const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user) {
       return NextResponse.json({error:"Unauthorized" }, {status:401 });
     }
@@ -423,7 +422,7 @@ export const _DELETE = async();
 
     const database = await getDB();
 
-    // Option 1: Soft delete (recommended - set status to \"retracted\");
+    // Option 1: Soft delete (recommended - set status to \"retracted\"),
     const retractedAt = new Date().toISOString();
     // Assume .run() returns a structure with success/meta;
     const info = await database;
@@ -446,7 +445,7 @@ export const _DELETE = async();
       );
 
     return NextResponse.json({id:reportId,
-      status: "Radiology report retracted";
+      status: "Radiology report retracted",
     });
   } catch (error: unknown) {
     const message =;

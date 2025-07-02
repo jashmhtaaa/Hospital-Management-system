@@ -1,9 +1,8 @@
-import "../../../../../../lib/audit"
-import "../../../../../../lib/error-handler"
-import "../../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../models/domain-models"
-import "next/server"
-import getPrescriptionById }
+import { } from "../../../../../../lib/error-handler"
+import "../../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../models/domain-models";
+import "next/server";
+import getPrescriptionById } from "../../../../../../lib/audit"
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server" }
 import {  auditLog  } from "@/lib/database"
@@ -27,7 +26,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const getPrescriptionById,
@@ -37,7 +36,7 @@ const getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const () => Promise.resolve(null),
@@ -47,7 +46,7 @@ const () => Promise.resolve(null),
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 /**;
@@ -152,7 +151,7 @@ export const GET = async();
         }
 
         // Determine status;
-        let status = "scheduled";
+        let status = "scheduled",
         if (!session.user) {
           status = matchingAdministration.status;
         } else if (!session.user) {
@@ -165,7 +164,7 @@ export const GET = async();
           status,
           administrationId: matchingAdministration?.id,
           matchingAdministration?.administeredBy,
-          notes: matchingAdministration?.notes;
+          notes: matchingAdministration?.notes,
         });
       }
     }
@@ -178,7 +177,7 @@ export const GET = async();
       userId,
       schedule.length,
         startDate: startDate.toISOString(),
-        endDate: endDate.toISOString();
+        endDate: endDate.toISOString(),
     });
 
     // Return response;

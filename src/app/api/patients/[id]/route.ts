@@ -1,9 +1,8 @@
-import "@/lib/database"
-import "@/lib/session"
-import "@/types/patient"
-import "next/server"
-import "zod"
-import { NextRequest } from "next/server"
+import { } from "@/lib/session"
+import "@/types/patient";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/database"
 import { NextResponse } from "next/server" }
 import {  DB  } from "@/lib/database"
 import {  getSession  } from "@/lib/database"
@@ -17,7 +16,7 @@ import { D1Database, D1ResultWithMeta  } from "@/types/cloudflare"; // Import D1
 const patientUpdateSchema = z.object({mrn:z.string().optional(),
     first_name: z.string().min(1, "First name is required").optional(),
     last_name: z.string().min(1, "Last name is required").optional(),
-    date_of_birth: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid date of birth format";
+    date_of_birth: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid date of birth format",
     }).optional(),
     gender: z.enum(["Male", "Female", "Other", "Unknown"]).optional(),
     contact_number: z.string().optional().nullable(),
@@ -35,7 +34,7 @@ const patientUpdateSchema = z.object({mrn:z.string().optional(),
     allergies: z.string().optional().nullable(),
     medical_history_summary: z.string().optional().nullable(),
     insurance_provider: z.string().optional().nullable(),
-    insurance_policy_number: z.string().optional().nullable();
+    insurance_policy_number: z.string().optional().nullable(),
 }).partial();
 
 // GET /api/patients/[id] - Fetch a specific patient by ID;

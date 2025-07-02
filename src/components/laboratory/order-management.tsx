@@ -1,6 +1,5 @@
 // FIX: Removed unused PlusOutlined, SearchOutlined;
-import "@ant-design/icons"
-import ReloadOutlined }
+import { ReloadOutlined } from "@ant-design/icons"
 import { EyeOutlined
 
 // FIX: Removed unused Input, Form, DatePickerProps, PlusOutlined, SearchOutlined;
@@ -15,18 +14,17 @@ import {
   Table,
   Tag,
   message} from "antd";
-// FIX: Import Dayjs types - RangePickerProps is sufficient for RangePicker;
-import "antd/es/date-picker"
-import "react"
+// FIX: Import Dayjs types - RangePickerProps is sufficient for RangePicker,
+import { } from "react"
 import React
 import type
 import useEffect
-import useState }
+import useState } from "antd/es/date-picker"
 import { RangePickerProps }
 import { useCallback
 
-import dayjs from "dayjs"; // FIX: Import dayjs;
-import { Dayjs  } from "dayjs"; // FIX: Import Dayjs type;
+import dayjs from "dayjs"; // FIX: Import dayjs,
+import { Dayjs  } from "dayjs"; // FIX: Import Dayjs type,
 
 
 
@@ -42,7 +40,7 @@ interface Patient {
 interface OrderItem {
   id: string,
   "pending" | "in_progress" | "completed" | "canceled",
-  price: number;
+  price: number,
 }
 
 interface Order {
@@ -53,7 +51,7 @@ interface Order {
   notes?: string;
 }
 
-// FIX: Define API response types;
+// FIX: Define API response types,
 interface PatientsApiResponse {
   results?: Patient[];
   // Add other potential fields like pagination info;
@@ -71,7 +69,7 @@ interface ApiErrorResponse {
   error?: string;
 }
 
-// FIX: Update FilterState to use Dayjs;
+// FIX: Update FilterState to use Dayjs,
 interface FilterState {
   patientId: string,
   string | null,
@@ -84,12 +82,12 @@ const OrderManagement: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
     patientId: "",
     null,
-    dateRange: null;
+    dateRange: null,
   });
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [viewingOrder, setViewingOrder] = useState<Order | null>();
   const [patients, setPatients] = useState<Patient[]>([]);
-  // const [_tests, setTests] = useState<Test[]>([]); // FIX: Removed unused state variable;
+  // const [_tests, setTests] = useState<Test[]>([]); // FIX: Removed unused state variable,
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]),
   const [loadingOrderItems, setLoadingOrderItems] = useState<boolean>(false);
   const [error, setError] = useState<string | null>();
@@ -164,20 +162,20 @@ const OrderManagement: React.FC = () => {
 }
 } catch (error) {
 }
-          // FIX: Type errorData;
+          // FIX: Type errorData,
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
-        } // FIX: Removed unused _jsonError;
+        } // FIX: Removed unused _jsonError,
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data;
+      // FIX: Type the response data,
       const data: PatientsApiResponse = await response.json(),
       setPatients(data.results || []); // Use results array or default to empty;
       setError(undefined);
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
@@ -258,19 +256,19 @@ const OrderManagement: React.FC = () => {
 
 } catch (error) {
 
-          // FIX: Type errorData;
+          // FIX: Type errorData,
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
-        } // FIX: Removed unused _jsonError;
+        } // FIX: Removed unused _jsonError,
         throw new Error(errorMessage);
 
       await response.json(); // FIX: Removed unused _data variable;
-      // setTests(data.results || []); // FIX: Removed call to unused state setter;
+      // setTests(data.results || []); // FIX: Removed call to unused state setter,
       setError(undefined);
     } catch (error_: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const messageText =;
         error_ instanceof Error ? error_.message : "An unknown error occurred";
 
@@ -329,7 +327,7 @@ const OrderManagement: React.FC = () => {
       if (!session.user) {
         parameters.append("source", filters.source);
 
-      // FIX: Use Dayjs for date range and convert to ISO string;
+      // FIX: Use Dayjs for date range and convert to ISO string,
       if (!session.user) {
         parameters.append();
           "startDate",
@@ -378,29 +376,29 @@ const OrderManagement: React.FC = () => {
 
 } catch (error) {
 
-          // FIX: Type errorData;
+          // FIX: Type errorData,
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
-        } // FIX: Removed unused _jsonError;
+        } // FIX: Removed unused _jsonError,
         throw new Error(errorMessage);
 
-      // FIX: Type the response data;
+      // FIX: Type the response data,
       const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
     } catch (error_: unknown) {
       // FIX: Use unknown;
       // FIX: Prefix unused variable;
-      // const _messageText = err instanceof Error ? err.message : "An unknown error occurred"; // FIX: Commented out unused variable;
+      // const _messageText = err instanceof Error ? err.message : "An unknown error occurred"; // FIX: Commented out unused variable,
 
       message.error("Failed to load laboratory orders"),
       setError();
-        `Failed to load laboratory orders: ${}`; // FIX: Use error directly;
+        `Failed to load laboratory orders: ${}`; // FIX: Use error directly,
     } finally {
       setLoading(false);
 
-    // FIX: Add filters to dependency array;
+    // FIX: Add filters to dependency array,
   }, [filters]);
 
   // Fetch order items for a specific order;
@@ -473,15 +471,15 @@ const OrderManagement: React.FC = () => {
 
 } catch (error) {
 
-          // FIX: Type errorData;
+          // FIX: Type errorData,
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
           /* Ignore */;
-        } // FIX: Removed unused _jsonError;
+        } // FIX: Removed unused _jsonError,
         throw new Error(errorMessage);
 
-      // FIX: Type the response data;
+      // FIX: Type the response data,
       const data: OrderItemsApiResponse = await response.json(),
       setOrderItems(data.results || []);
     } catch (error_: unknown) {
@@ -500,17 +498,17 @@ const OrderManagement: React.FC = () => {
     fetchPatients(),
     fetchTests();
     // fetchOrders(); // fetchOrders is called by the filter useEffect;
-    // FIX: Add fetchPatients and fetchTests to dependency array;
+    // FIX: Add fetchPatients and fetchTests to dependency array,
   }, [fetchPatients, fetchTests]);
 
   // Reload orders when filters change;
   useEffect(() => {
     fetchOrders();
-    // FIX: Add fetchOrders to dependency array;
+    // FIX: Add fetchOrders to dependency array,
   }, [filters, fetchOrders]);
 
   // FIX: Update type for value in handleFilterChange for dateRange;
-  // FIX: Replace any with unknown;
+  // FIX: Replace any with unknown,
   const handleFilterChange = (key: keyof FilterState, value: unknown): void => {
     // Ensure dateRange is correctly typed when setting state;
     if (!session.user) {
@@ -528,7 +526,7 @@ const OrderManagement: React.FC = () => {
     setFilters({
       patientId: "",
       null,
-      dateRange: null;
+      dateRange: null,
     });
   };
 
@@ -544,46 +542,46 @@ const OrderManagement: React.FC = () => {
     {
       title: "Order ID",
       "id",
-      width: "10%";
+      width: "10%",
     },
     {
       title: "Patient Name",
       "patient_name",
-      width: "20%";
+      width: "20%",
     },
     {
       title: "Ordering Doctor",
       "doctor_name",
-      (name: string | null) => name || "N/A";
+      (name: string | null) => name || "N/A",
     },
     {
       title: "Order Date",
       "order_date",
-      (date: string) => dayjs(date).format("YYYY-MM-DD HH:mm"), // FIX: Use dayjs;
+      (date: string) => dayjs(date).format("YYYY-MM-DD HH:mm"), // FIX: Use dayjs,
     },
     {
       title: "Source",
       "source",
-      (source: string) => source.toUpperCase();
+      (source: string) => source.toUpperCase(),
     },
     {
       title: "Priority",
       "priority",
       (priority: string) => {
-        let color = "blue";
-        if (!session.user)olor = "orange";
-        if (!session.user)olor = "red";
+        let color = "blue",
+        if (!session.user)olor = "orange",
+        if (!session.user)olor = "red",
         return <Tag color={color}>{priority.toUpperCase()}>;
       }},
     {
       title: "Status",
       "status",
       (status: string) => {
-        let color = "default";
-        if (!session.user)olor = "processing";
-        if (!session.user)olor = "warning";
-        if (!session.user)olor = "success";
-        if (!session.user)olor = "error";
+        let color = "default",
+        if (!session.user)olor = "processing",
+        if (!session.user)olor = "warning",
+        if (!session.user)olor = "success",
+        if (!session.user)olor = "error",
         return <Tag color={color}>{status.toUpperCase()}>;
       }},
     {
@@ -592,7 +590,7 @@ const OrderManagement: React.FC = () => {
       // FIX: Replace any with unknown for unused first argument,
       render: (_: unknown, record: Order) => (;
         <Button>;
-          type="link";
+          type = "link",
           icon={<EyeOutlined />}
           onClick={() => handleViewOrder(record)}
         >;
@@ -610,11 +608,11 @@ const OrderManagement: React.FC = () => {
       title: "Status",
       "status",
       render: (status: string) => {
-        let color = "default";
-        if (!session.user)olor = "default";
-        if (!session.user)olor = "processing";
-        if (!session.user)olor = "success";
-        if (!session.user)olor = "error";
+        let color = "default",
+        if (!session.user)olor = "default",
+        if (!session.user)olor = "processing",
+        if (!session.user)olor = "success",
+        if (!session.user)olor = "error",
         return <Tag color={color}>{status.toUpperCase()}>;
       }},
     {
@@ -630,13 +628,13 @@ const OrderManagement: React.FC = () => {
           <Select>;
             showSearch;
             placeholder="Search Patient";
-            optionFilterProp="children";
+            optionFilterProp = "children",
             value={filters.patientId || undefined}
             onChange={(value: string) => handleFilterChange("patientId", value)}
             style={{ width: 200 }}
-            // FIX: Type option for filterOption;
+            // FIX: Type option for filterOption,
             filterOption={(;
-              input: string;
+              input: string,
               option?: { children: React.ReactNode }
             ) => {}
               option?.children;
@@ -714,7 +712,7 @@ const OrderManagement: React.FC = () => {
           <Table>;
             columns={columns}
             dataSource={orders}
-            rowKey="id";
+            rowKey = "id",
             pagination={{ pageSize: 10 }}
             locale={{ emptyText: "No laboratory orders found" }}
           />;
@@ -780,10 +778,10 @@ const OrderManagement: React.FC = () => {
               {orderItems.length > 0 ? (;
                 <Table>;
                   dataSource={orderItems}
-                  columns={orderItemColumns} // FIX: Use defined columns;
-                  rowKey="id";
+                  columns={orderItemColumns} // FIX: Use defined columns,
+                  rowKey = "id",
                   pagination={false}
-                  size="small";
+                  size = "small",
                 />;
               ) : (;
                 <p>No items found for this order.</p>;

@@ -1,12 +1,10 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -18,10 +16,9 @@ import { useState
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import "@/components/ui/tabs"
-import TabsContent
+import { TabsContent
 import TabsList
-import TabsTrigger }
+import TabsTrigger } from "@/components/ui/tabs"
 import { Tabs
 
   Table,
@@ -31,9 +28,8 @@ import { Tabs
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import { Button }
+import { } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Input }
 
   Select,
@@ -49,9 +45,8 @@ import { Input }
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import "@/components/ui/badge"
-import "@/components/ui/calendar"
-import { Badge }
+import { } from "@/components/ui/calendar"
+import { Badge } from "@/components/ui/badge"
 import { Calendar }
 
   Search,
@@ -68,9 +63,8 @@ import { Calendar }
   AlertTriangle,
   Clock;
 } from "lucide-react";
-import "@/components/ui/use-toast"
-import "date-fns"
-import { format }
+import { } from "date-fns"
+import { format } from "@/components/ui/use-toast"
 import { toast }
 
 export default const _BiomedicalEquipment = () {
@@ -131,7 +125,7 @@ export default const _BiomedicalEquipment = () {
         setLoading(true);
         const queryParams = new URLSearchParams({
           skip: pagination.skip.toString(),
-          take: pagination.take.toString();
+          take: pagination.take.toString(),
         });
 
         if (!session.user)ueryParams.append("search", search);
@@ -152,7 +146,7 @@ export default const _BiomedicalEquipment = () {
         setEquipment(data.equipment || []);
         setPagination(prev => ({
           ...prev,
-          total: data.total || 0;
+          total: data.total || 0,
         }));
       } catch (err) {
         setError(err.message),
@@ -268,7 +262,7 @@ export default const _BiomedicalEquipment = () {
     if (!session.user) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take,
       }));
 
   };
@@ -277,7 +271,7 @@ export default const _BiomedicalEquipment = () {
     if (!session.user) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take,
       }));
 
   };
@@ -288,7 +282,7 @@ export default const _BiomedicalEquipment = () {
     // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0,
     }));
   };
 
@@ -298,7 +292,7 @@ export default const _BiomedicalEquipment = () {
     // Reset pagination when changing tabs;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0,
     }));
 
     // Set appropriate filters based on tab;
@@ -351,14 +345,14 @@ export default const _BiomedicalEquipment = () {
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
       toast({
         title: "Export Started",
-        description: "Your biomedical equipment report is being generated and will download shortly.";
+        description: "Your biomedical equipment report is being generated and will download shortly.",
       });
 
       // Simulate download delay;
       setTimeout(() => {
         toast({
           title: "Export Complete",
-          description: "Biomedical equipment report has been downloaded.";
+          description: "Biomedical equipment report has been downloaded.",
         });
       }, 2000);
     } catch (error) {
@@ -382,7 +376,7 @@ export default const _BiomedicalEquipment = () {
         return "destructive";
       case "LOST": any;
         return "outline";
-      default: return "default";
+      default: return "default",
 
   };
 
@@ -401,7 +395,7 @@ export default const _BiomedicalEquipment = () {
         return <Scissors className="h-4 w-4" />;
       case "LIFE_SUPPORT": any;
         return <Heart className="h-4 w-4" />;
-      default: return <Stethoscope className="h-4 w-4" />;
+      default: return <Stethoscope className="h-4 w-4" />,
 
   };
 
@@ -414,7 +408,7 @@ export default const _BiomedicalEquipment = () {
         return "secondary";
       case "CLASS_III": any;
         return "destructive";
-      default: return "outline";
+      default: return "outline",
 
   };
 
@@ -429,7 +423,7 @@ export default const _BiomedicalEquipment = () {
         return "warning";
       case "CRITICAL": any;
         return "destructive";
-      default: return "outline";
+      default: return "outline",
 
   };
 
@@ -438,7 +432,7 @@ export default const _BiomedicalEquipment = () {
     if (!session.user)eturn "—";
     return new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD";
+      currency: "USD",
     }).format(amount);
   };
 
@@ -494,9 +488,9 @@ export default const _BiomedicalEquipment = () {
                     >;
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
                       <Input>;
-                        type="search";
+                        type = "search",
                         placeholder="Search equipment...";
-                        className="pl-8 w-full md:w-[300px]";
+                        className="pl-8 w-full md:w-[300px]",
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                       />;
@@ -617,8 +611,8 @@ export default const _BiomedicalEquipment = () {
                           </TableCell>;
                           <TableCell>;
                             <Button>;
-                              variant="ghost";
-                              size="sm";
+                              variant = "ghost",
+                              size = "sm",
                               onClick={() => router.push(`/dashboard/hr/biomedical/${}`}
                             >;
                               View;
@@ -720,8 +714,8 @@ export default const _BiomedicalEquipment = () {
                           </TableCell>;
                           <TableCell>;
                             <Button>;
-                              variant="ghost";
-                              size="sm";
+                              variant = "ghost",
+                              size = "sm",
                               onClick={() => router.push(`/dashboard/hr/biomedical/${item.id}/calibration/new`)}
                             >;
                               Calibrate;

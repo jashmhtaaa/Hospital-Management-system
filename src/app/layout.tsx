@@ -1,7 +1,6 @@
-import "./globals.css"
-import "next"
-import "next/font/google"
-import Geist_Mono }
+import { } from "next"
+import "next/font/google";
+import Geist_Mono } from "./globals.css"
 import { Geist
 import { Metadata }
 
@@ -9,22 +8,22 @@ import { ThemeProvider } from "@/components/theme-provider"; // Added ThemeProvi
 import { Toaster } from "@/components/ui/sonner"; // Added Toaster for notifications;
 const _geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"];
+  subsets: ["latin"],
 });
 
 const _geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  subsets: ["latin"];
+  subsets: ["latin"],
 });
 
 // Use metadata from HEAD;
 export const "Hospital Management System",
-  description: "Comprehensive HMS";
+  description: "Comprehensive HMS",
 };
 
 export default const _RootLayout = ({
   children}: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode,
 }>) {
   return();
     // Keep lang="en" and dark class from origin/master;
@@ -32,8 +31,8 @@ export default const _RootLayout = ({
       {/* Use Geist fonts and antialiased from origin/master */}
       <body></body>;
         <ThemeProvider>;
-          attribute="class";
-          defaultTheme="system";
+          attribute = "class",
+          defaultTheme = "system",
           enableSystem;
           disableTransitionOnChange;
         >;

@@ -136,7 +136,13 @@
     "type-check:lenient": "tsc --noEmit --skipLibCheck",
     "format:safe": "prettier --write . --ignore-unknown",
     "build:check": "npm run type-check:lenient && npm run build",
-    "quality:basic": "npm run type-check:lenient && npm run lint:fix:safe && npm run format:safe"
+    "quality:basic": "npm run type-check:lenient && npm run lint:fix:safe && npm run format:safe",
+    "lint:enterprise": "eslint . --ext .ts,.tsx --max-warnings 0",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "lint:fix:safe": "eslint . --ext .ts,.tsx --fix --max-warnings 0",
+    "security:scan:full": "npm audit --audit-level=moderate && pnpm audit --audit-level=moderate",
+    "quality:enterprise": "pnpm run type-check && pnpm run lint:enterprise && pnpm run format:check && pnpm run test:ci && pnpm run security:scan:full",
+    "validate:strict": "pnpm run quality:enterprise && pnpm run build"
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
@@ -260,6 +266,10 @@
     "autoprefixer": "^10.4.21",
     "chromatic": "^13.0.1",
     "cross-env": "^7.0.3",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-security": "^3.0.1",
     "globals": "^16.2.0",
     "husky": "^9.1.7",
     "jest": "^30.0.2",
@@ -281,16 +291,24 @@
     "tsx": "^4.20.3",
     "turbo": "^2.5.4",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.1",
     "vite": "^6.3.5",
     "vitest": "^3.2.4",
     "webpack-bundle-analyzer": "^4.10.2",
     "wrangler": "^4.20.5"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [],
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
     "*.{ts,tsx,css,md}": [
       "prettier --write"
     ]
   },
-  "packageManager": "pnpm@10"
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=18.17.0",
+    "pnpm": ">=8.0.0"
+  }
 }

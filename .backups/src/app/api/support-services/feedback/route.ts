@@ -60,7 +60,7 @@ const updateComplaintSchema = z.object({
   escalationLevel: z.enum(["DEPARTMENT", "MANAGEMENT", "EXECUTIVE", "EXTERNAL"]).optional()});
 
 // GET /api/support-services/feedback;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -88,7 +88,7 @@ export const _GET = async (request: any) => {
 }
 
 // POST /api/support-services/feedback;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -102,7 +102,7 @@ export const _POST = async (request: any) => {
       // Create feedback;
       const result = await feedbackService.createFeedback(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       // Allow anonymous feedback submission;
@@ -113,7 +113,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/feedback/:id;
-export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -131,7 +131,7 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
 }
 
 // PATCH /api/support-services/feedback/:id;
-export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -155,7 +155,7 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
 }
 
 // GET /api/support-services/complaints;
-export const _GET_COMPLAINTS = async (request: any) => {
+export const _GET_COMPLAINTS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -183,7 +183,7 @@ export const _GET_COMPLAINTS = async (request: any) => {
 }
 
 // POST /api/support-services/complaints;
-export const _POST_COMPLAINT = async (request: any) => {
+export const _POST_COMPLAINT = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -197,7 +197,7 @@ export const _POST_COMPLAINT = async (request: any) => {
       // Create complaint;
       const result = await feedbackService.createComplaint(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       // Allow anonymous complaint submission;
@@ -208,7 +208,7 @@ export const _POST_COMPLAINT = async (request: any) => {
 }
 
 // GET /api/support-services/complaints/:id;
-export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -226,7 +226,7 @@ export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: { params: {
 }
 
 // PATCH /api/support-services/complaints/:id;
-export const _PATCH_COMPLAINT = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH_COMPLAINT = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -250,7 +250,7 @@ export const _PATCH_COMPLAINT = async (request: any, { params }: { params: { id:
 }
 
 // POST /api/support-services/complaints/:id/escalate;
-export const _ESCALATE_COMPLAINT = async (request: any, { params }: { params: { id: string } }) => {
+export const _ESCALATE_COMPLAINT = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -259,7 +259,7 @@ export const _ESCALATE_COMPLAINT = async (request: any, { params }: { params: { 
       const { escalationLevel, reason, escalatedById } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Escalation level is required" }, { status: 400 });
+        return NextResponse.json({ error: "Escalation level is required" ,}, { status: 400 ,});
       }
 
       // Escalate complaint;
@@ -280,7 +280,7 @@ export const _ESCALATE_COMPLAINT = async (request: any, { params }: { params: { 
 }
 
 // GET /api/support-services/feedback/analytics;
-export const _GET_ANALYTICS = async (request: any) => {
+export const _GET_ANALYTICS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {

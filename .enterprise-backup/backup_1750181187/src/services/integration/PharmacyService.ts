@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 // Validation schemas
 export const MedicationOrderSchema = z.object({
   encounterId: z.string().uuid(),
-  medications: z.array(z.object({
+  medications: z.array(z.object({,
     medicationId: z.string().uuid(),
     name: z.string().min(1),
     dosage: z.string().min(1),
@@ -26,7 +26,7 @@ export const MedicationOrderSchema = z.object({
 
 export const MedicationReconciliationSchema = z.object({
   dischargeId: z.string().uuid(),
-  medications: z.array(z.object({
+  medications: z.array(z.object({,
     medicationId: z.string().uuid().optional(),
     name: z.string().min(1),
     dosage: z.string().min(1),
@@ -36,49 +36,49 @@ export const MedicationReconciliationSchema = z.object({
     startDate: z.date().optional(),
     endDate: z.date().optional(),
     instructions: z.string().optional(),
-    continuePrescription: z.boolean().optional()
+    continuePrescription: z.boolean().optional(),
   })),
 });
 
 export const MedicationAdministrationSchema = z.object({
   orderId: z.string().uuid(),
-  administrationDetails: z.object({
+  administrationDetails: z.object({,
     dosage: z.string().optional(),
     route: z.string().optional(),
     administeredAt: z.date().optional(),
-    notes: z.string().optional()
+    notes: z.string().optional(),
   }),
   updateOrderStatus: z.enum(['ACTIVE', 'COMPLETED', 'DISCONTINUED']).optional(),
 });
 
 export const MedicationDiscontinueSchema = z.object({
   orderId: z.string().uuid(),
-  reason: z.string().min(1)
+  reason: z.string().min(1),
 });
 
 /**
  * PharmacyService class for handling medication-related operations;
  */
-\1
+
 }
-    logger.info({ method: 'createMedicationOrder', encounterId: data.encounterId }, 'Creating medication order');
+    logger.info({ method: 'createMedicationOrder', encounterId: data.encounterId ,}, 'Creating medication order');
 
     // Get encounter details
     const encounter = await prisma.encounter.findUnique({
-      where: { id: data.encounterId },
-      include: {
-        patient: {
-          select: {
+      where: { id: data.encounterId ,},
+      include: {,
+        patient: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true,
-            allergies: true
+             true,
+             true,
+            allergies: true,
           },
         },
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Encounter not found');
     }
 
@@ -89,23 +89,23 @@ export const MedicationDiscontinueSchema = z.object({
     for (const medication of data.medications) {
       // Check if patient is allergic to this medication
       const isAllergic = patientAllergies.some(
-        (allergy: unknown) =>
+        (allergy: unknown) =>,
           allergy.allergen.toLowerCase() === medication.name.toLowerCase() ||;
           (allergy.allergenType === 'MEDICATION' &&;
            allergy.allergen.toLowerCase().includes(medication.name.toLowerCase()));
       );
 
-      \1 {\n  \2{
+       {\n  {
         allergicMedications.push(medication.name);
       }
     }
 
     // If allergies found, return warning
-    \1 {\n  \2{
+     {\n  {
       return {
         warning: 'Potential allergic reaction detected';
         allergicMedications,
-        message: 'Patient may be allergic to one or more ordered medications'
+        message: 'Patient may be allergic to one or more ordered medications',
       };
     }
 
@@ -114,16 +114,16 @@ export const MedicationDiscontinueSchema = z.object({
 
     for (const medication of data.medications) {
       const order = await prisma.medicationOrder.create({
-        data: {
+        data: {,
           patientId: encounter.patientId,
-          \1,\2 medication.medicationId,
-          \1,\2 medication.dosage,
-          \1,\2 medication.frequency,
-          \1,\2 medication.startDate || new Date(),
-          \1,\2 medication.instructions,
-          \1,\2 medication.priority || 'ROUTINE',
-          \1,\2 new Date(),
-          updatedAt: new Date()
+           medication.medicationId,
+           medication.dosage,
+           medication.frequency,
+           medication.startDate || new Date(),
+           medication.instructions,
+           medication.priority || 'ROUTINE',
+           new Date(),
+          updatedAt: new Date(),
         },
       });
 
@@ -136,15 +136,15 @@ export const MedicationDiscontinueSchema = z.object({
         order.id,
         {
           orderId: order.id,
-          \1,\2 encounter.id,
-          \1,\2 medication.name
+           encounter.id,
+           medication.name
         }
       );
     }
 
     return {
       success: true,
-      \1,\2 `${createdOrders.length} medication orders created successfully`,
+       `${createdOrders.length} medication orders created successfully`,
     };
   }
 
@@ -154,45 +154,45 @@ export const MedicationDiscontinueSchema = z.object({
    * @param userId User ID of the person performing reconciliation;
    * @returns Reconciliation result;
    */
-  async performMedicationReconciliation(data: z.infer<typeof MedicationReconciliationSchema>, userId: string) {
-    logger.info({ method: 'performMedicationReconciliation', dischargeId: data.dischargeId }, 'Performing medication reconciliation');
+  async performMedicationReconciliation(data: z.infer<typeof MedicationReconciliationSchema>, userId: string) {,
+    logger.info({ method: 'performMedicationReconciliation', dischargeId: data.dischargeId ,}, 'Performing medication reconciliation');
 
     // Get discharge details
     const discharge = await prisma.discharge.findUnique({
-      where: { id: data.dischargeId },
-      include: {
-        patient: {
-          select: {
+      where: { id: data.dischargeId ,},
+      include: {,
+        patient: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           },
         },
-        encounter: true
+        encounter: true,
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Discharge record not found');
     }
 
     // Update discharge with medication reconciliation
     const _updatedDischarge = await prisma.discharge.update({
-      where: { id: data.dischargeId },
-      data: {
+      where: { id: data.dischargeId ,},
+      data: {,
         medicationReconciliation: data.medications,
-        \1,\2 new Date()
+         new Date()
       },
     });
 
     // Create medication reconciliation record
     const reconciliation = await prisma.medicationReconciliation.create({
-      data: {
+      data: {,
         patientId: discharge.patientId,
-        \1,\2 discharge.id,
-        \1,\2 'COMPLETED',
-        \1,\2 new Date(),
+         discharge.id,
+         'COMPLETED',
+         new Date(),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
     });
 
@@ -203,14 +203,14 @@ export const MedicationDiscontinueSchema = z.object({
       reconciliation.id,
       {
         reconciliationId: reconciliation.id,
-        \1,\2 discharge.encounterId,
-        \1,\2 data.medications.length
+         discharge.encounterId,
+         data.medications.length
       }
     );
 
     return {
       success: true,
-      \1,\2 'Medication reconciliation completed successfully'
+       'Medication reconciliation completed successfully'
     };
   }
 
@@ -220,48 +220,48 @@ export const MedicationDiscontinueSchema = z.object({
    * @param userId User ID of the person administering medication;
    * @returns Administration result;
    */
-  async recordMedicationAdministration(data: z.infer<typeof MedicationAdministrationSchema>, userId: string) {
-    logger.info({ method: 'recordMedicationAdministration', orderId: data.orderId }, 'Recording medication administration');
+  async recordMedicationAdministration(data: z.infer<typeof MedicationAdministrationSchema>, userId: string) {,
+    logger.info({ method: 'recordMedicationAdministration', orderId: data.orderId ,}, 'Recording medication administration');
 
     // Get medication order details
     const order = await prisma.medicationOrder.findUnique({
-      where: { id: data.orderId },
-      include: {
-        patient: {
-          select: {
+      where: { id: data.orderId ,},
+      include: {,
+        patient: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           },
         },
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Medication order not found');
     }
 
     // Create medication administration record
     const administration = await prisma.medicationAdministration.create({
-      data: {
+      data: {,
         orderId: order.id,
-        \1,\2 order.encounterId,
-        \1,\2 order.name,
-        \1,\2 data.administrationDetails.route || order.route,
+         order.encounterId,
+         order.name,
+         data.administrationDetails.route || order.route,
         administeredAt: data.administrationDetails.administeredAt || new Date(),
         administeredBy: userId,
-        \1,\2 'COMPLETED',
+         'COMPLETED',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
     });
 
     // Update medication order status if needed
-    \1 {\n  \2{
+     {\n  {
       await prisma.medicationOrder.update({
-        where: { id: order.id },
-        data: {
+        where: { id: order.id ,},
+        data: {,
           status: data.updateOrderStatus,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
       });
     }
@@ -273,15 +273,15 @@ export const MedicationDiscontinueSchema = z.object({
       administration.id,
       {
         administrationId: administration.id,
-        \1,\2 order.patientId,
-        \1,\2 order.medicationId,
-        \1,\2 administration.administeredAt
+         order.patientId,
+         order.medicationId,
+         administration.administeredAt
       }
     );
 
     return {
       success: true,
-      \1,\2 'Medication administration recorded successfully'
+       'Medication administration recorded successfully'
     };
   }
 
@@ -291,31 +291,31 @@ export const MedicationDiscontinueSchema = z.object({
    * @param userId User ID of the person discontinuing medication;
    * @returns Discontinue result;
    */
-  async discontinueMedication(data: z.infer<typeof MedicationDiscontinueSchema>, userId: string) {
-    logger.info({ method: 'discontinueMedication', orderId: data.orderId }, 'Discontinuing medication');
+  async discontinueMedication(data: z.infer<typeof MedicationDiscontinueSchema>, userId: string) {,
+    logger.info({ method: 'discontinueMedication', orderId: data.orderId ,}, 'Discontinuing medication');
 
     // Get medication order details
     const order = await prisma.medicationOrder.findUnique({
-      where: { id: data.orderId },
+      where: { id: data.orderId ,},
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Medication order not found');
     }
 
     // Check if order can be discontinued
-    \1 {\n  \2{
-      throw new Error(`Cannot discontinue order with status: ${\1}`;
+     {\n  {
+      throw new Error(`Cannot discontinue order with status: ${}`;
     }
 
     // Update medication order
     const updatedOrder = await prisma.medicationOrder.update({
-      where: { id: data.orderId },
-      data: {
+      where: { id: data.orderId ,},
+      data: {,
         status: 'DISCONTINUED',
-        \1,\2 userId,
+         userId,
         discontinuedAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
     });
 
@@ -326,15 +326,15 @@ export const MedicationDiscontinueSchema = z.object({
       order.id,
       {
         orderId: order.id,
-        \1,\2 order.encounterId,
-        \1,\2 order.name,
-        \1,\2 'DISCONTINUED'
+         order.encounterId,
+         order.name,
+         'DISCONTINUED'
       }
     );
 
     return {
       success: true,
-      \1,\2 'Medication order discontinued successfully'
+       'Medication order discontinued successfully'
     };
   }
 
@@ -343,26 +343,26 @@ export const MedicationDiscontinueSchema = z.object({
    * @param patientId Patient ID;
    * @returns Active medications;
    */
-  async getActiveMedications(patientId: string) {
+  async getActiveMedications(patientId: string) {,
     logger.info({ method: 'getActiveMedications', patientId }, 'Getting active medications');
 
     // Get active medication orders for the patient
     const activeMedications = await prisma.medicationOrder.findMany({
-      where: {
+      where: {,
         patientId,
         status: { in: ['ACTIVE', 'PENDING'] },
-        OR: [
-          { endDate: null },
-          { endDate: { gt: new Date() } },
+        OR: [,
+          { endDate: null ,},
+          { endDate: { gt: new Date() } ,},
         ],
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: 'desc' ,},
     });
 
     return {
       patientId,
       activeMedications,
-      count: activeMedications.length
+      count: activeMedications.length,
     };
   }
 
@@ -372,18 +372,18 @@ export const MedicationDiscontinueSchema = z.object({
    * @param limit Maximum number of records to return;
    * @returns Medication history;
    */
-  async getMedicationHistory(patientId: string, limit: number = 50) {
+  async getMedicationHistory(patientId: string, limit: number = 50) {,
     logger.info({ method: 'getMedicationHistory', patientId, limit }, 'Getting medication history');
 
     // Get medication history for the patient
     const medicationHistory = await prisma.medicationOrder.findMany({
-      where: { patientId },
-      orderBy: { createdAt: 'desc' },
+      where: { patientId ,},
+      orderBy: { createdAt: 'desc' ,},
       take: limit,
-      include: {
-        administrations: {
-          orderBy: { administeredAt: 'desc' },
-          take: 5
+      include: {,
+        administrations: {,
+          orderBy: { administeredAt: 'desc' ,},
+          take: 5,
         },
       },
     });
@@ -400,6 +400,6 @@ export const MedicationDiscontinueSchema = z.object({
       patientId,
       medicationHistory,
       groupedByEncounter,
-      count: medicationHistory.length
+      count: medicationHistory.length,
     };
   }

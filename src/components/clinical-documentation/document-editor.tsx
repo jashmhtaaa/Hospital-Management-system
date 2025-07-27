@@ -47,14 +47,12 @@ import { useToast }
 import { zodResolver }
 
 // Form schema validation;
-const documentFormSchema = z.object({
-  documentTitle: z.string().min(1, "Document title is required"),
+const documentFormSchema = z.object({documentTitle:z.string().min(1, "Document title is required"),
   documentType: z.string().min(1, "Document type is required"),
   content: z.string().min(1, "Content is required"),
   isConfidential: z.boolean().default(false),
   sections: z.array();
-    z.object({
-      id: z.string().optional(),
+    z.object({id:z.string().optional(),
       sectionTitle: z.string().min(1, "Section title is required"),
       sectionType: z.string().min(1, "Section type is required"),
       content: z.string().min(1, "Section content is required"),
@@ -66,8 +64,7 @@ const documentFormSchema = z.object({
 });
 
 // Type for document templates;
-interface DocumentTemplate {
-  id: string,
+interface DocumentTemplate {id:string,
   string,
   templateType: string;
   specialtyType?: string;
@@ -79,8 +76,7 @@ interface DocumentTemplate {
   }[];
 }
 
-interface DocumentEditorProps {
-  patientId: string;
+interface DocumentEditorProps {patientId:string;
   encounterId?: string;
   documentId?: string;
   onSuccess?: () => void;
@@ -97,8 +93,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
   const [activeTab, setActiveTab] = useState("content");
 
   // Form;
-  const form = useForm<z.infer<typeof documentFormSchema>>({
-    resolver: zodResolver(documentFormSchema),
+  const form = useForm<z.infer<typeof documentFormSchema>>({resolver:zodResolver(documentFormSchema),
     "",
       "",
       [],
@@ -151,8 +146,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       setTemplates(data.data);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -206,16 +200,14 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       const data = await response.json();
 
       // Update form values;
-      form.reset({
-        documentTitle: data.documentTitle,
+      form.reset({documentTitle:data.documentTitle,
         data.content,
         data.sections,
         data.attachmentUrls;
       });
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -246,8 +238,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
       form.setValue("content", template.content);
 
       if (!session.user) {
-        const formattedSections = template.sections.map(section => ({
-          sectionTitle: section.sectionTitle,
+        const formattedSections = template.sections.map(section => ({sectionTitle:section.sectionTitle,
           section.content,
           sectionOrder: section.sectionOrder;
         }));
@@ -303,16 +294,14 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
       if (!session.user) {
         // Update document;
-        response = await fetch(`/api/clinical-documentation/${documentId}`, {
-          method: "PUT",
+        response = await fetch(`/api/clinical-documentation/${documentId}`, {method:"PUT",
           headers: {
             "Content-Type": "application/json"},
           body: JSON.stringify(payload);
         });
       } else {
         // Create document;
-        response = await fetch("/api/clinical-documentation", {
-          method: "POST",
+        response = await fetch("/api/clinical-documentation", {method:"POST",
           headers: {
             "Content-Type": "application/json"},
           body: JSON.stringify(payload);
@@ -323,8 +312,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
         throw new Error(errorData.error || "Failed to save document");
 
       const data = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: isEditing ? "Document updated successfully" : "Document created successfully";
       });
 
@@ -336,8 +324,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -351,8 +338,7 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
     form.setValue("sections", [
       ...currentSections,
-      {
-        sectionTitle: "",
+      {sectionTitle:"",
         "",
         sectionOrder: currentSections.length + 1;
 
@@ -375,31 +361,31 @@ export const _DocumentEditor = ({ patientId, encounterId, documentId, onSuccess 
 
   // Document type options;
   const documentTypeOptions = [;
-    { value: "Admission Note", label: "Admission Note" },
-    { value: "Progress Note", label: "Progress Note" },
-    { value: "Discharge Summary", label: "Discharge Summary" },
-    { value: "Consultation Note", label: "Consultation Note" },
-    { value: "Operative Report", label: "Operative Report" },
-    { value: "Procedure Note", label: "Procedure Note" },
-    { value: "History and Physical", label: "History and Physical" },
-    { value: "Care Plan", label: "Care Plan" }];
+    {value:"Admission Note", label: "Admission Note" },
+    {value:"Progress Note", label: "Progress Note" },
+    {value:"Discharge Summary", label: "Discharge Summary" },
+    {value:"Consultation Note", label: "Consultation Note" },
+    {value:"Operative Report", label: "Operative Report" },
+    {value:"Procedure Note", label: "Procedure Note" },
+    {value:"History and Physical", label: "History and Physical" },
+    {value:"Care Plan", label: "Care Plan" }];
 
   // Section type options;
   const sectionTypeOptions = [;
-    { value: "History", label: "History" },
-    { value: "Physical Exam", label: "Physical Exam" },
-    { value: "Assessment", label: "Assessment" },
-    { value: "Plan", label: "Plan" },
-    { value: "Subjective", label: "Subjective" },
-    { value: "Objective", label: "Objective" },
-    { value: "Medications", label: "Medications" },
-    { value: "Allergies", label: "Allergies" },
-    { value: "Labs", label: "Labs" },
-    { value: "Imaging", label: "Imaging" },
-    { value: "Procedures", label: "Procedures" },
-    { value: "Vital Signs", label: "Vital Signs" },
-    { value: "Diagnosis", label: "Diagnosis" },
-    { value: "Follow Up", label: "Follow Up" }];
+    {value:"History", label: "History" },
+    {value:"Physical Exam", label: "Physical Exam" },
+    {value:"Assessment", label: "Assessment" },
+    {value:"Plan", label: "Plan" },
+    {value:"Subjective", label: "Subjective" },
+    {value:"Objective", label: "Objective" },
+    {value:"Medications", label: "Medications" },
+    {value:"Allergies", label: "Allergies" },
+    {value:"Labs", label: "Labs" },
+    {value:"Imaging", label: "Imaging" },
+    {value:"Procedures", label: "Procedures" },
+    {value:"Vital Signs", label: "Vital Signs" },
+    {value:"Diagnosis", label: "Diagnosis" },
+    {value:"Follow Up", label: "Follow Up" }];
 
   return();
     >;

@@ -32,34 +32,32 @@ import { Skeleton }
 
 // --- INTERFACES for API Responses (from HEAD) ---;
 interface OpdStatsResponse {
-  totalPatients?: number;
+    totalPatients?: number;
   todayAppointments?: number;
 }
 
 interface IpdStatsResponse {
-  activeAdmissions?: number;
+    activeAdmissions?: number;
   availableBeds?: number;
 }
 
 interface BillingStatsResponse {
-  pendingBills?: number;
+    pendingBills?: number;
 }
 
 interface PharmacyStatsResponse {
-  lowStockItems?: number;
+    lowStockItems?: number;
 }
 
 // Interface for the combined stats state (from HEAD);
-interface DashboardStats {
-  totalPatients: number,
+interface DashboardStats {totalPatients:number,
   number,
   number,
   lowStockItems: number;
 }
 
 const Dashboard = () {
-  const [stats, setStats] = useState<DashboardStats>({
-    totalPatients: 0,
+  const [stats, setStats] = useState<DashboardStats>({totalPatients:0,
     0,
     0,
     lowStockItems: 0;
@@ -132,8 +130,7 @@ const Dashboard = () {
         const pharmacyData =;
           (await pharmacyResponse.json()) as PharmacyStatsResponse;
 
-        setStats({
-          totalPatients: opdData?.totalPatients ?? 0,
+        setStats({totalPatients:opdData?.totalPatients ?? 0,
           ipdData?.activeAdmissions ?? 0,
           billingData?.pendingBills ?? 0,
           lowStockItems: pharmacyData?.lowStockItems ?? 0;
@@ -157,8 +154,7 @@ const Dashboard = () {
   }, []);
 
   // --- Stat Card Component (from HEAD, adapted for lucide icons) ---;
-  interface StatCardProperties {
-    title: string,
+  interface StatCardProperties {title:string,
     React.ElementType; // Use React.ElementType for lucide icons;
     link?: string;
     linkText?: string;
@@ -218,7 +214,7 @@ const Dashboard = () {
         {loading ? (;
           // Skeleton Loading State (from HEAD);
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">;
-            {Array.from({ length: 6 }).map((_, index) => (;
+            {Array.from({length:6 }).map((_, index) => (;
               >;
                 >;
                   >;
@@ -378,8 +374,7 @@ const Dashboard = () {
 Dashboard.displayName = "Dashboard";
 
 // --- Helper Component for Activity Lists (from HEAD) ---;
-interface ActivityItemProperties {
-  name: string,
+interface ActivityItemProperties {name:string,
   string,
   doctor: string;
 

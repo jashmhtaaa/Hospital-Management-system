@@ -5,13 +5,13 @@ const prisma = new PrismaClient();
 /**
  * Service for managing department and position data;
  */
-\1
+
 }
   }) {
     return prisma.department.create({
       data,
-      include: {
-        parent: true
+      include: {,
+        parent: true,
       },
     });
   }
@@ -19,15 +19,15 @@ const prisma = new PrismaClient();
   /**
    * Get department by ID;
    */
-  async getDepartmentById(id: string) {
+  async getDepartmentById(id: string) {,
     return prisma.department.findUnique({
-      where: { id },
-      include: {
+      where: { id ,},
+      include: {,
         parent: true,
-        \1,\2 true,
-            \1,\2 true,
-            \1,\2 true,,
-        positions: true
+         true,
+             true,
+             true,,
+        positions: true,
       },
     });
   }
@@ -37,7 +37,7 @@ const prisma = new PrismaClient();
    */
   async updateDepartment(
     id: string,
-    data: {
+    data: {,
       name?: string;
       code?: string;
       description?: string;
@@ -45,10 +45,10 @@ const prisma = new PrismaClient();
     }
   ) {
     return prisma.department.update({
-      where: { id },
+      where: { id ,},
       data,
-      include: {
-        parent: true
+      include: {,
+        parent: true,
       },
     });
   }
@@ -67,17 +67,17 @@ const prisma = new PrismaClient();
     search?: string;
     parentId?: string;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
-    \1 {\n  \2{
+     {\n  {
       where.parentId = parentId;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { code: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search, mode: 'insensitive' } ,},
+        { code: { contains: search, mode: 'insensitive' } ,},
+        { description: { contains: search, mode: 'insensitive' } ,},
       ];
     }
 
@@ -86,13 +86,13 @@ const prisma = new PrismaClient();
         where,
         skip,
         take,
-        orderBy: { name: 'asc' },
-        include: {
+        orderBy: { name: 'asc' ,},
+        include: {,
           parent: true,
-          _count: {
-            select: {
+          _count: {,
+            select: {,
               children: true,
-              \1,\2 true
+               true
             },
           },
         },
@@ -114,10 +114,10 @@ const prisma = new PrismaClient();
   async getDepartmentHierarchy() {
     // Get all departments
     const allDepartments = await prisma.department.findMany({
-      include: {
-        _count: {
-          select: {
-            employees: true
+      include: {,
+        _count: {,
+          select: {,
+            employees: true,
           },
         },
       },
@@ -127,21 +127,21 @@ const prisma = new PrismaClient();
     const departmentMap = new Map();
     const rootDepartments = [];
 
-    // First pass: create map of all departments
+    // First pass: create map of all departments,
     allDepartments.forEach(dept => {
       departmentMap.set(dept.id, {
         ...dept,
-        children: []
+        children: [],
       }),
     });
 
-    // Second pass: build hierarchy
+    // Second pass: build hierarchy,
     allDepartments.forEach(dept => {
       const departmentWithChildren = departmentMap.get(dept.id),
 
-      \1 {\n  \2{
+       {\n  {
         const parent = departmentMap.get(dept.parentId);
-        \1 {\n  \2{
+         {\n  {
           parent.children.push(departmentWithChildren);
         }
       } else {
@@ -155,7 +155,7 @@ const prisma = new PrismaClient();
   /**
    * Create a new position;
    */
-  async createPosition(data: {
+  async createPosition(data: {,
     title: string,
     code: string;
     description?: string;
@@ -163,8 +163,8 @@ const prisma = new PrismaClient();
   }) {
     return prisma.position.create({
       data,
-      include: {
-        department: true
+      include: {,
+        department: true,
       },
     });
   }
@@ -172,22 +172,22 @@ const prisma = new PrismaClient();
   /**
    * Get position by ID;
    */
-  async getPositionById(id: string) {
+  async getPositionById(id: string) {,
     return prisma.position.findUnique({
-      where: { id },
-      include: {
+      where: { id ,},
+      include: {,
         department: true,
-        employeePositions: {
-          include: {
-            employee: {
-              select: {
+        employeePositions: {,
+          include: {,
+            employee: {,
+              select: {,
                 id: true,
-                \1,\2 true,
-                \1,\2 true
+                 true,
+                 true
               },
             },
           },
-          where: {
+          where: {,
             endDate: null, // Only current assignments
           },
         },
@@ -200,7 +200,7 @@ const prisma = new PrismaClient();
    */
   async updatePosition(
     id: string,
-    data: {
+    data: {,
       title?: string;
       code?: string;
       description?: string;
@@ -208,10 +208,10 @@ const prisma = new PrismaClient();
     }
   ) {
     return prisma.position.update({
-      where: { id },
+      where: { id ,},
       data,
-      include: {
-        department: true
+      include: {,
+        department: true,
       },
     });
   }
@@ -230,17 +230,17 @@ const prisma = new PrismaClient();
     search?: string;
     departmentId?: string;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
-    \1 {\n  \2{
+     {\n  {
       where.departmentId = departmentId;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { code: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
+        { title: { contains: search, mode: 'insensitive' } ,},
+        { code: { contains: search, mode: 'insensitive' } ,},
+        { description: { contains: search, mode: 'insensitive' } ,},
       ];
     }
 
@@ -249,13 +249,13 @@ const prisma = new PrismaClient();
         where,
         skip,
         take,
-        orderBy: { title: 'asc' },
-        include: {
+        orderBy: { title: 'asc' ,},
+        include: {,
           department: true,
-          _count: {
-            select: {
-              employeePositions: {
-                where: {
+          _count: {,
+            select: {,
+              employeePositions: {,
+                where: {,
                   endDate: null, // Only current assignments
                 },
               },

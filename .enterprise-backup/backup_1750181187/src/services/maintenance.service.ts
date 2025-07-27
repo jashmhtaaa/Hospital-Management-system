@@ -6,7 +6,7 @@ export enum MaintenanceRequestStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
-\1\n\nexport \2 MaintenanceRequestPriority {
+\n\nexport  MaintenanceRequestPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
@@ -22,11 +22,11 @@ export const createMaintenanceRequestSchema = z.object({
   status: z.nativeEnum(MaintenanceRequestStatus).default(MaintenanceRequestStatus.PENDING),
   priority: z.nativeEnum(MaintenanceRequestPriority).default(MaintenanceRequestPriority.MEDIUM),
   requestedAt: z.date().default(() => new Date()),  completedAt: z.date().optional().nullable(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 export const updateMaintenanceRequestSchema = createMaintenanceRequestSchema.partial().extend({
-  id: z.string()
+  id: z.string(),
 });
 
 export type CreateMaintenanceRequestInput = z.infer<typeof createMaintenanceRequestSchema>;
@@ -38,14 +38,14 @@ import { prisma } from '../lib/prisma';
 /**
  * Service class for managing maintenance requests;
  */
-\1
+
 }
       });
 
       return request;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -64,37 +64,37 @@ import { prisma } from '../lib/prisma';
     assignedToId?: string;
   }) {
     try {
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+         {\n  {
           where.priority = filters.priority;
         }
-        \1 {\n  \2{
+         {\n  {
           where.equipmentId = filters.equipmentId;
         }
-        \1 {\n  \2{
+         {\n  {
           where.reportedBy = filters.reportedBy;
         }
-        \1 {\n  \2{
+         {\n  {
           where.assignedToId = filters.assignedToId;
         }
       }
 
       const requests = await prisma.maintenanceRequest.findMany({
         where,
-        orderBy: [
-          { priority: 'desc' },
-          { requestedAt: 'asc' },
+        orderBy: [,
+          { priority: 'desc' ,},
+          { requestedAt: 'asc' ,},
         ],
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -111,15 +111,15 @@ import { prisma } from '../lib/prisma';
    * @param id Request ID;
    * @returns The request or null if not found;
    */
-  async getRequestById(id: string) {
+  async getRequestById(id: string) {,
     try {
       const request = await prisma.maintenanceRequest.findUnique({
-        where: { id },
-        include: {
-          assignedTo: {
-            select: {
+        where: { id ,},
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -137,7 +137,7 @@ import { prisma } from '../lib/prisma';
    * @param data Updated request data;
    * @returns The updated request;
    */
-  async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {
+  async updateRequest(id: string, data: UpdateMaintenanceRequestInput) {,
     try {
       // Validate input data
       const validatedData = updateMaintenanceRequestSchema.parse({ ...data, id });
@@ -147,13 +147,13 @@ import { prisma } from '../lib/prisma';
 
       // Update the request
       const request = await prisma.maintenanceRequest.update({
-        where: { id },
+        where: { id ,},
         data: updateData,
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -161,8 +161,8 @@ import { prisma } from '../lib/prisma';
 
       return request;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -173,10 +173,10 @@ import { prisma } from '../lib/prisma';
    * @param id Request ID;
    * @returns The deleted request;
    */
-  async deleteRequest(id: string) {
+  async deleteRequest(id: string) {,
     try {
       const request = await prisma.maintenanceRequest.delete({
-        where: { id },
+        where: { id ,},
       });
 
       return request;
@@ -191,19 +191,19 @@ import { prisma } from '../lib/prisma';
    * @param userId User ID;
    * @returns The updated request;
    */
-  async assignRequest(requestId: string, userId: string) {
+  async assignRequest(requestId: string, userId: string) {,
     try {
       const request = await prisma.maintenanceRequest.update({
-        where: { id: requestId },
-        data: {
+        where: { id: requestId ,},
+        data: {,
           assignedToId: userId,
-          status: MaintenanceRequestStatus.IN_PROGRESS
+          status: MaintenanceRequestStatus.IN_PROGRESS,
         },
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -220,19 +220,19 @@ import { prisma } from '../lib/prisma';
    * @param requestId Request ID;
    * @returns The updated request;
    */
-  async completeRequest(requestId: string) {
+  async completeRequest(requestId: string) {,
     try {
       const request = await prisma.maintenanceRequest.update({
-        where: { id: requestId },
-        data: {
+        where: { id: requestId ,},
+        data: {,
           status: MaintenanceRequestStatus.COMPLETED,
-          completedAt: new Date()
+          completedAt: new Date(),
         },
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -249,18 +249,18 @@ import { prisma } from '../lib/prisma';
    * @param requestId Request ID;
    * @returns The updated request;
    */
-  async cancelRequest(requestId: string) {
+  async cancelRequest(requestId: string) {,
     try {
       const request = await prisma.maintenanceRequest.update({
-        where: { id: requestId },
-        data: {
-          status: MaintenanceRequestStatus.CANCELLED
+        where: { id: requestId ,},
+        data: {,
+          status: MaintenanceRequestStatus.CANCELLED,
         },
-        include: {
-          assignedTo: {
-            select: {
+        include: {,
+          assignedTo: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },

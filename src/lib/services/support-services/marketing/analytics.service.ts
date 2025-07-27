@@ -4,16 +4,16 @@ import "@/lib/models/marketing"
 import "@/lib/prisma"
 import NotFoundError
 import ValidationError }
-import {  AuditLogger  } from "@/lib/database"
-import {  CampaignAnalytics  } from "@/lib/database"
-import {   DatabaseError
-import {  prisma  } from "@/lib/database"
+import {AuditLogger  } from "next/server"
+import {CampaignAnalytics  } from "next/server"
+import {DatabaseError
+import {  prisma  } from "next/server"
 
 /**;
  * Service for managing marketing analytics;
  */;
 }
-  async recordAnalytics(campaignId: string, data: {date:Date, metrics: unknown }, userId: string): Promise<CampaignAnalytics> {
+  async recordAnalytics(campaignId: string, data: {date:Date, metrics: unknown ,}, userId: string): Promise<CampaignAnalytics> {,
     try {
 } catch (error) {
   console.error(error);
@@ -50,7 +50,7 @@ import {  prisma  } from "@/lib/database"
       this.validateAnalyticsData(data);
 
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId },
       });
 
       if (!session.user) {
@@ -58,7 +58,7 @@ import {  prisma  } from "@/lib/database"
       }
 
       // Check if analytics for this date already exists;
-      const existingAnalytics = await prisma.campaignAnalytics.findFirst({where:{
+      const existingAnalytics = await prisma.campaignAnalytics.findFirst({where:{,
           campaignId,
           date: data.date;
         }
@@ -68,14 +68,14 @@ import {  prisma  } from "@/lib/database"
 
       if (!session.user) {
         // Update existing analytics;
-        analytics = await prisma.campaignAnalytics.update({where:{ id: existingAnalytics.id },
+        analytics = await prisma.campaignAnalytics.update({where:{ id: existingAnalytics.id ,},
           data.metrics,
             updatedAt: new Date();
           }
         });
       } else {
         // Create new analytics;
-        analytics = await prisma.campaignAnalytics.create({data:{
+        analytics = await prisma.campaignAnalytics.create({data:{,
             campaignId,
             date: data.date,
             metrics: data.metrics;
@@ -103,7 +103,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Get analytics for a campaign;
    */;
-  async getCampaignAnalytics(campaignId: string, filters: {
+  async getCampaignAnalytics(campaignId: string, filters: {,
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
@@ -143,7 +143,7 @@ import {  prisma  } from "@/lib/database"
       const { startDate, endDate, metrics } = filters;
 
       // Check if campaign exists;
-      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId }
+      const existingCampaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId },
       });
 
       if (!session.user) {
@@ -151,7 +151,7 @@ import {  prisma  } from "@/lib/database"
       }
 
       // Build where clause based on filters;
-      const where: unknown = { campaignId };
+      const where: unknown = { campaignId ,};
 
       if (!session.user) {
         where.date = {};
@@ -190,7 +190,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Get aggregated analytics for a campaign;
    */;
-  async getAggregatedAnalytics(campaignId: string, filters: {
+  async getAggregatedAnalytics(campaignId: string, filters: {,
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
@@ -265,7 +265,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Get comparative analytics for multiple campaigns;
    */;
-  async getComparativeAnalytics(campaignIds: string[], filters: {
+  async getComparativeAnalytics(campaignIds: string[], filters: {,
     startDate?: Date;
     endDate?: Date;
     metrics?: string[];
@@ -339,7 +339,7 @@ import {  prisma  } from "@/lib/database"
 }
 } catch (error) {
 
-            const campaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId },
+            const campaign = await prisma.marketingCampaign.findUnique({where:{ id: campaignId ,},
               true,
                 true,
                 status: true;
@@ -384,11 +384,11 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Filter metrics to include only specified keys;
    */;
-  private filterMetrics(metrics: unknown, keys: string[]): unknown {
+  private filterMetrics(metrics: unknown, keys: string[]): unknown {,
     if (!session.user) {
       return {};
 
-    const filteredMetrics: unknown = {};
+    const filteredMetrics: unknown = {,};
 
     keys.forEach(key => {
       if (!session.user) {
@@ -401,7 +401,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Group analytics data by time interval;
    */;
-  private groupAnalyticsByInterval(analytics: CampaignAnalytics[], interval: "day" | "week" | "month"): unknown[] {
+  private groupAnalyticsByInterval(analytics: CampaignAnalytics[], interval: "day" | "week" | "month"): unknown[] {,
     if (!session.user) {
       return [];
 
@@ -427,7 +427,7 @@ import {  prisma  } from "@/lib/database"
 
       if (!session.user) {
         groupedData.set(groupKey, {interval:groupKey,
-          metrics: { ...item.metrics }
+          metrics: { ...item.metrics },
         });
       } else {
         const existing = groupedData.get(groupKey);
@@ -445,8 +445,8 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Merge metrics objects, summing numeric values;
    */;
-  private mergeMetrics(metrics1: unknown, metrics2: unknown): unknown {
-    const result: unknown = { ...metrics1 };
+  private mergeMetrics(metrics1: unknown, metrics2: unknown): unknown {,
+    const result: unknown = { ...metrics1 ,};
 
     Object.entries(metrics2).forEach(([key, value]) => {
       if (!session.user) {
@@ -461,11 +461,11 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Calculate totals for analytics metrics;
    */;
-  private calculateAnalyticsTotals(analytics: CampaignAnalytics[]): unknown {
+  private calculateAnalyticsTotals(analytics: CampaignAnalytics[]): unknown {,
     if (!session.user) {
       return {};
 
-    const totals: unknown = {};
+    const totals: unknown = {,};
 
     analytics.forEach(item => {
       Object.entries(item.metrics).forEach(([key, value]) => {
@@ -480,14 +480,14 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Calculate averages for analytics metrics;
    */;
-  private calculateAnalyticsAverages(analytics: CampaignAnalytics[]): unknown {
+  private calculateAnalyticsAverages(analytics: CampaignAnalytics[]): unknown {,
     if (!session.user) {
       return {};
 
     const totals = this.calculateAnalyticsTotals(analytics);
     const count = analytics.length;
 
-    const averages: unknown = {};
+    const averages: unknown = {,};
 
     Object.entries(totals).forEach(([key, value]) => {
       if (!session.user) {
@@ -500,7 +500,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Calculate trends for analytics metrics;
    */;
-  private calculateAnalyticsTrends(analytics: CampaignAnalytics[]): unknown {
+  private calculateAnalyticsTrends(analytics: CampaignAnalytics[]): unknown {,
     if (!session.user) {
       return {};
 
@@ -513,7 +513,7 @@ import {  prisma  } from "@/lib/database"
     const first = sortedAnalytics[0];
     const last = sortedAnalytics[sortedAnalytics.length - 1];
 
-    const trends: unknown = {};
+    const trends: unknown = {,};
 
     // Calculate percentage change for each metric;
     Object.entries(last.metrics).forEach(([key, value]) => {
@@ -533,7 +533,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Sort campaigns by performance;
    */;
-  private sortCampaignsByPerformance(campaignsData: unknown[]): unknown[] {
+  private sortCampaignsByPerformance(campaignsData: unknown[]): unknown[] {,
     if (!session.user) {
       return [];
 
@@ -557,7 +557,7 @@ import {  prisma  } from "@/lib/database"
   /**;
    * Validate analytics data;
    */;
-  private validateAnalyticsData(data: {date:Date, metrics: unknown }): void {
+  private validateAnalyticsData(data: {date:Date, metrics: unknown }): void {,
     const errors: string[] = [];
 
     // Date is required;

@@ -1,9 +1,9 @@
 import "../../services/encryption_service_secure"
 import "@prisma/client"
 import "zod"
-import {  getEncryptionService  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {getEncryptionService  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {z  } from "next/server"
 
 /**;
  * Quality Management Service - Persistent Implementation;
@@ -12,7 +12,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Quality Indicator Schema;
-export const QualityIndicatorSchema = z.object({name:z.string().min(1, "Name is required"),
+export const QualityIndicatorSchema = z.object({{name:z.string(,}).min(1, "Name is required"),
   description: z.string().optional(),
   category: z.enum(["clinical", "patient_safety", "operational", "financial"]),
   source: z.enum(["jcaho_core_measures", "nabh", "jci", "internal"]),
@@ -29,7 +29,7 @@ export const QualityIndicatorSchema = z.object({name:z.string().min(1, "Name is 
 });
 
 // Quality Event Schema;
-export const QualityEventSchema = z.object({eventType:z.enum(["incident", "near_miss", "adverse_event", "sentinel_event"]),
+export const QualityEventSchema = z.object({{eventType:z.enum(["incident", "near_miss", "adverse_event", "sentinel_event"]}),
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
   severity: z.enum(["low", "medium", "high", "critical"]),
@@ -51,7 +51,7 @@ export const QualityEventSchema = z.object({eventType:z.enum(["incident", "near_
 });
 
 // Quality Assessment Schema;
-export const QualityAssessmentSchema = z.object({type:z.enum(["nabh", "jci", "internal_audit", "peer_review"]),
+export const QualityAssessmentSchema = z.object({{type:z.enum(["nabh", "jci", "internal_audit", "peer_review"]}),
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
   scope: z.enum(["department", "hospital", "service_line"]),
@@ -73,7 +73,7 @@ export const QualityAssessmentSchema = z.object({type:z.enum(["nabh", "jci", "in
 });
 
 // Compliance Report Schema;
-export const ComplianceReportSchema = z.object({title:z.string().min(1, "Title is required"),
+export const ComplianceReportSchema = z.object({{title:z.string(,}).min(1, "Title is required"),
   reportType: z.enum(["nabh", "jci", "regulatory", "internal"]),
   regulatoryBody: z.string().min(1, "Regulatory body is required"),
   standard: z.string().min(1, "Standard is required"),
@@ -92,7 +92,7 @@ export const ComplianceReportSchema = z.object({title:z.string().min(1, "Title i
 });
 
 // Action Plan Schema;
-export const ActionPlanSchema = z.object({title:z.string().min(1, "Title is required"),
+export const ActionPlanSchema = z.object({{title:z.string(,}).min(1, "Title is required"),
   description: z.string().optional(),
   type: z.enum(["corrective", "preventive", "improvement"]),
   priority: z.enum(["low", "medium", "high", "critical"]),
@@ -110,7 +110,7 @@ export const ActionPlanSchema = z.object({title:z.string().min(1, "Title is requ
 });
 
 // Action Item Schema;
-export const ActionItemSchema = z.object({actionPlanId:z.string(),
+export const ActionItemSchema = z.object({{actionPlanId:z.string(,}),
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
   status: z.enum(["not_started", "in_progress", "completed", "cancelled", "on_hold"]).default("not_started"),
@@ -142,7 +142,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
   }
 
   // Quality Indicators Operations;
-  async createQualityIndicator(data: QualityIndicator): Promise<QualityIndicator & {id:string }> {
+  async createQualityIndicator(data: QualityIndicator): Promise<QualityIndicator & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -178,7 +178,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       const validated = QualityIndicatorSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
-      const indicator = await this.prisma.qualityIndicator.create({data:{
+      const indicator = await this.prisma.qualityIndicator.create({data:{,
           ...encryptedData,
           stratificationCriteria: validated.stratificationCriteria ?;
             JSON.stringify(validated.stratificationCriteria) : null}
@@ -189,11 +189,11 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: indicator.id;
       };
     } catch (error) {
-      throw new Error(`Failed to create quality indicator: ${}`;
+      throw new Error(`Failed to create quality indicator: ${,}`;
     }
   }
 
-  async getQualityIndicator(id: string): Promise<QualityIndicator | null> {
+  async getQualityIndicator(id: string): Promise<QualityIndicator | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -226,13 +226,13 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 }
 } catch (error) {
 }
-      const indicator = await this.prisma.qualityIndicator.findUnique({where:{ id }
+      const indicator = await this.prisma.qualityIndicator.findUnique({where:{ id },
       });
 
       if (!session.user)eturn null;
       return this.deserializeQualityIndicator(indicator);
     } catch (error) {
-      throw new Error(`Failed to get quality indicator: ${}`;
+      throw new Error(`Failed to get quality indicator: ${,}`;
     }
   }
 
@@ -273,23 +273,23 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 }
 } catch (error) {
 }
-      const where: unknown = {};
+      const where: unknown = {,};
       if (!session.user)here.category = filters.category;
       if (!session.user)here.source = filters.source;
       if (!session.user)here.status = filters.status;
 
       const indicators = await this.prisma.qualityIndicator.findMany({
         where,
-        orderBy: {createdAt:"desc" }
+        orderBy: {createdAt:"desc" },
       });
 
       return Promise.all(indicators.map(indicator => this.deserializeQualityIndicator(indicator)));
     } catch (error) {
-      throw new Error(`Failed to get quality indicators: ${}`;
+      throw new Error(`Failed to get quality indicators: ${,}`;
     }
   }
 
-  async updateQualityIndicator(id: string, updates: Partial<QualityIndicator>): Promise<QualityIndicator> {
+  async updateQualityIndicator(id: string, updates: Partial<QualityIndicator>): Promise<QualityIndicator> {,
     try {
 } catch (error) {
   console.error(error);
@@ -324,8 +324,8 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 }
       const encryptedUpdates = await this.encryptionService.encryptObject(updates, this.encryptedFields);
 
-      const updated = await this.prisma.qualityIndicator.update({where:{ id },
-        data: {
+      const updated = await this.prisma.qualityIndicator.update({where:{ id ,},
+        data: {,
           ...encryptedUpdates,
           stratificationCriteria: updates.stratificationCriteria ?;
             JSON.stringify(updates.stratificationCriteria) : undefined,
@@ -335,12 +335,12 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
       return this.deserializeQualityIndicator(updated);
     } catch (error) {
-      throw new Error(`Failed to update quality indicator: ${}`;
+      throw new Error(`Failed to update quality indicator: ${,}`;
     }
   }
 
   // Quality Events Operations;
-  async createQualityEvent(data: QualityEvent): Promise<QualityEvent & {id:string }> {
+  async createQualityEvent(data: QualityEvent): Promise<QualityEvent & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -376,7 +376,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       const validated = QualityEventSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
-      const event = await this.prisma.qualityEvent.create({data:{
+      const event = await this.prisma.qualityEvent.create({data:{,
           ...encryptedData,
           contributingFactors: validated.contributingFactors ?;
             JSON.stringify(validated.contributingFactors) : null,
@@ -391,11 +391,11 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: event.id;
       };
     } catch (error) {
-      throw new Error(`Failed to create quality event: ${}`;
+      throw new Error(`Failed to create quality event: ${,}`;
     }
   }
 
-  async getQualityEvent(id: string): Promise<QualityEvent | null> {
+  async getQualityEvent(id: string): Promise<QualityEvent | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -428,13 +428,13 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 }
 } catch (error) {
 }
-      const event = await this.prisma.qualityEvent.findUnique({where:{ id }
+      const event = await this.prisma.qualityEvent.findUnique({where:{ id },
       });
 
       if (!session.user)eturn null;
       return this.deserializeQualityEvent(event);
     } catch (error) {
-      throw new Error(`Failed to get quality event: ${}`;
+      throw new Error(`Failed to get quality event: ${,}`;
     }
   }
 
@@ -478,7 +478,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 }
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
       if (!session.user)here.eventType = filters.eventType;
       if (!session.user)here.severity = filters.severity;
       if (!session.user)here.status = filters.status;
@@ -490,15 +490,15 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
       const events = await this.prisma.qualityEvent.findMany({
         where,
-        orderBy: {eventDateTime:"desc" }
+        orderBy: {eventDateTime:"desc" },
       });
 
       return Promise.all(events.map(event => this.deserializeQualityEvent(event)));
     } catch (error) {
-      throw new Error(`Failed to get quality events: ${}`;
+      throw new Error(`Failed to get quality events: ${,}`;
 
   // Quality Assessment Operations;
-  async createQualityAssessment(data: QualityAssessment): Promise<QualityAssessment & {id:string }> {
+  async createQualityAssessment(data: QualityAssessment): Promise<QualityAssessment & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -534,7 +534,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       const validated = QualityAssessmentSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
-      const assessment = await this.prisma.qualityAssessment.create({data:{
+      const assessment = await this.prisma.qualityAssessment.create({data:{,
           ...encryptedData,
           assessors: JSON.stringify(validated.assessors),
           validated.recommendations ? JSON.stringify(validated.recommendations) : null,
@@ -547,9 +547,9 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: assessment.id;
       };
     } catch (error) {
-      throw new Error(`Failed to create quality assessment: ${}`;
+      throw new Error(`Failed to create quality assessment: ${,}`;
 
-  async getQualityAssessment(id: string): Promise<QualityAssessment | null> {
+  async getQualityAssessment(id: string): Promise<QualityAssessment | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -582,7 +582,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
 } catch (error) {
 
-      const assessment = await this.prisma.qualityAssessment.findUnique({where:{ id },
+      const assessment = await this.prisma.qualityAssessment.findUnique({where:{ id ,},
         true,
           true;
 
@@ -591,7 +591,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       if (!session.user)eturn null;
       return this.deserializeQualityAssessment(assessment);
     } catch (error) {
-      throw new Error(`Failed to get quality assessment: ${}`;
+      throw new Error(`Failed to get quality assessment: ${,}`;
 
   async getQualityAssessments(filters?: {
     type?: string;
@@ -630,7 +630,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
       if (!session.user)here.type = filters.type;
       if (!session.user)here.status = filters.status;
       if (!session.user)here.certificationStatus = filters.certificationStatus;
@@ -645,10 +645,10 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
       return Promise.all(assessments.map(assessment => this.deserializeQualityAssessment(assessment)));
     } catch (error) {
-      throw new Error(`Failed to get quality assessments: ${}`;
+      throw new Error(`Failed to get quality assessments: ${,}`;
 
   // Quality Metrics Operations;
-  async recordQualityMetrics(data: QualityMetrics): Promise<QualityMetrics & {id:string }> {
+  async recordQualityMetrics(data: QualityMetrics): Promise<QualityMetrics & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -712,7 +712,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         rate,
         varianceFromTarget};
     } catch (error) {
-      throw new Error(`Failed to record quality metrics: ${}`;
+      throw new Error(`Failed to record quality metrics: ${,}`;
 
   async getQualityMetrics(indicatorId: string, filters?: {
     periodType?: string;
@@ -751,7 +751,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
 } catch (error) {
 
-      const where: unknown = { indicatorId };
+      const where: unknown = { indicatorId ,};
       if (!session.user)here.periodType = filters.periodType;
       if (!session.user) {
         where.measurementPeriod = {};
@@ -760,7 +760,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
       const metrics = await this.prisma.qualityMetrics.findMany({
         where,
-        orderBy: {measurementPeriod:"desc" }
+        orderBy: {measurementPeriod:"desc" },
       });
 
       return metrics.map(metric => ({id:metric.id,
@@ -776,10 +776,10 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         verifiedBy: metric.verifiedBy || undefined;
       }));
     } catch (error) {
-      throw new Error(`Failed to get quality metrics: ${}`;
+      throw new Error(`Failed to get quality metrics: ${,}`;
 
   // Compliance Report Operations;
-  async createComplianceReport(data: ComplianceReport): Promise<ComplianceReport & {id:string }> {
+  async createComplianceReport(data: ComplianceReport): Promise<ComplianceReport & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -815,7 +815,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       const validated = ComplianceReportSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
-      const report = await this.prisma.complianceReport.create({data:{
+      const report = await this.prisma.complianceReport.create({data:{,
           ...encryptedData,
           requirements: JSON.stringify(validated.requirements),
           validated.gaps ? JSON.stringify(validated.gaps) : null;
@@ -827,9 +827,9 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: report.id;
       };
     } catch (error) {
-      throw new Error(`Failed to create compliance report: ${}`;
+      throw new Error(`Failed to create compliance report: ${,}`;
 
-  async getComplianceReport(id: string): Promise<ComplianceReport | null> {
+  async getComplianceReport(id: string): Promise<ComplianceReport | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -862,16 +862,16 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
 } catch (error) {
 
-      const report = await this.prisma.complianceReport.findUnique({where:{ id }
+      const report = await this.prisma.complianceReport.findUnique({where:{ id },
       });
 
       if (!session.user)eturn null;
       return this.deserializeComplianceReport(report);
     } catch (error) {
-      throw new Error(`Failed to get compliance report: ${}`;
+      throw new Error(`Failed to get compliance report: ${,}`;
 
   // Action Plan Operations;
-  async createActionPlan(data: ActionPlan): Promise<ActionPlan & {id:string }> {
+  async createActionPlan(data: ActionPlan): Promise<ActionPlan & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -907,7 +907,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       const validated = ActionPlanSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
-      const actionPlan = await this.prisma.actionPlan.create({data:{
+      const actionPlan = await this.prisma.actionPlan.create({data:{,
           ...encryptedData,
           impactedAreas: validated.impactedAreas ?;
             JSON.stringify(validated.impactedAreas) : null,
@@ -920,9 +920,9 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: actionPlan.id;
       };
     } catch (error) {
-      throw new Error(`Failed to create action plan: ${}`;
+      throw new Error(`Failed to create action plan: ${,}`;
 
-  async getActionPlan(id: string): Promise<ActionPlan | null> {
+  async getActionPlan(id: string): Promise<ActionPlan | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -955,7 +955,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
 } catch (error) {
 
-      const actionPlan = await this.prisma.actionPlan.findUnique({where:{ id },
+      const actionPlan = await this.prisma.actionPlan.findUnique({where:{ id ,},
         true;
 
       });
@@ -963,10 +963,10 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       if (!session.user)eturn null;
       return this.deserializeActionPlan(actionPlan);
     } catch (error) {
-      throw new Error(`Failed to get action plan: ${}`;
+      throw new Error(`Failed to get action plan: ${,}`;
 
   // Action Item Operations;
-  async createActionItem(data: ActionItem): Promise<ActionItem & {id:string }> {
+  async createActionItem(data: ActionItem): Promise<ActionItem & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1002,7 +1002,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       const validated = ActionItemSchema.parse(data);
       const encryptedData = await this.encryptionService.encryptObject(validated, this.encryptedFields);
 
-      const actionItem = await this.prisma.actionItem.create({data:{
+      const actionItem = await this.prisma.actionItem.create({data:{,
           ...encryptedData,
           dependencies: validated.dependencies ?;
             JSON.stringify(validated.dependencies) : null,
@@ -1015,9 +1015,9 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         id: actionItem.id;
       };
     } catch (error) {
-      throw new Error(`Failed to create action item: ${}`;
+      throw new Error(`Failed to create action item: ${,}`;
 
-  async updateActionItem(id: string, updates: Partial<ActionItem>): Promise<ActionItem> {
+  async updateActionItem(id: string, updates: Partial<ActionItem>): Promise<ActionItem> {,
     try {
 } catch (error) {
   console.error(error);
@@ -1052,8 +1052,8 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
       const encryptedUpdates = await this.encryptionService.encryptObject(updates, this.encryptedFields);
 
-      const updated = await this.prisma.actionItem.update({where:{ id },
-        data: {
+      const updated = await this.prisma.actionItem.update({where:{ id ,},
+        data: {,
           ...encryptedUpdates,
           dependencies: updates.dependencies ?;
             JSON.stringify(updates.dependencies) : undefined,
@@ -1065,10 +1065,10 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 
       return this.deserializeActionItem(updated);
     } catch (error) {
-      throw new Error(`Failed to update action item: ${}`;
+      throw new Error(`Failed to update action item: ${,}`;
 
   // Analytics and Reporting;
-  async getQualityDashboardData(indicatorIds: string[], dateRange: {from:Date, to: Date }) {
+  async getQualityDashboardData(indicatorIds: string[], dateRange: {from:Date, to: Date }) {,
     try {
 } catch (error) {
   console.error(error);
@@ -1102,14 +1102,14 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
 } catch (error) {
 
       const metrics = await this.prisma.qualityMetrics.findMany({
-        {in:indicatorIds },
+        {in:indicatorIds ,},
           dateRange.from,
             lte: dateRange.to;
 
         },
         true;
         },
-        orderBy: {measurementPeriod:"asc" }
+        orderBy: {measurementPeriod:"asc" },
       });
 
       return metrics.map(metric => ({
@@ -1122,10 +1122,10 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
         varianceFromTarget: metric.varianceFromTarget;
       }));
     } catch (error) {
-      throw new Error(`Failed to get dashboard data: ${}`;
+      throw new Error(`Failed to get dashboard data: ${,}`;
 
   // Helper methods for deserialization;
-  private async deserializeQualityIndicator(indicator: unknown): Promise<QualityIndicator> {
+  private async deserializeQualityIndicator(indicator: unknown): Promise<QualityIndicator> {,
     const decrypted = await this.encryptionService.decryptObject(indicator, this.encryptedFields);
 
     return {
@@ -1133,7 +1133,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       stratificationCriteria: indicator.stratificationCriteria ?;
         JSON.parse(indicator.stratificationCriteria) : undefined};
 
-  private async deserializeQualityEvent(event: unknown): Promise<QualityEvent> {
+  private async deserializeQualityEvent(event: unknown): Promise<QualityEvent> {,
     const decrypted = await this.encryptionService.decryptObject(event, this.encryptedFields);
 
     return {
@@ -1145,7 +1145,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       preventiveActions: event.preventiveActions ?;
         JSON.parse(event.preventiveActions) : undefined};
 
-  private async deserializeQualityAssessment(assessment: unknown): Promise<QualityAssessment> {
+  private async deserializeQualityAssessment(assessment: unknown): Promise<QualityAssessment> {,
     const decrypted = await this.encryptionService.decryptObject(assessment, this.encryptedFields);
 
     return {
@@ -1154,7 +1154,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       assessment.recommendations ? JSON.parse(assessment.recommendations) : undefined;
     };
 
-  private async deserializeComplianceReport(report: unknown): Promise<ComplianceReport> {
+  private async deserializeComplianceReport(report: unknown): Promise<ComplianceReport> {,
     const decrypted = await this.encryptionService.decryptObject(report, this.encryptedFields);
 
     return {
@@ -1163,7 +1163,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       report.gaps ? JSON.parse(report.gaps) : undefined;
     };
 
-  private async deserializeActionPlan(actionPlan: unknown): Promise<ActionPlan> {
+  private async deserializeActionPlan(actionPlan: unknown): Promise<ActionPlan> {,
     const decrypted = await this.encryptionService.decryptObject(actionPlan, this.encryptedFields);
 
     return {
@@ -1173,7 +1173,7 @@ export type ActionItem = z.infer<typeof ActionItemSchema> & { id?: string };
       teamMembers: actionPlan.teamMembers ?;
         JSON.parse(actionPlan.teamMembers) : undefined};
 
-  private async deserializeActionItem(actionItem: unknown): Promise<ActionItem> {
+  private async deserializeActionItem(actionItem: unknown): Promise<ActionItem> {,
     const decrypted = await this.encryptionService.decryptObject(actionItem, this.encryptedFields);
 
     return {

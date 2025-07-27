@@ -8,18 +8,18 @@ import { createClient } from 'redis';
  */
 
 // Configuration for Redis connection
-const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379'
+const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379',
 const REDIS_ENABLED = process.env.REDIS_ENABLED === 'true';
 
 // In-memory cache fallback
-const memoryCache: Record<string, { value: string, expiry: number }> = {};
+const memoryCache: Record<string, { value: string, expiry: number }> = {,};
 
 class CacheService {
   private redisClient: unknown;
   private connected = false;
 
   constructor() {
-    \1 {\n  \2{
+     {\n  {
       this.initRedisClient();
     }
   }
@@ -29,15 +29,15 @@ class CacheService {
    */
   private async initRedisClient() {
     try {
-      this.redisClient = createClient({ url: REDIS_URL });
+      this.redisClient = createClient({ url: REDIS_URL ,});
 
-      this.redisClient.on('error', (err: unknown) => {
+      this.redisClient.on('error', (err: unknown) => {,
 
         this.connected = false
       });
 
       this.redisClient.on('connect', () => {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         this.connected = true
       })
 
@@ -53,21 +53,21 @@ class CacheService {
    * @param key Cache key;
    * @returns Cached value or null if not found;
    */
-  async get(key: string): Promise<string | null> {
+  async get(key: string): Promise<string | null> {,
     try {
       // Try Redis if connected
-      \1 {\n  \2{
+       {\n  {
         return await this.redisClient.get(key);
       }
 
       // Fallback to memory cache
       const item = memoryCache[key];
-      \1 {\n  \2[0]) {
+       {\n  [0]) {
         return item.value;
       }
 
       // Remove expired item if exists
-      \1 {\n  \2{
+       {\n  {
         delete memoryCache[key];
       }
 
@@ -87,15 +87,15 @@ class CacheService {
   async set(key: string, value: string, ttl = 3600): Promise<void> {
     try {
       // Try Redis if connected
-      \1 {\n  \2{
-        await this.redisClient.set(key, value, { EX: ttl });
+       {\n  {
+        await this.redisClient.set(key, value, { EX: ttl ,});
         return;
       }
 
       // Fallback to memory cache
       memoryCache[key] = {
         value,
-        expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000)
+        expiry: crypto.getRandomValues(new Uint32Array(1))[0] + (ttl * 1000),
       };
     } catch (error) {
 
@@ -106,10 +106,10 @@ class CacheService {
    * Delete a value from cache;
    * @param key Cache key;
    */
-  async del(key: string): Promise<void> {
+  async del(key: string): Promise<void> {,
     try {
       // Try Redis if connected
-      \1 {\n  \2{
+       {\n  {
         await this.redisClient.del(key);
         return;
       }
@@ -123,14 +123,14 @@ class CacheService {
 
   /**
    * Delete multiple values from cache using pattern matching;
-   * @param pattern Pattern to match keys (e.g., "user:*")
+   * @param pattern Pattern to match keys (e.g., "user:*"),
    */
-  async delPattern(pattern: string): Promise<void> {
+  async delPattern(pattern: string): Promise<void> {,
     try {
       // Try Redis if connected
-      \1 {\n  \2{
+       {\n  {
         const keys = await this.redisClient.keys(pattern);
-        \1 {\n  \2{
+         {\n  {
           await this.redisClient.del(keys);
         }
         return;
@@ -139,7 +139,7 @@ class CacheService {
       // Fallback to memory cache - simple pattern matching
       const regex = new RegExp(pattern.replace('*', '.*'));
       Object.keys(memoryCache).forEach(key => {
-        \1 {\n  \2 {
+         {\n   {
           delete memoryCache[key];
         }
       });
@@ -154,7 +154,7 @@ class CacheService {
   async clear(): Promise<void> {
     try {
       // Try Redis if connected
-      \1 {\n  \2{
+       {\n  {
         await this.redisClient.flushDb();
         return;
       }

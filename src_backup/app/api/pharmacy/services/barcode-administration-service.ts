@@ -142,8 +142,8 @@ interface BarcodeVerificationResult {
         if (!session.user) {
           return {
             success: false,
-            message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description}`,
-            details: {
+            message: `WARNING: Severe drug interaction detected: ${severeInteractions[0].description,}`,
+            details: {,
               rightPatient,
               rightMedication,
               rightDose,
@@ -159,7 +159,7 @@ interface BarcodeVerificationResult {
         message: allRightsVerified;
           ? "All verification checks passed";
           : "One or more verification checks failed",
-        details: {
+        details: {,
           rightPatient,
           rightMedication,
           rightDose,
@@ -171,7 +171,7 @@ interface BarcodeVerificationResult {
 
       return {
         success: false,
-        message: `Verification error: ${error.message}`;
+        message: `Verification error: ${error.message,}`;
       };
     }
   }
@@ -266,7 +266,7 @@ interface BarcodeVerificationResult {
       new Date(),
       "not-done",
       reason, // Status reason;
-      `Administration skipped: ${reason}`, // Notes;
+      `Administration skipped: ${reason,}`, // Notes;
       undefined, // reasonCode;
       undefined, // reasonText;
       undefined, // device;
@@ -305,7 +305,7 @@ interface BarcodeVerificationResult {
    * @param patientId Patient ID;
    * @returns Array of prescriptions due for administration;
    */;
-  async getDueMedications(patientId: string): Promise<PharmacyDomain.Prescription[]> {
+  async getDueMedications(patientId: string): Promise<PharmacyDomain.Prescription[]> {,
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
 
     // Filter active prescriptions;
@@ -329,7 +329,7 @@ interface BarcodeVerificationResult {
     const prescriptions = await this.prescriptionRepository.findByPatientId(patientId);
     const activePrescriptions = prescriptions.filter(p => p.isActive());
 
-    const schedule: unknown = {};
+    const schedule: unknown = {,};
     const now = new Date();
 
     // Generate schedule for specified number of days;
@@ -374,7 +374,7 @@ interface BarcodeVerificationResult {
    * @param prescription Prescription to check;
    * @returns Boolean indicating if medication is due;
    */;
-  private isWithinAdministrationWindow(prescription: PharmacyDomain.Prescription): boolean {
+  private isWithinAdministrationWindow(prescription: PharmacyDomain.Prescription): boolean {,
     // This is a simplified implementation;
     // In a real system, this would check the scheduled administration times;
     // and determine if the current time is within an acceptable window;
@@ -493,7 +493,7 @@ interface BarcodeVerificationResult {
    * @param prescription Prescription to check;
    * @returns Boolean indicating if prescription should be completed;
    */;
-  private async shouldCompletePrescription(prescription: PharmacyDomain.Prescription): Promise<boolean> {
+  private async shouldCompletePrescription(prescription: PharmacyDomain.Prescription): Promise<boolean> {,
     // Get administration history for this prescription;
     const administrations = await this.administrationRepository.findByPrescriptionId(prescription.id);
 
@@ -514,7 +514,7 @@ interface BarcodeVerificationResult {
    * @param barcode Patient barcode;
    * @returns Patient ID;
    */;
-  private decodePatientBarcode(barcode: string): string {
+  private decodePatientBarcode(barcode: string): string {,
     // In a real system, this would implement actual barcode decoding logic;
     // For this implementation, we"ll assume the barcode is in the format "P-{patientId}";
     const match = barcode.match(/^P-(.+)$/);
@@ -584,4 +584,4 @@ interface BarcodeVerificationResult {
 
       return result;
 
-    return { medicationId: "' };
+    return { medicationId: "' ,};

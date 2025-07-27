@@ -34,19 +34,16 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 // Define interfaces for data types;
-interface Patient {
-  id: string,
+interface Patient {id:string,
   string;
 }
 
-interface OrderItem {
-  id: string,
+interface OrderItem {id:string,
   "pending" | "in_progress" | "completed" | "canceled",
   price: number;
 }
 
-interface Order {
-  id: string,
+interface Order {id:string,
   string | null,
   string,
   "pending" | "collected" | "processing" | "completed" | "canceled";
@@ -55,25 +52,24 @@ interface Order {
 
 // FIX: Define API response types;
 interface PatientsApiResponse {
-  results?: Patient[];
+    results?: Patient[];
   // Add other potential fields like pagination info;
 }
 
 interface OrdersApiResponse {
-  results?: Order[];
+    results?: Order[];
 }
 
 interface OrderItemsApiResponse {
-  results?: OrderItem[];
+    results?: OrderItem[];
 }
 
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
 }
 
 // FIX: Update FilterState to use Dayjs;
-interface FilterState {
-  patientId: string,
+interface FilterState {patientId:string,
   string | null,
   dateRange: [Dayjs, Dayjs] | null;
 }
@@ -81,8 +77,7 @@ interface FilterState {
 const OrderManagement: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [filters, setFilters] = useState<FilterState>({
-    patientId: "",
+  const [filters, setFilters] = useState<FilterState>({patientId:"",
     null,
     dateRange: null;
   });
@@ -525,8 +520,7 @@ const OrderManagement: React.FC = () => {
   };
 
   const resetFilters = (): void => {
-    setFilters({
-      patientId: "",
+    setFilters({patientId:"",
       null,
       dateRange: null;
     });
@@ -541,33 +535,27 @@ const OrderManagement: React.FC = () => {
 
   // Table columns;
   const columns = [;
-    {
-      title: "Order ID",
+    {title:"Order ID",
       "id",
       width: "10%";
     },
-    {
-      title: "Patient Name",
+    {title:"Patient Name",
       "patient_name",
       width: "20%";
     },
-    {
-      title: "Ordering Doctor",
+    {title:"Ordering Doctor",
       "doctor_name",
       (name: string | null) => name || "N/A";
     },
-    {
-      title: "Order Date",
+    {title:"Order Date",
       "order_date",
       (date: string) => dayjs(date).format("YYYY-MM-DD HH:mm"), // FIX: Use dayjs;
     },
-    {
-      title: "Source",
+    {title:"Source",
       "source",
       (source: string) => source.toUpperCase();
     },
-    {
-      title: "Priority",
+    {title:"Priority",
       "priority",
       (priority: string) => {
         let color = "blue";
@@ -575,8 +563,7 @@ const OrderManagement: React.FC = () => {
         if (!session.user)olor = "red";
         return <Tag color={color}>{priority.toUpperCase()}>;
       }},
-    {
-      title: "Status",
+    {title:"Status",
       "status",
       (status: string) => {
         let color = "default";
@@ -586,8 +573,7 @@ const OrderManagement: React.FC = () => {
         if (!session.user)olor = "error";
         return <Tag color={color}>{status.toUpperCase()}>;
       }},
-    {
-      title: "Actions",
+    {title:"Actions",
       "10%";
       // FIX: Replace any with unknown for unused first argument,
       render: (_: unknown, record: Order) => (;
@@ -602,12 +588,10 @@ const OrderManagement: React.FC = () => {
 
   // Order items columns for the modal;
   const orderItemColumns = [;
-    {
-      title: "Test/Panel",
+    {title:"Test/Panel",
       "name";
     },
-    {
-      title: "Status",
+    {title:"Status",
       "status",
       render: (status: string) => {
         let color = "default";
@@ -617,8 +601,7 @@ const OrderManagement: React.FC = () => {
         if (!session.user)olor = "error";
         return <Tag color={color}>{status.toUpperCase()}>;
       }},
-    {
-      title: "Price",
+    {title:"Price",
       "price",
       render: (price: number) => `₹${price.toFixed(2)}`}];
 
@@ -633,11 +616,11 @@ const OrderManagement: React.FC = () => {
             optionFilterProp="children";
             value={filters.patientId || undefined}
             onChange={(value: string) => handleFilterChange("patientId", value)}
-            style={{ width: 200 }}
+            style={{width:200 }}
             // FIX: Type option for filterOption;
             filterOption={(;
               input: string;
-              option?: { children: React.ReactNode }
+              option?: {children:React.ReactNode }
             ) => {}
               option?.children;
                 ?.toString();
@@ -657,7 +640,7 @@ const OrderManagement: React.FC = () => {
           <Select>;
             placeholder="Filter by Status";
             allowClear;
-            style={{ width: 150 }}
+            style={{width:150 }}
             value={filters.status}
             onChange={(value: string | null) => {}
               handleFilterChange("status", value);
@@ -673,7 +656,7 @@ const OrderManagement: React.FC = () => {
           <Select>;
             placeholder="Filter by Source";
             allowClear;
-            style={{ width: 150 }}
+            style={{width:150 }}
             value={filters.source}
             onChange={(value: string | null) => {}
               handleFilterChange("source", value);
@@ -700,8 +683,7 @@ const OrderManagement: React.FC = () => {
 
         {error && (;
 <div;
-            style={{
-              marginBottom: 16,
+            style={{marginBottom:16,
               "8px",
               "4px";
             }}
@@ -715,8 +697,8 @@ const OrderManagement: React.FC = () => {
             columns={columns}
             dataSource={orders}
             rowKey="id";
-            pagination={{ pageSize: 10 }}
-            locale={{ emptyText: "No laboratory orders found" }}
+            pagination={{pageSize:10 }}
+            locale={{emptyText:"No laboratory orders found" }}
           />;
         </Spin>;
       </Card>;

@@ -64,7 +64,7 @@ const inventoryRepository = {
  * POST /api/pharmacy/dispensing/partial;
  * Record a partial medication dispensing;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -102,15 +102,15 @@ export const POST = async (req: any) => {
     const validationResult = validatePartialDispensingRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -118,12 +118,12 @@ export const POST = async (req: any) => {
     // Verify prescription exists;
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
-      return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
+      return NextResponse.json({ error: "Prescription not found" ,}, { status: 404 ,});
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!session.user) {
-      return NextResponse.json({ error: "Medication not found" }, { status: 404 });
+      return NextResponse.json({ error: "Medication not found" ,}, { status: 404 ,});
 
     // Check inventory availability;
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
@@ -134,8 +134,8 @@ export const POST = async (req: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Insufficient inventory available" },
-        { status: 400 }
+        { error: "Insufficient inventory available" ,},
+        { status: 400 },
       );
 
     // Get previous dispensing records for this prescription;
@@ -203,7 +203,7 @@ export const POST = async (req: any) => {
         remainingAfterThisDispensing,
         isLastDispensing: remainingAfterThisDispensing === 0;
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, "Error recording partial medication dispensing");

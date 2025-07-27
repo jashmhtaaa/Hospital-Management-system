@@ -56,15 +56,15 @@ const patientRegisterSchema = z.object({
 // type PatientRegisterBody = z.infer<typeof patientRegisterSchema>;
 
 // Helper function to generate MRN (example);
-async const generateMRN = (db: D1Database): Promise<string> {
+async const generateMRN = (db: D1Database): Promise<string> {,
     // Simple example: Find max ID and increment. Needs robust implementation.;
-    const result = await db.prepare("SELECT MAX(patient_id) as maxId FROM Patients").first<{ maxId: number | null }>();
+    const result = await db.prepare("SELECT MAX(patient_id) as maxId FROM Patients").first<{ maxId: number | null ,}>();
     const nextId = (result?.maxId || 0) + 1;
     return `MRN${String(nextId).padStart(8, "0")}`;
 }
 
 // POST /api/patients/register - Register a new patient;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
     // No session check here, assuming public registration endpoint;
     // Add authentication/authorization if this is an internal endpoint;
 
@@ -105,8 +105,8 @@ export const _POST = async (request: any) => {
 
         if (!session.user) {
             return NextResponse.json();
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
         }
 
@@ -122,7 +122,7 @@ export const _POST = async (request: any) => {
         //     .bind(mrn, patientData.email);
         //     .first();
         // if (!session.user) {
-        //     return NextResponse.json({ message: "Patient with this MRN or Email already exists" }, { status: 409 });
+        //     return NextResponse.json({ message: "Patient with this MRN or Email already exists" ,}, { status: 409 ,});
         // }
 
         // Start transaction or use batch if creating user simultaneously;
@@ -210,10 +210,10 @@ export const _POST = async (request: any) => {
                 newUserId, // Include if user was created;
                 mrn: mrn;
             },
-            { status: 201 }
+            { status: 201 },
         );
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
@@ -222,8 +222,8 @@ export const _POST = async (request: any) => {
         // Check for specific DB errors like unique constraint violations if needed;
         // if (!session.user) { ... }
         return NextResponse.json();
-            { message: "Error registering patient", details: errorMessage },
-            { status: 500 }
+            { message: "Error registering patient", details: errorMessage ,},
+            { status: 500 },
         );
 
 export async function GET() { return new Response("OK"); }

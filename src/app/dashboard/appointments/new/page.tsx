@@ -44,8 +44,7 @@ import { z }
 export const dynamic = "force-dynamic";
 
 // Schema for booking validation;
-const BookAppointmentSchema = z.object({
-  patient_id: z.string().min(1, "Patient selection is required"), // Use string initially from select;
+const BookAppointmentSchema = z.object({patient_id:z.string().min(1, "Patient selection is required"), // Use string initially from select;
   doctor_id: z.string().min(1, "Doctor selection is required"),   // Use string initially from select;
   appointment_date: z.string().min(1, "Date is required"), // YYYY-MM-DD;
   appointment_time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Time must be in HH: MM format"),
@@ -58,8 +57,7 @@ type FormData = z.infer>;
 export default const _BookAppointmentPage = () {
   const router = useRouter();
   const { toast } = useToast();
-  const [formData, setFormData] = useState<Partial<FormData>>({
-      appointment_date: format(new Date(), "yyyy-MM-dd"), // Default to today;
+  const [formData, setFormData] = useState<Partial<FormData>>({appointment_date:format(new Date(), "yyyy-MM-dd"), // Default to today;
       appointment_time: "09:00", // Default time;
   });
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -118,8 +116,7 @@ export default const _BookAppointmentPage = () {
 
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "Could not load patients or doctors.";
-        toast({
-          title: "Error Fetching Data",
+        toast({title:"Error Fetching Data",
           "destructive";
         }),
         setErrors([code: z.ZodIssueCode.custom, path: ["form"], message: "Could not load required data." ]);
@@ -148,8 +145,7 @@ export default const _BookAppointmentPage = () {
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsLoading(false);
-      toast({
-        title: "Validation Error",
+      toast({title:"Validation Error",
         "destructive";
       });
       return;
@@ -157,8 +153,7 @@ export default const _BookAppointmentPage = () {
     // Combine date and time into ISO string;
     const appointmentDateTimeISO = `${validation.data.appointment_date}T${validation.data.appointment_time}:00`; // Assuming local timezone, add Z or offset if needed;
 
-    const dataToSend = {
-        patient_id: Number.parseInt(validation.data.patient_id, 10),
+    const dataToSend = {patient_id:Number.parseInt(validation.data.patient_id, 10),
         doctor_id: Number.parseInt(validation.data.doctor_id, 10),
         appointment_datetime: appointmentDateTimeISO,
         validation.data.reason;
@@ -196,8 +191,7 @@ export default const _BookAppointmentPage = () {
 
 } catch (error) {
 
-      const response = await fetch("/api/appointments", {
-        method: "POST",
+      const response = await fetch("/api/appointments", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(dataToSend);
@@ -208,8 +202,7 @@ export default const _BookAppointmentPage = () {
       if (!session.user) {
         throw new Error(result.error || "Failed to book appointment");
 
-      toast({
-        title: "Appointment Booked",
+      toast({title:"Appointment Booked",
         description: `Appointment scheduled successfully.`;
       });
 
@@ -217,9 +210,8 @@ export default const _BookAppointmentPage = () {
 
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
-      toast({
-        title: "Booking Failed",
+      setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
+      toast({title:"Booking Failed",
         "destructive";
       });
     } finally {

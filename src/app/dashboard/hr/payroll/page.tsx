@@ -78,12 +78,10 @@ export default const _PayrollManagement = () {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any | null>(null);
   const [statusFilter, setStatusFilter] = useState("");
-  const [dateRange, setDateRange] = useState({
-    from: null,
+  const [dateRange, setDateRange] = useState({from:null,
     to: null;
   });
-  const [pagination, setPagination] = useState({
-    skip: 0,
+  const [pagination, setPagination] = useState({skip:0,
     0;
   });
   const [activeTab, setActiveTab] = useState("periods");
@@ -124,8 +122,7 @@ export default const _PayrollManagement = () {
 } catch (error) {
 }
         setLoading(true);
-        const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
+        const queryParams = new URLSearchParams({skip:pagination.skip.toString(),
           take: pagination.take.toString();
         });
 
@@ -150,8 +147,7 @@ export default const _PayrollManagement = () {
         }));
       } catch (err) {
         setError(err.message),
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       } finally ;
@@ -232,21 +228,18 @@ export default const _PayrollManagement = () {
 } catch (error) {
 
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
-      toast({
-        title: "Export Started",
+      toast({title:"Export Started",
         description: "Your payroll report is being generated and will download shortly.";
       });
 
       // Simulate download delay;
       setTimeout(() => {
-        toast({
-          title: "Export Complete",
+        toast({title:"Export Complete",
           description: "Payroll report has been downloaded.";
         });
       }, 2000);
     } catch (error) {
-      toast({
-        title: "Export Failed",
+      toast({title:"Export Failed",
         "destructive";
       });
 
@@ -269,8 +262,7 @@ export default const _PayrollManagement = () {
 
   // Format currency;
   const _formatCurrency = (amount: unknown) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
+    return new Intl.NumberFormat("en-US", {style:"currency",
       currency: "USD";
     }).format(amount);
   };

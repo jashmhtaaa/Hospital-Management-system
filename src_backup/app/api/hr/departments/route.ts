@@ -12,17 +12,17 @@ const createDepartmentSchema = z.object({
   name: z.string().min(1, "Department name is required"),
   code: z.string().min(1, "Department code is required"),
   description: z.string().optional(),
-  parentId: z.string().optional()});
+  parentId: z.string().optional(),});
 
 // Schema for department update;
 const _updateDepartmentSchema = z.object({
   name: z.string().optional(),
   code: z.string().optional(),
   description: z.string().optional(),
-  parentId: z.string().optional()});
+  parentId: z.string().optional(),});
 
 // GET /api/hr/departments;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -75,13 +75,13 @@ export const _GET = async (request: any) => {
 
       return NextResponse.json(result);
 
-  } catch (error: unknown) {
-    return NextResponse.json({ error: "Failed to list departments", details: error.message }, { status: 500 });
+  } catch (error: unknown) {,
+    return NextResponse.json({ error: "Failed to list departments", details: error.message ,}, { status: 500 ,});
 
 };
 
 // POST /api/hr/departments;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -122,16 +122,16 @@ export const _POST = async (request: any) => {
     // Create department;
     const department = await departmentService.createDepartment(validatedData);
 
-    return NextResponse.json(department, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json(department, { status: 201 ,});
+  } catch (error: unknown) {,
     // Handle validation errors;
     if (!session.user) {
-      return NextResponse.json({ error: "Validation error", details: error.errors }, { status: 400 });
+      return NextResponse.json({ error: "Validation error", details: error.errors ,}, { status: 400 ,});
 
     // Handle unique constraint violations;
     if (!session.user) {
-      return NextResponse.json({ error: "Department with this name or code already exists" }, { status: 409 });
+      return NextResponse.json({ error: "Department with this name or code already exists" ,}, { status: 409 ,});
 
-    return NextResponse.json({ error: "Failed to create department", details: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Failed to create department", details: error.message ,}, { status: 500 ,});
 
 };

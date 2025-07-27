@@ -10,18 +10,18 @@ export enum BloodType {
   AB_NEGATIVE = 'AB_NEGATIVE',
   O_POSITIVE = 'O_POSITIVE',
   O_NEGATIVE = 'O_NEGATIVE',
-\1\n\nexport \2 BloodDonationStatus {
+\n\nexport  BloodDonationStatus {
   PENDING = 'PENDING',
   COMPLETED = 'COMPLETED',
   REJECTED = 'REJECTED',
   CANCELLED = 'CANCELLED',
-\1\n\nexport \2 BloodRequestStatus {
+\n\nexport  BloodRequestStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   FULFILLED = 'FULFILLED',
   REJECTED = 'REJECTED',
   CANCELLED = 'CANCELLED',
-\1\n\nexport \2 BloodRequestPriority {
+\n\nexport  BloodRequestPriority {
   ROUTINE = 'ROUTINE',
   URGENT = 'URGENT',
   EMERGENCY = 'EMERGENCY',
@@ -35,11 +35,11 @@ export const createBloodDonationSchema = z.object({
   donationDate: z.date().default(() => new Date()),
   expirationDate: z.date(),
   status: z.nativeEnum(BloodDonationStatus).default(BloodDonationStatus.PENDING),
-  notes: z.string().optional().nullable()
+  notes: z.string().optional().nullable(),
 });
 
 export const updateBloodDonationSchema = createBloodDonationSchema.partial().extend({
-  id: z.string()
+  id: z.string(),
 });
 
 // Validation schemas for BloodRequest
@@ -52,11 +52,11 @@ export const createBloodRequestSchema = z.object({
   requestDate: z.date().default(() => new Date()),  requiredBy: z.date().optional().nullable(),
   status: z.nativeEnum(BloodRequestStatus).default(BloodRequestStatus.PENDING),
   fulfilledDate: z.date().optional().nullable(),
-  notes: z.string().optional().nullable()
+  notes: z.string().optional().nullable(),
 });
 
 export const updateBloodRequestSchema = createBloodRequestSchema.partial().extend({
-  id: z.string()
+  id: z.string(),
 });
 
 export type CreateBloodDonationInput = z.infer<typeof createBloodDonationSchema>;
@@ -70,36 +70,36 @@ import { prisma } from '../lib/prisma';
 /**
  * Service class for managing blood bank operations;
  */
-\1
+
 }
         });
 
         // If the donation status is COMPLETED, update the inventory
-        \1 {\n  \2{
+         {\n  {
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
-              bloodType: validatedData.bloodType
+            where: {,
+              bloodType: validatedData.bloodType,
             },
           });
 
-          \1 {\n  \2{
+           {\n  {
             // Update existing inventory
             await tx.bloodInventory.update({
-              where: {
-                bloodType: validatedData.bloodType
+              where: {,
+                bloodType: validatedData.bloodType,
               },
-              data: {
+              data: {,
                 quantity: inventory.quantity + validatedData.quantity,
-                lastUpdated: new Date()
+                lastUpdated: new Date(),
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              data: {
+              data: {,
                 bloodType: validatedData.bloodType,
-                quantity: validatedData.quantity,                lastUpdated: new Date()
+                quantity: validatedData.quantity,                lastUpdated: new Date(),
               },
             });
           }
@@ -110,8 +110,8 @@ import { prisma } from '../lib/prisma';
 
       return donation;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -130,24 +130,24 @@ import { prisma } from '../lib/prisma';
     toDate?: Date;
   }) {
     try {
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+         {\n  {
           where.bloodType = filters.bloodType;
         }
-        \1 {\n  \2{
+         {\n  {
           where.donorId = filters.donorId;
         }
-        \1 {\n  \2{
+         {\n  {
           where.donationDate = {};
-          \1 {\n  \2{
+           {\n  {
             where.donationDate.gte = filters.fromDate;
           }
-          \1 {\n  \2{
+           {\n  {
             where.donationDate.lte = filters.toDate;
           }
         }
@@ -155,14 +155,14 @@ import { prisma } from '../lib/prisma';
 
       const donations = await prisma.bloodDonation.findMany({
         where,
-        orderBy: [
-          { donationDate: 'desc' },
+        orderBy: [,
+          { donationDate: 'desc' ,},
         ],
-        include: {
-          donor: {
-            select: {
+        include: {,
+          donor: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -179,15 +179,15 @@ import { prisma } from '../lib/prisma';
    * @param id Blood donation ID;
    * @returns The blood donation or null if not found;
    */
-  async getDonationById(id: string) {
+  async getDonationById(id: string) {,
     try {
       const donation = await prisma.bloodDonation.findUnique({
-        where: { id },
-        include: {
-          donor: {
-            select: {
+        where: { id ,},
+        include: {,
+          donor: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -205,7 +205,7 @@ import { prisma } from '../lib/prisma';
    * @param data Updated blood donation data;
    * @returns The updated blood donation;
    */
-  async updateDonation(id: string, data: UpdateBloodDonationInput) {
+  async updateDonation(id: string, data: UpdateBloodDonationInput) {,
     try {
       // Validate input data
       const validatedData = updateBloodDonationSchema.parse({ ...data, id });
@@ -215,10 +215,10 @@ import { prisma } from '../lib/prisma';
 
       // Get the current donation
       const currentDonation = await prisma.bloodDonation.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Blood donation with ID ${id} not found`);
       }
 
@@ -226,68 +226,68 @@ import { prisma } from '../lib/prisma';
       const updatedDonation = await prisma.$transaction(async (tx) => {
         // Update the donation
         const donation = await tx.bloodDonation.update({
-          where: { id },
-          data: updateData
+          where: { id ,},
+          data: updateData,
         });
 
         // Handle inventory updates if status changes
-        \1 {\n  \2{
+         {\n  {
           // If changing to COMPLETED, add to inventory
-          \1 {\n  \2{
+           {\n  {
             const bloodType = updateData.bloodType || currentDonation.bloodType;
             const quantity = updateData.quantity || currentDonation.quantity;
 
             // Check if inventory exists for this blood type
             const inventory = await tx.bloodInventory.findUnique({
-              where: {
+              where: {,
                 bloodType,
               },
             });
 
-            \1 {\n  \2{
+             {\n  {
               // Update existing inventory
               await tx.bloodInventory.update({
-                where: {
+                where: {,
                   bloodType,
                 },
-                data: {
+                data: {,
                   quantity: inventory.quantity + quantity,
-                  lastUpdated: new Date()
+                  lastUpdated: new Date(),
                 },
               });
             } else {
               // Create new inventory
               await tx.bloodInventory.create({
-                data: {
+                data: {,
                   bloodType,
                   quantity,
-                  lastUpdated: new Date()
+                  lastUpdated: new Date(),
                 },
               });
             }
           }
 
           // If changing from COMPLETED to something else, remove from inventory
-          \1 {\n  \2{
+           {\n  {
             const bloodType = currentDonation.bloodType;
             const quantity = currentDonation.quantity;
 
             // Check if inventory exists for this blood type
             const inventory = await tx.bloodInventory.findUnique({
-              where: {
+              where: {,
                 bloodType,
               },
             });
 
-            \1 {\n  \2{
+             {\n  {
               // Update existing inventory
               await tx.bloodInventory.update({
-                where: {
+                where: {,
                   bloodType,
                 },
-                data: {
+                data: {,
                   quantity: Math.max(0, inventory.quantity - quantity), // Ensure quantity doesn't go below 0
-                  lastUpdated: new Date()
+                  lastUpdated: new Date(),
                 },
               });
             }
@@ -299,8 +299,8 @@ import { prisma } from '../lib/prisma';
 
       return updatedDonation;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -311,14 +311,14 @@ import { prisma } from '../lib/prisma';
    * @param id Blood donation ID;
    * @returns The deleted blood donation;
    */
-  async deleteDonation(id: string) {
+  async deleteDonation(id: string) {,
     try {
       // Get the current donation
       const currentDonation = await prisma.bloodDonation.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Blood donation with ID ${id} not found`);
       }
 
@@ -326,27 +326,27 @@ import { prisma } from '../lib/prisma';
       const deletedDonation = await prisma.$transaction(async (tx) => {
         // Delete the donation
         const donation = await tx.bloodDonation.delete({
-          where: { id },
+          where: { id ,},
         });
 
         // If the donation was COMPLETED, update the inventory
-        \1 {\n  \2{
+         {\n  {
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
-              bloodType: currentDonation.bloodType
+            where: {,
+              bloodType: currentDonation.bloodType,
             },
           });
 
-          \1 {\n  \2{
+           {\n  {
             // Update existing inventory
             await tx.bloodInventory.update({
-              where: {
-                bloodType: currentDonation.bloodType
+              where: {,
+                bloodType: currentDonation.bloodType,
               },
-              data: {
+              data: {,
                 quantity: Math.max(0, inventory.quantity - currentDonation.quantity), // Ensure quantity doesn't go below 0
-                lastUpdated: new Date()
+                lastUpdated: new Date(),
               },
             });
           }
@@ -366,20 +366,20 @@ import { prisma } from '../lib/prisma';
    * @param data Blood request data;
    * @returns The created blood request;
    */
-  async createRequest(data: CreateBloodRequestInput) {
+  async createRequest(data: CreateBloodRequestInput) {,
     try {
       // Validate input data
       const validatedData = createBloodRequestSchema.parse(data);
 
       // Create the request
       const request = await prisma.bloodRequest.create({
-        data: validatedData
+        data: validatedData,
       });
 
       return request;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -399,27 +399,27 @@ import { prisma } from '../lib/prisma';
     toDate?: Date;
   }) {
     try {
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           where.status = filters.status;
         }
-        \1 {\n  \2{
+         {\n  {
           where.bloodType = filters.bloodType;
         }
-        \1 {\n  \2{
+         {\n  {
           where.patientId = filters.patientId;
         }
-        \1 {\n  \2{
+         {\n  {
           where.priority = filters.priority;
         }
-        \1 {\n  \2{
+         {\n  {
           where.requestDate = {};
-          \1 {\n  \2{
+           {\n  {
             where.requestDate.gte = filters.fromDate;
           }
-          \1 {\n  \2{
+           {\n  {
             where.requestDate.lte = filters.toDate;
           }
         }
@@ -427,15 +427,15 @@ import { prisma } from '../lib/prisma';
 
       const requests = await prisma.bloodRequest.findMany({
         where,
-        orderBy: [
-          { priority: 'desc' },
-          { requestDate: 'asc' },
+        orderBy: [,
+          { priority: 'desc' ,},
+          { requestDate: 'asc' ,},
         ],
-        include: {
-          patient: {
-            select: {
+        include: {,
+          patient: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -452,15 +452,15 @@ import { prisma } from '../lib/prisma';
    * @param id Blood request ID;
    * @returns The blood request or null if not found;
    */
-  async getRequestById(id: string) {
+  async getRequestById(id: string) {,
     try {
       const request = await prisma.bloodRequest.findUnique({
-        where: { id },
-        include: {
-          patient: {
-            select: {
+        where: { id ,},
+        include: {,
+          patient: {,
+            select: {,
               id: true,
-              name: true
+              name: true,
             },
           },
         },
@@ -478,7 +478,7 @@ import { prisma } from '../lib/prisma';
    * @param data Updated blood request data;
    * @returns The updated blood request;
    */
-  async updateRequest(id: string, data: UpdateBloodRequestInput) {
+  async updateRequest(id: string, data: UpdateBloodRequestInput) {,
     try {
       // Validate input data
       const validatedData = updateBloodRequestSchema.parse({ ...data, id });
@@ -488,17 +488,17 @@ import { prisma } from '../lib/prisma';
 
       // Get the current request
       const currentRequest = await prisma.bloodRequest.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
       // Update the request and inventory in a transaction if status changes to FULFILLED
       const updatedRequest = await prisma.$transaction(async (tx) => {
         // Special handling for status transitions
-        \1 {\n  \2{
+         {\n  {
           updateData.fulfilledDate = new Date();
 
           // Check if there's enough inventory
@@ -506,55 +506,55 @@ import { prisma } from '../lib/prisma';
           const quantity = updateData.quantity || currentRequest.quantity;
 
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
+            where: {,
               bloodType,
             },
           });
 
-          \1 {\n  \2{
+           {\n  {
             throw new Error(`Not enough ${bloodType} blood in inventory to fulfill this request`);
           }
 
           // Update inventory
           await tx.bloodInventory.update({
-            where: {
+            where: {,
               bloodType,
             },
-            data: {
+            data: {,
               quantity: inventory.quantity - quantity,
-              lastUpdated: new Date()
+              lastUpdated: new Date(),
             },
           });
         }
 
         // If changing from FULFILLED to something else, add back to inventory
-        \1 {\n  \2{
+         {\n  {
           updateData.fulfilledDate = null;
 
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
-              bloodType: currentRequest.bloodType
+            where: {,
+              bloodType: currentRequest.bloodType,
             },
           });
 
-          \1 {\n  \2{
+           {\n  {
             // Update existing inventory
             await tx.bloodInventory.update({
-              where: {
-                bloodType: currentRequest.bloodType
+              where: {,
+                bloodType: currentRequest.bloodType,
               },
-              data: {
+              data: {,
                 quantity: inventory.quantity + currentRequest.quantity,
-                lastUpdated: new Date()
+                lastUpdated: new Date(),
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              data: {
+              data: {,
                 bloodType: currentRequest.bloodType,
-                quantity: currentRequest.quantity,                lastUpdated: new Date()
+                quantity: currentRequest.quantity,                lastUpdated: new Date(),
               },
             });
           }
@@ -562,8 +562,8 @@ import { prisma } from '../lib/prisma';
 
         // Update the request
         const request = await tx.bloodRequest.update({
-          where: { id },
-          data: updateData
+          where: { id ,},
+          data: updateData,
         });
 
         return request;
@@ -571,8 +571,8 @@ import { prisma } from '../lib/prisma';
 
       return updatedRequest;
     } catch (error) {
-      \1 {\n  \2{
-        throw new Error(`Validation error: ${\1}`;
+       {\n  {
+        throw new Error(`Validation error: ${}`;
       }
       throw error;
     }
@@ -583,14 +583,14 @@ import { prisma } from '../lib/prisma';
    * @param id Blood request ID;
    * @returns The deleted blood request;
    */
-  async deleteRequest(id: string) {
+  async deleteRequest(id: string) {,
     try {
       // Get the current request
       const currentRequest = await prisma.bloodRequest.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
@@ -598,35 +598,35 @@ import { prisma } from '../lib/prisma';
       const deletedRequest = await prisma.$transaction(async (tx) => {
         // Delete the request
         const request = await tx.bloodRequest.delete({
-          where: { id },
+          where: { id ,},
         });
 
         // If the request was FULFILLED, update the inventory
-        \1 {\n  \2{
+         {\n  {
           // Check if inventory exists for this blood type
           const inventory = await tx.bloodInventory.findUnique({
-            where: {
-              bloodType: currentRequest.bloodType
+            where: {,
+              bloodType: currentRequest.bloodType,
             },
           });
 
-          \1 {\n  \2{
+           {\n  {
             // Update existing inventory
             await tx.bloodInventory.update({
-              where: {
-                bloodType: currentRequest.bloodType
+              where: {,
+                bloodType: currentRequest.bloodType,
               },
-              data: {
+              data: {,
                 quantity: inventory.quantity + currentRequest.quantity,
-                lastUpdated: new Date()
+                lastUpdated: new Date(),
               },
             });
           } else {
             // Create new inventory
             await tx.bloodInventory.create({
-              data: {
+              data: {,
                 bloodType: currentRequest.bloodType,
-                quantity: currentRequest.quantity,                lastUpdated: new Date()
+                quantity: currentRequest.quantity,                lastUpdated: new Date(),
               },
             });
           }
@@ -648,16 +648,16 @@ import { prisma } from '../lib/prisma';
    */
   async getInventory(bloodType?: string) {
     try {
-      const where: unknown = {};
+      const where: unknown = {,};
 
-      \1 {\n  \2{
+       {\n  {
         where.bloodType = bloodType;
       }
 
       const inventory = await prisma.bloodInventory.findMany({
         where,
-        orderBy: [
-          { bloodType: 'asc' },
+        orderBy: [,
+          { bloodType: 'asc' ,},
         ],
       });
 
@@ -673,11 +673,11 @@ import { prisma } from '../lib/prisma';
    * @param quantity Quantity needed;
    * @returns Boolean indicating if there's enough blood;
    */
-  async checkInventoryAvailability(bloodType: string, quantity: number) {
+  async checkInventoryAvailability(bloodType: string, quantity: number) {,
     try {
       const inventory = await prisma.bloodInventory.findUnique({
-        where: {
-          bloodType: bloodType as BloodType
+        where: {,
+          bloodType: bloodType as BloodType,
         },
       });
 
@@ -692,33 +692,33 @@ import { prisma } from '../lib/prisma';
    * @param id Blood request ID;
    * @returns The updated blood request;
    */
-  async fulfillRequest(id: string) {
+  async fulfillRequest(id: string) {,
     try {
       // Get the current request
       const request = await prisma.bloodRequest.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Blood request with ID ${id} not found`);
       }
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Blood request with ID ${id} is already fulfilled`);
       }
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Cannot fulfill a ${request.status.toLowerCase()} blood request`);
       }
 
       // Check if there's enough inventory
       const inventory = await prisma.bloodInventory.findUnique({
-        where: {
-          bloodType: request.bloodType
+        where: {,
+          bloodType: request.bloodType,
         },
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Not enough ${request.bloodType} blood in inventory to fulfill this request`);
       }
 
@@ -726,21 +726,21 @@ import { prisma } from '../lib/prisma';
       const fulfilledRequest = await prisma.$transaction(async (tx) => {
         // Update the request
         const updatedRequest = await tx.bloodRequest.update({
-          where: { id },
-          data: {
+          where: { id ,},
+          data: {,
             status: BloodRequestStatus.FULFILLED,
-            fulfilledDate: new Date()
+            fulfilledDate: new Date(),
           },
         });
 
         // Update inventory
         await tx.bloodInventory.update({
-          where: {
-            bloodType: request.bloodType
+          where: {,
+            bloodType: request.bloodType,
           },
-          data: {
+          data: {,
             quantity: inventory.quantity - request.quantity,
-            lastUpdated: new Date()
+            lastUpdated: new Date(),
           },
         });
 

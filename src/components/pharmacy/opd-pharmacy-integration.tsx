@@ -13,47 +13,40 @@ import { ChangeEvent
 // import { useRouter } from "next/navigation";
 
 // Define interfaces for data structures;
-interface Patient {
-  id: string,
+interface Patient {id:string,
   string,
   number,
   phone: string;
 }
 
-interface Medication {
-  id: string,
+interface Medication {id:string,
   string,
   string;
 }
 
-interface PrescriptionItemInput {
-  medication_id: string,
+interface PrescriptionItemInput {medication_id:string,
   string,
   number | string; // Allow string for input, parse later;
   instructions: string;
 }
 
-interface SelectedMedication extends Medication {
-  dosage: string,
+interface SelectedMedication extends Medication {dosage:string,
   string,
   quantity: string; // Keep as string for input state;
   instructions: string;
 }
 
-interface PrescriptionItemDisplay {
-  medication: string,
+interface PrescriptionItemDisplay {medication:string,
   string,
   duration: string;
 }
 
-interface Prescription {
-  id: string,
+interface Prescription {id:string,
   "pending" | "dispensed" | "cancelled",
   items: PrescriptionItemDisplay[];
 }
 
-interface PrescriptionFormData {
-  patient_id: string,
+interface PrescriptionFormData {patient_id:string,
   string,
   items: PrescriptionItemInput[];
 }
@@ -69,8 +62,7 @@ const OPDPharmacyIntegration: React.FC = () => {
     SelectedMedication[];
   >([]);
   const [formData, setFormData] = useState<Omit<PrescriptionFormData, "items">>(;
-    {
-      patient_id: "",
+    {patient_id:"",
       doctor_id: "", // This should ideally come from auth context;
       notes: "";
     }
@@ -162,28 +154,23 @@ const OPDPharmacyIntegration: React.FC = () => {
 }
         // Simulate fetching medications;
         const simulatedMedications: Medication[] = [;
-          {
-            id: "med_001",
+          {id:"med_001",
             "Calpol",
             "Tablet";
           },
-          {
-            id: "med_002",
+          {id:"med_002",
             "Amoxil",
             "Capsule";
           },
-          {
-            id: "med_003",
+          {id:"med_003",
             "Zyrtec",
             "Tablet";
           },
-          {
-            id: "med_004",
+          {id:"med_004",
             "Brufen",
             "Tablet";
           },
-          {
-            id: "med_005",
+          {id:"med_005",
             "Prilosec",
             "Capsule";
           }];
@@ -240,26 +227,21 @@ const OPDPharmacyIntegration: React.FC = () => {
         // setPrescriptions(data.prescriptions || []);
 
         const simulatedPrescriptions: Prescription[] = [;
-          {
-            id: "presc_001",
+          {id:"presc_001",
             "dispensed",
             items: [;
-              {
-                medication: "Paracetamol 500mg",
+              {medication:"Paracetamol 500mg",
                 "TID",
                 duration: "5 days";
               },
-              {
-                medication: "Cetirizine 10mg",
+              {medication:"Cetirizine 10mg",
                 "OD",
                 duration: "7 days";
               }]},
-          {
-            id: "presc_002",
+          {id:"presc_002",
             "pending",
             items: [;
-              {
-                medication: "Amoxicillin 250mg",
+              {medication:"Amoxicillin 250mg",
                 "BID",
                 duration: "7 days";
               }]}];
@@ -363,8 +345,7 @@ const OPDPharmacyIntegration: React.FC = () => {
             `Invalid quantity for ${med.generic_name}. Please enter a positive number.`;
           );
 
-        return {
-          medication_id: med.id,
+        return {medication_id:med.id,
           med.frequency,
           quantity,
           instructions: med.instructions;

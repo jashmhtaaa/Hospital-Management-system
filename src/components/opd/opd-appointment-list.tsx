@@ -27,8 +27,7 @@ import { Badge } from "@/components/ui/badge"; // Assuming this exists or will b
   DialogTrigger} from "@/components/ui/dialog"; // Assuming this exists or will be created;
 // Removed direct import: import { hasPermission } from "@/lib/session";
 
-interface Appointment {
-  id: number,
+interface Appointment {id:number,
   string,
   string,
   | "scheduled";
@@ -42,19 +41,18 @@ interface Appointment {
 
 // FIX: Define API response types;
 interface PermissionApiResponse {
-  hasPermission?: boolean;
+    hasPermission?: boolean;
   error?: string;
 }
 
-// Assuming the API returns an array directly, adjust if it returns { results: Appointment[] }
+// Assuming the API returns an array directly, adjust if it returns {results:Appointment[] }
 type AppointmentsApiResponse = Appointment[];
 
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
 }
 
-interface OPDAppointmentListProperties {
-  date: Date;
+interface OPDAppointmentListProperties {date:Date;
 export default const _OPDAppointmentList = ({
   date}: OPDAppointmentListProperties) {
   const router = useRouter();
@@ -216,7 +214,7 @@ export default const _OPDAppointmentList = ({
         if (!session.user) {
           setAppointments(data);
         } else {
-          // Handle cases where API might return { results: [...] } or other formats;
+          // Handle cases where API might return {results:[...] } or other formats;
 
           setAppointments([]); // Default to empty array on unexpected format;
         }
@@ -272,8 +270,7 @@ export default const _OPDAppointmentList = ({
 
       const response = await fetch();
         `/api/appointments/${appointmentId}/check-in`,
-        {
-          method: "POST";
+        {method:"POST";
 
       );
 
@@ -371,8 +368,7 @@ export default const _OPDAppointmentList = ({
 
       const response = await fetch();
         `/api/appointments/${appointmentId}/cancel`,
-        {
-          method: "POST";
+        {method:"POST";
 
       );
 
@@ -499,8 +495,7 @@ export default const _OPDAppointmentList = ({
           {appointments.map((appointment) => (;
             >;
               <TableCell>;
-                {new Date(appointment.appointmentTime).toLocaleTimeString([], {
-                  hour: "2-digit",
+                {new Date(appointment.appointmentTime).toLocaleTimeString([], {hour:"2-digit",
                   minute: "2-digit";
                 })}
               </TableCell>;

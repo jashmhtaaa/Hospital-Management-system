@@ -7,29 +7,29 @@ import { payrollService } from '@/lib/hr/payroll-service';
 const payrollPeriodSchema = z.object({
   name: z.string().min(1, "Name is required"),
   startDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid start date format"
+    message: "Invalid start date format",
   }),
   endDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid end date format"
+    message: "Invalid end date format",
   }),
   paymentDate: z.string().refine(val => !isNaN(Date.parse(val)), {
-    message: "Invalid payment date format"
+    message: "Invalid payment date format",
   }),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // POST handler for creating payroll period
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     // Parse request body
     const body = await request.json();
 
     // Validate request data
     const validationResult = payrollPeriodSchema.safeParse(body);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
     }
 
@@ -49,14 +49,14 @@ export const _POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json(
-      { error: "Failed to create payroll period", details: error.message },
-      { status: 500 }
+      { error: "Failed to create payroll period", details: error.message ,},
+      { status: 500 },
     );
   }
 }
 
 // GET handler for listing payroll periods
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const searchParams = request.nextUrl.searchParams;
 
@@ -82,7 +82,7 @@ export const _GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json(
-      { error: "Failed to fetch payroll periods", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch payroll periods", details: error.message ,},
+      { status: 500 },
     );
   }

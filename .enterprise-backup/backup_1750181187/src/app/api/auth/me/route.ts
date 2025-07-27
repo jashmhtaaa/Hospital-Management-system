@@ -4,12 +4,12 @@ import { getCurrentUser } from "@/lib/auth";
 // src/app/api/auth/me/route.ts
 // import { getRequestContext } from '@cloudflare/next-on-pages'
 
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const user = await getCurrentUser(request);
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Not authenticated" ,}, { status: 401 ,});
     }
 
     // Get additional user details from database if needed
@@ -25,26 +25,26 @@ export const _GET = async (request: NextRequest) => {
 
     const userDetails = {
       first_name: user.name?.split(" ")[0] || "Test",
-      \1,\2 user.email,
+       user.email,
       role: userRole, // Use the adjusted role
-      last_login: new Date().toISOString()
+      last_login: new Date().toISOString(),
     };
 
     // Return user information
     return NextResponse.json({
-      user: {
+      user: {,
         id: user.id,
-        \1,\2 `/* SECURITY: Template literal eliminated */
+         `/* SECURITY: Template literal eliminated */,
         firstName: userDetails.first_name,
-        \1,\2 userDetails.role, // This now uses the corrected role from userDetails
+         userDetails.role, // This now uses the corrected role from userDetails
         lastLogin: userDetails.last_login,
-        permissions: user.permissions || []
+        permissions: user.permissions || [],
       },
     });
   } catch (error) {
 
     return NextResponse.json(
-      { error: "Failed to fetch user information" },
-      { status: 500 }
+      { error: "Failed to fetch user information" ,},
+      { status: 500 },
     );
   }

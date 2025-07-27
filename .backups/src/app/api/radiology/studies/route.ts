@@ -12,7 +12,7 @@ import { type
 
 // Define Database interface (can be moved to a shared types file);
 interface PreparedStatement {
-  bind(...parameters: (string | number | null)[]): {
+  bind(...parameters: (string | number | null)[]): {,
     run(): Promise>;
     all<T = unknown>(): Promise>;
     first<T = unknown>(colName?: string): Promise<T | null>;
@@ -59,7 +59,7 @@ interface RadiologyStudyListItem {
 }
 
 // GET all Radiology Studies (filtered by orderId, patientId, status);
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -95,12 +95,12 @@ export const _GET = async (request: any) => {
     const session = await getSession(); // Call without request;
     // Check session and user existence first;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Pass session.user to checkUserRole if needed, or check roleName directly;
     // Assuming broad read access for authorized users;
     // if (!session.user) {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    //   return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     // }
 
     const { searchParams } = new URL(request.url);
@@ -147,19 +147,19 @@ export const _GET = async (request: any) => {
       .bind(...parameters);
       .all<RadiologyStudyListItem>();
     return NextResponse.json(results);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      { error: "Failed to fetch radiology studies", details: message },
-      { status: 500 }
+      { error: "Failed to fetch radiology studies", details: message ,},
+      { status: 500 },
     );
   }
 }
 
 // POST a new Radiology Study (Technician or Admin);
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -195,12 +195,12 @@ export const _POST = async (request: any) => {
     const session = await getSession(); // Call without request;
     // Check session and user existence first;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Use roleName for check;
     if (!session.user)eturn NextResponse.json()
-        { error: "Forbidden: Admin or Technician role required" },
-        { status: 403 }
+        { error: "Forbidden: Admin or Technician role required" ,},
+        { status: 403 },
       );
 
     const database: Database = await getDB(); // Use getDB;
@@ -220,14 +220,14 @@ export const _POST = async (request: any) => {
       return NextResponse.json();
         {
           error: "Missing required fields (order_id, study_datetime, technician_id)"},
-        { status: 400 }
+        { status: 400 },
       );
 
     // Validate date format;
     if (!session.user)) {
       return NextResponse.json();
-        { error: "Invalid study date/time format" },
-        { status: 400 }
+        { error: "Invalid study date/time format" ,},
+        { status: 400 },
       );
 
     // Check if order exists and is in a valid state (e.g., scheduled or pending);
@@ -237,13 +237,13 @@ export const _POST = async (request: any) => {
       .first<status: string >();
     if (!session.user) {
       return NextResponse.json();
-        { error: "Associated radiology order not found" },
-        { status: 404 }
+        { error: "Associated radiology order not found" ,},
+        { status: 404 },
       );
 
     // Add logic here if specific order statuses are required before creating a study;
-    // Example: if (!session.user) {
-    //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` }, { status: 400 });
+    // Example: if (!session.user) {,
+    //     return NextResponse.json({ error: `Cannot create study for order with status: ${order.status}` ,}, { status: 400 ,});
     // }
 
     const id = nanoid();
@@ -293,10 +293,10 @@ export const _POST = async (request: any) => {
       .first<RadiologyStudyListItem>();
 
     return NextResponse.json();
-      createdStudy || { id, message: "Radiology study created" },
-      { status: 201 }
+      createdStudy || { id, message: "Radiology study created" ,},
+      { status: 201 },
     );
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -305,17 +305,17 @@ export const _POST = async (request: any) => {
       error.message?.includes("accession_number");
     ) ;
       return NextResponse.json();
-        { error: "Accession number already exists" },
-        { status: 409 }
+        { error: "Accession number already exists" ,},
+        { status: 409 },
       );
     if (!session.user);
     ) ;
       // Could be invalid order_id, modality_id, or technician_id;
       return NextResponse.json();
         { error: "Invalid reference ID (Order, Modality, or Technician)" },
-        { status: 400 }
+        { status: 400 },
       );
     return NextResponse.json();
-      { error: "Failed to create radiology study", details: message },
-      { status: 500 }
+      { error: "Failed to create radiology study", details: message ,},
+      { status: 500 },
     );

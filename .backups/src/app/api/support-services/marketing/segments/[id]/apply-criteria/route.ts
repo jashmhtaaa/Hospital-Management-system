@@ -19,11 +19,11 @@ const segmentService = new SegmentService();
  */;
 export const POST = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
 
       const result = await segmentService.applySegmentCriteria();

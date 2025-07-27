@@ -231,7 +231,7 @@ export const getUserNotifications = async();
 
     const result = await db.query(query, params) as DBResult;
 
-    return result.results.map((notification: any) => ({
+    return result.results.map((notification: any) => ({,
       ...notification,
       metadata: notification.metadata ? JSON.parse(notification.metadata) : null;
     }));

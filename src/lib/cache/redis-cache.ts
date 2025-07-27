@@ -1,7 +1,7 @@
 import "../cache"
 import "ioredis"
 import Redis
-import {  cache  } from "@/lib/database"
+import {cache  } from "next/server"
 
 }
 
@@ -11,7 +11,8 @@ import {  cache  } from "@/lib/database"
  */;
 
 // Cache configuration;
-interface CacheConfig {host:string,
+interface CacheConfig {
+    {host:string,
   port: number;
   password?: string;
   db: number,
@@ -121,7 +122,7 @@ class RedisCacheManager {
   }
 
   // Core cache operations;
-  async get<T>(key: string): Promise<T | null> {
+  async get<T>(key: string): Promise<T | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -168,7 +169,7 @@ class RedisCacheManager {
     }
   }
 
-  async set<T>(key: string, value: T, ttl: number = this.config.defaultTTL): Promise<boolean> {
+  async set<T>(key: string, value: T, ttl: number = this.config.defaultTTL): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -220,7 +221,7 @@ class RedisCacheManager {
     }
   }
 
-  async del(key: string | string[]): Promise<number> {
+  async del(key: string | string[]): Promise<number> {,
     try {
 } catch (error) {
   console.error(error);
@@ -264,7 +265,7 @@ class RedisCacheManager {
     }
   }
 
-  async exists(key: string): Promise<boolean> {
+  async exists(key: string): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -309,7 +310,7 @@ class RedisCacheManager {
     }
   }
 
-  async expire(key: string, ttl: number): Promise<boolean> {
+  async expire(key: string, ttl: number): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -355,7 +356,7 @@ class RedisCacheManager {
   }
 
   // Pattern-based operations;
-  async getKeysByPattern(pattern: string): Promise<string[]> {
+  async getKeysByPattern(pattern: string): Promise<string[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -399,7 +400,7 @@ class RedisCacheManager {
     }
   }
 
-  async deleteByPattern(pattern: string): Promise<number> {
+  async deleteByPattern(pattern: string): Promise<number> {,
     try {
 } catch (error) {
   console.error(error);
@@ -443,7 +444,7 @@ class RedisCacheManager {
   }
 
   // Batch operations;
-  async mget<T>(keys: string[]): Promise<(T | null)[]> {
+  async mget<T>(keys: string[]): Promise<(T | null)[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -545,7 +546,7 @@ class RedisCacheManager {
   }
 
   // Hash operations for complex data structures;
-  async hget<T>(key: string, field: string): Promise<T | null> {
+  async hget<T>(key: string, field: string): Promise<T | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -592,7 +593,7 @@ class RedisCacheManager {
     }
   }
 
-  async hset<T>(key: string, field: string, value: T): Promise<boolean> {
+  async hset<T>(key: string, field: string, value: T): Promise<boolean> {,
     try {
 } catch (error) {
   console.error(error);
@@ -683,7 +684,7 @@ class RedisCacheManager {
       return {};
 
   // List operations for queues and timelines;
-  async lpush<T>(key: string, ...values: T[]): Promise<number> {
+  async lpush<T>(key: string, ...values: T[]): Promise<number> {,
     try {
 } catch (error) {
   console.error(error);
@@ -725,7 +726,7 @@ class RedisCacheManager {
 
       return 0;
 
-  async rpop<T>(key: string): Promise<T | null> {
+  async rpop<T>(key: string): Promise<T | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -769,7 +770,7 @@ class RedisCacheManager {
 
       return null;
 
-  async lrange<T>(key: string, start: number, stop: number): Promise<T[]> {
+  async lrange<T>(key: string, start: number, stop: number): Promise<T[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -812,7 +813,7 @@ class RedisCacheManager {
       return [];
 
   // Set operations for unique collections;
-  async sadd<T>(key: string, ...members: T[]): Promise<number> {
+  async sadd<T>(key: string, ...members: T[]): Promise<number> {,
     try {
 } catch (error) {
   console.error(error);
@@ -854,7 +855,7 @@ class RedisCacheManager {
 
       return 0;
 
-  async smembers<T>(key: string): Promise<T[]> {
+  async smembers<T>(key: string): Promise<T[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -941,7 +942,7 @@ class RedisCacheManager {
         memoryInfo: this.parseRedisInfo(info),
         this.config.host,
           this.config.db,
-          keyPrefix: this.config.keyPrefix};
+          keyPrefix: this.config.keyPrefix,};
     } catch (error) {
 
       return {connected:false,
@@ -1046,19 +1047,19 @@ export const redisCache = RedisCacheManager.getInstance();
 
 // High-level cache service integration;
 
-  async getPatient(patientId: string): Promise<any | null> {
+  async getPatient(patientId: string): Promise<any | null> {,
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
 
-  async invalidatePatient(patientId: string): Promise<void> {
+  async invalidatePatient(patientId: string): Promise<void> {,
     await this.redis.del(`/* SECURITY: Template literal eliminated */;
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_LIST}*`),
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_SEARCH}*`);
 
   // Bill caching;
-  async cacheBill(billId: string, bill: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
+  async cacheBill(billId: string, bill: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {,
     await this.redis.set(`/* SECURITY: Template literal eliminated */ bill, ttl);
 
-  async getBill(billId: string): Promise<any | null> {
+  async getBill(billId: string): Promise<any | null> {,
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
 
   async invalidateBills(patientId?: string): Promise<void> {
@@ -1067,43 +1068,43 @@ export const redisCache = RedisCacheManager.getInstance();
     await this.redis.del(CACHE_PATTERNS.OUTSTANDING_BILLS);
 
   // Appointment caching;
-  async cacheDoctorSchedule(doctorId: string, date: string, schedule: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
+  async cacheDoctorSchedule(doctorId: string, date: string, schedule: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {,
     await this.redis.set(`/* SECURITY: Template literal eliminated */ schedule, ttl);
 
-  async getDoctorSchedule(doctorId: string, date: string): Promise<any | null> {
+  async getDoctorSchedule(doctorId: string, date: string): Promise<any | null> {,
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
 
-  async invalidateDoctorSchedule(doctorId: string): Promise<void> {
+  async invalidateDoctorSchedule(doctorId: string): Promise<void> {,
     await this.redis.deleteByPattern(`/* SECURITY: Template literal eliminated */;
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.APPOINTMENT_LIST}*`)}
 
   // User session caching;
-  async cacheUserSession(sessionId: string, sessionData: unknown, ttl: number = CACHE_TTL.LONG): Promise<void> {
+  async cacheUserSession(sessionId: string, sessionData: unknown, ttl: number = CACHE_TTL.LONG): Promise<void> {,
     await this.redis.set(`/* SECURITY: Template literal eliminated */ sessionData, ttl);
 
-  async getUserSession(sessionId: string): Promise<any | null> {
+  async getUserSession(sessionId: string): Promise<any | null> {,
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
 
-  async invalidateUserSession(sessionId: string): Promise<void> {
+  async invalidateUserSession(sessionId: string): Promise<void> {,
     await this.redis.del(`/* SECURITY: Template literal eliminated */;
 
   // Dashboard statistics caching;
-  async cacheDashboardStats(userId: string, stats: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {
+  async cacheDashboardStats(userId: string, stats: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {,
     await this.redis.set(`/* SECURITY: Template literal eliminated */ stats, ttl);
 
-  async getDashboardStats(userId: string): Promise<any | null> {
+  async getDashboardStats(userId: string): Promise<any | null> {,
     return await this.redis.get(`/* SECURITY: Template literal eliminated */;
 
   // General purpose caching with automatic key generation;
-  async cacheResult<T>(pattern: string, identifier: string, data: T, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {
+  async cacheResult<T>(pattern: string, identifier: string, data: T, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {,
     const key = `/* SECURITY: Template literal eliminated */;
     await this.redis.set(key, data, ttl);
 
-  async getCachedResult<T>(pattern: string, identifier: string): Promise<T | null> {
+  async getCachedResult<T>(pattern: string, identifier: string): Promise<T | null> {,
     const key = `/* SECURITY: Template literal eliminated */;
     return await this.redis.get<T>(key);
 
-  async invalidatePattern(pattern: string): Promise<void> {
+  async invalidatePattern(pattern: string): Promise<void> {,
     await this.redis.deleteByPattern(`$pattern*`);
 
   // Cache warming strategies;

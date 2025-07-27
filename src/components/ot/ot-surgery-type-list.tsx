@@ -24,8 +24,7 @@ import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing im
 
 
 // Mock data structure - replace with actual API response type;
-interface SurgeryType {
-  id: string,
+interface SurgeryType {id:string,
   string | null,
   number | null,
   updated_at: string;
@@ -82,26 +81,22 @@ export default const _OTSurgeryTypeList = () {
         // Mock data for demonstration;
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
         const mockData: SurgeryType[] = [;
-          {
-            id: "st-1",
+          {id:"st-1",
             "Surgical removal of the appendix.",
             60,
             updated_at: "2025-04-27T10:00:00Z";
           },
-          {
-            id: "st-2",
+          {id:"st-2",
             "Surgical removal of the gallbladder via laparoscopy.",
             90,
             updated_at: "2025-04-27T11:00:00Z";
           },
-          {
-            id: "st-3",
+          {id:"st-3",
             "Minimally invasive surgical procedure on a joint.",
             120,
             updated_at: "2025-04-28T08:00:00Z";
           },
-          {
-            id: "st-4",
+          {id:"st-4",
             "Surgical procedure to restore normal blood flow to an obstructed coronary artery.",
             240,
             updated_at: "2025-04-26T14:00:00Z";

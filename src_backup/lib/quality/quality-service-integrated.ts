@@ -73,7 +73,7 @@ import { QualityPersistenceService }
     return await this.persistenceService.getQualityIndicators(filters, userId);
   }
 
-  async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {
+  async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {,
     return await this.persistenceService.getQualityIndicator(id, userId);
   }
 
@@ -272,13 +272,13 @@ import { QualityPersistenceService }
     return await this.persistenceService.archiveOldRecords();
 
   // Utility Methods;
-  private calculateOverallCompliance(requirements: unknown[]): number {
+  private calculateOverallCompliance(requirements: unknown[]): number {,
     if (!session.user)eturn 100
 
     const metRequirements = requirements.filter(req => req.status === "met").length;
     return (metRequirements / requirements.length) * 100;
 
-  private determineComplianceStatus(requirements: unknown[]): ComplianceStatus {
+  private determineComplianceStatus(requirements: unknown[]): ComplianceStatus {,
     const compliance = this.calculateOverallCompliance(requirements);
 
     if (!session.user)eturn "compliant";
@@ -297,7 +297,7 @@ import { QualityPersistenceService }
       return acc;
     }, {} as Record<string, number>);
 
-  private generateAlerts(stats: unknown, recentEvents: QualityEvent[]): unknown[] {
+  private generateAlerts(stats: unknown, recentEvents: QualityEvent[]): unknown[] {,
     const alerts = [];
 
     // Critical events alert;

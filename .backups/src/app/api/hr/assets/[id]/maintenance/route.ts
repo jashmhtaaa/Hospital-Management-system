@@ -10,7 +10,7 @@ import {  z  } from "@/lib/database"
 // Schema for maintenance record;
 const maintenanceSchema = z.object({
   maintenanceType: z.enum(["PREVENTIVE", "CORRECTIVE", "CALIBRATION", "INSPECTION"], {
-    errorMap: () => ({ message: "Invalid maintenance type" })}),
+    errorMap: () => ({ message: "Invalid maintenance type" }),}),
   date: z.string().refine(val => !isNaN(Date.parse(val)), {
     message: "Invalid date format";
   }),
@@ -24,7 +24,7 @@ const maintenanceSchema = z.object({
 // POST handler for recording maintenance;
 export const _POST = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -65,8 +65,8 @@ export const _POST = async();
     const validationResult = maintenanceSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
     }
 
@@ -87,14 +87,14 @@ export const _POST = async();
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to record maintenance", details: error.message },
-      { status: 500 }
+      { error: "Failed to record maintenance", details: error.message ,},
+      { status: 500 },
     );
 
 // GET handler for listing maintenance records;
 export const _GET = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -132,14 +132,14 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Asset not found" },
-        { status: 404 }
+        { error: "Asset not found" ,},
+        { status: 404 },
       );
 
     return NextResponse.json(asset.maintenanceRecords || []);
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to fetch maintenance records", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch maintenance records", details: error.message ,},
+      { status: 500 },
     );

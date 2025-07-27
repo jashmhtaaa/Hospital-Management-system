@@ -7,7 +7,7 @@
  */
 
 // Base FHIR Types
-\1
+
 }
   };
   request?: {

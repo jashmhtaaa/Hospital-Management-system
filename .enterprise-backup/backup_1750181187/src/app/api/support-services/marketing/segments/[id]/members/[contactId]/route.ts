@@ -13,18 +13,18 @@ const segmentService = new SegmentService();
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const { contactId } = await req.json();
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: 'Contact ID is required' },
-          { status: 400 }
+          { error: 'Contact ID is required' ,},
+          { status: 400 },
         );
       }
 
@@ -34,11 +34,11 @@ export const POST = async (
         session?.user?.id as string;
       );
 
-      return NextResponse.json(member, { status: 201 });
+      return NextResponse.json(member, { status: 201 ,});
     },
     {
       requiredPermission: 'marketing.segments.update',
-      auditAction: 'SEGMENT_MEMBER_ADD'
+      auditAction: 'SEGMENT_MEMBER_ADD',
     }
   );
 }
@@ -49,11 +49,11 @@ export const POST = async (
  */
 export const DELETE = async (
   request: NextRequest;
-  { params }: { id: string, contactId: string }
+  { params }: { id: string, contactId: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
 
       const member = await segmentService.removeContactFromSegment(
@@ -66,6 +66,6 @@ export const DELETE = async (
     },
     {
       requiredPermission: 'marketing.segments.update',
-      auditAction: 'SEGMENT_MEMBER_REMOVE'
+      auditAction: 'SEGMENT_MEMBER_REMOVE',
     }
   );

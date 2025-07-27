@@ -26,8 +26,7 @@ import { useToast } from "@/components/ui/use-toast"; // Changed import;
 
 
 // Mock data structure - replace with API data;
-interface CriticalAlert {
-  id: string,
+interface CriticalAlert {id:string,
   string; // Need to join with visits/patients table;
   mrn: string; // Need to join;
   location: string; // Need to join;
@@ -39,27 +38,23 @@ interface CriticalAlert {
 
 // Mock data - replace with API fetch;
 const mockAlerts: CriticalAlert[] = [;
-  {
-    id: "alert_uuid_1",
+  {id:"alert_uuid_1",
     "John Doe",
     "Room 3",
     [0] - 30 * 60 * 1000).toISOString(),
     "ECG shows ST elevation.";
   },
-  {
-    id: "alert_uuid_2",
+  {id:"alert_uuid_2",
     "Alice Wonderland",
     "Triage Room 2",
     [0] - 10 * 60 * 1000).toISOString(),
     "FAST positive, right-sided weakness."},
-  {
-    id: "alert_uuid_3",
+  {id:"alert_uuid_3",
     "Bob Builder",
     "Room 1",
     [0] - 60 * 60 * 1000).toISOString(),
     "Meets SIRS criteria, lactate elevated."},
-  {
-    id: "alert_uuid_4",
+  {id:"alert_uuid_4",
     "Jane Smith",
     "Room 5",
     [0] - 5 * 60 * 1000).toISOString(),
@@ -140,12 +135,10 @@ export default const _ERCriticalAlerts = () {
           alert.id === alertId ? { ...alert, status: "Acknowledged" } : alert;
         );
       );
-      toast({
-        title: "Alert Acknowledged",
+      toast({title:"Alert Acknowledged",
         description: `Alert ${alertId} marked as acknowledged.`});
     } catch {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally ;
@@ -194,12 +187,10 @@ export default const _ERCriticalAlerts = () {
         (previousAlerts) => {}
           previousAlerts.filter((alert) => alert.id !== alertId) // Remove resolved alerts from view;
       );
-      toast({
-        title: "Alert Resolved",
+      toast({title:"Alert Resolved",
         description: `Alert ${alertId} marked as resolved.`});
     } catch {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

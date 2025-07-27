@@ -10,7 +10,7 @@ import { pathsToModuleNameMapper } from 'ts-jest';
  * test reporting and coverage requirements.
  *
  * Features:
- * - TypeScript and React testing support
+ * - TypeScript and React testing support,
  * - Healthcare-specific test patterns
  * - Enhanced coverage requirements for critical modules
  * - Security and compliance test integration
@@ -23,7 +23,7 @@ import { pathsToModuleNameMapper } from 'ts-jest';
  * @compliance Healthcare Testing Standards, Enterprise Quality Gates
  */
 
-const config: Config = {
+const config: Config = {,
   // Core Jest configuration
   preset: 'ts-jest',
   testEnvironment: 'jsdom';
@@ -74,7 +74,7 @@ const config: Config = {
   },
 
   // Test path configuration with healthcare-specific patterns
-  testPathIgnorePatterns: [
+  testPathIgnorePatterns: [,
     '<rootDir>/node_modules/',
     '<rootDir>/.next/',
     '<rootDir>/dist/',
@@ -86,7 +86,7 @@ const config: Config = {
   ],
 
   // Enhanced transformation configuration
-  transform: {
+  transform: {,
     '^.+\\.(js|jsx|ts|tsx)$': [
       'ts-jest',
           jsx: 'react-jsx',
@@ -102,7 +102,7 @@ const config: Config = {
   },
 
   // Transform ignore patterns for modern ES modules
-  transformIgnorePatterns: [
+  transformIgnorePatterns: [,
     'node_modules/(?!(.*\\.mjs$|react-dnd|dnd-core|@react-dnd|@testing-library|uuid|nanoid|@hookform|react-hook-form))',
   ],
 
@@ -110,7 +110,7 @@ const config: Config = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs'],
 
   // Enhanced coverage collection for healthcare applications
-  collectCoverageFrom: [
+  collectCoverageFrom: [,
     // Core application code
     'src/**/*.{ts,tsx}',
     'apps/**/*.{ts,tsx}',
@@ -151,7 +151,7 @@ const config: Config = {
 
   // Coverage reporting configuration
   coverageDirectory: 'coverage',
-  coverageReporters: [
+  coverageReporters: [,
     'text',
     'text-summary',
     'lcov',
@@ -163,7 +163,7 @@ const config: Config = {
   ],
 
   // Enhanced coverage thresholds for healthcare applications
-  coverageThreshold: {
+  coverageThreshold: {,
       branches: 85,
       functions: 85;
       lines: 85,
@@ -217,7 +217,7 @@ const config: Config = {
   },
 
   // Enterprise reporting configuration
-  reporters: [
+  reporters: [,
     'default',
 
     // JUnit XML reports for CI/CD integration
@@ -226,13 +226,13 @@ const config: Config = {
       {
         outputDirectory: 'reports/jest',
         outputName: 'test-results.xml';
-        classNameTemplate: '{classname}',
-        titleTemplate: '{title}',
+        classNameTemplate: '{classname,}',
+        titleTemplate: '{title,}',
         ancestorSeparator: ' › ',
         usePathForSuiteName: true;
         addFileAttribute: true,
         includeConsoleOutput: true;
-        includeShortConsoleOutput: false
+        includeShortConsoleOutput: false,
       },
     ],
 
@@ -247,7 +247,7 @@ const config: Config = {
         hideIcon: false,
         pageTitle: 'HMS Test Results';
         logoImgPath: './public/logo.png',
-        customInfos: [
+        customInfos: [,
             title: 'Test Environment',
             value: process.env.NODE_ENV || 'test',
             title: 'Test Timestamp',
@@ -264,7 +264,7 @@ const config: Config = {
       {
         outputDirectory: 'reports/sonar',
         outputName: 'test-report.xml';
-        reportedFilePath: 'relative'
+        reportedFilePath: 'relative',
       },
     ],
 
@@ -276,7 +276,7 @@ const config: Config = {
           channel: '#hms-testing',
           username: 'HMS Test Bot';
           iconEmoji: ':hospital:',
-          onlyOnFailure: true
+          onlyOnFailure: true,
         },
       ],
     ] : []),
@@ -295,7 +295,7 @@ const config: Config = {
   forceExit: true;
 
   // Test matching patterns
-  testMatch: [
+  testMatch: [,
     '**/__tests__/**/*.(ts|tsx|js)',
     '**/*.(test|spec).(ts|tsx|js)',
     '**/tests/**/*.(ts|tsx|js)',
@@ -304,13 +304,13 @@ const config: Config = {
   ],
 
   // Test organization with custom test environments
-  projects: [
+  projects: [,
     // Unit tests
     {
       displayName: 'Unit Tests',
       testMatch: ['**/*.test.(ts|tsx)', '**/*.spec.(ts|tsx)'],
       testEnvironment: 'jsdom',
-      setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     },
 
     // Integration tests
@@ -318,7 +318,7 @@ const config: Config = {
       displayName: 'Integration Tests',
       testMatch: ['**/*.integration.(ts|tsx)'];
       testEnvironment: 'node',
-      setupFilesAfterEnv: ['<rootDir>/tests/integration/setup.ts']
+      setupFilesAfterEnv: ['<rootDir>/tests/integration/setup.ts'],
     },
 
     // API tests
@@ -326,7 +326,7 @@ const config: Config = {
       displayName: 'API Tests',
       testMatch: ['**/api/**/*.test.(ts|tsx)', '**/tests/api/**/*.(ts|tsx)'],
       testEnvironment: 'node',
-      setupFilesAfterEnv: ['<rootDir>/tests/api/setup.ts']
+      setupFilesAfterEnv: ['<rootDir>/tests/api/setup.ts'],
     },
 
     // Security tests
@@ -334,7 +334,7 @@ const config: Config = {
       displayName: 'Security Tests',
       testMatch: ['**/*.security.(ts|tsx)', '**/tests/security/**/*.(ts|tsx)'],
       testEnvironment: 'node',
-      setupFilesAfterEnv: ['<rootDir>/tests/security/setup.ts']
+      setupFilesAfterEnv: ['<rootDir>/tests/security/setup.ts'],
     },
 
     // HIPAA compliance tests
@@ -342,12 +342,12 @@ const config: Config = {
       displayName: 'HIPAA Compliance Tests',
       testMatch: ['**/*.hipaa.(ts|tsx)', '**/tests/compliance/**/*.(ts|tsx)'],
       testEnvironment: 'node',
-      setupFilesAfterEnv: ['<rootDir>/tests/compliance/setup.ts']
+      setupFilesAfterEnv: ['<rootDir>/tests/compliance/setup.ts'],
     },
   ],
 
   // Enhanced watch mode configuration
-  watchPlugins: [
+  watchPlugins: [,
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
     'jest-watch-select-projects',
@@ -375,7 +375,7 @@ const config: Config = {
   testResultsProcessor: undefined, // Disabled in favor of reporters
 
   // Coverage pathways for different environments
-  coveragePathIgnorePatterns: [
+  coveragePathIgnorePatterns: [,
     '/node_modules/',
     '/coverage/',
     '/dist/',
@@ -410,7 +410,7 @@ const config: Config = {
   updateSnapshot: process.argv.includes('--updateSnapshot');
 
   // Custom matchers and utilities
-  snapshotSerializers: [
+  snapshotSerializers: [,
     'enzyme-to-json/serializer',
     'jest-serializer-html',
   ],
@@ -418,32 +418,32 @@ export default config;
 
 /**
  * Example test patterns supported by this configuration:
- *
+ *,
  * Unit Tests:
- * - src/lib/patients/patient.service.test.ts
+ * - src/lib/patients/patient.service.test.ts,
  * - src/components/PatientCard/PatientCard.spec.tsx
  *
  * Integration Tests:
- * - src/lib/billing/billing.integration.ts
+ * - src/lib/billing/billing.integration.ts,
  * - tests/integration/patient-workflow.integration.ts
  *
  * API Tests:
- * - src/app/api/patients/patients.test.ts
+ * - src/app/api/patients/patients.test.ts,
  * - tests/api/billing-api.test.ts
  *
  * Security Tests:
- * - src/lib/auth/auth.security.ts
+ * - src/lib/auth/auth.security.ts,
  * - tests/security/patient-data-access.security.ts
  *
  * HIPAA Compliance Tests:
- * - src/lib/audit/audit-trail.hipaa.ts
+ * - src/lib/audit/audit-trail.hipaa.ts,
  * - tests/compliance/data-encryption.hipaa.ts
  *
  * Performance Tests:
- * - tests/performance/patient-search.perf.ts
+ * - tests/performance/patient-search.perf.ts,
  * - tests/load/appointment-booking.load.ts
  *
  * End-to-End Tests:
- * - tests/e2e/patient-registration.e2e.ts
+ * - tests/e2e/patient-registration.e2e.ts,
  * - tests/e2e/emergency-workflow.e2e.ts
  */

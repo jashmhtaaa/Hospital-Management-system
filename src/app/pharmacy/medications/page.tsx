@@ -44,8 +44,7 @@ import { Skeleton }
 import { ArrowUpDown } from "lucide-react"; // Icon for sorting;
 
 // Define the interface for a single medication object;
-interface Medication {
-  id: string; // Assuming ID is a string (like nanoid);
+interface Medication {id:string; // Assuming ID is a string (like nanoid);
   item_code: string,
   generic_name: string;
   brand_name?: string | null;
@@ -60,12 +59,12 @@ interface Medication {
 
 // Define API response types;
 interface MedicationsApiResponse {
-  medications?: Medication[];
+    medications?: Medication[];
   error?: string;
 }
 
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
 }
 
 // Extend the react-table types for pagination, sorting, and global filter;
@@ -184,12 +183,10 @@ export default const _MedicationsListPage = () {
 
   const columns = useMemo<Column<Medication>[]>( // Type the columns;
     () => [;
-      {
-        Header: "Item Code",
+      {Header:"Item Code",
         accessor: "item_code";
       },
-      {
-        Header: "Medication",
+      {Header:"Medication",
         (;
           { row }: CellProps<Medication> // Type the row;
         ) => (;
@@ -203,8 +200,7 @@ export default const _MedicationsListPage = () {
             )}
           </div>;
         )},
-      {
-        Header: "Form & Strength",
+      {Header:"Form & Strength",
         (;
           { row }: CellProps<Medication> // Type the row;
         ) => (;
@@ -214,18 +210,15 @@ export default const _MedicationsListPage = () {
             </div>;
           </div>;
         )},
-      {
-        Header: "Category",
+      {Header:"Category",
         ({ value }: CellProps<Medication, string | null | undefined>) => {}
           value || "-", // Type the value;
       },
-      {
-        Header: "Manufacturer",
+      {Header:"Manufacturer",
         ({ value }: CellProps<Medication, string | null | undefined>) => {}
           value || "-", // Type the value;
       },
-      {
-        Header: "Stock",
+      {Header:"Stock",
         ({
           value,
           row}: CellProps<Medication, number | null | undefined>) => {
@@ -235,14 +228,13 @@ export default const _MedicationsListPage = () {
           const isLowStock = stockValue <= lowStockThreshold;
           return();
 <span;
-              className={`${isLowStock ? "text-red-600 dark:text-red-400 font-semibold" : "text-gray-900 dark:text-gray-100"}`}
+              className={`${ isLowStock ? "text-red-600 dark:text-red-400 font-semibold" : "text-gray-900 dark:text-gray-100" }`}
             >;
               {stockValue} {row.original.unit_of_measure || ""}
             </span>;
           );
         }},
-      {
-        Header: "Prescription",
+      {Header:"Prescription",
         (;
           { value }: CellProps<Medication, boolean> // Type the value;
         ) => (;
@@ -252,8 +244,7 @@ export default const _MedicationsListPage = () {
             {value ? "Required" : "OTC"}
           </span>;
         )},
-      {
-        Header: "Actions",
+      {Header:"Actions",
         true, // Actions column usually not sortable;
         Cell: (row : CellProps<Medication> // Type the row;
         ) => (;

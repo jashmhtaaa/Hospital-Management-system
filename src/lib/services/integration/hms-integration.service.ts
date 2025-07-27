@@ -6,10 +6,10 @@ import ExternalServiceError
 import NotFoundError }
 import RBACService
 import Resource }
-import {   Action
-import {  AuditLogger  } from "@/lib/database"
-import {   AuthorizationError
-import {  prisma  } from "@/lib/database"
+import {Action
+import {  AuditLogger  } from "next/server"
+import {AuthorizationError
+import {  prisma  } from "next/server"
 
 }
 
@@ -22,7 +22,7 @@ import {  prisma  } from "@/lib/database"
  */;
 
 }
-      {patientData:true },
+      {patientData:true ,},
       userId,
       patientId;
     );
@@ -69,7 +69,7 @@ import {  prisma  } from "@/lib/database"
 
       // In a real implementation, this would call the HMS Patient Management API;
       // For this example, we"ll simulate the API call with a database query;
-      const patient = await prisma.patient.findUnique({where:{ id: patientId },
+      const patient = await prisma.patient.findUnique({where:{ id: patientId ,},
         true,
           true,
           true,
@@ -91,7 +91,7 @@ import {  prisma  } from "@/lib/database"
       await auditLogger.log({action:"integration.patient.info.success",
         resourceId: patientId;
         userId,
-        details: { patientId }
+        details: { patientId },
       });
 
       return patient;
@@ -121,7 +121,7 @@ import {  prisma  } from "@/lib/database"
       userRoles,
       Resource.SYSTEM,
       Action.READ,
-      {locationData:true },
+      {locationData:true ,},
       userId,
       locationId;
     );
@@ -168,7 +168,7 @@ import {  prisma  } from "@/lib/database"
 
       // In a real implementation, this would call the HMS Location Management API;
       // For this example, we"ll simulate the API call with a database query;
-      const location = await prisma.location.findUnique({where:{ id: locationId },
+      const location = await prisma.location.findUnique({where:{ id: locationId ,},
         true,
           true,
           true,
@@ -185,7 +185,7 @@ import {  prisma  } from "@/lib/database"
       await auditLogger.log({action:"integration.location.info.success",
         resourceId: locationId;
         userId,
-        details: { locationId }
+        details: { locationId },
       });
 
       return location;
@@ -222,7 +222,7 @@ import {  prisma  } from "@/lib/database"
       userRoles,
       Resource.SYSTEM,
       Action.CREATE,
-      {notificationSend:true },
+      {notificationSend:true ,},
       userId,
       recipientId;
     );
@@ -272,7 +272,7 @@ import {  prisma  } from "@/lib/database"
 
       // In a real implementation, this would call the HMS Notification System API;
       // For this example, we"ll simulate the API call with a database insert;
-      const notification = await prisma.notification.create({data:{
+      const notification = await prisma.notification.create({data:{,
           recipientId,
           type: notificationType;
           title,
@@ -287,7 +287,7 @@ import {  prisma  } from "@/lib/database"
       await auditLogger.log({action:"integration.notification.send.success",
         resourceId: notification.id;
         userId,
-        details: {
+        details: {,
           recipientId,
           notificationType,
           notificationId: notification.id;
@@ -318,7 +318,7 @@ import {  prisma  } from "@/lib/database"
       userRoles,
       Resource.USER,
       Action.READ,
-      {userId:targetUserId === userId ? "self" : "other" },
+      {userId:targetUserId === userId ? "self" : "other" ,},
       userId,
       targetUserId;
     );
@@ -365,7 +365,7 @@ import {  prisma  } from "@/lib/database"
 
       // In a real implementation, this would call the HMS User Management API;
       // For this example, we"ll simulate the API call with a database query;
-      const user = await prisma.user.findUnique({where:{ id: targetUserId },
+      const user = await prisma.user.findUnique({where:{ id: targetUserId ,},
         true,
           true,
           true,
@@ -387,7 +387,7 @@ import {  prisma  } from "@/lib/database"
       await auditLogger.log({action:"integration.user.info.success",
         resourceId: targetUserId;
         userId,
-        details: { targetUserId }
+        details: { targetUserId },
       });
 
       return user;
@@ -456,9 +456,9 @@ import {  prisma  } from "@/lib/database"
       // Audit the request;
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({action:"integration.report.submit.request",
-        resourceId: `report-${reportType}`,
+        resourceId: `report-${reportType,}`,
         userId,
-        details: { reportType }
+        details: { reportType },
       });
 
       // In a real implementation, this would call the HMS Reporting System API;
@@ -474,7 +474,7 @@ import {  prisma  } from "@/lib/database"
       await auditLogger.log({action:"integration.report.submit.success",
         resourceId: report.id;
         userId,
-        details: {
+        details: {,
           reportType,
           reportId: report.id;
 
@@ -518,7 +518,7 @@ import {  prisma  } from "@/lib/database"
       userRoles,
       resource,
       Action.UPDATE,
-      {patientLink:true },
+      {patientLink:true ,},
       userId,
       requestId;
     );
@@ -574,8 +574,8 @@ import {  prisma  } from "@/lib/database"
       const tableName = serviceType.toLowerCase() + "Request";
 
       // Dynamic update based on service type;
-      const request = await prisma[tableName].update({where:{ id: requestId },
-        data: {
+      const request = await prisma[tableName].update({where:{ id: requestId ,},
+        data: {,
           patientId,
           updatedById: userId;
 
@@ -628,7 +628,7 @@ import {  prisma  } from "@/lib/database"
       userRoles,
       resource,
       Action.UPDATE,
-      {locationLink:true },
+      {locationLink:true ,},
       userId,
       requestId;
     );
@@ -684,8 +684,8 @@ import {  prisma  } from "@/lib/database"
       const tableName = serviceType.toLowerCase() + "Request";
 
       // Dynamic update based on service type;
-      const request = await prisma[tableName].update({where:{ id: requestId },
-        data: {
+      const request = await prisma[tableName].update({where:{ id: requestId ,},
+        data: {,
           locationId,
           updatedById: userId;
 

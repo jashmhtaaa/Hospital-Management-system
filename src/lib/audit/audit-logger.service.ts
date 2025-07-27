@@ -19,8 +19,8 @@ import "crypto"
 import "events"
 import "uuid"
 import crypto
-import {  EventEmitter  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
+import {EventEmitter  } from "next/server"
+import {PrismaClient  } from "next/server"
 import { v4 as uuidv4 }
 
   context: AuditContext;}
@@ -38,7 +38,7 @@ export type ComplianceRegulation = "HIPAA" | "GDPR" | "SOX" | "FDA" | "HITECH" |
 
   sortBy?: string;}
 
-  format: "json" | "csv" | "pdf" | "xml"}
+  format: "json" | "csv" | "pdf" | "xml"},
 
   Date;}
   };
@@ -135,7 +135,7 @@ class AuditLoggerService extends EventEmitter {
         outcome;
           description: details.description || this.generateDescription(action, resource outcome);
           ...details;
-          requestId: uuidv4() 
+          requestId: uuidv4() ,
           ...context;
         compliance;
         integrity;
@@ -156,7 +156,7 @@ class AuditLoggerService extends EventEmitter {
       // Debug logging removed;
       // In case of audit system failure, we should still allow the operation to continue;
       // but log the failure separately;
-      this.emit("audit_error", { error, context: { eventType, action, actor: actor.id } });
+      this.emit("audit_error", { error, context: { eventType, action, actor: actor.id } ,});
       return "",
 
   /**;
@@ -274,7 +274,7 @@ class AuditLoggerService extends EventEmitter {
   /**;
    * Query audit events;
    */;
-  async queryEvents(query: AuditQuery): Promise<{events:AuditEvent[], totalCount: number }> {
+  async queryEvents(query: AuditQuery): Promise<{events:AuditEvent[], totalCount: number }> {,
     let filteredEvents = [...this.events];
     // Apply filters;
     if (!session.user) {
@@ -354,7 +354,7 @@ class AuditLoggerService extends EventEmitter {
       query;
       events;
       statistics;
-      generatedAt: new Date() {
+      generatedAt: new Date() {,
       generatedBy;
       format;
       complianceFlags;
@@ -365,7 +365,7 @@ class AuditLoggerService extends EventEmitter {
   /**;
    * Create audit alert;
    */;
-  async create/* SECURITY: Alert removed */: Promise<string> {
+  async create/* SECURITY: Alert removed */: Promise<string> {,
     const alertId = uuidv4() {
     const alertId;
       name;
@@ -383,7 +383,7 @@ class AuditLoggerService extends EventEmitter {
   /**;
    * Get audit statistics;
    */;
-  getStatistics(timeRange?: {start:Date, end: Date }): AuditStatistics {
+  getStatistics(timeRange?: {start:Date, end: Date }): AuditStatistics {,
     let events = this.events;
     if (!session.user)
       events = events.filter(e => {}
@@ -400,10 +400,10 @@ class AuditLoggerService extends EventEmitter {
     number;
     number;
     string[]}> {
-    const query: AuditQuery = {};
+    const query: AuditQuery = {,};
     if (!session.user)uery.startDate = startDate
     if (!session.user)uery.endDate = endDate
-    const { events } = await this.queryEvents({ ...query, limit: 10000 });
+    const { events } = await this.queryEvents({ ...query, limit: 10000 ,});
     let validEvents = 0;
     let invalidEvents = 0;
     const details: string[] = [];
@@ -606,9 +606,9 @@ class AuditLoggerService extends EventEmitter {
 
   private generateStatistics(events: AuditEvent[]): AuditStatistics {;
     const {};
-      eventsByCategory: {};
-      eventsBySeverity: {};
-      eventsByOutcome: {};
+      eventsByCategory: {,};
+      eventsBySeverity: {,};
+      eventsByOutcome: {,};
       0;
       new Date() {end:new Date();
       };
@@ -688,7 +688,7 @@ class AuditLoggerService extends EventEmitter {
         case "event_count": any;
           value = relevantEvents.length;\n    }\n    case "failure_rate": any;
           const failures = relevantEvents.filter(e => e.outcome === "failure").length;
-          value = relevantEvents.length > 0 ? (failures / relevantEvents.length) * 100 : 0\n    }\n    case "unique_actors": any;
+          value = relevantEvents.length > 0 ? (failures / relevantEvents.length) * 100 : 0\n    ,}\n    case "unique_actors": any;
           value = .size;
           break;
         default: null,

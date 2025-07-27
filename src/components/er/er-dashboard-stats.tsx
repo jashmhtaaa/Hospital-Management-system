@@ -19,8 +19,7 @@ import { Card
 
 export default const _ERDashboardStats = () {
   // In a real implementation, this data would come from API calls;
-  const stats = {
-    totalPatients: 24,
+  const stats = {totalPatients:24,
     "42 min",
     "18/25",
     incomingAmbulances: 2;

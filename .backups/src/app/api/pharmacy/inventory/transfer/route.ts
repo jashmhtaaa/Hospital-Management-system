@@ -44,7 +44,7 @@ const transferRepository = {
  * POST /api/pharmacy/inventory/transfer;
  * Transfer inventory between locations;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -82,15 +82,15 @@ export const POST = async (req: any) => {
     const validationResult = validateInventoryTransferRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -99,12 +99,12 @@ export const POST = async (req: any) => {
     // Verify source inventory has sufficient stock;
     const sourceInventory = await inventoryRepository.findById(data.sourceInventoryId);
     if (!session.user) {
-      return NextResponse.json({ error: "Source inventory not found" }, { status: 404 });
+      return NextResponse.json({ error: "Source inventory not found" ,}, { status: 404 ,});
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Insufficient stock in source location" },
-        { status: 400 }
+        { error: "Insufficient stock in source location" ,},
+        { status: 400 },
       );
 
     // Create transfer record;
@@ -160,7 +160,7 @@ export const POST = async (req: any) => {
         id: transferId,
         message: "Inventory transferred successfully";
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, "Error transferring inventory");

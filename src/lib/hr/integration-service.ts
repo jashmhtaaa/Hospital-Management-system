@@ -1,9 +1,9 @@
 import "@/lib/hr/auth-integration"
 import "@prisma/client"
 import "next-auth"
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
+import {authOptions  } from "next/server"
+import {getServerSession  } from "next/server"
+import {PrismaClient  } from "next/server"
 
 /**;
  * Integration service for connecting HR & Asset Management with other HMS modules;
@@ -85,7 +85,7 @@ import {  PrismaClient  } from "@/lib/database"
    * Get payroll data for finance module integration;
    * This provides payroll information to finance modules for accounting;
    */;
-  async getPayrollForFinance(periodId: string) {
+  async getPayrollForFinance(periodId: string) {,
     return this.prisma.payrollPeriod.findUnique({
       periodId,
         status: "PAID";
@@ -108,8 +108,8 @@ import {  PrismaClient  } from "@/lib/database"
    * Get employee attendance for scheduling module integration;
    * This provides attendance information to scheduling modules;
    */;
-  async getEmployeeAttendanceForScheduling(employeeId: string, startDate: Date, endDate: Date) {
-    return this.prisma.attendance.findMany({where:{
+  async getEmployeeAttendanceForScheduling(employeeId: string, startDate: Date, endDate: Date) {,
+    return this.prisma.attendance.findMany({where:{,
         employeeId,
         startDate,
           lte: endDate;
@@ -123,8 +123,8 @@ import {  PrismaClient  } from "@/lib/database"
    * Get employee leaves for scheduling module integration;
    * This provides leave information to scheduling modules;
    */;
-  async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {
-    return this.prisma.leave.findMany({where:{
+  async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {,
+    return this.prisma.leave.findMany({where:{,
         employeeId,
         endDate;
         },
@@ -155,10 +155,10 @@ import {  PrismaClient  } from "@/lib/database"
       throw new Error("Insufficient permissions");
 
     // Update asset status;
-    return this.prisma.asset.update({where:{ id: assetId },
-      data: {
+    return this.prisma.asset.update({where:{ id: assetId ,},
+      data: {,
         status,
-        notes: notes ? `${notes}\nUpdated by: ${session.user.name} (${session.user.email})` : undefined,
+        notes: notes ? `${notes}\nUpdated by: ${session.user.name} (${session.user.email,})` : undefined,
         {type:"STATUS_CHANGE",
             date: new Date(),
             "UNKNOWN", // Will be replaced in service layer;
@@ -194,7 +194,7 @@ import {  PrismaClient  } from "@/lib/database"
       throw new Error("Insufficient permissions");
 
     // Create maintenance record;
-    const maintenanceRecord = await this.prisma.maintenanceRecord.create({data:{
+    const maintenanceRecord = await this.prisma.maintenanceRecord.create({data:{,
         assetId,
         maintenanceType: data.maintenanceType,
         data.performedBy || `${session.user.name} (${session.user.email})`,
@@ -203,7 +203,7 @@ import {  PrismaClient  } from "@/lib/database"
       }});
 
     // Create history record;
-    await this.prisma.assetHistory.create({data:{
+    await this.prisma.assetHistory.create({data:{,
         assetId,
         type: "MAINTENANCE",
         date: new Date(),
@@ -216,7 +216,7 @@ import {  PrismaClient  } from "@/lib/database"
       }});
 
     // Update asset status;
-    await this.prisma.asset.update({where:{ id: assetId },
+    await this.prisma.asset.update({where:{ id: assetId ,},
       "AVAILABLE",
         data.nextMaintenanceDate;
       }});
@@ -237,4 +237,4 @@ import {  PrismaClient  } from "@/lib/database"
 
     });
 
-export const _integrationService = new IntegrationService();
+export const = new IntegrationService() {;}

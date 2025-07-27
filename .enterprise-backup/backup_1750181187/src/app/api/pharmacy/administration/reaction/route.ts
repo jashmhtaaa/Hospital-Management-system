@@ -17,13 +17,13 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {
@@ -34,7 +34,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 const reactionRepository = {
@@ -43,29 +43,29 @@ const reactionRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   save: (reaction: unknown) => Promise.resolve(reaction.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 /**
  * POST /api/pharmacy/administration/reaction;
  * Record adverse medication reaction;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateReactionRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -73,71 +73,71 @@ export const POST = async (req: NextRequest) => {
 
     // Verify patient exists
     const patient = await getPatientById(data.patientId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Patient not found' ,}, { status: 404 ,});
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(data.medicationId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Medication not found' ,}, { status: 404 ,});
     }
 
     // Verify prescription exists if provided
-    \1 {\n  \2{
+     {\n  {
       const prescription = await prescriptionRepository.findById(data.prescriptionId);
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
+       {\n  {
+        return NextResponse.json({ error: 'Prescription not found' ,}, { status: 404 ,});
       }
     }
 
     // Create reaction record
     const reaction = {
       id: data.id || crypto.randomUUID(),
-      \1,\2 data.medicationId,
-      \1,\2 data.reactionType,
-      \1,\2 data.symptoms || [],
+       data.medicationId,
+       data.reactionType,
+       data.symptoms || [],
       onset: data.onset ? new Date(data.onset) : new Date(),
       duration: data.duration,
-      \1,\2 data.outcome,
-      \1,\2 userId,
+       data.outcome,
+       userId,
       reportedAt: new Date(),
       isSerious: data.isSerious || false,
-      \1,\2 data.followUpDate ? new Date(data.followUpDate) : null
+       data.followUpDate ? new Date(data.followUpDate) : null
     };
 
     // Save reaction record
     const reactionId = await reactionRepository.save(reaction);
 
     // Create alert for serious reactions
-    \1 {\n  \2{
+     {\n  {
       // In a real implementation, create alert for clinical staff
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
       // In a real implementation, update patient allergies if needed
-      \1 {\n  \2{
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+       {\n  {
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       }
     }
 
     // Audit logging
     await auditLog('MEDICATION_REACTION', {
       action: 'CREATE',
-      \1,\2 reactionId,
-      \1,\2 data.patientId,
-      details: 
+       reactionId,
+       data.patientId,
+      details: ,
         medicationId: data.medicationId,
-        \1,\2 data.severity,
-        isSerious: data.isSerious
+         data.severity,
+        isSerious: data.isSerious,
     });
 
     // Return response
     return NextResponse.json(
       {
         id: reactionId,
-        \1,\2 data.severity === 'severe' || data.isSerious
+         data.severity === 'severe' || data.isSerious
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, 'Error recording adverse reaction');
@@ -148,12 +148,12 @@ export const POST = async (req: NextRequest) => {
  * GET /api/pharmacy/administration/reaction/patient/[patientId]
  * Get adverse reactions for a specific patient;
  */
-export const GET = async (req: NextRequest, { params }: { params: { patientId: string } }) => {
+export const GET = async (req: NextRequest, { params }: { params: { patientId: string } }) => {,
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -161,8 +161,8 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
 
     // Get patient ID from params
     const { patientId } = params;
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
+     {\n  {
+      return NextResponse.json({ error: 'Patient ID is required' ,}, { status: 400 ,});
     }
 
     // Get query parameters
@@ -179,17 +179,17 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
 
     // Apply filters
     let filteredRecords = reactionRecords;
-    \1 {\n  \2{
+     {\n  {
       filteredRecords = filteredRecords.filter(r => r.medicationId === medicationId);
     }
-    \1 {\n  \2{
+     {\n  {
       filteredRecords = filteredRecords.filter(r => r.severity === severity);
     }
-    \1 {\n  \2{
+     {\n  {
       const startDateTime = new Date(startDate).getTime();
       filteredRecords = filteredRecords.filter(r => new Date(r.onset).getTime() >= startDateTime);
     }
-    \1 {\n  \2{
+     {\n  {
       const endDateTime = new Date(endDate).getTime();
       filteredRecords = filteredRecords.filter(r => new Date(r.onset).getTime() <= endDateTime);
     }
@@ -202,13 +202,13 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     // Group by severity for reporting
     const severityCounts = {
       mild: filteredRecords.filter(r => r.severity === 'mild').length,
-      \1,\2 filteredRecords.filter(r => r.severity === 'severe').length
+       filteredRecords.filter(r => r.severity === 'severe').length
     };
 
     // Audit logging
     await auditLog('MEDICATION_REACTION', {
       action: 'LIST',
-      \1,\2 userId,
+       userId,
       patientId: patientId;
         medicationId,
         severity,
@@ -220,13 +220,13 @@ export const GET = async (req: NextRequest, { params }: { params: { patientId: s
     return NextResponse.json({
       reactionRecords: paginatedRecords;
       severityCounts,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit),
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error retrieving adverse reactions');
   }

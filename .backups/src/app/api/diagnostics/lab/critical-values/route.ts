@@ -17,7 +17,7 @@ import {  type
  * GET /api/diagnostics/lab/critical-values;
  * Get critical value configurations;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
  } from "@/lib/database" catch (error) {
   console.error(error);
@@ -53,7 +53,7 @@ export const GET = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters;
@@ -63,7 +63,7 @@ export const GET = async (request: any) => {
     const pageSize = Number.parseInt(searchParams.get("pageSize") || "20");
 
     // Cache key;
-    const cacheKey = `diagnostic:lab:critical-values:${testId || "all"}:${page}:${pageSize}`;
+    const cacheKey = `diagnostic:lab:critical-values:${testId || "all"}:${page}:${pageSize,}`;
 
     // Try to get from cache or fetch from database;
     const data = await RedisCache.getOrSet();
@@ -114,7 +114,7 @@ export const GET = async (request: any) => {
 
         return {
           criticalValues: result.results,
-          pagination: {
+          pagination: {,
             page,
             pageSize,
             totalCount,
@@ -131,7 +131,7 @@ export const GET = async (request: any) => {
     return NextResponse.json({
       error: "Failed to fetch critical values",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -139,7 +139,7 @@ export const GET = async (request: any) => {
  * POST /api/diagnostics/lab/critical-values;
  * Create a new critical value configuration;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -175,12 +175,12 @@ export const POST = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Parse request body;
@@ -189,21 +189,21 @@ export const POST = async (request: any) => {
 
     // Validate required fields;
     if (!session.user) {
-      return NextResponse.json({ error: "Test ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "Test ID is required" ,}, { status: 400 ,});
     }
 
     if (!session.user)| !units) {
-      return NextResponse.json({ error: "At least one threshold value and units are required" }, { status: 400 });
+      return NextResponse.json({ error: "At least one threshold value and units are required" ,}, { status: 400 ,});
     }
 
     if (!session.user) {
-      return NextResponse.json({ error: "Valid severity level is required" }, { status: 400 });
+      return NextResponse.json({ error: "Valid severity level is required" ,}, { status: 400 ,});
     }
 
     // Check if test exists;
     const testCheck = await DB.query("SELECT id FROM laboratory_tests WHERE id = ?", [testId]);
     if (!session.user) {
-      return NextResponse.json({ error: "Test not found" }, { status: 404 });
+      return NextResponse.json({ error: "Test not found" ,}, { status: 404 ,});
     }
 
     // Insert critical value;
@@ -250,13 +250,13 @@ export const POST = async (request: any) => {
       [result.insertId];
     );
 
-    return NextResponse.json(createdValue.results[0], { status: 201 });
+    return NextResponse.json(createdValue.results[0], { status: 201 ,});
   } catch (error) {
 
     return NextResponse.json({
       error: "Failed to create critical value",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -264,7 +264,7 @@ export const POST = async (request: any) => {
  * PUT /api/diagnostics/lab/critical-values/:id;
  * Update a critical value configuration;
  */;
-export const PUT = async (request: any, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -300,17 +300,17 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID" ,}, { status: 400 ,});
     }
 
     // Parse request body;
@@ -320,7 +320,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     // Check if critical value exists;
     const existingCheck = await DB.query("SELECT * FROM laboratory_critical_values WHERE id = ?", [id]);
     if (!session.user) {
-      return NextResponse.json({ error: "Critical value not found" }, { status: 404 });
+      return NextResponse.json({ error: "Critical value not found" ,}, { status: 404 ,});
     }
 
     // Build update query;
@@ -404,13 +404,13 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     return NextResponse.json({
       error: "Failed to update critical value",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
 
 /**;
  * DELETE /api/diagnostics/lab/critical-values/:id;
  * Delete a critical value configuration;
  */;
-export const DELETE = async (request: any, { params }: { params: { id: string } }) => {
+export const DELETE = async (request: any, { params }: { params: { id: string } }) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -446,20 +446,20 @@ export const DELETE = async (request: any, { params }: { params: { id: string } 
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     const id = Number.parseInt(params.id);
     if (!session.user) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID" ,}, { status: 400 ,});
 
     // Check if critical value exists;
     const existingCheck = await DB.query("SELECT * FROM laboratory_critical_values WHERE id = ?", [id]);
     if (!session.user) {
-      return NextResponse.json({ error: "Critical value not found" }, { status: 404 });
+      return NextResponse.json({ error: "Critical value not found" ,}, { status: 404 ,});
 
     // Delete critical value;
     await DB.query("DELETE FROM laboratory_critical_values WHERE id = ?", [id]);
@@ -474,10 +474,10 @@ export const DELETE = async (request: any, { params }: { params: { id: string } 
     // Invalidate cache;
     await CacheInvalidation.invalidatePattern("diagnostic:lab:critical-values:*");
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true ,});
   } catch (error) {
 
     return NextResponse.json({
       error: "Failed to delete critical value",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});

@@ -9,10 +9,10 @@ import { PrismaClient } from '@prisma/client';
  * Provides executive dashboards, clinical insights, and operational intelligence;
  */
 
-\1
+
 }
   };
-\1
+
 }
   };
   responsive: boolean;
@@ -20,15 +20,15 @@ import { PrismaClient } from '@prisma/client';
   subtitle?: string;
   legend?: LegendConfig;
   axes?: AxesConfig;
-\1
+
 }
     green: { min?: number; max?: number };
     yellow: { min?: number; max?: number };
     red: { min?: number; max?: number }
   };
   frequency: 'real_time' | 'hourly' | 'daily' | 'weekly' | 'monthly',
-  \1,\2 boolean
-\1
+   boolean
+
 }
 }
 
@@ -53,7 +53,7 @@ class BusinessIntelligenceService extends EventEmitter {
    * Start the BI service;
    */
   async start(): Promise<void> {
-    \1 {\n  \2eturn;
+     {\n  eturn;
 
     try {
       this.isRunning = true;
@@ -73,7 +73,7 @@ class BusinessIntelligenceService extends EventEmitter {
       // Start insight generation
       this.startInsightGeneration();
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       this.emit('bi_service_started')
     } catch (error) {
 
@@ -85,7 +85,7 @@ class BusinessIntelligenceService extends EventEmitter {
    * Stop the BI service;
    */
   async stop(): Promise<void> {
-    \1 {\n  \2eturn;
+     {\n  eturn;
 
     this.isRunning = false;
 
@@ -93,7 +93,7 @@ class BusinessIntelligenceService extends EventEmitter {
     this.scheduledJobs.forEach(job => clearInterval(job));
     this.scheduledJobs.clear();
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     this.emit('bi_service_stopped')
   }
 
@@ -101,24 +101,24 @@ class BusinessIntelligenceService extends EventEmitter {
    * Create a new analytics report
    */
   async createReport(report: Omit<AnalyticsReport, 'id' | 'createdAt' | 'updatedAt' | 'status'>): Promise<string> {
-    const newReport: AnalyticsReport = {
+    const newReport: AnalyticsReport = {,
       ...report,
       id: uuidv4(),
-      \1,\2 new Date(),
-      updatedAt: new Date()
+       new Date(),
+      updatedAt: new Date(),
     };
 
     this.reports.set(newReport.id, newReport);
 
     // Start scheduled job if configured
-    \1 {\n  \2{
+     {\n  {
       this.startScheduledJob(newReport);
     }
 
     // Persist to database
     try {
       // In production, save to database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     } catch (error) {
 
     }
@@ -130,13 +130,13 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Execute a report;
    */
-  async executeReport(reportId: string, parameters: Record<string, unknown> = {}, triggeredBy: string, triggerType: 'manual' | 'scheduled' | 'api' = 'manual'): Promise<string> {
+  async executeReport(reportId: string, parameters: Record<string, unknown> = {}, triggeredBy: string, triggerType: 'manual' | 'scheduled' | 'api' = 'manual'): Promise<string> {,
     const report = this.reports.get(reportId);
-    \1 {\n  \2{
-      throw new Error(`Report not found: ${\1}`;
+     {\n  {
+      throw new Error(`Report not found: ${}`;
     }
 
-    const execution: ReportExecution = {
+    const execution: ReportExecution = {,
       id: uuidv4(),
       reportId,
       parameters,
@@ -177,8 +177,8 @@ class BusinessIntelligenceService extends EventEmitter {
    */
   async getReportData(reportId: string, parameters: Record<string, unknown> = {}): Promise<unknown> {
     const report = this.reports.get(reportId);
-    \1 {\n  \2{
-      throw new Error(`Report not found: ${\1}`;
+     {\n  {
+      throw new Error(`Report not found: ${}`;
     }
 
     try {
@@ -194,12 +194,12 @@ class BusinessIntelligenceService extends EventEmitter {
    * Create a dataset;
    */
   async createDataset(dataset: Omit<AnalyticsDataset, 'id' | 'refreshedAt' | 'recordCount' | 'sizeBytes' | 'status'>): Promise<string> {
-    const newDataset: AnalyticsDataset = {
+    const newDataset: AnalyticsDataset = {,
       ...dataset,
       id: uuidv4(),
       refreshedAt: new Date(),
       recordCount: 0,
-      \1,\2 'loading'
+       'loading'
     };
 
     this.datasets.set(newDataset.id, newDataset);
@@ -214,9 +214,9 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Refresh a dataset;
    */
-  async refreshDataset(datasetId: string): Promise<boolean> {
+  async refreshDataset(datasetId: string): Promise<boolean> {,
     const dataset = this.datasets.get(datasetId);
-    \1 {\n  \2eturn false;
+     {\n  eturn false;
 
     try {
       dataset.status = 'loading';
@@ -250,16 +250,16 @@ class BusinessIntelligenceService extends EventEmitter {
    * Define a KPI;
    */
   async defineKPI(kpi: Omit<KPIDefinition, 'id'>): Promise<string> {
-    const newKPI: KPIDefinition = {
+    const newKPI: KPIDefinition = {,
       ...kpi,
-      id: uuidv4()
+      id: uuidv4(),
     };
 
     this.kpis.set(newKPI.id, newKPI);
     this.kpiValues.set(newKPI.id, []);
 
     // Start monitoring if active
-    \1 {\n  \2{
+     {\n  {
       this.startKPICollection(newKPI);
     }
 
@@ -270,10 +270,10 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Get KPI values;
    */
-  getKPIValues(kpiId: string, timeRange?: { start: Date, end: Date }): KPIValue[] {
+  getKPIValues(kpiId: string, timeRange?: { start: Date, end: Date }): KPIValue[] {,
     const values = this.kpiValues.get(kpiId) || [];
 
-    \1 {\n  \2eturn values;
+     {\n  eturn values;
 
     return values.filter(v =>
       v.timestamp >= timeRange?.start && v.timestamp <= timeRange.end;
@@ -283,7 +283,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Get current KPI value;
    */
-  getCurrentKPIValue(kpiId: string): KPIValue | undefined {
+  getCurrentKPIValue(kpiId: string): KPIValue | undefined {,
     const values = this.kpiValues.get(kpiId) || [];
     return values[values.length - 1];
   }
@@ -291,11 +291,11 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Create an alert;
    */
-  async create/* SECURITY: Alert removed */: Promise<string> {
-    const newAlert: AnalyticsAlert = {
+  async create/* SECURITY: Alert removed */: Promise<string> {,
+    const newAlert: AnalyticsAlert = {,
       ...alert,
       id: uuidv4(),
-      \1,\2 new Date()
+       new Date()
     };
 
     this.alerts.set(newAlert.id, newAlert);
@@ -307,9 +307,9 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Generate insights;
    */
-  async generateInsights(datasetId: string): Promise<AnalyticsInsight[]> {
+  async generateInsights(datasetId: string): Promise<AnalyticsInsight[]> {,
     const dataset = this.datasets.get(datasetId);
-    \1 {\n  \2{
+     {\n  {
       return [];
     }
 
@@ -334,11 +334,11 @@ class BusinessIntelligenceService extends EventEmitter {
   getInsights(category?: string, severity?: string): AnalyticsInsight[] {
     let filtered = this.insights.filter(i => !i.dismissed);
 
-    \1 {\n  \2{
+     {\n  {
       filtered = filtered.filter(i => i.category === category);
     }
 
-    \1 {\n  \2{
+     {\n  {
       filtered = filtered.filter(i => i.severity === severity);
     }
 
@@ -350,15 +350,15 @@ class BusinessIntelligenceService extends EventEmitter {
    */
   async exportReport(reportId: string, format: 'pdf' | 'xlsx' | 'csv' | 'png', parameters: Record<string, unknown> = {}): Promise<string> {
     const report = this.reports.get(reportId);
-    \1 {\n  \2{
-      throw new Error(`Report not found: ${\1}`;
+     {\n  {
+      throw new Error(`Report not found: ${}`;
     }
 
     try {
       const data = await this.getReportData(reportId, parameters);
       const exportUrl = await this.performReportExport(report, data, format);
 
-      this.emit('report_exported', { reportId, format, url: exportUrl });
+      this.emit('report_exported', { reportId, format, url: exportUrl ,});
       return exportUrl;
 
     } catch (error) {
@@ -370,7 +370,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**
    * Get analytics statistics;
    */
-  getStatistics(): {total: number, \1,\2 number ;total: number, \1,\2 number, \1,\2 number, \1,\2 number, \1,\2 number, \1,\2 number ;total: number, active: number ;
+  getStatistics(): {total: number,  number ;total: number,  number,  number,  number,  number,  number ;total: number, active: number ;
   } {
     const allReports = Array.from(this.reports.values());
     const allDatasets = Array.from(this.datasets.values());
@@ -378,27 +378,27 @@ class BusinessIntelligenceService extends EventEmitter {
     const allKPIs = Array.from(this.kpis.values());
 
     return {
-      reports: {
+      reports: {,
         total: allReports.length,
-        \1,\2 allReports.filter(r => r.schedule?.enabled).length
+         allReports.filter(r => r.schedule?.enabled).length
       },
-      datasets: {
+      datasets: {,
         total: allDatasets.length,
-        \1,\2 allDatasets.filter(d => d.status === 'loading').length,
-        error: allDatasets.filter(d => d.status === 'error').length
+         allDatasets.filter(d => d.status === 'loading').length,
+        error: allDatasets.filter(d => d.status === 'error').length,
       },
-      executions: {
+      executions: {,
         total: allExecutions.length,
-        \1,\2 allExecutions.filter(e => e.status === 'failed').length,
-        running: allExecutions.filter(e => e.status === 'running').length
+         allExecutions.filter(e => e.status === 'failed').length,
+        running: allExecutions.filter(e => e.status === 'running').length,
       },
-      insights: {
+      insights: {,
         total: this.insights.length,
-        \1,\2 this.insights.filter(i => i.dismissed).length
+         this.insights.filter(i => i.dismissed).length
       },
-      kpis: {
+      kpis: {,
         total: allKPIs.length,
-        active: allKPIs.filter(k => k.isActive).length
+        active: allKPIs.filter(k => k.isActive).length,
       }
     };
   }
@@ -408,7 +408,7 @@ class BusinessIntelligenceService extends EventEmitter {
   private async loadReports(): Promise<void> {
     try {
       // In production, load from database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     } catch (error) {
 
     }
@@ -417,7 +417,7 @@ class BusinessIntelligenceService extends EventEmitter {
   private async loadDatasets(): Promise<void> {
     try {
       // In production, load from database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     } catch (error) {
 
     }
@@ -426,29 +426,29 @@ class BusinessIntelligenceService extends EventEmitter {
   private async loadKPIs(): Promise<void> {
     try {
       // In production, load from database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
       // Sample KPIs
       await this.defineKPI({
         name: 'Patient Satisfaction',
-        \1,\2 'Quality',
-        \1,\2 '%',
-        \1,\2 90 ,
+         'Quality',
+         '%',
+         90 ,
           yellow: min: 80, max: 89 ,
           red: max: 79 ,
         frequency: 'daily',
-        \1,\2 true
+         true
       });
 
       await this.defineKPI({
         name: 'Average Length of Stay',
-        \1,\2 'Efficiency',
-        \1,\2 'days',
-        \1,\2 4.5 ,
+         'Efficiency',
+         'days',
+         4.5 ,
           yellow: min: 4.6, max: 5.5 ,
           red: min: 5.6 ,
         frequency: 'daily',
-        \1,\2 true
+         true
       });
 
     } catch (error) {
@@ -459,7 +459,7 @@ class BusinessIntelligenceService extends EventEmitter {
   private async loadAlerts(): Promise<void> {
     try {
       // In production, load from database
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     } catch (error) {
 
     }
@@ -467,14 +467,14 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private startScheduledJobs(): void {
     this.reports.forEach(report => {
-      \1 {\n  \2{
+       {\n  {
         this.startScheduledJob(report)
       }
     });
   }
 
-  private startScheduledJob(report: AnalyticsReport): void {
-    \1 {\n  \2eturn;
+  private startScheduledJob(report: AnalyticsReport): void {,
+     {\n  eturn;
 
     const intervalMs = this.calculateScheduleInterval(report.schedule);
 
@@ -496,9 +496,9 @@ class BusinessIntelligenceService extends EventEmitter {
     }, 5 * 60 * 1000);
   }
 
-  private startKPICollection(kpi: KPIDefinition): void {
+  private startKPICollection(kpi: KPIDefinition): void {,
     // Start individual KPI collection
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
   private startInsightGeneration(): void {
@@ -510,7 +510,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
   private async collectKPIValues(): Promise<void> {
     for (const kpi of this.kpis.values()) {
-      \1 {\n  \2ontinue;
+       {\n  ontinue;
 
       try {
         const value = await this.calculateKPIValue(kpi);
@@ -518,7 +518,7 @@ class BusinessIntelligenceService extends EventEmitter {
         values.push(value);
 
         // Keep only last 1000 values
-        \1 {\n  \2{
+         {\n  {
           values.splice(0, values.length - 1000);
         }
 
@@ -533,16 +533,16 @@ class BusinessIntelligenceService extends EventEmitter {
     }
   }
 
-  private async calculateKPIValue(kpi: KPIDefinition): Promise<KPIValue> {
+  private async calculateKPIValue(kpi: KPIDefinition): Promise<KPIValue> {,
     // Mock KPI calculation - in production, this would execute the formula
     const mockValue = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100;
     const target = kpi.target || 0;
     const trend = mockValue > target * 0.95 ? 'up' : mockValue < target * 0.85 ? 'down' : 'stable';
 
     let status: 'green' | 'yellow' | 'red' = 'green';
-    \1 {\n  \2tatus = 'red';
-    else \1 {\n  \2tatus = 'red';
-    else \1 {\n  \2tatus = 'yellow';
+     {\n  tatus = 'red';
+    else  {\n  tatus = 'red';
+    else  {\n  tatus = 'yellow';
 
     return {
       kpiId: kpi.id,
@@ -553,22 +553,22 @@ class BusinessIntelligenceService extends EventEmitter {
       trend,
       changePercent: (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) - 0.5) * 10, // -5% to +5%
       metadata: 
-    };
+    ,};
   }
 
-  private checkKPIAlerts(kpi: KPIDefinition, value: KPIValue): void {
+  private checkKPIAlerts(kpi: KPIDefinition, value: KPIValue): void {,
     const alerts = Array.from(this.alerts.values()).filter(a => a.kpiId === kpi?.id && a.isActive);
 
     alerts.forEach(alert => {
       const shouldTrigger = this.evaluateAlertCondition(alert.condition, value);
 
-      \1 {\n  \2{
-        this.trigger/* SECURITY: Alert removed */
+       {\n  {
+        this.trigger/* SECURITY: Alert removed */,
       }
     });
   }
 
-  private evaluateAlertCondition(condition: AlertCondition, value: KPIValue): boolean {
+  private evaluateAlertCondition(condition: AlertCondition, value: KPIValue): boolean {,
     const fieldValue = value.value; // Simplified - would need to handle different fields
 
     switch (condition.operator) {
@@ -577,17 +577,17 @@ class BusinessIntelligenceService extends EventEmitter {
       case 'equals': return fieldValue === condition.value;
       case 'not_equals': return fieldValue !== condition.value;
       case 'change_percent': return Math.abs(value.changePercent) > condition.value;
-      default: return false
+      default: return false,
     }
   }
 
-  private async trigger/* SECURITY: Alert removed */: Promise<void> {
+  private async trigger/* SECURITY: Alert removed */: Promise<void> {,
     alert.lastTriggered = new Date();
     alert.triggerCount++;
 
     // Send notifications via configured channels
     alert.channels.forEach(channel => {
-      \1 {\n  \2{
+       {\n  {
         this.sendAlertNotification(alert, value, channel);
       }
     });
@@ -595,25 +595,25 @@ class BusinessIntelligenceService extends EventEmitter {
     this.emit('alert_triggered', { alert, value });
   }
 
-  private sendAlertNotification(alert: AnalyticsAlert, value: KPIValue, channel: AlertChannel): void {
+  private sendAlertNotification(alert: AnalyticsAlert, value: KPIValue, channel: AlertChannel): void {,
     // Send notification via specified channel
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
   private async generateAllInsights(): Promise<void> {
     for (const dataset of this.datasets.values()) {
-      \1 {\n  \2{
+       {\n  {
         await this.generateInsights(dataset.id)
       }
     }
   }
 
-  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<{ url: string, data: unknown }> {
+  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<{ url: string, data: unknown }> {,
     // Mock report execution
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     return {
-      url: `/reports/${report.id}/results/${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      url: `/reports/${report.id}/results/${crypto.getRandomValues(new Uint32Array(1))[0],}`,
       data: { message: 'Report executed successfully', parameters }
     };
   }
@@ -623,44 +623,44 @@ class BusinessIntelligenceService extends EventEmitter {
     return { data: [], parameters };
   }
 
-  private transformReportData(data: unknown, report: AnalyticsReport): unknown {
+  private transformReportData(data: unknown, report: AnalyticsReport): unknown {,
     // Transform data based on report configuration
     return data;
   }
 
-  private async fetchDatasetData(dataset: AnalyticsDataset): Promise<unknown> {
+  private async fetchDatasetData(dataset: AnalyticsDataset): Promise<unknown> {,
     // Mock dataset data fetching
     return [];
   }
 
-  private async analyzeDataForInsights(data: unknown[], dataset: AnalyticsDataset): Promise<AnalyticsInsight[]> {
+  private async analyzeDataForInsights(data: unknown[], dataset: AnalyticsDataset): Promise<AnalyticsInsight[]> {,
     // Mock insight generation
     const insights: AnalyticsInsight[] = [];
 
     // Simulate anomaly detection
-    \1 {\n  \2[0] / (0xFFFFFFFF + 1) > 0.8) {
+     {\n  [0] / (0xFFFFFFFF + 1) > 0.8) {
       insights.push({
         id: uuidv4(),
-        \1,\2 'Unusual Data Pattern Detected',
+         'Unusual Data Pattern Detected',
         description: `Anomalous pattern detected in $dataset.name`,
         severity: 'medium',
-        \1,\2 [],
+         [],
         recommendations: ['Investigate data source', 'Review data quality'],
         category: 'Data Quality',
         detectedAt: new Date(),
-        dismissed: false
+        dismissed: false,
       });
     }
 
     return insights;
   }
 
-  private async performReportExport(report: AnalyticsReport, data: unknown, format: string): Promise<string> {
+  private async performReportExport(report: AnalyticsReport, data: unknown, format: string): Promise<string> {,
     // Mock export
     return `/exports/$report.id_$crypto.getRandomValues(new Uint32Array(1))[0].$format`;
   }
 
-  private calculateScheduleInterval(schedule: ScheduleConfig): number {
+  private calculateScheduleInterval(schedule: ScheduleConfig): number {,
     // Calculate interval in milliseconds
     switch (schedule.frequency) {
       case 'hourly': return 60 * 60 * 1000 * schedule.interval;

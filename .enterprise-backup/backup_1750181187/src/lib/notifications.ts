@@ -11,14 +11,14 @@ import { DB } from './database';
  * Database result interface
  */
 interface DBResult {
-  \1,\2 number;
+   number;
   affectedRows: number;
 }
 
 /**
  * Notification type definition
  */
-\1
+
 }
 }
 
@@ -83,7 +83,7 @@ export const _markNotificationRead = async (
 ): Promise<boolean> {
 export const markNotificationRead = async (
   notificationId: number,
-  userId: number
+  userId: number,
 ): Promise<boolean> => {
   try {
     const db = DB();
@@ -117,7 +117,7 @@ export const _getUserNotifications = async (
 export const getUserNotifications = async (
   userId: number,
   unreadOnly: boolean = false,
-  limit: number = 50
+  limit: number = 50,
 ): Promise<any[]> => {
   try {
     const db = DB();
@@ -130,7 +130,7 @@ export const getUserNotifications = async (
 
     const params: unknown[] = [userId];
 
-    \1 {\n  \2{
+     {\n  {
       query += ' AND read = false';
     }
 
@@ -139,9 +139,9 @@ export const getUserNotifications = async (
 
     const result = await db.query(query, params) as DBResult;
 
-    return result.results.map((notification: any) => ({
+    return result.results.map((notification: any) => ({,
       ...notification,
-      metadata: notification.metadata ? JSON.parse(notification.metadata) : null
+      metadata: notification.metadata ? JSON.parse(notification.metadata) : null,
     }));
   } catch (error) {
     return [];

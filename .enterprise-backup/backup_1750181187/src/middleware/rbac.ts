@@ -5,60 +5,60 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { AuthService } from '@/lib/auth/auth-service';
 import { logger } from '@/lib/logger';
 // src/middleware/rbac.ts
-\1
+
 }
 }
 
-export function createRBACMiddleware(routePermission: RoutePermission): unknown {
-  return async (request: NextRequest) => {
+export function createRBACMiddleware(routePermission: RoutePermission): unknown {,
+  return async (request: NextRequest) => {,
     try {
       // Extract token from Authorization header
       const authHeader = request.headers.get('authorization');
-      \1 {\n  \2 {
+       {\n   {
         return NextResponse.json(
-          { error: 'Unauthorized - No token provided' },
-          { status: 401 }
+          { error: 'Unauthorized - No token provided' ,},
+          { status: 401 },
         );
       }
 
       const token = authHeader.substring(7);
       const user = await AuthService.verifyToken(token);
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: 'Unauthorized - Invalid token' },
-          { status: 401 }
+          { error: 'Unauthorized - Invalid token' ,},
+          { status: 401 },
         );
       }
 
       // Check role-based access
-      \1 {\n  \2 {
+       {\n   {
         logger.warn('Access denied - insufficient role', {
           userId: user.id,
-          \1,\2 routePermission.roles
+           routePermission.roles
         });
 
         return NextResponse.json(
-          { error: 'Forbidden - Insufficient role' },
-          { status: 403 }
+          { error: 'Forbidden - Insufficient role' ,},
+          { status: 403 },
         );
       }
 
       // Check permission-based access
-      \1 {\n  \2{
+       {\n  {
         const hasPermissions = routePermission.requireAll
           ? routePermission.permissions.every(perm => user.permissions.includes(perm))
           : routePermission.permissions.some(perm => user.permissions.includes(perm));
 
-        \1 {\n  \2{
+         {\n  {
           logger.warn('Access denied - insufficient permissions', {
             userId: user.id,
-            \1,\2 routePermission.permissions
+             routePermission.permissions
           });
 
           return NextResponse.json(
-            { error: 'Forbidden - Insufficient permissions' },
-            { status: 403 }
+            { error: 'Forbidden - Insufficient permissions' ,},
+            { status: 403 },
           );
         }
       }
@@ -70,16 +70,16 @@ export function createRBACMiddleware(routePermission: RoutePermission): unknown 
       requestHeaders.set('x-user-role', user.role);
 
       return NextResponse.next({
-        request: {
-          headers: requestHeaders
+        request: {,
+          headers: requestHeaders,
         }
       });
 
     } catch (error) {
       logger.error('RBAC middleware error', { error });
       return NextResponse.json(
-        { error: 'Internal server error' },
-        { status: 500 }
+        { error: 'Internal server error' ,},
+        { status: 500 },
       );
     }
   };
@@ -99,5 +99,5 @@ export const _requireMedicalStaff = createRBACMiddleware({
 });
 
 export const _requirePatientAccess = createRBACMiddleware({
-  permissions: ['patient:read']
+  permissions: ['patient:read'],
 });

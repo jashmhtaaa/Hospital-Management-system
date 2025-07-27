@@ -13,7 +13,7 @@ import { logger } from '@/lib/core/logging';
 
 // Schema for financial report query parameters
 const reportQuerySchema = z.object({
-  reportType: z.enum([
+  reportType: z.enum([,
     'revenue',
     'expenses',
     'profit_loss',
@@ -32,7 +32,7 @@ const reportQuerySchema = z.object({
 });
 
 // GET handler for generating financial reports
-export const _GET = withErrorHandling(async (req: NextRequest) => {
+export const _GET = withErrorHandling(async (req: NextRequest) => {,
   // Validate query parameters
   const query = validateQuery(reportQuerySchema)(req);
 
@@ -45,7 +45,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
     startDate = new Date(query.startDate);
     endDate = new Date(query.endDate);
 
-    \1 {\n  \2{
+     {\n  {
       throw new ValidationError('Start date must be before end date', 'INVALID_DATE_RANGE');
     }
   } catch (error) {
@@ -56,17 +56,17 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   let reportData;
   switch (query.reportType) {
     case 'revenue':
-      reportData = await generateRevenueReport(startDate, endDate, query.groupBy, query.departmentId),\1\n    }\n    case 'expenses':
-      reportData = await generateExpensesReport(startDate, endDate, query.groupBy, query.departmentId),\1\n    }\n    case 'profit_loss':
-      reportData = await generateProfitLossReport(startDate, endDate, query.groupBy),\1\n    }\n    case 'accounts_receivable':
-      reportData = await generateAccountsReceivableReport(startDate, endDate),\1\n    }\n    case 'insurance_claims':
-      reportData = await generateInsuranceClaimsReport(startDate, endDate, query.insuranceProviderId),\1\n    }\n    case 'payment_collection':
-      reportData = await generatePaymentCollectionReport(startDate, endDate, query.groupBy),\1\n    }\n    case 'department_revenue':
-      reportData = await generateDepartmentRevenueReport(startDate, endDate),\1\n    }\n    case 'service_revenue':
+      reportData = await generateRevenueReport(startDate, endDate, query.groupBy, query.departmentId),\n    }\n    case 'expenses':
+      reportData = await generateExpensesReport(startDate, endDate, query.groupBy, query.departmentId),\n    }\n    case 'profit_loss':
+      reportData = await generateProfitLossReport(startDate, endDate, query.groupBy),\n    }\n    case 'accounts_receivable':
+      reportData = await generateAccountsReceivableReport(startDate, endDate),\n    }\n    case 'insurance_claims':
+      reportData = await generateInsuranceClaimsReport(startDate, endDate, query.insuranceProviderId),\n    }\n    case 'payment_collection':
+      reportData = await generatePaymentCollectionReport(startDate, endDate, query.groupBy),\n    }\n    case 'department_revenue':
+      reportData = await generateDepartmentRevenueReport(startDate, endDate),\n    }\n    case 'service_revenue':
       reportData = await generateServiceRevenueReport(startDate, endDate),
       break;
     default:
-      throw new ValidationError(`Unsupported report type: ${query.reportType}`, 'UNSUPPORTED_REPORT_TYPE'),
+      throw new ValidationError(`Unsupported report type: ${query.reportType,}`, 'UNSUPPORTED_REPORT_TYPE'),
   }
 
   // Format report based on requested format
@@ -75,28 +75,28 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 
   logger.info('Financial report generated', {
     reportType: query.reportType,
-    \1,\2 query.endDate,
-    format: query.format
+     query.endDate,
+    format: query.format,
   });
 
   return createSuccessResponse({
     reportType: query.reportType,
-    \1,\2 query.endDate,
-    \1,\2 new Date().toISOString(),
-    data: reportData
+     query.endDate,
+     new Date().toISOString(),
+    data: reportData,
   });
 });
 
 // Helper function to generate revenue report
 async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: string, departmentId?: string) {
-  const where: unknown = {
-    billDate: {
+  const where: unknown = {,
+    billDate: {,
       gte: startDate,
-      lte: endDate
+      lte: endDate,
     },
   };
 
-  \1 {\n  \2{
+   {\n  {
     where.departmentId = departmentId;
   }
 
@@ -106,29 +106,29 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
     case 'day':
       _groupByFormat = {
         _type: 'day',
-        day: { date: '$billDate' }
-      };\1\n    }\n    case 'week':
+        day: { date: '$billDate' },
+      };\n    }\n    case 'week':
       _groupByFormat = {
         _type: 'week',
-        week: { date: '$billDate' }
-      };\1\n    }\n    case 'month':
+        week: { date: '$billDate' },
+      };\n    }\n    case 'month':
       _groupByFormat = {
         _type: 'month',
-        month: { date: '$billDate' }
-      };\1\n    }\n    case 'quarter':
+        month: { date: '$billDate' },
+      };\n    }\n    case 'quarter':
       _groupByFormat = {
         _type: 'quarter',
-        quarter: { date: '$billDate' }
-      };\1\n    }\n    case 'year':
+        quarter: { date: '$billDate' },
+      };\n    }\n    case 'year':
       _groupByFormat = {
         _type: 'year',
-        year: { date: '$billDate' }
+        year: { date: '$billDate' },
       };
       break;
     default:
-      _groupByFormat = {
+      _groupByFormat = {,
         _type: 'month',
-        month: { date: '$billDate' }
+        month: { date: '$billDate' },
       };
   }
 
@@ -141,17 +141,17 @@ async const generateRevenueReport = (startDate: Date, endDate: Date, groupBy: st
     return {
       period: month.toISOString().substring(0, 7), // YYYY-MM format
       totalRevenue: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 500000) + 100000,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 10000
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 10000
     };
   });
 
   return {
-    summary: {
+    summary: {,
       totalRevenue: revenueData.reduce((sum, item) => sum + item.totalRevenue, 0),
       paidRevenue: revenueData.reduce((sum, item) => sum + item.paidRevenue, 0),
       outstandingRevenue: revenueData.reduce((sum, item) => sum + item.outstandingRevenue, 0),
     },
-    details: revenueData
+    details: revenueData,
   };
 }
 
@@ -163,18 +163,18 @@ async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: s
     return {
       period: month.toISOString().substring(0, 7), // YYYY-MM format
       totalExpenses: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 300000) + 50000,
-      categories: {
+      categories: {,
         salaries: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150000) + 30000,
-        \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30000) + 5000,
-        \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000) + 2000
+         Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30000) + 5000,
+         Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000) + 2000
       },
     };
   });
 
   return {
-    summary: {
+    summary: {,
       totalExpenses: expenseData.reduce((sum, item) => sum + item.totalExpenses, 0),
-      categorySummary: {
+      categorySummary: {,
         salaries: expenseData.reduce((sum, item) => sum + item.categories.salaries, 0),
         supplies: expenseData.reduce((sum, item) => sum + item.categories.supplies, 0),
         equipment: expenseData.reduce((sum, item) => sum + item.categories.equipment, 0),
@@ -182,29 +182,29 @@ async const generateExpensesReport = (startDate: Date, endDate: Date, groupBy: s
         other: expenseData.reduce((sum, item) => sum + item.categories.other, 0),
       },
     },
-    details: expenseData
+    details: expenseData,
   };
 }
 
 // Helper function to generate profit/loss report
-async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy: string) {
+async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy: string) {,
   // Get revenue and expense data
   const revenueData = await generateRevenueReport(startDate, endDate, groupBy);
   const expenseData = await generateExpensesReport(startDate, endDate, groupBy);
 
   // Calculate profit/loss
   const profitLossData = {
-    summary: {
+    summary: {,
       totalRevenue: revenueData.summary.totalRevenue,
-      \1,\2 revenueData.summary.totalRevenue - expenseData.summary.totalExpenses,
-      profitMargin: ((revenueData.summary.totalRevenue - expenseData.summary.totalExpenses) / revenueData.summary.totalRevenue * 100).toFixed(2) + '%'
+       revenueData.summary.totalRevenue - expenseData.summary.totalExpenses,
+      profitMargin: ((revenueData.summary.totalRevenue - expenseData.summary.totalExpenses) / revenueData.summary.totalRevenue * 100).toFixed(2) + '%',
     },
     details: revenueData.details.map((revenue, index) => {
       const expense = expenseData.details[index];
       return {
         period: revenue.period,
-        \1,\2 expense.totalExpenses,
-        \1,\2 ((revenue.totalRevenue - expense.totalExpenses) / revenue.totalRevenue * 100).toFixed(2) + '%'
+         expense.totalExpenses,
+         ((revenue.totalRevenue - expense.totalExpenses) / revenue.totalRevenue * 100).toFixed(2) + '%'
       };
     }),
   };
@@ -213,7 +213,7 @@ async const generateProfitLossReport = (startDate: Date, endDate: Date, groupBy:
 }
 
 // Helper function to generate accounts receivable report
-async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) {
+async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) {,
   // Simulate accounts receivable aging data
   const agingData = {
     current: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 50000;
@@ -224,19 +224,19 @@ async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) 
   };
 
   // Simulate top outstanding invoices
-  const topOutstandingInvoices = Array.from({ length: 10 }, (_, i) => {
+  const topOutstandingInvoices = Array.from({ length: 10 ,}, (_, i) => {
     return {
-      invoiceId: `INV-${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000)}`,
-      patientName: `Patient ${i + 1}`,
+      invoiceId: `INV-${Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000),}`,
+      patientName: `Patient ${i + 1,}`,
       amount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 10000) + 1000,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 90) + 1
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 90) + 1
     };
   }).sort((a, b) => b.amount - a.amount);
 
   return {
-    summary: {
+    summary: {,
       totalReceivables: Object.values(agingData).reduce((sum: unknown, value) => sum + value, 0),
-      agingBuckets: agingData
+      agingBuckets: agingData,
     },
     topOutstandingInvoices,
   };
@@ -244,14 +244,14 @@ async const generateAccountsReceivableReport = (startDate: Date, endDate: Date) 
 
 // Helper function to generate insurance claims report
 async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, insuranceProviderId?: string) {
-  const where: unknown = {
-    createdAt: {
+  const where: unknown = {,
+    createdAt: {,
       gte: startDate,
-      lte: endDate
+      lte: endDate,
     },
   };
 
-  \1 {\n  \2{
+   {\n  {
     where.insurancePolicy = {
       insuranceProviderId,
     };
@@ -260,10 +260,10 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
   // Simulate claims status data
   const claimsStatusData = {
     draft: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50) + 10,
-    \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 80) + 15,
-    \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200) + 50,
-    \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 40) + 5,
-    \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150) + 30
+     Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 80) + 15,
+     Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200) + 50,
+     Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 40) + 5,
+     Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150) + 30
   };
 
   // Calculate totals
@@ -272,40 +272,40 @@ async const generateInsuranceClaimsReport = (startDate: Date, endDate: Date, ins
   // Simulate financial data
   const financialData = {
     totalClaimedAmount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000) + 200000,
-    \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 30000,
-    averageProcessingDays: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20) + 5
+     Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 30000,
+    averageProcessingDays: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20) + 5,
   };
 
   // Simulate top insurance providers
-  const topProviders = Array.from({ length: 5 }, (_, i) => {
+  const topProviders = Array.from({ length: 5 ,}, (_, i) => {
     return {
-      providerId: `INS-${i + 1}`,
-      providerName: `Insurance Provider ${i + 1}`,
+      providerId: `INS-${i + 1,}`,
+      providerName: `Insurance Provider ${i + 1,}`,
       claimsCount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) + 20,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150000) + 30000,
-      \1,\2 (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30 + 70).toFixed(2) + '%'
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150000) + 30000,
+       (crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30 + 70).toFixed(2) + '%'
     };
   }).sort((a, b) => b.totalAmount - a.totalAmount);
 
   return {
-    summary: {
+    summary: {,
       totalClaims,
       statusBreakdown: claimsStatusData,
-      financialSummary: financialData
+      financialSummary: financialData,
     },
     topProviders,
   };
 }
 
 // Helper function to generate payment collection report
-async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, groupBy: string) {
+async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, groupBy: string) {,
   // Simulate payment method data
   const paymentMethodData = {
     cash: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100000) + 20000,
-    \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 300000) + 50000,
-    \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150000) + 25000,
-    \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 500000) + 100000,
-    mobile_payment: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 80000) + 15000
+     Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 300000) + 50000,
+     Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150000) + 25000,
+     Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 500000) + 100000,
+    mobile_payment: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 80000) + 15000,
   };
 
   // Calculate total
@@ -317,64 +317,64 @@ async const generatePaymentCollectionReport = (startDate: Date, endDate: Date, g
     return {
       period: month.toISOString().substring(0, 7), // YYYY-MM format
       totalCollected: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 50000,
-      paymentMethods: {
+      paymentMethods: {,
         cash: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 20000) + 5000,
-        \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50000) + 10000,
-        \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30000) + 6000,
-        \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 80000) + 15000,
-        mobile_payment: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 15000) + 3000
+         Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50000) + 10000,
+         Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30000) + 6000,
+         Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 80000) + 15000,
+        mobile_payment: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 15000) + 3000,
       },
     };
   });
 
   return {
-    summary: {
+    summary: {,
       totalPayments,
-      paymentMethodBreakdown: paymentMethodData
+      paymentMethodBreakdown: paymentMethodData,
     },
-    trends: paymentTrendData
+    trends: paymentTrendData,
   };
 }
 
 // Helper function to generate department revenue report
-async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
+async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {,
   // Simulate department revenue data
   const departmentData = [
     {
       departmentId: 'DEPT-1',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 500000) + 100000,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100000) + 20000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 500000) + 100000,
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100000) + 20000,
+       0, // Calculated below
     },
     {
       departmentId: 'DEPT-2',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 800000) + 200000,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 50000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 800000) + 200000,
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 50000,
+       0, // Calculated below
     },
     {
       departmentId: 'DEPT-3',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 400000) + 80000,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100000) + 20000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 400000) + 80000,
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100000) + 20000,
+       0, // Calculated below
     },
     {
       departmentId: 'DEPT-4',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 300000) + 60000,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50000) + 10000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 300000) + 60000,
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50000) + 10000,
+       0, // Calculated below
     },
     {
       departmentId: 'DEPT-5',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 350000) + 70000,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50000) + 10000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 350000) + 70000,
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50000) + 10000,
+       0, // Calculated below
     },
     {
       departmentId: 'DEPT-6',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 450000) + 90000,
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50000) + 10000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 450000) + 90000,
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50000) + 10000,
+       0, // Calculated below
     },
   ];
 
@@ -393,70 +393,70 @@ async const generateDepartmentRevenueReport = (startDate: Date, endDate: Date) {
   const totalPatients = departmentData.reduce((sum, dept) => sum + dept.patientCount, 0);
 
   return {
-    summary: {
+    summary: {,
       totalRevenue,
       totalPaidRevenue,
       totalOutstandingRevenue,
       totalPatients,
-      averageRevenuePerPatient: Math.round(totalRevenue / totalPatients)
+      averageRevenuePerPatient: Math.round(totalRevenue / totalPatients),
     },
-    departmentBreakdown: departmentData
+    departmentBreakdown: departmentData,
   };
 }
 
 // Helper function to generate service revenue report
-async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {
+async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {,
   // Simulate service revenue data
   const serviceData = [
     {
       serviceId: 'SVC-1',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 50000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 200000) + 50000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-2',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 300000) + 80000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 300000) + 80000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-3',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 250000) + 60000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 250000) + 60000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-4',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150000) + 40000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 150000) + 40000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-5',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 180000) + 50000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 180000) + 50000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-6',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 220000) + 60000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 220000) + 60000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-7',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 280000) + 70000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 280000) + 70000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-8',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 400000) + 100000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 400000) + 100000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-9',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 120000) + 30000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 120000) + 30000,
+       0, // Calculated below
     },
     {
       serviceId: 'SVC-10',
-      \1,\2 Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 350000) + 80000,
-      \1,\2 0, // Calculated below
+       Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 350000) + 80000,
+       0, // Calculated below
     },
   ];
 
@@ -473,17 +473,17 @@ async const generateServiceRevenueReport = (startDate: Date, endDate: Date) {
   const totalServiceCount = serviceData.reduce((sum, service) => sum + service.serviceCount, 0);
 
   return {
-    summary: {
+    summary: {,
       totalRevenue,
       totalServiceCount,
-      averageRevenuePerService: Math.round(totalRevenue / totalServiceCount)
+      averageRevenuePerService: Math.round(totalRevenue / totalServiceCount),
     },
-    serviceBreakdown: serviceData
+    serviceBreakdown: serviceData,
   };
 }
 
 // Helper function to get months between two dates
-const getMonthsBetweenDates = (startDate: Date, endDate: Date) {
+const getMonthsBetweenDates = (startDate: Date, endDate: Date) {,
   const months = [];
   const currentDate = new Date(startDate);
 

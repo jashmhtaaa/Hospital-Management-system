@@ -3,13 +3,13 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  ContactService  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {authOptions  } from "next/server"
+import {ContactService  } from "next/server"
+import {getServerSession  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
 
 const contactService = new ContactService();
 
@@ -19,11 +19,11 @@ const contactService = new ContactService();
  */;
 export const GET = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -45,11 +45,11 @@ export const GET = async();
  */;
 export const PUT = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -73,18 +73,18 @@ export const PUT = async();
  */;
 export const POST = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { content } = await req.json();
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Note content is required" },
-          {status:400 }
+          {error:"Note content is required" ,},
+          {status:400 },
         );
       }
 
@@ -94,7 +94,7 @@ export const POST = async();
         session?.user?.id as string;
       );
 
-      return NextResponse.json(note, {status:201 });
+      return NextResponse.json(note, {status:201 ,});
     },
     {requiredPermission:"marketing.contacts.update",
       auditAction: "CONTACT_NOTE_ADD";

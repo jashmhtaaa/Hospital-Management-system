@@ -1,4 +1,4 @@
 import "./billing.ts"
-import {  BillableItem  } from "@/lib/database"
+import {BillableItem  } from "next/server"
 
 // types/inventory.ts;

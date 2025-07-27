@@ -8,7 +8,7 @@ import type { Config } from "jest";
  * healthcare-specific test patterns.
  *
  * Features:
- * - TypeScript and React testing support
+ * - TypeScript and React testing support,
  * - Healthcare component testing
  * - Security test patterns
  * - Accessibility testing integration
@@ -21,17 +21,17 @@ import type { Config } from "jest";
  * @compliance Healthcare Testing Standards, HIPAA Testing Guidelines
  */
 
-const jestConfig: Config = {
+const jestConfig: Config = {,
 	// Test environment and setup
 	preset: "ts-jest",
 	testEnvironment: "jsdom", // Changed to jsdom for React component testing
 
 	// TypeScript and JavaScript transformation
-	transform: {
+	transform: {,
 		"^.+\\.(ts|tsx)$": [
 			"ts-jest",
 			{
-				tsconfig: {
+				tsconfig: {,
 					jsx: "react-jsx",
 					esModuleInterop: true,
 					allowSyntheticDefaultImports: true,
@@ -50,7 +50,7 @@ const jestConfig: Config = {
 	roots: ["<rootDir>/src", "<rootDir>/tests", "<rootDir>/__tests__"],
 
 	// Test pattern matching (healthcare-specific patterns)
-	testMatch: [
+	testMatch: [,
 		"**/__tests__/**/*.+(ts|tsx|js|jsx)",
 		"**/?(*.)+(spec|test).+(ts|tsx|js|jsx)",
 		"**/tests/**/*.+(ts|tsx|js|jsx)",
@@ -63,7 +63,7 @@ const jestConfig: Config = {
 	],
 
 	// Module name mapping for absolute imports and aliases
-	moduleNameMapping: {
+	moduleNameMapping: {,
 		"^@/(.*)$": "<rootDir>/src/$1",
 		"^@components/(.*)$": "<rootDir>/src/components/$1",
 		"^@lib/(.*)$": "<rootDir>/src/lib/$1",
@@ -82,7 +82,7 @@ const jestConfig: Config = {
 	},
 
 	// Setup files
-	setupFilesAfterEnv: [
+	setupFilesAfterEnv: [,
 		"<rootDir>/tests/setup/jest.setup.ts",
 		"<rootDir>/tests/setup/healthcare.setup.ts",
 		"<rootDir>/tests/setup/security.setup.ts",
@@ -92,7 +92,7 @@ const jestConfig: Config = {
 	// Coverage configuration (enterprise healthcare standards)
 	collectCoverage: true,
 	coverageDirectory: "coverage",
-	coverageReporters: [
+	coverageReporters: [,
 		"json",
 		"lcov",
 		"text",
@@ -103,8 +103,8 @@ const jestConfig: Config = {
 	],
 
 	// Coverage thresholds (healthcare application standards)
-	coverageThreshold: {
-		global: {
+	coverageThreshold: {,
+		global: {,
 			branches: 90,
 			functions: 90,
 			lines: 90,
@@ -138,7 +138,7 @@ const jestConfig: Config = {
 	},
 
 	// Files to collect coverage from
-	collectCoverageFrom: [
+	collectCoverageFrom: [,
 		"src/**/*.{ts,tsx,js,jsx}",
 		"!src/**/*.d.ts",
 		"!src/**/*.stories.{ts,tsx,js,jsx}",
@@ -155,7 +155,7 @@ const jestConfig: Config = {
 	],
 
 	// Coverage path ignore patterns
-	coveragePathIgnorePatterns: [
+	coveragePathIgnorePatterns: [,
 		"/node_modules/",
 		"/coverage/",
 		"/dist/",
@@ -167,28 +167,28 @@ const jestConfig: Config = {
 	],
 
 	// Test environment options
-	testEnvironmentOptions: {
+	testEnvironmentOptions: {,
 		url: "http://localhost:3000",
 		pretendToBeVisual: true,
 		resources: "usable",
 	},
 
 	// Global test configuration
-	globals: {
+	globals: {,
 		"ts-jest": {
 			useESM: true,
 			isolatedModules: true,
-			diagnostics: {
+			diagnostics: {,
 				ignoreCodes: [1343],
 			},
-			astTransformers: {
-				before: [
+			astTransformers: {,
+				before: [,
 					{
 						path: "node_modules/ts-jest-mock-import-meta",
-						options: {
-							metaObjectReplacement: {
+						options: {,
+							metaObjectReplacement: {,
 								url: "https://localhost:3000",
-								env: {
+								env: {,
 									NODE_ENV: "test",
 									NEXT_PUBLIC_APP_ENV: "test",
 								},
@@ -218,7 +218,7 @@ const jestConfig: Config = {
 	moduleDirectories: ["node_modules", "<rootDir>/src", "<rootDir>/tests"],
 
 	// Ignore patterns
-	testPathIgnorePatterns: [
+	testPathIgnorePatterns: [,
 		"/node_modules/",
 		"/.next/",
 		"/coverage/",
@@ -256,7 +256,7 @@ const jestConfig: Config = {
 	testResultsProcessor: "jest-sonar-reporter",
 
 	// Custom reporters for healthcare compliance
-	reporters: [
+	reporters: [,
 		"default",
 		[
 			"jest-junit",
@@ -264,8 +264,8 @@ const jestConfig: Config = {
 				outputDirectory: "coverage",
 				outputName: "junit.xml",
 				uniqueOutputName: "false",
-				classNameTemplate: "{classname}",
-				titleTemplate: "{title}",
+				classNameTemplate: "{classname,}",
+				titleTemplate: "{title,}",
 				ancestorSeparator: " › ",
 				usePathForSuiteName: "true",
 			},
@@ -291,7 +291,7 @@ const jestConfig: Config = {
 	testEnvironment: "jsdom",
 
 	// Additional Jest configuration for healthcare applications
-	extraGlobals: [
+	extraGlobals: [,
 		"Math",
 		"Date",
 		"crypto",
@@ -312,39 +312,39 @@ export default jestConfig;
 
 /**
  * Healthcare Testing Standards Compliance:
- *
+ *,
  * 1. Security Testing:
- *    - PHI data handling validation
+ *    - PHI data handling validation,
  *    - Authentication/authorization tests
  *    - Input sanitization verification
  *    - Encryption/decryption testing
  *
  * 2. Compliance Testing:
- *    - HIPAA compliance validation
+ *    - HIPAA compliance validation,
  *    - GDPR compliance checks
  *    - FDA regulation adherence
  *    - Audit trail verification
  *
  * 3. Accessibility Testing:
- *    - WCAG 2.1 AA compliance
+ *    - WCAG 2.1 AA compliance,
  *    - Screen reader compatibility
  *    - Keyboard navigation testing
  *    - Color contrast validation
  *
  * 4. Healthcare Workflow Testing:
- *    - Patient registration flows
+ *    - Patient registration flows,
  *    - Clinical decision support
  *    - Emergency system responses
  *    - Drug interaction checks
  *
  * 5. Performance Testing:
- *    - Critical path optimization
+ *    - Critical path optimization,
  *    - Emergency response times
  *    - Database query performance
  *    - Real-time system testing
  *
  * 6. FHIR Standard Testing:
- *    - Resource validation
+ *    - Resource validation,
  *    - Interoperability testing
  *    - Bundle processing
  *    - Terminology validation

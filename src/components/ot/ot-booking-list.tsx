@@ -36,8 +36,7 @@ import { Edit
 import { format }
 
 // Mock data structure - replace with actual API response type;
-interface Booking {
-  id: string,
+interface Booking {id:string,
   string,
   string,
   string,
@@ -47,8 +46,7 @@ export default const _OTBookingList = () {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
-  const [filters, setFilters] = useState({
-    status: "",
+  const [filters, setFilters] = useState({status:"",
     "",
     date: "";
   });
@@ -111,8 +109,7 @@ export default const _OTBookingList = () {
         // Mock data for demonstration;
         await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay;
         const mockData: Booking[] = [;
-          {
-            id: "booking-1",
+          {id:"booking-1",
             scheduled_start_time: "2025-04-28T08:00:00Z",
             scheduled_end_time: "2025-04-28T10:30:00Z",
             "routine",
@@ -120,8 +117,7 @@ export default const _OTBookingList = () {
             "OT-1",
             surgeon_name: "Dr. Alice Brown";
           },
-          {
-            id: "booking-2",
+          {id:"booking-2",
             scheduled_start_time: "2025-04-28T09:30:00Z",
             scheduled_end_time: "2025-04-28T12:00:00Z",
             "urgent",
@@ -129,8 +125,7 @@ export default const _OTBookingList = () {
             "OT-2",
             surgeon_name: "Dr. Bob White";
           },
-          {
-            id: "booking-3",
+          {id:"booking-3",
             scheduled_start_time: "2025-04-28T14:00:00Z",
             scheduled_end_time: "2025-04-28T16:00:00Z",
             "routine",

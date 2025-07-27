@@ -4,12 +4,12 @@ import "../notifications/external-notification.service"
 import "../performance/database-optimization.service"
 import "../quality/quality-persistence.service"
 import "../quality/quality-service-integrated"
-import {  getDatabaseOptimizationService  } from "@/lib/database"
-import {  getEHRPersistenceService  } from "@/lib/database"
-import {  getICDCodingService  } from "@/lib/database"
-import {  getIntegratedQualityService  } from "@/lib/database"
-import {  getNotificationService  } from "@/lib/database"
-import {  getQualityPersistenceService  } from "@/lib/database"
+import {getDatabaseOptimizationService  } from "next/server"
+import {getEHRPersistenceService  } from "next/server"
+import {getICDCodingService  } from "next/server"
+import {getIntegratedQualityService  } from "next/server"
+import {getNotificationService  } from "next/server"
+import {getQualityPersistenceService  } from "next/server"
 
 /**;
  * Gap Implementation Integration Test;
@@ -66,7 +66,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       // console.log removed for production;
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`ICD Coding Service: ${}`;
+      this.errors.push(`ICD Coding Service: ${,}`;
       // console.log removed for production;
     }
 
@@ -111,7 +111,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       // console.log removed for production;
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Quality Persistence: ${}`;
+      this.errors.push(`Quality Persistence: ${,}`;
       // console.log removed for production;
     }
 
@@ -156,7 +156,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       // console.log removed for production;
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`EHR Persistence: ${}`;
+      this.errors.push(`EHR Persistence: ${,}`;
       // console.log removed for production;
     }
 
@@ -201,7 +201,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       // console.log removed for production;
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`External Notifications: ${}`;
+      this.errors.push(`External Notifications: ${,}`;
       // console.log removed for production;
     }
 
@@ -246,7 +246,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       // console.log removed for production;
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Performance Optimization: ${}`;
+      this.errors.push(`Performance Optimization: ${,}`;
       // console.log removed for production;
     }
 
@@ -290,7 +290,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       // console.log removed for production;
     } catch (error) {
       results.testsFailed++;
-      this.errors.push(`Integrated Quality: ${}`;
+      this.errors.push(`Integrated Quality: ${,}`;
       // console.log removed for production;
 
     results.errors = this.errors;
@@ -549,7 +549,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
     // console.log removed for production;
     // console.log removed for production;
 
-  private generateRecommendations(results: GapImplementationTestResults): void {
+  private generateRecommendations(results: GapImplementationTestResults): void {,
     if (!session.user) {
       this.recommendations.push("Review and fix failing tests before deployment");
 
@@ -573,7 +573,7 @@ import {  getQualityPersistenceService  } from "@/lib/database"
       this.recommendations.push("Consider setting up monitoring and alerting for production deployment");
       this.recommendations.push("Plan for gradual rollout with feature flags");
 
-  private printTestSummary(results: GapImplementationTestResults): void {
+  private printTestSummary(results: GapImplementationTestResults): void {,
     // console.log removed for production;
     // console.log removed for production;
     // console.log removed for production;

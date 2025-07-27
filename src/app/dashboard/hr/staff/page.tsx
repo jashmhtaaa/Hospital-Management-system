@@ -65,8 +65,7 @@ export default const _StaffManagement = () {
   const [positionFilter, setPositionFilter] = useState("");
   const [departments, setDepartments] = useState<any[]>([]);
   const [positions, setPositions] = useState<any[]>([]);
-  const [pagination, setPagination] = useState({
-    skip: 0,
+  const [pagination, setPagination] = useState({skip:0,
     0;
   });
 
@@ -106,8 +105,7 @@ export default const _StaffManagement = () {
 } catch (error) {
 
         setLoading(true);
-        const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
+        const queryParams = new URLSearchParams({skip:pagination.skip.toString(),
           take: pagination.take.toString();
         });
 

@@ -13,11 +13,11 @@ const analyticsService = new AnalyticsService();
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { campaignId: string }
+  { params }: { campaignId: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -32,7 +32,7 @@ export const GET = async (
         metrics: searchParams.has('metrics');
           ? (searchParams.get('metrics') as string).split(',');
           : undefined,
-        groupBy: searchParams.get('groupBy') as 'day' | 'week' | 'month' | undefined
+        groupBy: searchParams.get('groupBy') as 'day' | 'week' | 'month' | undefined,
       };
 
       const result = await analyticsService.getAggregatedAnalytics(
@@ -44,7 +44,7 @@ export const GET = async (
     },
     {
       requiredPermission: 'marketing.analytics.read',
-      auditAction: 'CAMPAIGN_ANALYTICS_VIEW'
+      auditAction: 'CAMPAIGN_ANALYTICS_VIEW',
     }
   );
 }
@@ -55,11 +55,11 @@ export const GET = async (
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { campaignId: string }
+  { params }: { campaignId: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -69,10 +69,10 @@ export const POST = async (
         session?.user?.id as string;
       );
 
-      return NextResponse.json(analytics, { status: 201 });
+      return NextResponse.json(analytics, { status: 201 ,});
     },
     {
       requiredPermission: 'marketing.analytics.create',
-      auditAction: 'CAMPAIGN_ANALYTICS_RECORD'
+      auditAction: 'CAMPAIGN_ANALYTICS_RECORD',
     }
   );

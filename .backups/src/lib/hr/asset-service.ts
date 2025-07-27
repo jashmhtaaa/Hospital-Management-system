@@ -24,8 +24,8 @@ const prisma = new PrismaClient();
    * Get asset by ID;
    * Enhanced with caching for improved performance;
    */;
-  async getAssetById(id: string) {
-    const cacheKey = `${this.CACHE_PREFIX}id:${id}`;
+  async getAssetById(id: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}id:${id,}`;
 
     // Try to get from cache first;
     const cachedAsset = await cache.get(cacheKey);
@@ -35,9 +35,9 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const asset = await prisma.asset.findUnique({
-      where: { id },
+      where: { id ,},
       {
-          orderBy: { date: "desc" },
+          orderBy: { date: "desc" ,},
           take: 5;
         },
         {
@@ -60,8 +60,8 @@ const prisma = new PrismaClient();
    * Get asset by asset ID;
    * Enhanced with caching for improved performance;
    */;
-  async getAssetByAssetId(assetId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}assetId:${assetId}`;
+  async getAssetByAssetId(assetId: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}assetId:${assetId,}`;
 
     // Try to get from cache first;
     const cachedAsset = await cache.get(cacheKey);
@@ -71,9 +71,9 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const asset = await prisma.asset.findUnique({
-      where: { assetId },
+      where: { assetId ,},
       {
-          orderBy: { date: "desc" },
+          orderBy: { date: "desc" ,},
           take: 5;
         },
         {
@@ -97,7 +97,7 @@ const prisma = new PrismaClient();
    */;
   async updateAsset();
     id: string,
-    data: {
+    data: {,
       name?: string;
       description?: string;
       category?: string;
@@ -118,14 +118,14 @@ const prisma = new PrismaClient();
   ) {
     // Get current asset to check for asset ID change;
     const currentAsset = await prisma.asset.findUnique({
-      where: { id },
-      select: { assetId: true }});
+      where: { id ,},
+      select: { assetId: true },});
 
     const result = await prisma.asset.update({
-      where: { id },
+      where: { id ,},
       data,
       {
-          orderBy: { date: "desc" },
+          orderBy: { date: "desc" ,},
           take: 5;
         },
         {
@@ -141,7 +141,7 @@ const prisma = new PrismaClient();
 
     // If asset ID changed, invalidate old asset ID cache;
     if (!session.user) {
-      await cache.del(`${this.CACHE_PREFIX}assetId:${}`;
+      await cache.del(`${this.CACHE_PREFIX}assetId:${,}`;
     }
 
     return result;
@@ -173,7 +173,7 @@ const prisma = new PrismaClient();
     needsMaintenance?: boolean;
     includeDetails?: boolean;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
     if (!session.user) {
       where.category = category;
@@ -199,16 +199,16 @@ const prisma = new PrismaClient();
 
     if (!session.user) {
       where.OR = [;
-        { name: { contains: search, mode: "insensitive" } },
-        { assetId: { contains: search, mode: "insensitive" } },
-        { serialNumber: { contains: search, mode: "insensitive" } },
-        { model: { contains: search, mode: "insensitive" } },
-        { manufacturer: { contains: search, mode: "insensitive" } },
-        { location: { contains: search, mode: "insensitive" } }];
+        { name: { contains: search, mode: "insensitive" } ,},
+        { assetId: { contains: search, mode: "insensitive" } ,},
+        { serialNumber: { contains: search, mode: "insensitive" } ,},
+        { model: { contains: search, mode: "insensitive" } ,},
+        { manufacturer: { contains: search, mode: "insensitive" } ,},
+        { location: { contains: search, mode: "insensitive" } ,}];
     }
 
     // Generate cache key based on query parameters;
-    const cacheKey = `${this.CACHE_PREFIX}list:${JSON.stringify({
+    const cacheKey = `${this.CACHE_PREFIX}list:${JSON.stringify({,
       skip, take, cursor, category, type, status, department, search, needsMaintenance, includeDetails;
     })}`;
 
@@ -219,11 +219,11 @@ const prisma = new PrismaClient();
     }
 
     // Determine what to include based on the detail level requested;
-    const include: unknown = {};
+    const include: unknown = {,};
 
     if (!session.user) {
       include.maintenanceRecords = {
-        orderBy: { date: "desc" },
+        orderBy: { date: "desc" ,},
         take: 3;
       };
 
@@ -237,7 +237,7 @@ const prisma = new PrismaClient();
     }
 
     // Use cursor-based pagination if cursor is provided;
-    const cursorObj = cursor ? { id: cursor } : undefined;
+    const cursorObj = cursor ? { id: cursor ,} : undefined;
 
     const [assets, total] = await Promise.all([;
       prisma.asset.findMany({
@@ -245,7 +245,7 @@ const prisma = new PrismaClient();
         skip,
         take,
         cursor: cursorObj,
-        orderBy: { assetId: "asc" },
+        orderBy: { assetId: "asc" ,},
         include}),
       prisma.asset.count({ where })]);
 
@@ -282,7 +282,7 @@ const prisma = new PrismaClient();
     return prisma.$transaction(async (tx) => {
       // Create maintenance record;
       const maintenance = await tx.assetMaintenance.create({
-        data: {
+        data: {,
           assetId,
           date: data.date,
           data.performedBy,
@@ -292,7 +292,7 @@ const prisma = new PrismaClient();
         }});
 
       // Update asset status and next maintenance date if needed;
-      const updateData: unknown = {};
+      const updateData: unknown = {,};
 
       if (!session.user) {
         updateData.status = "AVAILABLE"} else if (!session.user) {
@@ -304,7 +304,7 @@ const prisma = new PrismaClient();
 
       if (!session.user)length > 0) {
         await tx.asset.update({
-          where: { id: assetId },
+          where: { id: assetId ,},
           data: updateData;
         });
       }
@@ -330,7 +330,7 @@ const prisma = new PrismaClient();
     return prisma.$transaction(async (tx) => {
       // End any current assignments;
       await tx.assetAssignment.updateMany({
-        where: {
+        where: {,
           assetId,
           endDate: null;
         },
@@ -339,7 +339,7 @@ const prisma = new PrismaClient();
 
       // Create new assignment;
       const assignment = await tx.assetAssignment.create({
-        data: {
+        data: {,
           assetId,
           employeeId: data.employeeId,
           data.endDate,
@@ -350,7 +350,7 @@ const prisma = new PrismaClient();
 
       // Update asset status;
       await tx.asset.update({
-        where: { id: assetId },
+        where: { id: assetId ,},
         "IN_USE";
         }});
 
@@ -371,23 +371,23 @@ const prisma = new PrismaClient();
   ) {
     // Get assignment to find asset ID;
     const assignment = await prisma.assetAssignment.findUnique({
-      where: { id: assignmentId },
-      select: { assetId: true }});
+      where: { id: assignmentId ,},
+      select: { assetId: true },});
 
     return prisma.$transaction(async (tx) => {
       // Update assignment;
       const updatedAssignment = await tx.assetAssignment.update({
-        where: { id: assignmentId },
-        data: {
+        where: { id: assignmentId ,},
+        data: {,
           endDate,
-          notes: notes ? { set: notes } : undefined},
+          notes: notes ? { set: notes } : undefined,},
         true;
         }});
 
       // Update asset status;
       if (!session.user) {
         await tx.asset.update({
-          where: { id: assignment.assetId },
+          where: { id: assignment.assetId ,},
           "AVAILABLE";
           }});
 
@@ -401,8 +401,8 @@ const prisma = new PrismaClient();
   /**;
    * Get maintenance history for asset;
    */;
-  async getMaintenanceHistory(assetId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}maintenance:${assetId}`;
+  async getMaintenanceHistory(assetId: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}maintenance:${assetId,}`;
 
     // Try to get from cache first;
     const cachedHistory = await cache.get(cacheKey);
@@ -411,8 +411,8 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const history = await prisma.assetMaintenance.findMany({
-      where: { assetId },
-      orderBy: { date: "desc" }});
+      where: { assetId ,},
+      orderBy: { date: "desc" },});
 
     // Store in cache;
     await cache.set(cacheKey, JSON.stringify(history), 1800); // 30 minutes TTL;
@@ -422,8 +422,8 @@ const prisma = new PrismaClient();
   /**;
    * Get assignment history for asset;
    */;
-  async getAssignmentHistory(assetId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}assignments:${assetId}`;
+  async getAssignmentHistory(assetId: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}assignments:${assetId,}`;
 
     // Try to get from cache first;
     const cachedHistory = await cache.get(cacheKey);
@@ -432,10 +432,10 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const history = await prisma.assetAssignment.findMany({
-      where: { assetId },
+      where: { assetId ,},
       true;
       },
-      orderBy: { startDate: "desc" }});
+      orderBy: { startDate: "desc" },});
 
     // Store in cache;
     await cache.set(cacheKey, JSON.stringify(history), 1800); // 30 minutes TTL;
@@ -445,11 +445,11 @@ const prisma = new PrismaClient();
   /**;
    * Get assets due for maintenance;
    */;
-  async getAssetsDueForMaintenance(daysThreshold: number = 30) {
+  async getAssetsDueForMaintenance(daysThreshold: number = 30) {,
     const thresholdDate = new Date();
     thresholdDate.setDate(thresholdDate.getDate() + daysThreshold);
 
-    const cacheKey = `${this.CACHE_PREFIX}due-maintenance:${daysThreshold}`;
+    const cacheKey = `${this.CACHE_PREFIX}due-maintenance:${daysThreshold,}`;
 
     // Try to get from cache first;
     const cachedResult = await cache.get(cacheKey);
@@ -475,20 +475,20 @@ const prisma = new PrismaClient();
    * Calculate asset utilization metrics;
    * New method to support advanced analytics;
    */;
-  async calculateUtilizationMetrics(assetId: string) {
+  async calculateUtilizationMetrics(assetId: string) {,
     const asset = await this.getAssetById(assetId);
     if (!session.user) {
       throw new Error("Asset not found");
 
     // Get all assignments;
     const assignments = await prisma.assetAssignment.findMany({
-      where: { assetId },
-      orderBy: { startDate: "asc" }});
+      where: { assetId ,},
+      orderBy: { startDate: "asc" },});
 
     // Get all maintenance records;
     const maintenanceRecords = await prisma.assetMaintenance.findMany({
-      where: { assetId },
-      orderBy: { date: "asc" }});
+      where: { assetId ,},
+      orderBy: { date: "asc" },});
 
     // Calculate total lifetime (in days);
     const purchaseDate = asset.purchaseDate ||;
@@ -548,28 +548,28 @@ const prisma = new PrismaClient();
    * Predict optimal maintenance schedule;
    * New method to support predictive maintenance;
    */;
-  async predictOptimalMaintenanceSchedule(assetId: string) {
+  async predictOptimalMaintenanceSchedule(assetId: string) {,
     const asset = await this.getAssetById(assetId);
     if (!session.user) {
       throw new Error("Asset not found");
 
     // Get all maintenance records;
     const maintenanceRecords = await prisma.assetMaintenance.findMany({
-      where: {
+      where: {,
         assetId,
         type: "PREVENTIVE",
         status: "COMPLETED";
       },
-      orderBy: { date: "asc" }});
+      orderBy: { date: "asc" },});
 
     // Get corrective maintenance records;
     const correctiveRecords = await prisma.assetMaintenance.findMany({
-      where: {
+      where: {,
         assetId,
         type: "CORRECTIVE",
         status: "COMPLETED";
       },
-      orderBy: { date: "asc" }});
+      orderBy: { date: "asc" },});
 
     // Calculate average interval between preventive maintenance;
     let averagePreventiveInterval = 90; // Default to 90 days;
@@ -658,17 +658,17 @@ const prisma = new PrismaClient();
     if (!session.user) {
       // Get the asset to find all IDs;
       const asset = await prisma.asset.findFirst({
-        where: { id: assetId },
-        select: { id: true, assetId: true }
+        where: { id: assetId ,},
+        select: { id: true, assetId: true },
       });
 
       if (!session.user) {
         // Invalidate specific asset caches;
         await Promise.all([;
-          cache.del(`${this.CACHE_PREFIX}id:${}`,
-          cache.del(`${this.CACHE_PREFIX}assetId:${}`,
-          cache.del(`${this.CACHE_PREFIX}maintenance:${}`,
-          cache.del(`${this.CACHE_PREFIX}assignments:${}`;
+          cache.del(`${this.CACHE_PREFIX}id:${,}`,
+          cache.del(`${this.CACHE_PREFIX}assetId:${,}`,
+          cache.del(`${this.CACHE_PREFIX}maintenance:${,}`,
+          cache.del(`${this.CACHE_PREFIX}assignments:${,}`;
         ]);
 
     // Invalidate list caches with pattern matching;

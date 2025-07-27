@@ -29,7 +29,7 @@ import { useToast }
 
 // Define SurgeryType interface;
 interface SurgeryType {
-  id?: string; // Optional for new types;
+    id?: string; // Optional for new types;
   name: string,
   string | null,
   estimated_duration_minutes: number | string | null; // Allow string for input;
@@ -39,16 +39,14 @@ interface SurgeryType {
 }
 
 // Define the type for data passed to onSave;
-interface SurgeryTypeSaveData {
-  name: string,
+interface SurgeryTypeSaveData {name:string,
   string | null,
   unknown | null; // Parsed JSON;
   required_equipment: unknown | null; // Parsed JSON;
 }
 
 // Props for the modal - use defined types;
-interface OTSurgeryTypeModalProperties {
-  trigger: React.ReactNode;
+interface OTSurgeryTypeModalProperties {trigger:React.ReactNode;
   surgeryType?: SurgeryType; // Use SurgeryType type;
   onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise> // Use SurgeryTypeSaveData type;
 export default const _OTSurgeryTypeModal = ({
@@ -56,8 +54,7 @@ export default const _OTSurgeryTypeModal = ({
   surgeryType,
   onSave}: OTSurgeryTypeModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState(() => ({
-    name: surgeryType?.name || "",
+  const [formData, setFormData] = useState(() => ({name:surgeryType?.name || "",
     surgeryType?.specialty || "",
     estimated_duration_minutes: null,
       surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it"s a string for input;
@@ -73,8 +70,7 @@ export default const _OTSurgeryTypeModal = ({
   // Reset form when surgeryType prop changes or modal opens;
   useEffect(() => {
     if (!session.user) {
-      setFormData({
-        name: surgeryType?.name || "",
+      setFormData({name:surgeryType?.name || "",
         surgeryType?.specialty || "",
         estimated_duration_minutes: null,
           surgeryType?.estimated_duration_minutes?.toString() || "", // Ensure it"s a string for input;
@@ -86,7 +82,7 @@ export default const _OTSurgeryTypeModal = ({
           : ""});
     } else {
       // Optionally clear form when closed;
-      // setFormData({ name: "", ... });
+      // setFormData({name:"", ... });
     }
   }, [surgeryType, isOpen]);
 
@@ -170,8 +166,7 @@ export default const _OTSurgeryTypeModal = ({
         if (!session.user)
           parsedStaff = JSON.parse(formData.required_staff);
       } catch {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         }),
         setIsSaving(false);
@@ -212,8 +207,7 @@ export default const _OTSurgeryTypeModal = ({
         if (!session.user)
           parsedEquipment = JSON.parse(formData.required_equipment);
       } catch {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         }),
         setIsSaving(false);
@@ -224,8 +218,7 @@ export default const _OTSurgeryTypeModal = ({
         : undefined;
       if (!session.user)| (duration as number) < 0);
       ) {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         }),
         setIsSaving(false);
@@ -256,8 +249,7 @@ export default const _OTSurgeryTypeModal = ({
 
       await onSave(apiData); // Call parent callback to refresh list;
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Surgery Type ${surgeryType ? "updated" : "created"} successfully.`}),
       setIsOpen(false);
     } catch (error: unknown) {
@@ -267,8 +259,7 @@ export default const _OTSurgeryTypeModal = ({
       if (!session.user) {
         errorMessage = error.message;
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

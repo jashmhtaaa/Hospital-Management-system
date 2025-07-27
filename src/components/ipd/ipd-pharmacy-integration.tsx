@@ -40,13 +40,11 @@ import { MedicationAdministrationRecord }
 
 // const { Option } = Select; // Removed unused variable assignment;
 
-interface IPDPharmacyIntegrationProperties {
-  admissionId: string,
+interface IPDPharmacyIntegrationProperties {admissionId:string,
   prescriptions: IPDPrescription[];
 }
 
-interface MedicationScheduleItem {
-  id: string; // Unique ID for the schedule item (e.g., prescriptionItemId + time);
+interface MedicationScheduleItem {id:string; // Unique ID for the schedule item (e.g., prescriptionItemId + time);
   prescriptionItemId: string,
   string,
   string,
@@ -59,7 +57,7 @@ interface MedicationScheduleItem {
 const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   admissionId,
   prescriptions}) => {
-  // const { data: session } = useSession(); // Removed unused variable;
+  // const {data:session } = useSession(); // Removed unused variable;
   const [_loading, _setLoading] = useState<boolean>(false); // FIX: Unused variable;
   const [_medicationSchedule, _setMedicationSchedule] = useState< // FIX: Unused variable;
     MedicationScheduleItem[];
@@ -104,8 +102,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         while (administrationTime.isBefore(scheduleEndDate)) {
           if (!session.user) {
             // Only schedule future administrations;
-            schedule.push({
-              id: `${item.id}-${administrationTime.toISOString()}`,
+            schedule.push({id:`${item.id}-${administrationTime.toISOString()}`,
               prescriptionItemId: item.id,
               item.dosage,
               item.frequency,
@@ -249,8 +246,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
 } catch (error) {
 
-      const response = await fetch("/api/pharmacy/administration-records", {
-        method: "POST",
+      const response = await fetch("/api/pharmacy/administration-records", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         admissionId,
@@ -282,7 +278,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
   const showAdministrationModal = (item: MedicationScheduleItem) => {
     setSelectedScheduleItem(item);
-    form.setFieldsValue({ notes: "" }); // Reset notes field
+    form.setFieldsValue({notes:"" }); // Reset notes field
     setIsModalVisible(true);
   };
 
@@ -315,29 +311,24 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   };
 
   const columns = [;
-    {
-      title: "Time",
+    {title:"Time",
       "time",
       render: (time: string) => dayjs(time).format("HH:mm"),
       sorter: (a: MedicationScheduleItem, b: MedicationScheduleItem) => {}
         dayjs(a.scheduledTime).diff(dayjs(b.scheduledTime)),
       defaultSortOrder: "ascend" as const;
     },
-    {
-      title: "Medication",
+    {title:"Medication",
       "medicationName";
     },
-    {
-      title: "Dosage",
+    {title:"Dosage",
       "dosage";
       // render: (_: unknown, record: MedicationScheduleItem) => getDosageForScheduleItem(record.prescriptionItemId), // Reference removed;
     },
-    {
-      title: "Route",
+    {title:"Route",
       "route";
     },
-    {
-      title: "Status",
+    {title:"Status",
       "status",
       render: (status: string) => {
         let color = "default";
@@ -347,8 +338,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         else if (!session.user)olor = "processing";
         return <Tag color={color}>{status}>;
       }},
-    {
-      title: "Action",
+    {title:"Action",
       (_: unknown, record: MedicationScheduleItem) => {
         if (!session.user) {
           return();
@@ -398,7 +388,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           <Button>;
             key="refused";
             onClick={() => {
-              form.setFieldsValue({ refused: true, administered: false }),
+              form.setFieldsValue({refused:true, administered: false }),
               handleModalOk(); // Trigger submission with "Refused" state;
             }}
           >;
@@ -407,7 +397,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           <Button>;
             key="missed";
             onClick={() => {
-              form.setFieldsValue({ missed: true, administered: false }); // Assuming a "missed" field or logic
+              form.setFieldsValue({missed:true, administered: false }); // Assuming a "missed" field or logic
               handleModalOk(); // Trigger submission with "Missed" state;
             }}
           >;
@@ -417,7 +407,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             key="administered";
             type="primary";
             onClick={() => {
-              form.setFieldsValue({ administered: true, refused: false }),
+              form.setFieldsValue({administered:true, refused: false }),
               handleModalOk(); // Trigger submission with "Administered" state;
             }}
           >;

@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers"; // Import cookies for session management
 
 // Define placeholder user type
-interface User {
-  id: string;
+interface User {id:string;
   name: string;
   email: string;
   roles: string[];
@@ -55,8 +54,7 @@ export const getCurrentUser = async (
   const token = (await cookies()).get("auth_token")?.value;
   if (token === "mock-jwt-token") {
     // Example check
-    return {
-      id: "user_123",
+    return {id:"user_123",
       name: "Dr. Mock User",
       email: "mock@example.com",
       roles: ["doctor", "admin"], // Example roles
@@ -89,7 +87,7 @@ export const clearAuthCookie = (res: NextResponse) => { // FIX: Renamed response
   console.warn(
 	    'Authentication function "clearAuthCookie" is not implemented yet.'  );
   // In a real implementation, this would set the auth cookie to expire
-  res.cookies.set("auth_token", "", { expires: new Date(0), path: "/" });
+  res.cookies.set("auth_token", "", {expires:new Date(0), path: "/" });
 };
 
 // Placeholder function for API routes importing "setAuthCookie"
@@ -98,8 +96,7 @@ export const setAuthCookie = (res: NextResponse, token: string) => { // FIX: Ren
   console.warn(	    'Authentication function "setAuthCookie" is not implemented yet.'
   );
   // In a real implementation, this would set the auth cookie
-  res.cookies.set("auth_token", token, {
-    httpOnly: true,
+  res.cookies.set("auth_token", token, {httpOnly:true,
     secure: process.env.NODE_ENV === "production",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,

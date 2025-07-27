@@ -15,7 +15,7 @@ import { HMSIntegrationService } from '@/lib/services/integration/hms-integratio
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { patientId: string }
+  { params }: { patientId: string },
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -31,7 +31,7 @@ export const GET = async (
 
     return NextResponse.json({
       success: true,
-      data: patientInfo
+      data: patientInfo,
     });
   });
 }
@@ -42,7 +42,7 @@ export const GET = async (
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { locationId: string }
+  { params }: { locationId: string },
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -58,7 +58,7 @@ export const GET = async (
 
     return NextResponse.json({
       success: true,
-      data: locationInfo
+      data: locationInfo,
     });
   });
 }
@@ -67,7 +67,7 @@ export const GET = async (
  * POST /api/integration/support-services/notification;
  * Sends a notification through the HMS Notification System;
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
@@ -78,16 +78,16 @@ export const POST = async (request: NextRequest) => {
     const { recipientId, type, title, message, metadata } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           success: false,
-          error: {
+          error: {,
             code: 'VALIDATION_ERROR',
-            \1,\2 ['recipientId', 'type', 'title', 'message']
+             ['recipientId', 'type', 'title', 'message']
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -104,7 +104,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      data: notification
+      data: notification,
     });
   });
 }
@@ -113,7 +113,7 @@ export const POST = async (request: NextRequest) => {
  * POST /api/integration/support-services/report;
  * Submits data to the HMS Reporting System;
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
     const userId = req.userId || 'anonymous';
@@ -124,16 +124,16 @@ export const POST = async (request: NextRequest) => {
     const { reportType, reportData } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           success: false,
-          error: {
+          error: {,
             code: 'VALIDATION_ERROR',
-            \1,\2 ['reportType', 'reportData']
+             ['reportType', 'reportData']
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -147,7 +147,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      data: report
+      data: report,
     });
   });
 }
@@ -158,7 +158,7 @@ export const POST = async (request: NextRequest) => {
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { serviceType: string, requestId: string }
+  { params }: { serviceType: string, requestId: string },
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -170,16 +170,16 @@ export const POST = async (
     const { patientId } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           success: false,
-          error: {
+          error: {,
             code: 'VALIDATION_ERROR',
-            \1,\2 ['patientId']
+             ['patientId']
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -187,17 +187,17 @@ export const POST = async (
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE', 'FEEDBACK'];
     const serviceType = params.serviceType.toUpperCase();
 
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
         {
           success: false,
-          error: {
+          error: {,
             code: 'VALIDATION_ERROR',
             message: 'Invalid service type';
               validServiceTypes
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -212,7 +212,7 @@ export const POST = async (
 
     return NextResponse.json({
       success: true,
-      data: request
+      data: request,
     });
   });
 }
@@ -223,7 +223,7 @@ export const POST = async (
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { serviceType: string, requestId: string }
+  { params }: { serviceType: string, requestId: string },
 ) => {
   return errorHandlingMiddleware(request, async (req) => {
     // Extract user information from request context
@@ -235,16 +235,16 @@ export const POST = async (
     const { locationId } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           success: false,
-          error: {
+          error: {,
             code: 'VALIDATION_ERROR',
-            \1,\2 ['locationId']
+             ['locationId']
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -252,17 +252,17 @@ export const POST = async (
     const validServiceTypes = ['HOUSEKEEPING', 'MAINTENANCE', 'DIETARY', 'AMBULANCE'];
     const serviceType = params.serviceType.toUpperCase();
 
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
         {
           success: false,
-          error: {
+          error: {,
             code: 'VALIDATION_ERROR',
             message: 'Invalid service type';
               validServiceTypes
           }
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -277,6 +277,6 @@ export const POST = async (
 
     return NextResponse.json({
       success: true,
-      data: request
+      data: request,
     });
   });

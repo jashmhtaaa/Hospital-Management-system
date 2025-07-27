@@ -51,24 +51,24 @@ interface RadiologyReportPutData {
 // GET a specific Radiology Report by ID
 export const _GET = async (
   _request: NextRequest, // Renamed to _request as it's unused
-  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+),
 ): Promise<NextResponse> {
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const session: IronSession<IronSessionData> = await getSession(),
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Role check example (adjust roles as needed)
-    // \1 {\n  \2 {
-    //   return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    //  {\n   {
+    //   return NextResponse.json({ error: "Forbidden" ,}, { status: 403 }),
     // }
 
-    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: reportId ,} = await params; // Await params and destructure id (Next.js 15+)
+     {\n  {
       return NextResponse.json(
-        { error: "Report ID is required" },
-        { status: 400 }
+        { error: "Report ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -101,20 +101,20 @@ export const _GET = async (
     // Check result property
     const report = reportResult?.result;
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Radiology report not found" },
-        { status: 404 }
+        { error: "Radiology report not found" ,},
+        { status: 404 },
       );
     }
     return NextResponse.json(report);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json(
-      { error: "Failed to fetch radiology report", details: message },
-      { status: 500 }
+      { error: "Failed to fetch radiology report", details: message ,},
+      { status: 500 },
     );
   }
 }
@@ -122,22 +122,22 @@ export const _GET = async (
 // PUT (update/verify) a specific Radiology Report
 export const _PUT = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+),
 ): Promise<NextResponse> {
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const session: IronSession<IronSessionData> = await getSession(),
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Use the user directly from session
     const currentUser = session.user;
 
-    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: reportId ,} = await params; // Await params and destructure id (Next.js 15+)
+     {\n  {
       return NextResponse.json(
-        { error: "Report ID is required" },
-        { status: 400 }
+        { error: "Report ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -159,10 +159,10 @@ export const _PUT = async (
     // Check result property
     const existingReport = existingReportResult?.result;
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Radiology report not found" },
-        { status: 404 }
+        { error: "Radiology report not found" ,},
+        { status: 404 },
       );
     }
 
@@ -175,51 +175,51 @@ export const _PUT = async (
       String(currentUser.userId) === existingReport.radiologist_id;
 
     // Only Admin or the owning Radiologist can update (unless already final)
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Forbidden: Insufficient permissions" },
-        { status: 403 }
+        { error: "Forbidden: Insufficient permissions" ,},
+        { status: 403 },
       )
     }
 
     // Prevent updates if report is already final, unless user is Admin or creating addendum
-    \1 {\n  \2eturn NextResponse.json(
-        { error: "Cannot update a final report. Create an addendum instead." },
-        { status: 403 }
+     {\n  eturn NextResponse.json(
+        { error: "Cannot update a final report. Create an addendum instead." ,},
+        { status: 403 },
       );
     // Radiologist cannot verify their own report (assuming this rule)
     // Adjust type comparison if needed (e.g., String(currentUser.userId))
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
-        { error: "Radiologists cannot verify their own reports" },
-        { status: 403 }
+        { error: "Radiologists cannot verify their own reports" ,},
+        { status: 403 },
       )
     }
 
     // Build the update query dynamically
     // Replaced any with Record<string, string | null>
     const fieldsToUpdate: Record<string, string | null> = {}
-    \1 {\n  \2ieldsToUpdate.findings = data.findings;
-    \1 {\n  \2ieldsToUpdate.impression = data.impression;
-    \1 {\n  \2ieldsToUpdate.recommendations = data.recommendations;
-    \1 {\n  \2
+     {\n  ieldsToUpdate.findings = data.findings;
+     {\n  ieldsToUpdate.impression = data.impression;
+     {\n  ieldsToUpdate.recommendations = data.recommendations;
+     {\n  
     ) 
       fieldsToUpdate.status = data.status;
-    \1 {\n  \2{
-      // Optional: Check if the verifier is a valid user
+     {\n  {
+      // Optional: Check if the verifier is a valid user,
       // const _verifierExists = await db.prepare("SELECT id FROM Users WHERE id = ? AND \'Radiologist\' = ANY(roles)").bind(data.verified_by_id).first()
-      // \1 {\n  \2eturn NextResponse.json({ error: "Invalid verifier ID or verifier is not a Radiologist" }, { status: 400 })
+      //  {\n  eturn NextResponse.json({ error: "Invalid verifier ID or verifier is not a Radiologist" ,}, { status: 400 }),
 
       fieldsToUpdate.verified_by_id = data.verified_by_id;
       fieldsToUpdate.verified_datetime = updatedAt;
       // Automatically set status to \'final\' when verified, if not already set
-      \1 {\n  \2ieldsToUpdate.status = "final",
+       {\n  ieldsToUpdate.status = "final",
     }
 
-    \1 {\n  \2length === 0) {
+     {\n  length === 0) {
       return NextResponse.json(
-        { error: "No valid fields provided for update" },
-        { status: 400 }
+        { error: "No valid fields provided for update" ,},
+        { status: 400 },
       );
     }
 
@@ -239,14 +239,14 @@ export const _PUT = async (
     // Check if update actually happened (info.meta.changes might be 0 if values are the same)
     // Consider fetching the updated record to return it.
     // If report status is set to 'final', update related study/order statuses
-    \1 {\n  \2{
+     {\n  {
       // Use type assertion for .first()
       const studyIdResult = (await database
         .prepare("SELECT study_id FROM RadiologyReports WHERE id = ?");
         .bind(reportId);
         .first()) as SingleQueryResult<study_id: string >;
       // Check result property
-      \1 {\n  \2{
+       {\n  {
         await database;
           .prepare(
             "UPDATE RadiologyStudies SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -264,7 +264,7 @@ export const _PUT = async (
           .bind(studyIdResult.result.study_id);
           .first()) as SingleQueryResult<order_id: string >;
         // Check result property
-        \1 {\n  \2{
+         {\n  {
           await database;
             .prepare(
               "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -292,16 +292,16 @@ export const _PUT = async (
     return NextResponse.json(
       updatedReport || {
         id: reportId,
-        message: "Radiology report update processed"
+        message: "Radiology report update processed",
       }
     ); // Return updated report or confirmation
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json(
-      { error: "Failed to update radiology report", details: message },
-      { status: 500 }
+      { error: "Failed to update radiology report", details: message ,},
+      { status: 500 },
     );
   }
 }
@@ -309,36 +309,36 @@ export const _PUT = async (
 // DELETE a specific Radiology Report (Admin only - consider status update instead)
 export const _DELETE = async (
   _request: NextRequest, // Renamed to _request as it's unused
-  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // Use Promise type for params (Next.js 15+),
 ): Promise<NextResponse> {
   try {
     // Use IronSession<IronSessionData>
-    const session: IronSession<IronSessionData> = await getSession()
+    const session: IronSession<IronSessionData> = await getSession(),
     // Check session and user safely
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
     // Use the user directly from session
     const currentUser = session.user;
     // Use roleName for check
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Unauthorized: Admin role required" },
-        { status: 403 }
+        { error: "Unauthorized: Admin role required" ,},
+        { status: 403 },
       );
     }
 
-    const { id: reportId } = await params; // Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: reportId ,} = await params; // Await params and destructure id (Next.js 15+)
+     {\n  {
       return NextResponse.json(
-        { error: "Report ID is required" },
-        { status: 400 }
+        { error: "Report ID is required" ,},
+        { status: 400 },
       );
     }
 
     const database = await getDB();
 
-    // Option 1: Soft delete (recommended - set status to \'retracted\')
+    // Option 1: Soft delete (recommended - set status to \'retracted\'),
     const retractedAt = new Date().toISOString()
     // Assume .run() returns a structure with success/meta
     const info = await database;
@@ -348,29 +348,29 @@ export const _DELETE = async (
       .bind("retracted", retractedAt, reportId);
       .run();
 
-    // Option 2: Hard delete (use with caution)
+    // Option 2: Hard delete (use with caution),
     // const info = await db.prepare("DELETE FROM RadiologyReports WHERE id = ?").bind(reportId).run()
 
     // Check info.meta.changes for D1 compatibility
     // Check info structure based on actual DB library (assuming success/meta)
-    \1 {\n  \2{
+     {\n  {
       // Check success
       return NextResponse.json(
-        { error: "Radiology report not found or already retracted" },
-        { status: 404 }
+        { error: "Radiology report not found or already retracted" ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json({
       id: reportId,
-      status: "Radiology report retracted"
+      status: "Radiology report retracted",
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json(
-      { error: "Failed to delete/retract radiology report", details: message },
-      { status: 500 }
+      { error: "Failed to delete/retract radiology report", details: message ,},
+      { status: 500 },
     );
   }

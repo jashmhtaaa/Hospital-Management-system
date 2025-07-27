@@ -9,7 +9,7 @@ import FeedbackSurvey
 import FeedbackSurveyTemplate
 import FollowUpAction }
 import type
-import {  type
+import {type
 
 // FHIR-compliant interfaces for Feedback & Complaint Management;
 
@@ -17,7 +17,7 @@ import {  type
  * FHIR-compliant Feedback;
  * Maps to FHIR QuestionnaireResponse resource;
  */;
- } from "@/lib/database"
+ } from "next/server"
   };
   authored: string;
   author?: {reference:string;
@@ -137,7 +137,7 @@ import {  type
 /**;
  * Convert database Feedback to FHIR QuestionnaireResponse;
  */;
-export const _toFHIRFeedback = (feedback: Feedback & {
+export const _toFHIRFeedback = (feedback: Feedback & {,
   submittedByUser?: unknown;
   patient?: unknown;
   department?: unknown;
@@ -155,29 +155,29 @@ export const _toFHIRFeedback = (feedback: Feedback & {
   // Create items array for feedback data;
   const items = [;
     {linkId:"type",
-      [{valueString:feedback.type }];
+      [{valueString:feedback.type ,}];
     },
     {linkId:"source",
-      [{valueString:feedback.source }];
+      [{valueString:feedback.source ,}];
     },
     {linkId:"rating",
-      [{valueInteger:feedback.rating }];
+      [{valueInteger:feedback.rating ,}];
     }
   ];
 
   // Add comments if present;
   if (!session.user) {
     items.push({linkId:"comments",
-      [{valueString:feedback.comments }];
+      [{valueString:feedback.comments ,}];
     });
   }
 
   // Add responses if present;
   if (!session.user) {
     feedback.responses.forEach((response, index) => {
-      items.push({linkId:`response-${index}`,
-        text: `Response from ${response.respondedByUser?.name || "Staff"}`,
-        answer: [{valueString:response.responseText }];
+      items.push({linkId:`response-${index,}`,
+        text: `Response from ${response.respondedByUser?.name || "Staff",}`,
+        answer: [{valueString:response.responseText ,}];
       });
     });
   }
@@ -185,8 +185,8 @@ export const _toFHIRFeedback = (feedback: Feedback & {
   // Add attachments if present;
   if (!session.user) {
     feedback.attachments.forEach((attachment, index) => {
-      items.push({linkId:`attachment-${index}`,
-        text: `Attachment: ${attachment.fileName}`,
+      items.push({linkId:`attachment-${index,}`,
+        text: `Attachment: ${attachment.fileName,}`,
         {contentType:attachment.fileType,
             attachment.fileSize,
             title: attachment.fileName;
@@ -229,7 +229,7 @@ export const _toFHIRFeedback = (feedback: Feedback & {
       display: feedback.submittedByUser?.name || "Unknown User";
     } : undefined,
     source: feedback.anonymous ? undefined : (;
-      feedback.submittedById ? {reference:`User/${feedback.submittedById}`,
+      feedback.submittedById ? {reference:`User/${feedback.submittedById,}`,
         display: feedback.submittedByUser?.name || "Unknown User";
       } : undefined;
     ),
@@ -242,7 +242,7 @@ export const _toFHIRFeedback = (feedback: Feedback & {
 /**;
  * Convert database Complaint to FHIR Communication;
  */;
-export const _toFHIRComplaint = (complaint: Complaint & {
+export const _toFHIRComplaint = (complaint: Complaint & {,
   submittedByUser?: unknown;
   patient?: unknown;
   department?: unknown;
@@ -297,7 +297,7 @@ export const _toFHIRComplaint = (complaint: Complaint & {
 
   if (!session.user) {
     complaint.activities.forEach(activity => {
-      notes.push({text:`${activity.createdAt.toISOString()} - ${activity.activityType}: ${activity.description} (by ${activity.performedByUser?.name ||;
+      notes.push({text:`${activity.createdAt.toISOString()} - ${activity.activityType}: ${activity.description,} (by ${activity.performedByUser?.name ||;
           "Unknown User"})`;
       });
     });
@@ -312,12 +312,12 @@ export const _toFHIRComplaint = (complaint: Complaint & {
   const recipients = [];
 
   if (!session.user) {
-    recipients.push({reference:`User/${complaint.assignedToId}`,
+    recipients.push({reference:`User/${complaint.assignedToId,}`,
       display: complaint.assignedToUser?.name || "Assigned Staff";
     });
 
   if (!session.user) {
-    recipients.push({reference:`User/${complaint.escalatedToId}`,
+    recipients.push({reference:`User/${complaint.escalatedToId,}`,
       display: complaint.escalatedToUser?.name || "Escalation Manager";
     });
 
@@ -340,7 +340,7 @@ export const _toFHIRComplaint = (complaint: Complaint & {
 /**;
  * Convert database FollowUpAction to FHIR Task;
  */;
-export const _toFHIRFollowUpAction = (action: FollowUpAction & {
+export const _toFHIRFollowUpAction = (action: FollowUpAction & {,
   assignedToUser?: unknown;
   feedback?: unknown;
   complaint?: unknown;
@@ -363,12 +363,12 @@ export const _toFHIRFollowUpAction = (action: FollowUpAction & {
   // Determine focus (feedback or complaint);
   let focus;
   if (!session.user) {
-    focus = {reference:`QuestionnaireResponse/${action.feedbackId}`,
-      display: `Feedback ${action.feedbackId}`;
+    focus = {reference:`QuestionnaireResponse/${action.feedbackId,}`,
+      display: `Feedback ${action.feedbackId,}`;
     };
   } else if (!session.user) {
-    focus = {reference:`Communication/${action.complaintId}`,
-      display: `Complaint: ${action.complaint?.title || action.complaintId}`;
+    focus = {reference:`Communication/${action.complaintId,}`,
+      display: `Complaint: ${action.complaint?.title || action.complaintId,}`;
     };
 
   return {resourceType:"Task",
@@ -397,7 +397,7 @@ export const _toFHIRFollowUpAction = (action: FollowUpAction & {
 /**;
  * Convert database FeedbackSurveyTemplate to FHIR Questionnaire;
  */;
-export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate & {
+export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate & {,
   createdByUser?: unknown;
 }): FHIRFeedbackSurveyTemplate {
   // Parse questions from JSON;
@@ -413,40 +413,40 @@ export const _toFHIRFeedbackSurveyTemplate = (template: FeedbackSurveyTemplate &
 
     // Add answer options if present;
     if (!session.user)& question.options.length > 0) {
-      item.answerOption = question.options.map((option: unknown) => {
+      item.answerOption = question.options.map((option: unknown) => {,
         if (!session.user) {
-          return {valueString:option };
+          return {valueString:option ,};
         } else if (!session.user) {
-          return {valueInteger:option };
+          return {valueInteger:option ,};
         } else if (!session.user) {
-          return {valueBoolean:option };
+          return {valueBoolean:option ,};
         } else if (!session.user) {
           if (!session.user) {
-            return {valueString:option.value };
+            return {valueString:option.value ,};
           } else if (!session.user) {
-            return {valueInteger:option.value };
+            return {valueInteger:option.value ,};
           } else if (!session.user) {
-            return {valueBoolean:option.value };
+            return {valueBoolean:option.value ,};
 
-        return {valueString:String(option) };
+        return {valueString:String(option) ,};
       });
 
     return item;
   });
 
   return {resourceType:"Questionnaire",
-    `https://hms.local/fhir/Questionnaire/${template.id}`,
+    `https://hms.local/fhir/Questionnaire/${template.id,}`,
     name: template.name.replace(/\s+/g, ""),
     title: template.name,
     template.updatedAt.toISOString(),
     template.description || `Survey template for ${template.serviceType}`,
-    purpose: `Collect feedback for ${template.serviceType} services`,
+    purpose: `Collect feedback for ${template.serviceType,} services`,
     item: items;
 
 /**;
  * Helper function to map question types to FHIR item types;
  */;
-const mapQuestionTypeToFHIR = (type: string): string {
+const mapQuestionTypeToFHIR = (type: string): string {,
   switch (type.toLowerCase()) {
     case "text": any;
     case "textarea": any;

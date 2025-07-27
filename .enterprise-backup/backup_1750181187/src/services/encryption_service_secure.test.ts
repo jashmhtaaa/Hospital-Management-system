@@ -82,7 +82,7 @@ describe('SecureEncryptionService', () => {
         id: '12345',
         name: 'John Doe',        ssn: '123-45-6789',
         email: 'john.doe@example.com',        diagnosis: 'Hypertension',
-        notes: 'Patient shows improvement',        created_at: '2023-01-01T00:00:00Z'
+        notes: 'Patient shows improvement',        created_at: '2023-01-01T00:00:00Z',
       };
 
       const sensitiveFields = ['ssn', 'email', 'diagnosis', 'notes'];
@@ -106,9 +106,9 @@ describe('SecureEncryptionService', () => {
 
     test('should handle objects with complex data types', async () => {
       const complexObject = {
-        metadata: { version: 1, created: new Date() },
+        metadata: { version: 1, created: new Date() ,},
         tags: ['urgent', 'cardiac'],
-        measurements: { bp: 120, hr: 80 }
+        measurements: { bp: 120, hr: 80 },
       };
 
       const encrypted = await encryptionService.encryptObject(complexObject, ['metadata', 'tags', 'measurements']);
@@ -177,7 +177,7 @@ describe('SecureEncryptionService', () => {
     })
 
     test('should handle multiple concurrent operations', async () => {
-      const texts = Array.from({ length: 100 }, (_, i) => `Text ${i}`);
+      const texts = Array.from({ length: 100 ,}, (_, i) => `Text ${i}`);
 
       const encryptPromises = texts.map(text => encryptionService.encrypt(text));
       const encrypted = await Promise.all(encryptPromises);
@@ -225,18 +225,18 @@ describe('Integration Tests', () => {
       address: '123 Main St, Anytown, ST 12345',
       insurance_id: 'INS987654321',
       emergency_contact: 'Jane Doe, +1-555-987-6543',
-      medical_history: [
+      medical_history: [,
         'Hypertension diagnosed 2020',
         'Diabetes Type 2 diagnosed 2019',
         'Allergic to penicillin'
       ],
-      current_medications: [
+      current_medications: [,
         'Metformin 500mg twice daily',
         'Lisinopril 10mg once daily'
       ],
-      lab_results: {
+      lab_results: {,
         glucose: '95 mg/dL',
-        a1c: '6.8%',        blood_pressure: '125/80 mmHg'
+        a1c: '6.8%',        blood_pressure: '125/80 mmHg',
       }
     };
 

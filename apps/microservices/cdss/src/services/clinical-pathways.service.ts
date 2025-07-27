@@ -16,26 +16,26 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
  */
 
 // Clinical pathway models
-\1
+
 }
   ageRange?: { min?: number; max?: number };
   gender?: string[];
   riskFactors?: string[];
   comorbidities?: string[];
   settings?: string[];
-\1
+
 }
-  estimatedDurationRange?: { min: number, max: number };
+  estimatedDurationRange?: { min: number, max: number ,};
   durationUnit: 'HOURS' | 'DAYS' | 'WEEKS' | 'MONTHS',
-  \1,\2 PathwayActivity[];
+   PathwayActivity[];
   prerequisites?: string[];
   goals: string[];
   exitCriteria?: string[];
   mandatoryActivities: string[];
   varianceProtocols?: string[];
-\1
+
 }
-  window?: { start: string, end: string };
+  window?: { start: string, end: string ,};
   recurrence?: string;
   priority: 'STAT' | 'URGENT' | 'ROUTINE' | 'TIMING_CRITICAL';
   relativeToPhaseStart?: boolean;
@@ -44,20 +44,20 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   dueAfter?: number;
   dueBefore?: number;
   durationUnit?: 'MINUTES' | 'HOURS' | 'DAYS' | 'WEEKS';
-\1
+
 }
 }
 
 // Order set models
-\1
+
 }
   };
   evidenceLevel: string,
-  \1,\2 Date,
-  \1,\2 string,
-  \1,\2 Date,
-  \1,\2 string,
-  \1,\2 string[]
+   Date,
+   string,
+   Date,
+   string,
+   string[]
 export enum OrderSetType {
   ADMISSION = 'ADMISSION',
   DISCHARGE = 'DISCHARGE',
@@ -68,22 +68,22 @@ export enum OrderSetType {
   PERIOPERATIVE = 'PERIOPERATIVE',
   STANDING = 'STANDING',
   PROTOCOL = 'PROTOCOL',
-\1
+
 }
 }
 
 // Patient pathway models
-\1
+
 }
   };
   notes?: string;
 }
 
 // Quality measure models
-\1
+
 }
   };
-  \1,\2 string;
+   string;
     exclusions?: string
   };
   calculation: string;
@@ -99,10 +99,10 @@ export enum OrderSetType {
   riskAdjustment?: string;
   codesets?: MeasureCodeSet[];
   references: Reference[],
-  \1,\2 Date,
-  \1,\2 string;
+   Date,
+   string;
   implementationNotes?: string;
-  versionHistory: MeasureVersion[]
+  versionHistory: MeasureVersion[],
 export enum QualityMeasureCategory {
   PROCESS = 'PROCESS',
   OUTCOME = 'OUTCOME',
@@ -128,22 +128,22 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   EFFICIENCY_COST_REDUCTION = 'EFFICIENCY_COST_REDUCTION',
   PATIENT_ENGAGEMENT = 'PATIENT_ENGAGEMENT',
   FUNCTIONAL_STATUS = 'FUNCTIONAL_STATUS',
-\1
+
 }
 }
 
 // Clinical trial models
-\1
+
 }
 }
 
 // Patient trial match models
-\1
+
 }
 }
 
 @Injectable();
-\1
+
 }
   ) {}
 
@@ -156,23 +156,23 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
     condition?: string;): Promise<ClinicalPathway[]> 
     try {
       // Try cache first
-      const cacheKey = `pathways:${JSON.stringify(filters || {})}`;
+      const cacheKey = `pathways:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      \1 {\n  \2eturn cached;
+       {\n  eturn cached;
 
       // Build filters
-      const where: unknown = {};
-      \1 {\n  \2here.status = filters.status;
-      \1 {\n  \2here.specialty = { has: filters.specialty };
-      \1 {\n  \2here.condition = filters.condition;
+      const where: unknown = {,};
+       {\n  here.status = filters.status;
+       {\n  here.specialty = { has: filters.specialty ,};
+       {\n  here.condition = filters.condition;
 
       // Only return active pathways by default
-      \1 {\n  \2here.status = PathwayStatus.ACTIVE;
+       {\n  here.status = PathwayStatus.ACTIVE;
 
       // Query database
       const pathways = await this.prisma.clinicalPathway.findMany({
         where,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updatedAt: 'desc' ,},
       });
 
       // Cache results
@@ -181,7 +181,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       // Record metrics
       metricsCollector.incrementCounter('cdss.pathway_queries', 1, {
         status: filters?.status || 'ACTIVE',
-        \1,\2 filters?.condition || 'ALL'
+         filters?.condition || 'ALL'
       });
 
       return pathways as ClinicalPathway[];catch (error) 
@@ -192,19 +192,19 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   /**
    * Get pathway by ID;
    */
-  async getPathwayById(id: string): Promise<ClinicalPathway | null> {
+  async getPathwayById(id: string): Promise<ClinicalPathway | null> {,
     try {
       // Try cache first
-      const cacheKey = `pathway:${id}`;
+      const cacheKey = `pathway:${id,}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      \1 {\n  \2eturn cached;
+       {\n  eturn cached;
 
       // Query database
       const pathway = await this.prisma.clinicalPathway.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2eturn null;
+       {\n  eturn null;
 
       // Cache result
       await cacheService.cacheResult('cdss:', cacheKey, pathway, 3600); // 1 hour
@@ -229,21 +229,21 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
       // Create pathway
       const newPathway = await this.prisma.clinicalPathway.create({
-        data: {
+        data: {,
           ...pathway,
-          id: `pathway-${crypto.getRandomValues(\1[0]}`,
+          id: `pathway-${crypto.getRandomValues([0],}`,
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        \1,\2 newPathway.id;
+         newPathway.id;
         userId,
-        \1,\2 pathway.name,
-          \1,\2 pathway.condition,
+         pathway.name,
+           pathway.condition,
       });
 
       // Invalidate cache
@@ -252,12 +252,12 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       // Record metrics
       metricsCollector.incrementCounter('cdss.pathways_created', 1, {
         specialty: pathway.specialty.join(','),
-        status: pathway.status
+        status: pathway.status,
       });
 
       // Publish event
       await pubsub.publish('PATHWAY_CREATED', {
-        pathwayCreated: newPathway
+        pathwayCreated: newPathway,
       });
 
       return newPathway as ClinicalPathway;
@@ -272,12 +272,12 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
    */
   async updatePathway(
     id: string,
-    \1,\2 string;
+     string;
   ): Promise<ClinicalPathway> {
     try {
       // Get current pathway
       const currentPathway = await this.getPathwayById(id);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Pathway ${id} not found`);
       }
 
@@ -286,37 +286,37 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
       // Update pathway
       const updatedPathway = await this.prisma.clinicalPathway.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           ...updates,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
-        \1,\2 id;
+         id;
         userId,
-        \1,\2 currentPathway.name,
-          \1,\2 currentPathway.status,
+         currentPathway.name,
+           currentPathway.status,
           newStatus: updates.status || currentPathway.status,
       });
 
       // Update metadata with modification history
-      \1 {\n  \2{
+       {\n  {
         updatedPathway.metadata.modificationHistory = [];
       }
 
-      const \1,\2 new Date(),
-        \1,\2 userId,
-        \1,\2 [`Updated by ${userId}`],
-        rationale: 'Pathway update'
+      const  new Date(),
+         userId,
+         [`Updated by ${userId}`],
+        rationale: 'Pathway update',
       };
 
       await this.prisma.clinicalPathway.update({
-        where: { id },
-        \1,\2 {
+        where: { id ,},
+         {
             ...updatedPathway.metadata,
             modificationHistory: [modificationRecord, ...updatedPathway.metadata.modificationHistory],
           },
@@ -324,12 +324,12 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`cdss:pathway:${\1}`;
+      await cacheService.invalidatePattern(`cdss:pathway:${}`;
       await cacheService.invalidatePattern('cdss:pathways:*');
 
       // Publish event
       await pubsub.publish('PATHWAY_UPDATED', {
-        pathwayUpdated: updatedPathway
+        pathwayUpdated: updatedPathway,
       });
 
       return updatedPathway as ClinicalPathway;
@@ -344,17 +344,17 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
    */
   async enrollPatientInPathway(
     patientId: string,
-    \1,\2 string;
+     string;
     encounterId?: string;
   ): Promise<PatientPathway> {
     try {
       // Get pathway
       const pathway = await this.getPathwayById(pathwayId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Pathway ${pathwayId} not found`);
       }
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Pathway ${pathwayId} is not active`);
       }
 
@@ -364,33 +364,33 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
         pathway;
       );
 
-      \1 {\n  \2{
-        throw \1[0]}`,
+       {\n  {
+        throw [0]}`,
         patientId,
         encounterId,
         pathwayId,
         pathwayVersion: pathway.version,
-        \1,\2 new Date(),
-        \1,\2 pathway.phases[0].id,
-        \1,\2 userId,
-        \1,\2 this.initializePatientPathwayPhases(pathway),
+         new Date(),
+         pathway.phases[0].id,
+         userId,
+         this.initializePatientPathwayPhases(pathway),
         outcomes: this.initializePatientPathwayOutcomes(pathway),
         variances: [],
-        \1,\2 this.initializePatientPathwayMetrics(pathway),
-        evaluations: []
+         this.initializePatientPathwayMetrics(pathway),
+        evaluations: [],
       };
 
       // Save patient pathway
       await this.prisma.patientPathway.create({
-        data: patientPathway as any
+        data: patientPathway as any,
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'ENROLL',
-        \1,\2 patientPathway.id;
+         patientPathway.id;
         userId,
-        details: 
+        details: ,
           patientId,
           pathwayId,
           pathwayName: pathway.name;
@@ -406,7 +406,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
       // Publish event
       await pubsub.publish('PATIENT_PATHWAY_ENROLLED', {
-        patientPathwayEnrolled: patientPathway
+        patientPathwayEnrolled: patientPathway,
       });
 
       return patientPathway;
@@ -419,14 +419,14 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   /**
    * Get patient pathway by ID;
    */
-  async getPatientPathwayById(id: string): Promise<PatientPathway | null> {
+  async getPatientPathwayById(id: string): Promise<PatientPathway | null> {,
     try {
       // Query database
       const patientPathway = await this.prisma.patientPathway.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2eturn null;
+       {\n  eturn null;
 
       return patientPathway as PatientPathway;
     } catch (error) {
@@ -438,15 +438,15 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   /**
    * Get active pathways for a patient;
    */
-  async getPatientActivePathways(patientId: string): Promise<PatientPathway[]> {
+  async getPatientActivePathways(patientId: string): Promise<PatientPathway[]> {,
     try {
       // Query database
       const patientPathways = await this.prisma.patientPathway.findMany({
-        where: {
+        where: {,
           patientId,
-          status: 'ACTIVE'
+          status: 'ACTIVE',
         },
-        orderBy: { startDate: 'desc' },
+        orderBy: { startDate: 'desc' ,},
       });
 
       return patientPathways as PatientPathway[];
@@ -461,34 +461,34 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
    */
   async updatePatientPathway(
     id: string,
-    \1,\2 string;
+     string;
   ): Promise<PatientPathway> {
     try {
       // Get current patient pathway
       const currentPathway = await this.getPatientPathwayById(id);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Patient pathway ${id} not found`);
       }
 
       // Update patient pathway
       const updatedPathway = await this.prisma.patientPathway.update({
-        where: { id },
-        data: updates as any
+        where: { id ,},
+        data: updates as any,
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
-        \1,\2 id;
+         id;
         userId,
-        \1,\2 currentPathway.patientId,
-          \1,\2 currentPathway.pathwayName,
-          \1,\2 updates.status || currentPathway.status,
+         currentPathway.patientId,
+           currentPathway.pathwayName,
+           updates.status || currentPathway.status,
       });
 
       // Publish event
       await pubsub.publish('PATIENT_PATHWAY_UPDATED', {
-        patientPathwayUpdated: updatedPathway
+        patientPathwayUpdated: updatedPathway,
       });
 
       return updatedPathway as PatientPathway;
@@ -503,33 +503,33 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
    */
   async completePathwayActivity(
     patientPathwayId: string,
-    \1,\2 string,
-    \1,\2 string;
+     string,
+     string;
       notes?: string;
       results?: string;
       documentId?: string;
-      customFields?: Record\1>
+      customFields?: Record>
     }
   ): Promise<PatientPathwayActivity> {
     try {
       // Get patient pathway
       const patientPathway = await this.getPatientPathwayById(patientPathwayId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Patient pathway ${patientPathwayId} not found`);
       }
 
       // Find phase
       const phaseIndex = patientPathway.phases.findIndex(phase => phase.id === phaseId);
-      \1 {\n  \2{
-        throw new Error(`Phase ${phaseId} not found in patient pathway ${\1}`;
+       {\n  {
+        throw new Error(`Phase ${phaseId} not found in patient pathway ${}`;
       }
 
       // Find activity
       const activityIndex = patientPathway.phases[phaseIndex].activities.findIndex(
         activity => activity.id === activityId;
       );
-      \1 {\n  \2{
-        throw new Error(`Activity ${activityId} not found in phase ${\1}`;
+       {\n  {
+        throw new Error(`Activity ${activityId} not found in phase ${}`;
       }
 
       // Update activity
@@ -544,8 +544,8 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
       // Update patient pathway
       await this.prisma.patientPathway.update({
-        where: { id: patientPathwayId },
-        \1,\2 patientPathway.phases
+        where: { id: patientPathwayId ,},
+         patientPathway.phases
         },
       });
 
@@ -561,7 +561,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'COMPLETE_ACTIVITY',
-        \1,\2 activityId,
+         activityId,
         userId: data.completedBy;
           patientPathwayId,
           phaseId,
@@ -573,12 +573,12 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
         patientPathwayId,
         phaseId,
         activityType: activity.type,
-        activityCategory: activity.category
+        activityCategory: activity.category,
       });
 
       // Publish event
       await pubsub.publish('PATHWAY_ACTIVITY_COMPLETED', {
-        pathwayActivityCompleted: {
+        pathwayActivityCompleted: {,
           patientPathwayId,
           phaseId,
           activity,
@@ -603,16 +603,16 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
     try {
       // Get patient pathway
       const patientPathway = await this.getPatientPathwayById(patientPathwayId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Patient pathway ${patientPathwayId} not found`);
       }
 
       // Create variance
-      const \1,\2 `variance-${crypto.getRandomValues(\1[0]}`,
+      const  `variance-${crypto.getRandomValues([0]}`,
         ...variance,
         detectionDate: new Date(),
-        \1,\2 'ACTIVE',
-        actions: []
+         'ACTIVE',
+        actions: [],
       };
 
       // Add variance to patient pathway
@@ -620,20 +620,20 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
       // Update patient pathway
       await this.prisma.patientPathway.update({
-        where: { id: patientPathwayId },
-        \1,\2 patientPathway.variances
+        where: { id: patientPathwayId ,},
+         patientPathway.variances
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'ADD_VARIANCE',
-        \1,\2 newVariance.id;
+         newVariance.id;
         userId,
-        details: 
+        details: ,
           patientPathwayId,
           varianceType: variance.type,
-          \1,\2 variance.phaseId,
+           variance.phaseId,
           activityId: variance.activityId,
       });
 
@@ -641,14 +641,14 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       metricsCollector.incrementCounter('cdss.pathway_variances', 1, {
         patientPathwayId,
         category: variance.category,
-        \1,\2 variance.phaseId || 'none'
+         variance.phaseId || 'none'
       });
 
       // Publish event
       await pubsub.publish('PATHWAY_VARIANCE_ADDED', {
-        pathwayVarianceAdded: {
+        pathwayVarianceAdded: {,
           patientPathwayId,
-          variance: newVariance
+          variance: newVariance,
         },
       });
 
@@ -669,23 +669,23 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   }): Promise<OrderSet[]> {
     try {
       // Try cache first
-      const cacheKey = `orderSets:${JSON.stringify(filters || {})}`;
+      const cacheKey = `orderSets:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      \1 {\n  \2eturn cached;
+       {\n  eturn cached;
 
       // Build filters
-      const where: unknown = {};
-      \1 {\n  \2here.type = filters.type;
-      \1 {\n  \2here.specialty = { has: filters.specialty };
-      \1 {\n  \2here.status = filters.status;
+      const where: unknown = {,};
+       {\n  here.type = filters.type;
+       {\n  here.specialty = { has: filters.specialty ,};
+       {\n  here.status = filters.status;
 
       // Only return active order sets by default
-      \1 {\n  \2here.status = 'ACTIVE';
+       {\n  here.status = 'ACTIVE';
 
       // Query database
       const orderSets = await this.prisma.orderSet.findMany({
         where,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updatedAt: 'desc' ,},
       });
 
       // Cache results
@@ -694,7 +694,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       // Record metrics
       metricsCollector.incrementCounter('cdss.order_set_queries', 1, {
         type: filters?.type || 'ALL',
-        \1,\2 filters?.status || 'ACTIVE'
+         filters?.status || 'ACTIVE'
       });
 
       return orderSets as OrderSet[];
@@ -707,19 +707,19 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   /**
    * Get order set by ID;
    */
-  async getOrderSetById(id: string): Promise<OrderSet | null> {
+  async getOrderSetById(id: string): Promise<OrderSet | null> {,
     try {
       // Try cache first
-      const cacheKey = `orderSet:${id}`;
+      const cacheKey = `orderSet:${id,}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      \1 {\n  \2eturn cached;
+       {\n  eturn cached;
 
       // Query database
       const orderSet = await this.prisma.orderSet.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2eturn null;
+       {\n  eturn null;
 
       // Cache result
       await cacheService.cacheResult('cdss:', cacheKey, orderSet, 3600); // 1 hour
@@ -744,23 +744,23 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
       // Create order set
       const newOrderSet = await this.prisma.orderSet.create({
-        data: {
+        data: {,
           ...orderSet,
-          id: `order-set-${crypto.getRandomValues(\1[0]}`,
+          id: `order-set-${crypto.getRandomValues([0],}`,
           createdAt: new Date(),
           updatedAt: new Date(),
           createdBy: userId,
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        \1,\2 newOrderSet.id;
+         newOrderSet.id;
         userId,
-        \1,\2 orderSet.name,
-          \1,\2 orderSet.specialty.join(','),,
+         orderSet.name,
+           orderSet.specialty.join(','),,
       });
 
       // Invalidate cache
@@ -774,7 +774,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
       // Publish event
       await pubsub.publish('ORDER_SET_CREATED', {
-        orderSetCreated: newOrderSet
+        orderSetCreated: newOrderSet,
       });
 
       return newOrderSet as OrderSet;
@@ -795,24 +795,24 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   }): Promise<QualityMeasure[]> {
     try {
       // Try cache first
-      const cacheKey = `qualityMeasures:${JSON.stringify(filters || {})}`;
+      const cacheKey = `qualityMeasures:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      \1 {\n  \2eturn cached;
+       {\n  eturn cached;
 
       // Build filters
-      const where: unknown = {};
-      \1 {\n  \2here.category = filters.category;
-      \1 {\n  \2here.type = filters.type;
-      \1 {\n  \2here.domain = filters.domain;
-      \1 {\n  \2here.status = filters.status;
+      const where: unknown = {,};
+       {\n  here.category = filters.category;
+       {\n  here.type = filters.type;
+       {\n  here.domain = filters.domain;
+       {\n  here.status = filters.status;
 
       // Only return active measures by default
-      \1 {\n  \2here.status = 'ACTIVE';
+       {\n  here.status = 'ACTIVE';
 
       // Query database
       const measures = await this.prisma.qualityMeasure.findMany({
         where,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updatedAt: 'desc' ,},
       });
 
       // Cache results
@@ -830,7 +830,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
    */
   async generateQualityMeasureReport(
     measureId: string,
-    \1,\2 Date,
+     Date,
       endDate: Date;
       department?: string;
       provider?: string;
@@ -840,10 +840,10 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
     try {
       // Get measure
       const measure = await this.prisma.qualityMeasure.findUnique({
-        where: { id: measureId },
+        where: { id: measureId ,},
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Quality measure ${measureId} not found`);
       }
 
@@ -857,7 +857,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       metricsCollector.incrementCounter('cdss.quality_measure_reports', 1, {
         measureId,
         measureName: measure.name,
-        category: measure.category
+        category: measure.category,
       });
 
       return reportData;
@@ -878,17 +878,17 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   }): Promise<ClinicalTrial[]> {
     try {
       // Build filters
-      const where: unknown = {};
-      \1 {\n  \2here.conditions = { has: filters.condition };
-      \1 {\n  \2here.phase = filters.phase;
-      \1 {\n  \2here.status = filters.status;
-      \1 {\n  \2{
+      const where: unknown = {,};
+       {\n  here.conditions = { has: filters.condition ,};
+       {\n  here.phase = filters.phase;
+       {\n  here.status = filters.status;
+       {\n  {
         where.locations = {
-          \1,\2 [
-              { city: { contains: filters.location, mode: 'insensitive' } },
-              { state: { contains: filters.location, mode: 'insensitive' } },
-              { country: { contains: filters.location, mode: 'insensitive' } },
-              { zip: { contains: filters.location, mode: 'insensitive' } },
+           [
+              { city: { contains: filters.location, mode: 'insensitive' } ,},
+              { state: { contains: filters.location, mode: 'insensitive' } ,},
+              { country: { contains: filters.location, mode: 'insensitive' } ,},
+              { zip: { contains: filters.location, mode: 'insensitive' } ,},
             ],
           },
         };
@@ -897,13 +897,13 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       // Query database
       const trials = await this.prisma.clinicalTrial.findMany({
         where,
-        orderBy: { lastUpdateDate: 'desc' },
+        orderBy: { lastUpdateDate: 'desc' ,},
       });
 
       // Record metrics
       metricsCollector.incrementCounter('cdss.clinical_trial_queries', 1, {
         condition: filters?.condition || 'ALL',
-        \1,\2 filters?.status || 'ALL'
+         filters?.status || 'ALL'
       });
 
       return trials as ClinicalTrial[];
@@ -916,7 +916,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   /**
    * Match patient to clinical trials;
    */
-  async matchPatientToTrials(patientId: string): Promise<PatientTrialMatch[]> {
+  async matchPatientToTrials(patientId: string): Promise<PatientTrialMatch[]> {,
     try {
       // Get patient data
       const patientData = await this.getPatientDataForTrialMatching(patientId);
@@ -933,12 +933,12 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
       // Record metrics
       metricsCollector.incrementCounter('cdss.patient_trial_matches', 1, {
         patientId,
-        matchCount: matches.length.toString()
+        matchCount: matches.length.toString(),
       });
 
       // Notify providers about high-scoring matches
       const highScoringMatches = matches.filter(match => match.matchScore >= 80);
-      \1 {\n  \2{
+       {\n  {
         await this.notifyProvidersAboutTrialMatches(
           patientId,
           highScoringMatches;
@@ -953,33 +953,33 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
   }
 
   // Private helper methods
-  private validatePathway(pathway: unknown): void {
+  private validatePathway(pathway: unknown): void {,
     // Implementation for pathway validation
   }
 
-  private validatePathwayUpdates(updates: Partial<ClinicalPathway>): void {
+  private validatePathwayUpdates(updates: Partial<ClinicalPathway>): void {,
     // Implementation for update validation
   }
 
   private async checkPatientEligibility(
     patientId: string,
-    pathway: ClinicalPathway
-  ): Promise<{ eligible: boolean, reasons: string[] }> {
+    pathway: ClinicalPathway,
+  ): Promise<{ eligible: boolean, reasons: string[] }> {,
     // Implementation to check eligibility
-    return { eligible: true, reasons: [] };
+    return { eligible: true, reasons: [] ,};
   }
 
-  private initializePatientPathwayPhases(pathway: ClinicalPathway): PatientPathwayPhase[] {
+  private initializePatientPathwayPhases(pathway: ClinicalPathway): PatientPathwayPhase[] {,
     // Implementation to initialize phases
     return [];
   }
 
-  private initializePatientPathwayOutcomes(pathway: ClinicalPathway): PatientPathwayOutcome[] {
+  private initializePatientPathwayOutcomes(pathway: ClinicalPathway): PatientPathwayOutcome[] {,
     // Implementation to initialize outcomes
     return [];
   }
 
-  private initializePatientPathwayMetrics(pathway: ClinicalPathway): PatientPathwayMetric[] {
+  private initializePatientPathwayMetrics(pathway: ClinicalPathway): PatientPathwayMetric[] {,
     // Implementation to initialize metrics
     return [];
   }
@@ -991,30 +991,30 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
     // Implementation to update phase completion
   }
 
-  private async updatePathwayProgress(patientPathwayId: string): Promise<void> {
+  private async updatePathwayProgress(patientPathwayId: string): Promise<void> {,
     // Implementation to update pathway progress
   }
 
   private async checkPhaseCompletion(
     patientPathwayId: string,
-    phaseId: string
+    phaseId: string,
   ): Promise<void> {
     // Implementation to check phase completion
   }
 
-  private validateOrderSet(orderSet: unknown): void {
+  private validateOrderSet(orderSet: unknown): void {,
     // Implementation for order set validation
   }
 
   private async calculateMeasurePerformance(
     measure: QualityMeasure,
-    parameters: unknown
+    parameters: unknown,
   ): Promise<any> {
     // Implementation to calculate measure performance
     return {};
   }
 
-  private async getPatientDataForTrialMatching(patientId: string): Promise<any> {
+  private async getPatientDataForTrialMatching(patientId: string): Promise<any> {,
     // Implementation to get patient data
     return {};
   }
@@ -1026,7 +1026,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
   private async performTrialMatching(
     patientData: unknown,
-    trials: ClinicalTrial[]
+    trials: ClinicalTrial[],
   ): Promise<PatientTrialMatch[]> {
     // Implementation to perform matching
     return [];
@@ -1034,7 +1034,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
   private async saveTrialMatches(
     patientId: string,
-    matches: PatientTrialMatch[]
+    matches: PatientTrialMatch[],
   ): Promise<PatientTrialMatch[]> {
     // Implementation to save matches
     return [];
@@ -1042,7 +1042,7 @@ export = "export" enum = "enum" QualityMeasureDomain = "QualityMeasureDomain"
 
   private async notifyProvidersAboutTrialMatches(
     patientId: string,
-    matches: PatientTrialMatch[]
+    matches: PatientTrialMatch[],
   ): Promise<void> {
     // Implementation to notify providers
   }

@@ -6,20 +6,20 @@ export const _runtime = "edge";
 // Interface for the POST request body
 interface StaffAssignmentBody {
   user_id: string; // Assuming ID is string
-  role: string
+  role: string,
 }
 
 // GET /api/ot/bookings/[id]/staff - Get staff assigned to a specific OT booking
 export const _GET = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: bookingId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Booking ID is required" },
-        { status: 400 }
+        { message: "Booking ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -39,12 +39,12 @@ export const _GET = async (
       .all();
 
     return NextResponse.json(results || []);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { message: "Error fetching OT staff assignments", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching OT staff assignments", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -52,24 +52,24 @@ export const _GET = async (
 // POST /api/ot/bookings/[id]/staff - Assign staff to an OT booking
 export const _POST = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: bookingId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Booking ID is required" },
-        { status: 400 }
+        { message: "Booking ID is required" ,},
+        { status: 400 },
       );
     }
 
     const body = (await _request.json()) as StaffAssignmentBody;
     const { user_id, role } = body;
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "User ID and role are required" },
-        { status: 400 }
+        { message: "User ID and role are required" ,},
+        { status: 400 },
       );
     }
 
@@ -85,49 +85,49 @@ export const _POST = async (
       "OT Assistant",
     ];
 
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
         { message: "Invalid role. Must be one of: " + validRoles.join(", ") },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const DB = process.env.DB as unknown as D1Database;
 
     // Check if booking exists
-    const { results: bookingResults } = await DB.prepare(
+    const { results: bookingResults } = await DB.prepare(,
       "SELECT id FROM OTBookings WHERE id = ?";
     );
       .bind(bookingId);
       .all();
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "OT Booking not found" },
-        { status: 404 }
+        { message: "OT Booking not found" ,},
+        { status: 404 },
       );
     }
 
     // Check if user exists
-    const { results: userResults } = await DB.prepare(
+    const { results: userResults } = await DB.prepare(,
       "SELECT id FROM Users WHERE id = ?";
     );
       .bind(user_id);
       .all();
-    \1 {\n  \2{
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ message: "User not found" ,}, { status: 404 ,});
     }
 
     // Check if assignment already exists
-    const { results: existingResults } = await DB.prepare(
+    const { results: existingResults } = await DB.prepare(,
       "SELECT id FROM OTStaffAssignments WHERE booking_id = ? AND user_id = ? AND role = ?";
     );
       .bind(bookingId, user_id, role);
       .all();
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "Staff member already assigned with this role" },
-        { status: 409 }
+        { message: "Staff member already assigned with this role" ,},
+        { status: 409 },
       );
     }
 
@@ -157,14 +157,14 @@ export const _POST = async (
     return results && results.length > 0;
       ? NextResponse.json(results[0], status: 201 );
       : // Fallback response if fetching the joined data fails
-        NextResponse.json(id, booking_id: bookingId, user_id, role, assigned_at: now ,status: 201 
+        NextResponse.json(id, booking_id: bookingId, user_id, role, assigned_at: now ,status: 201 ,
         ),
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { message: "Error assigning staff to OT booking", details: errorMessage },
-      { status: 500 }
+      { message: "Error assigning staff to OT booking", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -172,14 +172,14 @@ export const _POST = async (
 // DELETE /api/ot/bookings/[id]/staff - Remove all staff from an OT booking
 export const DELETE = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: bookingId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Booking ID is required" },
-        { status: 400 }
+        { message: "Booking ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -192,14 +192,14 @@ export const DELETE = async (
       {
         message: "Staff assignments removed successfully";
         // D1 delete doesn\"t reliably return changes, so we might not have an accurate count
-        // count: info.meta.changes
-      },status: 200 
+        // count: info.meta.changes,
+      },status: 200 ,
     )
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { message: "Error removing staff assignments", details: errorMessage },
-      { status: 500 }
+      { message: "Error removing staff assignments", details: errorMessage ,},
+      { status: 500 },
     );
   }

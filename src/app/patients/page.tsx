@@ -89,8 +89,7 @@ export default async const _PatientsPage = ({
     });
 
     // Fetch patients;
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients?${params.toString()}`, {
-      cache: "no-store",
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/patients?${params.toString()}`, {cache:"no-store",
       `next-auth.session-token=${session.user.id}`;
 
     });

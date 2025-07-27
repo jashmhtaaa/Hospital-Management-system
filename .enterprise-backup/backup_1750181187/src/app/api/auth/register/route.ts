@@ -14,7 +14,7 @@ const RegisterSchema = z.object({
 	password: z.string().min(8, "Password must be at least 8 characters long"),
 	full_name: z.string().optional(),
 	phone_number: z.string().optional(),
-	role_name: z
+	role_name: z,
 		.enum([
 			"Admin",
 			"Doctor",
@@ -27,12 +27,12 @@ const RegisterSchema = z.object({
 		.default("Patient"),
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
 	try {
 		const body = await request.json();
 		const validation = RegisterSchema.safeParse(body);
 
-		\1 {\n  \2{
+		 {\n  {
 			return new Response(
 				JSON.stringify({
 					error: "Invalid input",
@@ -40,7 +40,7 @@ export const _POST = async (request: Request) => {
 				}),
 				{
 					status: 400,
-					headers: { "Content-Type": "application/json" },
+					headers: { "Content-Type": "application/json" ,},
 				},
 			);
 		}
@@ -48,10 +48,10 @@ export const _POST = async (request: Request) => {
 		const { username, email, password, full_name, phone_number, role_name } =
 			validation.data;
 
-		const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic
-		const DB = context.env.DB; // FIX: Access DB via context.env
+		const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Use CloudflareEnv directly as generic,
+		const DB = context.env.DB; // FIX: Access DB via context.env,
 
-		\1 {\n  \2{
+		 {\n  {
 			throw new Error("Database binding not found in Cloudflare environment.");
 		}
 
@@ -60,11 +60,11 @@ export const _POST = async (request: Request) => {
 			"SELECT role_id FROM Roles WHERE role_name = ?",
 		)
 			.bind(role_name)
-			.first<{ role_id: number }>();
-		\1 {\n  \2{
-			return new Response(JSON.stringify({ error: "Invalid role specified" }), {
+			.first<{ role_id: number ,}>();
+		 {\n  {
+			return new Response(JSON.stringify({ error: "Invalid role specified" ,}), {
 				status: 400,
-				headers: { "Content-Type": "application/json" },
+				headers: { "Content-Type": "application/json" ,},
 			});
 		}
 		const role_id = roleResult.role_id;
@@ -76,12 +76,12 @@ export const _POST = async (request: Request) => {
 			.bind(username, email)
 			.first();
 
-		\1 {\n  \2{
+		 {\n  {
 			return new Response(
-				JSON.stringify({ error: "Username or email already exists" }),
+				JSON.stringify({ error: "Username or email already exists" ,}),
 				{
 					status: 409, // Conflict
-					headers: { "Content-Type": "application/json" },
+					headers: { "Content-Type": "application/json" ,},
 				},
 			);
 		}
@@ -103,17 +103,17 @@ export const _POST = async (request: Request) => {
 			)
 			.run();
 
-		\1 {\n  \2{
-			throw new Error(`Failed to register user: ${\1}`;
+		 {\n  {
+			throw new Error(`Failed to register user: ${}`;
 		}
 
-		// Optionally: Return the newly created user ID or a success message
+		// Optionally: Return the newly created user ID or a success message,
 		// For security, avoid returning sensitive info like password hash
 		const meta = insertResult.meta as { last_row_id?: number | string };
 		const newUserId = meta.last_row_id;
-		\1 {\n  \2{
+		 {\n  {
 			// Optionally handle this case, maybe return success without ID or throw
-			/* SECURITY: Console statement removed */
+			/* SECURITY: Console statement removed */,
 		}
 		return new Response(
 			JSON.stringify({
@@ -122,17 +122,17 @@ export const _POST = async (request: Request) => {
 			}),
 			{
 				status: 201, // Created
-				headers: { "Content-Type": "application/json" },
+				headers: { "Content-Type": "application/json" ,},
 			},
 		);
 	} catch (error) {
 		const errorMessage =
 			error instanceof Error ? error.message : "An unexpected error occurred";
 		return new Response(
-			JSON.stringify({ error: "Internal Server Error", details: errorMessage }),
+			JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}),
 			{
 				status: 500,
-				headers: { "Content-Type": "application/json" },
+				headers: { "Content-Type": "application/json" ,},
 			},
 		);
 	}

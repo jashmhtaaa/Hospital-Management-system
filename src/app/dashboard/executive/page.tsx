@@ -95,16 +95,14 @@ import { useState
   Minus;
 } from "lucide-react";
 
-interface ExecutiveDashboardData {
-  strategicKPIs: StrategyMetric[],
+interface ExecutiveDashboardData {strategicKPIs:StrategyMetric[],
   OperationalMetrics,
   MarketMetrics,
   BoardMetric[],
   ExecutiveAlert[],
   benchmarks: BenchmarkData[];
 
-interface StrategyMetric {
-  kpi: string,
+interface StrategyMetric {kpi:string,
   number,
   "positive" | "negative" | "neutral",
   "excellent" | "good" | "attention" | "critical",
@@ -134,7 +132,7 @@ interface FinancialOverview {
   };
 
 interface OperationalMetrics {
-  number,
+    number,
     number,
     equipmentEfficiency: number;
   };
@@ -152,7 +150,7 @@ interface OperationalMetrics {
   };
 
 interface QualityOverview {
-  number,
+    number,
     number,
     infectionRate: number;
   };
@@ -169,8 +167,7 @@ interface QualityOverview {
     lastAuditScore: number;
   };
 
-interface MarketMetrics {
-  marketShare: number,
+interface MarketMetrics {marketShare:number,
   number,
   number,
     number,
@@ -184,10 +181,8 @@ interface MarketMetrics {
     number;
   };
 
-interface RiskAssessment {
-  overallRisk: "low" | "medium" | "high" | "critical",
-  {
-    financial: number,
+interface RiskAssessment {overallRisk:"low" | "medium" | "high" | "critical",
+  {financial:number,
     number,
     number;
   };
@@ -199,35 +194,30 @@ interface RiskAssessment {
     overall: number;
   };
 
-interface BoardMetric {
-  metric: string,
+interface BoardMetric {metric:string,
   number,
   string,
   priority: "board" | "executive" | "operational";
 
-interface StrategicInitiative {
-  id: string,
+interface StrategicInitiative {id:string,
   "growth" | "efficiency" | "quality" | "innovation",
   "on-track" | "at-risk" | "delayed" | "completed",
   number,
   string,
   string;
 
-interface ExecutiveAlert {
-  id: string,
+interface ExecutiveAlert {id:string,
   "info" | "warning" | "critical",
   string,
   string,
   string;
 
-interface BenchmarkData {
-  metric: string,
+interface BenchmarkData {metric:string,
   number,
   number,
   percentile: number;
 
-const CHART_COLORS = {
-  primary: "#1e40af",
+const CHART_COLORS = {primary:"#1e40af",
   "#d97706",
   "#16a34a",
   "#7c3aed",
@@ -447,8 +437,7 @@ export default const _ExecutiveDashboard = () {
                     </div>;
                   </div>;
                   >;
-                    <LineChart data={data.financialOverview.revenue.trend.map((value, index) => ({
-                      month: `Month ${index + 1}`,
+                    <LineChart data={data.financialOverview.revenue.trend.map((value, index) => ({month:`Month ${index + 1}`,
                       revenue: value;
                     }))}>;
                       <CartesianGrid strokeDasharray="3 3" />;
@@ -460,7 +449,7 @@ export default const _ExecutiveDashboard = () {
                         dataKey="revenue";
                         stroke={CHART_COLORS.primary}
                         strokeWidth={3}
-                        dot={{ r: 4 }}
+                        dot={{r:4 }}
                       />;
                     </LineChart>;
                   </ResponsiveContainer>;
@@ -572,10 +561,10 @@ export default const _ExecutiveDashboard = () {
                   <PieChart>;
                     <Pie>;
                       data={[;
-                        { name: "Commercial", value: data.financialOverview.reimbursements.commercial },
-                        { name: "Medicare", value: data.financialOverview.reimbursements.medicare },
-                        { name: "Medicaid", value: data.financialOverview.reimbursements.medicaid },
-                        { name: "Other", value: 100 - data.financialOverview.reimbursements.commercial - data.financialOverview.reimbursements.medicare - data.financialOverview.reimbursements.medicaid }
+                        {name:"Commercial", value: data.financialOverview.reimbursements.commercial },
+                        {name:"Medicare", value: data.financialOverview.reimbursements.medicare },
+                        {name:"Medicaid", value: data.financialOverview.reimbursements.medicaid },
+                        {name:"Other", value: 100 - data.financialOverview.reimbursements.commercial - data.financialOverview.reimbursements.medicare - data.financialOverview.reimbursements.medicaid }
                       ]}
                       cx="50%";
                       cy="50%";
@@ -1019,10 +1008,10 @@ export default const _ExecutiveDashboard = () {
                   <PieChart>;
                     <Pie>;
                       data={[;
-                        { name: "Growth", value: 35, fill: CHART_COLORS.primary },
-                        { name: "Efficiency", value: 25, fill: CHART_COLORS.secondary },
-                        { name: "Quality", value: 20, fill: CHART_COLORS.warning },
-                        { name: "Innovation", value: 20, fill: CHART_COLORS.purple }
+                        {name:"Growth", value: 35, fill: CHART_COLORS.primary },
+                        {name:"Efficiency", value: 25, fill: CHART_COLORS.secondary },
+                        {name:"Quality", value: 20, fill: CHART_COLORS.warning },
+                        {name:"Innovation", value: 20, fill: CHART_COLORS.purple }
                       ]}
                       cx="50%";
                       cy="50%";
@@ -1245,34 +1234,29 @@ export default const _ExecutiveDashboard = () {
 
 // Mock data generation function for executive dashboard;
 const generateMockExecutiveData = (): ExecutiveDashboardData {
-  return {
-    strategicKPIs: [;
-      {
-        kpi: "Annual Revenue",
+  return {strategicKPIs:[;
+      {kpi:"Annual Revenue",
         450000000,
         "positive",
         "good",
         "financial",
         "high";
       },
-      {
-        kpi: "EBITDA Margin",
+      {kpi:"EBITDA Margin",
         20.0,
         "positive",
         "good",
         "financial",
         "high";
       },
-      {
-        kpi: "Patient Satisfaction",
+      {kpi:"Patient Satisfaction",
         95.0,
         "positive",
         "excellent",
         "quality",
         "high";
       },
-      {
-        kpi: "Market Share",
+      {kpi:"Market Share",
         35.0,
         "positive",
         "good",
@@ -1280,8 +1264,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         "medium";
 
     ],
-    {
-        current: 425000000,
+    {current:425000000,
         8.5,
         trend: [35, 38, 42, 45, 48, 52, 55, 58, 62, 65, 68, 71];
       },
@@ -1349,32 +1332,29 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         overall: 96.4;
     },
     boardMetrics: [;
-      { metric: "ROI", value: "14.2%", change: 2.1, status: "positive", benchmark: "12.5%", priority: "board" },
-      { metric: "Days Cash on Hand", value: "87", change: 5.3, status: "positive", benchmark: "75", priority: "board" },
-      { metric: "Staff Turnover", value: "8.8%", change: -1.2, status: "positive", benchmark: "12.5%", priority: "board" },
-      { metric: "Patient Safety Events", value: "1.2/1000", change: -0.3, status: "positive", benchmark: "2.1/1000", priority: "board" },
-      { metric: "HCAHPS Top Box", value: "94.3%", change: 1.8, status: "positive", benchmark: "89.2%", priority: "board" },
-      { metric: "Physician Engagement", value: "8.7/10", change: 0.4, status: "positive", benchmark: "7.9/10", priority: "executive" }
+      {metric:"ROI", value: "14.2%", change: 2.1, status: "positive", benchmark: "12.5%", priority: "board" },
+      {metric:"Days Cash on Hand", value: "87", change: 5.3, status: "positive", benchmark: "75", priority: "board" },
+      {metric:"Staff Turnover", value: "8.8%", change: -1.2, status: "positive", benchmark: "12.5%", priority: "board" },
+      {metric:"Patient Safety Events", value: "1.2/1000", change: -0.3, status: "positive", benchmark: "2.1/1000", priority: "board" },
+      {metric:"HCAHPS Top Box", value: "94.3%", change: 1.8, status: "positive", benchmark: "89.2%", priority: "board" },
+      {metric:"Physician Engagement", value: "8.7/10", change: 0.4, status: "positive", benchmark: "7.9/10", priority: "executive" }
     ],
     initiatives: [;
-      {
-        id: "1",
+      {id:"1",
         "innovation",
         "on-track",
         19.5,
         "Q2 2024",
         "2024-01-15";
       },
-      {
-        id: "2",
+      {id:"2",
         "quality",
         "on-track",
         10.2,
         "Q1 2024",
         "2024-01-12";
       },
-      {
-        id: "3",
+      {id:"3",
         "efficiency",
         "at-risk",
         5.2,
@@ -1383,15 +1363,13 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
 
     ],
     alerts: [;
-      {
-        id: "1",
+      {id:"1",
         "warning",
         "ICU occupancy has reached 95% for the past 48 hours with limited discharge prospects.",
         "Activate overflow protocols and expedite discharge planning for stable patients.",
         "2024-01-17";
       },
-      {
-        id: "2",
+      {id:"2",
         "critical",
         "Current revenue trajectory suggests we may miss Q4 target by 3-4%.",
         "Accelerate elective procedures and enhance collection efforts.",
@@ -1399,9 +1377,9 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
 
     ],
     benchmarks: [;
-      { metric: "EBITDA Margin", ourValue: 18.2, industryAvg: 16.5, topQuartile: 19.8, topDecile: 22.1, percentile: 75 },
-      { metric: "Length of Stay", ourValue: 4.2, industryAvg: 4.8, topQuartile: 4.0, topDecile: 3.7, percentile: 80 },
-      { metric: "Patient Satisfaction", ourValue: 94.3, industryAvg: 89.2, topQuartile: 92.5, topDecile: 95.8, percentile: 90 }
+      {metric:"EBITDA Margin", ourValue: 18.2, industryAvg: 16.5, topQuartile: 19.8, topDecile: 22.1, percentile: 75 },
+      {metric:"Length of Stay", ourValue: 4.2, industryAvg: 4.8, topQuartile: 4.0, topDecile: 3.7, percentile: 80 },
+      {metric:"Patient Satisfaction", ourValue: 94.3, industryAvg: 89.2, topQuartile: 92.5, topDecile: 95.8, percentile: 90 }
     ];
   };
 

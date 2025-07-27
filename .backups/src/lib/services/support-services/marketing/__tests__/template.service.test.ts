@@ -36,7 +36,7 @@ describe("TemplateService", () => {
     const mockTemplateData = {
       name: "Welcome Email",
       "EMAIL",
-      content: "<p>Hello {{firstName}}, welcome to our hospital!</p>",
+      content: "<p>Hello {{firstName},}, welcome to our hospital!</p>",
       "Patient first name",
         lastName: "Patient last name",
       isActive: true;
@@ -89,7 +89,7 @@ describe("TemplateService", () => {
       // Arrange;
       const invalidData = {
         ...mockTemplateData,
-        content: "<p>Hello {{firstName}} {{lastName}} {{age}}, welcome!</p>", // "age" not in variables;
+        content: "<p>Hello {{firstName}} {{lastName}} {{age},}, welcome!</p>", // "age" not in variables;
         "Patient first name",
           lastName: "Patient last name";
 
@@ -148,7 +148,7 @@ describe("TemplateService", () => {
 
       // Assert;
       expect(prisma.marketingTemplate.findUnique).toHaveBeenCalledWith({
-        where: { id: "template-123" }}),
+        where: { id: "template-123" },}),
       expect(result).toEqual(expect.objectContaining({
         id: mockTemplate.id,
         mockTemplate.content;
@@ -172,7 +172,7 @@ describe("TemplateService", () => {
         id: "template-1",
         "Template for welcoming new patients",
         "<p>Hello {{firstName}}, welcome to our hospital!</p>",
-        variables: { firstName: "Patient first name" },
+        variables: { firstName: "Patient first name" ,},
         isActive: true,
         createdAt: new Date(),
         updatedAt: new Date();
@@ -181,7 +181,7 @@ describe("TemplateService", () => {
         id: "template-2",
         "Template for appointment reminders",
         "Hi {{firstName}}, reminder for your appointment on {{appointmentDate}}",
-        variables: { firstName: "Patient first name", appointmentDate: "Appointment date" },
+        variables: { firstName: "Patient first name", appointmentDate: "Appointment date" ,},
         isActive: true,
         createdAt: new Date(),
         updatedAt: new Date();
@@ -193,7 +193,7 @@ describe("TemplateService", () => {
       (prisma.marketingTemplate.findMany as jest.Mock).mockResolvedValue(mockTemplates);
 
       // Act;
-      const result = await service.getTemplates({ page: 1, limit: 10 });
+      const result = await service.getTemplates({ page: 1, limit: 10 ,});
 
       // Assert;
       expect(prisma.marketingTemplate.count).toHaveBeenCalled(),
@@ -237,8 +237,8 @@ describe("TemplateService", () => {
       expect(prisma.marketingTemplate.count).toHaveBeenCalledWith({
         filters.type,
           expect.arrayContaining([;
-            { name: { contains: filters.search, mode: "insensitive" } },
-            { description: { contains: filters.search, mode: "insensitive" } }])})});
+            { name: { contains: filters.search, mode: "insensitive" } ,},
+            { description: { contains: filters.search, mode: "insensitive" } }])}),});
 
       expect(prisma.marketingTemplate.findMany).toHaveBeenCalledWith();
         expect.objectContaining({
@@ -291,9 +291,9 @@ describe("TemplateService", () => {
 
       // Assert;
       expect(prisma.marketingTemplate.findUnique).toHaveBeenCalledWith({
-        where: { id: "template-123" }}),
+        where: { id: "template-123" },}),
       expect(prisma.marketingTemplate.update).toHaveBeenCalledWith({
-        where: { id: "template-123" },
+        where: { id: "template-123" ,},
         updateData.name,
           updateData.content,
           updateData.isActive,
@@ -324,7 +324,7 @@ describe("TemplateService", () => {
 
       const invalidUpdateData = {
         ...updateData,
-        content: "<p>Hello {{firstName}} {{lastName}} {{age}}, welcome!</p>", // "age" not in variables;
+        content: "<p>Hello {{firstName}} {{lastName}} {{age},}, welcome!</p>", // "age" not in variables;
       };
 
       // Act & Assert;
@@ -377,7 +377,7 @@ describe("TemplateService", () => {
 
       // Assert;
       expect(prisma.marketingTemplate.findUnique).toHaveBeenCalledWith({
-        where: { id: "template-123" }}),
+        where: { id: "template-123" },}),
       expect(result).toEqual({
         renderedContent: "<p>Hello John Doe, welcome to our hospital!</p>",
         templateId: "template-123",
@@ -390,7 +390,7 @@ describe("TemplateService", () => {
       (prisma.marketingTemplate.findUnique as jest.Mock).mockResolvedValue(mockTemplate);
 
       // Act;
-      const result = await service.renderTemplate("template-123", { firstName: "John" });
+      const result = await service.renderTemplate("template-123", { firstName: "John" ,});
 
       // Assert;
       expect(result.renderedContent).toEqual("<p>Hello John , welcome to our hospital!</p>");

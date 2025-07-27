@@ -35,7 +35,7 @@ export interface Dashboard {
   favorites: number,
   views: number;
   version: string,
-  metadata: DashboardMetadata
+  metadata: DashboardMetadata,
 export enum DashboardCategory {
   EXECUTIVE = 'EXECUTIVE',
   CLINICAL = 'CLINICAL',
@@ -89,7 +89,7 @@ export interface DashboardWidget {
   status: 'ACTIVE' | 'INACTIVE',
   created: Date;
   updated: Date,
-  creator: string
+  creator: string,
 export enum WidgetType {
   CHART = 'CHART',
   TABLE = 'TABLE',
@@ -191,7 +191,7 @@ export interface TableSettings {
   aggregations: Record<string, 'sum' | 'avg' | 'min' | 'max' | 'count'>,
   wrapText: boolean;
   condensed: boolean,
-  showRowNumbers: boolean
+  showRowNumbers: boolean,
 export interface HighlightRule {
   column: string,
   condition: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'between' | 'contains';
@@ -219,7 +219,7 @@ export interface MetricSettings {
   size: 'small' | 'medium' | 'large',
   showTarget: boolean;
   targetValue?: number;
-  iconPosition: 'left' | 'right' | 'top' | 'bottom'
+  iconPosition: 'left' | 'right' | 'top' | 'bottom',
 export interface MetricThreshold {
   condition: 'less_than' | 'greater_than' | 'equals' | 'between',
   value: number;
@@ -248,7 +248,7 @@ export interface DataLabelSettings {
   position: 'inside' | 'outside' | 'auto';
   rotation?: number;
   format?: string;
-  font: {
+  font: {,
     family?: string;
     size?: number;
     weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
@@ -265,7 +265,7 @@ export interface LegendSettings {
   position: 'top' | 'right' | 'bottom' | 'left';
   alignment: 'start' | 'center' | 'end',
   orientation: 'horizontal' | 'vertical';
-  font: {
+  font: {,
     family?: string;
     size?: number;
     weight?: 'normal' | 'bold' | 'lighter' | 'bolder';
@@ -276,9 +276,9 @@ export interface LegendSettings {
   itemWidth?: number;
   itemHeight?: number;
   icon?: 'circle' | 'rect' | 'roundRect' | 'triangle' | 'diamond' | 'pin' | 'arrow' | 'none';
-  scrollable: boolean
+  scrollable: boolean,
 export interface AxisSettings {
-  xAxis: {
+  xAxis: {,
     visible: boolean;
     title?: string;
     titleFont?: {
@@ -301,9 +301,9 @@ export interface AxisSettings {
     min?: number;
     max?: number;
     logarithmic: boolean,
-    reversed: boolean
+    reversed: boolean,
   };
-  yAxis: {
+  yAxis: {,
     visible: boolean;
     title?: string;
     titleFont?: {
@@ -326,7 +326,7 @@ export interface AxisSettings {
     min?: number;
     max?: number;
     logarithmic: boolean,
-    reversed: boolean
+    reversed: boolean,
   };
 export interface ColorSettings {
   scheme: 'category10' | 'accent' | 'paired' | 'set1' | 'set2' | 'set3' | 'dark2' | 'pastel1' | 'pastel2' | 'tableau10' | 'custom';
@@ -338,21 +338,21 @@ export interface ColorSettings {
   highlightColor?: string;
   selectedColor?: string;
 export interface FormatSettings {
-  numbers: {
+  numbers: {,
     format: 'standard' | 'compact' | 'engineering' | 'currency' | 'percent' | 'custom';
     customFormat?: string;
     precision?: number;
     locale?: string;
     currencySymbol?: string;
-    showGrouping: boolean
+    showGrouping: boolean,
   };
-  dates: {
+  dates: {,
     format: 'short' | 'medium' | 'long' | 'full' | 'custom';
     customFormat?: string;
     locale?: string;
     timezone?: string
   };
-  text: {
+  text: {,
     truncation: 'none' | 'ellipsis' | 'character_limit';
     characterLimit?: number;
     case?: 'none' | 'uppercase' | 'lowercase' | 'titlecase'
@@ -378,7 +378,7 @@ export interface TooltipSettings {
   padding?: number;
   showDelay?: number;
   hideDelay?: number;
-  animation: boolean
+  animation: boolean,
 export interface PredictiveSettings {
   predictionType: 'forecast' | 'anomaly' | 'trend' | 'segment' | 'classification';
   forecastPeriods?: number;
@@ -414,11 +414,11 @@ export interface DashboardFilter {
   affects: string[]; // widget ids affected by this filter
   dependency?: {
     dependsOn: string; // filter id
-    mappingField: string
+    mappingField: string,
   };
   dateSettings?: DateFilterSettings;
   measureSettings?: MeasureFilterSettings;
-  cascading: boolean
+  cascading: boolean,
 export enum FilterType {
   TEXT = 'TEXT',
   NUMBER = 'NUMBER',
@@ -444,7 +444,7 @@ export interface DateFilterSettings {
   granularity: 'year' | 'quarter' | 'month' | 'week' | 'day' | 'hour' | 'minute' | 'second';
   min?: Date;
   max?: Date;
-  presets: DatePreset[]
+  presets: DatePreset[],
 export interface DatePreset {
   label: string,
   value: string; // e.g., 'last_7_days', 'last_30_days', 'last_quarter'
@@ -455,7 +455,7 @@ export interface MeasureFilterSettings {
   format?: string;
   marks?: {
     value: number,
-    label: string
+    label: string,
   }[];
 export interface WidgetFilter {
   id: string,
@@ -498,7 +498,7 @@ export interface WidgetAction {
   requiredRole?: string;
   customHandler?: string;
   visible: boolean,
-  enabled: boolean
+  enabled: boolean,
 export enum ActionType {
   DRILLDOWN = 'DRILLDOWN',
   NAVIGATE = 'NAVIGATE',
@@ -513,12 +513,12 @@ export interface WidgetDrilldown {
   name: string;
   targetWidgetId?: string;
   targetDashboardId?: string;
-  mappedFields: {
+  mappedFields: {,
     sourceField: string,
-    targetField: string
+    targetField: string,
   }[];
   preserveFilters: boolean,
-  openInNewTab: boolean
+  openInNewTab: boolean,
 export interface VisibilitySettings {
   roles: string[],
   departments: string[];
@@ -527,17 +527,17 @@ export interface VisibilitySettings {
   shareableLink?: string;
   linkExpiration?: Date;
   embeddable: boolean,
-  viewMode: 'view' | 'edit' | 'admin'
+  viewMode: 'view' | 'edit' | 'admin',
 export interface DashboardMetadata {
   creationSource: 'TEMPLATE' | 'CUSTOM' | 'DUPLICATE';
   templateId?: string;
   originalDashboardId?: string;
   version: string,
-  versionHistory: {
+  versionHistory: {,
     version: string,
     date: Date;
     userId: string,
-    changes: string
+    changes: string,
   }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
@@ -554,7 +554,7 @@ export interface DashboardData {
   executionTime: number,
   executionId: string;
   userContext: UserContext,
-  refreshType: 'auto' | 'manual' | 'initial'
+  refreshType: 'auto' | 'manual' | 'initial',
 export interface WidgetData {
   widgetId: string,
   widgetName: string;
@@ -596,7 +596,7 @@ export interface UserContext {
   timezone: string;
   language: string,
   deviceType: 'desktop' | 'tablet' | 'mobile';
-  sessionId: string
+  sessionId: string,
 }
 
 // KPI models
@@ -618,7 +618,7 @@ export interface KPI {
   created: Date,
   updated: Date;
   metadata: KPIMetadata,
-  tracking: KPITracking
+  tracking: KPITracking,
 export enum KPICategory {
   FINANCIAL = 'FINANCIAL',
   OPERATIONAL = 'OPERATIONAL',
@@ -669,11 +669,11 @@ export interface KPIMetadata {
   creationSource: 'STANDARD' | 'CUSTOM';
   standardId?: string;
   version: string,
-  versionHistory: {
+  versionHistory: {,
     version: string,
     date: Date;
     userId: string,
-    changes: string
+    changes: string,
   }[];
   reviewDate?: Date;
   reviewedBy?: string;
@@ -698,7 +698,7 @@ export interface KPITracking {
   forecast?: {
     nextPeriod: number,
     confidence: number; // 0-100
-    trend: 'IMPROVING' | 'STABLE' | 'WORSENING'
+    trend: 'IMPROVING' | 'STABLE' | 'WORSENING',
   };
 }
 
@@ -714,7 +714,7 @@ export interface ClinicalQualityDashboard {
   timeframe: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'CUSTOM';
   customTimeframe?: {
     start: Date,
-    end: Date
+    end: Date,
   };
   filters: DashboardFilter[],
   stratifications: Stratification[];
@@ -745,7 +745,7 @@ export interface QualityMeasure {
   targetValue?: number;
   weight?: number;
   improvement: 'INCREASE' | 'DECREASE',
-  status: 'ACTIVE' | 'INACTIVE'
+  status: 'ACTIVE' | 'INACTIVE',
 export interface QualityBenchmark {
   id: string,
   measureId: string;
@@ -767,7 +767,7 @@ export interface Stratification {
     value?: string;
   }[];
   enabled: boolean,
-  sequence: number
+  sequence: number,
 export interface QualityVisualization {
   id: string,
   name: string;
@@ -775,7 +775,7 @@ export interface QualityVisualization {
   measures: string[];
   dimensions: string[],
   settings: WidgetSettings;
-  sequence: number
+  sequence: number,
 export interface QualityDrilldown {
   id: string,
   name: string;
@@ -785,7 +785,7 @@ export interface QualityDrilldown {
   filters: WidgetFilter[];
   patientList: boolean,
   patientListColumns: string[];
-  actions: QualityAction[]
+  actions: QualityAction[],
 export interface QualityAction {
   id: string,
   name: string;
@@ -803,7 +803,7 @@ export interface QualityAlertThreshold {
   severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL',
   message: string;
   recipients: string[],
-  active: boolean
+  active: boolean,
 }
 
 // Financial Dashboard models
@@ -814,7 +814,7 @@ export interface FinancialDashboard {
   timeframe: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUAL' | 'CUSTOM';
   customTimeframe?: {
     start: Date,
-    end: Date
+    end: Date,
   };
   kpis: FinancialKPI[],
   sections: FinancialSection[];
@@ -826,7 +826,7 @@ export interface FinancialDashboard {
   updated: Date;
   createdBy: string,
   updatedBy: string;
-  visibility: VisibilitySettings
+  visibility: VisibilitySettings,
 export interface FinancialKPI {
   id: string,
   name: string;
@@ -839,7 +839,7 @@ export interface FinancialKPI {
   benchmarkValue?: number;
   sequence: number,
   visualization: 'NUMBER' | 'TREND' | 'PROGRESS' | 'COMPARISON';
-  thresholds: KPIThreshold[]
+  thresholds: KPIThreshold[],
 export interface FinancialSection {
   id: string,
   name: string;
@@ -847,7 +847,7 @@ export interface FinancialSection {
   type: 'REVENUE' | 'EXPENSE' | 'BALANCE_SHEET' | 'CASH_FLOW' | 'CUSTOM',
   widgets: FinancialWidget[];
   sequence: number,
-  expanded: boolean
+  expanded: boolean,
 export interface FinancialWidget {
   id: string,
   name: string;
@@ -859,7 +859,7 @@ export interface FinancialWidget {
   settings: WidgetSettings;
   sequence: number,
   filters: WidgetFilter[];
-  drilldowns: WidgetDrilldown[]
+  drilldowns: WidgetDrilldown[],
 }
 
 // Operational Dashboard models
@@ -872,7 +872,7 @@ export interface OperationalDashboard {
   timeframe: 'REAL_TIME' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'CUSTOM';
   customTimeframe?: {
     start: Date,
-    end: Date
+    end: Date,
   };
   refreshInterval?: number; // seconds
   kpis: OperationalKPI[],
@@ -883,13 +883,13 @@ export interface OperationalDashboard {
   updated: Date;
   createdBy: string,
   updatedBy: string;
-  visibility: VisibilitySettings
+  visibility: VisibilitySettings,
 export interface OperationalArea {
   id: string,
   name: string;
   type: 'DEPARTMENT' | 'UNIT' | 'SERVICE_LINE' | 'FACILITY' | 'CUSTOM';
   parentId?: string;
-  sequence: number
+  sequence: number,
 export interface OperationalKPI {
   id: string,
   name: string;
@@ -901,7 +901,7 @@ export interface OperationalKPI {
   thresholds: KPIThreshold[],
   sequence: number;
   visualization: 'NUMBER' | 'TREND' | 'GAUGE' | 'COMPARISON',
-  updateFrequency: 'REAL_TIME' | 'HOURLY' | 'DAILY' | 'CUSTOM'
+  updateFrequency: 'REAL_TIME' | 'HOURLY' | 'DAILY' | 'CUSTOM',
 export interface OperationalSection {
   id: string,
   name: string;
@@ -909,7 +909,7 @@ export interface OperationalSection {
   type: 'CAPACITY' | 'WORKFLOW' | 'RESOURCE' | 'PERFORMANCE' | 'CUSTOM',
   widgets: OperationalWidget[];
   sequence: number,
-  expanded: boolean
+  expanded: boolean,
 export interface OperationalWidget {
   id: string,
   name: string;
@@ -950,12 +950,12 @@ export class RealTimeDashboardService {
     owner?: string;): Promise<Dashboard[]> 
     try {
       // Try cache first
-      const cacheKey = `dashboards:${JSON.stringify(filters || {})}`;
+      const cacheKey = `dashboards:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached != null) return cached;
 
       // Build filters
-      const where: unknown = {};
+      const where: unknown = {,};
       if (filters?.category) where.category = filters.category;
       if (filters?.type) where.type = filters.type;
       if (filters?.status) where.status = filters.status;
@@ -967,7 +967,7 @@ export class RealTimeDashboardService {
       // Query database
       const dashboards = await this.prisma.dashboard.findMany({
         where,
-        orderBy: { updated: 'desc' },
+        orderBy: { updated: 'desc' ,},
       });
 
       // Cache results
@@ -977,7 +977,7 @@ export class RealTimeDashboardService {
       metricsCollector.incrementCounter('analytics.dashboard_queries', 1, {
         category: filters?.category || 'ALL',
         type: filters?.type || 'ALL';
-        status: filters?.status || 'ACTIVE'
+        status: filters?.status || 'ACTIVE',
       });
 
       return dashboards as Dashboard[];catch (error) 
@@ -988,16 +988,16 @@ export class RealTimeDashboardService {
   /**
    * Get dashboard by ID;
    */
-  async getDashboardById(id: string): Promise<Dashboard | null> {
+  async getDashboardById(id: string): Promise<Dashboard | null> {,
     try {
       // Try cache first
-      const cacheKey = `dashboard:${id}`;
+      const cacheKey = `dashboard:${id,}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached != null) return cached;
 
       // Query database
       const dashboard = await this.prisma.dashboard.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
       if (!dashboard) return null;
@@ -1007,9 +1007,9 @@ export class RealTimeDashboardService {
 
       // Increment view count
       await this.prisma.dashboard.update({
-        where: { id },
-        data: {
-          views: { increment: 1 },
+        where: { id ,},
+        data: {,
+          views: { increment: 1 ,},
         },
       });
 
@@ -1033,13 +1033,13 @@ export class RealTimeDashboardService {
 
       // Create dashboard
       const newDashboard = await this.prisma.dashboard.create({
-        data: {
+        data: {,
           ...dashboard,
-          id: `dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+          id: `dashboard-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
           created: new Date(),
           updated: new Date(),
           views: 0,
-          favorites: 0
+          favorites: 0,
         },
       });
 
@@ -1049,7 +1049,7 @@ export class RealTimeDashboardService {
         resourceType: 'DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: 
+        details: ,
           name: dashboard.name,
           category: dashboard.category;
           type: dashboard.type,
@@ -1061,12 +1061,12 @@ export class RealTimeDashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboards_created', 1, {
         category: dashboard.category,
-        type: dashboard.type
+        type: dashboard.type,
       });
 
       // Publish event
       await pubsub.publish('DASHBOARD_CREATED', {
-        dashboardCreated: newDashboard
+        dashboardCreated: newDashboard,
       });
 
       return newDashboard as Dashboard;
@@ -1096,10 +1096,10 @@ export class RealTimeDashboardService {
 
       // Update dashboard
       const updatedDashboard = await this.prisma.dashboard.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           ...updates,
-          updated: new Date()
+          updated: new Date(),
         },
       });
 
@@ -1109,7 +1109,7 @@ export class RealTimeDashboardService {
         resourceType: 'DASHBOARD';
         resourceId: id;
         userId,
-        details: 
+        details: ,
           name: currentDashboard.name,
           previousVersion: currentDashboard.metadata.version;
           newVersion: updates.metadata?.version || currentDashboard.metadata.version,
@@ -1122,13 +1122,13 @@ export class RealTimeDashboardService {
           version: updates.metadata.version,
           date: new Date(),
           userId,
-          changes: 'Dashboard updated'
+          changes: 'Dashboard updated',
         });
 
         await this.prisma.dashboard.update({
-          where: { id },
-          data: {
-            metadata: {
+          where: { id ,},
+          data: {,
+            metadata: {,
               ...updatedDashboard.metadata,
               versionHistory,
             },
@@ -1137,12 +1137,12 @@ export class RealTimeDashboardService {
       }
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${id}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${id,}`);
       await cacheService.invalidatePattern('analytics:dashboards:*');
 
       // Publish event
       await pubsub.publish('DASHBOARD_UPDATED', {
-        dashboardUpdated: updatedDashboard
+        dashboardUpdated: updatedDashboard,
       });
 
       return updatedDashboard as Dashboard;
@@ -1157,11 +1157,11 @@ export class RealTimeDashboardService {
    */
   async getDashboardData(
     dashboardId: string,
-    options: {
+    options: {,
       filters?: Record<string, any>;
       executionId?: string;
       refreshType?: 'auto' | 'manual' | 'initial';
-      userContext: UserContext
+      userContext: UserContext,
     }
   ): Promise<DashboardData> {
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
@@ -1210,7 +1210,7 @@ export class RealTimeDashboardService {
               cacheTtl: data.cacheTtl,
               timestamp: new Date(),
               metadata: data.metadata,
-              updateTrigger: options.refreshType
+              updateTrigger: options.refreshType,
             };
           } catch (error) {
 
@@ -1223,13 +1223,13 @@ export class RealTimeDashboardService {
               totalRows: 0,
               executionTime: 0;
               dataStatus: 'ERROR',
-              error: 
+              error: ,
                 code: 'WIDGET_DATA_ERROR',
                 message: error.message;
                 details: error.stack,
               cachedResult: false,
               timestamp: new Date(),
-              updateTrigger: options.refreshType
+              updateTrigger: options.refreshType,
             };
           }
         });
@@ -1238,7 +1238,7 @@ export class RealTimeDashboardService {
       const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
       // Create dashboard data
-      const dashboardData: DashboardData = {
+      const dashboardData: DashboardData = {,
         dashboardId,
         timestamp: new Date(),
         filterState,
@@ -1246,7 +1246,7 @@ export class RealTimeDashboardService {
         executionTime,
         executionId,
         userContext: options.userContext,
-        refreshType: options.refreshType || 'manual'
+        refreshType: options.refreshType || 'manual',
       };
 
       // Record metrics
@@ -1254,7 +1254,7 @@ export class RealTimeDashboardService {
       metricsCollector.incrementCounter('analytics.dashboard_data_requests', 1, {
         dashboardId,
         refreshType: options.refreshType || 'manual',
-        widgetCount: Object.keys(widgetData).length.toString()
+        widgetCount: Object.keys(widgetData).length.toString(),
       });
 
       // Record widget errors
@@ -1291,12 +1291,12 @@ export class RealTimeDashboardService {
       this.validateWidget(widget);
 
       // Create widget
-      const newWidget: DashboardWidget = {
+      const newWidget: DashboardWidget = {,
         ...widget,
-        id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         created: new Date(),
         updated: new Date(),
-        creator: userId
+        creator: userId,
       };
 
       // Add widget to dashboard
@@ -1304,10 +1304,10 @@ export class RealTimeDashboardService {
 
       // Update dashboard
       await this.prisma.dashboard.update({
-        where: { id: dashboardId },
-        data: {
+        where: { id: dashboardId ,},
+        data: {,
           widgets: updatedWidgets,
-          updated: new Date()
+          updated: new Date(),
         },
       });
 
@@ -1318,27 +1318,27 @@ export class RealTimeDashboardService {
         resourceId: newWidget.id,
         parentResourceId: dashboardId;
         userId,
-        details: 
+        details: ,
           widgetName: widget.name,
           widgetType: widget.type;
           visualization: widget.visualization,
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId,}`);
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.widgets_created', 1, {
         dashboardId,
         widgetType: widget.type,
-        visualization: widget.visualization
+        visualization: widget.visualization,
       });
 
       // Publish event
       await pubsub.publish('WIDGET_CREATED', {
-        widgetCreated: {
+        widgetCreated: {,
           dashboardId,
-          widget: newWidget
+          widget: newWidget,
         },
       });
 
@@ -1379,7 +1379,7 @@ export class RealTimeDashboardService {
       const updatedWidget = {
         ...currentWidget,
         ...updates,
-        updated: new Date()
+        updated: new Date(),
       };
 
       // Update widgets array
@@ -1388,10 +1388,10 @@ export class RealTimeDashboardService {
 
       // Update dashboard
       await this.prisma.dashboard.update({
-        where: { id: dashboardId },
-        data: {
+        where: { id: dashboardId ,},
+        data: {,
           widgets: updatedWidgets,
-          updated: new Date()
+          updated: new Date(),
         },
       });
 
@@ -1402,27 +1402,27 @@ export class RealTimeDashboardService {
         resourceId: widgetId,
         parentResourceId: dashboardId;
         userId,
-        details: 
+        details: ,
           widgetName: updatedWidget.name,
           previousVisualization: currentWidget.visualization;
           newVisualization: updates.visualization || currentWidget.visualization,
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId,}`);
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.widgets_updated', 1, {
         dashboardId,
         widgetType: updatedWidget.type,
-        visualization: updatedWidget.visualization
+        visualization: updatedWidget.visualization,
       });
 
       // Publish event
       await pubsub.publish('WIDGET_UPDATED', {
-        widgetUpdated: {
+        widgetUpdated: {,
           dashboardId,
-          widget: updatedWidget
+          widget: updatedWidget,
         },
       });
 
@@ -1445,16 +1445,16 @@ export class RealTimeDashboardService {
       this.validateKPI(kpi);
 
       // Create KPI
-      const newKPI: KPI = {
+      const newKPI: KPI = {,
         ...kpi,
-        id: `kpi-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `kpi-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         created: new Date(),
-        updated: new Date()
+        updated: new Date(),
       };
 
       // Save KPI
       await this.prisma.kpi.create({
-        data: newKPI as any
+        data: newKPI as any,
       });
 
       // Create audit log
@@ -1463,7 +1463,7 @@ export class RealTimeDashboardService {
         resourceType: 'KPI';
         resourceId: newKPI.id;
         userId,
-        details: 
+        details: ,
           name: kpi.name,
           category: kpi.category;
           type: kpi.type,
@@ -1472,12 +1472,12 @@ export class RealTimeDashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpis_created', 1, {
         category: kpi.category,
-        type: kpi.type
+        type: kpi.type,
       });
 
       // Publish event
       await pubsub.publish('KPI_CREATED', {
-        kpiCreated: newKPI
+        kpiCreated: newKPI,
       });
 
       return newKPI;
@@ -1490,16 +1490,16 @@ export class RealTimeDashboardService {
   /**
    * Get KPI by ID;
    */
-  async getKPIById(id: string): Promise<KPI | null> {
+  async getKPIById(id: string): Promise<KPI | null> {,
     try {
       // Try cache first
-      const cacheKey = `kpi:${id}`;
+      const cacheKey = `kpi:${id,}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached != null) return cached;
 
       // Query database
       const kpi = await this.prisma.kpi.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
       if (!kpi) return null;
@@ -1524,12 +1524,12 @@ export class RealTimeDashboardService {
   }): Promise<KPI[]> {
     try {
       // Try cache first
-      const cacheKey = `kpis:${JSON.stringify(filters || {})}`;
+      const cacheKey = `kpis:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached != null) return cached;
 
       // Build filters
-      const where: unknown = {};
+      const where: unknown = {,};
       if (filters?.category) where.category = filters.category;
       if (filters?.type) where.type = filters.type;
       if (filters?.status) where.status = filters.status;
@@ -1540,7 +1540,7 @@ export class RealTimeDashboardService {
       // Query database
       const kpis = await this.prisma.kpi.findMany({
         where,
-        orderBy: { updated: 'desc' },
+        orderBy: { updated: 'desc' ,},
       });
 
       // Cache results
@@ -1550,7 +1550,7 @@ export class RealTimeDashboardService {
       metricsCollector.incrementCounter('analytics.kpi_queries', 1, {
         category: filters?.category || 'ALL',
         type: filters?.type || 'ALL';
-        status: filters?.status || 'ACTIVE'
+        status: filters?.status || 'ACTIVE',
       });
 
       return kpis as KPI[];
@@ -1626,15 +1626,15 @@ export class RealTimeDashboardService {
 
       // Update KPI
       await this.prisma.kpi.update({
-        where: { id: kpiId },
-        data: {
+        where: { id: kpiId ,},
+        data: {,
           tracking,
-          updated: new Date()
+          updated: new Date(),
         },
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:kpi:${kpiId}`);
+      await cacheService.invalidatePattern(`analytics:kpi:${kpiId,}`);
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpi_updates', 1, {
@@ -1648,7 +1648,7 @@ export class RealTimeDashboardService {
 
       // Publish event
       await pubsub.publish('KPI_VALUE_UPDATED', {
-        kpiValueUpdated: {
+        kpiValueUpdated: {,
           kpiId,
           name: kpi.name;
           value,
@@ -1675,18 +1675,18 @@ export class RealTimeDashboardService {
       this.validateClinicalQualityDashboard(dashboard);
 
       // Create dashboard
-      const newDashboard: ClinicalQualityDashboard = {
+      const newDashboard: ClinicalQualityDashboard = {,
         ...dashboard,
-        id: `quality-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `quality-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
-        updatedBy: userId
+        updatedBy: userId,
       };
 
       // Save dashboard
       await this.prisma.clinicalQualityDashboard.create({
-        data: newDashboard as any
+        data: newDashboard as any,
       });
 
       // Create audit log
@@ -1695,7 +1695,7 @@ export class RealTimeDashboardService {
         resourceType: 'CLINICAL_QUALITY_DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: 
+        details: ,
           name: dashboard.name,
           specialty: dashboard.specialty;
           measureCount: dashboard.measures.length,
@@ -1704,12 +1704,12 @@ export class RealTimeDashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.quality_dashboards_created', 1, {
         specialty: dashboard.specialty || 'GENERAL',
-        measureCount: dashboard.measures.length.toString()
+        measureCount: dashboard.measures.length.toString(),
       });
 
       // Publish event
       await pubsub.publish('QUALITY_DASHBOARD_CREATED', {
-        qualityDashboardCreated: newDashboard
+        qualityDashboardCreated: newDashboard,
       });
 
       return newDashboard;
@@ -1731,18 +1731,18 @@ export class RealTimeDashboardService {
       this.validateFinancialDashboard(dashboard);
 
       // Create dashboard
-      const newDashboard: FinancialDashboard = {
+      const newDashboard: FinancialDashboard = {,
         ...dashboard,
-        id: `financial-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `financial-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
-        updatedBy: userId
+        updatedBy: userId,
       };
 
       // Save dashboard
       await this.prisma.financialDashboard.create({
-        data: newDashboard as any
+        data: newDashboard as any,
       });
 
       // Create audit log
@@ -1751,7 +1751,7 @@ export class RealTimeDashboardService {
         resourceType: 'FINANCIAL_DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: 
+        details: ,
           name: dashboard.name,
           timeframe: dashboard.timeframe;
           kpiCount: dashboard.kpis.length,
@@ -1760,12 +1760,12 @@ export class RealTimeDashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.financial_dashboards_created', 1, {
         timeframe: dashboard.timeframe,
-        kpiCount: dashboard.kpis.length.toString()
+        kpiCount: dashboard.kpis.length.toString(),
       });
 
       // Publish event
       await pubsub.publish('FINANCIAL_DASHBOARD_CREATED', {
-        financialDashboardCreated: newDashboard
+        financialDashboardCreated: newDashboard,
       });
 
       return newDashboard;
@@ -1787,18 +1787,18 @@ export class RealTimeDashboardService {
       this.validateOperationalDashboard(dashboard);
 
       // Create dashboard
-      const newDashboard: OperationalDashboard = {
+      const newDashboard: OperationalDashboard = {,
         ...dashboard,
-        id: `operational-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `operational-dashboard-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
-        updatedBy: userId
+        updatedBy: userId,
       };
 
       // Save dashboard
       await this.prisma.operationalDashboard.create({
-        data: newDashboard as any
+        data: newDashboard as any,
       });
 
       // Create audit log
@@ -1807,7 +1807,7 @@ export class RealTimeDashboardService {
         resourceType: 'OPERATIONAL_DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: 
+        details: ,
           name: dashboard.name,
           department: dashboard.department;
           timeframe: dashboard.timeframe,
@@ -1818,12 +1818,12 @@ export class RealTimeDashboardService {
       metricsCollector.incrementCounter('analytics.operational_dashboards_created', 1, {
         department: dashboard.department || 'GENERAL',
         timeframe: dashboard.timeframe;
-        kpiCount: dashboard.kpis.length.toString()
+        kpiCount: dashboard.kpis.length.toString(),
       });
 
       // Publish event
       await pubsub.publish('OPERATIONAL_DASHBOARD_CREATED', {
-        operationalDashboardCreated: newDashboard
+        operationalDashboardCreated: newDashboard,
       });
 
       return newDashboard;
@@ -1834,42 +1834,42 @@ export class RealTimeDashboardService {
   }
 
   // Private helper methods
-  private validateDashboard(dashboard: unknown): void {
+  private validateDashboard(dashboard: unknown): void {,
     // Implementation for dashboard validation
   }
 
-  private validateDashboardUpdates(updates: Partial<Dashboard>): void {
+  private validateDashboardUpdates(updates: Partial<Dashboard>): void {,
     // Implementation for update validation
   }
 
-  private validateWidget(widget: unknown): void {
+  private validateWidget(widget: unknown): void {,
     // Implementation for widget validation
   }
 
-  private validateWidgetUpdates(updates: Partial<DashboardWidget>): void {
+  private validateWidgetUpdates(updates: Partial<DashboardWidget>): void {,
     // Implementation for widget update validation
   }
 
-  private validateKPI(kpi: unknown): void {
+  private validateKPI(kpi: unknown): void {,
     // Implementation for KPI validation
   }
 
-  private validateClinicalQualityDashboard(dashboard: unknown): void {
+  private validateClinicalQualityDashboard(dashboard: unknown): void {,
     // Implementation for clinical quality dashboard validation
   }
 
-  private validateFinancialDashboard(dashboard: unknown): void {
+  private validateFinancialDashboard(dashboard: unknown): void {,
     // Implementation for financial dashboard validation
   }
 
-  private validateOperationalDashboard(dashboard: unknown): void {
+  private validateOperationalDashboard(dashboard: unknown): void {,
     // Implementation for operational dashboard validation
   }
 
   private getRelevantFilters(
     widget: DashboardWidget,
     filterState: Record<string, any>,
-    dashboardFilters: DashboardFilter[]
+    dashboardFilters: DashboardFilter[],
   ): Record<string, any> {
     // Get filters that affect this widget
     const relevantFilters: Record<string, any> = {};
@@ -1907,12 +1907,12 @@ export class RealTimeDashboardService {
     // In a real implementation, this would query the appropriate data source
 
     // Try cache first
-    const cacheKey = `widget:${widget.id}:${JSON.stringify(filters)}:${userContext.userId}`;
+    const cacheKey = `widget:${widget.id}:${JSON.stringify(filters)}:${userContext.userId,}`;
     const cached = await cacheService.getCachedResult('analytics:', cacheKey);
     if (cached != null) {
       return {
         ...cached,
-        cachedResult: true
+        cachedResult: true,
       };
     }
 
@@ -1929,35 +1929,35 @@ export class RealTimeDashboardService {
         case WidgetType.CHART:
           // For demonstration purposes, generate sample chart data
           columns.push(
-            { name: 'category', label: 'Category', dataType: 'string', role: 'dimension' },
-            { name: 'value', label: 'Value', dataType: 'number', role: 'measure' }
+            { name: 'category', label: 'Category', dataType: 'string', role: 'dimension' ,},
+            { name: 'value', label: 'Value', dataType: 'number', role: 'measure' },
           );
 
           // Generate sample data based on dimensions and measures
           if (widget.dimensions.includes('department')) {
             data.push(
-              { category: 'Emergency', value: 120 },
-              { category: 'Surgery', value: 85 },
-              { category: 'Pediatrics', value: 70 },
-              { category: 'Cardiology', value: 95 },
-              { category: 'Oncology', value: 60 }
+              { category: 'Emergency', value: 120 ,},
+              { category: 'Surgery', value: 85 ,},
+              { category: 'Pediatrics', value: 70 ,},
+              { category: 'Cardiology', value: 95 ,},
+              { category: 'Oncology', value: 60 },
             );
           } else if (widget.dimensions.includes('month')) {
             data.push(
-              { category: 'Jan', value: 45 },
-              { category: 'Feb', value: 50 },
-              { category: 'Mar', value: 55 },
-              { category: 'Apr', value: 65 },
-              { category: 'May', value: 70 },
-              { category: 'Jun', value: 80 }
+              { category: 'Jan', value: 45 ,},
+              { category: 'Feb', value: 50 ,},
+              { category: 'Mar', value: 55 ,},
+              { category: 'Apr', value: 65 ,},
+              { category: 'May', value: 70 ,},
+              { category: 'Jun', value: 80 },
             );
           } else {
             data.push(
-              { category: 'Category A', value: 50 },
-              { category: 'Category B', value: 75 },
-              { category: 'Category C', value: 30 },
-              { category: 'Category D', value: 45 },
-              { category: 'Category E', value: 60 }
+              { category: 'Category A', value: 50 ,},
+              { category: 'Category B', value: 75 ,},
+              { category: 'Category C', value: 30 ,},
+              { category: 'Category D', value: 45 ,},
+              { category: 'Category E', value: 60 },
             );
           }
 
@@ -1968,17 +1968,17 @@ export class RealTimeDashboardService {
         case WidgetType.TABLE:
           // For demonstration purposes, generate sample table data
           columns.push(
-            { name: 'id', label: 'ID', dataType: 'string', role: 'id' },
-            { name: 'name', label: 'Name', dataType: 'string', role: 'dimension' },
-            { name: 'value1', label: 'Value 1', dataType: 'number', role: 'measure' },
-            { name: 'value2', label: 'Value 2', dataType: 'number', role: 'measure' },
-            { name: 'date', label: 'Date', dataType: 'date', role: 'dimension' }
+            { name: 'id', label: 'ID', dataType: 'string', role: 'id' ,},
+            { name: 'name', label: 'Name', dataType: 'string', role: 'dimension' ,},
+            { name: 'value1', label: 'Value 1', dataType: 'number', role: 'measure' ,},
+            { name: 'value2', label: 'Value 2', dataType: 'number', role: 'measure' ,},
+            { name: 'date', label: 'Date', dataType: 'date', role: 'dimension' },
           ),
 
           for (let i = 1; i <= 10; i++) {
             data.push({
-              id: `ID-${i}`,
-              name: `Item ${i}`,
+              id: `ID-${i,}`,
+              name: `Item ${i,}`,
               value1: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100),
               value2: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100);
               date: new Date(2023, Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 12), Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 28) + 1),
@@ -1994,7 +1994,7 @@ export class RealTimeDashboardService {
 
         case WidgetType.METRIC:
           // For demonstration purposes, generate sample metric data
-          columns.push(name: 'value', label: 'Value', dataType: 'number', role: 'measure' ,name: 'previousValue', label: 'Previous Value', dataType: 'number', role: 'measure' ,name: 'change', label: 'Change', dataType: 'number', role: 'measure' ,name: 'changePercent', label: 'Change %', dataType: 'number', role: 'measure' 
+          columns.push(name: 'value', label: 'Value', dataType: 'number', role: 'measure' ,name: 'previousValue', label: 'Previous Value', dataType: 'number', role: 'measure' ,name: 'change', label: 'Change', dataType: 'number', role: 'measure' ,name: 'changePercent', label: 'Change %', dataType: 'number', role: 'measure' ,
           ),
 
           const value = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
@@ -2014,7 +2014,7 @@ export class RealTimeDashboardService {
 
         case WidgetType.PREDICTION:
           // For demonstration purposes, generate sample prediction data
-          columns.push(name: 'date', label: 'Date', dataType: 'date', role: 'dimension' ,name: 'actual', label: 'Actual', dataType: 'number', role: 'measure' ,name: 'forecast', label: 'Forecast', dataType: 'number', role: 'measure' ,name: 'lower', label: 'Lower Bound', dataType: 'number', role: 'measure' ,name: 'upper', label: 'Upper Bound', dataType: 'number', role: 'measure' 
+          columns.push(name: 'date', label: 'Date', dataType: 'date', role: 'dimension' ,name: 'actual', label: 'Actual', dataType: 'number', role: 'measure' ,name: 'forecast', label: 'Forecast', dataType: 'number', role: 'measure' ,name: 'lower', label: 'Lower Bound', dataType: 'number', role: 'measure' ,name: 'upper', label: 'Upper Bound', dataType: 'number', role: 'measure' ,
           ),
 
           const today = new Date();
@@ -2033,7 +2033,7 @@ export class RealTimeDashboardService {
                 actual: Math.round(baseValue + random),
                 forecast: null;
                 lower: null,
-                upper: null
+                upper: null,
               });
             } else {
               // Forecast data
@@ -2044,7 +2044,7 @@ export class RealTimeDashboardService {
                 actual: null;
                 forecast,
                 lower: Math.round(forecast - confidence),
-                upper: Math.round(forecast + confidence)
+                upper: Math.round(forecast + confidence),
               });
             }
           }
@@ -2053,16 +2053,16 @@ export class RealTimeDashboardService {
           break;
 
         default:
-          // Default sample data
+          // Default sample data,
           columns.push(
-            { name: 'key', label: 'Key', dataType: 'string', role: 'dimension' },
-            { name: 'value', label: 'Value', dataType: 'number', role: 'measure' }
+            { name: 'key', label: 'Key', dataType: 'string', role: 'dimension' ,},
+            { name: 'value', label: 'Value', dataType: 'number', role: 'measure' },
           ),
 
           data.push(
-            { key: 'Item 1', value: 10 },
-            { key: 'Item 2', value: 20 },
-            { key: 'Item 3', value: 30 }
+            { key: 'Item 1', value: 10 ,},
+            { key: 'Item 2', value: 20 ,},
+            { key: 'Item 3', value: 30 },
           );
 
           totalRows = data.length;
@@ -2072,7 +2072,7 @@ export class RealTimeDashboardService {
       error = {
         code: 'DATA_PROCESSING_ERROR',
         message: e.message;
-        details: e.stack
+        details: e.stack,
       };
     }
 
@@ -2084,9 +2084,9 @@ export class RealTimeDashboardService {
       error,
       cachedResult: false,
       cacheTtl: 300, // 5 minutes
-      metadata: {
+      metadata: {,
         generatedAt: new Date(),
-        filters: filters
+        filters: filters,
       },
     };
 
@@ -2098,7 +2098,7 @@ export class RealTimeDashboardService {
     return result;
   }
 
-  private async checkKPIThresholds(kpiId: string, value: number): Promise<void> {
+  private async checkKPIThresholds(kpiId: string, value: number): Promise<void> {,
     try {
       // Get KPI
       const kpi = await this.getKPIById(kpiId);
@@ -2127,7 +2127,7 @@ export class RealTimeDashboardService {
 
         if (triggered && threshold.alertEnabled) {
           // Generate alert
-          await this.generateKPI/* SECURITY: Alert removed */
+          await this.generateKPI/* SECURITY: Alert removed */,
         }
       }
     } catch (error) {
@@ -2135,16 +2135,16 @@ export class RealTimeDashboardService {
     }
   }
 
-  private async generateKPI/* SECURITY: Alert removed */: Promise<void> {
+  private async generateKPI/* SECURITY: Alert removed */: Promise<void> {,
     try {
       // Format alert message
       const message = threshold.alertMessage ||;
-        `KPI ${kpi.name} has reached ${threshold.severity} threshold: /* SECURITY: Template literal eliminated */
+        `KPI ${kpi.name} has reached ${threshold.severity} threshold: /* SECURITY: Template literal eliminated */,
 
       // Create alert record
       const alertId = `kpi-alert-${crypto.getRandomValues(new Uint32Array(1))[0]}`;
       await this.prisma.kpiAlert.create({
-        data: {
+        data: {,
           id: alertId,
           kpiId: kpi.id;
           thresholdId: threshold.id;
@@ -2153,7 +2153,7 @@ export class RealTimeDashboardService {
           severity: threshold.severity,
           timestamp: new Date(),
           acknowledged: false,
-          recipients: threshold.alertRecipients || []
+          recipients: threshold.alertRecipients || [],
         },
       });
 
@@ -2161,12 +2161,12 @@ export class RealTimeDashboardService {
       metricsCollector.incrementCounter('analytics.kpi_alerts', 1, {
         kpiId: kpi.id,
         category: kpi.category;
-        severity: threshold.severity
+        severity: threshold.severity,
       });
 
       // Publish event
       await pubsub.publish('KPI_ALERT', {
-        kpiAlert: {
+        kpiAlert: {,
           id: alertId,
           kpiId: kpi.id;
           kpiName: kpi.name;
@@ -2174,7 +2174,7 @@ export class RealTimeDashboardService {
           unit: kpi.unit;
           message,
           severity: threshold.severity,
-          timestamp: new Date()
+          timestamp: new Date(),
         },
       });
 

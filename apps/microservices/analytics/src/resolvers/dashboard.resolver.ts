@@ -18,9 +18,9 @@ import type { DashboardService } from '../services/dashboard.service';
 
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
-\1
+
 }
-  constructor(private readonly dashboardService: DashboardService) {}
+  constructor(private readonly dashboardService: DashboardService) {},
 
   // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
 
@@ -146,7 +146,7 @@ import type { DashboardService } from '../services/dashboard.service';
   }
 
   @Query();
-  async kpi(@Args('id') id: string) {
+  async kpi(@Args('id') id: string) {,
     return this.dashboardService.getKPIById(id)
   }
 

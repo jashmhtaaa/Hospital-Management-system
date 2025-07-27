@@ -62,7 +62,7 @@ const interactionService = new DrugInteractionService();
  * GET /api/pharmacy/prescriptions;
  * List prescriptions with filtering and pagination;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -98,7 +98,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -116,7 +116,7 @@ export const GET = async (req: any) => {
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria;
-    const filter: unknown = {};
+    const filter: unknown = {,};
     if (!session.user)ilter.patientId = patientId;
     if (!session.user)ilter.prescriberId = prescriberId;
     if (!session.user)ilter.medicationId = medicationId;
@@ -169,13 +169,13 @@ export const GET = async (req: any) => {
     // Return response;
     return NextResponse.json({
       prescriptions: fhirPrescriptions,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving prescriptions");
   }
@@ -185,7 +185,7 @@ export const GET = async (req: any) => {
  * POST /api/pharmacy/prescriptions;
  * Create a new prescription with interaction checking;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -223,14 +223,14 @@ export const POST = async (req: any) => {
     const validationResult = validatePrescriptionRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -238,12 +238,12 @@ export const POST = async (req: any) => {
     // Verify patient exists;
     const patient = await getPatientById(data.patientId);
     if (!session.user) {
-      return NextResponse.json({ error: "Patient not found" }, { status: 404 });
+      return NextResponse.json({ error: "Patient not found" ,}, { status: 404 ,});
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(data.medicationId);
     if (!session.user) {
-      return NextResponse.json({ error: "Medication not found" }, { status: 404 });
+      return NextResponse.json({ error: "Medication not found" ,}, { status: 404 ,});
 
     // Check for drug interactions;
     const patientPrescriptions = await prescriptionRepository.findByPatientId(data.patientId);
@@ -343,7 +343,7 @@ export const POST = async (req: any) => {
         id: prescriptionId,
         allInteractions.length > 0 ? allInteractions : undefined;
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, "Error creating prescription");

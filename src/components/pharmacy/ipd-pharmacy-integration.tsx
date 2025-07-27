@@ -13,29 +13,25 @@ import "lucide-react"
 import { Loader2 }
 
 // Define interfaces for data structures;
-interface PrescriptionItem {
-  id: string,
+interface PrescriptionItem {id:string,
   string,
   string,
   number,
   quantity: number;
 }
 
-interface Prescription {
-  id: string,
+interface Prescription {id:string,
   string; // e.g., "active", "partially_dispensed", "completed";
   items: PrescriptionItem[];
 }
 
-interface MedicationScheduleItem {
-  id: string,
+interface MedicationScheduleItem {id:string,
   string,
   "pending" | "administered" | "skipped" | "held";
   condition?: string;
 }
 
-interface AdministrationRecord {
-  id: string;
+interface AdministrationRecord {id:string;
   schedule_id?: string; // Link to schedule if applicable;
   prescription_item_id?: string; // Link to prescription item;
   medication_name: string,
@@ -43,8 +39,7 @@ interface AdministrationRecord {
   notes?: string;
 }
 
-interface IPDPharmacyIntegrationProperties {
-  admissionId: string | null,
+interface IPDPharmacyIntegrationProperties {admissionId:string | null,
   patientId: string | null;
 }
 
@@ -128,46 +123,39 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         // Mock data simulation;
         await new Promise((resolve) => setTimeout(resolve, 700));
         const mockPrescriptions: Prescription[] = [;
-          {
-            id: "presc_002",
+          {id:"presc_002",
             "partially_dispensed",
             items: [;
-              {
-                id: "item_003",
+              {id:"item_003",
                 "Amoxicillin 250mg",
                 "BID",
                 10,
                 quantity: 14;
               },
-              {
-                id: "item_004",
+              {id:"item_004",
                 "Paracetamol 500mg",
                 "PRN",
                 5,
                 quantity: 10;
               }]}];
         const mockSchedule: MedicationScheduleItem[] = [;
-          {
-            id: "sched_001",
+          {id:"sched_001",
             "Amoxicillin 250mg",
             scheduled_time: "08:00",
             status: "pending";
           },
-          {
-            id: "sched_002",
+          {id:"sched_002",
             "Amoxicillin 250mg",
             scheduled_time: "20:00",
             status: "pending";
           },
-          {
-            id: "sched_003",
+          {id:"sched_003",
             "Paracetamol 500mg",
             scheduled_time: "12:00",
             "If fever > 101F";
           }];
         const mockRecords: AdministrationRecord[] = [;
-          {
-            id: "admin_001",
+          {id:"admin_001",
             "item_003",
             [0] - 7_200_000).toISOString(),
             "Patient took medication without issues.";

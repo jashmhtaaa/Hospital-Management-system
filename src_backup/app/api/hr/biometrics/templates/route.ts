@@ -14,10 +14,10 @@ const biometricTemplateSchema = z.object({
     errorMap: () => ({ message: "Template type must be FINGERPRINT, FACIAL, or IRIS" })}),
   templateData: z.string().min(1, "Template data is required"),
   deviceId: z.string().optional(),
-  notes: z.string().optional()});
+  notes: z.string().optional(),});
 
 // POST handler for registering biometric template;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -57,8 +57,8 @@ export const _POST = async (request: any) => {
     const validationResult = biometricTemplateSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
 
     // Register biometric template;
@@ -67,14 +67,14 @@ export const _POST = async (request: any) => {
     return NextResponse.json(template);
   } catch (error) {
     return NextResponse.json();
-      { error: "Failed to register biometric template", details: error.message },
-      { status: 500 }
+      { error: "Failed to register biometric template", details: error.message ,},
+      { status: 500 },
     );
 
 };
 
 // GET handler for employee biometric templates;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -111,12 +111,12 @@ export const _GET = async (request: any) => {
     const employeeId = searchParams.get("employeeId");
 
     if (!session.user) {
-      return NextResponse.json({ error: "Employee ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "Employee ID is required" ,}, { status: 400 ,});
 
     const templates = await biometricService.getEmployeeBiometricTemplates(employeeId);
 
     return NextResponse.json({ templates });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch biometric templates", details: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch biometric templates", details: error.message ,}, { status: 500 ,});
 
 };

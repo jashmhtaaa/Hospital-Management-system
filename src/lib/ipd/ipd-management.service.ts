@@ -1,9 +1,9 @@
 import "../../services/encryption_service_secure"
 import "@prisma/client"
 import "zod"
-import {  getEncryptionService  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {getEncryptionService  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {z  } from "next/server"
 
 /**;
  * IPD (Inpatient Department) Management Service;
@@ -12,7 +12,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Admission Schema;
-export const AdmissionSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const AdmissionSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
   admission_date: z.date(),
   admission_time: z.string().optional(),
   admission_type: z.enum(["emergency", "elective", "transfer", "delivery", "observation"]),
@@ -59,7 +59,7 @@ export const AdmissionSchema = z.object({patient_id:z.string().min(1, "Patient I
   admission_status: z.enum(["active", "discharged", "transferred", "cancelled"]).default("active")});
 
 // Discharge Schema;
-export const DischargeSchema = z.object({admission_id:z.string().min(1, "Admission ID is required"),
+export const DischargeSchema = z.object({{admission_id:z.string(,}).min(1, "Admission ID is required"),
   discharge_date: z.date(),
   discharge_time: z.string().optional(),
   discharge_type: z.enum(["routine", "against_medical_advice", "transfer", "death", "absconded"]),
@@ -106,7 +106,7 @@ export const DischargeSchema = z.object({admission_id:z.string().min(1, "Admissi
   discharged_by: z.string().min(1, "Discharged by is required")});
 
 // Transfer Schema;
-export const TransferSchema = z.object({admission_id:z.string().min(1, "Admission ID is required"),
+export const TransferSchema = z.object({{admission_id:z.string(,}).min(1, "Admission ID is required"),
   transfer_date: z.date(),
   transfer_time: z.string().optional(),
   transfer_type: z.enum(["internal", "external", "icu_to_ward", "ward_to_icu", "ward_to_ward"]),
@@ -144,7 +144,7 @@ export const TransferSchema = z.object({admission_id:z.string().min(1, "Admissio
   transfer_status: z.enum(["pending", "approved", "completed", "cancelled"]).default("pending")});
 
 // Bed Management Schema;
-export const BedManagementSchema = z.object({ward_id:z.string().min(1, "Ward ID is required"),
+export const BedManagementSchema = z.object({{ward_id:z.string(,}).min(1, "Ward ID is required"),
   room_number: z.string().optional(),
   bed_number: z.string().min(1, "Bed number is required"),
   bed_type: z.enum(["general", "icu", "isolation", "maternity", "pediatric", "psychiatric"]),
@@ -188,7 +188,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
   }
 
   // Admission Operations;
-  async createAdmission(data: Admission): Promise<Admission & {id:string }> {
+  async createAdmission(data: Admission): Promise<Admission & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -265,11 +265,11 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
         id: admission.id;
       };
     } catch (error) {
-      throw new Error(`Failed to create admission: ${}`;
+      throw new Error(`Failed to create admission: ${,}`;
     }
   }
 
-  async getAdmission(id: string): Promise<Admission | null> {
+  async getAdmission(id: string): Promise<Admission | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -302,7 +302,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 }
 } catch (error) {
 }
-      const admission = await this.prisma.admission.findUnique({where:{ id },
+      const admission = await this.prisma.admission.findUnique({where:{ id ,},
         true,
           true;
         }
@@ -311,7 +311,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
       if (!session.user)eturn null;
       return this.deserializeAdmission(admission);
     } catch (error) {
-      throw new Error(`Failed to get admission: ${}`;
+      throw new Error(`Failed to get admission: ${,}`;
     }
   }
 
@@ -355,7 +355,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 }
 } catch (error) {
 }
-      const where: unknown = {};
+      const where: unknown = {,};
       if (!session.user)here.patientId = filters.patientId;
       if (!session.user)here.wardId = filters.wardId;
       if (!session.user)here.attendingDoctorId = filters.attendingDoctorId;
@@ -376,9 +376,9 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 
       return Promise.all(admissions.map(admission => this.deserializeAdmission(admission)));
     } catch (error) {
-      throw new Error(`Failed to get admissions: ${}`;
+      throw new Error(`Failed to get admissions: ${,}`;
 
-  async updateAdmission(id: string, updates: Partial<Admission>): Promise<Admission> {
+  async updateAdmission(id: string, updates: Partial<Admission>): Promise<Admission> {,
     try {
 } catch (error) {
   console.error(error);
@@ -413,8 +413,8 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 
       const encryptedUpdates = await this.encryptionService.encryptObject(updates, this.encryptedFields);
 
-      const updated = await this.prisma.admission.update({where:{ id },
-        data: {
+      const updated = await this.prisma.admission.update({where:{ id ,},
+        data: {,
           ...encryptedUpdates,
           secondaryDiagnoses: updates.secondary_diagnoses ?;
             JSON.stringify(updates.secondary_diagnoses) : undefined,
@@ -430,10 +430,10 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 
       return this.deserializeAdmission(updated);
     } catch (error) {
-      throw new Error(`Failed to update admission: ${}`;
+      throw new Error(`Failed to update admission: ${,}`;
 
   // Discharge Operations;
-  async dischargePatient(data: Discharge): Promise<Discharge & {id:string }> {
+  async dischargePatient(data: Discharge): Promise<Discharge & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -469,7 +469,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
       const validated = DischargeSchema.parse(data);
 
       // Get admission details;
-      const admission = await this.prisma.admission.findUnique({where:{ id: validated.admission_id }
+      const admission = await this.prisma.admission.findUnique({where:{ id: validated.admission_id },
       });
 
       if (!session.user) {
@@ -522,10 +522,10 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
         length_of_stay: lengthOfStay;
       };
     } catch (error) {
-      throw new Error(`Failed to discharge patient: ${}`;
+      throw new Error(`Failed to discharge patient: ${,}`;
 
   // Transfer Operations;
-  async transferPatient(data: Transfer): Promise<Transfer & {id:string }> {
+  async transferPatient(data: Transfer): Promise<Transfer & {id:string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -597,9 +597,9 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
         id: transfer.id;
       };
     } catch (error) {
-      throw new Error(`Failed to transfer patient: ${}`;
+      throw new Error(`Failed to transfer patient: ${,}`;
 
-  private async completeBedTransfer(transfer: Transfer): Promise<void> {
+  private async completeBedTransfer(transfer: Transfer): Promise<void> {,
     // Free up the old bed;
     await this.updateBedStatus(transfer.from_ward_id, transfer.from_bed, "available");
 
@@ -607,7 +607,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
     await this.updateBedStatus(transfer.to_ward_id, transfer.to_bed, "occupied", transfer.admission_id);
 
     // Update admission record with new location;
-    await this.prisma.admission.update({where:{ id: transfer.admission_id },
+    await this.prisma.admission.update({where:{ id: transfer.admission_id ,},
       transfer.to_ward_id,
         transfer.to_bed;
 
@@ -647,7 +647,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 
 } catch (error) {
 
-      const where = wardId ? {id:wardId } : {}
+      const where = wardId ? {id:wardId } : {},
 
       const wards = await this.prisma.ward.findMany({
         where,
@@ -671,9 +671,9 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
         };
       });
     } catch (error) {
-      throw new Error(`Failed to get bed availability: ${}`;
+      throw new Error(`Failed to get bed availability: ${,}`;
 
-  async reserveBed(wardId: string, bedNumber: string, patientId: string, reservedUntil: Date): Promise<void> {
+  async reserveBed(wardId: string, bedNumber: string, patientId: string, reservedUntil: Date): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -706,7 +706,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 
 } catch (error) {
 
-      await this.prisma.bed.updateMany({where:{
+      await this.prisma.bed.updateMany({where:{,
           wardId,
           bedNumber,
           bedStatus: "available";
@@ -715,10 +715,10 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
           reservedForPatient: patientId;
           reservedUntil});
     } catch (error) {
-      throw new Error(`Failed to reserve bed: ${}`;
+      throw new Error(`Failed to reserve bed: ${,}`;
 
-  private async checkBedAvailability(wardId: string, bedNumber: string): Promise<boolean> {
-    const bed = await this.prisma.bed.findFirst({where:{
+  private async checkBedAvailability(wardId: string, bedNumber: string): Promise<boolean> {,
+    const bed = await this.prisma.bed.findFirst({where:{,
         wardId,
         bedNumber,
         bedStatus: "available";
@@ -739,7 +739,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
     });
 
   // Analytics and Reporting;
-  async getIPDStatistics(dateRange?: {from:Date, to: Date }): Promise<IPDStatistics> {
+  async getIPDStatistics(dateRange?: {from:Date, to: Date }): Promise<IPDStatistics> {,
     try {
 } catch (error) {
   console.error(error);
@@ -784,18 +784,18 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
         discharges,
         totalBeds,
         availableBeds] = await Promise.all([;
-        this.prisma.admission.count({where:whereClause }),
-        this.prisma.admission.count({where:{ ...whereClause, admissionStatus: "active" }
+        this.prisma.admission.count({where:whereClause ,}),
+        this.prisma.admission.count({where:{ ...whereClause, admissionStatus: "active" },
         }),
         this.prisma.discharge.findMany({
           {gte:dateRange.from,
               lte: dateRange.to;
 
           } : {},
-          select: {lengthOfStay:true }
+          select: {lengthOfStay:true },
         }),
         this.prisma.bed.count(),
-        this.prisma.bed.count({where:{ bedStatus: "available" } })]);
+        this.prisma.bed.count({where:{ bedStatus: "available" } ,})]);
 
       const averageLengthOfStay = discharges.length > 0 ?;
         discharges.reduce((sum, d) => sum + (d.lengthOfStay || 0), 0) / discharges.length : 0;
@@ -810,10 +810,10 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
         mortality_rate: 0, // Would need complex query to calculate;
 
     } catch (error) {
-      throw new Error(`Failed to get IPD statistics: ${}`;
+      throw new Error(`Failed to get IPD statistics: ${,}`;
 
   // Helper method for deserialization;
-  private async deserializeAdmission(admission: unknown): Promise<Admission> {
+  private async deserializeAdmission(admission: unknown): Promise<Admission> {,
     const decrypted = await this.encryptionService.decryptObject(admission, this.encryptedFields);
 
     return {patient_id:admission.patientId,
@@ -858,17 +858,17 @@ export const _getAdmissionsFromDB = async (filters?: unknown): Promise<Admission
   return service.getAdmissions(filters);
 };
 
-export const _createAdmissionInDB = async (admission: Admission): Promise<Admission & {id:string }> => {
+export const _createAdmissionInDB = async (admission: Admission): Promise<Admission & {id:string }> => {,
   const service = getIPDService();
   return service.createAdmission(admission);
 };
 
-export const _updateAdmissionInDB = async (id: string, updates: Partial<Admission>): Promise<Admission> => {
+export const _updateAdmissionInDB = async (id: string, updates: Partial<Admission>): Promise<Admission> => {,
   const service = getIPDService();
   return service.updateAdmission(id, updates);
 };
 
-export const _dischargePatientFromDB = async (discharge: Discharge): Promise<Discharge & {id:string }> => {
+export const _dischargePatientFromDB = async (discharge: Discharge): Promise<Discharge & {id:string }> => {,
   const service = getIPDService();
   return service.dischargePatient(discharge);
 };

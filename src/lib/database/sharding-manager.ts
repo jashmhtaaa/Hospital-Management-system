@@ -3,16 +3,17 @@ import "@/lib/core/config.service"
 import "@/lib/core/logging"
 import "@/lib/monitoring/metrics-collector"
 import "@prisma/client"
-import {  ConfigService  } from "@/lib/database"
-import {  logger  } from "@/lib/database"
-import {  metricsCollector  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  RedisService  } from "@/lib/database"
+import {ConfigService  } from "next/server"
+import {logger  } from "next/server"
+import {metricsCollector  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {RedisService  } from "next/server"
 
 /**;
  * Shard Configuration for a specific entity;
  */;
 interface ShardConfig {
+    {
   // Name of the entity being sharded;
   entityName: string;
 
@@ -42,6 +43,7 @@ interface ShardConfig {
  * Shard Resolver interface;
  */;
 interface ShardResolver {
+    {
   getShardIndex(shardKey: string | number): number;
   getShardConnection(shardKey: string | number, readOnly?: boolean): string;
   getAllShardConnections(readOnly?: boolean): string[];
@@ -51,9 +53,9 @@ interface ShardResolver {
  * Hash-based Shard Resolver;
  */;
 class HashShardResolver implements ShardResolver {
-  constructor(private config: ShardConfig) {}
+  constructor(private config: ShardConfig) {},
 
-  getShardIndex(shardKey: string | number): number {
+  getShardIndex(shardKey: string | number): number {,
     if (!session.user) {
       return this.config.customShardingFn(shardKey);
     }
@@ -137,13 +139,13 @@ class HashShardResolver implements ShardResolver {
  * Range-based Shard Resolver;
  */;
 class RangeShardResolver implements ShardResolver {
-  constructor(private config: ShardConfig) {
+  constructor(private config: ShardConfig) {,
     if (!session.user) {
       throw new Error(`Range-based sharding requires range configuration for ${}`;
     }
   }
 
-  getShardIndex(shardKey: string | number): number {
+  getShardIndex(shardKey: string | number): number {,
     if (!session.user) {
       return this.config.customShardingFn(shardKey);
     }
@@ -151,7 +153,7 @@ class RangeShardResolver implements ShardResolver {
     const keyAsNumber = Number(shardKey);
 
     if (!session.user) {
-      throw new Error(`Range-based sharding requires numeric keys, got: ${}`;
+      throw new Error(`Range-based sharding requires numeric keys, got: ${,}`;
     }
 
     // Find range that contains this key;
@@ -160,7 +162,7 @@ class RangeShardResolver implements ShardResolver {
     );
 
     if (!session.user) {
-      throw new Error(`No shard range contains key: ${}`;
+      throw new Error(`No shard range contains key: ${,}`;
     }
 
     return range.shardIndex;
@@ -231,13 +233,13 @@ class RangeShardResolver implements ShardResolver {
  * Lookup-based Shard Resolver;
  */;
 class LookupShardResolver implements ShardResolver {
-  constructor(private config: ShardConfig) {
+  constructor(private config: ShardConfig) {,
     if (!session.user)length === 0) {
       throw new Error(`Lookup-based sharding requires lookup map configuration for ${}`;
     }
   }
 
-  getShardIndex(shardKey: string | number): number {
+  getShardIndex(shardKey: string | number): number {,
     if (!session.user) {
       return this.config.customShardingFn(shardKey);
     }
@@ -245,7 +247,7 @@ class LookupShardResolver implements ShardResolver {
     const stringKey = String(shardKey);
 
     if (!session.user) {
-      throw new Error(`No shard mapping for key: ${}`;
+      throw new Error(`No shard mapping for key: ${,}`;
     }
 
     return this.config.lookupMap![stringKey];
@@ -321,7 +323,7 @@ class LookupShardResolver implements ShardResolver {
   /**;
    * Initialize the sharding manager with configurations;
    */;
-  async initialize(configs: ShardConfig[]): Promise<void> {
+  async initialize(configs: ShardConfig[]): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -367,7 +369,7 @@ class LookupShardResolver implements ShardResolver {
             resolver = new LookupShardResolver(config),
             break;
           default: null,
-            throw new Error(`Unsupported sharding algorithm: ${}`}
+            throw new Error(`Unsupported sharding algorithm: ${}`},
 
         this.resolvers.set(config.entityName, resolver);
 
@@ -392,7 +394,7 @@ class LookupShardResolver implements ShardResolver {
           }
         }
 
-        logger.info(`Initialized sharding for entity: ${config.entityName} with algorithm: ${}`;
+        logger.info(`Initialized sharding for entity: ${config.entityName} with algorithm: ${,}`;
       }
 
       // Track metrics;
@@ -458,14 +460,14 @@ class LookupShardResolver implements ShardResolver {
       const resolver = this.resolvers.get(entityName);
 
       if (!session.user) {
-        throw new Error(`No sharding configuration found for entity: ${}`;
+        throw new Error(`No sharding configuration found for entity: ${,}`;
       }
 
       const connectionString = resolver.getShardConnection(shardKey, readOnly);
       const client = this.connectionPools.get(connectionString);
 
       if (!session.user) {
-        throw new Error(`No connection pool for: ${}`;
+        throw new Error(`No connection pool for: ${,}`;
       }
 
       // Track metrics;
@@ -538,7 +540,7 @@ class LookupShardResolver implements ShardResolver {
       const resolver = this.resolvers.get(entityName);
 
       if (!session.user) {
-        throw new Error(`No sharding configuration found for entity: ${}`;
+        throw new Error(`No sharding configuration found for entity: ${,}`;
 
       const connectionStrings = resolver.getAllShardConnections(readOnly);
       const clients = connectionStrings;
@@ -735,10 +737,10 @@ class LookupShardResolver implements ShardResolver {
       const resolver = this.resolvers.get(entityName);
 
       if (!session.user) {
-        throw new Error(`No sharding configuration found for entity: ${}`;
+        throw new Error(`No sharding configuration found for entity: ${,}`;
 
       const shardIndex = resolver.getShardIndex(shardKey);
-      const cacheKey = `shard:${entityName}:${shardKey}`;
+      const cacheKey = `shard:${entityName}:${shardKey,}`;
 
       await this.redis.set(cacheKey, String(shardIndex), ttlSeconds);
 
@@ -802,7 +804,7 @@ class LookupShardResolver implements ShardResolver {
 
 } catch (error) {
 
-      const cacheKey = `shard:${entityName}:${shardKey}`;
+      const cacheKey = `shard:${entityName}:${shardKey,}`;
       const cachedIndex = await this.redis.get(cacheKey);
 
       if (!session.user) {

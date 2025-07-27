@@ -51,7 +51,7 @@ interface ServiceItemInput {
 }
 
 // GET /api/billing/service-items - Get list of service items;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -90,7 +90,7 @@ export const _GET = async (request: any) => {
         {
           error: "Forbidden: You do not have permission to view service items.";
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -141,14 +141,14 @@ export const _GET = async (request: any) => {
       errorMessage = error.message;
     }
     return NextResponse.json();
-      { error: "Failed to fetch service items", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch service items", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/billing/service-items - Create a new service item;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -187,7 +187,7 @@ export const _POST = async (request: any) => {
         {
           error: "Forbidden: You do not have permission to create service items.";
         },
-        { status: 403 }
+        { status: 403 },
       );
 
     // Get user ID after permission check for logging/audit;
@@ -195,8 +195,8 @@ export const _POST = async (request: any) => {
     if (!session.user) {
       // Should not happen if hasPermission passed, but good practice;
       return NextResponse.json();
-        { error: "Authentication failed after permission check" },
-        { status: 500 }
+        { error: "Authentication failed after permission check" ,},
+        { status: 500 },
       );
 
     const body = await request.json();
@@ -207,24 +207,24 @@ export const _POST = async (request: any) => {
     if (!session.user)eturn NextResponse.json()
         {
           error: "Missing required fields (item_code, item_name, category, unit_price)"},
-        { status: 400 }
+        { status: 400 },
       );
 
     // Validate data types and formats;
     if (!session.user)eturn NextResponse.json()
-        { error: "Invalid item_code format" },
-        { status: 400 }
+        { error: "Invalid item_code format" ,},
+        { status: 400 },
       );
 
     if (!session.user)eturn NextResponse.json()
-        { error: "Invalid item_name format" },
-        { status: 400 }
+        { error: "Invalid item_name format" ,},
+        { status: 400 },
       );
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Unit price must be a positive number" },
-        { status: 400 }
+        { error: "Unit price must be a positive number" ,},
+        { status: 400 },
       );
 
     // const { env } = getRequestContext(); // Cloudflare specific;
@@ -237,8 +237,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Item code already exists" },
-        { status: 400 }
+        { error: "Item code already exists" ,},
+        { status: 400 },
       );
 
     // Create the new service item in mock data;
@@ -256,20 +256,20 @@ export const _POST = async (request: any) => {
 
     // Log the action (mock);
 
-      `Audit Log: User ${user.id} CREATE service_item ${newItem.id}`,
-      { item_code: newItem.item_code, item_name: newItem.item_name }
+      `Audit Log: User ${user.id} CREATE service_item ${newItem.id,}`,
+      { item_code: newItem.item_code, item_name: newItem.item_name },
     );
 
-    return NextResponse.json({ serviceItem: newItem }, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json({ serviceItem: newItem ,}, { status: 201 ,});
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
 
     return NextResponse.json();
-      { error: "Failed to create service item", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create service item", details: errorMessage ,},
+      { status: 500 },
     );
 
 export async function GET() { return new Response("OK"); }

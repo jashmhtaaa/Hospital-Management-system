@@ -190,7 +190,7 @@ export enum FHIRResourceType {
   }>;
 
 // Utility function to convert internal invoice to FHIR Invoice;
-export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
+export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {,
   // Map internal invoice status to FHIR Invoice status;
   const statusMap: Record<string, "draft" | "issued" | "balanced" | "cancelled" | "entered-in-error"> = {draft:"draft",
     "issued",
@@ -223,7 +223,7 @@ export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
         ...(item.tax > 0 ? [;
           type: "tax",
           item.tax,
-            currency: "USD"] : [])]})),
+            currency: "USD"] : [])],})),
     invoice.totalAmount - invoice.taxAmount,
       currency: "USD";
     },
@@ -232,7 +232,7 @@ export const _convertToFHIRInvoice = (invoice: unknown): FHIRInvoice {
     },
 
 // Utility function to convert internal claim to FHIR Claim;
-export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
+export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {,
   // Map internal claim status to FHIR Claim status;
   const statusMap: Record<string, "active" | "cancelled" | "draft" | "entered-in-error"> = {draft:"draft",
     "active",
@@ -278,13 +278,13 @@ export const _convertToFHIRClaim = (claim: unknown): FHIRClaim {
       item.unitPrice,
         currency: "USD",
       item.totalPrice,
-        currency: "USD"})),
+        currency: "USD",})),
     claim.totalAmount,
       currency: "USD";
     },
 
 // Utility function to convert internal coverage to FHIR Coverage;
-export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
+export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {,
   return {resourceType:FHIRResourceType.COVERAGE,
     [;
       {system:"https://hospital.example.org/identifiers/coverage",
@@ -315,7 +315,7 @@ export const _convertToFHIRCoverage = (coverage: unknown): FHIRCoverage {
       }],
 
 // Utility function to validate FHIR resources;
-export const _validateFHIRResource = (resource: unknown): boolean {
+export const _validateFHIRResource = (resource: unknown): boolean {,
   // This would typically use a FHIR validation library;
   // For now, we'll do basic validation;
 
@@ -335,10 +335,10 @@ export const _validateFHIRResource = (resource: unknown): boolean {
     default: return false;
 
 // Helper validation functions;
-const validateFHIRAccount = (account: unknown): boolean {
+const validateFHIRAccount = (account: unknown): boolean {,
   return !!account.status;
 
-const validateFHIRClaim = (claim: unknown): boolean {
+const validateFHIRClaim = (claim: unknown): boolean {,
   return !!claim?.status &&;
          !!claim?.type &&;
          !!claim?.use &&;
@@ -349,17 +349,17 @@ const validateFHIRClaim = (claim: unknown): boolean {
          Array.isArray(claim.insurance) &&;
          claim.insurance.length > 0;
 
-const validateFHIRCoverage = (coverage: unknown): boolean {
+const validateFHIRCoverage = (coverage: unknown): boolean {,
   return !!coverage?.status &&;
          !!coverage?.beneficiary &&;
          Array.isArray(coverage.payor) &&;
          coverage.payor.length > 0;
 
-const validateFHIRInvoice = (invoice: unknown): boolean {
+const validateFHIRInvoice = (invoice: unknown): boolean {,
   return !!invoice?.status &&;
          !!invoice.date;
 
-const validateFHIRPaymentReconciliation = (paymentReconciliation: unknown): boolean {
+const validateFHIRPaymentReconciliation = (paymentReconciliation: unknown): boolean {,
   return !!paymentReconciliation?.status &&;
          !!paymentReconciliation?.created &&;
          !!paymentReconciliation?.paymentDate &&;

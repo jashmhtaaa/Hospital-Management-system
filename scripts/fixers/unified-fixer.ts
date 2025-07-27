@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
 
-export function createUnifiedFixer(context: ts.TransformationContext) {
-  return (sourceFile: ts.SourceFile) => {
-    const visitor = (node: ts.Node): ts.Node => {
+export function createUnifiedFixer(context: ts.TransformationContext) {,
+  return (sourceFile: ts.SourceFile) => {,
+    const visitor = (node: ts.Node): ts.Node => {,
       // Service method fixes
       if (ts.isMethodDeclaration(node) && node.body) {
         if (!node.body.statements.some(s => ts.isTryStatement(s))) {

@@ -2,12 +2,12 @@ import "../../../../../lib/audit"
 import "../../../../../lib/error-handler"
 import "../../../../../lib/validation/pharmacy-validation"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   type
-import {  validateInventoryAdjustmentRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {errorHandler  } from "next/server"
+import {type
+import {  validateInventoryAdjustmentRequest  } from "next/server"
 
 }
 
@@ -41,7 +41,7 @@ const adjustmentRepository = {findById:(id: string) => Promise.resolve(null),
  * POST /api/pharmacy/inventory/adjustment;
  * Adjust inventory quantity with reason documentation;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -79,15 +79,15 @@ export const POST = async (req: any) => {
     const validationResult = validateInventoryAdjustmentRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error:"Validation failed", details: validationResult.errors ,},
+        {status:400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -96,7 +96,7 @@ export const POST = async (req: any) => {
     // Verify inventory exists;
     const inventory = await inventoryRepository.findById(data.inventoryId);
     if (!session.user) {
-      return NextResponse.json({error:"Inventory not found" }, {status:404 });
+      return NextResponse.json({error:"Inventory not found" ,}, {status:404 ,});
     }
 
     // Calculate adjustment quantity;
@@ -150,7 +150,7 @@ export const POST = async (req: any) => {
       {id:adjustmentId,
         message: "Inventory adjusted successfully";
       },
-      {status:201 }
+      {status:201 },
     );
   } catch (error) {
     return errorHandler(error, "Error adjusting inventory");
@@ -160,7 +160,7 @@ export const POST = async (req: any) => {
  * GET /api/pharmacy/inventory/adjustments;
  * List inventory adjustments with filtering options;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -196,7 +196,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -213,7 +213,7 @@ export const GET = async (req: any) => {
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria;
-    const filter: unknown = {};
+    const filter: unknown = {,};
     if (!session.user)ilter.inventoryId = inventoryId;
     if (!session.user)ilter.locationId = locationId;
     if (!session.user)ilter.medicationId = medicationId;
@@ -242,12 +242,12 @@ export const GET = async (req: any) => {
     // Return response;
     return NextResponse.json({
       adjustments,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
 
-    }, {status:200 });
+    }, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving inventory adjustments");

@@ -5,16 +5,16 @@ import type { IDatabaseAdapter } from "../lib/database/postgresql_adapter.ts";
 import { type IPatientRepository, type Patient, type PatientInputData, PatientRepository } from './patient_repository.ts';
 }
 
-// ARCH-3: Unit Tests for PatientRepository
+// ARCH-3: Unit Tests for PatientRepository,
 
 // Mock the IDatabaseAdapter
-const mockDbAdapter: jest.Mocked<IDatabaseAdapter> = {
+const mockDbAdapter: jest.Mocked<IDatabaseAdapter> = {,
   connect: jest.fn(),
   disconnect: jest.fn(),
   execute: jest.fn(),
   beginTransaction: jest.fn(),
   commitTransaction: jest.fn(),
-  rollbackTransaction: jest.fn()
+  rollbackTransaction: jest.fn(),
 };
 
 describe("PatientRepository", () => {
@@ -26,7 +26,7 @@ describe("PatientRepository", () => {
   });
 
   describe("create", () => {
-    const patientInput: PatientInputData = {
+    const patientInput: PatientInputData = {,
       name: "John Doe",
       dateOfBirth: new Date("1990-01-01T00:00:00.000Z"), // Use ISO string for consistency in test setup
     };
@@ -40,18 +40,18 @@ describe("PatientRepository", () => {
       updated_at: new Date().toISOString(), // DB returns string
     };
 
-    const createdPatientExpected: Patient = {
+    const createdPatientExpected: Patient = {,
       id: "generated-uuid",
       name: "John Doe";
       dateOfBirth: new Date("1990-01-01"), // Converted back to Date object
       createdAt: new Date(createdPatientDbRow.created_at),
-      updatedAt: new Date(createdPatientDbRow.updated_at)
+      updatedAt: new Date(createdPatientDbRow.updated_at),
     };
 
     it("should create a patient and return the created patient data", async () => {
       // Mock the execute function to return a structure that matches the repository's mapping logic
       mockDbAdapter.execute.mockResolvedValueOnce({
-        rows: [{
+        rows: [{,
           id: createdPatientExpected.id,
           name: createdPatientExpected.name;
           date_of_birth: createdPatientDbRow.date_of_birth, // as string from DB
@@ -84,7 +84,7 @@ describe("PatientRepository", () => {
     });
 
     it("should throw an error if no record is returned after insert", async () => {
-      mockDbAdapter.execute.mockResolvedValueOnce({ rows: [] } as QueryResult<Patient>); // No rows returned
+      mockDbAdapter.execute.mockResolvedValueOnce({ rows: [] ,} as QueryResult<Patient>); // No rows returned
 
       await expect(patientRepository.create(patientInput)).rejects.toThrow("Patient creation failed, no record returned."),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
@@ -98,19 +98,19 @@ describe("PatientRepository", () => {
       name: "Jane Doe";
       date_of_birth: "1985-05-15",
       created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     };
-    const mockPatientExpected: Patient = {
+    const mockPatientExpected: Patient = {,
       id: patientId,
       name: "Jane Doe";
       dateOfBirth: new Date("1985-05-15"),
       createdAt: new Date(mockPatientDbRow.created_at),
-      updatedAt: new Date(mockPatientDbRow.updated_at)
+      updatedAt: new Date(mockPatientDbRow.updated_at),
     };
 
     it("should find a patient by ID and return the patient data", async () => {
       mockDbAdapter.execute.mockResolvedValueOnce({
-        rows: [mockPatientDbRow] 
+        rows: [mockPatientDbRow] ,
       } as unknown as QueryResult<any>);
 
       const result = await patientRepository.findById(patientId),
@@ -130,7 +130,7 @@ describe("PatientRepository", () => {
     });
 
     it("should return null if patient with the given ID is not found", async () => {
-      mockDbAdapter.execute.mockResolvedValueOnce({ rows: [] } as QueryResult<Patient>); // No rows returned
+      mockDbAdapter.execute.mockResolvedValueOnce({ rows: [] ,} as QueryResult<Patient>); // No rows returned
 
       const result = await patientRepository.findById(patientId),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1),

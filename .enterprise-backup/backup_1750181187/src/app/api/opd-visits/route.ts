@@ -11,7 +11,7 @@ const opdVisitCreateSchema = z.object({
     patient_id: z.number(),
     doctor_id: z.number(),
     consultation_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid consultation datetime format"
+        message: "Invalid consultation datetime format",
     }),
     chief_complaint: z.string().min(1, "Chief complaint is required"),
     history_of_present_illness: z.string().optional().nullable(),
@@ -19,23 +19,23 @@ const opdVisitCreateSchema = z.object({
     physical_examination: z.string().optional().nullable(),
     diagnosis: z.string().optional().nullable(),
     treatment_plan: z.string().optional().nullable(),
-    follow_up_instructions: z.string().optional().nullable()
+    follow_up_instructions: z.string().optional().nullable(),
 });
 
 // GET /api/opd-visits - Fetch list of OPD visits (with filtering/pagination)
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
     const session = await getSession()
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
     try {
-        const { searchParams } = new URL(request.url); // Corrected: searchParams was already defined
+        const { searchParams } = new URL(request.url); // Corrected: searchParams was already defined,
         const page = Number.parseInt(searchParams.get("page") || "1");
         const limit = Number.parseInt(searchParams.get("limit") || "10");
         const offset = (page - 1) * limit;
         const patientIdFilter = searchParams.get("patient_id");
-        const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams
+        const doctorIdFilter = searchParams.get("doctor_id"); // Corrected: search_params to searchParams,
         const dateFromFilter = searchParams.get("date_from"),
         const dateToFilter = searchParams.get("date_to");
         const statusFilter = searchParams.get("status");
@@ -62,43 +62,43 @@ export const _GET = async (request: NextRequest) => {
         let countQuery = `SELECT COUNT(*) as total FROM Consultations WHERE visit_type = 'OPD'`;
         const countParameters: (string | number)[] = [];
 
-        \1 {\n  \2{
+         {\n  {
             query += " AND c.patient_id = ?";
             queryParameters.push(Number.parseInt(patientIdFilter));
             countQuery += " AND patient_id = ?";
             countParameters.push(Number.parseInt(patientIdFilter));
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND c.doctor_id = ?";
             queryParameters.push(Number.parseInt(doctorIdFilter));
             countQuery += " AND doctor_id = ?";
             countParameters.push(Number.parseInt(doctorIdFilter));
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND DATE(c.consultation_datetime) >= ?";
             queryParameters.push(dateFromFilter);
             countQuery += " AND DATE(consultation_datetime) >= ?";
             countParameters.push(dateFromFilter);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND DATE(c.consultation_datetime) <= ?";
             queryParameters.push(dateToFilter);
             countQuery += " AND DATE(consultation_datetime) <= ?";
             countParameters.push(dateToFilter);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND c.visit_status = ?";
             queryParameters.push(statusFilter);
             countQuery += " AND visit_status = ?";
             countParameters.push(statusFilter);
         }
 
-        query += ` ORDER BY c./* SECURITY: Template literal eliminated */
+        query += ` ORDER BY c./* SECURITY: Template literal eliminated */,
         queryParameters.push(limit, offset),
 
         const [visitsResult, countResult] = await Promise.all([
             (DB as D1Database).prepare(query).bind(...queryParameters).all<Consultation>(),
-            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
+            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number ,}>();
         ]);
 
         const results = visitsResult.results || [];
@@ -106,45 +106,45 @@ export const _GET = async (request: NextRequest) => {
 
         return NextResponse.json({
             data: results,
-            pagination: {
+            pagination: {,
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit)
+                totalPages: Math.ceil(total / limit),
             },
         });
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error fetching OPD visits", details: errorMessage },
-            { status: 500 }
+            { message: "Error fetching OPD visits", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
 
 // POST /api/opd-visits - Create a new OPD visit (Consultation record)
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
     const session = await getSession()
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
-    \1 {\n  \2{ // Ensure user exists if logged in
-        return NextResponse.json({ message: "User not found in session" }, { status: 500 });
+     {\n  { // Ensure user exists if logged in
+        return NextResponse.json({ message: "User not found in session" ,}, { status: 500 ,});
     }
 
     try {
         const body = await request.json();
         const validationResult = opdVisitCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
         }
 
@@ -176,7 +176,7 @@ export const _POST = async (request: NextRequest) => {
 
         const insertResult = await insertStmt.run() as D1ResultWithMeta;
 
-        \1 {\n  \2{
+         {\n  {
 
             throw new Error("Failed to create OPD visit record");
         }
@@ -184,18 +184,18 @@ export const _POST = async (request: NextRequest) => {
         const newVisitId = insertResult.meta.last_row_id;
 
         return NextResponse.json(
-            { message: "OPD visit created successfully", consultationId: newVisitId },
-            { status: 201 }
+            { message: "OPD visit created successfully", consultationId: newVisitId ,},
+            { status: 201 },
         );
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error creating OPD visit", details: errorMessage },
-            { status: 500 }
+            { message: "Error creating OPD visit", details: errorMessage ,},
+            { status: 500 },
         );
     }

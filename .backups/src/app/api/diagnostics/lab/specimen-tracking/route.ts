@@ -20,7 +20,7 @@ interface SpecimenTrackingCreateBody {
 }
 
 // GET /api/diagnostics/lab/specimen-tracking - Get tracking history for specimens;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -57,7 +57,7 @@ export const _GET = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters;
@@ -74,8 +74,8 @@ export const _GET = async (request: any) => {
     // Validate that either specimenId or barcode is provided;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Either specimenId or barcode must be provided" },
-        { status: 400 }
+        { error: "Either specimenId or barcode must be provided" ,},
+        { status: 400 },
       );
     }
 
@@ -158,25 +158,25 @@ export const _GET = async (request: any) => {
     // Return tracking history with pagination metadata;
     return NextResponse.json({
       data: tracking,
-      pagination: {
+      pagination: {,
         page,
         pageSize,
         totalCount,
         totalPages: Math.ceil(totalCount / pageSize);
       }
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to fetch specimen tracking", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch specimen tracking", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/diagnostics/lab/specimen-tracking - Create a new tracking entry;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -213,7 +213,7 @@ export const _POST = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse request body;
@@ -229,8 +229,8 @@ export const _POST = async (request: any) => {
     for (const field of requiredFields) {
       if (!session.user)| body[field] === undefined || body[field] === "") {
         return NextResponse.json();
-          { error: `Missing or invalid required field: ${field}` },
-          { status: 400 }
+          { error: `Missing or invalid required field: ${field}` ,},
+          { status: 400 },
         );
       }
     }
@@ -243,8 +243,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Specimen not found" },
-        { status: 404 }
+        { error: "Specimen not found" ,},
+        { status: 404 },
       );
     }
 
@@ -360,24 +360,24 @@ export const _POST = async (request: any) => {
       }
 
       // Return the created tracking entry;
-      return NextResponse.json(tracking, { status: 201 });
+      return NextResponse.json(tracking, { status: 201 ,});
     } catch (error) {
       // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to create specimen tracking", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create specimen tracking", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // GET /api/diagnostics/lab/specimen-tracking/locations - Get all specimen storage locations;
-export const _GET_LOCATIONS = async (request: any) => {
+export const _GET_LOCATIONS = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -414,7 +414,7 @@ export const _GET_LOCATIONS = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Execute query to get distinct locations;
@@ -430,17 +430,17 @@ export const _GET_LOCATIONS = async (request: any) => {
 
     // Return the locations;
     return NextResponse.json(locations.map(item => item.location));
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to fetch specimen locations", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch specimen locations", details: errorMessage ,},
+      { status: 500 },
     );
   }
 
 // POST /api/diagnostics/lab/specimen-tracking/scan - Process a barcode/RFID scan;
-export const _POST_SCAN = async (request: any) => {
+export const _POST_SCAN = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -477,7 +477,7 @@ export const _POST_SCAN = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Parse request body;
     const body = await request.json() as {
@@ -491,7 +491,7 @@ export const _POST_SCAN = async (request: any) => {
     if (!session.user) {
       return NextResponse.json();
         { error: "Barcode, scan type, and location are required" },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Check if specimen exists;
@@ -502,8 +502,8 @@ export const _POST_SCAN = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Specimen not found" },
-        { status: 404 }
+        { error: "Specimen not found" ,},
+        { status: 404 },
       );
 
     const specimen = specimenCheckResult.results[0];
@@ -648,16 +648,16 @@ export const _POST_SCAN = async (request: any) => {
       await DB.query("ROLLBACK", []);
       throw error;
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to process specimen scan", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to process specimen scan", details: errorMessage ,},
+      { status: 500 },
     );
 
 // POST /api/diagnostics/lab/specimen-tracking/batch - Process a batch of specimens;
-export const _POST_BATCH = async (request: any) => {
+export const _POST_BATCH = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -694,7 +694,7 @@ export const _POST_BATCH = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Parse request body;
     const body = await request.json() as {
@@ -707,7 +707,7 @@ export const _POST_BATCH = async (request: any) => {
     if (!session.user) {
       return NextResponse.json();
         { error: "Barcodes, status, and location are required" },
-        { status: 400 }
+        { status: 400 },
       );
 
     // Start transaction;
@@ -830,10 +830,10 @@ export const _POST_BATCH = async (request: any) => {
       await DB.query("ROLLBACK", []);
       throw error;
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to process batch specimens", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to process batch specimens", details: errorMessage ,},
+      { status: 500 },
     );

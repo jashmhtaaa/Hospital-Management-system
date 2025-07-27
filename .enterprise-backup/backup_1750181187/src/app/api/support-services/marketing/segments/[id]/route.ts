@@ -13,11 +13,11 @@ const segmentService = new SegmentService();
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -29,7 +29,7 @@ export const GET = async (
     },
     {
       requiredPermission: 'marketing.segments.read',
-      auditAction: 'SEGMENT_VIEW'
+      auditAction: 'SEGMENT_VIEW',
     }
   );
 }
@@ -40,11 +40,11 @@ export const GET = async (
  */
 export const PUT = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -58,6 +58,6 @@ export const PUT = async (
     },
     {
       requiredPermission: 'marketing.segments.update',
-      auditAction: 'SEGMENT_UPDATE'
+      auditAction: 'SEGMENT_UPDATE',
     }
   );

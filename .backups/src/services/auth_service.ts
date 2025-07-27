@@ -22,7 +22,7 @@ interface IAuditLogService {
 }
   ) {}
 
-  async login(credentials: unknown): Promise<{ token: string, user: unknown } | null> {
+  async login(credentials: unknown): Promise<{ token: string, user: unknown } | null> {,
     const { username, password } = credentials;
     let userIdForAudit = "unknown_user";
     let _loginStatus = "FAILURE";
@@ -66,7 +66,7 @@ interface IAuditLogService {
       const user = await this.userRepository.findByUsername(username);
       if (!session.user) {
         // Log audit event for failed login (user not found);
-        await this.auditLogService.logEvent(username, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: "User not found" });
+        await this.auditLogService.logEvent(username, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: "User not found" ,});
         return null; // Or throw specific error;
       }
       userIdForAudit = user.id || username; // Use actual user ID if available;
@@ -74,7 +74,7 @@ interface IAuditLogService {
       const isPasswordValid = await this.authUtils.verifyPassword(password, user.passwordHash); // Assuming user object has passwordHash;
       if (!session.user) {
         // Log audit event for failed login (invalid password);
-        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", user.id, "FAILURE", { reason: "Invalid password" });
+        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", user.id, "FAILURE", { reason: "Invalid password" ,});
         return null; // Or throw specific error;
 
       const token = await this.authUtils.generateToken(user.id, user.username);
@@ -84,9 +84,9 @@ interface IAuditLogService {
 
       // Return token and user information (excluding sensitive data like passwordHash);
       const { passwordHash, ...userWithoutPassword } = user;
-      return { token, user: userWithoutPassword };
+      return { token, user: userWithoutPassword ,};
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
       // Log audit event for generic login failure if not already logged;
       if (!session.user) {
@@ -98,7 +98,7 @@ interface IAuditLogService {
       // Depending on requirements, might re-throw or return null/specific error structure;
       return null;
 
-  async logout(userId: string): Promise<void> {
+  async logout(userId: string): Promise<void> {,
     // Business logic for logout (e.g., invalidating a token if using a denylist);
     // For a simple JWT setup, logout is often client-side (clearing the token).;
     // Server-side logout might involve logging the event.;
@@ -138,7 +138,7 @@ interface IAuditLogService {
       // Placeholder: In a real system, you might add the token to a blacklist here.;
       await this.auditLogService.logEvent(userId, "LOGOUT_SUCCESS", "Auth", userId, "SUCCESS");
       return Promise.resolve();
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
       await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", { reason: error.message ||;
         "Unknown error during logout" });

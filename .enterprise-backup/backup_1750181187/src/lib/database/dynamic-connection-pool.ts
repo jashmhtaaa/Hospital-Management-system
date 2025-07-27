@@ -47,7 +47,7 @@ interface DynamicPoolConfig {
 /**
  * Dynamic Connection Pool that scales based on usage;
  */
-\1
+
 }
     };
 
@@ -55,10 +55,10 @@ interface DynamicPoolConfig {
 
     this.pool = new Pool({
       connectionString: config.connectionString,
-      \1,\2 config.port,
-      \1,\2 config.user,
-      \1,\2 this.currentPoolSize,
-      \1,\2 config.connectionTimeoutMillis
+       config.port,
+       config.user,
+       this.currentPoolSize,
+       config.connectionTimeoutMillis
     });
 
     // Set up event handlers
@@ -72,7 +72,7 @@ interface DynamicPoolConfig {
 
     logger.info('Dynamic connection pool initialized', {
       minPoolSize: config.minPoolSize,
-      \1,\2 config.host || config.connectionString?.split('@')[1]?.split('/')[0]
+       config.host || config.connectionString?.split('@')[1]?.split('/')[0]
     });
   }
 
@@ -106,7 +106,7 @@ interface DynamicPoolConfig {
 
         // Track metrics
         metricsCollector.incrementCounter('database.connection_pool.client_releases', 1, {
-          hasError: String(!!err)
+          hasError: String(!!err),
         });
 
         return originalRelease.call(client, err)
@@ -119,7 +119,7 @@ interface DynamicPoolConfig {
       // Track error metrics
       metricsCollector.incrementCounter('database.connection_pool.errors', 1, {
         operation: 'getClient',
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
 
       logger.error('Error getting client from connection pool', { error });
@@ -150,7 +150,7 @@ interface DynamicPoolConfig {
 
         // Track metrics
         metricsCollector.recordTimer('database.connection_pool.query_time', duration, {
-          queryType: this.getQueryType(queryText)
+          queryType: this.getQueryType(queryText),
         });
 
         // Release the client back to the pool
@@ -159,7 +159,7 @@ interface DynamicPoolConfig {
         return result.rows as T;
       } catch (error) {
         // Release the client with error if we have one
-        \1 {\n  \2{
+         {\n  {
           client.release(error);
           client = null;
         }
@@ -169,11 +169,11 @@ interface DynamicPoolConfig {
         // Track error metrics
         metricsCollector.incrementCounter('database.connection_pool.query_errors', 1, {
           queryType: this.getQueryType(queryText),
-          \1,\2 String(attempt)
+           String(attempt)
         });
 
         // If we've reached max retries, throw the error
-        \1 {\n  \2{
+         {\n  {
           logger.error('Query failed after max retries', {
             error,
             query: queryText.substring(0, 100),
@@ -215,7 +215,7 @@ interface DynamicPoolConfig {
 
       // Track metrics
       metricsCollector.incrementCounter('database.connection_pool.transactions', 1, {
-        success: 'true'
+        success: 'true',
       });
 
       return result;
@@ -226,18 +226,18 @@ interface DynamicPoolConfig {
 
         // Track metrics
         metricsCollector.incrementCounter('database.connection_pool.transactions', 1, {
-          success: 'false'
+          success: 'false',
         });
       } catch (rollbackError) {
         logger.error('Error rolling back transaction', {
           error: rollbackError,
-          originalError: error
+          originalError: error,
         });
       }
 
       // Track error metrics
       metricsCollector.incrementCounter('database.connection_pool.transaction_errors', 1, {
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
 
       throw error;
@@ -285,13 +285,13 @@ interface DynamicPoolConfig {
   /**
    * Manually trigger a scale up operation;
    */
-  async scaleUp(size: number = this.config.scaleUpSize): Promise<void> {
-    \1 {\n  \2{
+  async scaleUp(size: number = this.config.scaleUpSize): Promise<void> {,
+     {\n  {
       logger.info('Scaling operation already in progress, ignoring scale up request');
       return;
     }
 
-    \1 {\n  \2{
+     {\n  {
       logger.info('Pool already at maximum size, cannot scale up further');
       return;
     }
@@ -303,11 +303,11 @@ interface DynamicPoolConfig {
       const newSize = Math.min(this.currentPoolSize + size, this.config.maxPoolSize);
       const addedConnections = newSize - this.currentPoolSize;
 
-      \1 {\n  \2{
+       {\n  {
         return;
       }
 
-      logger.info(`Scaling up connection pool from ${this.currentPoolSize} to ${\1}`;
+      logger.info(`Scaling up connection pool from ${this.currentPoolSize} to ${}`;
 
       // Update the pool's max connections
       this.pool.options.max = newSize;
@@ -315,7 +315,7 @@ interface DynamicPoolConfig {
 
       // Track metrics
       metricsCollector.incrementCounter('database.connection_pool.scale_up_operations', 1, {
-        addedConnections: String(addedConnections)
+        addedConnections: String(addedConnections),
       });
 
       // Update the total connection count gauge
@@ -326,7 +326,7 @@ interface DynamicPoolConfig {
       // Track error metrics
       metricsCollector.incrementCounter('database.connection_pool.errors', 1, {
         operation: 'scaleUp',
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
     } finally {
       this.pendingScaleOperation = false;
@@ -336,13 +336,13 @@ interface DynamicPoolConfig {
   /**
    * Manually trigger a scale down operation;
    */
-  async scaleDown(size: number = this.config.scaleDownSize): Promise<void> {
-    \1 {\n  \2{
+  async scaleDown(size: number = this.config.scaleDownSize): Promise<void> {,
+     {\n  {
       logger.info('Scaling operation already in progress, ignoring scale down request');
       return;
     }
 
-    \1 {\n  \2{
+     {\n  {
       logger.info('Pool already at minimum size, cannot scale down further');
       return;
     }
@@ -354,11 +354,11 @@ interface DynamicPoolConfig {
       const newSize = Math.max(this.currentPoolSize - size, this.config.minPoolSize);
       const removedConnections = this.currentPoolSize - newSize;
 
-      \1 {\n  \2{
+       {\n  {
         return;
       }
 
-      logger.info(`Scaling down connection pool from ${this.currentPoolSize} to ${\1}`;
+      logger.info(`Scaling down connection pool from ${this.currentPoolSize} to ${}`;
 
       // Update the pool's max connections
       this.pool.options.max = newSize;
@@ -366,7 +366,7 @@ interface DynamicPoolConfig {
 
       // Track metrics
       metricsCollector.incrementCounter('database.connection_pool.scale_down_operations', 1, {
-        removedConnections: String(removedConnections)
+        removedConnections: String(removedConnections),
       });
 
       // Update the total connection count gauge
@@ -380,7 +380,7 @@ interface DynamicPoolConfig {
       // Track error metrics
       metricsCollector.incrementCounter('database.connection_pool.errors', 1, {
         operation: 'scaleDown',
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
     } finally {
       this.pendingScaleOperation = false;
@@ -395,12 +395,12 @@ interface DynamicPoolConfig {
       logger.info('Shutting down dynamic connection pool');
 
       // Stop monitoring and health checks
-      \1 {\n  \2{
+       {\n  {
         clearInterval(this.monitoringInterval);
         this.monitoringInterval = null;
       }
 
-      \1 {\n  \2{
+       {\n  {
         clearInterval(this.healthCheckInterval);
         this.healthCheckInterval = null;
       }
@@ -415,7 +415,7 @@ interface DynamicPoolConfig {
       // Track error metrics
       metricsCollector.incrementCounter('database.connection_pool.errors', 1, {
         operation: 'shutdown',
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
     }
   }
@@ -425,12 +425,12 @@ interface DynamicPoolConfig {
    */
   private setupEventHandlers(): void {
     this.pool.on('error', (err, client) => {
-      logger.error('Unexpected error on idle client', { error: err });
+      logger.error('Unexpected error on idle client', { error: err ,});
 
       // Track error metrics
       metricsCollector.incrementCounter('database.connection_pool.errors', 1, {
         errorType: err.name || 'unknown',
-        operation: 'idleClient'
+        operation: 'idleClient',
       });
     });
 
@@ -449,7 +449,7 @@ interface DynamicPoolConfig {
    * Start the monitoring process;
    */
   private startMonitoring(): void {
-    \1 {\n  \2{
+     {\n  {
       clearInterval(this.monitoringInterval);
     }
 
@@ -462,7 +462,7 @@ interface DynamicPoolConfig {
    * Start the health check process;
    */
   private startHealthChecks(): void {
-    \1 {\n  \2{
+     {\n  {
       clearInterval(this.healthCheckInterval);
     }
 
@@ -486,14 +486,14 @@ interface DynamicPoolConfig {
       metricsCollector.setGauge('database.connection_pool.utilization_ratio', utilization);
 
       // Check if we need to scale up
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           this.scaleUp();
         } else {
           // We're at max capacity and still high utilization
           logger.warn('Connection pool at maximum capacity with high utilization', {
             utilization,
-            waitingClients: this.waitingClients
+            waitingClients: this.waitingClients,
           });
 
           // Track metrics
@@ -504,7 +504,7 @@ interface DynamicPoolConfig {
       // Check if we need to scale down, but only if it's been long enough since the last scale down
       const timeSinceLastScaleDown = crypto.getRandomValues(new Uint32Array(1))[0] - this.lastScaleDownTime;
 
-      \1 {\n  \2f (this.currentPoolSize > this.config.minPoolSize) {
+       {\n  f (this.currentPoolSize > this.config.minPoolSize) {
           this.scaleDown();
         }
     } catch (error) {
@@ -513,7 +513,7 @@ interface DynamicPoolConfig {
       // Track error metrics
       metricsCollector.incrementCounter('database.connection_pool.errors', 1, {
         operation: 'monitorUsage',
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
     }
   }
@@ -533,22 +533,22 @@ interface DynamicPoolConfig {
       // Track metrics
       metricsCollector.recordTimer('database.connection_pool.health_check_time', duration);
       metricsCollector.incrementCounter('database.connection_pool.health_checks', 1, {
-        success: 'true'
+        success: 'true',
       });
 
       logger.debug('Database health check completed successfully', {
-        durationMs: duration.toFixed(2)
+        durationMs: duration.toFixed(2),
       });
     } catch (error) {
       logger.error('Database health check failed', { error });
 
       // Track error metrics
       metricsCollector.incrementCounter('database.connection_pool.health_checks', 1, {
-        success: 'false'
+        success: 'false',
       });
       metricsCollector.incrementCounter('database.connection_pool.errors', 1, {
         operation: 'healthCheck',
-        errorType: error.name || 'unknown'
+        errorType: error.name || 'unknown',
       });
     }
   }
@@ -556,19 +556,19 @@ interface DynamicPoolConfig {
   /**
    * Get the type of SQL query (SELECT, INSERT, UPDATE, DELETE, etc.)
    */
-  private getQueryType(query: string): string {
+  private getQueryType(query: string): string {,
     const trimmedQuery = query.trim().toUpperCase();
 
-    \1 {\n  \2 return 'SELECT';
-    \1 {\n  \2 return 'INSERT';
-    \1 {\n  \2 return 'UPDATE';
-    \1 {\n  \2 return 'DELETE';
-    \1 {\n  \2 return 'CREATE';
-    \1 {\n  \2 return 'ALTER';
-    \1 {\n  \2 return 'DROP';
-    \1 {\n  \2 return 'BEGIN';
-    \1 {\n  \2 return 'COMMIT';
-    \1 {\n  \2 return 'ROLLBACK';
+     {\n   return 'SELECT';
+     {\n   return 'INSERT';
+     {\n   return 'UPDATE';
+     {\n   return 'DELETE';
+     {\n   return 'CREATE';
+     {\n   return 'ALTER';
+     {\n   return 'DROP';
+     {\n   return 'BEGIN';
+     {\n   return 'COMMIT';
+     {\n   return 'ROLLBACK';
 
     return 'OTHER';
   }

@@ -19,11 +19,11 @@ const segmentService = new SegmentService();
  */;
 export const GET = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -46,11 +46,11 @@ export const GET = async();
  */;
 export const PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 

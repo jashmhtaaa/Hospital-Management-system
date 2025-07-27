@@ -113,7 +113,7 @@ interface LabResultCreateBody {
 }
 
 // GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -150,7 +150,7 @@ export const _GET = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters;
@@ -336,7 +336,7 @@ export const _GET = async (request: any) => {
             result.performed_at,
           performer: [;
             {
-              reference: `Practitioner/${result.performed_by}`,
+              reference: `Practitioner/${result.performed_by,}`,
               display: result.performed_by_username;
             }
           ];
@@ -347,7 +347,7 @@ export const _GET = async (request: any) => {
           resource.issued = result.verified_at;
           if (!session.user)esource.performer = [];
           resource.performer.push({
-            reference: `Practitioner/${result.verified_by}`,
+            reference: `Practitioner/${result.verified_by,}`,
             display: result.verified_by_username;
           });
         }
@@ -467,7 +467,7 @@ export const _GET = async (request: any) => {
         // Add reference ranges if available;
         if (!session.user) {
           resource.referenceRange = referenceRanges.map(range => {
-            const refRange: unknown = {};
+            const refRange: unknown = {,};
 
             if (!session.user) {
               refRange.low = {
@@ -529,7 +529,7 @@ export const _GET = async (request: any) => {
             url: request.url;
           }
         ],
-        entry: fhirResources.map(resource => ({
+        entry: fhirResources.map(resource => ({,
           resource;
         }));
       });
@@ -537,7 +537,7 @@ export const _GET = async (request: any) => {
       // Return default format with pagination metadata;
       return NextResponse.json({
         data: results,
-        pagination: {
+        pagination: {,
           page,
           pageSize,
           totalCount,
@@ -545,18 +545,18 @@ export const _GET = async (request: any) => {
         }
       });
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to fetch laboratory results", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch laboratory results", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -593,7 +593,7 @@ export const _POST = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse request body;
@@ -602,16 +602,16 @@ export const _POST = async (request: any) => {
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Order item ID is required" },
-        { status: 400 }
+        { error: "Order item ID is required" ,},
+        { status: 400 },
       );
     }
 
     // Validate that at least one result value is provided;
     if (!session.user) {
       return NextResponse.json();
-        { error: "At least one result value must be provided" },
-        { status: 400 }
+        { error: "At least one result value must be provided" ,},
+        { status: 400 },
       );
     }
 
@@ -635,8 +635,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Order item not found" },
-        { status: 404 }
+        { error: "Order item not found" ,},
+        { status: 404 },
       );
     }
 
@@ -651,8 +651,8 @@ export const _POST = async (request: any) => {
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "Parameter not found" },
-          { status: 404 }
+          { error: "Parameter not found" ,},
+          { status: 404 },
         );
       }
     }
@@ -666,8 +666,8 @@ export const _POST = async (request: any) => {
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "Device not found" },
-          { status: 404 }
+          { error: "Device not found" ,},
+          { status: 404 },
         );
       }
     }
@@ -675,8 +675,8 @@ export const _POST = async (request: any) => {
     // Check if previous result exists if this is a correction;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Previous result ID is required for corrections" },
-        { status: 400 }
+        { error: "Previous result ID is required for corrections" ,},
+        { status: 400 },
       );
     }
 
@@ -688,8 +688,8 @@ export const _POST = async (request: any) => {
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "Previous result not found" },
-          { status: 404 }
+          { error: "Previous result not found" ,},
+          { status: 404 },
         );
       }
     }
@@ -1110,17 +1110,17 @@ export const _POST = async (request: any) => {
       }
 
       // Return the created result;
-      return NextResponse.json(createdResult, { status: 201 });
+      return NextResponse.json(createdResult, { status: 201 ,});
     } catch (error) ;
       // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to create laboratory result", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create laboratory result", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -1128,7 +1128,7 @@ export const _POST = async (request: any) => {
 // PUT /api/diagnostics/lab/results/:id - Update a laboratory result;
 export const _PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -1166,7 +1166,7 @@ export const _PUT = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const resultId = params.id;
@@ -1188,8 +1188,8 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Result not found" },
-        { status: 404 }
+        { error: "Result not found" ,},
+        { status: 404 },
       );
     }
 
@@ -1200,8 +1200,8 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Cannot update a verified result without creating a correction" },
-        { status: 400 }
+        { error: "Cannot update a verified result without creating a correction" ,},
+        { status: 400 },
       );
     }
 
@@ -1363,7 +1363,7 @@ export const _PUT = async();
         return NextResponse.json({
           ...createdCorrection,
           message: "Created new result as a correction";
-        }, { status: 201 });
+        }, { status: 201 ,});
       } else {
         // Regular update of an unverified result;
         // Encrypt sensitive data if needed;
@@ -1465,8 +1465,8 @@ export const _PUT = async();
         // Only proceed if there are fields to update;
         if (!session.user) {
           return NextResponse.json();
-            { error: "No fields to update" },
-            { status: 400 }
+            { error: "No fields to update" ,},
+            { status: 400 },
           );
 
         // Add updated_at field;
@@ -1562,18 +1562,18 @@ export const _PUT = async();
       await DB.query("ROLLBACK", []);
       throw error;
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to update laboratory result", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update laboratory result", details: errorMessage ,},
+      { status: 500 },
     );
 
 // POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result;
 export const _POST_VERIFY = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -1611,11 +1611,11 @@ export const _POST_VERIFY = async();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Only lab technicians, lab managers, and pathologists can verify results;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     const resultId = params.id;
 
@@ -1627,8 +1627,8 @@ export const _POST_VERIFY = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Result not found" },
-        { status: 404 }
+        { error: "Result not found" ,},
+        { status: 404 },
       );
 
     const existingResult = resultCheckResult.results[0];
@@ -1636,8 +1636,8 @@ export const _POST_VERIFY = async();
     // Check if result is already verified;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Result is already verified" },
-        { status: 400 }
+        { error: "Result is already verified" ,},
+        { status: 400 },
       );
 
     // Parse request body;
@@ -1762,16 +1762,16 @@ export const _POST_VERIFY = async();
       await DB.query("ROLLBACK", []);
       throw error;
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to verify laboratory result", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to verify laboratory result", details: errorMessage ,},
+      { status: 500 },
     );
 
 // GET /api/diagnostics/lab/results/critical - Get critical results;
-export const _GET_CRITICAL = async (request: any) => {
+export const _GET_CRITICAL = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -1808,7 +1808,7 @@ export const _GET_CRITICAL = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Parse query parameters;
     const { searchParams } = new URL(request.url);
@@ -1877,25 +1877,25 @@ export const _GET_CRITICAL = async (request: any) => {
     // Return alerts with pagination metadata;
     return NextResponse.json({
       data: alerts,
-      pagination: {
+      pagination: {,
         page,
         pageSize,
         totalCount,
         totalPages: Math.ceil(totalCount / pageSize);
 
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to fetch critical alerts", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch critical alerts", details: errorMessage ,},
+      { status: 500 },
     );
 
 // PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status;
 export const _PUT_CRITICAL = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -1933,7 +1933,7 @@ export const _PUT_CRITICAL = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     const alertId = params.id;
 
@@ -1945,8 +1945,8 @@ export const _PUT_CRITICAL = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Critical alert not found" },
-        { status: 404 }
+        { error: "Critical alert not found" ,},
+        { status: 404 },
       );
 
     // Parse request body;
@@ -1961,8 +1961,8 @@ export const _PUT_CRITICAL = async();
     // Validate status;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid status" },
-        { status: 400 }
+        { error: "Invalid status" ,},
+        { status: 400 },
       );
 
     // Encrypt sensitive data if needed;
@@ -2046,16 +2046,16 @@ export const _PUT_CRITICAL = async();
 
     // Return the updated alert;
     return NextResponse.json(updatedAlert);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to update critical alert", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update critical alert", details: errorMessage ,},
+      { status: 500 },
     );
 
 // Helper function to map HMS status to FHIR status;
-const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {
+const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {,
   switch (status) {
     case "registered": any;
       return "registered";
@@ -2074,7 +2074,7 @@ const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final"
     default: return "unknown";
 
 // Helper function to map HMS interpretation to FHIR interpretation;
-const mapInterpretationToFHIR = (interpretation: string): string {
+const mapInterpretationToFHIR = (interpretation: string): string {,
   switch (interpretation) {
     case "normal": any;
       return "N";

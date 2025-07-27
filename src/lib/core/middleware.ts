@@ -5,10 +5,10 @@ import "zod"
 import NextRequest
 import NextResponse }
 import ValidationError }
-import {   AppError
-import {  logger  } from "@/lib/database"
-import {   type
-import {  z  } from "@/lib/database"
+import {AppError
+import {  logger  } from "next/server"
+import {type
+import {  z  } from "next/server"
 
 }
 
@@ -22,8 +22,8 @@ import {  z  } from "@/lib/database"
  * @param schema Zod schema to validate against;
  * @returns Middleware function;
  */;
-export function validateRequestBody<T>(schema: z.ZodType<T>) {
-  return async (req: any) => {
+export function validateRequestBody<T>(schema: z.ZodType<T>) {,
+  return async (req: any) => {,
     try {
 } catch (error) {
   console.error(error);
@@ -72,8 +72,8 @@ export function validateRequestBody<T>(schema: z.ZodType<T>) {
  * @param schema Zod schema to validate against;
  * @returns Middleware function;
  */;
-export function validateQueryParams<T>(schema: z.ZodType<T>) {
-  return (req: any) => {
+export function validateQueryParams<T>(schema: z.ZodType<T>) {,
+  return (req: any) => {,
     try {
 } catch (error) {
   console.error(error);
@@ -130,7 +130,7 @@ export function validateQueryParams<T>(schema: z.ZodType<T>) {
 export const _withErrorHandling = (;
   handler: (req: any, ...args: unknown[]) => Promise>;
 ) {
-  return async (req: any, ...args: unknown[]) => {
+  return async (req: any, ...args: unknown[]) => {,
     try {
 } catch (error) {
   console.error(error);
@@ -183,7 +183,7 @@ export const _withErrorHandling = (;
         {error:"Internal server error",
           isProd ? undefined : String(error);
         },
-        {status:500 }
+        {status:500 },
       );
 
   };
@@ -196,15 +196,15 @@ export const _withErrorHandling = (;
 export const _withAuth = (;
   handler: (req: any, ...args: unknown[]) => Promise>;
 ) {
-  return async (req: any, ...args: unknown[]) => {
+  return async (req: any, ...args: unknown[]) => {,
     // In a real implementation, this would check session/token;
     // For now, we"ll assume authentication is handled by Next.js middleware;
     const session = req.headers.get("x-session");
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Unauthorized", code: "UNAUTHORIZED" },
-        {status:401 }
+        {error:"Unauthorized", code: "UNAUTHORIZED" ,},
+        {status:401 },
       );
 
     return handler(req, ...args);
@@ -220,15 +220,15 @@ export const _withPermissions = (;
   permissions: string[],
   handler: (req: any, ...args: unknown[]) => Promise>;
 ) {
-  return async (req: any, ...args: unknown[]) => {
+  return async (req: any, ...args: unknown[]) => {,
     // In a real implementation, this would check user permissions;
     // For now, we"ll assume a simple role-based check;
     const userRole = req.headers.get("x-user-role");
 
     if (!session.user)) {
       return NextResponse.json();
-        {error:"Forbidden", code: "FORBIDDEN' },
-        {status:403 }
+        {error:"Forbidden", code: "FORBIDDEN' ,},
+        {status:403 },
       );
 
     return handler(req, ...args);

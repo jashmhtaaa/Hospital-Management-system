@@ -10,12 +10,12 @@ import { getSession } from '@/lib/session';
  * GET /api/diagnostics/pacs/images;
  * Get PACS images with optional filtering;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Parse query parameters
@@ -57,37 +57,37 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add filters
-        \1 {\n  \2{
+         {\n  {
           query += ' AND i.patient_id = ?';
           params.push(patientId);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND i.study_instance_uid = ?';
           params.push(studyInstanceUid);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND i.series_instance_uid = ?';
           params.push(seriesInstanceUid);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND i.modality = ?';
           params.push(modality);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND i.accession_number = ?';
           params.push(accessionNumber);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND i.study_date >= ?';
           params.push(fromDate);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND i.study_date <= ?';
           params.push(toDate);
         }
@@ -107,7 +107,7 @@ export const GET = async (request: NextRequest) => {
           JOIN patients p ON i.patient_id = p.id;
           LEFT JOIN radiology_orders ro ON i.order_id = ro.id;
           WHERE 1=1;
-          /* SECURITY: Template literal eliminated */
+          /* SECURITY: Template literal eliminated */,
 
         const countParams = params.slice(0, -2),
         const countResult = await DB.query(countQuery, countParams);
@@ -118,13 +118,13 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'pacs_images',
+           'pacs_images',
           details: { patientId, studyInstanceUid, modality, page, pageSize }
         });
 
         return {
           images: result.results,
-          pagination: {
+          pagination: {,
             page,
             pageSize,
             totalCount,
@@ -140,8 +140,8 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: 'Failed to fetch PACS images',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -149,17 +149,17 @@ export const GET = async (request: NextRequest) => {
  * GET /api/diagnostics/pacs/images/:id;
  * Get a specific PACS image by ID;
  */
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     const id = parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+     {\n   {
+      return NextResponse.json({ error: 'Invalid ID' ,}, { status: 400 ,});
     }
 
     // Cache key
@@ -182,15 +182,15 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 
         const result = await DB.query(query, [id]);
 
-        \1 {\n  \2{
+         {\n  {
           throw new Error('Image not found');
         }
 
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'pacs_images',
-          \1,\2 { id }
+           'pacs_images',
+           { id }
         });
 
         return result.results[0];
@@ -203,8 +203,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 
     return NextResponse.json({
       error: 'Failed to fetch PACS image',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -212,17 +212,17 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
  * POST /api/diagnostics/pacs/images/retrieve;
  * Retrieve images from PACS server;
  */
-export const _POST_RETRIEVE = async (request: NextRequest) => {
+export const _POST_RETRIEVE = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Parse request body
@@ -236,10 +236,10 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
         error: 'At least one of patientId, accessionNumber, or studyInstanceUid is required'
-      }, { status: 400 });
+      }, { status: 400 ,});
     }
 
     // Check if PACS is configured
@@ -251,10 +251,10 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
 
     const pacsConfigResult = await DB.query(pacsConfigQuery);
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
-        error: 'PACS not configured'
-      }, { status: 400 });
+        error: 'PACS not configured',
+      }, { status: 400 ,});
     }
 
     // In a real implementation, this would use a DICOM library to query the PACS server
@@ -267,7 +267,7 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
     const retrievedImages = [];
 
     // If we have a study instance UID, simulate retrieving that specific study
-    \1 {\n  \2{
+     {\n  {
       // Generate a random number of series (1-5)
       const seriesCount = Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5) + 1
 
@@ -283,8 +283,8 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
             seriesInstanceUid,
             sopInstanceUid: `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$j + 1`,
             instanceNumber: j + 1,
-            \1,\2 studyDate || new Date().toISOString().split('T')[0],
-            \1,\2 i + 1,
+             studyDate || new Date().toISOString().split('T')[0],
+             i + 1,
             seriesDescription: `Series $i + 1`,
             patientId,
             accessionNumber: accessionNumber || `ACC$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)`;
@@ -311,10 +311,10 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
               sopInstanceUid: `1.2.840.10008.5.1.4.1.1.$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000).$j + 1`,
               instanceNumber: j + 1,
               modality: modality || ['CT', 'MR', 'XR'][Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 3)],
-              studyDate: studyDate ||
+              studyDate: studyDate ||,
                 new Date(crypto.getRandomValues(new Uint32Array(1))[0] - Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 30) * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
               studyTime: new Date().toISOString().split('T')[1].split('.')[0],
-              \1,\2 `Series $i + 1`,
+               `Series $i + 1`,
               patientId,
               accessionNumber: accessionNumber || `ACC$Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000000)`;
             });
@@ -329,12 +329,12 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
     // Log retrieval
     await auditLog({
       userId: session.user.id,
-      \1,\2 'pacs_images',
-      details: {
+       'pacs_images',
+      details: {,
         patientId,
         accessionNumber,
         studyInstanceUid,
-        imagesRetrieved: retrievedImages.length
+        imagesRetrieved: retrievedImages.length,
       }
     });
 
@@ -343,14 +343,14 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
       message: `Successfully retrieved $retrievedImages.lengthimages`,
       retrievedImages: retrievedImages.slice(0, 10), // Return only first 10 for brevity
       totalImages: retrievedImages.length,
-      \1,\2 new Set(retrievedImages.map(img => img.seriesInstanceUid)).size
+       new Set(retrievedImages.map(img => img.seriesInstanceUid)).size
     });
   } catch (error) {
 
     return NextResponse.json({
       error: 'Failed to retrieve images from PACS',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -358,17 +358,17 @@ export const _POST_RETRIEVE = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/images/store;
  * Store images to PACS server;
  */
-export const _POST_STORE = async (request: NextRequest) => {
+export const _POST_STORE = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Parse request body
@@ -385,10 +385,10 @@ export const _POST_STORE = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
         error: 'Patient ID, modality, study instance UID, series instance UID, SOP instance UID, and image data are required'
-      }, { status: 400 });
+      }, { status: 400 ,});
     }
 
     // Check if PACS is configured
@@ -400,23 +400,23 @@ export const _POST_STORE = async (request: NextRequest) => {
 
     const pacsConfigResult = await DB.query(pacsConfigQuery);
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
-        error: 'PACS not configured'
-      }, { status: 400 });
+        error: 'PACS not configured',
+      }, { status: 400 ,});
     }
 
     // Check if patient exists
     const patientCheck = await DB.query('SELECT id FROM patients WHERE id = ?', [patientId]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Patient not found' ,}, { status: 404 ,});
     }
 
     // Check if order exists if provided
-    \1 {\n  \2{
+     {\n  {
       const orderCheck = await DB.query('SELECT id FROM radiology_orders WHERE id = ?', [orderId]);
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+       {\n  {
+        return NextResponse.json({ error: 'Order not found' ,}, { status: 404 ,});
       }
     }
 
@@ -446,8 +446,8 @@ export const _POST_STORE = async (request: NextRequest) => {
       sopInstanceUid,
       body.seriesNumber || 1,
       body.instanceNumber || 1,
-      `https://pacs.example.com/wado?studyUID=${studyInstanceUid}&seriesUID=${seriesInstanceUid}&objectUID=${sopInstanceUid}`,
-      `https://pacs.example.com/wado?studyUID=${studyInstanceUid}&seriesUID=${seriesInstanceUid}&objectUID=${sopInstanceUid}&contentType=image/jpeg`,
+      `https://pacs.example.com/wado?studyUID=${studyInstanceUid}&seriesUID=${seriesInstanceUid}&objectUID=${sopInstanceUid,}`,
+      `https://pacs.example.com/wado?studyUID=${studyInstanceUid}&seriesUID=${seriesInstanceUid}&objectUID=${sopInstanceUid,}&contentType=image/jpeg`,
       session.user.id,
       session.user.id
     ];
@@ -457,7 +457,7 @@ export const _POST_STORE = async (request: NextRequest) => {
     // Log storage
     await auditLog({
       userId: session.user.id,
-      \1,\2 'pacs_images',
+       'pacs_images',
       resourceId: result.insertId;
         patientId,
         orderId,
@@ -471,7 +471,7 @@ export const _POST_STORE = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      \1,\2 result.insertId;
+       result.insertId;
       studyInstanceUid,
       seriesInstanceUid,
       sopInstanceUid;
@@ -480,8 +480,8 @@ export const _POST_STORE = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: 'Failed to store image to PACS',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -489,22 +489,22 @@ export const _POST_STORE = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/images/:id/annotations;
  * Add annotations to a PACS image;
  */
-export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+     {\n   {
+      return NextResponse.json({ error: 'Invalid ID' ,}, { status: 400 ,});
     }
 
     // Parse request body
@@ -519,16 +519,16 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
     } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
-        error: 'Annotation type and coordinates are required'
-      }, { status: 400 });
+        error: 'Annotation type and coordinates are required',
+      }, { status: 400 ,});
     }
 
     // Check if image exists
     const imageCheck = await DB.query('SELECT * FROM pacs_images WHERE id = ?', [id]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Image not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Image not found' ,}, { status: 404 ,});
     }
 
     // Insert annotation
@@ -556,11 +556,11 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
     // Log annotation
     await auditLog({
       userId: session.user.id,
-      \1,\2 'pacs_image_annotations',
-      \1,\2 id;
+       'pacs_image_annotations',
+       id;
         annotationType,
         hasText: !!text,
-        hasMeasurements: !!measurements
+        hasMeasurements: !!measurements,
     });
 
     // Get the created annotation
@@ -573,17 +573,17 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
     const annotation = {
       ...createdAnnotation.results[0],
       coordinates: JSON.parse(createdAnnotation.results[0].coordinates),
-      measurements: createdAnnotation.results[0].measurements ?
+      measurements: createdAnnotation.results[0].measurements ?,
         JSON.parse(createdAnnotation.results[0].measurements) : null
     };
 
-    return NextResponse.json(annotation, { status: 201 });
+    return NextResponse.json(annotation, { status: 201 ,});
   } catch (error) {
 
     return NextResponse.json({
       error: 'Failed to add annotation',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -591,21 +591,21 @@ export const _POST_ANNOTATIONS = async (request: NextRequest, { params }: { para
  * GET /api/diagnostics/pacs/images/:id/annotations;
  * Get annotations for a PACS image;
  */
-export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+     {\n   {
+      return NextResponse.json({ error: 'Invalid ID' ,}, { status: 400 ,});
     }
 
     // Cache key
-    const cacheKey = `diagnostic:pacs:image:${id}:annotations`;
+    const cacheKey = `diagnostic:pacs:image:${id,}:annotations`;
 
     // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
@@ -613,7 +613,7 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
       async () => {
         // Check if image exists
         const imageCheck = await DB.query('SELECT id FROM pacs_images WHERE id = ?', [id]);
-        \1 {\n  \2{
+         {\n  {
           throw new Error('Image not found');
         }
 
@@ -632,14 +632,14 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
         const annotations = result.results.map(annotation => ({
           ...annotation,
           coordinates: JSON.parse(annotation.coordinates),
-          measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null
+          measurements: annotation.measurements ? JSON.parse(annotation.measurements) : null,
         }));
 
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'pacs_image_annotations',
-          details: imageId: id 
+           'pacs_image_annotations',
+          details: imageId: id ,
         });
 
         return annotations;
@@ -652,6 +652,6 @@ export const _GET_ANNOTATIONS = async (request: NextRequest, { params }: { param
 
     return NextResponse.json({
       error: 'Failed to fetch annotations',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }

@@ -1,6 +1,4 @@
-import { 
-
- } from "@/lib/database"
+import { } from "next/server"
 
 /**;
  * FHIR R4 Appointment Resource Implementation;
@@ -82,7 +80,7 @@ import {
   /**;
    * Get patient reference from appointment;
    */;
-  static getPatientId(appointment: FHIRAppointment): string | undefined {
+  static getPatientId(appointment: FHIRAppointment): string | undefined {,
     const patientParticipant = appointment.participant.find();
       p => p.actor?.type === "Patient" || p.actor?.reference?.startsWith("Patient/");
     );
@@ -93,7 +91,7 @@ import {
   /**;
    * Get practitioner reference from appointment;
    */;
-  static getPractitionerId(appointment: FHIRAppointment): string | undefined {
+  static getPractitionerId(appointment: FHIRAppointment): string | undefined {,
     const practitionerParticipant = appointment.participant.find();
       p => p.actor?.type === "Practitioner" || p.actor?.reference?.startsWith("Practitioner/");
     );
@@ -104,7 +102,7 @@ import {
   /**;
    * Get location reference from appointment;
    */;
-  static getLocationId(appointment: FHIRAppointment): string | undefined {
+  static getLocationId(appointment: FHIRAppointment): string | undefined {,
     const locationParticipant = appointment.participant.find();
       p => p.actor?.type === "Location" || p.actor?.reference?.startsWith("Location/");
     );
@@ -115,7 +113,7 @@ import {
   /**;
    * Check if appointment is in the future;
    */;
-  static isFutureAppointment(appointment: FHIRAppointment): boolean {
+  static isFutureAppointment(appointment: FHIRAppointment): boolean {,
     if (!session.user)eturn false;
     return new Date(appointment.start) > new Date();
   }
@@ -123,7 +121,7 @@ import {
   /**;
    * Check if appointment is today;
    */;
-  static isTodayAppointment(appointment: FHIRAppointment): boolean {
+  static isTodayAppointment(appointment: FHIRAppointment): boolean {,
     if (!session.user)eturn false;
 
     const appointmentDate = new Date(appointment.start);
@@ -135,7 +133,7 @@ import {
   /**;
    * Get appointment duration in minutes;
    */;
-  static getDurationMinutes(appointment: FHIRAppointment): number {
+  static getDurationMinutes(appointment: FHIRAppointment): number {,
     if (!session.user) {
       return appointment.minutesDuration;
     }
@@ -152,7 +150,7 @@ import {
   /**;
    * Format appointment time for display;
    */;
-  static formatAppointmentTime(appointment: FHIRAppointment): string {
+  static formatAppointmentTime(appointment: FHIRAppointment): string {,
     if (!session.user)eturn "Time not specified";
 
     const startTime = new Date(appointment.start);
@@ -175,7 +173,7 @@ import {
   /**;
    * Get appointment status display text;
    */;
-  static getStatusDisplay(status: FHIRAppointment["status"]): string {
+  static getStatusDisplay(status: FHIRAppointment["status"]): string {,
     const statusMap: Record<string, string> = {
       "proposed": "Proposed",
       "pending": "Pending",
@@ -195,7 +193,7 @@ import {
   /**;
    * Validate FHIR Appointment resource;
    */;
-  static validateAppointment(appointment: FHIRAppointment): {valid:boolean, errors: string[] } {
+  static validateAppointment(appointment: FHIRAppointment): {valid:boolean, errors: string[] } {,
     const errors: string[] = [];
 
     if (!session.user) {
@@ -229,7 +227,7 @@ import {
   /**;
    * Convert current HMS Appointment model to FHIR Appointment;
    */;
-  static fromHMSAppointment(hmsAppointment: unknown): FHIRAppointment {
+  static fromHMSAppointment(hmsAppointment: unknown): FHIRAppointment {,
     const "Appointment",
       hmsAppointment.status || "booked",
       hmsAppointment.endTime,
@@ -290,14 +288,14 @@ import {
   /**;
    * Check if status transition is valid;
    */;
-  static isValidStatusTransition(fromStatus: FHIRAppointment["status"], toStatus: FHIRAppointment["status"]): boolean {
+  static isValidStatusTransition(fromStatus: FHIRAppointment["status"], toStatus: FHIRAppointment["status"]): boolean {,
     const allowedTransitions = this.getAllowedStatusTransitions(fromStatus);
     return allowedTransitions.includes(toStatus);
 
   /**;
    * Get next logical status for appointment workflow;
    */;
-  static getNextLogicalStatus(appointment: FHIRAppointment): FHIRAppointment["status"] | null {
+  static getNextLogicalStatus(appointment: FHIRAppointment): FHIRAppointment["status"] | null {,
     const now = new Date();
     const appointmentTime = appointment.start ? new Date(appointment.start) : null;
 

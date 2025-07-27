@@ -111,8 +111,7 @@ export const _DietaryDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [filters, setFilters] = useState({
-    status: "",
+  const [filters, setFilters] = useState({status:"",
     "",
     null as Date | null;
   });
@@ -191,8 +190,7 @@ export const _DietaryDashboard = () => {
       setTotalPages(data.pagination.totalPages);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -241,8 +239,7 @@ export const _DietaryDashboard = () => {
       setAnalytics(data);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -256,8 +253,7 @@ export const _DietaryDashboard = () => {
 
   // Reset filters;
   const resetFilters = () => {
-    setFilters({
-      status: "",
+    setFilters({status:"",
       "",
       null;
     }),
@@ -315,8 +311,7 @@ export const _DietaryDashboard = () => {
       setShowRequestDialog(true);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -364,8 +359,7 @@ export const _DietaryDashboard = () => {
       setShowMealPlanDialog(true);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -405,15 +399,13 @@ export const _DietaryDashboard = () => {
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/dietary/${requestId}`, {
-        method: "PUT",
+      const response = await fetch(`/api/support-services/dietary/${requestId}`, {method:"PUT",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify({ status })});
 
       if (!session.user)hrow new Error("Failed to update request status"),
-      toast({
-        title: "Status Updated",
+      toast({title:"Status Updated",
         description: `Request status has been updated to ${status}.`});
 
       // Refresh the requests list;
@@ -425,8 +417,7 @@ export const _DietaryDashboard = () => {
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 

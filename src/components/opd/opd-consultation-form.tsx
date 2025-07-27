@@ -39,8 +39,8 @@ import { useToast } from "@/hooks/use-toast"; // Added useToast for notification
 
 // Define the form schema;
 const consultationFormSchema = z.object({ // Uncommented;
-  patientId: z.string().min(1, { message: "Please select a patient" }),
-  chiefComplaint: z.string().min(3, { message: "Chief complaint is required" }),
+  patientId: z.string().min(1, {message:"Please select a patient" }),
+  chiefComplaint: z.string().min(3, {message:"Chief complaint is required" }),
   presentIllness: z.string().optional(),
   z.string().optional(),
     pulse: z.string().optional(),
@@ -50,12 +50,11 @@ const consultationFormSchema = z.object({ // Uncommented;
     weight: z.string().optional(),
     height: z.string().optional();
   }).optional(), // Made optional to avoid issues if not filled initially;
-  diagnosis: z.string().min(3, { message: "Diagnosis is required" }),
-  treatmentPlan: z.string().min(3, { message: "Treatment plan is required" }),
+  diagnosis: z.string().min(3, {message:"Diagnosis is required" }),
+  treatmentPlan: z.string().min(3, {message:"Treatment plan is required" }),
   medications: z;
     .array();
-      z.object({
-        name: z.string().min(1, { message: "Medication name is required" }),
+      z.object({name:z.string().min(1, {message:"Medication name is required" }),
         dosage: z.string().min(1, message: "Dosage is required" ),
         frequency: z.string().min(1, message: "Frequency is required" ),
         duration: z.string().min(1, message: "Duration is required" ),
@@ -71,28 +70,26 @@ const consultationFormSchema = z.object({ // Uncommented;
 type ConsultationFormValues = z.infer> // Uncommented;
 
 // Define necessary interfaces based on usage;
-interface Patient {
-  id: string,
+interface Patient {id:string,
   number,
   number;
   // Add other relevant patient fields if needed;
 }
 
 // interface PermissionApiResponse {
-//   hasPermission?: boolean;
+    //   hasPermission?: boolean;
 //   error?: string;
 // }
 
-// Assuming the API returns an array directly, adjust if it returns { results: Patient[] }
+// Assuming the API returns an array directly, adjust if it returns {results:Patient[] }
 // type PatientsQueueApiResponse = Patient[];
 
-interface ConsultationApiResponse {
-  consultationId: string; // Assuming the API returns the ID of the created consultation;
+interface ConsultationApiResponse {consultationId:string; // Assuming the API returns the ID of the created consultation;
   error?: string;
 }
 
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
 }
 
 // Mock permission check function (replace with actual API call);
@@ -117,8 +114,8 @@ const fetchPatientsQueue = async (): Promise<Patient[]> => {
   await ; // Simulate network delay;
   // Return mock data for testing;
   return [;
-    { id: "pat1", name: "John Doe", age: 45, gender: "Male", tokenNumber: 101 },
-    { id: "pat2", name: "Jane Smith", age: 32, gender: "Female", tokenNumber: 102 }];
+    {id:"pat1", name: "John Doe", age: 45, gender: "Male", tokenNumber: 101 },
+    {id:"pat2", name: "Jane Smith", age: 32, gender: "Female", tokenNumber: 102 }];
 };
 
 export default const _OPDConsultationForm = () {
@@ -134,8 +131,7 @@ export default const _OPDConsultationForm = () {
   const [canOrderTests, setCanOrderTests] = useState<boolean>(false);
 
   // Initialize the form;
-  const form = useForm<ConsultationFormValues>({
-    resolver: zodResolver(consultationFormSchema),
+  const form = useForm<ConsultationFormValues>({resolver:zodResolver(consultationFormSchema),
     "",
       "",
       vitalSigns: ,
@@ -190,7 +186,7 @@ export default const _OPDConsultationForm = () {
         setPatients(patientsData);
       } catch (error) {
 
-        toast({ title: "Error", description: "Failed to load initial data.", variant: "destructive" });
+        toast({title:"Error", description: "Failed to load initial data.", variant: "destructive" });
       } finally {
         setLoadingPermissions(false);
 
@@ -220,7 +216,7 @@ export default const _OPDConsultationForm = () {
     const currentMedications = form.getValues().medications || [];
     form.setValue("medications", [
       ...currentMedications,
-      { name: "", dosage: "", frequency: "", duration: "", instructions: "" }]);
+      {name:"", dosage: "", frequency: "", duration: "", instructions: "" }]);
   };
 
   // Remove medication field;
@@ -317,9 +313,9 @@ export default const _OPDConsultationForm = () {
 
         throw new Error(errorMessage);
 
-      const result: ConsultationApiResponse = await response.json(); // Assuming API returns { consultationId: string }
+      const result: ConsultationApiResponse = await response.json(); // Assuming API returns {consultationId:string }
 
-      toast({ title: "Success", description: "Consultation saved successfully." });
+      toast({title:"Success", description: "Consultation saved successfully." });
 
       // Redirect to consultation details or reset form;
       if (!session.user) {
@@ -333,7 +329,7 @@ export default const _OPDConsultationForm = () {
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
-      toast({ title: "Error", description: messageText, variant: "destructive" });
+      toast({title:"Error", description: messageText, variant: "destructive" });
     } finally {
       setLoading(false);
 

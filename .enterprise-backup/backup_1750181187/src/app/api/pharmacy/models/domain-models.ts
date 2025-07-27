@@ -10,20 +10,20 @@ import { z } from 'zod';
  */
 
 // Define domain models using ES2015 module syntax instead of namespace
-\1
+
 }
   };
-\1
+
 }
   };
-  discrepancies: Array<MedicationDiscrepancy & {
+  discrepancies: Array<MedicationDiscrepancy & {,
     resolution?: {
       action: 'continue' | 'discontinue' | 'modify' | 'substitute',
-      \1,\2 Date,
-      notes: string
+       Date,
+      notes: string,
     };
   }>;
-\1
+
 }
 }
 
@@ -48,7 +48,7 @@ export const MedicationSchema = z.object({
   sideEffects: z.array(z.string()).optional(),
   storageRequirements: z.string().optional(),
   requiresRefrigeration: z.boolean().optional(),
-  requiresControlledStorage: z.boolean().optional()
+  requiresControlledStorage: z.boolean().optional(),
 });
 
 export const MedicationInventorySchema = z.object({
@@ -66,7 +66,7 @@ export const MedicationInventorySchema = z.object({
   cost: z.number().nonnegative(),
   supplier: z.string(),
   receivedDate: z.date(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 export const MedicationOrderSchema = z.object({
@@ -74,12 +74,12 @@ export const MedicationOrderSchema = z.object({
   patientId: z.string(),
   providerId: z.string(),
   medicationId: z.string(),
-  status: z.enum([
+  status: z.enum([,
     'draft', 'active', 'on-hold', 'cancelled', 'completed',
     'entered-in-error', 'stopped', 'unknown';
   ]),
   orderDate: z.date(),
-  \1,\2 z.string(),
+   z.string(),
   route: z.string(),
   duration: z.string(),
   startDate: z.date().optional(),
@@ -89,13 +89,13 @@ export const MedicationOrderSchema = z.object({
   isStatOrder: z.boolean().optional(),
   prn: z.boolean().optional(),
   prnReason: z.string().optional(),
-  reconciliationId: z.string().optional()
+  reconciliationId: z.string().optional(),
 });
 
 // Factory functions to create domain objects with validation
-export const _createMedication = (data: Medication): Medication {
+export const _createMedication = (data: Medication): Medication {,
   return MedicationSchema.parse(data)
-export const _createMedicationInventory = (data: MedicationInventory): MedicationInventory {
+export const _createMedicationInventory = (data: MedicationInventory): MedicationInventory {,
   return MedicationInventorySchema.parse(data)
-export const _createMedicationOrder = (data: MedicationOrder): MedicationOrder {
+export const _createMedicationOrder = (data: MedicationOrder): MedicationOrder {,
   return MedicationOrderSchema.parse(data)

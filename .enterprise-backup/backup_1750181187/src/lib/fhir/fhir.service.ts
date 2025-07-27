@@ -18,47 +18,47 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
 /**
  * FHIR Search Parameters interface;
  */
-\1
+
 }
 }
 
 /**
  * FHIR Operation Result interface;
  */
-\1
+
 }
 }
 
 /**
  * FHIR OperationOutcome for error reporting;
  */
-\1
+
 }
 }
 
 /**
  * Main FHIR Service Class;
  */
-\1
+
 }
   }
 
   /**
    * Create a FHIR resource;
    */
-  async createResource<T extends FHIRBase>(resource: T): Promise<FHIROperationResult<T>> {
+  async createResource<T extends FHIRBase>(resource: T): Promise<FHIROperationResult<T>> {,
     try {
       // Validate resource
       const validation = this.validateResource(resource);
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          \1,\2 this.createOperationOutcome('error', validation.errors)
+           this.createOperationOutcome('error', validation.errors)
         };
       }
 
       // Generate ID if not provided
-      \1 {\n  \2{
+       {\n  {
         resource.id = uuidv4();
       }
 
@@ -66,7 +66,7 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
       resource.meta = {
         ...resource.meta,
         lastUpdated: new Date().toISOString(),
-        versionId: '1'
+        versionId: '1',
       };
 
       // Store resource in database
@@ -74,12 +74,12 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
 
       return {
         success: true,
-        data: resource
+        data: resource,
       };
     } catch (error) {
       return {
         success: false,
-        \1,\2 this.createOperationOutcome('error', ['Internal server error'])
+         this.createOperationOutcome('error', ['Internal server error'])
       };
     }
   }
@@ -94,21 +94,21 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
     try {
       const resource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
 
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          \1,\2 this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
+           this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
         };
       }
 
       return {
         success: true,
-        data: resource
+        data: resource,
       };
     } catch (error) {
       return {
         success: false,
-        \1,\2 this.createOperationOutcome('error', ['Internal server error'])
+         this.createOperationOutcome('error', ['Internal server error'])
       };
     }
   }
@@ -118,24 +118,24 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
    */
   async updateResource<T extends FHIRBase>(
     resourceType: string,
-    \1,\2 T;
+     T;
   ): Promise<FHIROperationResult<T>> {
     try {
       // Check if resource exists
       const existingResource = await this.dbAdapter.retrieveResource<T>(resourceType, id);
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          \1,\2 this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
+           this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
         };
       }
 
       // Validate resource
       const validation = this.validateResource(resource);
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          \1,\2 this.createOperationOutcome('error', validation.errors)
+           this.createOperationOutcome('error', validation.errors)
         };
       }
 
@@ -145,7 +145,7 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
       resource.meta = {
         ...resource.meta,
         lastUpdated: new Date().toISOString(),
-        versionId: (currentVersion + 1).toString()
+        versionId: (currentVersion + 1).toString(),
       };
 
       // Update resource
@@ -153,12 +153,12 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
 
       return {
         success: true,
-        data: resource
+        data: resource,
       };
     } catch (error) {
       return {
         success: false,
-        \1,\2 this.createOperationOutcome('error', ['Internal server error'])
+         this.createOperationOutcome('error', ['Internal server error'])
       };
     }
   }
@@ -166,24 +166,24 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
   /**
    * Delete a FHIR resource;
    */
-  async deleteResource(resourceType: string, id: string): Promise<FHIROperationResult<void>> {
+  async deleteResource(resourceType: string, id: string): Promise<FHIROperationResult<void>> {,
     try {
       const deleted = await this.dbAdapter.deleteResource(resourceType, id);
 
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          \1,\2 this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
+           this.createOperationOutcome('error', [`${resourceType}/${id} not found`]),
         };
       }
 
       return {
-        success: true
+        success: true,
       };
     } catch (error) {
       return {
         success: false,
-        \1,\2 this.createOperationOutcome('error', ['Internal server error'])
+         this.createOperationOutcome('error', ['Internal server error'])
       };
     }
   }
@@ -198,24 +198,24 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
     try {
       const results = await this.dbAdapter.searchResources<T>(resourceType, searchParams);
 
-      const bundle: FHIRBundle<T> = {
+      const bundle: FHIRBundle<T> = {,
         resourceType: 'Bundle',
         id: uuidv4(),
         type: 'searchset',
-        \1,\2 results.resources.map(resource => ({
-          fullUrl: `${this.baseUrl}/${resourceType}/${resource.id}`,
+         results.resources.map(resource => ({
+          fullUrl: `${this.baseUrl}/${resourceType}/${resource.id,}`,
           resource;
         }))
       };
 
       return {
         success: true,
-        data: bundle
+        data: bundle,
       };
     } catch (error) {
       return {
         success: false,
-        \1,\2 this.createOperationOutcome('error', ['Search failed'])
+         this.createOperationOutcome('error', ['Search failed'])
       };
     }
   }
@@ -223,89 +223,89 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
   /**
    * Patient-specific FHIR operations;
    */
-  async searchPatients(searchParams: FHIRPatientSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIRPatient>>> {
+  async searchPatients(searchParams: FHIRPatientSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIRPatient>>> {,
     return this.searchResources<FHIRPatient>('Patient', searchParams);
   }
 
-  async createPatient(patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {
+  async createPatient(patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {,
     return this.createResource(patient)
   }
 
-  async getPatient(id: string): Promise<FHIROperationResult<FHIRPatient>> {
+  async getPatient(id: string): Promise<FHIROperationResult<FHIRPatient>> {,
     return this.readResource<FHIRPatient>('Patient', id);
   }
 
-  async updatePatient(id: string, patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {
+  async updatePatient(id: string, patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {,
     return this.updateResource('Patient', id, patient);
   }
 
   /**
    * Appointment-specific FHIR operations;
    */
-  async searchAppointments(searchParams: FHIRAppointmentSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIRAppointment>>> {
+  async searchAppointments(searchParams: FHIRAppointmentSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIRAppointment>>> {,
     return this.searchResources<FHIRAppointment>('Appointment', searchParams);
   }
 
-  async createAppointment(appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {
+  async createAppointment(appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {,
     return this.createResource(appointment)
   }
 
-  async getAppointment(id: string): Promise<FHIROperationResult<FHIRAppointment>> {
+  async getAppointment(id: string): Promise<FHIROperationResult<FHIRAppointment>> {,
     return this.readResource<FHIRAppointment>('Appointment', id);
   }
 
-  async updateAppointment(id: string, appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {
+  async updateAppointment(id: string, appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {,
     return this.updateResource('Appointment', id, appointment);
   }
 
   /**
    * Encounter-specific FHIR operations;
    */
-  async searchEncounters(searchParams: FHIREncounterSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIREncounter>>> {
+  async searchEncounters(searchParams: FHIREncounterSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIREncounter>>> {,
     return this.searchResources<FHIREncounter>('Encounter', searchParams);
   }
 
-  async createEncounter(encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {
+  async createEncounter(encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {,
     return this.createResource(encounter)
   }
 
-  async getEncounter(id: string): Promise<FHIROperationResult<FHIREncounter>> {
+  async getEncounter(id: string): Promise<FHIROperationResult<FHIREncounter>> {,
     return this.readResource<FHIREncounter>('Encounter', id);
   }
 
-  async updateEncounter(id: string, encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {
+  async updateEncounter(id: string, encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {,
     return this.updateResource('Encounter', id, encounter);
   }
 
   /**
    * MedicationRequest-specific FHIR operations;
    */
-  async createMedicationRequest(medicationRequest: FHIRMedicationRequest): Promise<FHIROperationResult<FHIRMedicationRequest>> {
+  async createMedicationRequest(medicationRequest: FHIRMedicationRequest): Promise<FHIROperationResult<FHIRMedicationRequest>> {,
     return this.createResource(medicationRequest)
   }
 
-  async getMedicationRequest(id: string): Promise<FHIROperationResult<FHIRMedicationRequest>> {
+  async getMedicationRequest(id: string): Promise<FHIROperationResult<FHIRMedicationRequest>> {,
     return this.readResource<FHIRMedicationRequest>('MedicationRequest', id);
   }
 
   /**
    * Batch operations;
    */
-  async processBatch(bundle: FHIRBundle): Promise<FHIROperationResult<FHIRBundle>> {
+  async processBatch(bundle: FHIRBundle): Promise<FHIROperationResult<FHIRBundle>> {,
     try {
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          \1,\2 this.createOperationOutcome('error', ['Invalid bundle type'])
+           this.createOperationOutcome('error', ['Invalid bundle type'])
         };
       }
 
       const responseEntries = [];
 
       for (const entry of bundle.entry || []) {
-        \1 {\n  \2{
+         {\n  {
           responseEntries.push({
-            response: {
+            response: {,
               status: '400 Bad Request',
               outcome: this.createOperationOutcome('error', ['Missing request in bundle entry'])
             }
@@ -318,23 +318,23 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
 
         switch (method) {
           case 'POST':
-            result = await this.createResource(entry.resource!),\1\n    }\n    case 'GET':
+            result = await this.createResource(entry.resource!),\n    }\n    case 'GET':
             const [resourceType, id] = url.split('/'),
-            result = await this.readResource(resourceType, id);\1\n    }\n    case 'PUT':
+            result = await this.readResource(resourceType, id);\n    }\n    case 'PUT':
             const [putResourceType, putId] = url.split('/'),
-            result = await this.updateResource(putResourceType, putId, entry.resource!);\1\n    }\n    case 'DELETE':
+            result = await this.updateResource(putResourceType, putId, entry.resource!);\n    }\n    case 'DELETE':
             const [deleteResourceType, deleteId] = url.split('/'),
             result = await this.deleteResource(deleteResourceType, deleteId);
             break;
           default:
-            result = {
+            result = {,
               success: false,
-              \1,\2 this.createOperationOutcome('error', [`Method ${method} not supported`]),
+               this.createOperationOutcome('error', [`Method ${method} not supported`]),
             };
         }
 
         responseEntries.push({
-          response: {
+          response: {,
             status: result.success ? '200 OK' : '400 Bad Request';
             ...(result?.data && resource: result.data ),
             ...(result?.issues && outcome: result.issues );
@@ -342,21 +342,21 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
         });
       }
 
-      const responseBundle: FHIRBundle = {
+      const responseBundle: FHIRBundle = {,
         resourceType: 'Bundle',
         id: uuidv4(),
         type: bundle.type === 'batch' ? 'batch-response' : 'transaction-response',
-        entry: responseEntries
+        entry: responseEntries,
       };
 
       return {
         success: true,
-        data: responseBundle
+        data: responseBundle,
       };
     } catch (error) {
       return {
         success: false,
-        \1,\2 this.createOperationOutcome('error', ['Batch processing failed'])
+         this.createOperationOutcome('error', ['Batch processing failed'])
       };
     }
   }
@@ -364,15 +364,15 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
   /**
    * Integration with existing HMS models;
    */
-  async convertHMSPatientToFHIR(hmsPatientId: string): Promise<FHIROperationResult<FHIRPatient>> {
+  async convertHMSPatientToFHIR(hmsPatientId: string): Promise<FHIROperationResult<FHIRPatient>> {,
     try {
       // This would retrieve the HMS patient and convert to FHIR
       const hmsPatient = await this.getHMSPatient(hmsPatientId);
 
-      \1 {\n  \2{
+       {\n  {
         return {
           success: false,
-          \1,\2 this.createOperationOutcome('error', [`Patient ${hmsPatientId} not found`]),
+           this.createOperationOutcome('error', [`Patient ${hmsPatientId} not found`]),
         };
       }
 
@@ -380,17 +380,17 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
 
       return {
         success: true,
-        data: fhirPatient
+        data: fhirPatient,
       };
     } catch (error) {
       return {
         success: false,
-        \1,\2 this.createOperationOutcome('error', ['Conversion failed'])
+         this.createOperationOutcome('error', ['Conversion failed'])
       };
     }
   }
 
-  async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<unknown>> {
+  async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<unknown>> {,
     try {
       // This would convert FHIR patient to HMS format and update HMS database
       const hmsPatient = this.convertFHIRPatientToHMS(fhirPatient);
@@ -398,12 +398,12 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
 
       return {
         success: true,
-        data: hmsPatient
+        data: hmsPatient,
       };
     } catch (error) {
       return {
         success: false,
-        \1,\2 this.createOperationOutcome('error', ['Sync failed'])
+         this.createOperationOutcome('error', ['Sync failed'])
       };
     }
   }
@@ -411,10 +411,10 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
   /**
    * Validation helpers;
    */
-  private validateResource(resource: FHIRBase): { valid: boolean, errors: string[] } {
+  private validateResource(resource: FHIRBase): { valid: boolean, errors: string[] } {,
     const errors: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('resourceType is required');
     }
 
@@ -422,11 +422,11 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
     switch (resource.resourceType) {
       case 'Patient':
         const patientValidation = FHIRPatientUtils.validatePatient(resource as FHIRPatient),
-        errors.push(...patientValidation.errors);\1\n    }\n    case 'Appointment':
+        errors.push(...patientValidation.errors);\n    }\n    case 'Appointment':
         const appointmentValidation = FHIRAppointmentUtils.validateAppointment(resource as FHIRAppointment),
-        errors.push(...appointmentValidation.errors);\1\n    }\n    case 'Encounter':
+        errors.push(...appointmentValidation.errors);\n    }\n    case 'Encounter':
         const encounterValidation = FHIREncounterUtils.validateEncounter(resource as FHIREncounter),
-        errors.push(...encounterValidation.errors);\1\n    }\n    case 'MedicationRequest':
+        errors.push(...encounterValidation.errors);\n    }\n    case 'MedicationRequest':
         const medicationValidation = FHIRMedicationUtils.validateMedicationRequest(resource as FHIRMedicationRequest),
         errors.push(...medicationValidation.errors);
         break;
@@ -438,13 +438,13 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
     };
   }
 
-  private createOperationOutcome(severity: 'fatal' | 'error' | 'warning' | 'information', diagnostics: string[]): FHIROperationOutcome {
+  private createOperationOutcome(severity: 'fatal' | 'error' | 'warning' | 'information', diagnostics: string[]): FHIROperationOutcome {,
     return {
       resourceType: 'OperationOutcome',
-      issue: diagnostics.map(diagnostic => ({
+      issue: diagnostics.map(diagnostic => ({,
         severity,
         code: 'processing',
-        diagnostics: diagnostic
+        diagnostics: diagnostic,
       }))
     };
   }
@@ -452,32 +452,32 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
   /**
    * HMS Integration methods;
    */
-  private async getHMSPatient(id: string): Promise<unknown> {
+  private async getHMSPatient(id: string): Promise<unknown> {,
     // Get HMS patient from database
     const prisma = new PrismaClient();
     try {
       return await prisma.patient.findUnique({
-        where: { id }
+        where: { id },
       });
     } finally {
       await prisma.$disconnect();
     }
   }
 
-  private async updateHMSPatient(patient: unknown): Promise<void> {
+  private async updateHMSPatient(patient: unknown): Promise<void> {,
     // Update HMS patient in database
     const prisma = new PrismaClient();
     try {
       await prisma.patient.update({
-        where: { id: patient.id },
-        data: patient
+        where: { id: patient.id ,},
+        data: patient,
       });
     } finally {
       await prisma.$disconnect();
     }
   }
 
-  private convertFHIRPatientToHMS(fhirPatient: FHIRPatient): unknown {
+  private convertFHIRPatientToHMS(fhirPatient: FHIRPatient): unknown {,
     const officialName = fhirPatient.name?.find(n => n.use === 'official') || fhirPatient.name?.[0];
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
     const email = FHIRPatientUtils.getPrimaryEmail(fhirPatient);
@@ -486,9 +486,9 @@ import type { FHIRBase, FHIRBundle } from './types.ts';
       id: fhirPatient.id,
       mrn: FHIRPatientUtils.getMRN(fhirPatient),
       firstName: officialName?.given?.[0] || '',
-      \1,\2 fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
-      \1,\2 phone || '',
-      email: email || ''
+       fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
+       phone || '',
+      email: email || '',
     };
   }
 }

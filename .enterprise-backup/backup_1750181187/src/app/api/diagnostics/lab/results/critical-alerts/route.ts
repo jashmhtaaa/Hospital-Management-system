@@ -11,12 +11,12 @@ import { getSession } from '@/lib/session';
  * GET /api/diagnostics/lab/results/critical-alerts;
  * Get critical result alerts;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Parse query parameters
@@ -54,17 +54,17 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add status filter if provided
-        \1 {\n  \2{
+         {\n  {
           query += ' AND ca.status = ?';
           params.push(status);
         }
 
         // Add assigned_to filter if provided
-        \1 {\n  \2{
-          \1 {\n  \2{
+         {\n  {
+           {\n  {
             query += ' AND ca.assigned_to = ?';
             params.push(session.user.id);
-          } else \1 {\n  \2{
+          } else  {\n  {
             query += ' AND ca.assigned_to IS NULL';
           } else {
             query += ' AND ca.assigned_to = ?';
@@ -73,7 +73,7 @@ export const GET = async (request: NextRequest) => {
         }
 
         // Add role-based filtering
-        \1 {\n  \2 {
+         {\n   {
           // Regular users can only see alerts assigned to them or unassigned
           query += ' AND (ca.assigned_to = ? OR ca.assigned_to IS NULL)';
           params.push(session.user.id);
@@ -114,13 +114,13 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'laboratory_critical_alerts',
+           'laboratory_critical_alerts',
           details: status, assignedTo, page, pageSize 
         });
 
         return {
           alerts,
-          pagination: {
+          pagination: {,
             page,
             pageSize,
             totalCount,
@@ -136,8 +136,8 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: 'Failed to fetch critical alerts',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -145,17 +145,17 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/lab/results/critical-alerts;
  * Create a new critical result alert;
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Parse request body
@@ -163,20 +163,20 @@ export const POST = async (request: NextRequest) => {
     const { resultId, criticalValueId, notes, assignedTo } = body;
 
     // Validate required fields
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Result ID and Critical Value ID are required' }, { status: 400 });
+     {\n  {
+      return NextResponse.json({ error: 'Result ID and Critical Value ID are required' ,}, { status: 400 ,});
     }
 
     // Check if result exists
     const resultCheck = await DB.query('SELECT * FROM laboratory_results WHERE id = ?', [resultId]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Result not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Result not found' ,}, { status: 404 ,});
     }
 
     // Check if critical value exists
     const criticalValueCheck = await DB.query('SELECT * FROM laboratory_critical_values WHERE id = ?', [criticalValueId]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Critical value not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Critical value not found' ,}, { status: 404 ,});
     }
 
     // Check if alert already exists for this result
@@ -185,8 +185,8 @@ export const POST = async (request: NextRequest) => {
       [resultId, 'resolved']
     );
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'An active alert already exists for this result' }, { status: 409 });
+     {\n  {
+      return NextResponse.json({ error: 'An active alert already exists for this result' ,}, { status: 409 ,});
     }
 
     // Insert critical alert
@@ -211,17 +211,17 @@ export const POST = async (request: NextRequest) => {
     // Log creation
     await auditLog({
       userId: session.user.id,
-      \1,\2 'laboratory_critical_alerts',
-      \1,\2 body
+       'laboratory_critical_alerts',
+       body
     });
 
     // Send notifications
-    \1 {\n  \2{
+     {\n  {
       await notifyUsers({
         userIds: [assignedTo],
-        \1,\2 'You have been assigned a critical result alert that requires your attention',
-        \1,\2 result.insertId,
-        \1,\2 'high'
+         'You have been assigned a critical result alert that requires your attention',
+         result.insertId,
+         'high'
       });
     } else {
       // Notify all lab supervisors and managers if unassigned
@@ -232,12 +232,12 @@ export const POST = async (request: NextRequest) => {
 
       const supervisorIds = supervisors.results.map(user => user.id);
 
-      \1 {\n  \2{
+       {\n  {
         await notifyUsers({
           userIds: supervisorIds,
-          \1,\2 'A new critical result alert requires assignment',
-          \1,\2 result.insertId,
-          \1,\2 'high'
+           'A new critical result alert requires assignment',
+           result.insertId,
+           'high'
         });
       }
     }
@@ -263,13 +263,13 @@ export const POST = async (request: NextRequest) => {
       [result.insertId]
     );
 
-    return NextResponse.json(createdAlert.results[0], { status: 201 });
+    return NextResponse.json(createdAlert.results[0], { status: 201 ,});
   } catch (error) {
 
     return NextResponse.json({
       error: 'Failed to create critical alert',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -277,17 +277,17 @@ export const POST = async (request: NextRequest) => {
  * PUT /api/diagnostics/lab/results/critical-alerts/:id;
  * Update a critical result alert;
  */
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+     {\n   {
+      return NextResponse.json({ error: 'Invalid ID' ,}, { status: 400 ,});
     }
 
     // Parse request body
@@ -296,8 +296,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     // Check if alert exists
     const existingCheck = await DB.query('SELECT * FROM laboratory_critical_alerts WHERE id = ?', [id]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Critical alert not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Critical alert not found' ,}, { status: 404 ,});
     }
 
     const existingAlert = existingCheck.results[0];
@@ -306,47 +306,47 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const isAssignedToUser = existingAlert.assigned_to === session.user.id;
     const isManager = ['admin', 'lab_manager', 'lab_supervisor'].includes(session.user.roleName);
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n  {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Build update query
     const updateFields: string[] = [];
     const updateParams: unknown[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       // Only managers or assigned users can change status
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Forbidden: Cannot change status' }, { status: 403 });
+       {\n  {
+        return NextResponse.json({ error: 'Forbidden: Cannot change status' ,}, { status: 403 ,});
       }
 
       updateFields.push('status = ?');
       updateParams.push(status);
 
       // If resolving, require acknowledgement
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json({
-          error: 'Acknowledgement required to resolve critical alert'
-        }, { status: 400 });
+          error: 'Acknowledgement required to resolve critical alert',
+        }, { status: 400 ,});
       }
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('notes = ?');
       updateParams.push(notes);
     }
 
-    \1 {\n  \2{
+     {\n  {
       // Only managers can reassign
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Forbidden: Cannot reassign alert' }, { status: 403 });
+       {\n  {
+        return NextResponse.json({ error: 'Forbidden: Cannot reassign alert' ,}, { status: 403 ,});
       }
 
       updateFields.push('assigned_to = ?');
       updateParams.push(assignedTo || null);
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('acknowledged_at = NOW()');
       updateFields.push('acknowledged_by = ?');
       updateParams.push(session.user.id);
@@ -361,57 +361,57 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     updateParams.push(id);
 
     // Execute update
-    \1 {\n  \2{
+     {\n  {
       const query = `UPDATE laboratory_critical_alerts SET ${updateFields.join(', ')} WHERE id = ?`;
       await DB.query(query, updateParams);
 
       // Log update
       await auditLog({
         userId: session.user.id,
-        \1,\2 'laboratory_critical_alerts',
-        \1,\2 body
+         'laboratory_critical_alerts',
+         body
       });
 
       // Send notifications for assignment changes
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           await notifyUsers({
             userIds: [assignedTo],
-            \1,\2 'You have been assigned a critical result alert that requires your attention',
-            \1,\2 id,
-            \1,\2 'high'
+             'You have been assigned a critical result alert that requires your attention',
+             id,
+             'high'
           });
         }
       }
 
       // Send notifications for status changes
-      \1 {\n  \2{
+       {\n  {
         // Notify relevant parties about status change
         const notifyIds = [];
 
         // Always notify the creator
-        \1 {\n  \2{
+         {\n  {
           notifyIds.push(existingAlert.created_by);
         }
 
         // Notify the assigned user if they didn't make the change
-        \1 {\n  \2{
+         {\n  {
           notifyIds.push(existingAlert.assigned_to);
         }
 
-        \1 {\n  \2{
+         {\n  {
           await notifyUsers({
             userIds: notifyIds,
-            \1,\2 `Critical alert status changed to ${status}`,
+             `Critical alert status changed to ${status}`,
             type: 'critical_alert_update',
-            \1,\2 'laboratory_critical_alerts',
-            priority: 'medium'
+             'laboratory_critical_alerts',
+            priority: 'medium',
           });
         }
       }
 
       // Invalidate cache
-      await CacheInvalidation.invalidatePattern('diagnostic: lab: critical-alerts:*')
+      await CacheInvalidation.invalidatePattern('diagnostic: lab: critical-alerts:*'),
     }
 
     // Get the updated alert
@@ -437,6 +437,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     return NextResponse.json({
       error: 'Failed to update critical alert',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }

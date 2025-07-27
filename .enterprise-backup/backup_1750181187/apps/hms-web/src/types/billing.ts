@@ -12,7 +12,7 @@ export interface BillingItem {
   taxRate: number,
   isActive: boolean;
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 export interface Invoice {
   id: string,
   invoiceNumber: string;
@@ -33,7 +33,7 @@ export interface Invoice {
   items: InvoiceItem[],
   payments: Payment[];
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 export interface InvoiceItem {
   id: string,
   invoiceId: string;
@@ -48,7 +48,7 @@ export interface InvoiceItem {
   discountAmount: number,
   totalAmount: number;
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 export interface Payment {
   id: string,
   paymentNumber: string;
@@ -63,16 +63,16 @@ export interface Payment {
   receivedBy: string,
   receivedAt: Date;
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
 export interface BillingDashboardStats {
   totalRevenue: number,
   pendingAmount: number;
   overdueAmount: number,
   recentInvoices: Invoice[];
   recentPayments: Payment[],
-  revenueTrend: {
+  revenueTrend: {,
     period: string,
-    amount: number
+    amount: number,
   }[];
 export interface BillingSearchParams {
   query?: string;

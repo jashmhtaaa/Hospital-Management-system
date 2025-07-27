@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
  * Service for managing asset data with enhanced performance and analytics;
  * Optimized with caching, query improvements, and predictive maintenance;
  */
-\1
+
 }
   }) {
     const result = await prisma.asset.create({
@@ -25,37 +25,37 @@ const prisma = new PrismaClient();
    * Get asset by ID;
    * Enhanced with caching for improved performance;
    */
-  async getAssetById(id: string) {
-    const cacheKey = `${this.CACHE_PREFIX}id:${id}`;
+  async getAssetById(id: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}id:${id,}`;
 
     // Try to get from cache first
     const cachedAsset = await cache.get(cacheKey);
-    \1 {\n  \2{
+     {\n  {
       return JSON.parse(cachedAsset);
     }
 
     // If not in cache, fetch from database
     const asset = await prisma.asset.findUnique({
-      where: { id },
-      include: {
-        maintenanceRecords: {
-          orderBy: { date: 'desc' },
-          take: 5
+      where: { id ,},
+      include: {,
+        maintenanceRecords: {,
+          orderBy: { date: 'desc' ,},
+          take: 5,
         },
-        assignments: {
-          include: {
-            employee: true
+        assignments: {,
+          include: {,
+            employee: true,
           },
-          where: {
+          where: {,
             endDate: null, // Only current assignment
           },
-          take: 1
+          take: 1,
         },
       },
     });
 
     // Store in cache if found
-    \1 {\n  \2{
+     {\n  {
       await cache.set(cacheKey, JSON.stringify(asset), this.CACHE_TTL);
     }
 
@@ -66,37 +66,37 @@ const prisma = new PrismaClient();
    * Get asset by asset ID;
    * Enhanced with caching for improved performance;
    */
-  async getAssetByAssetId(assetId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}assetId:${assetId}`;
+  async getAssetByAssetId(assetId: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}assetId:${assetId,}`;
 
     // Try to get from cache first
     const cachedAsset = await cache.get(cacheKey);
-    \1 {\n  \2{
+     {\n  {
       return JSON.parse(cachedAsset);
     }
 
     // If not in cache, fetch from database
     const asset = await prisma.asset.findUnique({
-      where: { assetId },
-      include: {
-        maintenanceRecords: {
-          orderBy: { date: 'desc' },
-          take: 5
+      where: { assetId ,},
+      include: {,
+        maintenanceRecords: {,
+          orderBy: { date: 'desc' ,},
+          take: 5,
         },
-        assignments: {
-          include: {
-            employee: true
+        assignments: {,
+          include: {,
+            employee: true,
           },
-          where: {
+          where: {,
             endDate: null, // Only current assignment
           },
-          take: 1
+          take: 1,
         },
       },
     });
 
     // Store in cache if found
-    \1 {\n  \2{
+     {\n  {
       await cache.set(cacheKey, JSON.stringify(asset), this.CACHE_TTL);
     }
 
@@ -108,7 +108,7 @@ const prisma = new PrismaClient();
    */
   async updateAsset(
     id: string,
-    data: {
+    data: {,
       name?: string;
       description?: string;
       category?: string;
@@ -129,26 +129,26 @@ const prisma = new PrismaClient();
   ) {
     // Get current asset to check for asset ID change
     const currentAsset = await prisma.asset.findUnique({
-      where: { id },
-      select: { assetId: true },
+      where: { id ,},
+      select: { assetId: true ,},
     });
 
     const result = await prisma.asset.update({
-      where: { id },
+      where: { id ,},
       data,
-      include: {
-        maintenanceRecords: {
-          orderBy: { date: 'desc' },
-          take: 5
+      include: {,
+        maintenanceRecords: {,
+          orderBy: { date: 'desc' ,},
+          take: 5,
         },
-        assignments: {
-          include: {
-            employee: true
+        assignments: {,
+          include: {,
+            employee: true,
           },
-          where: {
+          where: {,
             endDate: null, // Only current assignment
           },
-          take: 1
+          take: 1,
         },
       },
     });
@@ -157,8 +157,8 @@ const prisma = new PrismaClient();
     await this.invalidateAssetCache(id);
 
     // If asset ID changed, invalidate old asset ID cache
-    \1 {\n  \2{
-      await cache.del(`${this.CACHE_PREFIX}assetId:${\1}`;
+     {\n  {
+      await cache.del(`${this.CACHE_PREFIX}assetId:${}`;
     }
 
     return result;
@@ -191,74 +191,74 @@ const prisma = new PrismaClient();
     needsMaintenance?: boolean;
     includeDetails?: boolean;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
-    \1 {\n  \2{
+     {\n  {
       where.category = category;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.type = type;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.status = status;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.department = department;
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.nextMaintenanceDate = {
         lte: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Next 30 days
       };
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { assetId: { contains: search, mode: 'insensitive' } },
-        { serialNumber: { contains: search, mode: 'insensitive' } },
-        { model: { contains: search, mode: 'insensitive' } },
-        { manufacturer: { contains: search, mode: 'insensitive' } },
-        { location: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search, mode: 'insensitive' } ,},
+        { assetId: { contains: search, mode: 'insensitive' } ,},
+        { serialNumber: { contains: search, mode: 'insensitive' } ,},
+        { model: { contains: search, mode: 'insensitive' } ,},
+        { manufacturer: { contains: search, mode: 'insensitive' } ,},
+        { location: { contains: search, mode: 'insensitive' } ,},
       ];
     }
 
     // Generate cache key based on query parameters
-    const cacheKey = `${this.CACHE_PREFIX}list:${JSON.stringify({
+    const cacheKey = `${this.CACHE_PREFIX}list:${JSON.stringify({,
       skip, take, cursor, category, type, status, department, search, needsMaintenance, includeDetails;
     })}`;
 
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    \1 {\n  \2{
+     {\n  {
       return JSON.parse(cachedResult);
     }
 
     // Determine what to include based on the detail level requested
-    const include: unknown = {};
+    const include: unknown = {,};
 
-    \1 {\n  \2{
+     {\n  {
       include.maintenanceRecords = {
-        orderBy: { date: 'desc' },
-        take: 3
+        orderBy: { date: 'desc' ,},
+        take: 3,
       };
 
       include.assignments = {
-        include: {
-          employee: true
+        include: {,
+          employee: true,
         },
-        where: {
+        where: {,
           endDate: null, // Only current assignment
         },
-        take: 1
+        take: 1,
       };
     }
 
     // Use cursor-based pagination if cursor is provided
-    const cursorObj = cursor ? { id: cursor } : undefined;
+    const cursorObj = cursor ? { id: cursor ,} : undefined;
 
     const [assets, total] = await Promise.all([
       prisma.asset.findMany({
@@ -266,7 +266,7 @@ const prisma = new PrismaClient();
         skip,
         take,
         cursor: cursorObj,
-        orderBy: { assetId: 'asc' },
+        orderBy: { assetId: 'asc' ,},
         include,
       }),
       prisma.asset.count({ where }),
@@ -277,7 +277,7 @@ const prisma = new PrismaClient();
       total,
       skip,
       take,
-      nextCursor: assets.length === take ? assets[assets.length - 1].id : null
+      nextCursor: assets.length === take ? assets[assets.length - 1].id : null,
     };
 
     // Store in cache
@@ -291,9 +291,9 @@ const prisma = new PrismaClient();
    */
   async recordMaintenance(
     assetId: string,
-    data: {
+    data: {,
       date: Date,
-      \1,\2 string,
+       string,
       description: string;
       cost?: number;
       parts?: string[];
@@ -306,33 +306,33 @@ const prisma = new PrismaClient();
     return prisma.$transaction(async (tx) => {
       // Create maintenance record
       const maintenance = await tx.assetMaintenance.create({
-        data: {
+        data: {,
           assetId,
           date: data.date,
-          \1,\2 data.performedBy,
-          \1,\2 data.cost,
-          \1,\2 data.status,
-          \1,\2 data.attachments
+           data.performedBy,
+           data.cost,
+           data.status,
+           data.attachments
         },
       });
 
       // Update asset status and next maintenance date if needed
-      const updateData: unknown = {};
+      const updateData: unknown = {,};
 
-      \1 {\n  \2{
+       {\n  {
         updateData.status = 'AVAILABLE',
-      } else \1 {\n  \2{
+      } else  {\n  {
         updateData.status = 'MAINTENANCE',
       }
 
-      \1 {\n  \2{
+       {\n  {
         updateData.nextMaintenanceDate = data.nextMaintenanceDate;
       }
 
-      \1 {\n  \2length > 0) {
+       {\n  length > 0) {
         await tx.asset.update({
-          where: { id: assetId },
-          data: updateData
+          where: { id: assetId ,},
+          data: updateData,
         });
       }
 
@@ -348,7 +348,7 @@ const prisma = new PrismaClient();
    */
   async assignAsset(
     assetId: string,
-    data: {
+    data: {,
       employeeId: string,
       startDate: Date;
       endDate?: Date;
@@ -358,33 +358,33 @@ const prisma = new PrismaClient();
     return prisma.$transaction(async (tx) => {
       // End any current assignments
       await tx.assetAssignment.updateMany({
-        where: {
+        where: {,
           assetId,
-          endDate: null
+          endDate: null,
         },
-        data: {
-          endDate: new Date()
+        data: {,
+          endDate: new Date(),
         },
       });
 
       // Create new assignment
       const assignment = await tx.assetAssignment.create({
-        data: {
+        data: {,
           assetId,
           employeeId: data.employeeId,
-          \1,\2 data.endDate,
-          notes: data.notes
+           data.endDate,
+          notes: data.notes,
         },
-        include: {
-          employee: true
+        include: {,
+          employee: true,
         },
       });
 
       // Update asset status
       await tx.asset.update({
-        where: { id: assetId },
-        data: {
-          status: 'IN_USE'
+        where: { id: assetId ,},
+        data: {,
+          status: 'IN_USE',
         },
       });
 
@@ -405,29 +405,29 @@ const prisma = new PrismaClient();
   ) {
     // Get assignment to find asset ID
     const assignment = await prisma.assetAssignment.findUnique({
-      where: { id: assignmentId },
-      select: { assetId: true },
+      where: { id: assignmentId ,},
+      select: { assetId: true ,},
     });
 
     return prisma.$transaction(async (tx) => {
       // Update assignment
       const updatedAssignment = await tx.assetAssignment.update({
-        where: { id: assignmentId },
-        data: {
+        where: { id: assignmentId ,},
+        data: {,
           endDate,
-          notes: notes ? { set: notes } : undefined,
+          notes: notes ? { set: notes ,} : undefined,
         },
-        include: {
-          employee: true
+        include: {,
+          employee: true,
         },
       });
 
       // Update asset status
-      \1 {\n  \2{
+       {\n  {
         await tx.asset.update({
-          where: { id: assignment.assetId },
-          data: {
-            status: 'AVAILABLE'
+          where: { id: assignment.assetId ,},
+          data: {,
+            status: 'AVAILABLE',
           },
         });
 
@@ -442,19 +442,19 @@ const prisma = new PrismaClient();
   /**
    * Get maintenance history for asset;
    */
-  async getMaintenanceHistory(assetId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}maintenance:${assetId}`;
+  async getMaintenanceHistory(assetId: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}maintenance:${assetId,}`;
 
     // Try to get from cache first
     const cachedHistory = await cache.get(cacheKey);
-    \1 {\n  \2{
+     {\n  {
       return JSON.parse(cachedHistory);
     }
 
     // If not in cache, fetch from database
     const history = await prisma.assetMaintenance.findMany({
-      where: { assetId },
-      orderBy: { date: 'desc' },
+      where: { assetId ,},
+      orderBy: { date: 'desc' ,},
     });
 
     // Store in cache
@@ -466,22 +466,22 @@ const prisma = new PrismaClient();
   /**
    * Get assignment history for asset;
    */
-  async getAssignmentHistory(assetId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}assignments:${assetId}`;
+  async getAssignmentHistory(assetId: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}assignments:${assetId,}`;
 
     // Try to get from cache first
     const cachedHistory = await cache.get(cacheKey);
-    \1 {\n  \2{
+     {\n  {
       return JSON.parse(cachedHistory);
     }
 
     // If not in cache, fetch from database
     const history = await prisma.assetAssignment.findMany({
-      where: { assetId },
-      include: {
-        employee: true
+      where: { assetId ,},
+      include: {,
+        employee: true,
       },
-      orderBy: { startDate: 'desc' },
+      orderBy: { startDate: 'desc' ,},
     });
 
     // Store in cache
@@ -493,30 +493,30 @@ const prisma = new PrismaClient();
   /**
    * Get assets due for maintenance;
    */
-  async getAssetsDueForMaintenance(daysThreshold: number = 30) {
+  async getAssetsDueForMaintenance(daysThreshold: number = 30) {,
     const thresholdDate = new Date();
     thresholdDate.setDate(thresholdDate.getDate() + daysThreshold);
 
-    const cacheKey = `${this.CACHE_PREFIX}due-maintenance:${daysThreshold}`;
+    const cacheKey = `${this.CACHE_PREFIX}due-maintenance:${daysThreshold,}`;
 
     // Try to get from cache first
     const cachedResult = await cache.get(cacheKey);
-    \1 {\n  \2{
+     {\n  {
       return JSON.parse(cachedResult);
     }
 
     // If not in cache, fetch from database
     const assets = await prisma.asset.findMany({
-      where: {
-        nextMaintenanceDate: {
-          lte: thresholdDate
+      where: {,
+        nextMaintenanceDate: {,
+          lte: thresholdDate,
         },
-        status: {
-          not: 'DISPOSED'
+        status: {,
+          not: 'DISPOSED',
         },
       },
-      orderBy: {
-        nextMaintenanceDate: 'asc'
+      orderBy: {,
+        nextMaintenanceDate: 'asc',
       },
     });
 
@@ -530,22 +530,22 @@ const prisma = new PrismaClient();
    * Calculate asset utilization metrics;
    * New method to support advanced analytics;
    */
-  async calculateUtilizationMetrics(assetId: string) {
+  async calculateUtilizationMetrics(assetId: string) {,
     const asset = await this.getAssetById(assetId);
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Asset not found');
     }
 
     // Get all assignments
     const assignments = await prisma.assetAssignment.findMany({
-      where: { assetId },
-      orderBy: { startDate: 'asc' },
+      where: { assetId ,},
+      orderBy: { startDate: 'asc' ,},
     });
 
     // Get all maintenance records
     const maintenanceRecords = await prisma.assetMaintenance.findMany({
-      where: { assetId },
-      orderBy: { date: 'asc' },
+      where: { assetId ,},
+      orderBy: { date: 'asc' ,},
     });
 
     // Calculate total lifetime (in days)
@@ -565,7 +565,7 @@ const prisma = new PrismaClient();
     // Calculate total time in maintenance (in days)
     let totalTimeInMaintenance = 0
     for (const record of maintenanceRecords) {
-      \1 {\n  \2{
+       {\n  {
         // Estimate 1 day for maintenance if completed
         totalTimeInMaintenance += 1;
       } else {
@@ -602,7 +602,7 @@ const prisma = new PrismaClient();
       totalMaintenanceCost,
       costPerDay,
       assignmentCount: assignments.length,
-      \1,\2 asset.purchasePrice || 0
+       asset.purchasePrice || 0
     };
   }
 
@@ -610,35 +610,35 @@ const prisma = new PrismaClient();
    * Predict optimal maintenance schedule;
    * New method to support predictive maintenance;
    */
-  async predictOptimalMaintenanceSchedule(assetId: string) {
+  async predictOptimalMaintenanceSchedule(assetId: string) {,
     const asset = await this.getAssetById(assetId);
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Asset not found');
     }
 
     // Get all maintenance records
     const maintenanceRecords = await prisma.assetMaintenance.findMany({
-      where: {
+      where: {,
         assetId,
         type: 'PREVENTIVE',
-        status: 'COMPLETED'
+        status: 'COMPLETED',
       },
-      orderBy: { date: 'asc' },
+      orderBy: { date: 'asc' ,},
     });
 
     // Get corrective maintenance records
     const correctiveRecords = await prisma.assetMaintenance.findMany({
-      where: {
+      where: {,
         assetId,
         type: 'CORRECTIVE',
-        status: 'COMPLETED'
+        status: 'COMPLETED',
       },
-      orderBy: { date: 'asc' },
+      orderBy: { date: 'asc' ,},
     });
 
     // Calculate average interval between preventive maintenance
     let averagePreventiveInterval = 90; // Default to 90 days
-    \1 {\n  \2{
+     {\n  {
       let totalInterval = 0;
       for (let i = 1; i < maintenanceRecords.length; i++) {
         const interval = (new Date(maintenanceRecords[i].date).getTime() -;
@@ -653,7 +653,7 @@ const prisma = new PrismaClient();
     let failureRisk = 'LOW';
     let confidenceLevel = 'LOW';
 
-    \1 {\n  \2{
+     {\n  {
       // Check if corrective maintenance occurs close to preventive maintenance
       const timeToFailureAfterMaintenance: number[] = [];
 
@@ -663,24 +663,24 @@ const prisma = new PrismaClient();
           m => new Date(m.date) < new Date(corrective.date);
         ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
 
-        \1 {\n  \2{
+         {\n  {
           const timeDiff = (new Date(corrective.date).getTime() -;
                            new Date(prevPreventive.date).getTime()) / (1000 * 60 * 60 * 24);
           timeToFailureAfterMaintenance.push(timeDiff);
         }
       }
 
-      \1 {\n  \2{
+       {\n  {
         // Calculate average time to failure after maintenance
         const avgTimeToFailure = timeToFailureAfterMaintenance.reduce((sum, time) => sum + time, 0) /
                                 timeToFailureAfterMaintenance.length;
 
         // If failures typically happen before the next scheduled maintenance,
         // we should reduce the interval
-        \1 {\n  \2{
+         {\n  {
           optimalInterval = Math.max(30, avgTimeToFailure * 0.8); // At least 30 days
           failureRisk = 'HIGH',
-        } else \1 {\n  \2{
+        } else  {\n  {
           // If failures typically happen long after maintenance, we can extend the interval
           optimalInterval = avgTimeToFailure * 0.8;
           failureRisk = 'LOW',
@@ -706,7 +706,7 @@ const prisma = new PrismaClient();
 
     return {
       assetId: asset.id,
-      \1,\2 averagePreventiveInterval,
+       averagePreventiveInterval,
       recommendedMaintenanceInterval: Math.round(optimalInterval),
       nextRecommendedMaintenanceDate: nextMaintenanceDate.toISOString(),
       failureRisk,
@@ -714,12 +714,12 @@ const prisma = new PrismaClient();
       preventiveMaintenanceCount: maintenanceRecords.length,
       correctiveMaintenanceCount: correctiveRecords.length;
       potentialCostSavings,
-      recommendation: optimalInterval < averagePreventiveInterval ?
+      recommendation: optimalInterval < averagePreventiveInterval ?,
                     'Increase maintenance frequency' :
                     (optimalInterval > averagePreventiveInterval ?
                      'Decrease maintenance frequency' :
                      'Maintain current schedule'),
-      dataPoints: maintenanceRecords.length + correctiveRecords.length
+      dataPoints: maintenanceRecords.length + correctiveRecords.length,
     };
   }
 
@@ -728,20 +728,20 @@ const prisma = new PrismaClient();
    * @param assetId Optional specific asset ID to invalidate;
    */
   private async invalidateAssetCache(assetId?: string) {
-    \1 {\n  \2{
+     {\n  {
       // Get the asset to find all IDs
       const asset = await prisma.asset.findFirst({
-        where: { id: assetId },
-        select: { id: true, assetId: true }
+        where: { id: assetId ,},
+        select: { id: true, assetId: true },
       });
 
-      \1 {\n  \2{
+       {\n  {
         // Invalidate specific asset caches
         await Promise.all([
-          cache.del(`${this.CACHE_PREFIX}id:${\1}`,
-          cache.del(`${this.CACHE_PREFIX}assetId:${\1}`,
-          cache.del(`${this.CACHE_PREFIX}maintenance:${\1}`,
-          cache.del(`${this.CACHE_PREFIX}assignments:${\1}`
+          cache.del(`${this.CACHE_PREFIX}id:${}`,
+          cache.del(`${this.CACHE_PREFIX}assetId:${}`,
+          cache.del(`${this.CACHE_PREFIX}maintenance:${}`,
+          cache.del(`${this.CACHE_PREFIX}assignments:${}`,
         ]);
       }
     }
@@ -749,7 +749,7 @@ const prisma = new PrismaClient();
     // Invalidate list caches with pattern matching
     await Promise.all([
       cache.delPattern(`${this.CACHE_PREFIX}list:*`),
-      cache.delPattern(`${this.CACHE_PREFIX}due-maintenance: *`)
+      cache.delPattern(`${this.CACHE_PREFIX}due-maintenance: *`),
     ])
   }
 export const _assetService = new AssetService();

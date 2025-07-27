@@ -20,13 +20,13 @@ import { DrugInteractionService } from '../../services/drug-interaction-service'
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {
@@ -38,7 +38,7 @@ const prescriptionRepository = {
   findAll: () => Promise.resolve([]),
   save: (prescription: unknown) => Promise.resolve(prescription.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 // Initialize services
@@ -51,12 +51,12 @@ const interactionService = new DrugInteractionService(
  * GET /api/pharmacy/prescriptions;
  * List prescriptions with filtering and pagination;
  */
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {,
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -74,17 +74,17 @@ export const GET = async (req: NextRequest) => {
     const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
-    const filter: unknown = {};
-    \1 {\n  \2ilter.patientId = patientId;
-    \1 {\n  \2ilter.prescriberId = prescriberId;
-    \1 {\n  \2ilter.medicationId = medicationId;
-    \1 {\n  \2ilter.status = status;
+    const filter: unknown = {,};
+     {\n  ilter.patientId = patientId;
+     {\n  ilter.prescriberId = prescriberId;
+     {\n  ilter.medicationId = medicationId;
+     {\n  ilter.status = status;
 
     // Add date range if provided
-    \1 {\n  \2{
+     {\n  {
       filter.createdAt = {};
-      \1 {\n  \2ilter.createdAt.gte = new Date(startDate);
-      \1 {\n  \2ilter.createdAt.lte = new Date(endDate);
+       {\n  ilter.createdAt.gte = new Date(startDate);
+       {\n  ilter.createdAt.lte = new Date(endDate);
     }
 
     // Get prescriptions (mock implementation)
@@ -92,16 +92,16 @@ export const GET = async (req: NextRequest) => {
 
     // Apply filters
     let filteredPrescriptions = prescriptions;
-    \1 {\n  \2{
+     {\n  {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.patientId === patientId);
     }
-    \1 {\n  \2{
+     {\n  {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.prescriberId === prescriberId);
     }
-    \1 {\n  \2{
+     {\n  {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.medicationId === medicationId);
     }
-    \1 {\n  \2{
+     {\n  {
       filteredPrescriptions = filteredPrescriptions.filter(p => p.status === status);
     }
 
@@ -116,24 +116,24 @@ export const GET = async (req: NextRequest) => {
     // Audit logging
     await auditLog('PRESCRIPTION', {
       action: 'LIST',
-      \1,\2 userId,
-      details: 
+       userId,
+      details: ,
         filter,
         page,
         limit,
-        resultCount: paginatedPrescriptions.length
+        resultCount: paginatedPrescriptions.length,
     });
 
     // Return response
     return NextResponse.json({
       prescriptions: fhirPrescriptions,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit),
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error retrieving prescriptions');
   }
@@ -143,22 +143,22 @@ export const GET = async (req: NextRequest) => {
  * POST /api/pharmacy/prescriptions;
  * Create a new prescription with interaction checking;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validatePrescriptionRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -166,14 +166,14 @@ export const POST = async (req: NextRequest) => {
 
     // Verify patient exists
     const patient = await getPatientById(data.patientId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Patient not found' ,}, { status: 404 ,});
     }
 
     // Verify medication exists
     const medication = await medicationRepository.findById(data.medicationId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Medication not found' ,}, { status: 404 ,});
     }
 
     // Check for drug interactions
@@ -208,12 +208,12 @@ export const POST = async (req: NextRequest) => {
     );
 
     // If there are severe interactions and no override provided, return error
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           error: 'Severe drug interactions detected',
-          \1,\2 true
-        },status: 409 
+           true
+        },status: 409 ,
       );
     }
 
@@ -241,12 +241,12 @@ export const POST = async (req: NextRequest) => {
     );
 
     // Special handling for controlled substances
-    \1 {\n  \2{
+     {\n  {
       // Encrypt controlled substance data
       prescription.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           dea: data.dea,
-          \1,\2 new Date()
+           new Date()
         });
       );
     }
@@ -255,20 +255,20 @@ export const POST = async (req: NextRequest) => {
     const prescriptionId = await prescriptionRepository.save(prescription);
 
     // If interaction override was provided, save it
-    \1 {\n  \2{
+     {\n  {
       // In a real implementation, save override record
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     }
 
     // Audit logging
     await auditLog('PRESCRIPTION', {
       action: 'CREATE',
-      \1,\2 prescriptionId,
-      \1,\2 data.patientId,
-      details: {
+       prescriptionId,
+       data.patientId,
+      details: {,
         medicationId: data.medicationId,
-        \1,\2 severeInteractions.length,
-        overrideProvided: !!data.interactionOverride
+         severeInteractions.length,
+        overrideProvided: !!data.interactionOverride,
       }
     });
 
@@ -276,9 +276,9 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: prescriptionId,
-        \1,\2 allInteractions.length > 0 ? allInteractions : undefined
+         allInteractions.length > 0 ? allInteractions : undefined,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, 'Error creating prescription');

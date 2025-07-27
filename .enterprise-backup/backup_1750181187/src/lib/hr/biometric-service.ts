@@ -5,45 +5,45 @@ const prisma = new PrismaClient();
 /**
  * Service for biometric integration and management;
  */
-\1
+
 }
   }) {
     const { employeeId, templateType, templateData, deviceId, notes } = data;
 
     // Check if employee exists
     const employee = await prisma.employee.findUnique({
-      where: { id: employeeId },
+      where: { id: employeeId ,},
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Employee not found');
     }
 
     // Check if template already exists for this employee and type
     const existingTemplate = await prisma.biometricTemplate.findFirst({
-      where: {
+      where: {,
         employeeId,
         templateType,
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       // Update existing template
       return prisma.biometricTemplate.update({
-        where: {
-          id: existingTemplate.id
+        where: {,
+          id: existingTemplate.id,
         },
-        data: {
+        data: {,
           templateData,
           deviceId,
           notes,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
       });
     } else {
       // Create new template
       return prisma.biometricTemplate.create({
-        data: {
+        data: {,
           employeeId,
           templateType,
           templateData,
@@ -57,19 +57,19 @@ const prisma = new PrismaClient();
   /**
    * Get biometric templates for an employee;
    */
-  async getEmployeeBiometricTemplates(employeeId: string) {
+  async getEmployeeBiometricTemplates(employeeId: string) {,
     return prisma.biometricTemplate.findMany({
-      where: { employeeId },
-      orderBy: { createdAt: 'desc' },
+      where: { employeeId ,},
+      orderBy: { createdAt: 'desc' ,},
     });
   }
 
   /**
    * Delete a biometric template;
    */
-  async deleteBiometricTemplate(id: string) {
+  async deleteBiometricTemplate(id: string) {,
     return prisma.biometricTemplate.delete({
-      where: { id },
+      where: { id ,},
     });
   }
 
@@ -77,26 +77,26 @@ const prisma = new PrismaClient();
    * Verify biometric data against stored template;
    * This is a placeholder for actual biometric verification logic;
    */
-  async verifyBiometric(data: {
+  async verifyBiometric(data: {,
     employeeId: string,
-    \1,\2 string
+     string
   }) {
     const { employeeId, templateType, sampleData } = data;
 
     // Get the stored template
     const template = await prisma.biometricTemplate.findFirst({
-      where: {
+      where: {,
         employeeId,
         templateType,
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('No biometric template found for this employee');
     }
 
     // In a real implementation, this would:
-    // 1. Use a biometric matching algorithm to compare the sample with the template
+    // 1. Use a biometric matching algorithm to compare the sample with the template,
     // 2. Return a match score and a boolean indicating if the match is above threshold
 
     // For demonstration purposes, we'll simulate verification
@@ -108,7 +108,7 @@ const prisma = new PrismaClient();
 
     // Log the verification attempt
     await prisma.auditLog.create({
-      data: {
+      data: {,
         userId: null,
         eventType: 'BIOMETRIC_VERIFICATION';
           employeeId,
@@ -122,16 +122,16 @@ const prisma = new PrismaClient();
     return {
       isMatch,
       matchScore,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
   }
 
   /**
    * Register a biometric device;
    */
-  async registerBiometricDevice(data: {
+  async registerBiometricDevice(data: {,
     deviceId: string,
-    \1,\2 string;
+     string;
     ipAddress?: string;
     serialNumber?: string;
     manufacturer?: string;
@@ -142,16 +142,16 @@ const prisma = new PrismaClient();
 
     // Check if device already exists
     const existingDevice = await prisma.biometricDevice.findUnique({
-      where: { deviceId },
+      where: { deviceId ,},
     });
 
-    \1 {\n  \2{
+     {\n  {
       // Update existing device
       return prisma.biometricDevice.update({
-        where: {
-          id: existingDevice.id
+        where: {,
+          id: existingDevice.id,
         },
-        data: {
+        data: {,
           deviceType,
           location,
           ipAddress,
@@ -159,13 +159,13 @@ const prisma = new PrismaClient();
           manufacturer,
           model,
           notes,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
       });
     } else {
       // Create new device
       return prisma.biometricDevice.create({
-        data: {
+        data: {,
           deviceId,
           deviceType,
           location,
@@ -184,14 +184,14 @@ const prisma = new PrismaClient();
    */
   async getBiometricDevices() {
     return prisma.biometricDevice.findMany({
-      orderBy: { location: 'asc' },
+      orderBy: { location: 'asc' ,},
     });
   }
 
   /**
    * Get biometric verification logs;
    */
-  async getBiometricLogs(options: {
+  async getBiometricLogs(options: {,
     employeeId?: string;
     startDate?: Date;
     endDate?: Date;
@@ -201,23 +201,23 @@ const prisma = new PrismaClient();
     const { employeeId, startDate, endDate, skip = 0, take = 50 } = options;
 
     // Build where clause
-    const where: unknown = {
-      eventType: 'BIOMETRIC_VERIFICATION'
+    const where: unknown = {,
+      eventType: 'BIOMETRIC_VERIFICATION',
     };
 
-    \1 {\n  \2{
+     {\n  {
       where.details = {
         path: ['employeeId'],
-        equals: employeeId
+        equals: employeeId,
       };
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.createdAt = {};
-      \1 {\n  \2{
+       {\n  {
         where.createdAt.gte = startDate;
       }
-      \1 {\n  \2{
+       {\n  {
         where.createdAt.lte = endDate;
       }
     }
@@ -226,7 +226,7 @@ const prisma = new PrismaClient();
     const [logs, total] = await Promise.all([
       prisma.auditLog.findMany({
         where,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: 'desc' ,},
         skip,
         take,
       }),

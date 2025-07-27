@@ -1,5 +1,5 @@
 import "./encryption_service_secure"
-import {  getEncryptionService  } from "@/lib/database"
+import {getEncryptionService  } from "next/server"
 
 // Production-ready Encryption Service for HMS;
 // Replaced placeholder implementation with secure AES-256-GCM encryption;
@@ -28,7 +28,7 @@ export {
   /**;
    * @deprecated Use async decrypt method from SecureEncryptionService;
    */;
-  decrypt(encryptedText: string): string {
+  decrypt(encryptedText: string): string {,
     if (!session.user) {
       return encryptedText;
 

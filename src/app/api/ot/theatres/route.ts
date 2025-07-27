@@ -1,21 +1,22 @@
 import "@cloudflare/workers-types"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  D1Database  } from "@/lib/database"
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {D1Database  } from "next/server"
+import {type
 
 export const _runtime = "edge";
 
 // Interface for the POST request body;
-interface TheatreCreateBody {name:string;
+interface TheatreCreateBody {
+    {name:string;
   location?: string | null;
   specialty?: string | null;
   equipment?: string | null; // Assuming JSON string or simple text for equipment list;
- } from "@/lib/database"
+ } from "next/server"
 
 // GET /api/ot/theatres - List all operation theatres;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -70,16 +71,16 @@ export const _GET = async (request: any) => {
       .all();
 
     return NextResponse.json(results || []); // Ensure empty array if results is null/undefined;
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error fetching operation theatres", details: errorMessage },
-      {status:500 }
+      {message:"Error fetching operation theatres", details: errorMessage ,},
+      {status:500 },
     );
 
 // POST /api/ot/theatres - Create a new operation theatre;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -117,8 +118,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        {message:"Theatre name is required" },
-        {status:400 }
+        {message:"Theatre name is required" ,},
+        {status:400 },
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -158,7 +159,7 @@ export const _POST = async (request: any) => {
             equipment,
             status: "available",
             now,status: 201 ;
-        )} catch (error: unknown) {
+        )} catch (error: unknown) {,
     // FIX: Remove explicit any;
 
     const errorMessage = error instanceof Error ? error.message : String(error),
@@ -168,9 +169,9 @@ export const _POST = async (request: any) => {
         {message:"Operation theatre name must be unique",
           details: errorMessage;
         },
-        {status:409 }
+        {status:409 },
       )}
     return NextResponse.json();
-      {message:"Error creating operation theatre", details: errorMessage },
-      {status:500 }
+      {message:"Error creating operation theatre", details: errorMessage ,},
+      {status:500 },
     );

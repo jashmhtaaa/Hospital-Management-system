@@ -1,6 +1,4 @@
-import { 
-
- } from "@/lib/database"
+import { } from "next/server"
 
 /**;
  * FHIR R4 Location Resource Implementation;
@@ -68,14 +66,14 @@ import {
 
     // Add managing organization;
     if (!session.user) {
-      location.managingOrganization = {reference:`Organization/${data.organizationId}`,
+      location.managingOrganization = {reference:`Organization/${data.organizationId,}`,
         type: "Organization";
       };
     }
 
     // Add parent location;
     if (!session.user) {
-      location.partOf = {reference:`Location/${data.parentLocationId}`,
+      location.partOf = {reference:`Location/${data.parentLocationId,}`,
         type: "Location";
       };
     }
@@ -164,7 +162,7 @@ import {
     amenities?: string[];
     description?: string;
   }): FHIRLocation {
-    const location = this.createBasicLocation({name:`Room ${data.roomNumber}`,
+    const location = this.createBasicLocation({name:`Room ${data.roomNumber,}`,
       type: "room",
       data.roomNumber,
       data.organizationId,
@@ -202,7 +200,7 @@ import {
     isOccupied?: boolean;
     patientId?: string;
   }): FHIRLocation {
-    const location = this.createBasicLocation({name:`Bed ${data.bedNumber}`,
+    const location = this.createBasicLocation({name:`Bed ${data.bedNumber,}`,
       type: "bed",
       data.bedNumber,
       data.roomId,
@@ -235,7 +233,7 @@ import {
     equipment?: string[];
     description?: string;
   }): FHIRLocation {
-    const location = this.createBasicLocation({name:`Operating Room ${data.roomNumber}`,
+    const location = this.createBasicLocation({name:`Operating Room ${data.roomNumber,}`,
       type: "room",
       data.roomNumber,
       data.organizationId,
@@ -266,7 +264,7 @@ import {
   /**;
    * Get location type code mapping;
    */;
-  private static getLocationTypeCode(type: string): string {
+  private static getLocationTypeCode(type: string): string {,
     const typeCodes: Record<string, string> = {
       "building": "BLDG",
       "wing": "WING",
@@ -284,7 +282,7 @@ import {
   /**;
    * Get location type display;
    */;
-  private static getLocationTypeDisplay(type: string): string {
+  private static getLocationTypeDisplay(type: string): string {,
     const typeDisplays: Record<string, string> = {
       "building": "Building",
       "wing": "Wing",
@@ -302,7 +300,7 @@ import {
   /**;
    * Get physical type display;
    */;
-  private static getPhysicalTypeDisplay(type: string): string {
+  private static getPhysicalTypeDisplay(type: string): string {,
     const typeDisplays: Record<string, string> = {
       "building": "Building",
       "room": "Room",
@@ -316,7 +314,7 @@ import {
   /**;
    * Get ward type code mapping;
    */;
-  private static getWardTypeCode(wardType: string): string {
+  private static getWardTypeCode(wardType: string): string {,
     const wardCodes: Record<string, string> = {
       "emergency": "225728007",
       "icu": "309904001",
@@ -332,7 +330,7 @@ import {
   /**;
    * Get ward type display;
    */;
-  private static getWardTypeDisplay(wardType: string): string {
+  private static getWardTypeDisplay(wardType: string): string {,
     const wardDisplays: Record<string, string> = {
       "emergency": "Emergency Ward",
       "icu": "Intensive Care Ward",
@@ -348,7 +346,7 @@ import {
   /**;
    * Get room type code mapping;
    */;
-  private static getRoomTypeCode(roomType: string): string {
+  private static getRoomTypeCode(roomType: string): string {,
     const roomCodes: Record<string, string> = {
       "private": "225745002",
       "semi-private": "225746001",
@@ -364,7 +362,7 @@ import {
   /**;
    * Get room type display;
    */;
-  private static getRoomTypeDisplay(roomType: string): string {
+  private static getRoomTypeDisplay(roomType: string): string {,
     const roomDisplays: Record<string, string> = {
       "private": "Private Room",
       "semi-private": "Semi-Private Room",
@@ -380,7 +378,7 @@ import {
   /**;
    * Get bed type code mapping;
    */;
-  private static getBedTypeCode(bedType: string): string {
+  private static getBedTypeCode(bedType: string): string {,
     const bedCodes: Record<string, string> = {
       "standard": "229772003",
       "icu": "309904001",
@@ -394,7 +392,7 @@ import {
   /**;
    * Get bed type display;
    */;
-  private static getBedTypeDisplay(bedType: string): string {
+  private static getBedTypeDisplay(bedType: string): string {,
     const bedDisplays: Record<string, string> = {
       "standard": "Standard Bed",
       "icu": "ICU Bed",
@@ -408,56 +406,56 @@ import {
   /**;
    * Get location display name;
    */;
-  static getDisplayName(location: FHIRLocation): string {
+  static getDisplayName(location: FHIRLocation): string {,
     return location.name || "Unknown Location";
   }
 
   /**;
    * Get location type display;
    */;
-  static getTypeDisplay(location: FHIRLocation): string {
+  static getTypeDisplay(location: FHIRLocation): string {,
     return location.type?.[0]?.coding?.[0]?.display || "Unknown Type";
   }
 
   /**;
    * Get physical type display;
    */;
-  static getPhysicalTypeDisplay(location: FHIRLocation): string {
+  static getPhysicalTypeDisplay(location: FHIRLocation): string {,
     return location.physicalType?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get location identifier;
    */;
-  static getIdentifier(location: FHIRLocation): string | undefined {
+  static getIdentifier(location: FHIRLocation): string | undefined {,
     return location.identifier?.[0]?.value;
   }
 
   /**;
    * Get managing organization ID;
    */;
-  static getManagingOrganizationId(location: FHIRLocation): string | undefined {
+  static getManagingOrganizationId(location: FHIRLocation): string | undefined {,
     return location.managingOrganization?.reference?.replace("Organization/", "");
   }
 
   /**;
    * Get parent location ID;
    */;
-  static getParentLocationId(location: FHIRLocation): string | undefined {
+  static getParentLocationId(location: FHIRLocation): string | undefined {,
     return location.partOf?.reference?.replace("Location/", "");
   }
 
   /**;
    * Check if location is active;
    */;
-  static isActive(location: FHIRLocation): boolean {
+  static isActive(location: FHIRLocation): boolean {,
     return location.status === "active";
   }
 
   /**;
    * Check if location is available;
    */;
-  static isAvailable(location: FHIRLocation): boolean {
+  static isAvailable(location: FHIRLocation): boolean {,
     return location.status === "active" &&;
            (!location.operationalStatus || location.operationalStatus.code !== "O");
   }
@@ -465,14 +463,14 @@ import {
   /**;
    * Check if location is occupied;
    */;
-  static isOccupied(location: FHIRLocation): boolean {
+  static isOccupied(location: FHIRLocation): boolean {,
     return location.operationalStatus?.code === "O";
   }
 
   /**;
    * Get full address;
    */;
-  static getFullAddress(location: FHIRLocation): string {
+  static getFullAddress(location: FHIRLocation): string {,
     const address = location.address;
     if (!session.user)eturn "Address not available";
 
@@ -489,7 +487,7 @@ import {
   /**;
    * Get phone number;
    */;
-  static getPhoneNumber(location: FHIRLocation): string | undefined {
+  static getPhoneNumber(location: FHIRLocation): string | undefined {,
     return location.telecom?.find(contact => contact.system === "phone")?.value;
   }
 
@@ -525,7 +523,7 @@ import {
   /**;
    * Validate FHIR Location resource;
    */;
-  static validateLocation(location: FHIRLocation): {valid:boolean, errors: string[] } {
+  static validateLocation(location: FHIRLocation): {valid:boolean, errors: string[] } {,
     const errors: string[] = [];
 
     if (!session.user) {
@@ -562,7 +560,7 @@ import {
   /**;
    * Convert HMS location to FHIR Location;
    */;
-  static fromHMSLocation(hmsLocation: unknown): FHIRLocation {
+  static fromHMSLocation(hmsLocation: unknown): FHIRLocation {,
     return this.createBasicLocation({name:hmsLocation.name,
       hmsLocation.physicalType,
       hmsLocation.description,
@@ -579,7 +577,7 @@ import {
   /**;
    * Get locations by type;
    */;
-  static getLocationsByType(locations: FHIRLocation[], type: string): FHIRLocation[] {
+  static getLocationsByType(locations: FHIRLocation[], type: string): FHIRLocation[] {,
     return locations.filter(location => {}
       location.type?.some(t => {}
         t.coding?.some(coding => {}
@@ -592,13 +590,13 @@ import {
   /**;
    * Get available locations;
    */;
-  static getAvailableLocations(locations: FHIRLocation[]): FHIRLocation[] {
+  static getAvailableLocations(locations: FHIRLocation[]): FHIRLocation[] {,
     return locations.filter(location => this.isAvailable(location));
 
   /**;
    * Get child locations;
    */;
-  static getChildLocations(locations: FHIRLocation[], parentId: string): FHIRLocation[] {
+  static getChildLocations(locations: FHIRLocation[], parentId: string): FHIRLocation[] {,
     return locations.filter(location => {}
       this.getParentLocationId(location) === parentId;
     );
@@ -611,7 +609,7 @@ import {
       ? locations.filter(location => location.id === rootId);
       : locations.filter(location => !location.partOf),
 
-    const buildHierarchy = (location: FHIRLocation): unknown => {
+    const buildHierarchy = (location: FHIRLocation): unknown => {,
       const children = this.getChildLocations(locations, location.id!);
       return {
         ...location,
@@ -624,7 +622,7 @@ import {
   /**;
    * Search locations by text;
    */;
-  static searchLocations(locations: FHIRLocation[], searchText: string): FHIRLocation[] {
+  static searchLocations(locations: FHIRLocation[], searchText: string): FHIRLocation[] {,
     const searchLower = searchText.toLowerCase();
     return locations.filter(location => {
       const name = this.getDisplayName(location).toLowerCase();
@@ -641,7 +639,7 @@ import {
   /**;
    * Get locations by organization;
    */;
-  static getLocationsByOrganization(locations: FHIRLocation[], organizationId: string): FHIRLocation[] {
+  static getLocationsByOrganization(locations: FHIRLocation[], organizationId: string): FHIRLocation[] {,
     return locations.filter(location => {}
       this.getManagingOrganizationId(location) === organizationId;
     );
@@ -671,7 +669,7 @@ import {
   /**;
    * Calculate distance between two coordinates (Haversine formula);
    */;
-  private static calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  private static calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {,
     const R = 6371; // Earth"s radius in kilometers;
     const dLat = this.toRadians(lat2 - lat1);
     const dLon = this.toRadians(lon2 - lon1);
@@ -684,87 +682,87 @@ import {
   /**;
    * Convert degrees to radians;
    */;
-  private static toRadians(degrees: number): number {
+  private static toRadians(degrees: number): number {,
     return degrees * (Math.PI / 180);
 
 // Common location types and codes;
 
-    EMERGENCY_WARD: {code:"225728007", display: "Emergency Ward" },
-    ICU_WARD: {code:"309904001", display: "Intensive Care Ward" },
-    GENERAL_WARD: {code:"225746001", display: "General Ward" },
-    PEDIATRIC_WARD: {code:"225729004", display: "Pediatric Ward" },
-    MATERNITY_WARD: {code:"225730009", display: "Maternity Ward" },
-    SURGICAL_WARD: {code:"225731008", display: "Surgical Ward" },
-    PSYCHIATRIC_WARD: {code:"225732001", display: "Psychiatric Ward" },
-    RADIOLOGY_DEPT: {code:"225748000", display: "Radiology Department" },
-    LABORATORY: {code:"261904005", display: "Laboratory" },
-    PHARMACY: {code:"264372000", display: "Pharmacy" },
-    OPERATING_ROOM: {code:"225765009", display: "Operating Room" },
-    RECOVERY_ROOM: {code:"225766005", display: "Recovery Room" }
+    EMERGENCY_WARD: {code:"225728007", display: "Emergency Ward" ,},
+    ICU_WARD: {code:"309904001", display: "Intensive Care Ward" ,},
+    GENERAL_WARD: {code:"225746001", display: "General Ward" ,},
+    PEDIATRIC_WARD: {code:"225729004", display: "Pediatric Ward" ,},
+    MATERNITY_WARD: {code:"225730009", display: "Maternity Ward" ,},
+    SURGICAL_WARD: {code:"225731008", display: "Surgical Ward" ,},
+    PSYCHIATRIC_WARD: {code:"225732001", display: "Psychiatric Ward" ,},
+    RADIOLOGY_DEPT: {code:"225748000", display: "Radiology Department" ,},
+    LABORATORY: {code:"261904005", display: "Laboratory" ,},
+    PHARMACY: {code:"264372000", display: "Pharmacy" ,},
+    OPERATING_ROOM: {code:"225765009", display: "Operating Room" ,},
+    RECOVERY_ROOM: {code:"225766005", display: "Recovery Room" },
   };
 
   /**;
    * Room types;
    */;
-  static readonly ROOM_TYPES = {PRIVATE_ROOM:{ code: "225745002", display: "Private Room" },
-    SEMI_PRIVATE_ROOM: {code:"225746001", display: "Semi-Private Room" },
-    WARD_ROOM: {code:"225747005", display: "Ward Room" },
-    ICU_ROOM: {code:"309904001", display: "ICU Room" },
-    EMERGENCY_ROOM: {code:"225728007", display: "Emergency Room" },
-    OPERATING_ROOM: {code:"225765009", display: "Operating Room" },
-    RECOVERY_ROOM: {code:"225766005", display: "Recovery Room" },
-    CONSULTATION_ROOM: {code:"225749008", display: "Consultation Room" },
-    EXAMINATION_ROOM: {code:"225750008", display: "Examination Room" }
+  static readonly ROOM_TYPES = {PRIVATE_ROOM:{ code: "225745002", display: "Private Room" ,},
+    SEMI_PRIVATE_ROOM: {code:"225746001", display: "Semi-Private Room" ,},
+    WARD_ROOM: {code:"225747005", display: "Ward Room" ,},
+    ICU_ROOM: {code:"309904001", display: "ICU Room" ,},
+    EMERGENCY_ROOM: {code:"225728007", display: "Emergency Room" ,},
+    OPERATING_ROOM: {code:"225765009", display: "Operating Room" ,},
+    RECOVERY_ROOM: {code:"225766005", display: "Recovery Room" ,},
+    CONSULTATION_ROOM: {code:"225749008", display: "Consultation Room" ,},
+    EXAMINATION_ROOM: {code:"225750008", display: "Examination Room" },
   };
 
   /**;
    * Bed types;
    */;
-  static readonly BED_TYPES = {STANDARD_BED:{ code: "229772003", display: "Standard Bed" },
-    ICU_BED: {code:"309904001", display: "ICU Bed" },
-    PEDIATRIC_BED: {code:"225729004", display: "Pediatric Bed" },
-    BARIATRIC_BED: {code:"229773008", display: "Bariatric Bed" },
-    ISOLATION_BED: {code:"225744003", display: "Isolation Bed" },
-    MATERNITY_BED: {code:"225730009", display: "Maternity Bed" }
+  static readonly BED_TYPES = {STANDARD_BED:{ code: "229772003", display: "Standard Bed" ,},
+    ICU_BED: {code:"309904001", display: "ICU Bed" ,},
+    PEDIATRIC_BED: {code:"225729004", display: "Pediatric Bed" ,},
+    BARIATRIC_BED: {code:"229773008", display: "Bariatric Bed" ,},
+    ISOLATION_BED: {code:"225744003", display: "Isolation Bed" ,},
+    MATERNITY_BED: {code:"225730009", display: "Maternity Bed" },
   };
 
   /**;
    * Physical types;
    */;
-  static readonly PHYSICAL_TYPES = {BUILDING:{ code: "bu", display: "Building" },
-    WING: {code:"wi", display: "Wing" },
-    WARD: {code:"wa", display: "Ward" },
-    LEVEL: {code:"lvl", display: "Level" },
-    CORRIDOR: {code:"co", display: "Corridor" },
-    ROOM: {code:"ro", display: "Room" },
-    VEHICLE: {code:"ve", display: "Vehicle" },
-    HOUSE: {code:"ho", display: "House" },
-    CABINET: {code:"ca", display: "Cabinet" },
-    ROAD: {code:"rd", display: "Road" }
+  static readonly PHYSICAL_TYPES = {BUILDING:{ code: "bu", display: "Building" ,},
+    WING: {code:"wi", display: "Wing" ,},
+    WARD: {code:"wa", display: "Ward" ,},
+    LEVEL: {code:"lvl", display: "Level" ,},
+    CORRIDOR: {code:"co", display: "Corridor" ,},
+    ROOM: {code:"ro", display: "Room" ,},
+    VEHICLE: {code:"ve", display: "Vehicle" ,},
+    HOUSE: {code:"ho", display: "House" ,},
+    CABINET: {code:"ca", display: "Cabinet" ,},
+    ROAD: {code:"rd", display: "Road" },
   };
 
   /**;
    * Get all room types;
    */;
-  static getAllRoomTypes(): Array<{code:string, display: string }> {
+  static getAllRoomTypes(): Array<{code:string, display: string }> {,
     return Object.values(this.ROOM_TYPES);
 
   /**;
    * Get all bed types;
    */;
-  static getAllBedTypes(): Array<{code:string, display: string }> {
+  static getAllBedTypes(): Array<{code:string, display: string }> {,
     return Object.values(this.BED_TYPES);
 
   /**;
    * Get room type by code;
    */;
-  static getRoomTypeByCode(code: string): {code:string, display: string } | undefined {
+  static getRoomTypeByCode(code: string): {code:string, display: string } | undefined {,
     return Object.values(this.ROOM_TYPES).find(type => type.code === code);
 
   /**;
    * Check if location is critical care area;
    */;
-  static isCriticalCareArea(code: string): boolean {
+  static isCriticalCareArea(code: string): boolean {,
     const criticalCodes = [;
       this.HOSPITAL_AREAS.EMERGENCY_WARD.code,
       this.HOSPITAL_AREAS.ICU_WARD.code,
@@ -778,7 +776,7 @@ import {
   /**;
    * Get locations by category;
    */;
-  static getLocationsByCategory(): Record<string, Array<{code:string, display: string }>> {
+  static getLocationsByCategory(): Record<string, Array<{code:string, display: string }>> {,
     return {
       "Critical Care": [;
         this.HOSPITAL_AREAS.EMERGENCY_WARD,

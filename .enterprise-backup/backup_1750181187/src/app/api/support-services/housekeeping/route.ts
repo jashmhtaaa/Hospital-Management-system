@@ -14,8 +14,8 @@ const createRequestSchema = z.object({
   requestType: z.enum(['CLEANING', 'DISINFECTION', 'LINEN_CHANGE', 'WASTE_DISPOSAL', 'OTHER']),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']),
   description: z.string().min(5).max(500),
-  \1,\2 z.string().max(1000).optional(),
-  requestedById: z.string().uuid()
+   z.string().max(1000).optional(),
+  requestedById: z.string().uuid(),
 });
 
 const updateRequestSchema = z.object({
@@ -25,11 +25,11 @@ const updateRequestSchema = z.object({
   scheduledTime: z.string().transform(val => new Date(val)).optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(['PENDING', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).optional(),
-  assignedToId: z.string().uuid().optional()
+  assignedToId: z.string().uuid().optional(),
 });
 
 // GET /api/support-services/housekeeping/requests
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -37,10 +37,10 @@ export const _GET = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        \1,\2 searchParams.get('locationId') || undefined,
-        \1,\2 searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
-        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
-        limit: parseInt(searchParams.get('limit') || '10')
+         searchParams.get('locationId') || undefined,
+         searchParams.get('fromDate') ? new Date(searchParams.get('fromDate')!) : undefined,
+         Number.parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10'),
       };
 
       // Get housekeeping requests with filters
@@ -50,13 +50,13 @@ export const _GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'housekeeping:read',
-      auditAction: 'HOUSEKEEPING_REQUESTS_VIEW'
+      auditAction: 'HOUSEKEEPING_REQUESTS_VIEW',
     }
   );
 }
 
 // POST /api/support-services/housekeeping/requests
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -70,17 +70,17 @@ export const _POST = async (request: NextRequest) => {
       // Create housekeeping request
       const result = await housekeepingService.createHousekeepingRequest(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       requiredPermission: 'housekeeping:create',
-      auditAction: 'HOUSEKEEPING_REQUEST_CREATE'
+      auditAction: 'HOUSEKEEPING_REQUEST_CREATE',
     }
   );
 }
 
 // GET /api/support-services/housekeeping/requests/:id
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -92,13 +92,13 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     },
     {
       requiredPermission: 'housekeeping:read',
-      auditAction: 'HOUSEKEEPING_REQUEST_VIEW'
+      auditAction: 'HOUSEKEEPING_REQUEST_VIEW',
     }
   );
 }
 
 // PATCH /api/support-services/housekeeping/requests/:id
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -116,30 +116,30 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
     },
     {
       requiredPermission: 'housekeeping:update',
-      auditAction: 'HOUSEKEEPING_REQUEST_UPDATE'
+      auditAction: 'HOUSEKEEPING_REQUEST_UPDATE',
     }
   );
 }
 
 // DELETE /api/support-services/housekeeping/requests/:id
-export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
       // Delete housekeeping request
       await housekeepingService.deleteHousekeepingRequest(params.id);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true ,});
     },
     {
       requiredPermission: 'housekeeping:delete',
-      auditAction: 'HOUSEKEEPING_REQUEST_DELETE'
+      auditAction: 'HOUSEKEEPING_REQUEST_DELETE',
     }
   );
 }
 
 // POST /api/support-services/housekeeping/requests/:id/assign
-export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -147,8 +147,8 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
       const body = await req.json();
       const { staffId } = body;
 
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Staff ID is required' }, { status: 400 });
+       {\n  {
+        return NextResponse.json({ error: 'Staff ID is required' ,}, { status: 400 ,});
       }
 
       // Assign housekeeping request
@@ -158,13 +158,13 @@ export const _ASSIGN = async (request: NextRequest, { params }: { params: { id: 
     },
     {
       requiredPermission: 'housekeeping:assign',
-      auditAction: 'HOUSEKEEPING_REQUEST_ASSIGN'
+      auditAction: 'HOUSEKEEPING_REQUEST_ASSIGN',
     }
   );
 }
 
 // POST /api/support-services/housekeeping/requests/:id/complete
-export const _COMPLETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _COMPLETE = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -183,13 +183,13 @@ export const _COMPLETE = async (request: NextRequest, { params }: { params: { id
     },
     {
       requiredPermission: 'housekeeping:update',
-      auditAction: 'HOUSEKEEPING_REQUEST_COMPLETE'
+      auditAction: 'HOUSEKEEPING_REQUEST_COMPLETE',
     }
   );
 }
 
 // GET /api/support-services/housekeeping/analytics
-export const _GET_ANALYTICS = async (request: NextRequest) => {
+export const _GET_ANALYTICS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -205,6 +205,6 @@ export const _GET_ANALYTICS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'housekeeping:analytics',
-      auditAction: 'HOUSEKEEPING_ANALYTICS_VIEW'
+      auditAction: 'HOUSEKEEPING_ANALYTICS_VIEW',
     }
   );

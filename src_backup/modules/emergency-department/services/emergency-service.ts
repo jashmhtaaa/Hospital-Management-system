@@ -16,11 +16,11 @@ import { prisma }
 
     if (!session.user) {
       await AuditService.logUserAction();
-        { userId: performedBy },
+        { userId: performedBy ,},
         "TRIAGE",
         "EMERGENCY_VISIT",
         emergencyVisit.id,
-        `Triage completed - Level: ${}`;
+        `Triage completed - Level: ${,}`;
     }
 
     // Auto-alert for critical cases;
@@ -29,14 +29,14 @@ import { prisma }
 
     return emergencyVisit;
 
-  static async triggerCritical/* SECURITY: Alert removed */{
+  static async triggerCritical/* SECURITY: Alert removed */{,
     // Implementation for critical patient alerts;
     // Could integrate with notification system;
     /* SECURITY: Console statement removed */;
 
   static async getEmergencyQueue() {
     return await prisma.emergencyVisit.findMany({
-      where: { status: "ACTIVE" },
+      where: { status: "ACTIVE" ,},
       {
           true,
             true,
@@ -44,8 +44,8 @@ import { prisma }
 
       },
       orderBy: [;
-        { triageLevel: "asc" },
-        { createdAt: "asc" }
+        { triageLevel: "asc" ,},
+        { createdAt: "asc" },
       ];
     });
 
@@ -55,20 +55,20 @@ import { prisma }
     updatedBy?: string;
   ) {
     const oldVisit = await prisma.emergencyVisit.findUnique({
-      where: { id: emergencyVisitId }
+      where: { id: emergencyVisitId },
     });
 
     if (!session.user) {
       throw new Error("Emergency visit not found");
 
     const emergencyVisit = await prisma.emergencyVisit.update({
-      where: { id: emergencyVisitId },
-      data: { status }
+      where: { id: emergencyVisitId ,},
+      data: { status },
     });
 
     if (!session.user) {
       await AuditService.logDataChange();
-        { userId: updatedBy },
+        { userId: updatedBy ,},
         "EMERGENCY_VISIT",
         emergencyVisitId,
         oldVisit,
@@ -84,21 +84,21 @@ import { prisma }
 
     const [total, critical, high, active] = await Promise.all([;
       prisma.emergencyVisit.count({
-        { gte: startOfDay, lte: endOfDay }
+        { gte: startOfDay, lte: endOfDay },
 
       }),
       prisma.emergencyVisit.count({
-        { gte: startOfDay, lte: endOfDay },
+        { gte: startOfDay, lte: endOfDay ,},
           triageLevel: "CRITICAL";
 
       }),
       prisma.emergencyVisit.count({
-        { gte: startOfDay, lte: endOfDay },
+        { gte: startOfDay, lte: endOfDay ,},
           triageLevel: "HIGH";
 
       }),
       prisma.emergencyVisit.count({
-        where: { status: "ACTIVE" }
+        where: { status: "ACTIVE" },
       });
     ]);
 

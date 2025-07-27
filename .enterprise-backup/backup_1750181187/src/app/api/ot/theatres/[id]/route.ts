@@ -15,14 +15,14 @@ interface TheatreUpdateBody {
 // GET /api/ot/theatres/[id] - Get details of a specific operation theatre
 export const _GET = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: theatreId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Theatre ID is required" },
-        { status: 400 }
+        { message: "Theatre ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -33,23 +33,23 @@ export const _GET = async (
       .bind(theatreId);
       .all();
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "Operation theatre not found" },
-        { status: 404 }
+        { message: "Operation theatre not found" ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json(results[0]);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
         message: "Error fetching operation theatre details",
-        details: errorMessage
+        details: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -57,14 +57,14 @@ export const _GET = async (
 // PUT /api/ot/theatres/[id] - Update an existing operation theatre
 export const _PUT = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: theatreId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Theatre ID is required" },
-        { status: 400 }
+        { message: "Theatre ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -72,22 +72,22 @@ export const _PUT = async (
     const { name, location, specialty, status, equipment } = body;
 
     // Basic validation - ensure at least one field is being updated
-    \1 {\n  \2eturn NextResponse.json(
-        { message: "No update fields provided" },
-        { status: 400 }
+     {\n  eturn NextResponse.json(
+        { message: "No update fields provided" ,},
+        { status: 400 },
       );
 
     const DB = process.env.DB as unknown as D1Database;
     const now = new Date().toISOString();
 
     // Construct the update query dynamically
-    // FIX: Use specific type for fieldsToUpdate
-    const fieldsToUpdate: { [key: string]: string | null } = {};
-    \1 {\n  \2ieldsToUpdate.name = name;
-    \1 {\n  \2ieldsToUpdate.location = location;
-    \1 {\n  \2ieldsToUpdate.specialty = specialty;
-    \1 {\n  \2ieldsToUpdate.status = status;
-    \1 {\n  \2ieldsToUpdate.equipment = equipment;
+    // FIX: Use specific type for fieldsToUpdate,
+    const fieldsToUpdate: { [key: string]: string | null } = {,};
+     {\n  ieldsToUpdate.name = name;
+     {\n  ieldsToUpdate.location = location;
+     {\n  ieldsToUpdate.specialty = specialty;
+     {\n  ieldsToUpdate.status = status;
+     {\n  ieldsToUpdate.equipment = equipment;
     fieldsToUpdate.updated_at = now;
 
     const setClauses = Object.keys(fieldsToUpdate);
@@ -102,17 +102,17 @@ export const _PUT = async (
       .bind(...values);
       .run();
 
-    \1 {\n  \2{
+     {\n  {
       // Check if the theatre actually exists before returning 404
-      const { results: checkExists } = await DB.prepare(
+      const { results: checkExists } = await DB.prepare(,
         "SELECT id FROM OperationTheatres WHERE id = ?";
       );
         .bind(theatreId);
         .all();
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { message: "Operation theatre not found" },
-          { status: 404 }
+          { message: "Operation theatre not found" ,},
+          { status: 404 },
         );
       }
       // If it exists but no changes were made, return 200 OK with current data
@@ -125,31 +125,31 @@ export const _PUT = async (
       .bind(theatreId);
       .all();
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "Failed to fetch updated theatre details after update" },
-        { status: 500 }
+        { message: "Failed to fetch updated theatre details after update" ,},
+        { status: 500 },
       );
     }
 
     return NextResponse.json(results[0]);
-  } catch (error: unknown) {
-    // FIX: Remove explicit any
+  } catch (error: unknown) {,
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
-      // FIX: Check errorMessage
+     {\n   {
+      // FIX: Check errorMessage,
       return NextResponse.json(
         {
           message: "Operation theatre name must be unique",
-          details: errorMessage
+          details: errorMessage,
         },
-        { status: 409 }
+        { status: 409 },
       ),
     }
     return NextResponse.json(
-      { message: "Error updating operation theatre", details: errorMessage },
-      { status: 500 }
+      { message: "Error updating operation theatre", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -157,52 +157,52 @@ export const _PUT = async (
 // DELETE /api/ot/theatres/[id] - Delete an operation theatre
 export const DELETE = async (
   _request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   try {
-    const { id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+)
-    \1 {\n  \2{
+    const { id: theatreId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
+     {\n  {
       return NextResponse.json(
-        { message: "Theatre ID is required" },
-        { status: 400 }
+        { message: "Theatre ID is required" ,},
+        { status: 400 },
       );
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database
     const info = await DB.prepare("DELETE FROM OperationTheatres WHERE id = ?");
       .bind(theatreId);
       .run();
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "Operation theatre not found" },
-        { status: 404 }
+        { message: "Operation theatre not found" ,},
+        { status: 404 },
       );
     }
 
     return NextResponse.json(
-      { message: "Operation theatre deleted successfully" },
-      { status: 200 }
+      { message: "Operation theatre deleted successfully" ,},
+      { status: 200 },
     );
-  } catch (error: unknown) {
-    // FIX: Remove explicit any
+  } catch (error: unknown) {,
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // Handle potential foreign key constraint errors if bookings exist
-    \1 {\n  \2 {
-      // FIX: Check errorMessage
+     {\n   {
+      // FIX: Check errorMessage,
       return NextResponse.json(
         {
           message: "Cannot delete theatre with existing bookings",
-          details: errorMessage
+          details: errorMessage,
         },
-        { status: 409 }
+        { status: 409 },
       ),
     }
     return NextResponse.json(
-      { message: "Error deleting operation theatre", details: errorMessage },
-      { status: 500 }
+      { message: "Error deleting operation theatre", details: errorMessage ,},
+      { status: 500 },
     );
   }

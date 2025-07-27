@@ -291,8 +291,7 @@ export const _MaintenanceDashboard = () => {
         setTotalPages(data.pagination.totalPages);
       } catch (error) {
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       } finally ;

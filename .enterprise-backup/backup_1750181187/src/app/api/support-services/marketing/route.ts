@@ -13,9 +13,9 @@ const campaignFilterSchema = z.object({
   type: z.string().optional(),
   status: z.string().optional(),
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
-  \1,\2 z.string().optional().transform(val => val ? new Date(val) : undefined),
-  \1,\2 z.string().default('1').transform(Number),
-  limit: z.string().default('10').transform(Number)
+   z.string().optional().transform(val => val ? new Date(val) : undefined),
+   z.string().default('1').transform(Number),
+  limit: z.string().default('10').transform(Number),
 });
 
 // Create campaign schema
@@ -24,11 +24,11 @@ const createCampaignSchema = z.object({
   description: z.string().optional(),
   type: z.string(),
   status: z.string().default('DRAFT'),
-  \1,\2 z.string().optional().transform(val => val ? new Date(val) : undefined),
+   z.string().optional().transform(val => val ? new Date(val) : undefined),
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  kpis: z.any().optional(),
 });
 
 // Update campaign schema
@@ -42,11 +42,11 @@ const updateCampaignSchema = z.object({
   budget: z.number().optional(),
   targetAudience: z.any().optional(),
   goals: z.array(z.string()).optional(),
-  kpis: z.any().optional()
+  kpis: z.any().optional(),
 });
 
 // GET /api/support-services/marketing/campaigns
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -64,13 +64,13 @@ export const _GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'marketing:read',
-      auditAction: 'MARKETING_CAMPAIGNS_VIEW'
+      auditAction: 'MARKETING_CAMPAIGNS_VIEW',
     }
   );
 }
 
 // POST /api/support-services/marketing/campaigns
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -93,17 +93,17 @@ export const _POST = async (request: NextRequest) => {
         userId;
       );
 
-      return NextResponse.json(campaign, { status: 201 });
+      return NextResponse.json(campaign, { status: 201 ,});
     },
     {
       requiredPermission: 'marketing:create',
-      auditAction: 'MARKETING_CAMPAIGN_CREATE'
+      auditAction: 'MARKETING_CAMPAIGN_CREATE',
     }
   );
 }
 
 // GET /api/support-services/marketing/campaigns/:id
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -115,13 +115,13 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     },
     {
       requiredPermission: 'marketing:read',
-      auditAction: 'MARKETING_CAMPAIGN_VIEW'
+      auditAction: 'MARKETING_CAMPAIGN_VIEW',
     }
   );
 }
 
 // PATCH /api/support-services/marketing/campaigns/:id
-export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -149,13 +149,13 @@ export const _PATCH = async (request: NextRequest, { params }: { params: { id: s
     },
     {
       requiredPermission: 'marketing:update',
-      auditAction: 'MARKETING_CAMPAIGN_UPDATE'
+      auditAction: 'MARKETING_CAMPAIGN_UPDATE',
     }
   );
 }
 
 // DELETE /api/support-services/marketing/campaigns/:id
-export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -166,17 +166,17 @@ export const _DELETE = async (request: NextRequest, { params }: { params: { id: 
       // Delete campaign
       await marketingService.deleteCampaign(params.id, userId);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true ,});
     },
     {
       requiredPermission: 'marketing:delete',
-      auditAction: 'MARKETING_CAMPAIGN_DELETE'
+      auditAction: 'MARKETING_CAMPAIGN_DELETE',
     }
   );
 }
 
 // GET /api/support-services/marketing/campaigns/:id/analytics
-export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -187,13 +187,13 @@ export const _GET_ANALYTICS = async (request: NextRequest, { params }: { params:
     },
     {
       requiredPermission: 'marketing:analytics',
-      auditAction: 'MARKETING_CAMPAIGN_ANALYTICS_VIEW'
+      auditAction: 'MARKETING_CAMPAIGN_ANALYTICS_VIEW',
     }
   );
 }
 
 // POST /api/support-services/marketing/campaigns/:id/channels
-export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -214,17 +214,17 @@ export const _POST_CHANNEL = async (request: NextRequest, { params }: { params: 
         userId;
       );
 
-      return NextResponse.json(channel, { status: 201 });
+      return NextResponse.json(channel, { status: 201 ,});
     },
     {
       requiredPermission: 'marketing:update',
-      auditAction: 'MARKETING_CAMPAIGN_CHANNEL_ADD'
+      auditAction: 'MARKETING_CAMPAIGN_CHANNEL_ADD',
     }
   );
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId
-export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string, segmentId: string } }) => {
+export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: { id: string, segmentId: string } }) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -239,17 +239,17 @@ export const _POST_SEGMENT = async (request: NextRequest, { params }: { params: 
         userId;
       );
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       requiredPermission: 'marketing:update',
-      auditAction: 'MARKETING_CAMPAIGN_SEGMENT_ADD'
+      auditAction: 'MARKETING_CAMPAIGN_SEGMENT_ADD',
     }
   );
 }
 
 // GET /api/support-services/marketing/contacts
-export const _GET_CONTACTS = async (request: NextRequest) => {
+export const _GET_CONTACTS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -257,9 +257,9 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
       const searchParams = req.nextUrl.searchParams;
       const filters = {
         status: searchParams.get('status') || undefined,
-        \1,\2 searchParams.get('segmentId') || undefined,
-        \1,\2 Number.parseInt(searchParams.get('page') || '1'),
-        limit: parseInt(searchParams.get('limit') || '10')
+         searchParams.get('segmentId') || undefined,
+         Number.parseInt(searchParams.get('page') || '1'),
+        limit: parseInt(searchParams.get('limit') || '10'),
       };
 
       // Get marketing contacts with filters
@@ -269,13 +269,13 @@ export const _GET_CONTACTS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'marketing:read',
-      auditAction: 'MARKETING_CONTACTS_VIEW'
+      auditAction: 'MARKETING_CONTACTS_VIEW',
     }
   );
 }
 
 // GET /api/support-services/marketing/analytics/overview
-export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {
+export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
     async (req) => {
@@ -291,6 +291,6 @@ export const _GET_OVERVIEW_ANALYTICS = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'marketing:analytics',
-      auditAction: 'MARKETING_OVERVIEW_ANALYTICS_VIEW'
+      auditAction: 'MARKETING_OVERVIEW_ANALYTICS_VIEW',
     }
   );

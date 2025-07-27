@@ -36,7 +36,7 @@ interface PrescriptionItemQueryResult {
 }
 
 // Helper function to get prescription ID from URL;
-const getPrescriptionId = (pathname: string): number | null {
+const getPrescriptionId = (pathname: string): number | null {,
     // Pathname might be /api/prescriptions/123;
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 1]; // Last part;
@@ -45,18 +45,18 @@ const getPrescriptionId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific prescription with items;
-export const _GET = async (request: Request) => {
+export const _GET = async (request: Request) => {,
     const session = await getIronSession<IronSessionData>(await cookies(), sessionOptions); // Added await for cookies();
     const url = new URL(request.url);
     const prescriptionId = getPrescriptionId(url.pathname);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Prescription ID" }), { status: 400 });
+        return new Response(JSON.stringify({ error: "Invalid Prescription ID" ,}), { status: 400 ,});
     }
 
     try {
@@ -108,20 +108,20 @@ export const _GET = async (request: Request) => {
         ).bind(prescriptionId).first<PrescriptionQueryResult>(); // Use defined interface;
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Prescription not found" }), { status: 404 });
+            return new Response(JSON.stringify({ error: "Prescription not found" ,}), { status: 404 ,});
         }
 
         // 3. Authorization check for Patients and Doctors;
         if (!session.user) {
-            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
+            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number ,}>();
             if (!session.user) {
-                return new Response(JSON.stringify({ error: "Forbidden: You can only view your own prescriptions" }), { status: 403 });
+                return new Response(JSON.stringify({ error: "Forbidden: You can only view your own prescriptions" ,}), { status: 403 ,});
 
         if (!session.user) {
-            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
+            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
             if (!session.user) {
                 // Allow viewing if not the prescribing doctor? Or restrict? For now, restrict.;
-                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own prescriptions" }), { status: 403 });
+                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own prescriptions" ,}), { status: 403 ,});
 
         // 4. Retrieve associated prescription items;
         const itemsResult = await DB.prepare();
@@ -139,8 +139,8 @@ export const _GET = async (request: Request) => {
             presResult.created_at,
             updated_at: presResult.updated_at;
             // Include patient and doctor info if needed in detail view;
-            // patient: { ... },
-            // doctor: { ... },
+            // patient: { ... ,},
+            // doctor: { ... ,},
             items: itemsResult.results?.map((item: PrescriptionItemQueryResult) => ({ // Use defined interface,
                 prescription_item_id: item.prescription_item_id,
                 item.inventory_item_id,
@@ -153,12 +153,12 @@ export const _GET = async (request: Request) => {
             })) || []}
 
         // 6. Return the detailed prescription;
-        return new Response(JSON.stringify(prescription), { status: 200 });
+        return new Response(JSON.stringify(prescription), { status: 200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), { status: 500 ,});
 
 // PUT/DELETE handlers - Generally prescriptions are not updated/deleted once issued.;
 // Modifications might involve cancelling and creating a new one.;

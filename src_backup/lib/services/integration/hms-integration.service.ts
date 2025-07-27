@@ -22,7 +22,7 @@ import { prisma }
  */;
 
 }
-      { patientData: true },
+      { patientData: true ,},
       userId,
       patientId;
     );
@@ -71,7 +71,7 @@ import { prisma }
       // In a real implementation, this would call the HMS Patient Management API;
       // For this example, we"ll simulate the API call with a database query;
       const patient = await prisma.patient.findUnique({
-        where: { id: patientId },
+        where: { id: patientId ,},
         true,
           true,
           true,
@@ -94,7 +94,7 @@ import { prisma }
         action: "integration.patient.info.success",
         resourceId: patientId;
         userId,
-        details: { patientId }
+        details: { patientId },
       });
 
       return patient;
@@ -124,7 +124,7 @@ import { prisma }
       userRoles,
       Resource.SYSTEM,
       Action.READ,
-      { locationData: true },
+      { locationData: true ,},
       userId,
       locationId;
     );
@@ -173,7 +173,7 @@ import { prisma }
       // In a real implementation, this would call the HMS Location Management API;
       // For this example, we"ll simulate the API call with a database query;
       const location = await prisma.location.findUnique({
-        where: { id: locationId },
+        where: { id: locationId ,},
         true,
           true,
           true,
@@ -191,7 +191,7 @@ import { prisma }
         action: "integration.location.info.success",
         resourceId: locationId;
         userId,
-        details: { locationId }
+        details: { locationId },
       });
 
       return location;
@@ -228,7 +228,7 @@ import { prisma }
       userRoles,
       Resource.SYSTEM,
       Action.CREATE,
-      { notificationSend: true },
+      { notificationSend: true ,},
       userId,
       recipientId;
     );
@@ -280,7 +280,7 @@ import { prisma }
       // In a real implementation, this would call the HMS Notification System API;
       // For this example, we"ll simulate the API call with a database insert;
       const notification = await prisma.notification.create({
-        data: {
+        data: {,
           recipientId,
           type: notificationType;
           title,
@@ -296,7 +296,7 @@ import { prisma }
         action: "integration.notification.send.success",
         resourceId: notification.id;
         userId,
-        details: {
+        details: {,
           recipientId,
           notificationType,
           notificationId: notification.id;
@@ -327,7 +327,7 @@ import { prisma }
       userRoles,
       Resource.USER,
       Action.READ,
-      { userId: targetUserId === userId ? "self" : "other" },
+      { userId: targetUserId === userId ? "self" : "other" ,},
       userId,
       targetUserId;
     );
@@ -376,7 +376,7 @@ import { prisma }
       // In a real implementation, this would call the HMS User Management API;
       // For this example, we"ll simulate the API call with a database query;
       const user = await prisma.user.findUnique({
-        where: { id: targetUserId },
+        where: { id: targetUserId ,},
         true,
           true,
           true,
@@ -399,7 +399,7 @@ import { prisma }
         action: "integration.user.info.success",
         resourceId: targetUserId;
         userId,
-        details: { targetUserId }
+        details: { targetUserId },
       });
 
       return user;
@@ -469,9 +469,9 @@ import { prisma }
       const auditLogger = new AuditLogger({ userId, userRoles });
       await auditLogger.log({
         action: "integration.report.submit.request",
-        resourceId: `report-${reportType}`,
+        resourceId: `report-${reportType,}`,
         userId,
-        details: { reportType }
+        details: { reportType },
       });
 
       // In a real implementation, this would call the HMS Reporting System API;
@@ -488,7 +488,7 @@ import { prisma }
         action: "integration.report.submit.success",
         resourceId: report.id;
         userId,
-        details: {
+        details: {,
           reportType,
           reportId: report.id;
 
@@ -532,7 +532,7 @@ import { prisma }
       userRoles,
       resource,
       Action.UPDATE,
-      { patientLink: true },
+      { patientLink: true ,},
       userId,
       requestId;
     );
@@ -590,8 +590,8 @@ import { prisma }
 
       // Dynamic update based on service type;
       const request = await prisma[tableName].update({
-        where: { id: requestId },
-        data: {
+        where: { id: requestId ,},
+        data: {,
           patientId,
           updatedById: userId;
 
@@ -645,7 +645,7 @@ import { prisma }
       userRoles,
       resource,
       Action.UPDATE,
-      { locationLink: true },
+      { locationLink: true ,},
       userId,
       requestId;
     );
@@ -703,8 +703,8 @@ import { prisma }
 
       // Dynamic update based on service type;
       const request = await prisma[tableName].update({
-        where: { id: requestId },
-        data: {
+        where: { id: requestId ,},
+        data: {,
           locationId,
           updatedById: userId;
 

@@ -6,92 +6,92 @@
  */
 
 // FHIR R4 Base Resource Interface
-\1
+
 }
 }
 
 // FHIR Meta Information
-\1
+
 }
 }
 
 // FHIR Narrative
-\1
+
 }
 }
 
 // FHIR Extension
-\1
+
 }
 }
 
 // FHIR Coding
-\1
+
 }
 }
 
 // FHIR CodeableConcept
-\1
+
 }
 }
 
 // FHIR Reference
-\1
+
 }
 }
 
 // FHIR Identifier
-\1
+
 }
 }
 
 // FHIR Period
-\1
+
 }
 }
 
 // FHIR Quantity
-\1
+
 }
 }
 
 // FHIR Range
-\1
+
 }
 }
 
 // FHIR Address
-\1
+
 }
 }
 
 // FHIR ContactPoint
-\1
+
 }
 }
 
 // FHIR HumanName
-\1
+
 }
 }
 
 // Patient Resource (FHIR R4)
-\1
+
 }
 }
 
 // Observation Resource (Lab Results)
-\1
+
 }
 }
 
 // ServiceRequest Resource (Lab Orders)
-\1
+
 }
 }
 
 // MedicationRequest Resource (Prescriptions)
-\1
+
 }
 }
 
@@ -99,7 +99,7 @@
 export abstract class FHIRResourceManager<T extends FHIRResource> {
   protected resourceType: string;
 
-  constructor(resourceType: string) {
+  constructor(resourceType: string) {,
     this.resourceType = resourceType
   }
 
@@ -113,15 +113,15 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     return {
       versionId: '1',
       lastUpdated: new Date().toISOString(),
-      source: source || 'HMS'
+      source: source || 'HMS',
     };
   }
 
   // Create narrative
-  createNarrative(content: string, status: FHIRNarrative['status'] = 'generated'): FHIRNarrative {
+  createNarrative(content: string, status: FHIRNarrative['status'] = 'generated'): FHIRNarrative {,
     return {
       status,
-      div: `<div xmlns="https://www.w3.org/1999/xhtml">${content}</div>`,
+      div: `<div xmlns="https://www.w3.org/1999/xhtml">${content,}</div>`,
     }
   }
 
@@ -154,7 +154,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
   // Create reference
   createReference(resourceType: string, id: string, display?: string): FHIRReference {
     return {
-      reference: `${resourceType}/${id}`,
+      reference: `${resourceType}/${id,}`,
       display,
     };
   }
@@ -164,11 +164,11 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
 
   // Convert to/from internal format
   abstract toFHIR(internalData: unknown): T;
-  abstract fromFHIR(fhirResource: T): unknown
+  abstract fromFHIR(fhirResource: T): unknown,
 }
 
 // FHIR Bundle for transaction operations
-\1
+
 }
 }
 
@@ -200,32 +200,32 @@ export const _FHIR_SYSTEMS = {
   REQUEST_PRIORITY: 'https://hl7.org/fhir/request-priority';
 
   // Medication request categories
-  MEDICATIONREQUEST_CATEGORY: 'https://terminology.hl7.org/CodeSystem/medicationrequest-category'
+  MEDICATIONREQUEST_CATEGORY: 'https://terminology.hl7.org/CodeSystem/medicationrequest-category',
 } as const
 
 // FHIR Validation utilities
-\1
+
 }
   }
 
-  static isValidDateTime(dateTime: string): boolean {
+  static isValidDateTime(dateTime: string): boolean {,
     const regex = /^(\d{4})(-\d{2})?(-\d{2})?(T\d{2}:\d{2}(:\d{2})?(\.\d{3})?(Z|[+-]\d{2}:\d{2})?)?$/;
     return regex.test(dateTime);
   }
 
-  static isValidId(id: string): boolean {
+  static isValidId(id: string): boolean {,
     const regex = /^[A-Za-z0-9\-\.]{1,64}$/;
     return regex.test(id);
   }
 
-  static isValidCode(code: string): boolean {
+  static isValidCode(code: string): boolean {,
     // Basic code validation - should not be empty and follow FHIR code pattern
     const regex = /^[^\s]+(\s[^\s]+)*$/;
     return code && code.length > 0 && regex.test(code);
   }
 
-  static validateRequired(value: unknown, fieldName: string): void {
-    \1 {\n  \2{
+  static validateRequired(value: unknown, fieldName: string): void {,
+     {\n  {
       throw new Error(`Required field '${fieldName}' is missing`);
     }
   }

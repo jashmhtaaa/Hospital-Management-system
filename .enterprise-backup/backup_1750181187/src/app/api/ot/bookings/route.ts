@@ -19,16 +19,16 @@ interface OTBookingBody {
 }
 
 // GET /api/ot/bookings - List OT bookings
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
     const theatreId = searchParams.get("theatreId");
     const surgeonId = searchParams.get("surgeonId");
     const patientId = searchParams.get("patientId");
     const status = searchParams.get("status");
-    const startDate = searchParams.get("startDate"); // Expected format: YYYY-MM-DD
-    const endDate = searchParams.get("endDate"); // Expected format: YYYY-MM-DD
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    const startDate = searchParams.get("startDate"); // Expected format: YYYY-MM-DD,
+    const endDate = searchParams.get("endDate"); // Expected format: YYYY-MM-DD,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database
     let query = `;
@@ -47,55 +47,55 @@ export const _GET = async (request: NextRequest) => {
     const conditions: string[] = [];
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("b.theatre_id = ?");
       parameters.push(theatreId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("b.lead_surgeon_id = ?");
       parameters.push(surgeonId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("b.patient_id = ?");
       parameters.push(patientId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("b.status = ?");
       parameters.push(status);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("date(b.scheduled_start_time) >= date(?)");
       parameters.push(startDate);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("date(b.scheduled_start_time) <= date(?)");
       parameters.push(endDate);
     }
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE " + conditions.join(" AND ");
     }
 
     query += " ORDER BY b.scheduled_start_time ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
       .all();
 
     return NextResponse.json(results);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { message: "Error fetching OT bookings", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching OT bookings", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/ot/bookings - Create a new OT booking
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const body = (await request.json()) as OTBookingBody;
     const {
@@ -113,12 +113,12 @@ export const _POST = async (request: NextRequest) => {
     } = body;
 
     // Basic validation
-    \1 {\n  \2eturn NextResponse.json(
-        { message: "Missing required booking fields" },
-        { status: 400 }
+     {\n  eturn NextResponse.json(
+        { message: "Missing required booking fields" ,},
+        { status: 400 },
       );
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database
     const id = crypto.randomUUID(),
@@ -175,15 +175,15 @@ export const _POST = async (request: NextRequest) => {
     return results && results.length > 0;
       ? NextResponse.json(results[0], status: 201 );
       : // Fallback if select fails
-        NextResponse.json(message: "Booking created, but failed to fetch details" ,status: 201 
+        NextResponse.json(message: "Booking created, but failed to fetch details" ,status: 201 ,
         ),
-  } catch (error: unknown) {
-    // FIX: Remove explicit any
+  } catch (error: unknown) {,
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     return NextResponse.json(
-      { message: "Error creating OT booking", details: errorMessage },
-      { status: 500 }
+      { message: "Error creating OT booking", details: errorMessage ,},
+      { status: 500 },
     )
   }

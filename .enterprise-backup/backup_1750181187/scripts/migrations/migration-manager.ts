@@ -46,7 +46,7 @@ class MigrationManager {
   }
 
   async initialize(): Promise<void> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     // Create migrations table if it doesn't exist
     await this.createMigrationsTable();
@@ -54,7 +54,7 @@ class MigrationManager {
     // Ensure directories exist
     await this.ensureDirectories();
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
   private async createMigrationsTable(): Promise<void> {
@@ -90,49 +90,49 @@ class MigrationManager {
 
   private async ensureDirectories(): Promise<void> {
     try {
-      await fs.mkdir(this.migrationsDir, { recursive: true });
-      await fs.mkdir(this.backupDir, { recursive: true });
+      await fs.mkdir(this.migrationsDir, { recursive: true ,});
+      await fs.mkdir(this.backupDir, { recursive: true ,});
     } catch (error) {
 
     }
   }
 
-  async createMigration(name: string, upSql: string, downSql: string): Promise<string> {
+  async createMigration(name: string, upSql: string, downSql: string): Promise<string> {,
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5),
     const version = `${timestamp}_${name.toLowerCase().replace(/\s+/g, '_')}`;
     const id = `migration_${version}`;
-\1
+
     };
 
     const migrationFile = path.join(this.migrationsDir, `${version}.json`);
     await fs.writeFile(migrationFile, JSON.stringify(migrationContent, null, 2));
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     return version
   }
 
   async runMigrations(): Promise<void> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const pendingMigrations = await this.getPendingMigrations()
 
     if (pendingMigrations.length === 0) {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       return
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     for (const migration of pendingMigrations) {
       await this.runSingleMigration(migration)
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
-  private async runSingleMigration(migration: Migration): Promise<void> {
+  private async runSingleMigration(migration: Migration): Promise<void> {,
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0]
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     // Create backup before migration
     const backupFile = await this.createBackup(migration.version),
@@ -166,10 +166,10 @@ class MigrationManager {
         checksum: migration.checksum;
         appliedAt: new Date(),
         executionTime,
-        status: 'SUCCESS'
+        status: 'SUCCESS',
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     } catch (error) {
       const executionTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime
@@ -188,29 +188,29 @@ class MigrationManager {
       });
 
       // Restore from backup
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       await this.restoreFromBackup(backupFile)
 
       throw error
     }
   }
 
-  async rollbackMigration(version: string): Promise<void> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  async rollbackMigration(version: string): Promise<void> {,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const migrationRecord = await this.getMigrationRecord(version)
     if (!migrationRecord) {
-      throw new Error(`Migration record not found for version: ${version}`);
+      throw new Error(`Migration record not found for version: ${version,}`);
     }
 
     if (migrationRecord.status === 'ROLLED_BACK') {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       return
     }
 
     const migration = await this.loadMigration(version)
     if (!migration) {
-      throw new Error(`Migration file not found for version: ${version}`);
+      throw new Error(`Migration file not found for version: ${version,}`);
     }
 
     // Create backup before rollback
@@ -238,37 +238,37 @@ class MigrationManager {
         WHERE version = ${version}
       `;
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     } catch (error) {
 
       // Restore from backup
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       await this.restoreFromBackup(backupFile)
 
       throw error
     }
   }
 
-  async rollbackToVersion(targetVersion: string): Promise<void> {
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  async rollbackToVersion(targetVersion: string): Promise<void> {,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const _appliedMigrations = await this.getAppliedMigrations()
-\1;
+;
     ).sort((a, b) => b.version.localeCompare(a.version)); // Reverse order
 
     if (migrationsToRollback.length === 0) {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       return
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     for (const migrationRecord of migrationsToRollback) {
       await this.rollbackMigration(migrationRecord.version)
     }
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   }
 
   private async getPendingMigrations(): Promise<Migration[]> {
@@ -301,7 +301,7 @@ class MigrationManager {
     }
   }
 
-  private async loadMigration(version: string): Promise<Migration | null> {
+  private async loadMigration(version: string): Promise<Migration | null> {,
     try {
       const migrationFile = path.join(this.migrationsDir, `${version}.json`);
       const content = await fs.readFile(migrationFile, 'utf-8');
@@ -313,7 +313,7 @@ class MigrationManager {
   }
 
   private async getAppliedVersions(): Promise<string[]> {
-\1;
+;
       ORDER BY version;
     `;
 
@@ -321,7 +321,7 @@ class MigrationManager {
   }
 
   private async getAppliedMigrations(): Promise<MigrationRecord[]> {
-\1;
+;
       ORDER BY version;
     `;
 
@@ -334,12 +334,12 @@ class MigrationManager {
       rolledBackAt: row.rolled_back_at;
       executionTime: row.execution_time,
       status: row.status;
-      errorMessage: row.error_message
+      errorMessage: row.error_message,
     }));
   }
 
-  private async getMigrationRecord(version: string): Promise<MigrationRecord | null> {
-\1;
+  private async getMigrationRecord(version: string): Promise<MigrationRecord | null> {,
+;
       LIMIT 1;
     `;
 
@@ -355,11 +355,11 @@ class MigrationManager {
       rolledBackAt: row.rolled_back_at;
       executionTime: row.execution_time,
       status: row.status;
-      errorMessage: row.error_message
+      errorMessage: row.error_message,
     };
   }
 
-  private async recordMigration(record: MigrationRecord): Promise<void> {
+  private async recordMigration(record: MigrationRecord): Promise<void> {,
     await this.prisma.$executeRaw`;
       INSERT INTO _migration_history (;
         id, name, version, checksum, applied_at, execution_time, status, error_message;
@@ -376,7 +376,7 @@ class MigrationManager {
     `;
   }
 
-  private async createBackup(identifier: string): Promise<string> {
+  private async createBackup(identifier: string): Promise<string> {,
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5),
     const backupFile = path.join(this.backupDir, `backup_$identifier_$timestamp.sql`);
 
@@ -384,8 +384,8 @@ class MigrationManager {
       // Use pg_dump to create backup
       const dbUrl = process.env.DATABASE_URL;
       if (dbUrl != null) {
-        execSync(`pg_dump "${dbUrl}" > "${backupFile}"`, { stdio: 'pipe' });
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        execSync(`pg_dump "${dbUrl}" > "${backupFile}"`, { stdio: 'pipe' ,});
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       } else {
 
       }
@@ -396,12 +396,12 @@ class MigrationManager {
     return backupFile
   }
 
-  private async restoreFromBackup(backupFile: string): Promise<void> {
+  private async restoreFromBackup(backupFile: string): Promise<void> {,
     try {
       const dbUrl = process.env.DATABASE_URL;
       if (dbUrl && await this.fileExists(backupFile)) {
-        execSync(`psql "${dbUrl}" < "${backupFile}"`, { stdio: 'pipe' });
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        execSync(`psql "${dbUrl}" < "${backupFile}"`, { stdio: 'pipe' ,});
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       } else {
 
       }
@@ -410,7 +410,7 @@ class MigrationManager {
     }
   }
 
-  private async fileExists(filePath: string): Promise<boolean> {
+  private async fileExists(filePath: string): Promise<boolean> {,
     try {
       await fs.access(filePath)
       return true;
@@ -419,7 +419,7 @@ class MigrationManager {
     }
   }
 
-  private splitSqlStatements(sql: string): string[] {
+  private splitSqlStatements(sql: string): string[] {,
     // Split SQL by semicolons, but be careful with quoted strings
     const statements: string[] = [];
     let current = '';
@@ -457,7 +457,7 @@ class MigrationManager {
     return statements;
   }
 
-  private generateChecksum(content: string): string {
+  private generateChecksum(content: string): string {,
     // Simple checksum implementation - in production, use crypto
     let hash = 0;
     for (let i = 0; i < content.length; i++) {
@@ -471,7 +471,7 @@ class MigrationManager {
   async getMigrationStatus(): Promise<{
     applied: MigrationRecord[],
     pending: Migration[];
-    total: number
+    total: number,
   }> {
     const applied = await this.getAppliedMigrations();
     const pending = await this.getPendingMigrations();
@@ -479,7 +479,7 @@ class MigrationManager {
     return {
       applied,
       pending,
-      total: applied.length + pending.length
+      total: applied.length + pending.length,
     };
   }
 
@@ -513,7 +513,7 @@ export async const rollback = (version?: string): Promise<void> {;
       if (lastApplied != null) {
         await manager.rollbackMigration(lastApplied.version);
       } else {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       }
     }
   } finally {
@@ -525,22 +525,22 @@ export async const status = (): Promise<void> {;
     await manager.initialize();
     const migrationStatus = await manager.getMigrationStatus();
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     if (migrationStatus.pending.length > 0) {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       migrationStatus.pending.forEach(migration => {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       })
     }
 
     if (migrationStatus.applied.length > 0) {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       migrationStatus.applied
         .filter(m => m.status === 'SUCCESS');
         .sort((a, b) => b.version.localeCompare(a.version));

@@ -34,7 +34,7 @@ const AdmissionSchema = z.object({
   insurance_approval_number: z.string().optional();
 });
 
-export async function GET(request: any): unknown {
+export async function GET(request: any): unknown {,
   try {
 } catch (error) {
   console.error(error);
@@ -71,7 +71,7 @@ export async function GET(request: any): unknown {
 
     // Get DB instance from Cloudflare context;
     const { env } = await getCloudflareContext();
-    const { DB: database } = env;
+    const { DB: database ,} = env;
 
     // Get query parameters;
     const { searchParams } = new URL(request.url);
@@ -116,7 +116,7 @@ export async function GET(request: any): unknown {
       conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
     // Query to get admissions with patient and doctor names (using mock db.query);
-    // Assuming db.query exists and returns { rows: [...] } based on db.ts mock;
+    // Assuming db.query exists and returns { rows: [...] ,} based on db.ts mock;
     const query = `;
       SELECT;
         a.admission_id,
@@ -156,8 +156,8 @@ export async function GET(request: any): unknown {
 
     return new Response(JSON.stringify(admissionsResult.results || []), {
       status: 200,
-      headers: { "Content-Type": "application/json" }});
-  } catch (error: unknown) {
+      headers: { "Content-Type": "application/json" },});
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return new Response();
@@ -167,10 +167,10 @@ export async function GET(request: any): unknown {
       }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" }}
+        headers: { "Content-Type": "application/json" }},
     );
   }
-export async function POST(request: any): unknown {
+export async function POST(request: any): unknown {,
   try {
 } catch (error) {
   console.error(error);
@@ -208,7 +208,7 @@ export async function POST(request: any): unknown {
 
     // Get DB instance from Cloudflare context;
     const { env } = await getCloudflareContext();
-    const { DB: database } = env;
+    const { DB: database ,} = env;
 
     const data = await request.json();
 
@@ -222,13 +222,13 @@ export async function POST(request: any): unknown {
         }),
         {
           status: 400,
-          headers: { "Content-Type": "application/json" }}
+          headers: { "Content-Type": "application/json" }},
       );
 
     const admissionData = validationResult.data;
 
     // Mock checks (replace with actual DB queries later);
-    // Assuming db.query exists and returns { rows: [...] } based on db.ts mock;
+    // Assuming db.query exists and returns { rows: [...] ,} based on db.ts mock;
     const patientCheckResult = await database.prepare();
       "SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE";
     ).bind(admissionData.patient_id).all();
@@ -237,8 +237,8 @@ export async function POST(request: any): unknown {
 
     if (!session.user) {
       return new Response();
-        JSON.stringify({ error: "Patient not found or inactive" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        JSON.stringify({ error: "Patient not found or inactive" ,}),
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
 
     const doctorCheckResult = await database.prepare();
@@ -249,8 +249,8 @@ export async function POST(request: any): unknown {
 
     if (!session.user) {
       return new Response();
-        JSON.stringify({ error: "Doctor not found or inactive" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
+        JSON.stringify({ error: "Doctor not found or inactive" ,}),
+        { status: 404, headers: { "Content-Type": "application/json" } },
       );
 
     const bedCheckResult = await database.prepare();
@@ -259,9 +259,9 @@ export async function POST(request: any): unknown {
     const bedCheck = bedCheckResult?.results && bedCheckResult.results.length > 0;
 
     if (!session.user) {
-      return new Response(JSON.stringify({ error: "Bed not available" }), {
+      return new Response(JSON.stringify({ error: "Bed not available" ,}), {
         status: 409,
-        headers: { "Content-Type": "application/json" }});
+        headers: { "Content-Type": "application/json" },});
 
     // Use production IPD service for admission creation;
     try {
@@ -322,7 +322,7 @@ export async function POST(request: any): unknown {
         }),
         {
           status: 201,
-          headers: { "Content-Type": "application/json" }}
+          headers: { "Content-Type": "application/json" }},
       );
     } catch (txError) {
 
@@ -334,10 +334,10 @@ export async function POST(request: any): unknown {
           error: "Failed during admission creation database operations",
           details: errorMessage;
         }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
+        { status: 500, headers: { "Content-Type": "application/json" } },
       );
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return new Response();
@@ -347,5 +347,5 @@ export async function POST(request: any): unknown {
       }),
       {
         status: 500,
-        headers: { "Content-Type": "application/json" }}
+        headers: { "Content-Type": "application/json" }},
     );

@@ -16,7 +16,7 @@ import { performance } from 'perf_hooks';
  * where system availability and response times directly impact patient care quality.
  *
  * Features:
- * - Real-time endpoint monitoring with healthcare-specific thresholds
+ * - Real-time endpoint monitoring with healthcare-specific thresholds,
  * - FHIR API compliance validation
  * - Critical healthcare workflow performance tracking
  * - Advanced alerting with severity-based escalation
@@ -25,7 +25,7 @@ import { performance } from 'perf_hooks';
  * - SLA compliance tracking for patient-critical systems
  *
  * Usage:
- * npx tsx scripts/monitoring/performance-check.ts [--config=path] [--output=path] [--alert-webhook=url]
+ * npx tsx scripts/monitoring/performance-check.ts [--config=path] [--output=path] [--alert-webhook=url],
  *
  * @version 2.0.0
  * @author HMS Development Team
@@ -34,7 +34,7 @@ import { performance } from 'perf_hooks';
 
 // Type definitions for performance monitoring
 interface PerformanceConfig {
-  readonly baseUrl: string
+  readonly baseUrl: string,
   readonly timeout: number;
   readonly retries: number;
   readonly concurrency: number;
@@ -42,7 +42,7 @@ interface PerformanceConfig {
   readonly endpoints: readonly EndpointConfig[];
   readonly alerting: AlertConfig;
   readonly reporting: ReportingConfig;
-  readonly healthcareSpecific: HealthcareConfig
+  readonly healthcareSpecific: HealthcareConfig,
 }
 
 interface PerformanceThresholds {
@@ -60,7 +60,7 @@ interface PerformanceThresholds {
 }
 
 interface EndpointConfig {
-  readonly path: string
+  readonly path: string,
   readonly name: string;
   readonly critical: boolean;
   readonly category: 'patient_care' | 'emergency' | 'admin' | 'integration' | 'reporting';
@@ -83,27 +83,27 @@ interface AlertConfig {
 }
 
 interface EscalationLevel {
-  readonly severity: AlertSeverity
+  readonly severity: AlertSeverity,
   readonly thresholdCount: number; // Number of failures before escalation
   readonly timeWindow: number; // Time window in minutes
-  readonly recipients: readonly string[]
+  readonly recipients: readonly string[],
 }
 
 interface ReportingConfig {
-  readonly enabled: boolean
+  readonly enabled: boolean,
   readonly outputDir: string;
   readonly formats: readonly ('json' | 'html' | 'csv' | 'prometheus')[];
   readonly retention: number; // Days to keep reports
-  readonly realTimeMetrics: boolean
+  readonly realTimeMetrics: boolean,
 }
 
 interface HealthcareConfig {
   readonly patientSafetyMode: boolean; // Enhanced monitoring for patient safety
-  readonly clinicalWorkflowTracking: boolean
+  readonly clinicalWorkflowTracking: boolean,
   readonly emergencyAlertingEnabled: boolean;
   readonly hipaaComplianceChecks: boolean;
   readonly fhirValidationEnabled: boolean;
-  readonly medicalDeviceIntegration: boolean
+  readonly medicalDeviceIntegration: boolean,
 }
 
 type AlertSeverity = 'info' | 'warning' | 'error' | 'critical' | 'emergency';
@@ -138,7 +138,7 @@ interface PerformanceMetrics {
   readonly tlsHandshakeTime: number;
   readonly timeToFirstByte: number;
   readonly contentDownloadTime: number;
-  readonly totalTime: number
+  readonly totalTime: number,
 }
 
 interface SystemMetrics {
@@ -147,20 +147,20 @@ interface SystemMetrics {
   readonly uptime: number;
   readonly version: string;
   readonly platform: string;
-  readonly system: {
+  readonly system: {,
     readonly cpus: number;
     readonly loadAvg: readonly number[];
     readonly freeMem: number;
     readonly totalMem: number;
-    readonly uptime: number
+    readonly uptime: number,
   };
-  readonly process: {
+  readonly process: {,
     readonly pid: number;
     readonly ppid: number;
     readonly uid?: number;
     readonly gid?: number
   };
-  readonly performance: {
+  readonly performance: {,
     readonly eventLoopUtilization: number;
     readonly gcMetrics?: GCMetrics
   };
@@ -169,7 +169,7 @@ interface SystemMetrics {
 interface GCMetrics {
   readonly totalTime: number;
   readonly totalCount: number;
-  readonly averageTime: number
+  readonly averageTime: number,
 }
 
 interface Alert {
@@ -189,40 +189,40 @@ interface Alert {
 
 interface PerformanceResults {
   readonly timestamp: string;
-  readonly overall: {
+  readonly overall: {,
     readonly passed: boolean;
     readonly score: number;
     readonly duration: number;
     readonly slaCompliance: number; // SLA compliance percentage
   }
   readonly endpoints: readonly EndpointResult[];
-  readonly metrics: {
+  readonly metrics: {,
     readonly averageResponseTime: number;
     readonly successRate: number;
     readonly errorCount: number;
     readonly totalRequests: number;
     readonly throughput: number; // Requests per second
-    readonly p95ResponseTime: number
-    readonly p99ResponseTime: number
+    readonly p95ResponseTime: number,
+    readonly p99ResponseTime: number,
   };
   readonly systemMetrics: SystemMetrics;
   readonly alerts: readonly Alert[];
-  readonly healthcareMetrics: {
+  readonly healthcareMetrics: {,
     readonly patientCareEndpointsHealth: number;
     readonly emergencySystemsAvailability: number;
     readonly fhirComplianceScore: number;
-    readonly clinicalWorkflowPerformance: number
+    readonly clinicalWorkflowPerformance: number,
   };
-  readonly recommendations: readonly string[]
+  readonly recommendations: readonly string[],
 }
 
 // Healthcare-optimized configuration with patient safety priorities
-const DEFAULT_CONFIG: PerformanceConfig = {
+const DEFAULT_CONFIG: PerformanceConfig = {,
   baseUrl: process.env.HMS_BASE_URL || 'http://localhost:3000',
   timeout: Number.parseInt(process.env.PERFORMANCE_TIMEOUT || '30000'),
   retries: Number.parseInt(process.env.PERFORMANCE_RETRIES || '3'),
   concurrency: Number.parseInt(process.env.PERFORMANCE_CONCURRENCY || '10'),
-  thresholds: {
+  thresholds: {,
     responseTime: 2000, // 2 seconds for general endpoints
     criticalResponseTime: 1000, // 1 second for critical healthcare functions
     emergencyResponseTime: 500, // 500ms for emergency endpoints
@@ -233,82 +233,82 @@ const DEFAULT_CONFIG: PerformanceConfig = {
     fhirComplianceScore: 95, // 95% FHIR compliance required
     databaseResponseTime: 500, // 500ms for database queries
     apiLatency: 200, // 200ms for API responses
-    throughput: 100 // 100 requests per second minimum
+    throughput: 100 // 100 requests per second minimum,
   },
-  endpoints: [
+  endpoints: [,
     // Patient Care Critical Endpoints
-    { path: '/api/health', name: 'System Health Check', critical: true, category: 'patient_care', method: 'GET' },
-    { path: '/api/patients/search', name: 'Patient Search', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'registration' },
-    { path: '/api/patients/vital-signs', name: 'Vital Signs API', critical: true, category: 'patient_care', method: 'GET' },
-    { path: '/api/appointments/today', name: 'Today Appointments', critical: true, category: 'patient_care', method: 'GET' },
+    { path: '/api/health', name: 'System Health Check', critical: true, category: 'patient_care', method: 'GET' ,},
+    { path: '/api/patients/search', name: 'Patient Search', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'registration' ,},
+    { path: '/api/patients/vital-signs', name: 'Vital Signs API', critical: true, category: 'patient_care', method: 'GET' ,},
+    { path: '/api/appointments/today', name: 'Today Appointments', critical: true, category: 'patient_care', method: 'GET' ,},
 
     // Emergency System Endpoints
-    { path: '/api/emergency/alerts', name: 'Emergency Alerts', critical: true, category: 'emergency', method: 'GET', maxResponseTime: 500 },
-    { path: '/api/emergency/triage', name: 'Emergency Triage', critical: true, category: 'emergency', method: 'GET', healthcareWorkflow: 'admission' },
-    { path: '/api/icu/monitoring', name: 'ICU Monitoring', critical: true, category: 'emergency', method: 'GET' },
+    { path: '/api/emergency/alerts', name: 'Emergency Alerts', critical: true, category: 'emergency', method: 'GET', maxResponseTime: 500 ,},
+    { path: '/api/emergency/triage', name: 'Emergency Triage', critical: true, category: 'emergency', method: 'GET', healthcareWorkflow: 'admission' ,},
+    { path: '/api/icu/monitoring', name: 'ICU Monitoring', critical: true, category: 'emergency', method: 'GET' ,},
 
     // FHIR Compliance Endpoints
-    { path: '/api/fhir/Patient', name: 'FHIR Patient API', critical: true, category: 'integration', method: 'GET', fhirResource: 'Patient' },
-    { path: '/api/fhir/Observation', name: 'FHIR Observation API', critical: true, category: 'integration', method: 'GET', fhirResource: 'Observation' },
-    { path: '/api/fhir/Encounter', name: 'FHIR Encounter API', critical: true, category: 'integration', method: 'GET', fhirResource: 'Encounter' },
+    { path: '/api/fhir/Patient', name: 'FHIR Patient API', critical: true, category: 'integration', method: 'GET', fhirResource: 'Patient' ,},
+    { path: '/api/fhir/Observation', name: 'FHIR Observation API', critical: true, category: 'integration', method: 'GET', fhirResource: 'Observation' ,},
+    { path: '/api/fhir/Encounter', name: 'FHIR Encounter API', critical: true, category: 'integration', method: 'GET', fhirResource: 'Encounter' ,},
 
     // Clinical Workflow Endpoints
-    { path: '/api/ipd/admissions', name: 'IPD Admissions', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'admission' },
-    { path: '/api/opd/queue', name: 'OPD Queue Management', critical: true, category: 'patient_care', method: 'GET' },
-    { path: '/api/pharmacy/dispensing', name: 'Pharmacy Dispensing', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'medication' },
-    { path: '/api/laboratory/results', name: 'Lab Results', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'lab' },
-    { path: '/api/radiology/orders', name: 'Radiology Orders', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'radiology' },
+    { path: '/api/ipd/admissions', name: 'IPD Admissions', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'admission' ,},
+    { path: '/api/opd/queue', name: 'OPD Queue Management', critical: true, category: 'patient_care', method: 'GET' ,},
+    { path: '/api/pharmacy/dispensing', name: 'Pharmacy Dispensing', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'medication' ,},
+    { path: '/api/laboratory/results', name: 'Lab Results', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'lab' ,},
+    { path: '/api/radiology/orders', name: 'Radiology Orders', critical: true, category: 'patient_care', method: 'GET', healthcareWorkflow: 'radiology' ,},
 
     // Administrative Endpoints
-    { path: '/api/billing/invoices', name: 'Billing System', critical: false, category: 'admin', method: 'GET' },
-    { path: '/api/reports/dashboard', name: 'Reports Dashboard', critical: false, category: 'reporting', method: 'GET' },
-    { path: '/api/audit/logs', name: 'Audit Logs', critical: false, category: 'admin', method: 'GET' },
+    { path: '/api/billing/invoices', name: 'Billing System', critical: false, category: 'admin', method: 'GET' ,},
+    { path: '/api/reports/dashboard', name: 'Reports Dashboard', critical: false, category: 'reporting', method: 'GET' ,},
+    { path: '/api/audit/logs', name: 'Audit Logs', critical: false, category: 'admin', method: 'GET' ,},
 
     // Authentication & Security
-    { path: '/api/auth/verify', name: 'Authentication Verification', critical: true, category: 'patient_care', method: 'POST' },
-    { path: '/api/security/health', name: 'Security Health Check', critical: true, category: 'patient_care', method: 'GET' }
+    { path: '/api/auth/verify', name: 'Authentication Verification', critical: true, category: 'patient_care', method: 'POST' ,},
+    { path: '/api/security/health', name: 'Security Health Check', critical: true, category: 'patient_care', method: 'GET' },
   ],
-  alerting: {
+  alerting: {,
     enabled: true,
     webhookUrl: process.env.ALERT_WEBHOOK_URL;
-    escalationLevels: [
-      { severity: 'warning', thresholdCount: 3, timeWindow: 5, recipients: ['team@hospital.com'] },
-      { severity: 'error', thresholdCount: 2, timeWindow: 3, recipients: ['oncall@hospital.com'] },
-      { severity: 'critical', thresholdCount: 1, timeWindow: 1, recipients: ['emergency@hospital.com'] },
+    escalationLevels: [,
+      { severity: 'warning', thresholdCount: 3, timeWindow: 5, recipients: ['team@hospital.com'] ,},
+      { severity: 'error', thresholdCount: 2, timeWindow: 3, recipients: ['oncall@hospital.com'] ,},
+      { severity: 'critical', thresholdCount: 1, timeWindow: 1, recipients: ['emergency@hospital.com'] ,},
       { severity: 'emergency', thresholdCount: 1, timeWindow: 1, recipients: ['cto@hospital.com', 'emergency@hospital.com'] }
     ],
-    suppressionTime: 15 // 15 minutes
+    suppressionTime: 15 // 15 minutes,
   },
-  reporting: {
+  reporting: {,
     enabled: true,
     outputDir: './docs/monitoring/performance';
     formats: ['json', 'html', 'prometheus'],
     retention: 30, // 30 days
-    realTimeMetrics: true
+    realTimeMetrics: true,
   },
-  healthcareSpecific: {
+  healthcareSpecific: {,
     patientSafetyMode: true,
     clinicalWorkflowTracking: true;
     emergencyAlertingEnabled: true,
     hipaaComplianceChecks: true;
     fhirValidationEnabled: true,
-    medicalDeviceIntegration: false
+    medicalDeviceIntegration: false,
   }
 } as const
 
 class PerformanceMonitor {
   private readonly config: PerformanceConfig;
-  private results: Partial<PerformanceResults> = {};
+  private results: Partial<PerformanceResults> = {,};
   private alertsSent = new Set<string>();
 
-  constructor(config: Partial<PerformanceConfig> = {}) {
+  constructor(config: Partial<PerformanceConfig> = {}) {,
     this.config = { ...DEFAULT_CONFIG, ...config };
     this.log('🏥 Healthcare Performance Monitor initialized');
   }
 
-  public async checkEndpoint(endpoint: EndpointConfig): Promise<EndpointResult> {
+  public async checkEndpoint(endpoint: EndpointConfig): Promise<EndpointResult> {,
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
-    const url = `/* SECURITY: Template literal eliminated */
+    const url = `/* SECURITY: Template literal eliminated */,
     let retryCount = 0;
 
     while (retryCount <= this.config.retries) {
@@ -323,7 +323,7 @@ class PerformanceMonitor {
                       response.statusCode < 400 &&
                       responseTime < threshold;
 
-        const result: EndpointResult = {
+        const result: EndpointResult = {,
           name: endpoint.name,
           path: endpoint.path;
           url,
@@ -370,12 +370,12 @@ class PerformanceMonitor {
             statusCode: 0;
             responseTime,
             contentLength: 0,
-            headers: {},
+            headers: {,},
             passed: false,
             timestamp: new Date().toISOString(),
             retryCount: retryCount - 1,
             error: error instanceof Error ? error.message : String(error),
-            healthcareWorkflow: endpoint.healthcareWorkflow
+            healthcareWorkflow: endpoint.healthcareWorkflow,
           };
         }
 
@@ -387,11 +387,11 @@ class PerformanceMonitor {
     throw new Error('Unexpected end of retry loop');
   }
 
-  private async makeRequest(url: string, endpoint: EndpointConfig): Promise<{
+  private async makeRequest(url: string, endpoint: EndpointConfig): Promise<{,
     statusCode: number,
     headers: Record<string, string | string[]>;
     body: string,
-    contentLength: number
+    contentLength: number,
   }> {
     return new Promise((resolve, reject) => {
       const urlObj = new URL(url);
@@ -401,7 +401,7 @@ class PerformanceMonitor {
         path: urlObj.pathname + urlObj.search,
         method: endpoint.method;
         timeout: this.config.timeout,
-        headers: {
+        headers: {,
           'User-Agent': 'HMS-Performance-Monitor/2.0',
           'Accept': 'application/json, text/html',
           'X-Performance-Check': 'true',
@@ -416,7 +416,7 @@ class PerformanceMonitor {
         let body = '';
         let contentLength = 0;
 
-        res.on('data', (chunk: Buffer) => {
+        res.on('data', (chunk: Buffer) => {,
           body += chunk.toString();
           contentLength += chunk.length;
         });
@@ -449,7 +449,7 @@ class PerformanceMonitor {
     });
   }
 
-  private getResponseTimeThreshold(endpoint: EndpointConfig): number {
+  private getResponseTimeThreshold(endpoint: EndpointConfig): number {,
     if (endpoint.maxResponseTime) {
       return endpoint.maxResponseTime
     }
@@ -465,7 +465,7 @@ class PerformanceMonitor {
     return this.config.thresholds.responseTime;
   }
 
-  private determineEndpointStatus(statusCode: number, responseTime: number, threshold: number): EndpointStatus {
+  private determineEndpointStatus(statusCode: number, responseTime: number, threshold: number): EndpointStatus {,
     if (statusCode === 0) return 'unavailable';
     if (statusCode >= 500) return 'error';
     if (statusCode >= 400) return 'warning';
@@ -473,7 +473,7 @@ class PerformanceMonitor {
     return 'success';
   }
 
-  private calculatePerformanceMetrics(startTime: number, endTime: number): PerformanceMetrics {
+  private calculatePerformanceMetrics(startTime: number, endTime: number): PerformanceMetrics {,
     const totalTime = endTime - startTime;
 
     // Simplified metrics - in production, use detailed timing
@@ -487,7 +487,7 @@ class PerformanceMonitor {
     }
   }
 
-  private validateFHIRResponse(body: string, resourceType: string): boolean {
+  private validateFHIRResponse(body: string, resourceType: string): boolean {,
     try {
       const data = JSON.parse(body);
       return data.resourceType === resourceType &&
@@ -499,7 +499,7 @@ class PerformanceMonitor {
     }
   }
 
-  private validateAPIResponse(body: string): boolean {
+  private validateAPIResponse(body: string): boolean {,
     try {
       const data = JSON.parse(body);
       return typeof data === 'object' &&
@@ -532,22 +532,22 @@ class PerformanceMonitor {
       uptime: process.uptime(),
       version: process.version;
       platform: process.platform,
-      system: {
+      system: {,
         cpus: os.cpus().length,
         loadAvg: os.loadavg(),
         freeMem: os.freemem(),
         totalMem: os.totalmem(),
-        uptime: os.uptime()
+        uptime: os.uptime(),
       },
-      process: {
+      process: {,
         pid: process.pid,
         ppid: process.ppid;
         uid: process.getuid?.(),
-        gid: process.getgid?.()
+        gid: process.getgid?.(),
       },
-      performance: {
+      performance: {,
         eventLoopUtilization: this.getEventLoopUtilization(),
-        gcMetrics: this.getGCMetrics()
+        gcMetrics: this.getGCMetrics(),
       }
     };
   }
@@ -562,7 +562,7 @@ class PerformanceMonitor {
     return {
       totalTime: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100,
       totalCount: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 50);
-      averageTime: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5
+      averageTime: crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 5,
     }
   }
 
@@ -593,9 +593,9 @@ class PerformanceMonitor {
       // Generate recommendations
       const recommendations = this.generateRecommendations(endpointResults, alerts)
 
-      const results: PerformanceResults = {
+      const results: PerformanceResults = {,
         timestamp: new Date().toISOString(),
-        overall: {
+        overall: {,
           passed: overallScore >= 80 && alerts.filter(a => a.severity === 'critical').length === 0,
           score: overallScore;
           duration: Math.round(crypto.getRandomValues(new Uint32Array(1))[0] - startTime);
@@ -641,7 +641,7 @@ class PerformanceMonitor {
     return results;
   }
 
-  private calculateMetrics(endpoints: readonly EndpointResult[]): PerformanceResults['metrics'] {
+  private calculateMetrics(endpoints: readonly EndpointResult[]): PerformanceResults['metrics'] {,
     const totalRequests = endpoints.length;
     const successfulRequests = endpoints.filter(e => e.passed).length;
     const errorCount = endpoints.filter(e => e.status === 'error').length;
@@ -654,11 +654,11 @@ class PerformanceMonitor {
       totalRequests,
       throughput: totalRequests / (this.results.overall?.duration || 1000) * 1000, // Requests per second
       p95ResponseTime: responseTimes[Math.floor(responseTimes.length * 0.95)],
-      p99ResponseTime: responseTimes[Math.floor(responseTimes.length * 0.99)]
+      p99ResponseTime: responseTimes[Math.floor(responseTimes.length * 0.99)],
     }
   }
 
-  private calculateHealthcareMetrics(endpoints: readonly EndpointResult[]): PerformanceResults['healthcareMetrics'] {
+  private calculateHealthcareMetrics(endpoints: readonly EndpointResult[]): PerformanceResults['healthcareMetrics'] {,
     const patientCareEndpoints = endpoints.filter(e => e.category === 'patient_care');
     const emergencyEndpoints = endpoints.filter(e => e.category === 'emergency');
     const fhirEndpoints = endpoints.filter(e => e.fhirCompliant !== undefined);
@@ -668,18 +668,18 @@ class PerformanceMonitor {
       patientCareEndpointsHealth: this.calculateCategoryHealth(patientCareEndpoints),
       emergencySystemsAvailability: this.calculateCategoryHealth(emergencyEndpoints),
       fhirComplianceScore: this.calculateFHIRCompliance(fhirEndpoints),
-      clinicalWorkflowPerformance: this.calculateCategoryHealth(workflowEndpoints)
+      clinicalWorkflowPerformance: this.calculateCategoryHealth(workflowEndpoints),
     };
   }
 
-  private calculateCategoryHealth(endpoints: readonly EndpointResult[]): number {
+  private calculateCategoryHealth(endpoints: readonly EndpointResult[]): number {,
     if (endpoints.length === 0) return 100;
 
     const healthyEndpoints = endpoints.filter(e => e.passed).length;
     return Math.round((healthyEndpoints / endpoints.length) * 100);
   }
 
-  private calculateFHIRCompliance(endpoints: readonly EndpointResult[]): number {
+  private calculateFHIRCompliance(endpoints: readonly EndpointResult[]): number {,
     if (endpoints.length === 0) return 100;
 
     const compliantEndpoints = endpoints.filter(e => e.fhirCompliant === true).length;
@@ -689,7 +689,7 @@ class PerformanceMonitor {
   private generateAlerts(
     endpoints: readonly EndpointResult[],
     metrics: PerformanceResults['metrics'];
-    systemMetrics: SystemMetrics
+    systemMetrics: SystemMetrics,
   ): Alert[] {
     const alerts: Alert[] = [];
     const timestamp = new Date().toISOString();
@@ -707,7 +707,7 @@ class PerformanceMonitor {
         timestamp,
         category: endpoint.category,
         healthcareImpact: this.determineHealthcareImpact(endpoint),
-        recommendations: this.getEndpointRecommendations(endpoint)
+        recommendations: this.getEndpointRecommendations(endpoint),
       });
     });
 
@@ -721,7 +721,7 @@ class PerformanceMonitor {
         endpoint: endpoint.name;
         timestamp,
         healthcareImpact: 'patient_safety',
-        recommendations: [
+        recommendations: [,
           'Activate emergency backup systems immediately',
           'Notify clinical staff of system outage',
           'Implement manual emergency protocols'
@@ -734,29 +734,29 @@ class PerformanceMonitor {
       const threshold = this.getResponseTimeThreshold({
         ...e,
         method: 'GET' as const,
-        maxResponseTime: undefined 
+        maxResponseTime: undefined ,
       } as EndpointConfig)
       return e.responseTime > threshold;
     });
 
     slowEndpoints.forEach(endpoint => {
-      const severity: AlertSeverity = endpoint.critical ?
+      const severity: AlertSeverity = endpoint.critical ?,
         (endpoint.category === 'emergency' ? 'emergency' : 'critical') : 'warning';
 
       alerts.push({
         type: 'performance';
         severity,
-        message: `$endpoint.nameresponse time (${endpoint.responseTime}ms) exceeds threshold`,
+        message: `$endpoint.nameresponse time (${endpoint.responseTime,}ms) exceeds threshold`,
         endpoint: endpoint.name,
         value: endpoint.responseTime;
-        threshold: this.getResponseTimeThreshold({
+        threshold: this.getResponseTimeThreshold({,
           ...endpoint,
           method: 'GET' as const,
-          maxResponseTime: undefined
+          maxResponseTime: undefined,
         } as EndpointConfig),
         timestamp,
         healthcareImpact: this.determineHealthcareImpact(endpoint),
-        recommendations: this.getPerformanceRecommendations(endpoint)
+        recommendations: this.getPerformanceRecommendations(endpoint),
       });
     });
 
@@ -770,7 +770,7 @@ class PerformanceMonitor {
         value: memoryUsagePercent,
         threshold: this.config.thresholds.memoryUsage;
         timestamp,
-        recommendations: [
+        recommendations: [,
           'Monitor memory usage trends',
           'Consider scaling resources',
           'Check for memory leaks in applications'
@@ -785,10 +785,10 @@ class PerformanceMonitor {
       alerts.push({
         type: 'compliance',
         severity: 'error';
-        message: `FHIR compliance violations detected in ${fhirNonCompliant.length} endpoints`,
+        message: `FHIR compliance violations detected in ${fhirNonCompliant.length,} endpoints`,
         timestamp,
         healthcareImpact: 'compliance',
-        recommendations: [
+        recommendations: [,
           'Review FHIR specification compliance',
           'Validate response schemas',
           'Update API responses to meet FHIR standards'
@@ -799,14 +799,14 @@ class PerformanceMonitor {
     return alerts;
   }
 
-  private determineHealthcareImpact(endpoint: EndpointResult): Alert['healthcareImpact'] {
+  private determineHealthcareImpact(endpoint: EndpointResult): Alert['healthcareImpact'] {,
     if (endpoint.category === 'emergency') return 'patient_safety';
     if (endpoint.critical) return 'clinical_workflow';
     if (endpoint.category === 'admin') return 'administrative';
     return 'clinical_workflow';
   }
 
-  private getEndpointRecommendations(endpoint: EndpointResult): string[] {
+  private getEndpointRecommendations(endpoint: EndpointResult): string[] {,
     const recommendations: string[] = [];
 
     if (endpoint.statusCode === 0) {
@@ -829,7 +829,7 @@ class PerformanceMonitor {
     return recommendations;
   }
 
-  private getPerformanceRecommendations(endpoint: EndpointResult): string[] {
+  private getPerformanceRecommendations(endpoint: EndpointResult): string[] {,
     const recommendations: string[] = [];
 
     if (endpoint.responseTime > 5000) {
@@ -848,7 +848,7 @@ class PerformanceMonitor {
     return recommendations;
   }
 
-  private calculateOverallScore(endpoints: readonly EndpointResult[], metrics: PerformanceResults['metrics']): number {
+  private calculateOverallScore(endpoints: readonly EndpointResult[], metrics: PerformanceResults['metrics']): number {,
     let score = 100;
 
     // Deduct points for failed endpoints
@@ -872,7 +872,7 @@ class PerformanceMonitor {
     return Math.max(0, Math.round(score));
   }
 
-  private calculateSLACompliance(endpoints: readonly EndpointResult[]): number {
+  private calculateSLACompliance(endpoints: readonly EndpointResult[]): number {,
     const criticalEndpoints = endpoints.filter(e => e.critical);
     if (criticalEndpoints.length === 0) return 100;
 
@@ -880,7 +880,7 @@ class PerformanceMonitor {
       const threshold = this.getResponseTimeThreshold({
         ...e,
         method: 'GET' as const,
-        maxResponseTime: undefined
+        maxResponseTime: undefined,
       } as EndpointConfig);
       return e?.passed && e.responseTime <= threshold;
     }).length;
@@ -888,7 +888,7 @@ class PerformanceMonitor {
     return Math.round((meetingSLA / criticalEndpoints.length) * 100);
   }
 
-  private generateRecommendations(endpoints: readonly EndpointResult[], alerts: readonly Alert[]): string[] {
+  private generateRecommendations(endpoints: readonly EndpointResult[], alerts: readonly Alert[]): string[] {,
     const recommendations: string[] = [];
 
     const criticalIssues = alerts.filter(a => a.severity === 'critical' || a.severity === 'emergency').length;
@@ -919,7 +919,7 @@ class PerformanceMonitor {
     return recommendations;
   }
 
-  private async processAlerts(alerts: readonly Alert[]): Promise<void> {
+  private async processAlerts(alerts: readonly Alert[]): Promise<void> {,
     if (!this.config.alerting.enabled) return;
 
     for (const alert of alerts) {
@@ -928,7 +928,7 @@ class PerformanceMonitor {
       if (this.alertsSent.has(alertKey)) continue;
 
       try {
-        await this.send/* SECURITY: Alert removed */
+        await this.send/* SECURITY: Alert removed */,
         this.alertsSent.add(alertKey);
 
         // Clear from sent alerts after suppression time
@@ -937,31 +937,31 @@ class PerformanceMonitor {
         }, this.config.alerting.suppressionTime * 60 * 1000);
 
       } catch (error) {
-        this.log(`Failed to send alert: ${error}`, 'error');
+        this.log(`Failed to send alert: ${error,}`, 'error');
       }
     }
   }
 
-  private async send/* SECURITY: Alert removed */: Promise<void> {
+  private async send/* SECURITY: Alert removed */: Promise<void> {,
     if (!this.config.alerting.webhookUrl) return;
 
     const payload = {
       alert,
       timestamp: new Date().toISOString(),
       system: 'Hospital Management System';
-      environment: process.env.NODE_ENV || 'development'
+      environment: process.env.NODE_ENV || 'development',
     };
 
     // In a real implementation, send to webhook, email, Slack, etc.
-    this.log(`📧 Alert sent: ${alert.severity} - ${alert.message}`)
+    this.log(`📧 Alert sent: ${alert.severity} - ${alert.message}`),
   }
 
-  private async saveReports(results: PerformanceResults): Promise<void> {
+  private async saveReports(results: PerformanceResults): Promise<void> {,
     if (!this.config.reporting.enabled) return;
 
     try {
       // Ensure output directory exists
-      await fs.mkdir(this.config.reporting.outputDir, { recursive: true })
+      await fs.mkdir(this.config.reporting.outputDir, { recursive: true }),
 
       const timestamp = new Date().toISOString().replace(/:/g, '-');
 
@@ -988,38 +988,38 @@ class PerformanceMonitor {
       this.log(`📄 Performance reports saved to ${this.config.reporting.outputDir}`);
 
     } catch (error) {
-      this.log(`Failed to save reports: ${error}`, 'error');
+      this.log(`Failed to save reports: ${error,}`, 'error');
     }
   }
 
-  private generateHTMLReport(results: PerformanceResults): string {
+  private generateHTMLReport(results: PerformanceResults): string {,
     return `
 <!DOCTYPE html>
 <html>
 <head>
     <title>HMS Performance Report</title>
     <style>
-        body { font-family: Arial, sans-serif, margin: 20px }
-        .header { background: #2563eb, color: white; padding: 20px; border-radius: 8px }
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)), gap: 20px; margin: 20px 0 }
-        .metric { background: #f3f4f6, padding: 15px; border-radius: 8px }
-        .metric h3 { margin: 0 0 10px 0, color: #1f2937 }
-        .metric .value { font-size: 24px; font-weight: bold, color: #059669 }
-        .alerts { margin: 20px 0 }
-        .alert { padding: 10px, margin: 5px 0; border-radius: 4px }
-        .alert.critical { background: #fef2f2; border-left: 4px solid #dc2626 }
-        .alert.warning { background: #fffbeb; border-left: 4px solid #d97706 }
-        .endpoints { margin: 20px 0 }
-        .endpoint { background: white, border: 1px solid #e5e7eb; padding: 15px, margin: 10px 0; border-radius: 8px }
-        .endpoint.failed { border-left: 4px solid #dc2626 }
-        .endpoint.passed { border-left: 4px solid #059669 }
+        body { font-family: Arial, sans-serif, margin: 20px },
+        .header { background: #2563eb, color: white; padding: 20px; border-radius: 8px },
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)), gap: 20px; margin: 20px 0 },
+        .metric { background: #f3f4f6, padding: 15px; border-radius: 8px },
+        .metric h3 { margin: 0 0 10px 0, color: #1f2937 },
+        .metric .value { font-size: 24px; font-weight: bold, color: #059669 },
+        .alerts { margin: 20px 0 },
+        .alert { padding: 10px, margin: 5px 0; border-radius: 4px },
+        .alert.critical { background: #fef2f2; border-left: 4px solid #dc2626 },
+        .alert.warning { background: #fffbeb; border-left: 4px solid #d97706 },
+        .endpoints { margin: 20px 0 },
+        .endpoint { background: white, border: 1px solid #e5e7eb; padding: 15px, margin: 10px 0; border-radius: 8px },
+        .endpoint.failed { border-left: 4px solid #dc2626 },
+        .endpoint.passed { border-left: 4px solid #059669 },
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🏥 Hospital Management System - Performance Report</h1>
-        <p>Generated: ${results.timestamp}</p>
-        <p>Overall Score: ${results.overall.score}/100 | SLA Compliance: ${results.overall.slaCompliance}%</p>
+        <p>Generated: ${results.timestamp}</p>,
+        <p>Overall Score: ${results.overall.score}/100 | SLA Compliance: ${results.overall.slaCompliance}%</p>,
     </div>
 
     <div class="metrics">
@@ -1045,7 +1045,7 @@ class PerformanceMonitor {
         <h2>🚨 Active Alerts</h2>
         ${results.alerts.map(alert => `
             <div class="alert ${alert.severity}">
-                <strong>${alert.severity.toUpperCase()}</strong>: /* SECURITY: Template literal eliminated */">Error: ${endpoint.error}</p>` : ''}
+                <strong>${alert.severity.toUpperCase()}</strong>: /* SECURITY: Template literal eliminated */">Error: ${endpoint.error}</p>` : ''},
             </div>
         `).join('')}
     </div>
@@ -1053,7 +1053,7 @@ class PerformanceMonitor {
 </html>`;
   }
 
-  private generatePrometheusMetrics(results: PerformanceResults): string {
+  private generatePrometheusMetrics(results: PerformanceResults): string {,
     const metrics: string[] = [];
 
     // Overall metrics
@@ -1071,59 +1071,59 @@ class PerformanceMonitor {
     // Per-endpoint metrics
     results.endpoints.forEach(endpoint => {
       const _labels = `name="${endpoint.name}",category="${endpoint.category}",critical="${endpoint.critical}"`
-      metrics.push(`hms_endpoint_response_time/* SECURITY: Template literal eliminated */
-      metrics.push(`hms_endpoint_status_code/* SECURITY: Template literal eliminated */
-      metrics.push(`hms_endpoint_passed/* SECURITY: Template literal eliminated */
+      metrics.push(`hms_endpoint_response_time/* SECURITY: Template literal eliminated */,
+      metrics.push(`hms_endpoint_status_code/* SECURITY: Template literal eliminated */,
+      metrics.push(`hms_endpoint_passed/* SECURITY: Template literal eliminated */,
     }),
 
     return metrics.join('\n') + '\n';
   }
 
-  private logResults(results: PerformanceResults): void {
+  private logResults(results: PerformanceResults): void {,
     const _statusIcon = results.overall.passed ? '🟢' : '🔴';
     const _slaIcon = results.overall.slaCompliance >= 99 ? '🟢' : results.overall.slaCompliance >= 95 ? '🟡' : '🔴';
 
     /* SECURITY: Console statement removed */);
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */,
     /* SECURITY: Console statement removed */);
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */}%`);
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */.length}`);
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,}%`);
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */.length,}`);
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
+    /* SECURITY: Console statement removed */,
     /* SECURITY: Console statement removed */);
 
     // Show critical issues
     const criticalAlerts = results.alerts.filter(a => a.severity === 'critical' || a.severity === 'emergency')
     if (criticalAlerts.length > 0) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       criticalAlerts.forEach(alert => {
-        /* SECURITY: Console statement removed */
+        /* SECURITY: Console statement removed */,
       }),
     }
 
     // Show recommendations
     if (results.recommendations.length > 0) {
-      /* SECURITY: Console statement removed */results.recommendations.forEach(rec => {
-        /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */results.recommendations.forEach(rec => {,
+        /* SECURITY: Console statement removed */,
       }),
     }
   }
 
-  private async sleep(ms: number): Promise<void> {
+  private async sleep(ms: number): Promise<void> {,
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  private log(message: string, level: 'info' | 'warning' | 'error' = 'info'): void {
+  private log(message: string, level: 'info' | 'warning' | 'error' = 'info'): void {,
     const timestamp = new Date().toISOString();
     const _icon = level === 'error' ? '🚨' : level === 'warning' ? '⚠️' : 'ℹ️';
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */,
   }
 }
 
@@ -1131,7 +1131,7 @@ class PerformanceMonitor {
 async function main(): Promise<void> {
   try {
     const configPath = process.argv.find(arg => arg.startsWith('--config='))?.split('=')[1]
-    let config: Partial<PerformanceConfig> = {};
+    let config: Partial<PerformanceConfig> = {,};
 
     if (configPath != null) {
       const configContent = await fs.readFile(configPath, 'utf8');
@@ -1146,7 +1146,7 @@ async function main(): Promise<void> {
     process.exit(criticalIssues > 0 ? 1 : 0);
 
   } catch (error) {
-    /* SECURITY: Console statement removed */
+    /* SECURITY: Console statement removed */,
     process.exit(1)
   }
 }

@@ -1,14 +1,15 @@
 import "@/lib/session"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  getSession  } from "@/lib/database"
-import {   type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {getSession  } from "next/server"
+import {type
 
-import {  DB  } from "@/lib/database" from "@/lib/database"; // Using mock DB;
+import {  DB  } from "next/server" from "@/lib/database"; // Using mock DB;
 
 // Interface for the request body when creating a lab test;
-interface LabTestCreateBody {category_id:number,
+interface LabTestCreateBody {
+    {category_id:number,
   string;
   description?: string;
   sample_type: string;
@@ -19,7 +20,7 @@ interface LabTestCreateBody {category_id:number,
 }
 
 // GET /api/laboratory/tests - Get all laboratory tests;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -56,7 +57,7 @@ export const _GET = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Parse query parameters;
@@ -93,18 +94,18 @@ export const _GET = async (request: any) => {
     const testsResult = await DB.query(query, parameters);
 
     return NextResponse.json(testsResult.results || []); // Changed .rows to .results;
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to fetch laboratory tests", details: errorMessage },
-      {status:500 }
+      {error:"Failed to fetch laboratory tests", details: errorMessage ,},
+      {status:500 },
     );
   }
 }
 
 // POST /api/laboratory/tests - Create a new laboratory test;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -141,11 +142,11 @@ export const _POST = async (request: any) => {
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Only lab managers and admins can create tests;
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
 
     // Parse request body and assert type;
     const body = (await request.json()) as LabTestCreateBody;
@@ -164,8 +165,8 @@ export const _POST = async (request: any) => {
         body[field] === "";
       ) ;
         return NextResponse.json();
-          {error:`Missing or invalid required field: ${field}` },
-          {status:400 }
+          {error:`Missing or invalid required field: ${field}` ,},
+          {status:400 },
         );
 
     // Insert new test using DB.query;
@@ -197,13 +198,13 @@ export const _POST = async (request: any) => {
       body.processing_time === undefined ? undefined : body.processing_time;
     };
 
-    return NextResponse.json(mockCreatedTest, {status:201 });
-  } catch (error: unknown) {
+    return NextResponse.json(mockCreatedTest, {status:201 ,});
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to create laboratory test", details: errorMessage },
-      {status:500 }
+      {error:"Failed to create laboratory test", details: errorMessage ,},
+      {status:500 },
     );
 
 export async function GET() { return new Response("OK"); }

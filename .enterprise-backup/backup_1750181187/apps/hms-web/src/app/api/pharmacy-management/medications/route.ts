@@ -4,7 +4,7 @@ import { AuditService } from "@/lib/audit/audit-service";
 import { prisma } from "@/lib/prisma";
 import { ApiResponseBuilder, PaginationBuilder } from "@/utils/api-response";
 // apps/hms-web/src/app/api/pharmacy-management/medications/route.ts
-export async function POST(request: NextRequest): unknown {
+export async function POST(request: NextRequest): unknown {,
 	try {
 		const body = await request.json();
 		const medicationData = body;
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest): unknown {
 			"CREATE",
 			"MEDICATION",
 			medication.id,
-			`Medication added: ${medication.name}`
+			`Medication added: ${medication.name}`,
 		);
 
 		return ApiResponseBuilder.success(medication, "Medication added successfully");
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest): unknown {
 	}
 }
 
-export async function GET(request: NextRequest): unknown {
+export async function GET(request: NextRequest): unknown {,
 	try {
 		const { searchParams } = new URL(request.url);
 		const page = Number.parseInt(searchParams.get("page") || "1");
@@ -44,20 +44,20 @@ export async function GET(request: NextRequest): unknown {
 			limit,
 		});
 
-		const where: unknown = { isActive: true };
+		const where: unknown = { isActive: true ,};
 
 		if (search != null) {
 			where.OR = [
-				{ name: { contains: search, mode: "insensitive" } },
-				{ genericName: { contains: search, mode: "insensitive" } },
-				{ manufacturer: { contains: search, mode: "insensitive" } },
+				{ name: { contains: search, mode: "insensitive" } ,},
+				{ genericName: { contains: search, mode: "insensitive" } ,},
+				{ manufacturer: { contains: search, mode: "insensitive" } ,},
 			];
 		}
 
 		if (category != null) where.category = category;
 
 		if (lowStock != null) {
-			where.currentStock = { lte: { minimumStock: true } };
+			where.currentStock = { lte: { minimumStock: true } ,};
 		}
 
 		const [medications, total] = await Promise.all([

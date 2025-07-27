@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
  * Service for managing employee data following FHIR Practitioner resource standards;
  * Enhanced with caching and query optimization for improved performance;
  */
-\1
+
 }
     }[];
     positions?: {
@@ -22,7 +22,7 @@ const prisma = new PrismaClient();
     const result = await prisma.$transaction(async (tx) => {
       // Create the employee record
       const employee = await tx.employee.create({
-        data: {
+        data: {,
           employeeId: data.employeeId,
           firstName: data.firstName,
           lastName: data.lastName,
@@ -36,16 +36,16 @@ const prisma = new PrismaClient();
           departmentId: data.departmentId,
           userId: data.userId,
           photo: data.photo,
-          emergencyContact: data.emergencyContact
+          emergencyContact: data.emergencyContact,
         },
       });
 
       // Add qualifications if provided
-      \1 {\n  \2{
+       {\n  {
         await Promise.all(
           data.qualifications.map((qual) =>
             tx.qualification.create({
-              data: {
+              data: {,
                 employeeId: employee.id,
                 code: qual.code,
                 name: qual.name,
@@ -53,7 +53,7 @@ const prisma = new PrismaClient();
                 identifier: qual.identifier,
                 startDate: qual.startDate,
                 endDate: qual.endDate,
-                attachment: qual.attachment
+                attachment: qual.attachment,
               },
             });
           );
@@ -61,16 +61,16 @@ const prisma = new PrismaClient();
       }
 
       // Add positions if provided
-      \1 {\n  \2{
+       {\n  {
         await Promise.all(
           data.positions.map((pos) =>
             tx.employeePosition.create({
-              data: {
+              data: {,
                 employeeId: employee.id,
                 positionId: pos.positionId,
                 isPrimary: pos.isPrimary,
                 startDate: pos.startDate,
-                endDate: pos.endDate
+                endDate: pos.endDate,
               },
             });
           );
@@ -90,40 +90,40 @@ const prisma = new PrismaClient();
    * Get employee by ID with related data;
    * Enhanced with caching for improved performance;
    */
-  async getEmployeeById(id: string) {
-    const cacheKey = `${this.CACHE_PREFIX}id:${id}`;
+  async getEmployeeById(id: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}id:${id,}`;
 
     // Try to get from cache first
     const cachedEmployee = await cache.get(cacheKey);
-    \1 {\n  \2{
+     {\n  {
       return JSON.parse(cachedEmployee);
     }
 
     // If not in cache, fetch from database
     const employee = await prisma.employee.findUnique({
-      where: { id },
-      include: {
+      where: { id ,},
+      include: {,
         department: true,
-        positions: {
-          include: {
-            position: true
+        positions: {,
+          include: {,
+            position: true,
           },
         },
         qualifications: true,
-        user: {
-          select: {
+        user: {,
+          select: {,
             id: true,
             name: true,
             email: true,
             image: true,
-            role: true
+            role: true,
           },
         },
       },
     });
 
     // Store in cache if found
-    \1 {\n  \2{
+     {\n  {
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);
     }
 
@@ -134,38 +134,38 @@ const prisma = new PrismaClient();
    * Get employee by employee ID with related data;
    * Enhanced with caching for improved performance;
    */
-  async getEmployeeByEmployeeId(employeeId: string) {
-    const cacheKey = `${this.CACHE_PREFIX}employeeId:${employeeId}`;
+  async getEmployeeByEmployeeId(employeeId: string) {,
+    const cacheKey = `${this.CACHE_PREFIX}employeeId:${employeeId,}`;
 
     // Try to get from cache first
     const cachedEmployee = await cache.get(cacheKey);
-    \1 {\n  \2{
+     {\n  {
       return JSON.parse(cachedEmployee);
     }
 
     // If not in cache, fetch from database
     const employee = await prisma.employee.findUnique({
-      where: { employeeId },
-      include: {
+      where: { employeeId ,},
+      include: {,
         department: true,
-        positions: {
-          include: {
-            position: true
+        positions: {,
+          include: {,
+            position: true,
           },
         },
         qualifications: true,
-        user: {
-          select: {
+        user: {,
+          select: {,
             id: true,
             name: true,
             email: true,
             image: true,
-            role: true
+            role: true,
           },
         },
       },
     });
 
     // Store in cache if found
-    \1 {\n  \2{
+     {\n  {
       await cache.set(cacheKey, JSON.stringify(employee), this.CACHE_TTL);

@@ -23,7 +23,7 @@ import { QualityPersistenceService } from './quality-persistence.service';
   type ComplianceStatus
 } from './quality-management.service';
 
-\1
+
 }
   }
 
@@ -45,7 +45,7 @@ import { QualityPersistenceService } from './quality-persistence.service';
   // Quality Indicators Management
   async registerQualityIndicator(
     indicator: Omit<QualityIndicator, 'id' | 'createdAt' | 'updatedAt'>,
-    userId: string
+    userId: string,
   ): Promise<string> {
     const indicatorId = await this.qualityService.registerQualityIndicator(indicator)
 
@@ -54,7 +54,7 @@ import { QualityPersistenceService } from './quality-persistence.service';
       ...indicator,
       id: indicatorId,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     } as QualityIndicator
 
     await this.persistenceService.saveQualityIndicator(fullIndicator, userId);
@@ -72,14 +72,14 @@ import { QualityPersistenceService } from './quality-persistence.service';
     return await this.persistenceService.getQualityIndicators(filters, userId);
   }
 
-  async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {
+  async getQualityIndicator(id: string, userId: string): Promise<QualityIndicator | null> {,
     return await this.persistenceService.getQualityIndicator(id, userId);
   }
 
   // Quality Events Management
   async reportQualityEvent(
     event: Omit<QualityEvent, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'notifications'>,
-    userId: string
+    userId: string,
   ): Promise<string> {
     const eventId = await this.qualityService.reportQualityEvent(event)
 
@@ -87,9 +87,9 @@ import { QualityPersistenceService } from './quality-persistence.service';
     const fullEvent = {
       ...event,
       id: eventId,
-      \1,\2 [],
+       [],
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     } as QualityEvent
 
     await this.persistenceService.saveQualityEvent(fullEvent, userId);
@@ -99,16 +99,16 @@ import { QualityPersistenceService } from './quality-persistence.service';
 
   async updateQualityEvent(
     eventId: string,
-    \1,\2 string
+     string
   ): Promise<boolean> {
     const success = await this.qualityService.updateQualityEvent(eventId, updates);
 
-    \1 {\n  \2{
+     {\n  {
       // Update in persistence layer
       const updatedEvent = {
         ...updates,
         id: eventId,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       } as QualityEvent
 
       await this.persistenceService.saveQualityEvent(updatedEvent, userId);
@@ -131,7 +131,7 @@ import { QualityPersistenceService } from './quality-persistence.service';
   // Compliance Reports Management
   async generateComplianceReport(
     reportData: Omit<ComplianceReport, 'id' | 'overallCompliance' | 'status'>,
-    userId: string
+    userId: string,
   ): Promise<string> {
     const reportId = await this.qualityService.generateComplianceReport(reportData)
 
@@ -140,7 +140,7 @@ import { QualityPersistenceService } from './quality-persistence.service';
       ...reportData,
       id: reportId,
       overallCompliance: this.calculateOverallCompliance(reportData.requirements || []),
-      status: this.determineComplianceStatus(reportData.requirements || [])
+      status: this.determineComplianceStatus(reportData.requirements || []),
     } as ComplianceReport
 
     await this.persistenceService.saveComplianceReport(fullReport, userId);
@@ -159,61 +159,61 @@ import { QualityPersistenceService } from './quality-persistence.service';
   }
 
   // Quality Statistics (now with persistent data)
-  async getQualityStatistics(): Promise<{total: number, \1,\2 number ;total: number, \1,\2 number ;total: number, \1,\2 number ;reports: number, \1,\2 number ;
+  async getQualityStatistics(): Promise<{total: number,  number ;total: number,  number ;total: number,  number ;reports: number,  number ;
   }> {
     const indicators = await this.persistenceService.getQualityIndicators({}, 'system');
     const events = await this.persistenceService.getQualityEvents({}, 'system');
     const reports = await this.persistenceService.getComplianceReports({}, 'system');
 
     return {
-      indicators: {
+      indicators: {,
         total: indicators.length,
-        \1,\2 indicators.filter(i => i.isCore).length
+         indicators.filter(i => i.isCore).length
       },
-      events: {
+      events: {,
         total: events.length,
-        \1,\2 events.filter(e => e.severity === 'severe' || e.severity === 'catastrophic').length
+         events.filter(e => e.severity === 'severe' || e.severity === 'catastrophic').length
       },
-      assessments: {
+      assessments: {,
         total: 0, // Would need assessment persistence
         active: 0,
-        completed: 0
+        completed: 0,
       },
-      compliance: {
+      compliance: {,
         reports: reports.length,
-        \1,\2 reports.reduce((sum, r) => sum + (r.gaps?.length || 0), 0)
+         reports.reduce((sum, r) => sum + (r.gaps?.length || 0), 0)
       }
     }
   }
 
   // Quality Dashboard (integrated version)
-  async getQualityDashboard(timeframe: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly'): Promise<{
+  async getQualityDashboard(timeframe: 'daily' | 'weekly' | 'monthly' | 'quarterly' = 'monthly'): Promise<{,
     overview: unknown,
-    trends: unknown[]
+    trends: unknown[],
     events: unknown,
-    \1,\2 unknown[]
+     unknown[]
   }> {
     // Get statistics from persistent data
     const stats = await this.getQualityStatistics()
 
     // Get recent events for overview
     const recentEvents = await this.persistenceService.getQualityEvents({
-      dateFrom: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days
+      dateFrom: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days,
     }, 'system')
 
     return {
-      overview: {
+      overview: {,
         totalIndicators: stats.indicators.total,
-        \1,\2 stats.compliance.reports > 0
+         stats.compliance.reports > 0
           ? (stats.compliance.compliant / stats.compliance.reports * 100).toFixed(1)
           : '0.0',
-        criticalAlerts: stats.events.critical
+        criticalAlerts: stats.events.critical,
       },
       trends: [], // Would need time-series data
-      events: {
+      events: {,
         recent: recentEvents.slice(0, 10),
         byType: this.groupEventsByType(recentEvents),
-        bySeverity: this.groupEventsBySeverity(recentEvents)
+        bySeverity: this.groupEventsBySeverity(recentEvents),
       },
       assessments: [], // Would need assessment data
       alerts: this.generateAlerts(stats, recentEvents)
@@ -221,14 +221,14 @@ import { QualityPersistenceService } from './quality-persistence.service';
   }
 
   // Data Migration (for existing in-memory data)
-  async migrateExistingData(userId: string): Promise<{
+  async migrateExistingData(userId: string): Promise<{,
     indicatorsMigrated: number,
-    eventsMigrated: number
-    reportsMigrated: number
+    eventsMigrated: number,
+    reportsMigrated: number,
   }> {
     const migratedCounts = {
       indicatorsMigrated: 0,
-      \1,\2 0
+       0
     };
 
     try {
@@ -236,9 +236,9 @@ import { QualityPersistenceService } from './quality-persistence.service';
       // This would require access to the private Maps in the quality service
       // For now, return zeros as the persistence is now the primary storage
 
-      /* SECURITY: Console statement removed */return migratedCounts
+      /* SECURITY: Console statement removed */return migratedCounts,
     } catch (error) {
-      /* SECURITY: Console statement removed */
+      /* SECURITY: Console statement removed */,
       throw new Error('Failed to migrate existing quality data')
     }
   }
@@ -246,26 +246,26 @@ import { QualityPersistenceService } from './quality-persistence.service';
   // Data Archival and Cleanup
   async archiveOldData(): Promise<{
     archivedIndicators: number,
-    archivedEvents: number
+    archivedEvents: number,
     archivedAssessments: number,
-    archivedReports: number
+    archivedReports: number,
   }> {
     return await this.persistenceService.archiveOldRecords();
   }
 
   // Utility Methods
-  private calculateOverallCompliance(requirements: unknown[]): number {
-    \1 {\n  \2eturn 100
+  private calculateOverallCompliance(requirements: unknown[]): number {,
+     {\n  eturn 100
 
     const metRequirements = requirements.filter(req => req.status === 'met').length;
     return (metRequirements / requirements.length) * 100;
   }
 
-  private determineComplianceStatus(requirements: unknown[]): ComplianceStatus {
+  private determineComplianceStatus(requirements: unknown[]): ComplianceStatus {,
     const compliance = this.calculateOverallCompliance(requirements);
 
-    \1 {\n  \2eturn 'compliant';
-    \1 {\n  \2eturn 'partially_compliant';
+     {\n  eturn 'compliant';
+     {\n  eturn 'partially_compliant';
     return 'non_compliant';
   }
 
@@ -283,15 +283,15 @@ import { QualityPersistenceService } from './quality-persistence.service';
     }, {} as Record<string, number>);
   }
 
-  private generateAlerts(stats: unknown, recentEvents: QualityEvent[]): unknown[] {
+  private generateAlerts(stats: unknown, recentEvents: QualityEvent[]): unknown[] {,
     const alerts = [];
 
     // Critical events alert
-    \1 {\n  \2{
+     {\n  {
       alerts.push({
         type: 'critical_events',
-        \1,\2 `${stats.events.critical} critical quality events require immediate attention`,
-        actionRequired: true
+         `${stats.events.critical} critical quality events require immediate attention`,
+        actionRequired: true,
       })
     }
 
@@ -300,11 +300,11 @@ import { QualityPersistenceService } from './quality-persistence.service';
       e.eventDate >= new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 24 * 60 * 60 * 1000)
     ).length
 
-    \1 {\n  \2{
+     {\n  {
       alerts.push({
         type: 'high_event_frequency',
-        \1,\2 `${todayEvents} quality events reported today - higher than usual`,
-        actionRequired: false
+         `${todayEvents} quality events reported today - higher than usual`,
+        actionRequired: false,
       });
     }
 
@@ -316,9 +316,9 @@ import { QualityPersistenceService } from './quality-persistence.service';
    */
   async healthCheck(): Promise<{
     status: 'healthy' | 'degraded' | 'unhealthy',
-    services: 
+    services: ,
       qualityService: boolean,
-      \1,\2 Date
+       Date
   }> {
     try {
       // Check if services are responsive
@@ -326,30 +326,30 @@ import { QualityPersistenceService } from './quality-persistence.service';
 
       return {
         status: 'healthy',
-        services: {
+        services: {,
           qualityService: true,
-          persistenceService: true
+          persistenceService: true,
         },
-        lastChecked: new Date()
+        lastChecked: new Date(),
       };
     } catch (error) {
       return {
         status: 'unhealthy',
-        services: {
+        services: {,
           qualityService: false,
-          persistenceService: false
+          persistenceService: false,
         },
-        lastChecked: new Date()
+        lastChecked: new Date(),
       };
     }
   }
 }
 
 // Singleton instance for application use
-let integratedQualityServiceInstance: IntegratedQualityService | null = null
+let integratedQualityServiceInstance: IntegratedQualityService | null = null,
 
 export const _getIntegratedQualityService = (): IntegratedQualityService => {
-  \1 {\n  \2{
+   {\n  {
     integratedQualityServiceInstance = new IntegratedQualityService();
   }
   return integratedQualityServiceInstance

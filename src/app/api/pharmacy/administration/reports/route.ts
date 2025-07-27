@@ -1,13 +1,13 @@
 import "../../../../../lib/audit"
 import "../../../../../lib/error-handler"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {  type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {errorHandler  } from "next/server"
+import {type
 
- } from "@/lib/database"
+ } from "next/server"
 
 /**;
  * Administration Reports API Routes;
@@ -25,7 +25,7 @@ const administrationRepository = {findById:(id: string) => Promise.resolve(null)
   findByDateRange: (startDate: Date, endDate: Date) => Promise.resolve([]),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByAdministeredBy: (userId: string) => Promise.resolve([]),
-  generateReport: (criteria: unknown) => Promise.resolve({data:[], summary: {} }),
+  generateReport: (criteria: unknown) => Promise.resolve({data:[], summary: {} ,}),
   save: (administration: unknown) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true);
@@ -35,7 +35,7 @@ const administrationRepository = {findById:(id: string) => Promise.resolve(null)
  * GET /api/pharmacy/administration/reports;
  * Generate medication administration reports with various filtering options;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -71,7 +71,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -95,13 +95,13 @@ export const GET = async (req: any) => {
     // Validate date range;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Start date and end date are required" },
-        {status:400 }
+        {error:"Start date and end date are required" ,},
+        {status:400 },
       );
     }
 
     // Build report criteria;
-    const criteria: unknown = {
+    const criteria: unknown = {,
       reportType,
       startDate: new Date(startDate),
       endDate: new Date(endDate),
@@ -142,7 +142,7 @@ export const GET = async (req: any) => {
 
       // Return CSV response;
       return new NextResponse(formattedReport, {status:200,
-        headers: {
+        headers: {,
           "Content-Type": "text/csv",
           "Content-Disposition": `attachment; filename="med_admin_report_${startDate}_to_${endDate}.csv"`;
         }
@@ -161,7 +161,7 @@ export const GET = async (req: any) => {
       });
 
       // Return JSON response;
-      return NextResponse.json(formattedReport, {status:200 });
+      return NextResponse.json(formattedReport, {status:200 ,});
     }
   } catch (error) {
     return errorHandler(error, "Error generating medication administration report");
@@ -171,7 +171,7 @@ export const GET = async (req: any) => {
 /**;
  * Helper function to calculate metrics for administration report;
  */;
-const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
+const calculateMetrics = (data: unknown[], criteria: unknown): unknown {,
   // Calculate various metrics based on the report data;
   const metrics = {totalAdministrations:data.length,
     0,
@@ -179,7 +179,7 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
     0,
     0,
       0,
-    administrationsByRoute: null};
+    administrationsByRoute: null,};
 
   // Calculate metrics;
   data.forEach(item => {
@@ -232,7 +232,7 @@ const calculateMetrics = (data: unknown[], criteria: unknown): unknown {
 /**;
  * Helper function to convert report data to CSV format;
  */;
-const convertToCSV = (data: unknown[]): string {
+const convertToCSV = (data: unknown[]): string {,
   if (!session.user) {
     return "";
 

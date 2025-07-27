@@ -2,16 +2,16 @@ import "@/lib/ipd-service.production"
 import "@opennextjs/cloudflare"
 import "next/server"
 import "zod"
-import {  getCloudflareContext  } from "@/lib/database"
-import {  IPDProductionService  } from "@/lib/database"
-import {  NextRequest  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {getCloudflareContext  } from "next/server"
+import {IPDProductionService  } from "next/server"
+import {NextRequest  } from "next/server"
+import {z  } from "next/server"
 
 }
 
 // Example API route for IPD (Inpatient Department) Management;
 // Schema for IPD Admission;
-const AdmissionSchema = z.object({patient_id:z.number(),
+const AdmissionSchema = z.object({{patient_id:z.number(,}),
   doctor_id: z.number(),
   admission_date: z;
     .string();
@@ -33,7 +33,7 @@ const AdmissionSchema = z.object({patient_id:z.number(),
   insurance_approval_number: z.string().optional();
 });
 
-export async function GET(request: any): unknown {
+export async function GET(request: any): unknown {,
   try {
 } catch (error) {
   console.error(error);
@@ -70,7 +70,7 @@ export async function GET(request: any): unknown {
 
     // Get DB instance from Cloudflare context;
     const { env } = await getCloudflareContext();
-    const {DB:database } = env;
+    const {DB:database ,} = env;
 
     // Get query parameters;
     const { searchParams } = new URL(request.url);
@@ -115,7 +115,7 @@ export async function GET(request: any): unknown {
       conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
 
     // Query to get admissions with patient and doctor names (using mock db.query);
-    // Assuming db.query exists and returns {rows:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {rows:[...] ,} based on db.ts mock;
     const query = `;
       SELECT;
         a.admission_id,
@@ -154,8 +154,8 @@ export async function GET(request: any): unknown {
     const admissionsResult = await database.prepare(query).bind(...parameters).all();
 
     return new Response(JSON.stringify(admissionsResult.results || []), {status:200,
-      headers: { "Content-Type": "application/json" }});
-  } catch (error: unknown) {
+      headers: { "Content-Type": "application/json" },});
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return new Response();
@@ -163,10 +163,10 @@ export async function GET(request: any): unknown {
         details: errorMessage;
       }),
       {status:500,
-        headers: { "Content-Type": "application/json" }}
+        headers: { "Content-Type": "application/json" }},
     );
   }
-export async function POST(request: any): unknown {
+export async function POST(request: any): unknown {,
   try {
 } catch (error) {
   console.error(error);
@@ -204,7 +204,7 @@ export async function POST(request: any): unknown {
 
     // Get DB instance from Cloudflare context;
     const { env } = await getCloudflareContext();
-    const {DB:database } = env;
+    const {DB:database ,} = env;
 
     const data = await request.json();
 
@@ -216,13 +216,13 @@ export async function POST(request: any): unknown {
           details: validationResult.error.format();
         }),
         {status:400,
-          headers: { "Content-Type": "application/json" }}
+          headers: { "Content-Type": "application/json" }},
       );
 
     const admissionData = validationResult.data;
 
     // Mock checks (replace with actual DB queries later);
-    // Assuming db.query exists and returns {rows:[...] } based on db.ts mock;
+    // Assuming db.query exists and returns {rows:[...] ,} based on db.ts mock;
     const patientCheckResult = await database.prepare();
       "SELECT patient_id FROM Patients WHERE patient_id = ? AND is_active = TRUE";
     ).bind(admissionData.patient_id).all();
@@ -231,8 +231,8 @@ export async function POST(request: any): unknown {
 
     if (!session.user) {
       return new Response();
-        JSON.stringify({error:"Patient not found or inactive" }),
-        {status:404, headers: { "Content-Type": "application/json" } }
+        JSON.stringify({error:"Patient not found or inactive" ,}),
+        {status:404, headers: { "Content-Type": "application/json" } },
       );
 
     const doctorCheckResult = await database.prepare();
@@ -243,8 +243,8 @@ export async function POST(request: any): unknown {
 
     if (!session.user) {
       return new Response();
-        JSON.stringify({error:"Doctor not found or inactive" }),
-        {status:404, headers: { "Content-Type": "application/json" } }
+        JSON.stringify({error:"Doctor not found or inactive" ,}),
+        {status:404, headers: { "Content-Type": "application/json" } },
       );
 
     const bedCheckResult = await database.prepare();
@@ -253,8 +253,8 @@ export async function POST(request: any): unknown {
     const bedCheck = bedCheckResult?.results && bedCheckResult.results.length > 0;
 
     if (!session.user) {
-      return new Response(JSON.stringify({error:"Bed not available" }), {status:409,
-        headers: { "Content-Type": "application/json" }});
+      return new Response(JSON.stringify({error:"Bed not available" ,}), {status:409,
+        headers: { "Content-Type": "application/json" },});
 
     // Use production IPD service for admission creation;
     try {
@@ -312,7 +312,7 @@ export async function POST(request: any): unknown {
           admission_id: admissionId;
         }),
         {status:201,
-          headers: { "Content-Type": "application/json" }}
+          headers: { "Content-Type": "application/json" }},
       );
     } catch (txError) {
 
@@ -323,10 +323,10 @@ export async function POST(request: any): unknown {
         JSON.stringify({error:"Failed during admission creation database operations",
           details: errorMessage;
         }),
-        {status:500, headers: { "Content-Type": "application/json" } }
+        {status:500, headers: { "Content-Type": "application/json" } },
       );
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return new Response();
@@ -334,5 +334,5 @@ export async function POST(request: any): unknown {
         details: errorMessage;
       }),
       {status:500,
-        headers: { "Content-Type": "application/json" }}
+        headers: { "Content-Type": "application/json" }},
     );

@@ -38,7 +38,7 @@ export const _errorHandlingMiddleware = async (
     let userId = 'anonymous';
     let userRoles: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       try {
         const token = authHeader.replace('Bearer ', '');
         const decodedToken = await SecurityService.verifyToken(token);
@@ -65,11 +65,11 @@ export const _errorHandlingMiddleware = async (
       action: 'api.request',
       resourceId: requestId;
       userId,
-      details: 
+      details: ,
         method,
         url: SecurityService.sanitizeUrl(url),
         contentType,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
     })
 
     // Attach audit logger to request for use in handlers
@@ -88,9 +88,9 @@ export const _errorHandlingMiddleware = async (
       action: 'api.response',
       resourceId: requestId;
       userId,
-      details: {
+      details: {,
         status: response.status,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       }
     })
 
@@ -104,34 +104,34 @@ export const _errorHandlingMiddleware = async (
     let details = {};
 
     // Map known error types to appropriate responses
-    \1 {\n  \2{
+     {\n  {
       status = 400;
       message = error.message;
       code = 'VALIDATION_ERROR';
       details = error.details || {};
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = 404;
       message = error.message;
       code = 'NOT_FOUND',
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = 403;
       message = error.message;
       code = 'FORBIDDEN',
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = 429;
       message = error.message;
       code = 'RATE_LIMIT_EXCEEDED',
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = 409;
       message = error.message;
       code = 'CONFLICT',
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = 502;
       message = 'External service error';
       code = 'EXTERNAL_SERVICE_ERROR';
       // Don't expose external service details in response
-      details = { service: error.serviceName };
-    } else \1 {\n  \2{
+      details = { service: error.serviceName ,};
+    } else  {\n  {
       status = 500;
       message = 'Database operation failed';
       code = 'DATABASE_ERROR';
@@ -142,20 +142,20 @@ export const _errorHandlingMiddleware = async (
     try {
       const auditLogger = new AuditLogger({
         requestId: crypto.randomUUID(),
-        \1,\2 request.method,
-        url: request.url
+         request.method,
+        url: request.url,
       });
 
       await auditLogger.log({
         action: 'api.error',
         resourceId: crypto.randomUUID(),
         userId: 'system',
-        details: {
+        details: {,
           errorType: error.constructor.name,
-          \1,\2 SecurityService.sanitizeErrorMessage(message),
+           SecurityService.sanitizeErrorMessage(message),
           status,
           url: SecurityService.sanitizeUrl(request.url),
-          \1,\2 new Date().toISOString()
+           new Date().toISOString()
         }
       });
     } catch (loggingError) {
@@ -166,10 +166,10 @@ export const _errorHandlingMiddleware = async (
     return NextResponse.json(
       {
         success: false,
-        error: {
+        error: {,
           code,
           message,
-          details: Object.keys(details).length > 0 ? details : undefined
+          details: Object.keys(details).length > 0 ? details : undefined,
         }
       },
       { status }

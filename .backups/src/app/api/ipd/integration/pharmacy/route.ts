@@ -20,7 +20,7 @@ import { type
  * This endpoint handles medication orders and reconciliation;
  * POST /api/ipd/integration/pharmacy;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "ORDER_MEDICATIONS");
   if (!session.user) {
@@ -60,13 +60,13 @@ export const POST = async (req: any) => {
 } catch (error) {
 }
     const body = await req.json();
-    logger.info({ route: "POST /api/ipd/integration/pharmacy", actionType: body.actionType }, "Processing pharmacy request");
+    logger.info({ route: "POST /api/ipd/integration/pharmacy", actionType: body.actionType ,}, "Processing pharmacy request");
 
     // Validate request body;
     if (!session.user) {
       return NextResponse.json();
         { error: "Missing required fields: actionType, encounterId" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -113,10 +113,10 @@ export const POST = async (req: any) => {
 
           // Check if there"s a warning about allergies;
           if (!session.user) {
-            return NextResponse.json(result, { status: 409 });
+            return NextResponse.json(result, { status: 409 ,});
           }
 
-          return NextResponse.json(result, { status: 201 });
+          return NextResponse.json(result, { status: 201 ,});
         } catch (error) {
           return handleApiError(error);
         }
@@ -156,7 +156,7 @@ export const POST = async (req: any) => {
 
           const validatedData = MedicationReconciliationSchema.parse(body);
           const result = await pharmacyService.performMedicationReconciliation(validatedData, authResult.user.id);
-          return NextResponse.json(result, { status: 200 });
+          return NextResponse.json(result, { status: 200 ,});
         } catch (error) {
           return handleApiError(error);
 
@@ -195,7 +195,7 @@ export const POST = async (req: any) => {
 
           const validatedData = MedicationAdministrationSchema.parse(body);
           const result = await pharmacyService.recordMedicationAdministration(validatedData, authResult.user.id);
-          return NextResponse.json(result, { status: 200 });
+          return NextResponse.json(result, { status: 200 ,});
         } catch (error) {
           return handleApiError(error);
 
@@ -234,14 +234,14 @@ export const POST = async (req: any) => {
 
           const validatedData = MedicationDiscontinueSchema.parse(body);
           const result = await pharmacyService.discontinueMedication(validatedData, authResult.user.id);
-          return NextResponse.json(result, { status: 200 });
+          return NextResponse.json(result, { status: 200 ,});
         } catch (error) {
           return handleApiError(error);
 
       default: null,
         return NextResponse.json();
-          { error: `Unsupported action type: ${body.actionType}` },
-          { status: 400 }
+          { error: `Unsupported action type: ${body.actionType}` ,},
+          { status: 400 },
         )}
   } catch (error) {
     return handleApiError(error);
@@ -250,7 +250,7 @@ export const POST = async (req: any) => {
  * Get active medications for a patient;
  * GET /api/ipd/integration/pharmacy/active-medications/:patientId;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
@@ -293,8 +293,8 @@ export const GET = async (req: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Missing patientId parameter" },
-        { status: 400 }
+        { error: "Missing patientId parameter" ,},
+        { status: 400 },
       );
 
     logger.info({ route: "GET /api/ipd/integration/pharmacy", patientId }, "Getting patient medications");
@@ -313,7 +313,7 @@ export const GET = async (req: any) => {
  * Get medication history for a patient;
  * GET /api/ipd/integration/pharmacy/medication-history;
  */;
-export const getMedicationHistory = async (req: any) => {
+export const getMedicationHistory = async (req: any) => {,
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
@@ -357,8 +357,8 @@ export const getMedicationHistory = async (req: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Missing patientId parameter" },
-        { status: 400 }
+        { error: "Missing patientId parameter" ,},
+        { status: 400 },
       );
 
     logger.info({ route: "GET /api/ipd/integration/pharmacy/medication-history", patientId, limit }, "Getting medication history');

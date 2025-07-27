@@ -16,59 +16,59 @@ import {
   FHIRAttachment;
 } from './types.ts';
 
-\1
+
 }
 }
 
 // DiagnosticReport Search Parameters
-\1
+
 }
 }
 
 // Helper functions for FHIR DiagnosticReport operations
-\1
+
 }
   }): FHIRDiagnosticReport {
     return {
       resourceType: 'DiagnosticReport',
-      \1,\2 [{
-        coding: [{
+       [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
-          \1,\2 'Laboratory'
+           'Laboratory'
         }]
       }],
       code: 
-        coding: [{
+        coding: [{,
           system: 'https://loinc.org',
-          \1,\2 data.reportName
+           data.reportName
         }],
       subject: 
-        reference: `Patient/${data.patientId}`,
+        reference: `Patient/${data.patientId,}`,
         type: 'Patient',
-      performer: [
-        reference: `Practitioner/${data.practitionerId}`,
+      performer: [,
+        reference: `Practitioner/${data.practitionerId,}`,
         type: 'Practitioner'],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
-      result: data.observations.map(obsId => (
-        reference: `Observation/${obsId}`,
+      result: data.observations.map(obsId => (,
+        reference: `Observation/${obsId,}`,
         type: 'Observation')),
       ...(data?.encounterId && 
-          reference: `Encounter/${data.encounterId}`,
+          reference: `Encounter/${data.encounterId,}`,
           type: 'Encounter'),
       ...(data?.specimens && 
-        specimen: data.specimens.map(specId => ({
-          reference: `Specimen/${specId}`,
-          type: 'Specimen'
+        specimen: data.specimens.map(specId => ({,
+          reference: `Specimen/${specId,}`,
+          type: 'Specimen',
         }))),
-      ...(data?.conclusion && conclusion: data.conclusion )
+      ...(data?.conclusion && conclusion: data.conclusion ),
     };
   }
 
   /**
    * Create an imaging report;
    */
-  static createImagingReport(data: {
+  static createImagingReport(data: {,
     patientId: string,
     radiologistId: string;
     encounterId?: string;
@@ -76,49 +76,49 @@ import {
     studyName: string;
     imagingStudyId?: string;
     findings: string,
-    \1,\2 string;
+     string;
     status?: 'preliminary' | 'final';
     images?: string[];
   }): FHIRDiagnosticReport {
     return {
       resourceType: 'DiagnosticReport',
-      \1,\2 [{
-        coding: [{
+       [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
-          \1,\2 'Radiology'
+           'Radiology'
         }]
       }],
       code: 
-        coding: [{
+        coding: [{,
           system: 'https://loinc.org',
-          \1,\2 data.studyName
+           data.studyName
         }],
       subject: 
-        reference: `Patient/${data.patientId}`,
+        reference: `Patient/${data.patientId,}`,
         type: 'Patient',
-      resultsInterpreter: [
-        reference: `Practitioner/${data.radiologistId}`,
+      resultsInterpreter: [,
+        reference: `Practitioner/${data.radiologistId,}`,
         type: 'Practitioner'],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
       conclusion: `Findings: $data.findings\n\nImpression: $data.impression`,
       ...(data?.encounterId && {
-        encounter: {
+        encounter: {,
           reference: `Encounter/$data.encounterId`,
-          type: 'Encounter'
+          type: 'Encounter',
         }
       }),
       ...(data?.imagingStudyId && {
-        imagingStudy: [{
+        imagingStudy: [{,
           reference: `ImagingStudy/$data.imagingStudyId`,
-          type: 'ImagingStudy'
+          type: 'ImagingStudy',
         }]
       }),
       ...(data?.images && {
-        media: data.images.map(imageId => ({
-          link: {
+        media: data.images.map(imageId => ({,
+          link: {,
             reference: `Media/$imageId`,
-            type: 'Media'
+            type: 'Media',
           }
         }))
       })
@@ -128,54 +128,54 @@ import {
   /**
    * Create a pathology report;
    */
-  static createPathologyReport(data: {
+  static createPathologyReport(data: {,
     patientId: string,
     pathologistId: string;
     encounterId?: string;
     specimenId: string,
-    \1,\2 string,
-    \1,\2 string,
+     string,
+     string,
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
   }): FHIRDiagnosticReport {
     return {
       resourceType: 'DiagnosticReport',
-      \1,\2 [{
-        coding: [{
+       [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
-          \1,\2 'Pathology'
+           'Pathology'
         }]
       }],
-      code: {
-        coding: [{
+      code: {,
+        coding: [{,
           system: 'https://loinc.org',
-          \1,\2 'Pathology report'
+           'Pathology report'
         }]
       },
-      subject: {
+      subject: {,
         reference: `Patient/$data.patientId`,
-        type: 'Patient'
+        type: 'Patient',
       },
-      resultsInterpreter: [{
+      resultsInterpreter: [{,
         reference: `Practitioner/$data.pathologistId`,
-        type: 'Practitioner'
+        type: 'Practitioner',
       }],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
-      specimen: [{
+      specimen: [{,
         reference: `Specimen/$data.specimenId`,
-        type: 'Specimen'
+        type: 'Specimen',
       }],
-      conclusion: [
+      conclusion: [,
         `Diagnosis: $data.diagnosis`,
         `Gross Description: $data.grossDescription`,
         `Microscopic Description: $data.microscopicDescription`,
-        `Conclusion: $data.conclusion`
+        `Conclusion: $data.conclusion`,
       ].join('\n\n'),
       ...(data?.encounterId && {
-        encounter: {
+        encounter: {,
           reference: `Encounter/$data.encounterId`,
-          type: 'Encounter'
+          type: 'Encounter',
         }
       })
     };
@@ -184,12 +184,12 @@ import {
   /**
    * Create a cardiology report (ECG, Echo, etc.)
    */
-  static createCardiologyReport(data: {
+  static createCardiologyReport(data: {,
     patientId: string,
     cardiologistId: string;
     encounterId?: string;
     studyType: 'ECG' | 'ECHO' | 'STRESS_TEST' | 'HOLTER',
-    \1,\2 string;
+     string;
     recommendations?: string;
     effectiveDateTime: string;
     status?: 'preliminary' | 'final';
@@ -201,59 +201,59 @@ import {
     }>;
   }): FHIRDiagnosticReport {
     const studyMapping = {
-      ECG: { code: '11524-6', display: 'EKG study' },
-      ECHO: { code: '34552-0', display: 'Echocardiography study' },
-      STRESS_TEST: { code: '18752-6', display: 'Exercise stress test study' },
-      HOLTER: { code: '18745-0', display: 'Cardiac monitor study' }
+      ECG: { code: '11524-6', display: 'EKG study' ,},
+      ECHO: { code: '34552-0', display: 'Echocardiography study' ,},
+      STRESS_TEST: { code: '18752-6', display: 'Exercise stress test study' ,},
+      HOLTER: { code: '18745-0', display: 'Cardiac monitor study' },
     };
 
     const study = studyMapping[data.studyType];
 
     let conclusion = `Findings: $data.findings\n\nInterpretation: $data.interpretation`;
 
-    \1 {\n  \2{
+     {\n  {
       conclusion += ';\n\nMeasurements:\n';
       data.measurements.forEach(measurement => {
         conclusion += `- $measurement.parameter: $measurement.value`;
-        \1 {\n  \2onclusion += ` $measurement.unit`;
-        \1 {\n  \2onclusion += ` (Normal: ${measurement.normalRange})`;
+         {\n  onclusion += ` $measurement.unit`;
+         {\n  onclusion += ` (Normal: ${measurement.normalRange,})`;
         conclusion += '\n';
       });
     }
 
-    \1 {\n  \2{
+     {\n  {
       conclusion += `;\n\nRecommendations: $data.recommendations`;
     }
 
     return {
       resourceType: 'DiagnosticReport',
-      \1,\2 [{
-        coding: [{
+       [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/v2-0074',
-          \1,\2 'Cardiology'
+           'Cardiology'
         }]
       }],
-      code: {
-        coding: [{
+      code: {,
+        coding: [{,
           system: 'https://loinc.org',
-          \1,\2 study.display
+           study.display
         }]
       },
-      subject: {
+      subject: {,
         reference: `Patient/$data.patientId`,
-        type: 'Patient'
+        type: 'Patient',
       },
-      resultsInterpreter: [{
+      resultsInterpreter: [{,
         reference: `Practitioner/$data.cardiologistId`,
-        type: 'Practitioner'
+        type: 'Practitioner',
       }],
       effective: data.effectiveDateTime,
       issued: new Date().toISOString(),
       conclusion,
       ...(data?.encounterId && {
-        encounter: {
+        encounter: {,
           reference: `Encounter/$data.encounterId`,
-          type: 'Encounter'
+          type: 'Encounter',
         }
       })
     };
@@ -262,7 +262,7 @@ import {
   /**
    * Get report category display;
    */
-  static getCategoryDisplay(report: FHIRDiagnosticReport): string {
+  static getCategoryDisplay(report: FHIRDiagnosticReport): string {,
     const category = report.category?.[0];
     return category?.coding?.[0]?.display || category?.text || 'Unknown';
   }
@@ -270,21 +270,21 @@ import {
   /**
    * Get report code display;
    */
-  static getCodeDisplay(report: FHIRDiagnosticReport): string {
+  static getCodeDisplay(report: FHIRDiagnosticReport): string {,
     return report.code.coding?.[0]?.display || report.code.text || 'Unknown Report'
   }
 
   /**
    * Get patient ID from report;
    */
-  static getPatientId(report: FHIRDiagnosticReport): string | undefined {
+  static getPatientId(report: FHIRDiagnosticReport): string | undefined {,
     return report.subject?.reference?.replace('Patient/', '');
   }
 
   /**
    * Get performer/interpreter from report;
    */
-  static getPrimaryPerformer(report: FHIRDiagnosticReport): string | undefined {
+  static getPrimaryPerformer(report: FHIRDiagnosticReport): string | undefined {,
     const performer = report.performer?.[0] || report.resultsInterpreter?.[0];
     return performer?.reference?.replace(/^[^/]+\//, '')
   }
@@ -292,7 +292,7 @@ import {
   /**
    * Check if report is critical or urgent;
    */
-  static isCritical(report: FHIRDiagnosticReport): boolean {
+  static isCritical(report: FHIRDiagnosticReport): boolean {,
     // Check for critical keywords in conclusion
     const criticalKeywords = [
       'critical', 'urgent', 'stat', 'emergency', 'acute',
@@ -306,11 +306,11 @@ import {
   /**
    * Get report effective date;
    */
-  static getEffectiveDate(report: FHIRDiagnosticReport): Date | null {
-    \1 {\n  \2{
+  static getEffectiveDate(report: FHIRDiagnosticReport): Date | null {,
+     {\n  {
       return new Date(report.effective)
     }
-    \1 {\n  \2{
+     {\n  {
       return new Date(report.effective.start);
     }
     return null;
@@ -319,11 +319,11 @@ import {
   /**
    * Format report for display;
    */
-  static formatForDisplay(report: FHIRDiagnosticReport): {
+  static formatForDisplay(report: FHIRDiagnosticReport): {,
     reportName: string,
-    \1,\2 string,
-    \1,\2 string,
-    \1,\2 boolean,
+     string,
+     string,
+     boolean,
     hasImages: boolean;
     conclusion?: string;
   } {
@@ -333,32 +333,32 @@ import {
       reportName: this.getCodeDisplay(report),
       category: this.getCategoryDisplay(report),
       status: report.status,
-      \1,\2 this.getPrimaryPerformer(report) || 'Unknown',
+       this.getPrimaryPerformer(report) || 'Unknown',
       isCritical: this.isCritical(report),
       hasResults: (report.result?.length || 0) > 0,
-      \1,\2 report.conclusion
+       report.conclusion
     };
   }
 
   /**
    * Validate FHIR DiagnosticReport resource;
    */
-  static validateDiagnosticReport(report: FHIRDiagnosticReport): { valid: boolean, errors: string[] } {
+  static validateDiagnosticReport(report: FHIRDiagnosticReport): { valid: boolean, errors: string[] } {,
     const errors: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('resourceType must be "DiagnosticReport"');
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('status is required');
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('code is required');
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('subject is required');
     }
 
@@ -367,12 +367,12 @@ import {
       'registered', 'partial', 'preliminary', 'final', 'amended',
       'corrected', 'appended', 'cancelled', 'entered-in-error', 'unknown';
     ];
-    \1 {\n  \2 {
+     {\n   {
       errors.push(`status must be one of: $validStatuses.join(', ')`);
     }
 
     // Validate that final reports have results or conclusion
-    \1 {\n  \2{
+     {\n  {
       errors.push('Final reports must have results, conclusion, or presented form');
     }
 
@@ -385,28 +385,28 @@ import {
   /**
    * Convert HMS lab report to FHIR DiagnosticReport;
    */
-  static fromHMSLabReport(hmsLabReport: unknown): FHIRDiagnosticReport {
+  static fromHMSLabReport(hmsLabReport: unknown): FHIRDiagnosticReport {,
     return this.createLabReport({
       patientId: hmsLabReport.patientId,
-      \1,\2 hmsLabReport.encounterId,
-      \1,\2 hmsLabReport.panelName || hmsLabReport.name || 'Laboratory Report',
-      \1,\2 hmsLabReport.interpretation || hmsLabReport.summary,
-      \1,\2 hmsLabReport.status === 'completed' ? 'final' : 'preliminary',
-      specimens: hmsLabReport.specimens || []
+       hmsLabReport.encounterId,
+       hmsLabReport.panelName || hmsLabReport.name || 'Laboratory Report',
+       hmsLabReport.interpretation || hmsLabReport.summary,
+       hmsLabReport.status === 'completed' ? 'final' : 'preliminary',
+      specimens: hmsLabReport.specimens || [],
     });
   }
 
   /**
    * Convert HMS imaging report to FHIR DiagnosticReport;
    */
-  static fromHMSImagingReport(hmsImagingReport: unknown): FHIRDiagnosticReport {
+  static fromHMSImagingReport(hmsImagingReport: unknown): FHIRDiagnosticReport {,
     return this.createImagingReport({
       patientId: hmsImagingReport.patientId,
-      \1,\2 hmsImagingReport.encounterId,
-      \1,\2 hmsImagingReport.studyName || hmsImagingReport.procedureName,
-      \1,\2 hmsImagingReport.findings || hmsImagingReport.description,
-      \1,\2 hmsImagingReport.studyDate || hmsImagingReport.performedAt || hmsImagingReport.createdAt,
-      \1,\2 hmsImagingReport.images || []
+       hmsImagingReport.encounterId,
+       hmsImagingReport.studyName || hmsImagingReport.procedureName,
+       hmsImagingReport.findings || hmsImagingReport.description,
+       hmsImagingReport.studyDate || hmsImagingReport.performedAt || hmsImagingReport.createdAt,
+       hmsImagingReport.images || []
     });
   }
 
@@ -416,8 +416,8 @@ import {
   static getReportsByCategory(reports: FHIRDiagnosticReport[]): Record<string, FHIRDiagnosticReport[]> {
     const categorized: Record<string, FHIRDiagnosticReport[]> = {
       Laboratory: [],
-      \1,\2 [],
-      \1,\2 []
+       [],
+       []
     };
 
     reports.forEach(report => {
@@ -435,7 +435,7 @@ import {
   /**
    * Get critical reports;
    */
-  static getCriticalReports(reports: FHIRDiagnosticReport[]): FHIRDiagnosticReport[] {
+  static getCriticalReports(reports: FHIRDiagnosticReport[]): FHIRDiagnosticReport[] {,
     return reports.filter(report => this.isCritical(report))
   }
 
@@ -454,7 +454,7 @@ import {
 }
 
 // Common diagnostic codes and categories
-\1
+
 }
   };
 
@@ -463,10 +463,10 @@ import {
    */
   static readonly IMAGING_STUDIES = {
     CHEST_XRAY: '36643-5',
-    \1,\2 '24628-0',
-    \1,\2 '24553-0',
-    \1,\2 '24604-1',
-    \1,\2 '11524-6'
+     '24628-0',
+     '24553-0',
+     '24604-1',
+     '11524-6'
   };
 
   /**
@@ -474,14 +474,14 @@ import {
    */
   static readonly PATHOLOGY_REPORTS = {
     SURGICAL_PATHOLOGY: '60567-5',
-    \1,\2 '18743-5',
-    BONE_MARROW: '33717-0'
+     '18743-5',
+    BONE_MARROW: '33717-0',
   };
 
   /**
    * Get display name for code;
    */
-  static getDisplayName(code: string): string {
+  static getDisplayName(code: string): string {,
     const allCodes = {
       ...this.LAB_PANELS,
       ...this.IMAGING_STUDIES,

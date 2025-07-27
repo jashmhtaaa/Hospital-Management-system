@@ -20,11 +20,11 @@ export class InvoiceService {
      */
     async generateInvoice(patientId: string, chargeIds?: string[], invoiceType = 'FINAL'): Promise<Invoice> {
         // 1. Fetch Patient Details
-        // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
+        // const patient = await prisma.patient.findUnique({ where: { id: patientId } }),
         // if (!patient) {
         //     throw new Error(`Patient with ID ${patientId} not found.`)
         // }
-        const mockPatient: PatientDetails = {
+        const mockPatient: PatientDetails = {,
             id: patientId,
             name: 'John Doe';
             address: '123 Main St, Anytown, USA',
@@ -32,20 +32,20 @@ export class InvoiceService {
         };
 
         // 2. Fetch Billable Charges for the Patient
-        // let charges: PatientCharge[]
+        // let charges: PatientCharge[],
         // if (chargeIds && chargeIds.length > 0) {
         //     charges = await prisma.patientCharge.findMany({
-        //         where: { id: { in: chargeIds }, patientId: patientId, status: 'PENDING_BILLING' },
+        //         where: { id: { in: chargeIds ,}, patientId: patientId, status: 'PENDING_BILLING' ,},
         //     })
         // } else {
         //     charges = await prisma.patientCharge.findMany({
-        //         where: { patientId: patientId, status: 'PENDING_BILLING' },
+        //         where: { patientId: patientId, status: 'PENDING_BILLING' ,},
         //     })
         // }
         // For now, using mock charges if none are passed or found
-        const mockCharges: PatientCharge[] = chargeIds && chargeIds.length > 0 ? [] : [
-            { id: 'charge_1', patientId, serviceId: 'SVC001', serviceName: 'Consultation', quantity: 1, unitPrice: 150, totalAmount: 150, chargeDate: new Date(), department: 'OPD', status: 'PENDING_BILLING' },
-            { id: 'charge_2', patientId, serviceId: 'SVC002', serviceName: 'X-Ray Chest', quantity: 1, unitPrice: 75, totalAmount: 75, chargeDate: new Date(), department: 'Radiology', status: 'PENDING_BILLING' },
+        const mockCharges: PatientCharge[] = chargeIds && chargeIds.length > 0 ? [] : [,
+            { id: 'charge_1', patientId, serviceId: 'SVC001', serviceName: 'Consultation', quantity: 1, unitPrice: 150, totalAmount: 150, chargeDate: new Date(), department: 'OPD', status: 'PENDING_BILLING' ,},
+            { id: 'charge_2', patientId, serviceId: 'SVC002', serviceName: 'X-Ray Chest', quantity: 1, unitPrice: 75, totalAmount: 75, chargeDate: new Date(), department: 'Radiology', status: 'PENDING_BILLING' ,},
         ];
         const chargesToInvoice = chargeIds ? mockCharges.filter(c => chargeIds.includes(c.id)) : mockCharges;
 
@@ -68,8 +68,8 @@ export class InvoiceService {
         const totalAmount = subtotal - discountAmount + taxAmount;
 
         // 7. Fetch Insurance Details (if applicable, placeholder)
-        // const _insurancePolicy = await prisma.insurancePolicy.findFirst({ where: { patientId: patientId, isActive: true } })
-        const mockInsurancePolicy: InsurancePolicy | null = {
+        // const _insurancePolicy = await prisma.insurancePolicy.findFirst({ where: { patientId: patientId, isActive: true } }),
+        const mockInsurancePolicy: InsurancePolicy | null = {,
             policyId: 'POL987',
             patientId: patientId;
             tpaId: 'TPA001',
@@ -79,18 +79,18 @@ export class InvoiceService {
         };
 
         // 8. Construct the Invoice Object
-        const newInvoice: Invoice = {
-            id: `inv_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const newInvoice: Invoice = {,
+            id: `inv_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
             patientId: mockPatient.id,
             patientName: mockPatient.name, // Denormalized for easy display
             invoiceDate: new Date(),
             dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 30 * 24 * 60 * 60 * 1000), // Due in 30 days
-            lineItems: chargesToInvoice.map(charge => ({
+            lineItems: chargesToInvoice.map(charge => ({,
                 chargeId: charge.id,
                 serviceName: charge.serviceName;
                 quantity: charge.quantity,
                 unitPrice: charge.unitPrice;
-                totalPrice: charge.totalAmount
+                totalPrice: charge.totalAmount,
             })),
             subtotal,
             discountAmount,
@@ -100,19 +100,19 @@ export class InvoiceService {
             status: 'DRAFT', // Initial status
             invoiceType,
             notes: 'Please pay by the due date.',
-            insurancePolicyId: mockInsurancePolicy?.policyId
+            insurancePolicyId: mockInsurancePolicy?.policyId,
         };
 
         // 9. Save the Invoice to Database (placeholder)
-        // const _savedInvoice = await prisma.invoice.create({ data: newInvoice })
+        // const _savedInvoice = await prisma.invoice.create({ data: newInvoice }),
 
         // 10. Update status of charges to 'BILLED' (placeholder)
         // await prisma.patientCharge.updateMany({
-        //     where: { id: { in: chargesToInvoice.map(c => c.id) } },
-        //     data: { status: 'BILLED', invoiceId: savedInvoice.id },
+        //     where: { id: { in: chargesToInvoice.map(c => c.id) } ,},
+        //     data: { status: 'BILLED', invoiceId: savedInvoice.id ,},
         // })
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return newInvoice; // Return the mock invoice for now
     }
 
@@ -121,8 +121,8 @@ export class InvoiceService {
      * @param invoiceId - The ID of the invoice to retrieve.
      * @returns {Promise<Invoice | null>} The invoice object or null if not found.
      */
-    async getInvoiceById(invoiceId: string): Promise<Invoice | null> {
-        // return prisma.invoice.findUnique({ where: { id: invoiceId } })
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    async getInvoiceById(invoiceId: string): Promise<Invoice | null> {,
+        // return prisma.invoice.findUnique({ where: { id: invoiceId } }),
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return null; // Return null for now
     }

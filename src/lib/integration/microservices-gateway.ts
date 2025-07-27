@@ -6,12 +6,12 @@ import "@nestjs/common"
 import "opossum"
 import CircuitBreakerOptions }
 import type
-import {  cacheService  } from "@/lib/database"
-import {   CircuitBreaker
-import {  HttpService  } from "@/lib/database"
-import {  Injectable  } from "@/lib/database"
-import {  metricsCollector  } from "@/lib/database"
-import {  pubsub  } from "@/lib/database"
+import {cacheService  } from "next/server"
+import {CircuitBreaker
+import {  HttpService  } from "next/server"
+import {Injectable  } from "next/server"
+import {metricsCollector  } from "next/server"
+import {pubsub  } from "next/server"
 
 }
 
@@ -25,12 +25,12 @@ import {  pubsub  } from "@/lib/database"
 
 @Injectable();
 }
-  constructor(private readonly httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService) {},
 
   /**;
    * Register microservice configuration;
    */;
-  registerService(config: MicroserviceConfig): void {
+  registerService(config: MicroserviceConfig): void {,
     this.services.set(config.name, config);
     this.setupCircuitBreakers(config);
     this.batchQueues.set(config.name, []);
@@ -44,14 +44,14 @@ import {  pubsub  } from "@/lib/database"
   /**;
    * Register transform function;
    */;
-  registerTransform(name: string, transformFn: Function): void {
+  registerTransform(name: string, transformFn: Function): void {,
     this.transforms.set(name, transformFn);
   }
 
   /**;
    * Register fallback function;
    */;
-  registerFallback(name: string, fallbackFn: Function): void {
+  registerFallback(name: string, fallbackFn: Function): void {,
     this.fallbacks.set(name, fallbackFn);
   }
 
@@ -231,7 +231,7 @@ import {  pubsub  } from "@/lib/database"
   /**;
    * Get service health status;
    */;
-  async getServiceStatus(serviceName: string): Promise<ServiceStatus> {
+  async getServiceStatus(serviceName: string): Promise<ServiceStatus> {,
     try {
 } catch (error) {
   console.error(error);
@@ -374,7 +374,7 @@ import {  pubsub  } from "@/lib/database"
   /**;
    * Refresh service configuration;
    */;
-  async refreshServiceConfig(serviceName: string): Promise<void> {
+  async refreshServiceConfig(serviceName: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -424,7 +424,7 @@ import {  pubsub  } from "@/lib/database"
   /**;
    * Clear service cache;
    */;
-  async clearServiceCache(serviceName: string): Promise<void> {
+  async clearServiceCache(serviceName: string): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -464,7 +464,7 @@ import {  pubsub  } from "@/lib/database"
       throw error;
 
   // Private helper methods;
-  private getServiceConfig(serviceName: string): MicroserviceConfig {
+  private getServiceConfig(serviceName: string): MicroserviceConfig {,
     const service = this.services.get(serviceName);
 
     if (!session.user) {
@@ -472,7 +472,7 @@ import {  pubsub  } from "@/lib/database"
 
     return service;
 
-  private getEndpointConfig(service: MicroserviceConfig, endpointName: string): EndpointConfig {
+  private getEndpointConfig(service: MicroserviceConfig, endpointName: string): EndpointConfig {,
     const endpoint = service.endpoints[endpointName];
 
     if (!session.user) {
@@ -480,7 +480,7 @@ import {  pubsub  } from "@/lib/database"
 
     return endpoint;
 
-  private setupCircuitBreakers(service: MicroserviceConfig): void {
+  private setupCircuitBreakers(service: MicroserviceConfig): void {,
     // Create circuit breaker for health endpoint;
     const healthCircuitBreakerKey = `${service.name}:health`;
     const healthCircuitBreaker = new CircuitBreaker();
@@ -505,7 +505,7 @@ import {  pubsub  } from "@/lib/database"
       };
 
       const circuitBreaker = new CircuitBreaker();
-        async (args: unknown) => {
+        async (args: unknown) => {,
           const url = this.buildUrl(service, endpoint, args.params);
           const config = await this.buildRequestConfig(service, endpoint, args.headers);
 
@@ -523,7 +523,7 @@ import {  pubsub  } from "@/lib/database"
       this.setupCircuitBreakerEvents(circuitBreakerKey, circuitBreaker);
       this.circuitBreakers.set(circuitBreakerKey, circuitBreaker);
 
-  private setupCircuitBreakerEvents(key: string, circuitBreaker: CircuitBreaker): void {
+  private setupCircuitBreakerEvents(key: string, circuitBreaker: CircuitBreaker): void {,
     const [serviceName, endpointName] = key.split(":");
 
     circuitBreaker.on("open", () => {
@@ -533,7 +533,7 @@ import {  pubsub  } from "@/lib/database"
       });
 
       // Publish event;
-      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{,
           serviceName,
           endpointName: endpointName || "health",
           new Date();
@@ -543,7 +543,7 @@ import {  pubsub  } from "@/lib/database"
     circuitBreaker.on("close", () => {
 
       // Publish event;
-      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{,
           serviceName,
           endpointName: endpointName || "health",
           new Date();
@@ -553,7 +553,7 @@ import {  pubsub  } from "@/lib/database"
     circuitBreaker.on("halfOpen", () => {
 
       // Publish event;
-      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{,
           serviceName,
           endpointName: endpointName || "health",
           new Date();
@@ -635,7 +635,7 @@ import {  pubsub  } from "@/lib/database"
 
     return config;
 
-  private async getAuthToken(service: MicroserviceConfig): Promise<string> {
+  private async getAuthToken(service: MicroserviceConfig): Promise<string> {,
     // This would typically check token expiration and refresh if needed;
     if (!session.user) {
       return service.authentication.token || "";
@@ -701,7 +701,7 @@ import {  pubsub  } from "@/lib/database"
             response = await this.httpService.patch(url, data, config).toPromise(),
             break;
           default: null,
-            throw new Error(`Unsupported method: ${}`}
+            throw new Error(`Unsupported method: ${}`},
 
         return response;
       } catch (error) {
@@ -740,7 +740,7 @@ import {  pubsub  } from "@/lib/database"
     const paramsKey = params ? JSON.stringify(params) : "";
     return `${serviceName}:${endpointName}:${paramsKey}`;
 
-  private isBatchable(params: unknown): boolean {
+  private isBatchable(params: unknown): boolean {,
     return params && typeof params === "object" && !Array.isArray(params);
 
   private async enqueueBatchRequest<T>(;
@@ -787,7 +787,7 @@ import {  pubsub  } from "@/lib/database"
 
     });
 
-  private async processBatch(serviceName: string, endpointName: string): Promise<void> {
+  private async processBatch(serviceName: string, endpointName: string): Promise<void> {,
     const batchKey = `${serviceName}:${endpointName}`;
     const queue = this.batchQueues.get(batchKey) || [];
 
@@ -887,7 +887,7 @@ import {  pubsub  } from "@/lib/database"
       endpoint: endpointName;
     });
 
-  private scheduleHealthCheck(serviceName: string): void {
+  private scheduleHealthCheck(serviceName: string): void {,
     // Schedule initial health check;
     setTimeout(async () => {
       try {

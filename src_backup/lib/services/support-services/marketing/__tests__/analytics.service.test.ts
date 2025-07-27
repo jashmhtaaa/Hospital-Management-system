@@ -44,25 +44,25 @@ describe("AnalyticsService", () => {
     };
 
     const mockActivities = [;
-      { id: "activity-1", type: "EMAIL_SENT", timestamp: new Date("2023-01-02") },
-      { id: "activity-2", type: "EMAIL_OPEN", timestamp: new Date("2023-01-03") },
-      { id: "activity-3", type: "EMAIL_CLICK", timestamp: new Date("2023-01-04") },
-      { id: "activity-4", type: "EMAIL_OPEN", timestamp: new Date("2023-01-05") },
-      { id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06") }];
+      { id: "activity-1", type: "EMAIL_SENT", timestamp: new Date("2023-01-02") ,},
+      { id: "activity-2", type: "EMAIL_OPEN", timestamp: new Date("2023-01-03") ,},
+      { id: "activity-3", type: "EMAIL_CLICK", timestamp: new Date("2023-01-04") ,},
+      { id: "activity-4", type: "EMAIL_OPEN", timestamp: new Date("2023-01-05") ,},
+      { id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06") ,}];
 
     const mockActivityCounts = [;
-      { type: "EMAIL_SENT", count: 100 },
-      { type: "EMAIL_OPEN", count: 45 },
-      { type: "EMAIL_CLICK", count: 20 },
-      { type: "CONVERSION", count: 5 }];
+      { type: "EMAIL_SENT", count: 100 ,},
+      { type: "EMAIL_OPEN", count: 45 ,},
+      { type: "EMAIL_CLICK", count: 20 ,},
+      { type: "CONVERSION", count: 5 ,}];
 
     const mockDailyStats = [;
-      { date: "2023-01-02", type: "EMAIL_SENT", count: 100 },
-      { date: "2023-01-03", type: "EMAIL_OPEN", count: 30 },
-      { date: "2023-01-04", type: "EMAIL_OPEN", count: 15 },
-      { date: "2023-01-04", type: "EMAIL_CLICK", count: 10 },
-      { date: "2023-01-05", type: "EMAIL_CLICK", count: 10 },
-      { date: "2023-01-06", type: "CONVERSION", count: 5 }];
+      { date: "2023-01-02", type: "EMAIL_SENT", count: 100 ,},
+      { date: "2023-01-03", type: "EMAIL_OPEN", count: 30 ,},
+      { date: "2023-01-04", type: "EMAIL_OPEN", count: 15 ,},
+      { date: "2023-01-04", type: "EMAIL_CLICK", count: 10 ,},
+      { date: "2023-01-05", type: "EMAIL_CLICK", count: 10 ,},
+      { date: "2023-01-06", type: "CONVERSION", count: 5 ,}];
 
     it("should retrieve campaign analytics successfully", async () => {
       // Arrange;
@@ -82,7 +82,7 @@ describe("AnalyticsService", () => {
 
       // Assert;
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
-        where: { id: "campaign-123" }}),
+        where: { id: "campaign-123" },}),
       expect(result).toEqual(expect.objectContaining({
         campaignId: "campaign-123",
         mockActivities.length,
@@ -298,22 +298,22 @@ describe("AnalyticsService", () => {
     };
 
     const mockActivities = [;
-      { id: "activity-1", type: "EMAIL_OPEN", timestamp: new Date("2023-01-02"), campaignId: "campaign-1" },
-      { id: "activity-2", type: "EMAIL_CLICK", timestamp: new Date("2023-01-03"), campaignId: "campaign-1" },
-      { id: "activity-3", type: "FORM_SUBMISSION", timestamp: new Date("2023-01-04"), campaignId: null },
-      { id: "activity-4", type: "PAGE_VIEW", timestamp: new Date("2023-01-05"), campaignId: null },
-      { id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06"), campaignId: "campaign-2" }];
+      { id: "activity-1", type: "EMAIL_OPEN", timestamp: new Date("2023-01-02"), campaignId: "campaign-1" ,},
+      { id: "activity-2", type: "EMAIL_CLICK", timestamp: new Date("2023-01-03"), campaignId: "campaign-1" ,},
+      { id: "activity-3", type: "FORM_SUBMISSION", timestamp: new Date("2023-01-04"), campaignId: null ,},
+      { id: "activity-4", type: "PAGE_VIEW", timestamp: new Date("2023-01-05"), campaignId: null ,},
+      { id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06"), campaignId: "campaign-2" ,}];
 
     const mockActivityCounts = [;
-      { type: "EMAIL_OPEN", count: 10 },
-      { type: "EMAIL_CLICK", count: 5 },
-      { type: "FORM_SUBMISSION", count: 2 },
-      { type: "PAGE_VIEW", count: 15 },
-      { type: "CONVERSION", count: 1 }];
+      { type: "EMAIL_OPEN", count: 10 ,},
+      { type: "EMAIL_CLICK", count: 5 ,},
+      { type: "FORM_SUBMISSION", count: 2 ,},
+      { type: "PAGE_VIEW", count: 15 ,},
+      { type: "CONVERSION", count: 1 ,}];
 
     const mockCampaignActivities = [;
-      { campaignId: "campaign-1", count: 3 },
-      { campaignId: "campaign-2", count: 2 }];
+      { campaignId: "campaign-1", count: 3 ,},
+      { campaignId: "campaign-2", count: 2 ,}];
 
     it("should retrieve contact activity analytics successfully", async () => {
       // Arrange;
@@ -333,11 +333,11 @@ describe("AnalyticsService", () => {
 
       // Assert;
       expect(prisma.contactActivity.count).toHaveBeenCalledWith({
-        where: { contactId: "contact-123" }}),
+        where: { contactId: "contact-123" },}),
       expect(prisma.contactActivity.groupBy).toHaveBeenCalledWith();
         expect.objectContaining({
           by: ["type"],
-          where: { contactId: "contact-123" },
+          where: { contactId: "contact-123" ,},
           _count: true;
         });
       );

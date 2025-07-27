@@ -1,5 +1,5 @@
 import "./database"
-import {  DB  } from "@/lib/database"
+import {DB  } from "next/server"
 
 /**;
  * Notifications module for HMS Diagnostics;
@@ -12,6 +12,7 @@ import {  DB  } from "@/lib/database"
  * Database result interface;
  */;
 interface DBResult {
+    {
   number;
   affectedRows: number;
 }
@@ -231,7 +232,7 @@ export const getUserNotifications = async();
 
     const result = await db.query(query, params) as DBResult;
 
-    return result.results.map((notification: any) => ({
+    return result.results.map((notification: any) => ({,
       ...notification,
       metadata: notification.metadata ? JSON.parse(notification.metadata) : null;
     }));

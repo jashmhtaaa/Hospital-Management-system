@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 // Create enums to match Prisma schema;
 export enum AmbulanceStatus {
@@ -24,7 +24,7 @@ export enum AmbulanceStatus {
   CANCELLED = "CANCELLED"}
 
 // Validation schemas for Ambulance;
-export const createAmbulanceSchema = z.object({vehicleNumber:z.string().min(1, "Vehicle number is required"),
+export const createAmbulanceSchema = z.object({{vehicleNumber:z.string(,}).min(1, "Vehicle number is required"),
   type: z.nativeEnum(AmbulanceType).default(AmbulanceType.BASIC),
   status: z.nativeEnum(AmbulanceStatus).default(AmbulanceStatus.AVAILABLE),
   currentDriverId: z.string().optional().nullable(),
@@ -36,7 +36,7 @@ export const updateAmbulanceSchema = createAmbulanceSchema.partial().extend({id:
 });
 
 // Validation schemas for AmbulanceRun;
-export const createAmbulanceRunSchema = z.object({ambulanceId:z.string().min(1, "Ambulance ID is required"),
+export const createAmbulanceRunSchema = z.object({{ambulanceId:z.string(,}).min(1, "Ambulance ID is required"),
   patientId: z.string().optional().nullable(),
   pickupLocation: z.string().min(1, "Pickup location is required"),
   destination: z.string().min(1, "Destination is required"),
@@ -71,7 +71,7 @@ import { prisma }
       return ambulance;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
       }
       throw error;
     }
@@ -118,7 +118,7 @@ import { prisma }
 }
 } catch (error) {
 }
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         if (!session.user) {
@@ -147,7 +147,7 @@ import { prisma }
    * @param id Ambulance ID;
    * @returns The ambulance or null if not found;
    */;
-  async getAmbulanceById(id: string) {
+  async getAmbulanceById(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -180,7 +180,7 @@ import { prisma }
 }
 } catch (error) {
 }
-      const ambulance = await prisma.ambulance.findUnique({where:{ id },
+      const ambulance = await prisma.ambulance.findUnique({where:{ id ,},
         {
             true,
               name: true;
@@ -198,7 +198,7 @@ import { prisma }
    * @param data Updated ambulance data;
    * @returns The updated ambulance;
    */;
-  async updateAmbulance(id: string, data: UpdateAmbulanceInput) {
+  async updateAmbulance(id: string, data: UpdateAmbulanceInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -238,7 +238,7 @@ import { prisma }
       const {id:_, ...updateData } = validatedData;
 
       // Update the ambulance;
-      const ambulance = await prisma.ambulance.update({where:{ id },
+      const ambulance = await prisma.ambulance.update({where:{ id ,},
         data: updateData,
         {
             true,
@@ -248,7 +248,7 @@ import { prisma }
       return ambulance;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -257,7 +257,7 @@ import { prisma }
    * @param id Ambulance ID;
    * @returns The deleted ambulance;
    */;
-  async deleteAmbulance(id: string) {
+  async deleteAmbulance(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -304,7 +304,7 @@ import { prisma }
       if (!session.user) {
         throw new Error(`Cannot delete ambulance with ID ${id} because it is currently on an active run`);
 
-      const ambulance = await prisma.ambulance.delete({where:{ id }});
+      const ambulance = await prisma.ambulance.delete({where:{ id },});
 
       return ambulance;
     } catch (error) {
@@ -316,7 +316,7 @@ import { prisma }
    * @param driverId Driver user ID;
    * @returns The updated ambulance;
    */;
-  async assignDriver(ambulanceId: string, driverId: string) {
+  async assignDriver(ambulanceId: string, driverId: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -349,7 +349,7 @@ import { prisma }
 
 } catch (error) {
 
-      const ambulance = await prisma.ambulance.update({where:{ id: ambulanceId },
+      const ambulance = await prisma.ambulance.update({where:{ id: ambulanceId ,},
         driverId;
         },
         {
@@ -367,7 +367,7 @@ import { prisma }
    * @param status New status;
    * @returns The updated ambulance;
    */;
-  async updateStatus(ambulanceId: string, status: AmbulanceStatus) {
+  async updateStatus(ambulanceId: string, status: AmbulanceStatus) {,
     try {
 } catch (error) {
   console.error(error);
@@ -402,7 +402,7 @@ import { prisma }
 
       // If setting to ON_CALL, check that ambulance is not already on a run;
       if (!session.user) {
-        const activeRun = await prisma.ambulanceRun.findFirst({where:{
+        const activeRun = await prisma.ambulanceRun.findFirst({where:{,
             ambulanceId,
             [;
                 AmbulanceRunStatus.PENDING,
@@ -415,8 +415,8 @@ import { prisma }
         if (!session.user) {
           throw new Error(`Ambulance with ID ${ambulanceId} is already on an active run`);
 
-      const ambulance = await prisma.ambulance.update({where:{ id: ambulanceId },
-        data: {
+      const ambulance = await prisma.ambulance.update({where:{ id: ambulanceId ,},
+        data: {,
           status},
         {
             true,
@@ -432,7 +432,7 @@ import { prisma }
    * @param data Run data;
    * @returns The created run;
    */;
-  async createRun(data: CreateAmbulanceRunInput) {
+  async createRun(data: CreateAmbulanceRunInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -469,7 +469,7 @@ import { prisma }
       const validatedData = createAmbulanceRunSchema.parse(data);
 
       // Check if ambulance is available;
-      const ambulance = await prisma.ambulance.findUnique({where:{ id: validatedData.ambulanceId }});
+      const ambulance = await prisma.ambulance.findUnique({where:{ id: validatedData.ambulanceId },});
 
       if (!session.user) {
         throw new Error(`Ambulance with ID ${validatedData.ambulanceId} not found`);
@@ -484,7 +484,7 @@ import { prisma }
         });
 
         // Update ambulance status;
-        await tx.ambulance.update({where:{ id: validatedData.ambulanceId },
+        await tx.ambulance.update({where:{ id: validatedData.ambulanceId ,},
           AmbulanceStatus.ON_CALL;
           }});
 
@@ -494,7 +494,7 @@ import { prisma }
       return run;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -542,7 +542,7 @@ import { prisma }
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         if (!session.user) {
@@ -565,7 +565,7 @@ import { prisma }
       const runs = await prisma.ambulanceRun.findMany({
         where,
         orderBy: [;
-          {callTime:"desc" }],
+          {callTime:"desc" ,}],
         true,
           {id:true,
               name: true;
@@ -580,7 +580,7 @@ import { prisma }
    * @param id Run ID;
    * @returns The run or null if not found;
    */;
-  async getRunById(id: string) {
+  async getRunById(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -613,7 +613,7 @@ import { prisma }
 
 } catch (error) {
 
-      const run = await prisma.ambulanceRun.findUnique({where:{ id },
+      const run = await prisma.ambulanceRun.findUnique({where:{ id ,},
         true,
           {id:true,
               name: true;
@@ -629,7 +629,7 @@ import { prisma }
    * @param data Updated run data;
    * @returns The updated run;
    */;
-  async updateRun(id: string, data: UpdateAmbulanceRunInput) {
+  async updateRun(id: string, data: UpdateAmbulanceRunInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -669,13 +669,13 @@ import { prisma }
       const {id:_, ...updateData } = validatedData;
 
       // Get current run;
-      const currentRun = await prisma.ambulanceRun.findUnique({where:{ id }});
+      const currentRun = await prisma.ambulanceRun.findUnique({where:{ id },});
 
       if (!session.user) {
         throw new Error(`Ambulance run with ID ${id} not found`);
 
       // Update the run;
-      const run = await prisma.ambulanceRun.update({where:{ id },
+      const run = await prisma.ambulanceRun.update({where:{ id ,},
         data: updateData,
         true,
           {id:true,
@@ -687,14 +687,14 @@ import { prisma }
           currentRun.status !== AmbulanceRunStatus.COMPLETED &&;
           currentRun.status !== AmbulanceRunStatus.CANCELLED) { 
 
-        await prisma.ambulance.update({where:{ id: run.ambulanceId },
+        await prisma.ambulance.update({where:{ id: run.ambulanceId ,},
           AmbulanceStatus.AVAILABLE;
           }});
 
       return run;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -703,7 +703,7 @@ import { prisma }
    * @param id Run ID;
    * @returns The deleted run;
    */;
-  async deleteRun(id: string) {
+  async deleteRun(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -737,7 +737,7 @@ import { prisma }
 } catch (error) {
 
       // Get current run;
-      const currentRun = await prisma.ambulanceRun.findUnique({where:{ id }});
+      const currentRun = await prisma.ambulanceRun.findUnique({where:{ id },});
 
       if (!session.user) {
         throw new Error(`Ambulance run with ID ${id} not found`);
@@ -746,7 +746,7 @@ import { prisma }
       if (!session.user) {
         throw new Error(`Cannot delete active ambulance run with ID ${}`;
 
-      const run = await prisma.ambulanceRun.delete({where:{ id }});
+      const run = await prisma.ambulanceRun.delete({where:{ id },});
 
       return run;
     } catch (error) {
@@ -758,7 +758,7 @@ import { prisma }
    * @param status New status;
    * @returns The updated run;
    */;
-  async updateRunStatus(runId: string, status: AmbulanceRunStatus) {
+  async updateRunStatus(runId: string, status: AmbulanceRunStatus) {,
     try {
 } catch (error) {
   console.error(error);
@@ -792,13 +792,13 @@ import { prisma }
 } catch (error) {
 
       // Get current run;
-      const currentRun = await prisma.ambulanceRun.findUnique({where:{ id: runId }});
+      const currentRun = await prisma.ambulanceRun.findUnique({where:{ id: runId },});
 
       if (!session.user) {
         throw new Error(`Ambulance run with ID ${runId} not found`);
 
       // Update timestamps based on status;
-      const updateData: any = {
+      const updateData: any = {,
         status};
 
       switch (status) {
@@ -823,7 +823,7 @@ import { prisma }
 
       // Update the run;
       const run = await prisma.$transaction(async (tx) => {
-        const updatedRun = await tx.ambulanceRun.update({where:{ id: runId },
+        const updatedRun = await tx.ambulanceRun.update({where:{ id: runId ,},
           data: updateData,
           true,
             {id:true,
@@ -835,7 +835,7 @@ import { prisma }
             currentRun.status !== AmbulanceRunStatus.COMPLETED &&;
             currentRun.status !== AmbulanceRunStatus.CANCELLED) {
 
-          await tx.ambulance.update({where:{ id: currentRun.ambulanceId },
+          await tx.ambulance.update({where:{ id: currentRun.ambulanceId ,},
             AmbulanceStatus.AVAILABLE;
             }});
 

@@ -18,13 +18,13 @@ import { DrugInteractionService } from '../../../services/drug-interaction-servi
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 // Initialize services
@@ -37,22 +37,22 @@ const interactionService = new DrugInteractionService(
  * POST /api/pharmacy/interactions/drug-condition;
  * Check for drug-condition contraindications;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateDrugConditionInteractionRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -62,7 +62,7 @@ export const POST = async (req: NextRequest) => {
     let conditions = data.conditions || [];
 
     // If patientId is provided, fetch conditions from patient record
-    \1 {\n  \2{
+     {\n  {
       const patientConditions = await getPatientConditions(data.patientId);
       conditions = patientConditions.map(c => c.code);
     }
@@ -76,22 +76,22 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('DRUG_INTERACTION', {
       action: 'CHECK_DRUG_CONDITION',
-      \1,\2 userId,
-      \1,\2 data.medicationIds,
-        \1,\2 contraindications.length
+       userId,
+       data.medicationIds,
+         contraindications.length
     });
 
     // Return response
     return NextResponse.json({
       contraindications,
-      metadata: {
+      metadata: {,
         totalCount: contraindications.length,
-        severityCounts: {
+        severityCounts: {,
           absolute: contraindications.filter(c => c.contraindicationType === 'absolute').length,
-          \1,\2 contraindications.filter(c => c.contraindicationType === 'caution').length
+           contraindications.filter(c => c.contraindicationType === 'caution').length
         }
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error checking drug-condition contraindications');
   }

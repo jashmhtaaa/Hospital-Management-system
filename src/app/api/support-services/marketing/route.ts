@@ -3,19 +3,19 @@ import "@/lib/security.service"
 import "@/lib/services/support-services/marketing/marketing.service"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  MarketingCampaignService  } from "@/lib/database"
-import {  SecurityService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {MarketingCampaignService  } from "next/server"
+import {SecurityService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
+import {z  } from "next/server"
 
 // Initialize service;
 const marketingService = new MarketingCampaignService();
 
 // Campaign filter schema;
-const campaignFilterSchema = z.object({type:z.string().optional(),
+const campaignFilterSchema = z.object({{type:z.string(,}).optional(),
   status: z.string().optional(),
   startDateFrom: z.string().optional().transform(val => val ? new Date(val) : undefined),
   z.string().optional().transform(val => val ? new Date(val) : undefined),
@@ -24,7 +24,7 @@ const campaignFilterSchema = z.object({type:z.string().optional(),
 });
 
 // Create campaign schema;
-const createCampaignSchema = z.object({name:z.string().min(3, "Campaign name must be at least 3 characters"),
+const createCampaignSchema = z.object({{name:z.string(,}).min(3, "Campaign name must be at least 3 characters"),
   description: z.string().optional(),
   type: z.string(),
   status: z.string().default("DRAFT"),
@@ -36,7 +36,7 @@ const createCampaignSchema = z.object({name:z.string().min(3, "Campaign name mus
 });
 
 // Update campaign schema;
-const updateCampaignSchema = z.object({name:z.string().min(3, "Campaign name must be at least 3 characters").optional(),
+const updateCampaignSchema = z.object({{name:z.string(,}).min(3, "Campaign name must be at least 3 characters").optional(),
   description: z.string().optional(),
   type: z.string().optional(),
   status: z.string().optional(),
@@ -49,7 +49,7 @@ const updateCampaignSchema = z.object({name:z.string().min(3, "Campaign name mus
 });
 
 // GET /api/support-services/marketing/campaigns;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -72,7 +72,7 @@ export const _GET = async (request: any) => {
 }
 
 // POST /api/support-services/marketing/campaigns;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -95,7 +95,7 @@ export const _POST = async (request: any) => {
         userId;
       );
 
-      return NextResponse.json(campaign, {status:201 });
+      return NextResponse.json(campaign, {status:201 ,});
     },
     {requiredPermission:"marketing:create",
       auditAction: "MARKETING_CAMPAIGN_CREATE";
@@ -104,7 +104,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/marketing/campaigns/:id;
-export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -121,7 +121,7 @@ export const _GET_BY_ID = async (request: any, { params }: {params:{ id: string 
 }
 
 // PATCH /api/support-services/marketing/campaigns/:id;
-export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {
+export const _PATCH = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -154,7 +154,7 @@ export const _PATCH = async (request: any, { params }: {params:{ id: string } })
 }
 
 // DELETE /api/support-services/marketing/campaigns/:id;
-export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {
+export const _DELETE = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -165,7 +165,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
       // Delete campaign;
       await marketingService.deleteCampaign(params.id, userId);
 
-      return NextResponse.json({success:true });
+      return NextResponse.json({success:true ,});
     },
     {requiredPermission:"marketing:delete",
       auditAction: "MARKETING_CAMPAIGN_DELETE";
@@ -174,7 +174,7 @@ export const _DELETE = async (request: any, { params }: {params:{ id: string } }
 }
 
 // GET /api/support-services/marketing/campaigns/:id/analytics;
-export const _GET_ANALYTICS = async (request: any, { params }: {params:{ id: string } }) => {
+export const _GET_ANALYTICS = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -190,7 +190,7 @@ export const _GET_ANALYTICS = async (request: any, { params }: {params:{ id: str
 }
 
 // POST /api/support-services/marketing/campaigns/:id/channels;
-export const _POST_CHANNEL = async (request: any, { params }: {params:{ id: string } }) => {
+export const _POST_CHANNEL = async (request: any, { params }: {params:{ id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -211,7 +211,7 @@ export const _POST_CHANNEL = async (request: any, { params }: {params:{ id: stri
         userId;
       );
 
-      return NextResponse.json(channel, {status:201 });
+      return NextResponse.json(channel, {status:201 ,});
     },
     {requiredPermission:"marketing:update",
       auditAction: "MARKETING_CAMPAIGN_CHANNEL_ADD";
@@ -220,7 +220,7 @@ export const _POST_CHANNEL = async (request: any, { params }: {params:{ id: stri
 }
 
 // POST /api/support-services/marketing/campaigns/:id/segments/:segmentId;
-export const _POST_SEGMENT = async (request: any, { params }: {params:{ id: string, segmentId: string } }) => {
+export const _POST_SEGMENT = async (request: any, { params }: {params:{ id: string, segmentId: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -235,7 +235,7 @@ export const _POST_SEGMENT = async (request: any, { params }: {params:{ id: stri
         userId;
       );
 
-      return NextResponse.json(result, {status:201 });
+      return NextResponse.json(result, {status:201 ,});
     },
     {requiredPermission:"marketing:update",
       auditAction: "MARKETING_CAMPAIGN_SEGMENT_ADD";
@@ -244,7 +244,7 @@ export const _POST_SEGMENT = async (request: any, { params }: {params:{ id: stri
 }
 
 // GET /api/support-services/marketing/contacts;
-export const _GET_CONTACTS = async (request: any) => {
+export const _GET_CONTACTS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -268,7 +268,7 @@ export const _GET_CONTACTS = async (request: any) => {
 }
 
 // GET /api/support-services/marketing/analytics/overview;
-export const _GET_OVERVIEW_ANALYTICS = async (request: any) => {
+export const _GET_OVERVIEW_ANALYTICS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {

@@ -27,7 +27,7 @@ import { useToast } from "@/hooks/use-toast"; // Assuming use-toast hook is avai
 
 // Define interface for the expected API response;
 interface LoginApiResponse {
-  error?: string;
+    error?: string;
   user?: {
     username?: string;
     // Add other user properties if known/needed;
@@ -78,8 +78,7 @@ export default const _LoginPage = () {
 
 } catch (error) {
 
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
+      const response = await fetch("/api/auth/login", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify({ identifier, password })});
@@ -91,8 +90,7 @@ export default const _LoginPage = () {
         throw new Error(data.error || "Login failed");
 
       // Login successful;
-      toast({
-        title: "Login Successful",
+      toast({title:"Login Successful",
         description: `Welcome back, ${data.user?.username || "user"}!`, // Use optional chaining;
       });
 
@@ -103,8 +101,7 @@ export default const _LoginPage = () {
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
       setError(message),
-      toast({
-        title: "Login Failed",
+      toast({title:"Login Failed",
         "destructive";
       });
     } finally {

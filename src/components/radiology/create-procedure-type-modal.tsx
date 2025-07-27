@@ -30,8 +30,7 @@ import { Textarea }
 }
 
 // Define the type for the component props;
-interface CreateProcedureTypeModalProperties {
-  isOpen: boolean,
+interface CreateProcedureTypeModalProperties {isOpen:boolean,
   (data: ProcedureTypeFormData) => Promise<void>;
 export default const _CreateProcedureTypeModal = ({
   isOpen,

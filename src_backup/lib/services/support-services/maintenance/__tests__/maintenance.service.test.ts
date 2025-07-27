@@ -42,7 +42,7 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/lib/security.service", () => ({
   vi.fn(input => input),
     sanitizeObject: vi.fn(obj => obj),
-    encryptSensitiveData: vi.fn(data => `encrypted_${}`,
+    encryptSensitiveData: vi.fn(data => `encrypted_${,}`,
     decryptSensitiveData: vi.fn(data => data.replace("encrypted_", "")),
     validateHipaaCompliance: vi.fn(() => true);
 
@@ -173,9 +173,9 @@ describe("MaintenanceService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.maintenanceAsset.findUnique as any).mockResolvedValue({ id: "asset1", name: "AC Unit 101" });
-      (prisma.user.findUnique as any).mockResolvedValue({ id: "user1", name: "John Doe" });
-      (prisma.department.findUnique as any).mockResolvedValue({ id: "dept1", name: "Cardiology" });
+      (prisma.maintenanceAsset.findUnique as any).mockResolvedValue({ id: "asset1", name: "AC Unit 101" ,});
+      (prisma.user.findUnique as any).mockResolvedValue({ id: "user1", name: "John Doe" ,});
+      (prisma.department.findUnique as any).mockResolvedValue({ id: "dept1", name: "Cardiology" ,});
       (prisma.maintenanceRequest.create as any).mockResolvedValue(mockCreatedRequest);
 
       // Call the service method;
@@ -234,7 +234,7 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.findUnique).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         include: expect.any(Object);
       });
 
@@ -320,7 +320,7 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         data: mockUpdateData,
         include: expect.any(Object);
       });
@@ -334,7 +334,7 @@ describe("MaintenanceService", () => {
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(null);
 
       // Expect the update to throw an error;
-      await expect(maintenanceService.updateMaintenanceRequest("invalid-id", { priority: "LOW" })).rejects.toThrow();
+      await expect(maintenanceService.updateMaintenanceRequest("invalid-id", { priority: "LOW" ,})).rejects.toThrow();
     });
   });
 
@@ -373,7 +373,7 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         "ASSIGNED",
           assignedToId: "tech1";
         },
@@ -441,7 +441,7 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         "IN_PROGRESS",
           startedAt: expect.any(Date),
           notes: "Starting work on the AC unit";
@@ -493,8 +493,8 @@ describe("MaintenanceService", () => {
       };
 
       const mockPartsUsed = [;
-        { partId: "part1", quantity: 2 },
-        { partId: "part2", quantity: 1 }
+        { partId: "part1", quantity: 2 ,},
+        { partId: "part2", quantity: 1 },
       ];
 
       const mockUpdatedRequest = {
@@ -511,8 +511,8 @@ describe("MaintenanceService", () => {
       (prisma.maintenanceRequest.findUnique as any).mockResolvedValue(mockExistingRequest);
       (prisma.maintenanceTechnician.findUnique as any).mockResolvedValue(mockTechnician);
       (prisma.maintenancePart.findUnique as any);
-        .mockResolvedValueOnce({ id: "part1", name: "Fan Motor", currentStock: 10 });
-        .mockResolvedValueOnce({ id: "part2", name: "Capacitor", currentStock: 5 });
+        .mockResolvedValueOnce({ id: "part1", name: "Fan Motor", currentStock: 10 ,});
+        .mockResolvedValueOnce({ id: "part2", name: "Capacitor", currentStock: 5 ,});
       (prisma.maintenancePart.update as any).mockResolvedValue({});
       (prisma.maintenanceRequest.update as any).mockResolvedValue(mockUpdatedRequest);
 
@@ -527,7 +527,7 @@ describe("MaintenanceService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.maintenanceRequest.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         "COMPLETED",
           expect.any(Date),
           2.5;
@@ -538,12 +538,12 @@ describe("MaintenanceService", () => {
       // Verify parts stock was updated;
       expect(prisma.maintenancePart.update).toHaveBeenCalledTimes(2),
       expect(prisma.maintenancePart.update).toHaveBeenCalledWith({
-        where: { id: "part1" },
-        data: { currentStock: 8 } // 10 - 2;
+        where: { id: "part1" ,},
+        data: { currentStock: 8 ,} // 10 - 2;
       }),
       expect(prisma.maintenancePart.update).toHaveBeenCalledWith({
-        where: { id: "part2" },
-        data: { currentStock: 4 } // 5 - 1;
+        where: { id: "part2" ,},
+        data: { currentStock: 4 ,} // 5 - 1;
       });
 
       // Verify result;
@@ -588,7 +588,7 @@ describe("MaintenanceService", () => {
       };
 
       const mockPartsUsed = [;
-        { partId: "part1", quantity: 20 } // More than available;
+        { partId: "part1", quantity: 20 ,} // More than available;
       ];
 
       // Mock Prisma response;
@@ -706,26 +706,26 @@ describe("MaintenanceService", () => {
     it("should return analytics data", async () => {
       // Mock data for status counts;
       const mockStatusCounts = [;
-        { status: "PENDING", count: 5 },
-        { status: "ASSIGNED", count: 3 },
-        { status: "IN_PROGRESS", count: 2 },
-        { status: "COMPLETED", count: 10 },
-        { status: "CANCELLED", count: 1 }
+        { status: "PENDING", count: 5 ,},
+        { status: "ASSIGNED", count: 3 ,},
+        { status: "IN_PROGRESS", count: 2 ,},
+        { status: "COMPLETED", count: 10 ,},
+        { status: "CANCELLED", count: 1 },
       ];
 
       // Mock data for request types;
       const mockRequestTypes = [;
-        { requestType: "PREVENTIVE", count: 8 },
-        { requestType: "CORRECTIVE", count: 10 },
-        { requestType: "EMERGENCY", count: 3 }
+        { requestType: "PREVENTIVE", count: 8 ,},
+        { requestType: "CORRECTIVE", count: 10 ,},
+        { requestType: "EMERGENCY", count: 3 },
       ];
 
       // Mock data for priority distribution;
       const mockPriorities = [;
-        { priority: "LOW", count: 2 },
-        { priority: "MEDIUM", count: 8 },
-        { priority: "HIGH", count: 6 },
-        { priority: "URGENT", count: 5 }
+        { priority: "LOW", count: 2 ,},
+        { priority: "MEDIUM", count: 8 ,},
+        { priority: "HIGH", count: 6 ,},
+        { priority: "URGENT", count: 5 },
       ];
 
       // Mock Prisma response for each query;
@@ -748,18 +748,18 @@ describe("MaintenanceService", () => {
 
       // Verify specific data;
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
-        { status: "PENDING", count: 5 },
-        { status: "COMPLETED", count: 10 }
+        { status: "PENDING", count: 5 ,},
+        { status: "COMPLETED", count: 10 },
       ]));
 
       expect(result.requestTypeDistribution).toEqual(expect.arrayContaining([;
-        { requestType: "PREVENTIVE", count: 8 },
-        { requestType: "CORRECTIVE", count: 10 }
+        { requestType: "PREVENTIVE", count: 8 ,},
+        { requestType: "CORRECTIVE", count: 10 },
       ]));
 
       expect(result.priorityDistribution).toEqual(expect.arrayContaining([;
-        { priority: "MEDIUM", count: 8 },
-        { priority: "HIGH", count: 6 }
+        { priority: "MEDIUM", count: 8 ,},
+        { priority: "HIGH", count: 6 },
       ]));
     });
 

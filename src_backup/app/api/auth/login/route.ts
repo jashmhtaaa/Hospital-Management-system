@@ -20,7 +20,7 @@ import { z }
 const LoginSchema = z.object({
   identifier: z.string().min(1, "Username or email is required"), // Can be username or email;
   password: z.string().min(1, "Password is required")});
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -57,9 +57,9 @@ export const _POST = async (request: Request) => {
     const validation = LoginSchema.safeParse(body);
 
     if (!session.user) {
-      return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+      return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
         status: 400,
-        headers: { "Content-Type": "application/json" }});
+        headers: { "Content-Type": "application/json" },});
 
     const { identifier, password } = validation.data;
 
@@ -86,17 +86,17 @@ export const _POST = async (request: Request) => {
           roleName: string>();
 
     if (!session.user) {
-      return new Response(JSON.stringify({ error: "Invalid credentials or user inactive" }), {
+      return new Response(JSON.stringify({ error: "Invalid credentials or user inactive" ,}), {
         status: 401, // Unauthorized;
-        headers: { "Content-Type": "application/json" }});
+        headers: { "Content-Type": "application/json" },});
 
     // 2. Compare password;
     const isPasswordValid = await comparePassword(password, userResult.password_hash);
 
     if (!session.user) {
-      return new Response(JSON.stringify({ error: "Invalid credentials" }), {
+      return new Response(JSON.stringify({ error: "Invalid credentials" ,}), {
         status: 401, // Unauthorized;
-        headers: { "Content-Type": "application/json" }});
+        headers: { "Content-Type": "application/json" },});
 
     // 3. Create session;
     const cookieStore = await cookies();
@@ -116,13 +116,13 @@ export const _POST = async (request: Request) => {
     await session.save();
 
     // 4. Return success response (maybe with user info, excluding sensitive data);
-    return new Response(JSON.stringify({ message: "Login successful", user: sessionUser }), {
+    return new Response(JSON.stringify({ message: "Login successful", user: sessionUser ,}), {
       status: 200,
-      headers: { "Content-Type": "application/json" }});
+      headers: { "Content-Type": "application/json" },});
 
   } catch (error) {
 
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-    return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+    return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
       status: 500,
-      headers: { "Content-Type": "application/json" }});
+      headers: { "Content-Type": "application/json" },});

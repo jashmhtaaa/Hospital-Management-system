@@ -6,87 +6,87 @@
  */
 
 // Marketing Campaign Model
-\1
+
 }
 }
 
 // Campaign Channel Model
-\1
+
 }
 }
 
 // Marketing Message Model
-\1
+
 }
 }
 
 // Message Interaction Model
-\1
+
 }
 }
 
 // Contact Model (for marketing purposes)
-\1
+
 }
 }
 
 // Contact Note Model
-\1
+
 }
 }
 
 // Marketing Activity Model
-\1
+
 }
 }
 
 // Contact Segment Model
-\1
+
 }
 }
 
 // Segment Member Model
-\1
+
 }
 }
 
 // Campaign Segment Model (Many-to-Many)
-\1
+
 }
 }
 
 // Lead Model
-\1
+
 }
 }
 
 // Lead Activity Model
-\1
+
 }
 }
 
 // Campaign Analytics Model
-\1
+
 }
 }
 
 // Marketing Template Model
-\1
+
 }
 }
 
 // Marketing Event Model
-\1
+
 }
 }
 
 // Event Registration Model
-\1
+
 }
 }
 
 // User interface (partial, only for marketing relations)
-\1
+
 }
 }
 

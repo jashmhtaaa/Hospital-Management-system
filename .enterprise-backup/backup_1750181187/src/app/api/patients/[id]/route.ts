@@ -12,7 +12,7 @@ const patientUpdateSchema = z.object({
     first_name: z.string().min(1, "First name is required").optional(),
     last_name: z.string().min(1, "Last name is required").optional(),
     date_of_birth: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid date of birth format"
+        message: "Invalid date of birth format",
     }).optional(),
     gender: z.enum(["Male", "Female", "Other", "Unknown"]).optional(),
     contact_number: z.string().optional().nullable(),
@@ -30,24 +30,24 @@ const patientUpdateSchema = z.object({
     allergies: z.string().optional().nullable(),
     medical_history_summary: z.string().optional().nullable(),
     insurance_provider: z.string().optional().nullable(),
-    insurance_policy_number: z.string().optional().nullable()
+    insurance_policy_number: z.string().optional().nullable(),
 }).partial();
 
 // GET /api/patients/[id] - Fetch a specific patient by ID
 export const _GET = async (
     _request: NextRequest;
-    { params }: { params: Promise<{ id: string }> }
+    { params }: { params: Promise<{ id: string }> },
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
-    const { id: patientId } = await params;
-    \1 {\n  \2{
+    const { id: patientId ,} = await params;
+     {\n  {
         return NextResponse.json(
-            { message: "Patient ID is required" },
-            { status: 400 }
+            { message: "Patient ID is required" ,},
+            { status: 400 },
         );
     }
 
@@ -64,24 +64,24 @@ export const _GET = async (
         `;
         const patientResult = await (DB as D1Database).prepare(query).bind(patientId).first<Patient & { created_by_user_name?: string, updated_by_user_name?: string }>();
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Patient not found" },
-                { status: 404 }
+                { message: "Patient not found" ,},
+                { status: 404 },
             );
         }
 
         return NextResponse.json(patientResult);
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error fetching patient details", details: errorMessage },
-            { status: 500 }
+            { message: "Error fetching patient details", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
@@ -89,21 +89,21 @@ export const _GET = async (
 // PUT /api/patients/[id] - Update an existing patient
 export const _PUT = async (
     request: NextRequest;
-    { params }: { params: Promise<{ id: string }> }
+    { params }: { params: Promise<{ id: string }> },
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
-    \1 {\n  \2{ // Ensure user exists if logged in
-        return NextResponse.json({ message: "User not found in session" }, { status: 500 });
+     {\n  { // Ensure user exists if logged in
+        return NextResponse.json({ message: "User not found in session" ,}, { status: 500 ,});
     }
 
-    const { id: patientId } = await params;
-    \1 {\n  \2{
+    const { id: patientId ,} = await params;
+     {\n  {
         return NextResponse.json(
-            { message: "Patient ID is required" },
-            { status: 400 }
+            { message: "Patient ID is required" ,},
+            { status: 400 },
         );
     }
 
@@ -111,19 +111,19 @@ export const _PUT = async (
         const body = await request.json();
         const validationResult = patientUpdateSchema.safeParse(body);
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
         }
 
         const updateData = validationResult.data;
 
-        \1 {\n  \2length === 0) {
+         {\n  length === 0) {
             return NextResponse.json(
-                { message: "No update fields provided" },
-                { status: 400 }
+                { message: "No update fields provided" ,},
+                { status: 400 },
             );
         }
 
@@ -144,9 +144,9 @@ export const _PUT = async (
 
         const updateResult = await (DB as D1Database).prepare(updateQuery).bind(...values).run() as D1ResultWithMeta;
 
-        \1 {\n  \2 {
+         {\n   {
 
-             \1 {\n  \2{
+              {\n  {
                 throw new Error("Failed to update patient record");
              }
         }
@@ -159,22 +159,22 @@ export const _PUT = async (
         `;
         const updatedPatient = await (DB as D1Database).prepare(fetchUpdatedQuery).bind(patientId).first<Patient & { updated_by_user_name?: string }>();
 
-        \1 {\n  \2{
+         {\n  {
 
              throw new Error("Failed to retrieve updated patient data");
         }
 
         return NextResponse.json(updatedPatient);
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error updating patient", details: errorMessage },
-            { status: 500 }
+            { message: "Error updating patient", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
@@ -182,18 +182,18 @@ export const _PUT = async (
 // DELETE /api/patients/[id] - Delete a patient (use with caution!)
 export const DELETE = async (
     _request: NextRequest;
-    { params }: { params: Promise<{ id: string }> }
+    { params }: { params: Promise<{ id: string }> },
 ) => {
     const session = await getSession()
-    \1 {\n  \2{ // Added !session.user check
-        return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+     {\n  { // Added !session.user check
+        return NextResponse.json({ message: "Forbidden" ,}, { status: 403 ,});
     }
 
-    const { id: patientId } = await params;
-    \1 {\n  \2{
+    const { id: patientId ,} = await params;
+     {\n  {
         return NextResponse.json(
-            { message: "Patient ID is required" },
-            { status: 400 }
+            { message: "Patient ID is required" ,},
+            { status: 400 },
         );
     }
 
@@ -201,29 +201,29 @@ export const DELETE = async (
         const deleteQuery = "DELETE FROM Patients WHERE patient_id = ?";
         const deleteResult = await (DB as D1Database).prepare(deleteQuery).bind(patientId).run() as D1ResultWithMeta;
 
-        \1 {\n  \2 {
+         {\n   {
 
-            \1 {\n  \2{
-                 return NextResponse.json({ message: "Patient not found or already deleted" }, { status: 404 });
+             {\n  {
+                 return NextResponse.json({ message: "Patient not found or already deleted" ,}, { status: 404 ,});
             }
-            \1 {\n  \2{
+             {\n  {
                 throw new Error("Failed to delete patient record");
             }
         }
 
         return NextResponse.json(
-            { message: "Patient deleted successfully" },
-            { status: 200 }
+            { message: "Patient deleted successfully" ,},
+            { status: 200 },
         );
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error deleting patient", details: errorMessage },
-            { status: 500 }
+            { message: "Error deleting patient", details: errorMessage ,},
+            { status: 500 },
         );
     }

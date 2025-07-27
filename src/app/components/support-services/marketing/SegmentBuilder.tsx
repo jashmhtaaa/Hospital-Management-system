@@ -37,15 +37,14 @@ import { useRouter }
 import { useState
 
 interface SegmentBuilderProps {
-  segmentId?: string;
+    segmentId?: string;
   onSuccess?: (segment: unknown) => void;
 export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilderProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [segment, setSegment] = useState<unknown>(null);
   const [activeTab, setActiveTab] = useState<string>("details");
-  const [formData, setFormData] = useState({
-    name: "",
+  const [formData, setFormData] = useState({name:"",
     true,
     "AND",
       conditions: [];
@@ -54,8 +53,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   const [availableContacts, setAvailableContacts] = useState<any[]>([]);
   const [criteriaPreview, setCriteriaPreview] = useState<string>("");
   const [estimatedSize, setEstimatedSize] = useState<number>(0);
-  const [newCondition, setNewCondition] = useState({
-    field: "email",
+  const [newCondition, setNewCondition] = useState({field:"email",
     "";
   });
 
@@ -104,8 +102,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         setSegment(data);
 
         // Set form values from segment data;
-        setFormData({
-          name: data.name || "",
+        setFormData({name:data.name || "",
           data.isActive !== undefined ? data.isActive : true,
           "AND",
             conditions: [];
@@ -123,8 +120,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
         fetchEstimatedSize(data.criteria);
       } catch (error) ;
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive");
       } finally {
         setIsLoading(false);
@@ -364,8 +360,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
   // Add condition to criteria;
   const handleAddCondition = () => {
     if (!session.user) {
-      toast({
-        title: "Validation Error",
+      toast({title:"Validation Error",
         "destructive";
       });
       return;
@@ -381,8 +376,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
     });
 
     // Reset new condition;
-    setNewCondition({
-      field: "email",
+    setNewCondition({field:"email",
       "";
     }),
     updateCriteriaPreview(newCriteria);
@@ -460,8 +454,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       if (!session.user)hrow new Error("Failed to save segment");
 
       const savedSegment = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Segment $segmentId ? "updated" : "created"successfully.`});
 
       if (!session.user) {
@@ -471,8 +464,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -517,16 +509,14 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/marketing/segments/$segmentId/apply-criteria`, {
-        method: "POST",
+      const response = await fetch(`/api/support-services/marketing/segments/$segmentId/apply-criteria`, {method:"POST",
         headers: null,
           "Content-Type": "application/json"});
 
       if (!session.user)hrow new Error("Failed to apply criteria");
 
       const result = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Criteria applied successfully. ${result.addedCount} contacts added to segment.`});
 
       // Refresh members;
@@ -538,8 +528,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -583,8 +572,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {
-        method: "POST",
+      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify({ contactId })});
@@ -596,14 +584,12 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       if (!session.user) {
         setMembers([...members, contact]);
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Contact added to segment successfully.";
       });
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 
@@ -645,8 +631,7 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members/${contactId}`, {
-        method: "DELETE";
+      const response = await fetch(`/api/support-services/marketing/segments/${segmentId}/members/${contactId}`, {method:"DELETE";
       });
 
       if (!session.user)hrow new Error("Failed to remove contact");
@@ -654,14 +639,12 @@ export default const _SegmentBuilder = ({ segmentId, onSuccess }: SegmentBuilder
       // Update members;
       setMembers(members.filter(m => m.id !== contactId));
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Contact removed from segment successfully.";
       });
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 

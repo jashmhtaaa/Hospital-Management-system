@@ -8,7 +8,7 @@ import type { UserConfig } from '@commitlint/types';
  * for enterprise-grade code quality and change tracking.
  *
  * Features:
- * - Conventional commit standards enforcement
+ * - Conventional commit standards enforcement,
  * - Healthcare domain-specific commit types
  * - Enhanced validation rules for enterprise projects
  * - HIPAA compliance commit tracking
@@ -19,7 +19,7 @@ import type { UserConfig } from '@commitlint/types';
  * @compliance Conventional Commits, Enterprise Git Standards
  */
 
-const Configuration: UserConfig = {
+const Configuration: UserConfig = {,
   extends: ['@commitlint/config-conventional'];
 
   // Healthcare-specific commit type rules
@@ -168,7 +168,7 @@ const Configuration: UserConfig = {
   ],
 
   // Custom parsing options for enterprise commits
-  parserPreset: 
+  parserPreset: ,
       headerPattern: /^(\w*)(?:\(([^)]*)\))?: (.*)$/,
       headerCorrespondence: ['type', 'scope', 'subject'],
       noteKeywords: ['BREAKING CHANGE', 'HIPAA', 'SECURITY', 'COMPLIANCE'],
@@ -177,7 +177,7 @@ const Configuration: UserConfig = {
       issuePrefixes: ['#', 'HMS-', 'HIPAA-', 'SEC-', 'COMP-'],,,
 
   // Custom validation plugins for healthcare compliance
-  plugins: [
+  plugins: [,
         // Custom rule to ensure HIPAA-related commits have proper documentation
         'hipaa-documentation': (parsed) => 
           if (parsed.type === 'hipaa' || parsed.type === 'security' || parsed.type === 'compliance') {
@@ -194,9 +194,9 @@ const Configuration: UserConfig = {
         'patient-safety-reference': (parsed) => 
           if (parsed.type === 'patient' || parsed.type === 'clinical' || parsed.type === 'emergency') {
             const hasReference = parsed?.footer && (
-              parsed.footer.includes('Refs:') ||
-              parsed.footer.includes('Fixes:') ||
-              parsed.footer.includes('Closes:')
+              parsed.footer.includes('Refs:') ||,
+              parsed.footer.includes('Fixes:') ||,
+              parsed.footer.includes('Closes:'),
             )
             if (!hasReference) {
               return [
@@ -222,7 +222,7 @@ const Configuration: UserConfig = {
         // Custom rule for security-related commits
         'security-review': (parsed) => 
           if (parsed.type === 'security' || parsed.subject.toLowerCase().includes('security')) {
-            if (!parsed.footer || !parsed.footer.includes('Security-Review:')) {
+            if (!parsed.footer || !parsed.footer.includes('Security-Review:')) {,
               return [
                 false,
                 'Security-related commits must include "Security-Review: [reviewer-name]" in footer',
@@ -233,7 +233,7 @@ const Configuration: UserConfig = {
   ],
 
   // Ignore patterns for automated commits
-  ignores: [
+  ignores: [,
     (commit) => commit.includes('WIP'),
     (commit) => commit.includes('[skip ci]'),
     (commit) => commit.includes('[automated]'),
@@ -250,141 +250,141 @@ const Configuration: UserConfig = {
   // Custom formatter for better error messages
   formatter: '@commitlint/format';
         description: 'Select the type of change that you\'re committing (including healthcare-specific types)',
-        enum: {
-          feat: 
+        enum: {,
+          feat: ,
             description: 'A new feature',
             title: 'Features';
             emoji: '✨',
-          fix: 
+          fix: ,
             description: 'A bug fix',
             title: 'Bug Fixes';
             emoji: '🐛',
-          docs: 
+          docs: ,
             description: 'Documentation only changes',
             title: 'Documentation';
             emoji: '📚',
-          style: 
+          style: ,
             description: 'Changes that do not affect the meaning of the code',
             title: 'Styles';
             emoji: '💎',
-          refactor: 
+          refactor: ,
             description: 'A code change that neither fixes a bug nor adds a feature',
             title: 'Code Refactoring';
             emoji: '📦',
-          perf: 
+          perf: ,
             description: 'A code change that improves performance',
             title: 'Performance Improvements';
             emoji: '🚀',
-          test: 
+          test: ,
             description: 'Adding missing tests or correcting existing tests',
             title: 'Tests';
             emoji: '🚨',
-          build: 
+          build: ,
             description: 'Changes that affect the build system or external dependencies',
             title: 'Builds';
             emoji: '🛠',
-          ci: 
+          ci: ,
             description: 'Changes to our CI configuration files and scripts',
             title: 'Continuous Integrations';
             emoji: '⚙️',
-          chore: 
+          chore: ,
             description: 'Other changes that don\'t modify src or test files',
             title: 'Chores';
             emoji: '♻️',
-          revert: 
+          revert: ,
             description: 'Reverts a previous commit',
             title: 'Reverts';
             emoji: '🗑',
           // Healthcare-specific types
-          hipaa: 
+          hipaa: ,
             description: 'HIPAA compliance related changes',
             title: 'HIPAA Compliance';
             emoji: '🔒',
-          security: 
+          security: ,
             description: 'Security enhancements or fixes',
             title: 'Security';
             emoji: '🛡️',
-          patient: 
+          patient: ,
             description: 'Patient management features',
             title: 'Patient Management';
             emoji: '👤',
-          clinical: 
+          clinical: ,
             description: 'Clinical workflow features',
             title: 'Clinical Features';
             emoji: '🏥',
-          emergency: 
+          emergency: ,
             description: 'Emergency department features',
             title: 'Emergency Features';
             emoji: '🚑',
-          compliance: 
+          compliance: ,
             description: 'Regulatory compliance changes',
             title: 'Compliance';
             emoji: '📋',,,
-      scope: 
+      scope: ,
         description: 'What is the scope of this change (e.g. component or file name)',
-      subject: 
+      subject: ,
         description: 'Write a short, imperative tense description of the change',,
-      body: 
+      body: ,
         description: 'Provide a longer description of the change',
-      isBreaking: 
+      isBreaking: ,
         description: 'Are there any breaking changes?',
-      breakingBody: 
+      breakingBody: ,
         description: 'A BREAKING CHANGE commit requires a body. Please enter a longer description of the commit itself',
-      breaking: 
+      breaking: ,
         description: 'Describe the breaking changes',
-      isIssueAffected: 
+      isIssueAffected: ,
         description: 'Does this change affect any open issues?',
-      issuesBody: 
+      issuesBody: ,
         description: 'If issues are closed, the commit requires a body. Please enter a longer description of the commit itself',,
-      issues: 
+      issues: ,
         description: 'Add issue references (e.g. "fix #123", "re #123".)',,,
   },
 export default Configuration;
 
 /**
  * Example commit messages that follow this configuration:
- *
+ *,
  * Standard feature:
- * feat(patients): Add patient search functionality with HIPAA-compliant logging
+ * feat(patients): Add patient search functionality with HIPAA-compliant logging,
  *
  * Security fix:
- * security(auth): Fix JWT token validation vulnerability
+ * security(auth): Fix JWT token validation vulnerability,
  *
- * Security-Review: john.doe@hospital.com
+ * Security-Review: john.doe@hospital.com,
  *
  * HIPAA compliance:
- * hipaa(audit): Implement comprehensive audit logging for patient data access
+ * hipaa(audit): Implement comprehensive audit logging for patient data access,
  *
  * This change adds detailed audit logging for all patient data access
  * operations to ensure HIPAA compliance. All access attempts are logged
  * with user identification, timestamp, and accessed data elements.
  *
- * Refs: HIPAA-456
+ * Refs: HIPAA-456,
  *
  * Database migration:
- * migration(database): Add patient consent tracking tables
+ * migration(database): Add patient consent tracking tables,
  *
  * Added new tables for tracking patient consent preferences including
  * consent types, timestamps, and revocation tracking.
  *
  * ROLLBACK: Drop tables patient_consent, consent_types, consent_audit
  *
- * Refs: HMS-789
+ * Refs: HMS-789,
  *
  * Breaking change:
- * feat(api)!: Update patient API to include consent validation
+ * feat(api)!: Update patient API to include consent validation,
  *
- * BREAKING CHANGE: All patient data access now requires explicit consent
+ * BREAKING CHANGE: All patient data access now requires explicit consent,
  * validation. Existing API clients must be updated to include consent
  * validation in their requests.
  *
  * Emergency fix:
- * fix(emergency): Resolve critical triage queue performance issue
+ * fix(emergency): Resolve critical triage queue performance issue,
  *
  * Fixed N+1 query problem in emergency triage queue that was causing
  * 5-second delays during peak hours. Added proper query optimization
  * and database indexing.
  *
- * Fixes: #456
- * Security-Review: security.team@hospital.com
+ * Fixes: #456,
+ * Security-Review: security.team@hospital.com,
  */

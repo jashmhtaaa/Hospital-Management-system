@@ -57,7 +57,7 @@ import {  type
   /**;
    * Create a FHIR resource;
    */;
-  async createResource<T extends FHIRBase>(resource: T): Promise<FHIROperationResult<T>> {
+  async createResource<T extends FHIRBase>(resource: T): Promise<FHIROperationResult<T>> {,
     try {
 } catch (error) {
   console.error(error);
@@ -268,7 +268,7 @@ import {  type
   /**;
    * Delete a FHIR resource;
    */;
-  async deleteResource(resourceType: string, id: string): Promise<FHIROperationResult<void>> {
+  async deleteResource(resourceType: string, id: string): Promise<FHIROperationResult<void>> {,
     try {
 } catch (error) {
   console.error(error);
@@ -363,7 +363,7 @@ import {  type
         id: uuidv4(),
         type: "searchset",
         results.resources.map(resource => ({
-          fullUrl: `${this.baseUrl}/${resourceType}/${resource.id}`,
+          fullUrl: `${this.baseUrl}/${resourceType}/${resource.id,}`,
           resource;
         }));
       };
@@ -381,61 +381,61 @@ import {  type
   /**;
    * Patient-specific FHIR operations;
    */;
-  async searchPatients(searchParams: FHIRPatientSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIRPatient>>> {
+  async searchPatients(searchParams: FHIRPatientSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIRPatient>>> {,
     return this.searchResources<FHIRPatient>("Patient", searchParams);
 
-  async createPatient(patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {
+  async createPatient(patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {,
     return this.createResource(patient);
 
-  async getPatient(id: string): Promise<FHIROperationResult<FHIRPatient>> {
+  async getPatient(id: string): Promise<FHIROperationResult<FHIRPatient>> {,
     return this.readResource<FHIRPatient>("Patient", id);
 
-  async updatePatient(id: string, patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {
+  async updatePatient(id: string, patient: FHIRPatient): Promise<FHIROperationResult<FHIRPatient>> {,
     return this.updateResource("Patient", id, patient);
 
   /**;
    * Appointment-specific FHIR operations;
    */;
-  async searchAppointments(searchParams: FHIRAppointmentSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIRAppointment>>> {
+  async searchAppointments(searchParams: FHIRAppointmentSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIRAppointment>>> {,
     return this.searchResources<FHIRAppointment>("Appointment", searchParams);
 
-  async createAppointment(appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {
+  async createAppointment(appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {,
     return this.createResource(appointment);
 
-  async getAppointment(id: string): Promise<FHIROperationResult<FHIRAppointment>> {
+  async getAppointment(id: string): Promise<FHIROperationResult<FHIRAppointment>> {,
     return this.readResource<FHIRAppointment>("Appointment", id);
 
-  async updateAppointment(id: string, appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {
+  async updateAppointment(id: string, appointment: FHIRAppointment): Promise<FHIROperationResult<FHIRAppointment>> {,
     return this.updateResource("Appointment", id, appointment);
 
   /**;
    * Encounter-specific FHIR operations;
    */;
-  async searchEncounters(searchParams: FHIREncounterSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIREncounter>>> {
+  async searchEncounters(searchParams: FHIREncounterSearchParams): Promise<FHIROperationResult<FHIRBundle<FHIREncounter>>> {,
     return this.searchResources<FHIREncounter>("Encounter", searchParams);
 
-  async createEncounter(encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {
+  async createEncounter(encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {,
     return this.createResource(encounter);
 
-  async getEncounter(id: string): Promise<FHIROperationResult<FHIREncounter>> {
+  async getEncounter(id: string): Promise<FHIROperationResult<FHIREncounter>> {,
     return this.readResource<FHIREncounter>("Encounter", id);
 
-  async updateEncounter(id: string, encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {
+  async updateEncounter(id: string, encounter: FHIREncounter): Promise<FHIROperationResult<FHIREncounter>> {,
     return this.updateResource("Encounter", id, encounter);
 
   /**;
    * MedicationRequest-specific FHIR operations;
    */;
-  async createMedicationRequest(medicationRequest: FHIRMedicationRequest): Promise<FHIROperationResult<FHIRMedicationRequest>> {
+  async createMedicationRequest(medicationRequest: FHIRMedicationRequest): Promise<FHIROperationResult<FHIRMedicationRequest>> {,
     return this.createResource(medicationRequest);
 
-  async getMedicationRequest(id: string): Promise<FHIROperationResult<FHIRMedicationRequest>> {
+  async getMedicationRequest(id: string): Promise<FHIROperationResult<FHIRMedicationRequest>> {,
     return this.readResource<FHIRMedicationRequest>("MedicationRequest", id);
 
   /**;
    * Batch operations;
    */;
-  async processBatch(bundle: FHIRBundle): Promise<FHIROperationResult<FHIRBundle>> {
+  async processBatch(bundle: FHIRBundle): Promise<FHIROperationResult<FHIRBundle>> {,
     try {
 } catch (error) {
   console.error(error);
@@ -527,7 +527,7 @@ import {  type
   /**;
    * Integration with existing HMS models;
    */;
-  async convertHMSPatientToFHIR(hmsPatientId: string): Promise<FHIROperationResult<FHIRPatient>> {
+  async convertHMSPatientToFHIR(hmsPatientId: string): Promise<FHIROperationResult<FHIRPatient>> {,
     try {
 } catch (error) {
   console.error(error);
@@ -580,7 +580,7 @@ import {  type
         this.createOperationOutcome("error", ["Conversion failed"]);
       };
 
-  async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<unknown>> {
+  async syncFHIRPatientToHMS(fhirPatient: FHIRPatient): Promise<FHIROperationResult<unknown>> {,
     try {
 } catch (error) {
   console.error(error);
@@ -630,7 +630,7 @@ import {  type
   /**;
    * Validation helpers;
    */;
-  private validateResource(resource: FHIRBase): { valid: boolean, errors: string[] } {
+  private validateResource(resource: FHIRBase): { valid: boolean, errors: string[] } {,
     const errors: string[] = [];
 
     if (!session.user) {
@@ -654,10 +654,10 @@ import {  type
       errors;
     };
 
-  private createOperationOutcome(severity: "fatal" | "error" | "warning" | "information", diagnostics: string[]): FHIROperationOutcome {
+  private createOperationOutcome(severity: "fatal" | "error" | "warning" | "information", diagnostics: string[]): FHIROperationOutcome {,
     return {
       resourceType: "OperationOutcome",
-      issue: diagnostics.map(diagnostic => ({
+      issue: diagnostics.map(diagnostic => ({,
         severity,
         code: "processing",
         diagnostics: diagnostic;
@@ -667,7 +667,7 @@ import {  type
   /**;
    * HMS Integration methods;
    */;
-  private async getHMSPatient(id: string): Promise<unknown> {
+  private async getHMSPatient(id: string): Promise<unknown> {,
     // Get HMS patient from database;
     const prisma = new PrismaClient();
     try {
@@ -703,12 +703,12 @@ import {  type
 } catch (error) {
 
       return await prisma.patient.findUnique({
-        where: { id }
+        where: { id },
       });
     } finally {
       await prisma.$disconnect();
 
-  private async updateHMSPatient(patient: unknown): Promise<void> {
+  private async updateHMSPatient(patient: unknown): Promise<void> {,
     // Update HMS patient in database;
     const prisma = new PrismaClient();
     try {
@@ -744,13 +744,13 @@ import {  type
 } catch (error) {
 
       await prisma.patient.update({
-        where: { id: patient.id },
+        where: { id: patient.id ,},
         data: patient;
       });
     } finally {
       await prisma.$disconnect();
 
-  private convertFHIRPatientToHMS(fhirPatient: FHIRPatient): unknown {
+  private convertFHIRPatientToHMS(fhirPatient: FHIRPatient): unknown {,
     const officialName = fhirPatient.name?.find(n => n.use === "official") || fhirPatient.name?.[0];
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
     const email = FHIRPatientUtils.getPrimaryEmail(fhirPatient);

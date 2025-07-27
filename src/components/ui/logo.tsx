@@ -5,7 +5,7 @@ import React
 import type
 
 interface LogoProperties {
-  variant?: "default" | "light" | "dark";
+    variant?: "default" | "light" | "dark";
   showText?: boolean;
   size?: "sm" | "md" | "lg";
   className?: string;
@@ -17,10 +17,9 @@ const Logo: React.FC<LogoProperties> = ({
   size = "md",
   className = ""}) => {
   // Size mapping;
-  const sizeMap = {
-    sm: { logo: 30, text: "text-lg" },
-    md: { logo: 40, text: "text-xl" },
-    lg: { logo: 50, text: "text-2xl" }};
+  const sizeMap = {sm:{ logo: 30, text: "text-lg" },
+    md: {logo:40, text: "text-xl" },
+    lg: {logo:50, text: "text-2xl" }};
 
   // Variant mapping for text color;
   const _textColorClass = variant === "light" ? "text-white" : "text-secondary";

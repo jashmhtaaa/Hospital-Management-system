@@ -51,19 +51,19 @@ export const _GET = async () => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Execute query using db.query;
-    // Assuming db.query exists and returns { results: [...] } based on db.ts mock;
+    // Assuming db.query exists and returns { results: [...] ,} based on db.ts mock;
     const categoriesResult = await database.query();
       "SELECT * FROM lab_test_categories ORDER BY name ASC";
     );
 
     return NextResponse.json(categoriesResult.results || []); // Changed .rows to .results;
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
@@ -72,13 +72,13 @@ export const _GET = async () => {
         error: "Failed to fetch laboratory test categories",
         details: errorMessage;
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 // POST /api/laboratory/categories - Create a new laboratory test category;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -115,7 +115,7 @@ export const _POST = async (request: any) => {
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Check permissions (using mock session data);
     // Assuming permissions are correctly populated in the mock session;
@@ -125,7 +125,7 @@ export const _POST = async (request: any) => {
       session.user.roleName === "Admin" ||;
       session.user.roleName === "Lab Manager"; // Adjusted roles/permissions;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     // Parse request body with type assertion;
     const body = (await request.json()) as CategoryInput;
@@ -134,15 +134,15 @@ export const _POST = async (request: any) => {
     if (!session.user) {
       // Also check if name is not just whitespace;
       return NextResponse.json();
-        { error: "Missing or empty required field: name" },
-        { status: 400 }
+        { error: "Missing or empty required field: name" ,},
+        { status: 400 },
       );
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Insert new category using db.query;
     // Mock query doesn-	 return last_row_id;
-    // Assuming db.query exists and returns { results: [...] } based on db.ts mock;
+    // Assuming db.query exists and returns { results: [...] ,} based on db.ts mock;
     await database.query();
       `;
       INSERT INTO lab_test_categories (name, description);
@@ -156,23 +156,23 @@ export const _POST = async (request: any) => {
 
     // Cannot reliably get the new record from mock DB;
     return NextResponse.json();
-      { message: "Category created (mock operation)" },
-      { status: 201 }
+      { message: "Category created (mock operation)" ,},
+      { status: 201 },
     );
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     // Check for potential duplicate entry errors if the DB provides specific codes;
     // if (!session.user) { // Example for SQLite;
-    //   return NextResponse.json({ error: "Category name already exists" }, { status: 409 });
+    //   return NextResponse.json({ error: "Category name already exists" ,}, { status: 409 ,});
     // }
     return NextResponse.json();
       {
         error: "Failed to create laboratory test category",
         details: errorMessage;
       },
-      { status: 500 }
+      { status: 500 },
     );
 
 export async function GET() { return new Response("OK"); }

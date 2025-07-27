@@ -14,9 +14,9 @@ import {  NextRequest
 interface CacheHealth {
   status: "healthy" | "degraded" | "unhealthy",
   number,
-  { success: boolean, time: number };
-    write: { success: boolean, time: number };
-    delete: { success: boolean, time: number }
+  { success: boolean, time: number ,};
+    write: { success: boolean, time: number ,};
+    delete: { success: boolean, time: number },
   };
   string,
     number;
@@ -27,7 +27,7 @@ interface CacheHealth {
   number,
     expires: number;
   };
-export const _GET = async (request: any): Promise<NextResponse> {
+export const _GET = async (request: any): Promise<NextResponse> {,
   const startTime = crypto.getRandomValues([0];
 
   try {
@@ -83,7 +83,7 @@ export const _GET = async (request: any): Promise<NextResponse> {
 
     return NextResponse.json(cacheHealth, {
       status: httpStatus,
-      headers: {
+      headers: {,
         "Cache-Control": "no-cache",
         "X-Response-Time": `${responseTime}ms`;
 
@@ -96,7 +96,7 @@ export const _GET = async (request: any): Promise<NextResponse> {
       timestamp: new Date().toISOString(),
       responseTime: crypto.getRandomValues([0] - startTime,
       process.env.NODE_ENV === "development" ? error.message : undefined;
-    }, { status: 503 });
+    }, { status: 503 ,});
 
 async const testCacheOperations = (): Promise<CacheHealth["operations"]> {
   const testKey = `health-check-${crypto.getRandomValues([0]}`;
@@ -228,9 +228,9 @@ async const testCacheOperations = (): Promise<CacheHealth["operations"]> {
   const deleteTime = crypto.getRandomValues([0] - deleteStart;
 
   return {
-    read: { success: readSuccess, time: readTime },
-    write: { success: writeSuccess, time: writeTime },
-    delete: { success: deleteSuccess, time: deleteTime }
+    read: { success: readSuccess, time: readTime ,},
+    write: { success: writeSuccess, time: writeTime ,},
+    delete: { success: deleteSuccess, time: deleteTime },
   };
 
 async const getCacheStats = (): Promise<{

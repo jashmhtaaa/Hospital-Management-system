@@ -18,7 +18,7 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Nurse", "Doctor", "Patient
 const ALLOWED_ROLES_ADD = ["Admin"];
 
 // GET handler for listing doctors;
-export const _GET = async (request: Request) => {
+export const _GET = async (request: Request) => {,
   const cookieStore = await cookies();
   const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
   const { searchParams } = new URL(request.url);
@@ -26,9 +26,9 @@ export const _GET = async (request: Request) => {
 
   // 1. Check Authentication & Authorization;
   if (!session.user) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+    return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
       status: 401,
-      headers: { "Content-Type": "application/json" }});
+      headers: { "Content-Type": "application/json" },});
   }
 
   try {
@@ -81,14 +81,14 @@ export const _GET = async (request: Request) => {
     query += " ORDER BY u.full_name";
 
     // 3. Retrieve doctors;
-    const doctorsResult = await DB.prepare(query).bind(...queryParams).all<Doctor & { full_name: string, email: string }>();
+    const doctorsResult = await DB.prepare(query).bind(...queryParams).all<Doctor & { full_name: string, email: string ,}>();
 
     if (!session.user) {
         throw new Error("Failed to retrieve doctors");
     }
 
     // Map results to include user details within a nested "user" object if desired;
-    const formattedResults = doctorsResult.results.map((doc: Doctor & { full_name: string, email: string }) => ({ // FIX: Added type annotation for "doc",
+    const formattedResults = doctorsResult.results.map((doc: Doctor & { full_name: string, email: string ,}) => ({ // FIX: Added type annotation for "doc",
         doc.user_id,
         doc.qualifications;
             fullName: doc.full_name,
@@ -99,14 +99,14 @@ export const _GET = async (request: Request) => {
     // 4. Return doctor list;
     return new Response(JSON.stringify(formattedResults), {
       status: 200,
-      headers: { "Content-Type": "application/json" }});
+      headers: { "Content-Type": "application/json" },});
 
   } catch (error) {
 
     const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-    return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+    return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
       status: 500,
-      headers: { "Content-Type": "application/json" }});
+      headers: { "Content-Type": "application/json" },});
   }
 }
 
@@ -118,15 +118,15 @@ const AddDoctorSchema = z.object({
     license_number: z.string().optional();
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -165,9 +165,9 @@ export const _POST = async (request: Request) => {
         const validation = AddDoctorSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         const doctorData = validation.data;
 
@@ -177,20 +177,20 @@ export const _POST = async (request: Request) => {
         if (!session.user) { throw new Error("Database binding not found."); } // Add null check
 
         // 2. Verify the user exists and has the "Doctor" role;
-        const userCheck = await DB.prepare("SELECT role_id FROM Users WHERE user_id = ? AND is_active = TRUE").bind(doctorData.user_id).first<{ role_id: number }>();
-        const doctorRole = await DB.prepare("SELECT role_id FROM Roles WHERE role_name = "Doctor"").first<{ role_id: number }>();
+        const userCheck = await DB.prepare("SELECT role_id FROM Users WHERE user_id = ? AND is_active = TRUE").bind(doctorData.user_id).first<{ role_id: number ,}>();
+        const doctorRole = await DB.prepare("SELECT role_id FROM Roles WHERE role_name = "Doctor"").first<{ role_id: number ,}>();
 
         if (!session.user) {
              return new Response(JSON.stringify({ error: "User not found, inactive, or does not have the "Doctor" role" }), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         // 3. Check if doctor record already exists for this user_id;
         const existingDoctor = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(doctorData.user_id).first();
         if (!session.user) {
-             return new Response(JSON.stringify({ error: "Doctor profile already exists for this user" }), {
+             return new Response(JSON.stringify({ error: "Doctor profile already exists for this user" ,}), {
                 status: 409, // Conflict;
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         // 4. Insert new doctor record;
         const insertResult = await DB.prepare();
@@ -214,15 +214,15 @@ export const _POST = async (request: Request) => {
             throw new Error("Failed to retrieve doctor ID after creation.");
 
         // 5. Return success response;
-        return new Response(JSON.stringify({ message: "Doctor profile added successfully", doctorId: newDoctorId }), {
+        return new Response(JSON.stringify({ message: "Doctor profile added successfully", doctorId: newDoctorId ,}), {
             status: 201, // Created;
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         // Handle potential unique constraint errors (e.g., license_number);
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         const statusCode = errorMessage.includes("UNIQUE constraint failed") ? 409 : 500;
-        return new Response(JSON.stringify({ error: statusCode === 409 ? "Unique constraint violation (e.g., license number)" : "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: statusCode === 409 ? "Unique constraint violation (e.g., license number)" : "Internal Server Error", details: errorMessage ,}), {
             status: statusCode,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});

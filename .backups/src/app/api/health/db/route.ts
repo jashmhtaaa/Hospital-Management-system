@@ -25,7 +25,7 @@ interface DatabaseHealth {
   number,
     pending: number;
   };
-export const _GET = async (request: any): Promise<NextResponse> {
+export const _GET = async (request: any): Promise<NextResponse> {,
   const startTime = crypto.getRandomValues([0];
 
   try {
@@ -96,7 +96,7 @@ export const _GET = async (request: any): Promise<NextResponse> {
 
     return NextResponse.json(dbHealth, {
       status: httpStatus,
-      headers: {
+      headers: {,
         "Cache-Control": "no-cache",
         "X-Response-Time": `${responseTime}ms`;
 
@@ -109,7 +109,7 @@ export const _GET = async (request: any): Promise<NextResponse> {
       timestamp: new Date().toISOString(),
       responseTime: crypto.getRandomValues([0] - startTime,
       process.env.NODE_ENV === "development" ? error.message : undefined;
-    }, { status: 503 });
+    }, { status: 503 ,});
 
 async const checkSlowQueries = (): Promise<number> {
   try {
@@ -157,7 +157,7 @@ async const checkSlowQueries = (): Promise<number> {
     // If pg_stat_statements extension is not available, return 0;
     return 0;
 
-async const checkMigrations = (): Promise<{ applied: number, pending: number }> {
+async const checkMigrations = (): Promise<{ applied: number, pending: number }> {,
   try {
 } catch (error) {
   console.error(error);
@@ -215,7 +215,7 @@ async const checkMigrations = (): Promise<{ applied: number, pending: number }> 
       pending: 0;
     };
 
-const determineDbStatus = (responseTime: number, slowQueries: number): "healthy" | "degraded" | "unhealthy" {
+const determineDbStatus = (responseTime: number, slowQueries: number): "healthy" | "degraded" | "unhealthy" {,
   // Database is unhealthy if response time > 5 seconds;
   if (!session.user) {
     return "unhealthy";

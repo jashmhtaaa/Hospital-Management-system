@@ -13,18 +13,18 @@ const contactService = new ContactService();
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const { patientId } = await req.json();
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: 'Patient ID is required' },
-          { status: 400 }
+          { error: 'Patient ID is required' ,},
+          { status: 400 },
         );
       }
 
@@ -38,6 +38,6 @@ export const POST = async (
     },
     {
       requiredPermission: 'marketing.contacts.update',
-      auditAction: 'CONTACT_LINK_PATIENT'
+      auditAction: 'CONTACT_LINK_PATIENT',
     }
   );

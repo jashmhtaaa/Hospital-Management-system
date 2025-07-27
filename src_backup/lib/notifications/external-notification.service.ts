@@ -153,7 +153,7 @@ class TwilioSMSProvider implements ISMSProvider {
         "-0.0075", // Typical SMS cost;
       }
 
-      /* SECURITY: Console statement removed */}...`);
+      /* SECURITY: Console statement removed */,}...`);
 
       return {
         id: result.sid,
@@ -223,7 +223,7 @@ class SendGridEmailProvider implements IEmailProvider {
       // sgMail.setApiKey(this.apiKey);
       // const _msg = {
       //   to,
-      //   from: { email: this.fromEmail, name: this.fromName },
+      //   from: { email: this.fromEmail, name: this.fromName ,},
       //   subject,
       //   [isHtml ? "html" : "text"]: body,
       //   customArgs: metadata;
@@ -232,7 +232,7 @@ class SendGridEmailProvider implements IEmailProvider {
 
       // Mock implementation for demonstration;
       const result = {
-        messageId: `${crypto.getRandomValues([0]}.${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}@sendgrid.net`,
+        messageId: `${crypto.getRandomValues([0],}.${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}@sendgrid.net`,
         statusCode: 202;
       }
 
@@ -303,8 +303,8 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
       // const client = twilio(this.accountSid, this.authToken);
       // const result = await client.messages.create({
       //   body: message;
-      //   from: `whatsapp:${this.fromNumber}`,
-      //   to: `whatsapp:${to}`;
+      //   from: `whatsapp:${this.fromNumber,}`,
+      //   to: `whatsapp:${to,}`;
       // });
 
       // Mock implementation for demonstration;
@@ -313,7 +313,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
         "-0.005", // Typical WhatsApp cost;
       }
 
-      /* SECURITY: Console statement removed */}...`);
+      /* SECURITY: Console statement removed */,}...`);
 
       return {
         id: result.sid,
@@ -381,7 +381,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
   }
 
   // Template Management;
-  async createTemplate(template: NotificationTemplate): Promise<NotificationTemplate & { id: string }> {
+  async createTemplate(template: NotificationTemplate): Promise<NotificationTemplate & { id: string }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -428,20 +428,20 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     } catch (error) {
       throw new Error(`Failed to create notification template: $error instanceof Error ? error.message : "Unknown error"`);
 
-  async getTemplate(id: string): Promise<NotificationTemplate | null> {
+  async getTemplate(id: string): Promise<NotificationTemplate | null> {,
     // In production, fetch from database;
     // For now, return mock template;
     return {
       id,
       name: "Appointment Reminder",
       "appointment_reminder",
-      body: "Dear {{patientName}}, your appointment is scheduled for {{appointmentDate}} at {{appointmentTime}}.",
+      body: "Dear {{patientName},}, your appointment is scheduled for {{appointmentDate}} at {{appointmentTime}}.",
       variables: ["patientName", "appointmentDate", "appointmentTime"],
       priority: "medium",
       "system";
 
   // Core Notification Methods;
-  async sendNotification(request: NotificationRequest): Promise<NotificationResult> {
+  async sendNotification(request: NotificationRequest): Promise<NotificationResult> {,
     try {
 } catch (error) {
   console.error(error);
@@ -617,7 +617,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     };
 
   // Bulk Notifications;
-  async sendBulkNotifications(requests: NotificationRequest[]): Promise<NotificationResult[]> {
+  async sendBulkNotifications(requests: NotificationRequest[]): Promise<NotificationResult[]> {,
     const results: NotificationResult[] = [];
 
     // Process in batches to avoid overwhelming providers;
@@ -660,7 +660,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     if (!session.user) {
       const smsResult = await this.sendNotification({
         type: "sms",
-        recipient: { phone: patientPhone },
+        recipient: { phone: patientPhone ,},
         message: `Dear $appointmentDetails.patientName, your appointment with Dr. ${appointmentDetails.doctorName} is scheduled for ${appointmentDetails.appointmentDate} at $appointmentDetails.appointmentTime. Location: $appointmentDetails.location`,
         priority: "medium",
         sender: "appointment_system";
@@ -671,7 +671,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     if (!session.user) {
       const emailResult = await this.sendNotification({
         type: "email",
-        recipient: { email: patientEmail },
+        recipient: { email: patientEmail ,},
         subject: "Appointment Reminder",
         message: `;
           <h2>Appointment Reminder</h2>;
@@ -693,15 +693,15 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
 
     return results;
 
-  async sendCriticalLab/* SECURITY: Alert removed */: Promise<NotificationResult[]> {
+  async sendCriticalLab/* SECURITY: Alert removed */: Promise<NotificationResult[]> {,
     const results: NotificationResult[] = [];
 
     // SMS Alert;
     if (!session.user) {
       const smsResult = await this.sendNotification({
         type: "sms",
-        recipient: { phone: doctorPhone },
-        message: `CRITICAL LAB ALERT: ${alertDetails.patientName} - ${alertDetails.labTest}: ${alertDetails.criticalValue} (Normal: ${alertDetails.normalRange}). Immediate attention required.`,
+        recipient: { phone: doctorPhone ,},
+        message: `CRITICAL LAB ALERT: ${alertDetails.patientName} - ${alertDetails.labTest}: ${alertDetails.criticalValue} (Normal: ${alertDetails.normalRange,}). Immediate attention required.`,
         priority: alertDetails.urgency,
         sender: "lab_system";
       });
@@ -711,14 +711,14 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     if (!session.user) {
       const emailResult = await this.sendNotification({
         type: "email",
-        recipient: { email: doctorEmail },
-        subject: `CRITICAL LAB ALERT - ${alertDetails.patientName}`,
+        recipient: { email: doctorEmail ,},
+        subject: `CRITICAL LAB ALERT - ${alertDetails.patientName,}`,
         message: `;
           <h2 style="color: red;">CRITICAL LAB ALERT</h2>;
-          <p><strong>Patient:</strong> ${alertDetails.patientName}</p>;
-          <p><strong>Test:</strong> ${alertDetails.labTest}</p>;
-          <p><strong>Critical Value:</strong> ${alertDetails.criticalValue}</p>;
-          <p><strong>Normal Range:</strong> ${alertDetails.normalRange}</p>;
+          <p><strong>Patient:</strong> ${alertDetails.patientName,}</p>;
+          <p><strong>Test:</strong> ${alertDetails.labTest,}</p>;
+          <p><strong>Critical Value:</strong> ${alertDetails.criticalValue,}</p>;
+          <p><strong>Normal Range:</strong> ${alertDetails.normalRange,}</p>;
           <p style="color: red;"><strong>This requires immediate attention!</strong></p>;
         `,
         priority: alertDetails.urgency,
@@ -758,7 +758,7 @@ class TwilioWhatsAppProvider implements IWhatsAppProvider {
     { id: string, status: string; errorMessage?: string; cost?: number }
   ): Promise<void> {
     // In production, store in database;
-    /* SECURITY: Console statement removed */}
+    /* SECURITY: Console statement removed */},
 
   // Cleanup;
   async disconnect(): Promise<void> {

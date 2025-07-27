@@ -5,47 +5,47 @@ import { createAuditLog } from '@/lib/audit-logging';
 import { toFHIRHousekeepingInspection, toFHIRHousekeepingRequest } from '@/lib/models/housekeeping';
 import { prisma } from '@/lib/prisma';
 import type { NotificationService } from '@/lib/services/notification.service';
-\1
+
 }
   }
 
   /**
    * Get housekeeping requests based on filters;
    */
-  async getHousekeepingRequests(filter: HousekeepingRequestFilter) {
+  async getHousekeepingRequests(filter: HousekeepingRequestFilter) {,
     const { status, locationId, priority, requestType, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {};
-    \1 {\n  \2here.status = status;
-    \1 {\n  \2here.locationId = locationId;
-    \1 {\n  \2here.priority = priority;
-    \1 {\n  \2here.requestType = requestType;
+    const where: unknown = {,};
+     {\n  here.status = status;
+     {\n  here.locationId = locationId;
+     {\n  here.priority = priority;
+     {\n  here.requestType = requestType;
 
     // Date range filter
-    \1 {\n  \2{
+     {\n  {
       where.createdAt = {};
-      \1 {\n  \2here.createdAt.gte = startDate;
-      \1 {\n  \2here.createdAt.lte = endDate;
+       {\n  here.createdAt.gte = startDate;
+       {\n  here.createdAt.lte = endDate;
     }
 
     const [requests, total] = await Promise.all([
       prisma.housekeepingRequest.findMany({
         where,
-        include: {
+        include: {,
           location: true,
-          requestedByUser: {
-            select: {
+          requestedByUser: {,
+            select: {,
               id: true,
-              \1,\2 true
+               true
             }
           },
-          tasks: {
-            include: {
-              assignedToUser: {
-                select: {
+          tasks: {,
+            include: {,
+              assignedToUser: {,
+                select: {,
                   id: true,
-                  \1,\2 true
+                   true
                 }
               }
             }
@@ -53,7 +53,7 @@ import type { NotificationService } from '@/lib/services/notification.service';
         },
         skip,
         take: limit,
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       }),
       prisma.housekeepingRequest.count(where )
     ]);
@@ -67,28 +67,28 @@ import type { NotificationService } from '@/lib/services/notification.service';
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit),
     };
   }
 
   /**
    * Create a new housekeeping request;
    */
-  async createHousekeepingRequest(data: CreateHousekeepingRequestData): Promise<HousekeepingRequest> {
+  async createHousekeepingRequest(data: CreateHousekeepingRequestData): Promise<HousekeepingRequest> {,
     const { locationId, requestType, description, priority, requestedBy, scheduledDate, notes } = data;
 
     // Validate location exists
     const location = await prisma.location.findUnique({
-      where: { id: locationId }
+      where: { id: locationId },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Location not found');
     }
 
     // Create the housekeeping request
     const request = await prisma.housekeepingRequest.create({
-      data: {
+      data: {,
         locationId,
         requestType,
         description,
@@ -98,31 +98,31 @@ import type { NotificationService } from '@/lib/services/notification.service';
         scheduledDate,
         notes;
       },
-      include: {
+      include: {,
         location: true,
-        requestedByUser: 
+        requestedByUser: ,
             id: true,
-            \1,\2 true
+             true
       }
     });
 
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      \1,\2 request.id,
-      \1,\2 `Created housekeeping request for ${location.name}`;
+       request.id,
+       `Created housekeeping request for ${location.name}`;
     });
 
     // Send notification to housekeeping staff
     await this.notificationService.sendNotification({
       type: 'HOUSEKEEPING_REQUEST',
-      title: `New ${priority} Housekeeping Request`,
-      message: `A new ${requestType} request has been created for ${location.name}`,
+      title: `New ${priority,} Housekeeping Request`,
+      message: `A new ${requestType} request has been created for ${location.name,}`,
       recipientRoles: ['HOUSEKEEPING_MANAGER', 'HOUSEKEEPING_STAFF'],
       entityId: request.id,
-      metadata: {
+      metadata: {,
         requestId: request.id,
-        \1,\2 priority
+         priority
       }
     });
 
@@ -132,32 +132,32 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Get a specific housekeeping request by ID;
    */
-  async getHousekeepingRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {
+  async getHousekeepingRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {,
     const request = await prisma.housekeepingRequest.findUnique({
-      where: { id },
-      include: {
+      where: { id ,},
+      include: {,
         location: true,
-        requestedByUser: {
-          select: {
+        requestedByUser: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           }
         },
-        tasks: {
+        tasks: {,
                 id: true,
-                \1,\2 true
+                 true
         }
       }
     });
 
-    \1 {\n  \2{
+     {\n  {
       return null;
     }
 
-    \1 {\n  \2{
+     {\n  {
       return {
         data: request,
-        fhir: toFHIRHousekeepingRequest(request)
+        fhir: toFHIRHousekeepingRequest(request),
       };
     }
 
@@ -167,13 +167,13 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Update a housekeeping request;
    */
-  async updateHousekeepingRequest(id: string, data: Partial<HousekeepingRequest>, userId: string): Promise<HousekeepingRequest> {
+  async updateHousekeepingRequest(id: string, data: Partial<HousekeepingRequest>, userId: string): Promise<HousekeepingRequest> {,
     const request = await prisma.housekeepingRequest.findUnique({
-      where: { id },
-      include: { location: true }
+      where: { id ,},
+      include: { location: true },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Housekeeping request not found');
     }
 
@@ -181,15 +181,15 @@ import type { NotificationService } from '@/lib/services/notification.service';
     const isCompleting = data.status === 'COMPLETED' && request.status !== 'COMPLETED';
 
     // If completing, ensure all tasks are completed
-    \1 {\n  \2{
+     {\n  {
       const incompleteTasks = await prisma.housekeepingTask.count({
-        where: {
+        where: {,
           requestId: id,
           status: { notIn: ['COMPLETED', 'CANCELLED'] }
         }
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Cannot mark request as completed while tasks are still pending');
       }
 
@@ -198,19 +198,19 @@ import type { NotificationService } from '@/lib/services/notification.service';
     }
 
     const updatedRequest = await prisma.housekeepingRequest.update({
-      where: { id },
+      where: { id ,},
       data,
-      include: {
+      include: {,
         location: true,
-        requestedByUser: {
-          select: {
+        requestedByUser: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           }
         },
-        tasks: {
+        tasks: {,
                 id: true,
-                \1,\2 true
+                 true
         }
       }
     });
@@ -218,20 +218,20 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      \1,\2 id;
+       id;
       userId,
-      details: `Updated housekeeping request for /* SECURITY: Template literal eliminated */
+      details: `Updated housekeeping request for /* SECURITY: Template literal eliminated */,
 
     // Send notification if status changed
-    \1 {\n  \2{
+     {\n  {
       await this.notificationService.sendNotification({
         type: 'HOUSEKEEPING_STATUS_CHANGE',
-        \1,\2 `Request for ${request.location.name} is now ${data.status}`,
+         `Request for ${request.location.name} is now ${data.status}`,
         recipientRoles: ['HOUSEKEEPING_MANAGER'],
-        \1,\2 request.id,
-        metadata: 
+         request.id,
+        metadata: ,
           requestId: request.id,
-          \1,\2 data.status
+           data.status
       });
     }
 
@@ -241,54 +241,54 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Create a task for a housekeeping request;
    */
-  async createHousekeepingTask(requestId: string, data: unknown, userId: string): Promise<HousekeepingTask> {
+  async createHousekeepingTask(requestId: string, data: unknown, userId: string): Promise<HousekeepingTask> {,
     const request = await prisma.housekeepingRequest.findUnique({
-      where: { id: requestId },
-      include: { location: true }
+      where: { id: requestId ,},
+      include: { location: true },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Housekeeping request not found');
     }
 
     // If request is in PENDING status, update to ASSIGNED
-    \1 {\n  \2{
+     {\n  {
       await prisma.housekeepingRequest.update({
-        where: { id: requestId },
-        data: { status: 'ASSIGNED' }
+        where: { id: requestId ,},
+        data: { status: 'ASSIGNED' },
       });
     }
 
     const task = await prisma.housekeepingTask.create({
-      data: {
+      data: {,
         requestId,
         description: data.description,
-        \1,\2 data.assignedToId,
-        \1,\2 data.notes
+         data.assignedToId,
+         data.notes
       },
-      include: {
+      include: {,
             id: true,
-            \1,\2 true
+             true
       }
     });
 
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      \1,\2 task.id;
+       task.id;
       userId,
-      details: `Created housekeeping task for request ${requestId}`;
+      details: `Created housekeeping task for request ${requestId,}`;
     });
 
     // Send notification to assigned staff
-    \1 {\n  \2{
+     {\n  {
       await this.notificationService.sendNotification({
         type: 'HOUSEKEEPING_TASK_ASSIGNED',
-        \1,\2 `You have been assigned a new task: ${data.description}`,
+         `You have been assigned a new task: ${data.description,}`,
         recipientIds: [data.assignedToId],
-        \1,\2 {
+         {
           taskId: task.id,
-          \1,\2 request.locationId
+           request.locationId
         }
       });
     }
@@ -299,40 +299,40 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Update a housekeeping task;
    */
-  async updateHousekeepingTask(id: string, data: Partial<HousekeepingTask>, userId: string): Promise<HousekeepingTask> {
+  async updateHousekeepingTask(id: string, data: Partial<HousekeepingTask>, userId: string): Promise<HousekeepingTask> {,
     const task = await prisma.housekeepingTask.findUnique({
-      where: { id },
-      include: {
-        request: true
+      where: { id ,},
+      include: {,
+        request: true,
       }
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Housekeeping task not found');
     }
 
     // Handle status transitions
-    \1 {\n  \2{
+     {\n  {
       // If starting task, set start time
-      \1 {\n  \2{
+       {\n  {
         data.startTime = new Date();
 
         // Also update request status if it's not already in progress
-        \1 {\n  \2{
+         {\n  {
           await prisma.housekeepingRequest.update({
-            where: { id: task.requestId },
-            data: { status: 'IN_PROGRESS' }
+            where: { id: task.requestId ,},
+            data: { status: 'IN_PROGRESS' },
           });
         }
       }
 
       // If completing task, set end time and calculate duration
-      \1 {\n  \2{
+       {\n  {
         const endTime = new Date();
         data.endTime = endTime;
 
         // Calculate duration in minutes if we have a start time
-        \1 {\n  \2{
+         {\n  {
           const durationMs = endTime.getTime() - task.startTime.getTime();
           data.duration = Math.round(durationMs / 60000); // Convert ms to minutes
         }
@@ -340,18 +340,18 @@ import type { NotificationService } from '@/lib/services/notification.service';
     }
 
     const updatedTask = await prisma.housekeepingTask.update({
-      where: { id },
+      where: { id ,},
       data,
-      include: {
-        assignedToUser: {
-          select: {
+      include: {,
+        assignedToUser: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           }
         },
-        request: {
-          include: {
-            location: true
+        request: {,
+          include: {,
+            location: true,
           }
         }
       }
@@ -360,36 +360,36 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      \1,\2 id;
+       id;
       userId,
-      details: `Updated housekeeping task status to ${data.status}`;
+      details: `Updated housekeeping task status to ${data.status,}`;
     });
 
     // If task is completed, check if all tasks are completed to update request status
-    \1 {\n  \2{
+     {\n  {
       const allTasks = await prisma.housekeepingTask.findMany({
-        where: { requestId: task.requestId }
+        where: { requestId: task.requestId },
       });
 
       const allCompleted = allTasks.every(t => t.status === 'COMPLETED' || t.status === 'CANCELLED');
 
-      \1 {\n  \2{
+       {\n  {
         await prisma.housekeepingRequest.update({
-          where: { id: task.requestId },
-          data: {
+          where: { id: task.requestId ,},
+          data: {,
             status: 'COMPLETED',
-            completedDate: new Date()
+            completedDate: new Date(),
           }
         });
 
         // Send notification that request is complete
         await this.notificationService.sendNotification({
           type: 'HOUSEKEEPING_REQUEST_COMPLETED',
-          \1,\2 `Request for ${updatedTask.request.location.name} has been completed`,
+           `Request for ${updatedTask.request.location.name} has been completed`,
           recipientIds: [updatedTask.request.requestedById],
-          \1,\2 {
+           {
             requestId: task.requestId,
-            locationId: updatedTask.request.locationId
+            locationId: updatedTask.request.locationId,
           }
         });
       }
@@ -402,36 +402,36 @@ import type { NotificationService } from '@/lib/services/notification.service';
    * Get housekeeping schedules;
    */
   async getHousekeepingSchedules(locationId?: string) {
-    const where: unknown = {};
-    \1 {\n  \2here.locationId = locationId;
+    const where: unknown = {,};
+     {\n  here.locationId = locationId;
 
     return prisma.housekeepingSchedule.findMany({
       where,
-      include: {
+      include: {,
         location: true,
-        createdByUser: {
-          select: {
+        createdByUser: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           }
         }
       },
-      orderBy: { nextRun: 'asc' }
+      orderBy: { nextRun: 'asc' },
     });
   }
 
   /**
    * Create a housekeeping schedule;
    */
-  async createHousekeepingSchedule(data: unknown, userId: string): Promise<HousekeepingSchedule> {
+  async createHousekeepingSchedule(data: unknown, userId: string): Promise<HousekeepingSchedule> {,
     const { locationId, scheduleType, frequency, dayOfWeek, timeOfDay, taskTemplate } = data;
 
     // Validate location exists
     const location = await prisma.location.findUnique({
-      where: { id: locationId }
+      where: { id: locationId },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Location not found');
     }
 
@@ -439,7 +439,7 @@ import type { NotificationService } from '@/lib/services/notification.service';
     const nextRun = this.calculateNextRunDate(scheduleType, frequency, dayOfWeek, timeOfDay);
 
     const schedule = await prisma.housekeepingSchedule.create({
-      data: {
+      data: {,
         locationId,
         scheduleType,
         frequency,
@@ -448,14 +448,14 @@ import type { NotificationService } from '@/lib/services/notification.service';
         taskTemplate,
         isActive: true;
         nextRun,
-        createdById: userId
+        createdById: userId,
       },
-      include: {
+      include: {,
         location: true,
-        createdByUser: {
-          select: {
+        createdByUser: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           }
         }
       }
@@ -464,9 +464,9 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      \1,\2 schedule.id;
+       schedule.id;
       userId,
-      details: `Created ${scheduleType} housekeeping schedule for ${location.name}`;
+      details: `Created ${scheduleType} housekeeping schedule for ${location.name,}`;
     });
 
     return schedule;
@@ -475,19 +475,19 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Update a housekeeping schedule;
    */
-  async updateHousekeepingSchedule(id: string, data: unknown, userId: string): Promise<HousekeepingSchedule> {
+  async updateHousekeepingSchedule(id: string, data: unknown, userId: string): Promise<HousekeepingSchedule> {,
     const schedule = await prisma.housekeepingSchedule.findUnique({
-      where: { id },
-      include: { location: true }
+      where: { id ,},
+      include: { location: true },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Housekeeping schedule not found');
     }
 
     // If schedule parameters changed, recalculate next run
     let nextRun = schedule.nextRun;
-    \1 {\n  \2{
+     {\n  {
       const scheduleType = data.scheduleType || schedule.scheduleType;
       const frequency = data.frequency || schedule.frequency;
       const dayOfWeek = data.dayOfWeek !== undefined ? data.dayOfWeek : schedule.dayOfWeek;
@@ -498,14 +498,14 @@ import type { NotificationService } from '@/lib/services/notification.service';
     }
 
     const updatedSchedule = await prisma.housekeepingSchedule.update({
-      where: { id },
+      where: { id ,},
       data,
-      include: {
+      include: {,
         location: true,
-        createdByUser: {
-          select: {
+        createdByUser: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           }
         }
       }
@@ -514,9 +514,9 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      \1,\2 id;
+       id;
       userId,
-      details: `Updated housekeeping schedule for ${schedule.location.name}`;
+      details: `Updated housekeeping schedule for ${schedule.location.name,}`;
     });
 
     return updatedSchedule;
@@ -525,19 +525,19 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Process due housekeeping schedules and create requests;
    */
-  async processDueSchedules(userId: string): Promise<number> {
+  async processDueSchedules(userId: string): Promise<number> {,
     const now = new Date();
 
     // Find all active schedules that are due
     const dueSchedules = await prisma.housekeepingSchedule.findMany({
-      where: {
+      where: {,
         isActive: true,
-        nextRun: {
-          lte: now
+        nextRun: {,
+          lte: now,
         }
       },
-      include: {
-        location: true
+      include: {,
+        location: true,
       }
     });
 
@@ -548,13 +548,13 @@ import type { NotificationService } from '@/lib/services/notification.service';
       try {
         // Create a new request based on the schedule
         await prisma.housekeepingRequest.create({
-          data: {
+          data: {,
             locationId: schedule.locationId,
-            \1,\2 `Scheduled ${schedule.scheduleType.toLowerCase()} cleaning for ${schedule.location.name}`,
+             `Scheduled ${schedule.scheduleType.toLowerCase()} cleaning for ${schedule.location.name}`,
             priority: 'MEDIUM',
-            \1,\2 userId,
+             userId,
             scheduledDate: new Date(),
-            notes: `Automatically generated from schedule ${schedule.id}`;
+            notes: `Automatically generated from schedule ${schedule.id,}`;
           }
         });
 
@@ -571,8 +571,8 @@ import type { NotificationService } from '@/lib/services/notification.service';
         );
 
         await prisma.housekeepingSchedule.update({
-          where: { id: schedule.id },
-          data: {
+          where: { id: schedule.id ,},
+          data: {,
             lastRun,
             nextRun;
           }
@@ -589,36 +589,36 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Get housekeeping inspections;
    */
-  async getHousekeepingInspections(filter: unknown) {
+  async getHousekeepingInspections(filter: unknown) {,
     const { locationId, status, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {};
-    \1 {\n  \2here.locationId = locationId;
-    \1 {\n  \2here.status = status;
+    const where: unknown = {,};
+     {\n  here.locationId = locationId;
+     {\n  here.status = status;
 
     // Date range filter
-    \1 {\n  \2{
+     {\n  {
       where.inspectionDate = {};
-      \1 {\n  \2here.inspectionDate.gte = startDate;
-      \1 {\n  \2here.inspectionDate.lte = endDate;
+       {\n  here.inspectionDate.gte = startDate;
+       {\n  here.inspectionDate.lte = endDate;
     }
 
     const [inspections, total] = await Promise.all([
       prisma.housekeepingInspection.findMany({
         where,
-        include: {
+        include: {,
           location: true,
-          inspector: {
-            select: {
+          inspector: {,
+            select: {,
               id: true,
-              \1,\2 true
+               true
             }
           }
         },
         skip,
         take: limit,
-        orderBy: { inspectionDate: 'desc' }
+        orderBy: { inspectionDate: 'desc' },
       }),
       prisma.housekeepingInspection.count({ where })
     ]);
@@ -628,11 +628,11 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     return {
       data: inspections,
-      \1,\2 {
+       {
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit),
       }
     };
   }
@@ -640,20 +640,20 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Create a housekeeping inspection;
    */
-  async createHousekeepingInspection(data: unknown, userId: string): Promise<HousekeepingInspection> {
+  async createHousekeepingInspection(data: unknown, userId: string): Promise<HousekeepingInspection> {,
     const { locationId, inspectionType, inspectorId, score, status, findings, recommendations, inspectionDate } = data;
 
     // Validate location exists
     const location = await prisma.location.findUnique({
-      where: { id: locationId }
+      where: { id: locationId },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Location not found');
     }
 
     const inspection = await prisma.housekeepingInspection.create({
-      data: {
+      data: {,
         locationId,
         inspectionType,
         inspectorId: inspectorId || userId;
@@ -661,14 +661,14 @@ import type { NotificationService } from '@/lib/services/notification.service';
         status,
         findings,
         recommendations,
-        inspectionDate: inspectionDate || new Date()
+        inspectionDate: inspectionDate || new Date(),
       },
-      include: {
+      include: {,
         location: true,
-        inspector: {
-          select: {
+        inspector: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           }
         }
       }
@@ -677,29 +677,29 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Create audit log
     await createAuditLog({
       action: 'CREATE',
-      \1,\2 inspection.id;
+       inspection.id;
       userId,
-      details: `Created ${inspectionType} inspection for ${location.name}`;
+      details: `Created ${inspectionType} inspection for ${location.name,}`;
     });
 
     // If inspection failed, create a follow-up cleaning request
-    \1 {\n  \2 {
+     {\n   {
       await this.createHousekeepingRequest({
         locationId,
         requestType: 'DEEP_CLEANING',
-        \1,\2 'HIGH',
-        \1,\2 new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000), // Schedule for next day
-        notes: `Inspection ID: ${inspection.id}\nFindings: ${findings || 'None provided'}`;
+         'HIGH',
+         new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 24 * 60 * 60 * 1000), // Schedule for next day
+        notes: `Inspection ID: ${inspection.id}\nFindings: ${findings || 'None provided',}`;
       });
 
       // Send notification about failed inspection
       await this.notificationService.sendNotification({
         type: 'HOUSEKEEPING_INSPECTION_FAILED',
-        \1,\2 `Location ${location.name} failed inspection. Follow-up cleaning has been scheduled.`,
+         `Location ${location.name} failed inspection. Follow-up cleaning has been scheduled.`,
         recipientRoles: ['HOUSEKEEPING_MANAGER'],
-        \1,\2 {
+         {
           inspectionId: inspection.id,
-          \1,\2 score
+           score
         }
       });
     }
@@ -710,15 +710,15 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Get housekeeping inventory items;
    */
-  async getHousekeepingInventory(filter: unknown) {
+  async getHousekeepingInventory(filter: unknown) {,
     const { itemType, lowStock, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {};
-    \1 {\n  \2here.itemType = itemType;
-    \1 {\n  \2{
+    const where: unknown = {,};
+     {\n  here.itemType = itemType;
+     {\n  {
       where.currentStock = {
-        lte: prisma.housekeepingInventory.fields.minimumStock
+        lte: prisma.housekeepingInventory.fields.minimumStock,
       };
     }
 
@@ -727,18 +727,18 @@ import type { NotificationService } from '@/lib/services/notification.service';
         where,
         skip,
         take: limit,
-        orderBy: { itemName: 'asc' }
+        orderBy: { itemName: 'asc' },
       }),
       prisma.housekeepingInventory.count({ where })
     ]);
 
     return {
       data: items,
-      pagination: {
+      pagination: {,
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit)
+        totalPages: Math.ceil(total / limit),
       }
     };
   }
@@ -746,44 +746,44 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Update inventory item;
    */
-  async updateInventoryItem(id: string, data: Partial<HousekeepingInventory>, userId: string): Promise<HousekeepingInventory> {
+  async updateInventoryItem(id: string, data: Partial<HousekeepingInventory>, userId: string): Promise<HousekeepingInventory> {,
     const item = await prisma.housekeepingInventory.findUnique({
-      where: { id }
+      where: { id },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Inventory item not found');
     }
 
     // If restocking, update lastRestocked date
-    \1 {\n  \2{
+     {\n  {
       data.lastRestocked = new Date();
     }
 
     const updatedItem = await prisma.housekeepingInventory.update({
-      where: { id },
+      where: { id ,},
       data;
     });
 
     // Create audit log
     await createAuditLog({
       action: 'UPDATE',
-      \1,\2 id;
+       id;
       userId,
-      details: `Updated inventory for ${item.itemName}, stock: ${item.currentStock} → ${data.currentStock ||
+      details: `Updated inventory for ${item.itemName,}, stock: ${item.currentStock} → ${data.currentStock ||,
         item.currentStock}`;
     });
 
     // Check if item is low on stock after update
-    \1 {\n  \2{
+     {\n  {
       await this.notificationService.sendNotification({
         type: 'HOUSEKEEPING_INVENTORY_LOW',
-        \1,\2 `${updatedItem.itemName} is running low (/* SECURITY: Template literal eliminated */
+         `${updatedItem.itemName} is running low (/* SECURITY: Template literal eliminated */,
         recipientRoles: ['HOUSEKEEPING_MANAGER', 'INVENTORY_MANAGER'],
         entityId: updatedItem.id,
-        metadata: {
+        metadata: {,
           itemId: updatedItem.id,
-          \1,\2 updatedItem.minimumStock
+           updatedItem.minimumStock
         }
       });
     }
@@ -794,16 +794,16 @@ import type { NotificationService } from '@/lib/services/notification.service';
   /**
    * Get housekeeping analytics;
    */
-  async getHousekeepingAnalytics(period: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY') {
+  async getHousekeepingAnalytics(period: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY') {,
     // Get date range based on period
     const now = new Date();
     let startDate: Date;
 
     switch (period) {
       case 'DAILY':
-        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\1\n    }\n    case 'WEEKLY':
-        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\1\n    }\n    case 'MONTHLY':
-        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\1\n    }\n    case 'YEARLY':
+        startDate = new Date(now.setDate(now.getDate() - 30)); // Last 30 days\n    }\n    case 'WEEKLY':
+        startDate = new Date(now.setDate(now.getDate() - 90)); // Last 90 days\n    }\n    case 'MONTHLY':
+        startDate = new Date(now.setMonth(now.getMonth() - 12)); // Last 12 months\n    }\n    case 'YEARLY':
         startDate = new Date(now.setFullYear(now.getFullYear() - 5)); // Last 5 years
         break;
       default:
@@ -813,23 +813,23 @@ import type { NotificationService } from '@/lib/services/notification.service';
     // Get request counts by status
     const requestsByStatus = await prisma.housekeepingRequest.groupBy({
       by: ['status'],
-      where: {
-        createdAt: {
-          gte: startDate
+      where: {,
+        createdAt: {,
+          gte: startDate,
         }
       },
-      _count: true
+      _count: true,
     });
 
     // Get request counts by type
     const requestsByType = await prisma.housekeepingRequest.groupBy({
       by: ['requestType'],
-      where: {
-        createdAt: {
-          gte: startDate
+      where: {,
+        createdAt: {,
+          gte: startDate,
         }
       },
-      _count: true
+      _count: true,
     });
 
     // Get average completion time
@@ -843,59 +843,59 @@ import type { NotificationService } from '@/lib/services/notification.service';
 
     // Get inspection scores over time
     const inspectionScores = await prisma.housekeepingInspection.findMany({
-      where: {
-        inspectionDate: {
-          gte: startDate
+      where: {,
+        inspectionDate: {,
+          gte: startDate,
         },
-        score: {
-          not: null
+        score: {,
+          not: null,
         }
       },
-      select: {
+      select: {,
         inspectionDate: true,
-        \1,\2 true,
+         true,
         location: 
-            name: true
+            name: true,
       },
-      orderBy: {
-        inspectionDate: 'asc'
+      orderBy: {,
+        inspectionDate: 'asc',
       }
     });
 
     // Get top 5 locations with most requests
     const topLocations = await prisma.housekeepingRequest.groupBy({
       by: ['locationId'],
-      where: {
-        createdAt: {
-          gte: startDate
+      where: {,
+        createdAt: {,
+          gte: startDate,
         }
       },
       _count: true,
-      orderBy: {
-        _count: {
-          locationId: 'desc'
+      orderBy: {,
+        _count: {,
+          locationId: 'desc',
         }
       },
-      take: 5
+      take: 5,
     });
 
     // Get location details for top locations
     const locationDetails = await prisma.location.findMany({
-      where: {
-        id: {
-          in: topLocations.map(loc => loc.locationId)
+      where: {,
+        id: {,
+          in: topLocations.map(loc => loc.locationId),
         }
       },
-      select: {
+      select: {,
         id: true,
-        name: true
+        name: true,
       }
     });
 
     // Map location names to the top locations
     const topLocationsWithNames = topLocations.map(loc => ({
       locationId: loc.locationId,
-      \1,\2 locationDetails.find(l => l.id === loc.locationId)?.name || 'Unknown'
+       locationDetails.find(l => l.id === loc.locationId)?.name || 'Unknown'
     }));
 
     return {
@@ -913,19 +913,19 @@ import type { NotificationService } from '@/lib/services/notification.service';
    */
   private calculateNextRunDate(
     scheduleType: string,
-    \1,\2 number | null,
-    \1,\2 Date = new Date();
+     number | null,
+     Date = new Date();
   ): Date {
     const result = new Date(baseDate);
 
     // Set time component if provided
-    \1 {\n  \2{
+     {\n  {
       result.setHours(timeOfDay.getHours());
       result.setMinutes(timeOfDay.getMinutes());
       result.setSeconds(0);
       result.setMilliseconds(0);
     } else {
-      // Default to 8:00 AM
+      // Default to 8:00 AM,
       result.setHours(8),
       result.setMinutes(0);
       result.setSeconds(0);
@@ -933,35 +933,35 @@ import type { NotificationService } from '@/lib/services/notification.service';
     }
 
     // If the calculated time is in the past, move to the next occurrence
-    \1 {\n  \2{
+     {\n  {
       // For daily, just move to tomorrow
-      \1 {\n  \2{
+       {\n  {
         result.setDate(result.getDate() + 1);
       }
     }
 
     switch (scheduleType) {
       case 'DAILY':
-        result.setDate(result.getDate() + frequency);\1\n    }\n    case 'WEEKLY':
-        \1 {\n  \2{
+        result.setDate(result.getDate() + frequency);\n    }\n    case 'WEEKLY':
+         {\n  {
           // Move to the next occurrence of the specified day of week
           const currentDay = result.getDay();
           let daysToAdd = (dayOfWeek - currentDay + 7) % 7;
-          \1 {\n  \2{
+           {\n  {
             daysToAdd = 7;
           }
           result.setDate(result.getDate() + daysToAdd);
 
           // Add weeks based on frequency
-          \1 {\n  \2{
+           {\n  {
             result.setDate(result.getDate() + (frequency - 1) * 7);
           }
         } else {
           // If no day specified, just add weeks based on frequency
           result.setDate(result.getDate() + frequency * 7);
-        }\1\n    }\n    case 'MONTHLY':
-        result.setMonth(result.getMonth() + frequency);\1\n    }\n    case 'QUARTERLY':
-        result.setMonth(result.getMonth() + frequency * 3);\1\n    }\n    case 'ANNUAL':
+        }\n    }\n    case 'MONTHLY':
+        result.setMonth(result.getMonth() + frequency);\n    }\n    case 'QUARTERLY':
+        result.setMonth(result.getMonth() + frequency * 3);\n    }\n    case 'ANNUAL':
         result.setFullYear(result.getFullYear() + frequency);
         break;
     }

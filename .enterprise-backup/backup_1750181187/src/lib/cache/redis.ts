@@ -5,7 +5,7 @@ import { config } from '@/config';
 // Create Redis client
 const redisClient = createClient({
   url: config.redis.url,
-  password: config.redis.password
+  password: config.redis.password,
 });
 
 // Connect to Redis
@@ -19,7 +19,7 @@ redisClient.on('error', (err) => {
 });
 
 // Cache wrapper class
-\1
+
 }
     } catch (error) {
 
@@ -32,7 +32,7 @@ redisClient.on('error', (err) => {
    */
   static async set<T>(key: string, data: T, ttlSeconds = 3600): Promise<void> {
     try {
-      await redisClient.set(key, JSON.stringify(data), { EX: ttlSeconds });
+      await redisClient.set(key, JSON.stringify(data), { EX: ttlSeconds ,});
     } catch (error) {
 
     }
@@ -41,7 +41,7 @@ redisClient.on('error', (err) => {
   /**
    * Delete data from cache;
    */
-  static async delete(key: string): Promise<void> {
+  static async delete(key: string): Promise<void> {,
     try {
       await redisClient.del(key)
     } catch (error) {
@@ -52,10 +52,10 @@ redisClient.on('error', (err) => {
   /**
    * Delete multiple keys matching a pattern;
    */
-  static async deletePattern(pattern: string): Promise<void> {
+  static async deletePattern(pattern: string): Promise<void> {,
     try {
       const keys = await redisClient.keys(pattern);
-      \1 {\n  \2{
+       {\n  {
         await redisClient.del(keys);
       }
     } catch (error) {
@@ -76,7 +76,7 @@ redisClient.on('error', (err) => {
       const cachedData = await RedisCache.get<T>(key);
 
       // If found in cache, return it
-      \1 {\n  \2{
+       {\n  {
         return cachedData;
       }
 

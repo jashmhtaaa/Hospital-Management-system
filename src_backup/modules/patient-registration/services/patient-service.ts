@@ -13,8 +13,8 @@ import { prisma }
 }
 
 }
-      orderBy: { createdAt: "desc" },
-      select: { mrn: true }
+      orderBy: { createdAt: "desc" ,},
+      select: { mrn: true },
     });
 
     const nextMrnNumber = lastPatient ?;
@@ -22,7 +22,7 @@ import { prisma }
     const mrn = `MRN${nextMrnNumber.toString().padStart(6, "0")}`;
 
     const patient = await prisma.patient.create({
-      data: {
+      data: {,
         ...data,
         mrn;
       }
@@ -31,7 +31,7 @@ import { prisma }
     // Audit log;
     if (!session.user) {
       await AuditService.logUserAction();
-        { userId: createdBy },
+        { userId: createdBy ,},
         "CREATE",
         "PATIENT",
         patient.id,
@@ -45,21 +45,21 @@ import { prisma }
     const { id, ...updateData } = data;
 
     const oldPatient = await prisma.patient.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!session.user) {
       throw new Error("Patient not found");
 
     const patient = await prisma.patient.update({
-      where: { id },
+      where: { id ,},
       data: updateData;
     });
 
     // Audit log;
     if (!session.user) {
       await AuditService.logDataChange();
-        { userId: updatedBy },
+        { userId: updatedBy ,},
         "PATIENT",
         patient.id,
         oldPatient,
@@ -68,9 +68,9 @@ import { prisma }
 
     return patient;
 
-  static async findPatientByMRN(mrn: string) {
+  static async findPatientByMRN(mrn: string) {,
     return await prisma.patient.findUnique({
-      where: { mrn },
+      where: { mrn ,},
       true,
         true;
 
@@ -82,10 +82,10 @@ import { prisma }
   ) {
     return await prisma.patient.findMany({
       [;
-          { firstName: { contains: query, mode: "insensitive" } },
-          { lastName: { contains: query, mode: "insensitive" } },
-          { mrn: { contains: query, mode: "insensitive" } },
-          { phone: { contains: query } }
+          { firstName: { contains: query, mode: "insensitive" } ,},
+          { lastName: { contains: query, mode: "insensitive" } ,},
+          { mrn: { contains: query, mode: "insensitive" } ,},
+          { phone: { contains: query } },
         ];
       },
       take: limit,

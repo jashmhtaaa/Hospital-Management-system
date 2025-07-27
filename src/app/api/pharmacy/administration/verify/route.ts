@@ -6,15 +6,15 @@ import "../../../models/domain-models"
 import "../../../services/barcode-administration-service"
 import "next/server"
 import getPrescriptionById }
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  auditLog  } from "@/lib/database"
-import {  BarcodeAdministrationService  } from "@/lib/database"
-import {  errorHandler  } from "@/lib/database"
-import {   getMedicationById
-import {  PharmacyDomain  } from "@/lib/database"
-import {   type
-import {  validateBarcodeVerificationRequest  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {auditLog  } from "next/server"
+import {BarcodeAdministrationService  } from "next/server"
+import {errorHandler  } from "next/server"
+import {getMedicationById
+import {  PharmacyDomain  } from "next/server"
+import {type
+import {  validateBarcodeVerificationRequest  } from "next/server"
 
 }
 
@@ -65,7 +65,7 @@ const barcodeService = new BarcodeAdministrationService();
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode scanning;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -103,14 +103,14 @@ export const POST = async (req: any) => {
     const validationResult = validateBarcodeVerificationRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors },
-        {status:400 }
+        {error:"Validation failed", details: validationResult.errors ,},
+        {status:400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -152,6 +152,6 @@ export const POST = async (req: any) => {
     });
 
     // Return response;
-    return NextResponse.json(response, {status:200 });
+    return NextResponse.json(response, {status:200 ,});
   } catch (error) {
     return errorHandler(error, "Error verifying medication administration");

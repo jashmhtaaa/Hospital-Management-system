@@ -56,7 +56,7 @@ import "date-fns"
 import { format }
 import { toast }
 
-export default const _PayrollPeriodDetail = ({ params }: { params: { id: string } }) {
+export default const _PayrollPeriodDetail = ({ params }: {params:{ id: string } }) {
   const router = useRouter(),
   const [payrollPeriod, setPayrollPeriod] = useState<any | null>(null),
   const [loading, setLoading] = useState(true),
@@ -109,8 +109,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         const data = await response.json(),
         setPayrollPeriod(data)} catch (err) {
         setError(err.message),
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         })} finally {
         setLoading(false)}
@@ -153,16 +152,14 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 } catch (error) {
 
       setProcessingAction(true),
-      const response = await fetch(`/api/hr/payroll/periods/${params.id}/generate`, {
-        method: "POST";
+      const response = await fetch(`/api/hr/payroll/periods/${params.id}/generate`, {method:"POST";
       }),
 
       if (!session.user) {
         throw new Error("Failed to generate payroll entries")}
 
       const data = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Generated ${data.entriesGenerated} payroll entries`}),
 
       // Refresh payroll period data;
@@ -171,8 +168,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData)}
     } catch (err) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       })} finally {
       setProcessingAction(false)}
@@ -213,16 +209,14 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 } catch (error) {
 
       setProcessingAction(true),
-      const response = await fetch(`/api/hr/payroll/periods/${params.id}/approve`, {
-        method: "POST";
+      const response = await fetch(`/api/hr/payroll/periods/${params.id}/approve`, {method:"POST";
       }),
 
       if (!session.user) {
         throw new Error("Failed to approve payroll period")}
 
       const data = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Approved ${data.entriesApproved} payroll entries`}),
 
       // Refresh payroll period data;
@@ -231,8 +225,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData)}
     } catch (err) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       })} finally {
       setProcessingAction(false)}
@@ -273,8 +266,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 } catch (error) {
 
       setProcessingAction(true),
-      const response = await fetch(`/api/hr/payroll/periods/${params.id}/pay`, {
-        method: "POST",
+      const response = await fetch(`/api/hr/payroll/periods/${params.id}/pay`, {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         new Date();
@@ -284,8 +276,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         throw new Error("Failed to mark payroll period as paid")}
 
       const data = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Marked ${data.entriesPaid} payroll entries as paid`}),
 
       // Refresh payroll period data;
@@ -294,8 +285,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
         const periodData = await periodResponse.json(),
         setPayrollPeriod(periodData)}
     } catch (err) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       })} finally {
       setProcessingAction(false)}
@@ -336,19 +326,16 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 } catch (error) {
 
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
-      toast({
-        title: "Export Started",
+      toast({title:"Export Started",
         description: "Your payroll report is being generated and will download shortly.";
       }),
 
       // Simulate download delay;
       setTimeout(() => {
-        toast({
-          title: "Export Complete",
+        toast({title:"Export Complete",
           description: "Payroll report has been downloaded.";
         })}, 2000)} catch (error) {
-      toast({
-        title: "Export Failed",
+      toast({title:"Export Failed",
         "destructive";
       })}
   };
@@ -370,8 +357,7 @@ export default const _PayrollPeriodDetail = ({ params }: { params: { id: string 
 
   // Format currency;
   const formatCurrency = (amount: unknown) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
+    return new Intl.NumberFormat("en-US", {style:"currency",
       currency: "USD";
     }).format(amount);
   };

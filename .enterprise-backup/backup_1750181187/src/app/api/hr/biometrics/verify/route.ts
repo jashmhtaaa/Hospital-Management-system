@@ -13,17 +13,17 @@ const biometricVerificationSchema = z.object({
 });
 
 // POST handler for verifying biometric data
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     // Parse request body
     const body = await request.json();
 
     // Validate request data
     const validationResult = biometricVerificationSchema.safeParse(body);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
     }
 
@@ -34,7 +34,7 @@ export const _POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json(
-      { error: "Failed to verify biometric data", details: error.message },
-      { status: 500 }
+      { error: "Failed to verify biometric data", details: error.message ,},
+      { status: 500 },
     );
   }

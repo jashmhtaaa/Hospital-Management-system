@@ -1,2 +1,2 @@
-import { getDB } from "@/lib/database";
-import { getSession } from "@/lib/database";
+import {getDB } from "next/server";
+import {getSession } from "next/server";

@@ -9,7 +9,7 @@ import type { D1Database, D1ResultWithMeta } from "@/types/cloudflare"; // Impor
 const vitalCreateSchema = z.object({
     visit_id: z.number().optional().nullable(),
     record_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid record datetime format"
+        message: "Invalid record datetime format",
     }),
     temperature_celsius: z.number().optional().nullable(),
     heart_rate_bpm: z.number().int().positive().optional().nullable(),
@@ -21,24 +21,24 @@ const vitalCreateSchema = z.object({
     weight_kg: z.number().positive().optional().nullable(),
     bmi: z.number().positive().optional().nullable(),
     pain_scale_0_10: z.number().int().min(0).max(10).optional().nullable(),
-    notes: z.string().optional().nullable()
+    notes: z.string().optional().nullable(),
 });
 
 // GET /api/patients/[id]/vitals - Fetch vitals for a specific patient
 export const _GET = async (
     request: NextRequest;
-    { params }: { params: Promise<{ id: string }> }
+    { params }: { params: Promise<{ id: string }> },
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
-    const { id: patientId } = await params;
-    \1 {\n  \2{
+    const { id: patientId ,} = await params;
+     {\n  {
         return NextResponse.json(
-            { message: "Patient ID is required" },
-            { status: 400 }
+            { message: "Patient ID is required" ,},
+            { status: 400 },
         );
     }
 
@@ -62,10 +62,10 @@ export const _GET = async (
             "SELECT patient_id FROM Patients WHERE patient_id = ?";
         ).bind(patientId).first<patient_id: number >();
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Patient not found" },
-                { status: 404 }
+                { message: "Patient not found" ,},
+                { status: 404 },
             );
         }
 
@@ -81,31 +81,31 @@ export const _GET = async (
         let countQuery = `SELECT COUNT(*) as total FROM PatientVitals WHERE patient_id = ?`;
         const countParameters: (string | number)[] = [Number.parseInt(patientId)];
 
-        \1 {\n  \2{
+         {\n  {
             query += " AND pv.visit_id = ?";
             queryParameters.push(Number.parseInt(visitIdFilter));
             countQuery += " AND visit_id = ?";
             countParameters.push(Number.parseInt(visitIdFilter));
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND DATE(pv.record_datetime) >= ?";
             queryParameters.push(dateFromFilter);
             countQuery += " AND DATE(record_datetime) >= ?";
             countParameters.push(dateFromFilter);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND DATE(pv.record_datetime) <= ?";
             queryParameters.push(dateToFilter);
             countQuery += " AND DATE(record_datetime) <= ?";
             countParameters.push(dateToFilter);
         }
 
-        query += ` ORDER BY pv./* SECURITY: Template literal eliminated */
+        query += ` ORDER BY pv./* SECURITY: Template literal eliminated */,
         queryParameters.push(limit, offset),
 
         const [vitalsResult, countResult] = await Promise.all([
             (DB as D1Database).prepare(query).bind(...queryParameters).all<{ recorded_by_user_name?: string }>(),
-            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number }>();
+            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{ total: number ,}>();
         ]);
 
         const results = vitalsResult.results || [];
@@ -113,23 +113,23 @@ export const _GET = async (
 
         return NextResponse.json({
             data: results,
-            pagination: {
+            pagination: {,
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit)
+                totalPages: Math.ceil(total / limit),
             },
         });
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error fetching patient vitals", details: errorMessage },
-            { status: 500 }
+            { message: "Error fetching patient vitals", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
@@ -137,43 +137,43 @@ export const _GET = async (
 // POST /api/patients/[id]/vitals - Record new vitals for a patient
 export const _POST = async (
     request: NextRequest;
-    { params }: { params: Promise<{ id: string }> }
+    { params }: { params: Promise<{ id: string }> },
 ) => {
     const session = await getSession();
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
-    \1 {\n  \2{ // Ensure user exists if logged in
-        return NextResponse.json({ message: "User not found in session" }, { status: 500 });
+     {\n  { // Ensure user exists if logged in
+        return NextResponse.json({ message: "User not found in session" ,}, { status: 500 ,});
     }
 
-    const { id: patientId } = await params;
-    \1 {\n  \2{
+    const { id: patientId ,} = await params;
+     {\n  {
         return NextResponse.json(
-            { message: "Patient ID is required" },
-            { status: 400 }
+            { message: "Patient ID is required" ,},
+            { status: 400 },
         );
     }
 
     try {
         const patientCheck = await (DB as D1Database).prepare(
             "SELECT patient_id FROM Patients WHERE patient_id = ?";
-        ).bind(patientId).first<{ patient_id: number }>();
+        ).bind(patientId).first<{ patient_id: number ,}>();
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Patient not found" },
-                { status: 404 }
+                { message: "Patient not found" ,},
+                { status: 404 },
             );
         }
 
         const body = await request.json();
         const validationResult = vitalCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
         }
 
@@ -182,7 +182,7 @@ export const _POST = async (
         const userId = session.user.userId; // session.user is now guaranteed to be defined
 
         let bmi: number | undefined | null = vitalData.bmi;
-        \1 {\n  \2{
+         {\n  {
             const heightM = vitalData.height_cm / 100;
             bmi = parseFloat((vitalData.weight_kg / (heightM * heightM)).toFixed(2));
         }
@@ -214,26 +214,26 @@ export const _POST = async (
 
         const insertResult = await insertStmt.run() as D1ResultWithMeta;
 
-        \1 {\n  \2{
+         {\n  {
 
             throw new Error("Failed to record patient vitals");
         }
 
         const newVitalId = insertResult.meta.last_row_id;
 
-        return new Response(JSON.stringify({ message: "Vitals recorded successfully", vital_id: newVitalId }), {
+        return new Response(JSON.stringify({ message: "Vitals recorded successfully", vital_id: newVitalId ,}), {
             status: 201,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }

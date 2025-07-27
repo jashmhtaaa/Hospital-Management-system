@@ -41,38 +41,33 @@ import { X, Check, ChevronsUpDown } from "lucide-react"; // Removed Plus;
 import { cn } from "@/lib/utils"; // Assuming you have this utility;
 
 // --- INTERFACES ---;
-interface Patient {
-  id: number,
+interface Patient {id:number,
   name: string; // Combined first/last or display name;
   mrn: string;
   first_name?: string; // Optional if "name" is primary display;
   last_name?: string; // Optional if "name" is primary display;
 }
 
-interface ServiceItem {
-  id: number,
+interface ServiceItem {id:number,
   string,
   number;
 }
 
-interface InvoiceItem extends ServiceItem {
-  quantity: number,
+interface InvoiceItem extends ServiceItem {quantity:number,
   subtotal: number;
 }
 
 // --- API Response Interfaces ---;
-interface PatientsApiResponse {
-  patients: Patient[];
+interface PatientsApiResponse {patients:Patient[];
   // Add other potential properties if known;
 }
 
-interface ServiceItemsApiResponse {
-  serviceItems: ServiceItem[];
+interface ServiceItemsApiResponse {serviceItems:ServiceItem[];
   // Add other potential properties if known;
 }
 
 interface ErrorResponse {
-  error?: string;
+    error?: string;
   message?: string; // Common alternative;
   // Add other potential properties;
 }
@@ -333,8 +328,7 @@ export default const _CreateInvoicePage = () {
 
 } catch (error) {
 
-      const invoiceData = {
-        patient_id: selectedPatient.id,
+      const invoiceData = {patient_id:selectedPatient.id,
         item.id,
           item_name: item.item_name, // Consider if description should be different;
           description: item.item_name, // Using item_name as description for now;
@@ -345,8 +339,7 @@ export default const _CreateInvoicePage = () {
         status: "pending", // Assuming a default status;
       };
 
-      const response = await fetch("/api/billing/invoices", {
-        method: "POST",
+      const response = await fetch("/api/billing/invoices", {method:"POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(invoiceData);
       });

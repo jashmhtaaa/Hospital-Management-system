@@ -12,50 +12,50 @@ interface TheatreCreateBody {
 }
 
 // GET /api/ot/theatres - List all operation theatres
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database
     let query =;
       "SELECT id, name, location, specialty, status, updated_at FROM OperationTheatres";
     const parameters: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE status = ?";
       parameters.push(status);
     }
 
     query += " ORDER BY name ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
       .all();
 
     return NextResponse.json(results || []); // Ensure empty array if results is null/undefined
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { message: "Error fetching operation theatres", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching operation theatres", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/ot/theatres - Create a new operation theatre
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const body = (await request.json()) as TheatreCreateBody;
     const { name, location, specialty, equipment } = body;
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { message: "Theatre name is required" },
-        { status: 400 }
+        { message: "Theatre name is required" ,},
+        { status: 400 },
       );
     }
 
@@ -95,24 +95,24 @@ export const _POST = async (request: NextRequest) => {
             specialty,
             equipment,
             status: "available",
-            \1,\2 now,status: 201 
+             now,status: 201 ,
         ),
-  } catch (error: unknown) {
-    // FIX: Remove explicit any
+  } catch (error: unknown) {,
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
-    \1 {\n  \2 {
-      // FIX: Check errorMessage
+     {\n   {
+      // FIX: Check errorMessage,
       return NextResponse.json(
         {
           message: "Operation theatre name must be unique",
-          details: errorMessage
+          details: errorMessage,
         },
-        { status: 409 }
+        { status: 409 },
       ),
     }
     return NextResponse.json(
-      { message: "Error creating operation theatre", details: errorMessage },
-      { status: 500 }
+      { message: "Error creating operation theatre", details: errorMessage ,},
+      { status: 500 },
     );
   }

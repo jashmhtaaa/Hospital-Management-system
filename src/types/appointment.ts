@@ -1,7 +1,7 @@
 import "./doctor.ts"
 import "./patient.ts"
-import {  Doctor  } from "@/lib/database"
-import {  Patient  } from "@/lib/database"
+import {Doctor  } from "next/server"
+import {Patient  } from "next/server"
 
 }
 
@@ -32,7 +32,8 @@ export = "export" interface = "interface" Appointment = "Appointment" {appointme
 }
 
 // Need User type if not already globally available;
-interface User {userId:number,
+interface User {
+    {userId:number,
     username: string;
     fullName?: string | null;
     email: string;

@@ -1,5 +1,5 @@
 import "@prisma/client"
-import {  PrismaClient  } from "@/lib/database"
+import {PrismaClient  } from "next/server"
 
 const prisma = new PrismaClient();
 
@@ -11,14 +11,14 @@ const prisma = new PrismaClient();
     const { employeeId, templateType, templateData, deviceId, notes } = data;
 
     // Check if employee exists;
-    const employee = await prisma.employee.findUnique({where:{ id: employeeId }});
+    const employee = await prisma.employee.findUnique({where:{ id: employeeId },});
 
     if (!session.user) {
       throw new Error("Employee not found");
     }
 
     // Check if template already exists for this employee and type;
-    const existingTemplate = await prisma.biometricTemplate.findFirst({where:{
+    const existingTemplate = await prisma.biometricTemplate.findFirst({where:{,
         employeeId,
         templateType}});
 
@@ -27,7 +27,7 @@ const prisma = new PrismaClient();
       return prisma.biometricTemplate.update({
         existingTemplate.id;
         },
-        data: {
+        data: {,
           templateData,
           deviceId,
           notes,
@@ -35,7 +35,7 @@ const prisma = new PrismaClient();
         }});
     } else {
       // Create new template;
-      return prisma.biometricTemplate.create({data:{
+      return prisma.biometricTemplate.create({data:{,
           employeeId,
           templateType,
           templateData,
@@ -47,16 +47,16 @@ const prisma = new PrismaClient();
   /**;
    * Get biometric templates for an employee;
    */;
-  async getEmployeeBiometricTemplates(employeeId: string) {
-    return prisma.biometricTemplate.findMany({where:{ employeeId },
-      orderBy: {createdAt:"desc" }});
+  async getEmployeeBiometricTemplates(employeeId: string) {,
+    return prisma.biometricTemplate.findMany({where:{ employeeId ,},
+      orderBy: {createdAt:"desc" },});
   }
 
   /**;
    * Delete a biometric template;
    */;
-  async deleteBiometricTemplate(id: string) {
-    return prisma.biometricTemplate.delete({where:{ id }});
+  async deleteBiometricTemplate(id: string) {,
+    return prisma.biometricTemplate.delete({where:{ id },});
   }
 
   /**;
@@ -69,7 +69,7 @@ const prisma = new PrismaClient();
     const { employeeId, templateType, sampleData } = data;
 
     // Get the stored template;
-    const template = await prisma.biometricTemplate.findFirst({where:{
+    const template = await prisma.biometricTemplate.findFirst({where:{,
         employeeId,
         templateType}});
 
@@ -96,7 +96,7 @@ const prisma = new PrismaClient();
           templateType,
           isMatch,
           matchScore,
-          timestamp: new Date()}});
+          timestamp: new Date()},});
 
     return {
       isMatch,
@@ -119,14 +119,14 @@ const prisma = new PrismaClient();
     const { deviceId, deviceType, location, ipAddress, serialNumber, manufacturer, model, notes } = data;
 
     // Check if device already exists;
-    const existingDevice = await prisma.biometricDevice.findUnique({where:{ deviceId }});
+    const existingDevice = await prisma.biometricDevice.findUnique({where:{ deviceId },});
 
     if (!session.user) {
       // Update existing device;
       return prisma.biometricDevice.update({
         existingDevice.id;
         },
-        data: {
+        data: {,
           deviceType,
           location,
           ipAddress,
@@ -138,7 +138,7 @@ const prisma = new PrismaClient();
         }});
     } else {
       // Create new device;
-      return prisma.biometricDevice.create({data:{
+      return prisma.biometricDevice.create({data:{,
           deviceId,
           deviceType,
           location,
@@ -152,12 +152,12 @@ const prisma = new PrismaClient();
    * Get all biometric devices;
    */;
   async getBiometricDevices() {
-    return prisma.biometricDevice.findMany({orderBy:{ location: "asc" }});
+    return prisma.biometricDevice.findMany({orderBy:{ location: "asc" },});
 
   /**;
    * Get biometric verification logs;
    */;
-  async getBiometricLogs(options: {
+  async getBiometricLogs(options: {,
     employeeId?: string;
     startDate?: Date;
     endDate?: Date;
@@ -187,7 +187,7 @@ const prisma = new PrismaClient();
     const [logs, total] = await Promise.all([;
       prisma.auditLog.findMany({
         where,
-        orderBy: {createdAt:"desc' },
+        orderBy: {createdAt:"desc' ,},
         skip,
         take}),
       prisma.auditLog.count({ where })]);

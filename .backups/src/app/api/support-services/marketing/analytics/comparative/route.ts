@@ -17,10 +17,10 @@ const analyticsService = new AnalyticsService();
  * GET /api/support-services/marketing/analytics/comparative;
  * Get comparative analytics for multiple campaigns;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const _session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -29,8 +29,8 @@ export const GET = async (request: any) => {
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "At least one campaign ID is required" },
-          { status: 400 }
+          { error: "At least one campaign ID is required" ,},
+          { status: 400 },
         );
       }
 

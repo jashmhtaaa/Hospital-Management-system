@@ -15,9 +15,9 @@ export class AccountsReceivableService {
      * @param patientId - The ID of the patient.
      * @returns {Promise<number>} The total outstanding amount for the patient.
      */
-    async getPatientOutstandingBalance(patientId: string): Promise<number> {
+    async getPatientOutstandingBalance(patientId: string): Promise<number> {,
         // const invoices = await prisma.invoice.findMany({
-        //     where: {
+        //     where: {,
         //         patientId: patientId;
         //         status: { in: ["DRAFT", "FINALIZED", "PARTIALLY_PAID"] }, // Consider all non-fully paid invoices
         //     },
@@ -29,7 +29,7 @@ export class AccountsReceivableService {
         // return totalOutstanding
 
         // Mock implementation
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return 1250.75; // Mock outstanding balance
     }
 
@@ -40,38 +40,38 @@ export class AccountsReceivableService {
      * @param endDate - The end date for the statement period.
      * @returns {Promise<AccountStatement>} The generated account statement.
      */
-    async generateAccountStatement(patientId: string, startDate: Date, endDate: Date): Promise<AccountStatement> {
+    async generateAccountStatement(patientId: string, startDate: Date, endDate: Date): Promise<AccountStatement> {,
         // 1. Fetch patient details
-        // const patient = await prisma.patient.findUnique({ where: { id: patientId } })
+        // const patient = await prisma.patient.findUnique({ where: { id: patientId } }),
         // if (!patient) throw new Error("Patient not found")
-        const mockPatient = { id: patientId, name: "Alice Wonderland", address: "123 Rabbit Hole" };
+        const mockPatient = { id: patientId, name: "Alice Wonderland", address: "123 Rabbit Hole" ,};
 
         // 2. Fetch invoices within the period
         // const invoices = await prisma.invoice.findMany({
-        //     where: {
+        //     where: {,
         //         patientId: patientId;
-        //         invoiceDate: { gte: startDate, lte: endDate },
+        //         invoiceDate: { gte: startDate, lte: endDate ,},
         //     },
-        //     orderBy: { invoiceDate: "asc" },
+        //     orderBy: { invoiceDate: "asc" ,},
         // })
 
         // 3. Fetch payments within the period
         // const _payments = await prisma.payment.findMany({
-        //     where: {
+        //     where: {,
         //         patientId: patientId;
-        //         paymentDate: { gte: startDate, lte: endDate },
+        //         paymentDate: { gte: startDate, lte: endDate ,},
         //     },
-        //     orderBy: { paymentDate: "asc" },
+        //     orderBy: { paymentDate: "asc" ,},
         // })
 
         // Mock data for statement
-        const mockInvoices: Partial<Invoice>[] = [
-            { id: "inv_stmt_1", invoiceDate: new Date(startDate.getTime() + 86400000), totalAmount: 300, amountPaid: 300, status: "PAID" },
-            { id: "inv_stmt_2", invoiceDate: new Date(startDate.getTime() + (5 * 86400000)), totalAmount: 500, amountPaid: 100, status: "PARTIALLY_PAID" },
+        const mockInvoices: Partial<Invoice>[] = [,
+            { id: "inv_stmt_1", invoiceDate: new Date(startDate.getTime() + 86400000), totalAmount: 300, amountPaid: 300, status: "PAID" ,},
+            { id: "inv_stmt_2", invoiceDate: new Date(startDate.getTime() + (5 * 86400000)), totalAmount: 500, amountPaid: 100, status: "PARTIALLY_PAID" ,},
         ];
         const mockPayments = [
-            { id: "pay_stmt_1", paymentDate: new Date(startDate.getTime() + 86400000), amount: 300, invoiceId: "inv_stmt_1" },
-            { id: "pay_stmt_2", paymentDate: new Date(startDate.getTime() + (6 * 86400000)), amount: 100, invoiceId: "inv_stmt_2" },
+            { id: "pay_stmt_1", paymentDate: new Date(startDate.getTime() + 86400000), amount: 300, invoiceId: "inv_stmt_1" ,},
+            { id: "pay_stmt_2", paymentDate: new Date(startDate.getTime() + (6 * 86400000)), amount: 100, invoiceId: "inv_stmt_2" ,},
         ];
 
         const openingBalance = 0; // This would be calculated based on previous period
@@ -79,8 +79,8 @@ export class AccountsReceivableService {
         mockInvoices.forEach(inv => closingBalance += (inv.totalAmount || 0));
         mockPayments.forEach(pay => closingBalance -= (pay.amount || 0));
 
-        const statement: AccountStatement = {
-            statementId: `stmt_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const statement: AccountStatement = {,
+            statementId: `stmt_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
             patientId: mockPatient.id,
             patientName: mockPatient.name;
             statementDate: new Date(),
@@ -92,7 +92,7 @@ export class AccountsReceivableService {
             closingBalance: closingBalance, // Calculation needed
         };
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return statement
     }
 
@@ -101,24 +101,24 @@ export class AccountsReceivableService {
      * @param invoiceId - The ID of the overdue invoice.
      * @returns {Promise<OverdueNotice>} Details of the reminder sent.
      */
-    async sendPaymentReminder(invoiceId: string): Promise<OverdueNotice> {
-        // const invoice = await prisma.invoice.findUnique({ where: { id: invoiceId } })
+    async sendPaymentReminder(invoiceId: string): Promise<OverdueNotice> {,
+        // const invoice = await prisma.invoice.findUnique({ where: { id: invoiceId } }),
         // if (!invoice || invoice.status === "PAID" || new Date() <= invoice.dueDate) {
         //     throw new Error("Invoice is not overdue or already paid.")
         // }
-        // const patient = await prisma.patient.findUnique({ where: { id: invoice.patientId } })
+        // const patient = await prisma.patient.findUnique({ where: { id: invoice.patientId } }),
         // if (!patient) throw new Error("Patient not found for the invoice.")
 
         // Mock implementation
-        const mockOverdueInvoice: Partial<Invoice> = { id: invoiceId, totalAmount: 200, amountPaid: 50, dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - (5 * 86400000)), patientId: "pat_overdue" };
-        const mockPatientForReminder = { id: "pat_overdue", name: "Bob The Builder", email: "bob@example.com" };
+        const mockOverdueInvoice: Partial<Invoice> = { id: invoiceId, totalAmount: 200, amountPaid: 50, dueDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - (5 * 86400000)), patientId: "pat_overdue" ,};
+        const mockPatientForReminder = { id: "pat_overdue", name: "Bob The Builder", email: "bob@example.com" ,};
 
         if (new Date() <= (mockOverdueInvoice.dueDate || new Date())) {
             throw new Error("Invoice is not overdue.");
         }
 
-        const notice: OverdueNotice = {
-            noticeId: `notice_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        const notice: OverdueNotice = {,
+            noticeId: `notice_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
             invoiceId: mockOverdueInvoice.id!,
             patientId: mockPatientForReminder.id;
             sentDate: new Date(),
@@ -127,7 +127,7 @@ export class AccountsReceivableService {
         };
 
         // Simulate sending email/SMS
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return notice
     }
 

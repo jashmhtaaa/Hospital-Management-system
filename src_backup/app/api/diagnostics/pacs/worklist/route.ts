@@ -17,7 +17,7 @@ import { type
  * GET /api/diagnostics/pacs/worklist;
  * Get modality worklist entries;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -53,12 +53,12 @@ export const GET = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Parse query parameters;
@@ -166,7 +166,7 @@ export const GET = async (request: any) => {
 
         return {
           worklist: result.results,
-          pagination: {
+          pagination: {,
             page,
             pageSize,
             totalCount,
@@ -183,7 +183,7 @@ export const GET = async (request: any) => {
     return NextResponse.json({
       error: "Failed to fetch modality worklist",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -191,7 +191,7 @@ export const GET = async (request: any) => {
  * POST /api/diagnostics/pacs/worklist/sync;
  * Synchronize modality worklist with radiology orders;
  */;
-export const _POST_SYNC = async (request: any) => {
+export const _POST_SYNC = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -227,12 +227,12 @@ export const _POST_SYNC = async (request: any) => {
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Check if PACS is configured;
@@ -247,7 +247,7 @@ export const _POST_SYNC = async (request: any) => {
     if (!session.user) {
       return NextResponse.json({
         error: "PACS not configured or modality worklist not enabled";
-      }, { status: 400 });
+      }, { status: 400 ,});
     }
 
     // Get orders that need to be synced to worklist;
@@ -401,7 +401,7 @@ export const _POST_SYNC = async (request: any) => {
     return NextResponse.json({
       error: "Failed to synchronize modality worklist",
       details: error instanceof Error ? error.message : "Unknown error";
-    }, { status: 500 });
+    }, { status: 500 ,});
   }
 }
 
@@ -409,7 +409,7 @@ export const _POST_SYNC = async (request: any) => {
  * PUT /api/diagnostics/pacs/worklist/:id;
  * Update a modality worklist entry;
  */;
-export const PUT = async (request: any, { params }: { params: { id: string } }) => {
+export const PUT = async (request: any, { params }: { params: { id: string } }) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -445,16 +445,16 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     // Authentication;
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     const id = parseInt(params.id);
     if (!session.user) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid ID" ,}, { status: 400 ,});
 
     // Parse request body;
     const body = await request.json();
@@ -469,7 +469,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     // Check if worklist entry exists;
     const entryCheck = await DB.query("SELECT * FROM modality_worklist WHERE id = ?", [id]);
     if (!session.user) {
-      return NextResponse.json({ error: "Worklist entry not found" }, { status: 404 });
+      return NextResponse.json({ error: "Worklist entry not found" ,}, { status: 404 ,});
 
     const entry = entryCheck.results[0];
 
@@ -491,7 +491,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
       if (!session.user) {
         return NextResponse.json({
           error: `Invalid status transition from $entry.statusto $status`;
-        }, { status: 400 });
+        }, { status: 400 ,});
 
       updateFields.push("status = ?");
       updateParams.push(status);
@@ -564,7 +564,7 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
           [;
             entry.order_id,
             status,
-            `Status updated from worklist: ${notes || ""}`,
+            `Status updated from worklist: ${notes || "",}`,
             session.user.id;
           ];
         );
@@ -599,4 +599,4 @@ export const PUT = async (request: any, { params }: { params: { id: string } }) 
     return NextResponse.json({
       error: "Failed to update worklist entry",
       details: error instanceof Error ? error.message : "Unknown error';
-    }, { status: 500 });
+    }, { status: 500 ,});

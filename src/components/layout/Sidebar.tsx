@@ -25,12 +25,12 @@ import Image
 
 // Define navigation items;
 const navItems = [;
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/patients", label: "Patients", icon: Users },
-  { href: "/dashboard/appointments", label: "Appointments", icon: CalendarDays },
-  { href: "/dashboard/billing", label: "Billing", icon: ReceiptText },
-  { href: "/dashboard/inventory", label: "Inventory", icon: Boxes },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings }];
+  {href:"/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  {href:"/dashboard/patients", label: "Patients", icon: Users },
+  {href:"/dashboard/appointments", label: "Appointments", icon: CalendarDays },
+  {href:"/dashboard/billing", label: "Billing", icon: ReceiptText },
+  {href:"/dashboard/inventory", label: "Inventory", icon: Boxes },
+  {href:"/dashboard/settings", label: "Settings", icon: Settings }];
 
 export const _Sidebar = () => {
   const pathname = usePathname();

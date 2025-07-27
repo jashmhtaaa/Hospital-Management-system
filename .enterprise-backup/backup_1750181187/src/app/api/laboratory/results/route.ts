@@ -16,11 +16,11 @@ interface LabResultInput {
 
 interface LabResult {
   id: number,
-  \1,\2 number | null,
-  \1,\2 boolean,
-  \1,\2 number,
-  \1,\2 number | null,
-  \1,\2 string,
+   number | null,
+   boolean,
+   number,
+   number | null,
+   string,
   updated_at: string;
   // Joined fields
   test_id?: number;
@@ -37,19 +37,19 @@ interface LabResult {
 
 interface OrderItem {
   id: number,
-  \1,\2 number | null,
-  \1,\2 string;
+   number | null,
+   string;
   // ... other fields
 }
 
 // Removed unused interfaces: TestParameter, LabTest
 
 // GET /api/laboratory/results - Get laboratory results
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const { searchParams } = new URL(request.url);
@@ -75,29 +75,29 @@ export const _GET = async (request: NextRequest) => {
       LEFT JOIN users u2 ON r.verified_by = u2.id;
     `;
 
-    // FIX: Use specific type for params
+    // FIX: Use specific type for params,
     const parameters: (string | number)[] = [];
     const conditions: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("r.order_item_id = ?");
       parameters.push(orderItemId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("oi.order_id = ?");
       parameters.push(orderId);
     }
-    \1 {\n  \2{
+     {\n  {
       conditions.push("o.patient_id = ?");
       parameters.push(patientId);
     }
 
-    // Role-based access control - Fixed: Use roleName
-    \1 {\n  \2{
+    // Role-based access control - Fixed: Use roleName,
+     {\n  {
       // Assuming 'Patient' role name
       conditions.push("o.patient_id = ?");
       parameters.push(session.user.userId); // Assuming userId is the correct ID
-    } else \1 {\n  \2{
+    } else  {\n  {
       // Assuming 'Doctor' role name
       // Doctors might see results for orders they placed or patients they manage
       // This might need refinement based on exact requirements
@@ -108,47 +108,47 @@ export const _GET = async (request: NextRequest) => {
     }
     // Admins, Lab Staff see all by default if no other filters applied
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE " + conditions.join(" AND ");
     }
     query += " ORDER BY r.created_at DESC";
 
     const results = await database.query(query, parameters);
     return NextResponse.json(results.results || []); // Changed .rows to .results
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to fetch laboratory results", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch laboratory results", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/laboratory/results - Create or update laboratory results
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
-    // Fixed: Use roleName and check against expected role names
+    // Fixed: Use roleName and check against expected role names,
     const allowedRoles = [
       "Lab Technician",
       "Lab Manager",
       "Pathologist",
       "Admin",
     ]; // Adjust role names as needed
-    \1 {\n  \2 {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const body = (await request.json()) as LabResultInput;
     const database = await getDB();
 
-    \1 {\n  \2{
+     {\n  {
       // --- Update existing result ---
       const resultResult = await database.query(
         "SELECT * FROM lab_results WHERE id = ?",
@@ -160,50 +160,50 @@ export const _POST = async (request: NextRequest) => {
           : undefined;
       ) as LabResult | null;
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "Result not found" },
-          { status: 404 }
+          { error: "Result not found" ,},
+          { status: 404 },
         );
       }
 
       const updates: string[] = [];
-      // FIX: Use specific type for params
+      // FIX: Use specific type for params,
       const parameters: (string | number | boolean)[] = [];
 
-      \1 {\n  \2{
+       {\n  {
         updates.push("result_value = ?");
         parameters.push(body.result_value);
       }
-      \1 {\n  \2{
+       {\n  {
         updates.push("is_abnormal = ?");
         parameters.push(body.is_abnormal);
       }
-      \1 {\n  \2{
+       {\n  {
         updates.push("notes = ?");
         parameters.push(body.notes);
       }
 
       // Handle verification
-      \1 {\n  \2{
-        // Fixed: Use roleName
-        \1 {\n  \2
+       {\n  {
+        // Fixed: Use roleName,
+         {\n  
         ) 
           // Adjust roles as needed
           return NextResponse.json(
             {
               error: "Only Pathologists, Lab Managers, or Admins can verify results",
             },
-            { status: 403 }
+            { status: 403 },
           );
         updates.push("verified_by = ?", "verified_at = CURRENT_TIMESTAMP");
         parameters.push(session.user.userId);
       }
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "No updates provided" },
-          { status: 400 }
+          { error: "No updates provided" ,},
+          { status: 400 },
         );
       }
 
@@ -224,15 +224,15 @@ export const _POST = async (request: NextRequest) => {
       return NextResponse.json(updatedResult);
     } else {
       // --- Create new result ---
-      const requiredFields: (keyof LabResultInput)[] = [
+      const requiredFields: (keyof LabResultInput)[] = [,
         "order_item_id",
         "result_value",
       ]
       for (const field of requiredFields) {
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: `Missing required field: ${field}` },
-            { status: 400 }
+            { error: `Missing required field: ${field}` ,},
+            { status: 400 },
           );
         }
       }
@@ -249,22 +249,22 @@ export const _POST = async (request: NextRequest) => {
             : undefined;
         ) as OrderItem | null;
 
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: "Order item not found" },
-            { status: 404 }
+            { error: "Order item not found" ,},
+            { status: 404 },
           );
         }
 
-        \1 {\n  \2{
+         {\n  {
           const parameterResult = await database.query(
             "SELECT * FROM lab_test_parameters WHERE id = ? AND test_id = ?",
             [body.parameter_id, orderItem.test_id]
           );
-          \1 {\n  \2{ // Changed .rows to .results (twice)
+           {\n  { // Changed .rows to .results (twice)
             return NextResponse.json(
-              { error: "Parameter does not belong to the test" },
-              { status: 400 }
+              { error: "Parameter does not belong to the test" ,},
+              { status: 400 },
             )
           }
         }
@@ -288,28 +288,28 @@ export const _POST = async (request: NextRequest) => {
 
         // --- Update Order/Item Status Logic (Needs refinement for mock DB) ---
         let allItemParametersCompleted = false
-        \1 {\n  \2{
+         {\n  {
           const parametersResult = await database.query(
             "SELECT id FROM lab_test_parameters WHERE test_id = ?",
             [orderItem.test_id]
           );
           const parameters = parametersResult.results || []; // Changed .rows to .results
 
-          \1 {\n  \2{
-            // FIX: Cast parameters to the expected type before mapping
-            const parameterIds = (parameters as Array<{ id: number }>).map(
+           {\n  {
+            // FIX: Cast parameters to the expected type before mapping,
+            const parameterIds = (parameters as Array<{ id: number }>).map(,
               (p) => p.id;
             );
             const resultsCountResult = await database.query(
               `SELECT COUNT(*) as count FROM lab_results WHERE order_item_id = ? AND parameter_id IN (${parameterIds.map(() => "?").join(",")})`,
               [body.order_item_id, ...parameterIds]
             );
-            // FIX: Define type for count result
+            // FIX: Define type for count result,
             const resultCount =;
               resultsCountResult?.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice)
-                ? (resultsCountResult.results[0] as { count: number }).count // Changed .rows to .results
+                ? (resultsCountResult.results[0] as { count: number }).count // Changed .rows to .results,
                 : 0;
-            \1 {\n  \2{
+             {\n  {
               // Use >= in case of re-entry
               allItemParametersCompleted = true;
             }
@@ -319,7 +319,7 @@ export const _POST = async (request: NextRequest) => {
           }
         }
 
-        \1 {\n  \2{
+         {\n  {
           await database.query(
             "UPDATE lab_order_items SET status = ? WHERE id = ?",
             ["completed", body.order_item_id]
@@ -332,12 +332,12 @@ export const _POST = async (request: NextRequest) => {
           "SELECT status FROM lab_order_items WHERE order_id = ?",
           [orderItem.order_id]
         );
-        // FIX: Cast results to expected type before using .every()
+        // FIX: Cast results to expected type before using .every(),
         const allOrderItemsCompleted = (
-          (orderItemsResult.results as Array<{ status: string }>) || [] // Changed .rows to .results
+          (orderItemsResult.results as Array<{ status: string }>) || [] // Changed .rows to .results,
         ).every((item) => item.status === "completed");
 
-        \1 {\n  \2{
+         {\n  {
           await database.query(
             "UPDATE lab_orders SET status = ? WHERE id = ?",
             ["completed", orderItem.order_id]
@@ -348,7 +348,7 @@ export const _POST = async (request: NextRequest) => {
             "SELECT id FROM lab_reports WHERE order_id = ?",
             [orderItem.order_id]
           )
-          \1 {\n  \2{ // Changed .rows to .results (twice)
+           {\n  { // Changed .rows to .results (twice)
             const reportNumber = `REP/* SECURITY: Template literal eliminated */ report_number, generated_by, status) VALUES (?, ?, ?, ?)",
               [
                 orderItem.order_id,
@@ -371,19 +371,19 @@ export const _POST = async (request: NextRequest) => {
             ? newResultResult.results[0] // Changed .rows to .results
             : { id: mockNewResultId, ...body };
 
-        return NextResponse.json(newResult, { status: 201 });
+        return NextResponse.json(newResult, { status: 201 ,});
       } catch (txError) {
         // No real rollback for mock DB
 
         throw txError; // Re-throw to be caught by outer handler
       }
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to manage laboratory result", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to manage laboratory result", details: errorMessage ,},
+      { status: 500 },
     );
   }

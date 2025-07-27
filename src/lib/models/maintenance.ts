@@ -1,7 +1,7 @@
 import "@prisma/client"
 import MaintenanceRequest
 import MaintenanceWorkOrder }
-import {  Asset
+import {Asset
 
 // FHIR-compliant interfaces for Maintenance Management;
 
@@ -10,7 +10,7 @@ import {  Asset
  * Maps to FHIR ServiceRequest resource;
  */;
 
-     } from "@/lib/database"[];
+     } from "next/server"[];
   }[];
   {system:string,
       string;
@@ -110,11 +110,11 @@ export const _toFHIRMaintenanceRequest = (unknown;
   };
 
   // Map request type to FHIR coding;
-  const requestTypeMap: Record<string, {code:string, display: string }> = {
-    "REPAIR": {code:"repair", display: "Repair" },
-    "PREVENTIVE": {code:"preventive", display: "Preventive Maintenance" },
-    "INSTALLATION": {code:"installation", display: "Installation" },
-    "INSPECTION": {code:"inspection", display: "Inspection" }
+  const requestTypeMap: Record<string, {code:string, display: string }> = {,
+    "REPAIR": {code:"repair", display: "Repair" ,},
+    "PREVENTIVE": {code:"preventive", display: "Preventive Maintenance" ,},
+    "INSTALLATION": {code:"installation", display: "Installation" ,},
+    "INSPECTION": {code:"inspection", display: "Inspection" },
   };
 
   return {resourceType:"ServiceRequest",
@@ -166,7 +166,7 @@ export const _toFHIRMaintenanceWorkOrder = (MaintenanceRequest;
   };
 
   return {resourceType:"Task",
-    [{reference:`ServiceRequest/${workOrder.requestId}`;
+    [{reference:`ServiceRequest/${workOrder.requestId,}`;
     }],
     status: statusMap[workOrder.status] || "requested",
     priorityMap[workOrder.request?.priority] || "routine",
@@ -199,11 +199,11 @@ export const _toFHIRAsset = (unknown;
   };
 
   // Map asset type to FHIR coding;
-  const assetTypeMap: Record<string, {code:string, display: string }> = {
-    "EQUIPMENT": {code:"equipment", display: "Medical Equipment" },
-    "FACILITY": {code:"facility", display: "Facility Asset" },
-    "VEHICLE": {code:"vehicle", display: "Vehicle" },
-    "IT": {code:"it", display: "IT Equipment" }
+  const assetTypeMap: Record<string, {code:string, display: string }> = {,
+    "EQUIPMENT": {code:"equipment", display: "Medical Equipment" ,},
+    "FACILITY": {code:"facility", display: "Facility Asset" ,},
+    "VEHICLE": {code:"vehicle", display: "Vehicle" ,},
+    "IT": {code:"it", display: "IT Equipment" },
   };
 
   return {resourceType:"Device",

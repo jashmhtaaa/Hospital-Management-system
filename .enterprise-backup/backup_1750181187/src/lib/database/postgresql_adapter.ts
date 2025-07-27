@@ -2,7 +2,7 @@
 import { Pool, type PoolClient, type QueryResult } from "pg";
 }
 
-// ARCH-1: Migrate to Enterprise Database Solution (Implement PostgreSQL Adapter)
+// ARCH-1: Migrate to Enterprise Database Solution (Implement PostgreSQL Adapter),
 // Research notes: research_notes_postgresql_adapter_article1.md, research_notes_postgresql_adapter_github_scan.md, research_notes_postgresql_adapter_egomobile_repo.md
 
 // Placeholder for configuration - in a real app, this would come from environment variables or a config service
@@ -18,7 +18,7 @@ const PG_CONFIG = {
  * @interface IDatabaseAdapter;
  * Defines the contract for database adapters.
  */
-\1
+
 }
 }
 
@@ -27,7 +27,7 @@ const PG_CONFIG = {
  * Implements the IDatabaseAdapter for PostgreSQL.
  * Handles connection pooling, query execution, and transaction management.
  */
-\1
+
 }
     });
   }
@@ -39,7 +39,7 @@ const PG_CONFIG = {
   async connect(): Promise<void> {
     try {
       const client = await this.pool.connect();
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       client.release()
     } catch (error) {
 
@@ -53,7 +53,7 @@ const PG_CONFIG = {
   async disconnect(): Promise<void> {
     try {
       await this.pool.end();
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     } catch (error) {
 
       throw error
@@ -102,7 +102,7 @@ const PG_CONFIG = {
    * Commits a database transaction.
    * @param client The client that holds the transaction.
    */
-  async commitTransaction(client: PoolClient): Promise<void> {
+  async commitTransaction(client: PoolClient): Promise<void> {,
     try {
       await client.query("COMMIT")
     } catch (error) {
@@ -124,7 +124,7 @@ const PG_CONFIG = {
    * Rolls back a database transaction.
    * @param client The client that holds the transaction.
    */
-  async rollbackTransaction(client: PoolClient): Promise<void> {
+  async rollbackTransaction(client: PoolClient): Promise<void> {,
     try {
       await client.query("ROLLBACK")
     } catch (error) {
@@ -144,42 +144,42 @@ async const testAdapter = () {
   try {
     await adapter.connect();
 
-    // Example: Create a table (ensure it doesn't exist or use IF NOT EXISTS)
+    // Example: Create a table (ensure it doesn't exist or use IF NOT EXISTS),
     // await adapter.execute(
     //   `CREATE TABLE IF NOT EXISTS test_items (
     //     id SERIAL PRIMARY KEY,
     //     name VARCHAR(100) NOT NULL
     //   )`
     // )
-    // // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
-    // Example: Insert data
+    // Example: Insert data,
     // const _insertResult = await adapter.execute(
     //   "INSERT INTO test_items (name) VALUES ($1) RETURNING *",
     //   ["Test Item 1"]
     // )
-    // // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
-    // Example: Select data
+    // Example: Select data,
     // const _selectResult = await adapter.execute("SELECT * FROM test_items")
-    // // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+    // // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 
-    // Example: Transaction
+    // Example: Transaction,
     const client = await adapter.beginTransaction(),
     try {
       // const _txInsertResult = await client.query(
       //   "INSERT INTO test_items (name) VALUES ($1) RETURNING *",
       //   ["Transaction Item"]
       // )
-      // // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
       // Simulating an error to test rollback
       // throw new Error("Simulated error during transaction")
       await adapter.commitTransaction(client);
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     } catch (txError) {
 
       await adapter.rollbackTransaction(client); // Rollback is handled by commitTransaction on error, but can be called explicitly
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+      // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
     }
 
   } catch (error) {

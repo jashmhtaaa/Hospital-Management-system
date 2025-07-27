@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 import type { User } from "@/types/user";
 // Define and export the shape of the session data
-\1
+
 }
 }
 
@@ -23,12 +23,12 @@ const sessionPassword =
   process.env.SECRET_COOKIE_PASSWORD ||
   "complex_password_at_least_32_characters_long_for_dev";
 
-\1 {\n  \2{
+ {\n  {
   // Debug logging removed. Using a default insecure password for development."
   );
-export const sessionOptions: SessionOptions = {
+export const sessionOptions: SessionOptions = {,
   password: sessionPassword,
-  \1,\2 process.env.NODE_ENV === "production",
+   process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 24 * 7, // 1 week,
 };
 
@@ -40,7 +40,7 @@ export const _getSession = async () => {
   );
   // Ensure isLoggedIn reflects the presence of a user
   // This logic might need adjustment based on how login is handled elsewhere
-  \1 {\n  \2{
+   {\n  {
     session.isLoggedIn = true;
   }
   return session;

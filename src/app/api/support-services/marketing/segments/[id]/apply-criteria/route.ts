@@ -3,13 +3,13 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {  SegmentService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {authOptions  } from "next/server"
+import {getServerSession  } from "next/server"
+import {SegmentService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
 
 const segmentService = new SegmentService();
 
@@ -19,11 +19,11 @@ const segmentService = new SegmentService();
  */;
 export const POST = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
 
       const result = await segmentService.applySegmentCriteria();

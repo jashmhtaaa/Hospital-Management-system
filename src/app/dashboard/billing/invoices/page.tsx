@@ -35,8 +35,7 @@ import { format } from "date-fns"; // For date formatting;
 
 
 // --- INTERFACES ---;
-interface Invoice {
-  id: number,
+interface Invoice {id:number,
   number,
   patient_name: string; // Assuming joined data or fetched separately;
   invoice_date: string,
@@ -46,7 +45,7 @@ interface Invoice {
 
 // FIX: Define interface for API response (commented out as unused for now);
 // interface InvoicesApiResponse {
-//   invoices: Invoice[];
+    //   invoices: Invoice[];
 //   // Add other potential properties if the API returns more data;
 // }
 
@@ -197,7 +196,7 @@ export default const _InvoicesListPage = () {
           <TableBody>;
             {isLoading ? (;
               // Skeleton Loader Rows;
-              (Array.from({ length: 5 }).map((_, index) => (;
+              (Array.from({length:5 }).map((_, index) => (;
                 >;
                   <TableCell>;
                     <Skeleton className="h-4 w-24" />;

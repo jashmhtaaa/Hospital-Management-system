@@ -17,14 +17,14 @@ import type { PredictiveAnalyticsService } from '../services/predictive-analytic
 @Controller('analytics/predictive');
 @UseGuards(JwtAuthGuard, RolesGuard);
 export class PredictiveAnalyticsController {
-  constructor(private readonly predictiveAnalyticsService: PredictiveAnalyticsService) {}
+  constructor(private readonly predictiveAnalyticsService: PredictiveAnalyticsService) {},
 
   @Get('models');
-  @ApiOperation({ summary: 'Get all predictive models' });
-  @ApiQuery({ name: 'type', required: false, description: 'Filter by model type' });
-  @ApiQuery({ name: 'category', required: false, description: 'Filter by model category' });
-  @ApiQuery({ name: 'status', required: false, description: 'Filter by model status' });
-  @ApiResponse({ status: 200, description: 'List of predictive models' });
+  @ApiOperation({ summary: 'Get all predictive models' ,});
+  @ApiQuery({ name: 'type', required: false, description: 'Filter by model type' ,});
+  @ApiQuery({ name: 'category', required: false, description: 'Filter by model category' ,});
+  @ApiQuery({ name: 'status', required: false, description: 'Filter by model status' ,});
+  @ApiResponse({ status: 200, description: 'List of predictive models' ,});
   async getAllModels(
     @Query('type') type?: string,
     @Query('category') category?: string,
@@ -33,34 +33,34 @@ export class PredictiveAnalyticsController {
     return this.predictiveAnalyticsService.getAllModels({
       type: type as any,
       category: category as any;
-      status: status as any
+      status: status as any,
     });
   }
 
   @Get('models/:id');
-  @ApiOperation({ summary: 'Get predictive model by ID' });
-  @ApiParam({ name: 'id', description: 'Model ID' });
-  @ApiResponse({ status: 200, description: 'Predictive model details' });
-  @ApiResponse({ status: 404, description: 'Model not found' });
-  async getModelById(@Param('id') id: string) {
+  @ApiOperation({ summary: 'Get predictive model by ID' ,});
+  @ApiParam({ name: 'id', description: 'Model ID' ,});
+  @ApiResponse({ status: 200, description: 'Predictive model details' ,});
+  @ApiResponse({ status: 404, description: 'Model not found' ,});
+  async getModelById(@Param('id') id: string) {,
     return this.predictiveAnalyticsService.getModelById(id)
   }
 
   @Post('models');
-  @ApiOperation({ summary: 'Create predictive model' });
-  @ApiBody({ description: 'Model data' });
-  @ApiResponse({ status: 201, description: 'Predictive model created' });
+  @ApiOperation({ summary: 'Create predictive model' ,});
+  @ApiBody({ description: 'Model data' ,});
+  @ApiResponse({ status: 201, description: 'Predictive model created' ,});
   @Roles('ADMIN', 'DATA_SCIENTIST');
-  async createModel(@Body() model: unknown, @Req() req: unknown) {
+  async createModel(@Body() model: unknown, @Req() req: unknown) {,
     return this.predictiveAnalyticsService.createModel(model, req.user.id);
   }
 
   @Put('models/:id');
-  @ApiOperation({ summary: 'Update predictive model' });
-  @ApiParam({ name: 'id', description: 'Model ID' });
-  @ApiBody({ description: 'Model updates' });
-  @ApiResponse({ status: 200, description: 'Predictive model updated' });
-  @ApiResponse({ status: 404, description: 'Model not found' });
+  @ApiOperation({ summary: 'Update predictive model' ,});
+  @ApiParam({ name: 'id', description: 'Model ID' ,});
+  @ApiBody({ description: 'Model updates' ,});
+  @ApiResponse({ status: 200, description: 'Predictive model updated' ,});
+  @ApiResponse({ status: 404, description: 'Model not found' ,});
   @Roles('ADMIN', 'DATA_SCIENTIST');
   async updateModel(
     @Param('id') id: string;
@@ -71,11 +71,11 @@ export class PredictiveAnalyticsController {
   }
 
   @Post('models/:id/train');
-  @ApiOperation({ summary: 'Train predictive model' });
-  @ApiParam({ name: 'id', description: 'Model ID' });
-  @ApiBody({ description: 'Training configuration' });
-  @ApiResponse({ status: 200, description: 'Training job started' });
-  @ApiResponse({ status: 404, description: 'Model not found' });
+  @ApiOperation({ summary: 'Train predictive model' ,});
+  @ApiParam({ name: 'id', description: 'Model ID' ,});
+  @ApiBody({ description: 'Training configuration' ,});
+  @ApiResponse({ status: 200, description: 'Training job started' ,});
+  @ApiResponse({ status: 404, description: 'Model not found' ,});
   @Roles('ADMIN', 'DATA_SCIENTIST');
   async trainModel(
     @Param('id') id: string;
@@ -86,11 +86,11 @@ export class PredictiveAnalyticsController {
   }
 
   @Post('models/:id/deploy');
-  @ApiOperation({ summary: 'Deploy predictive model' });
-  @ApiParam({ name: 'id', description: 'Model ID' });
-  @ApiBody({ description: 'Deployment configuration' });
-  @ApiResponse({ status: 200, description: 'Deployment job started' });
-  @ApiResponse({ status: 404, description: 'Model not found' });
+  @ApiOperation({ summary: 'Deploy predictive model' ,});
+  @ApiParam({ name: 'id', description: 'Model ID' ,});
+  @ApiBody({ description: 'Deployment configuration' ,});
+  @ApiResponse({ status: 200, description: 'Deployment job started' ,});
+  @ApiResponse({ status: 404, description: 'Model not found' ,});
   @Roles('ADMIN', 'DATA_SCIENTIST');
   async deployModel(
     @Param('id') id: string;
@@ -101,9 +101,9 @@ export class PredictiveAnalyticsController {
   }
 
   @Post('readmission-risk');
-  @ApiOperation({ summary: 'Predict readmission risk' });
-  @ApiBody({ description: 'Patient and prediction options' });
-  @ApiResponse({ status: 200, description: 'Readmission risk prediction' });
+  @ApiOperation({ summary: 'Predict readmission risk' ,});
+  @ApiBody({ description: 'Patient and prediction options' ,});
+  @ApiResponse({ status: 200, description: 'Readmission risk prediction' ,});
   async predictReadmissionRisk(
     @Body() data: { patientId: string; encounterId?: string; options?: unknown },
     @Req() req: unknown;
@@ -118,9 +118,9 @@ export class PredictiveAnalyticsController {
   }
 
   @Post('length-of-stay');
-  @ApiOperation({ summary: 'Predict length of stay' });
+  @ApiOperation({ summary: 'Predict length of stay' ,});
   @ApiBody({ description: 'Patient, encounter and prediction options' });
-  @ApiResponse({ status: 200, description: 'Length of stay prediction' });
+  @ApiResponse({ status: 200, description: 'Length of stay prediction' ,});
   async predictLengthOfStay(
     @Body() data: { patientId: string, encounterId: string; options?: unknown },
     @Req() req: unknown;
@@ -133,17 +133,17 @@ export class PredictiveAnalyticsController {
   }
 
   @Post('census-forecast');
-  @ApiOperation({ summary: 'Forecast census' });
-  @ApiBody({ description: 'Forecast options' });
-  @ApiResponse({ status: 200, description: 'Census forecast' });
-  async forecastCensus(@Body() options: unknown, @Req() req: unknown) {
+  @ApiOperation({ summary: 'Forecast census' ,});
+  @ApiBody({ description: 'Forecast options' ,});
+  @ApiResponse({ status: 200, description: 'Census forecast' ,});
+  async forecastCensus(@Body() options: unknown, @Req() req: unknown) {,
     return this.predictiveAnalyticsService.forecastCensus(options)
   }
 
   @Post('cost-prediction');
-  @ApiOperation({ summary: 'Predict cost' });
-  @ApiBody({ description: 'Patient and prediction options' });
-  @ApiResponse({ status: 200, description: 'Cost prediction' });
+  @ApiOperation({ summary: 'Predict cost' ,});
+  @ApiBody({ description: 'Patient and prediction options' ,});
+  @ApiResponse({ status: 200, description: 'Cost prediction' ,});
   async predictCost(
     @Body() data: { patientId: string; encounterId?: string; options?: unknown },
     @Req() req: unknown;
@@ -158,11 +158,11 @@ export class PredictiveAnalyticsController {
   }
 
   @Post('outcomes/:type/:id');
-  @ApiOperation({ summary: 'Record prediction outcome' });
-  @ApiParam({ name: 'type', enum: ['readmission', 'length_of_stay', 'cost'], description: 'Prediction type' });
-  @ApiParam({ name: 'id', description: 'Prediction ID' });
-  @ApiBody({ description: 'Outcome data' });
-  @ApiResponse({ status: 200, description: 'Outcome recorded' });
+  @ApiOperation({ summary: 'Record prediction outcome' ,});
+  @ApiParam({ name: 'type', enum: ['readmission', 'length_of_stay', 'cost'], description: 'Prediction type' ,});
+  @ApiParam({ name: 'id', description: 'Prediction ID' ,});
+  @ApiBody({ description: 'Outcome data' ,});
+  @ApiResponse({ status: 200, description: 'Outcome recorded' ,});
   @Roles('ADMIN', 'CLINICIAN', 'NURSE', 'DATA_SCIENTIST');
   async recordOutcome(
     @Param('type') type: string;
@@ -179,11 +179,11 @@ export class PredictiveAnalyticsController {
   }
 
   @Post('validation/:type/:id');
-  @ApiOperation({ summary: 'Record clinical validation' });
-  @ApiParam({ name: 'type', enum: ['readmission', 'length_of_stay', 'cost'], description: 'Prediction type' });
-  @ApiParam({ name: 'id', description: 'Prediction ID' });
-  @ApiBody({ description: 'Validation data' });
-  @ApiResponse({ status: 200, description: 'Validation recorded' });
+  @ApiOperation({ summary: 'Record clinical validation' ,});
+  @ApiParam({ name: 'type', enum: ['readmission', 'length_of_stay', 'cost'], description: 'Prediction type' ,});
+  @ApiParam({ name: 'id', description: 'Prediction ID' ,});
+  @ApiBody({ description: 'Validation data' ,});
+  @ApiResponse({ status: 200, description: 'Validation recorded' ,});
   @Roles('CLINICIAN', 'PHYSICIAN', 'NURSE_PRACTITIONER');
   async recordValidation(
     @Param('type') type: string;
@@ -200,13 +200,13 @@ export class PredictiveAnalyticsController {
   }
 
   @Get('models/:id/performance');
-  @ApiOperation({ summary: 'Get model performance metrics' });
-  @ApiParam({ name: 'id', description: 'Model ID' });
-  @ApiQuery({ name: 'startDate', required: false, description: 'Start date for performance metrics' })
-  @ApiQuery({ name: 'endDate', required: false, description: 'End date for performance metrics' })
-  @ApiQuery({ name: 'segment', required: false, description: 'Segment for performance metrics' })
-  @ApiResponse({ status: 200, description: 'Model performance metrics' });
-  @ApiResponse({ status: 404, description: 'Model not found' });
+  @ApiOperation({ summary: 'Get model performance metrics' ,});
+  @ApiParam({ name: 'id', description: 'Model ID' ,});
+  @ApiQuery({ name: 'startDate', required: false, description: 'Start date for performance metrics' }),
+  @ApiQuery({ name: 'endDate', required: false, description: 'End date for performance metrics' }),
+  @ApiQuery({ name: 'segment', required: false, description: 'Segment for performance metrics' }),
+  @ApiResponse({ status: 200, description: 'Model performance metrics' ,});
+  @ApiResponse({ status: 404, description: 'Model not found' ,});
   async getModelPerformance(
     @Param('id') id: string;
     @Query('startDate') startDate?: string,

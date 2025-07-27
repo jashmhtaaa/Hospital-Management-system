@@ -31,8 +31,7 @@ import "lucide-react"
 import { Loader2 }
 
 // Define interfaces for data structures;
-interface MedicationRecord {
-  id: string,
+interface MedicationRecord {id:string,
   string; // Assuming this comes from a join;
   dosage: string,
   string; // Assuming this comes from a join;
@@ -40,28 +39,24 @@ interface MedicationRecord {
   notes?: string;
 }
 
-interface Medication {
-  id: string,
+interface Medication {id:string,
   item_name: string; // Assuming this is the display name;
   dosage_form: string,
   strength: string;
 }
 
-interface AdmissionInfo {
-  admission_number: string,
+interface AdmissionInfo {admission_number:string,
   string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
-interface FormData {
-  medication_id: string,
+interface FormData {medication_id:string,
   string,
   notes: string;
 }
 
-interface MedicationAdministrationProperties {
-  admissionId: string | null;
+interface MedicationAdministrationProperties {admissionId:string | null;
 }
 
 const MedicationAdministration: React.FC<;
@@ -74,8 +69,7 @@ const MedicationAdministration: React.FC<;
   const [error, setError] = useState<string | null>();
   const [medications, setMedications] = useState<Medication[]>([]);
   const [loadingMedications, setLoadingMedications] = useState<boolean>(true);
-  const [formData, setFormData] = useState<FormData>({
-    medication_id: "",
+  const [formData, setFormData] = useState<FormData>({medication_id:"",
     "",
     notes: "";
   });
@@ -140,16 +134,14 @@ const MedicationAdministration: React.FC<;
         // Mock data;
         await new Promise((resolve) => setTimeout(resolve, 500));
         const mockRecords: MedicationRecord[] = [;
-          {
-            id: "mar_001",
+          {id:"mar_001",
             administered_time: [0] - 3_600_000).toISOString(), // 1 hour ago;
             medication_name: "Paracetamol 500mg Tablet",
             "oral",
             "Smith",
             notes: "Patient tolerated well.";
           },
-          {
-            id: "mar_002",
+          {id:"mar_002",
             administered_time: [0] - 14_400_000).toISOString(), // 4 hours ago;
             medication_name: "Amoxicillin 250mg Capsule",
             "oral",
@@ -223,18 +215,15 @@ const MedicationAdministration: React.FC<;
         // Mock data;
         await new Promise((resolve) => setTimeout(resolve, 300));
         const mockMeds: Medication[] = [;
-          {
-            id: "med_001",
+          {id:"med_001",
             "Tablet",
             strength: "500mg";
           },
-          {
-            id: "med_002",
+          {id:"med_002",
             "Capsule",
             strength: "250mg";
           },
-          {
-            id: "med_003",
+          {id:"med_003",
             "Tablet",
             strength: "200mg";
           }];
@@ -343,8 +332,7 @@ const MedicationAdministration: React.FC<;
       setMedicationRecords((previous) => [newRecord, ...previous]);
 
       // Reset form;
-      setFormData({
-        medication_id: "",
+      setFormData({medication_id:"",
         "",
         notes: "";
       }),
@@ -412,17 +400,17 @@ const MedicationAdministration: React.FC<;
   };
 
   // Route options for medication administration;
-  const routeOptions: { value: string, label: string }[] = [;
-    { value: "oral", label: "Oral" },
-    { value: "iv", label: "Intravenous (IV)" },
-    { value: "im", label: "Intramuscular (IM)" },
-    { value: "sc", label: "Subcutaneous (SC)" },
-    { value: "topical", label: "Topical" },
-    { value: "rectal", label: "Rectal" },
-    { value: "inhaled", label: "Inhaled" },
-    { value: "sublingual", label: "Sublingual" },
-    { value: "ng", label: "Nasogastric (NG)" },
-    { value: "other", label: "Other" }];
+  const routeOptions: {value:string, label: string }[] = [;
+    {value:"oral", label: "Oral" },
+    {value:"iv", label: "Intravenous (IV)" },
+    {value:"im", label: "Intramuscular (IM)" },
+    {value:"sc", label: "Subcutaneous (SC)" },
+    {value:"topical", label: "Topical" },
+    {value:"rectal", label: "Rectal" },
+    {value:"inhaled", label: "Inhaled" },
+    {value:"sublingual", label: "Sublingual" },
+    {value:"ng", label: "Nasogastric (NG)" },
+    {value:"other", label: "Other" }];
 
   return();
     >;

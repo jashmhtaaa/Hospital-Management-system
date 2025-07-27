@@ -12,20 +12,20 @@ const prisma = new PrismaClient();
 
 interface DatabaseHealth {
   status: 'healthy' | 'degraded' | 'unhealthy',
-  \1,\2 number,
-  connectionPool: {
+   number,
+  connectionPool: {,
     active: number,
-    \1,\2 number
+     number
   };
-  queries: {
+  queries: {,
     slow: number,
-    failed: number
+    failed: number,
   };
-  migrations: {
+  migrations: {,
     applied: number,
-    pending: number
+    pending: number,
   };
-export const _GET = async (request: NextRequest): Promise<NextResponse> {
+export const _GET = async (request: NextRequest): Promise<NextResponse> {,
   const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
   try {
@@ -45,21 +45,21 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
     const connectionPool = {
       active: 5, // These would come from actual pool metrics
       idle: 3,
-      total: 8
+      total: 8,
     };
 
     const responseTime = crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
 
-    const dbHealth: DatabaseHealth = {
+    const dbHealth: DatabaseHealth = {,
       status: determineDbStatus(responseTime, slowQueries),
       timestamp: new Date().toISOString(),
       responseTime,
       connectionPool,
-      queries: {
+      queries: {,
         slow: slowQueries,
-        failed: 0 // This would come from monitoring
+        failed: 0 // This would come from monitoring,
       },
-      migrations: migrationStatus
+      migrations: migrationStatus,
     }
 
     const httpStatus = dbHealth.status === 'healthy' ? 200 :
@@ -67,7 +67,7 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
 
     return NextResponse.json(dbHealth, {
       status: httpStatus,
-      headers: {
+      headers: {,
         'Cache-Control': 'no-cache',
         'X-Response-Time': `${responseTime}ms`;
       }
@@ -79,15 +79,15 @@ export const _GET = async (request: NextRequest): Promise<NextResponse> {
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
       responseTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
-      \1,\2 process.env.NODE_ENV === 'development' ? error.message : undefined
-    }, { status: 503 });
+       process.env.NODE_ENV === 'development' ? error.message : undefined,
+    }, { status: 503 ,});
   }
 }
 
 async const checkSlowQueries = (): Promise<number> {
   try {
     // This is a simplified example - in production you'd query actual slow query logs
-    // PostgreSQL example: query pg_stat_statements for slow queries
+    // PostgreSQL example: query pg_stat_statements for slow queries,
     const result = await prisma.$queryRaw`;
       SELECT COUNT(*) as slow_count;
       FROM pg_stat_statements;
@@ -101,7 +101,7 @@ async const checkSlowQueries = (): Promise<number> {
   }
 }
 
-async const checkMigrations = (): Promise<{ applied: number, pending: number }> {
+async const checkMigrations = (): Promise<{ applied: number, pending: number }> {,
   try {
     // Check applied migrations
     const applied = await prisma.$queryRaw`;
@@ -119,25 +119,25 @@ async const checkMigrations = (): Promise<{ applied: number, pending: number }> 
 
     return {
       applied: applied[0]?.count || 0,
-      pending: pending[0]?.count || 0
+      pending: pending[0]?.count || 0,
     };
   } catch (error) {
     // If migration table doesn't exist or is inaccessible
     return {
       applied: 0,
-      pending: 0
+      pending: 0,
     };
   }
 }
 
-const determineDbStatus = (responseTime: number, slowQueries: number): 'healthy' | 'degraded' | 'unhealthy' {
+const determineDbStatus = (responseTime: number, slowQueries: number): 'healthy' | 'degraded' | 'unhealthy' {,
   // Database is unhealthy if response time > 5 seconds
-  \1 {\n  \2{
+   {\n  {
     return 'unhealthy';
   }
 
   // Database is degraded if response time > 1 second or there are slow queries
-  \1 {\n  \2{
+   {\n  {
     return 'degraded';
   }
 

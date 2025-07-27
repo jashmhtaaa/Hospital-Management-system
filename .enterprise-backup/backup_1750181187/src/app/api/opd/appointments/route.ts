@@ -25,7 +25,7 @@ interface AppointmentUpdateBody {
   notes?: string;
 }
 
-// FIX: Define interface for filters
+// FIX: Define interface for filters,
 interface AppointmentFilters {
   startDate?: string | null;
   endDate?: string | null;
@@ -36,8 +36,8 @@ interface AppointmentFilters {
 }
 
 // Placeholder function to simulate database interaction
-async const getAppointmentsFromDB = (filters: AppointmentFilters) {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+async const getAppointmentsFromDB = (filters: AppointmentFilters) {,
+  // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   // Replace with actual D1 query when DB is configured
   // const { env } = getRequestContext()
   // const { results } = await env.DB.prepare(
@@ -60,75 +60,75 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
   const mockAppointments = [
     {
       id: 1,
-      \1,\2 101,
-      \1,\2 5,
-      \1,\2 "General Medicine",
+       101,
+       5,
+       "General Medicine",
       appointment_date: "2025-04-28T10:30:00Z",
-      \1,\2 "scheduled",
-      \1,\2 "Patient has history of asthma",
-      created_at: "2025-04-25T14:20:00Z"
+       "scheduled",
+       "Patient has history of asthma",
+      created_at: "2025-04-25T14:20:00Z",
     },
     {
       id: 2,
-      \1,\2 102,
-      \1,\2 8,
-      \1,\2 "Orthopedics",
+       102,
+       8,
+       "Orthopedics",
       appointment_date: "2025-04-28T11:15:00Z",
-      \1,\2 "checked_in",
-      \1,\2 "Check X-ray results",
-      created_at: "2025-04-26T09:45:00Z"
+       "checked_in",
+       "Check X-ray results",
+      created_at: "2025-04-26T09:45:00Z",
     },
     {
       id: 3,
-      \1,\2 103,
-      \1,\2 3,
-      \1,\2 "Cardiology",
+       103,
+       3,
+       "Cardiology",
       appointment_date: "2025-04-29T09:00:00Z",
-      \1,\2 "scheduled",
-      \1,\2 "Patient has family history of heart disease",
-      created_at: "2025-04-27T16:30:00Z"
+       "scheduled",
+       "Patient has family history of heart disease",
+      created_at: "2025-04-27T16:30:00Z",
     },
     {
       id: 4,
-      \1,\2 104,
-      \1,\2 5,
-      \1,\2 "General Medicine",
+       104,
+       5,
+       "General Medicine",
       appointment_date: "2025-04-27T14:30:00Z",
-      \1,\2 "completed",
-      \1,\2 "BP well controlled with current medication",
-      created_at: "2025-04-24T11:20:00Z"
+       "completed",
+       "BP well controlled with current medication",
+      created_at: "2025-04-24T11:20:00Z",
     },
   ];
 
   return mockAppointments.filter((appointment) => {
     // Apply date range filter
-    \1 {\n  \2{
+     {\n  {
       const startDate = new Date(filters.startDate);
       const appointmentDate = new Date(appointment.appointment_date);
-      \1 {\n  \2eturn false;
+       {\n  eturn false;
     }
 
-    \1 {\n  \2{
+     {\n  {
       const endDate = new Date(filters.endDate);
       const appointmentDate = new Date(appointment.appointment_date);
-      \1 {\n  \2eturn false;
+       {\n  eturn false;
     }
 
     // Apply status filter
-    \1 {\n  \2eturn false;
+     {\n  eturn false;
 
     // Apply doctor filter
-    \1 {\n  \2== filters.doctorId;
+     {\n  == filters.doctorId;
     );
       return false;
 
     // Apply patient filter
-    \1 {\n  \2== filters.patientId;
+     {\n  == filters.patientId;
     );
       return false;
 
     // Apply search filter
-    \1 {\n  \2{
+     {\n  {
       const searchTerm = filters.search.toLowerCase();
       return (
         appointment.patient_name.toLowerCase().includes(searchTerm) ||
@@ -143,8 +143,8 @@ async const getAppointmentsFromDB = (filters: AppointmentFilters) {
 }
 
 // Placeholder function to simulate creating an appointment
-async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {,
+  // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   // Replace with actual D1 insert query when DB is configured
   // const { env } = getRequestContext()
   // const _info = await env.DB.prepare(
@@ -172,13 +172,13 @@ async const createAppointmentInDB = (appointmentData: AppointmentCreateBody) {
     appointment_number: appointmentNumber;
     ...appointmentData,
     status: "scheduled",
-    created_at: new Date().toISOString()
+    created_at: new Date().toISOString(),
   };
 }
 
 // Placeholder function to simulate getting a single appointment
-async const getAppointmentByIdFromDB = (id: number) {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+async const getAppointmentByIdFromDB = (id: number) {,
+  // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   // Replace with actual D1 query when DB is configured
   // const { env } = getRequestContext()
   // const { results } = await env.DB.prepare(
@@ -194,32 +194,32 @@ async const getAppointmentByIdFromDB = (id: number) {
   const mockAppointments = [
     {
       id: 1,
-      \1,\2 101,
-      \1,\2 5,
-      \1,\2 "General Medicine",
+       101,
+       5,
+       "General Medicine",
       appointment_date: "2025-04-28T10:30:00Z",
-      \1,\2 "scheduled",
-      \1,\2 "Patient has history of asthma",
+       "scheduled",
+       "Patient has history of asthma",
       created_at: "2025-04-25T14:20:00Z",
-      patient_details: {
+      patient_details: {,
         age: 35,
-        \1,\2 "+91-9876543210",
-        medical_record_number: "MRN00101"
+         "+91-9876543210",
+        medical_record_number: "MRN00101",
       },
     },
     {
       id: 2,
-      \1,\2 102,
-      \1,\2 8,
-      \1,\2 "Orthopedics",
+       102,
+       8,
+       "Orthopedics",
       appointment_date: "2025-04-28T11:15:00Z",
-      \1,\2 "checked_in",
-      \1,\2 "Check X-ray results",
+       "checked_in",
+       "Check X-ray results",
       created_at: "2025-04-26T09:45:00Z",
-      patient_details: {
+      patient_details: {,
         age: 42,
-        \1,\2 "+91-9876543211",
-        medical_record_number: "MRN00102"
+         "+91-9876543211",
+        medical_record_number: "MRN00102",
       },
     },
   ];
@@ -232,7 +232,7 @@ async const updateAppointmentInDB = (
   id: number,
   updateData: AppointmentUpdateBody;
 ) {
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   // Replace with actual D1 update query when DB is configured
   // const { env } = getRequestContext()
   // const _updateFields = Object.entries(updateData)
@@ -248,7 +248,7 @@ async const updateAppointmentInDB = (
   return {
     id,
     ...updateData,
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString(),
   };
 }
 
@@ -256,7 +256,7 @@ async const updateAppointmentInDB = (
  * GET /api/opd/appointments;
  * Retrieves a list of appointments, potentially filtered.
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get("startDate");
@@ -267,7 +267,7 @@ export const GET = async (request: NextRequest) => {
     const search = searchParams.get("search");
     // Add other filters as needed
 
-    const filters: AppointmentFilters = {
+    const filters: AppointmentFilters = {,
       startDate,
       endDate,
       status,
@@ -278,14 +278,14 @@ export const GET = async (request: NextRequest) => {
 
     // Check if this is a request for a specific appointment
     const path = request.nextUrl.pathname;
-    \1 {\n  \2 {
+     {\n   {
       const id = Number.parseInt(path.split("/").pop() || "0");
-      \1 {\n  \2{
+       {\n  {
         const appointment = await getAppointmentByIdFromDB(id);
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: "Appointment not found" },
-            { status: 404 }
+            { error: "Appointment not found" ,},
+            { status: 404 },
           );
         }
         return NextResponse.json({ appointment });
@@ -296,15 +296,15 @@ export const GET = async (request: NextRequest) => {
     const appointments = await getAppointmentsFromDB(filters);
 
     return NextResponse.json({ appointments });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
         error: "Failed to fetch appointments",
-        details: errorMessage
+        details: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -313,33 +313,33 @@ export const GET = async (request: NextRequest) => {
  * POST /api/opd/appointments;
  * Creates a new appointment.
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   try {
     const appointmentData = (await request.json()) as AppointmentCreateBody;
 
     // Basic validation (add more comprehensive validation)
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           error: "Missing required fields (patient_id, doctor_id, appointment_date, appointment_type)",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Simulate creating the appointment in the database
     const newAppointment = await createAppointmentInDB(appointmentData);
 
-    return NextResponse.json({ appointment: newAppointment }, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json({ appointment: newAppointment ,}, { status: 201 ,});
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
         error: "Failed to create appointment",
-        details: errorMessage
+        details: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -348,15 +348,15 @@ export const POST = async (request: NextRequest) => {
  * PUT /api/opd/appointments/[id]
  * Updates an existing appointment.
  */
-export const PUT = async (request: NextRequest) => {
+export const PUT = async (request: NextRequest) => {,
   try {
     const path = request.nextUrl.pathname;
     const id = Number.parseInt(path.split("/").pop() || "0");
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Invalid appointment ID" },
-        { status: 400 }
+        { error: "Invalid appointment ID" ,},
+        { status: 400 },
       );
     }
 
@@ -365,15 +365,15 @@ export const PUT = async (request: NextRequest) => {
     // Simulate updating the appointment in the database
     const updatedAppointment = await updateAppointmentInDB(id, updateData);
 
-    return NextResponse.json({ appointment: updatedAppointment });
-  } catch (error: unknown) {
+    return NextResponse.json({ appointment: updatedAppointment ,});
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
       {
         error: "Failed to update appointment",
-        details: errorMessage
+        details: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }

@@ -8,7 +8,7 @@ import { type
 // src/app/api/auth/me/route.ts;
 // import { getRequestContext } from "@cloudflare/next-on-pages";
 
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -44,7 +44,7 @@ export const _GET = async (request: any) => {
     const user = await getCurrentUser(request);
 
     if (!session.user) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+      return NextResponse.json({ error: "Not authenticated" ,}, { status: 401 ,});
 
     // Get additional user details from database if needed;
     // const { env } = getRequestContext();
@@ -75,6 +75,6 @@ export const _GET = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to fetch user information" },
-      { status: 500 }
+      { error: "Failed to fetch user information" ,},
+      { status: 500 },
     );

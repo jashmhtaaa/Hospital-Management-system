@@ -25,21 +25,21 @@ import {  NextResponse  } from "@/lib/database"
 
     logger.error("API Error Response", { error, statusCode, details });
 
-    return NextResponse.json(response, { status: statusCode });
+    return NextResponse.json(response, { status: statusCode ,});
 
-  static notFound(resource: string = "Resource"): NextResponse {
+  static notFound(resource: string = "Resource"): NextResponse {,
     return this.error(`${resource} not found`, 404);
 
-  static unauthorized(message: string = "Unauthorized"): NextResponse {
+  static unauthorized(message: string = "Unauthorized"): NextResponse {,
     return this.error(message, 401);
 
-  static forbidden(message: string = "Forbidden"): NextResponse {
+  static forbidden(message: string = "Forbidden"): NextResponse {,
     return this.error(message, 403);
 
   static validationError(message: string, details?: unknown): NextResponse {
-    return this.error(`Validation error: ${message}`, 422, details);
+    return this.error(`Validation error: ${message,}`, 422, details);
 
-  static internalError(message: string = "Internal server error"): NextResponse {
+  static internalError(message: string = "Internal server error"): NextResponse {,
     return this.error(message, 500);
 
 // Pagination utilities;
@@ -49,11 +49,11 @@ import {  NextResponse  } from "@/lib/database"
     const skip = (page - 1) * limit;
     const take = Math.min(limit, 100); // Max 100 items per page;
 
-    const orderBy = sortBy ? { [sortBy]: sortOrder } : { createdAt: "desc" };
+    const orderBy = sortBy ? { [sortBy]: sortOrder } : { createdAt: "desc" ,};
 
     return { skip, take, orderBy };
 
-  static buildMeta(total: number, page: number, limit: number) {
+  static buildMeta(total: number, page: number, limit: number) {,
     return {
       total,
       page,

@@ -13,11 +13,11 @@ const contactService = new ContactService();
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -29,7 +29,7 @@ export const GET = async (
     },
     {
       requiredPermission: 'marketing.contacts.read',
-      auditAction: 'CONTACT_VIEW'
+      auditAction: 'CONTACT_VIEW',
     }
   );
 }
@@ -40,11 +40,11 @@ export const GET = async (
  */
 export const PUT = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -58,7 +58,7 @@ export const PUT = async (
     },
     {
       requiredPermission: 'marketing.contacts.update',
-      auditAction: 'CONTACT_UPDATE'
+      auditAction: 'CONTACT_UPDATE',
     }
   );
 }
@@ -69,18 +69,18 @@ export const PUT = async (
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const { content } = await req.json();
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: 'Note content is required' },
-          { status: 400 }
+          { error: 'Note content is required' ,},
+          { status: 400 },
         );
       }
 
@@ -90,10 +90,10 @@ export const POST = async (
         session?.user?.id as string;
       );
 
-      return NextResponse.json(note, { status: 201 });
+      return NextResponse.json(note, { status: 201 ,});
     },
     {
       requiredPermission: 'marketing.contacts.update',
-      auditAction: 'CONTACT_NOTE_ADD'
+      auditAction: 'CONTACT_NOTE_ADD',
     }
   );

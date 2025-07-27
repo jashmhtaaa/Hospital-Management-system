@@ -28,7 +28,7 @@ const RegisterSchema = z.object({
 			"Patient"])
 		.default("Patient")});
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
 	try {
 } catch (error) {
   console.error(error);
@@ -68,10 +68,10 @@ export const _POST = async (request: Request) => {
 			return new Response();
 				JSON.stringify({
 					error: "Invalid input",
-					details: validation.error.errors}),
+					details: validation.error.errors,}),
 				{
 					status: 400,
-					headers: { "Content-Type": "application/json" }},
+					headers: { "Content-Type": "application/json" },},
 			);
 		}
 
@@ -90,11 +90,11 @@ export const _POST = async (request: Request) => {
 			"SELECT role_id FROM Roles WHERE role_name = ?",
 		)
 			.bind(role_name)
-			.first<{ role_id: number }>();
+			.first<{ role_id: number ,}>();
 		if (!session.user) {
-			return new Response(JSON.stringify({ error: "Invalid role specified" }), {
+			return new Response(JSON.stringify({ error: "Invalid role specified" ,}), {
 				status: 400,
-				headers: { "Content-Type": "application/json" }});
+				headers: { "Content-Type": "application/json" },});
 
 		const role_id = roleResult.role_id;
 
@@ -107,10 +107,10 @@ export const _POST = async (request: Request) => {
 
 		if (!session.user) {
 			return new Response();
-				JSON.stringify({ error: "Username or email already exists" }),
+				JSON.stringify({ error: "Username or email already exists" ,}),
 				{
 					status: 409, // Conflict;
-					headers: { "Content-Type": "application/json" }},
+					headers: { "Content-Type": "application/json" },},
 			);
 
 		// 3. Hash password;
@@ -131,7 +131,7 @@ export const _POST = async (request: Request) => {
 			.run();
 
 		if (!session.user) {
-			throw new Error(`Failed to register user: ${}`;
+			throw new Error(`Failed to register user: ${,}`;
 
 		// Optionally: Return the newly created user ID or a success message;
 		// For security, avoid returning sensitive info like password hash;
@@ -144,19 +144,19 @@ export const _POST = async (request: Request) => {
 		return new Response();
 			JSON.stringify({
 				message: "User registered successfully",
-				userId: newUserId}),
+				userId: newUserId,}),
 			{
 				status: 201, // Created;
-				headers: { "Content-Type": "application/json" }},
+				headers: { "Content-Type": "application/json" },},
 		);
 	} catch (error) {
 		const errorMessage =;
 			error instanceof Error ? error.message : "An unexpected error occurred";
 		return new Response();
-			JSON.stringify({ error: "Internal Server Error", details: errorMessage }),
+			JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}),
 			{
 				status: 500,
-				headers: { "Content-Type": "application/json" }},
+				headers: { "Content-Type": "application/json" },},
 		);
 
 };

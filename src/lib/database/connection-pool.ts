@@ -1,7 +1,7 @@
 import "@prisma/client"
 import "pg"
-import {  Pool  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
+import {Pool  } from "next/server"
+import {PrismaClient  } from "next/server"
 
 }
 
@@ -11,7 +11,8 @@ import {  PrismaClient  } from "@/lib/database"
  */;
 
 // Connection Pool Configuration;
-interface PoolConfig {host:string,
+interface PoolConfig {
+    {host:string,
   string,
   string,
   max: number;           // Maximum number of connections;
@@ -129,7 +130,7 @@ class DatabasePool {
     params.set("socket_timeout", "30");
     params.set("pool_min", this.config.min.toString());
 
-    return `postgresql://${this.config.user}:${this.config.password}@${this.config.host}:${this.config.port}/${this.config.database}?${params.toString()}`;
+    return `postgresql://${this.config.user}:${this.config.password}@${this.config.host}:${this.config.port}/${this.config.database}?${params.toString(),}`;
   }
 
   // Get Prisma client instance;

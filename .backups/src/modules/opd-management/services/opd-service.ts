@@ -19,7 +19,7 @@ import {  prisma  } from "@/lib/database"
 
     if (!session.user) {
       await AuditService.logUserAction();
-        { userId: scheduledBy },
+        { userId: scheduledBy ,},
         "CREATE",
         "APPOINTMENT",
         appointment.id,
@@ -35,7 +35,7 @@ import {  prisma  } from "@/lib/database"
     string;
   ): Promise<boolean> {
     const conflictingAppointment = await prisma.appointment.findFirst({
-      where: {
+      where: {,
         doctorId,
         appointmentDate: date,
         "CANCELLED" ;
@@ -45,19 +45,19 @@ import {  prisma  } from "@/lib/database"
     return !conflictingAppointment;
   }
 
-  static async getDoctorSchedule(doctorId: string, date: Date) {
+  static async getDoctorSchedule(doctorId: string, date: Date) {,
     return await prisma.appointment.findMany({
-      where: {
+      where: {,
         doctorId,
         appointmentDate: date,
-        status: { not: "CANCELLED" }
+        status: { not: "CANCELLED" },
       },
       {
           true,
             true;
 
       },
-      orderBy: { appointmentTime: "asc" }
+      orderBy: { appointmentTime: "asc" },
     });
 
   static async updateAppointmentStatus();
@@ -66,23 +66,23 @@ import {  prisma  } from "@/lib/database"
     updatedBy?: string;
   ) {
     const oldAppointment = await prisma.appointment.findUnique({
-      where: { id: appointmentId }
+      where: { id: appointmentId },
     });
 
     if (!session.user) {
       throw new Error("Appointment not found");
 
     const appointment = await prisma.appointment.update({
-      where: { id: appointmentId },
-      data: {
+      where: { id: appointmentId ,},
+      data: {,
         status,
-        ...(status === "CANCELLED" && { cancelledAt: new Date() });
+        ...(status === "CANCELLED" && { cancelledAt: new Date() ,});
 
     });
 
     if (!session.user) {
       await AuditService.logDataChange();
-        { userId: updatedBy },
+        { userId: updatedBy ,},
         "APPOINTMENT",
         appointmentId,
         oldAppointment,
@@ -98,22 +98,22 @@ import {  prisma  } from "@/lib/database"
 
     const [scheduled, completed, cancelled, inProgress] = await Promise.all([;
       prisma.appointment.count({
-        { gte: startOfDay, lte: endOfDay },
+        { gte: startOfDay, lte: endOfDay ,},
           status: "SCHEDULED";
 
       }),
       prisma.appointment.count({
-        { gte: startOfDay, lte: endOfDay },
+        { gte: startOfDay, lte: endOfDay ,},
           status: "COMPLETED";
 
       }),
       prisma.appointment.count({
-        { gte: startOfDay, lte: endOfDay },
+        { gte: startOfDay, lte: endOfDay ,},
           status: "CANCELLED";
 
       }),
       prisma.appointment.count({
-        { gte: startOfDay, lte: endOfDay },
+        { gte: startOfDay, lte: endOfDay ,},
           status: "IN_PROGRESS";
 
       });

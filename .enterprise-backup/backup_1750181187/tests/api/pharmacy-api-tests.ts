@@ -10,7 +10,7 @@ import { performance } from 'perf_hooks';
  * regulatory compliance checks, clinical decision support, and pharmaceutical workflows.
  *
  * Test Coverage:
- * - Medication Master Data Management
+ * - Medication Master Data Management,
  * - Inventory Management & Stock Control
  * - Prescription Processing & Validation
  * - Dispensing Operations & Safety Checks
@@ -30,7 +30,7 @@ import { performance } from 'perf_hooks';
 
 // Type definitions for pharmacy domain objects
 interface Medication {
-  readonly id: string
+  readonly id: string,
   readonly generic_name: string;
   readonly brand_name?: string;
   readonly scientific_name?: string;
@@ -50,11 +50,11 @@ interface Medication {
   readonly storage_requirements: StorageRequirement[];
   readonly manufacturer?: string;
   readonly ndc_number?: string; // National Drug Code
-  readonly formulary_status: FormularyStatus
+  readonly formulary_status: FormularyStatus,
   readonly cost_center?: string;
   readonly created_at: string;
   readonly updated_at: string;
-  readonly active: boolean
+  readonly active: boolean,
 }
 
 type DosageForm =
@@ -105,7 +105,7 @@ interface InventoryBatch {
   readonly reorder_level: number;
   readonly max_stock_level: number;
   readonly created_at: string;
-  readonly updated_at: string
+  readonly updated_at: string,
 }
 
 type PharmacyLocation =
@@ -129,11 +129,11 @@ interface Prescription {
   readonly verbal_order: boolean;
   readonly items: readonly PrescriptionItem[];
   readonly diagnosis_codes: readonly string[]; // ICD-10 codes
-  readonly allergies_checked: boolean
+  readonly allergies_checked: boolean,
   readonly interactions_checked: boolean;
   readonly duplicate_therapy_checked: boolean;
   readonly created_at: string;
-  readonly updated_at: string
+  readonly updated_at: string,
 }
 
 type PrescriptionStatus =
@@ -164,7 +164,7 @@ interface PrescriptionItem {
   readonly dispensed_quantity?: number;
   readonly remaining_quantity?: number;
   readonly created_at: string;
-  readonly updated_at: string
+  readonly updated_at: string,
 }
 
 type PrescriptionItemStatus =
@@ -189,7 +189,7 @@ interface DispensingRecord {
   readonly pickup_signature?: string;
   readonly pickup_id_verified: boolean;
   readonly notes?: string;
-  readonly created_at: string
+  readonly created_at: string,
 }
 
 interface DrugInteraction {
@@ -202,7 +202,7 @@ interface DrugInteraction {
   readonly clinical_effect: string;
   readonly management: string;
   readonly evidence_level: EvidenceLevel;
-  readonly last_updated: string
+  readonly last_updated: string,
 }
 
 type InteractionType =
@@ -224,9 +224,9 @@ interface PharmacyStatistics {
   readonly dispensing_accuracy: number; // Percentage
   readonly patient_satisfaction: number; // Score out of 10
   readonly turnaround_time: number; // Minutes
-  readonly reorder_alerts: readonly ReorderAlert[]
+  readonly reorder_alerts: readonly ReorderAlert[],
   readonly expiry_alerts: readonly ExpiryAlert[];
-  readonly interaction_alerts: readonly InteractionAlert[]
+  readonly interaction_alerts: readonly InteractionAlert[],
 }
 
 interface ReorderAlert {
@@ -236,7 +236,7 @@ interface ReorderAlert {
   readonly reorder_level: number;
   readonly suggested_order_quantity: number;
   readonly supplier: string;
-  readonly priority: 'low' | 'medium' | 'high' | 'critical'
+  readonly priority: 'low' | 'medium' | 'high' | 'critical',
 }
 
 interface ExpiryAlert {
@@ -247,7 +247,7 @@ interface ExpiryAlert {
   readonly days_to_expiry: number;
   readonly quantity: number;
   readonly value: number;
-  readonly action_required: 'monitor' | 'return' | 'dispose'
+  readonly action_required: 'monitor' | 'return' | 'dispose',
 }
 
 interface InteractionAlert {
@@ -273,44 +273,44 @@ interface TestConfig {
   readonly baseUrl: string;
   readonly timeout: number;
   readonly retries: number;
-  readonly performanceThresholds: {
+  readonly performanceThresholds: {,
     readonly medicationSearchMaxTime: number;
     readonly inventoryUpdateMaxTime: number;
     readonly prescriptionProcessingMaxTime: number;
     readonly interactionCheckMaxTime: number;
-    readonly dispensingMaxTime: number
+    readonly dispensingMaxTime: number,
   };
-  readonly regulatoryCompliance: {
+  readonly regulatoryCompliance: {,
     readonly validateNDC: boolean;
     readonly requireDEANumber: boolean;
     readonly enforceControlledSubstanceTracking: boolean;
-    readonly mandatoryPatientCounseling: boolean
+    readonly mandatoryPatientCounseling: boolean,
   };
 }
 
 // Enterprise pharmacy test configuration
-const PHARMACY_TEST_CONFIG: TestConfig = {
+const PHARMACY_TEST_CONFIG: TestConfig = {,
   baseUrl: process.env.HMS_TEST_BASE_URL || 'http://localhost:8787',
   timeout: 60000, // Extended timeout for pharmacy operations
   retries: 3,
-  performanceThresholds: {
+  performanceThresholds: {,
     medicationSearchMaxTime: 2000, // 2 seconds for medication search
     inventoryUpdateMaxTime: 3000, // 3 seconds for inventory operations
     prescriptionProcessingMaxTime: 5000, // 5 seconds for prescription processing
     interactionCheckMaxTime: 1000, // 1 second for interaction checks
-    dispensingMaxTime: 4000 // 4 seconds for dispensing operations
+    dispensingMaxTime: 4000 // 4 seconds for dispensing operations,
   },
-  regulatoryCompliance: {
+  regulatoryCompliance: {,
     validateNDC: true,
     requireDEANumber: true;
     enforceControlledSubstanceTracking: true,
-    mandatoryPatientCounseling: true
+    mandatoryPatientCounseling: true,
   }
 } as const
 
 // Test data with pharmaceutical standards compliance
 const PHARMACY_TEST_DATA = {
-  mockMedication: {
+  mockMedication: {,
     generic_name: 'Metformin Hydrochloride',
     brand_name: 'Glucophage';
     scientific_name: '1,1-Dimethylbiguanide hydrochloride',
@@ -330,9 +330,9 @@ const PHARMACY_TEST_DATA = {
     manufacturer: 'Generic Pharma Test',
     ndc_number: '12345-678-90';
     formulary_status: 'preferred' as FormularyStatus,
-    active: true
+    active: true,
   },
-  mockControlledMedication: {
+  mockControlledMedication: {,
     generic_name: 'Morphine Sulfate',
     brand_name: 'MS Contin';
     dosage_form: 'tablet' as DosageForm,
@@ -350,9 +350,9 @@ const PHARMACY_TEST_DATA = {
     pregnancy_category: 'C' as PregnancyCategory,
     storage_requirements: ['room_temperature', 'controlled_room_temperature'] as StorageRequirement[],
     formulary_status: 'restricted' as FormularyStatus,
-    active: true
+    active: true,
   },
-  mockInventoryBatch: {
+  mockInventoryBatch: {,
     batch_number: 'TEST-BATCH-001',
     lot_number: 'LOT-2024-001';
     manufacture_date: '2024-01-15',
@@ -368,9 +368,9 @@ const PHARMACY_TEST_DATA = {
     quarantine_status: false,
     barcode: '1234567890123';
     reorder_level: 100,
-    max_stock_level: 2000
+    max_stock_level: 2000,
   },
-  mockPrescription: {
+  mockPrescription: {,
     prescription_number: 'RX-TEST-001',
     prescriber_dea_number: 'AB1234567';
     prescription_type: 'new' as PrescriptionType,
@@ -379,9 +379,9 @@ const PHARMACY_TEST_DATA = {
     diagnosis_codes: ['E11.9'], // Type 2 diabetes mellitus without complications
     allergies_checked: true,
     interactions_checked: true;
-    duplicate_therapy_checked: true
+    duplicate_therapy_checked: true,
   },
-  mockPrescriptionItem: {
+  mockPrescriptionItem: {,
     quantity: 30,
     dosage: '500mg';
     frequency: 'BID',
@@ -393,13 +393,13 @@ const PHARMACY_TEST_DATA = {
     refills_remaining: 5,
     days_supply: 30;
     unit_price: 0.50,
-    total_price: 15.00
+    total_price: 15.00,
   }
 } as const
 
 // Pharmacy test helper class with drug safety validations
 class PharmacyTestHelper {
-  private static authToken: string | null = null
+  private static authToken: string | null = null,
   private static createdResources = new Map<string, string>(),
   private static interactionEngine: InteractionEngine = new InteractionEngine(),
 
@@ -408,11 +408,11 @@ class PharmacyTestHelper {
 
     const response = await fetch(`${PHARMACY_TEST_CONFIG.baseUrl}/api/auth/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      headers: { 'Content-Type': 'application/json' ,},
+      body: JSON.stringify({,
         username: process.env.PHARMACY_TEST_USERNAME || 'pharmacist_test',
         password: process.env.PHARMACY_TEST_PASSWORD || 'pharmacy_test_pass';
-        role: 'pharmacist'
+        role: 'pharmacist',
       })
     });
 
@@ -420,19 +420,19 @@ class PharmacyTestHelper {
       throw new Error('Pharmacist authentication failed for testing');
     }
 
-    const data = await response.json() as { token: string };
+    const data = await response.json() as { token: string ,};
     this.authToken = data.token;
     return this.authToken;
   }
 
   static async makeAuthenticatedRequest<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<APIResponse<T>> {
     const token = await this.authenticate();
     const response = await fetch(`${PHARMACY_TEST_CONFIG.baseUrl}${endpoint}`, {
       ...options,
-      headers: {
+      headers: {,
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
         'X-Test-Environment': 'true',
@@ -442,7 +442,7 @@ class PharmacyTestHelper {
     });
 
     if (!response.ok) {
-      throw new Error(`Pharmacy API request failed: ${response.status} ${response.statusText}`);
+      throw new Error(`Pharmacy API request failed: ${response.status} ${response.statusText,}`);
     }
 
     return response.json() as Promise<APIResponse<T>>;
@@ -451,20 +451,20 @@ class PharmacyTestHelper {
   static async createTestMedication(medicationData?: Partial<Medication>): Promise<Medication> {
     const testData = {
       ...PHARMACY_TEST_DATA.mockMedication,
-      generic_name: `${PHARMACY_TEST_DATA.mockMedication.generic_name}_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      generic_name: `${PHARMACY_TEST_DATA.mockMedication.generic_name}_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
       ...medicationData
     };
 
     const response = await this.makeAuthenticatedRequest<Medication>('/api/pharmacy/medications', {
       method: 'POST',
-      body: JSON.stringify(testData)
+      body: JSON.stringify(testData),
     });
 
     if (!response.success || !response.data) {
       throw new Error('Failed to create test medication');
     }
 
-    this.createdResources.set(`medication:${response.data.id}`, response.data.id);
+    this.createdResources.set(`medication:${response.data.id,}`, response.data.id);
     return response.data;
   }
 
@@ -475,7 +475,7 @@ class PharmacyTestHelper {
     const testData = {
       ...PHARMACY_TEST_DATA.mockInventoryBatch,
       medication_id: medicationId,
-      batch_number: `${PHARMACY_TEST_DATA.mockInventoryBatch.batch_number}_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      batch_number: `${PHARMACY_TEST_DATA.mockInventoryBatch.batch_number}_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
       received_date: new Date().toISOString(),
       received_by: 'test_pharmacist';
       ...batchData
@@ -483,14 +483,14 @@ class PharmacyTestHelper {
 
     const response = await this.makeAuthenticatedRequest<InventoryBatch>('/api/pharmacy/inventory', {
       method: 'POST',
-      body: JSON.stringify(testData)
+      body: JSON.stringify(testData),
     });
 
     if (!response.success || !response.data) {
       throw new Error('Failed to create test inventory batch');
     }
 
-    this.createdResources.set(`inventory:${response.data.id}`, response.data.id);
+    this.createdResources.set(`inventory:${response.data.id,}`, response.data.id);
     return response.data;
   }
 
@@ -509,26 +509,26 @@ class PharmacyTestHelper {
       ...PHARMACY_TEST_DATA.mockPrescription,
       patient_id: patientId,
       prescriber_id: prescriberId;
-      prescription_number: `${PHARMACY_TEST_DATA.mockPrescription.prescription_number}_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      prescription_number: `${PHARMACY_TEST_DATA.mockPrescription.prescription_number}_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
       prescription_date: new Date().toISOString(),
       status: 'received' as PrescriptionStatus;
-      items: prescriptionItems
+      items: prescriptionItems,
     };
 
     const response = await this.makeAuthenticatedRequest<Prescription>('/api/pharmacy/prescriptions', {
       method: 'POST',
-      body: JSON.stringify(testData)
+      body: JSON.stringify(testData),
     });
 
     if (!response.success || !response.data) {
       throw new Error('Failed to create test prescription');
     }
 
-    this.createdResources.set(`prescription:${response.data.id}`, response.data.id);
+    this.createdResources.set(`prescription:${response.data.id,}`, response.data.id);
     return response.data;
   }
 
-  static validateMedicationStructure(medication: Medication): void {
+  static validateMedicationStructure(medication: Medication): void {,
     const requiredFields = [
       'id', 'generic_name', 'dosage_form', 'strength', 'unit_of_measure',
       'route', 'therapeutic_class', 'prescription_required', 'controlled_substance',
@@ -555,7 +555,7 @@ class PharmacyTestHelper {
     expect(['preferred', 'non_preferred', 'restricted', 'not_covered']).toContain(medication.formulary_status)
   }
 
-  static validateInventoryBatchStructure(batch: InventoryBatch): void {
+  static validateInventoryBatchStructure(batch: InventoryBatch): void {,
     const requiredFields = [
       'id', 'medication_id', 'batch_number', 'expiry_date', 'quantity',
       'unit_cost', 'selling_price', 'supplier', 'location', 'quality_status'
@@ -579,7 +579,7 @@ class PharmacyTestHelper {
     expect(['approved', 'quarantine', 'rejected', 'recalled', 'expired']).toContain(batch.quality_status)
   }
 
-  static validatePrescriptionStructure(prescription: Prescription): void {
+  static validatePrescriptionStructure(prescription: Prescription): void {,
     const requiredFields = [
       'id', 'prescription_number', 'patient_id', 'prescriber_id',
       'prescription_date', 'status', 'prescription_type', 'items'
@@ -611,7 +611,7 @@ class PharmacyTestHelper {
   static async measurePerformance<T>(
     operation: () => Promise<T>,
     maxTime: number;
-    operationName: string
+    operationName: string,
   ): Promise<T> {
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     const result = await operation();
@@ -623,14 +623,14 @@ class PharmacyTestHelper {
     return result;
   }
 
-  static async checkDrugInteractions(medicationIds: string[]): Promise<DrugInteraction[]> {
+  static async checkDrugInteractions(medicationIds: string[]): Promise<DrugInteraction[]> {,
     if (medicationIds.length < 2) return [];
 
-    const response = await this.makeAuthenticatedRequest<{ interactions: DrugInteraction[] }>(
+    const response = await this.makeAuthenticatedRequest<{ interactions: DrugInteraction[] }>(,
       '/api/pharmacy/interactions/check',
       {
         method: 'POST',
-        body: JSON.stringify({ medication_ids: medicationIds })
+        body: JSON.stringify({ medication_ids: medicationIds }),
       }
     );
 
@@ -644,17 +644,17 @@ class PharmacyTestHelper {
         switch (resourceType) {
           case 'medication':
             await this.makeAuthenticatedRequest(`/api/pharmacy/medications/${id}`, {
-              method: 'DELETE' 
+              method: 'DELETE' ,
             }),
             break;
           case 'inventory':
             await this.makeAuthenticatedRequest(`/api/pharmacy/inventory/${id}`, {
-              method: 'DELETE' 
+              method: 'DELETE' ,
             }),
             break;
           case 'prescription':
             await this.makeAuthenticatedRequest(`/api/pharmacy/prescriptions/${id}`, {
-              method: 'DELETE' 
+              method: 'DELETE' ,
             }),
             break;
         }
@@ -685,11 +685,11 @@ class InteractionEngine {
       clinical_effect: 'Increased risk of bleeding',
       management: 'Monitor INR closely, consider dose reduction',
       evidence_level: 'excellent',
-      last_updated: new Date().toISOString()
+      last_updated: new Date().toISOString(),
     }])
   }
 
-  checkInteractions(medicationIds: string[]): DrugInteraction[] {
+  checkInteractions(medicationIds: string[]): DrugInteraction[] {,
     const interactions: DrugInteraction[] = [];
 
     for (let i = 0; i < medicationIds.length; i++) {
@@ -721,7 +721,7 @@ afterAll(async () => {
 });
 
 beforeEach(() => {
-  console.log(`Running pharmacy test: ${expect.getState().currentTestName}`);
+  console.log(`Running pharmacy test: ${expect.getState().currentTestName,}`);
 });
 
 // Main test suites
@@ -731,7 +731,7 @@ describe('Medication Master Data API', () => {
       const response = await PharmacyTestHelper.measurePerformance(
         () => PharmacyTestHelper.makeAuthenticatedRequest<Medication>('/api/pharmacy/medications', {
           method: 'POST',
-          body: JSON.stringify(PHARMACY_TEST_DATA.mockMedication)
+          body: JSON.stringify(PHARMACY_TEST_DATA.mockMedication),
         }),
         PHARMACY_TEST_CONFIG.performanceThresholds.medicationSearchMaxTime,
         'Create medication'
@@ -746,7 +746,7 @@ describe('Medication Master Data API', () => {
         expect(response.data.controlled_substance).toBe(false),
         expect(response.data.black_box_warning).toBe(true);
 
-        PharmacyTestHelper.createdResources.set(`medication:${response.data.id}`, response.data.id);
+        PharmacyTestHelper.createdResources.set(`medication:${response.data.id,}`, response.data.id);
       }
     });
 
@@ -755,7 +755,7 @@ describe('Medication Master Data API', () => {
         '/api/pharmacy/medications',
         {
           method: 'POST',
-          body: JSON.stringify(PHARMACY_TEST_DATA.mockControlledMedication)
+          body: JSON.stringify(PHARMACY_TEST_DATA.mockControlledMedication),
         }
       );
 
@@ -769,20 +769,20 @@ describe('Medication Master Data API', () => {
         expect(response.data.narcotic).toBe(true),
         expect(response.data.high_alert_medication).toBe(true);
 
-        PharmacyTestHelper.createdResources.set(`medication:${response.data.id}`, response.data.id);
+        PharmacyTestHelper.createdResources.set(`medication:${response.data.id,}`, response.data.id);
       }
     });
 
     test('should reject medication with invalid NDC format', async () => {
       const invalidMedication = {
         ...PHARMACY_TEST_DATA.mockMedication,
-        ndc_number: 'INVALID-NDC-FORMAT'
+        ndc_number: 'INVALID-NDC-FORMAT',
       };
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/medications', {
           method: 'POST',
-          body: JSON.stringify(invalidMedication)
+          body: JSON.stringify(invalidMedication),
         })
       ).rejects.toThrow();
     });
@@ -791,13 +791,13 @@ describe('Medication Master Data API', () => {
       const invalidControlled = {
         ...PHARMACY_TEST_DATA.mockControlledMedication,
         controlled_substance: true,
-        controlled_schedule: undefined
+        controlled_schedule: undefined,
       };
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/medications', {
           method: 'POST',
-          body: JSON.stringify(invalidControlled)
+          body: JSON.stringify(invalidControlled),
         })
       ).rejects.toThrow();
     });
@@ -806,7 +806,7 @@ describe('Medication Master Data API', () => {
   describe('GET /api/pharmacy/medications', () => {
     test('should return paginated medication list with filters', async () => {
       const response = await PharmacyTestHelper.measurePerformance(
-        () => PharmacyTestHelper.makeAuthenticatedRequest<{ medications: Medication[] }>(
+        () => PharmacyTestHelper.makeAuthenticatedRequest<{ medications: Medication[] }>(,
           '/api/pharmacy/medications?page=1&limit=10&formulary_status=preferred'
         ),
         PHARMACY_TEST_CONFIG.performanceThresholds.medicationSearchMaxTime,
@@ -831,7 +831,7 @@ describe('Medication Master Data API', () => {
     test('should search medications by generic name', async () => {
       const testMedication = await PharmacyTestHelper.createTestMedication();
 
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ medications: Medication[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ medications: Medication[] }>(,
         `/api/pharmacy/medications?search=${encodeURIComponent('Metformin')}`
       );
 
@@ -844,7 +844,7 @@ describe('Medication Master Data API', () => {
     });
 
     test('should filter controlled substances', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ medications: Medication[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ medications: Medication[] }>(,
         '/api/pharmacy/medications?controlled_substance=true'
       );
 
@@ -859,7 +859,7 @@ describe('Medication Master Data API', () => {
     });
 
     test('should filter by therapeutic class', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ medications: Medication[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ medications: Medication[] }>(,
         '/api/pharmacy/medications?therapeutic_class=analgesic'
       );
 
@@ -881,7 +881,7 @@ describe('Medication Master Data API', () => {
         `/api/pharmacy/medications/${testMedication.id}`,
         {
           method: 'PUT',
-          body: JSON.stringify({ formulary_status: 'restricted' as FormularyStatus })
+          body: JSON.stringify({ formulary_status: 'restricted' as FormularyStatus }),
         }
       );
 
@@ -898,7 +898,7 @@ describe('Medication Master Data API', () => {
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest(`/api/pharmacy/medications/${testMedication.id}`, {
           method: 'PUT',
-          body: JSON.stringify({ controlled_substance: false })
+          body: JSON.stringify({ controlled_substance: false }),
         })
       ).rejects.toThrow()
     });
@@ -929,7 +929,7 @@ describe('Inventory Management API', () => {
     test('should enforce expiry date validation', async () => {
       const expiredBatchData = {
         ...PHARMACY_TEST_DATA.mockInventoryBatch,
-        expiry_date: '2020-01-01' // Expired date
+        expiry_date: '2020-01-01' // Expired date,
       }
 
       await expect(
@@ -944,7 +944,7 @@ describe('Inventory Management API', () => {
 
       const incorrectStorageBatch = {
         ...PHARMACY_TEST_DATA.mockInventoryBatch,
-        storage_condition: 'room_temperature' as StorageRequirement
+        storage_condition: 'room_temperature' as StorageRequirement,
       };
 
       await expect(
@@ -959,7 +959,7 @@ describe('Inventory Management API', () => {
 
       const controlledBatch = await PharmacyTestHelper.createTestInventoryBatch(
         controlledMedication.id,
-        { location: 'controlled_substances_vault' as PharmacyLocation }
+        { location: 'controlled_substances_vault' as PharmacyLocation },
       ),
       expect(controlledBatch.location).toBe('controlled_substances_vault'),
       expect(controlledBatch.barcode).toBeDefined();
@@ -970,7 +970,7 @@ describe('Inventory Management API', () => {
     test('should return inventory with stock levels', async () => {
       const testBatch = await PharmacyTestHelper.createTestInventoryBatch(testMedication.id);
 
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(,
         '/api/pharmacy/inventory'
       );
 
@@ -988,7 +988,7 @@ describe('Inventory Management API', () => {
     });
 
     test('should filter by expiry date alerts', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(,
         '/api/pharmacy/inventory?expiry_alert=30' // Next 30 days
       )
 
@@ -1006,7 +1006,7 @@ describe('Inventory Management API', () => {
     });
 
     test('should filter by low stock levels', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(,
         '/api/pharmacy/inventory?low_stock=true'
       );
 
@@ -1020,7 +1020,7 @@ describe('Inventory Management API', () => {
     });
 
     test('should filter by location', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ inventory: InventoryBatch[] }>(,
         '/api/pharmacy/inventory?location=main_pharmacy'
       );
 
@@ -1045,10 +1045,10 @@ describe('Inventory Management API', () => {
           `/api/pharmacy/inventory/${testBatch.id}`,
           {
             method: 'PUT',
-            body: JSON.stringify({
+            body: JSON.stringify({,
               quantity_adjustment: adjustmentQuantity,
               adjustment_reason: 'Expired stock removal';
-              adjusted_by: 'test_pharmacist'
+              adjusted_by: 'test_pharmacist',
             })
           }
         ),
@@ -1069,9 +1069,9 @@ describe('Inventory Management API', () => {
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest(`/api/pharmacy/inventory/${testBatch.id}`, {
           method: 'PUT',
-          body: JSON.stringify({
+          body: JSON.stringify({,
             quantity_adjustment: -(testBatch.quantity + 100), // More than available
-            adjustment_reason: 'Test negative inventory'
+            adjustment_reason: 'Test negative inventory',
           })
         })
       ).rejects.toThrow()
@@ -1084,10 +1084,10 @@ describe('Inventory Management API', () => {
         `/api/pharmacy/inventory/${testBatch.id}`,
         {
           method: 'PUT',
-          body: JSON.stringify({
+          body: JSON.stringify({,
             quality_status: 'quarantine' as QualityStatus,
             quarantine_reason: 'Quality control review';
-            quarantined_by: 'quality_control_manager'
+            quarantined_by: 'quality_control_manager',
           })
         }
       );
@@ -1101,15 +1101,15 @@ describe('Inventory Management API', () => {
 
 describe('Prescription Processing API', () => {
   let testMedication: Medication;
-  let testPatient: { id: string };
-  let testPrescriber: { id: string };
+  let testPatient: { id: string ,};
+  let testPrescriber: { id: string ,};
 
   beforeEach(async () => {
     testMedication = await PharmacyTestHelper.createTestMedication();
 
     // Mock patient and prescriber creation
-    testPatient = { id: 'TEST_PATIENT_001' }
-    testPrescriber = { id: 'TEST_PRESCRIBER_001' };
+    testPatient = { id: 'TEST_PATIENT_001' },
+    testPrescriber = { id: 'TEST_PRESCRIBER_001' ,};
   });
 
   describe('POST /api/pharmacy/prescriptions', () => {
@@ -1118,7 +1118,7 @@ describe('Prescription Processing API', () => {
         () => PharmacyTestHelper.createTestPrescription(
           testPatient.id,
           testPrescriber.id,
-          [{ medicationId: testMedication.id }]
+          [{ medicationId: testMedication.id }],
         ),
         PHARMACY_TEST_CONFIG.performanceThresholds.prescriptionProcessingMaxTime,
         'Create prescription'
@@ -1140,15 +1140,15 @@ describe('Prescription Processing API', () => {
         patient_id: testPatient.id,
         prescriber_id: testPrescriber.id;
         prescriber_dea_number: undefined, // Missing DEA number
-        items: [
+        items: [,
           ...PHARMACY_TEST_DATA.mockPrescriptionItem,
-          medication_id: controlledMedication.id]
+          medication_id: controlledMedication.id],
       }
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/prescriptions', {
           method: 'POST',
-          body: JSON.stringify(prescriptionWithoutDEA)
+          body: JSON.stringify(prescriptionWithoutDEA),
         })
       ).rejects.toThrow();
     });
@@ -1156,20 +1156,20 @@ describe('Prescription Processing API', () => {
     test('should check drug interactions automatically', async () => {
       const warfarin = await PharmacyTestHelper.createTestMedication({
         generic_name: 'Warfarin Sodium',
-        therapeutic_class: 'cardiovascular'
+        therapeutic_class: 'cardiovascular',
       });
 
       const aspirin = await PharmacyTestHelper.createTestMedication({
         generic_name: 'Aspirin',
-        therapeutic_class: 'analgesic'
+        therapeutic_class: 'analgesic',
       });
 
       const response = await PharmacyTestHelper.createTestPrescription(
         testPatient.id,
         testPrescriber.id,
         [
-          { medicationId: warfarin.id },
-          { medicationId: aspirin.id }
+          { medicationId: warfarin.id ,},
+          { medicationId: aspirin.id },
         ]
       );
 
@@ -1186,18 +1186,18 @@ describe('Prescription Processing API', () => {
         ...PHARMACY_TEST_DATA.mockPrescription,
         patient_id: testPatient.id,
         prescriber_id: testPrescriber.id;
-        items: [{
+        items: [{,
           ...PHARMACY_TEST_DATA.mockPrescriptionItem,
           medication_id: testMedication.id,
           dosage: 'INVALID_DOSAGE';
-          frequency: 'INVALID_FREQUENCY'
+          frequency: 'INVALID_FREQUENCY',
         }]
       };
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/prescriptions', {
           method: 'POST',
-          body: JSON.stringify(invalidPrescription)
+          body: JSON.stringify(invalidPrescription),
         })
       ).rejects.toThrow();
     });
@@ -1208,10 +1208,10 @@ describe('Prescription Processing API', () => {
       const testPrescription = await PharmacyTestHelper.createTestPrescription(
         testPatient.id,
         testPrescriber.id,
-        [{ medicationId: testMedication.id }]
+        [{ medicationId: testMedication.id }],
       );
 
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ prescriptions: Prescription[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ prescriptions: Prescription[] }>(,
         '/api/pharmacy/prescriptions?status=received'
       );
 
@@ -1229,7 +1229,7 @@ describe('Prescription Processing API', () => {
     });
 
     test('should search prescriptions by patient MRN', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ prescriptions: Prescription[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ prescriptions: Prescription[] }>(,
         `/api/pharmacy/prescriptions?patient_search=${testPatient.id}`
       );
 
@@ -1243,7 +1243,7 @@ describe('Prescription Processing API', () => {
     });
 
     test('should filter by prescription type', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ prescriptions: Prescription[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ prescriptions: Prescription[] }>(,
         '/api/pharmacy/prescriptions?type=new'
       );
 
@@ -1257,7 +1257,7 @@ describe('Prescription Processing API', () => {
     });
 
     test('should filter controlled substance prescriptions', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ prescriptions: Prescription[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ prescriptions: Prescription[] }>(,
         '/api/pharmacy/prescriptions?controlled_substance=true'
       );
 
@@ -1271,17 +1271,17 @@ describe('Prescription Processing API', () => {
       const testPrescription = await PharmacyTestHelper.createTestPrescription(
         testPatient.id,
         testPrescriber.id,
-        [{ medicationId: testMedication.id }]
+        [{ medicationId: testMedication.id }],
       );
 
       const response = await PharmacyTestHelper.makeAuthenticatedRequest<Prescription>(
         `/api/pharmacy/prescriptions/${testPrescription.id}/status`,
         {
           method: 'PUT',
-          body: JSON.stringify({
+          body: JSON.stringify({,
             status: 'under_review',
             reviewed_by: 'test_pharmacist';
-            review_notes: 'Standard review completed'
+            review_notes: 'Standard review completed',
           })
         }
       );
@@ -1298,7 +1298,7 @@ describe('Prescription Processing API', () => {
       const controlledPrescription = await PharmacyTestHelper.createTestPrescription(
         testPatient.id,
         testPrescriber.id,
-        [{ medicationId: controlledMedication.id }]
+        [{ medicationId: controlledMedication.id }],
       );
 
       // Direct status change to dispensed should fail without pharmacist approval
@@ -1307,7 +1307,7 @@ describe('Prescription Processing API', () => {
           `/api/pharmacy/prescriptions/${controlledPrescription.id}/status`,
           {
             method: 'PUT',
-            body: JSON.stringify({ status: 'ready_for_pickup' })
+            body: JSON.stringify({ status: 'ready_for_pickup' }),
           }
         )
       ).rejects.toThrow()
@@ -1326,7 +1326,7 @@ describe('Dispensing Operations API', () => {
     testPrescription = await PharmacyTestHelper.createTestPrescription(
       'TEST_PATIENT_001',
       'TEST_PRESCRIBER_001',
-      [{ medicationId: testMedication.id }]
+      [{ medicationId: testMedication.id }],
     );
   });
 
@@ -1343,13 +1343,13 @@ describe('Dispensing Operations API', () => {
         counseling_notes: 'Patient counseled on proper administration and side effects';
         medication_guide_provided: true,
         pickup_id_verified: true;
-        notes: 'Standard dispensing completed'
+        notes: 'Standard dispensing completed',
       };
 
       const response = await PharmacyTestHelper.measurePerformance(
         () => PharmacyTestHelper.makeAuthenticatedRequest<DispensingRecord>('/api/pharmacy/dispensing', {
           method: 'POST',
-          body: JSON.stringify(dispensingData)
+          body: JSON.stringify(dispensingData),
         }),
         PHARMACY_TEST_CONFIG.performanceThresholds.dispensingMaxTime,
         'Create dispensing record'
@@ -1380,13 +1380,13 @@ describe('Dispensing Operations API', () => {
         inventory_batch_id: testInventoryBatch.id,
         quantity_dispensed: 10;
         dispensed_by: 'test_pharmacist',
-        patient_counseled: false // Missing required counseling
+        patient_counseled: false // Missing required counseling,
       }
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/dispensing', {
           method: 'POST',
-          body: JSON.stringify(dispensingWithoutCounseling)
+          body: JSON.stringify(dispensingWithoutCounseling),
         })
       ).rejects.toThrow();
     });
@@ -1399,13 +1399,13 @@ describe('Dispensing Operations API', () => {
         prescription_item_id: testPrescription.items[0].id;
         inventory_batch_id: testInventoryBatch.id,
         quantity_dispensed: prescribedQuantity + 10, // More than prescribed
-        dispensed_by: 'test_pharmacist'
+        dispensed_by: 'test_pharmacist',
       }
 
       await expect(
         PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/dispensing', {
           method: 'POST',
-          body: JSON.stringify(overdispensing)
+          body: JSON.stringify(overdispensing),
         })
       ).rejects.toThrow();
     });
@@ -1420,14 +1420,14 @@ describe('Dispensing Operations API', () => {
         quantity_dispensed: partialQuantity;
         dispensed_by: 'test_pharmacist',
         patient_counseled: true;
-        notes: 'Partial dispensing due to inventory shortage'
+        notes: 'Partial dispensing due to inventory shortage',
       };
 
       const response = await PharmacyTestHelper.makeAuthenticatedRequest<DispensingRecord>(
         '/api/pharmacy/dispensing',
         {
           method: 'POST',
-          body: JSON.stringify(partialDispensing)
+          body: JSON.stringify(partialDispensing),
         }
       );
 
@@ -1447,7 +1447,7 @@ describe('Dispensing Operations API', () => {
 
   describe('GET /api/pharmacy/dispensing/history', () => {
     test('should return dispensing history with audit trail', async () => {
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ records: DispensingRecord[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ records: DispensingRecord[] }>(,
         '/api/pharmacy/dispensing/history?patient_id=TEST_PATIENT_001'
       );
 
@@ -1466,7 +1466,7 @@ describe('Dispensing Operations API', () => {
 
     test('should filter dispensing records by date range', async () => {
       const today = new Date().toISOString().split('T')[0];
-      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ records: DispensingRecord[] }>(
+      const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ records: DispensingRecord[] }>(,
         `/api/pharmacy/dispensing/history?from_date=${today}&to_date=${today}`
       );
 
@@ -1486,22 +1486,22 @@ describe('Drug Interaction Checking API', () => {
   test('should identify major drug interactions', async () => {
     const warfarin = await PharmacyTestHelper.createTestMedication({
       generic_name: 'Warfarin Sodium',
-      therapeutic_class: 'cardiovascular'
+      therapeutic_class: 'cardiovascular',
     });
 
     const aspirin = await PharmacyTestHelper.createTestMedication({
       generic_name: 'Aspirin',
-      therapeutic_class: 'analgesic'
+      therapeutic_class: 'analgesic',
     });
 
     const response = await PharmacyTestHelper.measurePerformance(
-      () => PharmacyTestHelper.makeAuthenticatedRequest<{ interactions: DrugInteraction[] }>(
+      () => PharmacyTestHelper.makeAuthenticatedRequest<{ interactions: DrugInteraction[] }>(,
         '/api/pharmacy/interactions/check',
         {
           method: 'POST',
-          body: JSON.stringify({
+          body: JSON.stringify({,
             medication_ids: [warfarin.id, aspirin.id],
-            patient_id: 'TEST_PATIENT_001'
+            patient_id: 'TEST_PATIENT_001',
           })
         }
       ),
@@ -1526,21 +1526,21 @@ describe('Drug Interaction Checking API', () => {
   test('should check for duplicate therapy', async () => {
     const medication1 = await PharmacyTestHelper.createTestMedication({
       generic_name: 'Metformin Hydrochloride',
-      therapeutic_class: 'endocrine'
+      therapeutic_class: 'endocrine',
     });
 
     const medication2 = await PharmacyTestHelper.createTestMedication({
       generic_name: 'Metformin Extended Release',
-      therapeutic_class: 'endocrine'
+      therapeutic_class: 'endocrine',
     });
 
-    const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ interactions: DrugInteraction[] }>(
+    const response = await PharmacyTestHelper.makeAuthenticatedRequest<{ interactions: DrugInteraction[] }>(,
       '/api/pharmacy/interactions/check',
       {
         method: 'POST',
-        body: JSON.stringify({
+        body: JSON.stringify({,
           medication_ids: [medication1.id, medication2.id],
-          check_duplicate_therapy: true
+          check_duplicate_therapy: true,
         })
       }
     );
@@ -1643,7 +1643,7 @@ describe('Pharmacy Security & Compliance', () => {
 
     for (const endpoint of endpoints) {
       const response = await fetch(`${PHARMACY_TEST_CONFIG.baseUrl}${endpoint}`, {
-        headers: {
+        headers: {,
           'Authorization': 'Bearer invalid-token'
         }
       }),
@@ -1679,15 +1679,15 @@ describe('Pharmacy Security & Compliance', () => {
       patient_id: 'TEST_PATIENT_001',
       prescriber_id: 'TEST_PRESCRIBER_001';
       prescriber_dea_number: 'INVALID_DEA',
-      items: [
+      items: [,
         ...PHARMACY_TEST_DATA.mockPrescriptionItem,
-        medication_id: controlledMedication.id]
+        medication_id: controlledMedication.id],
     };
 
     await expect(
       PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/prescriptions', {
         method: 'POST',
-        body: JSON.stringify(invalidDEAPrescription)
+        body: JSON.stringify(invalidDEAPrescription),
       })
     ).rejects.toThrow();
   });
@@ -1701,20 +1701,20 @@ describe('Pharmacy Performance Benchmarks', () => {
       {
         name: 'Search medications',
         operation: () => PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/medications?search=test'),
-        threshold: PHARMACY_TEST_CONFIG.performanceThresholds.medicationSearchMaxTime
+        threshold: PHARMACY_TEST_CONFIG.performanceThresholds.medicationSearchMaxTime,
       },
       {
         name: 'Check drug interactions',
         operation: () => PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/interactions/check', {
           method: 'POST',
-          body: JSON.stringify({ medication_ids: [testMedication.id] })
+          body: JSON.stringify({ medication_ids: [testMedication.id] }),
         }),
-        threshold: PHARMACY_TEST_CONFIG.performanceThresholds.interactionCheckMaxTime
+        threshold: PHARMACY_TEST_CONFIG.performanceThresholds.interactionCheckMaxTime,
       },
       {
         name: 'Get pharmacy statistics',
         operation: () => PharmacyTestHelper.makeAuthenticatedRequest('/api/pharmacy/dashboard/statistics'),
-        threshold: PHARMACY_TEST_CONFIG.performanceThresholds.medicationSearchMaxTime
+        threshold: PHARMACY_TEST_CONFIG.performanceThresholds.medicationSearchMaxTime,
       }
     ];
 
@@ -1727,11 +1727,11 @@ describe('Pharmacy Performance Benchmarks', () => {
     const testMedication = await PharmacyTestHelper.createTestMedication();
     const concurrentPrescriptions = 5;
 
-    const prescriptionPromises = Array.from({ length: concurrentPrescriptions }, (_, index) =>
+    const prescriptionPromises = Array.from({ length: concurrentPrescriptions ,}, (_, index) =>
       PharmacyTestHelper.createTestPrescription(
         `TEST_PATIENT_${index}`,
         'TEST_PRESCRIBER_001',
-        [{ medicationId: testMedication.id }]
+        [{ medicationId: testMedication.id }],
       )
     );
 

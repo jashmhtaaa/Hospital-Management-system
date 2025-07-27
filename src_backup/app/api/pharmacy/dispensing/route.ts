@@ -71,7 +71,7 @@ const inventoryRepository = {
  * GET /api/pharmacy/dispensing;
  * List medication dispensing records with filtering and pagination;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -107,7 +107,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -124,7 +124,7 @@ export const GET = async (req: any) => {
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
 
     // Build filter criteria;
-    const filter: unknown = {};
+    const filter: unknown = {,};
     if (!session.user)ilter.patientId = patientId;
     if (!session.user)ilter.prescriptionId = prescriptionId;
     if (!session.user)ilter.status = status;
@@ -173,13 +173,13 @@ export const GET = async (req: any) => {
     // Return response;
     return NextResponse.json({
       dispensingRecords: fhirDispensingRecords,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving dispensing records");
   }
@@ -189,7 +189,7 @@ export const GET = async (req: any) => {
  * POST /api/pharmacy/dispensing;
  * Create a new medication dispensing record;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -227,14 +227,14 @@ export const POST = async (req: any) => {
     const validationResult = validateDispensingRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -242,17 +242,17 @@ export const POST = async (req: any) => {
     // Verify prescription exists;
     const prescription = await prescriptionRepository.findById(data.prescriptionId);
     if (!session.user) {
-      return NextResponse.json({ error: "Prescription not found" }, { status: 404 });
+      return NextResponse.json({ error: "Prescription not found" ,}, { status: 404 ,});
 
     // Verify medication exists;
     const medication = await medicationRepository.findById(prescription.medicationId);
     if (!session.user) {
-      return NextResponse.json({ error: "Medication not found" }, { status: 404 });
+      return NextResponse.json({ error: "Medication not found" ,}, { status: 404 ,});
 
     // Verify patient exists;
     const patient = await getPatientById(prescription.patientId);
     if (!session.user) {
-      return NextResponse.json({ error: "Patient not found" }, { status: 404 });
+      return NextResponse.json({ error: "Patient not found" ,}, { status: 404 ,});
 
     // Check inventory availability;
     const inventoryItems = await inventoryRepository.findByMedicationId(prescription.medicationId);
@@ -263,8 +263,8 @@ export const POST = async (req: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Insufficient inventory available" },
-        { status: 400 }
+        { error: "Insufficient inventory available" ,},
+        { status: 400 },
       );
 
     // Create dispensing record;
@@ -323,7 +323,7 @@ export const POST = async (req: any) => {
         id: dispensingId,
         message: "Medication dispensed successfully";
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, "Error dispensing medication");

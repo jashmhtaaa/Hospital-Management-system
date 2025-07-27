@@ -14,14 +14,14 @@ import type { FHIRBase } from '@/lib/fhir/types';
  * Provides CRUD operations for FHIR resources while maintaining HMS compatibility;
  */
 
-\1
+
 }
   }
 
   /**
    * Store a FHIR resource;
    */
-  async storeResource<T extends FHIRBase>(resource: T): Promise<T> {
+  async storeResource<T extends FHIRBase>(resource: T): Promise<T> {,
     const resourceType = resource.resourceType;
     const resourceId = resource.id || uuidv4();
 
@@ -30,7 +30,7 @@ import type { FHIRBase } from '@/lib/fhir/types';
     resource.meta = {
       ...resource.meta,
       lastUpdated: new Date().toISOString(),
-      versionId: resource.meta?.versionId || '1'
+      versionId: resource.meta?.versionId || '1',
     };
 
     switch (resourceType) {
@@ -42,14 +42,14 @@ import type { FHIRBase } from '@/lib/fhir/types';
         return this.storeEncounter(resource as FHIREncounter) as Promise<T>;
       case 'MedicationRequest':
         return this.storeMedicationRequest(resource as FHIRMedicationRequest) as Promise<T>;
-      default: return this.storeGenericResource(resource)
+      default: return this.storeGenericResource(resource),
     }
   }
 
   /**
    * Retrieve a FHIR resource by ID;
    */
-  async retrieveResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {
+  async retrieveResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {,
     switch (resourceType) {
       case 'Patient':
         return this.retrievePatient(id) as Promise<T | null>;
@@ -67,10 +67,10 @@ import type { FHIRBase } from '@/lib/fhir/types';
   /**
    * Update a FHIR resource;
    */
-  async updateResource<T extends FHIRBase>(resourceType: string, id: string, resource: T): Promise<T> {
+  async updateResource<T extends FHIRBase>(resourceType: string, id: string, resource: T): Promise<T> {,
     // Get current version
     const existing = await this.retrieveResource<T>(resourceType, id);
-    \1 {\n  \2{
+     {\n  {
       throw new Error(`${resourceType}/${id} not found`);
     }
 
@@ -80,7 +80,7 @@ import type { FHIRBase } from '@/lib/fhir/types';
     resource.meta = {
       ...resource.meta,
       lastUpdated: new Date().toISOString(),
-      versionId: (currentVersion + 1).toString()
+      versionId: (currentVersion + 1).toString(),
     };
 
     return this.storeResource(resource);
@@ -89,7 +89,7 @@ import type { FHIRBase } from '@/lib/fhir/types';
   /**
    * Delete a FHIR resource;
    */
-  async deleteResource(resourceType: string, id: string): Promise<boolean> {
+  async deleteResource(resourceType: string, id: string): Promise<boolean> {,
     switch (resourceType) {
       case 'Patient':
         return this.deletePatient(id),
@@ -128,7 +128,7 @@ import type { FHIRBase } from '@/lib/fhir/types';
   /**
    * Patient-specific operations;
    */
-  private async storePatient(fhirPatient: FHIRPatient): Promise<FHIRPatient> {
+  private async storePatient(fhirPatient: FHIRPatient): Promise<FHIRPatient> {,
     const mrn = FHIRPatientUtils.getMRN(fhirPatient) || this.generateMRN();
     const _displayName = FHIRPatientUtils.getDisplayName(fhirPatient);
     const phone = FHIRPatientUtils.getPrimaryPhone(fhirPatient);
@@ -141,23 +141,23 @@ import type { FHIRBase } from '@/lib/fhir/types';
 
     // Store in Prisma Patient table
     const patient = await this.prisma.patient.upsert({
-      where: { id: fhirPatient.id! },
-      update: {
+      where: { id: fhirPatient.id! ,},
+      update: {,
         mrn,
         firstName,
         lastName,
         dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
-        \1,\2 phone || '',
-        \1,\2 new Date()
+         phone || '',
+         new Date()
       },
-      create: {
+      create: {,
         id: fhirPatient.id!;
         mrn,
         firstName,
         lastName,
         dateOfBirth: fhirPatient.birthDate ? new Date(fhirPatient.birthDate) : new Date(),
-        \1,\2 phone || '',
-        email: email || ''
+         phone || '',
+        email: email || '',
       }
     });
 
@@ -167,42 +167,42 @@ import type { FHIRBase } from '@/lib/fhir/types';
     return fhirPatient;
   }
 
-  private async retrievePatient(id: string): Promise<FHIRPatient | null> {
+  private async retrievePatient(id: string): Promise<FHIRPatient | null> {,
     const patient = await this.prisma.patient.findUnique({
-      where: { id }
+      where: { id },
     });
 
-    \1 {\n  \2{
+     {\n  {
       return null;
     }
 
     // Convert HMS patient to FHIR patient
     const fhirPatient = FHIRPatientUtils.fromHMSPatient({
       id: patient.id,
-      \1,\2 patient.firstName,
-      \1,\2 patient.dateOfBirth.toISOString().split('T')[0],
-      \1,\2 patient.phone,
-      email: patient.email
+       patient.firstName,
+       patient.dateOfBirth.toISOString().split('T')[0],
+       patient.phone,
+      email: patient.email,
     });
 
     // Get stored FHIR resource for additional data
     const storedFhir = await this.retrieveGenericResource<FHIRPatient>('Patient', id);
-    \1 {\n  \2{
+     {\n  {
       // Merge stored FHIR data with converted data
       return {
         ...storedFhir,
         ...fhirPatient,
-        meta: storedFhir.meta
+        meta: storedFhir.meta,
       };
     }
 
     return fhirPatient;
   }
 
-  private async deletePatient(id: string): Promise<boolean> {
+  private async deletePatient(id: string): Promise<boolean> {,
     try {
       await this.prisma.patient.delete({
-        where: { id }
+        where: { id },
       });
       await this.deleteGenericResource('Patient', id);
       return true;
@@ -211,44 +211,44 @@ import type { FHIRBase } from '@/lib/fhir/types';
     }
   }
 
-  private async searchPatients(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRPatient>> {
+  private async searchPatients(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRPatient>> {,
     const { _count = 20, _offset = 0, ...params } = searchParams;
 
-    const where: unknown = {};
+    const where: unknown = {,};
 
     // Build where clause based on search parameters
-    \1 {\n  \2{
+     {\n  {
       where.OR = [
-        { firstName: { contains: params.name, mode: 'insensitive' } },
-        { lastName: { contains: params.name, mode: 'insensitive' } }
+        { firstName: { contains: params.name, mode: 'insensitive' } ,},
+        { lastName: { contains: params.name, mode: 'insensitive' } },
       ];
     }
 
-    \1 {\n  \2{
-      where.lastName = { contains: params.family, mode: 'insensitive' };
+     {\n  {
+      where.lastName = { contains: params.family, mode: 'insensitive' ,};
     }
 
-    \1 {\n  \2{
-      where.firstName = { contains: params.given, mode: 'insensitive' };
+     {\n  {
+      where.firstName = { contains: params.given, mode: 'insensitive' ,};
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.mrn = params.identifier;
     }
 
-    \1 {\n  \2{
-      where.phone = { contains: params.phone };
+     {\n  {
+      where.phone = { contains: params.phone ,};
     }
 
-    \1 {\n  \2{
-      where.email = { contains: params.email };
+     {\n  {
+      where.email = { contains: params.email ,};
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.dateOfBirth = new Date(params.birthdate);
     }
 
-    \1 {\n  \2{
+     {\n  {
       where.gender = params.gender;
     }
 
@@ -256,7 +256,7 @@ import type { FHIRBase } from '@/lib/fhir/types';
       this.prisma.patient.findMany({
         where,
         skip: _offset,
-        \1,\2 { lastName: 'asc' }
+         { lastName: 'asc' },
       }),
       this.prisma.patient.count({ where })
     ]);
@@ -268,18 +268,18 @@ import type { FHIRBase } from '@/lib/fhir/types';
     return {
       resources: fhirPatients.filter(Boolean) as FHIRPatient[];
       total,
-      hasMore: _offset + _count < total
+      hasMore: _offset + _count < total,
     };
   }
 
   /**
    * Appointment-specific operations;
    */
-  private async storeAppointment(fhirAppointment: FHIRAppointment): Promise<FHIRAppointment> {
+  private async storeAppointment(fhirAppointment: FHIRAppointment): Promise<FHIRAppointment> {,
     const patientId = FHIRAppointmentUtils.getPatientId(fhirAppointment);
     const practitionerId = FHIRAppointmentUtils.getPractitionerId(fhirAppointment);
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Patient and Practitioner are required for appointments');
     }
 
@@ -289,67 +289,67 @@ import type { FHIRBase } from '@/lib/fhir/types';
     return fhirAppointment;
   }
 
-  private async retrieveAppointment(id: string): Promise<FHIRAppointment | null> {
+  private async retrieveAppointment(id: string): Promise<FHIRAppointment | null> {,
     return this.retrieveGenericResource<FHIRAppointment>('Appointment', id);
   }
 
-  private async deleteAppointment(id: string): Promise<boolean> {
+  private async deleteAppointment(id: string): Promise<boolean> {,
     return this.deleteGenericResource('Appointment', id);
   }
 
-  private async searchAppointments(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRAppointment>> {
+  private async searchAppointments(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRAppointment>> {,
     return this.searchGenericResources<FHIRAppointment>('Appointment', searchParams);
   }
 
   /**
    * Encounter-specific operations;
    */
-  private async storeEncounter(fhirEncounter: FHIREncounter): Promise<FHIREncounter> {
+  private async storeEncounter(fhirEncounter: FHIREncounter): Promise<FHIREncounter> {,
     await this.storeGenericResource(fhirEncounter);
     return fhirEncounter;
   }
 
-  private async retrieveEncounter(id: string): Promise<FHIREncounter | null> {
+  private async retrieveEncounter(id: string): Promise<FHIREncounter | null> {,
     return this.retrieveGenericResource<FHIREncounter>('Encounter', id);
   }
 
-  private async deleteEncounter(id: string): Promise<boolean> {
+  private async deleteEncounter(id: string): Promise<boolean> {,
     return this.deleteGenericResource('Encounter', id);
   }
 
-  private async searchEncounters(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIREncounter>> {
+  private async searchEncounters(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIREncounter>> {,
     return this.searchGenericResources<FHIREncounter>('Encounter', searchParams);
   }
 
   /**
    * MedicationRequest-specific operations;
    */
-  private async storeMedicationRequest(fhirMedRequest: FHIRMedicationRequest): Promise<FHIRMedicationRequest> {
+  private async storeMedicationRequest(fhirMedRequest: FHIRMedicationRequest): Promise<FHIRMedicationRequest> {,
     await this.storeGenericResource(fhirMedRequest);
     return fhirMedRequest;
   }
 
-  private async retrieveMedicationRequest(id: string): Promise<FHIRMedicationRequest | null> {
+  private async retrieveMedicationRequest(id: string): Promise<FHIRMedicationRequest | null> {,
     return this.retrieveGenericResource<FHIRMedicationRequest>('MedicationRequest', id);
   }
 
-  private async deleteMedicationRequest(id: string): Promise<boolean> {
+  private async deleteMedicationRequest(id: string): Promise<boolean> {,
     return this.deleteGenericResource('MedicationRequest', id);
   }
 
-  private async searchMedicationRequests(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRMedicationRequest>> {
+  private async searchMedicationRequests(searchParams: FHIRSearchParams): Promise<FHIRSearchResult<FHIRMedicationRequest>> {,
     return this.searchGenericResources<FHIRMedicationRequest>('MedicationRequest', searchParams);
   }
 
   /**
    * Generic FHIR resource operations (for resources without specific tables)
    */
-  private async storeGenericResource<T extends FHIRBase>(resource: T): Promise<T> {
+  private async storeGenericResource<T extends FHIRBase>(resource: T): Promise<T> {,
     // Create a generic FHIR resource table if it doesn't exist
     // For now, we'll store in a JSON format
 
     // You would need to create a FhirResource table in your Prisma schema:
-    /*
+    /*,
     model FhirResource {
       id           String   @id
       resourceType String;
@@ -386,14 +386,14 @@ import type { FHIRBase } from '@/lib/fhir/types';
     return resource;
   }
 
-  private async retrieveGenericResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {
+  private async retrieveGenericResource<T extends FHIRBase>(resourceType: string, id: string): Promise<T | null> {,
     try {
       const result = await this.prisma.$queryRawUnsafe<any[]>(`;
         SELECT content FROM fhir_resources;
         WHERE id = $1 AND resource_type = $2;
       `, id, resourceType);
 
-      \1 {\n  \2{
+       {\n  {
         return null;
       }
 
@@ -404,7 +404,7 @@ import type { FHIRBase } from '@/lib/fhir/types';
     }
   }
 
-  private async deleteGenericResource(resourceType: string, id: string): Promise<boolean> {
+  private async deleteGenericResource(resourceType: string, id: string): Promise<boolean> {,
     try {
       const result = await this.prisma.$executeRawUnsafe(`;
         DELETE FROM fhir_resources;
@@ -442,12 +442,12 @@ import type { FHIRBase } from '@/lib/fhir/types';
       return {
         resources: resources.map(r => r.content) as T[];
         total,
-        hasMore: _offset + _count < total
+        hasMore: _offset + _count < total,
       };
     } catch (error) {
       return {
         resources: [],
-        \1,\2 false
+         false
       };
     }
   }
@@ -458,7 +458,7 @@ import type { FHIRBase } from '@/lib/fhir/types';
   private generateMRN(): string {
     const _timestamp = crypto.getRandomValues(new Uint32Array(1))[0].toString();
     const _random = crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 8).toUpperCase();
-    return `MRN/* SECURITY: Template literal eliminated */
+    return `MRN/* SECURITY: Template literal eliminated */,
   }
 
   /**

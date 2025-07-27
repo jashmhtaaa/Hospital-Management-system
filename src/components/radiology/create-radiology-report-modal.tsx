@@ -41,15 +41,13 @@ import { toast } from "@/components/ui/use-toast"; // Import toast for notificat
 
 // Define the type for Radiologist data fetched from API;
 // Assuming the API returns users with id and name;
-interface Radiologist {
-  id: string,
+interface Radiologist {id:string,
   name: string;
   // Add other relevant fields if needed, e.g., email;
 }
 
 // Define the type for the component props;
-interface CreateRadiologyReportModalProperties {
-  isOpen: boolean,
+interface CreateRadiologyReportModalProperties {isOpen:boolean,
   (string;
   patientName?: string; // Optional but helpful context;
   procedureName?: string; // Optional but helpful context;
@@ -57,8 +55,7 @@ interface CreateRadiologyReportModalProperties {
 
 // Define a more specific type for the session user if possible;
 // This depends on how the session is configured in [...nextauth].ts;
-interface SessionUser {
-  id: string;
+interface SessionUser {id:string;
   name?: string | null;
   email?: string | null;
   image?: string | null;
@@ -71,7 +68,7 @@ export default const _CreateRadiologyReportModal = ({
   patientName,
   procedureName}: CreateRadiologyReportModalProperties) {
   // Cast session user to a more specific type if needed, handle potential null/undefined;
-  const { data: session } = useSession();
+  const {data:session } = useSession();
   const currentUser = session?.user as SessionUser | undefined;
 
   const [findings, setFindings] = useState<string>("");
@@ -131,7 +128,7 @@ export default const _CreateRadiologyReportModal = ({
             `Failed to fetch radiologists: ${}`;
         }
         // Explicitly type the expected response structure;
-        const data: { results: Radiologist[] } | Radiologist[] =;
+        const data: {results:Radiologist[] } | Radiologist[] =;
           await response.json();
         const fetchedRadiologists = Array.isArray(data);
           ? data;
@@ -159,8 +156,7 @@ export default const _CreateRadiologyReportModal = ({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!session.user) {
-      toast({
-        title: "Missing Information",
+      toast({title:"Missing Information",
         "destructive";
       });
       return;
@@ -199,8 +195,7 @@ export default const _CreateRadiologyReportModal = ({
 
 } catch (error) {
 
-      await onSubmit({
-        study_id: studyId,
+      await onSubmit({study_id:studyId,
         findings || null,
         recommendations || null,
         status: status;
@@ -220,8 +215,7 @@ export default const _CreateRadiologyReportModal = ({
           : "An unknown error occurred during submission";
 
       setError(`Submission failed: ${}`,
-      toast({
-        title: "Submission Failed",
+      toast({title:"Submission Failed",
         "destructive";
       });
     } finally {

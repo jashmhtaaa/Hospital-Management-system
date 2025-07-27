@@ -1,5 +1,5 @@
 import "zod"
-import {  z  } from "@/lib/database"
+import {z  } from "next/server"
 
 }
 
@@ -9,7 +9,7 @@ import {  z  } from "@/lib/database"
  */;
 
 // Clinical Note Schemas;
-export const ClinicalNoteSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const ClinicalNoteSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
   encounter_id: z.string().min(1, "Encounter ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
   note_type: z.enum(["progress_note", "soap_note", "admission_note", "discharge_summary", "consultation_note", "procedure_note", "nursing_note"]),
@@ -77,7 +77,7 @@ export const ClinicalNoteSchema = z.object({patient_id:z.string().min(1, "Patien
   structured_data: z.record(z.any()).optional();
 });
 
-export const CarePlanSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const CarePlanSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
   care_plan_name: z.string().min(1, "Care plan name is required"),
   diagnosis: z.string().min(1, "Primary diagnosis is required"),
@@ -120,7 +120,7 @@ export const CarePlanSchema = z.object({patient_id:z.string().min(1, "Patient ID
   notes: z.string().optional();
 });
 
-export const ProblemListSchema = z.object({patient_id:z.string().min(1, "Patient ID is required"),
+export const ProblemListSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
   provider_id: z.string().min(1, "Provider ID is required"),
 
   problem_name: z.string().min(1, "Problem name is required"),
@@ -147,7 +147,7 @@ export const ProblemListSchema = z.object({patient_id:z.string().min(1, "Patient
   notes: z.string().optional();
 });
 
-export const ClinicalGuidelineSchema = z.object({guideline_id:z.string(),
+export const ClinicalGuidelineSchema = z.object({{guideline_id:z.string(,}),
   name: z.string(),
   organization: z.string(),
   version: z.string(),
@@ -260,7 +260,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
         references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)"]}];
 
     guidelines.forEach(guidelineData => {
-      const guideline: ClinicalGuideline = {
+      const guideline: ClinicalGuideline = {,
         ...guidelineData,
         id: uuidv4(),
         created_at: new Date(),
@@ -305,7 +305,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Create clinical note;
    */;
-  async createClinicalNote(noteData: z.infer<typeof ClinicalNoteSchema>): Promise<ClinicalNote> {
+  async createClinicalNote(noteData: z.infer<typeof ClinicalNoteSchema>): Promise<ClinicalNote> {,
     const validatedData = ClinicalNoteSchema.parse(noteData);
 
     const noteId = uuidv4();
@@ -320,7 +320,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
       }
     }
 
-    const clinicalNote: ClinicalNote = {
+    const clinicalNote: ClinicalNote = {,
       ...validatedData,
       ...templateData,
       id: noteId,
@@ -350,7 +350,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Update clinical note;
    */;
-  async updateClinicalNote(noteId: string, updateData: Partial<ClinicalNote>): Promise<ClinicalNote> {
+  async updateClinicalNote(noteId: string, updateData: Partial<ClinicalNote>): Promise<ClinicalNote> {,
     const existingNote = this.clinicalNotes.get(noteId);
     if (!session.user) {
       throw new Error("Clinical note not found");
@@ -360,7 +360,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
       throw new Error("Cannot modify signed note. Create an amendment instead.");
     }
 
-    const updatedNote: ClinicalNote = {
+    const updatedNote: ClinicalNote = {,
       ...existingNote,
       ...updateData,
       updated_at: new Date();
@@ -373,7 +373,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Sign clinical note;
    */;
-  async signClinicalNote(noteId: string, providerId: string): Promise<ClinicalNote> {
+  async signClinicalNote(noteId: string, providerId: string): Promise<ClinicalNote> {,
     const note = this.clinicalNotes.get(noteId);
     if (!session.user) {
       throw new Error("Clinical note not found");
@@ -395,7 +395,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Create note amendment;
    */;
-  async createNoteAmendment(originalNoteId: string, amendmentText: string, providerId: string): Promise<ClinicalNote> {
+  async createNoteAmendment(originalNoteId: string, amendmentText: string, providerId: string): Promise<ClinicalNote> {,
     const originalNote = this.clinicalNotes.get(originalNoteId);
     if (!session.user) {
       throw new Error("Original note not found");
@@ -408,7 +408,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
     const amendmentId = uuidv4();
     const amendmentNumber = `$originalNote.note_number-AMEND-$originalNote.amendments.length + 1`;
 
-    const amendment: ClinicalNote = {
+    const amendment: ClinicalNote = {,
       ...originalNote,
       id: amendmentId,
       "amended",
@@ -432,7 +432,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Create care plan;
    */;
-  async createCarePlan(carePlanData: z.infer<typeof CarePlanSchema>): Promise<CarePlan> {
+  async createCarePlan(carePlanData: z.infer<typeof CarePlanSchema>): Promise<CarePlan> {,
     const validatedData = CarePlanSchema.parse(carePlanData);
 
     const carePlanId = uuidv4();
@@ -442,7 +442,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
     const nextReviewDate = new Date();
     nextReviewDate.setDate(nextReviewDate.getDate() + 30);
 
-    const carePlan: CarePlan = {
+    const carePlan: CarePlan = {,
       ...validatedData,
       id: carePlanId,
       new Date(),
@@ -467,12 +467,12 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Add problem to patient"s problem list;
    */;
-  async addProblem(problemData: z.infer<typeof ProblemListSchema>): Promise<ProblemListItem> {
+  async addProblem(problemData: z.infer<typeof ProblemListSchema>): Promise<ProblemListItem> {,
     const validatedData = ProblemListSchema.parse(problemData);
 
     const problemId = uuidv4();
 
-    const problem: ProblemListItem = {
+    const problem: ProblemListItem = {,
       ...validatedData,
       id: problemId,
       created_at: new Date(),
@@ -518,7 +518,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Get patient"s active problems;
    */;
-  async getActiveProblems(patientId: string): Promise<ProblemListItem[]> {
+  async getActiveProblems(patientId: string): Promise<ProblemListItem[]> {,
     const patientProblems = this.problemLists.get(patientId) || [];
     return patientProblems.filter(problem => problem.status === "active" || problem.status === "chronic");
   }
@@ -601,7 +601,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Evaluate decision support rule;
    */;
-  private evaluateRule(rule: unknown, note: ClinicalNote): boolean {
+  private evaluateRule(rule: unknown, note: ClinicalNote): boolean {,
     // Simplified rule evaluation - in real implementation, this would be more sophisticated;
     const condition = rule.condition.toLowerCase();
 
@@ -621,13 +621,13 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Get clinical decision support alerts;
    */;
-  async getClinicalDecisionSupport(encounterId: string): Promise<ClinicalDecisionSupport | null> {
+  async getClinicalDecisionSupport(encounterId: string): Promise<ClinicalDecisionSupport | null> {,
     return this.decisionSupport.get(encounterId) || null;
 
   /**;
    * Dismiss clinical alert;
    */;
-  async dismissClinical/* SECURITY: Alert removed */: Promise<void> {
+  async dismissClinical/* SECURITY: Alert removed */: Promise<void> {,
     const cds = this.decisionSupport.get(encounterId);
     if (!session.user) {
       throw new Error("Clinical decision support data not found");
@@ -674,7 +674,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
       active_problems: activeProblems,
       current_medications: ["Lisinopril 10mg daily", "Metformin 500mg BID"], // Simplified;
       allergies: ["NKDA"],
-      recent_vitals: {bp:"130/80", hr: "72", temp: "98.6" },
+      recent_vitals: {bp:"130/80", hr: "72", temp: "98.6" ,},
       recent_lab_results: [],
       [],
       qualityMeasures,
@@ -688,7 +688,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Search clinical notes;
    */;
-  async searchClinicalNotes(criteria: {
+  async searchClinicalNotes(criteria: {,
     patient_id?: string;
     provider_id?: string;
     note_type?: ClinicalNote["note_type"];
@@ -767,7 +767,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
   /**;
    * Auto-save note (for drafts);
    */;
-  async autoSaveNote(noteId: string, draftContent: Partial<ClinicalNote>): Promise<void> {
+  async autoSaveNote(noteId: string, draftContent: Partial<ClinicalNote>): Promise<void> {,
     const note = this.clinicalNotes.get(noteId);
     if (!session.user) {
       throw new Error("Note not found");
@@ -784,4 +784,4 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id:st
     this.clinicalNotes.set(noteId, updatedNote);
 
 // Export singleton instance;
-export const _electronicHealthRecordsService = new ElectronicHealthRecordsService();
+export const = new ElectronicHealthRecordsService() {;}

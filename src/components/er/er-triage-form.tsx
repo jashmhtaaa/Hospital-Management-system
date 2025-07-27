@@ -38,13 +38,12 @@ import "@/components/ui/use-toast"
 import { useToast }
 
 // Define the schema for the triage form using Zod;
-const triageFormSchema = z.object({
-  visitId: z.string().min(1, { message: "Visit ID is required." }), // Need a way to select/link the visit;
-  triageNurseId: z.string().min(1, { message: "Triage Nurse ID is required." }), // Should ideally come from logged-in user context;
+const triageFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID is required." }), // Need a way to select/link the visit;
+  triageNurseId: z.string().min(1, {message:"Triage Nurse ID is required." }), // Should ideally come from logged-in user context;
   esiLevel: z.coerce;
     .number();
     .min(1);
-    .max(5, { message: "ESI Level must be between 1 and 5." }),
+    .max(5, {message:"ESI Level must be between 1 and 5." }),
   hr: z.coerce.number().optional(),
   bpSystolic: z.coerce.number().optional(),
   bpDiastolic: z.coerce.number().optional(),
@@ -58,12 +57,11 @@ type TriageFormValues = z.infer>;
 
 // FIX: Define type for API error response;
 interface ApiErrorResponse {
-  error?: string;
+    error?: string;
 }
 
 // FIX: Define type for the Triage API success response;
-interface TriageResponse {
-  visit_id: string,
+interface TriageResponse {visit_id:string,
   esi_level: number;
   // Add other relevant fields returned by the API;
 }
@@ -75,8 +73,7 @@ export default const _ERTriageForm = () {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<TriageFormValues>({
-    resolver: zodResolver(triageFormSchema),
+  const form = useForm<TriageFormValues>({resolver:zodResolver(triageFormSchema),
     "", // Needs a mechanism to set this (e.g., from tracking board selection);
       triageNurseId: MOCK_NURSE_ID,
       undefined,
@@ -89,8 +86,7 @@ export default const _ERTriageForm = () {
     setIsLoading(true);
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-    const vitalSigns = {
-      HR: data.hr,
+    const vitalSigns = {HR:data.hr,
       BP: null,
         data?.bpSystolic && data.bpDiastolic;
           ? `${data.bpSystolic}/${data.bpDiastolic}`;
@@ -141,8 +137,7 @@ export default const _ERTriageForm = () {
 } catch (error) {
 
       // Replace with actual API call: POST /api/er/visits/[id]/triage;
-      const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {
-        method: "POST",
+      const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {method:"POST",
         headers: { "Content-Type": "application/json" },
         data.triageNurseId,
           filteredVitalSigns,
@@ -193,8 +188,7 @@ export default const _ERTriageForm = () {
 
       // FIX: Use defined type for result;
       const result: TriageResponse = await response.json(),
-      toast({
-        title: "Triage Assessment Submitted",
+      toast({title:"Triage Assessment Submitted",
         description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`});
       form.reset(); // Reset form after successful submission
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -205,8 +199,7 @@ export default const _ERTriageForm = () {
         error instanceof Error;
           ? error.message;
           : "An unexpected error occurred.";
-      toast({
-        title: "Submission Failed",
+      toast({title:"Submission Failed",
         "destructive";
       });
     } finally {

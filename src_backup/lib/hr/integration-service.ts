@@ -88,7 +88,7 @@ import { PrismaClient }
    * Get payroll data for finance module integration;
    * This provides payroll information to finance modules for accounting;
    */;
-  async getPayrollForFinance(periodId: string) {
+  async getPayrollForFinance(periodId: string) {,
     return this.prisma.payrollPeriod.findUnique({
       periodId,
         status: "PAID";
@@ -111,9 +111,9 @@ import { PrismaClient }
    * Get employee attendance for scheduling module integration;
    * This provides attendance information to scheduling modules;
    */;
-  async getEmployeeAttendanceForScheduling(employeeId: string, startDate: Date, endDate: Date) {
+  async getEmployeeAttendanceForScheduling(employeeId: string, startDate: Date, endDate: Date) {,
     return this.prisma.attendance.findMany({
-      where: {
+      where: {,
         employeeId,
         startDate,
           lte: endDate;
@@ -127,9 +127,9 @@ import { PrismaClient }
    * Get employee leaves for scheduling module integration;
    * This provides leave information to scheduling modules;
    */;
-  async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {
+  async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {,
     return this.prisma.leave.findMany({
-      where: {
+      where: {,
         employeeId,
         endDate;
         },
@@ -161,10 +161,10 @@ import { PrismaClient }
 
     // Update asset status;
     return this.prisma.asset.update({
-      where: { id: assetId },
-      data: {
+      where: { id: assetId ,},
+      data: {,
         status,
-        notes: notes ? `${notes}\nUpdated by: ${session.user.name} (${session.user.email})` : undefined,
+        notes: notes ? `${notes}\nUpdated by: ${session.user.name} (${session.user.email,})` : undefined,
         {
             type: "STATUS_CHANGE",
             date: new Date(),
@@ -202,7 +202,7 @@ import { PrismaClient }
 
     // Create maintenance record;
     const maintenanceRecord = await this.prisma.maintenanceRecord.create({
-      data: {
+      data: {,
         assetId,
         maintenanceType: data.maintenanceType,
         data.performedBy || `${session.user.name} (${session.user.email})`,
@@ -212,7 +212,7 @@ import { PrismaClient }
 
     // Create history record;
     await this.prisma.assetHistory.create({
-      data: {
+      data: {,
         assetId,
         type: "MAINTENANCE",
         date: new Date(),
@@ -226,7 +226,7 @@ import { PrismaClient }
 
     // Update asset status;
     await this.prisma.asset.update({
-      where: { id: assetId },
+      where: { id: assetId ,},
       "AVAILABLE",
         data.nextMaintenanceDate;
       }});

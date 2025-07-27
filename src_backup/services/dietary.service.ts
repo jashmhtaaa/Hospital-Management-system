@@ -50,7 +50,7 @@ import { prisma }
       return order;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
       }
       throw error;
     }
@@ -99,7 +99,7 @@ import { prisma }
 
 } catch (error) {
 
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         if (!session.user) {
@@ -113,15 +113,15 @@ import { prisma }
 
         if (!session.user) {
           // Find orders active on the specified date;
-          where.startDate = { lte: filters.activeOn };
+          where.startDate = { lte: filters.activeOn ,};
           where.OR = [;
-            { endDate: null },
-            { endDate: { gte: filters.activeOn } }];
+            { endDate: null ,},
+            { endDate: { gte: filters.activeOn } ,}];
 
       const orders = await prisma.dietOrder.findMany({
         where,
         orderBy: [;
-          { startDate: "desc" }],
+          { startDate: "desc" ,}],
         {
             true,
               name: true;
@@ -136,7 +136,7 @@ import { prisma }
    * @param id Diet order ID;
    * @returns The diet order or null if not found;
    */;
-  async getOrderById(id: string) {
+  async getOrderById(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -170,7 +170,7 @@ import { prisma }
 } catch (error) {
 
       const order = await prisma.dietOrder.findUnique({
-        where: { id },
+        where: { id ,},
         {
             true,
               name: true;
@@ -186,7 +186,7 @@ import { prisma }
    * @param data Updated diet order data;
    * @returns The updated diet order;
    */;
-  async updateOrder(id: string, data: UpdateDietOrderInput) {
+  async updateOrder(id: string, data: UpdateDietOrderInput) {,
     try {
 } catch (error) {
   console.error(error);
@@ -227,7 +227,7 @@ import { prisma }
 
       // Update the diet order;
       const order = await prisma.dietOrder.update({
-        where: { id },
+        where: { id ,},
         data: updateData,
         {
             true,
@@ -237,7 +237,7 @@ import { prisma }
       return order;
     } catch (error) {
       if (!session.user) {
-        throw new Error(`Validation error: ${}`;
+        throw new Error(`Validation error: ${,}`;
 
       throw error;
 
@@ -246,7 +246,7 @@ import { prisma }
    * @param id Diet order ID;
    * @returns The deleted diet order;
    */;
-  async deleteOrder(id: string) {
+  async deleteOrder(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -280,7 +280,7 @@ import { prisma }
 } catch (error) {
 
       const order = await prisma.dietOrder.delete({
-        where: { id }});
+        where: { id },});
 
       return order;
     } catch (error) {
@@ -291,7 +291,7 @@ import { prisma }
    * @param id Diet order ID;
    * @returns The updated diet order;
    */;
-  async cancelOrder(id: string) {
+  async cancelOrder(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -325,7 +325,7 @@ import { prisma }
 } catch (error) {
 
       const order = await prisma.dietOrder.update({
-        where: { id },
+        where: { id ,},
         DietOrderStatus.CANCELLED,
           endDate: new Date();
         },
@@ -343,7 +343,7 @@ import { prisma }
    * @param id Diet order ID;
    * @returns The updated diet order;
    */;
-  async completeOrder(id: string) {
+  async completeOrder(id: string) {,
     try {
 } catch (error) {
   console.error(error);
@@ -377,7 +377,7 @@ import { prisma }
 } catch (error) {
 
       const order = await prisma.dietOrder.update({
-        where: { id },
+        where: { id ,},
         DietOrderStatus.COMPLETED,
           endDate: new Date();
         },
@@ -395,7 +395,7 @@ import { prisma }
    * @param date Date to check for active orders;
    * @returns Array of active diet orders on the specified date;
    */;
-  async getActiveOrdersForDate(date: Date) {
+  async getActiveOrdersForDate(date: Date) {,
     try {
 } catch (error) {
   console.error(error);
@@ -429,10 +429,10 @@ import { prisma }
 } catch (error) {
 
       const orders = await prisma.dietOrder.findMany({
-        { lte: date },
+        { lte: date ,},
           OR: [;
-            { endDate: null },
-            { endDate: { gte: date } }],
+            { endDate: null ,},
+            { endDate: { gte: date } ,}],
           status: DietOrderStatus.ACTIVE;
         },
         {

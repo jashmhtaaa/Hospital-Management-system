@@ -19,7 +19,7 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Doctor", "Nurse"];
 const ALLOWED_ROLES_UPDATE = ["Doctor"]; // Only the doctor who created it?;
 
 // Helper function to get consultation ID from URL;
-const getConsultationId = (pathname: string): number | null {
+const getConsultationId = (pathname: string): number | null {,
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 1];
     const id = Number.parseInt(idStr, 10);
@@ -27,7 +27,7 @@ const getConsultationId = (pathname: string): number | null {
 }
 
 // GET handler for retrieving a specific consultation with full details;
-export const _GET = async (request: Request) => {
+export const _GET = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -35,11 +35,11 @@ export const _GET = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Consultation ID" }), { status: 400 });
+        return new Response(JSON.stringify({ error: "Invalid Consultation ID" ,}), { status: 400 ,});
     }
 
     try {
@@ -108,14 +108,14 @@ export const _GET = async (request: Request) => {
         ).bind(consultationId).first<ConsultationQueryResult>();
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
+            return new Response(JSON.stringify({ error: "Consultation not found" ,}), { status: 404 ,});
         }
 
         // 3. Authorization check: Ensure doctor can only view their own consultations;
         if (!session.user) {
-            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
+            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
             if (!session.user) {
-                return new Response(JSON.stringify({ error: "Forbidden: Doctors can only view their own consultations" }), { status: 403 });
+                return new Response(JSON.stringify({ error: "Forbidden: Doctors can only view their own consultations" ,}), { status: 403 ,});
             }
         }
 
@@ -135,12 +135,12 @@ export const _GET = async (request: Request) => {
         };
 
         // 5. Return the detailed consultation;
-        return new Response(JSON.stringify(consultation), { status: 200 });
+        return new Response(JSON.stringify(consultation), { status: 200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), { status: 500 ,});
     }
 }
 
@@ -155,7 +155,7 @@ const UpdateConsultationSchema = z.object({
     notes: z.string().optional().nullable();
 });
 
-export const _PUT = async (request: Request) => {
+export const _PUT = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -163,11 +163,11 @@ export const _PUT = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Consultation ID" }), { status: 400 });
+        return new Response(JSON.stringify({ error: "Invalid Consultation ID" ,}), { status: 400 ,});
     }
 
     try {
@@ -206,12 +206,12 @@ export const _PUT = async (request: Request) => {
         const validation = UpdateConsultationSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), { status: 400 ,});
 
         const updateData = validation.data;
 
         if (!session.user)length === 0) {
-             return new Response(JSON.stringify({ message: "No update data provided" }), { status: 200 });
+             return new Response(JSON.stringify({ message: "No update data provided" ,}), { status: 200 ,});
 
         const context = await getCloudflareContext<CloudflareEnv>();
         const DB = context.env.DB;
@@ -220,19 +220,19 @@ export const _PUT = async (request: Request) => {
             throw new Error("Database binding not found in Cloudflare environment.");
 
         // 2. Verify consultation exists and belongs to the current doctor;
-        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
+        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
+            return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" ,}), { status: 404 ,});
 
         const consultCheck = await DB.prepare("SELECT consultation_id, doctor_id FROM Consultations WHERE consultation_id = ?");
                                    .bind(consultationId);
                                    .first<consultation_id: number, doctor_id: number >();
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
+            return new Response(JSON.stringify({ error: "Consultation not found" ,}), { status: 404 ,});
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Forbidden: Doctors can only update their own consultations" }), { status: 403 });
+            return new Response(JSON.stringify({ error: "Forbidden: Doctors can only update their own consultations" ,}), { status: 403 ,});
 
         // 3. Build update query;
         let query = "UPDATE Consultations SET updated_at = CURRENT_TIMESTAMP";
@@ -252,12 +252,12 @@ export const _PUT = async (request: Request) => {
         const updateResult = await DB.prepare(query).bind(...queryParams).run();
 
         if (!session.user) {
-            throw new Error(`Failed to update consultation: ${}`;
+            throw new Error(`Failed to update consultation: ${,}`;
 
         // 5. Return success response;
-        return new Response(JSON.stringify({ message: "Consultation updated successfully" }), { status: 200 });
+        return new Response(JSON.stringify({ message: "Consultation updated successfully" ,}), { status: 200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), { status: 500 ,});

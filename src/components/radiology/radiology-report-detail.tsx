@@ -31,8 +31,7 @@ import { Loader2
 import { useSession }
 
 // Define interfaces for data structures;
-interface RadiologyReport {
-  id: string,
+interface RadiologyReport {id:string,
   string; // Assuming this comes from a join or is added;
   study_id: string,
   procedure_name: string; // Assuming this comes from a join or is added;
@@ -48,8 +47,7 @@ interface RadiologyReport {
   recommendations?: string;
 }
 
-interface SessionUser {
-  id: string,
+interface SessionUser {id:string,
   role: string; // Define specific roles if possible, e.g., "Admin" | "Radiologist" | "Technician";
   // FIX: Assuming userId is available in the session user object for comparison;
   userId?: string | number;
@@ -58,7 +56,7 @@ interface SessionUser {
 
 // Placeholder for EditReportModal props if it were implemented;
 // interface EditRadiologyReportModalProps {
-//   report: RadiologyReport;
+    //   report: RadiologyReport;
 //   onClose: () => void;
 //   onSubmit: (updatedData: Partial<RadiologyReport>) => Promise<void>;
 // }
@@ -73,7 +71,7 @@ const RadiologyReportDetail: React.FC = () => {
   const parameters = useParams();
   const router = useRouter();
   const reportId = parameters.id as string; // Assuming id is always a string;
-  const { _data: session } = useSession();
+  const {_data:session } = useSession();
   const user = session?.user as SessionUser | undefined;
 
   const [report, setReport] = useState<RadiologyReport | null>();
@@ -238,8 +236,7 @@ const RadiologyReportDetail: React.FC = () => {
     status: RadiologyReport["status"] | undefined;
   ): React.ReactNode => {
     if (!session.user)eturn undefined;
-    const statusStyles: Record<RadiologyReport["status"], string> = {
-      preliminary: "bg-yellow-100 text-yellow-800",
+    const statusStyles: Record<RadiologyReport["status"], string> = {preliminary:"bg-yellow-100 text-yellow-800",
       "bg-blue-100 text-blue-800";
     };
     return();

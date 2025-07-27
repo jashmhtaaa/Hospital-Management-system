@@ -16,40 +16,40 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
  */
 
 // Alert models
-\1
+
 }
 }
 
 // Alert instance models
-\1
+
 }
 }
 
 // Drug interaction alert models
-\1
+
 }
 }
 
 // Patient safety alert models
-\1
+
 }
 }
 
 // Alert analytics models
-\1
+
 }
   }[];
-  \1,\2 number,
-    \1,\2 number,
+   number,
+     number,
     estimatedTimeSaved: number; // minutes
   };
-  \1,\2 number[],
-    \1,\2 number[]
+   number[],
+     number[]
   };
 }
 
 @Injectable();
-\1
+
 }
   ) {}
 
@@ -63,23 +63,23 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   }): Promise<AlertDefinition[]> {
     try {
       // Try cache first
-      const cacheKey = `alertDefinitions:${JSON.stringify(filters || {})}`;
+      const cacheKey = `alertDefinitions:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      \1 {\n  \2eturn cached;
+       {\n  eturn cached;
 
       // Build filters
-      const where: unknown = {};
-      \1 {\n  \2here.category = filters.category;
-      \1 {\n  \2here.severity = filters.severity;
-      \1 {\n  \2here.status = filters.status;
+      const where: unknown = {,};
+       {\n  here.category = filters.category;
+       {\n  here.severity = filters.severity;
+       {\n  here.status = filters.status;
 
       // Only return active alerts by default
-      \1 {\n  \2here.status = 'ACTIVE';
+       {\n  here.status = 'ACTIVE';
 
       // Query database
       const alertDefinitions = await this.prisma.alertDefinition.findMany({
         where,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updatedAt: 'desc' ,},
       });
 
       // Cache results
@@ -88,7 +88,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Record metrics
       metricsCollector.incrementCounter('cdss.alert_definition_queries', 1, {
         category: filters?.category || 'ALL',
-        \1,\2 filters?.status || 'ACTIVE'
+         filters?.status || 'ACTIVE'
       });
 
       return alertDefinitions as AlertDefinition[];
@@ -101,19 +101,19 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Get alert definition by ID;
    */
-  async getAlertDefinitionById(id: string): Promise<AlertDefinition | null> {
+  async getAlertDefinitionById(id: string): Promise<AlertDefinition | null> {,
     try {
       // Try cache first
-      const cacheKey = `alertDefinition:${id}`;
+      const cacheKey = `alertDefinition:${id,}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
-      \1 {\n  \2eturn cached;
+       {\n  eturn cached;
 
       // Query database
       const alertDefinition = await this.prisma.alertDefinition.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
-      \1 {\n  \2eturn null;
+       {\n  eturn null;
 
       // Cache result
       await cacheService.cacheResult('cdss:', cacheKey, alertDefinition, 3600); // 1 hour
@@ -138,23 +138,23 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
       // Create definition
       const newDefinition = await this.prisma.alertDefinition.create({
-        data: {
+        data: {,
           ...definition,
-          id: `alert-def-${crypto.getRandomValues(\1[0]}`,
+          id: `alert-def-${crypto.getRandomValues([0],}`,
           createdAt: new Date(),
           updatedAt: new Date(),
           createdBy: userId,
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        \1,\2 newDefinition.id;
+         newDefinition.id;
         userId,
-        \1,\2 definition.name,
-          \1,\2 definition.severity,
+         definition.name,
+           definition.severity,
       });
 
       // Invalidate cache
@@ -163,12 +163,12 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Record metrics
       metricsCollector.incrementCounter('cdss.alert_definitions_created', 1, {
         category: definition.category,
-        \1,\2 definition.type
+         definition.type
       });
 
       // Publish event
       await pubsub.publish('ALERT_DEFINITION_CREATED', {
-        alertDefinitionCreated: newDefinition
+        alertDefinitionCreated: newDefinition,
       });
 
       return newDefinition as AlertDefinition;
@@ -183,12 +183,12 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
    */
   async updateAlertDefinition(
     id: string,
-    \1,\2 string;
+     string;
   ): Promise<AlertDefinition> {
     try {
       // Get current definition
       const currentDefinition = await this.getAlertDefinitionById(id);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Alert definition ${id} not found`);
       }
 
@@ -197,30 +197,30 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
       // Update definition
       const updatedDefinition = await this.prisma.alertDefinition.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           ...updates,
           updatedAt: new Date(),
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'UPDATE',
-        \1,\2 id;
+         id;
         userId,
-        \1,\2 JSON.stringify(updates),
-          \1,\2 updates.status || currentDefinition.status,
+         JSON.stringify(updates),
+           updates.status || currentDefinition.status,
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`cdss:alertDefinition:${\1}`;
+      await cacheService.invalidatePattern(`cdss:alertDefinition:${}`;
       await cacheService.invalidatePattern('cdss:alertDefinitions:*');
 
       // Publish event
       await pubsub.publish('ALERT_DEFINITION_UPDATED', {
-        alertDefinitionUpdated: updatedDefinition
+        alertDefinitionUpdated: updatedDefinition,
       });
 
       return updatedDefinition as AlertDefinition;
@@ -240,7 +240,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
     try {
       // Get alert definition
       const definition = await this.getAlertDefinitionById(definitionId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Alert definition ${definitionId} not found`);
       }
 
@@ -256,10 +256,10 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       let suppressedBy = null;
       let suppressionReason = null;
 
-      \1 {\n  \2{
+       {\n  {
         status = AlertStatus.SUPPRESSED;
         suppressedBy = 'SYSTEM';
-        \1,\2
+        
 
       // Apply machine learning for alert relevance and priority
       const mlInsights = await this.generateAlertMLInsights(
@@ -269,41 +269,41 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       );
 
       // Further suppress based on ML if noise reduction is enabled
-      \1 {\n  \2{
+       {\n  {
         status = AlertStatus.SUPPRESSED;
         suppressedBy = 'ML';
-        \1,\2
+        
 
       // Create alert instance
-      const \1,\2 `alert-${crypto.getRandomValues(\1[0]}`,
+      const  `alert-${crypto.getRandomValues([0]}`,
         definitionId,
         patientId: alert.patientId,
-        \1,\2 alert.resourceId,
-        \1,\2 alert.title,
-        \1,\2 alert.details,
-        \1,\2 definition.type,
+         alert.resourceId,
+         alert.title,
+         alert.details,
+         definition.type,
         severity: definition.severity;
         status,
         triggerTime: new Date(),
         expirationTime: definition.autoResolve;
-          ? \1[0] + (definition.autoResolveAfter || 1440) * 60 * 1000);
+          ? [0] + (definition.autoResolveAfter || 1440) * 60 * 1000);
           : undefined,
         suppressedBy,
         suppressionReason,
         actions: [],
-        \1,\2 [],
-        \1,\2 alert.triggerData || {},
+         [],
+         alert.triggerData || {},
         context: alert.context || ,
         mlInsights,
       };
 
       // Save alert instance
       await this.prisma.alertInstance.create({
-        data: newAlert as any
+        data: newAlert as any,
       });
 
       // If not suppressed, process actions and notifications
-      \1 {\n  \2{
+       {\n  {
         // Process actions
         const actions = await this.processAlertActions(
           newAlert,
@@ -319,14 +319,14 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         newAlert.deliveries = deliveries;
 
         // Schedule escalations if needed
-        \1 {\n  \2{
+         {\n  {
           await this.scheduleEscalation(newAlert.id, definition.escalationRules[0]);
         }
 
         // Update alert with actions and deliveries
         await this.prisma.alertInstance.update({
-          where: { id: newAlert.id },
-          data: {
+          where: { id: newAlert.id ,},
+          data: {,
             actions,
             deliveries,
           },
@@ -336,13 +336,13 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Record metrics
       metricsCollector.incrementCounter('cdss.alerts_generated', 1, {
         category: definition.category,
-        \1,\2 newAlert.status,
-        suppressed: shouldSuppress ? 'true' : 'false'
+         newAlert.status,
+        suppressed: shouldSuppress ? 'true' : 'false',
       });
 
       // Publish event
       await pubsub.publish('ALERT_CREATED', {
-        alertCreated: newAlert
+        alertCreated: newAlert,
       });
 
       return newAlert;
@@ -358,28 +358,28 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   async getPatientActiveAlerts(patientId: string, encounterId?: string): Promise<AlertInstance[]> {
     try {
       // Build filter
-      const where: unknown = {
+      const where: unknown = {,
         patientId,
         status: { in: [AlertStatus.ACTIVE, AlertStatus.ACKNOWLEDGED] },
       };
 
-      \1 {\n  \2{
+       {\n  {
         where.encounterId = encounterId;
       }
 
       // Query database
       const alerts = await this.prisma.alertInstance.findMany({
         where,
-        orderBy: [
-          { severity: 'asc' }, // CRITICAL first
-          { triggerTime: 'desc' },
+        orderBy: [,
+          { severity: 'asc' ,}, // CRITICAL first
+          { triggerTime: 'desc' ,},
         ],
       });
 
       // Record metrics
       metricsCollector.incrementCounter('cdss.patient_alert_queries', 1, {
         patientId,
-        activeAlertCount: alerts.length.toString()
+        activeAlertCount: alerts.length.toString(),
       });
 
       return alerts as AlertInstance[];
@@ -392,64 +392,64 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Acknowledge an alert;
    */
-  async acknowledge/* SECURITY: Alert removed */: Promise<AlertInstance> {
+  async acknowledge/* SECURITY: Alert removed */: Promise<AlertInstance> {,
     try {
       // Get alert
       const alert = await this.prisma.alertInstance.findUnique({
-        where: { id: alertId },
+        where: { id: alertId ,},
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Alert ${alertId} not found`);
       }
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Alert ${alertId} is not active`);
       }
 
       // Update alert
       const updatedAlert = await this.prisma.alertInstance.update({
-        where: { id: alertId },
-        \1,\2 AlertStatus.ACKNOWLEDGED,
+        where: { id: alertId ,},
+         AlertStatus.ACKNOWLEDGED,
           acknowledgedTime: new Date(),
           acknowledgedBy: userId,
-          acknowledgedNote: note
+          acknowledgedNote: note,
         },
       });
 
       // Update any escalations
       await this.prisma.alertEscalationInstance.updateMany({
-        \1,\2 { in: alert.escalations.map((e: unknown) => e.id) },
-          status: 'ACTIVE'
+         { in: alert.escalations.map((e: unknown) => e.id) ,},
+          status: 'ACTIVE',
         },
-        \1,\2 'ACKNOWLEDGED',
+         'ACKNOWLEDGED',
           acknowledgedTime: new Date(),
-          acknowledgedBy: userId
+          acknowledgedBy: userId,
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'ACKNOWLEDGE',
-        \1,\2 alertId;
+         alertId;
         userId,
-        \1,\2 alert.type,
+         alert.type,
           patientId: alert.patientId;
           note,
         },
       });
 
       // Record metrics
-      const responseTime = crypto.getRandomValues(\1[0] - new Date(alert.triggerTime).getTime();
+      const responseTime = crypto.getRandomValues([0] - new Date(alert.triggerTime).getTime();
       metricsCollector.recordTimer('cdss.alert_response_time', responseTime);
       metricsCollector.incrementCounter('cdss.alerts_acknowledged', 1, {
         category: alert.category,
-        severity: alert.severity
+        severity: alert.severity,
       });
 
       // Publish event
       await pubsub.publish('ALERT_ACKNOWLEDGED', {
-        alertAcknowledged: updatedAlert
+        alertAcknowledged: updatedAlert,
       });
 
       return updatedAlert as AlertInstance;
@@ -462,46 +462,46 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Resolve an alert;
    */
-  async resolve/* SECURITY: Alert removed */: Promise<AlertInstance> {
+  async resolve/* SECURITY: Alert removed */: Promise<AlertInstance> {,
     try {
       // Get alert
       const alert = await this.prisma.alertInstance.findUnique({
-        where: { id: alertId },
+        where: { id: alertId ,},
       });
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Alert ${alertId} not found`);
       }
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Alert ${alertId} cannot be resolved`);
       }
 
       // Update alert
       const updatedAlert = await this.prisma.alertInstance.update({
-        where: { id: alertId },
-        \1,\2 AlertStatus.RESOLVED,
+        where: { id: alertId ,},
+         AlertStatus.RESOLVED,
           resolvedTime: new Date(),
           resolvedBy: userId,
-          resolutionNote: note
+          resolutionNote: note,
         },
       });
 
       // Update any escalations
       await this.prisma.alertEscalationInstance.updateMany({
-        \1,\2 { in: alert.escalations.map((e: unknown) => e.id) },
+         { in: alert.escalations.map((e: unknown) => e.id) ,},
           status: { in: ['ACTIVE', 'ACKNOWLEDGED'] },
         },
-        \1,\2 'RESOLVED'
+         'RESOLVED'
         },
       });
 
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'RESOLVE',
-        \1,\2 alertId;
+         alertId;
         userId,
-        \1,\2 alert.type,
+         alert.type,
           patientId: alert.patientId;
           note,,
       });
@@ -509,12 +509,12 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Record metrics
       metricsCollector.incrementCounter('cdss.alerts_resolved', 1, {
         category: alert.category,
-        severity: alert.severity
+        severity: alert.severity,
       });
 
       // Publish event
       await pubsub.publish('ALERT_RESOLVED', {
-        alertResolved: updatedAlert
+        alertResolved: updatedAlert,
       });
 
       return updatedAlert as AlertInstance;
@@ -546,14 +546,14 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       const interactions = await this.checkInteractions(allDrugs);
 
       // If no interactions, return null
-      \1 {\n  \2{
+       {\n  {
         return null;
       }
 
       // Determine highest severity
       let highestSeverity = AlertSeverity.LOW;
       interactions.forEach(interaction => {
-        \1 {\n  \2|;
+         {\n  |;
           (interaction.severity === AlertSeverity?.HIGH && highestSeverity !== AlertSeverity.CRITICAL) ||;
           (interaction.severity === AlertSeverity?.MEDIUM &&;
             highestSeverity !== AlertSeverity?.CRITICAL &&;
@@ -563,17 +563,17 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       });
 
       // Create drug interaction alert
-      const \1,\2 `drug-interaction-${crypto.getRandomValues(\1[0]}`,
+      const  `drug-interaction-${crypto.getRandomValues([0]}`,
         patientId,
         encounterId,
         interactions,
         severity: highestSeverity,
-        \1,\2 new Date()
+         new Date()
       };
 
       // Save drug interaction alert
       await this.prisma.drugInteractionAlert.create({
-        data: alert as any
+        data: alert as any,
       });
 
       // Create standard alert instance for this interaction
@@ -581,7 +581,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         patientId,
         encounterId,
         resourceId: alert.id,
-        \1,\2 `Drug Interaction Alert - ${interactions.length} potential ${highestSeverity.toLowerCase()} interactions detected`,
+         `Drug Interaction Alert - ${interactions.length} potential ${highestSeverity.toLowerCase()} interactions detected`,
         message: this.formatDrugInteractionMessage(interactions),
         details: this.formatDrugInteractionDetails(interactions),
         triggerData: interactions ,
@@ -592,7 +592,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       metricsCollector.incrementCounter('cdss.drug_interaction_alerts', 1, {
         patientId,
         severity: highestSeverity,
-        interactionCount: interactions.length.toString()
+        interactionCount: interactions.length.toString(),
       });
 
       return alert;
@@ -607,14 +607,14 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
    */
   async processCriticalLabValue(
     patientId: string,
-    \1,\2 string,
-      \1,\2 string,
-      \1,\2 string,
-      \1,\2 string;
+     string,
+       string,
+       string,
+       string;
       criticalHigh?: string;
       criticalLow?: string;
       abnormalFlag: 'HIGH' | 'LOW' | 'CRITICAL_HIGH' | 'CRITICAL_LOW',
-      resultTime: Date
+      resultTime: Date,
     },
     encounterId?: string;
   ): Promise<CriticalValueAlert> {
@@ -627,26 +627,26 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       );
 
       // Create critical value alert
-      const \1,\2 `critical-value-${crypto.getRandomValues(\1[0]}`,
+      const  `critical-value-${crypto.getRandomValues([0]}`,
         patientId,
         encounterId,
         orderId: result.orderId,
-        \1,\2 result.testName,
-        \1,\2 result.value,
-        \1,\2 result.referenceRange,
-        \1,\2 result.criticalLow;
+         result.testName,
+         result.value,
+         result.referenceRange,
+         result.criticalLow;
         previousResults,
         abnormalFlag: result.abnormalFlag,
-        \1,\2 new Date(),
-        \1,\2 [],
-        \1,\2 'CRITICAL',
+         new Date(),
+         [],
+         'CRITICAL',
         orderingProvider: await this.getOrderingProvider(result.orderId),
-        status: 'PENDING'
+        status: 'PENDING',
       };
 
       // Save critical value alert
       await this.prisma.criticalValueAlert.create({
-        data: alert as any
+        data: alert as any,
       });
 
       // Create standard alert instance for this critical value
@@ -654,8 +654,8 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         patientId,
         encounterId,
         resourceId: alert.id,
-        \1,\2 `Critical Lab Value - ${result.testName}`,
-        \1,\2 this.formatCriticalValueDetails(result, previousResults),
+         `Critical Lab Value - ${result.testName}`,
+         this.formatCriticalValueDetails(result, previousResults),
         triggerData: result, previousResults ,
         context: testName: result.testName, abnormalFlag: result.abnormalFlag ,
       }, 'CRITICAL_VALUE_ALERT_DEFINITION_ID');
@@ -667,7 +667,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       metricsCollector.incrementCounter('cdss.critical_value_alerts', 1, {
         patientId,
         testCode: result.testCode,
-        abnormalFlag: result.abnormalFlag
+        abnormalFlag: result.abnormalFlag,
       });
 
       return alert;
@@ -680,26 +680,26 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Create patient safety alert;
    */
-  async createPatientSafety/* SECURITY: Alert removed */: Promise<PatientSafetyAlert> {
+  async createPatientSafety/* SECURITY: Alert removed */: Promise<PatientSafetyAlert> {,
     try {
       // Create safety alert
-      const alert: PatientSafetyAlert = {
+      const alert: PatientSafetyAlert = {,
         ...safety,
-        id: `safety-alert-${crypto.getRandomValues(\1[0]}`,
+        id: `safety-alert-${crypto.getRandomValues([0],}`,
         detectionTime: new Date(),
-        status: 'ACTIVE'
+        status: 'ACTIVE',
       };
 
       // Save safety alert
       await this.prisma.patientSafetyAlert.create({
-        data: alert as any
+        data: alert as any,
       });
 
       // Create standard alert instance for this safety issue
       await this.createAlertInstance({
         patientId: safety.patientId,
-        \1,\2 alert.id,
-        \1,\2 `Patient Safety Alert - ${safety.type}`,
+         alert.id,
+         `Patient Safety Alert - ${safety.type}`,
         message: safety.description,
         details: this.formatSafetyAlertDetails(safety),
         triggerData: safety ,
@@ -707,7 +707,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       }, 'PATIENT_SAFETY_ALERT_DEFINITION_ID');
 
       // Create incident report if required for certain safety alert types
-      \1 {\n  \2{
+       {\n  {
         const incidentReportId = await this.createIncidentReport(
           alert,
           userId;
@@ -715,8 +715,8 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
         // Update safety alert with incident report ID
         await this.prisma.patientSafetyAlert.update({
-          where: { id: alert.id },
-          data: { incidentReportId },
+          where: { id: alert.id ,},
+          data: { incidentReportId ,},
         });
 
         alert.incidentReportId = incidentReportId;
@@ -725,16 +725,16 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
       // Create audit log
       await this.auditService.createAuditLog({
         action: 'CREATE',
-        \1,\2 alert.id;
+         alert.id;
         userId,
-        \1,\2 safety.patientId,
-          \1,\2 safety.severity,
+         safety.patientId,
+           safety.severity,
       });
 
       // Record metrics
       metricsCollector.incrementCounter('cdss.safety_alerts', 1, {
         type: safety.type,
-        \1,\2 alert.incidentReportId ? 'true' : 'false'
+         alert.incidentReportId ? 'true' : 'false'
       });
 
       return alert;
@@ -750,7 +750,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   async getAlertAnalytics(
     timeRange?: {
       startDate: Date,
-      endDate: Date
+      endDate: Date,
     },
     filters?: {
       department?: string;
@@ -760,37 +760,37 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   ): Promise<AlertAnalytics> {
     try {
       // Default time range is last 24 hours
-      const startDate = timeRange?.startDate || \1[0] - 24 * 60 * 60 * 1000);
+      const startDate = timeRange?.startDate || [0] - 24 * 60 * 60 * 1000);
       const endDate = timeRange?.endDate || new Date();
 
       // Build filters
-      const \1,\2 {
+      const  {
           gte: startDate,
-          lte: endDate
+          lte: endDate,
         },
       };
 
-      \1 {\n  \2{
+       {\n  {
         where.context = {
           path: ['department'],
-          equals: filters.department
+          equals: filters.department,
         };
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.OR = [
-          { acknowledgedBy: filters.provider },
-          { resolvedBy: filters.provider },
+          { acknowledgedBy: filters.provider ,},
+          { resolvedBy: filters.provider ,},
           {
-            \1,\2 {
-                recipientValue: filters.provider
+             {
+                recipientValue: filters.provider,
               },
             },
           },
         ];
       }
 
-      \1 {\n  \2{
+       {\n  {
         where.category = filters.alertCategory;
       }
 
@@ -801,49 +801,49 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
         // Active alerts
         this.prisma.alertInstance.count({
-          where: {
+          where: {,
             ...where,
-            status: AlertStatus.ACTIVE
+            status: AlertStatus.ACTIVE,
           },
         }),
 
         // Resolved alerts
         this.prisma.alertInstance.count({
-          where: {
+          where: {,
             ...where,
-            status: AlertStatus.RESOLVED
+            status: AlertStatus.RESOLVED,
           },
         }),
 
         // Acknowledged alerts
         this.prisma.alertInstance.count({
-          where: {
+          where: {,
             ...where,
-            status: AlertStatus.ACKNOWLEDGED
+            status: AlertStatus.ACKNOWLEDGED,
           },
         }),
 
         // Suppressed alerts
         this.prisma.alertInstance.count({
-          where: {
+          where: {,
             ...where,
-            status: AlertStatus.SUPPRESSED
+            status: AlertStatus.SUPPRESSED,
           },
         }),
 
         // Expired alerts
         this.prisma.alertInstance.count({
-          where: {
+          where: {,
             ...where,
-            status: AlertStatus.EXPIRED
+            status: AlertStatus.EXPIRED,
           },
         }),
 
         // Error alerts
         this.prisma.alertInstance.count({
-          where: {
+          where: {,
             ...where,
-            status: AlertStatus.ERROR
+            status: AlertStatus.ERROR,
           },
         }),
 
@@ -851,14 +851,14 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         this.prisma.alertInstance.groupBy({
           by: ['severity'];
           where,
-          _count: true
+          _count: true,
         }),
 
         // Alerts by category
         this.prisma.alertInstance.groupBy({
           by: ['category'];
           where,
-          _count: true
+          _count: true,
         }),
 
         // Alerts by type
@@ -877,14 +877,14 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         this.prisma.alertInstance.aggregate(
             ...where,
             acknowledgedTime: not: null ,,
-          \1,\2 true,),
+           true,),
 
         // Top alert definitions
         this.prisma.alertInstance.groupBy(
           by: ['definitionId'];
           where,
           _count: true,
-          \1,\2 'desc',,
+           'desc',,
           take: 10),
       ]);
 
@@ -914,47 +914,47 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
         [AlertSeverity.INFO]: 0,
       };
 
-      alertStats[7].forEach((item: unknown) => {
+      alertStats[7].forEach((item: unknown) => {,
         alertsBySeverity[item.severity as AlertSeverity] = item._count
       });
 
       // Map category counts
-      const alertsByCategory: Record<AlertCategory, number> = {} as Record\1>
-      alertStats[8].forEach((item: unknown) => {
+      const alertsByCategory: Record<AlertCategory, number> = {} as Record>
+      alertStats[8].forEach((item: unknown) => {,
         alertsByCategory[item.category as AlertCategory] = item._count
       });
 
       // Map type counts
-      const alertsByType: Record<AlertType, number> = {} as Record\1>
-      alertStats[9].forEach((item: unknown) => {
+      const alertsByType: Record<AlertType, number> = {} as Record>
+      alertStats[9].forEach((item: unknown) => {,
         alertsByType[item.type as AlertType] = item._count
       });
 
       // Map status counts
-      const alertsByStatus: Record<AlertStatus, number> = {} as Record\1>
-      alertStats[10].forEach((item: unknown) => {
+      const alertsByStatus: Record<AlertStatus, number> = {} as Record>
+      alertStats[10].forEach((item: unknown) => {,
         alertsByStatus[item.status as AlertStatus] = item._count
       });
 
       // Get top alert definition details
       const topAlertDefinitions = await Promise.all(
-        alertStats[12].map(async (item: unknown) => {
+        alertStats[12].map(async (item: unknown) => {,
           const definition = await this.getAlertDefinitionById(item.definitionId);
           const overrideRate = await this.calculateDefinitionOverrideRate(item.definitionId, where);
 
           return {
             id: item.definitionId,
-            \1,\2 item._count;
+             item._count;
             overrideRate,
           };
         });
       );
 
       // Compile analytics
-      const \1,\2 alertStats[0],
-        \1,\2 alertStats[2],
-        \1,\2 alertStats[4],
-        \1,\2 alertStats[6];
+      const  alertStats[0],
+         alertStats[2],
+         alertStats[4],
+         alertStats[6];
         alertsBySeverity,
         alertsByCategory,
         alertsByType,
@@ -980,7 +980,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Get alert analytics by provider;
    */
-  async getProviderAlertAnalytics(providerId: string): Promise<any> {
+  async getProviderAlertAnalytics(providerId: string): Promise<any> {,
     // Implementation to get provider-specific analytics
     return {};
   }
@@ -988,17 +988,17 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
   /**
    * Check for alert fatigue for a provider;
    */
-  async checkAlertFatigue(providerId: string): Promise<any> {
+  async checkAlertFatigue(providerId: string): Promise<any> {,
     // Implementation to check alert fatigue
     return {};
   }
 
   // Private helper methods
-  private validateAlertDefinition(definition: unknown): void {
+  private validateAlertDefinition(definition: unknown): void {,
     // Implementation for definition validation
   }
 
-  private validateAlertDefinitionUpdates(updates: Partial<AlertDefinition>): void {
+  private validateAlertDefinitionUpdates(updates: Partial<AlertDefinition>): void {,
     // Implementation for update validation
   }
 
@@ -1014,7 +1014,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
 
   private async generateAlertMLInsights(
     definition: AlertDefinition,
-    \1,\2 boolean;
+     boolean;
   ): Promise<MLInsights | undefined> {
     // Implementation to generate ML insights
     return undefined;
@@ -1043,47 +1043,47 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
     // Implementation to schedule escalation
   }
 
-  private async getDrugInformation(drugIds: string[]): Promise<Drug[]> {
+  private async getDrugInformation(drugIds: string[]): Promise<Drug[]> {,
     // Implementation to get drug information
     return [];
   }
 
-  private async getPatientActiveMedications(patientId: string): Promise<Drug[]> {
+  private async getPatientActiveMedications(patientId: string): Promise<Drug[]> {,
     // Implementation to get active medications
     return [];
   }
 
-  private async checkInteractions(drugs: Drug[]): Promise<DrugInteraction[]> {
+  private async checkInteractions(drugs: Drug[]): Promise<DrugInteraction[]> {,
     // Implementation to check interactions
     return [];
   }
 
-  private formatDrugInteractionMessage(interactions: DrugInteraction[]): string {
+  private formatDrugInteractionMessage(interactions: DrugInteraction[]): string {,
     // Implementation to format message
     return '';
   }
 
-  private formatDrugInteractionDetails(interactions: DrugInteraction[]): string {
+  private formatDrugInteractionDetails(interactions: DrugInteraction[]): string {,
     // Implementation to format details
     return '';
   }
 
   private async getPreviousLabResults(
     patientId: string,
-    \1,\2 number;
+     number;
   ): Promise<PreviousResult[]> {
     // Implementation to get previous results
     return [];
   }
 
-  private async getOrderingProvider(orderId: string): Promise<string> {
+  private async getOrderingProvider(orderId: string): Promise<string> {,
     // Implementation to get ordering provider
     return '';
   }
 
   private formatCriticalValueDetails(
     result: unknown,
-    previousResults: PreviousResult[]
+    previousResults: PreviousResult[],
   ): string {
     // Implementation to format critical value details
     return '';
@@ -1095,7 +1095,7 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
     // Implementation to start escalation
   }
 
-  private formatSafetyAlertDetails(safety: unknown): string {
+  private formatSafetyAlertDetails(safety: unknown): string {,
     // Implementation to format safety alert details
     return '';
   }
@@ -1108,12 +1108,12 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
     return '';
   }
 
-  private async getAlertCountByHour(where: unknown): Promise<number[]> {
+  private async getAlertCountByHour(where: unknown): Promise<number[]> {,
     // Implementation to get counts by hour
     return Array(24).fill(0);
   }
 
-  private async getAlertCountByDay(where: unknown): Promise<number[]> {
+  private async getAlertCountByDay(where: unknown): Promise<number[]> {,
     // Implementation to get counts by day
     return Array(7).fill(0);
   }
@@ -1123,31 +1123,31 @@ import type { EncryptionService } from '@/lib/security/encryption.service';
     return {};
   }
 
-  private async calculateEscalationRate(where: unknown): Promise<number> {
+  private async calculateEscalationRate(where: unknown): Promise<number> {,
     // Implementation to calculate escalation rate
     return 0;
   }
 
-  private async calculateOverrideRate(where: unknown): Promise<number> {
+  private async calculateOverrideRate(where: unknown): Promise<number> {,
     // Implementation to calculate override rate
     return 0;
   }
 
-  private async calculateAlertFatigue(where: unknown): Promise<any> {
+  private async calculateAlertFatigue(where: unknown): Promise<any> {,
     // Implementation to calculate alert fatigue metrics
     return {
       overrideRateByHour: Array(24).fill(0),
       responseTimeByHour: Array(24).fill(0),
-      acknowledgedRateByCount: Array(10).fill(0)
+      acknowledgedRateByCount: Array(10).fill(0),
     };
   }
 
-  private async calculateNoiseReductionImpact(where: unknown): Promise<any> {
+  private async calculateNoiseReductionImpact(where: unknown): Promise<any> {,
     // Implementation to calculate noise reduction impact
     return {
       alertsBeforeReduction: 0,
-      \1,\2 0,
-      estimatedTimeSaved: 0
+       0,
+      estimatedTimeSaved: 0,
     };
   }
 

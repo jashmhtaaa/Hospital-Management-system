@@ -10,17 +10,17 @@ import { getSession } from '@/lib/session';
  * GET /api/diagnostics/pacs/worklist;
  * Get modality worklist entries;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Parse query parameters
@@ -64,32 +64,32 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add filters
-        \1 {\n  \2{
+         {\n  {
           query += ' AND mw.patient_id = ?';
           params.push(patientId);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND mw.modality = ?';
           params.push(modality);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND mw.status = ?';
           params.push(status);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND DATE(mw.scheduled_date) = ?';
           params.push(scheduledDate);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND mw.accession_number = ?';
           params.push(accessionNumber);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND (mw.accession_number LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ? OR ro.procedure_name LIKE ?)';
           const searchTerm = `%${search}%`;
           params.push(searchTerm, searchTerm, searchTerm, searchTerm);
@@ -122,13 +122,13 @@ export const GET = async (request: NextRequest) => {
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'modality_worklist',
+           'modality_worklist',
           details: patientId, modality, status, scheduledDate, page, pageSize 
         });
 
         return {
           worklist: result.results,
-          pagination: {
+          pagination: {,
             page,
             pageSize,
             totalCount,
@@ -144,8 +144,8 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: 'Failed to fetch modality worklist',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -153,17 +153,17 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/pacs/worklist/sync;
  * Synchronize modality worklist with radiology orders;
  */
-export const _POST_SYNC = async (request: NextRequest) => {
+export const _POST_SYNC = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Check if PACS is configured
@@ -175,10 +175,10 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
     const pacsConfigResult = await DB.query(pacsConfigQuery);
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
-        error: 'PACS not configured or modality worklist not enabled'
-      }, { status: 400 });
+        error: 'PACS not configured or modality worklist not enabled',
+      }, { status: 400 ,});
     }
 
     // Get orders that need to be synced to worklist
@@ -255,9 +255,9 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
       newEntries.push({
         id: insertResult.insertId,
-        \1,\2 `/* SECURITY: Template literal eliminated */
+         `/* SECURITY: Template literal eliminated */,
         modality: order.modality,
-        procedureName: order.procedure_name
+        procedureName: order.procedure_name,
       });
     }
 
@@ -292,8 +292,8 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
       updatedEntries.push({
         id: entry.id,
-        \1,\2 entry.order_status,
-        scheduledDate: entry.order_scheduled_date
+         entry.order_status,
+        scheduledDate: entry.order_scheduled_date,
       });
     }
 
@@ -304,17 +304,17 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
       removedEntries.push({
         id: entry.id,
-        accessionNumber: entry.accession_number
+        accessionNumber: entry.accession_number,
       });
     }
 
     // Log synchronization
     await auditLog({
       userId: session.user.id,
-      \1,\2 'modality_worklist',
-      details: {
+       'modality_worklist',
+      details: {,
         added: newEntries.length,
-        \1,\2 removedEntries.length
+         removedEntries.length
       }
     });
 
@@ -323,18 +323,18 @@ export const _POST_SYNC = async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      \1,\2 updatedEntries.length,
-      \1,\2 {
+       updatedEntries.length,
+       {
         added: newEntries,
-        \1,\2 removedEntries
+         removedEntries
       }
     });
   } catch (error) {
 
     return NextResponse.json({
       error: 'Failed to synchronize modality worklist',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -342,22 +342,22 @@ export const _POST_SYNC = async (request: NextRequest) => {
  * PUT /api/diagnostics/pacs/worklist/:id;
  * Update a modality worklist entry;
  */
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     const id = parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+     {\n   {
+      return NextResponse.json({ error: 'Invalid ID' ,}, { status: 400 ,});
     }
 
     // Parse request body
@@ -372,8 +372,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     // Check if worklist entry exists
     const entryCheck = await DB.query('SELECT * FROM modality_worklist WHERE id = ?', [id]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Worklist entry not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Worklist entry not found' ,}, { status: 404 ,});
     }
 
     const entry = entryCheck.results[0];
@@ -384,7 +384,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     let statusChanged = false;
     let _oldStatus = entry.status;
 
-    \1 {\n  \2{
+     {\n  {
       // Validate status transitions
       const validTransitions: Record<string, string[]> = {
         'scheduled': ['in_progress', 'cancelled'],
@@ -393,10 +393,10 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         'cancelled': []
       };
 
-      \1 {\n  \2 {
+       {\n   {
         return NextResponse.json({
           error: `Invalid status transition from $entry.statusto $status`;
-        }, { status: 400 });
+        }, { status: 400 ,});
       }
 
       updateFields.push('status = ?');
@@ -404,38 +404,38 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       statusChanged = true;
 
       // If completed, set performed information
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           updateFields.push('performed_by = ?');
           updateParams.push(session.user.id);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push('performed_date = CURDATE()');
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push('performed_time = CURTIME()');
         }
       }
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('performed_by = ?');
       updateParams.push(performedBy || null);
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('performed_date = ?');
       updateParams.push(performedDate || null);
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('performed_time = ?');
       updateParams.push(performedTime || null);
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('notes = ?');
       updateParams.push(notes || null);
     }
@@ -449,23 +449,23 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     updateParams.push(id);
 
     // Execute update
-    \1 {\n  \2{
+     {\n  {
       const query = `UPDATE modality_worklist SET $updateFields.join(', ')WHERE id = ?`;
       await DB.query(query, updateParams);
 
       // Log update
       await auditLog({
         userId: session.user.id,
-        \1,\2 'modality_worklist',
+         'modality_worklist',
         resourceId: id;
           ...body,
           statusChanged,
           _oldStatus: statusChanged ? _oldStatus : undefined,
-          newStatus: statusChanged ? status : undefined
+          newStatus: statusChanged ? status : undefined,
       });
 
       // If status changed, update the radiology order status as well
-      \1 {\n  \2{
+       {\n  {
         await DB.query(
           'UPDATE radiology_orders SET status = ?, updated_by = ?, updated_at = NOW() WHERE id = ?',
           [status, session.user.id, entry.order_id]
@@ -479,17 +479,17 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
           [
             entry.order_id,
             status,
-            `Status updated from worklist: ${notes || ''}`,
+            `Status updated from worklist: ${notes || '',}`,
             session.user.id;
           ]
         );
 
         // Invalidate order cache
-        await CacheInvalidation.invalidatePattern('diagnostic: radiology: orders:*')
+        await CacheInvalidation.invalidatePattern('diagnostic: radiology: orders:*'),
       }
 
       // Invalidate worklist cache
-      await CacheInvalidation.invalidatePattern('diagnostic: pacs: worklist:*')
+      await CacheInvalidation.invalidatePattern('diagnostic: pacs: worklist:*'),
     }
 
     // Get the updated worklist entry
@@ -515,6 +515,6 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     return NextResponse.json({
       error: 'Failed to update worklist entry',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }

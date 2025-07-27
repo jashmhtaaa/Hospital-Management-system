@@ -12,23 +12,23 @@ import { authService } from '@/lib/security/auth.service';
 class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   willSendRequest({ request, context }) {
     // Add authorization headers to service requests
-    \1 {\n  \2{
+     {\n  {
       request.http.headers.set('Authorization', context.authToken);
     }
 
     // Add user info for service-to-service tracing
-    \1 {\n  \2{
+     {\n  {
       request.http.headers.set('x-user-id', context.user.id);
       request.http.headers.set('x-user-roles', context.user.roles.join(','));
     }
 
     // Add request ID for tracing
-    \1 {\n  \2{
+     {\n  {
       request.http.headers.set('x-request-id', context.requestId);
     }
 
     // Add correlation ID for distributed tracing
-    \1 {\n  \2{
+     {\n  {
       request.http.headers.set('x-correlation-id', context.correlationId);
     }
   }
@@ -43,7 +43,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       context.startTime ? crypto.getRandomValues(new Uint32Array(1))[0] - context.startTime : 0,
       {
         service: serviceName,
-        operation: operationName
+        operation: operationName,
       }
     );
 
@@ -61,37 +61,37 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
       operationName,
       serviceName,
       userId: context.user?.id,
-      \1,\2 context.correlationId
+       context.correlationId
     });
 
     metricsCollector.incrementCounter('graphql.federation.errors', 1, {
       service: serviceName,
-      \1,\2 error.name || 'UnknownError'
+       error.name || 'UnknownError'
     });
   }
-export const _createGraphQLFederationServer = async (app: express.Application) => {
+export const _createGraphQLFederationServer = async (app: express.Application) => {,
   // Get the HTTP server instance
   const httpServer = http.createServer(app);
 
   // Define the list of GraphQL microservices
   const serviceList = [
-    { name: 'patients', url: process.env.PATIENT_SERVICE_URL ||
-      'https://patient-service.hms.svc.cluster.local/graphql' },
-    { name: 'billing', url: process.env.BILLING_SERVICE_URL || 'https://billing-service.hms.svc.cluster.local/graphql' },
-    { name: 'pharmacy', url: process.env.PHARMACY_SERVICE_URL ||
-      'https://pharmacy-service.hms.svc.cluster.local/graphql' },
-    { name: 'analytics', url: process.env.ANALYTICS_SERVICE_URL ||
-      'https://analytics-service.hms.svc.cluster.local/graphql' },
-    { name: 'auth', url: process.env.AUTH_SERVICE_URL || 'https://auth-service.hms.svc.cluster.local/graphql' },
-    { name: 'cdss', url: process.env.CDSS_SERVICE_URL || 'https://cdss-service.hms.svc.cluster.local/graphql' }
+    { name: 'patients', url: process.env.PATIENT_SERVICE_URL ||,
+      'https://patient-service.hms.svc.cluster.local/graphql' ,},
+    { name: 'billing', url: process.env.BILLING_SERVICE_URL || 'https://billing-service.hms.svc.cluster.local/graphql' ,},
+    { name: 'pharmacy', url: process.env.PHARMACY_SERVICE_URL ||,
+      'https://pharmacy-service.hms.svc.cluster.local/graphql' ,},
+    { name: 'analytics', url: process.env.ANALYTICS_SERVICE_URL ||,
+      'https://analytics-service.hms.svc.cluster.local/graphql' ,},
+    { name: 'auth', url: process.env.AUTH_SERVICE_URL || 'https://auth-service.hms.svc.cluster.local/graphql' ,},
+    { name: 'cdss', url: process.env.CDSS_SERVICE_URL || 'https://cdss-service.hms.svc.cluster.local/graphql' },
   ]
 
   // Create the gateway
   const gateway = new ApolloGateway({
-    supergraphSdl: new IntrospectAndCompose({
+    supergraphSdl: new IntrospectAndCompose({,
       subgraphs: serviceList,
       pollIntervalInMs: 60000, // Poll for schema changes every minute
-      introspectionHeaders: {
+      introspectionHeaders: {,
         'x-api-key': process.env.INTERNAL_API_KEY || 'internal-federation-key'
       }
     }),
@@ -103,12 +103,12 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
       logger.info(`GraphQL federation schema ${isInitialComposition ? 'initialized' : 'updated'}`, {
         graphRef,
         schemaLength: supergraphSdl.length,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
 
       // Track metrics
       metricsCollector.incrementCounter('graphql.federation.schema_updates', 1, {
-        isInitial: isInitialComposition.toString()
+        isInitial: isInitialComposition.toString(),
       });
     },
     experimental_didFailComposition: ({ graphRef, errors, isInitialComposition }) => {
@@ -117,12 +117,12 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
         graphRef,
         errors: errors.map(e => e.message),
         isInitialComposition,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
 
       // Track metrics
       metricsCollector.incrementCounter('graphql.federation.schema_errors', 1, {
-        isInitial: isInitialComposition.toString()
+        isInitial: isInitialComposition.toString(),
       });
     }
   });
@@ -130,7 +130,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
   // Create the Apollo Server
   const server = new ApolloServer({
     gateway,
-    context: async ({ req }) => {
+    context: async ({ req }) => {,
       const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
       const requestId = req.headers['x-request-id'] ||;
         `req-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 10)}`;
@@ -140,14 +140,14 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
       const authToken = req.headers.authorization;
       let user = null;
 
-      \1 {\n  \2 {
+       {\n   {
         try {
           user = await authService.validateToken(authToken.replace('Bearer ', ''));
         } catch (error) {
           logger.warn('Invalid auth token in GraphQL request', {
             requestId,
             correlationId,
-            error: error.message
+            error: error.message,
           });
         }
       }
@@ -160,17 +160,17 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
         startTime
       };
     },
-    plugins: [
+    plugins: [,
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
         async requestDidStart({ request, context }) {
           // Log request start
           const operationName = request.operationName || 'unknown';
 
-          logger.debug(`GraphQL federation request started: ${operationName}`, {
+          logger.debug(`GraphQL federation request started: ${operationName,}`, {
             operationName,
             requestId: context.requestId,
-            \1,\2 context.user?.id
+             context.user?.id
           });
 
           return {
@@ -180,15 +180,15 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
 
               metricsCollector.recordTimer('graphql.federation.request_time', duration, {
                 operation: operationName,
-                hasErrors: (response.errors?.length > 0).toString()
+                hasErrors: (response.errors?.length > 0).toString(),
               });
 
               // Log completion
-              logger.debug(`GraphQL federation request completed: ${operationName}`, {
+              logger.debug(`GraphQL federation request completed: ${operationName,}`, {
                 operationName,
-                duration: `${duration.toFixed(2)}ms`,
+                duration: `${duration.toFixed(2),}ms`,
                 hasErrors: response.errors?.length > 0,
-                \1,\2 context.correlationId
+                 context.correlationId
               });
             }
           };
@@ -198,7 +198,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
     introspection: process.env.NODE_ENV !== 'production';
     // Cache control directives
     csrfPrevention: true,
-    cache: 'bounded'
+    cache: 'bounded',
   });
 
   // Start the server
@@ -208,7 +208,7 @@ export const _createGraphQLFederationServer = async (app: express.Application) =
   server.applyMiddleware({
     app,
     path: '/graphql',
-    cors: {
+    cors: {,
       origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : '*',
       credentials: true,
       methods: ['GET', 'POST', 'OPTIONS'],

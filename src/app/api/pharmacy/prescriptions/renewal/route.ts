@@ -4,16 +4,16 @@ import "../../../../implementation/utils/error-handler"
 import "../../../../implementation/utils/rbac-service"
 import "@prisma/client"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  AuditLogger  } from "@/lib/database"
-import {  DrugInteractionService  } from "@/lib/database"
-import {  ErrorHandler  } from "@/lib/database"
-import {  PrismaClient  } from "@/lib/database"
-import {  RBACService  } from "@/lib/database"
-import {  type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {AuditLogger  } from "next/server"
+import {DrugInteractionService  } from "next/server"
+import {ErrorHandler  } from "next/server"
+import {PrismaClient  } from "next/server"
+import {RBACService  } from "next/server"
+import {type
 
- } from "@/lib/database"
+ } from "next/server"
 
 /**;
  * Prescription Renewal API Routes;
@@ -34,7 +34,7 @@ const _interactionService = new DrugInteractionService(prisma, auditLogger);
  *;
  * Retrieves prescriptions eligible for renewal;
  */;
-export const GET = async (req: any): Promise<NextResponse> {
+export const GET = async (req: any): Promise<NextResponse> {,
   try {
 } catch (error) {
   console.error(error);
@@ -75,7 +75,7 @@ export const GET = async (req: any): Promise<NextResponse> {
     // Validate user permissions;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     const userId = authHeader.split(" ")[1]; // In a real app, this would be a JWT token;
@@ -86,7 +86,7 @@ export const GET = async (req: any): Promise<NextResponse> {
         resourceType: "Prescription",
         "WARNING";
       });
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
     }
 
     // In a real implementation, this would query the database for prescriptions;
@@ -122,7 +122,7 @@ export const GET = async (req: any): Promise<NextResponse> {
       severity: "INFO";
     });
 
-    return NextResponse.json({prescriptions:eligiblePrescriptions });
+    return NextResponse.json({prescriptions:eligiblePrescriptions ,});
   } catch (error) {
     return errorHandler.handleApiError(error, "Failed to retrieve eligible prescriptions");
   }
@@ -133,7 +133,7 @@ export const GET = async (req: any): Promise<NextResponse> {
  *;
  * Requests renewal for a prescription;
  */;
-export const POST = async (req: any): Promise<NextResponse> {
+export const POST = async (req: any): Promise<NextResponse> {,
   try {
 } catch (error) {
   console.error(error);
@@ -173,7 +173,7 @@ export const POST = async (req: any): Promise<NextResponse> {
     // Validate user permissions;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
 
     const userId = authHeader.split(" ")[1]; // In a real app, this would be a JWT token;
@@ -185,17 +185,17 @@ export const POST = async (req: any): Promise<NextResponse> {
         "Attempted to request prescription renewal without permission",
         severity: "WARNING";
       });
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
 
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields: prescriptionId and patientId are required" },
-        {status:400 }
+        {error:"Missing required fields: prescriptionId and patientId are required" ,},
+        {status:400 },
       );
 
     // In a real implementation, this would create a renewal request in the database;
-    const renewalRequest = {id:`renewal-${crypto.getRandomValues([0]}`,
+    const renewalRequest = {id:`renewal-${crypto.getRandomValues([0],}`,
       prescriptionId,
       patientId,
       requesterId: userId,
@@ -213,7 +213,7 @@ export const POST = async (req: any): Promise<NextResponse> {
       severity: "INFO";
     });
 
-    return NextResponse.json({ renewalRequest }, {status:201 });
+    return NextResponse.json({ renewalRequest }, {status:201 ,});
   } catch (error) {
     return errorHandler.handleApiError(error, "Failed to request prescription renewal");
 
@@ -222,7 +222,7 @@ export const POST = async (req: any): Promise<NextResponse> {
  *;
  * Approves or denies a prescription renewal request;
  */;
-export const PUT = async (req: any): Promise<NextResponse> {
+export const PUT = async (req: any): Promise<NextResponse> {,
   try {
 } catch (error) {
   console.error(error);
@@ -262,7 +262,7 @@ export const PUT = async (req: any): Promise<NextResponse> {
     // Validate user permissions;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     const userId = authHeader.split(" ")[1]; // In a real app, this would be a JWT token;
     const hasPermission = await rbacService.hasPermission(userId, "prescription:renew:approve");
@@ -273,20 +273,20 @@ export const PUT = async (req: any): Promise<NextResponse> {
         "Attempted to approve/deny prescription renewal without permission",
         severity: "WARNING";
       });
-      return NextResponse.json({error:"Forbidden" }, {status:403 });
+      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
 
     // Validate required fields;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields: renewalId and action are required" },
-        {status:400 }
+        {error:"Missing required fields: renewalId and action are required" ,},
+        {status:400 },
       );
 
     // Validate action;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Invalid action: must be either "approve" or "deny"" },
-        {status:400 }
+        {error:"Invalid action: must be either "approve" or "deny"" ,},
+        {status:400 },
       );
 
     // In a real implementation, this would update the renewal request in the database;

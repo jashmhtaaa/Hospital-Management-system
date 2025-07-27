@@ -60,7 +60,7 @@ const _updateEmployeeSchema = z.object({
 });
 
 // GET /api/hr/staff;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -111,15 +111,15 @@ export const _GET = async (request: any) => {
       active});
 
     return NextResponse.json(result);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     return NextResponse.json();
-      { error: "Failed to list employees", details: error.message },
-      { status: 500 }
+      { error: "Failed to list employees", details: error.message ,},
+      { status: 500 },
     );
 
 // POST /api/hr/staff;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -160,19 +160,19 @@ export const _POST = async (request: any) => {
     // Create employee;
     const employee = await employeeService.createEmployee(validatedData);
 
-    return NextResponse.json(employee, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json(employee, { status: 201 ,});
+  } catch (error: unknown) {,
 
     // Handle validation errors;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation error", details: error.errors },
-        { status: 400 }
+        { error: "Validation error", details: error.errors ,},
+        { status: 400 },
       );
 
     return NextResponse.json();
-      { error: "Failed to create employee", details: error.message },
-      { status: 500 }
+      { error: "Failed to create employee", details: error.message ,},
+      { status: 500 },
     );
 
 })))

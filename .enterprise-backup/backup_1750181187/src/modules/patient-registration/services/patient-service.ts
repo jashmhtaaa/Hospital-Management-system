@@ -4,18 +4,18 @@ import { Prisma } from '@prisma/client';
 import { AuditService } from '@/lib/audit/audit-service';
 import { prisma } from '@/lib/prisma';
 // src/modules/patient-registration/services/patient-service.ts
-\1
+
 }
 }
 
-\1
+
 }
 }
 
-\1
+
 }
-      orderBy: { createdAt: 'desc' },
-      select: { mrn: true }
+      orderBy: { createdAt: 'desc' ,},
+      select: { mrn: true },
     });
 
     const nextMrnNumber = lastPatient ?
@@ -23,16 +23,16 @@ import { prisma } from '@/lib/prisma';
     const mrn = `MRN${nextMrnNumber.toString().padStart(6, '0')}`;
 
     const patient = await prisma.patient.create({
-      data: {
+      data: {,
         ...data,
         mrn
       }
     });
 
     // Audit log
-    \1 {\n  \2{
+     {\n  {
       await AuditService.logUserAction(
-        { userId: createdBy },
+        { userId: createdBy ,},
         'CREATE',
         'PATIENT',
         patient.id,
@@ -47,22 +47,22 @@ import { prisma } from '@/lib/prisma';
     const { id, ...updateData } = data;
 
     const oldPatient = await prisma.patient.findUnique({
-      where: { id }
+      where: { id },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('Patient not found');
     }
 
     const patient = await prisma.patient.update({
-      where: { id },
-      data: updateData
+      where: { id ,},
+      data: updateData,
     });
 
     // Audit log
-    \1 {\n  \2{
+     {\n  {
       await AuditService.logDataChange(
-        { userId: updatedBy },
+        { userId: updatedBy ,},
         'PATIENT',
         patient.id,
         oldPatient,
@@ -73,31 +73,31 @@ import { prisma } from '@/lib/prisma';
     return patient;
   }
 
-  static async findPatientByMRN(mrn: string) {
+  static async findPatientByMRN(mrn: string) {,
     return await prisma.patient.findUnique({
-      where: { mrn },
-      include: {
+      where: { mrn ,},
+      include: {,
         bills: true,
-        \1,\2 true
+         true
       }
     });
   }
 
   static async searchPatients(
     query: string,
-    \1,\2 number = 0
+     number = 0
   ) {
     return await prisma.patient.findMany({
-      where: {
-        OR: [
-          { firstName: { contains: query, mode: 'insensitive' } },
-          { lastName: { contains: query, mode: 'insensitive' } },
-          { mrn: { contains: query, mode: 'insensitive' } },
-          { phone: { contains: query } }
+      where: {,
+        OR: [,
+          { firstName: { contains: query, mode: 'insensitive' } ,},
+          { lastName: { contains: query, mode: 'insensitive' } ,},
+          { mrn: { contains: query, mode: 'insensitive' } ,},
+          { phone: { contains: query } },
         ]
       },
       take: limit,
-      \1,\2 'desc' 
+       'desc' 
     });
   }
 
@@ -105,16 +105,16 @@ import { prisma } from '@/lib/prisma';
     const [total, newToday, emergency] = await Promise.all([
       prisma.patient.count(),
       prisma.patient.count({
-        where: {
-          createdAt: {
+        where: {,
+          createdAt: {,
             gte: new Date(new Date().setHours(0, 0, 0, 0))
           }
         }
       }),
       prisma.emergencyVisit.count({
-        where: {
+        where: {,
           status: 'ACTIVE',
-          createdAt: {
+          createdAt: {,
             gte: new Date(new Date().setHours(0, 0, 0, 0))
           }
         }

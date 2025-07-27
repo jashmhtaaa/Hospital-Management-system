@@ -3,13 +3,13 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  ContactService  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {authOptions  } from "next/server"
+import {ContactService  } from "next/server"
+import {getServerSession  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
 
 const contactService = new ContactService();
 
@@ -19,18 +19,18 @@ const contactService = new ContactService();
  */;
 export const POST = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { patientId } = await req.json();
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Patient ID is required" },
-          {status:400 }
+          {error:"Patient ID is required" ,},
+          {status:400 },
         );
       }
 

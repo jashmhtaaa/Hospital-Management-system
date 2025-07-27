@@ -27,7 +27,7 @@ const SENSITIVE_FIELDS = [;
   "authorizationCode"];
 
 // Function to mask sensitive data in objects;
-const maskSensitiveData = (data: unknown): unknown {
+const maskSensitiveData = (data: unknown): unknown {,
   if (!session.user)eturn data;
 
   if (!session.user) {
@@ -62,12 +62,12 @@ const maskSensitiveData = (data: unknown): unknown {
 class DefaultLogger implements Logger {
   private logLevel: "debug" | "info" | "warn" | "error";
 
-  constructor(logLevel: "debug" | "info" | "warn" | "error" = "info") {
+  constructor(logLevel: "debug" | "info" | "warn" | "error" = "info") {,
     this.logLevel = logLevel;
   }
 
-  private shouldLog(level: "debug" | "info" | "warn" | "error"): boolean {
-    const levels = {debug:0, info: 1, warn: 2, error: 3 };
+  private shouldLog(level: "debug" | "info" | "warn" | "error"): boolean {,
+    const levels = {debug:0, info: 1, warn: 2, error: 3 ,};
     return levels[level] >= levels[this.logLevel];
   }
 
@@ -79,7 +79,7 @@ class DefaultLogger implements Logger {
       timestamp,
       level,
       message,
-      ...(maskedContext && {context:maskedContext })});
+      ...(maskedContext && {context:maskedContext }),});
   }
 
   debug(message: string, context?: Record<string, unknown>): void {
@@ -115,7 +115,7 @@ export const logger: Logger = new DefaultLogger(logLevel);
 let currentCorrelationId: string | null = null;
 
 // Set correlation ID for the current context;
-export const _setCorrelationId = (correlationId: string): void {
+export const _setCorrelationId = (correlationId: string): void {,
   currentCorrelationId = correlationId;
 }
 
@@ -131,7 +131,7 @@ export const _clearCorrelationId = (): void {
 
 // Logger with correlation ID;
 }
-  constructor(private baseLogger: Logger) {}
+  constructor(private baseLogger: Logger) {},
 
   debug(message: string, context?: Record<string, unknown>): void {
     this.baseLogger.debug(message, this.addCorrelationId(context));
@@ -155,4 +155,4 @@ export const _clearCorrelationId = (): void {
       correlationId};
 
 // Create correlated logger;
-export const _correlatedLogger: Logger = new CorrelatedLogger(logger);
+export const : Logger = new CorrelatedLogger(logger) {;}

@@ -3,13 +3,13 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {  TemplateService  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {authOptions  } from "next/server"
+import {getServerSession  } from "next/server"
+import {TemplateService  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
 
 const templateService = new TemplateService();
 
@@ -19,18 +19,18 @@ const templateService = new TemplateService();
  */;
 export const POST = async();
   request: any;
-  { params }: {id:string }
+  { params }: {id:string },
 ) => {
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const _session = await getServerSession(authOptions);
       const { variables } = await req.json();
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Variables must be a valid object" },
-          {status:400 }
+          {error:"Variables must be a valid object" ,},
+          {status:400 },
         );
       }
 

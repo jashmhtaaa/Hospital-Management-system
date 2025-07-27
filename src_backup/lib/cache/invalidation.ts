@@ -13,7 +13,7 @@ import { RedisCache }
   /**;
    * Invalidate specimen-related caches;
    */;
-  static async invalidateSpecimen(specimenId: number): Promise<void> {
+  static async invalidateSpecimen(specimenId: number): Promise<void> {,
     // Invalidate specific specimen;
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */;
 
@@ -27,7 +27,7 @@ import { RedisCache }
   /**;
    * Invalidate result-related caches;
    */;
-  static async invalidateResult(resultId: number): Promise<void> {
+  static async invalidateResult(resultId: number): Promise<void> {,
     // Invalidate specific result;
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */;
 
@@ -41,7 +41,7 @@ import { RedisCache }
   /**;
    * Invalidate radiology order-related caches;
    */;
-  static async invalidateRadiologyOrder(orderId: number): Promise<void> {
+  static async invalidateRadiologyOrder(orderId: number): Promise<void> {,
     // Invalidate specific order;
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */;
 
@@ -55,7 +55,7 @@ import { RedisCache }
   /**;
    * Invalidate report-related caches;
    */;
-  static async invalidateReport(reportId: number): Promise<void> {
+  static async invalidateReport(reportId: number): Promise<void> {,
     // Invalidate specific report;
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */;
 
@@ -66,14 +66,14 @@ import { RedisCache }
   /**;
    * Invalidate related test panels when a test changes;
    */;
-  private static async invalidateRelatedTestPanels(testId: number): Promise<void> {
+  private static async invalidateRelatedTestPanels(testId: number): Promise<void> {,
     // Get related test panel IDs;
     // This is a simplified example - in a real implementation, you would query the database;
     const relatedPanelIds = await getRelatedTestPanelIds(testId);
 
     // Invalidate each related panel;
     for (const panelId of relatedPanelIds) {
-      await RedisCache.delete(`diagnostic:lab:panel:${}`;
+      await RedisCache.delete(`diagnostic:lab:panel:${,}`;
     }
 
     // Invalidate panel lists;
@@ -83,7 +83,7 @@ import { RedisCache }
   /**;
    * Invalidate related results when a specimen changes;
    */;
-  private static async invalidateRelatedResults(specimenId: number): Promise<void> {
+  private static async invalidateRelatedResults(specimenId: number): Promise<void> {,
     // Get related result IDs;
     // This is a simplified example - in a real implementation, you would query the database;
     const relatedResultIds = await getRelatedResultIds(specimenId);
@@ -97,7 +97,7 @@ import { RedisCache }
   /**;
    * Invalidate related reports when a result or order changes;
    */;
-  private static async invalidateRelatedReports(entityId: number): Promise<void> {
+  private static async invalidateRelatedReports(entityId: number): Promise<void> {,
     // Get related report IDs;
     // This is a simplified example - in a real implementation, you would query the database;
     const relatedReportIds = await getRelatedReportIds(entityId);
@@ -111,15 +111,15 @@ import { RedisCache }
 
 // Helper functions to get related entity IDs;
 // These would be replaced with actual database queries in a real implementation;
-async const getRelatedTestPanelIds = (testId: number): Promise<number[]> {
+async const getRelatedTestPanelIds = (testId: number): Promise<number[]> {,
   // Example implementation;
   return []; // Placeholder;
 
-async const getRelatedResultIds = (specimenId: number): Promise<number[]> {
+async const getRelatedResultIds = (specimenId: number): Promise<number[]> {,
   // Example implementation;
   return []; // Placeholder;
 
-async const getRelatedReportIds = (entityId: number): Promise<number[]> {
+async const getRelatedReportIds = (entityId: number): Promise<number[]> {,
   // Example implementation;
   return []; // Placeholder;
 )))))

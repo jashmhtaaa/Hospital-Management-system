@@ -26,7 +26,7 @@ const salaryStructureSchema = z.object({
   ).min(1, "At least one component is required")});
 
 // POST handler for creating salary structure;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -66,8 +66,8 @@ export const _POST = async (request: any) => {
     const validationResult = salaryStructureSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
 
     // Create salary structure;
@@ -77,12 +77,12 @@ export const _POST = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to create salary structure", details: error.message },
-      { status: 500 }
+      { error: "Failed to create salary structure", details: error.message ,},
+      { status: 500 },
     );
 
 // GET handler for listing salary structures;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -121,6 +121,6 @@ export const _GET = async (request: any) => {
   } catch (error) {
 
     return NextResponse.json();
-      { error: "Failed to fetch salary structures", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch salary structures", details: error.message ,},
+      { status: 500 },
     );

@@ -13,18 +13,18 @@ const templateService = new TemplateService();
  */
 export const POST = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const _session = await getServerSession(authOptions);
       const { variables } = await req.json();
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: 'Variables must be a valid object' },
-          { status: 400 }
+          { error: 'Variables must be a valid object' ,},
+          { status: 400 },
         );
       }
 
@@ -37,6 +37,6 @@ export const POST = async (
     },
     {
       requiredPermission: 'marketing.templates.read',
-      auditAction: 'TEMPLATE_RENDER'
+      auditAction: 'TEMPLATE_RENDER',
     }
   );

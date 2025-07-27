@@ -6,25 +6,25 @@ import { createPatientSchema, validateRequest } from "@/lib/validation/schemas";
 import { createRBACMiddleware } from "@/middleware/rbac";
 import { ApiResponseBuilder, PaginationBuilder } from "@/utils/api-response";
 // apps/hms-web/src/app/api/patient-registration/route.ts
-export async function POST(request: NextRequest): unknown {
+export async function POST(request: NextRequest): unknown {,
 	try {
 		const body = await request.json();
 		const validatedData = validateRequest(createPatientSchema)(body);
 
 		// Check if patient already exists
 		const existingPatient = await prisma.patient.findFirst({
-			\1,\2 [{ phone: validatedData.phone }, { email: validatedData.email }],
+			 [{ phone: validatedData.phone ,}, { email: validatedData.email ,}],
 			},
 		});
 
-		\1 {\n  \2{
+		 {\n  {
 			return ApiResponseBuilder.error("Patient already exists with this phone or email", 409);
 		}
 
 		// Generate unique MRN
 		const lastPatient = await prisma.patient.findFirst({
-			orderBy: { createdAt: "desc" },
-			select: { mrn: true },
+			orderBy: { createdAt: "desc" ,},
+			select: { mrn: true ,},
 		});
 
 		const nextMrnNumber = lastPatient ? Number.parseInt(lastPatient.mrn.substring(3)) + 1 : 1001;
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest): unknown {
 
 		// Create patient
 		const patient = await prisma.patient.create({
-			data: {
+			data: {,
 				...validatedData,
 				mrn,
 			},
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest): unknown {
 	}
 }
 
-export async function GET(request: NextRequest): unknown {
+export async function GET(request: NextRequest): unknown {,
 	try {
 		const { searchParams } = new URL(request.url);
 		const page = Number.parseInt(searchParams.get("page") || "1");
@@ -71,11 +71,11 @@ export async function GET(request: NextRequest): unknown {
 
 		const where = search
 			? {
-					OR: [
-						{ firstName: { contains: search, mode: "insensitive" } },
-						{ lastName: { contains: search, mode: "insensitive" } },
-						{ mrn: { contains: search, mode: "insensitive" } },
-						{ phone: { contains: search } },
+					OR: [,
+						{ firstName: { contains: search, mode: "insensitive" } ,},
+						{ lastName: { contains: search, mode: "insensitive" } ,},
+						{ mrn: { contains: search, mode: "insensitive" } ,},
+						{ phone: { contains: search } ,},
 					],
 				}
 			: {};

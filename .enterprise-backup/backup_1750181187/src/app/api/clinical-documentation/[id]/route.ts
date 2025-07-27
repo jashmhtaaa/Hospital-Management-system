@@ -12,13 +12,13 @@ import { clinicalDocumentationService } from '../../../../services/clinical-docu
  */
 export const GET = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     // Get session
     const session = await getServerSession(authOptions);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get document
@@ -30,19 +30,19 @@ export const GET = async (
     return NextResponse.json(document);
   } catch (error) {
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: error.message }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
     }
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: error.message }, { status: 400 });
+     {\n  {
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
     }
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: error.message }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
     }
 
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' ,}, { status: 500 ,});
   }
 }
 
@@ -53,13 +53,13 @@ export const GET = async (
  */
 export const PUT = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     // Get session
     const session = await getServerSession(authOptions);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Parse request body
@@ -75,17 +75,17 @@ export const PUT = async (
     return NextResponse.json(document);
   } catch (error) {
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: error.message }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: error.message ,}, { status: 401 ,});
     }
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: error.message }, { status: 400 });
+     {\n  {
+      return NextResponse.json({ error: error.message ,}, { status: 400 ,});
     }
 
-    \1 {\n  \2{
-      return NextResponse.json({ error: error.message }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: error.message ,}, { status: 404 ,});
     }
 
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' ,}, { status: 500 ,});
   }

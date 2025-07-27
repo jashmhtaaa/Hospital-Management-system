@@ -30,7 +30,7 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
  */
 
 @Module({
-  imports: [
+  imports: [,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env.local', '.env'],
@@ -41,7 +41,7 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
       sortSchema: true,
       playground: process.env.NODE_ENV !== 'production';
       context: ({ req, connection }) =>
-        connection ? { req: { headers: connection.context } } : { req },
+        connection ? { req: { headers: connection.context } } : { req ,},
     }),
     PrismaModule,
     SecurityModule,
@@ -49,12 +49,12 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
     CacheModule,
     CoreGraphQLModule,
   ],
-  controllers: [
+  controllers: [,
     PredictiveAnalyticsController,
     CustomReportController,
     DashboardController,
   ],
-  providers: [
+  providers: [,
     PredictiveAnalyticsService,
     CustomReportService,
     DashboardService,
@@ -62,7 +62,7 @@ import { PredictiveAnalyticsService } from './services/predictive-analytics.serv
     CustomReportResolver,
     DashboardResolver,
   ],
-  exports: [
+  exports: [,
     PredictiveAnalyticsService,
     CustomReportService,
     DashboardService,

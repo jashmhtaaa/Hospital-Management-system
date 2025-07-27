@@ -64,7 +64,7 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
     const session = await getSession();
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     const database = await getDB();
 
@@ -139,13 +139,13 @@ export const _GET = async (/* _request: unknown */) => { // Removed unused param
       occupancyRate,
       recentAdmissions: recentAdmissions, // Use the correctly typed variable;
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
 
     return NextResponse.json();
-      { error: "Failed to fetch IPD statistics", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch IPD statistics", details: errorMessage ,},
+      { status: 500 },
     );

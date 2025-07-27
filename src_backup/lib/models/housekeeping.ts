@@ -151,11 +151,11 @@ export const _toFHIRHousekeepingRequest = (unknown,
   };
 
   // Map request type to FHIR coding;
-  const requestTypeMap: Record<string, { code: string, display: string }> = {
-    "REGULAR_CLEANING": { code: "regular-cleaning", display: "Regular Cleaning" },
-    "DEEP_CLEANING": { code: "deep-cleaning", display: "Deep Cleaning" },
-    "SPILL_CLEANUP": { code: "spill-cleanup", display: "Spill Cleanup" },
-    "TERMINAL_CLEANING": { code: "terminal-cleaning", display: "Terminal Cleaning" }
+  const requestTypeMap: Record<string, { code: string, display: string }> = {,
+    "REGULAR_CLEANING": { code: "regular-cleaning", display: "Regular Cleaning" ,},
+    "DEEP_CLEANING": { code: "deep-cleaning", display: "Deep Cleaning" ,},
+    "SPILL_CLEANUP": { code: "spill-cleanup", display: "Spill Cleanup" ,},
+    "TERMINAL_CLEANING": { code: "terminal-cleaning", display: "Terminal Cleaning" },
   };
 
   return {
@@ -201,7 +201,7 @@ export const _toFHIRHousekeepingTask = (HousekeepingRequest;
   return {
     resourceType: "Task",
     [{
-      reference: `ServiceRequest/${task.requestId}`;
+      reference: `ServiceRequest/${task.requestId,}`;
     }],
     status: statusMap[task.status] || "requested",
     priorityMap[task.request?.priority] || "routine",
@@ -254,7 +254,7 @@ export const _toFHIRHousekeepingInspection = (unknown,
       "https://unitsofmeasure.org",
       code: "score";
     } : undefined,
-    component: [
+    component: [,
       ...(inspection.findings ? [{
         [{
             system: "https://hms.local/fhir/CodeSystem/housekeeping-inspection",
@@ -277,7 +277,7 @@ export const _toFHIRHousekeepingInspection = (unknown,
   };
 
 // Helper function to map priority;
-const priorityMap = (priority: string): "routine" | "urgent" | "asap" | "stat" {
+const priorityMap = (priority: string): "routine" | "urgent" | "asap" | "stat" {,
   const map: Record<string, "routine" | "urgent" | "asap" | "stat"> = {
     "LOW": "routine",
     "MEDIUM": "routine",

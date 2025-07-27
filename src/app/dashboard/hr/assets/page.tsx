@@ -83,12 +83,10 @@ export default const _AssetManagement = () {
   const [locationFilter, setLocationFilter] = useState("");
   const [departments, setDepartments] = useState<any[]>([]);
   const [locations, setLocations] = useState<any[]>([]);
-  const [dateRange, setDateRange] = useState({
-    from: null,
+  const [dateRange, setDateRange] = useState({from:null,
     to: null;
   });
-  const [pagination, setPagination] = useState({
-    skip: 0,
+  const [pagination, setPagination] = useState({skip:0,
     0;
   });
   const [activeTab, setActiveTab] = useState("all");
@@ -130,8 +128,7 @@ export default const _AssetManagement = () {
 } catch (error) {
 }
         setLoading(true);
-        const queryParams = new URLSearchParams({
-          skip: pagination.skip.toString(),
+        const queryParams = new URLSearchParams({skip:pagination.skip.toString(),
           take: pagination.take.toString();
         });
 
@@ -163,8 +160,7 @@ export default const _AssetManagement = () {
         }));
       } catch (err) {
         setError(err.message),
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       } finally ;
@@ -364,21 +360,18 @@ export default const _AssetManagement = () {
 } catch (error) {
 
       // In a real implementation, this would call an API endpoint to generate a CSV/Excel file;
-      toast({
-        title: "Export Started",
+      toast({title:"Export Started",
         description: "Your asset report is being generated and will download shortly.";
       });
 
       // Simulate download delay;
       setTimeout(() => {
-        toast({
-          title: "Export Complete",
+        toast({title:"Export Complete",
           description: "Asset report has been downloaded.";
         });
       }, 2000);
     } catch (error) {
-      toast({
-        title: "Export Failed",
+      toast({title:"Export Failed",
         "destructive";
       });
 
@@ -421,8 +414,7 @@ export default const _AssetManagement = () {
   // Format currency;
   const formatCurrency = (amount: unknown) => {
     if (!session.user)eturn "—";
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
+    return new Intl.NumberFormat("en-US", {style:"currency",
       currency: "USD";
     }).format(amount);
   };

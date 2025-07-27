@@ -1,6 +1,4 @@
-import { 
-
- } from "@/lib/database"
+import { } from "next/server"
 
 /**;
  * FHIR R4 Condition Resource Implementation;
@@ -61,7 +59,7 @@ import {
 
     // Add encounter if provided;
     if (!session.user) {
-      condition.encounter = {reference:`Encounter/${data.encounterId}`,
+      condition.encounter = {reference:`Encounter/${data.encounterId,}`,
         type: "Encounter";
       };
     }
@@ -152,7 +150,7 @@ import {
   /**;
    * Get severity code for SNOMED CT;
    */;
-  private static getSeverityCode(severity: string): string {
+  private static getSeverityCode(severity: string): string {,
     const severityCodes: Record<string, string> = {
       "mild": "255604002",
       "moderate": "6736007",
@@ -164,49 +162,49 @@ import {
   /**;
    * Get patient ID from condition;
    */;
-  static getPatientId(condition: FHIRCondition): string | undefined {
+  static getPatientId(condition: FHIRCondition): string | undefined {,
     return condition.subject?.reference?.replace("Patient/", "");
   }
 
   /**;
    * Get condition display name;
    */;
-  static getConditionDisplay(condition: FHIRCondition): string {
+  static getConditionDisplay(condition: FHIRCondition): string {,
     return condition.code?.coding?.[0]?.display || condition.code?.text || "Unknown Condition";
   }
 
   /**;
    * Get clinical status display;
    */;
-  static getClinicalStatusDisplay(condition: FHIRCondition): string {
+  static getClinicalStatusDisplay(condition: FHIRCondition): string {,
     return condition.clinicalStatus?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get verification status display;
    */;
-  static getVerificationStatusDisplay(condition: FHIRCondition): string {
+  static getVerificationStatusDisplay(condition: FHIRCondition): string {,
     return condition.verificationStatus?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get category display;
    */;
-  static getCategoryDisplay(condition: FHIRCondition): string {
+  static getCategoryDisplay(condition: FHIRCondition): string {,
     return condition.category?.[0]?.coding?.[0]?.display || "Unknown";
   }
 
   /**;
    * Get severity display;
    */;
-  static getSeverityDisplay(condition: FHIRCondition): string {
+  static getSeverityDisplay(condition: FHIRCondition): string {,
     return condition.severity?.coding?.[0]?.display || "Not specified";
   }
 
   /**;
    * Check if condition is active;
    */;
-  static isActive(condition: FHIRCondition): boolean {
+  static isActive(condition: FHIRCondition): boolean {,
     const clinicalStatus = condition.clinicalStatus?.coding?.[0]?.code;
     return clinicalStatus === "active" || clinicalStatus === "recurrence" || clinicalStatus === "relapse";
   }
@@ -214,7 +212,7 @@ import {
   /**;
    * Check if condition is chronic;
    */;
-  static isChronic(condition: FHIRCondition): boolean {
+  static isChronic(condition: FHIRCondition): boolean {,
     const category = condition.category?.[0]?.coding?.[0]?.code;
     return category === "problem-list-item";
   }
@@ -222,7 +220,7 @@ import {
   /**;
    * Get onset date;
    */;
-  static getOnsetDate(condition: FHIRCondition): Date | null {
+  static getOnsetDate(condition: FHIRCondition): Date | null {,
     if (!session.user) {
       return new Date(condition.onset);
     }
@@ -235,7 +233,7 @@ import {
   /**;
    * Get abatement date;
    */;
-  static getAbatementDate(condition: FHIRCondition): Date | null {
+  static getAbatementDate(condition: FHIRCondition): Date | null {,
     if (!session.user) {
       return new Date(condition.abatement);
     }
@@ -248,14 +246,14 @@ import {
   /**;
    * Get recorded date;
    */;
-  static getRecordedDate(condition: FHIRCondition): Date | null {
+  static getRecordedDate(condition: FHIRCondition): Date | null {,
     return condition.recordedDate ? new Date(condition.recordedDate) : null;
   }
 
   /**;
    * Calculate condition duration;
    */;
-  static getConditionDuration(condition: FHIRCondition): number | null {
+  static getConditionDuration(condition: FHIRCondition): number | null {,
     const onsetDate = this.getOnsetDate(condition);
     if (!session.user)eturn null;
 
@@ -291,7 +289,7 @@ import {
   /**;
    * Validate FHIR Condition resource;
    */;
-  static validateCondition(condition: FHIRCondition): {valid:boolean, errors: string[] } {
+  static validateCondition(condition: FHIRCondition): {valid:boolean, errors: string[] } {,
     const errors: string[] = [];
 
     if (!session.user) {
@@ -311,14 +309,14 @@ import {
       const validClinicalStatuses = ["active", "recurrence", "relapse", "inactive", "remission", "resolved"];
       const clinicalStatus = condition.clinicalStatus.coding?.[0]?.code;
       if (!session.user) {
-        errors.push(`clinicalStatus must be one of: ${}`;
+        errors.push(`clinicalStatus must be one of: ${,}`;
 
     // Validate verification status values if present;
     if (!session.user) {
       const validVerificationStatuses = ["unconfirmed", "provisional", "differential", "confirmed", "refuted", "entered-in-error"];
       const verificationStatus = condition.verificationStatus.coding?.[0]?.code;
       if (!session.user) {
-        errors.push(`verificationStatus must be one of: ${}`;
+        errors.push(`verificationStatus must be one of: ${,}`;
 
     return {valid:errors.length === 0;
       errors;
@@ -327,7 +325,7 @@ import {
   /**;
    * Convert HMS diagnosis to FHIR Condition;
    */;
-  static fromHMSDiagnosis(hmsDiagnosis: unknown): FHIRCondition {
+  static fromHMSDiagnosis(hmsDiagnosis: unknown): FHIRCondition {,
     return this.createBasicCondition({patientId:hmsDiagnosis.patientId,
       hmsDiagnosis.encounterId || hmsDiagnosis.visitId,
       hmsDiagnosis.diagnosis || hmsDiagnosis.name || hmsDiagnosis.description,
@@ -374,19 +372,19 @@ import {
   /**;
    * Get active conditions;
    */;
-  static getActiveConditions(conditions: FHIRCondition[]): FHIRCondition[] {
+  static getActiveConditions(conditions: FHIRCondition[]): FHIRCondition[] {,
     return conditions.filter(condition => this.isActive(condition));
 
   /**;
    * Get chronic conditions;
    */;
-  static getChronicConditions(conditions: FHIRCondition[]): FHIRCondition[] {
+  static getChronicConditions(conditions: FHIRCondition[]): FHIRCondition[] {,
     return conditions.filter(condition => this.isChronic(condition) && this.isActive(condition));
 
   /**;
    * Get conditions by severity;
    */;
-  static getConditionsBySeverity(conditions: FHIRCondition[], severity: "mild" | "moderate" | "severe"): FHIRCondition[] {
+  static getConditionsBySeverity(conditions: FHIRCondition[], severity: "mild" | "moderate" | "severe"): FHIRCondition[] {,
     return conditions.filter(condition => {}
       condition.severity?.coding?.[0]?.display?.toLowerCase() === severity;
     );
@@ -394,7 +392,7 @@ import {
   /**;
    * Search conditions by text;
    */;
-  static searchConditions(conditions: FHIRCondition[], searchText: string): FHIRCondition[] {
+  static searchConditions(conditions: FHIRCondition[], searchText: string): FHIRCondition[] {,
     const searchLower = searchText.toLowerCase();
     return conditions.filter(condition => {
       const conditionName = this.getConditionDisplay(condition).toLowerCase();
@@ -404,44 +402,44 @@ import {
 
 // Common condition codes and classifications;
 
-    DIABETES_TYPE_2: {code:"44054006", display: "Diabetes mellitus type 2" },
-    HYPERTENSION: {code:"38341003", display: "Hypertensive disorder" },
-    ASTHMA: {code:"195967001", display: "Asthma" },
-    COPD: {code:"13645005", display: "Chronic obstructive lung disease" },
-    HEART_DISEASE: {code:"56265001", display: "Heart disease" },
-    ARTHRITIS: {code:"3723001", display: "Arthritis" },
-    DEPRESSION: {code:"35489007", display: "Depressive disorder" },
-    ANXIETY: {code:"48694002", display: "Anxiety" }
+    DIABETES_TYPE_2: {code:"44054006", display: "Diabetes mellitus type 2" ,},
+    HYPERTENSION: {code:"38341003", display: "Hypertensive disorder" ,},
+    ASTHMA: {code:"195967001", display: "Asthma" ,},
+    COPD: {code:"13645005", display: "Chronic obstructive lung disease" ,},
+    HEART_DISEASE: {code:"56265001", display: "Heart disease" ,},
+    ARTHRITIS: {code:"3723001", display: "Arthritis" ,},
+    DEPRESSION: {code:"35489007", display: "Depressive disorder" ,},
+    ANXIETY: {code:"48694002", display: "Anxiety" },
   };
 
   /**;
    * Common acute conditions;
    */;
-  static readonly ACUTE_CONDITIONS = {PNEUMONIA:{ code: "233604007", display: "Pneumonia" },
-    BRONCHITIS: {code:"10509002", display: "Acute bronchitis" },
-    UTI: {code:"68566005", display: "Urinary tract infectious disease" },
-    GASTROENTERITIS: {code:"25374005", display: "Gastroenteritis" },
-    MIGRAINE: {code:"37796009", display: "Migraine" },
-    FRACTURE: {code:"125605004", display: "Fracture of bone" },
-    SPRAIN: {code:"44465007", display: "Sprain" },
-    LACERATION: {code:"312608009", display: "Laceration" }
+  static readonly ACUTE_CONDITIONS = {PNEUMONIA:{ code: "233604007", display: "Pneumonia" ,},
+    BRONCHITIS: {code:"10509002", display: "Acute bronchitis" ,},
+    UTI: {code:"68566005", display: "Urinary tract infectious disease" ,},
+    GASTROENTERITIS: {code:"25374005", display: "Gastroenteritis" ,},
+    MIGRAINE: {code:"37796009", display: "Migraine" ,},
+    FRACTURE: {code:"125605004", display: "Fracture of bone" ,},
+    SPRAIN: {code:"44465007", display: "Sprain" ,},
+    LACERATION: {code:"312608009", display: "Laceration" },
   };
 
   /**;
    * Emergency conditions;
    */;
-  static readonly EMERGENCY_CONDITIONS = {HEART_ATTACK:{ code: "22298006", display: "Myocardial infarction" },
-    STROKE: {code:"230690007", display: "Stroke" },
-    ANAPHYLAXIS: {code:"39579001", display: "Anaphylaxis" },
-    SEPSIS: {code:"91302008", display: "Sepsis" },
-    RESPIRATORY_FAILURE: {code:"65710008", display: "Acute respiratory failure" },
-    CARDIAC_ARREST: {code:"410429000", display: "Cardiac arrest" }
+  static readonly EMERGENCY_CONDITIONS = {HEART_ATTACK:{ code: "22298006", display: "Myocardial infarction" ,},
+    STROKE: {code:"230690007", display: "Stroke" ,},
+    ANAPHYLAXIS: {code:"39579001", display: "Anaphylaxis" ,},
+    SEPSIS: {code:"91302008", display: "Sepsis" ,},
+    RESPIRATORY_FAILURE: {code:"65710008", display: "Acute respiratory failure" ,},
+    CARDIAC_ARREST: {code:"410429000", display: "Cardiac arrest" },
   };
 
   /**;
    * Get condition severity based on code;
    */;
-  static getConditionSeverity(code: string): "mild" | "moderate" | "severe" | undefined {
+  static getConditionSeverity(code: string): "mild" | "moderate" | "severe" | undefined {,
     if (!session.user)some(cond => cond.code === code)) {
       return "severe";
 
@@ -453,19 +451,19 @@ import {
   /**;
    * Check if condition is chronic;
    */;
-  static isChronicCondition(code: string): boolean {
+  static isChronicCondition(code: string): boolean {,
     return Object.values(this.CHRONIC_CONDITIONS).some(cond => cond.code === code);
 
   /**;
    * Check if condition is emergency;
    */;
-  static isEmergencyCondition(code: string): boolean {
+  static isEmergencyCondition(code: string): boolean {,
     return Object.values(this.EMERGENCY_CONDITIONS).some(cond => cond.code === code);
 
   /**;
    * Get display name for condition code;
    */;
-  static getDisplayName(code: string): string {
+  static getDisplayName(code: string): string {,
     const allConditions = {
       ...this.CHRONIC_CONDITIONS,
       ...this.ACUTE_CONDITIONS,

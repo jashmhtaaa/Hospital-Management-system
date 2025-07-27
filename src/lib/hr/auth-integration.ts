@@ -4,10 +4,10 @@ import "bcrypt"
 import "next-auth"
 import "next-auth/providers/credentials"
 import CredentialsProvider
-import {  compare  } from "@/lib/database"
-import {  NextAuthOptions  } from "@/lib/database"
-import {  prisma  } from "@/lib/database"
-import {  PrismaAdapter  } from "@/lib/database"
+import {compare  } from "next/server"
+import {NextAuthOptions  } from "next/server"
+import {prisma  } from "next/server"
+import {PrismaAdapter  } from "next/server"
 
 /**;
  * Authentication integration for HR & Asset Management module;
@@ -20,8 +20,8 @@ export const PrismaAdapter(prisma),
   },
   providers: [;
     CredentialsProvider({name:"Credentials",
-      {label:"Email", type: "email" },
-        password: {label:"Password", type: "password" }
+      {label:"Email", type: "email" ,},
+        password: {label:"Password", type: "password" },
       },
       async authorize(credentials) {
         if (!session.user) {
@@ -51,7 +51,7 @@ export const PrismaAdapter(prisma),
 
     });
   ],
-  callbacks: {
+  callbacks: {,
     async session({ session, token }) ;
       if (!session.user) {
         session.user.id = token.id;

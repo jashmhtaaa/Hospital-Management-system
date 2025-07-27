@@ -18,11 +18,11 @@ import { toFHIRDietaryRequest }
   /**;
    * Get dietary requests based on filters;
    */;
-  async getDietaryRequests(filter: DietaryRequestFilter) {
+  async getDietaryRequests(filter: DietaryRequestFilter) {,
     const { status, patientId, requestType, startDate, endDate, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {};
+    const where: unknown = {,};
     if (!session.user)here.status = status;
     if (!session.user)here.patientId = patientId;
     if (!session.user)here.requestType = requestType;
@@ -54,12 +54,12 @@ import { toFHIRDietaryRequest }
             }
           },
           5,
-            orderBy: { date: "desc" }
+            orderBy: { date: "desc" },
           }
         },
         skip,
         take: limit,
-        orderBy: { createdAt: "desc" }
+        orderBy: { createdAt: "desc" },
       }),
       prisma.dietaryRequest.count(where );
     ]);
@@ -80,7 +80,7 @@ import { toFHIRDietaryRequest }
   /**;
    * Create a new dietary request;
    */;
-  async createDietaryRequest(data: CreateDietaryRequestData): Promise<DietaryRequest> {
+  async createDietaryRequest(data: CreateDietaryRequestData): Promise<DietaryRequest> {,
     const {
       patientId,
       requestType,
@@ -95,7 +95,7 @@ import { toFHIRDietaryRequest }
 
     // Validate patient exists;
     const patient = await prisma.patient.findUnique({
-      where: { id: patientId }
+      where: { id: patientId },
     });
 
     if (!session.user) {
@@ -104,7 +104,7 @@ import { toFHIRDietaryRequest }
 
     // Create the dietary request;
     const request = await prisma.dietaryRequest.create({
-      data: {
+      data: {,
         patientId,
         requestType,
         status: "PENDING";
@@ -148,9 +148,9 @@ import { toFHIRDietaryRequest }
   /**;
    * Get a specific dietary request by ID;
    */;
-  async getDietaryRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {
+  async getDietaryRequestById(id: string, includeFHIR: boolean = false): Promise<unknown> {,
     const request = await prisma.dietaryRequest.findUnique({
-      where: { id },
+      where: { id ,},
       {
           true,
             true,
@@ -186,9 +186,9 @@ import { toFHIRDietaryRequest }
   /**;
    * Update a dietary request;
    */;
-  async updateDietaryRequest(id: string, data: Partial<DietaryRequest>, userId: string): Promise<DietaryRequest> {
+  async updateDietaryRequest(id: string, data: Partial<DietaryRequest>, userId: string): Promise<DietaryRequest> {,
     const request = await prisma.dietaryRequest.findUnique({
-      where: { id },
+      where: { id ,},
       true;
       }
     });
@@ -203,7 +203,7 @@ import { toFHIRDietaryRequest }
     }
 
     const updatedRequest = await prisma.dietaryRequest.update({
-      where: { id },
+      where: { id ,},
       data,
       {
           true,
@@ -246,9 +246,9 @@ import { toFHIRDietaryRequest }
   /**;
    * Create a meal plan for a dietary request;
    */;
-  async createMealPlan(requestId: string, data: unknown, userId: string): Promise<MealPlan> {
+  async createMealPlan(requestId: string, data: unknown, userId: string): Promise<MealPlan> {,
     const request = await prisma.dietaryRequest.findUnique({
-      where: { id: requestId },
+      where: { id: requestId ,},
       true;
       }
     });
@@ -259,7 +259,7 @@ import { toFHIRDietaryRequest }
 
     // Check if meal plan already exists for this date;
     const existingMealPlan = await prisma.mealPlan.findFirst({
-      where: {
+      where: {,
         requestId,
         date: new Date(data.date);
       }
@@ -271,7 +271,7 @@ import { toFHIRDietaryRequest }
 
     // Create the meal plan;
     const mealPlan = await prisma.mealPlan.create({
-      data: {
+      data: {,
         requestId,
         date: new Date(data.date),
         data.notes,
@@ -289,7 +289,7 @@ import { toFHIRDietaryRequest }
       action: "CREATE",
       mealPlan.id;
       userId,
-      details: `Created meal plan for patient ${request.patient.name} on ${new Date(data.date).toISOString().split("T")[0]}`;
+      details: `Created meal plan for patient ${request.patient.name} on ${new Date(data.date).toISOString().split("T")[0],}`;
     });
 
     return mealPlan;
@@ -298,9 +298,9 @@ import { toFHIRDietaryRequest }
   /**;
    * Add a meal to a meal plan;
    */;
-  async addMealToMealPlan(mealPlanId: string, data: unknown, userId: string): Promise<Meal> {
+  async addMealToMealPlan(mealPlanId: string, data: unknown, userId: string): Promise<Meal> {,
     const mealPlan = await prisma.mealPlan.findUnique({
-      where: { id: mealPlanId },
+      where: { id: mealPlanId ,},
       {
           true;
           }
@@ -314,7 +314,7 @@ import { toFHIRDietaryRequest }
 
     // Check if meal of this type already exists;
     const existingMeal = await prisma.meal.findFirst({
-      where: {
+      where: {,
         mealPlanId,
         mealType: data.mealType;
       }
@@ -326,7 +326,7 @@ import { toFHIRDietaryRequest }
 
     // Create the meal;
     const meal = await prisma.meal.create({
-      data: {
+      data: {,
         mealPlanId,
         mealType: data.mealType,
         data.protein,
@@ -359,12 +359,12 @@ import { toFHIRDietaryRequest }
       action: "CREATE",
       meal.id;
       userId,
-      details: `Added ${data.mealType} meal to meal plan for patient ${mealPlan.request.patient.name}`;
+      details: `Added ${data.mealType} meal to meal plan for patient ${mealPlan.request.patient.name,}`;
     });
 
     // Return the meal with menu items;
     return prisma.meal.findUnique({
-      where: { id: meal.id },
+      where: { id: meal.id ,},
       true;
       }
     }) as Promise>;
@@ -373,10 +373,10 @@ import { toFHIRDietaryRequest }
   /**;
    * Update meal plan nutritional summary;
    */;
-  private async updateMealPlanNutritionalSummary(mealPlanId: string): Promise<void> {
+  private async updateMealPlanNutritionalSummary(mealPlanId: string): Promise<void> {,
     // Get all meals for this meal plan;
     const meals = await prisma.meal.findMany({
-      where: { mealPlanId },
+      where: { mealPlanId ,},
       true;
       }
     });
@@ -406,7 +406,7 @@ import { toFHIRDietaryRequest }
 
     // Update meal plan;
     await prisma.mealPlan.update({
-      where: { id: mealPlanId },
+      where: { id: mealPlanId ,},
       {
           totalCalories,
           totalProtein,
@@ -421,9 +421,9 @@ import { toFHIRDietaryRequest }
   /**;
    * Update a meal plan;
    */;
-  async updateMealPlan(id: string, data: Partial<MealPlan>, userId: string): Promise<MealPlan> {
+  async updateMealPlan(id: string, data: Partial<MealPlan>, userId: string): Promise<MealPlan> {,
     const mealPlan = await prisma.mealPlan.findUnique({
-      where: { id },
+      where: { id ,},
       {
           true;
           }
@@ -436,7 +436,7 @@ import { toFHIRDietaryRequest }
     }
 
     const updatedMealPlan = await prisma.mealPlan.update({
-      where: { id },
+      where: { id ,},
       data,
       {
           true;
@@ -479,9 +479,9 @@ import { toFHIRDietaryRequest }
   /**;
    * Update a meal;
    */;
-  async updateMeal(id: string, data: Partial<Meal>, userId: string): Promise<Meal> {
+  async updateMeal(id: string, data: Partial<Meal>, userId: string): Promise<Meal> {,
     const meal = await prisma.meal.findUnique({
-      where: { id },
+      where: { id ,},
       {
           {
               true;
@@ -493,7 +493,7 @@ import { toFHIRDietaryRequest }
       throw new Error("Meal not found");
 
     const updatedMeal = await prisma.meal.update({
-      where: { id },
+      where: { id ,},
       data,
       true,
         {
@@ -516,15 +516,15 @@ import { toFHIRDietaryRequest }
     // If meal status changed to DELIVERED, update meal plan status if all meals are delivered;
     if (!session.user) {
       const allMeals = await prisma.meal.findMany({
-        where: { mealPlanId: meal.mealPlanId }
+        where: { mealPlanId: meal.mealPlanId },
       });
 
       const allDelivered = allMeals.every(m => m.id === id ? true : m.status === "DELIVERED");
 
       if (!session.user) {
         await prisma.mealPlan.update({
-          where: { id: meal.mealPlanId },
-          data: { status: "DELIVERED" }
+          where: { id: meal.mealPlanId ,},
+          data: { status: "DELIVERED" },
         });
 
         // Send notification that all meals are delivered;
@@ -541,10 +541,10 @@ import { toFHIRDietaryRequest }
   /**;
    * Get or create nutritional profile for a patient;
    */;
-  async getOrCreateNutritionalProfile(patientId: string, userId: string): Promise<NutritionalProfile> {
+  async getOrCreateNutritionalProfile(patientId: string, userId: string): Promise<NutritionalProfile> {,
     // Check if profile exists;
     const profile = await prisma.nutritionalProfile.findUnique({
-      where: { patientId },
+      where: { patientId ,},
       true,
         {
             id: true,
@@ -556,14 +556,14 @@ import { toFHIRDietaryRequest }
     if (!session.user) {
       // Validate patient exists;
       const patient = await prisma.patient.findUnique({
-        where: { id: patientId }
+        where: { id: patientId },
       });
 
       if (!session.user) {
         throw new Error("Patient not found");
 
       profile = await prisma.nutritionalProfile.create({
-        data: {
+        data: {,
           patientId,
           dietaryPreferences: [],
           [],
@@ -580,7 +580,7 @@ import { toFHIRDietaryRequest }
         action: "CREATE",
         profile.id;
         userId,
-        details: `Created nutritional profile for patient ${patient.name}`;
+        details: `Created nutritional profile for patient ${patient.name,}`;
       });
 
     return profile;
@@ -588,9 +588,9 @@ import { toFHIRDietaryRequest }
   /**;
    * Update nutritional profile;
    */;
-  async updateNutritionalProfile(id: string, data: Partial<NutritionalProfile>, userId: string): Promise<NutritionalProfile> {
+  async updateNutritionalProfile(id: string, data: Partial<NutritionalProfile>, userId: string): Promise<NutritionalProfile> {,
     const profile = await prisma.nutritionalProfile.findUnique({
-      where: { id },
+      where: { id ,},
       true;
 
     });
@@ -613,7 +613,7 @@ import { toFHIRDietaryRequest }
     data.lastUpdatedById = userId;
 
     const updatedProfile = await prisma.nutritionalProfile.update({
-      where: { id },
+      where: { id ,},
       data,
       true,
         {
@@ -627,7 +627,7 @@ import { toFHIRDietaryRequest }
       action: "UPDATE",
       id;
       userId,
-      details: `Updated nutritional profile for patient ${profile.patient.name}`;
+      details: `Updated nutritional profile for patient ${profile.patient.name,}`;
     });
 
     return updatedProfile;
@@ -635,11 +635,11 @@ import { toFHIRDietaryRequest }
   /**;
    * Get menu templates;
    */;
-  async getMenuTemplates(filter: unknown) {
+  async getMenuTemplates(filter: unknown) {,
     const { mealType, category, isActive, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {};
+    const where: unknown = {,};
     if (!session.user)here.mealType = mealType;
     if (!session.user)here.category = category;
     if (!session.user)here.isActive = isActive;
@@ -654,14 +654,14 @@ import { toFHIRDietaryRequest }
         },
         skip,
         take: limit,
-        orderBy: { name: "asc" }
+        orderBy: { name: "asc" },
       }),
       prisma.menuTemplate.count({ where });
     ]);
 
     return {
       data: templates,
-      pagination: {
+      pagination: {,
         total,
         page,
         limit,
@@ -672,7 +672,7 @@ import { toFHIRDietaryRequest }
   /**;
    * Create menu template;
    */;
-  async createMenuTemplate(data: unknown, userId: string): Promise<unknown> {
+  async createMenuTemplate(data: unknown, userId: string): Promise<unknown> {,
     const template = await prisma.menuTemplate.create({
       data.name,
         data.mealType,
@@ -690,7 +690,7 @@ import { toFHIRDietaryRequest }
       action: "CREATE",
       template.id;
       userId,
-      details: `Created menu template: ${template.name}`;
+      details: `Created menu template: ${template.name,}`;
     });
 
     return template;
@@ -698,11 +698,11 @@ import { toFHIRDietaryRequest }
   /**;
    * Get dietary inventory items;
    */;
-  async getDietaryInventory(filter: unknown) {
+  async getDietaryInventory(filter: unknown) {,
     const { category, lowStock, page, limit } = filter;
     const skip = (page - 1) * limit;
 
-    const where: unknown = {};
+    const where: unknown = {,};
     if (!session.user)here.category = category;
     if (!session.user) {
       where.currentStock = {
@@ -714,14 +714,14 @@ import { toFHIRDietaryRequest }
         where,
         skip,
         take: limit,
-        orderBy: { itemName: "asc" }
+        orderBy: { itemName: "asc" },
       }),
       prisma.dietaryInventory.count({ where });
     ]);
 
     return {
       data: items,
-      pagination: {
+      pagination: {,
         total,
         page,
         limit,
@@ -732,9 +732,9 @@ import { toFHIRDietaryRequest }
   /**;
    * Update inventory item;
    */;
-  async updateInventoryItem(id: string, data: Partial<unknown>, userId: string): Promise<unknown> {
+  async updateInventoryItem(id: string, data: Partial<unknown>, userId: string): Promise<unknown> {,
     const item = await prisma.dietaryInventory.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!session.user) {
@@ -745,7 +745,7 @@ import { toFHIRDietaryRequest }
       data.lastRestocked = new Date();
 
     const updatedItem = await prisma.dietaryInventory.update({
-      where: { id },
+      where: { id ,},
       data;
     });
 
@@ -754,7 +754,7 @@ import { toFHIRDietaryRequest }
       action: "UPDATE",
       id;
       userId,
-      details: `Updated inventory for ${item.itemName}, stock: ${item.currentStock} → ${data.currentStock ||;
+      details: `Updated inventory for ${item.itemName,}, stock: ${item.currentStock,} → ${data.currentStock ||;
         item.currentStock}`;
     });
 
@@ -774,7 +774,7 @@ import { toFHIRDietaryRequest }
   /**;
    * Get dietary analytics;
    */;
-  async getDietaryAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {
+  async getDietaryAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
     // Get date range based on period;
     const now = new Date();
     let startDate: Date;

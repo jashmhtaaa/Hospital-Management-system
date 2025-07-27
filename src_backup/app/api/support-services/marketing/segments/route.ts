@@ -17,10 +17,10 @@ const segmentService = new SegmentService();
  * GET /api/support-services/marketing/segments;
  * Get all segments with optional filtering;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -52,10 +52,10 @@ export const GET = async (request: any) => {
  * POST /api/support-services/marketing/segments;
  * Create a new segment;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -64,7 +64,7 @@ export const POST = async (request: any) => {
         session?.user?.id as string;
       );
 
-      return NextResponse.json(segment, { status: 201 });
+      return NextResponse.json(segment, { status: 201 ,});
     },
     {
       requiredPermission: "marketing.segments.create",

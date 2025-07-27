@@ -17,29 +17,29 @@ const ListLabOrdersQuerySchema = z.object({
     doctorId: z.coerce.number().int().positive().optional(),
     consultationId: z.coerce.number().int().positive().optional(),
     status: z.nativeEnum(LabOrderStatus).optional(),
-    dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-    dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+    dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/).optional(),
+    dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/).optional(),
     limit: z.coerce.number().int().positive().optional().default(50),
-    offset: z.coerce.number().int().nonnegative().optional().default(0)
+    offset: z.coerce.number().int().nonnegative().optional().default(0),
 });
 
 // Define the expected structure based on the SELECT query
 interface LabOrderQueryResultRow {
     lab_order_id: number,
-    \1,\2 number,
-    \1,\2 string,
-    \1,\2 string | null,
-    \1,\2 string; // Assuming this is part of lo.*
+     number,
+     string,
+     string | null,
+     string; // Assuming this is part of lo.*
     patient_first_name: string,
-    \1,\2 string | null
-export const _GET = async (request: Request) => {
+     string | null
+export const _GET = async (request: Request) => {,
     // Get cookies and create session
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
     try {
@@ -47,8 +47,8 @@ export const _GET = async (request: Request) => {
         const queryParams = Object.fromEntries(url.searchParams.entries());
         const validation = ListLabOrdersQuerySchema.safeParse(queryParams);
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invalid query parameters", details: validation.error.errors }), { status: 400 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invalid query parameters", details: validation.error.errors ,}), { status: 400 ,});
         }
 
         const filters = validation.data;
@@ -72,59 +72,59 @@ export const _GET = async (request: Request) => {
         const queryParamsList: (string | number)[] = [];
 
         // Apply filters and authorization
-        \1 {\n  \2{
+         {\n  {
             // Authorization check for Patients
-            \1 {\n  \2{
-                const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-                \1 {\n  \2{
-                    return new Response(JSON.stringify({ error: "Forbidden: You can only view your own lab orders" }), { status: 403 });
+             {\n  {
+                const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number ,}>();
+                 {\n  {
+                    return new Response(JSON.stringify({ error: "Forbidden: You can only view your own lab orders" ,}), { status: 403 ,});
                 }
             }
             query += " AND lo.patient_id = ?";
             queryParamsList.push(filters.patientId);
-        } else \1 {\n  \2{
+        } else  {\n  {
              // If no patientId filter, patient sees only their own
-             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-             \1 {\n  \2{
+             const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number ,}>();
+              {\n  {
                  query += " AND lo.patient_id = ?";
                  queryParamsList.push(patientProfile.patient_id);
              } else {
-                 return new Response(JSON.stringify([]), { status: 200 }); // Patient has no profile, return empty
+                 return new Response(JSON.stringify([]), { status: 200 ,}); // Patient has no profile, return empty
              }
         }
 
-        \1 {\n  \2{
+         {\n  {
             // Authorization check for Doctors
-            \1 {\n  \2{
-                const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-                \1 {\n  \2{
-                    return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 });
+             {\n  {
+                const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+                 {\n  {
+                    return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" ,}), { status: 403 ,});
                 }
             }
             query += " AND lo.doctor_id = ?";
             queryParamsList.push(filters.doctorId);
-        } else \1 {\n  \2{
+        } else  {\n  {
              // If no doctorId filter, doctor sees only their own
-             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-             \1 {\n  \2{
+             const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+              {\n  {
                  query += " AND lo.doctor_id = ?";
                  queryParamsList.push(userDoctorProfile.doctor_id);
              }
         }
 
-        \1 {\n  \2{
+         {\n  {
             query += " AND lo.consultation_id = ?";
             queryParamsList.push(filters.consultationId);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND lo.status = ?";
             queryParamsList.push(filters.status);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND DATE(lo.order_datetime) >= ?";
             queryParamsList.push(filters.dateFrom);
         }
-        \1 {\n  \2{
+         {\n  {
             query += " AND DATE(lo.order_datetime) <= ?";
             queryParamsList.push(filters.dateTo);
         }
@@ -136,22 +136,22 @@ export const _GET = async (request: Request) => {
         const results = await DB.prepare(query).bind(...queryParamsList).all<LabOrderQueryResultRow>()
 
         // 4. Format Response (basic details for list view) - Type 'row' in map
-        const labOrders = results.results?.map((row: LabOrderQueryResultRow) => ({
+        const labOrders = results.results?.map((row: LabOrderQueryResultRow) => ({,
             lab_order_id: row.lab_order_id,
-            \1,\2 row.patient_id,
-            \1,\2 row.order_datetime,
-            \1,\2 row.notes,
-            \1,\2 row.patient_id,
-                \1,\2 row.patient_last_name,
-            \1,\2 row.doctor_full_name as any // Use 'as any' or define Doctor type properly
+             row.patient_id,
+             row.order_datetime,
+             row.notes,
+             row.patient_id,
+                 row.patient_last_name,
+             row.doctor_full_name as any // Use 'as any' or define Doctor type properly
         })) || [];
 
-        return new Response(JSON.stringify(labOrders), { status: 200 });
+        return new Response(JSON.stringify(labOrders), { status: 200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), { status: 500 ,});
     }
 }
 
@@ -163,22 +163,22 @@ const CreateLabOrderSchema = z.object({
     // Items are added via POST /api/lab-orders/{id}/items
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     // Get cookies and create session
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
     try {
         const body = await request.json();
         const validation = CreateLabOrderSchema.safeParse(body);
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), { status: 400 ,});
         }
 
         const orderData = validation.data;
@@ -188,9 +188,9 @@ export const _POST = async (request: Request) => {
         const { DB } = env;
 
         // 2. Get Doctor ID from session user
-        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" }), { status: 404 });
+        const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+         {\n  {
+            return new Response(JSON.stringify({ error: "Doctor profile not found for the current user" ,}), { status: 404 ,});
         }
         const doctorId = doctorProfile.doctor_id;
 
@@ -199,11 +199,11 @@ export const _POST = async (request: Request) => {
                                    .bind(orderData.consultation_id);
                                    .first<consultation_id: number, patient_id: number, doctor_id: number >();
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Consultation not found" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Consultation not found" ,}), { status: 404 ,});
         }
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Forbidden: Cannot create lab order for another doctor's consultation" }), { status: 403 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Forbidden: Cannot create lab order for another doctor's consultation" ,}), { status: 403 ,});
         }
         const patientId = consultCheck.patient_id;
 
@@ -221,7 +221,7 @@ export const _POST = async (request: Request) => {
         ).run();
 
         // Check success and last_row_id existence and type
-        \1 {\n  \2last_row_id !== 'number') {
+         {\n  last_row_id !== 'number') {
 
             throw new Error("Failed to create lab order or retrieve ID");
         }
@@ -229,16 +229,16 @@ export const _POST = async (request: Request) => {
         const newLabOrderId = (insertResult.meta as any).last_row_id;
 
         // 5. Return the newly created lab order ID
-        return new Response(JSON.stringify({ message: "Lab Order created successfully", lab_order_id: newLabOrderId }), {
+        return new Response(JSON.stringify({ message: "Lab Order created successfully", lab_order_id: newLabOrderId ,}), {
             status: 201,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }

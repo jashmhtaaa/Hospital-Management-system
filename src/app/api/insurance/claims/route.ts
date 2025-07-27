@@ -1,10 +1,9 @@
 import "@/lib/prisma"
 import "next/server"
 import "zod"
-import {  
-import {  NextRequest  } from "@/lib/database"
-import {  prisma  } from "@/lib/database"
-import {  z  } from "@/lib/database"
+import {import {  NextRequest  } from "next/server"
+import {prisma  } from "next/server"
+import {z  } from "next/server"
 
   withErrorHandling,
   validateBody,
@@ -16,19 +15,19 @@ import {  z  } from "@/lib/database"
 import "@/lib/core/errors"
 import BusinessLogicError }
 import NotFoundError
-import { ValidationError
+import {ValidationError
 
   claimStatusSchema,
   icd10CodeSchema,
   cptCodeSchema;
-} from "@/lib/core/validation";
+} from "next/server";
 import "@/lib/core/fhir"
 import "@/lib/core/logging"
-import {  convertToFHIRClaim  } from "@/lib/database"
-import {  logger  } from "@/lib/database"
+import {convertToFHIRClaim  } from "next/server"
+import {logger  } from "next/server"
 
 // Schema for claim creation;
-const createClaimSchema = z.object({invoiceId:z.string().uuid(),
+const createClaimSchema = z.object({{invoiceId:z.string(,}).uuid(),
   insurancePolicyId: z.string().uuid(),
   icd10CodeSchema,
     description: z.string(),
@@ -47,7 +46,7 @@ const createClaimSchema = z.object({invoiceId:z.string().uuid(),
 });
 
 // Schema for claim query parameters;
-const claimQuerySchema = z.object({page:z.coerce.number().int().positive().optional().default(1),
+const claimQuerySchema = z.object({{page:z.coerce.number(,}).int().positive().optional().default(1),
   pageSize: z.coerce.number().int().positive().max(100).optional().default(20),
   patientId: z.string().uuid().optional(),
   invoiceId: z.string().uuid().optional(),
@@ -60,7 +59,7 @@ const claimQuerySchema = z.object({page:z.coerce.number().int().positive().optio
   format: z.enum(["json", "fhir"]).optional().default("json")});
 
 // GET handler for retrieving all claims with filtering and pagination;
-export const _GET = withErrorHandling(async (req: any) => {
+export const _GET = withErrorHandling(async (req: any) => {,
   // Validate query parameters;
   const query = validateQuery(claimQuerySchema)(req);
 
@@ -68,7 +67,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "read", "claim")(req);
 
   // Build filter conditions;
-  const where: unknown = {};
+  const where: unknown = {,};
 
   if (!session.user) {
     where.invoice = {patientId:query.patientId;
@@ -132,7 +131,7 @@ export const _GET = withErrorHandling(async (req: any) => {
   const [claims, total] = await Promise.all([;
     prisma.insuranceClaim.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder},
       skip: (query.page - 1) * query.pageSize,
       {
@@ -164,7 +163,7 @@ export const _GET = withErrorHandling(async (req: any) => {
 });
 
 // POST handler for creating a new claim;
-export const _POST = withErrorHandling(async (req: any) => {
+export const _POST = withErrorHandling(async (req: any) => {,
   // Validate request body;
   const data = await validateBody(createClaimSchema)(req);
 
@@ -172,7 +171,7 @@ export const _POST = withErrorHandling(async (req: any) => {
   await checkPermission(permissionService, "create", "claim")(req);
 
   // Retrieve invoice;
-  const invoice = await prisma.bill.findUnique({where:{ id: data.invoiceId }});
+  const invoice = await prisma.bill.findUnique({where:{ id: data.invoiceId },});
 
   if (!session.user) {
     throw new NotFoundError(`Invoice with ID ${data.invoiceId} not found`);
@@ -182,11 +181,11 @@ export const _POST = withErrorHandling(async (req: any) => {
     throw new BusinessLogicError();
       "Claims can only be created for approved or paid invoices",
       "INVALID_INVOICE_STATUS",
-      {currentStatus:invoice.status }
+      {currentStatus:invoice.status },
     );
 
   // Check if insurance policy exists;
-  const insurancePolicy = await prisma.insurancePolicy.findUnique({where:{ id: data.insurancePolicyId },
+  const insurancePolicy = await prisma.insurancePolicy.findUnique({where:{ id: data.insurancePolicyId ,},
     true;
     }});
 
@@ -198,7 +197,7 @@ export const _POST = withErrorHandling(async (req: any) => {
     throw new BusinessLogicError();
       "Insurance policy is not active",
       "INACTIVE_INSURANCE_POLICY",
-      {policyStatus:insurancePolicy.status }
+      {policyStatus:insurancePolicy.status },
     );
 
   // Check if patient on invoice matches policy beneficiary;
@@ -221,7 +220,7 @@ export const _POST = withErrorHandling(async (req: any) => {
   // Create claim in database;
   const claim = await prisma.$transaction(async (prisma) => {
     // Create claim record;
-    const newClaim = await prisma.insuranceClaim.create({data:{
+    const newClaim = await prisma.insuranceClaim.create({data:{,
         claimNumber,
         invoiceId: data.invoiceId,
         "draft";
@@ -237,15 +236,15 @@ export const _POST = withErrorHandling(async (req: any) => {
             true,
             true,
                 true,
-                mrn: true}}},
+                mrn: true}},},
         true,
             true,
-                name: true},
+                name: true,},
         diagnoses: true,
         true}}});
 
     // Update invoice to link claim;
-    await prisma.bill.update({where:{ id: data.invoiceId },
+    await prisma.bill.update({where:{ id: data.invoiceId ,},
       newClaim.id;
       }});
 

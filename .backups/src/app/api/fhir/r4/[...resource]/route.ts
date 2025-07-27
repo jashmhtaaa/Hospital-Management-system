@@ -80,7 +80,7 @@ export const GET = async (request: any, { params }: RouteParams) => {
 
       if (!session.user) {
         return NextResponse.json();
-          result.issues || { error: result.error },
+          result.issues || { error: result.error ,},
           {
             status: result.error === "Resource not found" ? 404 : 400;
             headers;
@@ -106,7 +106,7 @@ export const GET = async (request: any, { params }: RouteParams) => {
 
     if (!session.user) {
       return NextResponse.json();
-        searchResult.issues || { error: searchResult.error },
+        searchResult.issues || { error: searchResult.error ,},
         { status: 400, headers }
       );
     }
@@ -124,7 +124,7 @@ export const GET = async (request: any, { params }: RouteParams) => {
       },
       {
         status: 500,
-        headers: { "Content-Type": "application/fhir+json" }
+        headers: { "Content-Type": "application/fhir+json" },
       }
     );
   }
@@ -182,7 +182,7 @@ export const POST = async (request: any, { params }: RouteParams) => {
         },
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
         }
       );
     }
@@ -201,10 +201,10 @@ export const POST = async (request: any, { params }: RouteParams) => {
 
     if (!session.user) {
       return NextResponse.json();
-        result.issues || { error: result.error },
+        result.issues || { error: result.error ,},
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
         }
       );
 
@@ -231,7 +231,7 @@ export const POST = async (request: any, { params }: RouteParams) => {
       },
       {
         status: 500,
-        headers: { "Content-Type": "application/fhir+json" }
+        headers: { "Content-Type": "application/fhir+json" },
 
     );
 
@@ -285,7 +285,7 @@ export const PUT = async (request: any, { params }: RouteParams) => {
         },
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
 
@@ -302,7 +302,7 @@ export const PUT = async (request: any, { params }: RouteParams) => {
         },
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
 
@@ -320,10 +320,10 @@ export const PUT = async (request: any, { params }: RouteParams) => {
     if (!session.user) {
       const status = result.error === "Resource not found" ? 404 : 400;
       return NextResponse.json();
-        result.issues || { error: result.error },
+        result.issues || { error: result.error ,},
         {
           status,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
 
@@ -345,7 +345,7 @@ export const PUT = async (request: any, { params }: RouteParams) => {
       },
       {
         status: 500,
-        headers: { "Content-Type": "application/fhir+json" }
+        headers: { "Content-Type": "application/fhir+json" },
 
     );
 
@@ -399,7 +399,7 @@ export const DELETE = async (request: any, { params }: RouteParams) => {
         },
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
 
@@ -408,15 +408,15 @@ export const DELETE = async (request: any, { params }: RouteParams) => {
     if (!session.user) {
       const status = result.error === "Resource not found" ? 404 : 400;
       return NextResponse.json();
-        result.issues || { error: result.error },
+        result.issues || { error: result.error ,},
         {
           status,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
 
     // Return 204 No Content for successful deletion;
-    return new NextResponse(null, { status: 204 });
+    return new NextResponse(null, { status: 204 ,});
 
   } catch (error) {
 
@@ -429,7 +429,7 @@ export const DELETE = async (request: any, { params }: RouteParams) => {
       },
       {
         status: 500,
-        headers: { "Content-Type": "application/fhir+json" }
+        headers: { "Content-Type": "application/fhir+json" },
 
     );
 
@@ -483,7 +483,7 @@ export const PATCH = async (request: any, { params }: RouteParams) => {
         },
         {
           status: 400,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
 
@@ -492,10 +492,10 @@ export const PATCH = async (request: any, { params }: RouteParams) => {
 
     if (!session.user) {
       return NextResponse.json();
-        currentResult.issues || { error: currentResult.error },
+        currentResult.issues || { error: currentResult.error ,},
         {
           status: 404,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
 
@@ -516,7 +516,7 @@ export const PATCH = async (request: any, { params }: RouteParams) => {
         },
         {
           status: 501,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
     } else {
@@ -530,7 +530,7 @@ export const PATCH = async (request: any, { params }: RouteParams) => {
         },
         {
           status: 501,
-          headers: { "Content-Type": "application/fhir+json" }
+          headers: { "Content-Type": "application/fhir+json" },
 
       );
 
@@ -545,6 +545,6 @@ export const PATCH = async (request: any, { params }: RouteParams) => {
       },
       {
         status: 500,
-        headers: { "Content-Type": "application/fhir+json" }
+        headers: { "Content-Type": "application/fhir+json" },
 
     );

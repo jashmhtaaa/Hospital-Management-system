@@ -27,19 +27,19 @@ const inventoryRepository = {
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true),
-  transferStock: () => Promise.resolve(true)
+  transferStock: () => Promise.resolve(true),
 }
 
 /**
  * GET /api/pharmacy/inventory;
  * List inventory with stock levels and filtering options;
  */
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {,
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -55,11 +55,11 @@ export const GET = async (req: NextRequest) => {
     const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
-    const filter: unknown = {};
-    \1 {\n  \2ilter.locationId = locationId;
-    \1 {\n  \2ilter.medicationId = medicationId;
-    \1 {\n  \2ilter.belowReorderLevel = true;
-    \1 {\n  \2ilter.quantityOnHand = { gt: 0 };
+    const filter: unknown = {,};
+     {\n  ilter.locationId = locationId;
+     {\n  ilter.medicationId = medicationId;
+     {\n  ilter.belowReorderLevel = true;
+     {\n  ilter.quantityOnHand = { gt: 0 ,};
 
     // Get inventory items (mock implementation)
     const inventoryItems = await inventoryRepository.findAll()
@@ -74,24 +74,24 @@ export const GET = async (req: NextRequest) => {
     // Audit logging
     await auditLog('INVENTORY', {
       action: 'LIST',
-      \1,\2 userId,
-      details: 
+       userId,
+      details: ,
         filter,
         page,
         limit,
-        resultCount: paginatedItems.length
+        resultCount: paginatedItems.length,
     });
 
     // Return response
     return NextResponse.json({
       items: fhirInventoryItems,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit),
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error retrieving inventory');
   }
@@ -101,22 +101,22 @@ export const GET = async (req: NextRequest) => {
  * POST /api/pharmacy/inventory;
  * Add new inventory item;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateInventoryRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -137,12 +137,12 @@ export const POST = async (req: NextRequest) => {
     );
 
     // Special handling for controlled substances
-    \1 {\n  \2{
+     {\n  {
       // Encrypt controlled substance data
       inventoryItem.controlledSubstanceData = await encryptionService.encrypt(
         JSON.stringify({
           scheduleClass: data.scheduleClass,
-          \1,\2 data.lastAuditDate
+           data.lastAuditDate
         });
       );
     }
@@ -153,19 +153,19 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('INVENTORY', {
       action: 'CREATE',
-      \1,\2 inventoryItemId,
-      \1,\2 data.medicationId,
-        \1,\2 data.quantityOnHand,
-        isControlled: data.isControlled || false
+       inventoryItemId,
+       data.medicationId,
+         data.quantityOnHand,
+        isControlled: data.isControlled || false,
     });
 
     // Return response
     return NextResponse.json(
       {
         id: inventoryItemId,
-        message: 'Inventory item created successfully'
+        message: 'Inventory item created successfully',
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, 'Error creating inventory item');

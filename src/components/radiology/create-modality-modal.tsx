@@ -29,8 +29,7 @@ import { Textarea }
 }
 
 // FIX: Define interface for props, including isOpen;
-interface CreateModalityModalProperties {
-  isOpen: boolean; // Add isOpen prop;
+interface CreateModalityModalProperties {isOpen:boolean; // Add isOpen prop;
   onClose: () => void,
   onSubmit: (data: ModalityFormData) => Promise<void> | void;
 }

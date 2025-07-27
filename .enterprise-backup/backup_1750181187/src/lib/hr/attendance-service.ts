@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 /**
  * Service for managing attendance records and biometric verification;
  */
-\1
+
 }
   }) {
     const { employeeId, date, checkInTime, biometricVerified, notes } = data;
@@ -16,31 +16,31 @@ const prisma = new PrismaClient();
 
     // Check if attendance record already exists for this employee and date
     const existingRecord = await prisma.attendance.findUnique({
-      where: {
-        employeeId_date: {
+      where: {,
+        employeeId_date: {,
           employeeId,
-          date: formattedDate
+          date: formattedDate,
         },
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       // Update existing record with check-in time
       return prisma.attendance.update({
-        where: {
-          id: existingRecord.id
+        where: {,
+          id: existingRecord.id,
         },
-        data: {
+        data: {,
           checkInTime,
           biometricVerified,
           notes,
           status: this.determineAttendanceStatus(checkInTime, null),
         },
-        include: {
-          employee: {
-            select: {
+        include: {,
+          employee: {,
+            select: {,
               firstName: true,
-              \1,\2 true
+               true
             },
           },
         },
@@ -48,7 +48,7 @@ const prisma = new PrismaClient();
     } else {
       // Create new attendance record
       return prisma.attendance.create({
-        data: {
+        data: {,
           employeeId,
           date: formattedDate;
           checkInTime,
@@ -56,9 +56,9 @@ const prisma = new PrismaClient();
           notes,
           status: this.determineAttendanceStatus(checkInTime, null),
         },
-        include: {
+        include: {,
               firstName: true,
-              \1,\2 true,,
+               true,,
         },
       });
     }
@@ -67,9 +67,9 @@ const prisma = new PrismaClient();
   /**
    * Record employee check-out;
    */
-  async recordCheckOut(data: {
+  async recordCheckOut(data: {,
     employeeId: string,
-    \1,\2 Date,
+     Date,
     biometricVerified: boolean;
     notes?: string;
   }) {
@@ -81,34 +81,34 @@ const prisma = new PrismaClient();
 
     // Find attendance record for this employee and date
     const existingRecord = await prisma.attendance.findUnique({
-      where: {
-        employeeId_date: {
+      where: {,
+        employeeId_date: {,
           employeeId,
-          date: formattedDate
+          date: formattedDate,
         },
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error('No check-in record found for this date');
     }
 
     // Update record with check-out time
     return prisma.attendance.update({
-      where: {
-        id: existingRecord.id
+      where: {,
+        id: existingRecord.id,
       },
-      data: {
+      data: {,
         checkOutTime,
         biometricVerified: existingRecord.biometricVerified || biometricVerified,
-        notes: notes ? (existingRecord.notes ? `${existingRecord.notes}; ${notes}` : notes) : existingRecord.notes,
+        notes: notes ? (existingRecord.notes ? `${existingRecord.notes,}; ${notes}` : notes) : existingRecord.notes,
         status: this.determineAttendanceStatus(existingRecord.checkInTime, checkOutTime),
       },
-      include: {
-        employee: {
-          select: {
+      include: {,
+        employee: {,
+          select: {,
             firstName: true,
-            \1,\2 true
+             true
           },
         },
       },
@@ -118,15 +118,15 @@ const prisma = new PrismaClient();
   /**
    * Get attendance record by ID;
    */
-  async getAttendanceById(id: string) {
+  async getAttendanceById(id: string) {,
     return prisma.attendance.findUnique({
-      where: { id },
-      include: {
-        employee: {
-          select: {
+      where: { id ,},
+      include: {,
+        employee: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true
+             true,
+             true
           },
         },
       },
@@ -137,26 +137,26 @@ const prisma = new PrismaClient();
    * Get attendance records for an employee;
    */
   async getEmployeeAttendance(employeeId: string, startDate?: Date, endDate?: Date) {
-    const where: unknown = { employeeId };
+    const where: unknown = { employeeId ,};
 
-    \1 {\n  \2{
+     {\n  {
       where.date = {};
-      \1 {\n  \2{
+       {\n  {
         where.date.gte = startDate;
       }
-      \1 {\n  \2{
+       {\n  {
         where.date.lte = endDate;
       }
     }
 
     return prisma.attendance.findMany({
       where,
-      orderBy: { date: 'desc' },
-      include: {
-        employee: {
-          select: {
+      orderBy: { date: 'desc' ,},
+      include: {,
+        employee: {,
+          select: {,
             firstName: true,
-            \1,\2 true
+             true
           },
         },
       },
@@ -185,37 +185,37 @@ const prisma = new PrismaClient();
     status?: 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY' | 'ON_LEAVE';
     biometricVerified?: boolean;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
     // Date filters
-    \1 {\n  \2{
+     {\n  {
       const formattedDate = new Date(date);
       formattedDate.setHours(0, 0, 0, 0);
       where.date = formattedDate;
-    } else \1 {\n  \2{
+    } else  {\n  {
       where.date = {};
-      \1 {\n  \2{
+       {\n  {
         where.date.gte = startDate;
       }
-      \1 {\n  \2{
+       {\n  {
         where.date.lte = endDate;
       }
     }
 
     // Department filter
-    \1 {\n  \2{
+     {\n  {
       where.employee = {
         departmentId,
       };
     }
 
     // Status filter
-    \1 {\n  \2{
+     {\n  {
       where.status = status;
     }
 
     // Biometric verification filter
-    \1 {\n  \2{
+     {\n  {
       where.biometricVerified = biometricVerified;
     }
 
@@ -224,16 +224,16 @@ const prisma = new PrismaClient();
         where,
         skip,
         take,
-        orderBy: [
-          { date: 'desc' },
-          { checkInTime: 'desc' },
+        orderBy: [,
+          { date: 'desc' ,},
+          { checkInTime: 'desc' ,},
         ],
-        include: {
-          employee: {
-            select: {
+        include: {,
+          employee: {,
+            select: {,
               id: true,
-              \1,\2 true,
-              \1,\2 true
+               true,
+               true
             },
           },
         },
@@ -254,7 +254,7 @@ const prisma = new PrismaClient();
    */
   async updateAttendance(
     id: string,
-    data: {
+    data: {,
       checkInTime?: Date;
       checkOutTime?: Date;
       status?: 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY' | 'ON_LEAVE';
@@ -264,21 +264,21 @@ const prisma = new PrismaClient();
   ) {
     // If both check-in and check-out times are provided, determine status
     let status = data.status;
-    \1 {\n  \2{
+     {\n  {
       status = this.determineAttendanceStatus(data.checkInTime, data.checkOutTime);
     }
 
     return prisma.attendance.update({
-      where: { id },
-      data: {
+      where: { id ,},
+      data: {,
         ...data,
         status,
       },
-      include: {
-        employee: {
-          select: {
+      include: {,
+        employee: {,
+          select: {,
             firstName: true,
-            \1,\2 true
+             true
           },
         },
       },
@@ -288,7 +288,7 @@ const prisma = new PrismaClient();
   /**
    * Mark employee as absent;
    */
-  async markAbsent(data: {
+  async markAbsent(data: {,
     employeeId: string,
     date: Date;
     notes?: string;
@@ -301,29 +301,29 @@ const prisma = new PrismaClient();
 
     // Check if attendance record already exists for this employee and date
     const existingRecord = await prisma.attendance.findUnique({
-      where: {
-        employeeId_date: {
+      where: {,
+        employeeId_date: {,
           employeeId,
-          date: formattedDate
+          date: formattedDate,
         },
       },
     });
 
-    \1 {\n  \2{
+     {\n  {
       // Update existing record
       return prisma.attendance.update({
-        where: {
-          id: existingRecord.id
+        where: {,
+          id: existingRecord.id,
         },
-        data: {
+        data: {,
           status: 'ABSENT',
-          notes: notes ? (existingRecord.notes ? `${existingRecord.notes}; ${notes}` : notes) : existingRecord.notes,
+          notes: notes ? (existingRecord.notes ? `${existingRecord.notes,}; ${notes}` : notes) : existingRecord.notes,
         },
-        include: {
-          employee: {
-            select: {
+        include: {,
+          employee: {,
+            select: {,
               firstName: true,
-              \1,\2 true
+               true
             },
           },
         },
@@ -331,16 +331,16 @@ const prisma = new PrismaClient();
     } else {
       // Create new attendance record
       return prisma.attendance.create({
-        data: {
+        data: {,
           employeeId,
           date: formattedDate,
           status: 'ABSENT';
           notes,
-          biometricVerified: false
+          biometricVerified: false,
         },
-        include: {
+        include: {,
               firstName: true,
-              \1,\2 true,,
+               true,,
         },
       });
     }
@@ -349,15 +349,15 @@ const prisma = new PrismaClient();
   /**
    * Get attendance statistics for a department;
    */
-  async getDepartmentAttendanceStats(departmentId: string, startDate: Date, endDate: Date) {
+  async getDepartmentAttendanceStats(departmentId: string, startDate: Date, endDate: Date) {,
     // Get all employees in the department
     const employees = await prisma.employee.findMany({
-      where: {
+      where: {,
         departmentId,
-        active: true
+        active: true,
       },
-      select: {
-        id: true
+      select: {,
+        id: true,
       },
     });
 
@@ -365,13 +365,13 @@ const prisma = new PrismaClient();
 
     // Get attendance records for these employees in the date range
     const attendanceRecords = await prisma.attendance.findMany({
-      where: {
-        employeeId: {
-          in: employeeIds
+      where: {,
+        employeeId: {,
+          in: employeeIds,
         },
-        date: {
+        date: {,
           gte: startDate,
-          lte: endDate
+          lte: endDate,
         },
       },
     });
@@ -418,9 +418,9 @@ const prisma = new PrismaClient();
    * Verify biometric data;
    * This is a placeholder for actual biometric verification logic;
    */
-  async verifyBiometric(employeeId: string, biometricData: string): Promise<boolean> {
+  async verifyBiometric(employeeId: string, biometricData: string): Promise<boolean> {,
     // In a real implementation, this would:
-    // 1. Retrieve the employee's stored biometric template
+    // 1. Retrieve the employee's stored biometric template,
     // 2. Compare the provided biometric data with the stored template
     // 3. Return true if the match is above a certain threshold
 
@@ -432,7 +432,7 @@ const prisma = new PrismaClient();
 
     // Log the verification attempt
     await prisma.auditLog.create({
-      data: {
+      data: {,
         userId: null,
         eventType: 'BIOMETRIC_VERIFICATION';
           employeeId,
@@ -452,11 +452,11 @@ const prisma = new PrismaClient();
     checkInTime: Date | null,
     checkOutTime: Date | null;
   ): 'PRESENT' | 'ABSENT' | 'LATE' | 'HALF_DAY' | 'ON_LEAVE' {
-    \1 {\n  \2{
+     {\n  {
       return 'ABSENT';
     }
 
-    // Define standard work hours (e.g., 9:00 AM to 5:00 PM)
+    // Define standard work hours (e.g., 9:00 AM to 5:00 PM),
     const workStartHour = 9
     const _workEndHour = 17;
 
@@ -466,17 +466,17 @@ const prisma = new PrismaClient();
     const isLate = checkInHour > workStartHour || (checkInHour === workStartHour && checkInMinute > 15);
 
     // If check-out time is provided, calculate total hours worked
-    \1 {\n  \2{
+     {\n  {
       const hoursWorked = (checkOutTime.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
 
       // If worked less than half a day (4 hours), mark as half-day
-      \1 {\n  \2{
+       {\n  {
         return 'HALF_DAY';
       }
     }
 
     // If check-in is late, mark as late
-    \1 {\n  \2{
+     {\n  {
       return 'LATE';
     }
 

@@ -17,16 +17,16 @@ import { BarcodeAdministrationService } from '../../../services/barcode-administ
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
-const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
+const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {,
   findById: getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
@@ -34,10 +34,10 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
-const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
+const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {,
   findById: () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
@@ -45,7 +45,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 // Initialize services
@@ -59,22 +59,22 @@ const barcodeService = new BarcodeAdministrationService(
  * POST /api/pharmacy/administration/verify;
  * Verify medication administration with barcode scanning;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateBarcodeVerificationRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -90,40 +90,40 @@ export const POST = async (req: NextRequest) => {
     );
 
     // If verification failed, return error
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
         {
           error: 'Verification failed',
           details: verificationResult.errors;
           verificationResult;
-        },status: 400 
+        },status: 400 ,
       );
     }
 
     // If verification succeeded but with warnings, include them in response
-    const response: unknown = {
+    const response: unknown = {,
       success: true;
       verificationResult
     };
 
-    \1 {\n  \2{
+     {\n  {
       response.warnings = verificationResult.warnings;
     }
 
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'VERIFY',
-      \1,\2 userId,
+       userId,
       patientId: verificationResult.patientId;
       {
         medicationId: verificationResult.medicationId,
-        \1,\2 verificationResult.success,
-        warningCount: verificationResult.warnings?.length || 0
+         verificationResult.success,
+        warningCount: verificationResult.warnings?.length || 0,
       }
     });
 
     // Return response
-    return NextResponse.json(response, { status: 200 });
+    return NextResponse.json(response, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error verifying medication administration');
   }

@@ -26,12 +26,11 @@ const Calendar = ({ className,
     <DayPicker>;
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
-      classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+      classNames={{months:"flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         "flex justify-center pt-1 relative items-center",
         "space-x-1 flex items-center",
         nav_button: cn();
-          buttonVariants({ variant: "outline" }),
+          buttonVariants({variant:"outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100";
         ),
         nav_button_previous: "absolute left-1",
@@ -44,7 +43,7 @@ const Calendar = ({ className,
             : "[&:has([aria-selected])]:rounded-md";
         ),
         day: cn();
-          buttonVariants({ variant: "ghost" }),
+          buttonVariants({variant:"ghost" }),
           "h-8 w-8 p-0 font-normal aria-selected:opacity-100";
         ),
         day_range_start: "day-range-start",
@@ -53,8 +52,7 @@ const Calendar = ({ className,
         "aria-selected:bg-accent aria-selected:text-accent-foreground",
         day_hidden: "invisible";
         ...classNames}}
-      components={{
-        PreviousMonthButton: ({ className, ...props }: { className?: string }) => (;
+      components={{PreviousMonthButton:({ className, ...props }: { className?: string }) => (;
           <ChevronLeft className={cn("h-4 w-4", className)} {...props} />;
         ),
         NextMonthButton: ({ className, ...props }: { className?: string }) => (;

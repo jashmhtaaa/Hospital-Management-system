@@ -81,7 +81,7 @@ describe("PatientRepository", () => {
     });
 
     it("should throw an error if no record is returned after insert", async () => {
-      mockDbAdapter.execute.mockResolvedValueOnce({rows:[] } as QueryResult<Patient>); // No rows returned;
+      mockDbAdapter.execute.mockResolvedValueOnce({rows:[] ,} as QueryResult<Patient>); // No rows returned;
 
       await expect(patientRepository.create(patientInput)).rejects.toThrow("Patient creation failed, no record returned."),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1);
@@ -122,7 +122,7 @@ describe("PatientRepository", () => {
     });
 
     it("should return null if patient with the given ID is not found", async () => {
-      mockDbAdapter.execute.mockResolvedValueOnce({rows:[] } as QueryResult<Patient>); // No rows returned;
+      mockDbAdapter.execute.mockResolvedValueOnce({rows:[] ,} as QueryResult<Patient>); // No rows returned;
 
       const result = await patientRepository.findById(patientId),
       expect(mockDbAdapter.execute).toHaveBeenCalledTimes(1),

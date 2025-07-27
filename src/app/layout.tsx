@@ -7,13 +7,11 @@ import { Metadata }
 
 import { ThemeProvider } from "@/components/theme-provider"; // Added ThemeProvider;
 import { Toaster } from "@/components/ui/sonner"; // Added Toaster for notifications;
-const _geistSans = Geist({
-  variable: "--font-geist-sans",
+const _geistSans = Geist({variable:"--font-geist-sans",
   subsets: ["latin"];
 });
 
-const _geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const _geistMono = Geist_Mono({variable:"--font-geist-mono",
   subsets: ["latin"];
 });
 
@@ -23,8 +21,7 @@ export const "Hospital Management System",
 };
 
 export default const _RootLayout = ({
-  children}: Readonly<{
-  children: React.ReactNode;
+  children}: Readonly<{children:React.ReactNode;
 }>) {
   return();
     // Keep lang="en" and dark class from origin/master;

@@ -7,34 +7,34 @@ import { getSession } from "@/lib/session";
 // FHIR-compliant Observation resource structure
 interface FHIRObservation {
   resourceType: "Observation",
-  \1,\2 {
+   {
     versionId: string,
     lastUpdated: string;
     security?: Array<{
       system: string,
-      \1,\2 string
+       string
     }>
   };
   status: "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown",
-  category: Array<{
-    coding: Array<{
+  category: Array<{,
+    coding: Array<{,
       system: string,
-      \1,\2 string
+       string
     }>;
   }>;
-  code: {
-    coding: Array<{
+  code: {,
+    coding: Array<{,
       system: string,
-      \1,\2 string
+       string
     }>;
-    text: string
+    text: string,
   };
-  subject: {
+  subject: {,
     reference: string;
     display?: string
   };
   encounter?: {
-    reference: string
+    reference: string,
   };
   effectiveDateTime: string;
   issued?: string;
@@ -44,58 +44,58 @@ interface FHIRObservation {
   }>;
   valueQuantity?: {
     value: number,
-    \1,\2 string,
-    code: string
+     string,
+    code: string,
   };
   valueString?: string;
   valueBoolean?: boolean;
   valueInteger?: number;
   valueCodeableConcept?: {
-    coding: Array<{
+    coding: Array<{,
       system: string,
-      \1,\2 string
+       string
     }>;
-    text: string
+    text: string,
   };
   dataAbsentReason?: {
-    coding: Array<{
+    coding: Array<{,
       system: string,
-      \1,\2 string
+       string
     }>;
-    text: string
+    text: string,
   };
   interpretation?: Array<{
-    coding: Array<{
+    coding: Array<{,
       system: string,
-      \1,\2 string
+       string
     }>;
-    text: string
+    text: string,
   }>;
   note?: Array<{
-    text: string
+    text: string,
   }>;
   referenceRange?: Array<{
     low?: {
       value: number,
-      \1,\2 string,
-      code: string
+       string,
+      code: string,
     };
     high?: {
       value: number,
-      \1,\2 string,
-      code: string
+       string,
+      code: string,
     };
     text?: string;
   }>;
   specimen?: {
-    reference: string
+    reference: string,
   };
   method?: {
-    coding: Array<{
+    coding: Array<{,
       system: string,
-      \1,\2 string
+       string
     }>;
-    text: string
+    text: string,
   };
   device?: {
     reference: string;
@@ -150,13 +150,13 @@ interface LabResultCreateBody {
 }
 
 // GET /api/diagnostics/lab/results - Get laboratory results with enhanced filtering
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters
@@ -220,60 +220,60 @@ export const _GET = async (request: NextRequest) => {
     const parameters: unknown[] = [];
     const conditions: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("oi.order_id = ?");
       parameters.push(orderId);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("r.order_item_id = ?");
       parameters.push(orderItemId);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("o.patient_id = ?");
       parameters.push(patientId);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("oi.test_id = ?");
       parameters.push(testId);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("r.parameter_id = ?");
       parameters.push(parameterId);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("r.status = ?");
       parameters.push(status);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("r.interpretation = ?");
       parameters.push(interpretation);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("r.performed_at >= ?");
       parameters.push(fromDate);
     }
 
-    \1 {\n  \2{
+     {\n  {
       conditions.push("r.performed_at <= ?");
       parameters.push(toDate);
     }
 
-    \1 {\n  \2{
-      \1 {\n  \2{
+     {\n  {
+       {\n  {
         conditions.push("r.verified_by IS NOT NULL");
       } else {
         conditions.push("r.verified_by IS NULL");
       }
     }
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE " + conditions.join(" AND ");
     }
 
@@ -291,7 +291,7 @@ export const _GET = async (request: NextRequest) => {
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_results r JOIN lab_order_items oi ON r.order_item_id = oi.id JOIN lab_orders o ON oi.order_id = o.id";
 
-    \1 {\n  \2{
+     {\n  {
       countQuery += " WHERE " + conditions.join(" AND ");
     }
 
@@ -299,12 +299,12 @@ export const _GET = async (request: NextRequest) => {
     const totalCount = countResult.results?.[0]?.total || 0;
 
     // Format response based on requested format
-    \1 {\n  \2{
+     {\n  {
       // Transform to FHIR Observation resources
       const fhirResources = await Promise.all(results.map(async (result) => {
         // Get reference ranges for this test/parameter
         let referenceRanges = [];
-        \1 {\n  \2{
+         {\n  {
           const rangesQuery = `;
             SELECT * FROM lab_test_reference_ranges;
             WHERE test_id = ? AND parameter_id = ?;
@@ -314,111 +314,111 @@ export const _GET = async (request: NextRequest) => {
           referenceRanges = rangesResult.results || [];
         }
 
-        const resource: FHIRObservation = {
+        const resource: FHIRObservation = {,
           resourceType: "Observation",
           id: result.id.toString(),
-          meta: {
+          meta: {,
             versionId: "1",
-            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString()
+            lastUpdated: result.updated_at || result.performed_at || new Date().toISOString(),
           },
           status: mapStatusToFHIR(result.status || "preliminary"),
-          category: [
+          category: [,
             {
-              coding: [
+              coding: [,
                 {
                   system: "https://terminology.hl7.org/CodeSystem/observation-category",
-                  \1,\2 "Laboratory"
+                   "Laboratory"
                 }
               ]
             }
           ],
-          code: {
-            coding: [
+          code: {,
+            coding: [,
               {
                 system: "https://loinc.org",
-                \1,\2 result.parameter_name || result.test_name
+                 result.parameter_name || result.test_name
               }
             ],
-            text: result.parameter_name || result.test_name
+            text: result.parameter_name || result.test_name,
           },
-          subject: {
-            reference: `Patient/${result.patient_id}`,
-            display: `/* SECURITY: Template literal eliminated */
+          subject: {,
+            reference: `Patient/${result.patient_id,}`,
+            display: `/* SECURITY: Template literal eliminated */,
           effectiveDateTime: result.performed_at,
-          performer: [
+          performer: [,
             {
-              reference: `Practitioner/${result.performed_by}`,
-              display: result.performed_by_username
+              reference: `Practitioner/${result.performed_by,}`,
+              display: result.performed_by_username,
             }
           ]
         };
 
         // Add verification information if verified
-        \1 {\n  \2{
+         {\n  {
           resource.issued = result.verified_at;
-          \1 {\n  \2esource.performer = [];
+           {\n  esource.performer = [];
           resource.performer.push({
-            reference: `Practitioner/${result.verified_by}`,
-            display: result.verified_by_username
+            reference: `Practitioner/${result.verified_by,}`,
+            display: result.verified_by_username,
           });
         }
 
         // Add specimen reference if available
-        \1 {\n  \2{
+         {\n  {
           resource.specimen = {
-            reference: `Specimen/$result.specimen_id || 'unknown'`
+            reference: `Specimen/$result.specimen_id || 'unknown'`,
           };
         }
 
         // Add method if available
-        \1 {\n  \2{
+         {\n  {
           resource.method = {
-            coding: [
+            coding: [,
               {
                 system: result.method_system || "https://terminology.hl7.org/CodeSystem/v2-0936",
-                \1,\2 result.method
+                 result.method
               }
             ],
-            text: result.method
+            text: result.method,
           }
         }
 
         // Add device if available
-        \1 {\n  \2{
+         {\n  {
           resource.device = {
             reference: `Device/$result.device_id`,
-            display: result.device_name
+            display: result.device_name,
           };
         }
 
         // Add result value based on type
-        \1 {\n  \2{
+         {\n  {
           resource.valueQuantity = {
             value: result.result_value_numeric,
-            \1,\2 result.unit_system || "https://unitsofmeasure.org",
-            code: result.unit_code || result.unit || ""
+             result.unit_system || "https://unitsofmeasure.org",
+            code: result.unit_code || result.unit || "",
           }
-        } else \1 {\n  \2{
+        } else  {\n  {
           resource.valueString = result.result_value_text;
-        } else \1 {\n  \2{
+        } else  {\n  {
           resource.valueCodeableConcept = {
-            coding: [
+            coding: [,
               {
                 system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
-                \1,\2 result.result_value_coded
+                 result.result_value_coded
               }
             ],
-            text: result.result_value_coded
+            text: result.result_value_coded,
           }
-        } else \1 {\n  \2{
+        } else  {\n  {
           resource.valueBoolean = result.result_value_boolean;
-        } else \1 {\n  \2{
+        } else  {\n  {
           // Legacy field - try to determine type
-          \1 {\n  \2) {
+           {\n  ) {
             resource.valueQuantity = {
               value: Number(result.result_value),
-              \1,\2 result.unit_system || "https://unitsofmeasure.org",
-              code: result.unit_code || result.unit || ""
+               result.unit_system || "https://unitsofmeasure.org",
+              code: result.unit_code || result.unit || "",
             }
           } else {
             resource.valueString = result.result_value;
@@ -426,49 +426,49 @@ export const _GET = async (request: NextRequest) => {
         } else {
           // No result value
           resource.dataAbsentReason = {
-            coding: [
+            coding: [,
               {
                 system: "https://terminology.hl7.org/CodeSystem/data-absent-reason",
-                \1,\2 "Unknown"
+                 "Unknown"
               }
             ],
-            text: "Result value not provided"
+            text: "Result value not provided",
           }
         }
 
         // Add interpretation if available
-        \1 {\n  \2{
+         {\n  {
           resource.interpretation = [
             {
-              coding: [
+              coding: [,
                 {
                   system: "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
                   code: mapInterpretationToFHIR(result.interpretation),
-                  display: result.interpretation
+                  display: result.interpretation,
                 }
               ],
-              text: result.interpretation
+              text: result.interpretation,
             }
           ]
         }
 
         // Add notes if available
-        \1 {\n  \2{
+         {\n  {
           resource.note = [];
 
-          \1 {\n  \2{
+           {\n  {
             resource.note.push({
-              text: result.notes
+              text: result.notes,
             });
           }
 
-          \1 {\n  \2{
+           {\n  {
             resource.note.push({
               text: `Delta check: $result.delta_check_notes`;
             });
           }
 
-          \1 {\n  \2{
+           {\n  {
             resource.note.push({
               text: `Correction: $result.correction_reason`;
             });
@@ -476,39 +476,39 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add reference ranges if available
-        \1 {\n  \2{
+         {\n  {
           resource.referenceRange = referenceRanges.map(range => {
-            const refRange: unknown = {};
+            const refRange: unknown = {,};
 
-            \1 {\n  \2{
+             {\n  {
               refRange.low = {
                 value: range.value_low,
-                \1,\2 "https://unitsofmeasure.org",
-                code: range.unit || ""
+                 "https://unitsofmeasure.org",
+                code: range.unit || "",
               }
             }
 
-            \1 {\n  \2{
+             {\n  {
               refRange.high = {
                 value: range.value_high,
-                \1,\2 "https://unitsofmeasure.org",
-                code: range.unit || ""
+                 "https://unitsofmeasure.org",
+                code: range.unit || "",
               }
             }
 
-            \1 {\n  \2{
+             {\n  {
               refRange.text = range.text_value;
-            } else \1 {\n  \2| (range.age_high !== null &&;
+            } else  {\n  | (range.age_high !== null &&;
               range.age_high !== undefined)) {
               let text = "Reference range";
-              \1 {\n  \2{
+               {\n  {
                 text += ` for ${range.gender}`;
               }
-              \1 {\n  \2{
+               {\n  {
                 text += ` age $range.age_low-$range.age_high`;
-              } else \1 {\n  \2{
+              } else  {\n  {
                 text += ` age >= $range.age_low`;
-              } else \1 {\n  \2{
+              } else  {\n  {
                 text += ` age <= $range.age_high`;
               }
               refRange.text = text;
@@ -519,11 +519,11 @@ export const _GET = async (request: NextRequest) => {
         }
 
         // Add security tag for sensitive results if needed
-        \1 {\n  \2{
+         {\n  {
           resource.meta.security = [
             {
               system: "https://terminology.hl7.org/CodeSystem/v3-Confidentiality",
-              \1,\2 "Restricted"
+               "Restricted"
             }
           ]
         }
@@ -533,14 +533,14 @@ export const _GET = async (request: NextRequest) => {
 
       return NextResponse.json({
         resourceType: "Bundle",
-        \1,\2 totalCount,
-        link: [
+         totalCount,
+        link: [,
           {
             relation: "self",
-            url: request.url
+            url: request.url,
           }
         ],
-        entry: fhirResources.map(resource => ({
+        entry: fhirResources.map(resource => ({,
           resource
         }));
       });
@@ -548,50 +548,50 @@ export const _GET = async (request: NextRequest) => {
       // Return default format with pagination metadata
       return NextResponse.json({
         data: results,
-        pagination: {
+        pagination: {,
           page,
           pageSize,
           totalCount,
-          totalPages: Math.ceil(totalCount / pageSize)
+          totalPages: Math.ceil(totalCount / pageSize),
         }
       });
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to fetch laboratory results", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch laboratory results", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/diagnostics/lab/results - Create a new laboratory result with enhanced features
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse request body
     const body = await request.json() as LabResultCreateBody;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Order item ID is required" },
-        { status: 400 }
+        { error: "Order item ID is required" ,},
+        { status: 400 },
       );
     }
 
     // Validate that at least one result value is provided
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "At least one result value must be provided" },
-        { status: 400 }
+        { error: "At least one result value must be provided" ,},
+        { status: 400 },
       );
     }
 
@@ -613,70 +613,70 @@ export const _POST = async (request: NextRequest) => {
       [body.order_item_id]
     );
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Order item not found" },
-        { status: 404 }
+        { error: "Order item not found" ,},
+        { status: 404 },
       );
     }
 
     const orderItem = orderItemCheckResult.results[0];
 
     // Check if parameter exists if provided
-    \1 {\n  \2{
+     {\n  {
       const parameterCheckResult = await DB.query(
         "SELECT * FROM lab_test_parameters WHERE id = ?",
         [body.parameter_id]
       );
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "Parameter not found" },
-          { status: 404 }
+          { error: "Parameter not found" ,},
+          { status: 404 },
         );
       }
     }
 
     // Check if device exists if provided
-    \1 {\n  \2{
+     {\n  {
       const deviceCheckResult = await DB.query(
         "SELECT * FROM lab_devices WHERE id = ?",
         [body.device_id]
       );
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "Device not found" },
-          { status: 404 }
+          { error: "Device not found" ,},
+          { status: 404 },
         );
       }
     }
 
     // Check if previous result exists if this is a correction
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Previous result ID is required for corrections" },
-        { status: 400 }
+        { error: "Previous result ID is required for corrections" ,},
+        { status: 400 },
       );
     }
 
-    \1 {\n  \2{
+     {\n  {
       const previousResultCheckResult = await DB.query(
         "SELECT * FROM lab_results WHERE id = ?",
         [body.previous_result_id]
       );
 
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "Previous result not found" },
-          { status: 404 }
+          { error: "Previous result not found" ,},
+          { status: 404 },
         );
       }
     }
 
     // Perform delta check if requested
     let deltaCheckResult = null;
-    \1 {\n  \2{
+     {\n  {
       // Get previous results for this patient, test, and parameter
       const previousResultsQuery = `;
         SELECT;
@@ -702,7 +702,7 @@ export const _POST = async (request: NextRequest) => {
         orderItem.test_id;
       ];
 
-      \1 {\n  \2{
+       {\n  {
         queryParams.push(body.parameter_id);
       }
 
@@ -711,7 +711,7 @@ export const _POST = async (request: NextRequest) => {
       const previousResultsResult = await DB.query(previousResultsQuery, queryParams);
       const previousResult = previousResultsResult.results?.[0];
 
-      \1 {\n  \2{
+       {\n  {
         // Calculate delta
         const currentValue = body.result_value_numeric;
         const previousValue = previousResult.result_value_numeric;
@@ -726,7 +726,7 @@ export const _POST = async (request: NextRequest) => {
         `;
 
         const deltaRulesParams = [orderItem.test_id];
-        \1 {\n  \2{
+         {\n  {
           deltaRulesParams.push(body.parameter_id);
         }
 
@@ -736,18 +736,18 @@ export const _POST = async (request: NextRequest) => {
         let deltaCheckPassed = true;
         let deltaCheckNotes = "";
 
-        \1 {\n  \2{
+         {\n  {
           // Apply delta check rule
-          \1 {\n  \2{
+           {\n  {
             deltaCheckPassed = false;
             deltaCheckNotes = `Absolute change (${absoluteDelta.toFixed(2)}) exceeds limit (${deltaRule.absolute_change_limit})`;
-          } else \1 {\n  \2{
+          } else  {\n  {
             deltaCheckPassed = false;
             deltaCheckNotes = `Percent change (${percentDelta.toFixed(2)}%) exceeds limit (${deltaRule.percent_change_limit}%)`;
           }
         } else {
           // Default delta check if no rule exists
-          \1 {\n  \2{
+           {\n  {
             deltaCheckPassed = false;
             deltaCheckNotes = `Large percent change (${percentDelta.toFixed(2)}%) from previous result`;
           }
@@ -755,21 +755,21 @@ export const _POST = async (request: NextRequest) => {
 
         deltaCheckResult = {
           previous_value: previousValue,
-          \1,\2 absoluteDelta,
-          \1,\2 deltaCheckPassed,
-          notes: deltaCheckNotes || `Delta check $deltaCheckPassed ? 'passed' : 'failed'`
+           absoluteDelta,
+           deltaCheckPassed,
+          notes: deltaCheckNotes || `Delta check $deltaCheckPassed ? 'passed' : 'failed'`,
         };
       } else {
         deltaCheckResult = {
           passed: true,
-          notes: "No comparable previous result found for delta check"
+          notes: "No comparable previous result found for delta check",
         };
       }
     }
 
     // Determine interpretation if not provided
     let interpretation = body.interpretation;
-    \1 {\n  \2{
+     {\n  {
       // Get reference ranges for this test/parameter
       const rangesQuery = `;
         SELECT * FROM lab_test_reference_ranges;
@@ -778,27 +778,27 @@ export const _POST = async (request: NextRequest) => {
       `;
 
       const rangesParams = [orderItem.test_id];
-      \1 {\n  \2{
+       {\n  {
         rangesParams.push(body.parameter_id);
       }
 
       const rangesResult = await DB.query(rangesQuery, rangesParams);
       const ranges = rangesResult.results || [];
 
-      \1 {\n  \2{
+       {\n  {
         // Find applicable reference range
         const applicableRanges = ranges.filter(range => {
           // Check gender if specified
-          \1 {\n  \2{
+           {\n  {
             return false;
           }
 
           // Check age if specified
-          \1 {\n  \2& orderItem.patient_age) {
-            \1 {\n  \2{
+           {\n  & orderItem.patient_age) {
+             {\n  {
               return false;
             }
-            \1 {\n  \2{
+             {\n  {
               return false;
             }
           }
@@ -806,23 +806,23 @@ export const _POST = async (request: NextRequest) => {
           return true;
         });
 
-        \1 {\n  \2{
+         {\n  {
           const range = applicableRanges[0];
 
           // Check if result is critical
-          \1 {\n  \2{
-            \1 {\n  \2{
+           {\n  {
+             {\n  {
               interpretation = "critical-low",
-            } else \1 {\n  \2{
+            } else  {\n  {
               interpretation = "critical-high",
             }
           }
 
           // If not critical, check if abnormal
-          \1 {\n  \2{
-            \1 {\n  \2{
+           {\n  {
+             {\n  {
               interpretation = "low",
-            } else \1 {\n  \2{
+            } else  {\n  {
               interpretation = "high",
             } else {
               interpretation = "normal",
@@ -837,7 +837,7 @@ export const _POST = async (request: NextRequest) => {
 
     try {
       // If this is a correction, update the previous result status
-      \1 {\n  \2{
+       {\n  {
         await DB.query(
           "UPDATE lab_results SET status = 'corrected', updated_at = NOW() WHERE id = ?",
           [body.previous_result_id]
@@ -847,7 +847,7 @@ export const _POST = async (request: NextRequest) => {
       // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
         notes: body.notes,
-        \1,\2 deltaCheckResult?.notes
+         deltaCheckResult?.notes
       });
 
       // Insert result
@@ -905,7 +905,7 @@ export const _POST = async (request: NextRequest) => {
       // Check if all parameters for this order item have results
       let allParametersCompleted = false;
 
-      \1 {\n  \2{
+       {\n  {
         const parametersQuery = `;
           SELECT id FROM lab_test_parameters WHERE test_id = ?;
         `;
@@ -913,7 +913,7 @@ export const _POST = async (request: NextRequest) => {
         const parametersResult = await DB.query(parametersQuery, [orderItem.test_id]);
         const parameters = parametersResult.results || [];
 
-        \1 {\n  \2{
+         {\n  {
           // Test has parameters, check if all have results
           const _parameterIds = parameters.map(p => p.id);
 
@@ -941,7 +941,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Update order item status if all parameters are completed
-      \1 {\n  \2{
+       {\n  {
         await DB.query(
           "UPDATE lab_order_items SET status = ? WHERE id = ?",
           ["completed", body.order_item_id]
@@ -958,7 +958,7 @@ export const _POST = async (request: NextRequest) => {
         const allOrderItemsCompleted = orderItems.every(item => item.status === "completed");
 
         // Update order status if all items are completed
-        \1 {\n  \2{
+         {\n  {
           await DB.query(
             "UPDATE lab_orders SET status = ? WHERE id = ?",
             ["completed", orderItem.order_id]
@@ -971,8 +971,8 @@ export const _POST = async (request: NextRequest) => {
 
           const reportCheckResult = await DB.query(reportCheckQuery, [orderItem.order_id]);
 
-          \1 {\n  \2{
-            const reportNumber = `REP/* SECURITY: Template literal eliminated */
+           {\n  {
+            const reportNumber = `REP/* SECURITY: Template literal eliminated */,
 
             await DB.query(
               `INSERT INTO lab_reports (
@@ -990,7 +990,7 @@ export const _POST = async (request: NextRequest) => {
       }
 
       // Create critical result alert if interpretation is critical
-      \1 {\n  \2{
+       {\n  {
         await DB.query(
           `INSERT INTO lab_critical_alerts (
             result_id, order_id, patient_id, test_id, parameter_id,
@@ -1004,7 +1004,7 @@ export const _POST = async (request: NextRequest) => {
             body.parameter_id || null,
             interpretation,
             body.result_value_numeric !== undefined ? body.result_value_numeric :
-              body.result_value_text ||
+              body.result_value_text ||,
               body.result_value_coded ||
               (body.result_value_boolean !== undefined ? (body.result_value_boolean ? "true" : "false") : ""),
             "pending",
@@ -1054,27 +1054,27 @@ export const _POST = async (request: NextRequest) => {
       const resultFetchResult = await DB.query(fetchQuery, [resultId]);
       const createdResult = resultFetchResult.results?.[0];
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error("Failed to retrieve created result");
       }
 
       // Include delta check result if performed
-      \1 {\n  \2{
+       {\n  {
         createdResult.delta_check_details = deltaCheckResult;
       }
 
       // Return the created result
-      return NextResponse.json(createdResult, { status: 201 });
+      return NextResponse.json(createdResult, { status: 201 ,});
     } catch (error) 
       // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to create laboratory result", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create laboratory result", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -1082,14 +1082,14 @@ export const _POST = async (request: NextRequest) => {
 // PUT /api/diagnostics/lab/results/:id - Update a laboratory result
 export const _PUT = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const resultId = params.id;
@@ -1109,10 +1109,10 @@ export const _PUT = async (
       [resultId]
     );
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Result not found" },
-        { status: 404 }
+        { error: "Result not found" ,},
+        { status: 404 },
       );
     }
 
@@ -1121,10 +1121,10 @@ export const _PUT = async (
     // Check if result is already verified and not being corrected
     const body = await request.json() as Partial<LabResultCreateBody>;
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Cannot update a verified result without creating a correction" },
-        { status: 400 }
+        { error: "Cannot update a verified result without creating a correction" ,},
+        { status: 400 },
       );
     }
 
@@ -1133,19 +1133,19 @@ export const _PUT = async (
 
     try {
       // If this is being converted to a correction, create a new result instead
-      \1 {\n  \2{
+       {\n  {
         // Create a new result as a correction
-        const correctionBody: LabResultCreateBody = {
+        const correctionBody: LabResultCreateBody = {,
           order_item_id: existingResult.order_item_id,
-          \1,\2 body.result_value_numeric !== undefined ? body.result_value_numeric : existingResult.result_value_numeric,
-          \1,\2 body.result_value_coded !== undefined ? body.result_value_coded : existingResult.result_value_coded,
-          \1,\2 body.unit !== undefined ? body.unit : existingResult.unit,
-          \1,\2 body.unit_system !== undefined ? body.unit_system : existingResult.unit_system,
-          \1,\2 body.method !== undefined ? body.method : existingResult.method,
-          \1,\2 body.method_system !== undefined ? body.method_system : existingResult.method_system,
-          \1,\2 body.device_name !== undefined ? body.device_name : existingResult.device_name,
-          \1,\2 true,
-          \1,\2 existingResult.id
+           body.result_value_numeric !== undefined ? body.result_value_numeric : existingResult.result_value_numeric,
+           body.result_value_coded !== undefined ? body.result_value_coded : existingResult.result_value_coded,
+           body.unit !== undefined ? body.unit : existingResult.unit,
+           body.unit_system !== undefined ? body.unit_system : existingResult.unit_system,
+           body.method !== undefined ? body.method : existingResult.method,
+           body.method_system !== undefined ? body.method_system : existingResult.method_system,
+           body.device_name !== undefined ? body.device_name : existingResult.device_name,
+           true,
+           existingResult.id
         };
 
         // Mark the existing result as corrected
@@ -1157,7 +1157,7 @@ export const _PUT = async (
         // Encrypt sensitive data if needed
         const encryptedData = await encryptSensitiveData({
           notes: correctionBody.notes,
-          correctionReason: correctionBody.correction_reason
+          correctionReason: correctionBody.correction_reason,
         });
 
         // Insert correction
@@ -1249,20 +1249,20 @@ export const _PUT = async (
         const resultFetchResult = await DB.query(fetchQuery, [newResultId]);
         const createdCorrection = resultFetchResult.results?.[0];
 
-        \1 {\n  \2{
+         {\n  {
           throw new Error("Failed to retrieve created correction");
         }
 
         return NextResponse.json({
           ...createdCorrection,
-          message: "Created new result as a correction"
-        }, { status: 201 });
+          message: "Created new result as a correction",
+        }, { status: 201 ,});
       } else {
         // Regular update of an unverified result
         // Encrypt sensitive data if needed
         const encryptedData = await encryptSensitiveData({
           notes: body.notes,
-          correctionReason: body.correction_reason
+          correctionReason: body.correction_reason,
         });
 
         // Build update query
@@ -1270,86 +1270,86 @@ export const _PUT = async (
         const updateFields: string[] = [];
         const updateParameters: unknown[] = [];
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("result_value_numeric = ?");
           updateParameters.push(body.result_value_numeric);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("result_value_text = ?");
           updateParameters.push(body.result_value_text);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("result_value_coded = ?");
           updateParameters.push(body.result_value_coded);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("result_value_boolean = ?");
           updateParameters.push(body.result_value_boolean ? 1 : 0);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("unit = ?");
           updateParameters.push(body.unit);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("unit_code = ?");
           updateParameters.push(body.unit_code);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("unit_system = ?");
           updateParameters.push(body.unit_system);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("interpretation = ?");
           updateParameters.push(body.interpretation);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("method = ?");
           updateParameters.push(body.method);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("method_code = ?");
           updateParameters.push(body.method_code);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("method_system = ?");
           updateParameters.push(body.method_system);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("device_id = ?");
           updateParameters.push(body.device_id);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("device_name = ?");
           updateParameters.push(body.device_name);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("notes = ?");
           updateParameters.push(encryptedData.notes);
         }
 
         // Handle verification
-        \1 {\n  \2{
+         {\n  {
           updateFields.push("verified_by = ?");
           updateParameters.push(body.verified_by);
 
-          \1 {\n  \2{
+           {\n  {
             updateFields.push("verified_at = NOW()");
             updateFields.push("status = 'final'");
 
-            \1 {\n  \2{
+             {\n  {
               updateFields.push("verification_signature = ?");
               updateParameters.push(body.verification_signature);
             }
@@ -1357,10 +1357,10 @@ export const _PUT = async (
         }
 
         // Only proceed if there are fields to update
-        \1 {\n  \2{
+         {\n  {
           return NextResponse.json(
-            { error: "No fields to update" },
-            { status: 400 }
+            { error: "No fields to update" ,},
+            { status: 400 },
           );
         }
 
@@ -1375,7 +1375,7 @@ export const _PUT = async (
         await DB.query(updateQuery, updateParameters);
 
         // Create critical result alert if interpretation is critical
-        \1 {\n  \2{
+         {\n  {
           // Check if alert already exists
           const alertCheckQuery = `;
             SELECT id FROM lab_critical_alerts WHERE result_id = ?;
@@ -1383,7 +1383,7 @@ export const _PUT = async (
 
           const alertCheckResult = await DB.query(alertCheckQuery, [resultId]);
 
-          \1 {\n  \2{
+           {\n  {
             await DB.query(
               `INSERT INTO lab_critical_alerts (
                 result_id, order_id, patient_id, test_id, parameter_id,
@@ -1397,7 +1397,7 @@ export const _PUT = async (
                 existingResult.parameter_id || null,
                 body.interpretation,
                 body.result_value_numeric !== undefined ? body.result_value_numeric :
-                  body.result_value_text ||
+                  body.result_value_text ||,
                   body.result_value_coded ||
                   (body.result_value_boolean !== undefined ? (body.result_value_boolean ? "true" : "false") : ""),
                 "pending",
@@ -1448,7 +1448,7 @@ export const _PUT = async (
         const resultFetchResult = await DB.query(fetchQuery, [resultId]);
         const updatedResult = resultFetchResult.results?.[0];
 
-        \1 {\n  \2{
+         {\n  {
           throw new Error("Failed to retrieve updated result");
         }
 
@@ -1460,12 +1460,12 @@ export const _PUT = async (
       await DB.query("ROLLBACK", []);
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to update laboratory result", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update laboratory result", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -1473,19 +1473,19 @@ export const _PUT = async (
 // POST /api/diagnostics/lab/results/:id/verify - Verify a laboratory result
 export const _POST_VERIFY = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const session = await getSession();
 
     // Check authentication and authorization
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab technicians, lab managers, and pathologists can verify results
-    \1 {\n  \2 {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const resultId = params.id;
@@ -1496,20 +1496,20 @@ export const _POST_VERIFY = async (
       [resultId]
     );
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Result not found" },
-        { status: 404 }
+        { error: "Result not found" ,},
+        { status: 404 },
       );
     }
 
     const existingResult = resultCheckResult.results[0];
 
     // Check if result is already verified
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Result is already verified" },
-        { status: 400 }
+        { error: "Result is already verified" ,},
+        { status: 400 },
       );
     }
 
@@ -1525,7 +1525,7 @@ export const _POST_VERIFY = async (
     try {
       // Encrypt sensitive data if needed
       const encryptedData = await encryptSensitiveData({
-        notes: body.notes
+        notes: body.notes,
       });
 
       // Update result
@@ -1591,38 +1591,38 @@ export const _POST_VERIFY = async (
       const resultFetchResult = await DB.query(fetchQuery, [resultId]);
       const verifiedResult = resultFetchResult.results?.[0];
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error("Failed to retrieve verified result");
       }
 
       // Return the verified result
       return NextResponse.json({
         ...verifiedResult,
-        message: "Result verified successfully"
+        message: "Result verified successfully",
       });
     } catch (error) {
       // Rollback transaction on error
       await DB.query("ROLLBACK", []);
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to verify laboratory result", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to verify laboratory result", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // GET /api/diagnostics/lab/results/critical - Get critical results
-export const _GET_CRITICAL = async (request: NextRequest) => {
+export const _GET_CRITICAL = async (request: NextRequest) => {,
   try {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters
@@ -1665,7 +1665,7 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
     // Add filters
     const parameters: unknown[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       query += " WHERE a.status = ?";
       parameters.push(status);
     }
@@ -1684,7 +1684,7 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
     // Get total count for pagination
     let countQuery = "SELECT COUNT(*) as total FROM lab_critical_alerts a";
 
-    \1 {\n  \2{
+     {\n  {
       countQuery += " WHERE a.status = ?";
     }
 
@@ -1694,19 +1694,19 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
     // Return alerts with pagination metadata
     return NextResponse.json({
       data: alerts,
-      pagination: {
+      pagination: {,
         page,
         pageSize,
         totalCount,
-        totalPages: Math.ceil(totalCount / pageSize)
+        totalPages: Math.ceil(totalCount / pageSize),
       }
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to fetch critical alerts", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch critical alerts", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -1714,14 +1714,14 @@ export const _GET_CRITICAL = async (request: NextRequest) => {
 // PUT /api/diagnostics/lab/results/critical/:id - Update critical alert status
 export const _PUT_CRITICAL = async (
   request: NextRequest;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
     const session = await getSession();
 
     // Check authentication
-    \1 {\n  \2{
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     const alertId = params.id;
@@ -1732,10 +1732,10 @@ export const _PUT_CRITICAL = async (
       [alertId]
     );
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Critical alert not found" },
-        { status: 404 }
+        { error: "Critical alert not found" ,},
+        { status: 404 },
       );
     }
 
@@ -1749,17 +1749,17 @@ export const _PUT_CRITICAL = async (
     };
 
     // Validate status
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
-        { error: "Invalid status" },
-        { status: 400 }
+        { error: "Invalid status" ,},
+        { status: 400 },
       );
     }
 
     // Encrypt sensitive data if needed
     const encryptedData = await encryptSensitiveData({
       resolutionNotes: body.resolution_notes,
-      notifiedTo: body.notified_to
+      notifiedTo: body.notified_to,
     });
 
     // Update alert
@@ -1832,24 +1832,24 @@ export const _PUT_CRITICAL = async (
     const alertFetchResult = await DB.query(fetchQuery, [alertId]);
     const updatedAlert = alertFetchResult.results?.[0];
 
-    \1 {\n  \2{
+     {\n  {
       throw new Error("Failed to retrieve updated alert");
     }
 
     // Return the updated alert
     return NextResponse.json(updatedAlert);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json(
-      { error: "Failed to update critical alert", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update critical alert", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // Helper function to map HMS status to FHIR status
-const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {
+const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown" {,
   switch (status) {
     case "registered":
       return "registered";
@@ -1865,12 +1865,12 @@ const mapStatusToFHIR = (status: string): "registered" | "preliminary" | "final"
       return "cancelled";
     case "error":
       return "entered-in-error";
-    default: return "unknown"
+    default: return "unknown",
   }
 }
 
 // Helper function to map HMS interpretation to FHIR interpretation
-const mapInterpretationToFHIR = (interpretation: string): string {
+const mapInterpretationToFHIR = (interpretation: string): string {,
   switch (interpretation) {
     case "normal":
       return "N";
@@ -1888,5 +1888,5 @@ const mapInterpretationToFHIR = (interpretation: string): string {
       return ">";
     case "off-scale-low":
       return "<";
-    default: return "N"
+    default: return "N",
   }

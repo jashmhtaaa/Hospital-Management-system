@@ -21,8 +21,8 @@ export const PrismaAdapter(prisma),
   providers: [;
     CredentialsProvider({
       name: "Credentials",
-      { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+      { label: "Email", type: "email" ,},
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!session.user) {
@@ -53,7 +53,7 @@ export const PrismaAdapter(prisma),
 
     });
   ],
-  callbacks: {
+  callbacks: {,
     async session({ session, token }) ;
       if (!session.user) {
         session.user.id = token.id;

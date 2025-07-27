@@ -17,13 +17,13 @@ import type { PharmacyDomain } from '../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {
@@ -34,7 +34,7 @@ const prescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 const educationRepository = {
@@ -43,29 +43,29 @@ const educationRepository = {
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   save: (education: unknown) => Promise.resolve(education.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 /**
  * POST /api/pharmacy/administration/education;
  * Record patient education for medication;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateEducationRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -73,37 +73,37 @@ export const POST = async (req: NextRequest) => {
 
     // Verify patient exists
     const patient = await getPatientById(data.patientId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Patient not found' ,}, { status: 404 ,});
     }
 
     // Verify medication exists if provided
-    \1 {\n  \2{
+     {\n  {
       const medication = await medicationRepository.findById(data.medicationId);
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Medication not found' }, { status: 404 });
+       {\n  {
+        return NextResponse.json({ error: 'Medication not found' ,}, { status: 404 ,});
       }
     }
 
     // Verify prescription exists if provided
-    \1 {\n  \2{
+     {\n  {
       const prescription = await prescriptionRepository.findById(data.prescriptionId);
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Prescription not found' }, { status: 404 });
+       {\n  {
+        return NextResponse.json({ error: 'Prescription not found' ,}, { status: 404 ,});
       }
     }
 
     // Create education record
     const education = {
       id: data.id || crypto.randomUUID(),
-      \1,\2 data.medicationId,
-      \1,\2 data.educationType || 'verbal',
-      \1,\2 data.materials || [],
-      \1,\2 data.patientUnderstanding || 'good',
-      \1,\2 new Date(),
-      \1,\2 data.followUpDate ? new Date(data.followUpDate) : null,
-      \1,\2 data.interpreter || false,
-      interpreterName: data.interpreterName
+       data.medicationId,
+       data.educationType || 'verbal',
+       data.materials || [],
+       data.patientUnderstanding || 'good',
+       new Date(),
+       data.followUpDate ? new Date(data.followUpDate) : null,
+       data.interpreter || false,
+      interpreterName: data.interpreterName,
     };
 
     // Save education record
@@ -112,21 +112,21 @@ export const POST = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
       action: 'CREATE',
-      \1,\2 educationId,
-      \1,\2 data.patientId,
-      details: 
+       educationId,
+       data.patientId,
+      details: ,
         medicationId: data.medicationId,
-        \1,\2 data.educationType,
-        topics: data.topics
+         data.educationType,
+        topics: data.topics,
     });
 
     // Return response
     return NextResponse.json(
       {
         id: educationId,
-        message: 'Patient education recorded successfully'
+        message: 'Patient education recorded successfully',
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, 'Error recording patient education');
@@ -137,12 +137,12 @@ export const POST = async (req: NextRequest) => {
  * GET /api/pharmacy/administration/education;
  * Get patient education records with filtering options;
  */
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {,
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -160,24 +160,24 @@ export const GET = async (req: NextRequest) => {
     const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Require at least patientId filter
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Patient ID is required' },
-        { status: 400 }
+        { error: 'Patient ID is required' ,},
+        { status: 400 },
       );
     }
 
     // Build filter criteria
-    const filter: unknown = { patientId };
-    \1 {\n  \2ilter.medicationId = medicationId;
-    \1 {\n  \2ilter.prescriptionId = prescriptionId;
-    \1 {\n  \2ilter.educationType = educationType;
+    const filter: unknown = { patientId ,};
+     {\n  ilter.medicationId = medicationId;
+     {\n  ilter.prescriptionId = prescriptionId;
+     {\n  ilter.educationType = educationType;
 
     // Add date range if provided
-    \1 {\n  \2{
+     {\n  {
       filter.educatedAt = {};
-      \1 {\n  \2ilter.educatedAt.gte = new Date(startDate);
-      \1 {\n  \2ilter.educatedAt.lte = new Date(endDate);
+       {\n  ilter.educatedAt.gte = new Date(startDate);
+       {\n  ilter.educatedAt.lte = new Date(endDate);
     }
 
     // Get education records (mock implementation)
@@ -185,20 +185,20 @@ export const GET = async (req: NextRequest) => {
 
     // Apply additional filters
     let filteredRecords = educationRecords;
-    \1 {\n  \2{
+     {\n  {
       filteredRecords = filteredRecords.filter(e => e.medicationId === medicationId);
     }
-    \1 {\n  \2{
+     {\n  {
       filteredRecords = filteredRecords.filter(e => e.prescriptionId === prescriptionId);
     }
-    \1 {\n  \2{
+     {\n  {
       filteredRecords = filteredRecords.filter(e => e.educationType === educationType);
     }
-    \1 {\n  \2{
+     {\n  {
       const startDateTime = new Date(startDate).getTime();
       filteredRecords = filteredRecords.filter(e => new Date(e.educatedAt).getTime() >= startDateTime);
     }
-    \1 {\n  \2{
+     {\n  {
       const endDateTime = new Date(endDate).getTime();
       filteredRecords = filteredRecords.filter(e => new Date(e.educatedAt).getTime() <= endDateTime);
     }
@@ -211,24 +211,24 @@ export const GET = async (req: NextRequest) => {
     // Audit logging
     await auditLog('MEDICATION_EDUCATION', {
       action: 'LIST',
-      \1,\2 userId,
+       userId,
       patientId: patientId;
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length
+        resultCount: paginatedRecords.length,
     });
 
     // Return response
     return NextResponse.json({
       educationRecords: paginatedRecords,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit),
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error retrieving patient education records');
   }

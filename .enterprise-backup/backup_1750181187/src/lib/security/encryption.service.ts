@@ -9,7 +9,7 @@ import { logAuditEvent } from '@/lib/audit';
  * HIPAA-compliant encryption for PHI/PII data protection;
  */
 
-\1
+
 }
     };
 
@@ -19,7 +19,7 @@ import { logAuditEvent } from '@/lib/audit';
   }
 
   public static getInstance(): EncryptionService {
-    \1 {\n  \2{
+     {\n  {
       EncryptionService.instance = new EncryptionService();
     }
     return EncryptionService.instance;
@@ -33,7 +33,7 @@ import { logAuditEvent } from '@/lib/audit';
     context?: EncryptionContext;
   ): string {
     try {
-      \1 {\n  \2{
+       {\n  {
         return plaintext;
       }
 
@@ -52,12 +52,12 @@ import { logAuditEvent } from '@/lib/audit';
       const tag = cipher.getAuthTag();
 
       // Create encrypted data object
-      const encryptedData: EncryptedData = {
+      const encryptedData: EncryptedData = {,
         data: encrypted,
         iv: iv.toString('hex'),
         tag: tag.toString('hex'),
-        \1,\2 this.keyId,
-        version: this.version
+         this.keyId,
+        version: this.version,
       };
 
       // Log encryption event for audit
@@ -81,21 +81,21 @@ import { logAuditEvent } from '@/lib/audit';
     context?: EncryptionContext;
   ): string {
     try {
-      \1 {\n  \2{
+       {\n  {
         return encryptedText;
       }
 
       // Parse encrypted data
-      const encryptedData: EncryptedData = JSON.parse(
+      const encryptedData: EncryptedData = JSON.parse(,
         Buffer.from(encryptedText, 'base64').toString('utf8');
       );
 
       // Validate version and algorithm
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unsupported encryption version');
       }
 
-      \1 {\n  \2{
+       {\n  {
         throw new Error('Unsupported encryption algorithm');
       }
 
@@ -129,7 +129,7 @@ import { logAuditEvent } from '@/lib/audit';
    */
   hash(data: string, salt?: string): string {
     try {
-      \1 {\n  \2{
+       {\n  {
         return data;
       }
 
@@ -152,9 +152,9 @@ import { logAuditEvent } from '@/lib/audit';
   /**
    * Verify hashed data;
    */
-  verifyHash(data: string, hashedData: string): boolean {
+  verifyHash(data: string, hashedData: string): boolean {,
     try {
-      \1 {\n  \2{
+       {\n  {
         return false
       }
 
@@ -180,14 +180,14 @@ import { logAuditEvent } from '@/lib/audit';
   /**
    * Generate secure random token;
    */
-  generateToken(length: number = 32): string {
+  generateToken(length: number = 32): string {,
     return crypto.randomBytes(length).toString('hex')
   }
 
   /**
    * Generate cryptographically secure random string;
    */
-  generateSecureRandom(length: number = 16): string {
+  generateSecureRandom(length: number = 16): string {,
     const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
 
@@ -211,10 +211,10 @@ import { logAuditEvent } from '@/lib/audit';
 
     for (const field of fieldsToEncrypt) {
       const value = obj[field];
-      \1 {\n  \2{
+       {\n  {
         encrypted[field] = this.encrypt(value, {
           ...context,
-          resource: `${context?.resource || 'object'}.${String(field)}`
+          resource: `${context?.resource || 'object'}.${String(field)}`,
         }) as T[keyof T];
       }
     }
@@ -234,11 +234,11 @@ import { logAuditEvent } from '@/lib/audit';
 
     for (const field of fieldsToDecrypt) {
       const value = obj[field];
-      \1 {\n  \2{
+       {\n  {
         try {
           decrypted[field] = this.decrypt(value, {
             ...context,
-            resource: `${context?.resource || 'object'}.${String(field)}`
+            resource: `${context?.resource || 'object'}.${String(field)}`,
           }) as T[keyof T];
         } catch (error) {
           // Debug logging removed}:`, error)
@@ -266,12 +266,12 @@ import { logAuditEvent } from '@/lib/audit';
 
       await logAuditEvent({
         eventType: 'ENCRYPTION_KEY_ROTATION',
-        \1,\2 context?.resource || 'encrypted_data',
-        details: 
+         context?.resource || 'encrypted_data',
+        details: ,
           oldKeyId: this.keyId,
-          \1,\2 context?.purpose ,
+           context?.purpose ,
         ipAddress: context?.ipAddress,
-        severity: 'MEDIUM'
+        severity: 'MEDIUM',
       });
 
       return newEncrypted;
@@ -284,8 +284,8 @@ import { logAuditEvent } from '@/lib/audit';
   /**
    * Data masking for display purposes;
    */
-  maskData(data: string, maskChar: string = '*', visibleChars: number = 4): string {
-    \1 {\n  \2{
+  maskData(data: string, maskChar: string = '*', visibleChars: number = 4): string {,
+     {\n  {
       return maskChar.repeat(data?.length || 8)
     }
 
@@ -298,9 +298,9 @@ import { logAuditEvent } from '@/lib/audit';
   /**
    * Validate encryption integrity;
    */
-  validateIntegrity(encryptedData: string): boolean {
+  validateIntegrity(encryptedData: string): boolean {,
     try {
-      const parsed: EncryptedData = JSON.parse(
+      const parsed: EncryptedData = JSON.parse(,
         Buffer.from(encryptedData, 'base64').toString('utf8');
       );
 
@@ -341,18 +341,18 @@ import { logAuditEvent } from '@/lib/audit';
     error?: string;
   ): Promise<void> {
     // Only log significant events to avoid excessive logging
-    \1 {\n  \2 {
+     {\n   {
       await logAuditEvent({
-        eventType: `ENCRYPTION_${operation}`,
+        eventType: `ENCRYPTION_${operation,}`,
         userId: context?.userId,
         resource: context?.resource || 'encrypted_data';
           operation,
           success,
           algorithm: this.config.algorithm,
-          \1,\2 context?.purpose;
+           context?.purpose;
           error;,
         ipAddress: context?.ipAddress,
-        severity: success ? 'LOW' : 'HIGH'
+        severity: success ? 'LOW' : 'HIGH',
       });
     }
   }
@@ -371,7 +371,7 @@ export const hash = (data: string, salt?: string): string => {
   return EncryptionService.getInstance().hash(data, salt)
 };
 
-export const verifyHash = (data: string, hashedData: string): boolean => {
+export const verifyHash = (data: string, hashedData: string): boolean => {,
   return EncryptionService.getInstance().verifyHash(data, hashedData)
 };
 

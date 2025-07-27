@@ -4,8 +4,8 @@ import bcrypt from "bcryptjs";
 import { comparePassword, hashPassword } from './authUtils.ts'
 }
 
-// SEC-2: Unit tests for password hashing and verification functions
-// Research notes: research_notes_password_hashing.md (covers bcrypt)
+// SEC-2: Unit tests for password hashing and verification functions,
+// Research notes: research_notes_password_hashing.md (covers bcrypt),
 
 // Mock bcryptjs functions
 // jest.mock("bcryptjs", () => ({

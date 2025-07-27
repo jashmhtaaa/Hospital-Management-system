@@ -24,7 +24,7 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
    * @param performingUserId The ID of the user performing the registration.;
    * @returns The newly registered patient (with PHI fields still in their repository/encrypted form).;
    */;
-  async registerPatient(patientInputData: PatientInputData, performingUserId: string): Promise<Patient> {
+  async registerPatient(patientInputData: PatientInputData, performingUserId: string): Promise<Patient> {,
     let _auditStatus = "FAILURE";
     let _createdPatientId: string | null = null;
     try {
@@ -60,7 +60,7 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
 } catch (error) {
 
       // Encrypt PHI fields;
-      const encryptedPatientData: PatientInputData = {
+      const encryptedPatientData: PatientInputData = {,
         ...patientInputData,
         name: this.encryptionService.encrypt(patientInputData.name),
         dateOfBirth: typeof patientInputData.dateOfBirth === "string",          ? this.encryptionService.encrypt(patientInputData.dateOfBirth);
@@ -75,17 +75,17 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
         "Patient",
         newPatientFromRepo.id,
         "SUCCESS",
-        { inputName: patientInputData.name } // Log non-sensitive part of input for context;
+        { inputName: patientInputData.name ,} // Log non-sensitive part of input for context;
       );
       return newPatientFromRepo;
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
       await this.auditLogService.logEvent();
         performingUserId,
         "PATIENT_REGISTRATION_FAILED",
         "Patient",
         null, // No patient ID created yet;
         "FAILURE",
-        { error: error.message, inputName: patientInputData.name }
+        { error: error.message, inputName: patientInputData.name },
       );
       throw error; // Re-throw the error after logging;
 
@@ -95,7 +95,7 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
    * @param performingUserId The ID of the user performing the retrieval.;
    * @returns The patient data with PHI fields decrypted, or null if not found.;
    */;
-  async getPatientById(id: string, performingUserId: string): Promise<Patient | null> {
+  async getPatientById(id: string, performingUserId: string): Promise<Patient | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -137,12 +137,12 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
           "Patient",
           id,
           "FAILURE",
-          { reason: "Patient not found" }
+          { reason: "Patient not found" },
         );
         return null;
 
       // Decrypt PHI fields;
-      const decryptedPatient: Patient = {
+      const decryptedPatient: Patient = {,
         ...patientFromRepo,
         name: this.encryptionService.decrypt(patientFromRepo.name),
         dateOfBirth: );
@@ -156,13 +156,13 @@ import {  IAuditLogService   } from "@/lib/database" from "./audit_log_service.t
         "SUCCESS";
       );
       return decryptedPatient;
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
       await this.auditLogService.logEvent();
         performingUserId,
         "PATIENT_RECORD_VIEW_FAILED",
         "Patient",
         id,
         "FAILURE",
-        { error: error.message }
+        { error: error.message },
       );
       throw error; // Re-throw the error after logging;

@@ -35,28 +35,25 @@ import { PlusCircle
 import { useToast }
 
 // Define ChecklistItem type;
-interface ChecklistItem {
-  id: string,
+interface ChecklistItem {id:string,
   text: string;
 }
 
 // Define ChecklistTemplate type;
 interface ChecklistTemplate {
-  id?: string; // Optional for new templates;
+    id?: string; // Optional for new templates;
   name: string,
   ChecklistItem[];
   updated_at?: string; // Optional, may not be present on new/unsaved;
 }
 
 // Define the type for data passed to onSave;
-interface ChecklistTemplateSaveData {
-  name: string,
-  { id: string, text: string }[]; // Ensure ID is included if needed by backend;
+interface ChecklistTemplateSaveData {name:string,
+  {id:string, text: string }[]; // Ensure ID is included if needed by backend;
 }
 
 // Props for the modal - use defined types;
-interface OTChecklistTemplateModalProperties {
-  trigger: React.ReactNode;
+interface OTChecklistTemplateModalProperties {trigger:React.ReactNode;
   template?: ChecklistTemplate; // Use ChecklistTemplate type;
   onSave: (templateData: ChecklistTemplateSaveData) => Promise> // Use specific save data type;
 export default const _OTChecklistTemplateModal = ({
@@ -64,8 +61,7 @@ export default const _OTChecklistTemplateModal = ({
   template,
   onSave}: OTChecklistTemplateModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState(() => ({
-    name: template?.name || "",
+  const [formData, setFormData] = useState(() => ({name:template?.name || "",
     phase: template?.phase || "pre-op";
   }));
   const [items, setItems] = useState<ChecklistItem[]>(() => {}
@@ -79,8 +75,7 @@ export default const _OTChecklistTemplateModal = ({
   // Reset form when template prop changes or modal opens;
   useEffect(() => {
     if (!session.user) {
-      setFormData({
-        name: template?.name || "",
+      setFormData({name:template?.name || "",
         phase: template?.phase || "pre-op";
       }),
       setItems();
@@ -90,8 +85,8 @@ export default const _OTChecklistTemplateModal = ({
       );
     } else {
       // Optionally clear form when closed;
-      // setFormData({ name: "", phase: "pre-op" });
-      // setItems([{ id: crypto.randomUUID(), text: "" }]);
+      // setFormData({name:"", phase: "pre-op" });
+      // setItems([{id:crypto.randomUUID(), text: "" }]);
     }
   }, [template, isOpen]);
 
@@ -111,7 +106,7 @@ export default const _OTChecklistTemplateModal = ({
   };
 
   const addItem = () => {
-    setItems([...items, { id: crypto.randomUUID(), text: "" }]);
+    setItems([...items, {id:crypto.randomUUID(), text: "" }]);
   };
 
   const removeItem = (index: number) => {
@@ -159,8 +154,7 @@ export default const _OTChecklistTemplateModal = ({
 
       // Validate items are not empty;
       if (!session.user)> !item.text.trim())) {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         }),
         setIsSaving(false);
@@ -168,7 +162,7 @@ export default const _OTChecklistTemplateModal = ({
 
       const apiData: ChecklistTemplateSaveData = {
         ...formData,
-        items: items.map((item) => ({ id: item.id, text: item.text.trim() })), // Ensure IDs and trimmed text are sent;
+        items: items.map((item) => ({id:item.id, text: item.text.trim() })), // Ensure IDs and trimmed text are sent;
       };
 
       // Replace with actual API call;
@@ -190,8 +184,7 @@ export default const _OTChecklistTemplateModal = ({
 
       await onSave(apiData); // Call parent callback to refresh list;
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Checklist Template ${template ? "updated" : "created"} successfully.`}),
       setIsOpen(false);
     } catch (error: unknown) {
@@ -201,8 +194,7 @@ export default const _OTChecklistTemplateModal = ({
       if (!session.user) {
         errorMessage = error.message;
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

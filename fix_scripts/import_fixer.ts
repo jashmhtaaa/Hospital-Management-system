@@ -5,7 +5,7 @@ import path from 'path';
 const project = new Project({
     tsConfigFilePath: path.join(__dirname, '../tsconfig.json'),
     skipAddingFilesFromTsConfig: false,
-    skipFileDependencyResolution: false
+    skipFileDependencyResolution: false,
 });
 
 // Fix common import/export patterns

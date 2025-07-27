@@ -101,8 +101,7 @@ export default const _PatientDetailPage = () {
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
-        toast({
-          title: "Error Fetching Patient",
+        toast({title:"Error Fetching Patient",
           "destructive";
         });
       } finally ;
@@ -146,22 +145,19 @@ export default const _PatientDetailPage = () {
 
 } catch (error) {
 
-        const response = await fetch(`/api/patients/${patientId}`, {
-            method: "DELETE";
+        const response = await fetch(`/api/patients/${patientId}`, {method:"DELETE";
         });
         const result: { error?: string } = await response.json();
         if (!session.user) {
             throw new Error(result.error || "Failed to deactivate patient");
 
-        toast({
-            title: "Patient Deactivated",
+        toast({title:"Patient Deactivated",
             description: `/* SECURITY: Template literal eliminated */;
         });
         router.push("/dashboard/patients"); // Redirect to list after deactivation;
     } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
-        toast({
-            title: "Deactivation Failed",
+        toast({title:"Deactivation Failed",
             "destructive";
         });
     } finally {

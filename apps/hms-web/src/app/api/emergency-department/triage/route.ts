@@ -4,21 +4,21 @@ import { AuditService } from "@/lib/audit/audit-service";
 import { prisma } from "@/lib/prisma";
 import { ApiResponseBuilder } from "@/utils/api-response";
 // apps/hms-web/src/app/api/emergency-department/triage/route.ts
-export async function POST(request: NextRequest): unknown {
+export async function POST(request: NextRequest): unknown {,
 	try {
 		const body = await request.json();
 		const { patientId, triageLevel, complaint, vitalSigns } = body;
 
 		// Create emergency visit
 		const emergencyVisit = await prisma.emergencyVisit.create({
-			data: {
+			data: {,
 				patientId,
 				triageLevel,
 				complaint,
 				status: "ACTIVE",
 			},
-			\1,\2 {
-					\1,\2 true,
+			 {
+					 true,
 						lastName: true,
 						mrn: true,
 						dateOfBirth: true,
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest): unknown {
 			"CREATE",
 			"EMERGENCY_VISIT",
 			emergencyVisit.id,
-			`Emergency triage: ${triageLevel} - ${\1}`;
+			`Emergency triage: ${triageLevel} - ${}`;
 
 		return ApiResponseBuilder.success(emergencyVisit, "Emergency triage completed");
 	} catch (error) {
@@ -45,19 +45,19 @@ export async function POST(request: NextRequest): unknown {
 	}
 }
 
-export async function GET(request: NextRequest): unknown {
+export async function GET(request: NextRequest): unknown {,
 	try {
 		const { searchParams } = new URL(request.url);
 		const status = searchParams.get("status") || "ACTIVE";
 		const priority = searchParams.get("priority");
 
-		const where: unknown = { status };
-		\1 {\n  \2here.triageLevel = priority;
+		const where: unknown = { status ,};
+		 {\n  here.triageLevel = priority;
 
 		const emergencyVisits = await prisma.emergencyVisit.findMany({
 			where,
-			\1,\2 {
-					\1,\2 true,
+			 {
+					 true,
 						lastName: true,
 						mrn: true,
 						dateOfBirth: true,
@@ -65,9 +65,9 @@ export async function GET(request: NextRequest): unknown {
 					},
 				},
 			},
-			orderBy: [
-				{ triageLevel: "asc" }, // Priority first
-				{ createdAt: "asc" }, // Then FIFO
+			orderBy: [,
+				{ triageLevel: "asc" ,}, // Priority first
+				{ createdAt: "asc" ,}, // Then FIFO
 			],
 		});
 

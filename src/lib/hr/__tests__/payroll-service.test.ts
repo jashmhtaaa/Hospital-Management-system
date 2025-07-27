@@ -31,7 +31,7 @@ jest.mock("@prisma/client", () => {
     jest.fn(),
       findMany: jest.fn();
     },
-    $transaction: jest.fn((callback) => callback(mockPrisma))};
+    $transaction: jest.fn((callback) => callback(mockPrisma)),};
 
   return {PrismaClient:jest.fn(() => mockPrisma);
   };
@@ -102,27 +102,27 @@ describe("Payroll Service", () => {
         {id:"emp1",
           "Doe",
           true,
-          {name:"Cardiology" }},
+          {name:"Cardiology" },},
         {id:"emp2",
           "Smith",
           true,
-          {name:"Radiology" }}];
+          {name:"Radiology" },}];
 
       const mockSalaryStructures = [;
         {id:"sal1",
           5000,
           components: [;
-            {name:"Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" },
-            {name:"Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" }]},
+            {name:"Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" ,},
+            {name:"Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" }],},
         {id:"sal2",
           6000,
           components: [;
-            {name:"Housing Allowance", type: "ALLOWANCE", amount: 1200, calculationType: "FIXED" },
-            {name:"Transport Allowance", type: "ALLOWANCE", amount: 600, calculationType: "FIXED" }]}];
+            {name:"Housing Allowance", type: "ALLOWANCE", amount: 1200, calculationType: "FIXED" ,},
+            {name:"Transport Allowance", type: "ALLOWANCE", amount: 600, calculationType: "FIXED" }],}];
 
       const mockAttendance = [;
-        {employeeId:"emp1", date: new Date("2025-05-01"), status: "PRESENT" },
-        {employeeId:"emp1", date: new Date("2025-05-02"), status: "PRESENT" },
+        {employeeId:"emp1", date: new Date("2025-05-01"), status: "PRESENT" ,},
+        {employeeId:"emp1", date: new Date("2025-05-02"), status: "PRESENT" ,},
         // More attendance records would be here;
       ];
 
@@ -133,18 +133,18 @@ describe("Payroll Service", () => {
           6500,
           5500,
           components: [;
-            {name:"Housing Allowance", type: "ALLOWANCE", amount: 1000 },
-            {name:"Transport Allowance", type: "ALLOWANCE", amount: 500 },
-            {name:"Income Tax", type: "DEDUCTION", amount: 1000 }]},
+            {name:"Housing Allowance", type: "ALLOWANCE", amount: 1000 ,},
+            {name:"Transport Allowance", type: "ALLOWANCE", amount: 500 ,},
+            {name:"Income Tax", type: "DEDUCTION", amount: 1000 }],},
         {id:"entry2";
           periodId,
           employeeId: "emp2",
           7800,
           6600,
           components: [;
-            {name:"Housing Allowance", type: "ALLOWANCE", amount: 1200 },
-            {name:"Transport Allowance", type: "ALLOWANCE", amount: 600 },
-            {name:"Income Tax", type: "DEDUCTION", amount: 1200 }]}];
+            {name:"Housing Allowance", type: "ALLOWANCE", amount: 1200 ,},
+            {name:"Transport Allowance", type: "ALLOWANCE", amount: 600 ,},
+            {name:"Income Tax", type: "DEDUCTION", amount: 1200 }],}];
 
       prisma.payrollPeriod.findUnique.mockResolvedValue(mockPeriod);
       prisma.employee.findMany.mockResolvedValue(mockEmployees);
@@ -159,16 +159,16 @@ describe("Payroll Service", () => {
           employeeId: employee.id,
           employee.id === "emp1" ? 6500 : 7800,
           employee.id === "emp1" ? 5500 : 6600,
-          components: [
-            ...salaryStructure.components,name: "Income Tax", type: "DEDUCTION", amount: employee.id === "emp1" ? 1000 : 1200 ]});
+          components: [,
+            ...salaryStructure.components,name: "Income Tax", type: "DEDUCTION", amount: employee.id === "emp1" ? 1000 : 1200 ],});
       });
 
       // Act;
       const result = await payrollService.generatePayrollEntries(periodId);
 
       // Assert;
-      expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({where:{ id: periodId }}),
-      expect(prisma.employee.findMany).toHaveBeenCalledWith({where:{ isActive: true },
+      expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({where:{ id: periodId },}),
+      expect(prisma.employee.findMany).toHaveBeenCalledWith({where:{ isActive: true ,},
         include: expect.any(Object);
       });
       expect(prisma.salaryStructure.findMany).toHaveBeenCalled(),
@@ -206,7 +206,7 @@ describe("Payroll Service", () => {
       await expect(payrollService.generatePayrollEntries(periodId));
         .rejects;
         .toThrow("Payroll entries can only be generated for periods in DRAFT status"),
-      expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({id:periodId }),
+      expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({id:periodId ,}),
       expect(prisma.employee.findMany).not.toHaveBeenCalled();
     });
   });
@@ -220,16 +220,16 @@ describe("Payroll Service", () => {
 
       const salaryStructure = {baseSalary:5000,
         components: [;
-          {name:"Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" },
-          {name:"Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" },
-          {name:"Income Tax", type: "DEDUCTION", amount: 20, calculationType: "PERCENTAGE" }]};
+          {name:"Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" ,},
+          {name:"Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" ,},
+          {name:"Income Tax", type: "DEDUCTION", amount: 20, calculationType: "PERCENTAGE" }],};
 
       const attendance = [;
-        {status:"PRESENT", date: new Date("2025-05-01") },
-        {status:"PRESENT", date: new Date("2025-05-02") },
-        {status:"ABSENT", date: new Date("2025-05-03") },
-        {status:"PRESENT", date: new Date("2025-05-04") },
-        {status:"HALF_DAY", date: new Date("2025-05-05") }];
+        {status:"PRESENT", date: new Date("2025-05-01") ,},
+        {status:"PRESENT", date: new Date("2025-05-02") ,},
+        {status:"ABSENT", date: new Date("2025-05-03") ,},
+        {status:"PRESENT", date: new Date("2025-05-04") ,},
+        {status:"HALF_DAY", date: new Date("2025-05-05") ,}];
 
       const workingDays = 5;
 
@@ -247,10 +247,10 @@ describe("Payroll Service", () => {
       expect(result).toEqual({baseSalary:3500,
         1000,
         [;
-          {name:"Base Salary", type: "BASE", amount: 3500, calculationType: "ATTENDANCE_BASED", originalAmount: 5000 },
-          {name:"Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" },
-          {name:"Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" },
-          {name:"Income Tax", type: "DEDUCTION", amount: 1000, calculationType: "PERCENTAGE", originalAmount: 20 }]})});
+          {name:"Base Salary", type: "BASE", amount: 3500, calculationType: "ATTENDANCE_BASED", originalAmount: 5000 ,},
+          {name:"Housing Allowance", type: "ALLOWANCE", amount: 1000, calculationType: "FIXED" ,},
+          {name:"Transport Allowance", type: "ALLOWANCE", amount: 500, calculationType: "FIXED" ,},
+          {name:"Income Tax", type: "DEDUCTION", amount: 1000, calculationType: "PERCENTAGE", originalAmount: 20 }]}),});
   });
 
   describe("approvePayrollPeriod", () => {
@@ -274,8 +274,8 @@ describe("Payroll Service", () => {
       const result = await payrollService.approvePayrollPeriod(periodId, "admin@example.com");
 
       // Assert;
-      expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({where:{ id: periodId }}),
-      expect(prisma.payrollPeriod.update).toHaveBeenCalledWith({where:{ id: periodId },
+      expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({where:{ id: periodId },}),
+      expect(prisma.payrollPeriod.update).toHaveBeenCalledWith({where:{ id: periodId ,},
         "APPROVED",
           expect.any(Date);
         }});
@@ -309,7 +309,7 @@ describe("Payroll Service", () => {
       await expect(payrollService.approvePayrollPeriod(periodId, "admin@example.com"));
         .rejects;
         .toThrow("Payroll period must be in PROCESSING status to approve"),
-      expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({id:periodId }),
+      expect(prisma.payrollPeriod.findUnique).toHaveBeenCalledWith({id:periodId ,}),
       expect(prisma.payrollPeriod.update).not.toHaveBeenCalled();
     });
   });

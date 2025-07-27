@@ -38,7 +38,7 @@ describe("EligibilityCheckService", () => {
 
       // Act
       // const _eligibilityService = new EligibilityCheckService(/* pass mocks */)
-      // const eligibility = await eligibilityService.checkEligibility(patientId, policyId, \1
+      // const eligibility = await eligibilityService.checkEligibility(patientId, policyId, 
 
       // Assert
       // expect(eligibility).toBeDefined()
@@ -55,7 +55,7 @@ describe("EligibilityCheckService", () => {
 
       // Act & Assert
       // const _eligibilityService = new EligibilityCheckService(/* pass mocks */)
-      // await expect(eligibilityService.checkEligibility(patientId, policyId, \1).rejects.toThrow("TPA API Error"),
+      // await expect(eligibilityService.checkEligibility(patientId, policyId, ).rejects.toThrow("TPA API Error"),
       expect(true).toBe(true); // Placeholder assertion
     });
   });

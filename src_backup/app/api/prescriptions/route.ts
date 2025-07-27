@@ -38,10 +38,10 @@ const prescriptionCreateSchema = z.object({
 // type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>;
 
 // GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination);
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
     try {
@@ -146,7 +146,7 @@ export const _GET = async (request: any) => {
         // Execute queries;
         const [prescriptionsResult, countResult] = await Promise.all([;
             DB.prepare(query).bind(...queryParameters).all<Prescription & { patient_first_name?: string, patient_last_name?: string, doctor_name?: string }>(),
-            DB.prepare(countQuery).bind(...countParameters).first<{ total: number }>();
+            DB.prepare(countQuery).bind(...countParameters).first<{ total: number ,}>();
         ]);
 
         const results = prescriptionsResult.results || [];
@@ -157,35 +157,35 @@ export const _GET = async (request: any) => {
 
         return NextResponse.json({
             data: results,
-            pagination: {
+            pagination: {,
                 page,
                 limit,
                 total,
                 totalPages: Math.ceil(total / limit);
             }});
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json();
-            { message: "Error fetching prescriptions", details: errorMessage },
-            { status: 500 }
+            { message: "Error fetching prescriptions", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
 
 // POST /api/prescriptions - Create a new prescription;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
     // Add role check if needed (e.g., only doctors);
     if (!session.user) {
-         return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+         return NextResponse.json({ message: "Forbidden" ,}, { status: 403 ,});
     }
 
     try {
@@ -225,8 +225,8 @@ export const _POST = async (request: any) => {
 
         if (!session.user) {
             return NextResponse.json();
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
 
         const prescriptionData = validationResult.data;
@@ -292,19 +292,19 @@ export const _POST = async (request: any) => {
 
         // Return success response;
         return NextResponse.json();
-            { message: "Prescription created successfully", prescriptionId: newPrescriptionId },
-            { status: 201 }
+            { message: "Prescription created successfully", prescriptionId: newPrescriptionId ,},
+            { status: 201 },
         );
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
 
         return NextResponse.json();
-            { message: "Error creating prescription", details: errorMessage },
-            { status: 500 }
+            { message: "Error creating prescription", details: errorMessage ,},
+            { status: 500 },
         );
 
 export async function GET() { return new Response("OK"); }

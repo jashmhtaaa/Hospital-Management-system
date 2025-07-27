@@ -10,7 +10,7 @@ import { performance } from 'perf_hooks';
  * performance benchmarks, security checks, and HIPAA compliance verification.
  *
  * Test Coverage:
- * - Bed Management APIs
+ * - Bed Management APIs,
  * - Admission/Discharge workflows
  * - Progress Notes and Clinical Documentation
  * - Medication Administration Records
@@ -28,7 +28,7 @@ import { performance } from 'perf_hooks';
 
 // Type definitions for IPD domain objects
 interface Bed {
-  readonly id: string
+  readonly id: string,
   readonly bed_number: string;
   readonly room_number: string;
   readonly ward: string;
@@ -39,13 +39,13 @@ interface Bed {
   readonly equipment: readonly string[];
   readonly last_cleaned?: string;
   readonly created_at: string;
-  readonly updated_at: string
+  readonly updated_at: string,
 }
 
 interface Patient {
   readonly id: string;
   readonly mrn: string; // Medical Record Number
-  readonly first_name: string
+  readonly first_name: string,
   readonly last_name: string;
   readonly date_of_birth: string;
   readonly gender: 'M' | 'F' | 'O' | 'U';
@@ -58,7 +58,7 @@ interface Patient {
 interface EmergencyContact {
   readonly name: string;
   readonly relationship: string;
-  readonly phone: string
+  readonly phone: string,
 }
 
 interface InsuranceInfo {
@@ -84,7 +84,7 @@ interface Admission {
   readonly admission_notes?: string;
   readonly discharge_summary?: string;
   readonly created_at: string;
-  readonly updated_at: string
+  readonly updated_at: string,
 }
 
 interface ProgressNote {
@@ -98,7 +98,7 @@ interface ProgressNote {
   readonly content: string;
   readonly assessment?: string;
   readonly plan?: string;
-  readonly created_at: string
+  readonly created_at: string,
 }
 
 interface VitalSigns {
@@ -128,7 +128,7 @@ interface MedicationOrder {
   readonly end_date?: string;
   readonly prescribing_doctor: string;
   readonly special_instructions?: string;
-  readonly status: 'active' | 'completed' | 'discontinued' | 'on_hold'
+  readonly status: 'active' | 'completed' | 'discontinued' | 'on_hold',
 }
 
 interface IPDStatistics {
@@ -160,32 +160,32 @@ interface TestConfig {
   readonly baseUrl: string;
   readonly timeout: number;
   readonly retries: number;
-  readonly performanceThresholds: {
+  readonly performanceThresholds: {,
     readonly listBedsMaxTime: number;
     readonly createAdmissionMaxTime: number;
     readonly updateRecordMaxTime: number;
-    readonly searchMaxTime: number
+    readonly searchMaxTime: number,
   };
-  readonly testData: {
+  readonly testData: {,
     readonly mockPatient: Partial<Patient>;
     readonly mockAdmission: Partial<Admission>;
-    readonly mockBed: Partial<Bed>
+    readonly mockBed: Partial<Bed>,
   };
 }
 
 // Test configuration with healthcare-specific settings
-const TEST_CONFIG: TestConfig = {
+const TEST_CONFIG: TestConfig = {,
   baseUrl: process.env.HMS_TEST_BASE_URL || 'http://localhost:3000',
   timeout: 30000, // 30 seconds for healthcare operations
   retries: 3,
-  performanceThresholds: {
+  performanceThresholds: {,
     listBedsMaxTime: 2000, // 2 seconds to list beds
     createAdmissionMaxTime: 5000, // 5 seconds to create admission
     updateRecordMaxTime: 3000, // 3 seconds to update records
-    searchMaxTime: 1500 // 1.5 seconds for search operations
+    searchMaxTime: 1500 // 1.5 seconds for search operations,
   },
-  testData: {
-    mockPatient: {
+  testData: {,
+    mockPatient: {,
       mrn: 'TEST-MRN-001',
       first_name: 'John';
       last_name: 'Doe',
@@ -195,16 +195,16 @@ const TEST_CONFIG: TestConfig = {
       {
         name: 'Jane Doe',
         relationship: 'Spouse';
-        phone: '555-987-6543'
+        phone: '555-987-6543',
       }
     },
-    mockAdmission: {
+    mockAdmission: {,
       admission_type: 'emergency',
       chief_complaint: 'Chest pain';
       diagnosis: 'Acute myocardial infarction',
-      admission_notes: 'Patient presented with severe chest pain radiating to left arm'
+      admission_notes: 'Patient presented with severe chest pain radiating to left arm',
     },
-    mockBed: {
+    mockBed: {,
       bed_number: 'TEST-BED-001',
       room_number: 'TEST-ROOM-001';
       ward: 'Test Ward',
@@ -217,7 +217,7 @@ const TEST_CONFIG: TestConfig = {
 
 // Test utilities and helpers
 class IPDTestHelper {
-  private static authToken: string | null = null
+  private static authToken: string | null = null,
   private static createdResources: Set<string> = new Set(),
 
   static async authenticate(): Promise<string> {
@@ -225,10 +225,10 @@ class IPDTestHelper {
 
     const response = await fetch(`${TEST_CONFIG.baseUrl}/api/auth/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      headers: { 'Content-Type': 'application/json' ,},
+      body: JSON.stringify({,
         username: process.env.TEST_USERNAME || 'test_user',
-        password: process.env.TEST_PASSWORD || 'test_password'
+        password: process.env.TEST_PASSWORD || 'test_password',
       })
     });
 
@@ -236,19 +236,19 @@ class IPDTestHelper {
       throw new Error('Authentication failed for testing');
     }
 
-    const data = await response.json() as { token: string };
+    const data = await response.json() as { token: string ,};
     this.authToken = data.token;
     return this.authToken;
   }
 
   static async makeAuthenticatedRequest<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<APIResponse<T>> {
     const token = await this.authenticate();
     const response = await fetch(`${TEST_CONFIG.baseUrl}${endpoint}`, {
       ...options,
-      headers: {
+      headers: {,
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
         'X-Test-Environment': 'true',
@@ -257,7 +257,7 @@ class IPDTestHelper {
     });
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      throw new Error(`API request failed: ${response.status} ${response.statusText,}`);
     }
 
     return response.json() as Promise<APIResponse<T>>;
@@ -266,28 +266,28 @@ class IPDTestHelper {
   static async createTestPatient(): Promise<Patient> {
     const response = await this.makeAuthenticatedRequest<Patient>('/api/patients', {
       method: 'POST',
-      body: JSON.stringify(TEST_CONFIG.testData.mockPatient)
+      body: JSON.stringify(TEST_CONFIG.testData.mockPatient),
     });
 
     if (!response.success || !response.data) {
       throw new Error('Failed to create test patient');
     }
 
-    this.createdResources.add(`patient:${response.data.id}`);
+    this.createdResources.add(`patient:${response.data.id,}`);
     return response.data;
   }
 
   static async createTestBed(): Promise<Bed> {
     const response = await this.makeAuthenticatedRequest<Bed>('/api/ipd/beds', {
       method: 'POST',
-      body: JSON.stringify(TEST_CONFIG.testData.mockBed)
+      body: JSON.stringify(TEST_CONFIG.testData.mockBed),
     });
 
     if (!response.success || !response.data) {
       throw new Error('Failed to create test bed');
     }
 
-    this.createdResources.add(`bed:${response.data.id}`);
+    this.createdResources.add(`bed:${response.data.id,}`);
     return response.data;
   }
 
@@ -297,13 +297,13 @@ class IPDTestHelper {
       try {
         switch (type) {
           case 'patient':
-            await this.makeAuthenticatedRequest(`/api/patients/${id}`, { method: 'DELETE' }),
+            await this.makeAuthenticatedRequest(`/api/patients/${id}`, { method: 'DELETE' ,}),
             break;
           case 'bed':
-            await this.makeAuthenticatedRequest(`/api/ipd/beds/${id}`, { method: 'DELETE' }),
+            await this.makeAuthenticatedRequest(`/api/ipd/beds/${id}`, { method: 'DELETE' ,}),
             break;
           case 'admission':
-            await this.makeAuthenticatedRequest(`/api/ipd/admissions/${id}`, { method: 'DELETE' }),
+            await this.makeAuthenticatedRequest(`/api/ipd/admissions/${id}`, { method: 'DELETE' ,}),
             break;
         }
       } catch (error) {
@@ -315,7 +315,7 @@ class IPDTestHelper {
 
   static validateRequiredFields<T extends Record<string, unknown>>(
     object: T,
-    requiredFields: readonly (keyof T)[]
+    requiredFields: readonly (keyof T)[],
   ): void {
     const missingFields = requiredFields.filter(field => !(field in object));
     if (missingFields.length > 0) {
@@ -326,7 +326,7 @@ class IPDTestHelper {
   static async measurePerformance<T>(
     operation: () => Promise<T>,
     maxTime: number;
-    operationName: string
+    operationName: string,
   ): Promise<T> {
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
     const result = await operation();
@@ -353,7 +353,7 @@ afterAll(async () => {
 
 beforeEach(() => {
   // Setup for each test
-  console.log(`Running test: ${expect.getState().currentTestName}`)
+  console.log(`Running test: ${expect.getState().currentTestName}`),
 });
 
 afterEach(() => {
@@ -365,7 +365,7 @@ describe('IPD Bed Management API', () => {
   describe('GET /api/ipd/beds', () => {
     test('should return list of beds with valid structure', async () => {
       const response = await IPDTestHelper.measurePerformance(
-        () => IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>('/api/ipd/beds'),
+        () => IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] ,}>('/api/ipd/beds'),
         TEST_CONFIG.performanceThresholds.listBedsMaxTime,
         'List beds'
       )
@@ -387,7 +387,7 @@ describe('IPD Bed Management API', () => {
     });
 
     test('should filter beds by status', async () => {
-      const availableResponse = await IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>(
+      const availableResponse = await IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>(,
         '/api/ipd/beds?status=available'
       );
 
@@ -401,7 +401,7 @@ describe('IPD Bed Management API', () => {
     });
 
     test('should filter beds by ward', async () => {
-      const wardResponse = await IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>(
+      const wardResponse = await IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>(,
         '/api/ipd/beds?ward=ICU'
       );
 
@@ -415,7 +415,7 @@ describe('IPD Bed Management API', () => {
     });
 
     test('should filter beds by type', async () => {
-      const icuResponse = await IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>(
+      const icuResponse = await IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>(,
         '/api/ipd/beds?type=icu'
       );
 
@@ -429,7 +429,7 @@ describe('IPD Bed Management API', () => {
     });
 
     test('should support pagination', async () => {
-      const page1Response = await IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>(
+      const page1Response = await IPDTestHelper.makeAuthenticatedRequest<{ beds: Bed[] }>(,
         '/api/ipd/beds?page=1&limit=10'
       );
 
@@ -447,13 +447,13 @@ describe('IPD Bed Management API', () => {
     test('should create new bed with valid data', async () => {
       const newBed = {
         ...TEST_CONFIG.testData.mockBed,
-        bed_number: `TEST-BED-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
-        room_number: `TEST-ROOM-${crypto.getRandomValues(new Uint32Array(1))[0]}`
+        bed_number: `TEST-BED-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
+        room_number: `TEST-ROOM-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
       };
 
       const response = await IPDTestHelper.makeAuthenticatedRequest<Bed>('/api/ipd/beds', {
         method: 'POST',
-        body: JSON.stringify(newBed)
+        body: JSON.stringify(newBed),
       });
 
       expect(response.success).toBe(true),
@@ -465,7 +465,7 @@ describe('IPD Bed Management API', () => {
         expect(response.data.ward).toBe(newBed.ward),
         expect(response.data.status).toBe('available'); // Default status
 
-        IPDTestHelper.createdResources.add(`bed:${response.data.id}`)
+        IPDTestHelper.createdResources.add(`bed:${response.data.id}`),
       }
     });
 
@@ -473,13 +473,13 @@ describe('IPD Bed Management API', () => {
       const invalidBed = {
         bed_number: '', // Invalid empty bed number
         room_number: 'ROOM-001',
-        ward: 'Test Ward'
+        ward: 'Test Ward',
       }
 
       await expect(
         IPDTestHelper.makeAuthenticatedRequest('/api/ipd/beds', {
           method: 'POST',
-          body: JSON.stringify(invalidBed)
+          body: JSON.stringify(invalidBed),
         })
       ).rejects.toThrow();
     });
@@ -494,7 +494,7 @@ describe('IPD Bed Management API', () => {
         `/api/ipd/beds/${testBed.id}`,
         {
           method: 'PUT',
-          body: JSON.stringify({ status: 'maintenance' })
+          body: JSON.stringify({ status: 'maintenance' }),
         }
       );
 
@@ -515,7 +515,7 @@ describe('IPD Admissions API', () => {
 
   describe('GET /api/ipd/admissions', () => {
     test('should return list of admissions with valid structure', async () => {
-      const response = await IPDTestHelper.makeAuthenticatedRequest<{ admissions: Admission[] }>(
+      const response = await IPDTestHelper.makeAuthenticatedRequest<{ admissions: Admission[] }>(,
         '/api/ipd/admissions'
       );
 
@@ -535,7 +535,7 @@ describe('IPD Admissions API', () => {
     });
 
     test('should filter admissions by status', async () => {
-      const activeResponse = await IPDTestHelper.makeAuthenticatedRequest<{ admissions: Admission[] }>(
+      const activeResponse = await IPDTestHelper.makeAuthenticatedRequest<{ admissions: Admission[] }>(,
         '/api/ipd/admissions?status=active'
       );
 
@@ -550,7 +550,7 @@ describe('IPD Admissions API', () => {
 
     test('should search admissions by patient MRN', async () => {
       const searchResponse = await IPDTestHelper.measurePerformance(
-        () => IPDTestHelper.makeAuthenticatedRequest<{ admissions: Admission[] }>(
+        () => IPDTestHelper.makeAuthenticatedRequest<{ admissions: Admission[] }>(,
           `/api/ipd/admissions?search=${testPatient.mrn}`
         ),
         TEST_CONFIG.performanceThresholds.searchMaxTime,
@@ -574,7 +574,7 @@ describe('IPD Admissions API', () => {
       const response = await IPDTestHelper.measurePerformance(
         () => IPDTestHelper.makeAuthenticatedRequest<Admission>('/api/ipd/admissions', {
           method: 'POST',
-          body: JSON.stringify(newAdmission)
+          body: JSON.stringify(newAdmission),
         }),
         TEST_CONFIG.performanceThresholds.createAdmissionMaxTime,
         'Create admission'
@@ -589,7 +589,7 @@ describe('IPD Admissions API', () => {
         expect(response.data.status).toBe('active'),
         expect(response.data.admission_number).toMatch(/^ADM-\d+/);
 
-        IPDTestHelper.createdResources.add(`admission:${response.data.id}`);
+        IPDTestHelper.createdResources.add(`admission:${response.data.id,}`);
       }
     });
 
@@ -605,7 +605,7 @@ describe('IPD Admissions API', () => {
       await expect(
         IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions', {
           method: 'POST',
-          body: JSON.stringify(invalidAdmission)
+          body: JSON.stringify(invalidAdmission),
         })
       ).rejects.toThrow();
     });
@@ -622,7 +622,7 @@ describe('IPD Admissions API', () => {
 
       await IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions', {
         method: 'POST',
-        body: JSON.stringify(firstAdmission)
+        body: JSON.stringify(firstAdmission),
       });
 
       // Try to admit another patient to the same bed
@@ -638,7 +638,7 @@ describe('IPD Admissions API', () => {
       await expect(
         IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions', {
           method: 'POST',
-          body: JSON.stringify(secondAdmission)
+          body: JSON.stringify(secondAdmission),
         })
       ).rejects.toThrow();
     });
@@ -659,7 +659,7 @@ describe('IPD Admissions API', () => {
         '/api/ipd/admissions',
         {
           method: 'POST',
-          body: JSON.stringify(newAdmission)
+          body: JSON.stringify(newAdmission),
         }
       );
 
@@ -698,7 +698,7 @@ describe('IPD Progress Notes API', () => {
       '/api/ipd/admissions',
       {
         method: 'POST',
-        body: JSON.stringify(admissionData)
+        body: JSON.stringify(admissionData),
       }
     );
 
@@ -711,7 +711,7 @@ describe('IPD Progress Notes API', () => {
 
   describe('GET /api/ipd/admissions/:id/progress-notes', () => {
     test('should return progress notes for admission', async () => {
-      const response = await IPDTestHelper.makeAuthenticatedRequest<{ notes: ProgressNote[] }>(
+      const response = await IPDTestHelper.makeAuthenticatedRequest<{ notes: ProgressNote[] }>(,
         `/api/ipd/admissions/${testAdmission.id}/progress-notes`
       );
 
@@ -727,14 +727,14 @@ describe('IPD Progress Notes API', () => {
         subject: 'Daily Progress Note';
         content: 'Patient is stable and responding well to treatment.',
         assessment: 'Condition improving';
-        plan: 'Continue current medication regimen'
+        plan: 'Continue current medication regimen',
       };
 
       const response = await IPDTestHelper.makeAuthenticatedRequest<ProgressNote>(
         `/api/ipd/admissions/${testAdmission.id}/progress-notes`,
         {
           method: 'POST',
-          body: JSON.stringify(newNote)
+          body: JSON.stringify(newNote),
         }
       );
 
@@ -769,7 +769,7 @@ describe('IPD Vital Signs API', () => {
       '/api/ipd/admissions',
       {
         method: 'POST',
-        body: JSON.stringify(admissionData)
+        body: JSON.stringify(admissionData),
       }
     );
 
@@ -789,7 +789,7 @@ describe('IPD Vital Signs API', () => {
         heart_rate: 72;
         respiratory_rate: 16,
         oxygen_saturation: 98;
-        pain_scale: 2
+        pain_scale: 2,
       };
 
       const response = await IPDTestHelper.measurePerformance(
@@ -797,7 +797,7 @@ describe('IPD Vital Signs API', () => {
           `/api/ipd/admissions/${testAdmission.id}/vital-signs`,
           {
             method: 'POST',
-            body: JSON.stringify(vitalSigns)
+            body: JSON.stringify(vitalSigns),
           }
         ),
         TEST_CONFIG.performanceThresholds.updateRecordMaxTime,
@@ -822,7 +822,7 @@ describe('IPD Vital Signs API', () => {
         heart_rate: -10, // Invalid heart rate
         respiratory_rate: 16,
         oxygen_saturation: 150, // Invalid oxygen saturation
-        pain_scale: 15 // Invalid pain scale (should be 0-10)
+        pain_scale: 15 // Invalid pain scale (should be 0-10),
       }
 
       await expect(
@@ -830,7 +830,7 @@ describe('IPD Vital Signs API', () => {
           `/api/ipd/admissions/${testAdmission.id}/vital-signs`,
           {
             method: 'POST',
-            body: JSON.stringify(invalidVitalSigns)
+            body: JSON.stringify(invalidVitalSigns),
           }
         )
       ).rejects.toThrow();
@@ -915,13 +915,13 @@ describe('IPD Security and Authorization', () => {
     // This test would require setting up different user roles
     // and testing access permissions for each role
 
-    // Example: Nurse should not be able to discharge patients
-    // Example: Doctor should have full access
-    // Example: Admin should have system-wide access
+    // Example: Nurse should not be able to discharge patients,
+    // Example: Doctor should have full access,
+    // Example: Admin should have system-wide access,
 
     // For now, we just ensure the authorization header is required
     const response = await fetch(`${TEST_CONFIG.baseUrl}/api/ipd/beds`, {
-      headers: {
+      headers: {,
         'Authorization': 'Bearer invalid-token'
       }
     }),
@@ -946,7 +946,7 @@ describe('IPD FHIR Compliance', () => {
       '/api/ipd/admissions',
       {
         method: 'POST',
-        body: JSON.stringify(admissionData)
+        body: JSON.stringify(admissionData),
       }
     );
 
@@ -980,17 +980,17 @@ describe('IPD API Performance Benchmarks', () => {
       {
         name: 'List available beds',
         operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/ipd/beds?status=available'),
-        threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime
+        threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime,
       },
       {
         name: 'Search admissions',
         operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/ipd/admissions?search=test'),
-        threshold: TEST_CONFIG.performanceThresholds.searchMaxTime
+        threshold: TEST_CONFIG.performanceThresholds.searchMaxTime,
       },
       {
         name: 'Get IPD statistics',
         operation: () => IPDTestHelper.makeAuthenticatedRequest('/api/dashboard/ipd-stats'),
-        threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime
+        threshold: TEST_CONFIG.performanceThresholds.listBedsMaxTime,
       }
     ]
 
@@ -1001,7 +1001,7 @@ describe('IPD API Performance Benchmarks', () => {
 
   test('should handle concurrent requests efficiently', async () => {
     const concurrentRequests = 10;
-    const requests = Array.from({ length: concurrentRequests }, () =>
+    const requests = Array.from({ length: concurrentRequests ,}, () =>
       IPDTestHelper.makeAuthenticatedRequest('/api/ipd/beds')
     );
 

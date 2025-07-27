@@ -39,31 +39,28 @@ import { PlusCircle
 import { useToast }
 
 // Props for the component;
-interface OTStaffAssignmentProperties {
-  bookingId: string;
+interface OTStaffAssignmentProperties {bookingId:string;
 }
 
 // Mock data structures;
-interface AssignedStaff {
-  assignment_id: string,
+interface AssignedStaff {assignment_id:string,
   string,
   role: string;
 }
 
-interface User {
-  id: string,
+interface User {id:string,
   string; // Assuming user object has a role;
 }
 
 // Mock users - replace with API call to user management;
 const mockUsers: User[] = [;
-  { id: "user-1", name: "Dr. Alice Brown", role: "Surgeon" },
-  { id: "user-2", name: "Dr. Bob White", role: "Surgeon" },
-  { id: "user-3", name: "Dr. Charlie Green", role: "Anesthesiologist" },
-  { id: "user-4", name: "Dr. Diana Black", role: "Anesthesiologist" },
-  { id: "user-5", name: "Nurse Eve Adams", role: "Scrub Nurse" },
-  { id: "user-6", name: "Nurse Frank Davis", role: "Circulating Nurse" },
-  { id: "user-7", name: "Tech Grace Hall", role: "Technician" }];
+  {id:"user-1", name: "Dr. Alice Brown", role: "Surgeon" },
+  {id:"user-2", name: "Dr. Bob White", role: "Surgeon" },
+  {id:"user-3", name: "Dr. Charlie Green", role: "Anesthesiologist" },
+  {id:"user-4", name: "Dr. Diana Black", role: "Anesthesiologist" },
+  {id:"user-5", name: "Nurse Eve Adams", role: "Scrub Nurse" },
+  {id:"user-6", name: "Nurse Frank Davis", role: "Circulating Nurse" },
+  {id:"user-7", name: "Tech Grace Hall", role: "Technician" }];
 
 export default const _OTStaffAssignment = ({
   bookingId}: OTStaffAssignmentProperties) {
@@ -122,18 +119,15 @@ export default const _OTStaffAssignment = ({
 
       // Mock data for demonstration;
       const mockAssigned: AssignedStaff[] = [;
-        {
-          assignment_id: "assign-1",
+        {assignment_id:"assign-1",
           "Dr. Alice Brown",
           role: "Lead Surgeon";
         },
-        {
-          assignment_id: "assign-2",
+        {assignment_id:"assign-2",
           "Dr. Charlie Green",
           role: "Anesthesiologist";
         },
-        {
-          assignment_id: "assign-3",
+        {assignment_id:"assign-3",
           "Nurse Eve Adams",
           role: "Scrub Nurse";
         }];
@@ -158,8 +152,7 @@ export default const _OTStaffAssignment = ({
 
   const handleAddStaff = async () => {
     if (!session.user) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
       return;
@@ -227,15 +220,14 @@ export default const _OTStaffAssignment = ({
       setAssignedStaff((previous) => [...previous, newAssignment]);
       setSelectedUser(""),
       setSelectedRole("");
-      toast({ title: "Success", description: "Staff assigned successfully." });
+      toast({title:"Success", description: "Staff assigned successfully." });
     } catch (error: unknown) {
 
       let errorMessage = "Failed to assign staff.";
       if (!session.user) {
         errorMessage = error.message;
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -291,15 +283,14 @@ export default const _OTStaffAssignment = ({
       setAssignedStaff((previous) => {}
         previous.filter((staff) => staff.assignment_id !== assignmentId);
       );
-      toast({ title: "Success", description: "Staff removed successfully." });
+      toast({title:"Success", description: "Staff removed successfully." });
     } catch (error: unknown) {
 
       let errorMessage = "Failed to remove staff.";
       if (!session.user) {
         errorMessage = error.message;
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 

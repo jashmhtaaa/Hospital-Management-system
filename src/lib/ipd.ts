@@ -1,11 +1,12 @@
 import "@/lib/database"
-import {  getDB  } from "@/lib/database"
+import {getDB  } from "next/server"
 
 }
 
 // Placeholder for IPD related database functions;
 // FIX: Define a more specific type for Admission data;
-interface Admission {id:number,
+interface Admission {
+    {id:number,
   string; // ISO string;
   discharge_date?: string | null; // ISO string;
   attending_doctor_id?: string | null;
@@ -20,7 +21,8 @@ interface Admission {id:number,
 
 // FIX: Define a type for the expected structure of query results;
 // Assuming the mock DB query returns rows as unknown[];
-interface QueryResult<T> {
+interface QueryResult {
+    <T> {
   rows?: T[];
   // Add other potential properties like rowCount, etc., based on your DB library;
 
@@ -121,7 +123,7 @@ export const _updateAdmissionInDB = async();
     return null;
 
   // Apply updates to the existing mock data;
-  const updatedAdmission: Admission = {
+  const updatedAdmission: Admission = {,
     ...existing,
     ...updateData};
   return updatedAdmission;

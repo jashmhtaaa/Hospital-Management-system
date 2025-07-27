@@ -80,7 +80,7 @@ interface PreAuthorizationFilters {
 
 // Helper function to simulate DB interaction (GET);
 async const getPreAuthorizationsFromDB = (;
-  filters: PreAuthorizationFilters = {}
+  filters: PreAuthorizationFilters = {},
 ) {
 
     "Simulating DB fetch for pre-authorizations with filters: ";
@@ -178,7 +178,7 @@ async const createPreAuthorizationInDB = (;
  * GET /api/insurance/pre-authorizations;
  * Retrieves a list of pre-authorization requests, potentially filtered.;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -219,7 +219,7 @@ export const GET = async (request: any) => {
 
     const preAuthorizations = await getPreAuthorizationsFromDB(filters);
     return NextResponse.json({ preAuthorizations });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
@@ -230,14 +230,14 @@ export const GET = async (request: any) => {
         error: "Failed to fetch pre-authorization requests",
         details: errorMessage;
       },
-      { status: 500 }
+      { status: 500 },
     );
 
 /**;
  * POST /api/insurance/pre-authorizations;
  * Creates a new pre-authorization request.;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -279,14 +279,14 @@ export const POST = async (request: any) => {
       return NextResponse.json();
         {
           error: "Missing required fields (patient_insurance_id, requested_procedure)"},
-        { status: 400 }
+        { status: 400 },
       );
 
     // Simulate creating the pre-authorization request in the database;
     const newPreAuth = await createPreAuthorizationInDB(preAuthData);
 
-    return NextResponse.json({ preAuthorization: newPreAuth }, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json({ preAuthorization: newPreAuth ,}, { status: 201 ,});
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
@@ -297,7 +297,7 @@ export const POST = async (request: any) => {
         error: "Failed to create pre-authorization request",
         details: errorMessage;
       },
-      { status: 500 }
+      { status: 500 },
     );
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

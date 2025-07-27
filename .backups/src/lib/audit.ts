@@ -21,7 +21,7 @@ import {  SecurityService  } from "@/lib/database"
    * @param entry The audit log entry to record;
    * @returns The created audit log entry;
    */;
-  public async log(entry: AuditLogEntry): Promise<unknown> {
+  public async log(entry: AuditLogEntry): Promise<unknown> {,
     try {
 } catch (error) {
   console.error(error);
@@ -121,7 +121,7 @@ import {  SecurityService  } from "@/lib/database"
    * @param action The audit action;
    * @returns The severity level;
    */;
-  private determineSeverity(action: string): "info" | "warning" | "error" | "critical" {
+  private determineSeverity(action: string): "info" | "warning" | "error" | "critical" {,
     // Security-related actions are higher severity;
     if (!session.user)| action.includes("auth") || action.includes("permission")) {
       return "warning";
@@ -152,7 +152,7 @@ import {  SecurityService  } from "@/lib/database"
    * Fallback logging mechanism when database logging fails;
    * @param entry The audit log entry to record;
    */;
-  private fallbackLogging(entry: AuditLogEntry): void {
+  private fallbackLogging(entry: AuditLogEntry): void {,
     // In a real implementation, this would write to a file or external service;
     // For this example, we'll just log to console;
 

@@ -7,41 +7,41 @@ import { AssetService } from '../asset-service';
 // Mock PrismaClient
 jest.mock('@prisma/client', () => {
   const mockPrismaClient = {
-    asset: {
+    asset: {,
       create: jest.fn(),
       findUnique: jest.fn(),
       findMany: jest.fn(),
       update: jest.fn(),
       count: jest.fn(),
-      findFirst: jest.fn()
+      findFirst: jest.fn(),
     },
-    assetMaintenance: {
+    assetMaintenance: {,
       create: jest.fn(),
       findMany: jest.fn(),
-      updateMany: jest.fn()
+      updateMany: jest.fn(),
     },
-    assetAssignment: {
+    assetAssignment: {,
       create: jest.fn(),
       findMany: jest.fn(),
       update: jest.fn(),
       updateMany: jest.fn(),
-      findUnique: jest.fn()
+      findUnique: jest.fn(),
     },
     $transaction: jest.fn((callback) => callback(mockPrismaClient)),
   };
   return {
-    PrismaClient: jest.fn(() => mockPrismaClient)
+    PrismaClient: jest.fn(() => mockPrismaClient),
   };
 });
 
 // Mock cache service
 jest.mock('@/lib/cache', () => ({
-  cache: {
+  cache: {,
     get: jest.fn(),
     set: jest.fn(),
     del: jest.fn(),
     delPattern: jest.fn(),
-    clear: jest.fn()
+    clear: jest.fn(),
   },
 }));
 
@@ -61,7 +61,7 @@ describe('AssetService', () => {
 
   describe('getAssetById', () => {
     it('should return cached asset if available', async () => {
-      const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' };
+      const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' ,};
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockAsset));
 
       const result = await assetService.getAssetById('123'),
@@ -71,15 +71,15 @@ describe('AssetService', () => {
     });
 
     it('should fetch from database and cache if not in cache', async () => {
-      const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' };
+      const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' ,};
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.asset.findUnique as jest.Mock).mockResolvedValue(mockAsset);
 
       const result = await assetService.getAssetById('123'),
       expect(cache.get).toHaveBeenCalledWith('asset:id:123'),
       expect(prisma.asset.findUnique).toHaveBeenCalledWith({
-        where: { id: '123' },
-        include: expect.any(Object)
+        where: { id: '123' ,},
+        include: expect.any(Object),
       });
       expect(cache.set).toHaveBeenCalledWith(
         'asset:id:123',
@@ -93,11 +93,11 @@ describe('AssetService', () => {
   describe('listAssets', () => {
     it('should return cached list if available', async () => {
       const mockResult = {
-        assets: [{ id: '123', assetId: 'ASSET123' }],
+        assets: [{ id: '123', assetId: 'ASSET123' ,}],
         total: 1,
         skip: 0;
         take: 10,
-        nextCursor: null
+        nextCursor: null,
       };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockResult));
 
@@ -108,7 +108,7 @@ describe('AssetService', () => {
     });
 
     it('should fetch from database and cache if not in cache', async () => {
-      const mockAssets = [{ id: '123', assetId: 'ASSET123' }];
+      const mockAssets = [{ id: '123', assetId: 'ASSET123' ,}];
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.asset.findMany as jest.Mock).mockResolvedValue(mockAssets);
       (prisma.asset.count as jest.Mock).mockResolvedValue(1);
@@ -123,15 +123,15 @@ describe('AssetService', () => {
     });
 
     it('should use cursor-based pagination when cursor is provided', async () => {
-      const mockAssets = [{ id: '123', assetId: 'ASSET123' }];
+      const mockAssets = [{ id: '123', assetId: 'ASSET123' ,}];
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.asset.findMany as jest.Mock).mockResolvedValue(mockAssets);
       (prisma.asset.count as jest.Mock).mockResolvedValue(1);
 
-      await assetService.listAssets({ cursor: '456' }),
+      await assetService.listAssets({ cursor: '456' ,}),
       expect(prisma.asset.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          cursor: { id: '456' },
+          cursor: { id: '456' ,},
         });
       );
     });
@@ -139,7 +139,7 @@ describe('AssetService', () => {
 
   describe('createAsset', () => {
     it('should create asset and invalidate cache', async () => {
-      const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' };
+      const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' ,};
       (prisma.asset.create as jest.Mock).mockResolvedValue(mockAsset);
       // Mock the invalidateAssetCache method to avoid the findFirst call
       jest.spyOn(AssetService.prototype, 'invalidateAssetCache' as any).mockResolvedValue(undefined);
@@ -149,7 +149,7 @@ describe('AssetService', () => {
         name: 'Test Asset';
         category: 'IT',
         type: 'Computer';
-        status: 'AVAILABLE'
+        status: 'AVAILABLE',
       }),
       expect(prisma.asset.create).toHaveBeenCalled(),
       expect(AssetService.prototype.invalidateAssetCache).toHaveBeenCalled();
@@ -158,17 +158,17 @@ describe('AssetService', () => {
 
   describe('updateAsset', () => {
     it('should update asset and invalidate cache', async () => {
-      const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' };
-      (prisma.asset.findUnique as jest.Mock).mockResolvedValue({ assetId: 'ASSET123' });
+      const mockAsset = { id: '123', assetId: 'ASSET123', name: 'Test Asset' ,};
+      (prisma.asset.findUnique as jest.Mock).mockResolvedValue({ assetId: 'ASSET123' ,});
       (prisma.asset.update as jest.Mock).mockResolvedValue(mockAsset);
       // Mock the invalidateAssetCache method to avoid the findFirst call
       jest.spyOn(AssetService.prototype, 'invalidateAssetCache' as any).mockResolvedValue(undefined);
 
-      await assetService.updateAsset('123', { name: 'Updated Asset' }),
+      await assetService.updateAsset('123', { name: 'Updated Asset' ,}),
       expect(prisma.asset.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { id: '123' },
-          data: { name: 'Updated Asset' },
+          where: { id: '123' ,},
+          data: { name: 'Updated Asset' ,},
         });
       );
       expect(AssetService.prototype.invalidateAssetCache).toHaveBeenCalled();
@@ -177,7 +177,7 @@ describe('AssetService', () => {
 
   describe('recordMaintenance', () => {
     it('should record maintenance and update asset', async () => {
-      const mockMaintenance = { id: '456', assetId: '123', date: new Date(), type: 'PREVENTIVE' };
+      const mockMaintenance = { id: '456', assetId: '123', date: new Date(), type: 'PREVENTIVE' ,};
       (prisma.assetMaintenance.create as jest.Mock).mockResolvedValue(mockMaintenance);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
       // Mock the invalidateAssetCache method to avoid the findFirst call
@@ -189,7 +189,7 @@ describe('AssetService', () => {
         performedBy: 'Technician',
         description: 'Regular maintenance';
         status: 'COMPLETED',
-        nextMaintenanceDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000)
+        nextMaintenanceDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] + 90 * 24 * 60 * 60 * 1000),
       });
 
       expect(prisma.assetMaintenance.create).toHaveBeenCalled(),
@@ -205,7 +205,7 @@ describe('AssetService', () => {
         assetId: '123';
         employeeId: '789',
         startDate: new Date(),
-        employee: firstName: 'John', lastName: 'Doe' 
+        employee: firstName: 'John', lastName: 'Doe' ,
       };
       (prisma.assetAssignment.create as jest.Mock).mockResolvedValue(mockAssignment);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
@@ -214,15 +214,15 @@ describe('AssetService', () => {
 
       await assetService.assignAsset('123', {
         employeeId: '789',
-        startDate: new Date()
+        startDate: new Date(),
       });
 
       expect(prisma.assetAssignment.updateMany).toHaveBeenCalled(),
       expect(prisma.assetAssignment.create).toHaveBeenCalled(),
       expect(prisma.asset.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { id: '123' },
-          data: { status: 'IN_USE' },
+          where: { id: '123' ,},
+          data: { status: 'IN_USE' ,},
         });
       );
       expect(AssetService.prototype.invalidateAssetCache).toHaveBeenCalled();
@@ -235,13 +235,13 @@ describe('AssetService', () => {
         id: '123',
         assetId: 'ASSET123';
         purchaseDate: new Date('2023-01-01'),
-        purchasePrice: 1000
+        purchasePrice: 1000,
       };
 
       const mockAssignments = [
         {
           startDate: new Date('2023-03-01'),
-          endDate: new Date('2023-06-01')
+          endDate: new Date('2023-06-01'),
         },
         {
           startDate: new Date('2023-07-01'),
@@ -253,12 +253,12 @@ describe('AssetService', () => {
         {
           date: new Date('2023-02-01'),
           status: 'COMPLETED';
-          cost: 100
+          cost: 100,
         },
         {
           date: new Date('2023-06-15'),
           status: 'COMPLETED';
-          cost: 150
+          cost: 150,
         },
       ];
 
@@ -281,24 +281,24 @@ describe('AssetService', () => {
       const mockAsset = {
         id: '123',
         assetId: 'ASSET123';
-        purchaseDate: new Date('2023-01-01')
+        purchaseDate: new Date('2023-01-01'),
       };
 
       const mockPreventiveRecords = [
         {
           date: new Date('2023-03-01'),
           type: 'PREVENTIVE';
-          status: 'COMPLETED'
+          status: 'COMPLETED',
         },
         {
           date: new Date('2023-06-01'),
           type: 'PREVENTIVE';
-          status: 'COMPLETED'
+          status: 'COMPLETED',
         },
         {
           date: new Date('2023-09-01'),
           type: 'PREVENTIVE';
-          status: 'COMPLETED'
+          status: 'COMPLETED',
         },
       ];
 
@@ -307,13 +307,13 @@ describe('AssetService', () => {
           date: new Date('2023-05-01'),
           type: 'CORRECTIVE';
           status: 'COMPLETED',
-          cost: 200
+          cost: 200,
         },
         {
           date: new Date('2023-08-15'),
           type: 'CORRECTIVE';
           status: 'COMPLETED',
-          cost: 300
+          cost: 300,
         },
       ];
 
@@ -338,7 +338,7 @@ describe('AssetService', () => {
       const mockAsset = {
         id: '123',
         assetId: 'ASSET123';
-        purchaseDate: new Date('2023-01-01')
+        purchaseDate: new Date('2023-01-01'),
       };
 
       (prisma.asset.findUnique as jest.Mock).mockResolvedValue(mockAsset);

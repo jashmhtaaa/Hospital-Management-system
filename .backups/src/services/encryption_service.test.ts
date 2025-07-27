@@ -55,7 +55,7 @@ describe("EncryptionService (Placeholder)", () => {
       const decrypted = encryptionService.decrypt(nonPlaceholderText),
       expect(decrypted).toBe(nonPlaceholderText);
 // expect(console.warn).toHaveBeenCalledWith();
-        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: "${nonPlaceholderText}"`;
+        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: "${nonPlaceholderText,}"`;
       );
     });
 
@@ -80,7 +80,7 @@ describe("EncryptionService (Placeholder)", () => {
       const decrypted = encryptionService.decrypt(originalText),
       expect(decrypted).toBe(""); // It doesn"t start with prefix, so returns as is;
 // expect(console.warn).toHaveBeenCalledWith();
-        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: "${originalText}'`;
+        `EncryptionService (Placeholder): Attempted to decrypt text that was not in placeholder format: "${originalText,}'`;
       );
     });
   });

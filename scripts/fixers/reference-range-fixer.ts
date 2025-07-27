@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
 
-export function createReferenceRangeFixer(context: ts.TransformationContext) {
-  return (sourceFile: ts.SourceFile) => {
-    const visitor = (node: ts.Node): ts.Node => {
+export function createReferenceRangeFixer(context: ts.TransformationContext) {,
+  return (sourceFile: ts.SourceFile) => {,
+    const visitor = (node: ts.Node): ts.Node => {,
       // Fix missing try-catch in route handlers
       if (ts.isFunctionDeclaration(node) && 
           node.body && 

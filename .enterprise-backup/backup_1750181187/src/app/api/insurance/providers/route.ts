@@ -13,19 +13,19 @@ interface InsuranceProvider {
 }
 
 // Mock data store for insurance providers (replace with actual DB interaction)
-// FIX: Changed let to const for prefer-const rule
-const mockProviders: InsuranceProvider[] = [
+// FIX: Changed let to const for prefer-const rule,
+const mockProviders: InsuranceProvider[] = [,
   {
     _id: 1,
-    \1,\2 "Alice Brown",
-    \1,\2 "555-1111",
-    \1,\2 1
+     "Alice Brown",
+     "555-1111",
+     1
   },
   {
     _id: 2,
-    \1,\2 "Bob White",
-    \1,\2 "555-2222",
-    \1,\2 1
+     "Bob White",
+     "555-2222",
+     1
   },
 ];
 let nextProviderId = 3;
@@ -57,15 +57,15 @@ interface InsuranceProviderFilters {
 
 // Helper function to simulate DB interaction (GET)
 async const getInsuranceProvidersFromDB = (
-  filters: InsuranceProviderFilters = {}
+  filters: InsuranceProviderFilters = {},
 ) {
 
     "Simulating DB fetch for insurance providers with filters: ";
     filters
   );
   let filteredProviders = [...mockProviders];
-  // FIX: Check filters.is_active before using (TS18049)
-  \1 {\n  \2{
+  // FIX: Check filters.is_active before using (TS18049),
+   {\n  {
     const activeBool = String(filters.is_active).toLowerCase() === "true"
     filteredProviders = filteredProviders.filter(
       (p) => (p.is_active === 1) === activeBool;
@@ -75,10 +75,10 @@ async const getInsuranceProvidersFromDB = (
 }
 
 // Helper function to simulate DB interaction (GET by ID) - Belongs in [id]/route.ts
-// async function getInsuranceProviderByIdFromDB(_id: number): unknown { // Unused function
-//   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// async function getInsuranceProviderByIdFromDB(_id: number): unknown { // Unused function,
+//   // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 //   const provider = mockProviders.find(p => p._id === id)
-//   \1 {\n  \2{
+//    {\n  {
 //     throw new Error("Insurance provider not found")
 //   }
 //   return provider
@@ -86,17 +86,17 @@ async const getInsuranceProvidersFromDB = (
 
 // Helper function to simulate DB interaction (POST)
 async const createInsuranceProviderInDB = (
-  data: InsuranceProviderInput
+  data: InsuranceProviderInput,
 ): Promise<InsuranceProvider> {
   // Added return type
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+  // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
   // const _now = new Date().toISOString(); // Unused variable
-  // FIX: Ensure created object matches InsuranceProvider interface
-  const newProvider: InsuranceProvider = {
+  // FIX: Ensure created object matches InsuranceProvider interface,
+  const newProvider: InsuranceProvider = {,
     _id: nextProviderId++,
-    \1,\2 data.contact_person || undefined,
-    \1,\2 data.contact_phone || undefined,
-    \1,\2 data.is_active === undefined ? 1 : data.is_active ? 1 : 0, // Default active
+     data.contact_person || undefined,
+     data.contact_phone || undefined,
+     data.is_active === undefined ? 1 : data.is_active ? 1 : 0, // Default active
     // created_at: now, // Add if needed
     // updated_at: now, // Add if needed
   };
@@ -105,17 +105,17 @@ async const createInsuranceProviderInDB = (
 }
 
 // Helper function to simulate DB interaction (PUT) - Belongs in [id]/route.ts
-// async function updateInsuranceProviderInDB(_id: number, data: InsuranceProviderUpdateInput): unknown { // Unused function
-//   // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+// async function updateInsuranceProviderInDB(_id: number, data: InsuranceProviderUpdateInput): unknown { // Unused function,
+//   // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
 //   const _providerIndex = mockProviders.findIndex((p) => p._id === id)
-//   \1 {\n  \2{
+//    {\n  {
 //     throw new Error("Insurance provider not found")
 //   }
 
 //   // Handle boolean conversion if necessary
-//   const _updatePayload: Partial<InsuranceProvider> = { ...data }
-//   \1 {\n  \2{
-//     updatePayload.is_active = data.is_active ? 1 : 0
+//   const _updatePayload: Partial<InsuranceProvider> = { ...data },
+//    {\n  {
+//     updatePayload.is_active = data.is_active ? 1 : 0,
 //   }
 
 //   const _updatedProvider = {
@@ -131,24 +131,24 @@ async const createInsuranceProviderInDB = (
  * GET /api/insurance/providers
  * Retrieves a list of insurance providers, potentially filtered.
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
-    const filters: InsuranceProviderFilters = {
+    const filters: InsuranceProviderFilters = {,
       is_active: searchParams.get("is_active"), // "true" or "false"
     };
 
     const providers = await getInsuranceProvidersFromDB(filters);
     return NextResponse.json({ providers });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+     {\n  {
       errorMessage = error.message;
     }
     return NextResponse.json(
-      { error: "Failed to fetch insurance providers", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch insurance providers", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -157,33 +157,33 @@ export const GET = async (request: NextRequest) => {
  * POST /api/insurance/providers;
  * Creates a new insurance provider.
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   try {
     const body = await request.json();
     // Apply type assertion
     const providerData = body as InsuranceProviderInput;
 
     // Basic validation (add more comprehensive validation)
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Missing required field: name" },
-        { status: 400 }
+        { error: "Missing required field: name" ,},
+        { status: 400 },
       )
     }
 
     // Simulate creating the insurance provider in the database
     const newProvider = await createInsuranceProviderInDB(providerData);
 
-    return NextResponse.json({ provider: newProvider }, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json({ provider: newProvider ,}, { status: 201 ,});
+  } catch (error: unknown) {,
 
     let errorMessage = "An unknown error occurred";
-    \1 {\n  \2{
+     {\n  {
       errorMessage = error.message;
     }
     return NextResponse.json(
-      { error: "Failed to create insurance provider", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create insurance provider", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }

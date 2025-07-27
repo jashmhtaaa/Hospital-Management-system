@@ -16,82 +16,82 @@ import {
   FHIRDuration,
 } from './types.ts',
 
-\1
+
 }
 }
 
 // Encounter Search Parameters
-\1
+
 }
 }
 
 // Helper functions for FHIR Encounter operations
-\1
+
 }
   }): FHIREncounter {
-    const encounter: FHIREncounter = {
+    const encounter: FHIREncounter = {,
       resourceType: 'Encounter',
       status: 'planned',
-      class: {
+      class: {,
         system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
         code: data.class.toUpperCase(),
-        display: data.class.charAt(0).toUpperCase() + data.class.slice(1)
+        display: data.class.charAt(0).toUpperCase() + data.class.slice(1),
       },
-      subject: {
-        reference: `Patient/${data.patientId}`,
-        type: 'Patient'
+      subject: {,
+        reference: `Patient/${data.patientId,}`,
+        type: 'Patient',
       }
     }
 
     // Add period if start time is provided
-    \1 {\n  \2{
+     {\n  {
       encounter.period = {
         start: data.start,
-        ...(data?.end && { end: data.end })
+        ...(data?.end && { end: data.end }),
       },
       encounter.status = 'in-progress',
     }
 
     // Add practitioner participant if provided
-    \1 {\n  \2{
+     {\n  {
       encounter.participant = [{
-        individual: {
-          reference: `Practitioner/${data.practitionerId}`,
-          type: 'Practitioner'
+        individual: {,
+          reference: `Practitioner/${data.practitionerId,}`,
+          type: 'Practitioner',
         }
       }],
     }
 
     // Add location if provided
-    \1 {\n  \2{
+     {\n  {
       encounter.location = [{
-        location: {
-          reference: `Location/${data.locationId}`,
-          type: 'Location'
+        location: {,
+          reference: `Location/${data.locationId,}`,
+          type: 'Location',
         },
-        status: 'active'
+        status: 'active',
       }],
     }
 
     // Add appointment reference if provided
-    \1 {\n  \2{
+     {\n  {
       encounter.appointment = [{
-        reference: `Appointment/${data.appointmentId}`,
-        type: 'Appointment'
+        reference: `Appointment/${data.appointmentId,}`,
+        type: 'Appointment',
       }],
     }
 
     // Add reason if provided
-    \1 {\n  \2{
+     {\n  {
       encounter.reasonCode = [{
         ...(data?.reasonCode && {
-          coding: [{
+          coding: [{,
             system: 'https://snomed.info/sct',
             code: data.reasonCode,
-            display: data.reasonText || data.reasonCode
+            display: data.reasonText || data.reasonCode,
           }]
         }),
-        text: data.reasonText
+        text: data.reasonText,
       }]
     }
 
@@ -101,7 +101,7 @@ import {
   /**
    * Create OPD encounter,
    */
-  static createOPDEncounter(data: {
+  static createOPDEncounter(data: {,
     patientId: string,
     practitionerId: string,
     appointmentId?: string,
@@ -116,14 +116,14 @@ import {
       appointmentId: data.appointmentId,
       start: data.start,
       end: data.end,
-      reasonText: data.chiefComplaint
+      reasonText: data.chiefComplaint,
     }),
   }
 
   /**
    * Create IPD encounter (admission)
    */
-  static createIPDEncounter(data: {
+  static createIPDEncounter(data: {,
     patientId: string,
     practitionerId: string,
     locationId: string,
@@ -139,18 +139,18 @@ import {
       locationId: data.locationId,
       start: data.admissionDate,
       end: data.dischargeDate,
-      reasonText: data.admissionReason
+      reasonText: data.admissionReason,
     }),
 
     // Add hospitalization details
     encounter.hospitalization = ,
 
-    \1 {\n  \2{
+     {\n  {
       encounter.hospitalization.admitSource = {
-        coding: [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/admit-source',
           code: data.admissionSource,
-          display: data.admissionSource
+          display: data.admissionSource,
         }]
       }
     }
@@ -161,7 +161,7 @@ import {
   /**
    * Create Emergency encounter,
    */
-  static createEmergencyEncounter(data: {
+  static createEmergencyEncounter(data: {,
     patientId: string,
     practitionerId?: string,
     locationId: string,
@@ -175,16 +175,16 @@ import {
       practitionerId: data.practitionerId,
       locationId: data.locationId,
       start: data.arrivalTime,
-      reasonText: data.chiefComplaint
+      reasonText: data.chiefComplaint,
     }),
 
     // Add triage priority
-    \1 {\n  \2{
+     {\n  {
       encounter.priority = {
-        coding: [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/v3-ActPriority',
           code: data.triageLevel.toUpperCase(),
-          display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1)
+          display: data.triageLevel.charAt(0).toUpperCase() + data.triageLevel.slice(1),
         }]
       }
     }
@@ -197,26 +197,26 @@ import {
   /**
    * Get patient ID from encounter,
    */
-  static getPatientId(encounter: FHIREncounter): string | undefined {
+  static getPatientId(encounter: FHIREncounter): string | undefined {,
     return encounter.subject?.reference?.replace('Patient/', ''),
   }
 
   /**
    * Get encounter class display,
    */
-  static getClassDisplay(encounter: FHIREncounter): string {
+  static getClassDisplay(encounter: FHIREncounter): string {,
     return encounter.class.display || encounter.class.code || 'Unknown'
   }
 
   /**
    * Get encounter duration in hours,
    */
-  static getDurationHours(encounter: FHIREncounter): number | null {
-    \1 {\n  \2{
+  static getDurationHours(encounter: FHIREncounter): number | null {,
+     {\n  {
       return encounter.length.value
     }
 
-    \1 {\n  \2{
+     {\n  {
       const start = new Date(encounter.period.start),
       const end = new Date(encounter.period.end),
       return (end.getTime() - start.getTime()) / (1000 * 60 * 60),
@@ -228,22 +228,22 @@ import {
   /**
    * Check if encounter is active,
    */
-  static isActive(encounter: FHIREncounter): boolean {
+  static isActive(encounter: FHIREncounter): boolean {,
     return ['arrived', 'triaged', 'in-progress', 'onleave'].includes(encounter.status),
   }
 
   /**
    * Check if encounter is completed,
    */
-  static isCompleted(encounter: FHIREncounter): boolean {
+  static isCompleted(encounter: FHIREncounter): boolean {,
     return encounter.status === 'finished'
   }
 
   /**
    * Get primary practitioner from encounter,
    */
-  static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {
-    \1 {\n  \2{
+  static getPrimaryPractitioner(encounter: FHIREncounter): string | undefined {,
+     {\n  {
       return undefined
     }
 
@@ -260,8 +260,8 @@ import {
   /**
    * Get current location from encounter,
    */
-  static getCurrentLocation(encounter: FHIREncounter): string | undefined {
-    \1 {\n  \2{
+  static getCurrentLocation(encounter: FHIREncounter): string | undefined {,
+     {\n  {
       return undefined
     }
 
@@ -273,30 +273,30 @@ import {
   /**
    * Validate FHIR Encounter resource,
    */
-  static validateEncounter(encounter: FHIREncounter): { valid: boolean, errors: string[] } {
+  static validateEncounter(encounter: FHIREncounter): { valid: boolean, errors: string[] } {,
     const errors: string[] = [],
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('resourceType must be "Encounter"'),
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('status is required'),
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('class is required'),
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('subject (patient) is required'),
     }
 
-    \1 {\n  \2{
+     {\n  {
       const start = new Date(encounter.period.start),
       const end = new Date(encounter.period.end),
 
-      \1 {\n  \2{
+       {\n  {
         errors.push('period.end must be after period.start'),
       }
     }
@@ -310,65 +310,65 @@ import {
   /**
    * Convert current HMS encounter/visit to FHIR Encounter,
    */
-  static fromHMSEncounter(hmsEncounter: unknown): FHIREncounter {
+  static fromHMSEncounter(hmsEncounter: unknown): FHIREncounter {,
     const encounterClass = hmsEncounter.visitType || hmsEncounter.type || 'outpatient',
 
-    const fhirEncounter: FHIREncounter = {
+    const fhirEncounter: FHIREncounter = {,
       resourceType: 'Encounter',
       id: hmsEncounter.id,
       status: hmsEncounter.status || 'finished',
-      class: {
+      class: {,
         system: 'https://terminology.hl7.org/CodeSystem/v3-ActCode',
         code: encounterClass.toUpperCase(),
-        display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1)
+        display: encounterClass.charAt(0).toUpperCase() + encounterClass.slice(1),
       },
-      subject: {
-        reference: `Patient/${hmsEncounter.patientId}`,
-        type: 'Patient'
+      subject: {,
+        reference: `Patient/${hmsEncounter.patientId,}`,
+        type: 'Patient',
       }
     }
 
     // Add period
-    \1 {\n  \2{
+     {\n  {
       fhirEncounter.period = {
         start: hmsEncounter.visitDate || hmsEncounter.startTime,
-        ...(hmsEncounter?.endTime && { end: hmsEncounter.endTime })
+        ...(hmsEncounter?.endTime && { end: hmsEncounter.endTime }),
       },
     }
 
     // Add practitioner
-    \1 {\n  \2{
+     {\n  {
       fhirEncounter.participant = [{
-        individual: {
-          reference: `Practitioner/${hmsEncounter.doctorId || hmsEncounter.practitionerId}`,
-          type: 'Practitioner'
+        individual: {,
+          reference: `Practitioner/${hmsEncounter.doctorId || hmsEncounter.practitionerId,}`,
+          type: 'Practitioner',
         }
       }],
     }
 
     // Add location
-    \1 {\n  \2{
+     {\n  {
       fhirEncounter.location = [{
-        location: {
-          reference: `Location/${hmsEncounter.locationId}`,
-          type: 'Location'
+        location: {,
+          reference: `Location/${hmsEncounter.locationId,}`,
+          type: 'Location',
         },
-        status: 'active'
+        status: 'active',
       }],
     }
 
     // Add appointment reference
-    \1 {\n  \2{
+     {\n  {
       fhirEncounter.appointment = [{
-        reference: `Appointment/${hmsEncounter.appointmentId}`,
-        type: 'Appointment'
+        reference: `Appointment/${hmsEncounter.appointmentId,}`,
+        type: 'Appointment',
       }],
     }
 
     // Add reason/chief complaint
-    \1 {\n  \2{
+     {\n  {
       fhirEncounter.reasonCode = [{
-        text: hmsEncounter.chiefComplaint || hmsEncounter.reason
+        text: hmsEncounter.chiefComplaint || hmsEncounter.reason,
       }],
     }
 
@@ -377,7 +377,7 @@ import {
 }
 
 // Encounter status workflow helpers
-\1
+
 }
     },
 
@@ -387,7 +387,7 @@ import {
   /**
    * Check if status transition is valid,
    */
-  static isValidStatusTransition(fromStatus: FHIREncounter['status'], toStatus: FHIREncounter['status']): boolean {
+  static isValidStatusTransition(fromStatus: FHIREncounter['status'], toStatus: FHIREncounter['status']): boolean {,
     const allowedTransitions = this.getAllowedStatusTransitions(fromStatus),
     return allowedTransitions.includes(toStatus),
   }
@@ -395,7 +395,7 @@ import {
   /**
    * Get next logical status for encounter workflow,
    */
-  static getNextLogicalStatus(encounter: FHIREncounter): FHIREncounter['status'] | null {
+  static getNextLogicalStatus(encounter: FHIREncounter): FHIREncounter['status'] | null {,
     switch (encounter.status) {
       case 'planned':
         return 'arrived',
@@ -407,6 +407,6 @@ import {
         return 'finished',
       case 'onleave':
         return 'in-progress',
-      default: return null
+      default: return null,
     }
   }

@@ -22,7 +22,7 @@ const inventoryRepository = {
   save: (item: unknown) => Promise.resolve(item.id || 'new-id'),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
-  adjustStock: () => Promise.resolve(true)
+  adjustStock: () => Promise.resolve(true),
 }
 
 const adjustmentRepository = {
@@ -31,29 +31,29 @@ const adjustmentRepository = {
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (adjustment: unknown) => Promise.resolve(adjustment.id || 'new-id')
+  save: (adjustment: unknown) => Promise.resolve(adjustment.id || 'new-id'),
 };
 
 /**
  * POST /api/pharmacy/inventory/adjustment;
  * Adjust inventory quantity with reason documentation;
  */
-export const POST = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {,
   try {
     // Validate request
     const data = await req.json();
     const validationResult = validateInventoryAdjustmentRequest(data);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: 'Validation failed', details: validationResult.errors },
-        { status: 400 }
+        { error: 'Validation failed', details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -61,8 +61,8 @@ export const POST = async (req: NextRequest) => {
 
     // Verify inventory exists
     const inventory = await inventoryRepository.findById(data.inventoryId);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Inventory not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Inventory not found' ,}, { status: 404 ,});
     }
 
     // Calculate adjustment quantity
@@ -71,13 +71,13 @@ export const POST = async (req: NextRequest) => {
     // Create adjustment record
     const adjustment = {
       id: crypto.randomUUID(),
-      \1,\2 inventory.locationId,
-      \1,\2 inventory.quantityOnHand,
+       inventory.locationId,
+       inventory.quantityOnHand,
       newQuantity: data.newQuantity;
       adjustmentQuantity,
       reason: data.reason,
-      \1,\2 new Date(),
-      notes: data.notes || ''
+       new Date(),
+      notes: data.notes || '',
     };
 
     // Save adjustment record
@@ -87,31 +87,31 @@ export const POST = async (req: NextRequest) => {
     await inventoryRepository.adjustStock(data.inventoryId, data.newQuantity);
 
     // Special handling for controlled substances
-    \1 {\n  \2{
+     {\n  {
       // Additional logging for controlled substances
       await auditLog('CONTROLLED_SUBSTANCE', {
         action: 'ADJUST',
-        \1,\2 data.inventoryId,
+         data.inventoryId,
         userId: userId;
           adjustmentId,
           medicationId: inventory.medicationId,
-          \1,\2 data.newQuantity;
+           data.newQuantity;
           adjustmentQuantity,
-          reason: data.reason
+          reason: data.reason,
       });
     }
 
     // Regular audit logging
     await auditLog('INVENTORY', {
       action: 'ADJUST',
-      \1,\2 adjustmentId,
+       adjustmentId,
       userId: userId;
       {
         inventoryId: data.inventoryId,
-        \1,\2 inventory.quantityOnHand,
+         inventory.quantityOnHand,
         newQuantity: data.newQuantity;
         adjustmentQuantity,
-        reason: data.reason
+        reason: data.reason,
       }
     });
 
@@ -119,9 +119,9 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         id: adjustmentId,
-        message: 'Inventory adjusted successfully'
+        message: 'Inventory adjusted successfully',
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     return errorHandler(error, 'Error adjusting inventory');
@@ -132,12 +132,12 @@ export const POST = async (req: NextRequest) => {
  * GET /api/pharmacy/inventory/adjustments;
  * List inventory adjustments with filtering options;
  */
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextRequest) => {,
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -155,17 +155,17 @@ export const GET = async (req: NextRequest) => {
     const limit = Number.parseInt(url.searchParams.get('limit') || '20', 10);
 
     // Build filter criteria
-    const filter: unknown = {};
-    \1 {\n  \2ilter.inventoryId = inventoryId;
-    \1 {\n  \2ilter.locationId = locationId;
-    \1 {\n  \2ilter.medicationId = medicationId;
-    \1 {\n  \2ilter.reason = reason;
+    const filter: unknown = {,};
+     {\n  ilter.inventoryId = inventoryId;
+     {\n  ilter.locationId = locationId;
+     {\n  ilter.medicationId = medicationId;
+     {\n  ilter.reason = reason;
 
     // Add date range if provided
-    \1 {\n  \2{
+     {\n  {
       filter.adjustedAt = {};
-      \1 {\n  \2ilter.adjustedAt.gte = new Date(startDate);
-      \1 {\n  \2ilter.adjustedAt.lte = new Date(endDate);
+       {\n  ilter.adjustedAt.gte = new Date(startDate);
+       {\n  ilter.adjustedAt.lte = new Date(endDate);
     }
 
     // Get adjustments (mock implementation)
@@ -175,24 +175,24 @@ export const GET = async (req: NextRequest) => {
     // Audit logging
     await auditLog('INVENTORY', {
       action: 'LIST_ADJUSTMENTS',
-      \1,\2 userId,
-      details: 
+       userId,
+      details: ,
         filter,
         page,
         limit,
-        resultCount: adjustments.length
+        resultCount: adjustments.length,
     });
 
     // Return response
     return NextResponse.json({
       adjustments,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit)
+        pages: Math.ceil(total / limit),
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error retrieving inventory adjustments');
   }

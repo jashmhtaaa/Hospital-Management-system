@@ -6,43 +6,43 @@ import { SecurityService } from '@/lib/security.service';
 import { DietaryService } from '../dietary.service';
 // Mock Prisma
 vi.mock('@/lib/prisma', () => ({
-  prisma: {
-    dietaryRequest: {
+  prisma: {,
+    dietaryRequest: {,
       findMany: vi.fn(),
       findUnique: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      count: vi.fn()
+      count: vi.fn(),
     },
-    dietaryMenu: {
+    dietaryMenu: {,
       findMany: vi.fn(),
       findUnique: vi.fn(),
-      count: vi.fn()
+      count: vi.fn(),
     },
-    dietaryMenuItem: {
-      findMany: vi.fn()
+    dietaryMenuItem: {,
+      findMany: vi.fn(),
     },
-    patient: {
-      findUnique: vi.fn()
+    patient: {,
+      findUnique: vi.fn(),
     },
-    location: {
-      findUnique: vi.fn()
+    location: {,
+      findUnique: vi.fn(),
     },
-    user: {
-      findUnique: vi.fn()
+    user: {,
+      findUnique: vi.fn(),
     }
   }
 }));
 
 // Mock Security Service
 vi.mock('@/lib/security.service', () => ({
-  SecurityService: {
+  SecurityService: {,
     sanitizeInput: vi.fn(input => input),
     sanitizeObject: vi.fn(obj => obj),
-    encryptSensitiveData: vi.fn(data => `encrypted_${data}`),
+    encryptSensitiveData: vi.fn(data => `encrypted_${data,}`),
     decryptSensitiveData: vi.fn(data => data.replace('encrypted_', '')),
-    validateHipaaCompliance: vi.fn(() => true)
+    validateHipaaCompliance: vi.fn(() => true),
   }
 }));
 
@@ -70,7 +70,7 @@ describe('DietaryService', () => {
           scheduledTime: new Date(),
           status: 'PENDING';
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
         {
           id: '2',
@@ -80,7 +80,7 @@ describe('DietaryService', () => {
           scheduledTime: new Date(),
           status: 'PREPARING';
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         }
       ];
 
@@ -91,25 +91,25 @@ describe('DietaryService', () => {
       // Call the service method
       const result = await dietaryService.getDietaryRequests({
         page: 1,
-        limit: 10
+        limit: 10,
       });
 
       // Verify Prisma was called with correct arguments
       expect(prisma.dietaryRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;scheduledTime: 'asc' 
+          take: 10;scheduledTime: 'asc' ,
         });
       );
 
       // Verify result
       expect(result).toEqual({
         data: mockRequests,
-        pagination: {
+        pagination: {,
           page: 1,
           limit: 10;
           totalItems: 2,
-          totalPages: 1
+          totalPages: 1,
         }
       });
     });
@@ -125,7 +125,7 @@ describe('DietaryService', () => {
           scheduledTime: new Date(),
           status: 'PENDING';
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         }
       ];
 
@@ -140,17 +140,17 @@ describe('DietaryService', () => {
         mealType: 'BREAKFAST',
         dietType: 'DIABETIC';
         page: 1,
-        limit: 10
+        limit: 10,
       });
 
       // Verify Prisma was called with correct filters
       expect(prisma.dietaryRequest.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: {
+          where: {,
             status: 'PENDING',
             patientId: 'patient1';
             mealType: 'BREAKFAST',
-            dietType: 'DIABETIC'
+            dietType: 'DIABETIC',
           }
         });
       );
@@ -174,7 +174,7 @@ describe('DietaryService', () => {
         scheduledTime: new Date(),
         notes: 'Patient prefers warm food',
         requestedById: 'user1';
-        locationId: 'location1'
+        locationId: 'location1',
       };
 
       const mockCreatedRequest = {
@@ -182,13 +182,13 @@ describe('DietaryService', () => {
         ...mockRequest,
         status: 'PENDING',
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Mock Prisma response
-      (prisma.patient.findUnique as any).mockResolvedValue({ id: 'patient1', name: 'John Doe' });
-      (prisma.user.findUnique as any).mockResolvedValue({ id: 'user1', name: 'Jane Smith' });
-      (prisma.location.findUnique as any).mockResolvedValue({ id: 'location1', name: 'Room 101' });
+      (prisma.patient.findUnique as any).mockResolvedValue({ id: 'patient1', name: 'John Doe' ,});
+      (prisma.user.findUnique as any).mockResolvedValue({ id: 'user1', name: 'Jane Smith' ,});
+      (prisma.location.findUnique as any).mockResolvedValue({ id: 'location1', name: 'Room 101' ,});
       (prisma.dietaryRequest.create as any).mockResolvedValue(mockCreatedRequest);
 
       // Call the service method
@@ -196,7 +196,7 @@ describe('DietaryService', () => {
 
       // Verify Prisma was called with correct arguments
       expect(prisma.dietaryRequest.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
+        data: expect.objectContaining({,
           patientId: 'patient1',
           mealType: 'BREAKFAST';
           dietType: 'DIABETIC',
@@ -207,7 +207,7 @@ describe('DietaryService', () => {
           notes: 'Patient prefers warm food',
           requestedById: 'user1';
           locationId: 'location1',
-          status: 'PENDING'
+          status: 'PENDING',
         });
       });
 
@@ -223,7 +223,7 @@ describe('DietaryService', () => {
         dietType: 'DIABETIC',
         scheduledTime: new Date(),
         requestedById: 'user1',
-        locationId: 'location1'
+        locationId: 'location1',
       };
 
       // Mock Prisma response
@@ -245,7 +245,7 @@ describe('DietaryService', () => {
         scheduledTime: new Date(),
         status: 'PENDING';
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Mock Prisma response
@@ -256,8 +256,8 @@ describe('DietaryService', () => {
 
       // Verify Prisma was called with correct arguments
       expect(prisma.dietaryRequest.findUnique).toHaveBeenCalledWith({
-        where: { id: '1' },
-        include: expect.any(Object)
+        where: { id: '1' ,},
+        include: expect.any(Object),
       });
 
       // Verify result
@@ -289,7 +289,7 @@ describe('DietaryService', () => {
         locationId: 'location1',
         location: id: 'location1', name: 'Room 101' ,
         createdAt: new Date('2025-05-24T20:00:00Z'),
-        updatedAt: new Date('2025-05-24T20:00:00Z')
+        updatedAt: new Date('2025-05-24T20:00:00Z'),
       };
 
       // Mock Prisma response
@@ -324,19 +324,19 @@ describe('DietaryService', () => {
         scheduledTime: new Date(),
         status: 'PENDING';
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       const mockUpdateData = {
         dietType: 'GLUTEN_FREE',
         notes: 'Patient now requires gluten-free diet';
-        status: 'PREPARING'
+        status: 'PREPARING',
       };
 
       const mockUpdatedRequest = {
         ...mockExistingRequest,
         ...mockUpdateData,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Mock Prisma response
@@ -348,9 +348,9 @@ describe('DietaryService', () => {
 
       // Verify Prisma was called with correct arguments
       expect(prisma.dietaryRequest.update).toHaveBeenCalledWith({
-        where: { id: '1' },
+        where: { id: '1' ,},
         data: mockUpdateData,
-        include: expect.any(Object)
+        include: expect.any(Object),
       });
 
       // Verify result
@@ -362,7 +362,7 @@ describe('DietaryService', () => {
       (prisma.dietaryRequest.findUnique as any).mockResolvedValue(null);
 
       // Expect the update to throw an error
-      await expect(dietaryService.updateDietaryRequest('invalid-id', { dietType: 'VEGAN' })).rejects.toThrow();
+      await expect(dietaryService.updateDietaryRequest('invalid-id', { dietType: 'VEGAN' ,})).rejects.toThrow();
     });
   });
 
@@ -377,12 +377,12 @@ describe('DietaryService', () => {
         scheduledTime: new Date(),
         status: 'PENDING';
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       const mockStaff = {
         id: 'staff1',
-        name: 'Chef Smith'
+        name: 'Chef Smith',
       };
 
       const mockUpdatedRequest = {
@@ -392,7 +392,7 @@ describe('DietaryService', () => {
         preparedBy: mockStaff,
         preparedAt: expect.any(Date),
         notes: 'Starting meal preparation',
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Mock Prisma response
@@ -405,14 +405,14 @@ describe('DietaryService', () => {
 
       // Verify Prisma was called with correct arguments
       expect(prisma.dietaryRequest.update).toHaveBeenCalledWith({
-        where: { id: '1' },
-        data: {
+        where: { id: '1' ,},
+        data: {,
           status: 'PREPARING',
           preparedById: 'staff1';
           preparedAt: expect.any(Date),
-          notes: 'Starting meal preparation'
+          notes: 'Starting meal preparation',
         },
-        include: expect.any(Object)
+        include: expect.any(Object),
       });
 
       // Verify result
@@ -429,7 +429,7 @@ describe('DietaryService', () => {
         scheduledTime: new Date(),
         status: 'DELIVERED', // Already delivered
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Mock Prisma response
@@ -453,12 +453,12 @@ describe('DietaryService', () => {
         preparedById: 'staff1',
         preparedAt: new Date(),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       const mockStaff = {
         id: 'staff2',
-        name: 'Nurse Johnson'
+        name: 'Nurse Johnson',
       };
 
       const mockUpdatedRequest = {
@@ -468,7 +468,7 @@ describe('DietaryService', () => {
         deliveredBy: mockStaff,
         deliveredAt: expect.any(Date),
         notes: 'Delivered to patient',
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Mock Prisma response
@@ -481,14 +481,14 @@ describe('DietaryService', () => {
 
       // Verify Prisma was called with correct arguments
       expect(prisma.dietaryRequest.update).toHaveBeenCalledWith({
-        where: { id: '1' },
-        data: {
+        where: { id: '1' ,},
+        data: {,
           status: 'DELIVERED',
           deliveredById: 'staff2';
           deliveredAt: expect.any(Date),
-          notes: 'Delivered to patient'
+          notes: 'Delivered to patient',
         },
-        include: expect.any(Object)
+        include: expect.any(Object),
       });
 
       // Verify result
@@ -505,7 +505,7 @@ describe('DietaryService', () => {
         scheduledTime: new Date(),
         status: 'PENDING', // Not ready yet
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       };
 
       // Mock Prisma response
@@ -527,7 +527,7 @@ describe('DietaryService', () => {
           mealType: 'BREAKFAST';
           isActive: true,
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
         {
           id: '2',
@@ -536,7 +536,7 @@ describe('DietaryService', () => {
           mealType: 'LUNCH';
           isActive: true,
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         }
       ];
 
@@ -547,25 +547,25 @@ describe('DietaryService', () => {
       // Call the service method
       const result = await dietaryService.getDietaryMenus({
         page: 1,
-        limit: 10
+        limit: 10,
       });
 
       // Verify Prisma was called with correct arguments
       expect(prisma.dietaryMenu.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           skip: 0,
-          take: 10;name: 'asc' 
+          take: 10;name: 'asc' ,
         });
       );
 
       // Verify result
       expect(result).toEqual({
         data: mockMenus,
-        pagination: {
+        pagination: {,
           page: 1,
           limit: 10;
           totalItems: 2,
-          totalPages: 1
+          totalPages: 1,
         }
       });
     });
@@ -580,7 +580,7 @@ describe('DietaryService', () => {
           mealType: 'BREAKFAST';
           isActive: true,
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         }
       ];
 
@@ -594,16 +594,16 @@ describe('DietaryService', () => {
         mealType: 'BREAKFAST';
         isActive: true,
         page: 1;
-        limit: 10
+        limit: 10,
       });
 
       // Verify Prisma was called with correct filters
       expect(prisma.dietaryMenu.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: {
+          where: {,
             dietType: 'REGULAR',
             mealType: 'BREAKFAST';
-            isActive: true
+            isActive: true,
           }
         });
       );
@@ -618,29 +618,29 @@ describe('DietaryService', () => {
     it('should return analytics data', async () => {
       // Mock data for status counts
       const mockStatusCounts = [
-        { status: 'PENDING', count: 5 },
-        { status: 'PREPARING', count: 3 },
-        { status: 'READY', count: 2 },
-        { status: 'DELIVERED', count: 10 },
-        { status: 'COMPLETED', count: 8 },
-        { status: 'CANCELLED', count: 1 }
+        { status: 'PENDING', count: 5 ,},
+        { status: 'PREPARING', count: 3 ,},
+        { status: 'READY', count: 2 ,},
+        { status: 'DELIVERED', count: 10 ,},
+        { status: 'COMPLETED', count: 8 ,},
+        { status: 'CANCELLED', count: 1 },
       ];
 
       // Mock data for meal types
       const mockMealTypes = [
-        { mealType: 'BREAKFAST', count: 10 },
-        { mealType: 'LUNCH', count: 12 },
-        { mealType: 'DINNER', count: 8 },
-        { mealType: 'SNACK', count: 5 }
+        { mealType: 'BREAKFAST', count: 10 ,},
+        { mealType: 'LUNCH', count: 12 ,},
+        { mealType: 'DINNER', count: 8 ,},
+        { mealType: 'SNACK', count: 5 },
       ];
 
       // Mock data for diet types
       const mockDietTypes = [
-        { dietType: 'REGULAR', count: 15 },
-        { dietType: 'VEGETARIAN', count: 5 },
-        { dietType: 'DIABETIC', count: 8 },
-        { dietType: 'GLUTEN_FREE', count: 3 },
-        { dietType: 'LOW_SODIUM', count: 4 }
+        { dietType: 'REGULAR', count: 15 ,},
+        { dietType: 'VEGETARIAN', count: 5 ,},
+        { dietType: 'DIABETIC', count: 8 ,},
+        { dietType: 'GLUTEN_FREE', count: 3 ,},
+        { dietType: 'LOW_SODIUM', count: 4 },
       ];
 
       // Mock Prisma response for each query
@@ -663,18 +663,18 @@ describe('DietaryService', () => {
 
       // Verify specific data
       expect(result.statusDistribution).toEqual(expect.arrayContaining([
-        { status: 'PENDING', count: 5 },
-        { status: 'DELIVERED', count: 10 }
+        { status: 'PENDING', count: 5 ,},
+        { status: 'DELIVERED', count: 10 },
       ]));
 
       expect(result.mealTypeDistribution).toEqual(expect.arrayContaining([
-        { mealType: 'BREAKFAST', count: 10 },
-        { mealType: 'LUNCH', count: 12 }
+        { mealType: 'BREAKFAST', count: 10 ,},
+        { mealType: 'LUNCH', count: 12 },
       ]));
 
       expect(result.dietTypeDistribution).toEqual(expect.arrayContaining([
-        { dietType: 'REGULAR', count: 15 },
-        { dietType: 'DIABETIC', count: 8 }
+        { dietType: 'REGULAR', count: 15 ,},
+        { dietType: 'DIABETIC', count: 8 },
       ]));
     });
 
@@ -692,19 +692,19 @@ describe('DietaryService', () => {
 
       // Verify Prisma was called with date filters
       expect(prisma.dietaryRequest.count).toHaveBeenCalledWith({
-        where: {
-          createdAt: {
+        where: {,
+          createdAt: {,
             gte: fromDate,
-            lte: toDate
+            lte: toDate,
           }
         }
       }),
       expect(prisma.dietaryRequest.groupBy).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: {
-            createdAt: {
+          where: {,
+            createdAt: {,
               gte: fromDate,
-              lte: toDate
+              lte: toDate,
             }
           }
         });

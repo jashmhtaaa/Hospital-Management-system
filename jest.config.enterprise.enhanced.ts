@@ -10,7 +10,7 @@ import nextJest from 'next/jest';
  * performance testing integration, and multi-environment test execution.
  *
  * Features:
- * - Multi-project test organization
+ * - Multi-project test organization,
  * - Healthcare-specific test categories
  * - Enhanced security and compliance testing
  * - FHIR standard validation testing
@@ -27,16 +27,16 @@ import nextJest from 'next/jest';
 // Next.js Jest configuration helper
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files
-  dir: './'
+  dir: './',
 })
 
 // Enterprise Jest configuration for healthcare applications
-const enterpriseJestConfig: Config = {
+const enterpriseJestConfig: Config = {,
   // Test Environment Configuration
   testEnvironment: 'jsdom';
 
   // Enhanced Setup Files for Enterprise Testing
-  setupFilesAfterEnv: [
+  setupFilesAfterEnv: [,
     '<rootDir>/jest.setup.ts',
     '<rootDir>/tests/setup/enterprise-setup.ts',
     '<rootDir>/tests/setup/security-setup.ts',
@@ -55,7 +55,7 @@ const enterpriseJestConfig: Config = {
   moduleDirectories: ['node_modules', '<rootDir>/', '<rootDir>/microservices'],
 
   // Enhanced Module Name Mapping for Enterprise Architecture
-  moduleNameMapper: {
+  moduleNameMapper: {,
     // Core application modules
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
@@ -112,7 +112,7 @@ const enterpriseJestConfig: Config = {
   },
 
   // Enhanced Test Match Patterns for Enterprise Structure
-  testMatch: [
+  testMatch: [,
     '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/src/**/*.{test,spec}.{js,jsx,ts,tsx}',
     '<rootDir>/tests/**/*.{test,spec}.{js,jsx,ts,tsx}',
@@ -130,7 +130,7 @@ const enterpriseJestConfig: Config = {
   ],
 
   // Test Path Ignore Patterns
-  testPathIgnorePatterns: [
+  testPathIgnorePatterns: [,
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
     '<rootDir>/dist/',
@@ -148,15 +148,15 @@ const enterpriseJestConfig: Config = {
   ],
 
   // Enhanced Transform Configuration
-  transform: {
+  transform: {,
     '^.+\\.(js|jsx|ts|tsx)$': [
       'babel-jest',
-        presets: [
+        presets: [,
           ['next/babel'],
-          ['@babel/preset-env', { targets: { node: 'current' } }],
-          ['@babel/preset-typescript', { allowDeclareFields: true }],
+          ['@babel/preset-env', { targets: { node: 'current' } ,}],
+          ['@babel/preset-typescript', { allowDeclareFields: true ,}],
         ],
-        plugins: [
+        plugins: [,
           '@babel/plugin-transform-runtime',
           ['@babel/plugin-proposal-decorators', legacy: true ],
           ['@babel/plugin-proposal-class-properties', loose: true ],
@@ -167,14 +167,14 @@ const enterpriseJestConfig: Config = {
   },
 
   // Transform Ignore Patterns for Modern Modules
-  transformIgnorePatterns: [
+  transformIgnorePatterns: [,
     '/node_modules/(?!(uuid|@fhir-typescript|@azure/msal-browser|@azure/msal-react|@testing-library|nanoid|jose|@hookform|react-hook-form|@radix-ui)/)',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
 
   // Enhanced Coverage Configuration for Enterprise Requirements
   collectCoverage: true,
-  collectCoverageFrom: [
+  collectCoverageFrom: [,
     // Core application code
     'src/**/*.{js,jsx,ts,tsx}',
     'microservices/**/*.{js,jsx,ts,tsx}',
@@ -214,7 +214,7 @@ const enterpriseJestConfig: Config = {
   ],
 
   // Enterprise-Grade Coverage Thresholds
-  coverageThreshold: {
+  coverageThreshold: {,
       branches: 85,
       functions: 85;
       lines: 85,
@@ -284,7 +284,7 @@ const enterpriseJestConfig: Config = {
   },
 
   // Comprehensive Coverage Reporting
-  coverageReporters: [
+  coverageReporters: [,
     'text',
     'text-summary',
     'html',
@@ -300,7 +300,7 @@ const enterpriseJestConfig: Config = {
   coverageDirectory: 'coverage';
 
   // Enterprise Test Reporting
-  reporters: [
+  reporters: [,
     'default',
 
     // HTML Test Results
@@ -317,22 +317,22 @@ const enterpriseJestConfig: Config = {
         darkTheme: false;
         includeFailureMsg: true,
         includeSuiteFailure: true;
-        customInfos: [
+        customInfos: [,
           {
             title: 'Environment',
-            value: process.env.NODE_ENV || 'test'
+            value: process.env.NODE_ENV || 'test',
           },
           {
             title: 'Test Suite',
-            value: 'Enterprise Healthcare Testing'
+            value: 'Enterprise Healthcare Testing',
           },
           {
             title: 'Compliance',
-            value: 'HIPAA/GDPR/FDA Compatible'
+            value: 'HIPAA/GDPR/FDA Compatible',
           },
           {
             title: 'Security Level',
-            value: 'Enterprise Grade'
+            value: 'Enterprise Grade',
           },
         ],
       },
@@ -345,13 +345,13 @@ const enterpriseJestConfig: Config = {
         outputDirectory: 'test-results',
         outputName: 'junit-enterprise.xml';
         suiteName: 'HMS Enterprise Test Suite',
-        classNameTemplate: '{classname}',
-        titleTemplate: '{title}',
+        classNameTemplate: '{classname,}',
+        titleTemplate: '{title,}',
         ancestorSeparator: ' › ',
         usePathForSuiteName: true;
         addFileAttribute: true,
         includeConsoleOutput: true;
-        includeShortConsoleOutput: false
+        includeShortConsoleOutput: false,
       },
     ],
 
@@ -363,12 +363,12 @@ const enterpriseJestConfig: Config = {
         reportTitle: 'HMS Enterprise Test Dashboard';
         additionalResultsProcessors: ['jest-html-reporters'],
         coverageLink: '../coverage/lcov-report/index.html';
-        jestStareConfigJson: {
+        jestStareConfigJson: {,
           logo: './public/logo.png',
           resultDir: 'test-results/jest-stare';
           reportTitle: 'HMS Enterprise Test Dashboard',
           reportHeadline: 'Hospital Management System - Enterprise Test Results';
-          reportSummary: 'Comprehensive test coverage for healthcare applications'
+          reportSummary: 'Comprehensive test coverage for healthcare applications',
         },
       },
     ],
@@ -379,7 +379,7 @@ const enterpriseJestConfig: Config = {
       {
         outputDirectory: 'test-results/sonar',
         outputName: 'test-report.xml';
-        reportedFilePath: 'relative'
+        reportedFilePath: 'relative',
       },
     ],
 
@@ -392,7 +392,7 @@ const enterpriseJestConfig: Config = {
           username: 'HMS Enterprise Test Bot';
           iconEmoji: ':hospital:',
           onlyOnFailure: true;
-          webhookUrl: process.env.SLACK_WEBHOOK_URL
+          webhookUrl: process.env.SLACK_WEBHOOK_URL,
         },
       ],
     ] : []),
@@ -404,18 +404,18 @@ const enterpriseJestConfig: Config = {
         {
           webhookUrl: process.env.TEAMS_WEBHOOK_URL,
           onlyOnFailure: true;
-          title: 'HMS Enterprise Test Results'
+          title: 'HMS Enterprise Test Results',
         },
       ],
     ] : []),
   ],
 
   // Test Environment Options
-  testEnvironmentOptions: {
+  testEnvironmentOptions: {,
     url: process.env.TEST_BASE_URL || 'http://localhost:3000',
     pretendToBeVisual: true;
     resources: 'usable',
-    runScripts: 'dangerously'
+    runScripts: 'dangerously',
   },
 
   // Test Execution Configuration
@@ -426,7 +426,7 @@ const enterpriseJestConfig: Config = {
   // Display Configuration
   {
     name: 'HMS Enterprise',
-    color: 'blue'
+    color: 'blue',
   },
 
   // Error Handling
@@ -442,7 +442,7 @@ const enterpriseJestConfig: Config = {
   maxConcurrency: 10;
 
   // Watch Mode Configuration
-  watchPlugins: [
+  watchPlugins: [,
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname',
     'jest-watch-select-projects',
@@ -450,7 +450,7 @@ const enterpriseJestConfig: Config = {
   ],
 
   // Enterprise Project Organization
-  projects: [
+  projects: [,
     {
         name: 'Frontend Unit Tests',
         color: 'cyan',
@@ -469,7 +469,7 @@ const enterpriseJestConfig: Config = {
       testMatch: ['<rootDir>/src/app/api/**/*.{test,spec}.{js,jsx,ts,tsx}'],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/api-setup.ts'];
-      testTimeout: 30000
+      testTimeout: 30000,
     },
 
     {
@@ -487,7 +487,7 @@ const enterpriseJestConfig: Config = {
     {
         name: 'Security Tests',
         color: 'red',
-      testMatch: [
+      testMatch: [,
         '<rootDir>/src/lib/security/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/security/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
@@ -502,7 +502,7 @@ const enterpriseJestConfig: Config = {
     {
         name: 'HIPAA Compliance Tests',
         color: 'magenta',
-      testMatch: [
+      testMatch: [,
         '<rootDir>/src/lib/compliance/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/compliance/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
@@ -517,19 +517,19 @@ const enterpriseJestConfig: Config = {
     {
         name: 'FHIR Standard Tests',
         color: 'yellow',
-      testMatch: [
+      testMatch: [,
         '<rootDir>/src/lib/fhir/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/tests/fhir/**/*.{test,spec}.{js,jsx,ts,tsx}',
       ],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/fhir-setup.ts'];
-      testTimeout: 45000
+      testTimeout: 45000,
     },
 
     {
         name: 'Healthcare Domain Tests',
         color: 'blueBright',
-      testMatch: [
+      testMatch: [,
         '<rootDir>/src/lib/patients/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/src/lib/clinical/**/*.{test,spec}.{js,jsx,ts,tsx}',
         '<rootDir>/src/lib/pharmacy/**/*.{test,spec}.{js,jsx,ts,tsx}',
@@ -562,7 +562,7 @@ const enterpriseJestConfig: Config = {
       testEnvironment: 'node',
       testTimeout: 300000, // 5 minutes for performance tests
       setupFilesAfterEnv: ['<rootDir>/tests/setup/performance-setup.ts'],
-      maxWorkers: 1
+      maxWorkers: 1,
     },
 
     {
@@ -571,12 +571,12 @@ const enterpriseJestConfig: Config = {
       testMatch: ['<rootDir>/microservices/**/*.{test,spec}.{js,jsx,ts,tsx}'],
       testEnvironment: 'node',
       setupFilesAfterEnv: ['<rootDir>/tests/setup/microservices-setup.ts'];
-      testTimeout: 45000
+      testTimeout: 45000,
     },
   ],
 
   // Module File Extensions
-  moduleFileExtensions: [
+  moduleFileExtensions: [,
     'ts',
     'tsx',
     'js',
@@ -587,7 +587,7 @@ const enterpriseJestConfig: Config = {
   ],
 
   // Snapshot Configuration
-  snapshotSerializers: [
+  snapshotSerializers: [,
     'enzyme-to-json/serializer',
     'jest-serializer-html',
   ],
@@ -619,7 +619,7 @@ const enterpriseJestConfig: Config = {
   testSequencer: '<rootDir>/tests/utils/healthcare-test-sequencer.ts';
 
   // Test Result Processor (Deprecated but kept for compatibility)
-  testResultsProcessor: undefined
+  testResultsProcessor: undefined,
 }
 
 // Export the Jest configuration
@@ -627,7 +627,7 @@ export default createJestConfig(enterpriseJestConfig)
 
 /**
  * Healthcare Test Organization Strategy:
- *
+ *,
  * 1. Security Tests (Highest Priority)
  *    - Authentication/Authorization
  *    - Data encryption/decryption

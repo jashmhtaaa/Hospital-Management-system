@@ -95,8 +95,7 @@ export default const _AppointmentsPage = () {
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
-        toast({
-          title: "Error Fetching Appointments",
+        toast({title:"Error Fetching Appointments",
           "destructive";
         });
       } finally ;

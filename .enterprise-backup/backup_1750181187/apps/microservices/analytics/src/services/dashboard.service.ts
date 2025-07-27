@@ -39,7 +39,7 @@ export interface Dashboard {
   settings: DashboardSettings;
   autoRefresh: boolean,
   tags: string[];
-  metadata: DashboardMetadata
+  metadata: DashboardMetadata,
 export enum DashboardCategory {
   CLINICAL = 'CLINICAL',
   FINANCIAL = 'FINANCIAL',
@@ -69,12 +69,12 @@ export interface DashboardLayout {
   options?: Record<string, any>;
 export interface BreakpointLayout {
   columns: number,
-  layouts: {
+  layouts: {,
     widgetId: string,
     x: number;
     y: number,
     w: number;
-    h: number
+    h: number,
   }[];
 export interface DashboardWidget {
   id: string,
@@ -97,7 +97,7 @@ export interface DashboardWidget {
   lastRefreshed?: Date;
   version: string,
   tags: string[];
-  metadata: WidgetMetadata
+  metadata: WidgetMetadata,
 export enum WidgetType {
   CHART = 'CHART',
   TABLE = 'TABLE',
@@ -129,7 +129,7 @@ export interface WidgetPosition {
   zIndex?: number;
 export interface WidgetDataSource {
   type: 'API' | 'GRAPHQL' | 'SQL' | 'SERVICE' | 'STATIC' | 'REALTIME' | 'CUSTOM',
-  config: {
+  config: {,
     url?: string;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     headers?: Record<string, string>;
@@ -158,7 +158,7 @@ export interface WidgetVisualization {
     showTooltips: boolean,
     showDataLabels: boolean;
     showAxes: boolean,
-    showGrid: boolean
+    showGrid: boolean,
   };
   theme?: {
     colors: string[];
@@ -301,7 +301,7 @@ export interface WidgetFilter {
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'greater_than_or_equals' | 'less_than_or_equals' | 'between' | 'not_between' | 'contains' | 'not_contains' | 'starts_with' | 'ends_with' | 'is_empty' | 'is_not_empty' | 'in' | 'not_in';
   value?: unknown;
   value2?: unknown; // For 'between' and 'not_between'
-  isDynamic: boolean
+  isDynamic: boolean,
   dynamicSource?: {
     type: 'DASHBOARD_FILTER' | 'WIDGET_INTERACTION' | 'USER_PROPERTY' | 'GLOBAL_PARAMETER',
     source: string;
@@ -323,12 +323,12 @@ export interface DashboardFilter {
     type: 'STATIC' | 'API' | 'SERVICE',
     config: Record<string, any>
   };
-  position: {
+  position: {,
     area: 'TOP' | 'LEFT' | 'RIGHT' | 'BOTTOM' | 'WIDGET';
     widgetId?: string; // If area is 'WIDGET'
-    order: number
+    order: number,
   }
-  settings: {
+  settings: {,
     width?: string | number;
     placeholder?: string;
     label?: string;
@@ -345,7 +345,7 @@ export interface DashboardFilter {
     step?: number;
     marks?: {
       value: number,
-      label: string
+      label: string,
     }[];
     customComponent?: string
   };
@@ -357,7 +357,7 @@ export interface DashboardFilter {
   }[];
   permissions?: {
     roles: string[],
-    access: 'VIEW' | 'EDIT'
+    access: 'VIEW' | 'EDIT',
   }[];
   advanced?: boolean;
   hidden?: boolean;
@@ -365,7 +365,7 @@ export interface DashboardFilter {
 export interface DashboardTheme {
   id: string,
   name: string;
-  palette: {
+  palette: {,
     primary: string,
     secondary: string;
     success: string,
@@ -377,101 +377,101 @@ export interface DashboardTheme {
     text: string,
     textSecondary: string;
     border: string,
-    chartColors: string[]
+    chartColors: string[],
   };
-  typography: {
+  typography: {,
     fontFamily: string,
     fontSize: number;
     fontWeightLight: number,
     fontWeightRegular: number;
     fontWeightMedium: number,
     fontWeightBold: number;
-    h1: {
+    h1: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string
     };
-    h2: {
+    h2: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string
     };
-    h3: {
+    h3: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string
     };
-    h4: {
+    h4: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string
     };
-    h5: {
+    h5: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string
     };
-    h6: {
+    h6: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number;
       textTransform?: string
     };
-    body1: {
+    body1: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number
     };
-    body2: {
+    body2: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number
     };
-    caption: {
+    caption: {,
       fontSize: number,
       fontWeight: number;
       lineHeight: number;
       letterSpacing?: number
     };
   };
-  shape: {
+  shape: {,
     borderRadius: number,
-    borderWidth: number
+    borderWidth: number,
   };
   spacing: number,
   shadows: string[];
-  transitions: {
-    duration: {
+  transitions: {,
+    duration: {,
       shortest: number,
       shorter: number;
       short: number,
       standard: number;
       complex: number,
       enteringScreen: number;
-      leavingScreen: number
+      leavingScreen: number,
     };
-    easing: {
+    easing: {,
       easeInOut: string,
       easeOut: string;
       easeIn: string,
-      sharp: string
+      sharp: string,
     }
   };
   components?: {
-    [key: string]: {
+    [key: string]: {,
       styleOverrides?: Record<string, any>;
       variants?: Record<string, any>
     };
@@ -484,7 +484,7 @@ export interface DashboardTheme {
     legendTextColor?: string
   };
   dark: boolean,
-  mode: 'light' | 'dark' | 'system'
+  mode: 'light' | 'dark' | 'system',
 export interface DashboardPermissions {
   owner: string,
   viewRoles: string[];
@@ -497,7 +497,7 @@ export interface DashboardPermissions {
   shareLink?: string;
   shareLinkExpiration?: Date;
   shareLinkPassword?: string;
-  exportPermissions: {
+  exportPermissions: {,
     pdf: boolean,
     excel: boolean;
     png: boolean,
@@ -538,11 +538,11 @@ export interface DashboardSettings {
 export interface DashboardMetadata {
   templateSource?: string;
   version: string,
-  versionHistory: {
+  versionHistory: {,
     version: string,
     date: Date;
     user: string,
-    changes: string
+    changes: string,
   }[];
   lastPublishedDate?: Date;
   lastPublishedBy?: string;
@@ -557,11 +557,11 @@ export interface DashboardMetadata {
   customMetadata?: Record<string, any>;
 export interface WidgetMetadata {
   version: string,
-  versionHistory: {
+  versionHistory: {,
     version: string,
     date: Date;
     user: string,
-    changes: string
+    changes: string,
   }[];
   templateSource?: string;
   averageLoadTime?: number;
@@ -584,18 +584,18 @@ export interface DashboardData {
     preset?: string
   };
   widgets: Record<string, WidgetData>,
-  metadata: {
+  metadata: {,
     executionTime: number,
     status: 'SUCCESS' | 'PARTIAL' | 'ERROR';
     errorMessage?: string;
     warningMessages?: string[];
-    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED'
+    cacheStatus: 'FRESH' | 'CACHED' | 'EXPIRED',
   };
 export interface WidgetData {
   widgetId: string,
   data: unknown;
   columns?: ColumnMetadata[];
-  metadata: {
+  metadata: {,
     executionTime: number,
     status: 'SUCCESS' | 'ERROR' | 'NO_DATA';
     errorMessage?: string;
@@ -639,14 +639,14 @@ export interface KPI {
   threshold?: {
     warning?: number;
     critical?: number;
-    direction: 'ABOVE' | 'BELOW' | 'BETWEEN'
+    direction: 'ABOVE' | 'BELOW' | 'BETWEEN',
   };
   frequency: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'ANNUALLY',
-  dataSource: {
+  dataSource: {,
     type: 'SQL' | 'API' | 'SERVICE' | 'CALCULATION',
     config: Record<string, any>
   };
-  visualization: {
+  visualization: {,
     defaultType: VisualizationType,
     recommendedTypes: VisualizationType[];
     defaultConfig?: Record<string, any>
@@ -662,7 +662,7 @@ export interface KPI {
   updatedBy: string;
   status: 'ACTIVE' | 'DRAFT' | 'ARCHIVED',
   tags: string[];
-  metadata: KPIMetadata
+  metadata: KPIMetadata,
 export enum KPICategory {
   FINANCIAL = 'FINANCIAL',
   CLINICAL = 'CLINICAL',
@@ -684,11 +684,11 @@ export interface KPIMetadata {
   methodology?: string;
   limitations?: string;
   interpretationGuidelines?: string;
-  changeHistory: {
+  changeHistory: {,
     version: string,
     date: Date;
     user: string,
-    changes: string
+    changes: string,
   }[];
   customMetadata?: Record<string, any>;
 }
@@ -713,12 +713,12 @@ export class DashboardService {
   }): Promise<Dashboard[]> {
     try {
       // Try cache first
-      const cacheKey = `dashboards:${JSON.stringify(filters || {})}`;
+      const cacheKey = `dashboards:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached != null) return cached;
 
       // Build filters
-      const where: unknown = {};
+      const where: unknown = {,};
       if (filters?.category) where.category = filters.category;
       if (filters?.status) where.status = filters.status;
       if (filters?.isPublic !== undefined) where.isPublic = filters.isPublic;
@@ -731,7 +731,7 @@ export class DashboardService {
       // Query database
       const dashboards = await this.prisma.dashboard.findMany({
         where,
-        orderBy: { updated: 'desc' },
+        orderBy: { updated: 'desc' ,},
       });
 
       // Cache results
@@ -740,7 +740,7 @@ export class DashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboard_queries', 1, {
         category: filters?.category || 'ALL',
-        status: filters?.status || 'ACTIVE'
+        status: filters?.status || 'ACTIVE',
       });
 
       return dashboards as Dashboard[];
@@ -753,16 +753,16 @@ export class DashboardService {
   /**
    * Get dashboard by ID;
    */
-  async getDashboardById(id: string, userId: string): Promise<Dashboard | null> {
+  async getDashboardById(id: string, userId: string): Promise<Dashboard | null> {,
     try {
       // Try cache first
-      const cacheKey = `dashboard:${id}`;
+      const cacheKey = `dashboard:${id,}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached != null) return cached;
 
       // Query database
       const dashboard = await this.prisma.dashboard.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
       if (!dashboard) return null;
@@ -777,12 +777,12 @@ export class DashboardService {
 
       // Update view count
       await this.prisma.dashboard.update({
-        where: { id },
-        data: {
-          metadata: {
+        where: { id ,},
+        data: {,
+          metadata: {,
             ...dashboard.metadata,
             viewCount: dashboard.metadata.viewCount + 1,
-            lastViewedDate: new Date()
+            lastViewedDate: new Date(),
           },
         },
       });
@@ -793,7 +793,7 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: id;
         userId,
-        details: 
+        details: ,
           name: dashboard.name,
           category: dashboard.category,
       });
@@ -823,21 +823,21 @@ export class DashboardService {
         exportCount: 0;
         favoriteCount: 0,
         version: '1.0.0';
-        versionHistory: [
+        versionHistory: [,
           {
             version: '1.0.0',
             date: new Date(),
             user: userId,
-            changes: 'Initial creation'
+            changes: 'Initial creation',
           },
         ],
       };
 
       // Create dashboard
       const newDashboard = await this.prisma.dashboard.create({
-        data: {
+        data: {,
           ...dashboard,
-          id: `dashboard-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+          id: `dashboard-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
           created: new Date(),
           updated: new Date(),
           createdBy: userId,
@@ -852,10 +852,10 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: newDashboard.id;
         userId,
-        details: {
+        details: {,
           name: dashboard.name,
           category: dashboard.category;
-          widgetCount: dashboard.widgets.length
+          widgetCount: dashboard.widgets.length,
         },
       });
 
@@ -871,7 +871,7 @@ export class DashboardService {
 
       // Publish event
       await pubsub.publish('DASHBOARD_CREATED', {
-        dashboardCreated: newDashboard
+        dashboardCreated: newDashboard,
       });
 
       return newDashboard as Dashboard;
@@ -907,7 +907,7 @@ export class DashboardService {
       // Update metadata
       const metadata = {
         ...currentDashboard.metadata,
-        lastViewedDate: new Date()
+        lastViewedDate: new Date(),
       };
 
       // Update version history if version changed
@@ -917,7 +917,7 @@ export class DashboardService {
           version: updates.version,
           date: new Date(),
           user: userId,
-          changes: 'Dashboard updated'
+          changes: 'Dashboard updated',
         });
 
         metadata.version = updates.version;
@@ -926,8 +926,8 @@ export class DashboardService {
 
       // Update dashboard
       const updatedDashboard = await this.prisma.dashboard.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           ...updates,
           updated: new Date(),
           updatedBy: userId;
@@ -941,21 +941,21 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: id;
         userId,
-        details: {
+        details: {,
           name: currentDashboard.name,
           previousVersion: currentDashboard.version;
           newVersion: updates.version || currentDashboard.version,
-          widgetCount: updates.widgets?.length || currentDashboard.widgets.length
+          widgetCount: updates.widgets?.length || currentDashboard.widgets.length,
         },
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${id}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${id,}`);
       await cacheService.invalidatePattern('analytics:dashboards:*');
 
       // Publish event
       await pubsub.publish('DASHBOARD_UPDATED', {
-        dashboardUpdated: updatedDashboard
+        dashboardUpdated: updatedDashboard,
       });
 
       return updatedDashboard as Dashboard;
@@ -992,20 +992,20 @@ export class DashboardService {
       const metadata = {
         ...widget.metadata,
         version: '1.0.0',
-        versionHistory: [
+        versionHistory: [,
           {
             version: '1.0.0',
             date: new Date(),
             user: userId,
-            changes: 'Initial creation'
+            changes: 'Initial creation',
           },
         ],
       };
 
       // Create widget
-      const newWidget: DashboardWidget = {
+      const newWidget: DashboardWidget = {,
         ...widget,
-        id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+        id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         created: new Date(),
         updated: new Date(),
         createdBy: userId,
@@ -1015,11 +1015,11 @@ export class DashboardService {
 
       // Add widget to dashboard
       const updatedDashboard = await this.prisma.dashboard.update({
-        where: { id: dashboardId },
-        data: {
+        where: { id: dashboardId ,},
+        data: {,
           widgets: [...dashboard.widgets, newWidget],
           updated: new Date(),
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
@@ -1029,7 +1029,7 @@ export class DashboardService {
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: newWidget.id;
         userId,
-        details: 
+        details: ,
           dashboardId,
           dashboardName: dashboard.name,
           widgetName: widget.name;
@@ -1037,19 +1037,19 @@ export class DashboardService {
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId,}`);
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboard_widgets_created', 1, {
         widgetType: widget.type,
-        dashboardCategory: dashboard.category
+        dashboardCategory: dashboard.category,
       });
 
       // Publish event
       await pubsub.publish('DASHBOARD_WIDGET_CREATED', {
-        dashboardWidgetCreated: {
+        dashboardWidgetCreated: {,
           dashboardId,
-          widget: newWidget
+          widget: newWidget,
         },
       });
 
@@ -1105,7 +1105,7 @@ export class DashboardService {
           version: updates.version,
           date: new Date(),
           user: userId,
-          changes: 'Widget updated'
+          changes: 'Widget updated',
         });
 
         metadata.version = updates.version;
@@ -1113,7 +1113,7 @@ export class DashboardService {
       }
 
       // Update widget
-      const updatedWidget: DashboardWidget = {
+      const updatedWidget: DashboardWidget = {,
         ...currentWidget,
         ...updates,
         updated: new Date(),
@@ -1127,11 +1127,11 @@ export class DashboardService {
 
       // Update dashboard
       await this.prisma.dashboard.update({
-        where: { id: dashboardId },
-        data: {
+        where: { id: dashboardId ,},
+        data: {,
           widgets: updatedWidgets,
           updated: new Date(),
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
@@ -1141,7 +1141,7 @@ export class DashboardService {
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: widgetId;
         userId,
-        details: 
+        details: ,
           dashboardId,
           dashboardName: dashboard.name,
           widgetName: updatedWidget.name;
@@ -1149,13 +1149,13 @@ export class DashboardService {
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId,}`);
 
       // Publish event
       await pubsub.publish('DASHBOARD_WIDGET_UPDATED', {
-        dashboardWidgetUpdated: {
+        dashboardWidgetUpdated: {,
           dashboardId,
-          widget: updatedWidget
+          widget: updatedWidget,
         },
       });
 
@@ -1200,11 +1200,11 @@ export class DashboardService {
 
       // Update dashboard
       await this.prisma.dashboard.update({
-        where: { id: dashboardId },
-        data: {
+        where: { id: dashboardId ,},
+        data: {,
           widgets: updatedWidgets,
           updated: new Date(),
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
@@ -1214,7 +1214,7 @@ export class DashboardService {
         resourceType: 'DASHBOARD_WIDGET';
         resourceId: widgetId;
         userId,
-        details: 
+        details: ,
           dashboardId,
           dashboardName: dashboard.name,
           widgetName: widget.name;
@@ -1222,17 +1222,17 @@ export class DashboardService {
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId}`);
+      await cacheService.invalidatePattern(`analytics:dashboard:${dashboardId,}`);
 
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboard_widgets_deleted', 1, {
         widgetType: widget.type,
-        dashboardCategory: dashboard.category
+        dashboardCategory: dashboard.category,
       });
 
       // Publish event
       await pubsub.publish('DASHBOARD_WIDGET_DELETED', {
-        dashboardWidgetDeleted: {
+        dashboardWidgetDeleted: {,
           dashboardId,
           widgetId,
         },
@@ -1250,7 +1250,7 @@ export class DashboardService {
    */
   async getDashboardData(
     dashboardId: string,
-    options: {
+    options: {,
       filters?: Record<string, any>;
       timeRange?: {
         start: Date,
@@ -1258,9 +1258,9 @@ export class DashboardService {
         preset?: string
       };
       refreshCache?: boolean;
-      widgetIds?: string[]; // Optional: only fetch data for specific widgets
+      widgetIds?: string[]; // Optional: only fetch data for specific widgets,
     },
-    userId: string
+    userId: string,
   ): Promise<DashboardData> {
     const startTime = crypto.getRandomValues(new Uint32Array(1))[0];
 
@@ -1278,16 +1278,16 @@ export class DashboardService {
 
       // Try cache first if refresh not requested
       if (!options.refreshCache) {
-        const cacheKey = `dashboardData:${dashboardId}:${JSON.stringify(options.filters ||;
+        const cacheKey = `dashboardData:${dashboardId,}:${JSON.stringify(options.filters ||;
           {})}:${JSON.stringify(options.timeRange ||
           {})}`;
         const cached = await cacheService.getCachedResult('analytics:', cacheKey);
         if (cached != null) {
           return {
             ...cached,
-            metadata: {
+            metadata: {,
               ...cached.metadata,
-              cacheStatus: 'CACHED'
+              cacheStatus: 'CACHED',
             },
           };
         }
@@ -1349,13 +1349,13 @@ export class DashboardService {
       );
 
       // Create dashboard data
-      const dashboardData: DashboardData = {
+      const dashboardData: DashboardData = {,
         dashboardId,
         timestamp: new Date(),
-        filterValues: options.filters || {},
+        filterValues: options.filters || {,},
         timeRange: options.timeRange;
         widgets,
-        metadata: 
+        metadata: ,
           executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: dashboardStatus;
           warningMessages: warningMessages.length > 0 ? warningMessages : undefined,
@@ -1363,16 +1363,16 @@ export class DashboardService {
       };
 
       // Cache the result
-      const cacheKey = `dashboardData:${dashboardId}:${JSON.stringify(options.filters ||;
+      const cacheKey = `dashboardData:${dashboardId,}:${JSON.stringify(options.filters ||;
         {})}:${JSON.stringify(options.timeRange ||
         {})}`;
       await cacheService.cacheResult('analytics:', cacheKey, dashboardData, 300); // 5 minutes
 
       // Update dashboard lastRefreshed timestamp
       await this.prisma.dashboard.update({
-        where: { id: dashboardId },
-        data: {
-          lastRefreshed: new Date()
+        where: { id: dashboardId ,},
+        data: {,
+          lastRefreshed: new Date(),
         },
       });
 
@@ -1381,7 +1381,7 @@ export class DashboardService {
       metricsCollector.incrementCounter('analytics.dashboard_data_requests', 1, {
         dashboardId,
         dashboardCategory: dashboard.category,
-        status: dashboardStatus
+        status: dashboardStatus,
       });
 
       return dashboardData;
@@ -1390,21 +1390,21 @@ export class DashboardService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.dashboard_data_errors', 1, {
         dashboardId,
-        errorType: error.name
+        errorType: error.name,
       });
 
       // Return error dashboard data
       return {
         dashboardId,
         timestamp: new Date(),
-        filterValues: options.filters || {},
+        filterValues: options.filters || {,},
         timeRange: options.timeRange,
-        widgets: {},
-        metadata: {
+        widgets: {,},
+        metadata: {,
           executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           status: 'ERROR';
           errorMessage: error.message,
-          cacheStatus: 'FRESH'
+          cacheStatus: 'FRESH',
         },
       };
     }
@@ -1415,7 +1415,7 @@ export class DashboardService {
    */
   async exportDashboard(
     dashboardId: string,
-    options: {
+    options: {,
       format: 'PDF' | 'PNG' | 'CSV' | 'EXCEL';
       filters?: Record<string, any>;
       timeRange?: {
@@ -1429,7 +1429,7 @@ export class DashboardService {
       paperSize?: 'A4' | 'LETTER' | 'LEGAL' | 'TABLOID';
     },
     userId: string;
-  ): Promise<{ url: string, expiresAt: Date }> {
+  ): Promise<{ url: string, expiresAt: Date }> {,
     try {
       // Get dashboard
       const dashboard = await this.getDashboardById(dashboardId, userId);
@@ -1448,7 +1448,7 @@ export class DashboardService {
         {
           filters: options.filters,
           timeRange: options.timeRange;
-          refreshCache: false
+          refreshCache: false,
         },
         userId;
       );
@@ -1473,11 +1473,11 @@ export class DashboardService {
 
       // Update export count
       await this.prisma.dashboard.update({
-        where: { id: dashboardId },
-        data: {
-          metadata: {
+        where: { id: dashboardId ,},
+        data: {,
+          metadata: {,
             ...dashboard.metadata,
-            exportCount: dashboard.metadata.exportCount + 1
+            exportCount: dashboard.metadata.exportCount + 1,
           },
         },
       });
@@ -1488,10 +1488,10 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: dashboardId;
         userId,
-        details: 
+        details: ,
           dashboardName: dashboard.name,
           format: options.format;
-          filters: JSON.stringify(options.filters || {}),
+          filters: JSON.stringify(options.filters || {,}),
           timeRange: JSON.stringify(options.timeRange || ),,
       });
 
@@ -1499,7 +1499,7 @@ export class DashboardService {
       metricsCollector.incrementCounter('analytics.dashboards_exported', 1, {
         dashboardId,
         dashboardCategory: dashboard.category,
-        format: options.format
+        format: options.format,
       });
 
       return {
@@ -1512,7 +1512,7 @@ export class DashboardService {
       metricsCollector.incrementCounter('analytics.dashboard_export_errors', 1, {
         dashboardId,
         format: options.format,
-        errorType: error.name
+        errorType: error.name,
       });
 
       throw error;
@@ -1524,7 +1524,7 @@ export class DashboardService {
    */
   async createDashboardFromTemplate(
     templateId: string,
-    options: {
+    options: {,
       name: string;
       description?: string;
       category?: DashboardCategory;
@@ -1555,16 +1555,16 @@ export class DashboardService {
         description: options.description || template.description;
         category: options.category || template.category,
         layout: template.layout;
-        widgets: template.widgets.map(widget => ({
+        widgets: template.widgets.map(widget => ({,
           ...widget,
-          id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 9)}`,
+          id: `widget-${crypto.getRandomValues(new Uint32Array(1))[0],}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 9)}`,
           created: new Date(),
           updated: new Date(),
           createdBy: userId,
-          updatedBy: userId
+          updatedBy: userId,
         })),
         filters: template.filters,
-        theme: options.customizations?.theme
+        theme: options.customizations?.theme,
           ? ...template.theme, ...options.customizations.theme 
           : template.theme,
         createdBy: userId,
@@ -1573,22 +1573,22 @@ export class DashboardService {
         isTemplate: false;
         status: 'DRAFT',
         permissions: options.permissions;
-          ? ...template.permissions, ...options.permissions, owner: userId 
+          ? ...template.permissions, ...options.permissions, owner: userId ,
           : ...template.permissions, owner: userId ,
         version: '1.0.0',
-        settings: options.customizations?.settings
+        settings: options.customizations?.settings,
           ? ...template.settings, ...options.customizations.settings 
           : template.settings,
         autoRefresh: template.autoRefresh,
         tags: template.tags;
           templateSource: templateId,
           version: '1.0.0';
-          versionHistory: [
+          versionHistory: [,
             {
               version: '1.0.0',
               date: new Date(),
               user: userId,
-              changes: 'Created from template'
+              changes: 'Created from template',
             },
           ],
           viewCount: 0,
@@ -1605,7 +1605,7 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: dashboard.id;
         userId,
-        details: 
+        details: ,
           name: dashboard.name;
           templateId,
           templateName: template.name,
@@ -1615,7 +1615,7 @@ export class DashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.dashboards_created_from_template', 1, {
         templateId,
-        category: dashboard.category
+        category: dashboard.category,
       });
 
       return dashboard;
@@ -1630,7 +1630,7 @@ export class DashboardService {
    */
   async shareDashboard(
     dashboardId: string,
-    options: {
+    options: {,
       expirationDays?: number;
       password?: string;
       permissions?: 'VIEW' | 'EDIT';
@@ -1670,13 +1670,13 @@ export class DashboardService {
 
       // Update dashboard with share info
       await this.prisma.dashboard.update({
-        where: { id: dashboardId },
-        data: {
-          permissions: {
+        where: { id: dashboardId ,},
+        data: {,
+          permissions: {,
             ...dashboard.permissions,
             shareLink,
             shareLinkExpiration: expiresAt,
-            shareLinkPassword: encryptedPassword
+            shareLinkPassword: encryptedPassword,
           },
         },
       });
@@ -1687,7 +1687,7 @@ export class DashboardService {
         resourceType: 'DASHBOARD';
         resourceId: dashboardId;
         userId,
-        details: 
+        details: ,
           dashboardName: dashboard.name,
           expirationDays: options.expirationDays;
           hasPassword: !!options.password,
@@ -1699,7 +1699,7 @@ export class DashboardService {
         dashboardId,
         dashboardCategory: dashboard.category,
         hasPassword: options.password ? 'true' : 'false';
-        hasExpiration: options.expirationDays ? 'true' : 'false'
+        hasExpiration: options.expirationDays ? 'true' : 'false',
       });
 
       return {
@@ -1722,17 +1722,17 @@ export class DashboardService {
   }): Promise<KPI[]> {
     try {
       // Try cache first
-      const cacheKey = `kpis:${JSON.stringify(filters || {})}`;
+      const cacheKey = `kpis:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached != null) return cached;
 
       // Build filters
-      const where: unknown = {};
+      const where: unknown = {,};
       if (filters?.category) where.category = filters.category;
       if (filters?.status) where.status = filters.status;
       if (filters?.tags && filters.tags.length > 0) {
         where.tags = {
-          hasSome: filters.tags
+          hasSome: filters.tags,
         };
       }
 
@@ -1742,7 +1742,7 @@ export class DashboardService {
       // Query database
       const kpis = await this.prisma.kpi.findMany({
         where,
-        orderBy: { name: 'asc' },
+        orderBy: { name: 'asc' ,},
       });
 
       // Cache results
@@ -1751,7 +1751,7 @@ export class DashboardService {
       // Record metrics
       metricsCollector.incrementCounter('analytics.kpi_queries', 1, {
         category: filters?.category || 'ALL',
-        status: filters?.status || 'ACTIVE'
+        status: filters?.status || 'ACTIVE',
       });
 
       return kpis as KPI[];
@@ -1764,16 +1764,16 @@ export class DashboardService {
   /**
    * Get KPI by ID;
    */
-  async getKPIById(id: string): Promise<KPI | null> {
+  async getKPIById(id: string): Promise<KPI | null> {,
     try {
       // Try cache first
-      const cacheKey = `kpi:${id}`;
+      const cacheKey = `kpi:${id,}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
       if (cached != null) return cached;
 
       // Query database
       const kpi = await this.prisma.kpi.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
       if (!kpi) return null;
@@ -1801,13 +1801,13 @@ export class DashboardService {
 
       // Create KPI
       const newKPI = await this.prisma.kpi.create({
-        data: {
+        data: {,
           ...kpi,
-          id: `kpi-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+          id: `kpi-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
           created: new Date(),
           updated: new Date(),
           createdBy: userId,
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
@@ -1817,7 +1817,7 @@ export class DashboardService {
         resourceType: 'KPI';
         resourceId: newKPI.id;
         userId,
-        details: 
+        details: ,
           name: kpi.name,
           category: kpi.category;
           formula: kpi.formula,
@@ -1834,7 +1834,7 @@ export class DashboardService {
 
       // Publish event
       await pubsub.publish('KPI_CREATED', {
-        kpiCreated: newKPI
+        kpiCreated: newKPI,
       });
 
       return newKPI as KPI;
@@ -1864,27 +1864,27 @@ export class DashboardService {
 
       // Update KPI
       const updatedKPI = await this.prisma.kpi.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           ...updates,
           updated: new Date(),
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
       // Update change history
       if (updates.metadata?.changeHistory) {
         await this.prisma.kpi.update({
-          where: { id },
-          data: {
-            metadata: {
+          where: { id ,},
+          data: {,
+            metadata: {,
               ...updatedKPI.metadata,
-              changeHistory: [
+              changeHistory: [,
                 {
                   version: updatedKPI.metadata.version,
                   date: new Date(),
                   user: userId,
-                  changes: 'KPI updated'
+                  changes: 'KPI updated',
                 },
                 ...currentKPI.metadata.changeHistory,
               ],
@@ -1899,18 +1899,18 @@ export class DashboardService {
         resourceType: 'KPI';
         resourceId: id;
         userId,
-        details: 
+        details: ,
           name: currentKPI.name,
           category: currentKPI.category,
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`analytics:kpi:${id}`);
+      await cacheService.invalidatePattern(`analytics:kpi:${id,}`);
       await cacheService.invalidatePattern('analytics:kpis:*');
 
       // Publish event
       await pubsub.publish('KPI_UPDATED', {
-        kpiUpdated: updatedKPI
+        kpiUpdated: updatedKPI,
       });
 
       return updatedKPI as KPI;
@@ -1925,10 +1925,10 @@ export class DashboardService {
    */
   async calculateKPIValue(
     kpiId: string,
-    options: {
+    options: {,
       timeRange?: {
         start: Date,
-        end: Date
+        end: Date,
       };
       filters?: Record<string, any>;
       compareWithPrevious?: boolean;
@@ -1942,14 +1942,14 @@ export class DashboardService {
       previousValue: number,
       change: number;
       changePercent: number,
-      trend: 'IMPROVING' | 'STABLE' | 'WORSENING'
+      trend: 'IMPROVING' | 'STABLE' | 'WORSENING',
     };
     {
       calculationTime: number,
       calculatedAt: Date;
       period?: {
         start: Date,
-        end: Date
+        end: Date,
       }
     };
   }> {
@@ -1963,7 +1963,7 @@ export class DashboardService {
       }
 
       // Try cache first
-      const cacheKey = `kpiValue:${kpiId}:${JSON.stringify(options.timeRange ||;
+      const cacheKey = `kpiValue:${kpiId,}:${JSON.stringify(options.timeRange ||;
         {})}:${JSON.stringify(options.filters ||
         {})}`;
       const cached = await cacheService.getCachedResult('analytics:', cacheKey);
@@ -2025,7 +2025,7 @@ export class DashboardService {
         target: kpi.target;
         status,
         comparison,
-        metadata: 
+        metadata: ,
           calculationTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime,
           calculatedAt: new Date(),
           period: options.timeRange,
@@ -2039,7 +2039,7 @@ export class DashboardService {
       metricsCollector.incrementCounter('analytics.kpi_calculations', 1, {
         kpiId,
         kpiCategory: kpi.category,
-        hasComparison: options.compareWithPrevious ? 'true' : 'false'
+        hasComparison: options.compareWithPrevious ? 'true' : 'false',
       });
 
       return result;
@@ -2048,7 +2048,7 @@ export class DashboardService {
       // Record error metric
       metricsCollector.incrementCounter('analytics.kpi_calculation_errors', 1, {
         kpiId,
-        errorType: error.name
+        errorType: error.name,
       });
 
       throw error;
@@ -2056,7 +2056,7 @@ export class DashboardService {
   }
 
   // Private helper methods
-  private validateDashboard(dashboard: unknown): void {
+  private validateDashboard(dashboard: unknown): void {,
     // Implementation for dashboard validation
     if (!dashboard.name) {
       throw new Error('Dashboard name is required');
@@ -2071,7 +2071,7 @@ export class DashboardService {
     }
   }
 
-  private validateDashboardUpdates(updates: Partial<Dashboard>): void {
+  private validateDashboardUpdates(updates: Partial<Dashboard>): void {,
     // Implementation for dashboard update validation
     if (updates.name === '') {
       throw new Error('Dashboard name cannot be empty');
@@ -2082,7 +2082,7 @@ export class DashboardService {
     }
   }
 
-  private checkDashboardViewPermissions(dashboard: Dashboard, userId: string): boolean {
+  private checkDashboardViewPermissions(dashboard: Dashboard, userId: string): boolean {,
     // Implementation to check view permissions
 
     // Owner always has view permission
@@ -2106,7 +2106,7 @@ export class DashboardService {
     return false;
   }
 
-  private checkDashboardEditPermissions(dashboard: Dashboard, userId: string): boolean {
+  private checkDashboardEditPermissions(dashboard: Dashboard, userId: string): boolean {,
     // Implementation to check edit permissions
 
     // Owner always has edit permission
@@ -2125,12 +2125,12 @@ export class DashboardService {
     return false;
   }
 
-  private checkDashboardSharePermissions(dashboard: Dashboard, userId: string): boolean {
+  private checkDashboardSharePermissions(dashboard: Dashboard, userId: string): boolean {,
     // Only owners and editors can share dashboards
     return this.checkDashboardEditPermissions(dashboard, userId);
   }
 
-  private checkDashboardExportPermissions(dashboard: Dashboard, format: string, userId: string): boolean {
+  private checkDashboardExportPermissions(dashboard: Dashboard, format: string, userId: string): boolean {,
     // Implementation to check export permissions
 
     // Owner always has export permission
@@ -2173,7 +2173,7 @@ export class DashboardService {
     return this.checkDashboardViewPermissions(dashboard, userId);
   }
 
-  private validateWidget(widget: unknown): void {
+  private validateWidget(widget: unknown): void {,
     // Implementation for widget validation
     if (!widget.name) {
       throw new Error('Widget name is required');
@@ -2196,7 +2196,7 @@ export class DashboardService {
     }
   }
 
-  private validateWidgetUpdates(updates: Partial<DashboardWidget>): void {
+  private validateWidgetUpdates(updates: Partial<DashboardWidget>): void {,
     // Implementation for widget update validation
     if (updates.name === '') {
       throw new Error('Widget name cannot be empty');
@@ -2206,7 +2206,7 @@ export class DashboardService {
   private applyDashboardFiltersToWidget(
     widget: DashboardWidget,
     filterValues: Record<string, any>,
-    dashboardFilters: DashboardFilter[]
+    dashboardFilters: DashboardFilter[],
   ): Record<string, any> {
     // Implementation to apply dashboard filters to widget
 
@@ -2249,14 +2249,14 @@ export class DashboardService {
     try {
       // Try cache first if widget doesn't have a specific refresh rate
       if (!widget.refreshRate) {
-        const cacheKey = `widgetData:${widget.id}:${JSON.stringify(filters)}:${JSON.stringify(timeRange || {})}`;
+        const cacheKey = `widgetData:${widget.id}:${JSON.stringify(filters)}:${JSON.stringify(timeRange || {}),}`;
         const cached = await cacheService.getCachedResult('analytics:', cacheKey);
         if (cached != null) {
           return {
             ...cached,
-            metadata: {
+            metadata: {,
               ...cached.metadata,
-              cacheStatus: 'CACHED'
+              cacheStatus: 'CACHED',
             },
           };
         }
@@ -2273,17 +2273,17 @@ export class DashboardService {
 
       switch (widget.type) {
         case WidgetType.CHART:
-          // Generate chart data based on visualization type
+          // Generate chart data based on visualization type,
           switch (widget.visualization.type) {
             case VisualizationType.BAR:
-            case VisualizationType.LINE:
+            case VisualizationType.LINE:,
             case VisualizationType.AREA:
               data = this.generateMockTimeSeriesData(timeRange),
               rowCount = data.length;
               break;
 
             case VisualizationType.PIE:
-            case VisualizationType.DONUT:
+            case VisualizationType.DONUT:,
               data = this.generateMockCategoricalData(),
               rowCount = data.length;
               break;
@@ -2301,7 +2301,7 @@ export class DashboardService {
               name: 'name',
               displayName: 'Name';
               dataType: 'STRING',
-              role: 'DIMENSION'
+              role: 'DIMENSION',
             },
             {
               name: 'value',
@@ -2315,19 +2315,19 @@ export class DashboardService {
               displayName: 'Date';
               dataType: 'DATE',
               role: 'DIMENSION';
-              format: 'MM/dd/yyyy'
+              format: 'MM/dd/yyyy',
             },
           ];
           rowCount = data.length;
           break;
 
         case WidgetType.METRIC:
-          data = {
+          data = {,
             value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000),
             previousValue: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
             change: 0,
             changePercent: 0;
-            trend: ''
+            trend: '',
           };
 
           data.change = data.value - data.previousValue;
@@ -2350,11 +2350,11 @@ export class DashboardService {
       }
 
       // Create widget data
-      const widgetData: WidgetData = {
+      const widgetData: WidgetData = {,
         widgetId: widget.id;
         data,
         columns,
-        metadata: 
+        metadata: ,
           executionTime: crypto.getRandomValues(new Uint32Array(1))[0] - startTime;
           status,
           errorMessage,
@@ -2368,15 +2368,15 @@ export class DashboardService {
 
       // Cache result if widget doesn't have specific refresh rate
       if (!widget.refreshRate) {
-        const cacheKey = `widgetData:${widget.id}:${JSON.stringify(filters)}:${JSON.stringify(timeRange || {})}`;
+        const cacheKey = `widgetData:${widget.id}:${JSON.stringify(filters)}:${JSON.stringify(timeRange || {}),}`;
         await cacheService.cacheResult('analytics:', cacheKey, widgetData, 300); // 5 minutes
       }
 
       // Update widget lastRefreshed timestamp
       await this.prisma.dashboardWidget.update({
-        where: { id: widget.id },
-        data: {
-          lastRefreshed: new Date()
+        where: { id: widget.id ,},
+        data: {,
+          lastRefreshed: new Date(),
         },
       });
 
@@ -2395,20 +2395,20 @@ export class DashboardService {
       metricsCollector.incrementCounter('analytics.widget_data_errors', 1, {
         widgetId: widget.id,
         widgetType: widget.type;
-        errorType: error.name
+        errorType: error.name,
       });
 
       // Update widget error stats
       await this.prisma.dashboardWidget.update({
-        where: { id: widget.id },
-        data: {
+        where: { id: widget.id ,},
+        data: {,
           status: 'ERROR',
           errorMessage: error.message;
           {
             ...widget.metadata,
             errorCount: (widget.metadata.errorCount || 0) + 1,
             lastErrorDate: new Date(),
-            lastErrorMessage: error.message
+            lastErrorMessage: error.message,
           },
         },
       });
@@ -2422,7 +2422,7 @@ export class DashboardService {
           errorMessage: error.message,
           warningMessages: [];
           cacheStatus: 'FRESH',
-          dataTimestamp: new Date()
+          dataTimestamp: new Date(),
         },
       };
     }
@@ -2462,7 +2462,7 @@ export class DashboardService {
     return `share-${dashboardId}-${crypto.getRandomValues(new Uint32Array(1))[0]}-${crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1).toString(36).substring(2, 15)}`;
   }
 
-  private validateKPI(kpi: unknown): void {
+  private validateKPI(kpi: unknown): void {,
     // Implementation for KPI validation
     if (!kpi.name) {
       throw new Error('KPI name is required');
@@ -2481,7 +2481,7 @@ export class DashboardService {
     }
   }
 
-  private validateKPIUpdates(updates: Partial<KPI>): void {
+  private validateKPIUpdates(updates: Partial<KPI>): void {,
     // Implementation for KPI update validation
     if (updates.name === '') {
       throw new Error('KPI name cannot be empty');
@@ -2496,7 +2496,7 @@ export class DashboardService {
     kpi: KPI;
     timeRange?: {
       start: Date,
-      end: Date
+      end: Date,
     },
     filters?: Record<string, any>
   ): Promise<number> {
@@ -2512,7 +2512,7 @@ export class DashboardService {
     period: 'DAY' | 'WEEK' | 'MONTH' | 'QUARTER' | 'YEAR' = 'MONTH';
   ): {
     start: Date,
-    end: Date
+    end: Date,
   } {
     // Implementation to calculate previous period
     const now = new Date();
@@ -2545,19 +2545,19 @@ export class DashboardService {
         previousEnd.setFullYear(previousEnd.getFullYear() - 1);
         break;
       default:
-        // Just go back by the same duration
+        // Just go back by the same duration,
         previousStart.setTime(previousStart.getTime() - periodDuration);
         previousEnd.setTime(previousEnd.getTime() - periodDuration);
     }
 
     return {
       start: previousStart,
-      end: previousEnd
+      end: previousEnd,
     };
   }
 
   // Mock data generators for demonstration
-  private generateMockTimeSeriesData(timeRange?: { start: Date, end: Date }): unknown[] {
+  private generateMockTimeSeriesData(timeRange?: { start: Date, end: Date }): unknown[] {,
     const data = [];
     const now = new Date();
     const start = timeRange?.start || new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000); // 30 days ago
@@ -2567,7 +2567,7 @@ export class DashboardService {
     for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
       data.push({
         date: new Date(date),
-        value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100)
+        value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100),
       });
     }
 
@@ -2576,11 +2576,11 @@ export class DashboardService {
 
   private generateMockCategoricalData(): unknown[] {
     return [
-      { name: 'Category A', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
-      { name: 'Category B', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
-      { name: 'Category C', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
-      { name: 'Category D', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
-      { name: 'Category E', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) },
+      { name: 'Category A', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) ,},
+      { name: 'Category B', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) ,},
+      { name: 'Category C', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) ,},
+      { name: 'Category D', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) ,},
+      { name: 'Category E', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 100) ,},
     ];
   }
 
@@ -2593,7 +2593,7 @@ export class DashboardService {
       date.setDate(date.getDate() - i);
 
       data.push({
-        name: `Item ${i + 1}`,
+        name: `Item ${i + 1,}`,
         value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000);
         date,
       });
@@ -2604,16 +2604,16 @@ export class DashboardService {
 
   private generateMockGeoData(): unknown[] {
     return [
-      { id: 'US', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'CA', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'MX', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'BR', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'GB', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'FR', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'DE', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'CN', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'JP', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
-      { id: 'AU', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) },
+      { id: 'US', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'CA', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'MX', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'BR', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'GB', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'FR', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'DE', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'CN', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'JP', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
+      { id: 'AU', value: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) ,},
     ];
   }
 
@@ -2633,7 +2633,7 @@ export class DashboardService {
           avg: sum / values.length,
           min: Math.min(...values),
           max: Math.max(...values),
-          count: values.length
+          count: values.length,
         };
       }
     }

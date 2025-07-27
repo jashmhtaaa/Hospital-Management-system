@@ -38,8 +38,7 @@ import { z }
 export const dynamic = "force-dynamic";
 
 // Schema for validation;
-const AddInventoryItemSchema = z.object({
-    billable_item_id: z.string().optional().nullable(), // Use string initially from select;
+const AddInventoryItemSchema = z.object({billable_item_id:z.string().optional().nullable(), // Use string initially from select;
     item_name: z.string().min(1, "Item name is required"),
     category: z.string().optional(),
     manufacturer: z.string().optional(),
@@ -53,8 +52,7 @@ type FormData = z.infer>;
 export default const _AddInventoryItemPage = () {
   const router = useRouter();
   const { toast } = useToast();
-  const [formData, setFormData] = useState<Partial<FormData>>({
-      is_active: true,
+  const [formData, setFormData] = useState<Partial<FormData>>({is_active:true,
       reorder_level: 0;
   });
   const [billableItems, setBillableItems] = useState<BillableItem[]>([]);
@@ -105,8 +103,7 @@ export default const _AddInventoryItemPage = () {
         setBillableItems(data);
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "Could not load items for linking.";
-        toast({
-          title: "Error Fetching Billable Items",
+        toast({title:"Error Fetching Billable Items",
           "destructive";
         });
       } finally ;
@@ -136,8 +133,7 @@ export default const _AddInventoryItemPage = () {
     if (!session.user) {
       setErrors(validation.error.errors),
       setIsLoading(false);
-      toast({
-        title: "Validation Error",
+      toast({title:"Validation Error",
         "destructive";
       });
       return;
@@ -178,8 +174,7 @@ export default const _AddInventoryItemPage = () {
 
 } catch (error) {
 
-      const response = await fetch("/api/inventory-items", {
-        method: "POST",
+      const response = await fetch("/api/inventory-items", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(dataToSend);
@@ -190,17 +185,15 @@ export default const _AddInventoryItemPage = () {
       if (!session.user) {
         throw new Error(result.error || "Failed to add inventory item");
 
-      toast({
-        title: "Inventory Item Added",
+      toast({title:"Inventory Item Added",
         description: `Item "${validation.data.item_name}" created successfully.`});
 
       router.push("/dashboard/inventory"); // Redirect to inventory list;
 
     } catch (err: unknown) { // Use unknown;
       const message = err instanceof Error ? err.message : "An unexpected error occurred.";
-      setErrors([{ code: z.ZodIssueCode.custom, path: ["form"], message: message }]),
-      toast({
-        title: "Creation Failed",
+      setErrors([{code:z.ZodIssueCode.custom, path: ["form"], message: message }]),
+      toast({title:"Creation Failed",
         "destructive";
       });
     } finally {

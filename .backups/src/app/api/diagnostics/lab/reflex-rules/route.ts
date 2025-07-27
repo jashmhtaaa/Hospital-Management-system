@@ -18,7 +18,7 @@ interface ReflexRuleCreateBody {
  } from "@/lib/database"
 
 // GET /api/diagnostics/lab/reflex-rules - Get reflex testing rules;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -55,7 +55,7 @@ export const _GET = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters;
@@ -125,25 +125,25 @@ export const _GET = async (request: any) => {
     // Return rules with pagination metadata;
     return NextResponse.json({
       data: rules,
-      pagination: {
+      pagination: {,
         page,
         pageSize,
         totalCount,
         totalPages: Math.ceil(totalCount / pageSize);
       }
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to fetch reflex rules", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch reflex rules", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/diagnostics/lab/reflex-rules - Create a new reflex rule;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -180,12 +180,12 @@ export const _POST = async (request: any) => {
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can create reflex rules;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Parse request body;
@@ -202,8 +202,8 @@ export const _POST = async (request: any) => {
     for (const field of requiredFields) {
       if (!session.user)| body[field] === undefined || body[field] === "") {
         return NextResponse.json();
-          { error: `Missing or invalid required field: ${field}` },
-          { status: 400 }
+          { error: `Missing or invalid required field: ${field}` ,},
+          { status: 400 },
         );
       }
     }
@@ -212,16 +212,16 @@ export const _POST = async (request: any) => {
     const validOperators = ["eq", "ne", "lt", "gt", "le", "ge"];
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid condition operator" },
-        { status: 400 }
+        { error: "Invalid condition operator" ,},
+        { status: 400 },
       );
     }
 
     // Validate priority if provided;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid priority" },
-        { status: 400 }
+        { error: "Invalid priority" ,},
+        { status: 400 },
       );
     }
 
@@ -233,8 +233,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Condition test not found" },
-        { status: 404 }
+        { error: "Condition test not found" ,},
+        { status: 404 },
       );
     }
 
@@ -246,8 +246,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Action test not found" },
-        { status: 404 }
+        { error: "Action test not found" ,},
+        { status: 404 },
       );
     }
 
@@ -268,8 +268,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "A duplicate reflex rule already exists" },
-        { status: 400 }
+        { error: "A duplicate reflex rule already exists" ,},
+        { status: 400 },
       );
     }
 
@@ -320,13 +320,13 @@ export const _POST = async (request: any) => {
     }
 
     // Return the created reflex rule;
-    return NextResponse.json(rule, { status: 201 });
-  } catch (error: unknown) {
+    return NextResponse.json(rule, { status: 201 ,});
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to create reflex rule", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create reflex rule", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -334,7 +334,7 @@ export const _POST = async (request: any) => {
 // PUT /api/diagnostics/lab/reflex-rules/:id - Update a reflex rule;
 export const _PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -372,12 +372,12 @@ export const _PUT = async();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can update reflex rules;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const ruleId = params.id;
@@ -390,8 +390,8 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Reflex rule not found" },
-        { status: 404 }
+        { error: "Reflex rule not found" ,},
+        { status: 404 },
       );
     }
 
@@ -403,8 +403,8 @@ export const _PUT = async();
       const validOperators = ["eq", "ne", "lt", "gt", "le", "ge"];
       if (!session.user) {
         return NextResponse.json();
-          { error: "Invalid condition operator" },
-          { status: 400 }
+          { error: "Invalid condition operator" ,},
+          { status: 400 },
         );
       }
     }
@@ -412,8 +412,8 @@ export const _PUT = async();
     // Validate priority if provided;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid priority" },
-        { status: 400 }
+        { error: "Invalid priority" ,},
+        { status: 400 },
       );
     }
 
@@ -426,8 +426,8 @@ export const _PUT = async();
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "Condition test not found" },
-          { status: 404 }
+          { error: "Condition test not found" ,},
+          { status: 404 },
         );
       }
     }
@@ -441,8 +441,8 @@ export const _PUT = async();
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "Action test not found" },
-          { status: 404 }
+          { error: "Action test not found" ,},
+          { status: 404 },
         );
       }
     }
@@ -483,8 +483,8 @@ export const _PUT = async();
 
       if (!session.user) {
         return NextResponse.json();
-          { error: "A duplicate reflex rule already exists" },
-          { status: 400 }
+          { error: "A duplicate reflex rule already exists" ,},
+          { status: 400 },
         );
       }
     }
@@ -526,8 +526,8 @@ export const _PUT = async();
     // Only proceed if there are fields to update;
     if (!session.user) {
       return NextResponse.json();
-        { error: "No fields to update" },
-        { status: 400 }
+        { error: "No fields to update" ,},
+        { status: 400 },
       );
 
     updateQuery += updateFields.join(", ") + " WHERE id = ?";
@@ -562,18 +562,18 @@ export const _PUT = async();
 
     // Return the updated reflex rule;
     return NextResponse.json(rule);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to update reflex rule", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update reflex rule", details: errorMessage ,},
+      { status: 500 },
     );
 
 // DELETE /api/diagnostics/lab/reflex-rules/:id - Delete a reflex rule;
 export const DELETE = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -611,11 +611,11 @@ export const DELETE = async();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Only lab managers and admins can delete reflex rules;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     const ruleId = params.id;
 
@@ -627,8 +627,8 @@ export const DELETE = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Reflex rule not found" },
-        { status: 404 }
+        { error: "Reflex rule not found" ,},
+        { status: 404 },
       );
 
     // Delete the reflex rule;
@@ -640,10 +640,10 @@ export const DELETE = async();
     return NextResponse.json({
       message: "Reflex rule deleted successfully";
     });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to delete reflex rule", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to delete reflex rule", details: errorMessage ,},
+      { status: 500 },
     );

@@ -65,8 +65,8 @@ interface Permission {
 interface RoleDefinition {
   name: Role;
   inherits?: Role[];
-  permissions: Permission[]
-\1
+  permissions: Permission[],
+
 }
     },
     {
@@ -81,70 +81,70 @@ interface RoleDefinition {
     },
     {
       name: Role.HOUSEKEEPING,
-      \1,\2 [
+       [
         // Housekeeping staff can manage housekeeping requests
-        { resource: Resource.HOUSEKEEPING, action: Action.UPDATE },
-        { resource: Resource.HOUSEKEEPING, action: Action.ASSIGN },
+        { resource: Resource.HOUSEKEEPING, action: Action.UPDATE ,},
+        { resource: Resource.HOUSEKEEPING, action: Action.ASSIGN ,},
       ]
     },
     {
       name: Role.MAINTENANCE,
-      \1,\2 [
+       [
         // Maintenance staff can manage maintenance requests
-        { resource: Resource.MAINTENANCE, action: Action.UPDATE },
-        { resource: Resource.MAINTENANCE, action: Action.ASSIGN },
+        { resource: Resource.MAINTENANCE, action: Action.UPDATE ,},
+        { resource: Resource.MAINTENANCE, action: Action.ASSIGN ,},
       ]
     },
     {
       name: Role.DIETARY,
-      \1,\2 [
+       [
         // Dietary staff can manage dietary requests
-        { resource: Resource.DIETARY, action: Action.UPDATE },
-        { resource: Resource.DIETARY, action: Action.ASSIGN },
+        { resource: Resource.DIETARY, action: Action.UPDATE ,},
+        { resource: Resource.DIETARY, action: Action.ASSIGN ,},
       ]
     },
     {
       name: Role.AMBULANCE,
-      \1,\2 [
+       [
         // Ambulance staff can manage ambulance requests
-        { resource: Resource.AMBULANCE, action: Action.UPDATE },
-        { resource: Resource.AMBULANCE, action: Action.ASSIGN },
+        { resource: Resource.AMBULANCE, action: Action.UPDATE ,},
+        { resource: Resource.AMBULANCE, action: Action.ASSIGN ,},
       ]
     },
     {
       name: Role.MARKETING,
-      \1,\2 [
+       [
         // Marketing staff can manage marketing campaigns
-        { resource: Resource.MARKETING, action: Action.READ },
-        { resource: Resource.MARKETING, action: Action.CREATE },
-        { resource: Resource.MARKETING, action: Action.UPDATE },
-        { resource: Resource.MARKETING, action: Action.DELETE },
-        { resource: Resource.CAMPAIGN, action: Action.READ },
-        { resource: Resource.CAMPAIGN, action: Action.CREATE },
-        { resource: Resource.CAMPAIGN, action: Action.UPDATE },
-        { resource: Resource.CAMPAIGN, action: Action.DELETE },
-        { resource: Resource.CONTACT, action: Action.READ },
-        { resource: Resource.CONTACT, action: Action.CREATE },
-        { resource: Resource.CONTACT, action: Action.UPDATE },
-        { resource: Resource.CONTACT, action: Action.DELETE },
-        { resource: Resource.SEGMENT, action: Action.READ },
-        { resource: Resource.SEGMENT, action: Action.CREATE },
-        { resource: Resource.SEGMENT, action: Action.UPDATE },
-        { resource: Resource.SEGMENT, action: Action.DELETE },
-        { resource: Resource.TEMPLATE, action: Action.READ },
-        { resource: Resource.TEMPLATE, action: Action.CREATE },
-        { resource: Resource.TEMPLATE, action: Action.UPDATE },
-        { resource: Resource.TEMPLATE, action: Action.DELETE },
-        { resource: Resource.ANALYTICS, action: Action.READ },
+        { resource: Resource.MARKETING, action: Action.READ ,},
+        { resource: Resource.MARKETING, action: Action.CREATE ,},
+        { resource: Resource.MARKETING, action: Action.UPDATE ,},
+        { resource: Resource.MARKETING, action: Action.DELETE ,},
+        { resource: Resource.CAMPAIGN, action: Action.READ ,},
+        { resource: Resource.CAMPAIGN, action: Action.CREATE ,},
+        { resource: Resource.CAMPAIGN, action: Action.UPDATE ,},
+        { resource: Resource.CAMPAIGN, action: Action.DELETE ,},
+        { resource: Resource.CONTACT, action: Action.READ ,},
+        { resource: Resource.CONTACT, action: Action.CREATE ,},
+        { resource: Resource.CONTACT, action: Action.UPDATE ,},
+        { resource: Resource.CONTACT, action: Action.DELETE ,},
+        { resource: Resource.SEGMENT, action: Action.READ ,},
+        { resource: Resource.SEGMENT, action: Action.CREATE ,},
+        { resource: Resource.SEGMENT, action: Action.UPDATE ,},
+        { resource: Resource.SEGMENT, action: Action.DELETE ,},
+        { resource: Resource.TEMPLATE, action: Action.READ ,},
+        { resource: Resource.TEMPLATE, action: Action.CREATE ,},
+        { resource: Resource.TEMPLATE, action: Action.UPDATE ,},
+        { resource: Resource.TEMPLATE, action: Action.DELETE ,},
+        { resource: Resource.ANALYTICS, action: Action.READ ,},
       ]
     },
     {
       name: Role.FEEDBACK,
-      \1,\2 [
+       [
         // Feedback staff can manage feedback
-        { resource: Resource.FEEDBACK, action: Action.READ },
-        { resource: Resource.FEEDBACK, action: Action.UPDATE },
-        { resource: Resource.FEEDBACK, action: Action.ASSIGN },
+        { resource: Resource.FEEDBACK, action: Action.READ ,},
+        { resource: Resource.FEEDBACK, action: Action.UPDATE ,},
+        { resource: Resource.FEEDBACK, action: Action.ASSIGN ,},
       ]
     },
     {
@@ -169,11 +169,11 @@ interface RoleDefinition {
    */
   public static hasPermission(
     userRoles: string[],
-    \1,\2 Action;
+     Action;
     constraints?: Record<string, unknown>
   ): boolean {
     // Admin role has access to everything
-    \1 {\n  \2 {
+     {\n   {
       return true;
     }
 
@@ -181,7 +181,7 @@ interface RoleDefinition {
     for (const userRole of userRoles) {
       // Get the role definition
       const roleDef = this.roleDefinitions.find(r => r.name === userRole);
-      \1 {\n  \2ontinue;
+       {\n  ontinue;
 
       // Check direct permissions
       const hasDirectPermission = this.checkDirectPermission(
@@ -191,15 +191,15 @@ interface RoleDefinition {
         constraints;
       );
 
-      \1 {\n  \2{
+       {\n  {
         return true;
       }
 
       // Check inherited permissions
-      \1 {\n  \2{
+       {\n  {
         for (const inheritedRole of roleDef.inherits) {
           const inheritedRoleDef = this.roleDefinitions.find(r => r.name === inheritedRole);
-          \1 {\n  \2ontinue;
+           {\n  ontinue;
 
           const hasInheritedPermission = this.checkDirectPermission(
             inheritedRoleDef,
@@ -208,7 +208,7 @@ interface RoleDefinition {
             constraints;
           );
 
-          \1 {\n  \2{
+           {\n  {
             return true;
           }
         }
@@ -228,7 +228,7 @@ interface RoleDefinition {
    */
   private static checkDirectPermission(
     roleDef: RoleDefinition,
-    \1,\2 Action;
+     Action;
     constraints?: Record<string, unknown>
   ): boolean {
     // Check for system-level permission (full access)
@@ -236,7 +236,7 @@ interface RoleDefinition {
       p => p.resource === Resource?.SYSTEM && p.action === Action.EXECUTE
     );
 
-    \1 {\n  \2{
+     {\n  {
       return true;
     }
 
@@ -248,7 +248,7 @@ interface RoleDefinition {
 
       // If no constraints are defined in the permission, or no constraints are provided
       // for the check, then we only need to match resource and action
-      \1 {\n  \2{
+       {\n  {
         return resourceMatches && actionMatches;
       }
 
@@ -273,16 +273,16 @@ interface RoleDefinition {
    */
   public static enforcePermission(
     userRoles: string[],
-    \1,\2 Action;
+     Action;
     constraints?: Record<string, unknown>,
     userId?: string,
     resourceId?: string;
   ): void {
     const hasPermission = this.hasPermission(userRoles, resource, action, constraints);
 
-    \1 {\n  \2{
+     {\n  {
       // Log the authorization failure
-      \1 {\n  \2{
+       {\n  {
         const auditLogger = new AuditLogger({
           userId,
           userRoles;
@@ -292,11 +292,11 @@ interface RoleDefinition {
           action: 'authorization.denied',
           resourceId: resourceId || 'unknown';
           userId,
-          details: 
+          details: ,
             resource,
             action,
             constraints;,
-          severity: 'warning'
+          severity: 'warning',
         }).catch(err => );
       }
 
@@ -311,7 +311,7 @@ interface RoleDefinition {
    * @param userRoles The user's roles;
    * @returns Array of permissions;
    */
-  public static getPermissionsForRoles(userRoles: string[]): Permission[] {
+  public static getPermissionsForRoles(userRoles: string[]): Permission[] {,
     const permissions: Permission[] = [];
 
     // Process each role
@@ -327,9 +327,9 @@ interface RoleDefinition {
    * @param roleName The role name;
    * @param permissions The permissions array to add to;
    */
-  private static addPermissionsForRole(roleName: string, permissions: Permission[]): void {
+  private static addPermissionsForRole(roleName: string, permissions: Permission[]): void {,
     const roleDef = this.roleDefinitions.find(r => r.name === roleName);
-    \1 {\n  \2eturn;
+     {\n  eturn;
 
     // Add direct permissions
     for (const permission of roleDef.permissions) {
@@ -340,13 +340,13 @@ interface RoleDefinition {
         JSON.stringify(p.constraints) === JSON.stringify(permission.constraints);
       );
 
-      \1 {\n  \2{
+       {\n  {
         permissions.push(permission);
       }
     }
 
     // Add inherited permissions
-    \1 {\n  \2{
+     {\n  {
       for (const inheritedRole of roleDef.inherits) {
         this.addPermissionsForRole(inheritedRole, permissions);
       }

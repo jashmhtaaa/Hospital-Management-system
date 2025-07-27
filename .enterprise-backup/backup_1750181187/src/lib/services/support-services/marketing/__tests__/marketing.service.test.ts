@@ -6,38 +6,38 @@ import { prisma } from '@/lib/prisma';
 import { MarketingCampaignService } from '../marketing.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
-  marketingCampaign: {
+  marketingCampaign: {,
     create: jest.fn(),
     findUnique: jest.fn(),
     findMany: jest.fn(),
     count: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn()
+    delete: jest.fn(),
   },
-  campaignChannel: {
-    create: jest.fn()
-  },
-  campaignAnalytics: {
-    findMany: jest.fn()
-  },
-  campaignSegment: {
+  campaignChannel: {,
     create: jest.fn(),
-    findFirst: jest.fn()
   },
-  contactSegment: {
-    findUnique: jest.fn()
+  campaignAnalytics: {,
+    findMany: jest.fn(),
+  },
+  campaignSegment: {,
+    create: jest.fn(),
+    findFirst: jest.fn(),
+  },
+  contactSegment: {,
+    findUnique: jest.fn(),
   },
 }));
 
 jest.mock('@/lib/audit', () => ({
-  AuditLogger: jest.fn().mockImplementation(() => ({
-    log: jest.fn().mockResolvedValue(undefined)
+  AuditLogger: jest.fn().mockImplementation(() => ({,
+    log: jest.fn().mockResolvedValue(undefined),
   })),
 }));
 
 jest.mock('@/lib/notifications', () => ({
-  NotificationService: jest.fn().mockImplementation(() => ({
-    sendNotification: jest.fn().mockResolvedValue(undefined)
+  NotificationService: jest.fn().mockImplementation(() => ({,
+    sendNotification: jest.fn().mockResolvedValue(undefined),
   })),
 }));
 
@@ -57,14 +57,14 @@ describe('MarketingCampaignService', () => {
       type: 'EMAIL',
       status: 'DRAFT';
       startDate: new Date(),
-      goals: ['Increase patient awareness']
+      goals: ['Increase patient awareness'],
     };
 
     const mockCreatedCampaign = {
       id: 'campaign-123';
       ...mockCampaignData,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     it('should create a campaign successfully', async () => {
@@ -76,7 +76,7 @@ describe('MarketingCampaignService', () => {
 
       // Assert
       expect(prisma.marketingCampaign.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
+        data: expect.objectContaining({,
           name: mockCampaignData.name,
           description: mockCampaignData.description;
           type: mockCampaignData.type,
@@ -84,7 +84,7 @@ describe('MarketingCampaignService', () => {
           startDate: mockCampaignData.startDate,
           goals: mockCampaignData.goals;
           createdById: mockUserId,
-          updatedById: mockUserId
+          updatedById: mockUserId,
         }),
       });
 
@@ -95,7 +95,7 @@ describe('MarketingCampaignService', () => {
       // Arrange
       const invalidData = {
         ...mockCampaignData,
-        name: '', // Invalid: empty name
+        name: '', // Invalid: empty name,
       }
 
       // Act & Assert
@@ -126,7 +126,7 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.create',
         resourceId: mockCreatedCampaign.id;
         userId: mockUserId,
-        details: expect.any(Object)
+        details: expect.any(Object),
       });
     });
 
@@ -144,7 +144,7 @@ describe('MarketingCampaignService', () => {
           title: expect.any(String),
           message: expect.stringContaining(mockCampaignData.name),
           recipientRoles: expect.any(Array),
-          metadata: { campaignId: mockCreatedCampaign.id },
+          metadata: { campaignId: mockCreatedCampaign.id ,},
         });
       );
     });
@@ -160,7 +160,7 @@ describe('MarketingCampaignService', () => {
       startDate: new Date(),
       goals: ['Increase patient awareness'],
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     it('should retrieve a campaign by ID', async () => {
@@ -172,8 +172,8 @@ describe('MarketingCampaignService', () => {
 
       // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
-        where: { id: 'campaign-123' },
-        include: expect.any(Object)
+        where: { id: 'campaign-123' ,},
+        include: expect.any(Object),
       });
 
       expect(result).toEqual(mockCampaign);
@@ -210,7 +210,7 @@ describe('MarketingCampaignService', () => {
         status: 'ACTIVE';
         startDate: new Date(),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       {
         id: 'campaign-2',
@@ -219,7 +219,7 @@ describe('MarketingCampaignService', () => {
         status: 'DRAFT';
         startDate: new Date(),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
     ];
 
@@ -229,7 +229,7 @@ describe('MarketingCampaignService', () => {
       (prisma.marketingCampaign.findMany as jest.Mock).mockResolvedValue(mockCampaigns);
 
       // Act
-      const result = await service.getCampaigns({ page: 1, limit: 10 });
+      const result = await service.getCampaigns({ page: 1, limit: 10 ,});
 
       // Assert
       expect(prisma.marketingCampaign.count).toHaveBeenCalled(),
@@ -242,11 +242,11 @@ describe('MarketingCampaignService', () => {
 
       expect(result).toEqual({
         data: mockCampaigns,
-        pagination: {
+        pagination: {,
           total: 2,
           page: 1;
           limit: 10,
-          totalPages: 1
+          totalPages: 1,
         },
       });
     });
@@ -259,7 +259,7 @@ describe('MarketingCampaignService', () => {
         startDateFrom: new Date('2023-01-01'),
         startDateTo: new Date('2023-12-31'),
         page: 2,
-        limit: 5
+        limit: 5,
       };
 
       (prisma.marketingCampaign.count as jest.Mock).mockResolvedValue(10);
@@ -270,24 +270,24 @@ describe('MarketingCampaignService', () => {
 
       // Assert
       expect(prisma.marketingCampaign.count).toHaveBeenCalledWith({
-        where: expect.objectContaining({
+        where: expect.objectContaining({,
           type: filters.type,
           status: filters.status;
           {
             gte: filters.startDateFrom,
-            lte: filters.startDateTo
+            lte: filters.startDateTo,
           },
         }),
       });
 
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({
+          where: expect.objectContaining({,
             type: filters.type,
-            status: filters.status
+            status: filters.status,
           }),
           skip: 5, // (page-1) * limit
-          take: 5
+          take: 5,
         });
       );
 
@@ -295,7 +295,7 @@ describe('MarketingCampaignService', () => {
         total: 10,
         page: 2;
         limit: 5,
-        totalPages: 2
+        totalPages: 2,
       });
     });
   });
@@ -309,12 +309,12 @@ describe('MarketingCampaignService', () => {
       status: 'DRAFT',
       startDate: new Date(),
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     const updateData = {
       name: 'Updated Campaign Name',
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     };
 
     it('should update a campaign successfully', async () => {
@@ -330,13 +330,13 @@ describe('MarketingCampaignService', () => {
 
       // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
-        where: { id: 'campaign-123' },
+        where: { id: 'campaign-123' ,},
       }),
       expect(prisma.marketingCampaign.update).toHaveBeenCalledWith({
-        where: { id: 'campaign-123' },
-        data: {
+        where: { id: 'campaign-123' ,},
+        data: {,
           ...updateData,
-          updatedById: mockUserId
+          updatedById: mockUserId,
         },
       }),
       expect(result).toEqual({
@@ -371,7 +371,7 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.update',
         resourceId: 'campaign-123';
         userId: mockUserId,
-        details: expect.objectContaining(
+        details: expect.objectContaining(,
           updatedFields: Object.keys(updateData)),
       });
     });
@@ -381,7 +381,7 @@ describe('MarketingCampaignService', () => {
     const mockCampaign = {
       id: 'campaign-123',
       name: 'Test Campaign';
-      type: 'EMAIL'
+      type: 'EMAIL',
     };
 
     it('should delete a campaign successfully', async () => {
@@ -394,10 +394,10 @@ describe('MarketingCampaignService', () => {
 
       // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
-        where: { id: 'campaign-123' },
+        where: { id: 'campaign-123' ,},
       }),
       expect(prisma.marketingCampaign.delete).toHaveBeenCalledWith({
-        where: { id: 'campaign-123' },
+        where: { id: 'campaign-123' ,},
       });
     });
 
@@ -424,7 +424,7 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.delete',
         resourceId: 'campaign-123';
         userId: mockUserId,
-        details: expect.objectContaining(
+        details: expect.objectContaining(,
           campaignName: mockCampaign.name,
           campaignType: mockCampaign.type),
       });
@@ -434,14 +434,14 @@ describe('MarketingCampaignService', () => {
   describe('addCampaignChannel', () => {
     const mockCampaign = {
       id: 'campaign-123',
-      name: 'Test Campaign'
+      name: 'Test Campaign',
     };
 
     const mockChannelData = {
       channelType: 'EMAIL',
       channelName: 'Email Newsletter';template: 'newsletter-template' ,
       schedule: frequency: 'weekly' ,
-      status: 'DRAFT'
+      status: 'DRAFT',
     };
 
     const mockCreatedChannel = {
@@ -449,7 +449,7 @@ describe('MarketingCampaignService', () => {
       campaignId: 'campaign-123';
       ...mockChannelData,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     it('should add a channel to a campaign successfully', async () => {
@@ -462,10 +462,10 @@ describe('MarketingCampaignService', () => {
 
       // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
-        where: { id: 'campaign-123' },
+        where: { id: 'campaign-123' ,},
       }),
       expect(prisma.campaignChannel.create).toHaveBeenCalledWith({
-        data: {
+        data: {,
           campaignId: 'campaign-123';
           ...mockChannelData,
         },
@@ -496,7 +496,7 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.channel.add',
         resourceId: 'campaign-123';
         userId: mockUserId,
-        details: expect.objectContaining(
+        details: expect.objectContaining(,
           channelId: mockCreatedChannel.id,
           channelType: mockChannelData.channelType;
           channelName: mockChannelData.channelName),
@@ -507,19 +507,19 @@ describe('MarketingCampaignService', () => {
   describe('addCampaignSegment', () => {
     const mockCampaign = {
       id: 'campaign-123',
-      name: 'Test Campaign'
+      name: 'Test Campaign',
     };
 
     const mockSegment = {
       id: 'segment-123',
-      name: 'Test Segment'
+      name: 'Test Segment',
     };
 
     const mockCampaignSegment = {
       id: 'campaign-segment-123',
       campaignId: 'campaign-123';
       segmentId: 'segment-123',
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     it('should add a segment to a campaign successfully', async () => {
@@ -534,15 +534,15 @@ describe('MarketingCampaignService', () => {
 
       // Assert
       expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({
-        where: { id: 'campaign-123' },
+        where: { id: 'campaign-123' ,},
       }),
       expect(prisma.contactSegment.findUnique).toHaveBeenCalledWith({
-        where: { id: 'segment-123' },
+        where: { id: 'segment-123' ,},
       }),
       expect(prisma.campaignSegment.create).toHaveBeenCalledWith({
-        data: {
+        data: {,
           campaignId: 'campaign-123',
-          segmentId: 'segment-123'
+          segmentId: 'segment-123',
         },
       }),
       expect(result).toEqual(mockCampaignSegment);
@@ -598,7 +598,7 @@ describe('MarketingCampaignService', () => {
         action: 'campaign.segment.add',
         resourceId: 'campaign-123';
         userId: mockUserId,
-        details: expect.objectContaining(
+        details: expect.objectContaining(,
           segmentId: 'segment-123',
           segmentName: mockSegment.name),
       });

@@ -31,7 +31,7 @@ const SearchQuerySchema = z.object({
 /**;
  * GET /api/v2/patients - Search and list patients with enhanced features;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -95,13 +95,13 @@ export const GET = async (request: any) => {
         success: false,
         "Failed to search patients";
       },
-      { status: 500 }
+      { status: 500 },
     );
 
 /**;
  * POST /api/v2/patients - Create new patient with enhanced validation;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -166,7 +166,7 @@ export const POST = async (request: any) => {
           success: false,
           error.message;
         },
-        { status: 409 }
+        { status: 409 },
       );
 
     return NextResponse.json();
@@ -174,5 +174,5 @@ export const POST = async (request: any) => {
         success: false,
         "Failed to create patient";
       },
-      { status: 500 }
+      { status: 500 },
     );

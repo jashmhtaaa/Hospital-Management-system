@@ -40,7 +40,7 @@ const updateRequestSchema = z.object({
   })).optional()});
 
 // GET /api/support-services/maintenance/requests;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -68,7 +68,7 @@ export const _GET = async (request: any) => {
 }
 
 // POST /api/support-services/maintenance/requests;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -82,7 +82,7 @@ export const _POST = async (request: any) => {
       // Create maintenance request;
       const result = await maintenanceService.createMaintenanceRequest(sanitizedData);
 
-      return NextResponse.json(result, { status: 201 });
+      return NextResponse.json(result, { status: 201 ,});
     },
     {
       requiredPermission: "maintenance:create",
@@ -92,7 +92,7 @@ export const _POST = async (request: any) => {
 }
 
 // GET /api/support-services/maintenance/requests/:id;
-export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -110,7 +110,7 @@ export const _GET_BY_ID = async (request: any, { params }: { params: { id: strin
 }
 
 // PATCH /api/support-services/maintenance/requests/:id;
-export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {
+export const _PATCH = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -134,14 +134,14 @@ export const _PATCH = async (request: any, { params }: { params: { id: string } 
 }
 
 // DELETE /api/support-services/maintenance/requests/:id;
-export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {
+export const _DELETE = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
       // Delete maintenance request;
       await maintenanceService.deleteMaintenanceRequest(params.id);
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true ,});
     },
     {
       requiredPermission: "maintenance:delete",
@@ -151,7 +151,7 @@ export const _DELETE = async (request: any, { params }: { params: { id: string }
 }
 
 // POST /api/support-services/maintenance/requests/:id/assign;
-export const _ASSIGN = async (request: any, { params }: { params: { id: string } }) => {
+export const _ASSIGN = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -160,7 +160,7 @@ export const _ASSIGN = async (request: any, { params }: { params: { id: string }
       const { technicianId } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Technician ID is required" }, { status: 400 });
+        return NextResponse.json({ error: "Technician ID is required" ,}, { status: 400 ,});
       }
 
       // Assign maintenance request;
@@ -176,7 +176,7 @@ export const _ASSIGN = async (request: any, { params }: { params: { id: string }
 }
 
 // POST /api/support-services/maintenance/requests/:id/start;
-export const _START = async (request: any, { params }: { params: { id: string } }) => {
+export const _START = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -185,7 +185,7 @@ export const _START = async (request: any, { params }: { params: { id: string } 
       const { technicianId, notes } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Technician ID is required" }, { status: 400 });
+        return NextResponse.json({ error: "Technician ID is required" ,}, { status: 400 ,});
       }
 
       // Start maintenance work;
@@ -205,7 +205,7 @@ export const _START = async (request: any, { params }: { params: { id: string } 
 }
 
 // POST /api/support-services/maintenance/requests/:id/complete;
-export const _COMPLETE = async (request: any, { params }: { params: { id: string } }) => {
+export const _COMPLETE = async (request: any, { params }: { params: { id: string } }) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -214,7 +214,7 @@ export const _COMPLETE = async (request: any, { params }: { params: { id: string
       const { technicianId, notes, partsUsed, laborHours } = body;
 
       if (!session.user) {
-        return NextResponse.json({ error: "Technician ID is required" }, { status: 400 });
+        return NextResponse.json({ error: "Technician ID is required" ,}, { status: 400 ,});
       }
 
       // Complete maintenance request;
@@ -236,7 +236,7 @@ export const _COMPLETE = async (request: any, { params }: { params: { id: string
 }
 
 // GET /api/support-services/maintenance/assets;
-export const _GET_ASSETS = async (request: any) => {
+export const _GET_ASSETS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {
@@ -262,7 +262,7 @@ export const _GET_ASSETS = async (request: any) => {
 }
 
 // GET /api/support-services/maintenance/analytics;
-export const _GET_ANALYTICS = async (request: any) => {
+export const _GET_ANALYTICS = async (request: any) => {,
   return withErrorHandling();
     request,
     async (req) => {

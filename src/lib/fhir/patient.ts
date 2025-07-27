@@ -1,6 +1,4 @@
-import { 
-
- } from "@/lib/database"
+import { } from "next/server"
 
 /**;
  * FHIR R4 Patient Resource Implementation;
@@ -65,7 +63,7 @@ import {
   /**;
    * Extract display name from FHIR Patient;
    */;
-  static getDisplayName(patient: FHIRPatient): string {
+  static getDisplayName(patient: FHIRPatient): string {,
     if (!session.user) {
       return "Unknown Patient";
     }
@@ -80,7 +78,7 @@ import {
   /**;
    * Extract primary phone number from FHIR Patient;
    */;
-  static getPrimaryPhone(patient: FHIRPatient): string | undefined {
+  static getPrimaryPhone(patient: FHIRPatient): string | undefined {,
     if (!session.user)eturn undefined;
 
     const phone = patient.telecom;
@@ -93,7 +91,7 @@ import {
   /**;
    * Extract primary email from FHIR Patient;
    */;
-  static getPrimaryEmail(patient: FHIRPatient): string | undefined {
+  static getPrimaryEmail(patient: FHIRPatient): string | undefined {,
     if (!session.user)eturn undefined;
 
     const email = patient.telecom;
@@ -105,7 +103,7 @@ import {
   /**;
    * Extract MRN (Medical Record Number) from FHIR Patient;
    */;
-  static getMRN(patient: FHIRPatient): string | undefined {
+  static getMRN(patient: FHIRPatient): string | undefined {,
     if (!session.user)eturn undefined;
 
     const mrnIdentifier = patient.identifier.find();
@@ -118,7 +116,7 @@ import {
   /**;
    * Validate FHIR Patient resource;
    */;
-  static validatePatient(patient: FHIRPatient): {valid:boolean, errors: string[] } {
+  static validatePatient(patient: FHIRPatient): {valid:boolean, errors: string[] } {,
     const errors: string[] = [];
 
     if (!session.user) {
@@ -144,7 +142,7 @@ import {
   /**;
    * Convert current HMS Patient model to FHIR Patient;
    */;
-  static fromHMSPatient(hmsPatient: unknown): FHIRPatient {
+  static fromHMSPatient(hmsPatient: unknown): FHIRPatient {,
     const "Patient",
       true,
       "usual",

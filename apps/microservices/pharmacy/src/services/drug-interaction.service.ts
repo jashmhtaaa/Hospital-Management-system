@@ -13,15 +13,15 @@ import type { PrismaService } from '@/lib/prisma';
  * Real-time drug interaction checking with allergy screening;
  */
 
-\1
+
 }
   }
 
   /**
    * Comprehensive drug interaction and allergy checking;
    */
-  async checkInteractions(request: InteractionCheckRequest): Promise<InteractionCheckResult> {
-    const startTime = crypto.getRandomValues(\1[0];
+  async checkInteractions(request: InteractionCheckRequest): Promise<InteractionCheckResult> {,
+    const startTime = crypto.getRandomValues([0];
 
     try {
       // Get patient's current medications if not provided
@@ -89,7 +89,7 @@ import type { PrismaService } from '@/lib/prisma';
         ageAlerts,
       });
 
-      const \1,\2 request.patientId,
+      const  request.patientId,
         checkTimestamp: new Date(),
         drugInteractions,
         allergyAlerts,
@@ -107,7 +107,7 @@ import type { PrismaService } from '@/lib/prisma';
       // Cache result for potential quick re-check
       await cacheService.cacheResult(
         'interaction_check:',
-        `${request.patientId}:${crypto.getRandomValues(\1[0]}`,
+        `${request.patientId}:${crypto.getRandomValues([0]}`,
         result,
         300 // 5 minutes
       );
@@ -116,12 +116,12 @@ import type { PrismaService } from '@/lib/prisma';
       await this.processCriticalAlerts(result);
 
       // Record metrics
-      const duration = crypto.getRandomValues(\1[0] - startTime;
+      const duration = crypto.getRandomValues([0] - startTime;
       metricsCollector.recordTimer('pharmacy.interaction_check_time', duration);
       metricsCollector.incrementCounter('pharmacy.interaction_checks', 1, {
         patientId: request.patientId,
         alertCount: this.getTotalAlertCount(result).toString(),
-        riskLevel: this.getRiskLevel(overallRiskScore)
+        riskLevel: this.getRiskLevel(overallRiskScore),
       });
 
       return result;
@@ -134,7 +134,7 @@ import type { PrismaService } from '@/lib/prisma';
   /**
    * Check drug-drug interactions;
    */
-  private async checkDrugInteractions(medications: MedicationForCheck[]): Promise<DrugInteractionAlert[]> {
+  private async checkDrugInteractions(medications: MedicationForCheck[]): Promise<DrugInteractionAlert[]> {,
     const alerts: DrugInteractionAlert[] = [];
 
     // Check all medication pairs
@@ -149,13 +149,13 @@ import type { PrismaService } from '@/lib/prisma';
           med2.genericName || med2.brandName || '';
         );
 
-        \1 {\n  \2{
-          const \1,\2 `interaction-${i}-${j}`,
+         {\n  {
+          const  `interaction-${i}-${j}`,
             drug1: med1.genericName || med1.brandName || '',
-            \1,\2 interaction.severity,
-            \1,\2 interaction.clinicalEffect,
-            \1,\2 interaction.management,
-            \1,\2 interaction.onset,
+             interaction.severity,
+             interaction.clinicalEffect,
+             interaction.management,
+             interaction.onset,
             monitoringRequired: this.requiresMonitoring(interaction),
             alternatives: await this.getAlternatives(med1, med2),
           };
@@ -173,32 +173,32 @@ import type { PrismaService } from '@/lib/prisma';
    */
   private async checkAllergies(
     medications: MedicationForCheck[],
-    allergies: PatientAllergy[]
+    allergies: PatientAllergy[],
   ): Promise<AllergyAlert[]> {
     const alerts: AllergyAlert[] = [];
 
     for (const medication of medications) {
       for (const allergy of allergies) {
         // Direct allergy match
-        \1 {\n  \2 {
+         {\n   {
           alerts.push({
-            id: `allergy-${medication.genericName}-${allergy.id}`,
+            id: `allergy-${medication.genericName}-${allergy.id,}`,
             medication: medication.genericName || medication.brandName || '',
-            \1,\2 false,
-            \1,\2 `Patient has known allergy to ${allergy.allergen}`,
+             false,
+             `Patient has known allergy to ${allergy.allergen}`,
             recommendations: ['Discontinue medication', 'Consider alternative'],
           });
         }
 
         // Cross-reactivity check
         const crossReactivity = await this.checkCrossReactivity(medication, allergy);
-        \1 {\n  \2{
+         {\n  {
           alerts.push({
-            id: `cross-${medication.genericName}-${allergy.id}`,
+            id: `cross-${medication.genericName}-${allergy.id,}`,
             medication: medication.genericName || medication.brandName || '',
-            \1,\2 true,
-            \1,\2 crossReactivity.description,
-            recommendations: crossReactivity.recommendations
+             true,
+             crossReactivity.description,
+            recommendations: crossReactivity.recommendations,
           });
         }
       }
@@ -208,15 +208,15 @@ import type { PrismaService } from '@/lib/prisma';
   /**
    * Check for duplicate therapy;
    */
-  private async checkDuplicateTherapy(medications: MedicationForCheck[]): Promise<DuplicateTherapyAlert[]> {
+  private async checkDuplicateTherapy(medications: MedicationForCheck[]): Promise<DuplicateTherapyAlert[]> {,
     const alerts: DuplicateTherapyAlert[] = [];
     const therapeuticGroups = new Map<string, MedicationForCheck[]>();
 
     // Group medications by therapeutic class
     for (const medication of medications) {
       const therapeuticClass = await this.getTherapeuticClass(medication);
-      \1 {\n  \2{
-        \1 {\n  \2 {
+       {\n  {
+         {\n   {
           therapeuticGroups.set(therapeuticClass, []);
         }
         therapeuticGroups.get(therapeuticClass)!.push(medication);
@@ -225,13 +225,13 @@ import type { PrismaService } from '@/lib/prisma';
 
     // Check for duplicates in each group
     for (const [therapeuticClass, meds] of therapeuticGroups) {
-      \1 {\n  \2{
+       {\n  {
         alerts.push({
-          id: `duplicate-${therapeuticClass}`,
+          id: `duplicate-${therapeuticClass,}`,
           medications: meds.map(m => m.genericName || m.brandName || ''),
           therapeuticClass,
           riskDescription: `Multiple medications from the same therapeutic class may increase risk of adverse effects`,
-          recommendations: [
+          recommendations: [,
             'Review necessity of multiple agents',
             'Consider discontinuing one medication',
             'Monitor for additive effects',
@@ -254,32 +254,32 @@ import type { PrismaService } from '@/lib/prisma';
 
     for (const medication of medications) {
       const drugInfo = await this.getDrugInfo(medication.genericName || medication.brandName || '');
-      \1 {\n  \2ontinue;
+       {\n  ontinue;
 
       // Parse current dosage
       const currentDose = this.parseDosage(medication.dosage);
-      \1 {\n  \2ontinue;
+       {\n  ontinue;
 
       // Get recommended dosage ranges
       const recommendedDosage = await this.getRecommendedDosage(drugInfo, demographics);
 
       // Check for high dose
-      \1 {\n  \2{
+       {\n  {
         alerts.push({
-          id: `high-dose-${medication.genericName}`,
+          id: `high-dose-${medication.genericName,}`,
           medication: medication.genericName || medication.brandName || '',
-          \1,\2 medication.dosage,
-          \1,\2 'Dose exceeds recommended maximum'
+           medication.dosage,
+           'Dose exceeds recommended maximum'
         });
       }
 
       // Check for low dose
-      \1 {\n  \2{
+       {\n  {
         alerts.push({
-          id: `low-dose-${medication.genericName}`,
+          id: `low-dose-${medication.genericName,}`,
           medication: medication.genericName || medication.brandName || '',
-          \1,\2 medication.dosage,
-          \1,\2 'Dose may be subtherapeutic'
+           medication.dosage,
+           'Dose may be subtherapeutic'
         });
       }
     }
@@ -292,13 +292,13 @@ import type { PrismaService } from '@/lib/prisma';
    */
   async calculateDosage(
     medicationId: string,
-    \1,\2 string;
+     string;
     clinicalFactors?: ClinicalFactors;
   ): Promise<DosageRecommendation> {
     try {
       const drugInfo = await this.getDrugInfo(medicationId);
-      \1 {\n  \2{
-        throw new Error(`Drug information not found for ${\1}`;
+       {\n  {
+        throw new Error(`Drug information not found for ${}`;
       }
 
       // Base dosage calculation
@@ -311,14 +311,14 @@ import type { PrismaService } from '@/lib/prisma';
       dosage = this.adjustForHepatic(dosage, patientDemographics.hepaticFunction, drugInfo);
 
       // Apply clinical factors
-      \1 {\n  \2{
+       {\n  {
         dosage = this.adjustForClinicalFactors(dosage, clinicalFactors, drugInfo);
       }
 
       // Generate monitoring recommendations
       const monitoring = this.generateMonitoringRecommendations(drugInfo, dosage, patientDemographics);
 
-      const recommendation: DosageRecommendation = {
+      const recommendation: DosageRecommendation = {,
         medicationId,
         patientId: '', // Would be passed in
         calculatedDose: dosage,
@@ -327,14 +327,14 @@ import type { PrismaService } from '@/lib/prisma';
         warnings: this.generateDosageWarnings(dosage, drugInfo, patientDemographics),
         alternatives: await this.getDosageAlternatives(drugInfo, dosage),
         confidenceLevel: this.calculateConfidenceLevel(drugInfo, patientDemographics),
-        calculatedAt: new Date()
+        calculatedAt: new Date(),
       };
 
       // Record metrics
       metricsCollector.incrementCounter('pharmacy.dosage_calculations', 1, {
         medication: drugInfo.genericName;
         indication,
-        ageGroup: this.getAgeGroup(patientDemographics.age)
+        ageGroup: this.getAgeGroup(patientDemographics.age),
       });
 
       return recommendation;
@@ -346,37 +346,37 @@ import type { PrismaService } from '@/lib/prisma';
 
   // Private helper methods would continue here...
 
-  private async getDrugInteraction(drug1: string, drug2: string): Promise<DrugInteraction | null> {
+  private async getDrugInteraction(drug1: string, drug2: string): Promise<DrugInteraction | null> {,
     // Implementation to fetch drug interaction from database
     return null; // Placeholder
   }
 
-  private requiresMonitoring(interaction: DrugInteraction): boolean {
+  private requiresMonitoring(interaction: DrugInteraction): boolean {,
     return interaction.severity === WarningSeverity.MAJOR ||;
            interaction.severity === WarningSeverity.CRITICAL;
   }
 
-  private async getAlternatives(med1: MedicationForCheck, med2: MedicationForCheck): Promise<string[]> {
+  private async getAlternatives(med1: MedicationForCheck, med2: MedicationForCheck): Promise<string[]> {,
     // Implementation to suggest alternative medications
     return [];
   }
 
-  private isDirectAllergyMatch(medication: MedicationForCheck, allergy: PatientAllergy): boolean {
+  private isDirectAllergyMatch(medication: MedicationForCheck, allergy: PatientAllergy): boolean {,
     // Implementation to check direct allergy match
     return false;
   }
 
-  private async checkCrossReactivity(medication: MedicationForCheck, allergy: PatientAllergy): Promise<any> {
+  private async checkCrossReactivity(medication: MedicationForCheck, allergy: PatientAllergy): Promise<any> {,
     // Implementation to check cross-reactivity
     return null;
   }
 
-  private calculateRiskScore(alerts: unknown): number {
+  private calculateRiskScore(alerts: unknown): number {,
     // Implementation to calculate overall risk score
     return 0;
   }
 
-  private generateRecommendations(alerts: unknown): ClinicalRecommendation[] {
+  private generateRecommendations(alerts: unknown): ClinicalRecommendation[] {,
     // Implementation to generate clinical recommendations
     return [];
   }
@@ -384,22 +384,22 @@ import type { PrismaService } from '@/lib/prisma';
   // Additional helper methods would be implemented here...
 
   // Required abstract methods
-  validate(resource: FHIRMedicationRequest): boolean {
+  validate(resource: FHIRMedicationRequest): boolean {,
     return !!(resource?.resourceType && resource?.status && resource?.intent && resource.subject)
   }
 
-  toFHIR(internalData: unknown): FHIRMedicationRequest {
+  toFHIR(internalData: unknown): FHIRMedicationRequest {,
     return {
       resourceType: 'MedicationRequest',
-      \1,\2 'active',
-      \1,\2 this.createReference('Patient', internalData.patientId),
+       'active',
+       this.createReference('Patient', internalData.patientId),
     };
   }
 
-  fromFHIR(fhirResource: FHIRMedicationRequest): unknown {
+  fromFHIR(fhirResource: FHIRMedicationRequest): unknown {,
     return {
       id: fhirResource.id,
-      patientId: fhirResource.subject?.reference?.split('/')[1] || ''
+      patientId: fhirResource.subject?.reference?.split('/')[1] || '',
     };
   }
 }
@@ -407,45 +407,45 @@ import type { PrismaService } from '@/lib/prisma';
 // Supporting interfaces
 interface ClinicalFactors {
   comorbidities: string[],
-  \1,\2 {
+   {
     renal: 'NORMAL' | 'MILD' | 'MODERATE' | 'SEVERE',
-    \1,\2 'NORMAL' | 'COMPROMISED'
+     'NORMAL' | 'COMPROMISED'
   };
   geneticFactors?: string[];
 }
 
 interface DosageRecommendation {
   medicationId: string,
-  \1,\2 CalculatedDosage,
-  \1,\2 MonitoringRecommendation[],
-  \1,\2 AlternativeDosage[],
+   CalculatedDosage,
+   MonitoringRecommendation[],
+   AlternativeDosage[],
   confidenceLevel: number; // 0-100
-  calculatedAt: Date
+  calculatedAt: Date,
 }
 
 interface CalculatedDosage {
   amount: number,
-  \1,\2 string,
+   string,
   route: string;
   duration?: string;
   maxDailyDose: number,
-  adjustments: DosageAdjustment[]
+  adjustments: DosageAdjustment[],
 }
 
 interface DosageAdjustment {
   factor: string; // age, weight, renal, etc.
   multiplier: number,
-  rationale: string
+  rationale: string,
 }
 
 interface MonitoringRecommendation {
   parameter: string,
   frequency: string;
   targetRange?: string;
-  rationale: string
+  rationale: string,
 }
 
 interface AlternativeDosage {
   regimen: string,
-  \1,\2 string[],
-  disadvantages: string[]
+   string[],
+  disadvantages: string[],

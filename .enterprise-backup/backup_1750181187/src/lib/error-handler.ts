@@ -5,7 +5,7 @@
  * Provides consistent error handling, HIPAA-compliant error messages,
  * and appropriate status codes for all API responses;
  */
-\1
+
 }
   };
 
@@ -13,20 +13,20 @@
   private static readonly ERROR_CODES = {
     // Housekeeping errors
     HOUSEKEEPING_REQUEST_NOT_FOUND: 'HOUSEKEEPING_REQUEST_NOT_FOUND',
-    \1,\2 'HOUSEKEEPING_SCHEDULE_CONFLICT';
+     'HOUSEKEEPING_SCHEDULE_CONFLICT';
 
     // Maintenance errors
     MAINTENANCE_REQUEST_NOT_FOUND: 'MAINTENANCE_REQUEST_NOT_FOUND',
-    \1,\2 'MAINTENANCE_STAFF_NOT_AVAILABLE',
+     'MAINTENANCE_STAFF_NOT_AVAILABLE',
     MAINTENANCE_PARTS_UNAVAILABLE: 'MAINTENANCE_PARTS_UNAVAILABLE';
 
     // Dietary errors
     DIETARY_REQUEST_NOT_FOUND: 'DIETARY_REQUEST_NOT_FOUND',
-    \1,\2 'DIETARY_RESTRICTION_CONFLICT';
+     'DIETARY_RESTRICTION_CONFLICT';
 
     // Ambulance errors
     AMBULANCE_NOT_FOUND: 'AMBULANCE_NOT_FOUND',
-    \1,\2 'AMBULANCE_CREW_UNAVAILABLE';
+     'AMBULANCE_CREW_UNAVAILABLE';
 
     // Feedback errors
     FEEDBACK_NOT_FOUND: 'FEEDBACK_NOT_FOUND',
@@ -34,14 +34,14 @@
 
     // Marketing errors
     CAMPAIGN_NOT_FOUND: 'CAMPAIGN_NOT_FOUND',
-    \1,\2 'CONTACT_NOT_FOUND',
+     'CONTACT_NOT_FOUND',
     LEAD_NOT_FOUND: 'LEAD_NOT_FOUND';
 
     // General errors
     VALIDATION_ERROR: 'VALIDATION_ERROR',
-    \1,\2 'PERMISSION_DENIED',
-    \1,\2 'INTERNAL_SERVER_ERROR',
-    INTEGRATION_ERROR: 'INTEGRATION_ERROR'
+     'PERMISSION_DENIED',
+     'INTERNAL_SERVER_ERROR',
+    INTEGRATION_ERROR: 'INTEGRATION_ERROR',
   };
 
   /**
@@ -49,10 +49,10 @@
    * @param error The error to process;
    * @returns Standardized error response with status, message, code, and logging flag;
    */
-  public static processError(error: unknown): {
+  public static processError(error: unknown): {,
     status: number,
-    \1,\2 string,
-    shouldLog: boolean
+     string,
+    shouldLog: boolean,
   } {
     // Default values
     let status = 500;
@@ -61,68 +61,68 @@
     let shouldLog = true;
 
     // Handle known error types
-    \1 {\n  \2 {
+     {\n   {
       status = this.ERROR_TYPES.NOT_FOUND;
       message = this.sanitizeErrorMessage(error.message) || 'Resource not found';
 
       // Determine specific error code based on message content
-      \1 {\n  \2 {
+       {\n   {
         errorCode = this.ERROR_CODES.HOUSEKEEPING_REQUEST_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.MAINTENANCE_REQUEST_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.DIETARY_REQUEST_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.AMBULANCE_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.FEEDBACK_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.COMPLAINT_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.CAMPAIGN_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.SEGMENT_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.CONTACT_NOT_FOUND;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.LEAD_NOT_FOUND;
       }
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = this.ERROR_TYPES.VALIDATION;
       message = 'Validation error';
       errorCode = this.ERROR_CODES.VALIDATION_ERROR;
       shouldLog = false; // Validation errors are expected and don't need to be logged
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = this.ERROR_TYPES.UNAUTHORIZED;
       message = 'Unauthorized access';
       errorCode = this.ERROR_CODES.UNAUTHORIZED_ACCESS;
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = this.ERROR_TYPES.FORBIDDEN;
       message = 'Permission denied';
       errorCode = this.ERROR_CODES.PERMISSION_DENIED;
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = this.ERROR_TYPES.CONFLICT;
       message = this.sanitizeErrorMessage(error.message) || 'Resource conflict';
 
       // Determine specific conflict type
-      \1 {\n  \2 {
+       {\n   {
         errorCode = this.ERROR_CODES.HOUSEKEEPING_SCHEDULE_CONFLICT;
-      } else \1 {\n  \2 {
+      } else  {\n   {
         errorCode = this.ERROR_CODES.DIETARY_RESTRICTION_CONFLICT;
       }
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = this.ERROR_TYPES.BAD_REQUEST;
       message = 'Database operation failed';
       errorCode = this.ERROR_CODES.DATABASE_ERROR;
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = this.ERROR_TYPES.INTERNAL;
       message = 'Database error';
       errorCode = this.ERROR_CODES.DATABASE_ERROR;
-    } else \1 {\n  \2{
+    } else  {\n  {
       status = this.ERROR_TYPES.SERVICE_UNAVAILABLE;
       message = 'Integration service unavailable';
       errorCode = this.ERROR_CODES.INTEGRATION_ERROR;
-    } else \1 {\n  \2{
+    } else  {\n  {
       // Use the status from the error if available
       status = error.status;
       message = this.sanitizeErrorMessage(error.message) || 'An error occurred';
@@ -146,9 +146,9 @@
    */
   public static createError(
     message: string,
-    \1,\2 keyof typeof ErrorHandler.ERROR_CODES;
-  ): Error & { status: number, code: string } {
-    const error = new Error(message) as Error & { status: number, code: string };
+     keyof typeof ErrorHandler.ERROR_CODES;
+  ): Error & { status: number, code: string } {,
+    const error = new Error(message) as Error & { status: number, code: string ,};
     error.name = `${type}Error`;
     error.status = this.ERROR_TYPES[type];
     error.code = this.ERROR_CODES[code];
@@ -161,8 +161,8 @@
    * @param message The original error message;
    * @returns Sanitized error message;
    */
-  private static sanitizeErrorMessage(message: string): string {
-    \1 {\n  \2eturn '';
+  private static sanitizeErrorMessage(message: string): string {,
+     {\n  eturn '';
 
     // Remove any potential PHI (Patient Health Information)
     let sanitized = message

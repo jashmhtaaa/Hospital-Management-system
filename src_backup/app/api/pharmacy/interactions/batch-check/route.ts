@@ -48,7 +48,7 @@ const interactionService = new DrugInteractionService();
  * POST /api/pharmacy/interactions/batch-check;
  * Perform comprehensive batch interaction checking;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -86,15 +86,15 @@ export const POST = async (req: any) => {
     const validationResult = validateBatchInteractionCheckRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        { error: "Validation failed", details: validationResult.errors },
-        { status: 400 }
+        { error: "Validation failed", details: validationResult.errors ,},
+        { status: 400 },
       );
     }
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -154,6 +154,6 @@ export const POST = async (req: any) => {
         results.totalInteractionCount,
         criticalInteractionCount: results.criticalInteractionCount;
 
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, "Error performing batch interaction check");

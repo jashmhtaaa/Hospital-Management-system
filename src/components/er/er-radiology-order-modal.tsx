@@ -40,24 +40,21 @@ import { Input }
 import { useToast } from "@/components/ui/use-toast"; // FIX: Import useToast hook;
 
 // Define the schema for the radiology order form using Zod;
-const radiologyOrderFormSchema = z.object({
-  visitId: z.string().min(1, { message: "Visit ID is required." }),
-  patientName: z.string().min(1, { message: "Patient name is required." }),
+const radiologyOrderFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID is required." }),
+  patientName: z.string().min(1, {message:"Patient name is required." }),
   orderingDoctorId: z;
     .string();
-    .min(1, { message: "Ordering doctor is required." }),
-  procedureTypeId: z.string().min(1, { message: "Select a procedure type." }),
+    .min(1, {message:"Ordering doctor is required." }),
+  procedureTypeId: z.string().min(1, {message:"Select a procedure type." }),
   priority: z.literal("STAT"), // Default to STAT for ER;
   clinicalNotes: z.string().optional();
 });
 
 type RadiologyOrderFormValues = z.infer>;
 
-interface ERRadiologyOrderModalProperties {
-  isOpen: boolean,
+interface ERRadiologyOrderModalProperties {isOpen:boolean,
   onClose: () => void;
-  visitData?: {
-    id: string,
+  visitData?: {id:string,
     patientName: string;
     assignedDoctorId?: string; // Pass assigned doctor if available;
   };
@@ -66,12 +63,12 @@ interface ERRadiologyOrderModalProperties {
 
 // Mock data for available radiology procedure types - replace with API fetch;
 const availableProcedureTypes = [;
-  { id: "proc_xray_chest", name: "X-Ray Chest (PA/Lat)" },
-  { id: "proc_ct_head_wo", name: "CT Head w/o Contrast" },
-  { id: "proc_us_abd", name: "Ultrasound Abdomen Complete" },
-  { id: "proc_xray_kub", name: "X-Ray KUB" },
-  { id: "proc_ct_abd_pel_w", name: "CT Abdomen/Pelvis w/ Contrast" },
-  { id: "proc_mri_brain_wo", name: "MRI Brain w/o Contrast" }];
+  {id:"proc_xray_chest", name: "X-Ray Chest (PA/Lat)" },
+  {id:"proc_ct_head_wo", name: "CT Head w/o Contrast" },
+  {id:"proc_us_abd", name: "Ultrasound Abdomen Complete" },
+  {id:"proc_xray_kub", name: "X-Ray KUB" },
+  {id:"proc_ct_abd_pel_w", name: "CT Abdomen/Pelvis w/ Contrast" },
+  {id:"proc_mri_brain_wo", name: "MRI Brain w/o Contrast" }];
 
 export default const _ERRadiologyOrderModal = ({
   isOpen,
@@ -81,8 +78,7 @@ export default const _ERRadiologyOrderModal = ({
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast(); // FIX: Get toast function from hook;
 
-  const form = useForm<RadiologyOrderFormValues>({
-    resolver: zodResolver(radiologyOrderFormSchema),
+  const form = useForm<RadiologyOrderFormValues>({resolver:zodResolver(radiologyOrderFormSchema),
     visitData?.id || "",
       visitData?.assignedDoctorId || "", // Pre-fill if available;
       procedureTypeId: "",
@@ -135,8 +131,7 @@ export default const _ERRadiologyOrderModal = ({
 } catch (error) {
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      const response = await fetch("/api/radiology/orders", {
-        method: "POST",
+      const response = await fetch("/api/radiology/orders", {method:"POST",
         headers: { "Content-Type": "application/json" },
         visitData?.id, // Assuming visit ID links to patient in backend;
           visit_id: data.visitId,
@@ -186,13 +181,12 @@ export default const _ERRadiologyOrderModal = ({
 
         throw new Error(errorMessage);
 
-      const newOrder: { id: string } = await response.json(); // FIX: Add basic type for newOrder;
+      const newOrder: {id:string } = await response.json(); // FIX: Add basic type for newOrder;
 
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
       // This might require another API call or be handled by backend logic;
 
-      toast({
-        title: "Radiology Order Submitted",
+      toast({title:"Radiology Order Submitted",
         description: `STAT order ${newOrder.id} placed successfully.`}),
 
       if (!session.user) {
@@ -206,8 +200,7 @@ export default const _ERRadiologyOrderModal = ({
       onClose();
     } catch (error: unknown) {
 
-      toast({
-        title: "Order Failed",
+      toast({title:"Order Failed",
         description: null,
           error instanceof Error;
             ? error.message;

@@ -36,7 +36,7 @@ import { Patient  } from "@/types/patient"; // Assuming Patient type exists;
 
 // Define interface for error response;
 interface ErrorResponse {
-  error?: string;
+    error?: string;
   message?: string;
 export default const _PatientsPage = () {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -91,8 +91,7 @@ export default const _PatientsPage = () {
       } catch (err: unknown) { // Use unknown;
         const message = err instanceof Error ? err.message : "An unknown error occurred";
         setError(message),
-        toast({
-          title: "Error Fetching Patients",
+        toast({title:"Error Fetching Patients",
           "destructive";
         });
       } finally ;

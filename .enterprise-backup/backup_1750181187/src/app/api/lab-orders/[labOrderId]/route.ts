@@ -15,41 +15,41 @@ const ALLOWED_ROLES_UPDATE = ["Admin", "Doctor", "Nurse", "LabTechnician"]; // R
 // Define interface for lab order query result
 interface LabOrderQueryResult {
     lab_order_id: number,
-    \1,\2 number,
-    \1,\2 string,
-    \1,\2 string | null,
-    \1,\2 string,
-    \1,\2 string,
-    doctor_full_name: string | null
+     number,
+     string,
+     string | null,
+     string,
+     string,
+    doctor_full_name: string | null,
 }
 
 // Define interface for lab order item query result
 interface LabOrderItemQueryResult {
     lab_order_item_id: number,
-    \1,\2 number,
-    \1,\2 string | null,
-    \1,\2 string | null,
-    \1,\2 string | null,
-    \1,\2 string | null,
-    \1,\2 string | null,
-    \1,\2 string,
-    \1,\2 string,
-    \1,\2 string | null,
-    result_verified_by_user_full_name: string | null
-export const _GET = async (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
+     number,
+     string | null,
+     string | null,
+     string | null,
+     string | null,
+     string | null,
+     string,
+     string,
+     string | null,
+    result_verified_by_user_full_name: string | null,
+export const _GET = async (_request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {,
     // Pass cookies() directly
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
-    const { labOrderId: labOrderIdString } = await params;
+    const { labOrderId: labOrderIdString ,} = await params;
     const labOrderId = Number.parseInt(labOrderIdString, 10);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Invalid Lab Order ID" }), { status: 400 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Invalid Lab Order ID" ,}), { status: 400 ,});
     }
 
     try {
@@ -70,22 +70,22 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
              WHERE lo.lab_order_id = ?`;
         ).bind(labOrderId).first<LabOrderQueryResult>();
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Lab Order not found" ,}), { status: 404 ,});
         }
 
         // 3. Authorization check for Patients and Doctors
-        \1 {\n  \2{
-            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
-            \1 {\n  \2{
-                return new Response(JSON.stringify({ error: "Forbidden: You can only view your own lab orders" }), { status: 403 });
+         {\n  {
+            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number ,}>();
+             {\n  {
+                return new Response(JSON.stringify({ error: "Forbidden: You can only view your own lab orders" ,}), { status: 403 ,});
             }
         }
-        \1 {\n  \2{
-            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
-            \1 {\n  \2{
+         {\n  {
+            const userDoctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
+             {\n  {
                  // Allow viewing if not the ordering doctor? Or restrict? For now, restrict.
-                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" }), { status: 403 })
+                return new Response(JSON.stringify({ error: "Forbidden: Doctors can generally only view their own lab orders" ,}), { status: 403 }),
             }
         }
 
@@ -102,45 +102,45 @@ export const _GET = async (_request: Request, { params }: { params: Promise<{ la
         ).bind(labOrderId).all<LabOrderItemQueryResult>();
 
         // 5. Format the final response
-        const labOrder: LabOrder = {
+        const labOrder: LabOrder = {,
             lab_order_id: orderResult.lab_order_id,
-            \1,\2 orderResult.patient_id,
+             orderResult.patient_id,
             doctor_id: orderResult.doctor_id!, // Add non-null assertion
             order_datetime: orderResult.order_datetime,
-            \1,\2 orderResult.notes,
-            \1,\2 orderResult.updated_at;
+             orderResult.notes,
+             orderResult.updated_at;
                 patient_id: orderResult.patient_id,
-                \1,\2 orderResult.patient_last_name,
-            doctor: 
+                 orderResult.patient_last_name,
+            doctor: ,
                 doctor_id: orderResult.doctor_id,
                 user: fullName: orderResult.doctor_full_name ,
-            items: itemsResult.results?.map((item: LabOrderItemQueryResult) => (
+            items: itemsResult.results?.map((item: LabOrderItemQueryResult) => (,
                 lab_order_item_id: item.lab_order_item_id,
-                \1,\2 item.billable_item_id,
-                \1,\2 item.sample_type,
-                \1,\2 item.sample_collection_datetime,
-                \1,\2 item.result_value,
-                \1,\2 item.reference_range,
-                \1,\2 item.result_datetime,
-                \1,\2 item.status as LabOrderItemStatus, // Cast string to enum
+                 item.billable_item_id,
+                 item.sample_type,
+                 item.sample_collection_datetime,
+                 item.result_value,
+                 item.reference_range,
+                 item.result_datetime,
+                 item.status as LabOrderItemStatus, // Cast string to enum
                 created_at: item.created_at,
-                \1,\2 item.billable_item_id,
+                 item.billable_item_id,
                     item_code: item.billable_item_code,
-                sample_collected_by_user: item.sample_collected_by_user_id ? 
+                sample_collected_by_user: item.sample_collected_by_user_id ? ,
                     user_id: item.sample_collected_by_user_id,
                     full_name: item.sample_collected_by_user_full_name: null,
-                result_verified_by_user: item.result_verified_by_user_id ? 
+                result_verified_by_user: item.result_verified_by_user_id ? ,
                     user_id: item.result_verified_by_user_id,
                     full_name: item.result_verified_by_user_full_name: null;)) as LabOrderItem[] || [],
         };
 
         // 6. Return the detailed lab order
-        return new Response(JSON.stringify(labOrder), { status: 200 });
+        return new Response(JSON.stringify(labOrder), { status: 200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), { status: 500 });
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), { status: 500 ,});
     }
 }
 
@@ -151,35 +151,35 @@ const UpdateLabOrderSchema = z.object({
     // Other fields? Usually status is updated based on item statuses
 });
 
-export const _PUT = async (request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {
+export const _PUT = async (request: Request, { params }: { params: Promise<{ labOrderId: string }> }) => {,
     // Pass cookies() directly
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
-    const { labOrderId: labOrderIdString } = await params;
+    const { labOrderId: labOrderIdString ,} = await params;
     const labOrderId = Number.parseInt(labOrderIdString, 10);
 
     // 1. Check Authentication & Authorization
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), { status: 401 ,});
     }
 
-    \1 {\n  \2 {
-        return new Response(JSON.stringify({ error: "Invalid Lab Order ID" }), { status: 400 });
+     {\n   {
+        return new Response(JSON.stringify({ error: "Invalid Lab Order ID" ,}), { status: 400 ,});
     }
 
     try {
         const body = await request.json();
         const validation = UpdateLabOrderSchema.safeParse(body);
 
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), { status: 400 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), { status: 400 ,});
         }
 
         const updateData = validation.data;
 
         // Check if there's anything to update
-        \1 {\n  \2length === 0) {
-             return new Response(JSON.stringify({ message: "No update data provided" }), { status: 200 });
+         {\n  length === 0) {
+             return new Response(JSON.stringify({ message: "No update data provided" ,}), { status: 200 ,});
         }
 
         // If we reach here, there is data to update
@@ -191,18 +191,18 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
         const orderCheck = await DB.prepare("SELECT lab_order_id FROM LabOrders WHERE lab_order_id = ?");
                                    .bind(labOrderId);
                                    .first<lab_order_id: number >();
-        \1 {\n  \2{
-            return new Response(JSON.stringify({ error: "Lab Order not found" }), { status: 404 });
+         {\n  {
+            return new Response(JSON.stringify({ error: "Lab Order not found" ,}), { status: 404 ,});
         }
 
-        // Granular authorization: only LabTech can change status to Completed
+        // Granular authorization: only LabTech can change status to Completed,
 
         // 3. Build update query
         let query = "UPDATE LabOrders SET updated_at = CURRENT_TIMESTAMP";
         const queryParams: (string | null | number)[] = [];
 
         Object.entries(updateData).forEach(([key, value]) => {
-            \1 {\n  \2{ // Allow null values to be set
+             {\n  { // Allow null values to be set
                 query += `, ${key} = ?`;
                 queryParams.push(value);
             }
@@ -214,23 +214,23 @@ export const _PUT = async (request: Request, { params }: { params: Promise<{ lab
         // 4. Execute update
         const updateResult = await DB.prepare(query).bind(...queryParams).run();
 
-        \1 {\n  \2{
+         {\n  {
             throw new Error("Failed to update lab order");
         }
 
         // 5. Return success response
-        return new Response(JSON.stringify({ message: "Lab Order updated successfully" }), { status: 200 });
+        return new Response(JSON.stringify({ message: "Lab Order updated successfully" ,}), { status: 200 ,});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json" ,},
         });
     }
 }
 
 // DELETE handler - Lab orders are generally not deleted, maybe cancelled (status update).
 // Implement if hard deletion is truly required, but use with caution.
-// export async function DELETE(request: Request): unknown { ...
+// export async function DELETE(request: Request): unknown { ...,

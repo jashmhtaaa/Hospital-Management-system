@@ -11,7 +11,7 @@ import { Suspense }
 
 export default async const _DocumentViewPage = ({
   params;
-}: {id: string ;
+}: {id:string ;
 }) {
   // Get session;
   const session = await getServerSession(authOptions);

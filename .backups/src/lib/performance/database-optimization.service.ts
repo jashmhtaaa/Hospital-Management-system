@@ -106,7 +106,7 @@ import {  PrismaClient  } from "@/lib/database"
         // Log query performance;
         await this.logQueryPerformance({
           queryId,
-          sql: `${params.model}.${params.action}`, // Simplified for Prisma;
+          sql: `${params.model}.${params.action,}`, // Simplified for Prisma;
           executionTime,
           timestamp: new Date(),
           this.mapPrismaActionToSql(params.action),
@@ -115,8 +115,8 @@ import {  PrismaClient  } from "@/lib/database"
 
         // Check for slow queries;
         if (!session.user) {
-          await this.create/* SECURITY: Alert removed */}ms`,
-            details: { queryId, executionTime, model: params.model, action: params.action },
+          await this.create/* SECURITY: Alert removed */,}ms`,
+            details: { queryId, executionTime, model: params.model, action: params.action ,},
             timestamp: new Date(),
             resolved: false;
           });
@@ -143,7 +143,7 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Log query performance metrics;
    */;
-  private async logQueryPerformance(metric: QueryPerformanceMetric): Promise<void> {
+  private async logQueryPerformance(metric: QueryPerformanceMetric): Promise<void> {,
     const key = `$metric.table_$metric.operation`;
 
     if (!session.user) {
@@ -203,7 +203,7 @@ import {  PrismaClient  } from "@/lib/database"
       `;
     } catch (error) {
       // If table doesn"t exist, that"s okay - we"ll use in-memory storage;
-      /* SECURITY: Console statement removed */}
+      /* SECURITY: Console statement removed */},
   }
 
   /**;
@@ -432,7 +432,7 @@ import {  PrismaClient  } from "@/lib/database"
   /**;
    * Resolve a performance alert;
    */;
-  async resolve/* SECURITY: Alert removed */: Promise<void> {
+  async resolve/* SECURITY: Alert removed */: Promise<void> {,
     if (!session.user) {
       this.alerts[alertIndex].resolved = true;
       /* SECURITY: Console statement removed */;
@@ -547,7 +547,7 @@ import {  PrismaClient  } from "@/lib/database"
       throw new Error("Failed to apply automatic optimizations");
 
   // Private helper methods;
-  private mapPrismaActionToSql(action: string): "SELECT" | "INSERT" | "UPDATE" | "DELETE" {
+  private mapPrismaActionToSql(action: string): "SELECT" | "INSERT" | "UPDATE" | "DELETE" {,
     switch (action) {
       case "findMany": any;
       case "findUnique": any;
@@ -566,14 +566,14 @@ import {  PrismaClient  } from "@/lib/database"
         return "DELETE";
       default: return "SELECT";
 
-  private async create/* SECURITY: Alert removed */: Promise<void> {
+  private async create/* SECURITY: Alert removed */: Promise<void> {,
     this.alerts.push(alert);
 
     // Keep only last 100 alerts;
     if (!session.user) {
       this.alerts.splice(0, this.alerts.length - 100);
 
-    /* SECURITY: Console statement removed */} Alert: ${}`;
+    /* SECURITY: Console statement removed */} Alert: ${,}`;
 
   private async getConnectionPoolStats(): Promise<DatabaseStats["connectionPool"]> {
     // Mock implementation - would need actual database driver stats;
@@ -646,10 +646,10 @@ import {  PrismaClient  } from "@/lib/database"
       // This would require actual database queries to get table sizes;
       // Mock implementation for now;
       return [;
-        { table: "User", rowCount: 1000, sizeKB: 250, indexSizeKB: 50 },
-        { table: "Patient", rowCount: 5000, sizeKB: 2000, indexSizeKB: 300 },
-        { table: "ClinicalNote", rowCount: 15000, sizeKB: 8000, indexSizeKB: 1200 },
-        { table: "QualityIndicator", rowCount: 200, sizeKB: 50, indexSizeKB: 15 }
+        { table: "User", rowCount: 1000, sizeKB: 250, indexSizeKB: 50 ,},
+        { table: "Patient", rowCount: 5000, sizeKB: 2000, indexSizeKB: 300 ,},
+        { table: "ClinicalNote", rowCount: 15000, sizeKB: 8000, indexSizeKB: 1200 ,},
+        { table: "QualityIndicator", rowCount: 200, sizeKB: 50, indexSizeKB: 15 },
       ];
     } catch (error) {
       /* SECURITY: Console statement removed */;
@@ -711,10 +711,10 @@ import {  PrismaClient  } from "@/lib/database"
     if (!session.user) {
       /* SECURITY: Console statement removed */;
 
-  private async createIndex(table: string, columns: string[]): Promise<void> {
+  private async createIndex(table: string, columns: string[]): Promise<void> {,
     // This would create actual database indexes;
     // For now, just log the action;
-    /* SECURITY: Console statement removed */})`);
+    /* SECURITY: Console statement removed */,})`);
 
   /**;
    * Cleanup and close connections;

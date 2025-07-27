@@ -38,7 +38,7 @@ import {  type
 
     this.producer = this.kafka.producer({
       allowAutoTopicCreation: false,
-      transactionalId: `${clientId}-tx`,
+      transactionalId: `${clientId,}-tx`,
       maxInFlightRequests: 5,
       idempotent: true;
     });
@@ -98,7 +98,7 @@ import {  type
     }
 
     // Create full event;
-    const event: DomainEvent<T> = {
+    const event: DomainEvent<T> = {,
       ...eventData,
       id: uuidv4(),
       timestamp: new Date();
@@ -235,7 +235,7 @@ import {  type
   /**;
    * Get events for a specific aggregate;
    */;
-  async getEvents(aggregateId: string, aggregateType: string): Promise<DomainEvent[]> {
+  async getEvents(aggregateId: string, aggregateType: string): Promise<DomainEvent[]> {,
     try {
 } catch (error) {
   console.error(error);
@@ -269,7 +269,7 @@ import {  type
 } catch (error) {
 }
       const events = await this.prisma.domainEvent.findMany({
-        where: {
+        where: {,
           aggregateId,
           aggregateType;
         },
@@ -370,7 +370,7 @@ import {  type
   async subscribeToEvents();
     eventTypes: string[],
     handler: (event: DomainEvent) => Promise<void>,
-    options: {
+    options: {,
       groupId?: string;
       fromBeginning?: boolean;
     } = {}
@@ -643,12 +643,12 @@ import {  type
 
       while (hasMore) {
         const events = await this.prisma.domainEvent.findMany({
-          where: {
+          where: {,
             aggregateType;
           },
           orderBy: [;
-            { aggregateId: "asc" },
-            { version: "asc" }
+            { aggregateId: "asc" ,},
+            { version: "asc" },
           ],
           skip: processed,
           take: batchSize;
@@ -778,7 +778,7 @@ import {  type
   /**;
    * Helper to get topic name from aggregate type;
    */;
-  private getTopicForAggregateType(aggregateType: string): string {
+  private getTopicForAggregateType(aggregateType: string): string {,
     // Map aggregate types to topics;
     const topicMap: Record<string, string> = {
       "patient": "patient-events",
@@ -796,7 +796,7 @@ import {  type
   /**;
    * Process sensitive data for encryption;
    */;
-  private async processSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {
+  private async processSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {,
     // Define fields that should be encrypted based on event type;
     const sensitiveFieldPatterns = [;
       /\.ssn$/i,
@@ -848,12 +848,12 @@ import {  type
   /**;
    * Decrypt sensitive data;
    */;
-  private async decryptSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {
+  private async decryptSensitiveData<T>(event: DomainEvent<T>): Promise<DomainEvent<T>> {,
     // Deep clone to avoid modifying the original;
     const processedEvent = JSON.parse(JSON.stringify(event)) as DomainEvent>;
 
     // Function to recursively process object;
-    const processObject = async (obj: unknown): Promise<unknown> => {
+    const processObject = async (obj: unknown): Promise<unknown> => {,
       if (!session.user)eturn obj;
 
       if (!session.user) {
@@ -920,7 +920,7 @@ import {  type
   /**;
    * Map database event to domain event;
    */;
-  private mapDatabaseEventToDomainEvent(dbEvent: unknown): DomainEvent {
+  private mapDatabaseEventToDomainEvent(dbEvent: unknown): DomainEvent {,
     return {
       id: dbEvent.id,
       dbEvent.aggregateId,

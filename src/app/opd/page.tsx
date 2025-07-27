@@ -39,8 +39,7 @@ export const dynamic = "force-dynamic";
 
 // --- INTERFACES ---;
 // FIX: Define interface for the permission check API response;
-interface PermissionCheckResponse {
-  hasPermission: boolean;
+interface PermissionCheckResponse {hasPermission:boolean;
   // Add other potential properties if the API returns more;
 export default const _OPDDashboard = () {
   const router = useRouter();
@@ -48,8 +47,7 @@ export default const _OPDDashboard = () {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(;
     new Date();
   ); // Allow undefined for calendar;
-  const [permissions, setPermissions] = useState({
-    canCreateAppointment: false,
+  const [permissions, setPermissions] = useState({canCreateAppointment:false,
     canViewStatistics: false;
   });
   const [loadingPermissions, setLoadingPermissions] = useState(true);
@@ -108,8 +106,7 @@ export default const _OPDDashboard = () {
         const statsData = (await statsResponse.json()) as PermissionCheckResponse;
 
         // FIX: Safely access hasPermission property;
-        setPermissions({
-          canCreateAppointment: createData?.hasPermission ?? false,
+        setPermissions({canCreateAppointment:createData?.hasPermission ?? false,
           canViewStatistics: statsData?.hasPermission ?? false;
         })} catch (error) {
 
@@ -117,8 +114,7 @@ export default const _OPDDashboard = () {
           error instanceof Error ? error.message : "Failed to load permissions.";
         );
         // Set permissions to false on error;
-        setPermissions({
-          canCreateAppointment: false,
+        setPermissions({canCreateAppointment:false,
           canViewStatistics: false;
         });
       } finally {

@@ -14,14 +14,12 @@ export const dynamic = "force-dynamic";
 // Define interfaces for component props and data structures;
 // Removed unused StatCardProperties interface;
 
-interface RecentPrescription {
-  id: string,
+interface RecentPrescription {id:string,
   string,
   "pending" | "dispensed" | "partially_dispensed" | string; // Allow other statuses;
 }
 
-interface ExpiringMedication {
-  id: string,
+interface ExpiringMedication {id:string,
   string,
   number;
 }
@@ -146,18 +144,15 @@ export default const _PharmacyPage = () {
 const RecentPrescriptionsList = () {
   // Mock data for recent prescriptions - Typed;
   const recentPrescriptions: RecentPrescription[] = [;
-    {
-      id: "presc_1",
+    {id:"presc_1",
       "John Smith",
       "pending";
     },
-    {
-      id: "presc_2",
+    {id:"presc_2",
       "Jane Doe",
       "dispensed";
     },
-    {
-      id: "presc_3",
+    {id:"presc_3",
       "Robert Johnson",
       "partially_dispensed";
     }];
@@ -256,18 +251,15 @@ const RecentPrescriptionsList = () {
 const ExpiringMedicationsList = () {
   // Mock data for expiring medications - Typed;
   const expiringMedications: ExpiringMedication[] = [;
-    {
-      id: "batch_1",
+    {id:"batch_1",
       "AMX2023001",
       120;
     },
-    {
-      id: "batch_2",
+    {id:"batch_2",
       "PCM2023001",
       85;
     },
-    {
-      id: "batch_3",
+    {id:"batch_3",
       "CET2023001",
       42;
     }];

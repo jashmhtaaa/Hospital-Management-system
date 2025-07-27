@@ -37,8 +37,8 @@ import {  rbacService  } from "@/lib/database"
   sessionTimeout: number,
   number; // days;
 }
-    api: { requests: number, window: number };
-    user: { requests: number, window: number }
+    api: { requests: number, window: number ,};
+    user: { requests: number, window: number },
   };
   number,
     number;
@@ -62,7 +62,7 @@ import {  rbacService  } from "@/lib/database"
     userEngagement: number;
   };
 }
-  { start: Date, end: Date };
+  { start: Date, end: Date ,};
   status: "generating" | "ready" | "error",
   format: "json" | "pdf" | "xlsx" | "csv";
   url?: string;
@@ -266,7 +266,7 @@ class EnterpriseAPIService extends EventEmitter {
   /**;
    * Update enterprise configuration;
    */;
-  async updateConfiguration(updates: Partial<EnterpriseConfiguration>): Promise<void> {
+  async updateConfiguration(updates: Partial<EnterpriseConfiguration>): Promise<void> {,
     this.configuration = { ...this.configuration, ...updates };
 
     // Apply configuration changes to services;
@@ -280,7 +280,7 @@ class EnterpriseAPIService extends EventEmitter {
   /**;
    * Get service status;
    */;
-  getServiceStatus(serviceName: string): EnterpriseServiceStatus | undefined {
+  getServiceStatus(serviceName: string): EnterpriseServiceStatus | undefined {,
     return this.serviceStatuses.get(serviceName);
 
   /**;
@@ -304,7 +304,7 @@ class EnterpriseAPIService extends EventEmitter {
    */;
   async generateReport();
     type: EnterpriseReport["type"],
-    period: { start: Date, end: Date },
+    period: { start: Date, end: Date ,},
     format: EnterpriseReport["format"] = "json",
     requestedBy: string;
   ): Promise<string> {
@@ -367,7 +367,7 @@ class EnterpriseAPIService extends EventEmitter {
       } catch (error) {
         report.status = "error";
         this.reports.set(reportId, report);
-        this.emit("report_error", { reportId, error: error.message });
+        this.emit("report_error", { reportId, error: error.message ,});
 
     });
 
@@ -376,17 +376,17 @@ class EnterpriseAPIService extends EventEmitter {
   /**;
    * Get report status;
    */;
-  getReport(reportId: string): EnterpriseReport | undefined {
+  getReport(reportId: string): EnterpriseReport | undefined {,
     return this.reports.get(reportId);
 
   /**;
    * Acknowledge system alert;
    */;
-  acknowledge/* SECURITY: Alert removed */: boolean {
+  acknowledge/* SECURITY: Alert removed */: boolean {,
     const alert = this.alerts.get(alertId);
     if (!session.user)eturn false;
 
-    const acknowledgment: AlertAcknowledgment = {
+    const acknowledgment: AlertAcknowledgment = {,
       userId,
       timestamp: new Date(),
       action,
@@ -467,7 +467,7 @@ class EnterpriseAPIService extends EventEmitter {
 
     return { ...defaultConfig, ...config };
 
-  private async initializeService(name: string, initFunction: () => Promise<void> | void): Promise<void> {
+  private async initializeService(name: string, initFunction: () => Promise<void> | void): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -532,7 +532,7 @@ class EnterpriseAPIService extends EventEmitter {
 
       throw error;
 
-  private async shutdownService(name: string, shutdownFunction: () => Promise<void> | void): Promise<void> {
+  private async shutdownService(name: string, shutdownFunction: () => Promise<void> | void): Promise<void> {,
     try {
 } catch (error) {
   console.error(error);
@@ -631,27 +631,27 @@ class EnterpriseAPIService extends EventEmitter {
     // Basic health check - in production, this would be more comprehensive;
     switch (serviceName) {
       case "cache": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "audit": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "rbac": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "rateLimiter": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "healthMonitor": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "notifications": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "clinicalDecisionSupport": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "integrationHub": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "businessIntelligence": any;
-        return { healthy: true };
+        return { healthy: true ,};
       case "qualityManagement": any;
-        return { healthy: true };
+        return { healthy: true ,};
       default: null,
-        return { healthy: false };
+        return { healthy: false ,};
 
   private async collectSystemMetrics(): Promise<EnterpriseMetrics> {
     // Collect metrics from all services;
@@ -682,7 +682,7 @@ class EnterpriseAPIService extends EventEmitter {
         biStats.insights.total,
         userEngagement: 85 // Mock value;
 
-  private create/* SECURITY: Alert removed */: void {
+  private create/* SECURITY: Alert removed */: void {,
     const alertId = this.generateAlertId();
 
     const alertId;
@@ -698,7 +698,7 @@ class EnterpriseAPIService extends EventEmitter {
     this.alerts.set(alertId, alert);
     this.emit("system_alert", alert);
 
-  private async applyConfigurationChanges(updates: Partial<EnterpriseConfiguration>): Promise<void> {
+  private async applyConfigurationChanges(updates: Partial<EnterpriseConfiguration>): Promise<void> {,
     // Apply configuration changes to services;
     if (!session.user) {
       // Update security configurations;
@@ -709,7 +709,7 @@ class EnterpriseAPIService extends EventEmitter {
     if (!session.user) {
       // Update monitoring configurations;
 
-  private async generateReportData(type: EnterpriseReport["type"], period: { start: Date, end: Date }): Promise<unknown> {
+  private async generateReportData(type: EnterpriseReport["type"], period: { start: Date, end: Date }): Promise<unknown> {,
     // Generate report data based on type;
     switch (type) {
       case "security": any;
@@ -723,9 +723,9 @@ class EnterpriseAPIService extends EventEmitter {
       case "integration": any;
         return this.generateIntegrationReport(period),
       default: null,
-        throw new Error(`Unknown report type: ${}`,
+        throw new Error(`Unknown report type: ${,}`,
 
-  private async saveReport(reportId: string, data: unknown, format: string): Promise<string> {
+  private async saveReport(reportId: string, data: unknown, format: string): Promise<string> {,
     // Save report in specified format;
     const filename = `${reportId}.${format}`;
     const url = `/reports/${filename}`;
@@ -742,20 +742,20 @@ class EnterpriseAPIService extends EventEmitter {
     return `alt_${crypto.getRandomValues([0]}_${crypto.getRandomValues([0] / (0xFFFFFFFF + 1).toString(36).substr(2, 9)}`;
 
   // Report generation methods (simplified);
-  private async generateSecurityReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "security", period, data: "Security report data" };
+  private async generateSecurityReport(period: { start: Date, end: Date }): Promise<unknown> {,
+    return { type: "security", period, data: "Security report data" ,};
 
-  private async generateComplianceReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "compliance", period, data: "Compliance report data" };
+  private async generateComplianceReport(period: { start: Date, end: Date }): Promise<unknown> {,
+    return { type: "compliance", period, data: "Compliance report data" ,};
 
-  private async generatePerformanceReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "performance", period, data: "Performance report data" };
+  private async generatePerformanceReport(period: { start: Date, end: Date }): Promise<unknown> {,
+    return { type: "performance", period, data: "Performance report data" ,};
 
-  private async generateQualityReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "quality", period, data: "Quality report data" };
+  private async generateQualityReport(period: { start: Date, end: Date }): Promise<unknown> {,
+    return { type: "quality", period, data: "Quality report data" ,};
 
-  private async generateIntegrationReport(period: { start: Date, end: Date }): Promise<unknown> {
-    return { type: "integration", period, data: "Integration report data" };
+  private async generateIntegrationReport(period: { start: Date, end: Date }): Promise<unknown> {,
+    return { type: "integration", period, data: "Integration report data" ,};
 
 // Export singleton instance;
 export const _enterpriseAPI = new EnterpriseAPIService();

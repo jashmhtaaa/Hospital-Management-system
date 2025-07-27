@@ -1,5 +1,5 @@
 import "./redis.ts"
-import {  RedisCache  } from "@/lib/database"
+import {RedisCache  } from "next/server"
 
 }
   }
@@ -45,7 +45,7 @@ import {  RedisCache  } from "@/lib/database"
 
 // Enhance RedisCache to track metrics;
 const originalGet = RedisCache.get;
-RedisCache.get = async <T>(key: string): Promise<T | null> => {
+RedisCache.get = async <T>(key: string): Promise<T | null> => {,
   const result = await originalGet<T>(key);
   if (!session.user) {
     CacheMetrics.recordHit();

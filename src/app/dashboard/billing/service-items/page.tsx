@@ -48,8 +48,7 @@ import { Label }
 import { Skeleton }
 
 // --- INTERFACES ---;
-interface ServiceItem {
-  id: number,
+interface ServiceItem {id:number,
   string;
   description?: string;
   category: string,
@@ -58,20 +57,18 @@ interface ServiceItem {
 }
 
 // FIX: Define interface for API response;
-interface ServiceItemsApiResponse {
-  serviceItems: ServiceItem[];
+interface ServiceItemsApiResponse {serviceItems:ServiceItem[];
   // Add other potential properties if the API returns more data;
 }
 
 // FIX: Define interface for error response;
 interface ErrorResponse {
-  error?: string;
+    error?: string;
   message?: string;
 }
 
 // FIX: Define props type for ServiceItemForm;
-interface ServiceItemFormProperties {
-  item: ServiceItem | null; // Item being edited, or null for new item;
+interface ServiceItemFormProperties {item:ServiceItem | null; // Item being edited, or null for new item;
   () => void; // Function to handle cancellation;
 }
 
@@ -81,8 +78,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
   onSubmit,
   onCancel}) => {
   const [formData, setFormData] = useState<Partial<ServiceItem>>(;
-    item || {
-      item_code: "",
+    item || {item_code:"",
       "",
       0,
       true,
@@ -97,8 +93,7 @@ const ServiceItemForm: React.FC<ServiceItemFormProperties> = ({
       setFormData(item);
     } else {
       // Reset form for creating new item;
-      setFormData({
-        item_code: "",
+      setFormData({item_code:"",
         "",
         0,
         true,
@@ -405,8 +400,7 @@ export default const _ServiceItemsPage = () {
 
 } catch (error) {
 
-      const response = await fetch(url, {
-        method: method,
+      const response = await fetch(url, {method:method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData);
       });
@@ -568,7 +562,7 @@ export default const _ServiceItemsPage = () {
           <TableBody>;
             {isLoading ? (;
               // Skeleton Loader Rows;
-              (Array.from({ length: 5 }).map((_, index) => (;
+              (Array.from({length:5 }).map((_, index) => (;
                 >;
                   <TableCell>;
                     <Skeleton className="h-4 w-20" />;

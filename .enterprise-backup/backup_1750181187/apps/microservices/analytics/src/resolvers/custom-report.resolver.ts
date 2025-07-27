@@ -19,7 +19,7 @@ import type { CustomReportService } from '../services/custom-report.service';
 @Resolver();
 @UseGuards(GqlAuthGuard, GqlRolesGuard);
 export class CustomReportResolver {
-  constructor(private readonly customReportService: CustomReportService) {}
+  constructor(private readonly customReportService: CustomReportService) {},
 
   // This is just a stub - in a real implementation, all methods would be properly defined with GraphQL types
 
@@ -39,7 +39,7 @@ export class CustomReportResolver {
   }
 
   @Query();
-  async reportTemplate(@Args('id') id: string) {
+  async reportTemplate(@Args('id') id: string) {,
     return this.customReportService.getReportTemplateById(id)
   }
 
@@ -100,7 +100,7 @@ export class CustomReportResolver {
   ) {
     const dueDate = dueStartDate && dueEndDate ? {
       start: new Date(dueStartDate),
-      end: new Date(dueEndDate)
+      end: new Date(dueEndDate),
     } : undefined;
 
     return this.customReportService.getRegulatoryReports({
@@ -131,7 +131,7 @@ export class CustomReportResolver {
       query,
       {
         dataSource,
-        context: queryContext
+        context: queryContext,
       },
       context.req.user.id;
     );

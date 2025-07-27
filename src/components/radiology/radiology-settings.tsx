@@ -34,16 +34,14 @@ import { Loader2
 import CreateModalityModal, { type ModalityFormData } from "./create-modality-modal.ts"; // Assuming modal exports form data type;
 
 // Define interfaces;
-interface ProcedureType {
-  id: string,
+interface ProcedureType {id:string,
   name: string;
   modality_type?: string | null;
   description?: string | null;
   // Add other fields if available from API;
 }
 
-interface Modality {
-  id: string,
+interface Modality {id:string,
   name: string;
   location?: string | null;
   description?: string | null;
@@ -278,8 +276,7 @@ export default const _RadiologySettings = () {
 
 } catch (error) {
 
-      const response = await fetch("/api/radiology/procedure-types", {
-        method: "POST",
+      const response = await fetch("/api/radiology/procedure-types", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(procedureData);
@@ -371,8 +368,7 @@ export default const _RadiologySettings = () {
 
 } catch (error) {
 
-      const response = await fetch("/api/radiology/modalities", {
-        method: "POST",
+      const response = await fetch("/api/radiology/modalities", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
         body: JSON.stringify(modalityData);

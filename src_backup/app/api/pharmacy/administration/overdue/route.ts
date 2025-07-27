@@ -56,7 +56,7 @@ const () => Promise.resolve(null),
  * GET /api/pharmacy/administration/overdue;
  * List medications that are overdue for administration;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -92,7 +92,7 @@ export const GET = async (req: any) => {
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example);
@@ -197,7 +197,7 @@ export const GET = async (req: any) => {
     // Sort by severity (critical first) and then by how overdue;
     overdueAdministrations.sort((a, b) => {
       // Sort by severity first;
-      const severityOrder = { critical: 0, high: 1, medium: 2, normal: 3 };
+      const severityOrder = { critical: 0, high: 1, medium: 2, normal: 3 ,};
       const severityDiff = severityOrder[a.severity] - severityOrder[b.severity];
       if (!session.user)eturn severityDiff;
 
@@ -220,7 +220,7 @@ export const GET = async (req: any) => {
     await auditLog("MEDICATION_ADMINISTRATION", {
       action: "LIST_OVERDUE",
       userId,
-      details: {
+      details: {,
         overdueThreshold,
         locationId,
         patientId,
@@ -236,13 +236,13 @@ export const GET = async (req: any) => {
       overdueAdministrations: paginatedAdministrations;
       severityCounts,
       overdueThreshold,
-      pagination: {
+      pagination: {,
         page,
         limit,
         total,
         pages: Math.ceil(total / limit);
       }
-    }, { status: 200 });
+    }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, "Error retrieving overdue medications");
   }
@@ -251,7 +251,7 @@ export const GET = async (req: any) => {
 /**;
  * Helper function to generate schedule times based on frequency;
  */;
-const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
+const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {,
   const times: Date[] = [];
 
   // Parse frequency;

@@ -33,7 +33,7 @@ const createPolicySchema = z.object({
   deductibleMet: z.number().optional(),
   outOfPocketMax: z.number().optional(),
   outOfPocketMet: z.number().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // Schema for insurance policy query parameters
@@ -51,7 +51,7 @@ const policyQuerySchema = z.object({
 });
 
 // GET handler for retrieving all insurance policies with filtering and pagination
-export const _GET = withErrorHandling(async (req: NextRequest) => {
+export const _GET = withErrorHandling(async (req: NextRequest) => {,
   // Validate query parameters
   const query = validateQuery(policyQuerySchema)(req);
 
@@ -59,37 +59,37 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   await checkPermission(permissionService, 'read', 'insurancePolicy')(req);
 
   // Build filter conditions
-  const where: unknown = {};
+  const where: unknown = {,};
 
-  \1 {\n  \2{
+   {\n  {
     where.patientId = query.patientId;
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.insuranceProviderId = query.insuranceProviderId;
   }
 
-  \1 {\n  \2{
-    \1 {\n  \2{
+   {\n  {
+     {\n  {
       const today = new Date();
-      where.startDate = { lte: today };
+      where.startDate = { lte: today ,};
       where.OR = [
-        { endDate: null },
-        { endDate: { gte: today } }
+        { endDate: null ,},
+        { endDate: { gte: today } },
       ];
-    } else \1 {\n  \2{
+    } else  {\n  {
       const today = new Date();
-      where.endDate = { lt: today };
-    } else \1 {\n  \2{
+      where.endDate = { lt: today ,};
+    } else  {\n  {
       where.status = 'inactive',
     }
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.coverageType = query.coverageType;
   }
 
-  \1 {\n  \2{
+   {\n  {
     where.planType = query.planType;
   }
 
@@ -97,32 +97,32 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
   const [policies, total] = await Promise.all([
     prisma.insurancePolicy.findMany({
       where,
-      orderBy: {
+      orderBy: {,
         [query.sortBy]: query.sortOrder,
       },
       skip: (query.page - 1) * query.pageSize,
-      \1,\2 {
-        patient: {
-          select: {
+       {
+        patient: {,
+          select: {,
             id: true,
-            \1,\2 true,
-            \1,\2 true
+             true,
+             true
           },
         },
-        subscriber: {
-          select: {
+        subscriber: {,
+          select: {,
             id: true,
-            \1,\2 true
+             true
           },
         },
-        insuranceProvider: true
+        insuranceProvider: true,
       },
     }),
     prisma.insurancePolicy.count(where ),
   ]);
 
   // Convert to FHIR format if requested
-  \1 {\n  \2{
+   {\n  {
     const fhirCoverages = policies.map(policy => convertToFHIRCoverage(policy));
     return createPaginatedResponse(fhirCoverages, query.page, query.pageSize, total);
   }
@@ -132,7 +132,7 @@ export const _GET = withErrorHandling(async (req: NextRequest) => {
 });
 
 // POST handler for creating a new insurance policy
-export const _POST = withErrorHandling(async (req: NextRequest) => {
+export const _POST = withErrorHandling(async (req: NextRequest) => {,
   // Validate request body
   const data = await validateBody(createPolicySchema)(req);
 
@@ -141,29 +141,29 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
 
   // Check if patient exists
   const patient = await prisma.patient.findUnique({
-    where: { id: data.patientId },
+    where: { id: data.patientId ,},
   });
 
-  \1 {\n  \2{
+   {\n  {
     throw new NotFoundError(`Patient with ID ${data.patientId} not found`);
   }
 
   // Check if insurance provider exists
   const provider = await prisma.insuranceProvider.findUnique({
-    where: { id: data.insuranceProviderId },
+    where: { id: data.insuranceProviderId ,},
   });
 
-  \1 {\n  \2{
+   {\n  {
     throw new NotFoundError(`Insurance provider with ID ${data.insuranceProviderId} not found`);
   }
 
   // Check if subscriber exists if provided
-  \1 {\n  \2{
+   {\n  {
     const subscriber = await prisma.patient.findUnique({
-      where: { id: data.subscriberId },
+      where: { id: data.subscriberId ,},
     });
 
-    \1 {\n  \2{
+     {\n  {
       throw new NotFoundError(`Subscriber with ID ${data.subscriberId} not found`);
     }
   } else {
@@ -176,47 +176,47 @@ export const _POST = withErrorHandling(async (req: NextRequest) => {
   const today = new Date();
   let status = 'inactive';
 
-  \1 {\n  \2 {
+   {\n   {
     status = 'active',
-  } else \1 {\n  \2{
+  } else  {\n  {
     status = 'expired',
   }
 
   // Create policy in database
   const policy = await prisma.insurancePolicy.create({
-    data: {
+    data: {,
       patientId: data.patientId,
-      \1,\2 data.policyNumber,
-      \1,\2 data.groupName,
-      \1,\2 data.relationship,
-      \1,\2 data.endDate,
-      \1,\2 data.planType,
-      \1,\2 data.coinsurancePercentage,
-      \1,\2 data.deductibleMet,
-      \1,\2 data.outOfPocketMet;
+       data.policyNumber,
+       data.groupName,
+       data.relationship,
+       data.endDate,
+       data.planType,
+       data.coinsurancePercentage,
+       data.deductibleMet,
+       data.outOfPocketMet;
       status,
-      notes: data.notes
+      notes: data.notes,
     },
-    include: {
-      patient: {
-        select: {
+    include: {,
+      patient: {,
+        select: {,
           id: true,
-          \1,\2 true,
-          mrn: true
+           true,
+          mrn: true,
         },
       },
-      subscriber: {
+      subscriber: {,
           id: true,
-          \1,\2 true,
+           true,
       },
-      insuranceProvider: true
+      insuranceProvider: true,
     },
   });
 
   logger.info('Insurance policy created', {
     policyId: policy.id,
-    \1,\2 policy.patientId,
-    providerId: policy.insuranceProviderId
+     policy.patientId,
+    providerId: policy.insuranceProviderId,
   });
 
   return createSuccessResponse(policy);

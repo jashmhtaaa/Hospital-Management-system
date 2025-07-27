@@ -40,7 +40,7 @@ export interface ClinicalPathway {
   effectiveDate: Date;
   expirationDate?: Date;
   reviewDate: Date,
-  metadata: PathwayMetadata
+  metadata: PathwayMetadata,
 export enum PathwayStatus {
   DRAFT = 'DRAFT',
   ACTIVE = 'ACTIVE',
@@ -61,7 +61,7 @@ export interface PathwayPhase {
   name: string;
   description: string;
   estimatedDuration?: number; // days
-  estimatedDurationRange?: { min: number, max: number };
+  estimatedDurationRange?: { min: number, max: number ,};
   durationUnit: 'HOURS' | 'DAYS' | 'WEEKS' | 'MONTHS',
   sequence: number;
   activities: PathwayActivity[];
@@ -124,7 +124,7 @@ export enum ActivityType {
 export = "export" interface = "interface" ActivityTiming = "ActivityTiming" {
   type: 'RELATIVE' | 'ABSOLUTE' | 'PERIODIC' | 'EVENT_BASED',
   timing: string;
-  window?: { start: string, end: string };
+  window?: { start: string, end: string ,};
   recurrence?: string;
   priority: 'STAT' | 'URGENT' | 'ROUTINE' | 'TIMING_CRITICAL';
   relativeToPhaseStart?: boolean;
@@ -140,7 +140,7 @@ export interface DecisionPoint {
   condition: string;
   options: DecisionOption[],
   decisionLogic: string;
-  requiresDocumentation: boolean
+  requiresDocumentation: boolean,
 export interface DecisionOption {
   id: string,
   name: string;
@@ -158,7 +158,7 @@ export interface PathwayOutcome {
   measuredBy: string;
   baseline?: string;
   benchmark?: string;
-  linkedMetrics: string[]
+  linkedMetrics: string[],
 export interface PathwayMetric {
   id: string,
   name: string;
@@ -193,20 +193,20 @@ export interface PathwayMetadata {
   modificationHistory: ModificationRecord[],
   relatedPathways: string[];
   qualityMeasures: string[],
-  approvals: Approval[]
+  approvals: Approval[],
 export interface Reference {
   citation: string;
   url?: string;
   pubMedId?: string;
   doi?: string;
-  type: 'JOURNAL' | 'GUIDELINE' | 'BOOK' | 'WEBSITE' | 'OTHER'
+  type: 'JOURNAL' | 'GUIDELINE' | 'BOOK' | 'WEBSITE' | 'OTHER',
 export interface ModificationRecord {
   date: Date,
   version: string;
   modifiedBy: string,
   approvedBy: string;
   changes: string[],
-  rationale: string
+  rationale: string,
 export interface Approval {
   committee: string,
   date: Date;
@@ -227,11 +227,11 @@ export interface OrderSet {
   indication: string,
   sections: OrderSetSection[];
   keywords: string[],
-  usage: {
+  usage: {,
     frequency: number;
     lastUsed?: Date;
     providers: number,
-    departments: string[]
+    departments: string[],
   };
   evidenceLevel: string,
   references: Reference[];
@@ -243,7 +243,7 @@ export interface OrderSet {
   reviewers: string[];
   version: string,
   relatedOrderSets: string[];
-  pathwayIds: string[]
+  pathwayIds: string[],
 export enum OrderSetType {
   ADMISSION = 'ADMISSION',
   DISCHARGE = 'DISCHARGE',
@@ -261,7 +261,7 @@ export interface OrderSetSection {
   sequence: number,
   orderItems: OrderItem[];
   displayCondition?: string;
-  collapsedByDefault: boolean
+  collapsedByDefault: boolean,
 export interface OrderItem {
   id: string,
   name: string;
@@ -332,7 +332,7 @@ export interface PatientPathway {
   variances: PatientPathwayVariance[],
   notes: PatientPathwayNote[];
   metrics: PatientPathwayMetric[],
-  evaluations: PatientPathwayEvaluation[]
+  evaluations: PatientPathwayEvaluation[],
 export interface PatientPathwayPhase {
   id: string,
   phaseId: string;
@@ -409,7 +409,7 @@ export interface PatientPathwayNote {
   category: 'CLINICAL' | 'ADMINISTRATIVE' | 'PROGRESS' | 'VARIANCE' | 'OTHER';
   phaseId?: string;
   activityId?: string;
-  visibility: 'INTERNAL' | 'PATIENT_VISIBLE'
+  visibility: 'INTERNAL' | 'PATIENT_VISIBLE',
 export interface PatientPathwayMetric {
   id: string,
   metricId: string;
@@ -426,7 +426,7 @@ export interface PatientPathwayEvaluation {
   evaluator: string,
   recommendations: string[];
   pathwayModifications: string[],
-  quality: {
+  quality: {,
     adherence: number; // 0-100
     appropriateness: number; // 0-100
     outcomes: number; // 0-100
@@ -448,11 +448,11 @@ export interface QualityMeasure {
   steward: string;
   endorsedBy?: string[];
   nqfId?: string;
-  numerator: {
+  numerator: {,
     definition: string;
     exclusions?: string
   };
-  denominator: {
+  denominator: {,
     definition: string;
     exclusions?: string
   };
@@ -474,7 +474,7 @@ export interface QualityMeasure {
   createdBy: string;
   updatedBy: string;
   implementationNotes?: string;
-  versionHistory: MeasureVersion[]
+  versionHistory: MeasureVersion[],
 export enum QualityMeasureCategory {
   PROCESS = 'PROCESS',
   OUTCOME = 'OUTCOME',
@@ -504,13 +504,13 @@ export interface MeasureCodeSet {
   name: string,
   description: string;
   codeSystem: string,
-  codes: string[]
+  codes: string[],
 export interface MeasureVersion {
   version: string,
   date: Date;
   updatedBy: string,
   changes: string[];
-  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'RETIRED'
+  status: 'ACTIVE' | 'INACTIVE' | 'DRAFT' | 'RETIRED',
 }
 
 // Clinical trial models
@@ -553,7 +553,7 @@ export interface TrialIntervention {
 export interface TrialSponsor {
   name: string,
   type: 'LEAD' | 'COLLABORATOR' | 'FUNDER';
-  class: 'INDUSTRY' | 'NIH' | 'US_FED' | 'OTHER_GOV' | 'NETWORK' | 'INDIVIDUAL' | 'OTHER'
+  class: 'INDUSTRY' | 'NIH' | 'US_FED' | 'OTHER_GOV' | 'NETWORK' | 'INDIVIDUAL' | 'OTHER',
 export interface TrialEligibility {
   criteria: string,
   gender: 'ALL' | 'MALE' | 'FEMALE';
@@ -576,7 +576,7 @@ export interface TrialContact {
   name?: string;
   phone?: string;
   email?: string;
-  type: 'CENTRAL' | 'SITE' | 'PRINCIPAL_INVESTIGATOR' | 'SUB_INVESTIGATOR' | 'STUDY_DIRECTOR'
+  type: 'CENTRAL' | 'SITE' | 'PRINCIPAL_INVESTIGATOR' | 'SUB_INVESTIGATOR' | 'STUDY_DIRECTOR',
 export interface TrialOutcome {
   type: 'PRIMARY' | 'SECONDARY' | 'OTHER',
   measure: string;
@@ -587,7 +587,7 @@ export interface TrialStaff {
   role: string;
   department?: string;
   contactInfo?: string;
-  accessLevel: 'FULL' | 'RESTRICTED' | 'VIEW_ONLY'
+  accessLevel: 'FULL' | 'RESTRICTED' | 'VIEW_ONLY',
 }
 
 // Patient trial match models
@@ -618,7 +618,7 @@ export interface PatientTrialMatch {
   declineReason?: string;
   ineligibilityReason?: string;
   followUpActions?: string[];
-  notificationsSent: TrialNotification[]
+  notificationsSent: TrialNotification[],
 export interface MatchCriteria {
   criterion: string,
   category: 'INCLUSION' | 'EXCLUSION' | 'DEMOGRAPHIC';
@@ -656,14 +656,14 @@ export class ClinicalPathwaysService {
     condition?: string;): Promise<ClinicalPathway[]> 
     try {
       // Try cache first
-      const cacheKey = `pathways:${JSON.stringify(filters || {})}`;
+      const cacheKey = `pathways:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached != null) return cached;
 
       // Build filters
-      const where: unknown = {};
+      const where: unknown = {,};
       if (filters?.status) where.status = filters.status;
-      if (filters?.specialty) where.specialty = { has: filters.specialty };
+      if (filters?.specialty) where.specialty = { has: filters.specialty ,};
       if (filters?.condition) where.condition = filters.condition;
 
       // Only return active pathways by default
@@ -672,7 +672,7 @@ export class ClinicalPathwaysService {
       // Query database
       const pathways = await this.prisma.clinicalPathway.findMany({
         where,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updatedAt: 'desc' ,},
       });
 
       // Cache results
@@ -682,7 +682,7 @@ export class ClinicalPathwaysService {
       metricsCollector.incrementCounter('cdss.pathway_queries', 1, {
         status: filters?.status || 'ACTIVE',
         specialty: filters?.specialty || 'ALL';
-        condition: filters?.condition || 'ALL'
+        condition: filters?.condition || 'ALL',
       });
 
       return pathways as ClinicalPathway[];catch (error) 
@@ -693,16 +693,16 @@ export class ClinicalPathwaysService {
   /**
    * Get pathway by ID;
    */
-  async getPathwayById(id: string): Promise<ClinicalPathway | null> {
+  async getPathwayById(id: string): Promise<ClinicalPathway | null> {,
     try {
       // Try cache first
-      const cacheKey = `pathway:${id}`;
+      const cacheKey = `pathway:${id,}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached != null) return cached;
 
       // Query database
       const pathway = await this.prisma.clinicalPathway.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
       if (!pathway) return null;
@@ -730,11 +730,11 @@ export class ClinicalPathwaysService {
 
       // Create pathway
       const newPathway = await this.prisma.clinicalPathway.create({
-        data: {
+        data: {,
           ...pathway,
-          id: `pathway-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+          id: `pathway-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
           createdAt: new Date(),
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
       });
 
@@ -744,7 +744,7 @@ export class ClinicalPathwaysService {
         resourceType: 'CLINICAL_PATHWAY';
         resourceId: newPathway.id;
         userId,
-        details: 
+        details: ,
           name: pathway.name,
           version: pathway.version;
           condition: pathway.condition,
@@ -756,12 +756,12 @@ export class ClinicalPathwaysService {
       // Record metrics
       metricsCollector.incrementCounter('cdss.pathways_created', 1, {
         specialty: pathway.specialty.join(','),
-        status: pathway.status
+        status: pathway.status,
       });
 
       // Publish event
       await pubsub.publish('PATHWAY_CREATED', {
-        pathwayCreated: newPathway
+        pathwayCreated: newPathway,
       });
 
       return newPathway as ClinicalPathway;
@@ -791,10 +791,10 @@ export class ClinicalPathwaysService {
 
       // Update pathway
       const updatedPathway = await this.prisma.clinicalPathway.update({
-        where: { id },
-        data: {
+        where: { id ,},
+        data: {,
           ...updates,
-          updatedAt: new Date()
+          updatedAt: new Date(),
         },
       });
 
@@ -804,7 +804,7 @@ export class ClinicalPathwaysService {
         resourceType: 'CLINICAL_PATHWAY';
         resourceId: id;
         userId,
-        details: 
+        details: ,
           name: currentPathway.name,
           version: updates.version || currentPathway.version;
           previousStatus: currentPathway.status,
@@ -816,19 +816,19 @@ export class ClinicalPathwaysService {
         updatedPathway.metadata.modificationHistory = [];
       }
 
-      const modificationRecord: ModificationRecord = {
+      const modificationRecord: ModificationRecord = {,
         date: new Date(),
         version: updatedPathway.version;
         modifiedBy: userId,
         approvedBy: userId;
-        changes: [`Updated by ${userId}`],
-        rationale: 'Pathway update'
+        changes: [`Updated by ${userId,}`],
+        rationale: 'Pathway update',
       };
 
       await this.prisma.clinicalPathway.update({
-        where: { id },
-        data: {
-          metadata: {
+        where: { id ,},
+        data: {,
+          metadata: {,
             ...updatedPathway.metadata,
             modificationHistory: [modificationRecord, ...updatedPathway.metadata.modificationHistory],
           },
@@ -836,12 +836,12 @@ export class ClinicalPathwaysService {
       });
 
       // Invalidate cache
-      await cacheService.invalidatePattern(`cdss:pathway:${id}`);
+      await cacheService.invalidatePattern(`cdss:pathway:${id,}`);
       await cacheService.invalidatePattern('cdss:pathways:*');
 
       // Publish event
       await pubsub.publish('PATHWAY_UPDATED', {
-        pathwayUpdated: updatedPathway
+        pathwayUpdated: updatedPathway,
       });
 
       return updatedPathway as ClinicalPathway;
@@ -882,8 +882,8 @@ export class ClinicalPathwaysService {
       }
 
       // Create patient pathway
-      const patientPathway: PatientPathway = {
-        id: `patient-pathway-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const patientPathway: PatientPathway = {,
+        id: `patient-pathway-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         patientId,
         encounterId,
         pathwayId,
@@ -900,12 +900,12 @@ export class ClinicalPathwaysService {
         variances: [],
         notes: [];
         metrics: this.initializePatientPathwayMetrics(pathway),
-        evaluations: []
+        evaluations: [],
       };
 
       // Save patient pathway
       await this.prisma.patientPathway.create({
-        data: patientPathway as any
+        data: patientPathway as any,
       });
 
       // Create audit log
@@ -914,7 +914,7 @@ export class ClinicalPathwaysService {
         resourceType: 'PATIENT_PATHWAY';
         resourceId: patientPathway.id;
         userId,
-        details: 
+        details: ,
           patientId,
           pathwayId,
           pathwayName: pathway.name;
@@ -930,7 +930,7 @@ export class ClinicalPathwaysService {
 
       // Publish event
       await pubsub.publish('PATIENT_PATHWAY_ENROLLED', {
-        patientPathwayEnrolled: patientPathway
+        patientPathwayEnrolled: patientPathway,
       });
 
       return patientPathway;
@@ -943,11 +943,11 @@ export class ClinicalPathwaysService {
   /**
    * Get patient pathway by ID;
    */
-  async getPatientPathwayById(id: string): Promise<PatientPathway | null> {
+  async getPatientPathwayById(id: string): Promise<PatientPathway | null> {,
     try {
       // Query database
       const patientPathway = await this.prisma.patientPathway.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
       if (!patientPathway) return null;
@@ -962,15 +962,15 @@ export class ClinicalPathwaysService {
   /**
    * Get active pathways for a patient;
    */
-  async getPatientActivePathways(patientId: string): Promise<PatientPathway[]> {
+  async getPatientActivePathways(patientId: string): Promise<PatientPathway[]> {,
     try {
       // Query database
       const patientPathways = await this.prisma.patientPathway.findMany({
-        where: {
+        where: {,
           patientId,
-          status: 'ACTIVE'
+          status: 'ACTIVE',
         },
-        orderBy: { startDate: 'desc' },
+        orderBy: { startDate: 'desc' ,},
       });
 
       return patientPathways as PatientPathway[];
@@ -997,8 +997,8 @@ export class ClinicalPathwaysService {
 
       // Update patient pathway
       const updatedPathway = await this.prisma.patientPathway.update({
-        where: { id },
-        data: updates as any
+        where: { id ,},
+        data: updates as any,
       });
 
       // Create audit log
@@ -1007,7 +1007,7 @@ export class ClinicalPathwaysService {
         resourceType: 'PATIENT_PATHWAY';
         resourceId: id;
         userId,
-        details: 
+        details: ,
           patientId: currentPathway.patientId,
           pathwayId: currentPathway.pathwayId;
           pathwayName: currentPathway.pathwayName,
@@ -1017,7 +1017,7 @@ export class ClinicalPathwaysService {
 
       // Publish event
       await pubsub.publish('PATIENT_PATHWAY_UPDATED', {
-        patientPathwayUpdated: updatedPathway
+        patientPathwayUpdated: updatedPathway,
       });
 
       return updatedPathway as PatientPathway;
@@ -1034,7 +1034,7 @@ export class ClinicalPathwaysService {
     patientPathwayId: string,
     phaseId: string;
     activityId: string,
-    data: {
+    data: {,
       completedBy: string;
       notes?: string;
       results?: string;
@@ -1075,9 +1075,9 @@ export class ClinicalPathwaysService {
 
       // Update patient pathway
       await this.prisma.patientPathway.update({
-        where: { id: patientPathwayId },
-        data: {
-          phases: patientPathway.phases
+        where: { id: patientPathwayId ,},
+        data: {,
+          phases: patientPathway.phases,
         },
       });
 
@@ -1106,12 +1106,12 @@ export class ClinicalPathwaysService {
         patientPathwayId,
         phaseId,
         activityType: activity.type,
-        activityCategory: activity.category
+        activityCategory: activity.category,
       });
 
       // Publish event
       await pubsub.publish('PATHWAY_ACTIVITY_COMPLETED', {
-        pathwayActivityCompleted: {
+        pathwayActivityCompleted: {,
           patientPathwayId,
           phaseId,
           activity,
@@ -1141,13 +1141,13 @@ export class ClinicalPathwaysService {
       }
 
       // Create variance
-      const newVariance: PatientPathwayVariance = {
-        id: `variance-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      const newVariance: PatientPathwayVariance = {,
+        id: `variance-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
         ...variance,
         detectionDate: new Date(),
         detectedBy: userId;
         status: 'ACTIVE',
-        actions: []
+        actions: [],
       };
 
       // Add variance to patient pathway
@@ -1155,9 +1155,9 @@ export class ClinicalPathwaysService {
 
       // Update patient pathway
       await this.prisma.patientPathway.update({
-        where: { id: patientPathwayId },
-        data: {
-          variances: patientPathway.variances
+        where: { id: patientPathwayId ,},
+        data: {,
+          variances: patientPathway.variances,
         },
       });
 
@@ -1167,7 +1167,7 @@ export class ClinicalPathwaysService {
         resourceType: 'PATIENT_PATHWAY_VARIANCE';
         resourceId: newVariance.id;
         userId,
-        details: 
+        details: ,
           patientPathwayId,
           varianceType: variance.type,
           severity: variance.severity;
@@ -1180,14 +1180,14 @@ export class ClinicalPathwaysService {
         patientPathwayId,
         category: variance.category,
         severity: variance.severity;
-        phaseId: variance.phaseId || 'none'
+        phaseId: variance.phaseId || 'none',
       });
 
       // Publish event
       await pubsub.publish('PATHWAY_VARIANCE_ADDED', {
-        pathwayVarianceAdded: {
+        pathwayVarianceAdded: {,
           patientPathwayId,
-          variance: newVariance
+          variance: newVariance,
         },
       });
 
@@ -1208,14 +1208,14 @@ export class ClinicalPathwaysService {
   }): Promise<OrderSet[]> {
     try {
       // Try cache first
-      const cacheKey = `orderSets:${JSON.stringify(filters || {})}`;
+      const cacheKey = `orderSets:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached != null) return cached;
 
       // Build filters
-      const where: unknown = {};
+      const where: unknown = {,};
       if (filters?.type) where.type = filters.type;
-      if (filters?.specialty) where.specialty = { has: filters.specialty };
+      if (filters?.specialty) where.specialty = { has: filters.specialty ,};
       if (filters?.status) where.status = filters.status;
 
       // Only return active order sets by default
@@ -1224,7 +1224,7 @@ export class ClinicalPathwaysService {
       // Query database
       const orderSets = await this.prisma.orderSet.findMany({
         where,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updatedAt: 'desc' ,},
       });
 
       // Cache results
@@ -1234,7 +1234,7 @@ export class ClinicalPathwaysService {
       metricsCollector.incrementCounter('cdss.order_set_queries', 1, {
         type: filters?.type || 'ALL',
         specialty: filters?.specialty || 'ALL';
-        status: filters?.status || 'ACTIVE'
+        status: filters?.status || 'ACTIVE',
       });
 
       return orderSets as OrderSet[];
@@ -1247,16 +1247,16 @@ export class ClinicalPathwaysService {
   /**
    * Get order set by ID;
    */
-  async getOrderSetById(id: string): Promise<OrderSet | null> {
+  async getOrderSetById(id: string): Promise<OrderSet | null> {,
     try {
       // Try cache first
-      const cacheKey = `orderSet:${id}`;
+      const cacheKey = `orderSet:${id,}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached != null) return cached;
 
       // Query database
       const orderSet = await this.prisma.orderSet.findUnique({
-        where: { id },
+        where: { id ,},
       });
 
       if (!orderSet) return null;
@@ -1284,13 +1284,13 @@ export class ClinicalPathwaysService {
 
       // Create order set
       const newOrderSet = await this.prisma.orderSet.create({
-        data: {
+        data: {,
           ...orderSet,
-          id: `order-set-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+          id: `order-set-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
           createdAt: new Date(),
           updatedAt: new Date(),
           createdBy: userId,
-          updatedBy: userId
+          updatedBy: userId,
         },
       });
 
@@ -1300,7 +1300,7 @@ export class ClinicalPathwaysService {
         resourceType: 'ORDER_SET';
         resourceId: newOrderSet.id;
         userId,
-        details: 
+        details: ,
           name: orderSet.name,
           type: orderSet.type;
           specialty: orderSet.specialty.join(','),,
@@ -1317,7 +1317,7 @@ export class ClinicalPathwaysService {
 
       // Publish event
       await pubsub.publish('ORDER_SET_CREATED', {
-        orderSetCreated: newOrderSet
+        orderSetCreated: newOrderSet,
       });
 
       return newOrderSet as OrderSet;
@@ -1338,12 +1338,12 @@ export class ClinicalPathwaysService {
   }): Promise<QualityMeasure[]> {
     try {
       // Try cache first
-      const cacheKey = `qualityMeasures:${JSON.stringify(filters || {})}`;
+      const cacheKey = `qualityMeasures:${JSON.stringify(filters || {}),}`;
       const cached = await cacheService.getCachedResult('cdss:', cacheKey);
       if (cached != null) return cached;
 
       // Build filters
-      const where: unknown = {};
+      const where: unknown = {,};
       if (filters?.category) where.category = filters.category;
       if (filters?.type) where.type = filters.type;
       if (filters?.domain) where.domain = filters.domain;
@@ -1355,7 +1355,7 @@ export class ClinicalPathwaysService {
       // Query database
       const measures = await this.prisma.qualityMeasure.findMany({
         where,
-        orderBy: { updatedAt: 'desc' },
+        orderBy: { updatedAt: 'desc' ,},
       });
 
       // Cache results
@@ -1373,7 +1373,7 @@ export class ClinicalPathwaysService {
    */
   async generateQualityMeasureReport(
     measureId: string,
-    parameters: {
+    parameters: {,
       startDate: Date,
       endDate: Date;
       department?: string;
@@ -1384,7 +1384,7 @@ export class ClinicalPathwaysService {
     try {
       // Get measure
       const measure = await this.prisma.qualityMeasure.findUnique({
-        where: { id: measureId },
+        where: { id: measureId ,},
       });
 
       if (!measure) {
@@ -1401,7 +1401,7 @@ export class ClinicalPathwaysService {
       metricsCollector.incrementCounter('cdss.quality_measure_reports', 1, {
         measureId,
         measureName: measure.name,
-        category: measure.category
+        category: measure.category,
       });
 
       return reportData;
@@ -1422,18 +1422,18 @@ export class ClinicalPathwaysService {
   }): Promise<ClinicalTrial[]> {
     try {
       // Build filters
-      const where: unknown = {};
-      if (filters?.condition) where.conditions = { has: filters.condition };
+      const where: unknown = {,};
+      if (filters?.condition) where.conditions = { has: filters.condition ,};
       if (filters?.phase) where.phase = filters.phase;
       if (filters?.status) where.status = filters.status;
       if (filters?.location) {
         where.locations = {
-          some: {
-            OR: [
-              { city: { contains: filters.location, mode: 'insensitive' } },
-              { state: { contains: filters.location, mode: 'insensitive' } },
-              { country: { contains: filters.location, mode: 'insensitive' } },
-              { zip: { contains: filters.location, mode: 'insensitive' } },
+          some: {,
+            OR: [,
+              { city: { contains: filters.location, mode: 'insensitive' } ,},
+              { state: { contains: filters.location, mode: 'insensitive' } ,},
+              { country: { contains: filters.location, mode: 'insensitive' } ,},
+              { zip: { contains: filters.location, mode: 'insensitive' } ,},
             ],
           },
         };
@@ -1442,14 +1442,14 @@ export class ClinicalPathwaysService {
       // Query database
       const trials = await this.prisma.clinicalTrial.findMany({
         where,
-        orderBy: { lastUpdateDate: 'desc' },
+        orderBy: { lastUpdateDate: 'desc' ,},
       });
 
       // Record metrics
       metricsCollector.incrementCounter('cdss.clinical_trial_queries', 1, {
         condition: filters?.condition || 'ALL',
         phase: filters?.phase || 'ALL';
-        status: filters?.status || 'ALL'
+        status: filters?.status || 'ALL',
       });
 
       return trials as ClinicalTrial[];
@@ -1462,7 +1462,7 @@ export class ClinicalPathwaysService {
   /**
    * Match patient to clinical trials;
    */
-  async matchPatientToTrials(patientId: string): Promise<PatientTrialMatch[]> {
+  async matchPatientToTrials(patientId: string): Promise<PatientTrialMatch[]> {,
     try {
       // Get patient data
       const patientData = await this.getPatientDataForTrialMatching(patientId);
@@ -1479,7 +1479,7 @@ export class ClinicalPathwaysService {
       // Record metrics
       metricsCollector.incrementCounter('cdss.patient_trial_matches', 1, {
         patientId,
-        matchCount: matches.length.toString()
+        matchCount: matches.length.toString(),
       });
 
       // Notify providers about high-scoring matches
@@ -1499,33 +1499,33 @@ export class ClinicalPathwaysService {
   }
 
   // Private helper methods
-  private validatePathway(pathway: unknown): void {
+  private validatePathway(pathway: unknown): void {,
     // Implementation for pathway validation
   }
 
-  private validatePathwayUpdates(updates: Partial<ClinicalPathway>): void {
+  private validatePathwayUpdates(updates: Partial<ClinicalPathway>): void {,
     // Implementation for update validation
   }
 
   private async checkPatientEligibility(
     patientId: string,
-    pathway: ClinicalPathway
-  ): Promise<{ eligible: boolean, reasons: string[] }> {
+    pathway: ClinicalPathway,
+  ): Promise<{ eligible: boolean, reasons: string[] }> {,
     // Implementation to check eligibility
-    return { eligible: true, reasons: [] };
+    return { eligible: true, reasons: [] ,};
   }
 
-  private initializePatientPathwayPhases(pathway: ClinicalPathway): PatientPathwayPhase[] {
+  private initializePatientPathwayPhases(pathway: ClinicalPathway): PatientPathwayPhase[] {,
     // Implementation to initialize phases
     return [];
   }
 
-  private initializePatientPathwayOutcomes(pathway: ClinicalPathway): PatientPathwayOutcome[] {
+  private initializePatientPathwayOutcomes(pathway: ClinicalPathway): PatientPathwayOutcome[] {,
     // Implementation to initialize outcomes
     return [];
   }
 
-  private initializePatientPathwayMetrics(pathway: ClinicalPathway): PatientPathwayMetric[] {
+  private initializePatientPathwayMetrics(pathway: ClinicalPathway): PatientPathwayMetric[] {,
     // Implementation to initialize metrics
     return [];
   }
@@ -1537,30 +1537,30 @@ export class ClinicalPathwaysService {
     // Implementation to update phase completion
   }
 
-  private async updatePathwayProgress(patientPathwayId: string): Promise<void> {
+  private async updatePathwayProgress(patientPathwayId: string): Promise<void> {,
     // Implementation to update pathway progress
   }
 
   private async checkPhaseCompletion(
     patientPathwayId: string,
-    phaseId: string
+    phaseId: string,
   ): Promise<void> {
     // Implementation to check phase completion
   }
 
-  private validateOrderSet(orderSet: unknown): void {
+  private validateOrderSet(orderSet: unknown): void {,
     // Implementation for order set validation
   }
 
   private async calculateMeasurePerformance(
     measure: QualityMeasure,
-    parameters: unknown
+    parameters: unknown,
   ): Promise<any> {
     // Implementation to calculate measure performance
     return {};
   }
 
-  private async getPatientDataForTrialMatching(patientId: string): Promise<any> {
+  private async getPatientDataForTrialMatching(patientId: string): Promise<any> {,
     // Implementation to get patient data
     return {};
   }
@@ -1572,7 +1572,7 @@ export class ClinicalPathwaysService {
 
   private async performTrialMatching(
     patientData: unknown,
-    trials: ClinicalTrial[]
+    trials: ClinicalTrial[],
   ): Promise<PatientTrialMatch[]> {
     // Implementation to perform matching
     return [];
@@ -1580,7 +1580,7 @@ export class ClinicalPathwaysService {
 
   private async saveTrialMatches(
     patientId: string,
-    matches: PatientTrialMatch[]
+    matches: PatientTrialMatch[],
   ): Promise<PatientTrialMatch[]> {
     // Implementation to save matches
     return [];
@@ -1588,7 +1588,7 @@ export class ClinicalPathwaysService {
 
   private async notifyProvidersAboutTrialMatches(
     patientId: string,
-    matches: PatientTrialMatch[]
+    matches: PatientTrialMatch[],
   ): Promise<void> {
     // Implementation to notify providers
   }

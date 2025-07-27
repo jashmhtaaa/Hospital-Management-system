@@ -11,8 +11,7 @@ import { type
 "use client";
 
 // Define interfaces for data structures;
-interface DispensingRecord {
-  id: string,
+interface DispensingRecord {id:string,
   string,
   string;
   brand_name?: string;
@@ -23,12 +22,10 @@ interface DispensingRecord {
   billed: boolean;
 }
 
-interface UnbilledItem extends DispensingRecord {
-  subtotal: number;
+interface UnbilledItem extends DispensingRecord {subtotal:number;
 }
 
-interface BillingPharmacyIntegrationProperties {
-  patientId: string | null; // Allow null if patientId might not be available initially;
+interface BillingPharmacyIntegrationProperties {patientId:string | null; // Allow null if patientId might not be available initially;
 }
 
 const BillingPharmacyIntegration: React.FC<;
@@ -93,8 +90,7 @@ const BillingPharmacyIntegration: React.FC<;
 
         // Mock data;
         const mockRecords: DispensingRecord[] = [;
-          {
-            id: "disp_001",
+          {id:"disp_001",
             "item_001",
             "Paracetamol",
             "500mg",
@@ -103,8 +99,7 @@ const BillingPharmacyIntegration: React.FC<;
             "2025-04-28T10:15:00Z",
             billed: false;
           },
-          {
-            id: "disp_002",
+          {id:"disp_002",
             "item_002",
             "Cetirizine",
             "10mg",

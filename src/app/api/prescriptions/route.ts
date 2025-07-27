@@ -3,18 +3,18 @@ import "@/lib/session"
 import "@/types/opd"
 import "next/server"
 import "zod"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  DB  } from "@/lib/database"
-import {  getSession  } from "@/lib/database"
-import {  Prescription  } from "@/lib/database"
-import {   type
-import {  z  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {DB  } from "next/server"
+import {getSession  } from "next/server"
+import {Prescription  } from "next/server"
+import {type
+import {  z  } from "next/server"
 
-import { D1ResultWithMeta  } from "@/types/cloudflare"; // Import the specific type;
+import {D1ResultWithMeta  } from "next/server"; // Import the specific type;
 
 // Zod schema for creating a prescription;
-const prescriptionItemSchema = z.object({inventory_item_id:z.number(),
+const prescriptionItemSchema = z.object({{inventory_item_id:z.number(,}),
     drug_name: z.string().min(1),
     dosage: z.string().min(1),
     frequency: z.string().min(1),
@@ -24,7 +24,7 @@ const prescriptionItemSchema = z.object({inventory_item_id:z.number(),
     quantity_prescribed: z.number().positive().optional().nullable();
 });
 
-const prescriptionCreateSchema = z.object({patient_id:z.number(),
+const prescriptionCreateSchema = z.object({{patient_id:z.number(,}),
     doctor_id: z.number(), // Or derive from session;
     consultation_id: z.number().optional().nullable(),
     prescription_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid prescription date format";
@@ -35,10 +35,10 @@ const prescriptionCreateSchema = z.object({patient_id:z.number(),
 // type PrescriptionCreateBody = z.infer<typeof prescriptionCreateSchema>;
 
 // GET /api/prescriptions - Fetch list of prescriptions (with filtering/pagination);
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({message:"Unauthorized" }, {status:401 });
+        return NextResponse.json({message:"Unauthorized" ,}, {status:401 ,});
     }
 
     try {
@@ -143,7 +143,7 @@ export const _GET = async (request: any) => {
         // Execute queries;
         const [prescriptionsResult, countResult] = await Promise.all([;
             DB.prepare(query).bind(...queryParameters).all<Prescription & { patient_first_name?: string, patient_last_name?: string, doctor_name?: string }>(),
-            DB.prepare(countQuery).bind(...countParameters).first<{total:number }>();
+            DB.prepare(countQuery).bind(...countParameters).first<{total:number ,}>();
         ]);
 
         const results = prescriptionsResult.results || [];
@@ -153,35 +153,35 @@ export const _GET = async (request: any) => {
         // This might be better done in the GET /api/prescriptions/[id] endpoint;
 
         return NextResponse.json({data:results,
-            pagination: {
+            pagination: {,
                 page,
                 limit,
                 total,
                 totalPages: Math.ceil(total / limit);
             }});
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json();
-            {message:"Error fetching prescriptions", details: errorMessage },
-            {status:500 }
+            {message:"Error fetching prescriptions", details: errorMessage ,},
+            {status:500 },
         );
     }
 }
 
 // POST /api/prescriptions - Create a new prescription;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({message:"Unauthorized" }, {status:401 });
+        return NextResponse.json({message:"Unauthorized" ,}, {status:401 ,});
     }
     // Add role check if needed (e.g., only doctors);
     if (!session.user) {
-         return NextResponse.json({message:"Forbidden" }, {status:403 });
+         return NextResponse.json({message:"Forbidden" ,}, {status:403 ,});
     }
 
     try {
@@ -221,8 +221,8 @@ export const _POST = async (request: any) => {
 
         if (!session.user) {
             return NextResponse.json();
-                {message:"Invalid input", errors: validationResult.error.errors },
-                {status:400 }
+                {message:"Invalid input", errors: validationResult.error.errors ,},
+                {status:400 },
             );
 
         const prescriptionData = validationResult.data;
@@ -288,19 +288,19 @@ export const _POST = async (request: any) => {
 
         // Return success response;
         return NextResponse.json();
-            {message:"Prescription created successfully", prescriptionId: newPrescriptionId },
-            {status:201 }
+            {message:"Prescription created successfully", prescriptionId: newPrescriptionId ,},
+            {status:201 },
         );
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
 
         return NextResponse.json();
-            {message:"Error creating prescription", details: errorMessage },
-            {status:500 }
+            {message:"Error creating prescription", details: errorMessage ,},
+            {status:500 },
         );
 
 export async function GET() { return new Response("OK"); }

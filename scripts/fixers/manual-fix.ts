@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-function fixRouteFile(filePath: string) {
+function fixRouteFile(filePath: string) {,
   let content = fs.readFileSync(filePath, 'utf8');
   
   // Fix import statements

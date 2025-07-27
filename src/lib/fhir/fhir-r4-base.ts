@@ -59,7 +59,7 @@
 export abstract class FHIRResourceManager<T extends FHIRResource> {
   protected resourceType: string;
 
-  constructor(resourceType: string) {
+  constructor(resourceType: string) {,
     this.resourceType = resourceType;
 
   // Generate FHIR-compliant ID;
@@ -74,10 +74,10 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
     };
 
   // Create narrative;
-  createNarrative(content: string, status: FHIRNarrative["status"] = "generated"): FHIRNarrative {
+  createNarrative(content: string, status: FHIRNarrative["status"] = "generated"): FHIRNarrative {,
     return {
       status,
-      div: `<div xmlns="https://www.w3.org/1999/xhtml">${content}</div>`,
+      div: `<div xmlns="https://www.w3.org/1999/xhtml">${content,}</div>`,
 
   // Create coding;
   createCoding(system: string, code: string, display?: string): FHIRCoding {
@@ -99,7 +99,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
 
   // Create reference;
   createReference(resourceType: string, id: string, display?: string): FHIRReference {
-    return {reference:`${resourceType}/${id}`,
+    return {reference:`${resourceType}/${id,}`,
       display};
 
   // Validate resource structure;
@@ -144,20 +144,20 @@ export const _FHIR_SYSTEMS = {
 
 // FHIR Validation utilities;
 
-  static isValidDateTime(dateTime: string): boolean {
+  static isValidDateTime(dateTime: string): boolean {,
     const regex = /^(\d{4})(-\d{2})?(-\d{2})?(T\d{2}:\d{2}(:\d{2})?(\.\d{3})?(Z|[+-]\d{2}:\d{2})?)?$/;
     return regex.test(dateTime);
 
-  static isValidId(id: string): boolean {
+  static isValidId(id: string): boolean {,
     const regex = /^[A-Za-z0-9\-\.]{1,64}$/;
     return regex.test(id);
 
-  static isValidCode(code: string): boolean {
+  static isValidCode(code: string): boolean {,
     // Basic code validation - should not be empty and follow FHIR code pattern;
     const regex = /^[^\s]+(\s[^\s]+)*$/;
     return code && code.length > 0 && regex.test(code);
 
-  static validateRequired(value: unknown, fieldName: string): void {
+  static validateRequired(value: unknown, fieldName: string): void {,
     if (!session.user) {
       throw new Error(`Required field "${fieldName}" is missing`);
 

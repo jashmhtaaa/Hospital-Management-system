@@ -13,11 +13,11 @@ interface ModalityInput {
 }
 
 // GET all Radiology Modalities
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   const session = await getSession();
-  \1 {\n  \2;
+   {\n  ;
   ) 
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
 
   const DB = process.env.DB as unknown as D1Database;
   try {
@@ -25,22 +25,22 @@ export const _GET = async (request: NextRequest) => {
       "SELECT * FROM RadiologyModalities ORDER BY name ASC";
     ).all();
     return NextResponse.json(results);
-  } catch (error: unknown) {
-    // FIX: Use unknown instead of any
+  } catch (error: unknown) {,
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
-      { error: "Failed to fetch radiology modalities", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch radiology modalities", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST a new Radiology Modality (Admin only)
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   const session = await getSession()
-  \1 {\n  \2) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+   {\n  ) {
+    return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
   }
 
   const DB = process.env.DB as unknown as D1Database;
@@ -48,10 +48,10 @@ export const _POST = async (request: NextRequest) => {
     const { name, description, location } =;
       (await request.json()) as ModalityInput; // Cast to ModalityInput
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Missing required field: name" },
-        { status: 400 }
+        { error: "Missing required field: name" ,},
+        { status: 400 },
       );
     }
 
@@ -61,10 +61,10 @@ export const _POST = async (request: NextRequest) => {
     );
       .bind(name);
       .first();
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Modality with this name already exists" },
-        { status: 409 }
+        { error: "Modality with this name already exists" ,},
+        { status: 409 },
       );
     }
 
@@ -78,21 +78,21 @@ export const _POST = async (request: NextRequest) => {
       .run();
 
     return NextResponse.json(
-      { id, status: "Radiology modality created" },
-      { status: 201 }
+      { id, status: "Radiology modality created" ,},
+      { status: 201 },
     );
-  } catch (error: unknown) {
-    // FIX: Use unknown instead of any
+  } catch (error: unknown) {,
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
-    \1 {\n  \2 {
+     {\n   {
       return NextResponse.json(
-        { error: "Modality with this name already exists" },
-        { status: 409 }
+        { error: "Modality with this name already exists" ,},
+        { status: 409 },
       );
     }
     return NextResponse.json(
-      { error: "Failed to create radiology modality", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create radiology modality", details: errorMessage ,},
+      { status: 500 },
     );
   }

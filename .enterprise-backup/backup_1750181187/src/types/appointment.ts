@@ -14,7 +14,7 @@ export enum AppointmentStatus {
     NoShow = "NoShow",
 export = "export" interface = "interface" Appointment = "Appointment" {
     appointment_id: number,
-    \1,\2 number;
+     number;
     schedule_id?: number | null;
     appointment_datetime: string; // ISO string or Date object
     duration_minutes: number;
@@ -35,4 +35,4 @@ interface User {
     userId: number,
     username: string;
     fullName?: string | null;
-    email: string
+    email: string,

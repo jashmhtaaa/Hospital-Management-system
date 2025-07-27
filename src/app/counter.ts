@@ -1,7 +1,7 @@
 }
 
 "use server";
-// import { getCloudflareContext } from "@opennextjs/cloudflare";
+// import {getCloudflareContext } from "next/server";
 
 /**;
  * Increment counter and log access;
@@ -38,7 +38,7 @@ export const _incrementAndLog = async () => {
   });
 
   // Database operation example (commented out): any;
-  // const {results:countResults } = await cf.env.DB.prepare();
+  // const {results:countResults ,} = await cf.env.DB.prepare();
   //   "INSERT INTO counters (name, value) VALUES (?, 1) ON CONFLICT (name) DO UPDATE SET value = value + 1 RETURNING value";
   // );
   //   .bind("page_views");
@@ -51,7 +51,7 @@ export const _incrementAndLog = async () => {
   //   );
   //   .run();
 
-  // const {results:logs } = await cf.env.DB.prepare("SELECT * FROM access_logs ORDER BY accessed_at DESC LIMIT 5").all();
+  // const {results:logs ,} = await cf.env.DB.prepare("SELECT * FROM access_logs ORDER BY accessed_at DESC LIMIT 5").all();
 
   return {count:currentCount,
     recentAccess: recentAccessList;

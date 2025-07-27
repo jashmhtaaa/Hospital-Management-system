@@ -14,7 +14,7 @@ export const _loginSchema = z.object({
 
 export const _registerSchema = z.object({
   email: z.string().email("Invalid email format"),
-  password: z.string()
+  password: z.string(),
     .min(8, "Password must be at least 8 characters")
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain uppercase, lowercase, and number"),
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -62,8 +62,8 @@ export const _createAppointmentSchema = z.object({
 });
 
 // Validation middleware;
-export function validateRequest<T>(schema: z.ZodSchema<T>) {
-  return (data: unknown): T => {
+export function validateRequest<T>(schema: z.ZodSchema<T>) {,
+  return (data: unknown): T => {,
     try {
 } catch (error) {
   console.error(error);
@@ -103,7 +103,7 @@ export function validateRequest<T>(schema: z.ZodSchema<T>) {
           field: err.path.join("."),
           message: err.message;
         }));
-        throw new Error(`Validation failed: ${}`;
+        throw new Error(`Validation failed: ${,}`;
 
       throw error;
 

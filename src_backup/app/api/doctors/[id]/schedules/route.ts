@@ -17,7 +17,7 @@ const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor"];
 const ALLOWED_ROLES_MANAGE = ["Admin", "Doctor"]; // Only Admin or the Doctor themselves can manage schedule;
 
 // Helper function to get doctor ID from URL;
-const getDoctorId = (pathname: string): number | null {
+const getDoctorId = (pathname: string): number | null {,
     const parts = pathname.split("/");
     const idStr = parts[parts.length - 2]; // Second to last part;
     const id = Number.parseInt(idStr, 10);
@@ -25,7 +25,7 @@ const getDoctorId = (pathname: string): number | null {
 }
 
 // GET handler for listing schedules for a specific doctor;
-export const _GET = async (request: Request) => {
+export const _GET = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -33,15 +33,15 @@ export const _GET = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Invalid Doctor ID" }), {
+        return new Response(JSON.stringify({ error: "Invalid Doctor ID" ,}), {
             status: 400,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -88,20 +88,20 @@ export const _GET = async (request: Request) => {
             "SELECT * FROM DoctorSchedules WHERE doctor_id = ? ORDER BY day_of_week, start_time";
         ).bind(doctorId).all<DoctorSchedule>();
 
-        // Assuming .all() returns { results: [...] } or similar structure based on D1 docs;
+        // Assuming .all() returns { results: [...] ,} or similar structure based on D1 docs;
         const schedules = schedulesResult.results || [];
 
         // 3. Return schedule list;
         return new Response(JSON.stringify(schedules), {
             status: 200,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 }
 
@@ -117,7 +117,7 @@ const AddScheduleSchema = z.object({
     path: ["end_time"];
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const url = new URL(request.url);
@@ -125,9 +125,9 @@ export const _POST = async (request: Request) => {
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     let dbInstance: D1Database | undefined;
@@ -171,24 +171,24 @@ export const _POST = async (request: Request) => {
 
         // If the user is a Doctor, they can only manage their own schedule;
         if (!session.user) {
-            const doctorProfile = await dbInstance.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
+            const doctorProfile = await dbInstance.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
             if (!session.user) {
-                 return new Response(JSON.stringify({ error: "Forbidden: Doctors can only manage their own schedule" }), {
+                 return new Response(JSON.stringify({ error: "Forbidden: Doctors can only manage their own schedule" ,}), {
                     status: 403,
-                    headers: { "Content-Type": "application/json" }});
+                    headers: { "Content-Type": "application/json" },});
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid Doctor ID" }), {
+            return new Response(JSON.stringify({ error: "Invalid Doctor ID" ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         const body = await request.json();
         const validation = AddScheduleSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         const scheduleData = validation.data;
 
@@ -212,11 +212,11 @@ export const _POST = async (request: Request) => {
             // Handle potential unique constraint errors;
             const errorString = String(insertResult.error); // Convert error to string;
             if (!session.user) { // Check string
-                 return new Response(JSON.stringify({ error: "Schedule slot with this start time already exists for this day" }), {
+                 return new Response(JSON.stringify({ error: "Schedule slot with this start time already exists for this day" ,}), {
                     status: 409, // Conflict;
-                    headers: { "Content-Type": "application/json" }});
+                    headers: { "Content-Type": "application/json" },});
 
-            throw new Error(`Failed to add schedule slot: ${}`;
+            throw new Error(`Failed to add schedule slot: ${,}`;
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newScheduleId = meta.last_row_id;
@@ -225,15 +225,15 @@ export const _POST = async (request: Request) => {
             throw new Error("Failed to retrieve schedule ID after creation.");
 
         // 4. Return success response;
-        return new Response(JSON.stringify({ message: "Schedule slot added successfully", scheduleId: newScheduleId }), {
+        return new Response(JSON.stringify({ message: "Schedule slot added successfully", scheduleId: newScheduleId ,}), {
             status: 201, // Created;
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
 export async function GET() { return new Response("OK"); })

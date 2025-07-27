@@ -14,7 +14,7 @@ import type { PrismaService } from '@/lib/prisma';
  * Comprehensive patient lifecycle management with predictive analytics;
  */
 
-\1
+
 }
   }
 
@@ -22,10 +22,10 @@ import type { PrismaService } from '@/lib/prisma';
    * Create comprehensive patient profile with AI-powered data enrichment;
    */
   async createEnhancedPatient(
-    patientData: Partial\1>
+    patientData: Partial>,
     sourceSystem?: string;
   ): Promise<EnhancedPatient> {
-    const startTime = crypto.getRandomValues(\1[0];
+    const startTime = crypto.getRandomValues([0];
 
     try {
       // Generate medical record number
@@ -33,7 +33,7 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Perform duplicate checking
       const duplicateCheck = await this.checkForDuplicates(patientData);
-      \1 {\n  \2{
+       {\n  {
         // Handle potential duplicates according to business rules
         await this.handlePotentialDuplicates(duplicateCheck);
       }
@@ -48,32 +48,32 @@ import type { PrismaService } from '@/lib/prisma';
       const analytics = await this.generateInitialAnalytics(enrichedData);
 
       // Create enhanced patient record
-      const \1,\2 `patient-${crypto.getRandomValues(\1[0]}`,
+      const  `patient-${crypto.getRandomValues([0]}`,
         medicalRecordNumber: mrn,
-        \1,\2 patientData.middleName,
-        \1,\2 patientData.dateOfBirth!,
+         patientData.middleName,
+         patientData.dateOfBirth!,
         age: this.calculateAge(patientData.dateOfBirth!),
         gender: patientData.gender || Gender.UNKNOWN,
-        \1,\2 patientData.preferredName,
-        \1,\2 enrichedData.contactInfo || this.getDefaultContactInfo(),
-        \1,\2 enrichedData.demographics || this.getDefaultDemographics(),
+         patientData.preferredName,
+         enrichedData.contactInfo || this.getDefaultContactInfo(),
+         enrichedData.demographics || this.getDefaultDemographics(),
         clinicalProfile: enrichedData.clinicalProfile || this.getDefaultClinicalProfile(),
         insurance: patientData.insurance || [],
         financialProfile: this.getDefaultFinancialProfile(),
         careTeam: [],
-        \1,\2 this.getDefaultPreferences(),
-        \1,\2 [],
+         this.getDefaultPreferences(),
+         [],
         flags: this.generateInitialFlags(enrichedData),
         riskAssessments: initialRiskAssessments,
         carePlans: [];
         analytics,
         consents: [],
         privacySettings: this.getDefaultPrivacySettings(),
-        \1,\2 `audit-${crypto.getRandomValues(\1[0]}`,
+         `audit-${crypto.getRandomValues([0]}`,
           type: AuditEventType.CREATE,
-          \1,\2 new Date(),
-          \1,\2 ['Patient Registration'],
-          \1,\2 sourceSystem || 'HMS', type: ['Hospital Management System'] ,
+           new Date(),
+           ['Patient Registration'],
+           sourceSystem || 'HMS', type: ['Hospital Management System'] ,
           entity: [],
           context: ,],
         status: PatientStatus.ACTIVE,
@@ -81,7 +81,7 @@ import type { PrismaService } from '@/lib/prisma';
         updatedAt: new Date(),
         lastActivity: new Date(),
         createdBy: patientData.createdBy || 'system',
-        \1,\2 1
+         1
       };
 
       // Save to database
@@ -92,19 +92,19 @@ import type { PrismaService } from '@/lib/prisma';
 
       // Publish real-time event
       await pubsub.publish(SUBSCRIPTION_EVENTS.PATIENT_REGISTERED, {
-        patientRegistered: enhancedPatient
+        patientRegistered: enhancedPatient,
       });
 
       // Trigger initial care management workflows
       await this.triggerCareManagementWorkflows(enhancedPatient);
 
       // Record metrics
-      const duration = crypto.getRandomValues(\1[0] - startTime;
+      const duration = crypto.getRandomValues([0] - startTime;
       metricsCollector.recordTimer('patient_management.registration_time', duration);
       metricsCollector.incrementCounter('patient_management.patients_registered', 1, {
         sourceSystem: sourceSystem || 'unknown',
         hasInsurance: (patientData.insurance?.length || 0 > 0).toString(),
-        riskLevel: this.getOverallRiskLevel(initialRiskAssessments)
+        riskLevel: this.getOverallRiskLevel(initialRiskAssessments),
       });
 
       return enhancedPatient;
@@ -117,10 +117,10 @@ import type { PrismaService } from '@/lib/prisma';
   /**
    * AI-powered predictive analytics for patient outcomes;
    */
-  async generatePredictiveAnalytics(patientId: string): Promise<PredictiveModel[]> 
+  async generatePredictiveAnalytics(patientId: string): Promise<PredictiveModel[]> ,
     try {
       const patient = await this.getEnhancedPatient(patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Patient ${patientId} not found`);
       }
 
@@ -151,7 +151,7 @@ import type { PrismaService } from '@/lib/prisma';
       models.push(...responseModels);
 
       // Update patient analytics
-      await this.updatePatientAnalytics(patientId, { predictiveModels: models });
+      await this.updatePatientAnalytics(patientId, { predictiveModels: models ,});
 
       // Cache results
       await cacheService.cacheResult(
@@ -165,7 +165,7 @@ import type { PrismaService } from '@/lib/prisma';
       metricsCollector.incrementCounter('patient_management.predictive_analytics', 1, {
         patientId,
         modelCount: models.length.toString(),
-        highRiskModels: models.filter(m => m.probability > 0.7).length.toString()
+        highRiskModels: models.filter(m => m.probability > 0.7).length.toString(),
       });
 
       return models;
@@ -177,10 +177,10 @@ import type { PrismaService } from '@/lib/prisma';
   /**
    * Real-time patient monitoring with alert generation;
    */
-  async monitorPatientStatus(patientId: string): Promise<PatientAlert[]> 
+  async monitorPatientStatus(patientId: string): Promise<PatientAlert[]> ,
     try {
       const patient = await this.getEnhancedPatient(patientId);
-      \1 {\n  \2{
+       {\n  {
         throw new Error(`Patient ${patientId} not found`);
       }
 
@@ -216,12 +216,12 @@ import type { PrismaService } from '@/lib/prisma';
       // Process critical alerts
       const criticalAlerts = alerts.filter(a => a.priority === AlertPriority.CRITICAL ||
         a.priority === AlertPriority.EMERGENCY);
-      \1 {\n  \2{
+       {\n  {
         await this.processCriticalAlerts(patient, criticalAlerts);
       }
 
       // Publish real-time updates
-      \1 {\n  \2{
+       {\n  {
         await pubsub.publish(SUBSCRIPTION_EVENTS.CRITICAL_PATIENT_ALERT, {
           criticalPatientAlert: { patientId, alerts },
         });
@@ -236,29 +236,29 @@ import type { PrismaService } from '@/lib/prisma';
   // Private helper methods
   private async generateMRN(): Promise<string> {
     const _prefix = 'MRN';
-    const _timestamp = crypto.getRandomValues(\1[0].toString();
-    const _random = Math.floor(crypto.getRandomValues(\1[0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
-    return `/* SECURITY: Template literal eliminated */
+    const _timestamp = crypto.getRandomValues([0].toString();
+    const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, '0');
+    return `/* SECURITY: Template literal eliminated */,
   }
 
-  private calculateAge(dateOfBirth: Date): number {
+  private calculateAge(dateOfBirth: Date): number {,
     const today = new Date();
     let age = today.getFullYear() - dateOfBirth.getFullYear();
     const monthDiff = today.getMonth() - dateOfBirth.getMonth();
 
-    \1 {\n  \2 dateOfBirth.getDate())) {
+     {\n   dateOfBirth.getDate())) {
       age--;
     }
 
     return age;
   }
 
-  private async checkForDuplicates(patientData: Partial<EnhancedPatient>): Promise<any> {
+  private async checkForDuplicates(patientData: Partial<EnhancedPatient>): Promise<any> {,
     // Implementation for duplicate detection
-    return { possibleDuplicates: [] };
+    return { possibleDuplicates: [] ,};
   }
 
-  private async enrichPatientData(patientData: Partial<EnhancedPatient>): Promise<any> {
+  private async enrichPatientData(patientData: Partial<EnhancedPatient>): Promise<any> {,
     // AI-powered data enrichment implementation
     return patientData;
   }
@@ -266,46 +266,46 @@ import type { PrismaService } from '@/lib/prisma';
   // Additional helper methods would be implemented here...
 
   // Required abstract methods
-  validate(resource: FHIRPatient): boolean {
+  validate(resource: FHIRPatient): boolean {,
     return !!(resource?.resourceType && resource?.name && resource.name.length > 0)
   }
 
-  toFHIR(patient: EnhancedPatient): FHIRPatient {
+  toFHIR(patient: EnhancedPatient): FHIRPatient {,
     return {
       resourceType: 'Patient',
-      \1,\2 [
+       [
         this.createIdentifier(FHIR_SYSTEMS.MRN, patient.medicalRecordNumber),
       ],
       active: patient.status === PatientStatus.ACTIVE,
-      \1,\2 'official',
-        \1,\2 [patient.firstName, patient.middleName].filter(Boolean),
+       'official',
+         [patient.firstName, patient.middleName].filter(Boolean),
       }],
       gender: patient.gender.toLowerCase() as any,
-      \1,\2 patient.contactInfo.addresses.map(addr => ({
+       patient.contactInfo.addresses.map(addr => ({
         use: addr.type.toLowerCase() as any,
         line: [addr.line1, addr.line2].filter(Boolean),
         city: addr.city,
-        \1,\2 addr.postalCode,
-        country: addr.country
+         addr.postalCode,
+        country: addr.country,
       })),
-      telecom: [
+      telecom: [,
         patient.contactInfo?.primaryPhone && {
           system: 'phone',
-          \1,\2 'home'
+           'home'
         },
         patient.contactInfo?.email && {
           system: 'email',
-          value: patient.contactInfo.email
+          value: patient.contactInfo.email,
         },
       ].filter(Boolean),
     };
   }
 
-  fromFHIR(fhirResource: FHIRPatient): Partial<EnhancedPatient> {
+  fromFHIR(fhirResource: FHIRPatient): Partial<EnhancedPatient> {,
     return {
       id: fhirResource.id,
-      \1,\2 fhirResource.name?.[0]?.given?.[0] || '',
-      \1,\2 fhirResource.gender?.toUpperCase() as Gender,
-      dateOfBirth: fhirResource.birthDate ? new Date(fhirResource.birthDate) : new Date()
+       fhirResource.name?.[0]?.given?.[0] || '',
+       fhirResource.gender?.toUpperCase() as Gender,
+      dateOfBirth: fhirResource.birthDate ? new Date(fhirResource.birthDate) : new Date(),
     };
   }

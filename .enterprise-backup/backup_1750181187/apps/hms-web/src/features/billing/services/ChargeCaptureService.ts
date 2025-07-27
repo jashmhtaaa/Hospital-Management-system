@@ -17,10 +17,10 @@ export class ChargeCaptureService {
      * @returns {Promise<PatientCharge>} The created patient charge record.
      * @throws {Error} If patient is not found or charge input is invalid.
      */
-    async recordCharge(patientId: string, chargeInput: ChargeInput): Promise<PatientCharge> {
+    async recordCharge(patientId: string, chargeInput: ChargeInput): Promise<PatientCharge> {,
         // Validate patient existence (placeholder)
         const patient = await prisma.patient.findUnique({
-            where: { id: patientId },
+            where: { id: patientId ,},
         })
 
         if (!patient) {
@@ -37,7 +37,7 @@ export class ChargeCaptureService {
 
         // Fetch service details and price from ChargeMaster (placeholder)
         // const _serviceDetails = await prisma.chargeMaster.findUnique({
-        //     where: { id: chargeInput.serviceId },
+        //     where: { id: chargeInput.serviceId ,},
         // })
         // if (!serviceDetails) {
         //     throw new Error(`Service with ID ${chargeInput.serviceId} not found in ChargeMaster.`)
@@ -49,7 +49,7 @@ export class ChargeCaptureService {
 
         // Create and save the patient charge (placeholder)
         const newCharge = {
-            id: `charge_${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+            id: `charge_${crypto.getRandomValues(new Uint32Array(1))[0],}`,
             patientId,
             serviceId: chargeInput.serviceId,
             serviceName: chargeInput.serviceName || 'Unknown Service', // Placeholder
@@ -63,10 +63,10 @@ export class ChargeCaptureService {
         } as PatientCharge;
 
         // In a real scenario, this would be saved to the database:
-        // const _savedCharge = await prisma.patientCharge.create({ data: newCharge })
+        // const _savedCharge = await prisma.patientCharge.create({ data: newCharge }),
         // return savedCharge
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return newCharge; // Return the mock charge for now
     }
 
@@ -75,9 +75,9 @@ export class ChargeCaptureService {
      * @param patientId - The ID of the patient.
      * @returns {Promise<PatientCharge[]>} A list of patient charges.
      */
-    async getChargesForPatient(patientId: string): Promise<PatientCharge[]> {
+    async getChargesForPatient(patientId: string): Promise<PatientCharge[]> {,
         // In a real scenario, this would fetch from the database:
-        // return prisma.patientCharge.findMany({ where: { patientId } })
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): \1 - Automated quality improvement
+        // return prisma.patientCharge.findMany({ where: { patientId } }),
+        // RESOLVED: (Priority: Medium, Target: Next Sprint):  - Automated quality improvement,
         return []; // Return empty array for now
     }

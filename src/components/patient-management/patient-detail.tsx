@@ -65,15 +65,13 @@ import { format
 import { useToast }
 
 // Define patient status colors;
-const statusColors: Record<string, string> = {
-  Active: "success",
+const statusColors: Record<string, string> = {Active:"success",
   "destructive";
   "On Hold": "warning";
 };
 
 // Patient interface;
-interface Patient {
-  id: string,
+interface Patient {id:string,
   string,
   lastName: string;
   middleName?: string;
@@ -99,8 +97,7 @@ interface Patient {
     emailOptIn: boolean,
     smsOptIn: boolean;
   };
-  addresses?: {
-    id: string,
+  addresses?: {id:string,
     boolean,
     addressLine1: string;
     addressLine2?: string;
@@ -109,8 +106,7 @@ interface Patient {
     postalCode: string,
     country: string;
   }[];
-  identifications?: {
-    id: string,
+  identifications?: {id:string,
     string,
     isPrimary: boolean;
     issuingCountry?: string;
@@ -118,8 +114,7 @@ interface Patient {
     issueDate?: string;
     expirationDate?: string;
   }[];
-  contacts?: {
-    id: string,
+  contacts?: {id:string,
     string,
     boolean;
     phoneHome?: string;
@@ -130,8 +125,7 @@ interface Patient {
     isLegalGuardian: boolean,
     hasDecisionMaking: boolean;
   }[];
-  insurances?: {
-    id: string,
+  insurances?: {id:string,
     string;
     planName?: string;
     policyNumber: string;
@@ -150,8 +144,7 @@ interface Patient {
 }
 
 // Props interface;
-interface PatientDetailProps {
-  patientId: string;
+interface PatientDetailProps {patientId:string;
   initialData?: Patient;
 export default const _PatientDetail = ({ patientId, initialData }: PatientDetailProps) {
   const router = useRouter();
@@ -215,8 +208,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
       setPatient(data);
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally ;
@@ -469,7 +461,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
             </div>;
             >;
               <Clock className="h-3 w-3 mr-1" />;
-              <span>Last Updated: {formatDistance(new Date(patient.updatedAt), new Date(), { addSuffix: true })}</span>;
+              <span>Last Updated: {formatDistance(new Date(patient.updatedAt), new Date(), {addSuffix:true })}</span>;
             </div>;
             {patient?.language && patient.language !== "English" && (;
               >;

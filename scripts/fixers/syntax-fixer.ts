@@ -1,8 +1,8 @@
 import * as ts from 'typescript';
 
-export function createSyntaxFixer(context: ts.TransformationContext) {
-  return (sourceFile: ts.SourceFile) => {
-    const visitor = (node: ts.Node): ts.Node => {
+export function createSyntaxFixer(context: ts.TransformationContext) {,
+  return (sourceFile: ts.SourceFile) => {,
+    const visitor = (node: ts.Node): ts.Node => {,
       // Fix missing semicolons
       if (ts.isExpressionStatement(node) && !node.getText().endsWith(';')) {
         return ts.factory.updateExpressionStatement(node, node.expression);

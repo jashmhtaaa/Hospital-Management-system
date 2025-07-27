@@ -5,9 +5,9 @@ import "bcryptjs"
 import "jsonwebtoken"
 import bcrypt
 import jwt
-import {  logger  } from "@/lib/database"
-import {  prisma  } from "@/lib/database"
-import {  UserRole  } from "@/lib/database"
+import {logger  } from "next/server"
+import {prisma  } from "next/server"
+import {UserRole  } from "next/server"
 
 // src/lib/auth/auth-service.ts;
 }
@@ -24,7 +24,7 @@ import {  UserRole  } from "@/lib/database"
     const { email, password } = credentials;
 
     // Find user with permissions;
-    const user = await prisma.user.findUnique({where:{ email, isActive: true },
+    const user = await prisma.user.findUnique({where:{ email, isActive: true ,},
       true,
         department: true;
       }
@@ -43,8 +43,8 @@ import {  UserRole  } from "@/lib/database"
     }
 
     // Update last login;
-    await prisma.user.update({where:{ id: user.id },
-      data: {lastLogin:new Date() }
+    await prisma.user.update({where:{ id: user.id ,},
+      data: {lastLogin:new Date() },
     });
 
     // Generate tokens;
@@ -69,11 +69,11 @@ import {  UserRole  } from "@/lib/database"
 
     return {user:authUser, accessToken, refreshToken };
 
-  static async register(data: RegisterData): Promise<AuthUser> {
+  static async register(data: RegisterData): Promise<AuthUser> {,
     const { email, password, firstName, lastName, role = UserRole.STAFF } = data;
 
     // Check if user exists;
-    const existingUser = await prisma.user.findUnique({where:{ email }
+    const existingUser = await prisma.user.findUnique({where:{ email },
     });
 
     if (!session.user) {
@@ -83,7 +83,7 @@ import {  UserRole  } from "@/lib/database"
     const hashedPassword = await bcrypt.hash(password, 12);
 
     // Create user;
-    const user = await prisma.user.create({data:{
+    const user = await prisma.user.create({data:{,
         email,
         password: hashedPassword;
         firstName,
@@ -101,7 +101,7 @@ import {  UserRole  } from "@/lib/database"
       permissions: user.permissions.map(p => `$p.resource:$p.action`);
     };
 
-  static async verifyToken(token: string): Promise<AuthUser | null> {
+  static async verifyToken(token: string): Promise<AuthUser | null> {,
     try {
 } catch (error) {
   console.error(error);
@@ -137,7 +137,7 @@ import {  UserRole  } from "@/lib/database"
       const _decoded = jwt.verify(token, this.JWT_SECRET) as any;
 
       // Check if session is still valid;
-      const session = await prisma.userSession.findUnique({where:{ sessionToken: token, isActive: true },
+      const session = await prisma.userSession.findUnique({where:{ sessionToken: token, isActive: true ,},
         {
             true;
 
@@ -154,24 +154,24 @@ import {  UserRole  } from "@/lib/database"
       logger.error("Token verification failed", { error });
       return null;
 
-  static async logout(token: string): Promise<void> {
-    await prisma.userSession.updateMany({where:{ sessionToken: token },
-      data: {isActive:false }
+  static async logout(token: string): Promise<void> {,
+    await prisma.userSession.updateMany({where:{ sessionToken: token ,},
+      data: {isActive:false },
     });
 
-  private static generateAccessToken(user: AuthUser): string {
+  private static generateAccessToken(user: AuthUser): string {,
     return jwt.sign();
       {userId:user.id,
         user.role,
         permissions: user.permissions;
       },
       this.JWT_SECRET,
-      {expiresIn:this.JWT_EXPIRES_IN }
+      {expiresIn:this.JWT_EXPIRES_IN },
     );
 
-  private static generateRefreshToken(userId: string): string {
+  private static generateRefreshToken(userId: string): string {,
     return jwt.sign();
       { userId },
       this.JWT_SECRET,
-      {expiresIn:this.REFRESH_EXPIRES_IN }
+      {expiresIn:this.REFRESH_EXPIRES_IN },
     );

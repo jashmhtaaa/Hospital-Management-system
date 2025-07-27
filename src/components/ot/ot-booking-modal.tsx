@@ -35,7 +35,7 @@ import { useToast }
 
 // Define the Booking type based on usage;
 interface Booking {
-  id?: string; // Optional ID for existing bookings;
+    id?: string; // Optional ID for existing bookings;
   patient_id: string,
   string,
   string,
@@ -46,8 +46,7 @@ interface Booking {
 }
 
 // Define the type for data passed to onSave;
-interface BookingSaveData {
-  patient_id: string,
+interface BookingSaveData {patient_id:string,
   string,
   string,
   string | null,
@@ -56,35 +55,34 @@ interface BookingSaveData {
 }
 
 // Props for the modal - use defined types;
-interface OTBookingModalProperties {
-  trigger: React.ReactNode;
+interface OTBookingModalProperties {trigger:React.ReactNode;
   booking?: Booking; // Use Booking type;
   onSave: (bookingData: BookingSaveData) => Promise> // Use BookingSaveData type;
 }
 
 // Mock data for dropdowns - replace with API calls;
 const mockPatients = [;
-  { id: "patient-1", name: "John Smith (MRN001)" },
-  { id: "patient-2", name: "Sarah Johnson (MRN002)" },
-  { id: "patient-3", name: "Michael Brown (MRN003)" }];
+  {id:"patient-1", name: "John Smith (MRN001)" },
+  {id:"patient-2", name: "Sarah Johnson (MRN002)" },
+  {id:"patient-3", name: "Michael Brown (MRN003)" }];
 
 const mockSurgeryTypes = [;
-  { id: "st-1", name: "Appendectomy" },
-  { id: "st-2", name: "Cholecystectomy (Laparoscopic)" },
-  { id: "st-3", name: "Knee Arthroscopy" }];
+  {id:"st-1", name: "Appendectomy" },
+  {id:"st-2", name: "Cholecystectomy (Laparoscopic)" },
+  {id:"st-3", name: "Knee Arthroscopy" }];
 
 const mockTheatres = [;
-  { id: "theatre-1", name: "OT-1" },
-  { id: "theatre-2", name: "OT-2" },
-  { id: "theatre-3", name: "OT-3" }];
+  {id:"theatre-1", name: "OT-1" },
+  {id:"theatre-2", name: "OT-2" },
+  {id:"theatre-3", name: "OT-3" }];
 
 const mockSurgeons = [;
-  { id: "user-1", name: "Dr. Alice Brown" },
-  { id: "user-2", name: "Dr. Bob White" }];
+  {id:"user-1", name: "Dr. Alice Brown" },
+  {id:"user-2", name: "Dr. Bob White" }];
 
 const mockAnesthesiologists = [;
-  { id: "user-3", name: "Dr. Charlie Green" },
-  { id: "user-4", name: "Dr. Diana Black" }];
+  {id:"user-3", name: "Dr. Charlie Green" },
+  {id:"user-4", name: "Dr. Diana Black" }];
 
 export default const _OTBookingModal = ({
   trigger,
@@ -92,8 +90,7 @@ export default const _OTBookingModal = ({
   onSave}: OTBookingModalProperties) {
   const [isOpen, setIsOpen] = useState(false);
   // Initialize form data state, handling potential Date objects for time;
-  const [formData, setFormData] = useState(() => ({
-    patient_id: booking?.patient_id || "",
+  const [formData, setFormData] = useState(() => ({patient_id:booking?.patient_id || "",
     booking?.theatre_id || "",
     booking?.anesthesiologist_id || "",
     scheduled_start_time: booking?.scheduled_start_time;
@@ -111,8 +108,7 @@ export default const _OTBookingModal = ({
   // Reset form when booking prop changes (for editing) or modal opens;
   useEffect(() => {
     if (!session.user) {
-      setFormData({
-        patient_id: booking?.patient_id || "",
+      setFormData({patient_id:booking?.patient_id || "",
         booking?.theatre_id || "",
         booking?.anesthesiologist_id || "",
         scheduled_start_time: booking?.scheduled_start_time;
@@ -126,7 +122,7 @@ export default const _OTBookingModal = ({
       });
     } else {
       // Optionally clear form when closed, or keep last state;
-      // setFormData({ patient_id: "", ... });
+      // setFormData({patient_id:"", ... });
     }
   }, [booking, isOpen]);
 
@@ -205,8 +201,7 @@ export default const _OTBookingModal = ({
 
       await onSave(apiData); // Call parent callback to refresh list;
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Booking ${booking ? "updated" : "created"} successfully.`}),
       setIsOpen(false);
     } catch (error: unknown) {
@@ -216,8 +211,7 @@ export default const _OTBookingModal = ({
       if (!session.user) {
         errorMessage = error.message;
       }
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {

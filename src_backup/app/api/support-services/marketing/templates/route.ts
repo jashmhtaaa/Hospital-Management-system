@@ -17,10 +17,10 @@ const templateService = new TemplateService();
  * GET /api/support-services/marketing/templates;
  * Get all templates with optional filtering;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -53,10 +53,10 @@ export const GET = async (request: any) => {
  * POST /api/support-services/marketing/templates;
  * Create a new template;
  */;
-export const POST = async (request: any) => {
+export const POST = async (request: any) => {,
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -65,7 +65,7 @@ export const POST = async (request: any) => {
         session?.user?.id as string;
       );
 
-      return NextResponse.json(template, { status: 201 });
+      return NextResponse.json(template, { status: 201 ,});
     },
     {
       requiredPermission: "marketing.templates.create",

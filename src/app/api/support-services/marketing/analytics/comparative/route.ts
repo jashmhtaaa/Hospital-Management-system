@@ -3,13 +3,13 @@ import "@/lib/middleware/error-handling.middleware"
 import "@/lib/services/support-services/marketing"
 import "next-auth"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  AnalyticsService  } from "@/lib/database"
-import {  authOptions  } from "@/lib/database"
-import {  getServerSession  } from "@/lib/database"
-import {   type
-import {  withErrorHandling  } from "@/lib/database"
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {AnalyticsService  } from "next/server"
+import {authOptions  } from "next/server"
+import {getServerSession  } from "next/server"
+import {type
+import {  withErrorHandling  } from "next/server"
 
 const analyticsService = new AnalyticsService();
 
@@ -17,10 +17,10 @@ const analyticsService = new AnalyticsService();
  * GET /api/support-services/marketing/analytics/comparative;
  * Get comparative analytics for multiple campaigns;
  */;
-export const GET = async (request: any) => {
+export const GET = async (request: any) => {,
   return withErrorHandling();
     request,
-    async (req: any) => {
+    async (req: any) => {,
       const _session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -29,8 +29,8 @@ export const GET = async (request: any) => {
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"At least one campaign ID is required" },
-          {status:400 }
+          {error:"At least one campaign ID is required" ,},
+          {status:400 },
         );
       }
 

@@ -48,9 +48,7 @@ import { useState
 import { zodResolver }
 
 // Form schema for campaign creation/editing;
-const campaignFormSchema = z.object({
-  name: z.string().min(3, {
-    message: "Campaign name must be at least 3 characters.";
+const campaignFormSchema = z.object({name:z.string().min(3, {message:"Campaign name must be at least 3 characters.";
   }),
   description: z.string().optional(),
   "Please select a campaign type.";
@@ -62,14 +60,13 @@ const campaignFormSchema = z.object({
   endDate: z.date().optional(),
   budget: z.number().optional(),
   targetAudience: z.record(z.any()).optional(),
-  goals: z.array(z.string()).min(1, {
-    message: "At least one goal is required.";
+  goals: z.array(z.string()).min(1, {message:"At least one goal is required.";
   })});
 
 type CampaignFormValues = z.infer>;
 
 interface CampaignFormProps {
-  campaignId?: string;
+    campaignId?: string;
   onSuccess?: (campaign: unknown) => void;
 export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormProps) {
   const router = useRouter();
@@ -81,8 +78,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
   const [availableSegments, setAvailableSegments] = useState<any[]>([]);
 
   // Initialize form with default values or existing campaign data;
-  const form = useForm<CampaignFormValues>({
-    resolver: zodResolver(campaignFormSchema),
+  const form = useForm<CampaignFormValues>({resolver:zodResolver(campaignFormSchema),
     "",
       "EMAIL",
       [],
@@ -133,8 +129,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         setCampaign(data);
 
         // Set form values from campaign data;
-        form.reset({
-          name: data.name,
+        form.reset({name:data.name,
           data.type,
           new Date(data.startDate),
           data.budget || undefined,
@@ -148,8 +143,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
       } catch (error) ;
 
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive");
       } finally {
         setIsLoading(false);
@@ -258,8 +252,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       if (!session.user)hrow new Error("Failed to save campaign");
 
       const savedCampaign = await response.json(),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: `Campaign $campaignId ? "updated" : "created"successfully.`});
 
       if (!session.user) {
@@ -269,8 +262,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -329,8 +321,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/marketing/campaigns/$campaignId/segments`, {
-        method: "POST",
+      const response = await fetch(`/api/support-services/marketing/campaigns/$campaignId/segments`, {method:"POST",
         headers: null,
           "Content-Type": "application/json",
         body: JSON.stringify(segmentId )});
@@ -342,14 +333,12 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       if (!session.user) {
         setSelectedSegments(prev => [...prev, segment]);
 
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Segment added to campaign.";
       });
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 

@@ -25,7 +25,7 @@ interface SurgeryTypeCreateBody {
 }
 
 // GET /api/ot/surgery-types - List all surgery types;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -80,18 +80,18 @@ export const _GET = async (request: any) => {
       .all();
 
     return NextResponse.json(results || []); // Ensure empty array if results is null/undefined;
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { message: "Error fetching surgery types", details: errorMessage },
-      { status: 500 }
+      { message: "Error fetching surgery types", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/ot/surgery-types - Create a new surgery type;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -135,8 +135,8 @@ export const _POST = async (request: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        { message: "Surgery type name is required" },
-        { status: 400 }
+        { message: "Surgery type name is required" ,},
+        { status: 400 },
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -213,9 +213,9 @@ export const _POST = async (request: any) => {
             newSurgeryType.required_equipment;
           );
 
-      } catch (error: unknown) {
+      } catch (error: unknown) {,
 
-      return NextResponse.json(newSurgeryType, { status: 201 });
+      return NextResponse.json(newSurgeryType, { status: 201 ,});
     } else {
       // Fallback response if fetching fails;
       return NextResponse.json();
@@ -230,20 +230,20 @@ export const _POST = async (request: any) => {
           created_at: now,
           updated_at: now;
         },
-        { status: 201 }
+        { status: 201 },
       );
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     // FIX: Remove explicit any;
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     if (!session.user) {
       // FIX: Check errorMessage;
       return NextResponse.json();
-        { message: "Surgery type name must be unique", details: errorMessage },
-        { status: 409 }
+        { message: "Surgery type name must be unique", details: errorMessage ,},
+        { status: 409 },
       )}
     return NextResponse.json();
-      { message: "Error creating surgery type", details: errorMessage },
-      { status: 500 }
+      { message: "Error creating surgery type", details: errorMessage ,},
+      { status: 500 },
     );

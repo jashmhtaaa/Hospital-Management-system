@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
 
 export default async const _DocumentEditPage = ({
   params;
-}: {id: string ;
+}: {id:string ;
 }) {
   // Get session;
   const session = await getServerSession(authOptions);
@@ -27,7 +27,7 @@ export default async const _DocumentEditPage = ({
 
   // Check if document exists and is editable (would use real check in production);
   // const document = await prisma.clinicalDocument.findUnique({
-  //   where: { id: params.id }
+  //   where: {id:params.id }
   // });
 
   // if (!session.user) {

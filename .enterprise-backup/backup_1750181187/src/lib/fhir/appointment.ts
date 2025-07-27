@@ -15,66 +15,66 @@ import {
   FHIRExtension;
 } from './types.ts';
 
-\1
+
 }
 }
 
 // Appointment Search Parameters
-\1
+
 }
 }
 
 // Helper functions for FHIR Appointment operations
-\1
+
 }
   }): FHIRAppointment {
-    const appointment: FHIRAppointment = {
+    const appointment: FHIRAppointment = {,
       resourceType: 'Appointment',
-      \1,\2 data.start,
-      \1,\2 [
+       data.start,
+       [
         {
-          actor: {
-            reference: `Patient/${data.patientId}`,
-            type: 'Patient'
+          actor: {,
+            reference: `Patient/${data.patientId,}`,
+            type: 'Patient',
           },
           required: 'required',
-          status: 'accepted'
+          status: 'accepted',
         },
         {
-          actor: {
-            reference: `Practitioner/${data.practitionerId}`,
-            type: 'Practitioner'
+          actor: {,
+            reference: `Practitioner/${data.practitionerId,}`,
+            type: 'Practitioner',
           },
           required: 'required',
-          status: 'accepted'
+          status: 'accepted',
         }
       ]
     };
 
     // Add location if provided
-    \1 {\n  \2{
+     {\n  {
       appointment.participant.push({
-        actor: {
-          reference: `Location/${data.locationId}`,
-          type: 'Location'
+        actor: {,
+          reference: `Location/${data.locationId,}`,
+          type: 'Location',
         },
         required: 'required',
-        status: 'accepted'
+        status: 'accepted',
       });
     }
 
     // Add appointment type if provided
-    \1 {\n  \2{
+     {\n  {
       appointment.appointmentType = {
-        coding: [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/v2-0276',
-          \1,\2 data.appointmentType
+           data.appointmentType
         }]
       }
     }
 
     // Add description if provided
-    \1 {\n  \2{
+     {\n  {
       appointment.description = data.description;
     }
 
@@ -89,7 +89,7 @@ import {
   /**
    * Get patient reference from appointment;
    */
-  static getPatientId(appointment: FHIRAppointment): string | undefined {
+  static getPatientId(appointment: FHIRAppointment): string | undefined {,
     const patientParticipant = appointment.participant.find(
       p => p.actor?.type === 'Patient' || p.actor?.reference?.startsWith('Patient/');
     );
@@ -100,7 +100,7 @@ import {
   /**
    * Get practitioner reference from appointment;
    */
-  static getPractitionerId(appointment: FHIRAppointment): string | undefined {
+  static getPractitionerId(appointment: FHIRAppointment): string | undefined {,
     const practitionerParticipant = appointment.participant.find(
       p => p.actor?.type === 'Practitioner' || p.actor?.reference?.startsWith('Practitioner/');
     );
@@ -111,7 +111,7 @@ import {
   /**
    * Get location reference from appointment;
    */
-  static getLocationId(appointment: FHIRAppointment): string | undefined {
+  static getLocationId(appointment: FHIRAppointment): string | undefined {,
     const locationParticipant = appointment.participant.find(
       p => p.actor?.type === 'Location' || p.actor?.reference?.startsWith('Location/');
     );
@@ -122,16 +122,16 @@ import {
   /**
    * Check if appointment is in the future;
    */
-  static isFutureAppointment(appointment: FHIRAppointment): boolean {
-    \1 {\n  \2eturn false;
+  static isFutureAppointment(appointment: FHIRAppointment): boolean {,
+     {\n  eturn false;
     return new Date(appointment.start) > new Date();
   }
 
   /**
    * Check if appointment is today;
    */
-  static isTodayAppointment(appointment: FHIRAppointment): boolean {
-    \1 {\n  \2eturn false;
+  static isTodayAppointment(appointment: FHIRAppointment): boolean {,
+     {\n  eturn false;
 
     const appointmentDate = new Date(appointment.start);
     const today = new Date();
@@ -142,12 +142,12 @@ import {
   /**
    * Get appointment duration in minutes;
    */
-  static getDurationMinutes(appointment: FHIRAppointment): number {
-    \1 {\n  \2{
+  static getDurationMinutes(appointment: FHIRAppointment): number {,
+     {\n  {
       return appointment.minutesDuration
     }
 
-    \1 {\n  \2{
+     {\n  {
       const startTime = new Date(appointment.start);
       const endTime = new Date(appointment.end);
       return Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
@@ -159,20 +159,20 @@ import {
   /**
    * Format appointment time for display;
    */
-  static formatAppointmentTime(appointment: FHIRAppointment): string {
-    \1 {\n  \2eturn 'Time not specified';
+  static formatAppointmentTime(appointment: FHIRAppointment): string {,
+     {\n  eturn 'Time not specified';
 
     const startTime = new Date(appointment.start);
     const endTime = appointment.end ? new Date(appointment.end) : null;
 
-    const timeFormat: Intl.DateTimeFormatOptions = {
+    const timeFormat: Intl.DateTimeFormatOptions = {,
       hour: '2-digit',
-      \1,\2 true
+       true
     };
 
     const startTimeStr = startTime.toLocaleTimeString('en-US', timeFormat);
 
-    \1 {\n  \2{
+     {\n  {
       const endTimeStr = endTime.toLocaleTimeString('en-US', timeFormat);
       return `${startTimeStr} - ${endTimeStr}`;
     }
@@ -183,7 +183,7 @@ import {
   /**
    * Get appointment status display text;
    */
-  static getStatusDisplay(status: FHIRAppointment['status']): string {
+  static getStatusDisplay(status: FHIRAppointment['status']): string {,
     const statusMap: Record<string, string> = {
       'proposed': 'Proposed',
       'pending': 'Pending',
@@ -203,35 +203,35 @@ import {
   /**
    * Validate FHIR Appointment resource;
    */
-  static validateAppointment(appointment: FHIRAppointment): { valid: boolean, errors: string[] } {
+  static validateAppointment(appointment: FHIRAppointment): { valid: boolean, errors: string[] } {,
     const errors: string[] = [];
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('resourceType must be "Appointment"');
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('status is required');
     }
 
-    \1 {\n  \2{
+     {\n  {
       errors.push('At least one participant is required');
     } else {
       for (const participant of appointment.participant) {
-        \1 {\n  \2{
+         {\n  {
           errors.push('participant.status is required');
         }
-        \1 {\n  \2{
+         {\n  {
           errors.push('participant.actor is required');
         }
       }
     }
 
-    \1 {\n  \2{
+     {\n  {
       const startTime = new Date(appointment.start);
       const endTime = new Date(appointment.end);
 
-      \1 {\n  \2{
+       {\n  {
         errors.push('end time must be after start time');
       }
     }
@@ -245,62 +245,62 @@ import {
   /**
    * Convert current HMS Appointment model to FHIR Appointment;
    */
-  static fromHMSAppointment(hmsAppointment: unknown): FHIRAppointment {
-    const fhirAppointment: FHIRAppointment = {
+  static fromHMSAppointment(hmsAppointment: unknown): FHIRAppointment {,
+    const fhirAppointment: FHIRAppointment = {,
       resourceType: 'Appointment',
-      \1,\2 hmsAppointment.status || 'booked',
-      \1,\2 hmsAppointment.endTime,
-      \1,\2 []
+       hmsAppointment.status || 'booked',
+       hmsAppointment.endTime,
+       []
     };
 
     // Add patient participant
-    \1 {\n  \2{
+     {\n  {
       fhirAppointment.participant.push({
-        actor: {
-          reference: `Patient/${hmsAppointment.patientId}`,
-          type: 'Patient'
+        actor: {,
+          reference: `Patient/${hmsAppointment.patientId,}`,
+          type: 'Patient',
         },
         required: 'required',
-        status: 'accepted'
+        status: 'accepted',
       });
     }
 
     // Add practitioner participant
-    \1 {\n  \2{
+     {\n  {
       fhirAppointment.participant.push({
-        actor: {
-          reference: `Practitioner/${hmsAppointment.doctorId || hmsAppointment.practitionerId}`,
-          type: 'Practitioner'
+        actor: {,
+          reference: `Practitioner/${hmsAppointment.doctorId || hmsAppointment.practitionerId,}`,
+          type: 'Practitioner',
         },
         required: 'required',
-        status: 'accepted'
+        status: 'accepted',
       });
     }
 
     // Add location if available
-    \1 {\n  \2{
+     {\n  {
       fhirAppointment.participant.push({
-        actor: {
-          reference: `Location/${hmsAppointment.locationId}`,
-          type: 'Location'
+        actor: {,
+          reference: `Location/${hmsAppointment.locationId,}`,
+          type: 'Location',
         },
         required: 'required',
-        status: 'accepted'
+        status: 'accepted',
       });
     }
 
     // Add appointment type if available
-    \1 {\n  \2{
+     {\n  {
       fhirAppointment.appointmentType = {
-        coding: [{
+        coding: [{,
           system: 'https://terminology.hl7.org/CodeSystem/v2-0276',
-          \1,\2 hmsAppointment.appointmentType || hmsAppointment.visitType
+           hmsAppointment.appointmentType || hmsAppointment.visitType
         }]
       }
     }
 
     // Calculate duration if start and end times are available
-    \1 {\n  \2{
+     {\n  {
       const startTime = new Date(fhirAppointment.start);
       const endTime = new Date(fhirAppointment.end);
       fhirAppointment.minutesDuration = Math.round((endTime.getTime() - startTime.getTime()) / (1000 * 60));
@@ -311,7 +311,7 @@ import {
 }
 
 // Appointment status workflow helpers
-\1
+
 }
     };
 
@@ -321,7 +321,7 @@ import {
   /**
    * Check if status transition is valid;
    */
-  static isValidStatusTransition(fromStatus: FHIRAppointment['status'], toStatus: FHIRAppointment['status']): boolean {
+  static isValidStatusTransition(fromStatus: FHIRAppointment['status'], toStatus: FHIRAppointment['status']): boolean {,
     const allowedTransitions = this.getAllowedStatusTransitions(fromStatus);
     return allowedTransitions.includes(toStatus);
   }
@@ -329,7 +329,7 @@ import {
   /**
    * Get next logical status for appointment workflow;
    */
-  static getNextLogicalStatus(appointment: FHIRAppointment): FHIRAppointment['status'] | null {
+  static getNextLogicalStatus(appointment: FHIRAppointment): FHIRAppointment['status'] | null {,
     const now = new Date();
     const appointmentTime = appointment.start ? new Date(appointment.start) : null;
 
@@ -339,13 +339,13 @@ import {
       case 'pending':
         return 'booked';
       case 'booked':
-        \1 {\n  \2{
+         {\n  {
           return 'arrived';
         }
         return null;
       case 'arrived':
       case 'checked-in':
         return 'fulfilled';
-      default: return null
+      default: return null,
     }
   }

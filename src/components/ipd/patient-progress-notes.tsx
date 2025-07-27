@@ -29,8 +29,7 @@ import "lucide-react"
 import { Loader2 }
 
 // Define interfaces for data structures;
-interface ProgressNote {
-  id: string,
+interface ProgressNote {id:string,
   string,
   string,
   string,
@@ -40,34 +39,31 @@ interface ProgressNote {
   doctor_last_name?: string;
 }
 
-interface AdmissionInfo {
-  admission_number: string,
+interface AdmissionInfo {admission_number:string,
   string,
   patient_last_name: string;
   diagnosis?: string;
 }
 
-interface FormData {
-  subjective: string,
+interface FormData {subjective:string,
   string,
   plan: string;
 }
 
 // FIX: Define type for API error response;
-// interface ApiErrorResponse { // FIX: Removed unused interface;
+// interface ApiErrorResponse {
+    // FIX: Removed unused interface;
 //   error?: string;
 // }
 
 // FIX: Define type for API success response (new note);
 type NewNoteResponse = ProgressNote;
 
-interface PatientProgressNotesProperties {
-  admissionId: string | null;
+interface PatientProgressNotesProperties {admissionId:string | null;
 }
 
 // FIX: Create a sub-component to manage individual note tabs state;
-interface NoteDisplayProperties {
-  note: ProgressNote,
+interface NoteDisplayProperties {note:ProgressNote,
   formatDateTime: (dateString: string | undefined) => string
 }
 
@@ -138,8 +134,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   const [progressNotes, setProgressNotes] = useState<ProgressNote[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>();
-  const [formData, setFormData] = useState<FormData>({
-    subjective: "",
+  const [formData, setFormData] = useState<FormData>({subjective:"",
     "",
     plan: "";
   });
@@ -231,7 +226,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
         //   } catch (jsonError) { /* Ignore */ }
         //   throw new Error(errorMsg);
         // }
-        // const data = await response.json(); // Assuming { admission: AdmissionInfo, progress_notes: ProgressNote[] }
+        // const data = await response.json(); // Assuming {admission:AdmissionInfo, progress_notes: ProgressNote[] }
         // setProgressNotes(data.progress_notes?.sort((a, b) => new Date(b.note_date).getTime() - new Date(a.note_date).getTime()) || []);
         // setPatientInfo(data.admission || null);
 
@@ -243,8 +238,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
           "Pneumonia";
         };
         const mockProgressNotes: ProgressNote[] = [;
-          {
-            id: "pn_001",
+          {id:"pn_001",
             [0] - 3_600_000 * 6).toISOString(), // 6 hours ago;
             subjective: "Patient reports feeling slightly better. Cough less frequent.",
             objective: null,
@@ -254,8 +248,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
             "Smith",
             created_at: new Date().toISOString();
           },
-          {
-            id: "pn_002",
+          {id:"pn_002",
             [0] - 86_400_000).toISOString(), // 1 day ago;
             subjective: "Patient complaining of persistent cough and mild shortness of breath.",
             objective: null,
@@ -296,8 +289,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     if (!session.user) {
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
       return;
@@ -407,13 +399,11 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       setProgressNotes((previous) => [newNote, ...previous]);
 
       // Reset form;
-      setFormData({
-        subjective: "",
+      setFormData({subjective:"",
         "",
         plan: "";
       }),
-      toast({
-        title: "Success",
+      toast({title:"Success",
         description: "Progress note added successfully!";
       });
     } catch (error_: unknown) {
@@ -421,7 +411,7 @@ const PatientProgressNotes: React.FC<PatientProgressNotesProperties> = ({
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      toast({ title: "Error", description: message, variant: "destructive" });
+      toast({title:"Error", description: message, variant: "destructive" });
     } finally {
       setSubmitting(false);
 

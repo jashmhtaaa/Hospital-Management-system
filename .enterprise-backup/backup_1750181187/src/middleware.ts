@@ -22,19 +22,19 @@ interface RequestContext {
   authenticated: boolean,
   rateLimited: boolean,
   cached: boolean,
-  nonce: string
+  nonce: string,
 }
 
 /**
  * Main middleware function that orchestrates all enterprise services,
  */,
-export const middleware = async (request: NextRequest) => {
+export const middleware = async (request: NextRequest) => {,
   const startTime = crypto.getRandomValues(new Uint32Array(1))[0],
   const requestId = generateRequestId(),
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64'),
 
   // Initialize request context
-  const context: RequestContext = => {
+  const context: RequestContext = => {,
     requestId,
     startTime,
     path: request.nextUrl.pathname,
@@ -49,40 +49,40 @@ export const middleware = async (request: NextRequest) => {
 
   try {
     // Skip middleware for certain paths
-    \1 {\n  \2 {
+     {\n   {
       return applySecurityHeaders(NextResponse.next(), context),
     }
 
     // 1. Health Check Endpoint
-    \1 {\n  \2{
+     {\n  {
       return handleHealthCheck(request, context),
     }
 
     // 2. Rate Limiting
     const rateLimitResult = await checkRateLimit(request, context),
-    \1 {\n  \2{
+     {\n  {
       return applySecurityHeaders(createRateLimitResponse(rateLimitResult), context),
     }
 
     // 3. Authentication & Authorization
     const authResult = await authenticateRequest(request, context),
-    \1 {\n  \2 {
+     {\n   {
       return applySecurityHeaders(createUnauthorizedResponse(authResult.error), context),
     }
 
     // 4. Cache Check (for GET requests)
-    let cacheResult: unknown = null
-    \1 {\n  \2 {
+    let cacheResult: unknown = null,
+     {\n   {
       cacheResult = await checkCache(request, context),
-      \1 {\n  \2{
+       {\n  {
         return applySecurityHeaders(createCachedResponse(cacheResult.data, cacheResult.headers), context),
       }
     }
 
     // 5. Request Authorization Check
-    \1 {\n  \2{
+     {\n  {
       const authzResult = await checkAuthorization(request, context),
-      \1 {\n  \2{
+       {\n  {
         await logUnauthorizedAccess(context, authzResult.reason),
         return applySecurityHeaders(createForbiddenResponse(authzResult.reason), context),
       }
@@ -108,11 +108,11 @@ export const middleware = async (request: NextRequest) => {
       'critical',
       'Middleware processing failed',
       context,
-      { error: error.message, stack: error.stack }
+      { error: error.message, stack: error.stack },
     ),
 
     // Return error response
-\1,
+
     ),
 
     return applySecurityHeaders(errorResponse, context),
@@ -122,9 +122,9 @@ export const middleware = async (request: NextRequest) => {
 /**
  * Apply comprehensive security headers including CSP,
  */,
-const applySecurityHeaders = (response: NextResponse, context: RequestContext): NextResponse => => {
+const applySecurityHeaders = (response: NextResponse, context: RequestContext): NextResponse => => {,
   // CSP directives
-\1,
+
   ].join('; '),
 
   // Apply security headers
@@ -152,12 +152,12 @@ const generateRequestId = (): string => {
 /**
  * Get client IP address,
  */,
-const getClientIP = (request: NextRequest): string => {
+const getClientIP = (request: NextRequest): string => {,
   const forwarded = request.headers.get('x-forwarded-for'),
   const realIP = request.headers.get('x-real-ip'),
   const remoteAddr = request.headers.get('x-remote-addr'),
 
-  \1 {\n  \2{
+   {\n  {
     return forwarded.split(',')[0].trim(),
   }
 
@@ -167,8 +167,8 @@ const getClientIP = (request: NextRequest): string => {
 /**
  * Check if middleware should be skipped for this path,
  */,
-const shouldSkipMiddleware = (pathname: string): boolean => {
-\1,
+const shouldSkipMiddleware = (pathname: string): boolean => {,
+
   ],
 
   return skipPaths.some(path => pathname.startsWith(path)),
@@ -177,17 +177,17 @@ const shouldSkipMiddleware = (pathname: string): boolean => {
 /**
  * Handle health check requests,
  */,
-const handleHealthCheck = (request: NextRequest, context: RequestContext): Promise<NextResponse> => {
+const handleHealthCheck = (request: NextRequest, context: RequestContext): Promise<NextResponse> => {,
   try {
     // Simplified health check since services might not be initialized in middleware
-\1,
-      requestId: context.requestId
+
+      requestId: context.requestId,
     },
 
-    const response = NextResponse.json(healthData, { status: 200 }),
+    const response = NextResponse.json(healthData, { status: 200 ,}),
     return response,
   } catch (error) {
-\1,
+
     ),
     return response,
   }
@@ -196,71 +196,71 @@ const handleHealthCheck = (request: NextRequest, context: RequestContext): Promi
 /**
  * Simplified rate limiting check,
  */,
-const checkRateLimit = (request: NextRequest, context: RequestContext) => {
+const checkRateLimit = (request: NextRequest, context: RequestContext) => {,
   try {
     // Simplified rate limiting - in production this would use the rate limiter service
     // For now, implement basic IP-based rate limiting
-    const _key = `rate_limit:${context.ipAddress}:${context.path}`,
+    const _key = `rate_limit:${context.ipAddress}:${context.path,}`,
 
     // This would normally use Redis or the rate limiter service
     // For now, allow all requests
-    return { allowed: true },
+    return { allowed: true ,},
   } catch (error) {
     // Debug logging removed
-    return { allowed: true },
+    return { allowed: true ,},
   }
 }
 
 /**
  * Create rate limit exceeded response,
  */,
-const createRateLimitResponse = (rateLimitResult: unknown): NextResponse => => {
+const createRateLimitResponse = (rateLimitResult: unknown): NextResponse => => {,
   return NextResponse.json(,
     {
       error: 'Rate limit exceeded',
       message: 'Too many requests',
-      retryAfter: 60
+      retryAfter: 60,
     },
-    { status: 429 }
+    { status: 429 },
   ),
 }
 
 /**
  * Simplified authentication check,
  */,
-const authenticateRequest = (request: NextRequest, context: RequestContext) => {
+const authenticateRequest = (request: NextRequest, context: RequestContext) => {,
   try {
     const authHeader = request.headers.get('authorization'),
     const tokenCookie = request.cookies.get('access_token'),
 
     const token = authHeader?.replace('Bearer ', '') || tokenCookie?.value,
 
-    \1 {\n  \2{
-      return { success: false, error: 'No authentication token' },
+     {\n  {
+      return { success: false, error: 'No authentication token' ,},
     }
 
     // Simplified token validation - in production this would use the RBAC service
     // For now, assume valid tokens start with 'valid_'
-    \1 {\n  \2 {
+     {\n   {
       context.userId = 'user_123'
       context.organizationId = 'org_456',
       context.sessionId = 'session_789',
       context.authenticated = true,
-      return { success: true },
+      return { success: true ,},
     }
 
-    return { success: false, error: 'Invalid token' },
+    return { success: false, error: 'Invalid token' ,},
   } catch (error) {
     // Debug logging removed
-    return { success: false, error: 'Authentication failed' },
+    return { success: false, error: 'Authentication failed' ,},
   }
 }
 
 /**
  * Check if path requires authentication,
  */,
-const requiresAuth = (pathname: string): boolean => {
-\1,
+const requiresAuth = (pathname: string): boolean => {,
+
   ],
 
   return !publicPaths.some(path => pathname === path || pathname.startsWith(path)),
@@ -269,36 +269,36 @@ const requiresAuth = (pathname: string): boolean => {
 /**
  * Create unauthorized response,
  */,
-const createUnauthorizedResponse = (error: string): NextResponse => => {
+const createUnauthorizedResponse = (error: string): NextResponse => => {,
   return NextResponse.json(,
-    { error: 'Unauthorized', message: error },
-    { status: 401 }
+    { error: 'Unauthorized', message: error ,},
+    { status: 401 },
   ),
 }
 
 /**
  * Simplified cache check,
  */,
-const checkCache = (request: NextRequest, context: RequestContext) => {
+const checkCache = (request: NextRequest, context: RequestContext) => {,
   try {
     // Simplified caching - in production this would use the cache service
-    return { hit: false },
+    return { hit: false ,},
   } catch (error) {
     // Debug logging removed
-    return { hit: false },
+    return { hit: false ,},
   }
 }
 
 /**
  * Check if path is cacheable,
  */,
-const isCacheable = (pathname: string): boolean => {
-\1,
-  ],
-\1,
+const isCacheable = (pathname: string): boolean => {,
+
   ],
 
-  \1 {\n  \2) {
+  ],
+
+   {\n  ) {
     return false,
   }
 
@@ -317,21 +317,21 @@ const createCachedResponse = (data: unknown, headers: Record<string, string> = {
 /**
  * Simplified authorization check,
  */,
-const checkAuthorization = (request: NextRequest, context: RequestContext) => {
+const checkAuthorization = (request: NextRequest, context: RequestContext) => {,
   try {
     // Simplified authorization - in production this would use the RBAC service
     // For now, allow all authenticated requests
-    return { allowed: true },
+    return { allowed: true ,},
   } catch (error) {
     // Debug logging removed
-    return { allowed: false, reason: 'Authorization check failed' },
+    return { allowed: false, reason: 'Authorization check failed' ,},
   }
 }
 
 /**
  * Log unauthorized access attempt,
  */,
-const logUnauthorizedAccess = (context: RequestContext, reason: string): Promise<void> => {
+const logUnauthorizedAccess = (context: RequestContext, reason: string): Promise<void> => {,
   try {
     // Debug logging removed
   } catch (error) {
@@ -342,19 +342,19 @@ const logUnauthorizedAccess = (context: RequestContext, reason: string): Promise
 /**
  * Create forbidden response,
  */,
-const createForbiddenResponse = (reason: string): NextResponse => => {
+const createForbiddenResponse = (reason: string): NextResponse => => {,
   return NextResponse.json(,
-    { error: 'Forbidden', message: reason },
-    { status: 403 }
+    { error: 'Forbidden', message: reason ,},
+    { status: 403 },
   ),
 }
 
 /**
  * Log request start,
  */,
-const logRequestStart = (context: RequestContext): Promise<void> => {
+const logRequestStart = (context: RequestContext): Promise<void> => {,
   try {
-    \1 {\n  \2 {
+     {\n   {
 // Debug logging removed
     }
   } catch (error) {
@@ -365,13 +365,13 @@ const logRequestStart = (context: RequestContext): Promise<void> => {
 /**
  * Check if request should be logged,
  */,
-const shouldLogRequest = (path: string): boolean => {
-\1,
-  ],
-\1,
+const shouldLogRequest = (path: string): boolean => {,
+
   ],
 
-  \1 {\n  \2) {
+  ],
+
+   {\n  ) {
     return false,
   }
 
@@ -381,7 +381,7 @@ const shouldLogRequest = (path: string): boolean => {
 /**
  * Process the request (pass to Next.js),
  */,
-const processRequest = (request: NextRequest, context: RequestContext): Promise<NextResponse> => {
+const processRequest = (request: NextRequest, context: RequestContext): Promise<NextResponse> => {,
   // Add context headers for downstream handlers
   const requestHeaders = new Headers(request.headers),
   requestHeaders.set('x-request-id', context.requestId),
@@ -393,7 +393,7 @@ const processRequest = (request: NextRequest, context: RequestContext): Promise<
 
   return NextResponse.next({
     request: {,
-      headers: requestHeaders
+      headers: requestHeaders,
     }
   }),
 }
@@ -414,7 +414,7 @@ const postProcessResponse = (,
     response.headers.set('X-Response-Time', `${responseTime}ms`),
 
     // Log completion for important requests
-    \1 {\n  \2 {
+     {\n   {
 // Debug logging removed
     }
   } catch (error) {

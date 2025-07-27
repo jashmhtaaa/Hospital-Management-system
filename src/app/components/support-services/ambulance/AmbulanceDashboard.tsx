@@ -57,8 +57,7 @@ export default const _AmbulanceDashboard = () {
   const [loading, setLoading] = useState(true);
   const [selectedAmbulance, setSelectedAmbulance] = useState<any | null>(null);
   const [selectedTrip, setSelectedTrip] = useState<any | null>(null);
-  const [filters, setFilters] = useState({
-    status: "",
+  const [filters, setFilters] = useState({status:"",
     "",
     priority: "";
   }),
@@ -114,15 +113,13 @@ export default const _AmbulanceDashboard = () {
       if (!session.user) {
         setAmbulances(data.data);
       } else {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
       }
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -179,15 +176,13 @@ export default const _AmbulanceDashboard = () {
       if (!session.user) {
         setTrips(data.data);
       } else {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
     } finally {
@@ -228,30 +223,26 @@ export default const _AmbulanceDashboard = () {
 
 } catch (error) {
 
-      const response = await fetch(`/api/support-services/ambulance/trips/${tripId}/status`, {
-        method: "PUT",
+      const response = await fetch(`/api/support-services/ambulance/trips/${tripId}/status`, {method:"PUT",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify({ status: newStatus })});
+        body: JSON.stringify({status:newStatus })});
 
       const data = await response.json();
 
       if (!session.user) {
-        toast({
-          title: "Success",
+        toast({title:"Success",
           description: `Trip status updated to ${newStatus}`}),
         fetchTrips();
         fetchAmbulances();
       } else {
-        toast({
-          title: "Error",
+        toast({title:"Error",
           "destructive";
         });
 
     } catch (error) {
 
-      toast({
-        title: "Error",
+      toast({title:"Error",
         "destructive";
       });
 

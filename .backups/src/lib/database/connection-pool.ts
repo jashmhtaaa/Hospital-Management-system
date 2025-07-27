@@ -133,7 +133,7 @@ class DatabasePool {
     params.set("socket_timeout", "30");
     params.set("pool_min", this.config.min.toString());
 
-    return `postgresql://${this.config.user}:${this.config.password}@${this.config.host}:${this.config.port}/${this.config.database}?${params.toString()}`;
+    return `postgresql://${this.config.user}:${this.config.password}@${this.config.host}:${this.config.port}/${this.config.database}?${params.toString(),}`;
   }
 
   // Get Prisma client instance;

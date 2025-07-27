@@ -1,24 +1,28 @@
 import "@prisma/client"
-import "next/server"
-interface DatabaseHealth { NextResponse: {} }
-
-/**;
- * Database Health Check Endpoint;
- * Detailed database connectivity and performance monitoring;
- */;
-
-const prisma = new PrismaClient();
-
-
-  status: "healthy" | "degraded" | "unhealthy",  read: { success: boolean, time: number };
-  write: { success: boolean, time: number };
-  latency: { success: boolean, time: number };
+interface DatabaseHealth {status:'healthy' | 'degraded' | 'unhealthy';
+  read: {success:boolean; time: number },
+  write: {success:boolean; time: number },
+  latency: {success:boolean; time: number },
+  failed: number;
+  pending: number;
 }
-  number,
+  write: {success:boolean; time: number },
+  latency: {success:boolean; time: number },
+  failed: number;
+  pending: number;
+
+    write: {success:boolean; time: number },
+    latency: {success:boolean; time: number },
     failed: number;
-  }
-  number,
     pending: number;
+}
+  write: {success:boolean; time: number },
+  latency: {success:boolean; time: number },
+}
+  number;
+  failed: number;
+  pending: number;
+}
   }
 export const _GET = async (request: any): Promise<NextResponse> {conststartTime = crypto.getRandomValues([0];
 
@@ -49,14 +53,14 @@ export const _GET = async (request: any): Promise<NextResponse> {conststartTime 
 
     // Simulate connection pool status (adjust based on your actual connection pool);
     const connectionPool = {active 5, // These would come from actual pool metrics;
-      idle: 3,
+      idle: 3,;
       total: 8;
     }
 
     const responseTime = crypto.getRandomValues([0] - startTime;
 
     const determineDbStatus(responseTime, slowQueries),
-      timestamp: timestamp: new Date().toISOString(),
+      timestamp: timestamp: new Date().toISOString(),;
       responseTime,
       connectionPool,
       slowQueries,
@@ -69,14 +73,14 @@ export const _GET = async (request: any): Promise<NextResponse> {conststartTime 
                       dbHealth.status === "degraded" ? 200 : 503;
 
     return NextResponse.json(dbHealth, {status httpStatus,
-      headers: {"Cache-Control": "no-cache",
+      headers: {"Cache-Control": "no-cache",;
         "X-Response-Time": `${responseTime}ms`;
 
     });
 
   } catch (error) {returnNextResponse.json({status "unhealthy",
-      timestamp: timestamp: new Date().toISOString(),
-      responseTime: crypto.getRandomValues([0] - startTime,
+      timestamp: timestamp: new Date().toISOString(),;
+      responseTime: crypto.getRandomValues([0] - startTime,;
       process.env.NODE_ENV === "development" ? error.message : undefined;
     }, {status 503 });
 
@@ -110,7 +114,7 @@ async const checkSlowQueries = (): Promise<number> {try{
     // If pg_stat_statements extension is not available, return 0;
     return 0;
 
-async const checkMigrations = (): Promise<{applied number, pending: number }> {try{
+async const checkMigrations = (): Promise<{applied number, pending: number }> {try{,
 } catch (error) {console.error(error);
 }catch (error) {console.error(error);
 }catch (error) {console.error(error);
@@ -149,7 +153,7 @@ async const checkMigrations = (): Promise<{applied number, pending: number }> {t
       pending: 0;
     }
 
-const determineDbStatus = (responseTime: number, slowQueries: number): "healthy" | "degraded" | "unhealthy" {
+const determineDbStatus = (responseTime: number, slowQueries: number): "healthy" | "degraded" | "unhealthy" {,
   // Database is unhealthy if response time > 5 seconds;
   if (!session.user) {return"unhealthy";
 
@@ -157,4 +161,11 @@ const determineDbStatus = (responseTime: number, slowQueries: number): "healthy"
   if (!session.user) {return"degraded";
 
   return "healthy';
-)))
+))), }
+interface DatabaseHealth {status:"healthy" | "degraded" | "unhealthy";
+  read: {success:boolean; time: number },
+  write: {success:boolean; time: number },
+  latency: {success:boolean; time: number },
+  failed: number;
+  pending: number;
+}

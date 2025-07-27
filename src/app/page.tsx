@@ -22,8 +22,7 @@ import { ScrollArea }
 import { useEffect
 
 export default const _Home = () {
-  const [stats, setStats] = useState<{ count: number, recentAccess: { accessed_at: string }[] }>({
-    count: 0,
+  const [stats, setStats] = useState<{count:number, recentAccess: {accessed_at:string }[] }>({count:0,
     recentAccess: [];
   });
   const [optimisticStats, setOptimisticStats] = useOptimistic(stats);
@@ -34,9 +33,8 @@ export default const _Home = () {
 
   const handleClick = async () => {
     startTransition(async () => {
-      setOptimisticStats({
-        count: optimisticStats.count + 1,
-        recentAccess: [{ accessed_at: new Date().toISOString() }, ...optimisticStats.recentAccess.slice(0, 4)];
+      setOptimisticStats({count:optimisticStats.count + 1,
+        recentAccess: [{accessed_at:new Date().toISOString() }, ...optimisticStats.recentAccess.slice(0, 4)];
       });
       const newStats = await incrementAndLog(),
       setStats(newStats);

@@ -12,14 +12,14 @@ interface OrderUpdateInput {
   procedure_type_id?: string;
 export const _GET = async (
   request: NextRequest;
-  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+)
+  { params }: { params: Promise<{ id: string }> } // FIX: Use Promise type for params (Next.js 15+),
 ) {
   const session = await getSession()
-  \1 {\n  \2;
+   {\n  ;
   ) 
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
 
-  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+  const { id: orderId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
   const DB = process.env.DB as unknown as D1Database;
 
   try {
@@ -29,32 +29,32 @@ export const _GET = async (
       .bind(orderId);
       .first();
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Radiology order not found" },
-        { status: 404 }
+        { error: "Radiology order not found" ,},
+        { status: 404 },
       );
     }
     return NextResponse.json(order);
-  } catch (error: unknown) {
-    // FIX: Use unknown instead of any
+  } catch (error: unknown) {,
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
-      { error: "Failed to fetch radiology order", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch radiology order", details: errorMessage ,},
+      { status: 500 },
     );
   }
 export const _PUT = async (
-  request: NextRequest;params : params: Promise<{ id: string }> 
+  request: NextRequest;params : params: Promise<{ id: string }> ,
 ) {
   const session = await getSession()
   // Allow Admin, Receptionist, Technician to update status/details
-  \1 {\n  \2;
+   {\n  ;
   ) 
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
 
-  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+  const { id: orderId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
   const DB = process.env.DB as unknown as D1Database;
 
   try {
@@ -63,17 +63,17 @@ export const _PUT = async (
     const updatedAt = new Date().toISOString();
 
     // Build the update query dynamically based on provided fields
-    // FIX: Use a more specific type for fieldsToUpdate
+    // FIX: Use a more specific type for fieldsToUpdate,
     const fieldsToUpdate: Record<string, string | undefined | null> = {};
-    \1 {\n  \2ieldsToUpdate.status = status;
-    \1 {\n  \2ieldsToUpdate.priority = priority;
-    \1 {\n  \2ieldsToUpdate.clinical_indication = clinical_indication;
-    \1 {\n  \2ieldsToUpdate.procedure_type_id = procedure_type_id;
+     {\n  ieldsToUpdate.status = status;
+     {\n  ieldsToUpdate.priority = priority;
+     {\n  ieldsToUpdate.clinical_indication = clinical_indication;
+     {\n  ieldsToUpdate.procedure_type_id = procedure_type_id;
 
-    \1 {\n  \2length === 0) {
+     {\n  length === 0) {
       return NextResponse.json(
-        { error: "No fields provided for update" },
-        { status: 400 }
+        { error: "No fields provided for update" ,},
+        { status: 400 },
       );
     }
 
@@ -92,56 +92,56 @@ export const _PUT = async (
     // Check info.meta.changes if available, otherwise check info.success
     const _changesMade = info.meta?.changes ?? (info.success ? 1 : 0); // D1Response meta might have changes
 
-    \1 {\n  \2{
+     {\n  {
       // Check if the order exists
       const existingOrder = await DB.prepare(
         "SELECT id FROM RadiologyOrders WHERE id = ?";
       );
         .bind(orderId);
         .first();
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "Radiology order not found" },
-          { status: 404 }
+          { error: "Radiology order not found" ,},
+          { status: 404 },
         );
       }
       // If it exists but no changes were made (e.g., same data sent), return success
       return NextResponse.json({
         id: orderId,
-        status: "Radiology order update processed (no changes detected)"
+        status: "Radiology order update processed (no changes detected)",
       });
     }
 
     return NextResponse.json({
       id: orderId,
-      status: "Radiology order updated"
+      status: "Radiology order updated",
     });
-  } catch (error: unknown) {
-    // FIX: Use unknown instead of any
+  } catch (error: unknown) {,
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
-      { error: "Failed to update radiology order", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update radiology order", details: errorMessage ,},
+      { status: 500 },
     );
   }
 export const _DELETE = async (
-  request: NextRequest;params : params: Promise<{ id: string }> 
+  request: NextRequest;params : params: Promise<{ id: string }> ,
 ) {
   const session = await getSession()
   // Typically only Admins or perhaps Receptionists should cancel orders
-  \1 {\n  \2;
+   {\n  ;
   ) 
     // Use await and pass request
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized" ,}, { status: 403 ,});
 
-  const { id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+)
+  const { id: orderId ,} = await params; // FIX: Await params and destructure id (Next.js 15+),
   const DB = process.env.DB as unknown as D1Database;
 
   try {
     // Instead of deleting, consider marking as \"cancelled\"
     const updatedAt = new Date().toISOString()
-    const info: D1Result = await DB.prepare(
+    const info: D1Result = await DB.prepare(,
       // Add type D1Result
       "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
     );
@@ -151,40 +151,40 @@ export const _DELETE = async (
     // Check info.meta.changes if available, otherwise check info.success
     const _changesMade = info.meta?.changes ?? (info.success ? 1 : 0);
 
-    \1 {\n  \2{
+     {\n  {
       const existingOrder = await DB.prepare(
         "SELECT id, status FROM RadiologyOrders WHERE id = ?";
       );
         .bind(orderId);
         .first(); // Remove type parameter
-      \1 {\n  \2{
+       {\n  {
         return NextResponse.json(
-          { error: "Radiology order not found" },
-          { status: 404 }
+          { error: "Radiology order not found" ,},
+          { status: 404 },
         );
       }
       // Check if existingOrder has status property before accessing it
-      // FIX: Removed unnecessary escapes around \"object\" and \"status\"
-      \1 {\n  \2eturn NextResponse.json({
+      // FIX: Removed unnecessary escapes around \"object\" and \"status\",
+       {\n  eturn NextResponse.json({
           id: orderId,
-          status: "Radiology order already cancelled"
+          status: "Radiology order already cancelled",
         });
       return NextResponse.json(
-        { error: "Failed to cancel radiology order (unknown reason)" },
-        { status: 500 }
+        { error: "Failed to cancel radiology order (unknown reason)" ,},
+        { status: 500 },
       );
     }
 
     return NextResponse.json({
       id: orderId,
-      status: "Radiology order cancelled"
+      status: "Radiology order cancelled",
     });
-  } catch (error: unknown) {
-    // FIX: Use unknown instead of any
+  } catch (error: unknown) {,
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json(
-      { error: "Failed to cancel radiology order", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to cancel radiology order", details: errorMessage ,},
+      { status: 500 },
     );
   }

@@ -1,2 +1,2 @@
 import AppointmentStatus from "@/types/appointment";
-import { IronSessionData } from "iron-session";
+import {IronSessionData } from "next/server";

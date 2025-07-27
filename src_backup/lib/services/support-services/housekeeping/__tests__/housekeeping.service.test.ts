@@ -34,7 +34,7 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/lib/security.service", () => ({
   vi.fn(input => input),
     sanitizeObject: vi.fn(obj => obj),
-    encryptSensitiveData: vi.fn(data => `encrypted_${}`,
+    encryptSensitiveData: vi.fn(data => `encrypted_${,}`,
     decryptSensitiveData: vi.fn(data => data.replace("encrypted_", "")),
     validateHipaaCompliance: vi.fn(() => true);
 
@@ -165,8 +165,8 @@ describe("HousekeepingService", () => {
       };
 
       // Mock Prisma response;
-      (prisma.location.findUnique as any).mockResolvedValue({ id: "location1", name: "Room 101" });
-      (prisma.user.findUnique as any).mockResolvedValue({ id: "user1", name: "John Doe" });
+      (prisma.location.findUnique as any).mockResolvedValue({ id: "location1", name: "Room 101" ,});
+      (prisma.user.findUnique as any).mockResolvedValue({ id: "user1", name: "John Doe" ,});
       (prisma.housekeepingRequest.create as any).mockResolvedValue(mockCreatedRequest);
 
       // Call the service method;
@@ -224,7 +224,7 @@ describe("HousekeepingService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.housekeepingRequest.findUnique).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         include: expect.any(Object);
       });
 
@@ -308,7 +308,7 @@ describe("HousekeepingService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         data: mockUpdateData,
         include: expect.any(Object);
       });
@@ -322,7 +322,7 @@ describe("HousekeepingService", () => {
       (prisma.housekeepingRequest.findUnique as any).mockResolvedValue(null);
 
       // Expect the update to throw an error;
-      await expect(housekeepingService.updateHousekeepingRequest("invalid-id", { priority: "LOW" })).rejects.toThrow();
+      await expect(housekeepingService.updateHousekeepingRequest("invalid-id", { priority: "LOW" ,})).rejects.toThrow();
     });
   });
 
@@ -361,7 +361,7 @@ describe("HousekeepingService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         "ASSIGNED",
           assignedToId: "staff1";
         },
@@ -430,7 +430,7 @@ describe("HousekeepingService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.housekeepingRequest.update).toHaveBeenCalledWith({
-        where: { id: "1" },
+        where: { id: "1" ,},
         "COMPLETED",
           expect.any(Date),
           notes: "Completed as requested";
@@ -484,7 +484,7 @@ describe("HousekeepingService", () => {
 
       // Verify Prisma was called with correct arguments;
       expect(prisma.housekeepingRequest.delete).toHaveBeenCalledWith({
-        where: { id: "1" }
+        where: { id: "1" },
       });
     });
 
@@ -501,27 +501,27 @@ describe("HousekeepingService", () => {
     it("should return analytics data", async () => {
       // Mock data for status counts;
       const mockStatusCounts = [;
-        { status: "PENDING", count: 5 },
-        { status: "ASSIGNED", count: 3 },
-        { status: "IN_PROGRESS", count: 2 },
-        { status: "COMPLETED", count: 10 },
-        { status: "CANCELLED", count: 1 }
+        { status: "PENDING", count: 5 ,},
+        { status: "ASSIGNED", count: 3 ,},
+        { status: "IN_PROGRESS", count: 2 ,},
+        { status: "COMPLETED", count: 10 ,},
+        { status: "CANCELLED", count: 1 },
       ];
 
       // Mock data for request types;
       const mockRequestTypes = [;
-        { requestType: "CLEANING", count: 12 },
-        { requestType: "DISINFECTION", count: 5 },
-        { requestType: "LINEN_CHANGE", count: 3 },
-        { requestType: "WASTE_DISPOSAL", count: 1 }
+        { requestType: "CLEANING", count: 12 ,},
+        { requestType: "DISINFECTION", count: 5 ,},
+        { requestType: "LINEN_CHANGE", count: 3 ,},
+        { requestType: "WASTE_DISPOSAL", count: 1 },
       ];
 
       // Mock data for priority distribution;
       const mockPriorities = [;
-        { priority: "LOW", count: 2 },
-        { priority: "MEDIUM", count: 8 },
-        { priority: "HIGH", count: 6 },
-        { priority: "URGENT", count: 5 }
+        { priority: "LOW", count: 2 ,},
+        { priority: "MEDIUM", count: 8 ,},
+        { priority: "HIGH", count: 6 ,},
+        { priority: "URGENT", count: 5 },
       ];
 
       // Mock Prisma response for each query;
@@ -544,18 +544,18 @@ describe("HousekeepingService", () => {
 
       // Verify specific data;
       expect(result.statusDistribution).toEqual(expect.arrayContaining([;
-        { status: "PENDING", count: 5 },
-        { status: "COMPLETED", count: 10 }
+        { status: "PENDING", count: 5 ,},
+        { status: "COMPLETED", count: 10 },
       ]));
 
       expect(result.requestTypeDistribution).toEqual(expect.arrayContaining([;
-        { requestType: "CLEANING", count: 12 },
-        { requestType: "DISINFECTION", count: 5 }
+        { requestType: "CLEANING", count: 12 ,},
+        { requestType: "DISINFECTION", count: 5 },
       ]));
 
       expect(result.priorityDistribution).toEqual(expect.arrayContaining([;
-        { priority: "MEDIUM", count: 8 },
-        { priority: "HIGH", count: 6 }
+        { priority: "MEDIUM", count: 8 ,},
+        { priority: "HIGH", count: 6 },
       ]));
     });
 

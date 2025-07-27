@@ -18,7 +18,7 @@ import { authMiddleware } from "../middleware/auth";
  *
  * This module configures Apollo Federation to create a unified GraphQL schema
  * across multiple microservices. It implements:
- *
+ *,
  * - Service discovery for GraphQL endpoints
  * - Schema composition with conflict resolution
  * - Type merging and references across services
@@ -32,7 +32,7 @@ export interface ServiceDefinition {
 
 export interface FederationConfig {
 	services: ServiceDefinition[];
-	redisConfig: {
+	redisConfig: {,
 		host: string;
 		port: number;
 		password?: string;
@@ -53,7 +53,7 @@ export class GraphQLFederation {
 	private config: FederationConfig;
 	private logger: ILogger;
 	private metrics: MetricsCollector;
-	constructor(config: FederationConfig) {
+	constructor(config: FederationConfig) {,
 		this.config = config;
 		this.logger = config.logger;
 		this.metrics = config.metrics;
@@ -119,28 +119,28 @@ export class GraphQLFederation {
 		}
 		// Initialize Apollo Gateway
 		this.gateway = new ApolloGateway({
-			supergraphSdl: new IntrospectAndCompose({
-				subgraphs: config.services.map((service) => ({
+			supergraphSdl: new IntrospectAndCompose({,
+				subgraphs: config.services.map((service) => ({,
 					name: service.name,
 					url: service.url,
 				})),
 				pollIntervalInMs: 60000, // Poll for schema changes every minute
 			}),
-			buildService: ({ url }) => new AuthenticatedDataSource({ url }),
+			buildService: ({ url }) => new AuthenticatedDataSource({ url ,}),
 		});
 		// Initialize Apollo Server
 		this.server = new ApolloServer({
 			gateway: this.gateway,
-			plugins: [
+			plugins: [,
 				ApolloServerPluginCacheControl({
 					defaultMaxAge: 30, // Default max age of 30 seconds
 				}),
 				responseCachePlugin({
-					cache: new RedisCache({
+					cache: new RedisCache({,
 						client: this.redis,
 						prefix: "apollo-cache:",
 					}),
-					sessionId: (requestContext) => {
+					sessionId: (requestContext) => {,
 						if (requestContext.context.user) {
 							return `${requestContext.context.user.id}:${requestContext.context.user.roles.join(",")}`;
 						}

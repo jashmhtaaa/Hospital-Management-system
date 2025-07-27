@@ -6,25 +6,25 @@ import "next/server"
 import LaboratoryService }
 import LabOrderSchema
 import LabResultNotificationSchema
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  handleApiError  } from "@/lib/database"
-import {  ipdMiddleware  } from "@/lib/database"
-import {   LabCancelSchema
-import {  logger  } from "@/lib/database"
-import {  type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {handleApiError  } from "next/server"
+import {ipdMiddleware  } from "next/server"
+import {LabCancelSchema
+import {  logger  } from "next/server"
+import {type
 
 /**;
  * Integration endpoint for Laboratory Module;
  * This endpoint handles lab test orders and results;
  * POST /api/ipd/integration/laboratory;
  */;
-export const POST = async (req: any) => {
+export const POST = async (req: any) => {,
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "ORDER_LABS");
   if (!session.user) {
     return authResult; // This is an error response;
-   } from "@/lib/database"
+   } from "next/server"
 
   try {
 } catch (error) {
@@ -59,13 +59,13 @@ export const POST = async (req: any) => {
 } catch (error) {
 }
     const body = await req.json();
-    logger.info({route:"POST /api/ipd/integration/laboratory", actionType: body.actionType }, "Processing laboratory request");
+    logger.info({route:"POST /api/ipd/integration/laboratory", actionType: body.actionType ,}, "Processing laboratory request");
 
     // Validate request body;
     if (!session.user) {
       return NextResponse.json();
         {error:"Missing required fields: actionType, encounterId" },
-        {status:400 }
+        {status:400 },
       );
     }
 
@@ -109,7 +109,7 @@ export const POST = async (req: any) => {
 }
           const validatedData = LabOrderSchema.parse(body);
           const result = await laboratoryService.createLabOrder(validatedData, authResult.user.id);
-          return NextResponse.json(result, {status:201 });
+          return NextResponse.json(result, {status:201 ,});
         } catch (error) {
           return handleApiError(error);
         }
@@ -149,7 +149,7 @@ export const POST = async (req: any) => {
 }
           const validatedData = LabCancelSchema.parse(body);
           const result = await laboratoryService.cancelLabOrder(validatedData, authResult.user.id);
-          return NextResponse.json(result, {status:200 });
+          return NextResponse.json(result, {status:200 ,});
         } catch (error) {
           return handleApiError(error);
         }
@@ -189,14 +189,14 @@ export const POST = async (req: any) => {
 
           const validatedData = LabResultNotificationSchema.parse(body);
           const result = await laboratoryService.sendLabResultNotification(validatedData, authResult.user.id);
-          return NextResponse.json(result, {status:200 });
+          return NextResponse.json(result, {status:200 ,});
         } catch (error) {
           return handleApiError(error);
 
       default: null,
         return NextResponse.json();
-          {error:`Unsupported action type: ${body.actionType}` },
-          {status:400 }
+          {error:`Unsupported action type: ${body.actionType}` ,},
+          {status:400 },
         )}
   } catch (error) {
     return handleApiError(error);
@@ -205,7 +205,7 @@ export const POST = async (req: any) => {
  * Get pending lab orders for a patient;
  * GET /api/ipd/integration/laboratory/pending-orders;
  */;
-export const GET = async (req: any) => {
+export const GET = async (req: any) => {,
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
@@ -248,8 +248,8 @@ export const GET = async (req: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing patientId parameter" },
-        {status:400 }
+        {error:"Missing patientId parameter" ,},
+        {status:400 },
       );
 
     logger.info({route:"GET /api/ipd/integration/laboratory", patientId }, "Getting pending laboratory orders");
@@ -268,7 +268,7 @@ export const GET = async (req: any) => {
  * Get lab results for a patient;
  * GET /api/ipd/integration/laboratory/results;
  */;
-export const getLabResults = async (req: any) => {
+export const getLabResults = async (req: any) => {,
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
@@ -314,8 +314,8 @@ export const getLabResults = async (req: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing patientId parameter" },
-        {status:400 }
+        {error:"Missing patientId parameter" ,},
+        {status:400 },
       );
 
     logger.info({route:"GET /api/ipd/integration/laboratory/results";
@@ -339,7 +339,7 @@ export const getLabResults = async (req: any) => {
  * Get detailed lab result;
  * GET /api/ipd/integration/laboratory/results/details;
  */;
-export const getLabResultDetails = async (req: any) => {
+export const getLabResultDetails = async (req: any) => {,
   // Check authentication and authorization;
   const authResult = await ipdMiddleware(req, "VIEW");
   if (!session.user) {
@@ -382,8 +382,8 @@ export const getLabResultDetails = async (req: any) => {
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing orderId parameter" },
-        {status:400 }
+        {error:"Missing orderId parameter" ,},
+        {status:400 },
       );
 
     logger.info({route:"GET /api/ipd/integration/laboratory/results/details", orderId }, "Getting laboratory result details");

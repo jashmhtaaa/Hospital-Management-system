@@ -11,21 +11,21 @@ const biometricTemplateSchema = z.object({
   }),
   templateData: z.string().min(1, "Template data is required"),
   deviceId: z.string().optional(),
-  notes: z.string().optional()
+  notes: z.string().optional(),
 });
 
 // POST handler for registering biometric template
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
   try {
     // Parse request body
     const body = await request.json();
 
     // Validate request data
     const validationResult = biometricTemplateSchema.safeParse(body);
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Validation error", details: validationResult.error.format() },
-        { status: 400 }
+        { error: "Validation error", details: validationResult.error.format() ,},
+        { status: 400 },
       );
     }
 
@@ -36,22 +36,22 @@ export const _POST = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json(
-      { error: "Failed to register biometric template", details: error.message },
-      { status: 500 }
+      { error: "Failed to register biometric template", details: error.message ,},
+      { status: 500 },
     );
   }
 }
 
 // GET handler for employee biometric templates
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
   try {
     const searchParams = request.nextUrl.searchParams;
     const employeeId = searchParams.get('employeeId');
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json(
-        { error: "Employee ID is required" },
-        { status: 400 }
+        { error: "Employee ID is required" ,},
+        { status: 400 },
       );
     }
 
@@ -61,7 +61,7 @@ export const _GET = async (request: NextRequest) => {
   } catch (error) {
 
     return NextResponse.json(
-      { error: "Failed to fetch biometric templates", details: error.message },
-      { status: 500 }
+      { error: "Failed to fetch biometric templates", details: error.message ,},
+      { status: 500 },
     );
   }

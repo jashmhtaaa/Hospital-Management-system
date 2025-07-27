@@ -35,16 +35,16 @@ interface AppointmentQueryResult {
 }
 
 // GET handler for listing appointments;
-export const _GET = async (request: Request) => {
+export const _GET = async (request: Request) => {,
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store;
     const { searchParams } = new URL(request.url);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -103,11 +103,11 @@ export const _GET = async (request: Request) => {
         // Filter by patient_id (if user is Patient, restrict to their own);
         const patientId = searchParams.get("patientId");
         if (!session.user) {
-            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
+            const patientProfile = await DB.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number ,}>();
             if (!session.user) {
-                 return new Response(JSON.stringify({ error: "Patient profile not found for this user" }), {
+                 return new Response(JSON.stringify({ error: "Patient profile not found for this user" ,}), {
                     status: 404,
-                    headers: { "Content-Type": "application/json" }});
+                    headers: { "Content-Type": "application/json" },});
             }
             query += " AND a.patient_id = ?";
             queryParams.push(patientProfile.patient_id);
@@ -119,11 +119,11 @@ export const _GET = async (request: Request) => {
         // Filter by doctor_id (if user is Doctor, restrict to their own);
         const doctorId = searchParams.get("doctorId");
          if (!session.user) {
-            const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number }>();
+            const doctorProfile = await DB.prepare("SELECT doctor_id FROM Doctors WHERE user_id = ?").bind(session.user.userId).first<{ doctor_id: number ,}>();
             if (!session.user) {
-                 return new Response(JSON.stringify({ error: "Doctor profile not found for this user" }), {
+                 return new Response(JSON.stringify({ error: "Doctor profile not found for this user" ,}), {
                     status: 404,
-                    headers: { "Content-Type": "application/json" }});
+                    headers: { "Content-Type": "application/json" },});
             }
             query += " AND a.doctor_id = ?";
             queryParams.push(doctorProfile.doctor_id);
@@ -167,16 +167,16 @@ export const _GET = async (request: Request) => {
             reason: appt.reason,
             notes: appt.notes,
             createdAt: appt.created_at,
-            patient: {
+            patient: {,
                 id: appt.patient_id,
                 firstName: appt.patient_first_name,
-                lastName: appt.patient_last_name},
-            doctor: {},
+                lastName: appt.patient_last_name,},
+            doctor: {,},
                 id: appt.doctor_id,
                 name: appt.doctor_name,
                 specialty: appt.doctor_specialty;
             },
-            user: {},
+            user: {,},
                 userId: 0, // Placeholder;
                 username: "", // Placeholder;
                 email: "" // Placeholder;
@@ -186,14 +186,14 @@ export const _GET = async (request: Request) => {
         // 5. Return appointment list;
         return new Response(JSON.stringify(formattedAppointments), {
             status: 200,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 }
 
@@ -201,21 +201,21 @@ export const _GET = async (request: Request) => {
 const BookAppointmentSchema = z.object({
     patient_id: z.number().int().positive(),
     doctor_id: z.number().int().positive(),
-    appointment_datetime: z.string().datetime({ message: "Invalid ISO 8601 datetime string" }),
+    appointment_datetime: z.string().datetime({ message: "Invalid ISO 8601 datetime string" ,}),
     duration_minutes: z.number().int().positive().optional().default(15),
     reason: z.string().optional(),
     status: z.nativeEnum(AppointmentStatus).optional().default(AppointmentStatus.Scheduled);
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     const cookieStore = await cookies(); // REVERT FIX: Add await back based on TS error;
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions); // Pass the awaited store;
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -254,9 +254,9 @@ export const _POST = async (request: Request) => {
         const validation = BookAppointmentSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         const apptData = validation.data;
         // Get context and DB instance once;
@@ -268,11 +268,11 @@ export const _POST = async (request: Request) => {
 
         // If user is a Patient, ensure they are booking for themselves;
         if (!session.user) {
-             const patientProfile = await dbInstance.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number }>();
+             const patientProfile = await dbInstance.prepare("SELECT patient_id FROM Patients WHERE user_id = ? AND is_active = TRUE").bind(session.user.userId).first<{ patient_id: number ,}>();
              if (!session.user) {
-                 return new Response(JSON.stringify({ error: "Forbidden: Patients can only book appointments for themselves" }), {
+                 return new Response(JSON.stringify({ error: "Forbidden: Patients can only book appointments for themselves" ,}), {
                     status: 403,
-                    headers: { "Content-Type": "application/json" }});
+                    headers: { "Content-Type": "application/json" },});
 
         // 2. Check Doctor Availability using availability service;
 
@@ -292,7 +292,7 @@ export const _POST = async (request: Request) => {
         .run();
 
         if (!session.user) {
-            throw new Error(`Failed to book appointment: ${}`;
+            throw new Error(`Failed to book appointment: ${,}`;
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newAppointmentId = meta.last_row_id;
@@ -301,15 +301,15 @@ export const _POST = async (request: Request) => {
             throw new Error("Failed to retrieve appointment ID after creation.");
 
         // 4. Return success response;
-        return new Response(JSON.stringify({ message: "Appointment booked successfully", appointmentId: newAppointmentId }), {
+        return new Response(JSON.stringify({ message: "Appointment booked successfully", appointmentId: newAppointmentId ,}), {
             status: 201,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
 export async function GET() { return new Response("OK"); })

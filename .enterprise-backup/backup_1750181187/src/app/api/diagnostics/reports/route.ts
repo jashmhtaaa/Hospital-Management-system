@@ -13,12 +13,12 @@ import { getSession } from '@/lib/session';
  * GET /api/diagnostics/reports;
  * Get diagnostic reports with optional filtering;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Parse query parameters
@@ -63,37 +63,37 @@ export const GET = async (request: NextRequest) => {
         const params: unknown[] = [];
 
         // Add filters
-        \1 {\n  \2{
+         {\n  {
           query += ' AND r.patient_id = ?';
           params.push(patientId);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND r.report_type = ?';
           params.push(reportType);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND r.status = ?';
           params.push(status);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND r.report_date >= ?';
           params.push(fromDate);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND r.report_date <= ?';
           params.push(toDate);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND r.author_id = ?';
           params.push(authorId);
         }
 
-        \1 {\n  \2{
+         {\n  {
           query += ' AND (r.title LIKE ? OR r.conclusion LIKE ? OR p.patient_id LIKE ? OR CONCAT(p.first_name, " ", p.last_name) LIKE ?)';
           const searchTerm = `%${search}%`;
           params.push(searchTerm, searchTerm, searchTerm, searchTerm);
@@ -128,26 +128,26 @@ export const GET = async (request: NextRequest) => {
           return {
             ...report,
             content: report.content ? decryptSensitiveData(report.content) : null,
-            \1,\2 report.conclusion ? decryptSensitiveData(report.conclusion) : null
+             report.conclusion ? decryptSensitiveData(report.conclusion) : null
           };
         });
 
         // Convert to FHIR format if requested
         let formattedReports = reports;
-        \1 {\n  \2{
+         {\n  {
           formattedReports = reports.map(report => generateFhirResource('DiagnosticReport', report));
         }
 
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'diagnostic_reports',
+           'diagnostic_reports',
           details: patientId, reportType, status, page, pageSize, format 
         });
 
         return {
           reports: formattedReports,
-          pagination: {
+          pagination: {,
             page,
             pageSize,
             totalCount,
@@ -163,8 +163,8 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({
       error: 'Failed to fetch diagnostic reports',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -172,17 +172,17 @@ export const GET = async (request: NextRequest) => {
  * POST /api/diagnostics/reports;
  * Create a new diagnostic report;
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Parse request body
@@ -206,40 +206,40 @@ export const POST = async (request: NextRequest) => {
     } = body;
 
     // Validate required fields
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
         error: 'Patient ID, report type, and title are required'
-      }, { status: 400 });
+      }, { status: 400 ,});
     }
 
     // Check if patient exists
     const patientCheck = await DB.query('SELECT id FROM patients WHERE id = ?', [patientId]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Patient not found' ,}, { status: 404 ,});
     }
 
     // Check if order exists if provided
-    \1 {\n  \2{
+     {\n  {
       let orderTable;
-      \1 {\n  \2{
+       {\n  {
         orderTable = 'radiology_orders',
-      } else \1 {\n  \2{
+      } else  {\n  {
         orderTable = 'laboratory_orders',
       } else {
         orderTable = 'diagnostic_orders',
       }
 
       const orderCheck = await DB.query(`SELECT id FROM ${orderTable} WHERE id = ?`, [orderId]);
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+       {\n  {
+        return NextResponse.json({ error: 'Order not found' ,}, { status: 404 ,});
       }
     }
 
     // Check if template exists if provided
-    \1 {\n  \2{
+     {\n  {
       const templateCheck = await DB.query('SELECT id FROM report_templates WHERE id = ?', [templateId]);
-      \1 {\n  \2{
-        return NextResponse.json({ error: 'Template not found' }, { status: 404 });
+       {\n  {
+        return NextResponse.json({ error: 'Template not found' ,}, { status: 404 ,});
       }
     }
 
@@ -283,7 +283,7 @@ export const POST = async (request: NextRequest) => {
     const reportId = result.insertId;
 
     // Handle multimedia attachments if provided
-    \1 {\n  \2& multimedia.length > 0) {
+     {\n  & multimedia.length > 0) {
       for (const item of multimedia) {
         await DB.query(
           `INSERT INTO report_multimedia (
@@ -306,22 +306,22 @@ export const POST = async (request: NextRequest) => {
     // Log creation
     await auditLog({
       userId: session.user.id,
-      \1,\2 'diagnostic_reports',
+       'diagnostic_reports',
       resourceId: reportId;
         patientId,
         reportType,
         title,
         status: status || 'draft',
-        criticalFindings: criticalFindings || false
+        criticalFindings: criticalFindings || false,
     });
 
     // If critical findings are present, notify relevant parties
-    \1 {\n  \2{
+     {\n  {
       // Determine who to notify based on report type
       let notifyRoles = [];
-      \1 {\n  \2{
+       {\n  {
         notifyRoles = ['radiologist', 'physician'];
-      } else \1 {\n  \2{
+      } else  {\n  {
         notifyRoles = ['pathologist', 'physician'];
       } else {
         notifyRoles = ['physician'];
@@ -337,14 +337,14 @@ export const POST = async (request: NextRequest) => {
       const usersResult = await DB.query(usersQuery, notifyRoles);
       const userIds = usersResult.results.map(user => user.id);
 
-      \1 {\n  \2{
+       {\n  {
         await notifyUsers({
           userIds,
           title: 'Critical Finding in Diagnostic Report',
-          message: `Critical finding reported in ${reportType} report: ${title}`,
+          message: `Critical finding reported in ${reportType} report: ${title,}`,
           type: 'critical_finding',
-          \1,\2 'diagnostic_reports',
-          priority: 'high'
+           'diagnostic_reports',
+          priority: 'high',
         });
       }
     }
@@ -369,11 +369,11 @@ export const POST = async (request: NextRequest) => {
     // Decrypt sensitive data
     const report = {
       ...createdReport.results[0],
-      content: createdReport.results[0].content ?
+      content: createdReport.results[0].content ?,
         decryptSensitiveData(createdReport.results[0].content) : null,
-      findings: createdReport.results[0].findings ?
+      findings: createdReport.results[0].findings ?,
         decryptSensitiveData(createdReport.results[0].findings) : null,
-      conclusion: createdReport.results[0].conclusion ?
+      conclusion: createdReport.results[0].conclusion ?,
         decryptSensitiveData(createdReport.results[0].conclusion) : null
     };
 
@@ -385,13 +385,13 @@ export const POST = async (request: NextRequest) => {
 
     report.multimedia = multimediaResult.results;
 
-    return NextResponse.json(report, { status: 201 });
+    return NextResponse.json(report, { status: 201 ,});
   } catch (error) {
 
     return NextResponse.json({
       error: 'Failed to create diagnostic report',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -399,17 +399,17 @@ export const POST = async (request: NextRequest) => {
  * GET /api/diagnostics/reports/:id;
  * Get a specific diagnostic report by ID;
  */
-export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+     {\n   {
+      return NextResponse.json({ error: 'Invalid ID' ,}, { status: 400 ,});
     }
 
     // Parse query parameters
@@ -417,7 +417,7 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
     const format = searchParams.get('format') || 'json'; // json or fhir
 
     // Cache key
-    const cacheKey = `diagnostic:report:${id}:${format}`;
+    const cacheKey = `diagnostic:report:${id}:${format,}`;
 
     // Try to get from cache or fetch from database
     const data = await RedisCache.getOrSet(
@@ -438,18 +438,18 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 
         const result = await DB.query(query, [id]);
 
-        \1 {\n  \2{
+         {\n  {
           throw new Error('Report not found');
         }
 
         // Decrypt sensitive data
         const report = {
           ...result.results[0],
-          content: result.results[0].content ?
+          content: result.results[0].content ?,
             decryptSensitiveData(result.results[0].content) : null,
-          findings: result.results[0].findings ?
+          findings: result.results[0].findings ?,
             decryptSensitiveData(result.results[0].findings) : null,
-          conclusion: result.results[0].conclusion ?
+          conclusion: result.results[0].conclusion ?,
             decryptSensitiveData(result.results[0].conclusion) : null
         };
 
@@ -463,14 +463,14 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 
         // Convert to FHIR format if requested
         let formattedReport = report;
-        \1 {\n  \2{
+         {\n  {
           formattedReport = generateFhirResource('DiagnosticReport', report);
         }
 
         // Log access
         await auditLog({
           userId: session.user.id,
-          \1,\2 'diagnostic_reports',
+           'diagnostic_reports',
           resourceId: id;id, format 
         });
 
@@ -484,8 +484,8 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
 
     return NextResponse.json({
       error: 'Failed to fetch diagnostic report',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -493,17 +493,17 @@ export const _GET_BY_ID = async (request: NextRequest, { params }: { params: { i
  * PUT /api/diagnostics/reports/:id;
  * Update a diagnostic report;
  */
-export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const PUT = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+     {\n   {
+      return NextResponse.json({ error: 'Invalid ID' ,}, { status: 400 ,});
     }
 
     // Parse request body
@@ -526,8 +526,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     // Check if report exists
     const reportCheck = await DB.query('SELECT * FROM diagnostic_reports WHERE id = ?', [id]);
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Report not found' }, { status: 404 });
+     {\n  {
+      return NextResponse.json({ error: 'Report not found' ,}, { status: 404 ,});
     }
 
     const existingReport = reportCheck.results[0];
@@ -538,15 +538,15 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const isAdmin = ['admin', 'radiology_manager', 'lab_manager'].includes(session.user.roleName);
 
     // Only certain roles can update reports
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n  {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     // Prevent modification of verified reports unless by admin
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
-        error: 'Cannot modify a verified report'
-      }, { status: 403 });
+        error: 'Cannot modify a verified report',
+      }, { status: 403 ,});
     }
 
     // Build update query
@@ -556,27 +556,27 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     const _oldStatus = existingReport.status;
     const criticalStatusChanged = false;
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('title = ?');
       updateParams.push(title);
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('content = ?');
       updateParams.push(content ? encryptSensitiveData(content) : null);
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('findings = ?');
       updateParams.push(findings ? encryptSensitiveData(findings) : null);
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('conclusion = ?');
       updateParams.push(conclusion ? encryptSensitiveData(conclusion) : null);
     }
 
-    \1 {\n  \2{
+     {\n  {
       // Validate status transitions
       const validTransitions: Record<string, string[]> = {
         'draft': ['preliminary', 'final', 'verified', 'cancelled'],
@@ -586,9 +586,9 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         'cancelled': []
       };
 
-      \1 {\n  \2 {
+       {\n   {
         return NextResponse.json({
-          error: `Invalid status transition from ${existingReport.status} to ${status}`;
+          error: `Invalid status transition from ${existingReport.status} to ${status,}`;
         }, status: 400 );
       }
 
@@ -597,29 +597,29 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       statusChanged = true;
 
       // If transitioning to verified status, set verifier and verification time
-      \1 {\n  \2{
-        \1 {\n  \2{
+       {\n  {
+         {\n  {
           updateFields.push('verifier_id = ?');
           updateParams.push(session.user.id);
         }
 
-        \1 {\n  \2{
+         {\n  {
           updateFields.push('verified_at = NOW()');
         }
       }
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('critical_findings = ?');
       updateParams.push(criticalFindings);
       criticalStatusChanged = true;
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('critical_findings_acknowledged = ?');
       updateParams.push(criticalFindingsAcknowledged);
 
-      \1 {\n  \2{
+       {\n  {
         updateFields.push('critical_findings_acknowledged_by = ?');
         updateParams.push(criticalFindingsAcknowledgedBy || session.user.id);
 
@@ -628,17 +628,17 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
     }
 
-    \1 {\n  \2{
+     {\n  {
       updateFields.push('report_date = ?');
       updateParams.push(reportDate);
     }
 
-    \1 {\n  \2 {
+     {\n   {
       updateFields.push('verifier_id = ?');
       updateParams.push(verifierId);
     }
 
-    \1 {\n  \2 {
+     {\n   {
       updateFields.push('verified_at = ?');
       updateParams.push(verifiedAt);
     }
@@ -652,14 +652,14 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     updateParams.push(id);
 
     // Execute update
-    \1 {\n  \2{
+     {\n  {
       const query = `UPDATE diagnostic_reports SET ${updateFields.join(', ')} WHERE id = ?`;
       await DB.query(query, updateParams);
 
       // Log update
       await auditLog({
         userId: session.user.id,
-        \1,\2 'diagnostic_reports',
+         'diagnostic_reports',
         resourceId: id;
           ...body,
           statusChanged,
@@ -669,7 +669,7 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       });
 
       // Handle multimedia attachments if provided
-      \1 {\n  \2 {
+       {\n   {
         // Delete existing multimedia
         await DB.query('DELETE FROM report_multimedia WHERE report_id = ?', [id]);
 
@@ -694,12 +694,12 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
       }
 
       // If critical findings status changed to true, notify relevant parties
-      \1 {\n  \2{
+       {\n  {
         // Determine who to notify based on report type
         let notifyRoles = [];
-        \1 {\n  \2{
+         {\n  {
           notifyRoles = ['radiologist', 'physician'];
-        } else \1 {\n  \2{
+        } else  {\n  {
           notifyRoles = ['pathologist', 'physician'];
         } else {
           notifyRoles = ['physician'];
@@ -715,21 +715,21 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
         const usersResult = await DB.query(usersQuery, notifyRoles);
         const userIds = usersResult.results.map(user => user.id);
 
-        \1 {\n  \2{
+         {\n  {
           await notifyUsers({
             userIds,
             title: 'Critical Finding in Diagnostic Report',
-            message: `Critical finding reported in ${existingReport.report_type} report: ${existingReport.title}`,
+            message: `Critical finding reported in ${existingReport.report_type} report: ${existingReport.title,}`,
             type: 'critical_finding',
-            \1,\2 'diagnostic_reports',
-            priority: 'high'
+             'diagnostic_reports',
+            priority: 'high',
           });
         }
       }
 
       // Invalidate cache
       await CacheInvalidation.invalidatePattern('diagnostic:reports:*');
-      await CacheInvalidation.invalidatePattern(`diagnostic:report:${id}:*`);
+      await CacheInvalidation.invalidatePattern(`diagnostic:report:${id,}:*`);
     }
 
     // Get the updated report
@@ -749,11 +749,11 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
     // Decrypt sensitive data
     const report = {
       ...updatedReport.results[0],
-      content: updatedReport.results[0].content ?
+      content: updatedReport.results[0].content ?,
         decryptSensitiveData(updatedReport.results[0].content) : null,
-      findings: updatedReport.results[0].findings ?
+      findings: updatedReport.results[0].findings ?,
         decryptSensitiveData(updatedReport.results[0].findings) : null,
-      conclusion: updatedReport.results[0].conclusion ?
+      conclusion: updatedReport.results[0].conclusion ?,
         decryptSensitiveData(updatedReport.results[0].conclusion) : null
     };
 
@@ -770,8 +770,8 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
 
     return NextResponse.json({
       error: 'Failed to update diagnostic report',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }
 }
 
@@ -779,22 +779,22 @@ export const PUT = async (request: NextRequest, { params }: { params: { id: stri
  * POST /api/diagnostics/reports/:id/acknowledge-critical;
  * Acknowledge critical findings in a report;
  */
-export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params }: { params: { id: string } }) => {
+export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params }: { params: { id: string } }) => {,
   try {
     // Authentication
     const session = await getSession();
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Authorization
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+     {\n   {
+      return NextResponse.json({ error: 'Forbidden' ,}, { status: 403 ,});
     }
 
     const id = Number.parseInt(params.id);
-    \1 {\n  \2 {
-      return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
+     {\n   {
+      return NextResponse.json({ error: 'Invalid ID' ,}, { status: 400 ,});
     }
 
     // Parse request body
@@ -807,19 +807,19 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
       [id]
     );
 
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
-        error: 'Report not found or does not have critical findings'
-      }, { status: 404 });
+        error: 'Report not found or does not have critical findings',
+      }, { status: 404 ,});
     }
 
     const report = reportCheck.results[0];
 
     // Check if already acknowledged
-    \1 {\n  \2{
+     {\n  {
       return NextResponse.json({
         error: 'Critical findings already acknowledged',
-        \1,\2 report.critical_findings_acknowledged_at
+         report.critical_findings_acknowledged_at
       }, status: 409 );
     }
 
@@ -838,13 +838,13 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
     // Log acknowledgement
     await auditLog({
       userId: session.user.id,
-      \1,\2 'diagnostic_reports_critical',
-      \1,\2 id,
-        acknowledgementNotes: acknowledgementNotes || null
+       'diagnostic_reports_critical',
+       id,
+        acknowledgementNotes: acknowledgementNotes || null,
     });
 
     // Create acknowledgement record with notes if provided
-    \1 {\n  \2{
+     {\n  {
       await DB.query(
         `INSERT INTO critical_findings_acknowledgements (
           report_id, acknowledged_by, acknowledged_at, notes;
@@ -854,29 +854,29 @@ export const _POST_ACKNOWLEDGE_CRITICAL = async (request: NextRequest, { params 
     }
 
     // Notify report author
-    \1 {\n  \2{
+     {\n  {
       await notifyUsers({
         userIds: [report.author_id],
-        \1,\2 `Critical findings in report "${report.title}" have been acknowledged`,
+         `Critical findings in report "${report.title}" have been acknowledged`,
         type: 'critical_finding_acknowledged',
-        \1,\2 'diagnostic_reports',
-        priority: 'medium'
+         'diagnostic_reports',
+        priority: 'medium',
       });
     }
 
     // Invalidate cache
     await CacheInvalidation.invalidatePattern('diagnostic:reports:*');
-    await CacheInvalidation.invalidatePattern(`diagnostic:report:${id}:*`);
+    await CacheInvalidation.invalidatePattern(`diagnostic:report:${id,}:*`);
 
     return NextResponse.json({
       success: true,
-      \1,\2 session.user.id,
-      acknowledgedAt: new Date().toISOString()
+       session.user.id,
+      acknowledgedAt: new Date().toISOString(),
     });
   } catch (error) {
 
     return NextResponse.json({
       error: 'Failed to acknowledge critical findings',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+      details: error instanceof Error ? error.message : 'Unknown error',
+    }, { status: 500 ,});
   }

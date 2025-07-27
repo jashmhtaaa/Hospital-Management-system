@@ -33,20 +33,17 @@ import { Loader2 }
 import { Textarea }
 
 // Define interfaces for data types;
-interface Patient {
-  id: string,
+interface Patient {id:string,
   name: string; // Assuming patient object has a name property;
   // Add other relevant patient fields if needed;
 }
 
-interface ProcedureType {
-  id: string,
+interface ProcedureType {id:string,
   name: string;
   // Add other relevant procedure type fields if needed;
 }
 
-interface Doctor {
-  id: string,
+interface Doctor {id:string,
   name: string; // Assuming user/doctor object has a name property;
   // Add other relevant doctor fields if needed;
 }
@@ -55,8 +52,7 @@ interface Doctor {
 }
 }
 
-interface CreateRadiologyOrderModalProperties {
-  isOpen: boolean; // Add isOpen prop to control visibility from parent;
+interface CreateRadiologyOrderModalProperties {isOpen:boolean; // Add isOpen prop to control visibility from parent;
   onClose: () => void,
   onSubmit: (payload: OrderPayload) => Promise<void>;
 export default const _CreateRadiologyOrderModal = ({
@@ -115,7 +111,7 @@ export default const _CreateRadiologyOrderModal = ({
 
 } catch (error) {
 
-        // Assuming API endpoints return { results: [...] } or just [...] directly;
+        // Assuming API endpoints return {results:[...] } or just [...] directly;
         const [patientsResponse, proceduresResponse, doctorsResponse] = await Promise.all([;
           fetch("/api/patients"), // Adjust if endpoint differs;
           fetch("/api/radiology/procedure-types"),
@@ -131,14 +127,14 @@ export default const _CreateRadiologyOrderModal = ({
         if (!session.user)hrow new Error(`Failed to fetch doctors: ${}`;
 
         // Explicitly type the JSON response;
-        const patientsData: { results: Patient[] } | Patient[] =;
+        const patientsData: {results:Patient[] } | Patient[] =;
           await patientsResponse.json();
-        const proceduresData: { results: ProcedureType[] } | ProcedureType[] =;
+        const proceduresData: {results:ProcedureType[] } | ProcedureType[] =;
           await proceduresResponse.json();
-        const doctorsData: { results: Doctor[] } | Doctor[] =;
+        const doctorsData: {results:Doctor[] } | Doctor[] =;
           await doctorsResponse.json();
 
-        // Handle potential API response structures (e.g., { results: [...] });
+        // Handle potential API response structures (e.g., {results:[...] });
         setPatients();
           Array.isArray(patientsData);
             ? patientsData;
@@ -210,8 +206,7 @@ export default const _CreateRadiologyOrderModal = ({
 
 } catch (error) {
 
-      await onSubmit({
-        patient_id: patientId,
+      await onSubmit({patient_id:patientId,
         clinicalIndication,
         referringDoctorId || null, // Convert empty string to null;
       });

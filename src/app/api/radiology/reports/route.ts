@@ -1,17 +1,18 @@
-import { IronSession  } from "iron-session"; // Import IronSession;
+import {IronSession  } from "next/server"; // Import IronSession;
 import "nanoid"
 import "next/server"
-import { NextRequest } from "next/server"
-import { NextResponse } from "next/server" }
-import {  nanoid  } from "@/lib/database"
-import { type
+import {NextRequest } from "next/server"
+import {NextResponse } from "next/server" }
+import {nanoid  } from "next/server"
+import {type
 
-// import { checkUserRole } from "@/lib/auth"; // Assuming checkUserRole might not be fully implemented or needed based on roleName;
-import { getDB } from "@/lib/database"; // Import getDB;
-import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
+// import { checkUserRole } from "next/server"; // Assuming checkUserRole might not be fully implemented or needed based on roleName;
+import {getDB } from "next/server"; // Import getDB;
+import {type IronSessionData, getSession } from "next/server"; // Import IronSessionData;
 
 // Interface for POST request body;
-interface RadiologyReportPostData {study_id:string,
+interface RadiologyReportPostData {
+    {study_id:string,
   radiologist_id: string;
   findings?: string | null;
   impression: string;
@@ -20,7 +21,8 @@ interface RadiologyReportPostData {study_id:string,
 }
 
 // Interface for GET response items (adjust based on actual query results);
-interface RadiologyReportListItem {id:string,
+interface RadiologyReportListItem {
+    {id:string,
   string,
   status: string;
   accession_number?: string;
@@ -32,7 +34,7 @@ interface RadiologyReportListItem {id:string,
 }
 
 // GET all Radiology Reports (filtered by study_id, patient_id, radiologist_id, status);
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -69,11 +71,11 @@ export const _GET = async (request: any) => {
     const session: IronSession<IronSessionData> = await getSession();
     // Check session and user existence first;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
     }
     // Role check example (adjust roles as needed);
     // if (!session.user) {
-    //   return NextResponse.json({error:"Forbidden" }, {status:403 });
+    //   return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
     // }
 
     const { searchParams } = new URL(request.url);
@@ -85,7 +87,8 @@ export const _GET = async (request: any) => {
     const database = await getDB();
 
     // Select rr.*, rs.accession_number, rad.name as radiologist_name, ro.patient_id, p.name as patient_name, pt.name as procedure_name;
-    // Ensure aliases match the RadiologyReportListItem interface if possible;
+    // Ensure aliases match the RadiologyReportListItem interface if {
+    possible;
     let query = `SELECT;
                    rr.id, rr.study_id, rr.report_datetime, rr.status,
                    rs.accession_number,
@@ -125,25 +128,25 @@ export const _GET = async (request: any) => {
     query += " ORDER BY rr.report_datetime DESC";
 
     // Use direct type argument for .all() if supported, or assert structure;
-    // Assuming .all<T>() returns {results:T[] }
+    // Assuming .all<T>() returns {results:T[] },
     const result = await database;
       .prepare(query);
       .bind(...parameters);
       .all<RadiologyReportListItem>();
     return NextResponse.json(result.results || []);
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      {error:"Failed to fetch radiology reports", details: message },
-      {status:500 }
+      {error:"Failed to fetch radiology reports", details: message ,},
+      {status:500 },
     );
   }
 }
 
 // POST a new Radiology Report (Radiologist or Admin);
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -180,14 +183,14 @@ export const _POST = async (request: any) => {
     const session: IronSession<IronSessionData> = await getSession();
     // Check session and user existence first;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" }, {status:401 });
+      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
 
     // Use the user directly from session;
     const currentUser = session.user;
     // Use roleName for check;
     if (!session.user)eturn NextResponse.json()
-        {error:"Forbidden: Admin or Radiologist role required" },
-        {status:403 }
+        {error:"Forbidden: Admin or Radiologist role required" ,},
+        {status:403 },
       );
 
     const database = await getDB();
@@ -203,7 +206,7 @@ export const _POST = async (request: any) => {
     if (!session.user) {
       return NextResponse.json();
         {error:"Missing required fields (study_id, radiologist_id, impression)"},
-        {status:400 }
+        {status:400 },
       );
 
     // Check if study exists;
@@ -214,14 +217,14 @@ export const _POST = async (request: any) => {
       .first<id: string >();
     if (!session.user) {
       return NextResponse.json();
-        {error:"Associated radiology study not found" },
-        {status:404 }
+        {error:"Associated radiology study not found" ,},
+        {status:404 },
       );
 
     // Check if a report already exists for this study (optional, depends on workflow - allow addendums?);
     // const _existingReport = await db.prepare("SELECT id FROM RadiologyReports WHERE study_id = ? AND status != \"addendum\"").bind(study_id).first();
     // if (!session.user) {
-    //     return NextResponse.json({error:"A report already exists for this study. Create an addendum instead?" }, {status:409 });
+    //     return NextResponse.json({error:"A report already exists for this study. Create an addendum instead?" ,}, {status:409 ,});
     // }
 
     const id = nanoid();
@@ -276,10 +279,10 @@ export const _POST = async (request: any) => {
       .first<RadiologyReportListItem>(); // Use existing interface;
 
     return NextResponse.json();
-      createdReport || { id, message: "Radiology report created" },
-      {status:201 }
+      createdReport || { id, message: "Radiology report created" ,},
+      {status:201 },
     );
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -290,9 +293,9 @@ export const _POST = async (request: any) => {
         {error:"Failed to create radiology report: A report for this study might already exist.",
           details: message;
         },
-        {status:409 }
+        {status:409 },
       );
     return NextResponse.json();
-      {error:"Failed to create radiology report", details: message },
-      {status:500 }
+      {error:"Failed to create radiology report", details: message ,},
+      {status:500 },
     );

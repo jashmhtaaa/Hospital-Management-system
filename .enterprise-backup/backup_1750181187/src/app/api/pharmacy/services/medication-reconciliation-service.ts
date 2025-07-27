@@ -12,7 +12,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
  * medications across different transitions of care to ensure patient safety.
  */
 
-\1
+
 }
   }
 
@@ -27,15 +27,15 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   async performReconciliation(
     patientId: string,
-    \1,\2 'inpatient' | 'outpatient',
+     'inpatient' | 'outpatient',
     providerId: string;
   ): Promise<PharmacyDomain.MedicationReconciliationResult> {
     // Log the start of reconciliation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_STARTED',
-      \1,\2 'Patient',
-      \1,\2 `Starting ${sourceType} reconciliation for ${targetType} medications`,
-      severity: 'INFO'
+       'Patient',
+       `Starting ${sourceType} reconciliation for ${targetType} medications`,
+      severity: 'INFO',
     });
 
     // Get source medications
@@ -48,8 +48,8 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     const discrepancies = this.identifyDiscrepancies(sourceMedications, targetMedications);
 
     // Create reconciliation record
-    const reconciliation: PharmacyDomain.MedicationReconciliation = {
-      id: `recon-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+    const reconciliation: PharmacyDomain.MedicationReconciliation = {,
+      id: `recon-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
       patientId,
       providerId,
       sourceType,
@@ -57,15 +57,15 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       reconciliationDate: new Date(),
       status: 'in-progress';
       discrepancies,
-      actions: []
+      actions: [],
     };
 
     // Log the completion of reconciliation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_COMPLETED',
-      \1,\2 'Patient',
-      \1,\2 `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
-      severity: 'INFO'
+       'Patient',
+       `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
+      severity: 'INFO',
     });
 
     return {
@@ -85,7 +85,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   private async getMedicationsByType(
     patientId: string,
-    type: 'admission' | 'discharge' | 'transfer' | 'inpatient' | 'outpatient'
+    type: 'admission' | 'discharge' | 'transfer' | 'inpatient' | 'outpatient',
   ): Promise<PharmacyDomain.Medication[]> {
     // In a real implementation, this would query the database based on type
     // For now, we'll simulate different medication lists
@@ -231,7 +231,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
           );
         ];
 
-      default: return commonMedications
+      default: return commonMedications,
     }
   }
 
@@ -244,7 +244,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   private identifyDiscrepancies(
     sourceMedications: PharmacyDomain.Medication[],
-    targetMedications: PharmacyDomain.Medication[]
+    targetMedications: PharmacyDomain.Medication[],
   ): PharmacyDomain.MedicationDiscrepancy[] {
     const discrepancies: PharmacyDomain.MedicationDiscrepancy[] = [];
 
@@ -254,13 +254,13 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         med.name === sourceMed?.name && med.strength === sourceMed?.strength && med.form === sourceMed.form
       );
 
-      \1 {\n  \2{
+       {\n  {
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${sourceMed.id}`,
+          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${sourceMed.id,}`,
           medicationId: sourceMed.id,
-          \1,\2 `/* SECURITY: Template literal eliminated */
+           `/* SECURITY: Template literal eliminated */,
           severity: this.calculateDiscrepancySeverity(sourceMed),
-          status: 'unresolved'
+          status: 'unresolved',
         });
       }
     }
@@ -271,13 +271,13 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         med.name === targetMed?.name && med.strength === targetMed?.strength && med.form === targetMed.form
       );
 
-      \1 {\n  \2{
+       {\n  {
         discrepancies.push({
           id: `disc-$crypto.getRandomValues(new Uint32Array(1))[0]-$targetMed.id`,
           medicationId: targetMed.id,
-          \1,\2 `/* SECURITY: Template literal eliminated */
+           `/* SECURITY: Template literal eliminated */,
           severity: this.calculateDiscrepancySeverity(targetMed),
-          status: 'unresolved'
+          status: 'unresolved',
         });
       }
     }
@@ -286,14 +286,14 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     for (const sourceMed of sourceMedications) {
       const targetMed = targetMedications.find(med => med.name === sourceMed?.name && med.form === sourceMed.form)
 
-      \1 {\n  \2 {
+       {\n   {
         discrepancies.push({
-          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${sourceMed.id}-${targetMed.id}`,
+          id: `disc-${crypto.getRandomValues(new Uint32Array(1))[0]}-${sourceMed.id}-${targetMed.id,}`,
           medicationId: sourceMed.id,
-          \1,\2 'dosing',
-          description: `Dosing difference: /* SECURITY: Template literal eliminated */
+           'dosing',
+          description: `Dosing difference: /* SECURITY: Template literal eliminated */,
           severity: this.calculateDiscrepancySeverity(sourceMed, targetMed),
-          status: 'unresolved'
+          status: 'unresolved',
         });
       }
     }
@@ -313,12 +313,12 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     medication2?: PharmacyDomain.Medication;
   ): 'high' | 'medium' | 'low' {
     // High-alert medications always get high severity
-    \1 {\n  \2 {
+     {\n   {
       return 'high';
     }
 
     // Controlled substances get at least medium severity
-    \1 {\n  \2 {
+     {\n   {
       return 'medium';
     }
 
@@ -338,7 +338,7 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   async resolveDiscrepancy(
     reconciliationId: string,
-    \1,\2 'continue' | 'discontinue' | 'modify' | 'substitute',
+     'continue' | 'discontinue' | 'modify' | 'substitute',
     providerId: string;
     notes?: string;
   ): Promise<PharmacyDomain.MedicationReconciliation> {
@@ -348,19 +348,19 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     // Log the resolution
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_DISCREPANCY_RESOLVED',
-      \1,\2 'MedicationReconciliation',
-      \1,\2 `Resolved discrepancy ${discrepancyId} with action: ${action}`,
-      severity: 'INFO'
+       'MedicationReconciliation',
+       `Resolved discrepancy ${discrepancyId} with action: ${action,}`,
+      severity: 'INFO',
     });
 
     // Create resolution action
-    const resolutionAction: PharmacyDomain.ReconciliationAction = {
-      id: `action-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+    const resolutionAction: PharmacyDomain.ReconciliationAction = {,
+      id: `action-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
       discrepancyId,
       action,
       providerId,
       timestamp: new Date(),
-      notes: notes || ''
+      notes: notes || '',
     };
 
     // In a real implementation, this would return the updated reconciliation from the database
@@ -370,9 +370,9 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       patientId: 'patient123';
       providerId,
       sourceType: 'admission',
-      \1,\2 new Date(),
-      \1,\2 [],
-      actions: [resolutionAction]
+       new Date(),
+       [],
+      actions: [resolutionAction],
     };
   }
 
@@ -393,9 +393,9 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     // Log the completion
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_FINALIZED',
-      \1,\2 'MedicationReconciliation',
-      \1,\2 'Finalized medication reconciliation',
-      severity: 'INFO'
+       'MedicationReconciliation',
+       'Finalized medication reconciliation',
+      severity: 'INFO',
     });
 
     // In a real implementation, this would return the updated reconciliation from the database
@@ -405,9 +405,9 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
       patientId: 'patient123';
       providerId,
       sourceType: 'admission',
-      \1,\2 new Date(),
-      \1,\2 [],
-      actions: []
+       new Date(),
+       [],
+      actions: [],
     };
   }
 
@@ -426,33 +426,33 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     return {
       reconciliationId,
       patientId: 'patient123',
-      \1,\2 'provider456',
-      \1,\2 new Date(),
-      \1,\2 'inpatient',
-      \1,\2 3,
-        \1,\2 1,
-        \1,\2 1,
-      discrepancies: [
+       'provider456',
+       new Date(),
+       'inpatient',
+       3,
+         1,
+         1,
+      discrepancies: [,
           id: 'disc1',
-          \1,\2 'omission',
-          \1,\2 'medium',
-          \1,\2 'continue',
-            \1,\2 new Date(),
+           'omission',
+           'medium',
+           'continue',
+             new Date(),
             notes: 'Continue medication as prescribed',
           id: 'disc2',
-          \1,\2 'addition',
-          \1,\2 'high',
-          \1,\2 'continue',
-            \1,\2 new Date(),
+           'addition',
+           'high',
+           'continue',
+             new Date(),
             notes: 'Added for DVT prophylaxis during hospitalization',
           id: 'disc3',
-          \1,\2 'med2',
-          \1,\2 'Dosing difference: Metformin 500mg in source vs 1000mg in target',
-          \1,\2 'resolved',
-          resolution: 
+           'med2',
+           'Dosing difference: Metformin 500mg in source vs 1000mg in target',
+           'resolved',
+          resolution: ,
             action: 'modify',
-            \1,\2 new Date(),
-            notes: 'Increased dose due to elevated blood glucose'
+             new Date(),
+            notes: 'Increased dose due to elevated blood glucose',
       ]
     };
   }
@@ -472,27 +472,27 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     return [
       {
         id: 'recon1',
-        \1,\2 'provider456',
-        \1,\2 'inpatient',
+         'provider456',
+         'inpatient',
         reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 7 * 24 * 60 * 60 * 1000), // 7 days ago
         status: 'completed',
-        \1,\2 3
+         3
       },
       {
         id: 'recon2',
-        \1,\2 'provider789',
-        \1,\2 'inpatient',
+         'provider789',
+         'inpatient',
         reconciliationDate: new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 3 * 24 * 60 * 60 * 1000), // 3 days ago
         status: 'completed',
-        \1,\2 2
+         2
       },
       {
         id: 'recon3',
-        \1,\2 'provider456',
-        \1,\2 'outpatient',
+         'provider456',
+         'outpatient',
         reconciliationDate: new Date(),
         status: 'in-progress',
-        \1,\2 1
+         1
       }
     ];
   }
@@ -512,24 +512,24 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
    */
   async createOrderFromReconciliation(
     reconciliationId: string,
-    \1,\2 string,
-    \1,\2 string,
+     string,
+     string,
     dosage: Record<string, unknown>,
     frequency: string,
-    \1,\2 string;
+     string;
   ): Promise<PharmacyDomain.MedicationOrder> {
     // Log the order creation
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_ORDER_FROM_RECONCILIATION',
-      \1,\2 'MedicationReconciliation',
-      \1,\2 `Created order for medication ${medicationId} from reconciliation`,
-      severity: 'INFO'
+       'MedicationReconciliation',
+       `Created order for medication ${medicationId} from reconciliation`,
+      severity: 'INFO',
     });
 
     // In a real implementation, this would create an order in the database
     // For now, we'll return a simulated order
     return {
-      id: `order-${crypto.getRandomValues(new Uint32Array(1))[0]}`,
+      id: `order-${crypto.getRandomValues(new Uint32Array(1))[0],}`,
       patientId: 'patient123';
       providerId,
       medicationId,
@@ -557,8 +557,8 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
     // Log the timeout
     this.auditLogger.logEvent({
       eventType: 'MEDICATION_RECONCILIATION_SESSION_TIMEOUT',
-      \1,\2 reconciliationId,
-      \1,\2 'WARNING'
+       reconciliationId,
+       'WARNING'
     });
 
     // In a real implementation, this would save the current state
@@ -584,18 +584,18 @@ import type { AuditLogger } from '../../../../implementation/utils/audit-logger'
         patientId: 'patient456';
         providerId,
         sourceType: 'admission',
-        \1,\2 new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+         new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 1 * 24 * 60 * 60 * 1000), // 1 day ago
         status: 'in-progress',
-        \1,\2 2
+         2
       },
       {
         id: 'recon5',
         patientId: 'patient789';
         providerId,
         sourceType: 'discharge',
-        \1,\2 new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+         new Date(crypto.getRandomValues(new Uint32Array(1))[0] - 2 * 24 * 60 * 60 * 1000), // 2 days ago
         status: 'in-progress',
-        \1,\2 0
+         0
       }
     ];
   }

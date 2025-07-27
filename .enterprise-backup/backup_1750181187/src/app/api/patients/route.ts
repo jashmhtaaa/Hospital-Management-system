@@ -12,7 +12,7 @@ const patientCreateSchema = z.object({
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
     date_of_birth: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid date of birth format"
+        message: "Invalid date of birth format",
     }),
     gender: z.enum(["Male", "Female", "Other", "Unknown"]), // Enforce specific values
     contact_number: z.string().optional().nullable(),
@@ -33,23 +33,23 @@ const patientCreateSchema = z.object({
     medical_history_summary: z.string().optional().nullable();
     // Insurance details
     insurance_provider: z.string().optional().nullable(),
-    insurance_policy_number: z.string().optional().nullable()
+    insurance_policy_number: z.string().optional().nullable(),
 });
 
 // type PatientCreateBody = z.infer<typeof patientCreateSchema>
 
 // Helper function to generate MRN (example - reuse from register route if identical)
-async const generateMRN = (db: D1Database): Promise<string> {
-    const result = await db.prepare("SELECT MAX(patient_id) as maxId FROM Patients").first<{ maxId: number | null }>()
+async const generateMRN = (db: D1Database): Promise<string> {,
+    const result = await db.prepare("SELECT MAX(patient_id) as maxId FROM Patients").first<{ maxId: number | null }>(),
     const nextId = (result?.maxId || 0) + 1;
     return `MRN${String(nextId).padStart(8, "0")}`;
 }
 
 // GET /api/patients - Fetch list of patients (with filtering/pagination/search)
-export const _GET = async (request: NextRequest) => {
+export const _GET = async (request: NextRequest) => {,
     const session = await getSession()
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
     try {
@@ -78,7 +78,7 @@ export const _GET = async (request: NextRequest) => {
         let countQuery = `SELECT COUNT(*) as total FROM Patients WHERE 1=1`;
         const countParameters: (string | number)[] = [];
 
-        \1 {\n  \2{
+         {\n  {
             const likeTerm = `%${searchTerm}%`;
             query += " AND (mrn LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR contact_number LIKE ? OR email LIKE ?)";
             queryParameters.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
@@ -86,13 +86,13 @@ export const _GET = async (request: NextRequest) => {
             countParameters.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
         }
 
-        query += ` ORDER BY /* SECURITY: Template literal eliminated */
+        query += ` ORDER BY /* SECURITY: Template literal eliminated */,
         queryParameters.push(limit, offset);
 
         // Execute queries
         const [patientsResult, countResult] = await Promise.all([
             DB.prepare(query).bind(...queryParameters).all<Patient>(), // Assuming Patient type matches result
-            DB.prepare(countQuery).bind(...countParameters).first<{ total: number }>();
+            DB.prepare(countQuery).bind(...countParameters).first<{ total: number ,}>();
         ]);
 
         const results = patientsResult.results || [];
@@ -100,32 +100,32 @@ export const _GET = async (request: NextRequest) => {
 
         return NextResponse.json({
             data: results,
-            pagination: {
+            pagination: {,
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit)
+                totalPages: Math.ceil(total / limit),
             },
         });
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error fetching patients", details: errorMessage },
-            { status: 500 }
+            { message: "Error fetching patients", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
 
 // POST /api/patients - Create a new patient (internal use, registration is separate)
-export const _POST = async (request: NextRequest) => {
+export const _POST = async (request: NextRequest) => {,
     const session = await getSession()
-    \1 {\n  \2{
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+     {\n  {
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
     // Add role check if needed
 
@@ -133,10 +133,10 @@ export const _POST = async (request: NextRequest) => {
         const body = await request.json();
         const validationResult = patientCreateSchema.safeParse(body);
 
-        \1 {\n  \2{
+         {\n  {
             return NextResponse.json(
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
         }
 
@@ -186,7 +186,7 @@ export const _POST = async (request: NextRequest) => {
 
         const insertResult = await insertStmt.run() as D1ResultWithMeta; // Use D1ResultWithMeta
 
-        \1 {\n  \2{
+         {\n  {
 
             throw new Error("Failed to create patient record");
         }
@@ -197,22 +197,22 @@ export const _POST = async (request: NextRequest) => {
         const fetchNewQuery = `SELECT * FROM Patients WHERE patient_id = ?`;
         const newPatient = await DB.prepare(fetchNewQuery).bind(newPatientId).first<Patient>();
 
-        \1 {\n  \2{
+         {\n  {
             // This shouldn't happen if insert succeeded, but handle defensively
 
             throw new Error("Failed to retrieve newly created patient data");
         }
 
-        return NextResponse.json(newPatient, { status: 201 });
+        return NextResponse.json(newPatient, { status: 201 ,});
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
-        \1 {\n  \2{
+         {\n  {
             errorMessage = error.message;
         }
         return NextResponse.json(
-            { message: "Error creating patient", details: errorMessage },
-            { status: 500 }
+            { message: "Error creating patient", details: errorMessage ,},
+            { status: 500 },
         );
     }

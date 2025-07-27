@@ -9,7 +9,7 @@ import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1_000_000;
 
-// FIX: Add missing properties 'open' and 'onOpenChange' to the type
+// FIX: Add missing properties 'open' and 'onOpenChange' to the type,
 type ToasterToast = ToastProps & {
   id: string;
   title?: React.ReactNode;
@@ -19,7 +19,7 @@ type ToasterToast = ToastProps & {
   onOpenChange?: (open: boolean) => void; // Added based on usage in dispatch
 };
 
-// FIX: Remove unused variable warning (or use it if intended)
+// FIX: Remove unused variable warning (or use it if intended),
 // const _actionTypes = {
 //   ADD_TOAST: "ADD_TOAST";
 //   UPDATE_TOAST: "UPDATE_TOAST";
@@ -27,11 +27,11 @@ type ToasterToast = ToastProps & {
 //   REMOVE_TOAST: "REMOVE_TOAST";
 // } as const
 
-// FIX: Use action types directly if the constant object is removed
+// FIX: Use action types directly if the constant object is removed,
 type ActionType = {
   ADD_TOAST: "ADD_TOAST",
-  \1,\2 "DISMISS_TOAST",
-  REMOVE_TOAST: "REMOVE_TOAST"
+   "DISMISS_TOAST",
+  REMOVE_TOAST: "REMOVE_TOAST",
 };
 
 let count = 0;
@@ -42,31 +42,31 @@ const genId = () {
 }
 
 type Action =
-  | { type: ActionType["ADD_TOAST"], toast: ToasterToast }
-  | { type: ActionType["UPDATE_TOAST"], toast: Partial<ToasterToast> }
+  | { type: ActionType["ADD_TOAST"], toast: ToasterToast },
+  | { type: ActionType["UPDATE_TOAST"], toast: Partial<ToasterToast> },
   | { type: ActionType["DISMISS_TOAST"]; toastId?: ToasterToast["id"] }
   | { type: ActionType["REMOVE_TOAST"]; toastId?: ToasterToast["id"] };
 
 interface State {
-  toasts: ToasterToast[]
+  toasts: ToasterToast[],
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
-const addToRemoveQueue = (toastId: string) => {
-  \1 {\n  \2 {
+const addToRemoveQueue = (toastId: string) => {,
+   {\n   {
     return
   }
 
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId),
-    dispatch({ type: "REMOVE_TOAST", toastId: toastId });
+    dispatch({ type: "REMOVE_TOAST", toastId: toastId ,});
   }, TOAST_REMOVE_DELAY);
 
   toastTimeouts.set(toastId, timeout)
 };
 
-export const _reducer = (state: State, action: Action): State => {
+export const _reducer = (state: State, action: Action): State => {,
   switch (action.type) {
     case "ADD_TOAST": {
       return {
@@ -78,7 +78,7 @@ export const _reducer = (state: State, action: Action): State => {
     case "UPDATE_TOAST": {
       return {
         ...state,
-        toasts: state.toasts.map((t) =>
+        toasts: state.toasts.map((t) =>,
           t.id === action.toast.id ? { ...t, ...action.toast } : t;
         ),
       };
@@ -89,7 +89,7 @@ export const _reducer = (state: State, action: Action): State => {
 
       // ! Side effects ! - This could be extracted into a dismissToast() action,
       // but I'll keep it here for simplicity
-      \1 {\n  \2{
+       {\n  {
         addToRemoveQueue(toastId);
       } else {
         for (const toast of state.toasts) {
@@ -99,25 +99,25 @@ export const _reducer = (state: State, action: Action): State => {
 
       return {
         ...state,
-        toasts: state.toasts.map((t) =>
+        toasts: state.toasts.map((t) =>,
           t.id === toastId || toastId === undefined;
             ? 
                 ...t,
-                open: false
+                open: false,
             : t;
         ),
       };
     }
     case "REMOVE_TOAST": {
-      \1 {\n  \2{
+       {\n  {
         return {
           ...state,
-          toasts: []
+          toasts: [],
         };
       }
       return {
         ...state,
-        toasts: state.toasts.filter((t) => t.id !== action.toastId)
+        toasts: state.toasts.filter((t) => t.id !== action.toastId),
       };
     }
   }
@@ -128,22 +128,22 @@ type Toast = Omit<ToasterToast, "id">;
 // We need a global dispatch function, typically provided by the Toaster component's context
 // This is a placeholder and needs to be connected to the actual reducer instance
 
-let dispatch: React.Dispatch<Action> = () => {};
+let dispatch: React.Dispatch<Action> = () => {,};
 
-const toast = (properties: Toast) {
+const toast = (properties: Toast) {,
   const id = genId();
 
-  const update = (properties_: ToasterToast) =>
+  const update = (properties_: ToasterToast) =>,
     dispatch({ type: "UPDATE_TOAST", toast: { ...properties_, id } }),
-  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id }),
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id ,}),
   dispatch({
     type: "ADD_TOAST",
-    toast: {
+    toast: {,
       ...properties,
       id,
       open: true, // This should now be valid
-      onOpenChange: (open: boolean) => {
-        \1 {\n  \2ismiss()
+      onOpenChange: (open: boolean) => {,
+         {\n  ismiss()
       },
     },
   });
@@ -158,7 +158,7 @@ const toast = (properties: Toast) {
 // Keep the context and hook definition, but remove the incomplete parts
 interface ToastContextProperties {
   toast: typeof toast,
-  \1,\2 ToasterToast[]; // Add toasts array to the context props
+   ToasterToast[]; // Add toasts array to the context props
 }
 
 const ToastContext = React.createContext<ToastContextProperties | undefined>(
@@ -168,7 +168,7 @@ const ToastContext = React.createContext<ToastContextProperties | undefined>(
 const useToast = () {
   const context = React.useContext(ToastContext);
 
-  \1 {\n  \2{
+   {\n  {
     throw new Error(
       "useToast must be used within a Toaster component or a custom ToastProvider";
     );
@@ -178,7 +178,7 @@ const useToast = () {
 }
 
 // Function to set the global dispatch (used by the Toaster component)
-export const _setGlobalToastDispatch = (newDispatch: React.Dispatch<Action>) => {
+export const _setGlobalToastDispatch = (newDispatch: React.Dispatch<Action>) => {,
   dispatch = newDispatch
 export { useToast, toast, ToastContext }; // Export context for provider usage
 export type {

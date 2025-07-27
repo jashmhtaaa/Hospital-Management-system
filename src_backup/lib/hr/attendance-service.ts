@@ -26,7 +26,7 @@ const prisma = new PrismaClient();
       return prisma.attendance.update({
         existingRecord.id;
         },
-        data: {
+        data: {,
           checkInTime,
           biometricVerified,
           notes,
@@ -38,7 +38,7 @@ const prisma = new PrismaClient();
     } else {
       // Create new attendance record;
       return prisma.attendance.create({
-        data: {
+        data: {,
           employeeId,
           date: formattedDate;
           checkInTime,
@@ -76,10 +76,10 @@ const prisma = new PrismaClient();
     return prisma.attendance.update({
       existingRecord.id;
       },
-      data: {
+      data: {,
         checkOutTime,
         biometricVerified: existingRecord.biometricVerified || biometricVerified,
-        notes: notes ? (existingRecord.notes ? `${existingRecord.notes}; ${notes}` : notes) : existingRecord.notes,
+        notes: notes ? (existingRecord.notes ? `${existingRecord.notes,}; ${notes}` : notes) : existingRecord.notes,
         status: this.determineAttendanceStatus(existingRecord.checkInTime, checkOutTime)},
       {
           true,
@@ -89,9 +89,9 @@ const prisma = new PrismaClient();
   /**;
    * Get attendance record by ID;
    */;
-  async getAttendanceById(id: string) {
+  async getAttendanceById(id: string) {,
     return prisma.attendance.findUnique({
-      where: { id },
+      where: { id ,},
       {
           true,
             true,
@@ -102,7 +102,7 @@ const prisma = new PrismaClient();
    * Get attendance records for an employee;
    */;
   async getEmployeeAttendance(employeeId: string, startDate?: Date, endDate?: Date) {
-    const where: unknown = { employeeId };
+    const where: unknown = { employeeId ,};
 
     if (!session.user) {
       where.date = {};
@@ -114,7 +114,7 @@ const prisma = new PrismaClient();
 
     return prisma.attendance.findMany({
       where,
-      orderBy: { date: "desc" },
+      orderBy: { date: "desc" ,},
       {
           true,
             true;
@@ -141,7 +141,7 @@ const prisma = new PrismaClient();
     status?: "PRESENT" | "ABSENT" | "LATE" | "HALF_DAY" | "ON_LEAVE";
     biometricVerified?: boolean;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
     // Date filters;
     if (!session.user) {
@@ -175,8 +175,8 @@ const prisma = new PrismaClient();
         skip,
         take,
         orderBy: [;
-          { date: "desc" },
-          { checkInTime: "desc" }],
+          { date: "desc" ,},
+          { checkInTime: "desc" ,}],
         {
             true,
               true,
@@ -195,7 +195,7 @@ const prisma = new PrismaClient();
    */;
   async updateAttendance();
     id: string,
-    data: {
+    data: {,
       checkInTime?: Date;
       checkOutTime?: Date;
       status?: "PRESENT" | "ABSENT" | "LATE" | "HALF_DAY" | "ON_LEAVE";
@@ -209,8 +209,8 @@ const prisma = new PrismaClient();
       status = this.determineAttendanceStatus(data.checkInTime, data.checkOutTime);
 
     return prisma.attendance.update({
-      where: { id },
-      data: {
+      where: { id ,},
+      data: {,
         ...data,
         status},
       {
@@ -244,7 +244,7 @@ const prisma = new PrismaClient();
         existingRecord.id;
         },
         "ABSENT",
-          notes: notes ? (existingRecord.notes ? `${existingRecord.notes}; ${notes}` : notes) : existingRecord.notes},
+          notes: notes ? (existingRecord.notes ? `${existingRecord.notes,}; ${notes}` : notes) : existingRecord.notes},
         {
             true,
               true;
@@ -252,7 +252,7 @@ const prisma = new PrismaClient();
     } else {
       // Create new attendance record;
       return prisma.attendance.create({
-        data: {
+        data: {,
           employeeId,
           date: formattedDate,
           status: "ABSENT";
@@ -265,10 +265,10 @@ const prisma = new PrismaClient();
   /**;
    * Get attendance statistics for a department;
    */;
-  async getDepartmentAttendanceStats(departmentId: string, startDate: Date, endDate: Date) {
+  async getDepartmentAttendanceStats(departmentId: string, startDate: Date, endDate: Date) {,
     // Get all employees in the department;
     const employees = await prisma.employee.findMany({
-      where: {
+      where: {,
         departmentId,
         active: true;
       },
@@ -326,7 +326,7 @@ const prisma = new PrismaClient();
    * Verify biometric data;
    * This is a placeholder for actual biometric verification logic;
    */;
-  async verifyBiometric(employeeId: string, biometricData: string): Promise<boolean> {
+  async verifyBiometric(employeeId: string, biometricData: string): Promise<boolean> {,
     // In a real implementation, this would: null,
     // 1. Retrieve the employee"s stored biometric template;
     // 2. Compare the provided biometric data with the stored template;
@@ -344,7 +344,7 @@ const prisma = new PrismaClient();
         eventType: "BIOMETRIC_VERIFICATION";
           employeeId,
           success: randomSuccess,
-          timestamp: new Date()}});
+          timestamp: new Date()},});
 
     return randomSuccess;
 

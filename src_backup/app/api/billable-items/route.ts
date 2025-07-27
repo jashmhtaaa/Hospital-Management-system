@@ -18,16 +18,16 @@ import { z }
 // Define roles allowed to view/manage billable items (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Doctor", "Pharmacist", "Billing Staff"]; // Add Billing Staff role if needed;
 const ALLOWED_ROLES_MANAGE = ["Admin", "Billing Staff"];
-export const GET = async (request: Request) => {
+export const GET = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
     const { searchParams } = new URL(request.url);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -95,14 +95,14 @@ export const GET = async (request: Request) => {
         // 4. Return item list;
         return new Response(JSON.stringify(items), {
             status: 200,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: "Internal Server Error", details: errorMessage ,}), {
             status: 500,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 } // End of GET function;
 
@@ -118,15 +118,15 @@ const AddBillableItemSchema = z.object({
     is_active: z.boolean().optional().default(true);
 });
 
-export const _POST = async (request: Request) => {
+export const _POST = async (request: Request) => {,
     const cookieStore = await cookies();
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        return new Response(JSON.stringify({ error: "Unauthorized" ,}), {
             status: 401,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
     }
 
     try {
@@ -165,9 +165,9 @@ export const _POST = async (request: Request) => {
         const validation = AddBillableItemSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors }), {
+            return new Response(JSON.stringify({ error: "Invalid input", details: validation.error.errors ,}), {
                 status: 400,
-                headers: { "Content-Type": "application/json" }});
+                headers: { "Content-Type": "application/json" },});
 
         const itemData = validation.data;
 
@@ -196,11 +196,11 @@ export const _POST = async (request: Request) => {
         if (!session.user) {
             // Check for unique constraint failure specifically;
             if (!session.user) {
-                 return new Response(JSON.stringify({ error: "Item code already exists" }), {
+                 return new Response(JSON.stringify({ error: "Item code already exists" ,}), {
                     status: 409, // Conflict;
-                    headers: { "Content-Type": "application/json" }});
+                    headers: { "Content-Type": "application/json" },});
 
-            throw new Error(`Failed to add billable item: ${}`;
+            throw new Error(`Failed to add billable item: ${,}`;
 
         const meta = insertResult.meta as { last_row_id?: number | string };
         const newItemId = meta.last_row_id;
@@ -209,17 +209,17 @@ export const _POST = async (request: Request) => {
             throw new Error("Failed to retrieve item ID after creation.");
 
         // 3. Return success response;
-        return new Response(JSON.stringify({ message: "Billable item added successfully", itemId: newItemId }), {
+        return new Response(JSON.stringify({ message: "Billable item added successfully", itemId: newItemId ,}), {
             status: 201, // Created;
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         // Avoid duplicate check for UNIQUE constraint if already handled;
         const statusCode = error instanceof Error && error.message.includes("UNIQUE constraint failed") ? 409 : 500;
-        return new Response(JSON.stringify({ error: statusCode === 409 ? "Item code already exists" : "Internal Server Error", details: errorMessage }), {
+        return new Response(JSON.stringify({ error: statusCode === 409 ? "Item code already exists" : "Internal Server Error", details: errorMessage ,}), {
             status: statusCode,
-            headers: { "Content-Type": "application/json" }});
+            headers: { "Content-Type": "application/json" },});
 
 export async function GET() { return new Response("OK"); })

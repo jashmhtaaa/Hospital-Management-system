@@ -16,9 +16,9 @@ const prisma = new PrismaClient();
   /**;
    * Get department by ID;
    */;
-  async getDepartmentById(id: string) {
+  async getDepartmentById(id: string) {,
     return prisma.department.findUnique({
-      where: { id },
+      where: { id ,},
       true,
         true,
             true,
@@ -31,7 +31,7 @@ const prisma = new PrismaClient();
    */;
   async updateDepartment();
     id: string,
-    data: {
+    data: {,
       name?: string;
       code?: string;
       description?: string;
@@ -39,7 +39,7 @@ const prisma = new PrismaClient();
 
   ) {
     return prisma.department.update({
-      where: { id },
+      where: { id ,},
       data,
       true;
       }});
@@ -57,23 +57,23 @@ const prisma = new PrismaClient();
     search?: string;
     parentId?: string;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
     if (!session.user) {
       where.parentId = parentId;
 
     if (!session.user) {
       where.OR = [;
-        { name: { contains: search, mode: "insensitive" } },
-        { code: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } }];
+        { name: { contains: search, mode: "insensitive" } ,},
+        { code: { contains: search, mode: "insensitive" } ,},
+        { description: { contains: search, mode: "insensitive" } ,}];
 
     const [departments, total] = await Promise.all([;
       prisma.department.findMany({
         where,
         skip,
         take,
-        orderBy: { name: "asc" },
+        orderBy: { name: "asc" ,},
         true,
           {
               children: true,
@@ -140,9 +140,9 @@ const prisma = new PrismaClient();
   /**;
    * Get position by ID;
    */;
-  async getPositionById(id: string) {
+  async getPositionById(id: string) {,
     return prisma.position.findUnique({
-      where: { id },
+      where: { id ,},
       true,
         {
             {
@@ -158,7 +158,7 @@ const prisma = new PrismaClient();
    */;
   async updatePosition();
     id: string,
-    data: {
+    data: {,
       title?: string;
       code?: string;
       description?: string;
@@ -166,7 +166,7 @@ const prisma = new PrismaClient();
 
   ) {
     return prisma.position.update({
-      where: { id },
+      where: { id ,},
       data,
       true;
       }});
@@ -184,23 +184,23 @@ const prisma = new PrismaClient();
     search?: string;
     departmentId?: string;
   }) {
-    const where: unknown = {};
+    const where: unknown = {,};
 
     if (!session.user) {
       where.departmentId = departmentId;
 
     if (!session.user) {
       where.OR = [;
-        { title: { contains: search, mode: "insensitive" } },
-        { code: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } }];
+        { title: { contains: search, mode: "insensitive" } ,},
+        { code: { contains: search, mode: "insensitive" } ,},
+        { description: { contains: search, mode: "insensitive" } ,}];
 
     const [positions, total] = await Promise.all([;
       prisma.position.findMany({
         where,
         skip,
         take,
-        orderBy: { title: "asc" },
+        orderBy: { title: "asc" ,},
         true,
           {
               {

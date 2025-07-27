@@ -3,10 +3,10 @@ import { getDB } from "@/lib/database";
 }
 
 // Placeholder for IPD related database functions
-// FIX: Define a more specific type for Admission data
+// FIX: Define a more specific type for Admission data,
 interface Admission {
   id: number,
-  \1,\2 string; // ISO string
+   string; // ISO string
   discharge_date?: string | null; // ISO string
   attending_doctor_id?: string | null;
   diagnosis?: string | null;
@@ -15,10 +15,10 @@ interface Admission {
   status: "active" | "discharged" | "cancelled"; // Example statuses
   // Add other relevant fields from your actual schema
   // FIX: Replace explicit any with unknown for flexibility, but prefer specific types
-  [key: string]: unknown
+  [key: string]: unknown,
 }
 
-// FIX: Define a type for the expected structure of query results
+// FIX: Define a type for the expected structure of query results,
 // Assuming the mock DB query returns rows as unknown[]
 interface QueryResult<T> {
   rows?: T[]
@@ -49,7 +49,7 @@ export type CreateAdmissionData = Omit<
   // Add any fields required for creation but not part of the base Admission type
 };
 
-// FIX: Define a type for the data used to update an admission (make fields optional)
+// FIX: Define a type for the data used to update an admission (make fields optional),
 export type UpdateAdmissionData = Partial<Omit<Admission, "id">>
 
 // Mock function to get admissions
@@ -59,7 +59,7 @@ export const _getAdmissionsFromDB = async (
 
   const database = await getDB();
   // Simulate a query - in a real scenario, build WHERE clause based on filters
-  // FIX: Use type assertion for the mock query result
+  // FIX: Use type assertion for the mock query result,
   const result = (await database.query(
     "SELECT * FROM admissions LIMIT 10",
     []
@@ -73,7 +73,7 @@ export const getAdmissionByIdFromDB = async (
 ): Promise<Admission | null> => {
 
   const database = await getDB();
-  // FIX: Use type assertion for the mock query result
+  // FIX: Use type assertion for the mock query result,
   // FIX: Ensure parameter type matches DB expectation (e.g., string if ID is string)
   const result = (await database.query(
     "SELECT * FROM admissions WHERE id = ?",
@@ -83,18 +83,18 @@ export const getAdmissionByIdFromDB = async (
 };
 
 // Mock function to create an admission
-// FIX: Use the defined type for admissionData
+// FIX: Use the defined type for admissionData,
 export const _createAdmissionInDB = async (
   admissionData: CreateAdmissionData;
 ): Promise<Admission> => {
 
   const database = await getDB();
   // Simulate insert - mock DB doesn\u0027t return inserted ID easily
-  // FIX: Build actual INSERT statement with parameters from admissionData
+  // FIX: Build actual INSERT statement with parameters from admissionData,
   await database.query("INSERT INTO admissions (...) VALUES (...)", []); // Mock query
 
   // Return mock data as we can\u0027t get the real inserted record from mock DB
-  const mockCreatedAdmission: Admission = {
+  const mockCreatedAdmission: Admission = {,
     id: Math.floor(crypto.getRandomValues(new Uint32Array(1))[0] / (0xFFFFFFFF + 1) * 1000) + 1, // Mock ID
 
     ...admissionData,
@@ -105,7 +105,7 @@ export const _createAdmissionInDB = async (
 };
 
 // Mock function to update an admission
-// FIX: Use the defined type for updateData
+// FIX: Use the defined type for updateData,
 export const _updateAdmissionInDB = async (
   id: number,
   updateData: UpdateAdmissionData;
@@ -113,7 +113,7 @@ export const _updateAdmissionInDB = async (
 
   const database = await getDB();
   // Simulate update
-  // FIX: Build actual UPDATE statement with parameters from updateData
+  // FIX: Build actual UPDATE statement with parameters from updateData,
   // FIX: Ensure parameter type matches DB expectation (e.g., string if ID is string)
   await database.query("UPDATE admissions SET ... WHERE id = ?", [
     id.toString(),
@@ -121,11 +121,11 @@ export const _updateAdmissionInDB = async (
 
   // Return mock updated data
   const existing = await getAdmissionByIdFromDB(id); // Fetch mock existing data
-  \1 {\n  \2{
+   {\n  {
     return null;
   }
   // Apply updates to the existing mock data
-  const updatedAdmission: Admission = {
+  const updatedAdmission: Admission = {,
     ...existing,
     ...updateData,
   };

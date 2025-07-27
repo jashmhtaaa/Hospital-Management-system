@@ -89,7 +89,7 @@ interface LabTestCreateBody {
 }
 
 // GET /api/diagnostics/lab/tests - Get all laboratory tests with enhanced filtering;
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -126,7 +126,7 @@ export const _GET = async (request: any) => {
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Parse query parameters;
@@ -263,25 +263,25 @@ export const _GET = async (request: any) => {
       // Return default format with pagination metadata;
       return NextResponse.json({
         data: tests,
-        pagination: {
+        pagination: {,
           page,
           pageSize,
           totalCount,
           totalPages: Math.ceil(totalCount / pageSize);
         }
       });
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to fetch laboratory tests", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to fetch laboratory tests", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
 
 // POST /api/diagnostics/lab/tests - Create a new laboratory test with enhanced features;
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
   try {
 } catch (error) {
   console.error(error);
@@ -318,12 +318,12 @@ export const _POST = async (request: any) => {
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can create tests;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     // Parse request body;
@@ -342,8 +342,8 @@ export const _POST = async (request: any) => {
     for (const field of requiredFields) {
       if (!session.user)| body[field] === undefined || body[field] === "") {
         return NextResponse.json();
-          { error: `Missing or invalid required field: ${field}` },
-          { status: 400 }
+          { error: `Missing or invalid required field: ${field}` ,},
+          { status: 400 },
         );
       }
     }
@@ -352,16 +352,16 @@ export const _POST = async (request: any) => {
     const loincRegex = /^\d+-\d+$/;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Invalid LOINC code format. Expected format: #####-#" },
-        { status: 400 }
+        { error: "Invalid LOINC code format. Expected format: #####-#" ,},
+        { status: 400 },
       );
     }
 
     // Validate panel items if this is a panel;
     if (!session.user) {
       return NextResponse.json();
-        { error: "Panel tests must include at least one panel item" },
-        { status: 400 }
+        { error: "Panel tests must include at least one panel item" ,},
+        { status: 400 },
       );
     }
 
@@ -582,18 +582,18 @@ export const _POST = async (request: any) => {
       };
 
       // Return the created test;
-      return NextResponse.json(completeTest, { status: 201 });
+      return NextResponse.json(completeTest, { status: 201 ,});
     } catch (error) {
       // Rollback transaction on error;
       await DB.query("ROLLBACK", []);
       throw error;
     }
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to create laboratory test", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to create laboratory test", details: errorMessage ,},
+      { status: 500 },
     );
   }
 }
@@ -601,7 +601,7 @@ export const _POST = async (request: any) => {
 // PUT /api/diagnostics/lab/tests/:id - Update an existing laboratory test;
 export const _PUT = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -639,12 +639,12 @@ export const _PUT = async();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
     }
 
     // Only lab managers and admins can update tests;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
     }
 
     const testId = params.id;
@@ -657,8 +657,8 @@ export const _PUT = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Laboratory test not found" },
-        { status: 404 }
+        { error: "Laboratory test not found" ,},
+        { status: 404 },
       );
     }
 
@@ -976,18 +976,18 @@ export const _PUT = async();
       await DB.query("ROLLBACK", []);
       throw error;
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to update laboratory test", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to update laboratory test", details: errorMessage ,},
+      { status: 500 },
     );
 
 // DELETE /api/diagnostics/lab/tests/:id - Delete a laboratory test;
 export const DELETE = async();
   request: any;
-  { params }: { id: string }
+  { params }: { id: string },
 ) => {
   try {
 } catch (error) {
@@ -1025,11 +1025,11 @@ export const DELETE = async();
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" ,}, { status: 401 ,});
 
     // Only lab managers and admins can delete tests;
     if (!session.user) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" ,}, { status: 403 ,});
 
     const testId = params.id;
 
@@ -1041,8 +1041,8 @@ export const DELETE = async();
 
     if (!session.user) {
       return NextResponse.json();
-        { error: "Laboratory test not found" },
-        { status: 404 }
+        { error: "Laboratory test not found" ,},
+        { status: 404 },
       );
 
     // Check if test is used in any orders;
@@ -1117,10 +1117,10 @@ export const DELETE = async();
       await DB.query("ROLLBACK", []);
       throw error;
 
-  } catch (error: unknown) {
+  } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      { error: "Failed to delete laboratory test", details: errorMessage },
-      { status: 500 }
+      { error: "Failed to delete laboratory test", details: errorMessage ,},
+      { status: 500 },
     );

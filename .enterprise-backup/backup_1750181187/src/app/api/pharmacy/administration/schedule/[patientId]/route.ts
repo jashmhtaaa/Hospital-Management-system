@@ -15,16 +15,16 @@ import type { PharmacyDomain } from '../../../../models/domain-models';
  */
 
 // Initialize repositories (in production, use dependency injection)
-const medicationRepository: PharmacyDomain.MedicationRepository = {
+const medicationRepository: PharmacyDomain.MedicationRepository = {,
   findById: getMedicationById,
   findAll: () => Promise.resolve([]),
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 }
 
-const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
+const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {,
   findById: getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
@@ -32,10 +32,10 @@ const prescriptionRepository: PharmacyDomain.PrescriptionRepository = {
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(''),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
-const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {
+const administrationRepository: PharmacyDomain.MedicationAdministrationRepository = {,
   findById: () => Promise.resolve(null),
   findByPatientId: () => Promise.resolve([]),
   findByPrescriptionId: () => Promise.resolve([]),
@@ -43,7 +43,7 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || 'new-id'),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true)
+  delete: () => Promise.resolve(true),
 };
 
 /**
@@ -52,13 +52,13 @@ const administrationRepository: PharmacyDomain.MedicationAdministrationRepositor
  */
 export const GET = async (
   req: NextRequest;
-  { params }: { patientId: string }
+  { params }: { patientId: string },
 ) => {
   try {
     // Check authorization
     const authHeader = req.headers.get('authorization');
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+     {\n  {
+      return NextResponse.json({ error: 'Unauthorized' ,}, { status: 401 ,});
     }
 
     // Get user from auth token (simplified for example)
@@ -66,8 +66,8 @@ export const GET = async (
 
     // Get patient ID from params
     const { patientId } = params;
-    \1 {\n  \2{
-      return NextResponse.json({ error: 'Patient ID is required' }, { status: 400 });
+     {\n  {
+      return NextResponse.json({ error: 'Patient ID is required' ,}, { status: 400 ,});
     }
 
     // Get query parameters
@@ -89,7 +89,7 @@ export const GET = async (
 
     for (const prescription of activePrescriptions) {
       const medication = await medicationRepository.findById(prescription.medicationId);
-      \1 {\n  \2ontinue;
+       {\n  ontinue;
 
       // Parse frequency to generate schedule times
       const frequency = prescription.dosage.frequency;
@@ -112,27 +112,27 @@ export const GET = async (
         });
 
         // Skip completed administrations if not requested
-        \1 {\n  \2{
+         {\n  {
           continue;
         }
 
         // Determine status
         let status = 'scheduled';
-        \1 {\n  \2{
+         {\n  {
           status = matchingAdministration.status;
-        } else \1 {\n  \2 {
+        } else  {\n   {
           status = 'overdue',
         }
 
         schedule.push({
           prescriptionId: prescription.id,
-          \1,\2 medication.name,
-          \1,\2 prescription.dosage.unit,
-          \1,\2 scheduleTime;
+           medication.name,
+           prescription.dosage.unit,
+           scheduleTime;
           status,
           administrationId: matchingAdministration?.id,
-          \1,\2 matchingAdministration?.administeredBy,
-          notes: matchingAdministration?.notes
+           matchingAdministration?.administeredBy,
+          notes: matchingAdministration?.notes,
         });
       }
     }
@@ -143,14 +143,14 @@ export const GET = async (
     // Audit logging
     await auditLog('MEDICATION_ADMINISTRATION', {
       action: 'SCHEDULE_VIEW',
-      \1,\2 userId,
-      \1,\2 schedule.length,
+       userId,
+       schedule.length,
         startDate: startDate.toISOString(),
-        endDate: endDate.toISOString()
+        endDate: endDate.toISOString(),
     });
 
     // Return response
-    return NextResponse.json({ schedule }, { status: 200 });
+    return NextResponse.json({ schedule }, { status: 200 ,});
   } catch (error) {
     return errorHandler(error, 'Error retrieving medication administration schedule');
   }
@@ -159,97 +159,97 @@ export const GET = async (
 /**
  * Helper function to generate schedule times based on frequency;
  */
-const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {
+const generateScheduleTimes = (frequency: string, start: Date, end: Date): Date[] {,
   const times: Date[] = [];
 
   // Parse frequency
-  \1 {\n  \2 {
+   {\n   {
     // Once daily - default to 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(time);
     }
-  } else \1 {\n  \2| frequency.includes('BID')) {
+  } else  {\n  | frequency.includes('BID')) {
     // Twice daily - 9 AM and 5 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(morning);
     }
 
     const evening = new Date(start);
     evening.setHours(17, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(evening);
     }
-  } else \1 {\n  \2| frequency.includes('TID')) {
+  } else  {\n  | frequency.includes('TID')) {
     // Three times daily - 9 AM, 1 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(morning);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(13, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(evening);
     }
-  } else \1 {\n  \2| frequency.includes('QID')) {
+  } else  {\n  | frequency.includes('QID')) {
     // Four times daily - 9 AM, 1 PM, 5 PM, and 9 PM
     const morning = new Date(start);
     morning.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(morning);
     }
 
     const noon = new Date(start);
     noon.setHours(13, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(noon);
     }
 
     const afternoon = new Date(start);
     afternoon.setHours(17, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(afternoon);
     }
 
     const evening = new Date(start);
     evening.setHours(21, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(evening);
     }
-  } else \1 {\n  \2& frequency.includes('hours')) {
+  } else  {\n  & frequency.includes('hours')) {
     // Every X hours
     const match = frequency.match(/every\s+(\d+)\s+hours/i);
-    \1 {\n  \2{
+     {\n  {
       const hours = Number.parseInt(match[1], 10);
       const time = new Date(start);
       time.setMinutes(0, 0, 0);
       time.setHours(Math.ceil(time.getHours() / hours) * hours);
 
       while (time < end) {
-        \1 {\n  \2{
+         {\n  {
           times.push(new Date(time));
         }
         time.setHours(time.getHours() + hours);
       }
     }
-  } else \1 {\n  \2| frequency.includes('as needed')) {
+  } else  {\n  | frequency.includes('as needed')) {
     // PRN - no scheduled times
   } else {
     // Default to once daily at 9 AM
     const time = new Date(start);
     time.setHours(9, 0, 0, 0);
-    \1 {\n  \2{
+     {\n  {
       times.push(time);
     }
   }

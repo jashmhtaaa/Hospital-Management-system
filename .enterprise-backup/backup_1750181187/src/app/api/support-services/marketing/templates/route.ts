@@ -11,10 +11,10 @@ const templateService = new TemplateService();
  * GET /api/support-services/marketing/templates;
  * Get all templates with optional filtering;
  */
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const { searchParams } = new URL(req.url);
 
@@ -39,7 +39,7 @@ export const GET = async (request: NextRequest) => {
     },
     {
       requiredPermission: 'marketing.templates.read',
-      auditAction: 'TEMPLATES_LIST'
+      auditAction: 'TEMPLATES_LIST',
     }
   );
 }
@@ -48,10 +48,10 @@ export const GET = async (request: NextRequest) => {
  * POST /api/support-services/marketing/templates;
  * Create a new template;
  */
-export const POST = async (request: NextRequest) => {
+export const POST = async (request: NextRequest) => {,
   return withErrorHandling(
     request,
-    async (req: NextRequest) => {
+    async (req: NextRequest) => {,
       const session = await getServerSession(authOptions);
       const data = await req.json();
 
@@ -60,10 +60,10 @@ export const POST = async (request: NextRequest) => {
         session?.user?.id as string;
       );
 
-      return NextResponse.json(template, { status: 201 });
+      return NextResponse.json(template, { status: 201 ,});
     },
     {
       requiredPermission: 'marketing.templates.create',
-      auditAction: 'TEMPLATE_CREATE'
+      auditAction: 'TEMPLATE_CREATE',
     }
   );

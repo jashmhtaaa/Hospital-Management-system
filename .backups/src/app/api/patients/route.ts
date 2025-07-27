@@ -46,17 +46,17 @@ const patientCreateSchema = z.object({
 // type PatientCreateBody = z.infer<typeof patientCreateSchema>;
 
 // Helper function to generate MRN (example - reuse from register route if identical);
-async const generateMRN = (db: D1Database): Promise<string> {
-    const result = await db.prepare("SELECT MAX(patient_id) as maxId FROM Patients").first<{ maxId: number | null }>();
+async const generateMRN = (db: D1Database): Promise<string> {,
+    const result = await db.prepare("SELECT MAX(patient_id) as maxId FROM Patients").first<{ maxId: number | null ,}>();
     const nextId = (result?.maxId || 0) + 1;
     return `MRN${String(nextId).padStart(8, "0")}`;
 }
 
 // GET /api/patients - Fetch list of patients (with filtering/pagination/search);
-export const _GET = async (request: any) => {
+export const _GET = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
 
     try {
@@ -130,7 +130,7 @@ export const _GET = async (request: any) => {
         // Execute queries;
         const [patientsResult, countResult] = await Promise.all([;
             DB.prepare(query).bind(...queryParameters).all<Patient>(), // Assuming Patient type matches result;
-            DB.prepare(countQuery).bind(...countParameters).first<{ total: number }>();
+            DB.prepare(countQuery).bind(...countParameters).first<{ total: number ,}>();
         ]);
 
         const results = patientsResult.results || [];
@@ -138,31 +138,31 @@ export const _GET = async (request: any) => {
 
         return NextResponse.json({
             data: results,
-            pagination: {
+            pagination: {,
                 page,
                 limit,
                 total,
                 totalPages: Math.ceil(total / limit);
             }});
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
         }
         return NextResponse.json();
-            { message: "Error fetching patients", details: errorMessage },
-            { status: 500 }
+            { message: "Error fetching patients", details: errorMessage ,},
+            { status: 500 },
         );
     }
 }
 
 // POST /api/patients - Create a new patient (internal use, registration is separate);
-export const _POST = async (request: any) => {
+export const _POST = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        return NextResponse.json({ message: "Unauthorized" ,}, { status: 401 ,});
     }
     // Add role check if needed;
 
@@ -203,8 +203,8 @@ export const _POST = async (request: any) => {
 
         if (!session.user) {
             return NextResponse.json();
-                { message: "Invalid input", errors: validationResult.error.errors },
-                { status: 400 }
+                { message: "Invalid input", errors: validationResult.error.errors ,},
+                { status: 400 },
             );
 
         const patientData = validationResult.data;
@@ -268,17 +268,17 @@ export const _POST = async (request: any) => {
 
             throw new Error("Failed to retrieve newly created patient data");
 
-        return NextResponse.json(newPatient, { status: 201 });
+        return NextResponse.json(newPatient, { status: 201 ,});
 
-    } catch (error: unknown) {
+    } catch (error: unknown) {,
 
         let errorMessage = "An unknown error occurred";
         if (!session.user) {
             errorMessage = error.message;
 
         return NextResponse.json();
-            { message: "Error creating patient", details: errorMessage },
-            { status: 500 }
+            { message: "Error creating patient", details: errorMessage ,},
+            { status: 500 },
         );
 
 export async function GET() { return new Response("OK"); }

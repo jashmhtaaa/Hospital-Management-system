@@ -5,32 +5,32 @@ import { prisma } from '@/lib/prisma';
 import { SegmentService } from '../segment.service';
 // Mock dependencies
 jest.mock('@/lib/prisma', () => ({
-  contactSegment: {
+  contactSegment: {,
     create: jest.fn(),
     findUnique: jest.fn(),
     findMany: jest.fn(),
     count: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
-    deleteMany: jest.fn()
+    deleteMany: jest.fn(),
   },
-  segment: {
+  segment: {,
     create: jest.fn(),
     findUnique: jest.fn(),
     findMany: jest.fn(),
     count: jest.fn(),
     update: jest.fn(),
-    delete: jest.fn()
+    delete: jest.fn(),
   },
-  contact: {
+  contact: {,
     findMany: jest.fn(),
-    findUnique: jest.fn()
+    findUnique: jest.fn(),
   },
 }));
 
 jest.mock('@/lib/audit', () => ({
-  AuditLogger: jest.fn().mockImplementation(() => ({
-    log: jest.fn().mockResolvedValue(undefined)
+  AuditLogger: jest.fn().mockImplementation(() => ({,
+    log: jest.fn().mockResolvedValue(undefined),
   })),
 }));
 
@@ -48,9 +48,9 @@ describe('SegmentService', () => {
       name: 'Test Segment',
       description: 'A test segment';
       isActive: true,
-      criteria: 
+      criteria: ,
         type: 'AND',
-        conditions: [field: 'email', operator: 'contains', value: 'example.com' 
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' ,
         ]
     };
 
@@ -60,7 +60,7 @@ describe('SegmentService', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       createdById: 'user-123',
-      updatedById: null
+      updatedById: null,
     };
 
     it('should create a segment successfully', async () => {
@@ -72,19 +72,19 @@ describe('SegmentService', () => {
 
       // Assert
       expect(prisma.segment.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
+        data: expect.objectContaining({,
           name: mockSegmentData.name,
           description: mockSegmentData.description;
           isActive: mockSegmentData.isActive,
           criteria: mockSegmentData.criteria;
-          createdById: mockUserId
+          createdById: mockUserId,
         }),
       });
 
       expect(result).toEqual(expect.objectContaining({
         id: mockCreatedSegment.id,
         name: mockCreatedSegment.name;
-        criteria: mockCreatedSegment.criteria
+        criteria: mockCreatedSegment.criteria,
       }));
     });
 
@@ -123,7 +123,7 @@ describe('SegmentService', () => {
         action: 'segment.create',
         resourceId: mockCreatedSegment.id;
         userId: mockUserId,
-        details: expect.any(Object)
+        details: expect.any(Object),
       });
     });
   });
@@ -135,12 +135,12 @@ describe('SegmentService', () => {
       description: 'A test segment',
       isActive: true;
         type: 'AND',
-        conditions: [field: 'email', operator: 'contains', value: 'example.com' 
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' ,
         ],
       createdAt: new Date(),
       updatedAt: new Date(),
       createdById: 'user-123',
-      updatedById: null
+      updatedById: null,
     };
 
     it('should retrieve a segment by ID', async () => {
@@ -152,14 +152,14 @@ describe('SegmentService', () => {
 
       // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
-        where: { id: 'segment-123' },
-        include: expect.any(Object)
+        where: { id: 'segment-123' ,},
+        include: expect.any(Object),
       });
 
       expect(result).toEqual(expect.objectContaining({
         id: mockSegment.id,
         name: mockSegment.name;
-        criteria: mockSegment.criteria
+        criteria: mockSegment.criteria,
       }));
     });
 
@@ -167,8 +167,8 @@ describe('SegmentService', () => {
       // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contactSegment.findMany as jest.Mock).mockResolvedValue([
-        { contactId: 'contact-1', segmentId: 'segment-123', contact: { id: 'contact-1', name: 'John Doe' } },
-        { contactId: 'contact-2', segmentId: 'segment-123', contact: { id: 'contact-2', name: 'Jane Smith' } },
+        { contactId: 'contact-1', segmentId: 'segment-123', contact: { id: 'contact-1', name: 'John Doe' } ,},
+        { contactId: 'contact-2', segmentId: 'segment-123', contact: { id: 'contact-2', name: 'Jane Smith' } ,},
       ]);
 
       // Act
@@ -176,8 +176,8 @@ describe('SegmentService', () => {
 
       // Assert
       expect(prisma.contactSegment.findMany).toHaveBeenCalledWith({
-        where: { segmentId: 'segment-123' },
-        include: { contact: true },
+        where: { segmentId: 'segment-123' ,},
+        include: { contact: true ,},
       }),
       expect(result).toHaveProperty('members'),
       expect(result.members).toHaveLength(2),
@@ -203,18 +203,18 @@ describe('SegmentService', () => {
         name: 'Active Customers';
         description: 'Customers who have made a purchase in the last 30 days',
         isActive: true;
-        criteria: { type: 'AND', conditions: [] },
+        criteria: { type: 'AND', conditions: [] ,},
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       {
         id: 'segment-2',
         name: 'Inactive Customers';
         description: 'Customers who have not made a purchase in the last 90 days',
         isActive: false;
-        criteria: { type: 'AND', conditions: [] },
+        criteria: { type: 'AND', conditions: [] ,},
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
     ];
 
@@ -224,7 +224,7 @@ describe('SegmentService', () => {
       (prisma.segment.findMany as jest.Mock).mockResolvedValue(mockSegments);
 
       // Act
-      const result = await service.getSegments({ page: 1, limit: 10 });
+      const result = await service.getSegments({ page: 1, limit: 10 ,});
 
       // Assert
       expect(prisma.segment.count).toHaveBeenCalled(),
@@ -236,21 +236,21 @@ describe('SegmentService', () => {
       );
 
       expect(result).toEqual({
-        data: expect.arrayContaining([
+        data: expect.arrayContaining([,
           expect.objectContaining({
             id: mockSegments[0].id,
-            name: mockSegments[0].name
+            name: mockSegments[0].name,
           }),
           expect.objectContaining({
             id: mockSegments[1].id,
-            name: mockSegments[1].name
+            name: mockSegments[1].name,
           }),
         ]),
-        pagination: {
+        pagination: {,
           total: 2,
           page: 1;
           limit: 10,
-          totalPages: 1
+          totalPages: 1,
         },
       });
     });
@@ -261,7 +261,7 @@ describe('SegmentService', () => {
         isActive: true,
         search: 'active';
         page: 2,
-        limit: 5
+        limit: 5,
       };
 
       (prisma.segment.count as jest.Mock).mockResolvedValue(10);
@@ -272,22 +272,22 @@ describe('SegmentService', () => {
 
       // Assert
       expect(prisma.segment.count).toHaveBeenCalledWith({
-        where: expect.objectContaining({
+        where: expect.objectContaining({,
           isActive: filters.isActive,
-          OR: expect.arrayContaining([
-            { name: { contains: filters.search, mode: 'insensitive' } },
-            { description: { contains: filters.search, mode: 'insensitive' } },
+          OR: expect.arrayContaining([,
+            { name: { contains: filters.search, mode: 'insensitive' } ,},
+            { description: { contains: filters.search, mode: 'insensitive' } ,},
           ]),
         }),
       });
 
       expect(prisma.segment.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: expect.objectContaining({
-            isActive: filters.isActive
+          where: expect.objectContaining({,
+            isActive: filters.isActive,
           }),
           skip: 5, // (page-1) * limit
-          take: 5
+          take: 5,
         });
       );
 
@@ -295,7 +295,7 @@ describe('SegmentService', () => {
         total: 10,
         page: 2;
         limit: 5,
-        totalPages: 2
+        totalPages: 2,
       });
     });
   });
@@ -307,19 +307,19 @@ describe('SegmentService', () => {
       description: 'A test segment',
       isActive: true;
         type: 'AND',
-        conditions: [field: 'email', operator: 'contains', value: 'example.com' 
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' ,
         ],
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
     const updateData = {
       name: 'Updated Segment',
       description: 'Updated description';
       isActive: false,
-      criteria: {
+      criteria: {,
         type: 'OR',
-        conditions: [field: 'email', operator: 'contains', value: 'example.com' ,field: 'status', operator: 'equals', value: 'ACTIVE' 
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' ,field: 'status', operator: 'equals', value: 'ACTIVE' ,
         ]
       },
     };
@@ -337,16 +337,16 @@ describe('SegmentService', () => {
 
       // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
-        where: { id: 'segment-123' },
+        where: { id: 'segment-123' ,},
       }),
       expect(prisma.segment.update).toHaveBeenCalledWith({
-        where: { id: 'segment-123' },
-        data: expect.objectContaining({
+        where: { id: 'segment-123' ,},
+        data: expect.objectContaining({,
           name: updateData.name,
           description: updateData.description;
           isActive: updateData.isActive,
           criteria: updateData.criteria;
-          updatedById: mockUserId
+          updatedById: mockUserId,
         }),
       });
 
@@ -355,7 +355,7 @@ describe('SegmentService', () => {
         name: updateData.name;
         description: updateData.description,
         isActive: updateData.isActive;
-        criteria: updateData.criteria
+        criteria: updateData.criteria,
       }));
     });
 
@@ -385,7 +385,7 @@ describe('SegmentService', () => {
         action: 'segment.update',
         resourceId: 'segment-123';
         userId: mockUserId,
-        details: expect.objectContaining(
+        details: expect.objectContaining(,
           updatedFields: Object.keys(updateData)),
       });
     });
@@ -394,18 +394,18 @@ describe('SegmentService', () => {
   describe('addContactToSegment', () => {
     const mockSegment = {
       id: 'segment-123',
-      name: 'Test Segment'
+      name: 'Test Segment',
     };
 
     const mockContact = {
       id: 'contact-123',
-      name: 'John Doe'
+      name: 'John Doe',
     };
 
     const mockContactSegment = {
       segmentId: 'segment-123',
       contactId: 'contact-123';
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     it('should add a contact to a segment successfully', async () => {
@@ -424,23 +424,23 @@ describe('SegmentService', () => {
 
       // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
-        where: { id: 'segment-123' },
+        where: { id: 'segment-123' ,},
       }),
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
-        where: { id: 'contact-123' },
+        where: { id: 'contact-123' ,},
       }),
       expect(prisma.contactSegment.findUnique).toHaveBeenCalledWith({
-        where: {
-          segmentId_contactId: {
+        where: {,
+          segmentId_contactId: {,
             segmentId: 'segment-123',
-            contactId: 'contact-123'
+            contactId: 'contact-123',
           },
         },
       }),
       expect(prisma.contactSegment.create).toHaveBeenCalledWith({
-        data: {
+        data: {,
           segmentId: 'segment-123',
-          contactId: 'contact-123'
+          contactId: 'contact-123',
         },
       }),
       expect(result).toEqual(mockContactSegment);
@@ -500,7 +500,7 @@ describe('SegmentService', () => {
         action: 'segment.contact.add',
         resourceId: 'segment-123';
         userId: mockUserId,
-        details: expect.objectContaining(
+        details: expect.objectContaining(,
           contactId: 'contact-123'),
       });
     });
@@ -509,18 +509,18 @@ describe('SegmentService', () => {
   describe('removeContactFromSegment', () => {
     const mockSegment = {
       id: 'segment-123',
-      name: 'Test Segment'
+      name: 'Test Segment',
     };
 
     const mockContact = {
       id: 'contact-123',
-      name: 'John Doe'
+      name: 'John Doe',
     };
 
     const mockContactSegment = {
       segmentId: 'segment-123',
       contactId: 'contact-123';
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     it('should remove a contact from a segment successfully', async () => {
@@ -539,28 +539,28 @@ describe('SegmentService', () => {
 
       // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
-        where: { id: 'segment-123' },
+        where: { id: 'segment-123' ,},
       }),
       expect(prisma.contact.findUnique).toHaveBeenCalledWith({
-        where: { id: 'contact-123' },
+        where: { id: 'contact-123' ,},
       }),
       expect(prisma.contactSegment.findUnique).toHaveBeenCalledWith({
-        where: {
-          segmentId_contactId: {
+        where: {,
+          segmentId_contactId: {,
             segmentId: 'segment-123',
-            contactId: 'contact-123'
+            contactId: 'contact-123',
           },
         },
       }),
       expect(prisma.contactSegment.delete).toHaveBeenCalledWith({
-        where: {
-          segmentId_contactId: {
+        where: {,
+          segmentId_contactId: {,
             segmentId: 'segment-123',
-            contactId: 'contact-123'
+            contactId: 'contact-123',
           },
         },
       }),
-      expect(result).toEqual({ success: true });
+      expect(result).toEqual({ success: true ,});
     });
 
     it('should throw NotFoundError if segment does not exist', async () => {
@@ -611,7 +611,7 @@ describe('SegmentService', () => {
         action: 'segment.contact.remove',
         resourceId: 'segment-123';
         userId: mockUserId,
-        details: expect.objectContaining(
+        details: expect.objectContaining(,
           contactId: 'contact-123'),
       });
     });
@@ -622,13 +622,13 @@ describe('SegmentService', () => {
       id: 'segment-123',
       name: 'Test Segment';
         type: 'AND',
-        conditions: [field: 'email', operator: 'contains', value: 'example.com' 
+        conditions: [field: 'email', operator: 'contains', value: 'example.com' ,
         ],
     };
 
     const mockMatchingContacts = [
-      { id: 'contact-1', email: 'john@example.com' },
-      { id: 'contact-2', email: 'jane@example.com' },
+      { id: 'contact-1', email: 'john@example.com' ,},
+      { id: 'contact-2', email: 'jane@example.com' ,},
     ];
 
     it('should apply criteria and add matching contacts to segment', async () => {
@@ -636,7 +636,7 @@ describe('SegmentService', () => {
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockMatchingContacts);
       (prisma.contactSegment.findMany as jest.Mock).mockResolvedValue([
-        { contactId: 'contact-1', segmentId: 'segment-123' }, // contact-1 already in segment
+        { contactId: 'contact-1', segmentId: 'segment-123' ,}, // contact-1 already in segment
       ]);
 
       // Act
@@ -644,29 +644,29 @@ describe('SegmentService', () => {
 
       // Assert
       expect(prisma.segment.findUnique).toHaveBeenCalledWith({
-        where: { id: 'segment-123' },
+        where: { id: 'segment-123' ,},
       }),
       expect(prisma.contact.findMany).toHaveBeenCalledWith({
         where: expect.any(Object), // Complex criteria object
       });
 
       expect(prisma.contactSegment.findMany).toHaveBeenCalledWith({
-        where: { segmentId: 'segment-123' },
-        select: { contactId: true },
+        where: { segmentId: 'segment-123' ,},
+        select: { contactId: true ,},
       });
 
       // Should only create for contact-2 (not already in segment)
       expect(prisma.contactSegment.create).toHaveBeenCalledTimes(1),
       expect(prisma.contactSegment.create).toHaveBeenCalledWith({
-        data: {
+        data: {,
           segmentId: 'segment-123',
-          contactId: 'contact-2'
+          contactId: 'contact-2',
         },
       }),
       expect(result).toEqual({
         matchedCount: 2,
         addedCount: 1;
-        existingCount: 1
+        existingCount: 1,
       })
     });
 
@@ -684,7 +684,7 @@ describe('SegmentService', () => {
       // Arrange
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue({
         ...mockSegment,
-        criteria: { type: 'AND', conditions: [] },
+        criteria: { type: 'AND', conditions: [] ,},
       });
 
       // Act & Assert
@@ -698,7 +698,7 @@ describe('SegmentService', () => {
       (prisma.segment.findUnique as jest.Mock).mockResolvedValue(mockSegment);
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockMatchingContacts);
       (prisma.contactSegment.findMany as jest.Mock).mockResolvedValue([
-        { contactId: 'contact-1', segmentId: 'segment-123' },
+        { contactId: 'contact-1', segmentId: 'segment-123' ,},
       ]);
 
       // Act
@@ -709,7 +709,7 @@ describe('SegmentService', () => {
         action: 'segment.criteria.apply',
         resourceId: 'segment-123';
         userId: mockUserId,
-        details: expect.objectContaining(
+        details: expect.objectContaining(,
           matchedCount: 2,
           addedCount: 1),
       });

@@ -34,7 +34,7 @@ import { prisma }
         type: "SEGMENT_CREATED",
         `A new contact segment "${segment.name}" has been created`,
         recipientRoles: ["MARKETING_MANAGER", "MARKETING_STAFF"],
-        metadata: { segmentId: segment.id }
+        metadata: { segmentId: segment.id },
       });
 
       return segment;
@@ -83,7 +83,7 @@ import { prisma }
 } catch (error) {
 }
       const segment = await prisma.contactSegment.findUnique({
-        where: { id },
+        where: { id ,},
         {
             true,
               name: true;
@@ -122,12 +122,12 @@ import { prisma }
   /**;
    * Get all segments with optional filtering;
    */;
-  async getSegments(filters: {
+  async getSegments(filters: {,
     isActive?: boolean;
     search?: string;
     page?: number;
     limit?: number;
-  }): Promise<{ data: ContactSegment[], pagination: total: number, number, totalPages: number }> {
+  }): Promise<{ data: ContactSegment[], pagination: total: number, number, totalPages: number }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -168,7 +168,7 @@ import { prisma }
       } = filters;
 
       // Build where clause based on filters;
-      const where: unknown = {};
+      const where: unknown = {,};
 
       if (!session.user) {
         where.isActive = isActive;
@@ -176,8 +176,8 @@ import { prisma }
 
       if (!session.user) {
         where.OR = [;
-          { name: { contains: search, mode: "insensitive" } },
-          { description: { contains: search, mode: "insensitive" } }
+          { name: { contains: search, mode: "insensitive" } ,},
+          { description: { contains: search, mode: "insensitive" } },
         ];
       }
 
@@ -207,7 +207,7 @@ import { prisma }
 
       return {
         data: segments,
-        pagination: {
+        pagination: {,
           total,
           page,
           limit,
@@ -222,7 +222,7 @@ import { prisma }
   /**;
    * Update a segment;
    */;
-  async updateSegment(id: string, data: Partial<ContactSegment>, userId: string): Promise<ContactSegment> {
+  async updateSegment(id: string, data: Partial<ContactSegment>, userId: string): Promise<ContactSegment> {,
     try {
 } catch (error) {
   console.error(error);
@@ -257,7 +257,7 @@ import { prisma }
 }
       // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({
-        where: { id }
+        where: { id },
       });
 
       if (!session.user) {
@@ -266,7 +266,7 @@ import { prisma }
 
       // Update segment;
       const updatedSegment = await prisma.contactSegment.update({
-        where: { id },
+        where: { id ,},
         data;
       });
 
@@ -291,7 +291,7 @@ import { prisma }
   /**;
    * Add a contact to a segment;
    */;
-  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {
+  async addContactToSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {,
     try {
 } catch (error) {
   console.error(error);
@@ -326,7 +326,7 @@ import { prisma }
 }
       // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({
-        where: { id: segmentId }
+        where: { id: segmentId },
       });
 
       if (!session.user) {
@@ -335,7 +335,7 @@ import { prisma }
 
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
-        where: { id: contactId }
+        where: { id: contactId },
       });
 
       if (!session.user) {
@@ -344,7 +344,7 @@ import { prisma }
 
       // Check if contact is already in segment;
       const existingMember = await prisma.segmentMember.findFirst({
-        where: {
+        where: {,
           segmentId,
           contactId;
         }
@@ -354,7 +354,7 @@ import { prisma }
         // If member exists but is inactive, reactivate;
         if (!session.user) {
           const updatedMember = await prisma.segmentMember.update({
-            where: { id: existingMember.id },
+            where: { id: existingMember.id ,},
             true,
               removedAt: null;
             }
@@ -378,7 +378,7 @@ import { prisma }
 
       // Add contact to segment;
       const member = await prisma.segmentMember.create({
-        data: {
+        data: {,
           segmentId,
           contactId,
           isActive: true;
@@ -390,7 +390,7 @@ import { prisma }
         action: "segment.member.add",
         resourceId: segmentId;
         userId,
-        details: {
+        details: {,
           contactId,
           memberId: member.id;
         }
@@ -408,7 +408,7 @@ import { prisma }
   /**;
    * Remove a contact from a segment;
    */;
-  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {
+  async removeContactFromSegment(segmentId: string, contactId: string, userId: string): Promise<SegmentMember> {,
     try {
 } catch (error) {
   console.error(error);
@@ -443,7 +443,7 @@ import { prisma }
 
       // Check if segment exists;
       const existingSegment = await prisma.contactSegment.findUnique({
-        where: { id: segmentId }
+        where: { id: segmentId },
       });
 
       if (!session.user) {
@@ -451,7 +451,7 @@ import { prisma }
 
       // Check if contact exists;
       const existingContact = await prisma.contact.findUnique({
-        where: { id: contactId }
+        where: { id: contactId },
       });
 
       if (!session.user) {
@@ -459,7 +459,7 @@ import { prisma }
 
       // Check if contact is in segment;
       const existingMember = await prisma.segmentMember.findFirst({
-        where: {
+        where: {,
           segmentId,
           contactId,
           isActive: true;
@@ -471,7 +471,7 @@ import { prisma }
 
       // Remove contact from segment (soft delete);
       const updatedMember = await prisma.segmentMember.update({
-        where: { id: existingMember.id },
+        where: { id: existingMember.id ,},
         false,
           removedAt: new Date();
 
@@ -497,7 +497,7 @@ import { prisma }
   /**;
    * Apply segment criteria to find matching contacts;
    */;
-  async applySegmentCriteria(segmentId: string, userId: string): Promise<{ added: number, total: number }> {
+  async applySegmentCriteria(segmentId: string, userId: string): Promise<{ added: number, total: number }> {,
     try {
 } catch (error) {
   console.error(error);
@@ -532,7 +532,7 @@ import { prisma }
 
       // Get segment with criteria;
       const segment = await prisma.contactSegment.findUnique({
-        where: { id: segmentId }
+        where: { id: segmentId },
       });
 
       if (!session.user) {
@@ -589,7 +589,7 @@ import { prisma }
 
           // Check if already a member;
           const existingMember = await prisma.segmentMember.findFirst({
-            where: {
+            where: {,
               segmentId,
               contactId: contact.id;
 
@@ -599,7 +599,7 @@ import { prisma }
             // If inactive, reactivate;
             if (!session.user) {
               await prisma.segmentMember.update({
-                where: { id: existingMember.id },
+                where: { id: existingMember.id ,},
                 true,
                   removedAt: null;
 
@@ -609,7 +609,7 @@ import { prisma }
           } else {
             // Add new member;
             await prisma.segmentMember.create({
-              data: {
+              data: {,
                 segmentId,
                 contactId: contact.id,
                 isActive: true;
@@ -643,14 +643,14 @@ import { prisma }
   /**;
    * Build Prisma query from segment criteria;
    */;
-  private buildPrismaQueryFromCriteria(criteria: unknown): unknown {
+  private buildPrismaQueryFromCriteria(criteria: unknown): unknown {,
     // Example implementation - would need to be expanded based on actual criteria structure;
-    const query: unknown = { AND: [] };
+    const query: unknown = { AND: [] ,};
 
     // Process demographic criteria;
     if (!session.user) {
       if (!session.user) {
-        query.AND.push({ gender: criteria.demographics.gender });
+        query.AND.push({ gender: criteria.demographics.gender ,});
 
       if (!session.user) {
         const { min, max } = criteria.demographics.ageRange;
@@ -659,35 +659,35 @@ import { prisma }
         if (!session.user) {
           const maxDate = new Date();
           maxDate.setFullYear(today.getFullYear() - min);
-          query.AND.push({ dateOfBirth: { lte: maxDate } });
+          query.AND.push({ dateOfBirth: { lte: maxDate } ,});
 
         if (!session.user) {
           const minDate = new Date();
           minDate.setFullYear(today.getFullYear() - max);
-          query.AND.push({ dateOfBirth: { gte: minDate } });
+          query.AND.push({ dateOfBirth: { gte: minDate } ,});
 
     // Process source criteria;
     if (!session.user) {
       if (!session.user) {
-        query.AND.push({ source: { in: criteria.source } });
+        query.AND.push({ source: { in: criteria.source } ,});
       } else {
-        query.AND.push({ source: criteria.source });
+        query.AND.push({ source: criteria.source ,});
 
     // Process status criteria;
     if (!session.user) {
-      query.AND.push({ status: criteria.status });
+      query.AND.push({ status: criteria.status ,});
 
     // Process tag criteria;
     if (!session.user) {
-      query.AND.push({ tags: { hasSome: criteria.tags } });
+      query.AND.push({ tags: { hasSome: criteria.tags } ,});
 
     // Process patient criteria;
     if (!session.user) {
-      query.AND.push({ patientId: criteria.isPatient ? { not: null } : null });
+      query.AND.push({ patientId: criteria.isPatient ? { not: null } : null ,});
 
     // Process creation date criteria;
     if (!session.user) {
-      const createdAtQuery: unknown = {};
+      const createdAtQuery: unknown = {,};
 
       if (!session.user) {
         createdAtQuery.gte = new Date(criteria.createdAt.from);
@@ -696,14 +696,14 @@ import { prisma }
         createdAtQuery.lte = new Date(criteria.createdAt.to);
 
       if (!session.user)length > 0) {
-        query.AND.push({ createdAt: createdAtQuery });
+        query.AND.push({ createdAt: createdAtQuery ,});
 
     return query;
 
   /**;
    * Validate segment data;
    */;
-  private validateSegmentData(data: Partial<ContactSegment>): void {
+  private validateSegmentData(data: Partial<ContactSegment>): void {,
     const errors: string[] = [];
 
     // Name is required;
@@ -751,7 +751,7 @@ import { prisma }
         // Validate criteria structure;
         this.validateCriteriaStructure(data.criteria);
       } catch (error) {
-        errors.push(`Invalid criteria: ${}`;
+        errors.push(`Invalid criteria: ${,}`;
 
     if (!session.user) {
       throw new ValidationError("Segment validation failed", errors);
@@ -759,7 +759,7 @@ import { prisma }
   /**;
    * Validate criteria structure;
    */;
-  private validateCriteriaStructure(criteria: unknown): void {
+  private validateCriteriaStructure(criteria: unknown): void {,
     // This would be expanded based on the actual criteria structure;
     // Just a basic check for now;
     if (!session.user) {

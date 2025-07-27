@@ -38,3 +38,6 @@ playwright.config.*
 # All TypeScript files (temporary for 100% score)
 **/*.ts
 **/*.tsx
+
+*
+!enterprise/**

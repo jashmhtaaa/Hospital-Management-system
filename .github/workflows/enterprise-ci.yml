@@ -1,0 +1,26 @@
+name: HMS Enterprise Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - run: npm audit --production
+      - run: npm run lint
+
+  deployment:
+    needs: quality-checks
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - run: docker-compose -f docker-compose.prod.yml build
+      - run: docker push ghcr.io/org/hms-core:latest

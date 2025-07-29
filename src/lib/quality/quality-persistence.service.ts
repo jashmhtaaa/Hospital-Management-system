@@ -81,8 +81,8 @@ import {ActionPlan,
         dataToStore.metadata = await this.encryptData(JSON.stringify(indicator.metadata));
       }
 
-      await this.prisma.qualityIndicator.upsert({where:{ id: indicator.id ,},
-        update: {,
+      await this.prisma.qualityIndicator.upsert({where: { id: indicator.id },
+        update: {
           ...dataToStore,
           updatedAt: new Date(),
           updatedBy: userId;
@@ -96,7 +96,7 @@ import {ActionPlan,
       });
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"quality_indicator_saved",
+        await this.auditService.logAuditEvent({action: "quality_indicator_saved",
           indicator.id;
           userId,
           indicator.type,
@@ -142,7 +142,7 @@ import {ActionPlan,
 }
 } catch (error) {
 }
-      const record = await this.prisma.qualityIndicator.findUnique({where:{ id },
+      const record = await this.prisma.qualityIndicator.findUnique({where: { id }
       });
 
       if (!session.user)eturn null;
@@ -191,7 +191,7 @@ import {ActionPlan,
       }
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"quality_indicator_accessed",
+        await this.auditService.logAuditEvent({action: "quality_indicator_accessed",
           id;
           userId,
           details: type: indicator.type ;
@@ -257,7 +257,7 @@ import {ActionPlan,
 
       const records = await this.prisma.qualityIndicator.findMany({
         where,
-        orderBy: {createdAt:"desc" },
+        orderBy: {createdAt: "desc" }
       });
 
       const indicators = await Promise.all(records.map(async (record: unknown) => {,
@@ -307,7 +307,7 @@ import {ActionPlan,
       }));
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"quality_indicators_queried",
+        await this.auditService.logAuditEvent({action: "quality_indicators_queried",
           "list";
           userId,
           details: null,
@@ -369,8 +369,8 @@ import {ActionPlan,
         }
       }
 
-      await this.prisma.qualityEvent.upsert({where:{ id: event.id ,},
-        update: {,
+      await this.prisma.qualityEvent.upsert({where: { id: event.id },
+        update: {
           ...dataToStore,
           updatedAt: new Date(),
           updatedBy: userId;
@@ -384,7 +384,7 @@ import {ActionPlan,
       });
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"quality_event_saved",
+        await this.auditService.logAuditEvent({action: "quality_event_saved",
           event.id;
           userId,
           event.type,
@@ -451,7 +451,7 @@ import {ActionPlan,
 
       const records = await this.prisma.qualityEvent.findMany({
         where,
-        orderBy: {eventDate:"desc" },
+        orderBy: {eventDate: "desc" }
       });
 
       const events = await Promise.all(records.map(async (record: unknown) => {,
@@ -538,7 +538,7 @@ import {ActionPlan,
       }));
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"quality_events_queried",
+        await this.auditService.logAuditEvent({action: "quality_events_queried",
           "list";
           userId,
           details: null,
@@ -595,8 +595,8 @@ import {ActionPlan,
         if (!session.user) {
           dataToStore.recommendations = await this.encryptData(JSON.stringify(assessment.recommendations));
 
-      await this.prisma.qualityAssessment.upsert({where:{ id: assessment.id ,},
-        update: {,
+      await this.prisma.qualityAssessment.upsert({where: { id: assessment.id },
+        update: {
           ...dataToStore,
           updatedAt: new Date(),
           updatedBy: userId;
@@ -610,7 +610,7 @@ import {ActionPlan,
       });
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"quality_assessment_saved",
+        await this.auditService.logAuditEvent({action: "quality_assessment_saved",
           assessment.id;
           userId,
           assessment.type,
@@ -668,8 +668,8 @@ import {ActionPlan,
         if (!session.user) {
           dataToStore.actionPlan = await this.encryptData(JSON.stringify(report.actionPlan));
 
-      await this.prisma.complianceReport.upsert({where:{ id: report.id ,},
-        update: {,
+      await this.prisma.complianceReport.upsert({where: { id: report.id },
+        update: {
           ...dataToStore,
           updatedAt: new Date(),
           updatedBy: userId;
@@ -683,7 +683,7 @@ import {ActionPlan,
       });
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"compliance_report_saved",
+        await this.auditService.logAuditEvent({action: "compliance_report_saved",
           report.id;
           userId,
           report.regulatoryBody,
@@ -746,7 +746,7 @@ import {ActionPlan,
 
       const records = await this.prisma.complianceReport.findMany({
         where,
-        orderBy: {reportDate:"desc" },
+        orderBy: {reportDate: "desc" }
       });
 
       const reports = await Promise.all(records.map(async (record: unknown) => {,
@@ -869,7 +869,7 @@ import {ActionPlan,
       }));
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"compliance_reports_queried",
+        await this.auditService.logAuditEvent({action: "compliance_reports_queried",
           "list";
           userId,
           details: null,
@@ -916,8 +916,8 @@ import {ActionPlan,
 
 } catch (error) {
 
-      await this.prisma.actionPlan.upsert({where:{ id: actionPlan.id ,},
-        update: {,
+      await this.prisma.actionPlan.upsert({where: { id: actionPlan.id },
+        update: {
           ...actionPlan,
           updatedAt: new Date(),
           updatedBy: userId;
@@ -931,7 +931,7 @@ import {ActionPlan,
       });
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"action_plan_saved",
+        await this.auditService.logAuditEvent({action: "action_plan_saved",
           actionPlan.id;
           userId,
           actionPlan.title,
@@ -976,8 +976,8 @@ import {ActionPlan,
 
 } catch (error) {
 
-      await this.prisma.qualityMetric.upsert({where:{ id: metric.id ,},
-        update: {,
+      await this.prisma.qualityMetric.upsert({where: { id: metric.id },
+        update: {
           ...metric,
           updatedAt: new Date(),
           updatedBy: userId;
@@ -991,7 +991,7 @@ import {ActionPlan,
       });
 
       if (!session.user) {
-        await this.auditService.logAuditEvent({action:"quality_metric_saved",
+        await this.auditService.logAuditEvent({action: "quality_metric_saved",
           metric.id;
           userId,
           metric.name,
@@ -1012,12 +1012,12 @@ import {ActionPlan,
     return await this.encryptionService.decrypt(encryptedData);
 
   // Data Retention and Archiving;
-  async archiveOldRecords(): Promise<{archivedIndicators:number,
+  async archiveOldRecords(): Promise<{archivedIndicators: number,
     number,
     archivedReports: number;
   }> {
     if (!session.user) {
-      return {archivedIndicators:0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 ,};
+      return {archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
 
     const cutoffDate = new Date();
     cutoffDate.setFullYear(cutoffDate.getFullYear() - this.config.retentionPeriod);
@@ -1055,21 +1055,21 @@ import {ActionPlan,
 } catch (error) {
 
       const [indicators, events, assessments, reports] = await Promise.all([;
-        this.prisma.qualityIndicator.updateMany({where:{ createdAt: {lt:cutoffDate ,}, archived: false ,},
-          data: {archived:true, archivedAt: new Date() },
+        this.prisma.qualityIndicator.updateMany({where: { createdAt: {lt:cutoffDate }, archived: false },
+          data: {archived: true, archivedAt: new Date() }
         }),
-        this.prisma.qualityEvent.updateMany({where:{ createdAt: {lt:cutoffDate ,}, archived: false ,},
-          data: {archived:true, archivedAt: new Date() },
+        this.prisma.qualityEvent.updateMany({where: { createdAt: {lt:cutoffDate }, archived: false },
+          data: {archived: true, archivedAt: new Date() }
         }),
-        this.prisma.qualityAssessment.updateMany({where:{ createdAt: {lt:cutoffDate ,}, archived: false ,},
-          data: {archived:true, archivedAt: new Date() },
+        this.prisma.qualityAssessment.updateMany({where: { createdAt: {lt:cutoffDate }, archived: false },
+          data: {archived: true, archivedAt: new Date() }
         }),
-        this.prisma.complianceReport.updateMany({where:{ createdAt: {lt:cutoffDate ,}, archived: false ,},
-          data: {archived:true, archivedAt: new Date() },
+        this.prisma.complianceReport.updateMany({where: { createdAt: {lt:cutoffDate }, archived: false },
+          data: {archived: true, archivedAt: new Date() }
         });
       ]);
 
-      return {archivedIndicators:indicators.count,
+      return {archivedIndicators: indicators.count,
         assessments.count,
         archivedReports: reports.count;
       };

@@ -59,13 +59,13 @@ export const POST = async (req: any) => {,
 } catch (error) {
 }
     const body = await req.json();
-    logger.info({route:"POST /api/ipd/integration/laboratory", actionType: body.actionType ,}, "Processing laboratory request");
+    logger.info({route: "POST /api/ipd/integration/laboratory", actionType: body.actionType }, "Processing laboratory request");
 
     // Validate request body;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required fields: actionType, encounterId" },
-        {status:400 },
+        {error: "Missing required fields: actionType, encounterId" },
+        {status: 400 }
       );
     }
 
@@ -109,7 +109,7 @@ export const POST = async (req: any) => {,
 }
           const validatedData = LabOrderSchema.parse(body);
           const result = await laboratoryService.createLabOrder(validatedData, authResult.user.id);
-          return NextResponse.json(result, {status:201 ,});
+          return NextResponse.json(result, {status: 201 });
         } catch (error) {
           return handleApiError(error);
         }
@@ -149,7 +149,7 @@ export const POST = async (req: any) => {,
 }
           const validatedData = LabCancelSchema.parse(body);
           const result = await laboratoryService.cancelLabOrder(validatedData, authResult.user.id);
-          return NextResponse.json(result, {status:200 ,});
+          return NextResponse.json(result, {status: 200 });
         } catch (error) {
           return handleApiError(error);
         }
@@ -189,14 +189,14 @@ export const POST = async (req: any) => {,
 
           const validatedData = LabResultNotificationSchema.parse(body);
           const result = await laboratoryService.sendLabResultNotification(validatedData, authResult.user.id);
-          return NextResponse.json(result, {status:200 ,});
+          return NextResponse.json(result, {status: 200 });
         } catch (error) {
           return handleApiError(error);
 
       default: null,
         return NextResponse.json();
-          {error:`Unsupported action type: ${body.actionType}` ,},
-          {status:400 },
+          {error: `Unsupported action type: ${body.actionType}` },
+          {status: 400 }
         )}
   } catch (error) {
     return handleApiError(error);
@@ -248,11 +248,11 @@ export const GET = async (req: any) => {,
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing patientId parameter" ,},
-        {status:400 },
+        {error: "Missing patientId parameter" },
+        {status: 400 }
       );
 
-    logger.info({route:"GET /api/ipd/integration/laboratory", patientId }, "Getting pending laboratory orders");
+    logger.info({route: "GET /api/ipd/integration/laboratory", patientId }, "Getting pending laboratory orders");
 
     // Create laboratory service instance;
     const laboratoryService = new LaboratoryService();
@@ -314,11 +314,11 @@ export const getLabResults = async (req: any) => {,
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing patientId parameter" ,},
-        {status:400 },
+        {error: "Missing patientId parameter" },
+        {status: 400 }
       );
 
-    logger.info({route:"GET /api/ipd/integration/laboratory/results";
+    logger.info({route: "GET /api/ipd/integration/laboratory/results";
       patientId,
       encounterId,
       limit,
@@ -382,11 +382,11 @@ export const getLabResultDetails = async (req: any) => {,
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing orderId parameter" ,},
-        {status:400 },
+        {error: "Missing orderId parameter" },
+        {status: 400 }
       );
 
-    logger.info({route:"GET /api/ipd/integration/laboratory/results/details", orderId }, "Getting laboratory result details");
+    logger.info({route: "GET /api/ipd/integration/laboratory/results/details", orderId }, "Getting laboratory result details");
 
     // Create laboratory service instance;
     const laboratoryService = new LaboratoryService();

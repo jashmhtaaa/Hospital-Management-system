@@ -25,7 +25,7 @@ export const GET = async (request: any) => {,
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters;
-      const filters = {isActive:searchParams.has("isActive");
+      const filters = {isActive: searchParams.has("isActive");
           ? searchParams.get("isActive") === "true";
           : undefined,
         search: searchParams.get("search") || undefined,
@@ -40,7 +40,7 @@ export const GET = async (request: any) => {,
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"marketing.segments.read",
+    {requiredPermission: "marketing.segments.read",
       auditAction: "SEGMENTS_LIST";
     }
   );
@@ -62,9 +62,9 @@ export const POST = async (request: any) => {,
         session?.user?.id as string;
       );
 
-      return NextResponse.json(segment, {status:201 ,});
+      return NextResponse.json(segment, {status: 201 });
     },
-    {requiredPermission:"marketing.segments.create",
+    {requiredPermission: "marketing.segments.create",
       auditAction: "SEGMENT_CREATE";
     }
   );

@@ -19,7 +19,7 @@ const contactService = new ContactService();
  */;
 export const POST = async();
   request: any;
-  { params }: {id:string },
+  { params }: {id: string }
 ) => {
   return withErrorHandling();
     request,
@@ -29,8 +29,8 @@ export const POST = async();
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Patient ID is required" ,},
-          {status:400 },
+          {error: "Patient ID is required" },
+          {status: 400 }
         );
       }
 
@@ -42,7 +42,7 @@ export const POST = async();
 
       return NextResponse.json(contact);
     },
-    {requiredPermission:"marketing.contacts.update",
+    {requiredPermission: "marketing.contacts.update",
       auditAction: "CONTACT_LINK_PATIENT";
     }
   );

@@ -11,8 +11,7 @@ import {PrismaClient  } from "next/server"
  */;
 
 // Connection Pool Configuration;
-interface PoolConfig {
-    {host:string,
+interface PoolConfig {host: string,
   string,
   string,
   max: number;           // Maximum number of connections;
@@ -45,7 +44,7 @@ class DatabasePool {
   }
 
   private getPoolConfig(): PoolConfig {
-    return {host:process.env.DB_HOST || "localhost",
+    return {host: process.env.DB_HOST || "localhost",
       port: Number.parseInt(process.env.DB_PORT || "5432"),
       database: process.env.DB_NAME || "hospital_management",
       process.env.DB_PASSWORD || "password",
@@ -63,7 +62,7 @@ class DatabasePool {
     const databaseUrl = this.buildConnectionString();
 
     this.prismaClient = new PrismaClient({
-      {url:databaseUrl;
+      {url: databaseUrl;
         }
       },
       log: this.config.logging ? ["query", "info", "warn", "error"] : ["error"],
@@ -87,7 +86,7 @@ class DatabasePool {
   }
 
   private initializePgPool(): void {
-    this.pgPool = new Pool({host:this.config.host,
+    this.pgPool = new Pool({host: this.config.host,
       this.config.database,
       this.config.password,
       this.config.min,
@@ -144,7 +143,7 @@ class DatabasePool {
   }
 
   // Connection pool health check;
-  public async healthCheck(): Promise<{prisma:boolean,
+  public async healthCheck(): Promise<{prisma: boolean,
     unknown;
   }> {
     try {
@@ -188,13 +187,13 @@ class DatabasePool {
       // Get pool statistics;
       const stats = this.getPoolStats();
 
-      return {prisma:prismaHealthy,
+      return {prisma: prismaHealthy,
         pool: poolHealthy;
         stats;
       };
     } catch (error) {
 
-      return {prisma:false,
+      return {prisma: false,
         null;
       };
     }
@@ -283,7 +282,7 @@ class DatabasePool {
       return false;
 
   private getPoolStats(): unknown {
-    return {totalCount:this.pgPool.totalCount,
+    return {totalCount: this.pgPool.totalCount,
       this.pgPool.waitingCount,
       this.config.min;
     };

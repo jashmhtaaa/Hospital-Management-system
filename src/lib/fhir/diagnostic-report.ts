@@ -25,7 +25,7 @@ import { } from "next/server"
 // Helper functions for FHIR DiagnosticReport operations;
 }
   }): FHIRDiagnosticReport {
-    return {resourceType:"DiagnosticReport",
+    return {resourceType: "DiagnosticReport",
       [{
         "https://terminology.hl7.org/CodeSystem/v2-0074",
           "Laboratory";
@@ -67,7 +67,7 @@ import { } from "next/server"
     status?: "preliminary" | "final";
     images?: string[];
   }): FHIRDiagnosticReport {
-    return {resourceType:"DiagnosticReport",
+    return {resourceType: "DiagnosticReport",
       [{
         "https://terminology.hl7.org/CodeSystem/v2-0074",
           "Radiology";
@@ -94,7 +94,7 @@ import { } from "next/server"
         }];
       }),
       ...(data?.images && {
-        {reference:`Media/$imageId`,
+        {reference: `Media/$imageId`,
             type: "Media";
 
         }));
@@ -113,13 +113,13 @@ import { } from "next/server"
     effectiveDateTime: string;
     status?: "preliminary" | "final";
   }): FHIRDiagnosticReport {
-    return {resourceType:"DiagnosticReport",
+    return {resourceType: "DiagnosticReport",
       [{
         "https://terminology.hl7.org/CodeSystem/v2-0074",
           "Pathology";
         }];
       }],
-      [{system:"https://loinc.org",
+      [{system: "https://loinc.org",
           "Pathology report";
         }];
       },
@@ -160,10 +160,10 @@ import { } from "next/server"
     status?: "preliminary" | "final";
     measurements?: Array>;
   }): FHIRDiagnosticReport {
-    const studyMapping = {ECG:{ code: "11524-6", display: "EKG study" ,},
-      ECHO: {code:"34552-0", display: "Echocardiography study" ,},
-      STRESS_TEST: {code:"18752-6", display: "Exercise stress test study" ,},
-      HOLTER: {code:"18745-0", display: "Cardiac monitor study" },
+    const studyMapping = {ECG: { code: "11524-6", display: "EKG study" },
+      ECHO: {code: "34552-0", display: "Echocardiography study" },
+      STRESS_TEST: {code: "18752-6", display: "Exercise stress test study" },
+      HOLTER: {code: "18745-0", display: "Cardiac monitor study" }
     };
 
     const study = studyMapping[data.studyType];
@@ -182,13 +182,13 @@ import { } from "next/server"
     if (!session.user) {
       conclusion += `;\n\nRecommendations: $data.recommendations`;
 
-    return {resourceType:"DiagnosticReport",
+    return {resourceType: "DiagnosticReport",
       [{
         "https://terminology.hl7.org/CodeSystem/v2-0074",
           "Cardiology";
         }];
       }],
-      [{system:"https://loinc.org",
+      [{system: "https://loinc.org",
           study.display;
         }];
       },
@@ -271,7 +271,7 @@ import { } from "next/server"
   } {
     const effectiveDate = this.getEffectiveDate(report);
 
-    return {reportName:this.getCodeDisplay(report),
+    return {reportName: this.getCodeDisplay(report),
       category: this.getCategoryDisplay(report),
       status: report.status,
       this.getPrimaryPerformer(report) || "Unknown",
@@ -283,7 +283,7 @@ import { } from "next/server"
   /**;
    * Validate FHIR DiagnosticReport resource;
    */;
-  static validateDiagnosticReport(report: FHIRDiagnosticReport): {valid:boolean, errors: string[] } {,
+  static validateDiagnosticReport(report: FHIRDiagnosticReport): {valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -310,15 +310,15 @@ import { } from "next/server"
     if (!session.user) {
       errors.push("Final reports must have results, conclusion, or presented form");
 
-    return {valid:errors.length === 0;
+    return {valid: errors.length === 0;
       errors;
     };
 
   /**;
    * Convert HMS lab report to FHIR DiagnosticReport;
    */;
-  static fromHMSLabReport(hmsLabReport: unknown): FHIRDiagnosticReport {,
-    return this.createLabReport({patientId:hmsLabReport.patientId,
+  static fromHMSLabReport(hmsLabReport: unknown): FHIRDiagnosticReport {
+    return this.createLabReport({patientId: hmsLabReport.patientId,
       hmsLabReport.encounterId,
       hmsLabReport.panelName || hmsLabReport.name || "Laboratory Report",
       hmsLabReport.interpretation || hmsLabReport.summary,
@@ -329,8 +329,8 @@ import { } from "next/server"
   /**;
    * Convert HMS imaging report to FHIR DiagnosticReport;
    */;
-  static fromHMSImagingReport(hmsImagingReport: unknown): FHIRDiagnosticReport {,
-    return this.createImagingReport({patientId:hmsImagingReport.patientId,
+  static fromHMSImagingReport(hmsImagingReport: unknown): FHIRDiagnosticReport {
+    return this.createImagingReport({patientId: hmsImagingReport.patientId,
       hmsImagingReport.encounterId,
       hmsImagingReport.studyName || hmsImagingReport.procedureName,
       hmsImagingReport.findings || hmsImagingReport.description,
@@ -342,7 +342,7 @@ import { } from "next/server"
    * Get reports by category;
    */;
   static getReportsByCategory(reports: FHIRDiagnosticReport[]): Record<string, FHIRDiagnosticReport[]> {
-    const categorized: Record<string, FHIRDiagnosticReport[]> = {Laboratory:[],
+    const categorized: Record<string, FHIRDiagnosticReport[]> = {Laboratory: [],
       [],
       [];
     };
@@ -383,7 +383,7 @@ import { } from "next/server"
   /**;
    * Imaging study codes;
    */;
-  static readonly IMAGING_STUDIES = {CHEST_XRAY:"36643-5",
+  static readonly IMAGING_STUDIES = {CHEST_XRAY: "36643-5",
     "24628-0",
     "24553-0",
     "24604-1",
@@ -393,7 +393,7 @@ import { } from "next/server"
   /**;
    * Pathology report codes;
    */;
-  static readonly PATHOLOGY_REPORTS = {SURGICAL_PATHOLOGY:"60567-5",
+  static readonly PATHOLOGY_REPORTS = {SURGICAL_PATHOLOGY: "60567-5",
     "18743-5",
     BONE_MARROW: "33717-0";
   };

@@ -1,6 +1,6 @@
 import {NextRequest, NextResponse } from "next/server";
 
-interface ERVisit {id:string | number;
+interface ERVisit {id: string | number;
   patient_id: string | number;
   patient_name?: string;
   mrn?: string;
@@ -18,8 +18,8 @@ interface ERVisit {id:string | number;
   updated_at?: string;
 }
 
-const mockVisits: ERVisit[] = [,
-  {id:1,
+const mockVisits: ERVisit[] = [
+  {id: 1,
     patient_name: "John Doe",
     mrn: "MRN001",
     patient_id: 1,
@@ -30,7 +30,7 @@ const mockVisits: ERVisit[] = [,
     created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
     updated_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
   },
-  {id:2,
+  {id: 2,
     patient_name: "Jane Smith",
     patient_id: 2,
     arrival_timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
@@ -46,13 +46,14 @@ const mockVisits: ERVisit[] = [,
 
 let nextVisitId = 3;
 
-interface ERVisitInput {patient_id:number | string;
+interface ERVisitInput {patient_id: number | string;
   chief_complaint: string;
   mode_of_arrival?: string;
   arrival_timestamp?: string;
 }
 interface ERVisitFilters {
-    status?: string | undefined;
+
+  status?: string | undefined;
   location?: string | undefined;
   date?: string | undefined;
 }
@@ -79,7 +80,7 @@ async function getERVisitsFromDB(filters: ERVisitFilters = {}) {,
 
 async function createERVisitInDB(data: ERVisitInput): Promise<ERVisit> {,
   const now = new Date().toISOString();
-  const newVisit: ERVisit = {id:nextVisitId++,
+  const newVisit: ERVisit = {id: nextVisitId++,
     patient_id: data.patient_id,
     patient_name: `Patient ${data.patient_id,}`,
     mrn: `MRN${String(data.patient_id).padStart(3, "0")}`,
@@ -98,7 +99,7 @@ async function createERVisitInDB(data: ERVisitInput): Promise<ERVisit> {,
 export const GET = async (request: NextRequest) => {,
   try {
     const { searchParams } = new URL(request.url);
-    const filters: ERVisitFilters = {status:searchParams.get("status") ?? undefined,
+    const filters: ERVisitFilters = {status: searchParams.get("status") ?? undefined,
       location: searchParams.get("location") ?? undefined,
       date: searchParams.get("date") ?? undefined,
     };
@@ -108,8 +109,8 @@ export const GET = async (request: NextRequest) => {,
   } catch (error: unknown) {,
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
-      {error:"Failed to fetch ER visits", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to fetch ER visits", details: errorMessage },
+      {status: 500 }
     );
   }
 };
@@ -121,18 +122,18 @@ export const POST = async (request: NextRequest) => {,
 
     if (!visitData.patient_id || !visitData.chief_complaint) {
       return NextResponse.json(
-        {error:"Missing required fields (patient_id, chief_complaint)" },
-        {status:400 },
+        {error: "Missing required fields (patient_id, chief_complaint)" },
+        {status: 400 }
       );
     }
 
     const newVisit = await createERVisitInDB(visitData);
-    return NextResponse.json({visit:newVisit ,}, {status:201 ,});
-  } catch (error: unknown) {,
+    return NextResponse.json({visit: newVisit }, {status: 201 });
+  } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json(
-      {error:"Failed to create ER visit", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to create ER visit", details: errorMessage },
+      {status: 500 }
     );
   }
 };

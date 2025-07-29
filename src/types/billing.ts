@@ -9,7 +9,7 @@ export enum ItemType {
     Consumable = "Consumable",
     EquipmentUsage = "EquipmentUsage",
     Package = "Package",
-export = "export" interface = "interface" BillableItem = "BillableItem" {item_id:number;
+export = "export" interface = "interface" BillableItem = "BillableItem" {item_id: number;
     item_code?: string | null;
     item_name: string;
     description?: string | null;

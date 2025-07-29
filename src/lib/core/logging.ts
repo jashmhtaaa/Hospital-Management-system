@@ -66,8 +66,8 @@ class DefaultLogger implements Logger {
     this.logLevel = logLevel;
   }
 
-  private shouldLog(level: "debug" | "info" | "warn" | "error"): boolean {,
-    const levels = {debug:0, info: 1, warn: 2, error: 3 ,};
+  private shouldLog(level: "debug" | "info" | "warn" | "error"): boolean {
+    const levels = {debug: 0, info: 1, warn: 2, error: 3 };
     return levels[level] >= levels[this.logLevel];
   }
 
@@ -79,7 +79,7 @@ class DefaultLogger implements Logger {
       timestamp,
       level,
       message,
-      ...(maskedContext && {context:maskedContext }),});
+      ...(maskedContext && {context: maskedContext })});
   }
 
   debug(message: string, context?: Record<string, unknown>): void {

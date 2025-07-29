@@ -94,7 +94,7 @@ import {PrismaClient  } from "next/server"
     } catch (error) {
 
       // Log security event;
-      await logAuditEvent({eventType:"PERMISSION_CHECK_ERROR";
+      await logAuditEvent({eventType: "PERMISSION_CHECK_ERROR";
         userId,
         resource,
         details: error: (error as Error).message, resource, action ,
@@ -241,15 +241,15 @@ import {PrismaClient  } from "next/server"
       }
 
       // Get roles from database;
-      const userRoles = await this.prisma.userRole.findMany({where:{,
+      const userRoles = await this.prisma.userRole.findMany({where: {
           userId,
           isActive: true,
           OR: [;
-            {expiresAt:null ,},
-            {expiresAt:{ gt: new Date() } },
+            {expiresAt:null },
+            {expiresAt: { gt: new Date() } }
           ];
         },
-        select: {roleId:true },
+        select: {roleId: true }
       });
 
       const roleIds = userRoles.map(ur => ur.roleId);
@@ -329,7 +329,7 @@ import {PrismaClient  } from "next/server"
       await this.clearUserCache(assignment.userId);
 
       // Log audit event;
-      await logAuditEvent({eventType:"ROLE_ASSIGNED",
+      await logAuditEvent({eventType: "ROLE_ASSIGNED",
         assignment.userId,
         resource: "user_role";
         {roleId:assignment.roleId,
@@ -342,7 +342,7 @@ import {PrismaClient  } from "next/server"
 
     } catch (error) {
 
-      await logAuditEvent({eventType:"ROLE_ASSIGNMENT_ERROR",
+      await logAuditEvent({eventType: "ROLE_ASSIGNMENT_ERROR",
         assignment.userId,
         (error as Error).message,
           roleId: assignment.roleId,
@@ -397,7 +397,7 @@ import {PrismaClient  } from "next/server"
         throw new Error(`Role ${roleId} does not exist`);
 
       // Deactivate role assignment;
-      const result = await this.prisma.userRole.updateMany({where:{,
+      const result = await this.prisma.userRole.updateMany({where: {
           userId,
           roleId,
           isActive: true;
@@ -414,7 +414,7 @@ import {PrismaClient  } from "next/server"
       await this.clearUserCache(userId);
 
       // Log audit event;
-      await logAuditEvent({eventType:"ROLE_REMOVED",
+      await logAuditEvent({eventType: "ROLE_REMOVED",
         userId,
         resource: "user_role";
           roleId,
@@ -425,7 +425,7 @@ import {PrismaClient  } from "next/server"
 
     } catch (error) {
 
-      await logAuditEvent({eventType:"ROLE_REMOVAL_ERROR",
+      await logAuditEvent({eventType: "ROLE_REMOVAL_ERROR",
         userId,
         (error as Error).message;
           roleId;,
@@ -495,7 +495,7 @@ import {PrismaClient  } from "next/server"
 } catch (error) {
 
       // Log emergency access request;
-      await logAuditEvent({eventType:"EMERGENCY_ACCESS_GRANTED",
+      await logAuditEvent({eventType: "EMERGENCY_ACCESS_GRANTED",
         userId;
         resource,
         details: null,
@@ -548,7 +548,7 @@ import {PrismaClient  } from "next/server"
                      action === "delete";
 
     if (!session.user) {
-      await logAuditEvent({eventType:granted ? "PERMISSION_GRANTED" : "PERMISSION_DENIED";
+      await logAuditEvent({eventType: granted ? "PERMISSION_GRANTED" : "PERMISSION_DENIED";
         userId,
         resource,
         details: null,

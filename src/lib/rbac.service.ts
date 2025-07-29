@@ -54,85 +54,83 @@ export enum Action {
   REPORT = "report"}
 
 // Permission definition type;
-interface Permission {
-    {resource:Resource,
+interface Permission {resource: Resource,
   action: Action;
   constraints?: Record>;
 }
 
 // Role definition with permissions;
-interface RoleDefinition {
-    {name:Role;
+interface RoleDefinition {name: Role;
   inherits?: Role[];
   permissions: Permission[];
 }
     },
-    {name:Role.MANAGER,
+    {name: Role.MANAGER,
       permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.APPROVE ,resource: Resource.HOUSEKEEPING, action: Action.REPORT ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.APPROVE ,resource: Resource.MAINTENANCE, action: Action.REPORT ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.DIETARY, action: Action.APPROVE ,resource: Resource.DIETARY, action: Action.REPORT ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.APPROVE ,resource: Resource.AMBULANCE, action: Action.REPORT ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.APPROVE ,resource: Resource.FEEDBACK, action: Action.REPORT ,resource: Resource.MARKETING, action: Action.READ ,resource: Resource.MARKETING, action: Action.APPROVE ,resource: Resource.MARKETING, action: Action.REPORT ,resource: Resource.USER, action: Action.READ ,resource: Resource.USER, action: Action.CREATE ,resource: Resource.USER, action: Action.UPDATE ];
     },
-    {name:Role.STAFF,
+    {name: Role.STAFF,
       permissions: [resource: Resource.HOUSEKEEPING, action: Action.READ ,resource: Resource.MAINTENANCE, action: Action.READ ,resource: Resource.DIETARY, action: Action.READ ,resource: Resource.AMBULANCE, action: Action.READ ,resource: Resource.FEEDBACK, action: Action.READ ,resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.CREATE ];
     },
-    {name:Role.HOUSEKEEPING,
+    {name: Role.HOUSEKEEPING,
       [;
         // Housekeeping staff can manage housekeeping requests;
-        {resource:Resource.HOUSEKEEPING, action: Action.UPDATE ,},
-        {resource:Resource.HOUSEKEEPING, action: Action.ASSIGN ,}];
+        {resource:Resource.HOUSEKEEPING, action: Action.UPDATE },
+        {resource: Resource.HOUSEKEEPING, action: Action.ASSIGN }];
     },
-    {name:Role.MAINTENANCE,
+    {name: Role.MAINTENANCE,
       [;
         // Maintenance staff can manage maintenance requests;
-        {resource:Resource.MAINTENANCE, action: Action.UPDATE ,},
-        {resource:Resource.MAINTENANCE, action: Action.ASSIGN ,}];
+        {resource:Resource.MAINTENANCE, action: Action.UPDATE },
+        {resource: Resource.MAINTENANCE, action: Action.ASSIGN }];
     },
-    {name:Role.DIETARY,
+    {name: Role.DIETARY,
       [;
         // Dietary staff can manage dietary requests;
-        {resource:Resource.DIETARY, action: Action.UPDATE ,},
-        {resource:Resource.DIETARY, action: Action.ASSIGN ,}];
+        {resource:Resource.DIETARY, action: Action.UPDATE },
+        {resource: Resource.DIETARY, action: Action.ASSIGN }];
     },
-    {name:Role.AMBULANCE,
+    {name: Role.AMBULANCE,
       [;
         // Ambulance staff can manage ambulance requests;
-        {resource:Resource.AMBULANCE, action: Action.UPDATE ,},
-        {resource:Resource.AMBULANCE, action: Action.ASSIGN ,}];
+        {resource:Resource.AMBULANCE, action: Action.UPDATE },
+        {resource: Resource.AMBULANCE, action: Action.ASSIGN }];
     },
-    {name:Role.MARKETING,
+    {name: Role.MARKETING,
       [;
         // Marketing staff can manage marketing campaigns;
-        {resource:Resource.MARKETING, action: Action.READ ,},
-        {resource:Resource.MARKETING, action: Action.CREATE ,},
-        {resource:Resource.MARKETING, action: Action.UPDATE ,},
-        {resource:Resource.MARKETING, action: Action.DELETE ,},
-        {resource:Resource.CAMPAIGN, action: Action.READ ,},
-        {resource:Resource.CAMPAIGN, action: Action.CREATE ,},
-        {resource:Resource.CAMPAIGN, action: Action.UPDATE ,},
-        {resource:Resource.CAMPAIGN, action: Action.DELETE ,},
-        {resource:Resource.CONTACT, action: Action.READ ,},
-        {resource:Resource.CONTACT, action: Action.CREATE ,},
-        {resource:Resource.CONTACT, action: Action.UPDATE ,},
-        {resource:Resource.CONTACT, action: Action.DELETE ,},
-        {resource:Resource.SEGMENT, action: Action.READ ,},
-        {resource:Resource.SEGMENT, action: Action.CREATE ,},
-        {resource:Resource.SEGMENT, action: Action.UPDATE ,},
-        {resource:Resource.SEGMENT, action: Action.DELETE ,},
-        {resource:Resource.TEMPLATE, action: Action.READ ,},
-        {resource:Resource.TEMPLATE, action: Action.CREATE ,},
-        {resource:Resource.TEMPLATE, action: Action.UPDATE ,},
-        {resource:Resource.TEMPLATE, action: Action.DELETE ,},
-        {resource:Resource.ANALYTICS, action: Action.READ ,}];
+        {resource:Resource.MARKETING, action: Action.READ },
+        {resource: Resource.MARKETING, action: Action.CREATE },
+        {resource: Resource.MARKETING, action: Action.UPDATE },
+        {resource: Resource.MARKETING, action: Action.DELETE },
+        {resource: Resource.CAMPAIGN, action: Action.READ },
+        {resource: Resource.CAMPAIGN, action: Action.CREATE },
+        {resource: Resource.CAMPAIGN, action: Action.UPDATE },
+        {resource: Resource.CAMPAIGN, action: Action.DELETE },
+        {resource: Resource.CONTACT, action: Action.READ },
+        {resource: Resource.CONTACT, action: Action.CREATE },
+        {resource: Resource.CONTACT, action: Action.UPDATE },
+        {resource: Resource.CONTACT, action: Action.DELETE },
+        {resource: Resource.SEGMENT, action: Action.READ },
+        {resource: Resource.SEGMENT, action: Action.CREATE },
+        {resource: Resource.SEGMENT, action: Action.UPDATE },
+        {resource: Resource.SEGMENT, action: Action.DELETE },
+        {resource: Resource.TEMPLATE, action: Action.READ },
+        {resource: Resource.TEMPLATE, action: Action.CREATE },
+        {resource: Resource.TEMPLATE, action: Action.UPDATE },
+        {resource: Resource.TEMPLATE, action: Action.DELETE },
+        {resource: Resource.ANALYTICS, action: Action.READ }];
     },
-    {name:Role.FEEDBACK,
+    {name: Role.FEEDBACK,
       [;
         // Feedback staff can manage feedback;
-        {resource:Resource.FEEDBACK, action: Action.READ ,},
-        {resource:Resource.FEEDBACK, action: Action.UPDATE ,},
-        {resource:Resource.FEEDBACK, action: Action.ASSIGN ,}];
+        {resource:Resource.FEEDBACK, action: Action.READ },
+        {resource: Resource.FEEDBACK, action: Action.UPDATE },
+        {resource: Resource.FEEDBACK, action: Action.ASSIGN }];
     },
-    {name:Role.PATIENT,
+    {name: Role.PATIENT,
       permissions: [resource: Resource.HOUSEKEEPING, action: Action.CREATE ,resource: Resource.HOUSEKEEPING, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.MAINTENANCE, action: Action.CREATE ,resource: Resource.MAINTENANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.DIETARY, action: Action.CREATE ,resource: Resource.DIETARY, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.AMBULANCE, action: Action.CREATE ,resource: Resource.AMBULANCE, action: Action.READ, constraints: ownedByUser: true ,resource: Resource.FEEDBACK, action: Action.CREATE ,resource: Resource.FEEDBACK, action: Action.READ, constraints: ownedByUser: true ];
     },
-    {name:Role.GUEST,
+    {name: Role.GUEST,
       permissions: [resource: Resource.FEEDBACK, action: Action.CREATE ];
     }
   ];
@@ -266,7 +264,7 @@ interface RoleDefinition {
           userRoles;
         });
 
-        auditLogger.log({action:"authorization.denied",
+        auditLogger.log({action: "authorization.denied",
           resourceId: resourceId || "unknown";
           userId,
           details: any;

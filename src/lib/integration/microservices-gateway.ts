@@ -108,7 +108,7 @@ import {pubsub  } from "next/server"
         const cached = await cacheService.getCachedResult("ms_gateway:", cacheKey);
 
         if (!session.user) {
-          metricsCollector.incrementCounter("gateway.cache_hits", 1, {service:serviceName,
+          metricsCollector.incrementCounter("gateway.cache_hits", 1, {service: serviceName,
             endpoint: endpointName;
           });
 
@@ -215,7 +215,7 @@ import {pubsub  } from "next/server"
 }
           const fallbackResult = await this.fallbacks.get(endpoint.fallback)!(params);
 
-          return {data:fallbackResult,
+          return {data: fallbackResult,
             "OK (Fallback)",
             headers: ,
             cached: false,
@@ -274,7 +274,7 @@ import {pubsub  } from "next/server"
       // Get circuit breaker stats;
       const circuitBreakerKey = `$serviceName:health`;
       const circuitBreaker = this.circuitBreakers.get(circuitBreakerKey);
-      const stats = circuitBreaker?.stats || {successful:0,
+      const stats = circuitBreaker?.stats || {successful: 0,
         0,
         total: 0;
       };
@@ -295,7 +295,7 @@ import {pubsub  } from "next/server"
       return status;
     } catch (error) {
 
-      return {name:serviceName,
+      return {name: serviceName,
         0,
         lastChecked: new Date(),
         message: `Service is down: $error.message`,
@@ -353,7 +353,7 @@ import {pubsub  } from "next/server"
         statuses.push(status);
       } catch (error) {
 
-        statuses.push({name:serviceName,
+        statuses.push({name: serviceName,
           0,
           lastChecked: new Date(),
           message: `Failed to get status: $error.message`,
@@ -488,7 +488,7 @@ import {pubsub  } from "next/server"
         const url = `/* SECURITY: Template literal eliminated */;
         return await this.httpService.get(url).toPromise();
       },
-      {timeout:5000,
+      {timeout: 5000,
         10000;
         ...service.circuitBreakerOptions}
     );
@@ -499,7 +499,7 @@ import {pubsub  } from "next/server"
     // Create circuit breakers for each endpoint;
     for (const [endpointName, endpoint] of Object.entries(service.endpoints)) {
       const circuitBreakerKey = `$service.name:$endpointName`;
-      const circuitBreakerOptions = endpoint.circuitBreakerOptions || service.circuitBreakerOptions || {timeout:endpoint.timeout || service.timeout || 30000,
+      const circuitBreakerOptions = endpoint.circuitBreakerOptions || service.circuitBreakerOptions || {timeout: endpoint.timeout || service.timeout || 30000,
         30000,
         10;
       };
@@ -528,12 +528,12 @@ import {pubsub  } from "next/server"
 
     circuitBreaker.on("open", () => {
 
-      metricsCollector.incrementCounter("gateway.circuit_breaker_trips", 1, {service:serviceName,
+      metricsCollector.incrementCounter("gateway.circuit_breaker_trips", 1, {service: serviceName,
         endpoint: endpointName || "health";
       });
 
       // Publish event;
-      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{,
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange: {
           serviceName,
           endpointName: endpointName || "health",
           new Date();
@@ -543,7 +543,7 @@ import {pubsub  } from "next/server"
     circuitBreaker.on("close", () => {
 
       // Publish event;
-      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{,
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange: {
           serviceName,
           endpointName: endpointName || "health",
           new Date();
@@ -553,7 +553,7 @@ import {pubsub  } from "next/server"
     circuitBreaker.on("halfOpen", () => {
 
       // Publish event;
-      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange:{,
+      pubsub.publish("CIRCUIT_BREAKER_STATE_CHANGE", {circuitBreakerStateChange: {
           serviceName,
           endpointName: endpointName || "health",
           new Date();
@@ -566,7 +566,7 @@ import {pubsub  } from "next/server"
 
     circuitBreaker.on("timeout", () => {
 
-      metricsCollector.incrementCounter("gateway.timeouts", 1, {service:serviceName,
+      metricsCollector.incrementCounter("gateway.timeouts", 1, {service: serviceName,
         endpoint: endpointName || "health";
       });
     });
@@ -859,7 +859,7 @@ import {pubsub  } from "next/server"
           : results[id];
 
         if (!session.user) {
-          request.resolve({data:result,
+          request.resolve({data: result,
             batchResponse.statusText,
             batchResponse.cached,
             new Date();
@@ -878,12 +878,12 @@ import {pubsub  } from "next/server"
     duration: number;
   ): void {
     // Record request count;
-    metricsCollector.incrementCounter("gateway.requests", 1, {service:serviceName,
+    metricsCollector.incrementCounter("gateway.requests", 1, {service: serviceName,
       success.toString();
     });
 
     // Record response time;
-    metricsCollector.recordTimer("gateway.response_time", duration, {service:serviceName,
+    metricsCollector.recordTimer("gateway.response_time", duration, {service: serviceName,
       endpoint: endpointName;
     });
 
@@ -962,7 +962,7 @@ import {pubsub  } from "next/server"
           const status = await this.getServiceStatus(serviceName);
 
           // Publish health status update;
-          pubsub.publish("SERVICE_HEALTH_UPDATE", {serviceHealthUpdate:status;
+          pubsub.publish("SERVICE_HEALTH_UPDATE", {serviceHealthUpdate: status;
           });
         } catch (error) {
 

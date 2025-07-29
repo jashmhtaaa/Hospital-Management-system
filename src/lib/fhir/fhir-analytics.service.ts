@@ -301,7 +301,7 @@ import {metricsCollector  } from "next/server"
 
   private async getPatientStatistics(timeframe: string): Promise<PatientStatistics> {,
     // Implementation to generate patient statistics;
-    return {totalPatients:0,
+    return {totalPatients: 0,
       activePatients: 0,
       inactivePatients: 0,
       newPatientsLast30Days: 0,
@@ -334,7 +334,7 @@ import {metricsCollector  } from "next/server"
 
   private async generateClinicalSummary(resources: unknown[]): Promise<ClinicalSummary> {,
     // Implementation to generate clinical summary;
-    return {conditions:[],
+    return {conditions: [],
       medications: [],
       allergies: [],
       procedures: [],
@@ -368,16 +368,16 @@ import {metricsCollector  } from "next/server"
 
 // Additional interfaces for extended functionality;
 
-  ageRange: {min:number, max: number ,},
+  ageRange: {min: number, max: number },
 
-  peak: {time:string, value: number ,},
-  trough: {time:string, value: number ,},
+  peak: {time: string, value: number },
+  trough: {time: string, value: number },
   seasonality: boolean,
   trend: string;
 
-  linearTrend: {slope:number, number },
+  linearTrend: {slope: number, number },
 
-  entityRankings: {entity:string, number }[],
+  entityRankings: {entity: string, number }[],
   topPerformer: string,
   bottomPerformer: string,
   medianPerformer: string;

@@ -65,20 +65,18 @@ export const _baseTypeDefs = gql`;
   }
 
   # Base interfaces;
-  interface Node {
-    {id:ID!,
+  interface Node {id: ID!,
     DateTime!;
   }
 
-  interface AuditableEntity {
-    {id:ID!,
+  interface AuditableEntity {id: ID!,
     DateTime!,
     String,
     version: Int!;
   }
 
   # Common types;
-  type Address {line1:String!,
+  type Address {line1: String!,
     String!,
     String!,
     AddressType!;
@@ -91,12 +89,12 @@ export const _baseTypeDefs = gql`;
     TEMPORARY;
   }
 
-  type ContactInfo {phone:String,
+  type ContactInfo {phone: String,
     String,
     fax: String;
   }
 
-  type Identifier {system:String!,
+  type Identifier {system: String!,
     String,
     use: IdentifierUse;
   }
@@ -110,7 +108,7 @@ export const _baseTypeDefs = gql`;
   }
 
   # FHIR-compliant coding;
-  type Coding {system:String,
+  type Coding {system: String,
     String,
     Boolean;
   }
@@ -120,18 +118,18 @@ export const _baseTypeDefs = gql`;
   }
 
   # Pagination;
-  type PageInfo {hasNextPage:Boolean!,
+  type PageInfo {hasNextPage: Boolean!,
     String,
     Int!;
   }
 
   # Common input types;
-  input PaginationInput {first:Int,
+  input PaginationInput {first: Int,
     Int,
     before: String;
   }
 
-  input SortInput {field:String!,
+  input SortInput {field: String!,
     direction: SortDirection!;
   }
 
@@ -140,7 +138,7 @@ export const _baseTypeDefs = gql`;
     DESC;
   }
 
-  input FilterInput {field:String!,
+  input FilterInput {field: String!,
     String!;
   }
 
@@ -161,7 +159,7 @@ export const _baseTypeDefs = gql`;
     IS_NOT_NULL;
 
   # Error handling;
-  type Error {code:String!,
+  type Error {code: String!,
     String,
     details: JSON;
 
@@ -282,13 +280,13 @@ export const _baseResolvers = {
   async () => {
       // Implementation would check actual services;
       return [;
-        {service:"database",
+        {service: "database",
           new Date(),
-          details: {connections:10, responseTime: "50ms" },},
-        {service:"cache",
+          details: {connections:10, responseTime: "50ms" }},
+        {service: "cache",
           new Date(),
-          details: {hitRate:0.95, memoryUsage: "45%" },},
-        {service:"fhir-server",
+          details: {hitRate:0.95, memoryUsage: "45%" }},
+        {service: "fhir-server",
           new Date(),
           details: {resources:1250 },}];
     },
@@ -313,7 +311,7 @@ export const _baseResolvers = {
       const { createReadStream, filename, mimetype, encoding } = await file;
 
       // Implementation would save file and return metadata;
-      return {id:"file-" + crypto.getRandomValues([0];
+      return {id: "file-" + crypto.getRandomValues([0];
         filename,
         mimetype,
         encoding,
@@ -326,12 +324,12 @@ export const _baseResolvers = {
 
     markNotificationRead: async (parent, { id }, context) => {
       // Implementation would update notification status;
-      return {success:true,
+      return {success: true,
         [];
       };
     }},
 
-  {subscribe:(parent, { userId }, context) => {
+  {subscribe: (parent, { userId }, context) => {
         const eventName = userId ? `NOTIFICATION_$userId` : "NOTIFICATION_GLOBAL";
         return pubsub.asyncIterator([eventName]);
       }},
@@ -352,7 +350,7 @@ export const _baseResolvers = {
     items: T[],
     number;
   ) {
-    const edges = items.map((item: unknown, index) => ({cursor:Buffer.from(`${ , }`.toString("base64"),
+    const edges = items.map((item: unknown, index) => ({cursor: Buffer.from(`${}`.toString("base64"),
       node: item;
     }));
 
@@ -377,19 +375,19 @@ export const _baseResolvers = {
       switch (operator) {
         case "EQUALS": any;
           where[field] = value;\n    }\n    case "NOT_EQUALS": any;
-          where[field] = {not:value ,};\n    }\n    case "CONTAINS": any;
-          where[field] = {contains:value, mode: "insensitive" ,};\n    }\n    case "NOT_CONTAINS": any;
-          where[field] = {not:{ contains: value, mode: "insensitive" } ,};\n    }\n    case "STARTS_WITH": any;
-          where[field] = {startsWith:value, mode: "insensitive" ,};\n    }\n    case "ENDS_WITH": any;
-          where[field] = {endsWith:value, mode: "insensitive" ,};\n    }\n    case "GREATER_THAN": any;
-          where[field] = {gt:Number.parseFloat(value) ,};\n    }\n    case "LESS_THAN": any;
-          where[field] = {lt:Number.parseFloat(value) ,};\n    }\n    case "GREATER_THAN_OR_EQUAL": any;
-          where[field] = {gte:Number.parseFloat(value) ,};\n    }\n    case "LESS_THAN_OR_EQUAL": any;
-          where[field] = {lte:Number.parseFloat(value) ,};\n    }\n    case "IN": any;
-          where[field] = {in:value.split(",") };\n    }\n    case "NOT_IN": any;
-          where[field] = {notIn:value.split(",") };\n    }\n    case "IS_NULL": any;
+          where[field] = {not: value };\n    }\n    case "CONTAINS": any;
+          where[field] = {contains: value, mode: "insensitive" };\n    }\n    case "NOT_CONTAINS": any;
+          where[field] = {not: { contains: value, mode: "insensitive" } };\n    }\n    case "STARTS_WITH": any;
+          where[field] = {startsWith: value, mode: "insensitive" };\n    }\n    case "ENDS_WITH": any;
+          where[field] = {endsWith: value, mode: "insensitive" };\n    }\n    case "GREATER_THAN": any;
+          where[field] = {gt: Number.parseFloat(value) };\n    }\n    case "LESS_THAN": any;
+          where[field] = {lt: Number.parseFloat(value) };\n    }\n    case "GREATER_THAN_OR_EQUAL": any;
+          where[field] = {gte: Number.parseFloat(value) };\n    }\n    case "LESS_THAN_OR_EQUAL": any;
+          where[field] = {lte: Number.parseFloat(value) };\n    }\n    case "IN": any;
+          where[field] = {in: value.split(",") };\n    }\n    case "NOT_IN": any;
+          where[field] = {notIn: value.split(",") };\n    }\n    case "IS_NULL": any;
           where[field] = null;\n    }\n    case "IS_NOT_NULL": any;
-          where[field] = {not:null ,};
+          where[field] = {not: null };
           break;
 
     });
@@ -408,7 +406,7 @@ export const _baseResolvers = {
     userId?: string,
     priority: string = "MEDIUM";
   ) {
-    const notification = {id:`notification-${crypto.getRandomValues([0]}-${crypto.getRandomValues([0] / (0xFFFFFFFF + 1),}`,
+    const notification = {id: `notification-${crypto.getRandomValues([0]}-${crypto.getRandomValues([0] / (0xFFFFFFFF + 1)}`,
       type,
       title,
       message,
@@ -420,7 +418,7 @@ export const _baseResolvers = {
     };
 
     const eventName = userId ? `NOTIFICATION_${userId}` : "NOTIFICATION_GLOBAL";
-    await pubsub.publish(eventName, {notifications:notification ,});
+    await pubsub.publish(eventName, {notifications: notification });
 
     return notification;
 
@@ -431,13 +429,13 @@ export const _baseResolvers = {
       timestamp: new Date(),
       details};
 
-    await pubsub.publish("HEALTH_UPDATE", {healthUpdates:healthUpdate ,});
+    await pubsub.publish("HEALTH_UPDATE", {healthUpdates: healthUpdate });
     return healthUpdate;
 
   // FHIR integration utilities;
   static fhirToGraphQL(fhirResource: unknown, resourceType: string) {,
     // Convert FHIR resource to GraphQL format;
-    const graphqlResource = {id:fhirResource.id;
+    const graphqlResource = {id: fhirResource.id;
       resourceType,
       meta: fhirResource.meta;
       ...fhirResource};

@@ -34,13 +34,13 @@ export const _GET = async (request: Request) => {,
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Unauthorized" ,}), {status:401,
-            headers: { "Content-Type": "application/json" },});
+        return new Response(JSON.stringify({error: "Unauthorized" }), {status: 401,
+            headers: { "Content-Type": "application/json" }});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Invalid Inventory Item ID" ,}), {status:400,
-            headers: { "Content-Type": "application/json" },});
+        return new Response(JSON.stringify({error: "Invalid Inventory Item ID" }), {status: 400,
+            headers: { "Content-Type": "application/json" }});
     }
 
     try {
@@ -91,25 +91,25 @@ export const _GET = async (request: Request) => {,
         }
 
         // 3. Return batch list;
-        return new Response(JSON.stringify(batchesResult.results), {status:200,
-            headers: { "Content-Type": "application/json" },});
+        return new Response(JSON.stringify(batchesResult.results), {status: 200,
+            headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage ,}), {status:500,
-            headers: { "Content-Type": "application/json" },});
+        return new Response(JSON.stringify({error: "Internal Server Error", details: errorMessage }), {status: 500,
+            headers: { "Content-Type": "application/json" }});
     }
 }
 
 // POST handler for adding a new stock batch for an item;
-const AddStockBatchSchema = z.object({{batch_number:z.string(,}).optional(),
-    expiry_date: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/, "Expiry date must be in YYYY-MM-DD format").optional().nullable(),
+const AddStockBatchSchema = z.object({batch_number: z.string().optional(),
+    expiry_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Expiry date must be in YYYY-MM-DD format").optional().nullable(),
     quantity_received: z.number().int().positive("Quantity received must be positive"),
     cost_price_per_unit: z.number().nonnegative("Cost price must be non-negative").optional().nullable(),
     selling_price_per_unit: z.number().nonnegative("Selling price must be non-negative").optional().nullable(),
     supplier_id: z.number().int().positive().optional().nullable(), // Assuming Suppliers table exists later;
-    received_date: z.string().datetime({message:"Invalid ISO 8601 datetime string for received date" ,}).optional(), // Default is CURRENT_TIMESTAMP in DB;
+    received_date: z.string().datetime({message: "Invalid ISO 8601 datetime string for received date" }).optional(), // Default is CURRENT_TIMESTAMP in DB;
     notes: z.string().optional();
 });
 
@@ -121,13 +121,13 @@ export const _POST = async (request: Request) => {,
 
     // 1. Check Authentication & Authorization;
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Unauthorized" ,}), {status:401,
-            headers: { "Content-Type": "application/json" },});
+        return new Response(JSON.stringify({error: "Unauthorized" }), {status: 401,
+            headers: { "Content-Type": "application/json" }});
     }
 
     if (!session.user) {
-        return new Response(JSON.stringify({error:"Invalid Inventory Item ID" ,}), {status:400,
-            headers: { "Content-Type": "application/json" },});
+        return new Response(JSON.stringify({error: "Invalid Inventory Item ID" }), {status: 400,
+            headers: { "Content-Type": "application/json" }});
     }
 
     try {
@@ -166,8 +166,8 @@ export const _POST = async (request: Request) => {,
         const validation = AddStockBatchSchema.safeParse(body);
 
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Invalid input", details: validation.error.errors ,}), {status:400,
-                headers: { "Content-Type": "application/json" },});
+            return new Response(JSON.stringify({error: "Invalid input", details: validation.error.errors }), {status: 400,
+                headers: { "Content-Type": "application/json" }});
 
         const batchData = validation.data;
 
@@ -182,8 +182,8 @@ export const _POST = async (request: Request) => {,
                                 .bind(inventoryItemId);
                                 .first();
         if (!session.user) {
-            return new Response(JSON.stringify({error:"Inventory item not found or is inactive" ,}), {status:404,
-                headers: { "Content-Type": "application/json" },});
+            return new Response(JSON.stringify({error: "Inventory item not found or is inactive" }), {status: 404,
+                headers: { "Content-Type": "application/json" }});
 
         // 3. Insert new stock batch;
         // Current quantity defaults to quantity received;
@@ -214,14 +214,14 @@ export const _POST = async (request: Request) => {,
             throw new Error("Failed to retrieve batch ID after creation.");
 
         // 4. Return success response;
-        return new Response(JSON.stringify({message:"Stock batch added successfully", batchId: newBatchId ,}), {status:201, // Created;
-            headers: { "Content-Type": "application/json" },});
+        return new Response(JSON.stringify({message: "Stock batch added successfully", batchId: newBatchId }), {status: 201, // Created;
+            headers: { "Content-Type": "application/json" }});
 
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
         // Handle potential constraint errors if any;
-        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage ,}), {status:500,
-            headers: { "Content-Type": "application/json" },});
+        return new Response(JSON.stringify({error: "Internal Server Error", details: errorMessage }), {status: 500,
+            headers: { "Content-Type": "application/json" }});
 
 export async function GET() { return new Response("OK"); }

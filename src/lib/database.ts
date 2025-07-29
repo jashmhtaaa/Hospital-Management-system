@@ -17,7 +17,7 @@
  * @returns Database connection instance;
  */;
 export const DB = (): DBConnection => {
-  return {query:async (sql: string, params: unknown[] = []) => {,
+  return {query: async (sql: string, params: unknown[] = []) => {
       try {
 } catch (error) {
   console.error(error);
@@ -55,7 +55,7 @@ export const DB = (): DBConnection => {
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
         // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
-        return {results:[],
+        return {results: [],
           insertId: 0,
           affectedRows: 0;
 
@@ -79,7 +79,7 @@ export const DB = (): DBConnection => {
  * @returns Promise resolving to array of query results;
  */;
 export const executeTransaction = async();
-  queries: {sql:string; params?: unknown[] }[];
+  queries: {sql: string; params?: unknown[] }[];
 ): Promise<any[]> => {
   const db = DB();
   const results: unknown[] = [];

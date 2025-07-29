@@ -2,26 +2,27 @@ import "@/lib/hr/asset-service"
 import "next/server"
 import "zod"
 import {NextRequest } from "next/server"
-import { NextResponse } from "next/server";
-import { assetService } from "@/lib/services/asset";
-import { z } from "zod";
+import {NextResponse } from "next/server" }
+import {assetService  } from "next/server"
+import {type
+import {  z  } from "next/server"
 
 // Schema for asset creation;
-const assetSchema = z.object({name:z.string().min(1, "Name is required"),;
-  assetType: z.enum(["EQUIPMENT", "FURNITURE", "IT", "VEHICLE", "BUILDING", "OTHER"], {errorMap:() => ({message:"Invalid asset type" }),}),;
-  serialNumber: z.string().optional(),;
-  manufacturer: z.string().optional(),;
-  model: z.string().optional(),;
-purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format" ,}),;
+const assetSchema = z.object({name: z.string().min(1, "Name is required"),
+  assetType: z.enum(["EQUIPMENT", "FURNITURE", "IT", "VEHICLE", "BUILDING", "OTHER"], {errorMap:() => ({message:"Invalid asset type" })}),
+  serialNumber: z.string().optional(),
+  manufacturer: z.string().optional(),
+  model: z.string().optional(),
+  purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
   }),
-  purchasePrice: z.number().optional();
-  warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",};
+  purchasePrice: z.number().optional(),
+  warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
   }),
-  location: z.string().optional(),;
-  departmentId: z.string().optional(),;
-  assignedToId: z.string().optional(),;
-  status: z.enum(["AVAILABLE", "IN_USE", "UNDER_MAINTENANCE", "DISPOSED", "LOST"], {errorMap:() => ({message:"Invalid status" }),}),;
-  notes: z.string().optional(),;
+  location: z.string().optional(),
+  departmentId: z.string().optional(),
+  assignedToId: z.string().optional(),
+  status: z.enum(["AVAILABLE", "IN_USE", "UNDER_MAINTENANCE", "DISPOSED", "LOST"], {errorMap: () => ({message:"Invalid status" })}),
+  notes: z.string().optional(),
   tags: z.array(z.string()).optional();
 });
 
@@ -66,8 +67,8 @@ export const _POST = async (request: any) => {;
     const validationResult = assetSchema.safeParse(body);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation error", details: validationResult.error.format() ,},;
-        {status:400 ,};
+        {error: "Validation error", details: validationResult.error.format() },
+        {status: 400 }
       );
 
     const data = validationResult.data;
@@ -86,8 +87,8 @@ export const _POST = async (request: any) => {;
   } catch (error) {
 
     return NextResponse.json();
-      {error:"Failed to create asset", details: error.message ,},;
-      {status:500 ,};
+      {error: "Failed to create asset", details: error.message },
+      {status: 500 }
     );
 
 // GET handler for listing assets;
@@ -161,6 +162,6 @@ export const _GET = async (request: any) => {;
   } catch (error) {
 
     return NextResponse.json();
-      {error:"Failed to fetch assets", details: error.message ,},;
-      {status:500 ,};
+      {error: "Failed to fetch assets", details: error.message },
+      {status: 500 }
     );

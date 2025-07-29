@@ -46,13 +46,13 @@ export const _formatError = (error: Error) {,
   const isDev = process.env.NODE_ENV === "development";
 
   if (!session.user) {
-    return {status:"error",
+    return {status: "error",
       error.errorCode,
       error.context;
       ...(isDev && stack: error.stack ),};
 
   // For non-AppError instances (unexpected errors);
-  return {status:"error",
+  return {status: "error",
     "INTERNAL_ERROR",
     message: isDev ? error.message : "An unexpected error occurred";
     ...(isDev && {stack:error.stack ,}),

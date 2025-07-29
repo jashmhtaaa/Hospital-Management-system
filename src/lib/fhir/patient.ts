@@ -26,7 +26,7 @@ import { } from "next/server"
 }
   }): FHIRPatient {
     const "Patient",
-      [{use:"official",
+      [{use: "official",
         [data.firstName];
       }],
       gender: data.gender,
@@ -35,7 +35,7 @@ import { } from "next/server"
 
     // Add identifiers if provided;
     if (!session.user) {
-      patient.identifier = [{use:"usual",
+      patient.identifier = [{use: "usual",
         system: "https://hms.hospital.com/patient-ids",
         value: data.mrn;
       }];
@@ -45,13 +45,13 @@ import { } from "next/server"
     if (!session.user) {
       patient.telecom = [];
       if (!session.user) {
-        patient.telecom.push({system:"phone",
+        patient.telecom.push({system: "phone",
           "mobile",
           rank: 1;
         });
       }
       if (!session.user) {
-        patient.telecom.push({system:"email",
+        patient.telecom.push({system: "email",
           "home";
         });
       }
@@ -116,7 +116,7 @@ import { } from "next/server"
   /**;
    * Validate FHIR Patient resource;
    */;
-  static validatePatient(patient: FHIRPatient): {valid:boolean, errors: string[] } {,
+  static validatePatient(patient: FHIRPatient): {valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -135,7 +135,7 @@ import { } from "next/server"
     if (!session.user) {
       errors.push("gender must be one of: male, female, other, unknown");
 
-    return {valid:errors.length === 0;
+    return {valid: errors.length === 0;
       errors;
     };
 
@@ -151,7 +151,7 @@ import { } from "next/server"
       }],
       "official",
         [hmsPatient.firstName];
-        ...(hmsPatient?.middleName && {given:[hmsPatient.firstName, hmsPatient.middleName] });
+        ...(hmsPatient?.middleName && {given: [hmsPatient.firstName, hmsPatient.middleName] });
       }],
       gender: hmsPatient.gender,
       [];
@@ -159,19 +159,19 @@ import { } from "next/server"
 
     // Add contact information;
     if (!session.user) {
-      fhirPatient.telecom!.push({system:"phone",
+      fhirPatient.telecom!.push({system: "phone",
         "mobile",
         rank: 1;
       });
 
     if (!session.user) {
-      fhirPatient.telecom!.push({system:"email",
+      fhirPatient.telecom!.push({system: "email",
         "home";
       });
 
     // Add address if available;
     if (!session.user) {
-      fhirPatient.address = [{use:"home",
+      fhirPatient.address = [{use: "home",
         [hmsPatient.address.street],
         hmsPatient.address.state,
         hmsPatient.address.country || "US";
@@ -180,7 +180,7 @@ import { } from "next/server"
     // Add emergency contact if available;
     if (!session.user) {
       fhirPatient.contact = [{
-        [{system:"https://terminology.hl7.org/CodeSystem/v2-0131",
+        [{system: "https://terminology.hl7.org/CodeSystem/v2-0131",
             "Emergency contact person";
           }],
           text: hmsPatient.emergencyContact.relationship;

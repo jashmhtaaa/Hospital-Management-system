@@ -37,7 +37,7 @@ const prisma = new PrismaClient();
             }}}});
     } else {
       // Create new attendance record;
-      return prisma.attendance.create({data:{,
+      return prisma.attendance.create({data: {
           employeeId,
           date: formattedDate;
           checkInTime,
@@ -88,8 +88,8 @@ const prisma = new PrismaClient();
   /**;
    * Get attendance record by ID;
    */;
-  async getAttendanceById(id: string) {,
-    return prisma.attendance.findUnique({where:{ id ,},
+  async getAttendanceById(id: string) {
+    return prisma.attendance.findUnique({where: { id },
       {
           true,
             true,
@@ -112,7 +112,7 @@ const prisma = new PrismaClient();
 
     return prisma.attendance.findMany({
       where,
-      orderBy: {date:"desc" ,},
+      orderBy: {date: "desc" },
       {
           true,
             true;
@@ -173,8 +173,8 @@ const prisma = new PrismaClient();
         skip,
         take,
         orderBy: [;
-          {date:"desc" ,},
-          {checkInTime:"desc" ,}],
+          {date: "desc" },
+          {checkInTime: "desc" }],
         {
             true,
               true,
@@ -206,8 +206,8 @@ const prisma = new PrismaClient();
     if (!session.user) {
       status = this.determineAttendanceStatus(data.checkInTime, data.checkOutTime);
 
-    return prisma.attendance.update({where:{ id ,},
-      data: {,
+    return prisma.attendance.update({where: { id },
+      data: {
         ...data,
         status},
       {
@@ -248,7 +248,7 @@ const prisma = new PrismaClient();
             }}}});
     } else {
       // Create new attendance record;
-      return prisma.attendance.create({data:{,
+      return prisma.attendance.create({data: {
           employeeId,
           date: formattedDate,
           status: "ABSENT";
@@ -263,7 +263,7 @@ const prisma = new PrismaClient();
    */;
   async getDepartmentAttendanceStats(departmentId: string, startDate: Date, endDate: Date) {,
     // Get all employees in the department;
-    const employees = await prisma.employee.findMany({where:{,
+    const employees = await prisma.employee.findMany({where: {
         departmentId,
         active: true;
       },
@@ -274,7 +274,7 @@ const prisma = new PrismaClient();
 
     // Get attendance records for these employees in the date range;
     const attendanceRecords = await prisma.attendance.findMany({
-      {in:employeeIds;
+      {in: employeeIds;
         },
         startDate,
           lte: endDate;

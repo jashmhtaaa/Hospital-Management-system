@@ -14,7 +14,7 @@ const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 const REDIS_ENABLED = process.env.REDIS_ENABLED === "true";
 
 // In-memory cache fallback;
-const memoryCache: Record<string, {value:string, expiry: number }> = {,};
+const memoryCache: Record<string, {value: string, expiry: number }> = {};
 
 class CacheService {
   private redisClient: unknown;
@@ -62,7 +62,7 @@ class CacheService {
 }
 } catch (error) {
 }
-      this.redisClient = createClient({url:REDIS_URL ,});
+      this.redisClient = createClient({url: REDIS_URL });
 
       this.redisClient.on("error", (err: unknown) => {,
 
@@ -183,7 +183,7 @@ class CacheService {
 
       // Try Redis if connected;
       if (!session.user) {
-        await this.redisClient.set(key, value, {EX:ttl ,});
+        await this.redisClient.set(key, value, {EX: ttl });
         return;
 
       // Fallback to memory cache;

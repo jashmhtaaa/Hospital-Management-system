@@ -19,7 +19,7 @@ const analyticsService = new AnalyticsService();
  */;
 export const GET = async();
   request: any;
-  { params }: {campaignId:string },
+  { params }: {campaignId: string }
 ) => {
   return withErrorHandling();
     request,
@@ -28,7 +28,7 @@ export const GET = async();
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters;
-      const filters = {startDate:searchParams.has("startDate");
+      const filters = {startDate: searchParams.has("startDate");
           ? new Date(searchParams.get("startDate") as string);
           : undefined,
         endDate: searchParams.has("endDate");
@@ -47,7 +47,7 @@ export const GET = async();
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"marketing.analytics.read",
+    {requiredPermission: "marketing.analytics.read",
       auditAction: "CAMPAIGN_ANALYTICS_VIEW";
     }
   );
@@ -59,7 +59,7 @@ export const GET = async();
  */;
 export const POST = async();
   request: any;
-  { params }: {campaignId:string },
+  { params }: {campaignId: string }
 ) => {
   return withErrorHandling();
     request,
@@ -73,9 +73,9 @@ export const POST = async();
         session?.user?.id as string;
       );
 
-      return NextResponse.json(analytics, {status:201 ,});
+      return NextResponse.json(analytics, {status: 201 });
     },
-    {requiredPermission:"marketing.analytics.create",
+    {requiredPermission: "marketing.analytics.create",
       auditAction: "CAMPAIGN_ANALYTICS_RECORD";
     }
   );

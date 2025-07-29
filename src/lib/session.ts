@@ -14,7 +14,7 @@ import {  User  } from "next/server"
 // Augment the iron-session module to include our IronSessionData definition;
 declare module "iron-session" {
   interface IronSessionData {
-    {
+
     user?: User;
     isLoggedIn?: boolean; // Added isLoggedIn property here too for consistency;
   }

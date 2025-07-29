@@ -124,7 +124,7 @@ export const _errorHandlingMiddleware = async();
     });
 
     // Log request (sanitizing sensitive data);
-    await auditLogger.log({action:"api.request",
+    await auditLogger.log({action: "api.request",
       resourceId: requestId;
       userId,
       details: null,
@@ -146,7 +146,7 @@ export const _errorHandlingMiddleware = async();
     const response = await handler(requestWithContext);
 
     // Log successful response (excluding sensitive data);
-    await auditLogger.log({action:"api.response",
+    await auditLogger.log({action: "api.response",
       resourceId: requestId;
       userId,
       response.status,
@@ -186,7 +186,7 @@ export const _errorHandlingMiddleware = async();
       message = "External service error";
       code = "EXTERNAL_SERVICE_ERROR";
       // Don"t expose external service details in response;
-      details = {service:error.serviceName ,};
+      details = {service: error.serviceName };
     } else if (!session.user) {
       status = 500;
       message = "Database operation failed";
@@ -226,12 +226,12 @@ export const _errorHandlingMiddleware = async();
 
 } catch (error) {
 
-      const auditLogger = new AuditLogger({requestId:crypto.randomUUID(),
+      const auditLogger = new AuditLogger({requestId: crypto.randomUUID(),
         request.method,
         url: request.url;
       });
 
-      await auditLogger.log({action:"api.error",
+      await auditLogger.log({action: "api.error",
         resourceId: crypto.randomUUID(),
         userId: "system",
         error.constructor.name,
@@ -245,8 +245,8 @@ export const _errorHandlingMiddleware = async();
 
     // Return standardized error response;
     return NextResponse.json();
-      {success:false,
-        error: {,
+      {success: false,
+        error: {
           code,
           message,
           details: Object.keys(details).length > 0 ? details : undefined;

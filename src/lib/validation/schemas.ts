@@ -7,12 +7,12 @@ import {  z  } from "next/server"
 
 // src/lib/validation/schemas.ts;
 // User validation schemas;
-export const _loginSchema = z.object({{email:z.string(,}).email("Invalid email format"),
+export const _loginSchema = z.object({email: z.string().email("Invalid email format"),
   password: z.string().min(8, "Password must be at least 8 characters");
 });
 
-export const _registerSchema = z.object({{email:z.string(,}).email("Invalid email format"),
-  password: z.string(),
+export const _registerSchema = z.object({email: z.string().email("Invalid email format"),
+  password: z.string()
     .min(8, "Password must be at least 8 characters")
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain uppercase, lowercase, and number"),
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -20,7 +20,7 @@ export const _registerSchema = z.object({{email:z.string(,}).email("Invalid emai
   role: z.nativeEnum(UserRole).optional();
 });
 
-export const _updateUserSchema = z.object({{firstName:z.string(,}).min(2).optional(),
+export const _updateUserSchema = z.object({firstName: z.string().min(2).optional(),
   lastName: z.string().min(2).optional(),
   phone: z.string().optional(),
   departmentId: z.string().cuid().optional(),
@@ -29,7 +29,7 @@ export const _updateUserSchema = z.object({{firstName:z.string(,}).min(2).option
 });
 
 // Patient validation schemas;
-export const createPatientSchema = z.object({{firstName:z.string(,}).min(2, "First name is required"),
+export const createPatientSchema = z.object({firstName: z.string().min(2, "First name is required"),
   lastName: z.string().min(2, "Last name is required"),
   dateOfBirth: z.string().transform((str) => ,
   gender: z.nativeEnum(Gender),
@@ -47,7 +47,7 @@ export const createPatientSchema = z.object({{firstName:z.string(,}).min(2, "Fir
 export const _updatePatientSchema = createPatientSchema.partial();
 
 // Appointment validation schemas;
-export const _createAppointmentSchema = z.object({{patientId:z.string(,}).cuid("Invalid patient ID"),
+export const _createAppointmentSchema = z.object({patientId: z.string().cuid("Invalid patient ID"),
   doctorId: z.string().cuid("Invalid doctor ID"),
   departmentId: z.string().cuid("Invalid department ID"),
   z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Invalid time format"),
@@ -94,7 +94,7 @@ export function validateRequest<T>(schema: z.ZodSchema<T>) {,
       return schema.parse(data);
     } catch (error) {
       if (!session.user) {
-        const formattedErrors = error.errors.map(err => ({field:err.path.join("."),
+        const formattedErrors = error.errors.map(err => ({field: err.path.join("."),
           message: err.message;
         }));
         throw new Error(`Validation failed: ${,}`;

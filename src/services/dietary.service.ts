@@ -19,7 +19,7 @@ export enum DietType {
   CANCELLED = "CANCELLED"}
 
 // Validation schemas;
-export const createDietOrderSchema = z.object({{patientId:z.string(,}).min(1, "Patient ID is required"),
+export const createDietOrderSchema = z.object({patientId: z.string().min(1, "Patient ID is required"),
   dietType: z.nativeEnum(DietType),
   instructions: z.string().optional(),
   startDate: z.date().default(() => ,
@@ -29,7 +29,7 @@ export const createDietOrderSchema = z.object({{patientId:z.string(,}).min(1, "P
   notes: z.string().optional();
 });
 
-export const updateDietOrderSchema = createDietOrderSchema.partial().extend({id:z.string();
+export const updateDietOrderSchema = createDietOrderSchema.partial().extend({id: z.string();
 });
 
 export type CreateDietOrderInput = z.infer>;
@@ -111,15 +111,15 @@ import {prisma  } from "next/server"
 
         if (!session.user) {
           // Find orders active on the specified date;
-          where.startDate = {lte:filters.activeOn ,};
+          where.startDate = {lte: filters.activeOn };
           where.OR = [;
-            {endDate:null ,},
-            {endDate:{ gte: filters.activeOn } ,}];
+            {endDate: null },
+            {endDate: { gte: filters.activeOn } }];
 
       const orders = await prisma.dietOrder.findMany({
         where,
         orderBy: [;
-          {startDate:"desc" ,}],
+          {startDate: "desc" }],
         {
             true,
               name: true;
@@ -167,7 +167,7 @@ import {prisma  } from "next/server"
 
 } catch (error) {
 
-      const order = await prisma.dietOrder.findUnique({where:{ id ,},
+      const order = await prisma.dietOrder.findUnique({where: { id },
         {
             true,
               name: true;
@@ -220,10 +220,10 @@ import {prisma  } from "next/server"
       const validatedData = updateDietOrderSchema.parse({ ...data, id });
 
       // Remove id from the data to be updated;
-      const {id:_, ...updateData } = validatedData;
+      const {id: _, ...updateData } = validatedData;
 
       // Update the diet order;
-      const order = await prisma.dietOrder.update({where:{ id ,},
+      const order = await prisma.dietOrder.update({where: { id },
         data: updateData,
         {
             true,
@@ -275,7 +275,7 @@ import {prisma  } from "next/server"
 
 } catch (error) {
 
-      const order = await prisma.dietOrder.delete({where:{ id },});
+      const order = await prisma.dietOrder.delete({where: { id }});
 
       return order;
     } catch (error) {
@@ -319,7 +319,7 @@ import {prisma  } from "next/server"
 
 } catch (error) {
 
-      const order = await prisma.dietOrder.update({where:{ id ,},
+      const order = await prisma.dietOrder.update({where: { id },
         DietOrderStatus.CANCELLED,
           endDate: new Date();
         },
@@ -370,7 +370,7 @@ import {prisma  } from "next/server"
 
 } catch (error) {
 
-      const order = await prisma.dietOrder.update({where:{ id ,},
+      const order = await prisma.dietOrder.update({where: { id },
         DietOrderStatus.COMPLETED,
           endDate: new Date();
         },
@@ -422,10 +422,10 @@ import {prisma  } from "next/server"
 } catch (error) {
 
       const orders = await prisma.dietOrder.findMany({
-        {lte:date ,},
+        {lte: date },
           OR: [;
-            {endDate:null ,},
-            {endDate:{ gte: date } ,}],
+            {endDate: null },
+            {endDate: { gte: date } }],
           status: DietOrderStatus.ACTIVE;
         },
         {

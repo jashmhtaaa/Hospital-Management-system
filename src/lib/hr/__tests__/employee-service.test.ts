@@ -35,8 +35,8 @@ jest.mock("@prisma/client", () => {
     },
     jest.fn();
     },
-    $transaction: jest.fn((callback) => callback(mockPrismaClient)),};
-  return {PrismaClient:jest.fn(() => mockPrismaClient);
+    $transaction: jest.fn((callback) => callback(mockPrismaClient))};
+  return {PrismaClient: jest.fn(() => mockPrismaClient);
   };
 });
 
@@ -65,7 +65,7 @@ describe("EmployeeService", () => {
 
   describe("getEmployeeById", () => {
     it("should return cached employee if available", async () => {
-      const mockEmployee = {id:"123", firstName: "John", lastName: "Doe" ,};
+      const mockEmployee = {id: "123", firstName: "John", lastName: "Doe" };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockEmployee));
 
       const result = await employeeService.getEmployeeById("123"),
@@ -75,13 +75,13 @@ describe("EmployeeService", () => {
     });
 
     it("should fetch from database and cache if not in cache", async () => {
-      const mockEmployee = {id:"123", firstName: "John", lastName: "Doe" ,};
+      const mockEmployee = {id: "123", firstName: "John", lastName: "Doe" };
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findUnique as jest.Mock).mockResolvedValue(mockEmployee);
 
       const result = await employeeService.getEmployeeById("123"),
       expect(cache.get).toHaveBeenCalledWith("employee:id:123"),
-      expect(prisma.employee.findUnique).toHaveBeenCalledWith({where:{ id: "123" ,},
+      expect(prisma.employee.findUnique).toHaveBeenCalledWith({where: { id: "123" },
         include: expect.any(Object);
       });
       expect(cache.set).toHaveBeenCalledWith();
@@ -95,7 +95,7 @@ describe("EmployeeService", () => {
 
   describe("listEmployees", () => {
     it("should return cached list if available", async () => {
-      const mockResult = {employees:[{id:"123", firstName: "John" ,}],
+      const mockResult = {employees: [{id:"123", firstName: "John" }],
         total: 1,
         10,
         nextCursor: null;
@@ -109,7 +109,7 @@ describe("EmployeeService", () => {
     });
 
     it("should fetch from database and cache if not in cache", async () => {
-      const mockEmployees = [{id:"123", firstName: "John" ,}];
+      const mockEmployees = [{id: "123", firstName: "John" }];
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockEmployees);
       (prisma.employee.count as jest.Mock).mockResolvedValue(1);
@@ -124,27 +124,27 @@ describe("EmployeeService", () => {
     });
 
     it("should use cursor-based pagination when cursor is provided", async () => {
-      const mockEmployees = [{id:"123", firstName: "John" ,}];
+      const mockEmployees = [{id: "123", firstName: "John" }];
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockEmployees);
       (prisma.employee.count as jest.Mock).mockResolvedValue(1);
 
-      await employeeService.listEmployees({cursor:"456" ,}),
+      await employeeService.listEmployees({cursor: "456" }),
       expect(prisma.employee.findMany).toHaveBeenCalledWith();
-        expect.objectContaining({cursor:{ id: "456" },});
+        expect.objectContaining({cursor: { id: "456" }});
       );
     });
   });
 
   describe("createEmployee", () => {
     it("should create employee and invalidate cache", async () => {
-      const mockEmployee = {id:"123", firstName: "John", lastName: "Doe" ,};
+      const mockEmployee = {id: "123", firstName: "John", lastName: "Doe" };
       (prisma.employee.create as jest.Mock).mockResolvedValue(mockEmployee);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
       // Mock the invalidateEmployeeCache method to avoid the findFirst call;
       jest.spyOn(EmployeeService.prototype, "invalidateEmployeeCache" as any).mockResolvedValue(undefined);
 
-      await employeeService.createEmployee({employeeId:"EMP123",
+      await employeeService.createEmployee({employeeId: "EMP123",
         "Doe",
         joiningDate: new Date();
       });
@@ -156,15 +156,15 @@ describe("EmployeeService", () => {
 
   describe("updateEmployee", () => {
     it("should update employee and invalidate cache", async () => {
-      const mockEmployee = {id:"123", firstName: "John", lastName: "Doe" ,};
+      const mockEmployee = {id: "123", firstName: "John", lastName: "Doe" };
       (prisma.employee.update as jest.Mock).mockResolvedValue(mockEmployee);
       // Mock the invalidateEmployeeCache method to avoid the findFirst call;
       jest.spyOn(EmployeeService.prototype, "invalidateEmployeeCache" as any).mockResolvedValue(undefined);
 
-      await employeeService.updateEmployee("123", {firstName:"John Updated" ,}),
+      await employeeService.updateEmployee("123", {firstName: "John Updated" }),
       expect(prisma.employee.update).toHaveBeenCalledWith();
-        expect.objectContaining({where:{ id: "123" ,},
-          data: {firstName:"John Updated" },});
+        expect.objectContaining({where: { id: "123" },
+          data: {firstName: "John Updated" }});
       );
       expect(EmployeeService.prototype.invalidateEmployeeCache).toHaveBeenCalled();
     });
@@ -173,16 +173,16 @@ describe("EmployeeService", () => {
   describe("predictStaffingNeeds", () => {
     it("should predict staffing needs based on historical data", async () => {
       const mockAttendance = [;
-        {checkInTime:new Date("2024-05-20T08:00:00Z"),
-          [{position:{ code: "NURSE" } }]},},
-        {checkInTime:new Date("2024-05-20T08:00:00Z"),
-          [{position:{ code: "NURSE" } }]},},
-        {checkInTime:new Date("2024-05-20T08:00:00Z"),
-          [{position:{ code: "DOCTOR" } }]},}];
+        {checkInTime: new Date("2024-05-20T08:00:00Z"),
+          [{position:{ code: "NURSE" } }]}},
+        {checkInTime: new Date("2024-05-20T08:00:00Z"),
+          [{position:{ code: "NURSE" } }]}},
+        {checkInTime: new Date("2024-05-20T08:00:00Z"),
+          [{position:{ code: "DOCTOR" } }]}}];
 
       const mockCurrentStaff = [;
-        {positions:[{position:{ code: "NURSE" } }],},
-        {positions:[{position:{ code: "DOCTOR" } }],}];
+        {positions: [{position:{ code: "NURSE" } }]},
+        {positions: [{position:{ code: "DOCTOR" } }]}];
 
       (prisma.attendance.findMany as jest.Mock).mockResolvedValue(mockAttendance);
       (prisma.employee.findMany as jest.Mock).mockResolvedValue(mockCurrentStaff);
@@ -200,7 +200,7 @@ describe("EmployeeService", () => {
 
   describe("FHIR conversion", () => {
     it("should convert employee to FHIR Practitioner with R5 compliance", () => {
-      const mockEmployee = {id:"123",
+      const mockEmployee = {id: "123",
         "John",
         "john@example.com",
         [];
@@ -217,12 +217,12 @@ describe("EmployeeService", () => {
     });
 
     it("should convert position to FHIR PractitionerRole with R5 compliance", () => {
-      const mockEmployee = {id:"123",
+      const mockEmployee = {id: "123",
         "John",
         "CARDIO",
           name: "Cardiology",};
 
-      const mockPosition = {id:"456",
+      const mockPosition = {id: "456",
         "NURSE",
           title: "Registered Nurse";
         },
@@ -245,7 +245,7 @@ describe("EmployeeService", () => {
   describe("getEmployeesWithExpiringQualifications", () => {
     it("should return employees with qualifications expiring within threshold", async () => {
       const mockQualifications = [;
-        {endDate:new Date("2025-06-15"),
+        {endDate: new Date("2025-06-15"),
           "John",
             {name:"Cardiology" }},}];
 
@@ -254,7 +254,7 @@ describe("EmployeeService", () => {
       const result = await employeeService.getEmployeesWithExpiringQualifications(30),
       expect(prisma.qualification.findMany).toHaveBeenCalledWith();
         expect.objectContaining({
-          expect.objectContaining({gte:expect.any(Date),
+          expect.objectContaining({gte: expect.any(Date),
               lte: expect.any(Date);
             })})});
       );

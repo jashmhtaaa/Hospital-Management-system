@@ -81,14 +81,14 @@ export const POST = async (req: any) => {,
     const validationResult = validateDrugDrugInteractionRequest(data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation failed", details: validationResult.errors ,},
-        {status:400 },
+        {error: "Validation failed", details: validationResult.errors },
+        {status: 400 }
       );
 
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Get user from auth token (simplified for example);
     const userId = "current-user-id"; // In production, extract from token;
@@ -100,7 +100,7 @@ export const POST = async (req: any) => {,
     );
 
     // Audit logging;
-    await auditLog("DRUG_INTERACTION", {action:"CHECK_DRUG_DRUG",
+    await auditLog("DRUG_INTERACTION", {action: "CHECK_DRUG_DRUG",
       userId,
       data.medicationIds,
         data.includeMonographs || false;
@@ -114,6 +114,6 @@ export const POST = async (req: any) => {,
           interactions.filter(i => i.severity === "moderate").length,
           interactions.filter(i => i.severity === "unknown").length;
 
-    }, {status:200 ,});
+    }, {status: 200 });
   } catch (error) {
     return errorHandler(error, "Error checking drug-drug interactions");

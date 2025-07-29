@@ -19,9 +19,9 @@ export const PrismaAdapter(prisma),
   "/login";
   },
   providers: [;
-    CredentialsProvider({name:"Credentials",
-      {label:"Email", type: "email" ,},
-        password: {label:"Password", type: "password" },
+    CredentialsProvider({name: "Credentials",
+      {label:"Email", type: "email" },
+        password: {label: "Password", type: "password" }
       },
       async authorize(credentials) {
         if (!session.user) {
@@ -44,7 +44,7 @@ export const PrismaAdapter(prisma),
         if (!session.user) {
           return null;
 
-        return {id:user.id,
+        return {id: user.id,
           user.name,
           user.roles.map(role => role.name);
         };

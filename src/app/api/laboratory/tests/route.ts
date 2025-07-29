@@ -8,8 +8,7 @@ import {type
 import {  DB  } from "next/server" from "@/lib/database"; // Using mock DB;
 
 // Interface for the request body when creating a lab test;
-interface LabTestCreateBody {
-    {category_id:number,
+interface LabTestCreateBody {category_id: number,
   string;
   description?: string;
   sample_type: string;
@@ -57,7 +56,7 @@ export const _GET = async (request: any) => {,
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Parse query parameters;
@@ -98,8 +97,8 @@ export const _GET = async (request: any) => {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to fetch laboratory tests", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to fetch laboratory tests", details: errorMessage },
+      {status: 500 }
     );
   }
 }
@@ -142,11 +141,11 @@ export const _POST = async (request: any) => {,
 
     // Check authentication and authorization;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Only lab managers and admins can create tests;
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
 
     // Parse request body and assert type;
     const body = (await request.json()) as LabTestCreateBody;
@@ -165,8 +164,8 @@ export const _POST = async (request: any) => {,
         body[field] === "";
       ) ;
         return NextResponse.json();
-          {error:`Missing or invalid required field: ${field}` ,},
-          {status:400 },
+          {error: `Missing or invalid required field: ${field}` },
+          {status: 400 }
         );
 
     // Insert new test using DB.query;
@@ -191,20 +190,20 @@ export const _POST = async (request: any) => {,
 
     // Mock response as we cannot get last_row_id from mock DB.query;
     const mockTestId = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10_000);
-    const mockCreatedTest = {id:mockTestId;
+    const mockCreatedTest = {id: mockTestId;
       ...body, // Include other details from the request body;
       is_active: body.is_active === undefined ? true : body.is_active, // Ensure is_active is set;
       description: body.description || "",
       body.processing_time === undefined ? undefined : body.processing_time;
     };
 
-    return NextResponse.json(mockCreatedTest, {status:201 ,});
-  } catch (error: unknown) {,
+    return NextResponse.json(mockCreatedTest, {status: 201 });
+  } catch (error: unknown) {
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to create laboratory test", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to create laboratory test", details: errorMessage },
+      {status: 500 }
     );
 
 export async function GET() { return new Response("OK"); }

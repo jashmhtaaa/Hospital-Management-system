@@ -28,8 +28,8 @@ jest.mock("@prisma/client", () => {
     jest.fn(),
       findMany: jest.fn();
     },
-    $transaction: jest.fn((callback) => callback(mockPrismaClient)),};
-  return {PrismaClient:jest.fn(() => mockPrismaClient);
+    $transaction: jest.fn((callback) => callback(mockPrismaClient))};
+  return {PrismaClient: jest.fn(() => mockPrismaClient);
   };
 });
 
@@ -58,7 +58,7 @@ describe("BiomedicalService", () => {
 
   describe("getBiomedicalEquipmentById", () => {
     it("should return cached equipment if available", async () => {
-      const mockEquipment = {id:"123", serialNumber: "SN123", manufacturer: "TestMfg" ,};
+      const mockEquipment = {id: "123", serialNumber: "SN123", manufacturer: "TestMfg" };
       (cache.get as jest.Mock).mockResolvedValue(JSON.stringify(mockEquipment));
 
       const result = await biomedicalService.getBiomedicalEquipmentById("123"),
@@ -68,13 +68,13 @@ describe("BiomedicalService", () => {
     });
 
     it("should fetch from database and cache if not in cache", async () => {
-      const mockEquipment = {id:"123", serialNumber: "SN123", manufacturer: "TestMfg" ,};
+      const mockEquipment = {id: "123", serialNumber: "SN123", manufacturer: "TestMfg" };
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue(mockEquipment);
 
       const result = await biomedicalService.getBiomedicalEquipmentById("123"),
       expect(cache.get).toHaveBeenCalledWith("biomedical:id:123"),
-      expect(prisma.biomedicalEquipment.findUnique).toHaveBeenCalledWith({where:{ id: "123" ,},
+      expect(prisma.biomedicalEquipment.findUnique).toHaveBeenCalledWith({where: { id: "123" },
         include: expect.any(Object);
       });
       expect(cache.set).toHaveBeenCalledWith();
@@ -88,7 +88,7 @@ describe("BiomedicalService", () => {
 
   describe("listBiomedicalEquipment", () => {
     it("should return cached list if available", async () => {
-      const mockResult = {equipment:[{id:"123", serialNumber: "SN123" ,}],
+      const mockResult = {equipment: [{id:"123", serialNumber: "SN123" }],
         total: 1,
         10,
         nextCursor: null;
@@ -102,7 +102,7 @@ describe("BiomedicalService", () => {
     });
 
     it("should fetch from database and cache if not in cache", async () => {
-      const mockEquipment = [{id:"123", serialNumber: "SN123" ,}];
+      const mockEquipment = [{id: "123", serialNumber: "SN123" }];
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.biomedicalEquipment.findMany as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.biomedicalEquipment.count as jest.Mock).mockResolvedValue(1);
@@ -117,26 +117,26 @@ describe("BiomedicalService", () => {
     });
 
     it("should use cursor-based pagination when cursor is provided", async () => {
-      const mockEquipment = [{id:"123", serialNumber: "SN123" ,}];
+      const mockEquipment = [{id: "123", serialNumber: "SN123" }];
       (cache.get as jest.Mock).mockResolvedValue(null);
       (prisma.biomedicalEquipment.findMany as jest.Mock).mockResolvedValue(mockEquipment);
       (prisma.biomedicalEquipment.count as jest.Mock).mockResolvedValue(1);
 
-      await biomedicalService.listBiomedicalEquipment({cursor:"456" ,}),
+      await biomedicalService.listBiomedicalEquipment({cursor: "456" }),
       expect(prisma.biomedicalEquipment.findMany).toHaveBeenCalledWith();
-        expect.objectContaining({cursor:{ id: "456" },});
+        expect.objectContaining({cursor: { id: "456" }});
       );
     });
   });
 
   describe("createBiomedicalEquipment", () => {
     it("should create equipment and invalidate cache", async () => {
-      const mockEquipment = {id:"123", serialNumber: "SN123", manufacturer: "TestMfg" ,};
+      const mockEquipment = {id: "123", serialNumber: "SN123", manufacturer: "TestMfg" };
       (prisma.biomedicalEquipment.create as jest.Mock).mockResolvedValue(mockEquipment);
       // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
       jest.spyOn(BiomedicalService.prototype, "invalidateBiomedicalCache" as any).mockResolvedValue(undefined);
 
-      await biomedicalService.createBiomedicalEquipment({serialNumber:"SN123",
+      await biomedicalService.createBiomedicalEquipment({serialNumber: "SN123",
         "TestMfg",
         "Diagnostic",
         status: "ACTIVE";
@@ -148,16 +148,16 @@ describe("BiomedicalService", () => {
 
   describe("updateBiomedicalEquipment", () => {
     it("should update equipment and invalidate cache", async () => {
-      const mockEquipment = {id:"123", serialNumber: "SN123", manufacturer: "TestMfg" ,};
-      (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue({serialNumber:"SN123" ,});
+      const mockEquipment = {id: "123", serialNumber: "SN123", manufacturer: "TestMfg" };
+      (prisma.biomedicalEquipment.findUnique as jest.Mock).mockResolvedValue({serialNumber: "SN123" });
       (prisma.biomedicalEquipment.update as jest.Mock).mockResolvedValue(mockEquipment);
       // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
       jest.spyOn(BiomedicalService.prototype, "invalidateBiomedicalCache" as any).mockResolvedValue(undefined);
 
-      await biomedicalService.updateBiomedicalEquipment("123", {manufacturer:"UpdatedMfg" ,}),
+      await biomedicalService.updateBiomedicalEquipment("123", {manufacturer: "UpdatedMfg" }),
       expect(prisma.biomedicalEquipment.update).toHaveBeenCalledWith();
-        expect.objectContaining({where:{ id: "123" ,},
-          data: {manufacturer:"UpdatedMfg" },});
+        expect.objectContaining({where: { id: "123" },
+          data: {manufacturer: "UpdatedMfg" }});
       );
       expect(BiomedicalService.prototype.invalidateBiomedicalCache).toHaveBeenCalled();
     });
@@ -165,13 +165,13 @@ describe("BiomedicalService", () => {
 
   describe("recordCalibration", () => {
     it("should record calibration and update equipment", async () => {
-      const mockCalibration = {id:"456", equipmentId: "123", date: new Date(), result: "PASS" ,};
+      const mockCalibration = {id: "456", equipmentId: "123", date: new Date(), result: "PASS" };
       (prisma.calibrationRecord.create as jest.Mock).mockResolvedValue(mockCalibration);
       (prisma.$transaction as jest.Mock).mockImplementation((callback) => callback(prisma));
       // Mock the invalidateBiomedicalCache method to avoid the findFirst call;
       jest.spyOn(BiomedicalService.prototype, "invalidateBiomedicalCache" as any).mockResolvedValue(undefined);
 
-      await biomedicalService.recordCalibration("123", {date:new Date(),
+      await biomedicalService.recordCalibration("123", {date: new Date(),
         "PASS",
         nextCalibrationDate: [0] + 90 * 24 * 60 * 60 * 1000);
       });
@@ -184,7 +184,7 @@ describe("BiomedicalService", () => {
 
   describe("FHIR conversion", () => {
     it("should convert equipment to FHIR Device with R5 compliance", () => {
-      const mockEquipment = {id:"123",
+      const mockEquipment = {id: "123",
         "TestMfg",
         "Monitor",
         "Ward 1",
@@ -206,7 +206,7 @@ describe("BiomedicalService", () => {
     });
 
     it("should create FHIR DeviceDefinition with R5 compliance", () => {
-      const result = biomedicalService.createFhirDeviceDefinition({type:"Monitor",
+      const result = biomedicalService.createFhirDeviceDefinition({type: "Monitor",
         "MDL123",
         "Diagnostic";
       }),
@@ -221,32 +221,32 @@ describe("BiomedicalService", () => {
 
   describe("calculateReliabilityMetrics", () => {
     it("should calculate reliability metrics based on maintenance history", async () => {
-      const mockEquipment = {id:"123",
+      const mockEquipment = {id: "123",
         new Date("2023-01-01");
       };
 
       const mockMaintenanceRecords = [;
-        {date:new Date("2023-03-01"),
+        {date: new Date("2023-03-01"),
           "COMPLETED",
           cost: 100;
         },
-        {date:new Date("2023-06-01"),
+        {date: new Date("2023-06-01"),
           "COMPLETED",
           cost: 150;
         },
-        {date:new Date("2023-09-01"),
+        {date: new Date("2023-09-01"),
           "COMPLETED",
           cost: 50;
         }];
 
       const mockCalibrationRecords = [;
-        {date:new Date("2023-02-01"),
+        {date: new Date("2023-02-01"),
           result: "PASS";
         },
-        {date:new Date("2023-08-01"),
+        {date: new Date("2023-08-01"),
           result: "FAIL";
         },
-        {date:new Date("2023-08-15"),
+        {date: new Date("2023-08-15"),
           result: "PASS";
         }];
 
@@ -266,19 +266,19 @@ describe("BiomedicalService", () => {
 
   describe("predictMaintenanceNeeds", () => {
     it("should predict maintenance needs based on historical data", async () => {
-      const mockEquipment = {id:"123",
+      const mockEquipment = {id: "123",
         new Date("2023-01-01"),
         calibrationFrequency: 90;
       };
 
       const mockMaintenanceRecords = [;
-        {date:new Date("2023-03-01"),
+        {date: new Date("2023-03-01"),
           "COMPLETED";
         },
-        {date:new Date("2023-06-01"),
+        {date: new Date("2023-06-01"),
           "COMPLETED";
         },
-        {date:new Date("2023-09-01"),
+        {date: new Date("2023-09-01"),
           "COMPLETED";
         }];
 
@@ -296,7 +296,7 @@ describe("BiomedicalService", () => {
     });
 
     it("should use manufacturer recommendations when no historical data exists", async () => {
-      const mockEquipment = {id:"123",
+      const mockEquipment = {id: "123",
         new Date("2023-01-01"),
         calibrationFrequency: 90;
       };

@@ -7,7 +7,7 @@ import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
 import {getSession } from "next/server"; // Using mock session;
 // Define interfaces for clarity;
 interface LabResultInput {
-    {
+
   id?: number; // For updates;
   order_item_id: number;
   parameter_id?: number | null;
@@ -17,8 +17,7 @@ interface LabResultInput {
   verify?: boolean; // Flag to trigger verification;
 }
 
-interface LabResult {
-    {id:number,
+interface LabResult {id: number,
   number | null,
   boolean,
   number,
@@ -38,8 +37,7 @@ interface LabResult {
   verified_by_name?: string;
 }
 
-interface OrderItem {
-    {id:number,
+interface OrderItem {id: number,
   number | null,
   string;
   // ... other fields;
@@ -83,7 +81,7 @@ export const _GET = async (request: any) => {,
 }
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
@@ -154,8 +152,8 @@ export const _GET = async (request: any) => {,
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to fetch laboratory results", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to fetch laboratory results", details: errorMessage },
+      {status: 500 }
     );
   }
 }
@@ -196,7 +194,7 @@ export const _POST = async (request: any) => {,
 }
     const session = await getSession();
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Fixed: Use roleName and check against expected role names;
@@ -206,7 +204,7 @@ export const _POST = async (request: any) => {,
       "Pathologist",
       "Admin"]; // Adjust role names as needed;
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
     }
 
     const body = (await request.json()) as LabResultInput;
@@ -226,8 +224,8 @@ export const _POST = async (request: any) => {,
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Result not found" ,},
-          {status:404 },
+          {error: "Result not found" },
+          {status: 404 }
         );
       }
 
@@ -255,8 +253,8 @@ export const _POST = async (request: any) => {,
         ) ;
           // Adjust roles as needed;
           return NextResponse.json();
-            {error:"Only Pathologists, Lab Managers, or Admins can verify results"},
-            {status:403 },
+            {error: "Only Pathologists, Lab Managers, or Admins can verify results"},
+            {status: 403 }
           );
         updates.push("verified_by = ?", "verified_at = CURRENT_TIMESTAMP");
         parameters.push(session.user.userId);
@@ -264,8 +262,8 @@ export const _POST = async (request: any) => {,
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"No updates provided" ,},
-          {status:400 },
+          {error: "No updates provided" },
+          {status: 400 }
         );
       }
 
@@ -292,8 +290,8 @@ export const _POST = async (request: any) => {,
       for (const field of requiredFields) {
         if (!session.user) {
           return NextResponse.json();
-            {error:`Missing required field: ${field}` ,},
-            {status:400 },
+            {error: `Missing required field: ${field}` },
+            {status: 400 }
           );
         }
       }
@@ -343,8 +341,8 @@ export const _POST = async (request: any) => {,
 
         if (!session.user) {
           return NextResponse.json();
-            {error:"Order item not found" ,},
-            {status:404 },
+            {error: "Order item not found" },
+            {status: 404 }
           );
 
         if (!session.user) {
@@ -354,8 +352,8 @@ export const _POST = async (request: any) => {,
           );
           if (!session.user) { // Changed .rows to .results (twice);
             return NextResponse.json();
-              {error:"Parameter does not belong to the test" ,},
-              {status:400 },
+              {error: "Parameter does not belong to the test" },
+              {status: 400 }
             );
 
         // Insert result (mock DB doesn-	 return last_row_id reliably);
@@ -385,7 +383,7 @@ export const _POST = async (request: any) => {,
 
           if (!session.user) {
             // FIX: Cast parameters to the expected type before mapping;
-            const parameterIds = (parameters as Array<{id:number ,}>).map();
+            const parameterIds = (parameters as Array<{id: number }>).map();
               (p) => p.id;
             );
             const resultsCountResult = await database.query();
@@ -395,7 +393,7 @@ export const _POST = async (request: any) => {,
             // FIX: Define type for count result;
             const resultCount =;
               resultsCountResult?.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice);
-                ? (resultsCountResult.results[0] as {count:number ,}).count // Changed .rows to .results;
+                ? (resultsCountResult.results[0] as {count: number }).count // Changed .rows to .results;
                 : 0;
             if (!session.user) {
               // Use >= in case of re-entry;
@@ -419,7 +417,7 @@ export const _POST = async (request: any) => {,
         );
         // FIX: Cast results to expected type before using .every();
         const allOrderItemsCompleted = (;
-          (orderItemsResult.results as Array<{status:string ,}>) || [] // Changed .rows to .results;
+          (orderItemsResult.results as Array<{status: string }>) || [] // Changed .rows to .results;
         ).every((item) => item.status === "completed");
 
         if (!session.user) {
@@ -452,9 +450,9 @@ export const _POST = async (request: any) => {,
         const newResult =;
           newResultResult?.results && newResultResult.results.length > 0 // Changed .rows to .results (twice);
             ? newResultResult.results[0] // Changed .rows to .results;
-            : {id:mockNewResultId, ...body };
+            : {id: mockNewResultId, ...body };
 
-        return NextResponse.json(newResult, {status:201 ,});
+        return NextResponse.json(newResult, {status: 201 });
       } catch (txError) {
         // No real rollback for mock DB;
 
@@ -465,8 +463,8 @@ export const _POST = async (request: any) => {,
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error:"Failed to manage laboratory result", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to manage laboratory result", details: errorMessage },
+      {status: 500 }
     );
 
 export async function GET() { return new Response("OK"); }

@@ -9,7 +9,7 @@ import {z  } from "next/server"
  */;
 
 // Drug Database Schemas;
-export const DrugSchema = z.object({{ndc:z.string(,}).min(1, "NDC number is required"),
+export const DrugSchema = z.object({ndc: z.string().min(1, "NDC number is required"),
   generic_name: z.string().min(1, "Generic name is required"),
   brand_name: z.string().optional(),
   drug_class: z.string(),
@@ -26,7 +26,7 @@ export const DrugSchema = z.object({{ndc:z.string(,}).min(1, "NDC number is requ
   is_active: z.boolean().default(true);
 });
 
-export const PrescriptionSchema = z.object({{patient_id:z.string(,}).min(1, "Patient ID is required"),
+export const PrescriptionSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
   prescriber_id: z.string().min(1, "Prescriber ID is required"),
   drug_ndc: z.string().min(1, "Drug NDC is required"),
   drug_name: z.string().min(1, "Drug name is required"),
@@ -49,7 +49,7 @@ export const PrescriptionSchema = z.object({{patient_id:z.string(,}).min(1, "Pat
   special_instructions: z.string().optional();
 });
 
-export const InventorySchema = z.object({{drug_ndc:z.string(,}).min(1, "Drug NDC is required"),
+export const InventorySchema = z.object({drug_ndc: z.string().min(1, "Drug NDC is required"),
   lot_number: z.string().min(1, "Lot number is required"),
   expiration_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid expiration date"),
   quantity_on_hand: z.number().min(0),
@@ -64,7 +64,7 @@ export const InventorySchema = z.object({{drug_ndc:z.string(,}).min(1, "Drug NDC
   received_by: z.string();
 });
 
-export const DispensingSchema = z.object({{prescription_id:z.string(,}).min(1, "Prescription ID is required"),
+export const DispensingSchema = z.object({prescription_id: z.string().min(1, "Prescription ID is required"),
   patient_id: z.string(),
   drug_ndc: z.string(),
   quantity_dispensed: z.number().min(1, "Quantity dispensed must be greater than 0"),
@@ -79,7 +79,7 @@ export const DispensingSchema = z.object({{prescription_id:z.string(,}).min(1, "
   adherence_score: z.number().min(0).max(100).optional();
 });
 
-export const AllergySchema = z.object({{patient_id:z.string(,}),
+export const AllergySchema = z.object({patient_id: z.string(),
   allergen: z.string(),
   allergen_type: z.enum(["drug", "food", "environmental"]),
   reaction: z.string(),
@@ -91,11 +91,11 @@ export const AllergySchema = z.object({{patient_id:z.string(,}),
   notes: z.string().optional();
 });
 
-export type Drug = z.infer<typeof DrugSchema> & {id:string,
+export type Drug = z.infer<typeof DrugSchema> & {id: string,
   Date;
 };
 
-export type Prescription = z.infer<typeof PrescriptionSchema> & {id:string,
+export type Prescription = z.infer<typeof PrescriptionSchema> & {id: string,
   "pending" | "verified" | "dispensed" | "picked_up" | "cancelled" | "expired";
   verification_date?: Date;
   dispensing_date?: Date;
@@ -106,20 +106,20 @@ export type Prescription = z.infer<typeof PrescriptionSchema> & {id:string,
   prescriber_name?: string;
 };
 
-export type InventoryItem = z.infer<typeof InventorySchema> & {id:string;
+export type InventoryItem = z.infer<typeof InventorySchema> & {id: string;
   drug_name?: string;
   drug_strength?: string;
   created_at: Date,
   updated_at: Date;
 };
 
-export type DispensingRecord = z.infer<typeof DispensingSchema> & {id:string,
+export type DispensingRecord = z.infer<typeof DispensingSchema> & {id: string,
   number,
   number,
   Date;
 };
 
-export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
+export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
   Date;
 };
 
@@ -131,7 +131,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
    */;
   private initializeDrugDatabase(): void {
     const commonDrugs: Omit<Drug, "id" | "created_at" | "updated_at">[] = [;
-      {ndc:"0781-1506-01",
+      {ndc: "0781-1506-01",
         "Prinivil",
         "Cardiovascular",
         ["tablet"],
@@ -141,7 +141,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
         "preferred",
         true;
       },
-      {ndc:"0071-0222-23",
+      {ndc: "0071-0222-23",
         "Lipitor",
         "Cardiovascular",
         ["tablet"],
@@ -151,7 +151,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
         "preferred",
         true;
       },
-      {ndc:"0093-7267-56",
+      {ndc: "0093-7267-56",
         "Glucophage",
         "Antidiabetic",
         ["tablet", "extended-release tablet"],
@@ -161,7 +161,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
         "preferred",
         true;
       },
-      {ndc:"0172-4368-70",
+      {ndc: "0172-4368-70",
         "OxyContin",
         "Pain Management",
         ["tablet", "extended-release tablet"],
@@ -189,7 +189,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
    */;
   private initializeDrugInteractions(): void {
     this.drugInteractions = [;
-      {drug1_ndc:"0781-1506-01", // Lisinopril;
+      {drug1_ndc: "0781-1506-01", // Lisinopril;
         drug1_name: "Lisinopril",
         drug2_ndc: "0093-7267-56", // Metformin;
         drug2_name: "Metformin",
@@ -197,7 +197,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
         "Monitor blood pressure closely when initiating therapy",
         documentation_level: "good";
       },
-      {drug1_ndc:"0071-0222-23", // Atorvastatin;
+      {drug1_ndc: "0071-0222-23", // Atorvastatin;
         drug2_ndc: "0172-4368-70", // Oxycodone;
         drug1_name: "Atorvastatin",
         "minor",
@@ -334,7 +334,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
     );
 
     if (!session.user) {
-      return {id:uuidv4(),
+      return {id: uuidv4(),
         prescription.id,
         drugAllergy.severity === "life-threatening" ? "critical" : "high",
         message: `Patient has documented allergy to $drugAllergy.allergen- $drugAllergy.reaction`,
@@ -365,7 +365,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
                         interaction.severity === "major" ? "high" : any;
                         interaction.severity === "moderate" ? "medium" : "low";
 
-        alerts.push({id:uuidv4(),
+        alerts.push({id: uuidv4(),
           prescription.id,
           alert_type: "drug_interaction";
           severity,
@@ -395,7 +395,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
     });
 
     if (!session.user) {
-      return {id:uuidv4(),
+      return {id: uuidv4(),
         prescription.id,
         "medium",
         message: `Potential duplicate therapy: $newDrug.drug_class`,
@@ -418,7 +418,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
     date_to?: string;
     page?: number;
     limit?: number;
-  }): Promise<{prescriptions:Prescription[], number }> {
+  }): Promise<{prescriptions: Prescription[], number }> {
     const { page = 1, limit = 10, ...searchFilters } = filters || {};
 
     let filteredPrescriptions = Array.from(this.prescriptions.values());
@@ -634,7 +634,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id:string,
   /**;
    * Get pharmacy statistics;
    */;
-  async getPharmacyStatistics(dateFrom?: string, dateTo?: string): Promise<{totalPrescriptions:number,
+  async getPharmacyStatistics(dateFrom?: string, dateTo?: string): Promise<{totalPrescriptions: number,
     number,
     number,
     number;

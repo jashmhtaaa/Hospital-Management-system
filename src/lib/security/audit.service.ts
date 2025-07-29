@@ -15,7 +15,7 @@ import {PrismaClient  } from "next/server"
 }
   };
 }
-    Array<{resource:string, count: number ,}>;
+    Array<{resource: string, count: number }>;
   };
 }
   }
@@ -153,7 +153,7 @@ import {PrismaClient  } from "next/server"
       const [events, totalCount] = await Promise.all([;
         this.prisma.auditLog.findMany({
           where,
-          orderBy: {timestamp:"desc" ,},
+          orderBy: {timestamp: "desc" },
           take: query.limit || 100,
           skip: query.offset || 0;
         }),
@@ -163,7 +163,7 @@ import {PrismaClient  } from "next/server"
       // Generate summary;
       const summary = await this.generateSummary(where);
 
-      return {events:events.map(this.formatAuditEvent),
+      return {events: events.map(this.formatAuditEvent),
         totalCount,
         summary;
       };
@@ -273,11 +273,11 @@ import {PrismaClient  } from "next/server"
 
       // In production, this would move logs to cold storage;
       const result = await this.prisma.auditLog.deleteMany({
-        {lt:olderThan },
+        {lt: olderThan }
 
       });
 
-      await this.logEvent({eventType:"AUDIT_LOGS_ARCHIVED",
+      await this.logEvent({eventType: "AUDIT_LOGS_ARCHIVED",
         result.count,
           olderThan: olderThan.toISOString(),
         severity: "LOW";
@@ -325,13 +325,13 @@ import {PrismaClient  } from "next/server"
 
   private setupLogger(): void {
     const transports: winston.transport[] = [;
-      new winston.transports.Console({format:winston.format.combine(),
+      new winston.transports.Console({format: winston.format.combine()
           winston.format.timestamp(),
           winston.format.json();
         );
       }),
-      new winston.transports.File({filename:"logs/audit.log",
-        format: winston.format.combine(),
+      new winston.transports.File({filename: "logs/audit.log",
+        format: winston.format.combine()
           winston.format.timestamp(),
           winston.format.json();
         );
@@ -348,7 +348,7 @@ import {PrismaClient  } from "next/server"
         });
       );
 
-    this.logger = winston.createLogger({level:"info",
+    this.logger = winston.createLogger({level: "info",
       format: winston.format.json(),
       transports;
     });
@@ -434,8 +434,8 @@ import {PrismaClient  } from "next/server"
       }));
     };
 
-  private formatAuditEvent(dbEvent: unknown): AuditEvent {,
-    return {eventType:dbEvent.eventType,
+  private formatAuditEvent(dbEvent: unknown): AuditEvent {
+    return {eventType: dbEvent.eventType,
       dbEvent.targetUserId,
       dbEvent.resourceId,
       dbEvent.details,

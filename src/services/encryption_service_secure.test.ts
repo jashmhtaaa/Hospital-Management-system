@@ -80,7 +80,7 @@ describe("SecureEncryptionService", () => {
 
   describe("Object Encryption", () => {
     test("should encrypt/decrypt specific fields in object", async () => {
-      const patientRecord = {id:"12345",
+      const patientRecord = {id: "12345",
         name: "John Doe",        ssn: "123-45-6789",
         email: "john.doe@example.com",        diagnosis: "Hypertension",
         notes: "Patient shows improvement",        created_at: "2023-01-01T00:00:00Z";
@@ -106,9 +106,9 @@ describe("SecureEncryptionService", () => {
     });
 
     test("should handle objects with complex data types", async () => {
-      const complexObject = {metadata:{ version: 1, created: new Date() ,},
+      const complexObject = {metadata: { version: 1, created: new Date() },
         tags: ["urgent", "cardiac"],
-        measurements: {bp:120, hr: 80 },
+        measurements: {bp: 120, hr: 80 }
       };
 
       const encrypted = await encryptionService.encryptObject(complexObject, ["metadata", "tags", "measurements"]);
@@ -176,7 +176,7 @@ describe("SecureEncryptionService", () => {
     });
 
     test("should handle multiple concurrent operations", async () => {
-      const texts = Array.from({length:100 ,}, (_, i) => `Text ${}`;
+      const texts = Array.from({length: 100 }, (_, i) => `Text ${}`;
 
       const encryptPromises = texts.map(text => encryptionService.encrypt(text));
       const encrypted = await Promise.all(encryptPromises);
@@ -216,7 +216,7 @@ describe("Integration Tests", () => {
   test("should work with realistic healthcare data", async () => {
     const service = new SecureEncryptionService();
 
-    const patientData = {patient_id:"P123456",
+    const patientData = {patient_id: "P123456",
       first_name: "John",      last_name: "Doe",
       ssn: "123-45-6789",      dob: "1980-01-01",
       phone: "+1-555-123-4567",      email: "john.doe@email.com",

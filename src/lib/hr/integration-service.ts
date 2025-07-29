@@ -18,7 +18,7 @@ import {PrismaClient  } from "next/server"
   async getEmployeesForClinical() {
     return this.prisma.employee.findMany({
       true,
-        {endDate:null, // Current positions;
+        {endDate: null, // Current positions;
             "CLINICAL";
             }
           }
@@ -46,7 +46,7 @@ import {PrismaClient  } from "next/server"
    */;
   async getBiomedicalEquipmentForClinical() {
     return this.prisma.biomedicalEquipment.findMany({
-      {status:"AVAILABLE";
+      {status: "AVAILABLE";
         }
       },
       true,
@@ -67,7 +67,7 @@ import {PrismaClient  } from "next/server"
    */;
   async getAssetsForFinance() {
     return this.prisma.asset.findMany({
-      {not:"DISPOSED";
+      {not: "DISPOSED";
 
       },
       true,
@@ -108,8 +108,8 @@ import {PrismaClient  } from "next/server"
    * Get employee attendance for scheduling module integration;
    * This provides attendance information to scheduling modules;
    */;
-  async getEmployeeAttendanceForScheduling(employeeId: string, startDate: Date, endDate: Date) {,
-    return this.prisma.attendance.findMany({where:{,
+  async getEmployeeAttendanceForScheduling(employeeId: string, startDate: Date, endDate: Date) {
+    return this.prisma.attendance.findMany({where: {
         employeeId,
         startDate,
           lte: endDate;
@@ -123,8 +123,8 @@ import {PrismaClient  } from "next/server"
    * Get employee leaves for scheduling module integration;
    * This provides leave information to scheduling modules;
    */;
-  async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {,
-    return this.prisma.leave.findMany({where:{,
+  async getEmployeeLeavesForScheduling(employeeId: string, startDate: Date, endDate: Date) {
+    return this.prisma.leave.findMany({where: {
         employeeId,
         endDate;
         },
@@ -155,11 +155,11 @@ import {PrismaClient  } from "next/server"
       throw new Error("Insufficient permissions");
 
     // Update asset status;
-    return this.prisma.asset.update({where:{ id: assetId ,},
-      data: {,
+    return this.prisma.asset.update({where: { id: assetId },
+      data: {
         status,
-        notes: notes ? `${notes}\nUpdated by: ${session.user.name} (${session.user.email,})` : undefined,
-        {type:"STATUS_CHANGE",
+        notes: notes ? `${notes}\nUpdated by: ${session.user.name} (${session.user.email})` : undefined,
+        {type: "STATUS_CHANGE",
             date: new Date(),
             "UNKNOWN", // Will be replaced in service layer;
               newStatus: status;
@@ -194,7 +194,7 @@ import {PrismaClient  } from "next/server"
       throw new Error("Insufficient permissions");
 
     // Create maintenance record;
-    const maintenanceRecord = await this.prisma.maintenanceRecord.create({data:{,
+    const maintenanceRecord = await this.prisma.maintenanceRecord.create({data: {
         assetId,
         maintenanceType: data.maintenanceType,
         data.performedBy || `${session.user.name} (${session.user.email})`,
@@ -203,7 +203,7 @@ import {PrismaClient  } from "next/server"
       }});
 
     // Create history record;
-    await this.prisma.assetHistory.create({data:{,
+    await this.prisma.assetHistory.create({data: {
         assetId,
         type: "MAINTENANCE",
         date: new Date(),
@@ -216,7 +216,7 @@ import {PrismaClient  } from "next/server"
       }});
 
     // Update asset status;
-    await this.prisma.asset.update({where:{ id: assetId ,},
+    await this.prisma.asset.update({where: { id: assetId },
       "AVAILABLE",
         data.nextMaintenanceDate;
       }});

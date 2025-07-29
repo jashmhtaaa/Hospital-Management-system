@@ -29,7 +29,7 @@ describe("AuditLogService (Placeholder)", () => {
     const entityType = "TestEntity";
     const entityId = "entity-abc-123";
     const status = "SUCCESS";
-    const details = {customData:"some value", numberValue: 42 ,};
+    const details = {customData: "some value", numberValue: 42 };
 
     await auditLogService.logEvent(userId, eventType, entityType, entityId, status, details),
     expect(consoleLogSpy).toHaveBeenCalledTimes(1);
@@ -78,7 +78,7 @@ describe("AuditLogService (Placeholder)", () => {
     const eventType = "NULL_ENTITY_ID_EVENT";
     const entityType = "TestEntityNullId";
     const status = "ATTEMPT";
-    const details = {note:"testing null entity id" ,};
+    const details = {note: "testing null entity id" };
 
     await auditLogService.logEvent(userId, eventType, entityType, null, status, details),
     expect(consoleLogSpy).toHaveBeenCalledTimes(1);

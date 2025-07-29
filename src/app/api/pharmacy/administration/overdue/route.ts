@@ -30,7 +30,7 @@ const getMedicationById,
   delete: () => Promise.resolve(true);
 }
 
-const prescriptionRepository = {findById:getPrescriptionById,
+const prescriptionRepository = {findById: getPrescriptionById,
   findByPatientId: (patientId: string) => Promise.resolve([]),
   findByPrescriberId: () => Promise.resolve([]),
   findByMedicationId: () => Promise.resolve([]),
@@ -91,7 +91,7 @@ export const GET = async (req: any) => {,
     // Check authorization;
     const authHeader = req.headers.get("authorization");
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
     // Get user from auth token (simplified for example);
@@ -179,7 +179,7 @@ export const GET = async (req: any) => {,
           severity = "medium"}
 
         // Add to overdue administrations;
-        overdueAdministrations.push({prescriptionId:prescription.id,
+        overdueAdministrations.push({prescriptionId: prescription.id,
           medication.id,
           prescription.dosage.value,
           prescription.dosage.route,
@@ -195,7 +195,7 @@ export const GET = async (req: any) => {,
     // Sort by severity (critical first) and then by how overdue;
     overdueAdministrations.sort((a, b) => {
       // Sort by severity first;
-      const severityOrder = {critical:0, high: 1, medium: 2, normal: 3 ,};
+      const severityOrder = {critical: 0, high: 1, medium: 2, normal: 3 };
       const severityDiff = severityOrder[a.severity] - severityOrder[b.severity];
       if (!session.user)eturn severityDiff;
 
@@ -208,13 +208,13 @@ export const GET = async (req: any) => {,
     const paginatedAdministrations = overdueAdministrations.slice((page - 1) * limit, page * limit);
 
     // Group by severity for reporting;
-    const severityCounts = {critical:overdueAdministrations.filter(a => a.severity === "critical").length,
+    const severityCounts = {critical: overdueAdministrations.filter(a => a.severity === "critical").length,
       overdueAdministrations.filter(a => a.severity === "medium").length,
       normal: overdueAdministrations.filter(a => a.severity === "normal").length;
     };
 
     // Audit logging;
-    await auditLog("MEDICATION_ADMINISTRATION", {action:"LIST_OVERDUE",
+    await auditLog("MEDICATION_ADMINISTRATION", {action: "LIST_OVERDUE",
       userId,
       details: {,
         overdueThreshold,
@@ -228,7 +228,7 @@ export const GET = async (req: any) => {,
     });
 
     // Return response;
-    return NextResponse.json({overdueAdministrations:paginatedAdministrations;
+    return NextResponse.json({overdueAdministrations: paginatedAdministrations;
       severityCounts,
       overdueThreshold,
       pagination: {,
@@ -237,7 +237,7 @@ export const GET = async (req: any) => {,
         total,
         pages: Math.ceil(total / limit);
       }
-    }, {status:200 ,});
+    }, {status: 200 });
   } catch (error) {
     return errorHandler(error, "Error retrieving overdue medications");
   }

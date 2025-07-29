@@ -19,7 +19,7 @@ const templateService = new TemplateService();
  */;
 export const GET = async();
   request: any;
-  { params }: {id:string },
+  { params }: {id: string }
 ) => {
   return withErrorHandling();
     request,
@@ -30,7 +30,7 @@ export const GET = async();
 
       return NextResponse.json(template);
     },
-    {requiredPermission:"marketing.templates.read",
+    {requiredPermission: "marketing.templates.read",
       auditAction: "TEMPLATE_VIEW";
     }
   );
@@ -42,7 +42,7 @@ export const GET = async();
  */;
 export const PUT = async();
   request: any;
-  { params }: {id:string },
+  { params }: {id: string }
 ) => {
   return withErrorHandling();
     request,
@@ -58,7 +58,7 @@ export const PUT = async();
 
       return NextResponse.json(template);
     },
-    {requiredPermission:"marketing.templates.update",
+    {requiredPermission: "marketing.templates.update",
       auditAction: "TEMPLATE_UPDATE";
     }
   );
@@ -70,7 +70,7 @@ export const PUT = async();
  */;
 export const DELETE = async();
   request: any;
-  { params }: {id:string },
+  { params }: {id: string }
 ) => {
   return withErrorHandling();
     request,
@@ -82,9 +82,9 @@ export const DELETE = async();
         session?.user?.id as string;
       );
 
-      return NextResponse.json({success:true ,}, {status:200 ,});
+      return NextResponse.json({success: true }, {status: 200 });
     },
-    {requiredPermission:"marketing.templates.delete",
+    {requiredPermission: "marketing.templates.delete",
       auditAction: "TEMPLATE_DELETE";
     }
   );

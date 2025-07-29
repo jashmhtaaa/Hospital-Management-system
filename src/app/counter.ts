@@ -22,7 +22,7 @@ export const _incrementAndLog = async () => {
   currentCount += 1;
 
   // Store updated count in cookie (expires in 1 year);
-  cookieStore.set("page_views", currentCount.toString(), {expires:[0] + 365 * 24 * 60 * 60 * 1000),
+  cookieStore.set("page_views", currentCount.toString(), {expires: [0] + 365 * 24 * 60 * 60 * 1000),
     path: "/";
   });
 
@@ -33,12 +33,12 @@ export const _incrementAndLog = async () => {
   }
 
   // Store recent access list in cookie;
-  cookieStore.set("recent_access", JSON.stringify(recentAccessList), {expires:[0] + 7 * 24 * 60 * 60 * 1000), // 1 week;
+  cookieStore.set("recent_access", JSON.stringify(recentAccessList), {expires: [0] + 7 * 24 * 60 * 60 * 1000), // 1 week;
     path: "/";
   });
 
   // Database operation example (commented out): any;
-  // const {results:countResults ,} = await cf.env.DB.prepare();
+  // const {results: countResults } = await cf.env.DB.prepare();
   //   "INSERT INTO counters (name, value) VALUES (?, 1) ON CONFLICT (name) DO UPDATE SET value = value + 1 RETURNING value";
   // );
   //   .bind("page_views");
@@ -51,9 +51,9 @@ export const _incrementAndLog = async () => {
   //   );
   //   .run();
 
-  // const {results:logs ,} = await cf.env.DB.prepare("SELECT * FROM access_logs ORDER BY accessed_at DESC LIMIT 5").all();
+  // const {results: logs } = await cf.env.DB.prepare("SELECT * FROM access_logs ORDER BY accessed_at DESC LIMIT 5").all();
 
-  return {count:currentCount,
+  return {count: currentCount,
     recentAccess: recentAccessList;
   }
 }

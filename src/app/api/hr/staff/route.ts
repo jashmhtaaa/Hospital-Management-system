@@ -8,7 +8,7 @@ import {type
 import {  z  } from "next/server"
 
 // Schema for employee creation;
-const createEmployeeSchema = z.object({{employeeId:z.string(,}).min(1, "Employee ID is required"),
+const createEmployeeSchema = z.object({employeeId: z.string().min(1, "Employee ID is required"),
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   middleName: z.string().optional(),
@@ -32,7 +32,7 @@ const createEmployeeSchema = z.object({{employeeId:z.string(,}).min(1, "Employee
     });
   ).optional(),
   positions: z.array();
-    z.object({{positionId:z.string(,}),
+    z.object({positionId: z.string(),
       isPrimary: z.boolean(),
       startDate: z.string().transform(val => ,
       endDate: z.string().optional().transform(val => val ? new Date(val) : undefined);
@@ -40,7 +40,7 @@ const createEmployeeSchema = z.object({{employeeId:z.string(,}).min(1, "Employee
   ).optional()});
 
 // Schema for employee update;
-const _updateEmployeeSchema = z.object({{firstName:z.string(,}).optional(),
+const _updateEmployeeSchema = z.object({firstName: z.string().optional(),
   lastName: z.string().optional(),
   middleName: z.string().optional(),
   gender: z.enum(["MALE", "FEMALE", "OTHER", "UNKNOWN"]).optional(),
@@ -110,8 +110,8 @@ export const _GET = async (request: any) => {,
   } catch (error: unknown) {,
 
     return NextResponse.json();
-      {error:"Failed to list employees", details: error.message ,},
-      {status:500 },
+      {error: "Failed to list employees", details: error.message },
+      {status: 500 }
     );
 
 // POST /api/hr/staff;
@@ -156,19 +156,19 @@ export const _POST = async (request: any) => {,
     // Create employee;
     const employee = await employeeService.createEmployee(validatedData);
 
-    return NextResponse.json(employee, {status:201 ,});
-  } catch (error: unknown) {,
+    return NextResponse.json(employee, {status: 201 });
+  } catch (error: unknown) {
 
     // Handle validation errors;
     if (!session.user) {
       return NextResponse.json();
-        {error:"Validation error", details: error.errors ,},
-        {status:400 },
+        {error: "Validation error", details: error.errors },
+        {status: 400 }
       );
 
     return NextResponse.json();
-      {error:"Failed to create employee", details: error.message ,},
-      {status:500 },
+      {error: "Failed to create employee", details: error.message },
+      {status: 500 }
     );
 
 })))

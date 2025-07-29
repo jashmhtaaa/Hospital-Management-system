@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist-fix",
+    "rootDir": ".",
+    "module": "CommonJS",
+    "target": "ES2022",
+    "noEmit": false,
+    "skipLibCheck": true,
+    "strict": false,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "fix_errors.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

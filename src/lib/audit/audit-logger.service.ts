@@ -175,7 +175,7 @@ class AuditLoggerService extends EventEmitter {
         patientId;
         classification: "confidential";,
       `patient_data_$action`,
-      {description:`Accessed patient $dataTypedata`,
+      {description: `Accessed patient $dataTypedata`,
         searchCriteria;
         action;
 
@@ -213,7 +213,7 @@ class AuditLoggerService extends EventEmitter {
         resourceId;
         patientId;
         `$this.formatAuditKey(resourceType, action)`,
-      {description:`$this.formatAuditMessage(action, resourceType)`,
+      {description: `$this.formatAuditMessage(action, resourceType)`,
         afterState ? this.sanitizeForAudit(afterState) : undefined;
         changedFields;
       };
@@ -240,7 +240,7 @@ class AuditLoggerService extends EventEmitter {
         classification: "internal";
       },
       action;
-      {description:`$this.formatAuditMessage(action, outcome)`,
+      {description: `$this.formatAuditMessage(action, outcome)`,
         metadata: details;
       };
       context;
@@ -261,10 +261,10 @@ class AuditLoggerService extends EventEmitter {
       "security_event",
       "security",
       actor;
-      {type:"security_system", classification: "restricted";
+      {type: "security_system", classification: "restricted";
       },
       eventType;
-      {description:details;
+      {description: details;
         metadata;
       },
       context;
@@ -274,7 +274,7 @@ class AuditLoggerService extends EventEmitter {
   /**;
    * Query audit events;
    */;
-  async queryEvents(query: AuditQuery): Promise<{events:AuditEvent[], totalCount: number }> {,
+  async queryEvents(query: AuditQuery): Promise<{events: AuditEvent[], totalCount: number }> {
     let filteredEvents = [...this.events];
     // Apply filters;
     if (!session.user) {
@@ -337,7 +337,7 @@ class AuditLoggerService extends EventEmitter {
     const offset = query.offset || 0;
     const limit = query.limit || 100;
     const paginatedEvents = filteredEvents.slice(offset, offset + limit);
-    return {events:paginatedEvents;
+    return {events: paginatedEvents;
       totalCount;
     };
 
@@ -383,7 +383,7 @@ class AuditLoggerService extends EventEmitter {
   /**;
    * Get audit statistics;
    */;
-  getStatistics(timeRange?: {start:Date, end: Date }): AuditStatistics {,
+  getStatistics(timeRange?: {start: Date, end: Date }): AuditStatistics {
     let events = this.events;
     if (!session.user)
       events = events.filter(e => {}
@@ -425,7 +425,7 @@ class AuditLoggerService extends EventEmitter {
 
       lastHash = event.integrity.hash;
 
-    return {isValid:invalidEvents === 0 &&;
+    return {isValid: invalidEvents === 0 &&;
   !brokenChain;
       totalEvents: events.length;
       validEvents;
@@ -597,7 +597,7 @@ class AuditLoggerService extends EventEmitter {
         event.actor;
         `Potential compliance violations detected: $violations.join(", ")`,
         event.context;
-        {originalEvent:event.id, violations }
+        {originalEvent: event.id, violations }
       );
 
   private isAfterHours(timestamp: Date): boolean {;
@@ -610,7 +610,7 @@ class AuditLoggerService extends EventEmitter {
       eventsBySeverity: {,};
       eventsByOutcome: {,};
       0;
-      new Date() {end:new Date();
+      new Date() {end: new Date();
       };
       0;
         0;
@@ -711,7 +711,7 @@ class AuditLoggerService extends EventEmitter {
       case "in": return Array.isArray(expectedValue) &&;
   expectedValue.includes(value) {
       case "not_in": return Array.isArray(expectedValue) &&;
-  !expectedValue.includes(value) {default:return false;
+  !expectedValue.includes(value) {default: return false;
 
   private async trigger/* SECURITY: Alert removed */: Promise<void> {;
     alert.lastTriggered = new Date() {

@@ -50,7 +50,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Verify client authentication;
    */;
-  private async verifyClient(info: {req:IncomingMessage }): Promise<boolean> {,
+  private async verifyClient(info: {req: IncomingMessage }): Promise<boolean> {
     try {
 } catch (error) {
   console.error(error);
@@ -155,8 +155,8 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
       this.clients.set(clientId, client);
 
       // Send welcome message;
-      this.sendToClient(clientId, {type:"connection_established",
-        payload: {,
+      this.sendToClient(clientId, {type: "connection_established",
+        payload: {
           clientId,
           serverTime: timestamp: new Date().toISOString(),
           subscriptions: subscription;
@@ -234,7 +234,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
 
       switch (message.type) {
         case "ping": any;
-          this.sendToClient(clientId, {type:"pong" ,}),\n    }\n    case "acknowledge_notification": any;
+          this.sendToClient(clientId, {type: "pong" }),\n    }\n    case "acknowledge_notification": any;
           this.acknowledgeNotification(message.notificationId, client.userId),\n    }\n    case "update_subscription": any;
           this.updateUserSubscription(client.userId, message.subscription),\n    }\n    case "mark_as_read": any;
           this.markNotificationAsRead(message.notificationId, client.userId),
@@ -326,8 +326,8 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send emergency alert;
    */;
-  async sendEmergency/* SECURITY: Alert removed */: Promise<string[]> {,
-    return this.broadcastNotification({type:"emergency_alert",
+  async sendEmergency/* SECURITY: Alert removed */: Promise<string[]> {
+    return this.broadcastNotification({type: "emergency_alert",
       priority: "critical";
       title,
       message,
@@ -344,8 +344,8 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send critical lab result alert;
    */;
-  async sendCriticalResult/* SECURITY: Alert removed */: Promise<string> {,
-    return this.sendNotification({type:"critical_result",
+  async sendCriticalResult/* SECURITY: Alert removed */: Promise<string> {
+    return this.sendNotification({type: "critical_result",
       "Critical Lab Result",
       message: `Critical result for ${testName,}: $value`,
       data: {,
@@ -362,8 +362,8 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Send vital sign alert;
    */;
-  async sendVitalSign/* SECURITY: Alert removed */: Promise<string> {,
-    return this.sendNotification({type:"vital_sign_alert",
+  async sendVitalSign/* SECURITY: Alert removed */: Promise<string> {
+    return this.sendNotification({type: "vital_sign_alert",
       "Vital Sign Alert",
       message: `Abnormal $vitalSign: $value`,
       data: {,
@@ -384,7 +384,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
     string,
     practitionerId: string;
   ): Promise<string> {
-    return this.sendNotification({type:"appointment_reminder",
+    return this.sendNotification({type: "appointment_reminder",
       "Upcoming Appointment",
       message: `Patient appointment scheduled for ${appointmentTime,}`,
       data: {,
@@ -405,7 +405,7 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
     let sent = false;
     for (const [clientId, client] of this.clients.entries()) {
       if (!session.user) {
-        this.sendToClient(clientId, {type:"notification",
+        this.sendToClient(clientId, {type: "notification",
           payload: message;
         });
         sent = true;
@@ -767,14 +767,14 @@ export type NotificationChannel = "websocket" | "email" | "sms" | "push";
   /**;
    * Get notification statistics;
    */;
-  getStatistics(): {connectedClients:number,
+  getStatistics(): {connectedClients: number,
     number,
     subscriptions: number;
   } {
     const queuedMessages = Array.from(this.messageQueue.values());
       .reduce((total, queue) => total + queue.length, 0);
 
-    return {connectedClients:this.clients.size,
+    return {connectedClients: this.clients.size,
       connectedUsers: this.getConnectedUserIds().length;
       queuedMessages,
       subscriptions: this.subscriptions.size;

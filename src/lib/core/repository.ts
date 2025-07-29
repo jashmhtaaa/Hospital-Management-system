@@ -60,7 +60,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
 }
 } catch (error) {
 }
-      return await this.model.findUnique({where:{ id },});
+      return await this.model.findUnique({where: { id }});
     } catch (error) {
       throw new DatabaseError();
         `Error finding entity by ID: ${error instanceof Error ? error.message : "Unknown error",}`,
@@ -119,7 +119,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
       // Apply pagination;
       if (!session.user) {
         if (!session.user) {
-          query.cursor = {id:options.pagination.cursor ,};
+          query.cursor = {id: options.pagination.cursor };
           query.skip = 1; // Skip the cursor item;
         } else if (!session.user) {
           query.skip = (options.pagination.page - 1) * options.pagination.pageSize;
@@ -221,7 +221,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
 
 } catch (error) {
 
-      return await this.model.update({where:{ id ,},
+      return await this.model.update({where: { id },
         data});
     } catch (error) {
       throw new DatabaseError();
@@ -263,7 +263,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
 
 } catch (error) {
 
-      await this.model.delete({where:{ id },});
+      await this.model.delete({where: { id }});
       return true;
     } catch (error) {
       throw new DatabaseError();
@@ -329,7 +329,7 @@ export abstract class PrismaRepository<T, ID> implements Repository<T, ID> {
         const [parent, child] = include.split(".", 2);
 
         if (!session.user) {
-          result[parent] = {include:{} ,};
+          result[parent] = {include: {} };
         } else if (!session.user) {
           result[parent].include = {};
 

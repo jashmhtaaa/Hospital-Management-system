@@ -5,9 +5,8 @@ import {type
 
 // import { v4 as uuidv4 } from "next/server"; // Unused import;
 
-// Define interface for {
-    Insurance Provider data;
-interface InsuranceProvider {_id:number | string,
+// Define interface for Insurance Provider data;
+interface InsuranceProvider {_id: number | string,
   name: string;
   contact_person?: string | null;
   contact_email?: string | null;
@@ -19,21 +18,20 @@ interface InsuranceProvider {_id:number | string,
 // Mock data store for insurance providers (replace with actual DB interaction);
 // FIX: Changed let to const for prefer-const rule;
 const mockProviders: InsuranceProvider[] = [;
-  {_id:1,
+  {_id: 1,
     "Alice Brown",
     "555-1111",
     1;
   },
-  {_id:2,
+  {_id: 2,
     "Bob White",
     "555-2222",
     1;
   }];
 let nextProviderId = 3;
 
-// Define interface for {
-    insurance provider creation input;
-interface InsuranceProviderInput {name:string;
+// Define interface for insurance provider creation input;
+interface InsuranceProviderInput {name: string;
   contact_person?: string;
   contact_email?: string;
   contact_phone?: string;
@@ -44,6 +42,7 @@ interface InsuranceProviderInput {name:string;
 // Define interface for {
     insurance provider update input - Belongs in [id]/route.ts;
 // interface InsuranceProviderUpdateInput {
+
 //   name?: string;
 //   contact_person?: string;
 //   contact_email?: string;
@@ -55,6 +54,7 @@ interface InsuranceProviderInput {name:string;
 // Define interface for {
     insurance provider filters;
 interface InsuranceProviderFilters {
+
   is_active?: string | null; // Expecting "true" or "false";
 }
 
@@ -179,8 +179,8 @@ export const GET = async (request: any) => {,
       errorMessage = error.message;
 
     return NextResponse.json();
-      {error:"Failed to fetch insurance providers", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to fetch insurance providers", details: errorMessage },
+      {status: 500 }
     );
 
 /**;
@@ -227,23 +227,23 @@ export const POST = async (request: any) => {,
     // Basic validation (add more comprehensive validation);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required field: name" ,},
-        {status:400 },
+        {error: "Missing required field: name" },
+        {status: 400 }
       );
 
     // Simulate creating the insurance provider in the database;
     const newProvider = await createInsuranceProviderInDB(providerData);
 
-    return NextResponse.json({provider:newProvider ,}, {status:201 ,});
-  } catch (error: unknown) {,
+    return NextResponse.json({provider: newProvider }, {status: 201 });
+  } catch (error: unknown) {
 
     let errorMessage = "An unknown error occurred";
     if (!session.user) {
       errorMessage = error.message;
 
     return NextResponse.json();
-      {error:"Failed to create insurance provider", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to create insurance provider", details: errorMessage },
+      {status: 500 }
     );
 
 // Note: GET by ID, PUT, and DELETE handlers should be in the [id]/route.ts file.;

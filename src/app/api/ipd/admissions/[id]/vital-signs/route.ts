@@ -10,6 +10,7 @@ import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
 // Define interface for {
     POST request body;
 interface VitalSignsInput {
+
   record_time?: string; // Optional, defaults to now;
   temperature?: number | null;
   pulse?: number | null;
@@ -23,7 +24,7 @@ interface VitalSignsInput {
 // GET /api/ipd/admissions/[id]/vital-signs - Get all vital signs for an admission;
 export const _GET = async();
   _request: any;
-  { params }: {params:Promise<{id:string }> ,} // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -61,15 +62,15 @@ export const _GET = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    const {id:admissionId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Check if admission exists using db.query;
-    // Assuming db.query exists and returns {results:[...] ,} based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const admissionResult = await database.query();
       `;
       SELECT a.*, p.first_name as patient_first_name, p.last_name as patient_last_name;
@@ -86,8 +87,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Admission not found" ,},
-        {status:404 },
+        {error: "Admission not found" },
+        {status: 404 }
       );
     }
 
@@ -100,11 +101,11 @@ export const _GET = async();
       session.user.permissions?.includes("vital_signs:view") ?? false;
 
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
     }
 
     // Get vital signs using db.query;
-    // Assuming db.query exists and returns {results:[...] ,} based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const vitalSignsResult = await database.query();
       `;
       SELECT vs.*, u.first_name as recorded_by_first_name, u.last_name as recorded_by_last_name;
@@ -124,8 +125,8 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to fetch vital signs", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to fetch vital signs", details: errorMessage },
+      {status: 500 }
     );
   }
 }
@@ -133,7 +134,7 @@ export const _GET = async();
 // POST /api/ipd/admissions/[id]/vital-signs - Create a new vital signs record;
 export const _POST = async();
   request: any;
-  { params }: {params:Promise<{id:string }> ,} // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -171,7 +172,7 @@ export const _POST = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Check permissions (using mock session data);
     const isNurse = session.user.roleName === "Nurse";
@@ -181,42 +182,42 @@ export const _POST = async();
       session.user.permissions?.includes("vital_signs:create") ?? false;
 
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
 
-    const {id:admissionId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     // Fixed: Apply type assertion;
     const data = (await request.json()) as VitalSignsInput;
 
     // Basic validation (using typed data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"At least one vital sign must be provided" ,},
-        {status:400 },
+        {error: "At least one vital sign must be provided" },
+        {status: 400 }
       );
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Check if admission exists and is active using db.query;
-    // Assuming db.query exists and returns {results:[...] ,} based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const admissionResult = await database.query();
       "SELECT id, status FROM admissions WHERE id = ?",
       [admissionId];
     );
     const admission =;
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results;
-        ? (admissionResult.results[0] as {id:string, status: string ,}) // Changed .rows to .results;
+        ? (admissionResult.results[0] as {id: string, status: string }) // Changed .rows to .results;
         : undefined;
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Admission not found" ,},
-        {status:404 },
+        {error: "Admission not found" },
+        {status: 404 }
       );
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Cannot add vital signs to a non-active admission" ,},
-        {status:409 },
+        {error: "Cannot add vital signs to a non-active admission" },
+        {status: 409 }
       ); // Updated error message;
 
     // Insert new vital signs record using db.query;
@@ -243,13 +244,13 @@ export const _POST = async();
 
     // Cannot reliably get the new record from mock DB;
     return NextResponse.json();
-      {message:"Vital signs recorded (mock operation)" ,},
-      {status:201 },
+      {message: "Vital signs recorded (mock operation)" },
+      {status: 201 }
     );
   } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to create vital signs record", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to create vital signs record", details: errorMessage },
+      {status: 500 }
     );

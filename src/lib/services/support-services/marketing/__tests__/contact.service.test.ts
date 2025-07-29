@@ -44,12 +44,12 @@ describe("ContactService", () => {
   });
 
   describe("createContact", () => {
-    const mockContactData = {name:"John Doe",
+    const mockContactData = {name: "John Doe",
       "123-456-7890",
       "ACTIVE";
     };
 
-    const mockCreatedContact = {id:"contact-123";
+    const mockCreatedContact = {id: "contact-123";
       ...mockContactData,
       createdAt: new Date(),
       updatedAt: new Date();
@@ -70,7 +70,7 @@ describe("ContactService", () => {
           createdById: mockUserId;
         })});
 
-      expect(result).toEqual(expect.objectContaining({id:mockCreatedContact.id,
+      expect(result).toEqual(expect.objectContaining({id: mockCreatedContact.id,
         mockCreatedContact.email;
       }));
 
@@ -109,7 +109,7 @@ describe("ContactService", () => {
       await service.createContact(mockContactData, mockUserId);
 
       // Assert;
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action:"contact.create",
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "contact.create",
         mockUserId,
         details: expect.any(Object);
       });
@@ -117,7 +117,7 @@ describe("ContactService", () => {
   });
 
   describe("getContactById", () => {
-    const mockContact = {id:"contact-123",
+    const mockContact = {id: "contact-123",
       "john.doe@example.com",
       "WEBSITE",
       new Date(),
@@ -132,7 +132,7 @@ describe("ContactService", () => {
       const result = await service.getContactById("contact-123");
 
       // Assert;
-      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" ,},
+      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where: { id: "contact-123" },
         include: expect.any(Object);
       });
 
@@ -168,13 +168,13 @@ describe("ContactService", () => {
 
   describe("getContacts", () => {
     const mockContacts = [;
-      {id:"contact-1",
+      {id: "contact-1",
         "john.doe@example.com",
         "WEBSITE",
         new Date(),
         updatedAt: new Date();
       },
-      {id:"contact-2",
+      {id: "contact-2",
         "jane.smith@example.com",
         "REFERRAL",
         new Date(),
@@ -187,20 +187,20 @@ describe("ContactService", () => {
       (prisma.contact.findMany as jest.Mock).mockResolvedValue(mockContacts);
 
       // Act;
-      const result = await service.getContacts({page:1, limit: 10 ,});
+      const result = await service.getContacts({page: 1, limit: 10 });
 
       // Assert;
       expect(prisma.contact.count).toHaveBeenCalled(),
       expect(prisma.contact.findMany).toHaveBeenCalledWith();
-        expect.objectContaining({skip:0,
+        expect.objectContaining({skip: 0,
           "desc" });
       );
 
-      expect(result).toEqual({data:expect.arrayContaining([;
+      expect(result).toEqual({data: expect.arrayContaining([;
           expect.objectContaining({id:mockContacts[0].id,
             expect.not.stringContaining("encrypted_");
           }),
-          expect.objectContaining({id:mockContacts[1].id,
+          expect.objectContaining({id: mockContacts[1].id,
             expect.not.stringContaining("encrypted_");
           })]),
         2,
@@ -214,7 +214,7 @@ describe("ContactService", () => {
 
     it("should apply filters correctly", async () => {
       // Arrange;
-      const filters = {status:"ACTIVE",
+      const filters = {status: "ACTIVE",
         "john",
         5;
       };
@@ -229,8 +229,8 @@ describe("ContactService", () => {
       expect(prisma.contact.count).toHaveBeenCalledWith({
         filters.status,
           expect.arrayContaining([;
-            {name:{ contains: filters.search, mode: "insensitive" } ,},
-            {email:{ contains: filters.search, mode: "insensitive" } }])}),});
+            {name: { contains: filters.search, mode: "insensitive" } },
+            {email: { contains: filters.search, mode: "insensitive" } }])})});
 
       expect(prisma.contact.findMany).toHaveBeenCalledWith();
         expect.objectContaining({
@@ -242,7 +242,7 @@ describe("ContactService", () => {
         });
       );
 
-      expect(result.pagination).toEqual({total:10,
+      expect(result.pagination).toEqual({total: 10,
         5,
         totalPages: 2;
       });
@@ -250,14 +250,14 @@ describe("ContactService", () => {
   });
 
   describe("updateContact", () => {
-    const mockContact = {id:"contact-123",
+    const mockContact = {id: "contact-123",
       "john.doe@example.com",
       "WEBSITE",
       new Date(),
       updatedAt: new Date();
     };
 
-    const updateData = {name:"John Updated",
+    const updateData = {name: "John Updated",
       "INACTIVE";
     };
 
@@ -273,8 +273,8 @@ describe("ContactService", () => {
       const result = await service.updateContact("contact-123", updateData, mockUserId);
 
       // Assert;
-      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" },}),
-      expect(prisma.contact.update).toHaveBeenCalledWith({where:{ id: "contact-123" ,},
+      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where: { id: "contact-123" }}),
+      expect(prisma.contact.update).toHaveBeenCalledWith({where: { id: "contact-123" },
         updateData.name,
           phone: expect.stringContaining("encrypted_"),
           status: updateData.status,
@@ -310,18 +310,18 @@ describe("ContactService", () => {
       await service.updateContact("contact-123", updateData, mockUserId);
 
       // Assert;
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action:"contact.update",
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "contact.update",
         mockUserId,
         Object.keys(updateData))});
     });
   });
 
   describe("addContactNote", () => {
-    const mockContact = {id:"contact-123",
+    const mockContact = {id: "contact-123",
       name: "John Doe";
     };
 
-    const mockNote = {id:"note-123",
+    const mockNote = {id: "note-123",
       "This is a test note",
       new Date();
     };
@@ -339,7 +339,7 @@ describe("ContactService", () => {
       );
 
       // Assert;
-      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" },}),
+      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where: { id: "contact-123" }}),
       expect(prisma.contactNote.create).toHaveBeenCalledWith({
         "contact-123",
           mockUserId;
@@ -366,18 +366,18 @@ describe("ContactService", () => {
       await service.addContactNote("contact-123", "This is a test note", mockUserId);
 
       // Assert;
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action:"contact.note.add",
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "contact.note.add",
         mockUserId,
         mockNote.id)});
     });
   });
 
   describe("linkContactToPatient", () => {
-    const mockContact = {id:"contact-123",
+    const mockContact = {id: "contact-123",
       null;
     };
 
-    const mockPatient = {id:"patient-123",
+    const mockPatient = {id: "patient-123",
       name: "John Doe";
     };
 
@@ -401,9 +401,9 @@ describe("ContactService", () => {
       );
 
       // Assert;
-      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where:{ id: "contact-123" },}),
+      expect(prisma.contact.findUnique).toHaveBeenCalledWith({where: { id: "contact-123" }}),
       expect(service["getPatientById"]).toHaveBeenCalledWith("patient-123"),
-      expect(prisma.contact.update).toHaveBeenCalledWith({where:{ id: "contact-123" ,},
+      expect(prisma.contact.update).toHaveBeenCalledWith({where: { id: "contact-123" },
         "patient-123",
           updatedById: mockUserId;
         }}),
@@ -441,7 +441,7 @@ describe("ContactService", () => {
       await service.linkContactToPatient("contact-123", "patient-123", mockUserId);
 
       // Assert;
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action:"contact.patient.link",
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "contact.patient.link",
         mockUserId,
         "patient-123")});
     });

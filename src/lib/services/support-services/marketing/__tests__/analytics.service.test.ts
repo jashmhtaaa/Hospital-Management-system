@@ -36,32 +36,32 @@ describe("AnalyticsService", () => {
   });
 
   describe("getCampaignAnalytics", () => {
-    const mockCampaign = {id:"campaign-123",
+    const mockCampaign = {id: "campaign-123",
       "EMAIL",
       new Date("2023-01-01"),
       endDate: new Date("2023-01-31");
     };
 
     const mockActivities = [;
-      {id:"activity-1", type: "EMAIL_SENT", timestamp: new Date("2023-01-02") ,},
-      {id:"activity-2", type: "EMAIL_OPEN", timestamp: new Date("2023-01-03") ,},
-      {id:"activity-3", type: "EMAIL_CLICK", timestamp: new Date("2023-01-04") ,},
-      {id:"activity-4", type: "EMAIL_OPEN", timestamp: new Date("2023-01-05") ,},
-      {id:"activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06") ,}];
+      {id: "activity-1", type: "EMAIL_SENT", timestamp: new Date("2023-01-02") },
+      {id: "activity-2", type: "EMAIL_OPEN", timestamp: new Date("2023-01-03") },
+      {id: "activity-3", type: "EMAIL_CLICK", timestamp: new Date("2023-01-04") },
+      {id: "activity-4", type: "EMAIL_OPEN", timestamp: new Date("2023-01-05") },
+      {id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06") }];
 
     const mockActivityCounts = [;
-      {type:"EMAIL_SENT", count: 100 ,},
-      {type:"EMAIL_OPEN", count: 45 ,},
-      {type:"EMAIL_CLICK", count: 20 ,},
-      {type:"CONVERSION", count: 5 ,}];
+      {type: "EMAIL_SENT", count: 100 },
+      {type: "EMAIL_OPEN", count: 45 },
+      {type: "EMAIL_CLICK", count: 20 },
+      {type: "CONVERSION", count: 5 }];
 
     const mockDailyStats = [;
-      {date:"2023-01-02", type: "EMAIL_SENT", count: 100 ,},
-      {date:"2023-01-03", type: "EMAIL_OPEN", count: 30 ,},
-      {date:"2023-01-04", type: "EMAIL_OPEN", count: 15 ,},
-      {date:"2023-01-04", type: "EMAIL_CLICK", count: 10 ,},
-      {date:"2023-01-05", type: "EMAIL_CLICK", count: 10 ,},
-      {date:"2023-01-06", type: "CONVERSION", count: 5 ,}];
+      {date: "2023-01-02", type: "EMAIL_SENT", count: 100 },
+      {date: "2023-01-03", type: "EMAIL_OPEN", count: 30 },
+      {date: "2023-01-04", type: "EMAIL_OPEN", count: 15 },
+      {date: "2023-01-04", type: "EMAIL_CLICK", count: 10 },
+      {date: "2023-01-05", type: "EMAIL_CLICK", count: 10 },
+      {date: "2023-01-06", type: "CONVERSION", count: 5 }];
 
     it("should retrieve campaign analytics successfully", async () => {
       // Arrange;
@@ -80,8 +80,8 @@ describe("AnalyticsService", () => {
       const result = await service.getCampaignAnalytics("campaign-123");
 
       // Assert;
-      expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({where:{ id: "campaign-123" },}),
-      expect(result).toEqual(expect.objectContaining({campaignId:"campaign-123",
+      expect(prisma.marketingCampaign.findUnique).toHaveBeenCalledWith({where: { id: "campaign-123" }}),
+      expect(result).toEqual(expect.objectContaining({campaignId: "campaign-123",
         mockActivities.length,
         100,
           20,
@@ -92,7 +92,7 @@ describe("AnalyticsService", () => {
 
       // Check time series data format;
       expect(result.timeSeriesData).toEqual(expect.arrayContaining([;
-        expect.objectContaining({date:expect.any(String),
+        expect.objectContaining({date: expect.any(String),
           expect.any(Number),
             opens: expect.any(Number),
             clicks: expect.any(Number),
@@ -155,7 +155,7 @@ describe("AnalyticsService", () => {
       await service.getCampaignAnalytics("campaign-123", undefined, mockUserId);
 
       // Assert;
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action:"analytics.campaign.view",
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "analytics.campaign.view",
         mockUserId,
         details: expect.any(Object);
       });
@@ -164,25 +164,25 @@ describe("AnalyticsService", () => {
 
   describe("getComparativeCampaignAnalytics", () => {
     const mockCampaigns = [;
-      {id:"campaign-1",
+      {id: "campaign-1",
         "EMAIL",
         new Date("2023-01-01"),
         endDate: new Date("2023-01-31");
       },
-      {id:"campaign-2",
+      {id: "campaign-2",
         "EMAIL",
         new Date("2023-02-01"),
         endDate: new Date("2023-02-28");
       }];
 
     const mockCampaignMetrics = [;
-      {campaignId:"campaign-1",
+      {campaignId: "campaign-1",
         100,
           25,
           50,
           10;
         }},
-      {campaignId:"campaign-2",
+      {campaignId: "campaign-2",
         150,
           30,
           40,
@@ -209,15 +209,15 @@ describe("AnalyticsService", () => {
 
       // Assert;
       expect(prisma.marketingCampaign.findMany).toHaveBeenCalledWith({
-        {in:["campaign-1", "campaign-2"] }}}),
+        {in: ["campaign-1", "campaign-2"] }}}),
       expect(service.getCampaignAnalytics).toHaveBeenCalledTimes(2),
       expect(service.getCampaignAnalytics).toHaveBeenCalledWith("campaign-1", undefined, undefined),
       expect(service.getCampaignAnalytics).toHaveBeenCalledWith("campaign-2", undefined, undefined),
-      expect(result).toEqual({campaigns:expect.arrayContaining([;
+      expect(result).toEqual({campaigns: expect.arrayContaining([;
           expect.objectContaining({id:"campaign-1",
             mockCampaignMetrics[0].metrics;
           }),
-          expect.objectContaining({id:"campaign-2",
+          expect.objectContaining({id: "campaign-2",
             mockCampaignMetrics[1].metrics;
           })]),
         expect.any(Object),
@@ -271,7 +271,7 @@ describe("AnalyticsService", () => {
       await service.getComparativeCampaignAnalytics(["campaign-1", "campaign-2"], mockUserId);
 
       // Assert;
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action:"analytics.campaign.compare",
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "analytics.campaign.compare",
         resourceId: expect.any(String), // Generated ID;
         userId: mockUserId,
         ["campaign-1", "campaign-2"]})});
@@ -279,27 +279,27 @@ describe("AnalyticsService", () => {
   });
 
   describe("getContactActivityAnalytics", () => {
-    const _mockContact = {id:"contact-123",
+    const _mockContact = {id: "contact-123",
       "john.doe@example.com";
     };
 
     const mockActivities = [;
-      {id:"activity-1", type: "EMAIL_OPEN", timestamp: new Date("2023-01-02"), campaignId: "campaign-1" ,},
-      {id:"activity-2", type: "EMAIL_CLICK", timestamp: new Date("2023-01-03"), campaignId: "campaign-1" ,},
-      {id:"activity-3", type: "FORM_SUBMISSION", timestamp: new Date("2023-01-04"), campaignId: null ,},
-      {id:"activity-4", type: "PAGE_VIEW", timestamp: new Date("2023-01-05"), campaignId: null ,},
-      {id:"activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06"), campaignId: "campaign-2" ,}];
+      {id: "activity-1", type: "EMAIL_OPEN", timestamp: new Date("2023-01-02"), campaignId: "campaign-1" },
+      {id: "activity-2", type: "EMAIL_CLICK", timestamp: new Date("2023-01-03"), campaignId: "campaign-1" },
+      {id: "activity-3", type: "FORM_SUBMISSION", timestamp: new Date("2023-01-04"), campaignId: null },
+      {id: "activity-4", type: "PAGE_VIEW", timestamp: new Date("2023-01-05"), campaignId: null },
+      {id: "activity-5", type: "CONVERSION", timestamp: new Date("2023-01-06"), campaignId: "campaign-2" }];
 
     const mockActivityCounts = [;
-      {type:"EMAIL_OPEN", count: 10 ,},
-      {type:"EMAIL_CLICK", count: 5 ,},
-      {type:"FORM_SUBMISSION", count: 2 ,},
-      {type:"PAGE_VIEW", count: 15 ,},
-      {type:"CONVERSION", count: 1 ,}];
+      {type: "EMAIL_OPEN", count: 10 },
+      {type: "EMAIL_CLICK", count: 5 },
+      {type: "FORM_SUBMISSION", count: 2 },
+      {type: "PAGE_VIEW", count: 15 },
+      {type: "CONVERSION", count: 1 }];
 
     const mockCampaignActivities = [;
-      {campaignId:"campaign-1", count: 3 ,},
-      {campaignId:"campaign-2", count: 2 ,}];
+      {campaignId: "campaign-1", count: 3 },
+      {campaignId: "campaign-2", count: 2 }];
 
     it("should retrieve contact activity analytics successfully", async () => {
       // Arrange;
@@ -318,28 +318,28 @@ describe("AnalyticsService", () => {
       const result = await service.getContactActivityAnalytics("contact-123");
 
       // Assert;
-      expect(prisma.contactActivity.count).toHaveBeenCalledWith({where:{ contactId: "contact-123" },}),
+      expect(prisma.contactActivity.count).toHaveBeenCalledWith({where: { contactId: "contact-123" }}),
       expect(prisma.contactActivity.groupBy).toHaveBeenCalledWith();
-        expect.objectContaining({by:["type"],
-          where: {contactId:"contact-123" ,},
+        expect.objectContaining({by: ["type"],
+          where: {contactId:"contact-123" },
           _count: true;
         });
       );
 
-      expect(result).toEqual(expect.objectContaining({contactId:"contact-123",
+      expect(result).toEqual(expect.objectContaining({contactId: "contact-123",
         expect.objectContaining({EMAIL_OPEN:10,
           2,
           1;
         }),
         campaignEngagement: expect.arrayContaining([;
-          expect.objectContaining({campaignId:"campaign-1",
+          expect.objectContaining({campaignId: "campaign-1",
             activityCount: 3;
           }),
-          expect.objectContaining({campaignId:"campaign-2",
+          expect.objectContaining({campaignId: "campaign-2",
             activityCount: 2;
           })]),
         recentActivities: expect.arrayContaining([;
-          expect.objectContaining({id:expect.any(String),
+          expect.objectContaining({id: expect.any(String),
             type: expect.any(String),
             timestamp: expect.any(Date);
           })])}));
@@ -390,7 +390,7 @@ describe("AnalyticsService", () => {
       await service.getContactActivityAnalytics("contact-123", undefined, mockUserId);
 
       // Assert;
-      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action:"analytics.contact.view",
+      expect(AuditLogger.prototype.log).toHaveBeenCalledWith({action: "analytics.contact.view",
         mockUserId,
         details: expect.any(Object);
       });

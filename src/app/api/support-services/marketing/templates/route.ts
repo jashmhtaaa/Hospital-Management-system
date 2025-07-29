@@ -25,7 +25,7 @@ export const GET = async (request: any) => {,
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters;
-      const filters = {type:searchParams.get("type") || undefined,
+      const filters = {type: searchParams.get("type") || undefined,
         isActive: searchParams.has("isActive");
           ? searchParams.get("isActive") === "true";
           : undefined,
@@ -41,7 +41,7 @@ export const GET = async (request: any) => {,
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"marketing.templates.read",
+    {requiredPermission: "marketing.templates.read",
       auditAction: "TEMPLATES_LIST";
     }
   );
@@ -63,9 +63,9 @@ export const POST = async (request: any) => {,
         session?.user?.id as string;
       );
 
-      return NextResponse.json(template, {status:201 ,});
+      return NextResponse.json(template, {status: 201 });
     },
-    {requiredPermission:"marketing.templates.create",
+    {requiredPermission: "marketing.templates.create",
       auditAction: "TEMPLATE_CREATE";
     }
   );

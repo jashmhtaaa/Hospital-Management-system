@@ -8,7 +8,7 @@ import {  getDB  } from "next/server" from "@/lib/database"; // Assuming db retu
 import {type IronSessionData, getSession } from "next/server"; // Import IronSessionData;
 // Define interfaces for data structures;
 // interface _Medication {
-    {
+
  // FIX: Prefixed unused  - Removed as it"s unused;
 //   id: string;
 //   item_code: string;
@@ -29,8 +29,7 @@ import {type IronSessionData, getSession } from "next/server"; // Import IronSes
 //   updated_at: string;
 // } // FIX: Commented out body to fix parsing error;
 
-interface MedicationInput {
-    {item_code:string,
+interface MedicationInput {item_code: string,
   generic_name: string;
   brand_name?: string | null;
   dosage_form: string,
@@ -45,7 +44,7 @@ interface MedicationInput {
 }
 
 interface MedicationFilters {
-    {
+
   search?: string | null;
   category?: string | null;
   manufacturer?: string | null;
@@ -93,11 +92,11 @@ export const GET = async (request: any) => {,
     // FIX: Use IronSession<IronSessionData> type;
     const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
     // Role check (e.g., allow Pharmacy staff, Doctors, Admins);
     // if (!session.user) {
-    //   return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
+    //   return NextResponse.json({error: "Forbidden" }, {status: 403 });
     // }
 
     const { searchParams } = new URL(request.url);
@@ -164,8 +163,8 @@ export const GET = async (request: any) => {,
       error instanceof Error ? error.message : "An unknown error occurred";
 
     return NextResponse.json();
-      {error:"Failed to fetch medications", details: message ,},
-      {status:500 },
+      {error: "Failed to fetch medications", details: message },
+      {status: 500 }
     );
   }
 
@@ -211,16 +210,16 @@ export const POST = async (request: any) => {,
     if (!session.user);
     ) ;
       return NextResponse.json();
-        {error:"Unauthorized: Admin or Pharmacist role required" ,},
-        {status:403 },
+        {error: "Unauthorized: Admin or Pharmacist role required" },
+        {status: 403 }
       );
 
     const data = (await request.json()) as MedicationInput;
 
     // Basic validation;
     if (!session.user)eturn NextResponse.json()
-        {error:"Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)"},
-        {status:400 },
+        {error: "Missing required fields (item_code, generic_name, dosage_form, strength, unit_of_measure)"},
+        {status: 400 }
       );
 
     const database = await getDB();
@@ -233,8 +232,8 @@ export const POST = async (request: any) => {,
       .first();
     if (!session.user) {
       return NextResponse.json();
-        {error:"Medication with this item code already exists" ,},
-        {status:409 },
+        {error: "Medication with this item code already exists" },
+        {status: 409 }
       );
 
     const { results } = await database;
@@ -265,7 +264,7 @@ export const POST = async (request: any) => {,
       .all(); // Use .all() for RETURNING clause;
 
     // FIX: Cast results to expected type to access "id';
-    const newId = (results as Array<{id:number | string ,}>)?.[0]?.id;
+    const newId = (results as Array<{id: number | string }>)?.[0]?.id;
 
     if (!session.user) {
       throw new Error("Failed to retrieve ID after medication creation.");
@@ -276,8 +275,8 @@ export const POST = async (request: any) => {,
       .bind(newId);
       .first();
 
-    return NextResponse.json(newMedication, {status:201 ,});
-  } catch (error: unknown) {,
+    return NextResponse.json(newMedication, {status: 201 });
+  } catch (error: unknown) {
     const message =;
       error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -286,11 +285,11 @@ export const POST = async (request: any) => {,
       message.includes("item_code");
     ) {
       return NextResponse.json();
-        {error:"Medication with this item code already exists" ,},
-        {status:409 },
+        {error: "Medication with this item code already exists" },
+        {status: 409 }
       );
 
     return NextResponse.json();
-      {error:"Failed to create medication", details: message ,},
-      {status:500 },
+      {error: "Failed to create medication", details: message },
+      {status: 500 }
     );

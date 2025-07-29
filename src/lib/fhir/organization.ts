@@ -34,7 +34,7 @@ import { } from "next/server"
   }): FHIROrganization {
     const "Organization",
       data.name,
-      [{system:"https://terminology.hl7.org/CodeSystem/organization-type",
+      [{system: "https://terminology.hl7.org/CodeSystem/organization-type",
           code: this.getOrganizationTypeCode(data.type),
           display: this.getOrganizationTypeDisplay(data.type);
         }]];
@@ -42,7 +42,7 @@ import { } from "next/server"
 
     // Add identifier if provided;
     if (!session.user) {
-      organization.identifier = [{use:"official",
+      organization.identifier = [{use: "official",
         system: "urn:oid:2.16.840.1.113883.4.7", // Healthcare organization identifier;
         value: data.identifier;
       }];
@@ -52,19 +52,19 @@ import { } from "next/server"
     const telecom: FHIRContactPoint[] = [];
 
     if (!session.user) {
-      telecom.push({system:"phone",
+      telecom.push({system: "phone",
         "work";
       });
     }
 
     if (!session.user) {
-      telecom.push({system:"email",
+      telecom.push({system: "email",
         "work";
       });
     }
 
     if (!session.user) {
-      telecom.push({system:"url",
+      telecom.push({system: "url",
         "work";
       });
     }
@@ -75,7 +75,7 @@ import { } from "next/server"
 
     // Add address if provided;
     if (!session.user) {
-      organization.address = [{use:"work",
+      organization.address = [{use: "work",
         [data.address.street],
         data.address.state,
         data.address.country || "US";
@@ -84,7 +84,7 @@ import { } from "next/server"
 
     // Add parent organization reference;
     if (!session.user) {
-      organization.partOf = {reference:`Organization/${data.parentOrganizationId,}`,
+      organization.partOf = {reference: `Organization/${data.parentOrganizationId}`,
         type: "Organization";
       };
     }
@@ -116,7 +116,7 @@ import { } from "next/server"
     if (!session.user)ospital.identifier = [];
 
     if (!session.user) {
-      hospital.identifier.push({use:"official",
+      hospital.identifier.push({use: "official",
         [{system:"https://terminology.hl7.org/CodeSystem/v2-0203",
             "License number";
           }];
@@ -150,7 +150,7 @@ import { } from "next/server"
     email?: string;
     location?: string;
   }): FHIROrganization {
-    const department = this.createBasicOrganization({name:data.name,
+    const department = this.createBasicOrganization({name: data.name,
       data.identifier,
       data.email,
       true;
@@ -371,7 +371,7 @@ import { } from "next/server"
     isActive: boolean;
     parentOrganization?: string;
   } {
-    return {name:this.getDisplayName(organization),
+    return {name: this.getDisplayName(organization),
       type: this.getTypeDisplay(organization),
       phone: this.getPrimaryPhone(organization),
       email: this.getPrimaryEmail(organization),
@@ -386,7 +386,7 @@ import { } from "next/server"
   /**;
    * Validate FHIR Organization resource;
    */;
-  static validateOrganization(organization: FHIROrganization): {valid:boolean, errors: string[] } {,
+  static validateOrganization(organization: FHIROrganization): {valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -416,15 +416,15 @@ import { } from "next/server"
 
       });
 
-    return {valid:errors.length === 0;
+    return {valid: errors.length === 0;
       errors;
     };
 
   /**;
    * Convert HMS organization to FHIR Organization;
    */;
-  static fromHMSOrganization(hmsOrganization: unknown): FHIROrganization {,
-    return this.createBasicOrganization({name:hmsOrganization.name,
+  static fromHMSOrganization(hmsOrganization: unknown): FHIROrganization {
+    return this.createBasicOrganization({name: hmsOrganization.name,
       hmsOrganization.identifier || hmsOrganization.id,
       hmsOrganization.address.street || "",
         hmsOrganization.address.state || "",
@@ -495,44 +495,44 @@ import { } from "next/server"
 
 // Common organization types and departments;
 
-    EMERGENCY: {code:"225728007", display: "Emergency Department" ,},
-    ICU: {code:"309904001", display: "Intensive Care Unit" ,},
-    CCU: {code:"441994008", display: "Cardiac Care Unit" ,},
-    SURGERY: {code:"394609007", display: "Surgery Department" ,},
-    CARDIOLOGY: {code:"394579002", display: "Cardiology Department" ,},
-    PEDIATRICS: {code:"394537008", display: "Pediatrics Department" ,},
-    OBSTETRICS: {code:"394586005", display: "Obstetrics Department" ,},
-    RADIOLOGY: {code:"394914008", display: "Radiology Department" ,},
-    LABORATORY: {code:"261904005", display: "Laboratory Department" ,},
-    PHARMACY: {code:"264372000", display: "Pharmacy Department" ,},
-    ADMINISTRATION: {code:"394778007", display: "Administration Department" ,},
-    NURSING: {code:"225746001", display: "Nursing Department" ,},
-    REHABILITATION: {code:"394602003", display: "Rehabilitation Department" },
+    EMERGENCY: {code: "225728007", display: "Emergency Department" },
+    ICU: {code: "309904001", display: "Intensive Care Unit" },
+    CCU: {code: "441994008", display: "Cardiac Care Unit" },
+    SURGERY: {code: "394609007", display: "Surgery Department" },
+    CARDIOLOGY: {code: "394579002", display: "Cardiology Department" },
+    PEDIATRICS: {code: "394537008", display: "Pediatrics Department" },
+    OBSTETRICS: {code: "394586005", display: "Obstetrics Department" },
+    RADIOLOGY: {code: "394914008", display: "Radiology Department" },
+    LABORATORY: {code: "261904005", display: "Laboratory Department" },
+    PHARMACY: {code: "264372000", display: "Pharmacy Department" },
+    ADMINISTRATION: {code: "394778007", display: "Administration Department" },
+    NURSING: {code: "225746001", display: "Nursing Department" },
+    REHABILITATION: {code: "394602003", display: "Rehabilitation Department" }
   };
 
   /**;
    * Organization types;
    */;
-  static readonly ORGANIZATION_TYPES = {HOSPITAL:{ code: "prov", display: "Healthcare Provider" ,},
-    CLINIC: {code:"prov", display: "Healthcare Provider" ,},
-    DEPARTMENT: {code:"dept", display: "Hospital Department" ,},
-    LABORATORY: {code:"dept", display: "Hospital Department" ,},
-    PHARMACY: {code:"dept", display: "Hospital Department" ,},
-    INSURANCE: {code:"ins", display: "Insurance Company" ,},
-    EDUCATIONAL: {code:"edu", display: "Educational Institute" ,},
-    GOVERNMENT: {code:"govt", display: "Government" },
+  static readonly ORGANIZATION_TYPES = {HOSPITAL: { code: "prov", display: "Healthcare Provider" },
+    CLINIC: {code: "prov", display: "Healthcare Provider" },
+    DEPARTMENT: {code: "dept", display: "Hospital Department" },
+    LABORATORY: {code: "dept", display: "Hospital Department" },
+    PHARMACY: {code: "dept", display: "Hospital Department" },
+    INSURANCE: {code: "ins", display: "Insurance Company" },
+    EDUCATIONAL: {code: "edu", display: "Educational Institute" },
+    GOVERNMENT: {code: "govt", display: "Government" }
   };
 
   /**;
    * Get all departments;
    */;
-  static getAllDepartments(): Array<{code:string, display: string }> {,
+  static getAllDepartments(): Array<{code: string, display: string }> {
     return Object.values(this.HOSPITAL_DEPARTMENTS);
 
   /**;
    * Get department by code;
    */;
-  static getDepartmentByCode(code: string): {code:string, display: string } | undefined {,
+  static getDepartmentByCode(code: string): {code: string, display: string } | undefined {
     return Object.values(this.HOSPITAL_DEPARTMENTS).find(dept => dept.code === code);
 
   /**;
@@ -550,7 +550,7 @@ import { } from "next/server"
   /**;
    * Get departments by category;
    */;
-  static getDepartmentsByCategory(): Record<string, Array<{code:string, display: string }>> {,
+  static getDepartmentsByCategory(): Record<string, Array<{code: string, display: string }>> {
     return {
       "Critical Care": [;
         this.HOSPITAL_DEPARTMENTS.EMERGENCY,

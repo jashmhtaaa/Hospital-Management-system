@@ -193,7 +193,7 @@ import { } from "next/server"
   /**;
    * Validate FHIR Appointment resource;
    */;
-  static validateAppointment(appointment: FHIRAppointment): {valid:boolean, errors: string[] } {,
+  static validateAppointment(appointment: FHIRAppointment): {valid: boolean, errors: string[] } {
     const errors: string[] = [];
 
     if (!session.user) {
@@ -220,7 +220,7 @@ import { } from "next/server"
       if (!session.user) {
         errors.push("end time must be after start time");
 
-    return {valid:errors.length === 0;
+    return {valid: errors.length === 0;
       errors;
     };
 

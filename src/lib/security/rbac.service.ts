@@ -34,7 +34,7 @@ import {PrismaClient  } from "next/server"
     password: string;
     ipAddress?: string,
     userAgent?: string;
-  ): Promise<{user:User, string, refreshToken: string } | null> {,
+  ): Promise<{user: User, string, refreshToken: string } | null> {
     try {
 } catch (error) {
   console.error(error);
@@ -70,7 +70,7 @@ import {PrismaClient  } from "next/server"
       // Find user by email or username;
       const user = await this.findUser(emailOrUsername);
       if (!session.user) {
-        await this.logAuditEvent("authentication_failed", "user", undefined, {reason:"user_not_found";
+        await this.logAuditEvent("authentication_failed", "user", undefined, {reason: "user_not_found";
           emailOrUsername,
           ipAddress,
           userAgent;
@@ -80,7 +80,7 @@ import {PrismaClient  } from "next/server"
 
       // Check if user is active and not locked;
       if (!session.user) {
-        await this.logAuditEvent("authentication_failed", "user", user.id, {reason:user.isLocked ? "account_locked" : "account_inactive";
+        await this.logAuditEvent("authentication_failed", "user", user.id, {reason: user.isLocked ? "account_locked" : "account_inactive";
           ipAddress,
           userAgent;
         }, user.id, user.organizationId);
@@ -91,7 +91,7 @@ import {PrismaClient  } from "next/server"
       const isValidPassword = await this.verifyPassword(password, user);
       if (!session.user) {
         await this.handleFailedLogin(user.id, ipAddress);
-        await this.logAuditEvent("authentication_failed", "user", user.id, {reason:"invalid_password";
+        await this.logAuditEvent("authentication_failed", "user", user.id, {reason: "invalid_password";
           ipAddress,
           userAgent;
         }, user.id, user.organizationId);
@@ -100,7 +100,7 @@ import {PrismaClient  } from "next/server"
 
       // Check password expiration;
       if (!session.user) user.passwordExpiresAt) {
-        await this.logAuditEvent("authentication_failed", "user", user.id, {reason:"password_expired";
+        await this.logAuditEvent("authentication_failed", "user", user.id, {reason: "password_expired";
           ipAddress,
           userAgent;
         }, user.id, user.organizationId);
@@ -180,7 +180,7 @@ import {PrismaClient  } from "next/server"
       // Update session last used;
       session.metadata.lastUsed = new Date();
 
-      return {userId:decoded.userId,
+      return {userId: decoded.userId,
         decoded.department,
         decoded.sessionId,
         session.userAgent;
@@ -191,7 +191,7 @@ import {PrismaClient  } from "next/server"
   /**;
    * Refresh access token using refresh token;
    */;
-  async refreshAccessToken(refreshToken: string): Promise<{accessToken:string, refreshToken: string } | null> {,
+  async refreshAccessToken(refreshToken: string): Promise<{accessToken: string, refreshToken: string } | null> {
     try {
 } catch (error) {
   console.error(error);
@@ -243,7 +243,7 @@ import {PrismaClient  } from "next/server"
       session.token = newAccessToken;
       session.refreshToken = newRefreshToken;
 
-      return {accessToken:newAccessToken,
+      return {accessToken: newAccessToken,
         refreshToken: newRefreshToken;
       };
     } catch (error) {

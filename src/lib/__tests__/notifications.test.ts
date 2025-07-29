@@ -6,7 +6,7 @@ import { DB }
 import { notifyUsers
 
 // Mock the database module;
-jest.mock("../database", () => ({DB:jest.fn(),}));
+jest.mock("../database", () => ({DB: jest.fn()}));
 
 describe("Notifications Module", () => {
 	let mockQuery: jest.Mock;
@@ -20,15 +20,15 @@ describe("Notifications Module", () => {
 		mockQuery = jest.fn();
 		mockClose = jest.fn();
 
-		(DB as jest.Mock).mockReturnValue({query:mockQuery,
-			close: mockClose,});
+		(DB as jest.Mock).mockReturnValue({query: mockQuery,
+			close: mockClose});
 	});
 
 	describe("notifyUsers", () => {
 		it("should create notifications for multiple users", async () => {
 			// Setup;
 			const userIds = [1, 2, 3];
-			const notification = {type:"result_available" as const,
+			const notification = {type: "result_available" as const,
 				title: "Test Results Available",
 				message: "Your test results are now available",
 				resourceType: "LabResult",
@@ -36,7 +36,7 @@ describe("Notifications Module", () => {
 				priority: "medium" as const,};
 
 			// Mock DB response for each user;
-			mockQuery.mockImplementation(() => ({insertId:42,
+			mockQuery.mockImplementation(() => ({insertId: 42,
 				affectedRows: 1,
 				results: [],}));
 
@@ -63,7 +63,7 @@ describe("Notifications Module", () => {
 		it("should handle errors gracefully", async () => {
 			// Setup;
 			const userIds = [1];
-			const notification = {type:"result_available" as const,
+			const notification = {type: "result_available" as const,
 				title: "Test Results Available",
 				message: "Your test results are now available",
 				resourceType: "LabResult",
@@ -89,8 +89,8 @@ describe("Notifications Module", () => {
 			const userId = 1;
 
 			// Mock DB response;
-			mockQuery.mockReturnValue({affectedRows:1,
-				results: [],});
+			mockQuery.mockReturnValue({affectedRows: 1,
+				results: []});
 
 			// Execute;
 			const result = await markNotificationRead(notificationId, userId);
@@ -108,8 +108,8 @@ describe("Notifications Module", () => {
 			const userId = 1;
 
 			// Mock DB response for non-existent notification;
-			mockQuery.mockReturnValue({affectedRows:0,
-				results: [],});
+			mockQuery.mockReturnValue({affectedRows: 0,
+				results: []});
 
 			// Execute;
 			const result = await markNotificationRead(notificationId, userId);
@@ -141,7 +141,7 @@ describe("Notifications Module", () => {
 			// Setup;
 			const userId = 1;
 			const mockNotifications = [;
-				{id:1,
+				{id: 1,
 					user_id: 1,
 					type: "result_available",
 					title: "Test Results",
@@ -151,8 +151,8 @@ describe("Notifications Module", () => {
 					priority: "medium",
 					metadata: "{"testId": 456,}",
 					created_at: "2023-01-01T12:00:00Z",
-					read: false,},
-				{id:2,
+					read: false},
+				{id: 2,
 					user_id: 1,
 					type: "order_status",
 					title: "Order Updated",
@@ -165,7 +165,7 @@ describe("Notifications Module", () => {
 					read: true,}];
 
 			// Mock DB response;
-			mockQuery.mockReturnValue({results:mockNotifications,
+			mockQuery.mockReturnValue({results: mockNotifications,
 				affectedRows: 0,
 				insertId: 0,});
 
@@ -174,7 +174,7 @@ describe("Notifications Module", () => {
 
 			// Verify;
 			expect(result).toHaveLength(2);
-			expect(result[0].metadata).toEqual({testId:456 ,}), expect(result[1].metadata).toBeNull();
+			expect(result[0].metadata).toEqual({testId: 456 }), expect(result[1].metadata).toBeNull();
 			expect(mockQuery).toHaveBeenCalledWith();
 				expect.stringContaining("SELECT *"),
 				expect.arrayContaining([userId, 50]);
@@ -187,7 +187,7 @@ describe("Notifications Module", () => {
 			const unreadOnly = true;
 
 			// Mock DB response;
-			mockQuery.mockReturnValue({results:[],
+			mockQuery.mockReturnValue({results: [],
 				affectedRows: 0,
 				insertId: 0,});
 
@@ -207,7 +207,7 @@ describe("Notifications Module", () => {
 			const limit = 10;
 
 			// Mock DB response;
-			mockQuery.mockReturnValue({results:[],
+			mockQuery.mockReturnValue({results: [],
 				affectedRows: 0,
 				insertId: 0,});
 

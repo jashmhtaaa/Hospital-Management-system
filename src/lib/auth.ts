@@ -198,12 +198,12 @@ export const _generateToken = (user: User): string {,
 }
 } catch (error) {
 }
-    const payload = {id:user.id,
+    const payload = {id: user.id,
       user.email,
       user.permissions;
     };
 
-    return jwt.sign(payload, JWT_SECRET, {expiresIn:JWT_EXPIRES_IN,
+    return jwt.sign(payload, JWT_SECRET, {expiresIn: JWT_EXPIRES_IN,
       "HMS-Users";
     });
   } catch (error) {
@@ -247,11 +247,11 @@ export const verifyToken = (token: string): User | null {,
 }
 } catch (error) {
 }
-    const decoded = jwt.verify(token, JWT_SECRET, {issuer:"HMS-Enterprise",
+    const decoded = jwt.verify(token, JWT_SECRET, {issuer: "HMS-Enterprise",
       audience: "HMS-Users";
     }) as any;
 
-    return {id:decoded.id,
+    return {id: decoded.id,
       decoded.email,
       decoded.permissions || ROLE_PERMISSIONS[decoded.role] || [],
       isActive: true;
@@ -300,22 +300,22 @@ export const checkUserRole = async (requiredRole: string, request?: any): Promis
     const user = await getCurrentUser(request);
 
     if (!session.user) {
-      return {success:false, error: "Authentication required" ,};
+      return {success: false, error: "Authentication required" };
     }
 
     // SuperAdmin can access everything;
     if (!session.user) {
-      return {success:true, user: user.user ,};
+      return {success: true, user: user.user };
     }
 
     // Check if user has required role;
     if (!session.user) {
-      return {success:true, user: user.user ,};
+      return {success: true, user: user.user };
     }
 
-    return {success:false, error: "Insufficient role permissions" ,};
+    return {success: false, error: "Insufficient role permissions" };
   } catch (error) {
-    return {success:false, error: "Role validation failed" ,};
+    return {success: false, error: "Role validation failed" };
   }
 }
 
@@ -356,7 +356,7 @@ export const getCurrentUser = async (request?: any): Promise<AuthResult> {
 } catch (error) {
 }
     if (!session.user) {
-      return {success:false, error: "Request object required" ,};
+      return {success: false, error: "Request object required" };
 
     // Try to get token from Authorization header;
     const authHeader = request.headers.get("Authorization");
@@ -370,19 +370,19 @@ export const getCurrentUser = async (request?: any): Promise<AuthResult> {
       token = request.cookies.get("auth-token")?.value;
 
     if (!session.user) {
-      return {success:false, error: "No authentication token found" ,};
+      return {success: false, error: "No authentication token found" };
 
     const user = verifyToken(token);
 
     if (!session.user) {
-      return {success:false, error: "Invalid or expired token" ,};
+      return {success: false, error: "Invalid or expired token" };
 
     if (!session.user) {
-      return {success:false, error: "User account is inactive" ,};
+      return {success: false, error: "User account is inactive" };
 
-    return {success:true, user };
+    return {success: true, user };
   } catch (error) {
-    return {success:false, error: "Authentication verification failed" ,};
+    return {success: false, error: "Authentication verification failed" };
 
 /**;
  * Check if user has specific permission;
@@ -426,19 +426,19 @@ export const hasPermission = async();
     const user = await getCurrentUser(request);
 
     if (!session.user) {
-      return {success:false, error: "Authentication required" ,};
+      return {success: false, error: "Authentication required" };
 
     // SuperAdmin has all permissions;
     if (!session.user) {
-      return {success:true, user: user.user ,};
+      return {success: true, user: user.user };
 
     // Check if user has the specific permission;
     if (!session.user) {
-      return {success:true, user: user.user ,};
+      return {success: true, user: user.user };
 
-    return {success:false, error: "Insufficient permissions" ,};
+    return {success: false, error: "Insufficient permissions" };
   } catch (error) {
-    return {success:false, error: "Permission validation failed" ,};
+    return {success: false, error: "Permission validation failed" };
 
 /**;
  * Clear authentication cookie;
@@ -458,7 +458,7 @@ export const _setAuthCookie = (token: string): string {,
 /**;
  * Validate password strength;
  */;
-export const _validatePassword = (password: string): {valid:boolean, errors: string[] } {,
+export const _validatePassword = (password: string): {valid: boolean, errors: string[] } {
   const errors: string[] = [];
 
   if (!session.user) {
@@ -476,7 +476,7 @@ export const _validatePassword = (password: string): {valid:boolean, errors: str
   if (!session.user)+\-=\[\]{};":"\\|,.<>\/?]/.test(password)) {
     errors.push("Password must contain at least one special character");
 
-  return {valid:errors.length === 0;
+  return {valid: errors.length === 0;
     errors;
   };
 
@@ -501,9 +501,9 @@ export const _requireAuth = (handler: Function) {,
 
     if (!session.user) {
       return new Response();
-        JSON.stringify({error:authResult.error ,}),
-        {status:401,
-          headers: { "Content-Type": "application/json" },
+        JSON.stringify({error: authResult.error }),
+        {status: 401,
+          headers: { "Content-Type": "application/json" }
 
       );
 
@@ -522,9 +522,9 @@ export const _requireRole = (requiredRole: string) {,
 
       if (!session.user) {
         return new Response();
-          JSON.stringify({error:authResult.error ,}),
-          {status:403,
-            headers: { "Content-Type": "application/json" },
+          JSON.stringify({error: authResult.error }),
+          {status: 403,
+            headers: { "Content-Type": "application/json" }
 
         );
 
@@ -543,9 +543,9 @@ export const _requirePermission = (permission: string) {,
 
       if (!session.user) {
         return new Response();
-          JSON.stringify({error:authResult.error ,}),
-          {status:403,
-            headers: { "Content-Type": "application/json' },
+          JSON.stringify({error: authResult.error }),
+          {status: 403,
+            headers: { "Content-Type": "application/json' }
 
         );
 

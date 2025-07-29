@@ -8,8 +8,7 @@ import {type
 export const _runtime = "edge";
 
 // Interface for the POST request body;
-interface ChecklistResponseBody {
-    {checklist_template_id:string; // Assuming ID is string;
+interface ChecklistResponseBody {checklist_template_id: string; // Assuming ID is string;
   phase: string; // e.g., "Pre-Op", "Intra-Op", "Post-Op";
   responses: Record> // JSON object { "itemId": responseValue, ...  } from "next/server"
   completed_by_id?: string; // Optional, assuming ID is string;
@@ -18,7 +17,7 @@ interface ChecklistResponseBody {
 // GET /api/ot/bookings/[id]/checklist-responses - Get checklist responses for a booking;
 export const _GET = async();
   request: any;
-  { params }: {params:Promise<{id:string }> ,} // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -52,11 +51,11 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id:bookingId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {message:"Booking ID is required" ,},
-        {status:400 },
+        {message: "Booking ID is required" },
+        {status: 400 }
       );
     }
 
@@ -138,8 +137,8 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error fetching checklist responses", details: errorMessage ,},
-      {status:500 },
+      {message: "Error fetching checklist responses", details: errorMessage },
+      {status: 500 }
     );
   }
 }
@@ -147,7 +146,7 @@ export const _GET = async();
 // POST /api/ot/bookings/[id]/checklist-responses - Add/Update checklist responses for a booking;
 export const _POST = async();
   request: any;
-  { params }: {params:Promise<{id:string }> ,} // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -181,11 +180,11 @@ export const _POST = async();
 
 } catch (error) {
 
-    const {id:bookingId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     if (!session.user) {
       return NextResponse.json();
-        {message:"Booking ID is required" ,},
-        {status:400 },
+        {message: "Booking ID is required" },
+        {status: 400 }
       );
 
     const body = (await request.json()) as ChecklistResponseBody;
@@ -198,34 +197,34 @@ export const _POST = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {message:"Template ID, phase, and responses are required" },
-        {status:400 },
+        {message: "Template ID, phase, and responses are required" },
+        {status: 400 }
       );
 
     const DB = process.env.DB as unknown as D1Database;
 
     // Check if booking exists;
-    const {results:bookingResults ,} = await DB.prepare();
+    const {results: bookingResults } = await DB.prepare();
       "SELECT id FROM OTBookings WHERE id = ?";
     );
       .bind(bookingId);
       .all();
     if (!session.user) {
       return NextResponse.json();
-        {message:"OT Booking not found" ,},
-        {status:404 },
+        {message: "OT Booking not found" },
+        {status: 404 }
       );
 
     // Check if template exists;
-    const {results:templateResults ,} = await DB.prepare();
+    const {results: templateResults } = await DB.prepare();
       "SELECT id FROM OTChecklistTemplates WHERE id = ? AND phase = ?";
     );
       .bind(checklist_template_id, phase);
       .all();
     if (!session.user) {
       return NextResponse.json();
-        {message:"Checklist template not found for the specified phase" ,},
-        {status:404 },
+        {message: "Checklist template not found for the specified phase" },
+        {status: 404 }
       );
 
     const now = new Date().toISOString();
@@ -233,7 +232,7 @@ export const _POST = async();
 
     // Use UPSERT logic: Insert or Replace based on booking_id and checklist_template_id;
     // D1 doesn't have native UPSERT, so we check existence first;
-    const {results:existing ,} = await DB.prepare();
+    const {results: existing } = await DB.prepare();
       "SELECT id FROM OTChecklistResponses WHERE booking_id = ? AND checklist_template_id = ?";
     );
       .bind(bookingId, checklist_template_id);
@@ -279,7 +278,7 @@ export const _POST = async();
         .run();
 
     // Fetch the created/updated response;
-    const {results:finalResult ,} = await DB.prepare();
+    const {results: finalResult } = await DB.prepare();
       "SELECT * FROM OTChecklistResponses WHERE id = ?";
     );
       .bind(responseId);
@@ -326,18 +325,18 @@ export const _POST = async();
 
         // Keep responses as original string if parsing fails;
 
-      return NextResponse.json(finalResult[0], {status:existing && existing.length > 0 ? 200 : 201;
+      return NextResponse.json(finalResult[0], {status: existing && existing.length > 0 ? 200 : 201;
       });
     } else {
       return NextResponse.json();
-        {message:"Checklist response saved, but failed to fetch details" },
-        {status:201 },
+        {message: "Checklist response saved, but failed to fetch details" },
+        {status: 201 }
       );
 
   } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error saving checklist response", details: errorMessage ,},
-      {status:500 },
+      {message: "Error saving checklist response", details: errorMessage },
+      {status: 500 }
     );

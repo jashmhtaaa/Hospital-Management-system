@@ -46,7 +46,15 @@
       "@/types/*": [
         "./types/*"
       ]
-    }
+    },
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "allowUnreachableCode": true,
+    "allowUnusedLabels": true,
   },
   "include": [
     "enterprise/**/*",

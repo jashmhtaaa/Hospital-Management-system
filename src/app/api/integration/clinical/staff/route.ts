@@ -44,9 +44,9 @@ export const _GET = async (request: any) => {,
 
     const employees = await integrationService.getEmployeesForClinical();
 
-    return NextResponse.json({success:true,
-      data: employees,});
+    return NextResponse.json({success: true,
+      data: employees});
   } catch (error) {
-    return NextResponse.json({error:"Failed to fetch employees", details: error.message ,}, {status:500 ,});
+    return NextResponse.json({error: "Failed to fetch employees", details: error.message }, {status: 500 });
 
 };

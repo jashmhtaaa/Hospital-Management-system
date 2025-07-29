@@ -14,7 +14,7 @@ import {  z  } from "next/server"
 import {D1Database, D1ResultWithMeta  } from "next/server"; // Import D1Database;
 
 // Zod schema for creating an OPD visit;
-const opdVisitCreateSchema = z.object({{patient_id:z.number(,}),
+const opdVisitCreateSchema = z.object({patient_id: z.number(),
     doctor_id: z.number(),
     consultation_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid consultation datetime format";
     }),
@@ -31,7 +31,7 @@ const opdVisitCreateSchema = z.object({{patient_id:z.number(,}),
 export const _GET = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({message:"Unauthorized" ,}, {status:401 ,});
+        return NextResponse.json({message: "Unauthorized" }, {status: 401 });
     }
 
     try {
@@ -134,14 +134,14 @@ export const _GET = async (request: any) => {,
 
         const [visitsResult, countResult] = await Promise.all([;
             (DB as D1Database).prepare(query).bind(...queryParameters).all<Consultation>(),
-            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{total:number ,}>();
+            (DB as D1Database).prepare(countQuery).bind(...countParameters).first<{total: number }>();
         ]);
 
         const results = visitsResult.results || [];
         const total = countResult?.total || 0;
 
-        return NextResponse.json({data:results,
-            pagination: {,
+        return NextResponse.json({data: results,
+            pagination: {
                 page,
                 limit,
                 total,
@@ -155,8 +155,8 @@ export const _GET = async (request: any) => {,
             errorMessage = error.message;
         }
         return NextResponse.json();
-            {message:"Error fetching OPD visits", details: errorMessage ,},
-            {status:500 },
+            {message: "Error fetching OPD visits", details: errorMessage },
+            {status: 500 }
         );
     }
 }
@@ -165,10 +165,10 @@ export const _GET = async (request: any) => {,
 export const _POST = async (request: any) => {,
     const session = await getSession();
     if (!session.user) {
-        return NextResponse.json({message:"Unauthorized" ,}, {status:401 ,});
+        return NextResponse.json({message: "Unauthorized" }, {status: 401 });
     }
     if (!session.user) { // Ensure user exists if logged in
-        return NextResponse.json({message:"User not found in session" ,}, {status:500 ,});
+        return NextResponse.json({message: "User not found in session" }, {status: 500 });
     }
 
     try {
@@ -208,8 +208,8 @@ export const _POST = async (request: any) => {,
 
         if (!session.user) {
             return NextResponse.json();
-                {message:"Invalid input", errors: validationResult.error.errors ,},
-                {status:400 },
+                {message: "Invalid input", errors: validationResult.error.errors },
+                {status: 400 }
             );
 
         const visitData = validationResult.data;
@@ -247,8 +247,8 @@ export const _POST = async (request: any) => {,
         const newVisitId = insertResult.meta.last_row_id;
 
         return NextResponse.json();
-            {message:"OPD visit created successfully", consultationId: newVisitId ,},
-            {status:201 },
+            {message: "OPD visit created successfully", consultationId: newVisitId },
+            {status: 201 }
         );
 
     } catch (error: unknown) {,
@@ -258,8 +258,8 @@ export const _POST = async (request: any) => {,
             errorMessage = error.message;
 
         return NextResponse.json();
-            {message:"Error creating OPD visit", details: errorMessage ,},
-            {status:500 },
+            {message: "Error creating OPD visit", details: errorMessage },
+            {status: 500 }
         );
 
 export async function GET() { return new Response("OK"); }

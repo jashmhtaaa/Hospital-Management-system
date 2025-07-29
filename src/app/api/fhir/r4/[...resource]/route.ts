@@ -7,11 +7,11 @@ import {FHIRMedicationRequest } from "next/server";
 export const GET = async (request: NextRequest) => {,
   try {
     // Implementation here
-    return NextResponse.json({message:"FHIR endpoint" ,});
+    return NextResponse.json({message: "FHIR endpoint" });
   } catch (error) {
     return NextResponse.json(
-      {error:"FHIR operation failed" ,},
-      {status:500 },
+      {error: "FHIR operation failed" },
+      {status: 500 }
     );
   }
 };

@@ -12,7 +12,7 @@ import {DB  } from "next/server"
  * Database result interface;
  */;
 interface DBResult {
-    {
+
   number;
   affectedRows: number;
 }

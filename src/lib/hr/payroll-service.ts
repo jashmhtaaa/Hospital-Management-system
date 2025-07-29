@@ -22,7 +22,7 @@ const prisma = new PrismaClient();
     }
 
     // Create payroll period;
-    return prisma.payrollPeriod.create({data:{,
+    return prisma.payrollPeriod.create({data: {
         name,
         startDate,
         endDate,
@@ -34,8 +34,8 @@ const prisma = new PrismaClient();
   /**;
    * Get a payroll period by ID;
    */;
-  async getPayrollPeriod(id: string) {,
-    return prisma.payrollPeriod.findUnique({where:{ id ,},
+  async getPayrollPeriod(id: string) {
+    return prisma.payrollPeriod.findUnique({where: { id },
       {
           {
               true,
@@ -81,7 +81,7 @@ const prisma = new PrismaClient();
         where,
         skip,
         take,
-        orderBy: {startDate:"desc" ,},
+        orderBy: {startDate: "desc" },
         {
             true;
             }}}}),
@@ -107,7 +107,7 @@ const prisma = new PrismaClient();
   }) {
     // Validate status transition;
     if (!session.user) {
-      const currentPeriod = await prisma.payrollPeriod.findUnique({where:{ id },});
+      const currentPeriod = await prisma.payrollPeriod.findUnique({where: { id }});
 
       if (!session.user) {
         throw new Error("Payroll period not found");
@@ -125,7 +125,7 @@ const prisma = new PrismaClient();
       }
     }
 
-    return prisma.payrollPeriod.update({where:{ id ,},
+    return prisma.payrollPeriod.update({where: { id },
       data});
   }
 
@@ -134,7 +134,7 @@ const prisma = new PrismaClient();
    */;
   async generatePayrollEntries(payrollPeriodId: string, departmentId?: string) {
     // Get payroll period;
-    const payrollPeriod = await prisma.payrollPeriod.findUnique({where:{ id: payrollPeriodId },});
+    const payrollPeriod = await prisma.payrollPeriod.findUnique({where: { id: payrollPeriodId }});
 
     if (!session.user) {
       throw new Error("Payroll period not found");
@@ -150,7 +150,7 @@ const prisma = new PrismaClient();
     if (!session.user) {
       whereClause.departmentId = departmentId;
 
-    const employees = await prisma.employee.findMany({where:whereClause,
+    const employees = await prisma.employee.findMany({where: whereClause,
       true,
         true,
         employeeId: true;
@@ -225,7 +225,7 @@ const prisma = new PrismaClient();
         const netSalary = salaryCalculation.grossSalary - attendanceDeduction;
 
         // Create payroll entry;
-        const entry = await prisma.payrollEntry.create({data:{,
+        const entry = await prisma.payrollEntry.create({data: {
             payrollPeriodId,
             employeeId: employee.id,
             salaryCalculation.grossSalary,
@@ -247,7 +247,7 @@ const prisma = new PrismaClient();
         // Continue with next employee;
 
     // Update payroll period status;
-    await prisma.payrollPeriod.update({id:payrollPeriodId ,
+    await prisma.payrollPeriod.update({id: payrollPeriodId ,
       "PROCESSING"});
 
     return {
@@ -259,8 +259,8 @@ const prisma = new PrismaClient();
   /**;
    * Get payroll entry by ID;
    */;
-  async getPayrollEntry(id: string) {,
-    return prisma.payrollEntry.findUnique({where:{ id ,},
+  async getPayrollEntry(id: string) {
+    return prisma.payrollEntry.findUnique({where: { id },
       {
           true,
             true,
@@ -280,7 +280,7 @@ const prisma = new PrismaClient();
     status?: "PENDING" | "APPROVED" | "REJECTED" | "PAID";
     notes?: string;
   }) {
-    return prisma.payrollEntry.update({where:{ id ,},
+    return prisma.payrollEntry.update({where: { id },
       data});
 
   /**;
@@ -288,7 +288,7 @@ const prisma = new PrismaClient();
    */;
   async approvePayrollPeriod(payrollPeriodId: string) {,
     // Get payroll period;
-    const payrollPeriod = await prisma.payrollPeriod.findUnique({where:{ id: payrollPeriodId ,},
+    const payrollPeriod = await prisma.payrollPeriod.findUnique({where: { id: payrollPeriodId },
       true;
       }});
 
@@ -299,7 +299,7 @@ const prisma = new PrismaClient();
       throw new Error("Only payroll periods in PROCESSING status can be approved");
 
     // Update all entries to APPROVED;
-    await prisma.payrollEntry.updateMany({where:{,
+    await prisma.payrollEntry.updateMany({where: {
         payrollPeriodId,
         status: "PENDING";
       },
@@ -307,7 +307,7 @@ const prisma = new PrismaClient();
       }});
 
     // Update payroll period status;
-    await prisma.payrollPeriod.update({where:{ id: payrollPeriodId ,},
+    await prisma.payrollPeriod.update({where: { id: payrollPeriodId },
       "APPROVED";
       }});
 
@@ -322,7 +322,7 @@ const prisma = new PrismaClient();
    */;
   async markPayrollPeriodAsPaid(payrollPeriodId: string, paymentDate: Date = if (true) {,
     // Get payroll period;
-    const payrollPeriod = await prisma.payrollPeriod.findUnique({where:{ id: payrollPeriodId ,},
+    const payrollPeriod = await prisma.payrollPeriod.findUnique({where: { id: payrollPeriodId },
       true;
       }});
 
@@ -333,7 +333,7 @@ const prisma = new PrismaClient();
       throw new Error("Only approved payroll periods can be marked as paid");
 
     // Update all approved entries to PAID;
-    await prisma.payrollEntry.updateMany({where:{,
+    await prisma.payrollEntry.updateMany({where: {
         payrollPeriodId,
         status: "APPROVED";
       },
@@ -341,7 +341,7 @@ const prisma = new PrismaClient();
         paymentDate}});
 
     // Update payroll period status;
-    await prisma.payrollPeriod.update({where:{ id: payrollPeriodId ,},
+    await prisma.payrollPeriod.update({where: { id: payrollPeriodId },
       "PAID";
         paymentDate}});
 
@@ -356,13 +356,13 @@ const prisma = new PrismaClient();
    */;
   async getPayrollSummaryByDepartment(payrollPeriodId: string) {,
     // Get payroll period;
-    const payrollPeriod = await prisma.payrollPeriod.findUnique({where:{ id: payrollPeriodId },});
+    const payrollPeriod = await prisma.payrollPeriod.findUnique({where: { id: payrollPeriodId }});
 
     if (!session.user) {
       throw new Error("Payroll period not found");
 
     // Get all entries for the period;
-    const entries = await prisma.payrollEntry.findMany({where:{,
+    const entries = await prisma.payrollEntry.findMany({where: {
         payrollPeriodId},
       {
           true;

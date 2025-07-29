@@ -16,20 +16,20 @@ import {type
  */;
 
 }
-  range?: {min:number, max: number ,};
+  range?: {min: number, max: number };
   percentile?: number; // Target percentile (e.g., 75th percentile);
   source: "internal" | "benchmark" | "regulatory" | "best_practice",
   validFrom: Date;
   validTo?: Date;
 }
-  {start:Date, end: Date ,};
+  {start: Date, end: Date };
   standards: string[];
   excludedAreas?: string[];
 }
-  range?: {min:number, max: number ,};
+  range?: {min: number, max: number };
   levels?: ScoringLevel[];
 }
-  period: {start:Date, end: Date ,};
+  period: {start: Date, end: Date };
   value: number,
   number,
   number,
@@ -44,7 +44,7 @@ import {type
   validatedAt?: Date;
   notes?: string;
 }
-  {start:Date, end: Date ,};
+  {start: Date, end: Date };
   regulatoryBody: string,
   ComplianceRequirement[],
   "compliant" | "non_compliant" | "conditional" | "pending",
@@ -277,7 +277,7 @@ class QualityManagementService extends EventEmitter {
   /**;
    * Calculate quality metrics;
    */;
-  async calculateQualityMetrics(indicatorId: string, period: {start:Date, end: Date ,}, calculateFor?: string): Promise<QualityMetrics | null> {
+  async calculateQualityMetrics(indicatorId: string, period: {start: Date, end: Date }, calculateFor?: string): Promise<QualityMetrics | null> {
     const indicator = this.indicators.get(indicatorId);
     if (!session.user)eturn null;
 
@@ -386,7 +386,7 @@ class QualityManagementService extends EventEmitter {
   /**;
    * Get quality statistics;
    */;
-  async getQualityStatistics(): Promise<{total:number, number ;total: number, number ;total: number, number ;reports: number, number ;
+  async getQualityStatistics(): Promise<{total: number, number ;total: number, number ;total: number, number ;reports: number, number ;
   }> {
     // Get data from persistence service instead of in-memory Maps;
     const allIndicators = await this.persistenceService.getQualityIndicators({}, "system");
@@ -449,7 +449,7 @@ class QualityManagementService extends EventEmitter {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
       // Sample core indicators;
-      await this.registerQualityIndicator({name:"Central Line-Associated Bloodstream Infection (CLABSI) Rate",
+      await this.registerQualityIndicator({name: "Central Line-Associated Bloodstream Infection (CLABSI) Rate",
         description: "Rate of central line-associated bloodstream infections per 1,000 central line days",
         category: "infection_prevention",
         "hai_cdc",
@@ -475,7 +475,7 @@ class QualityManagementService extends EventEmitter {
         "system";
       });
 
-      await this.registerQualityIndicator({name:"Patient Fall Rate",
+      await this.registerQualityIndicator({name: "Patient Fall Rate",
         description: "Rate of patient falls per 1,000 patient days",
         category: "patient_safety",
         "ahrq_psi",
@@ -561,7 +561,7 @@ class QualityManagementService extends EventEmitter {
     const job = setInterval(async () => {
       const endDate = new Date();
       const startDate = this.calculatePeriodStart(endDate, indicator.calculation.period);
-      await this.calculateQualityMetrics(indicator.id, {start:startDate, end: endDate ,});
+      await this.calculateQualityMetrics(indicator.id, {start: startDate, end: endDate });
     }, intervalMs);
 
     this.calculationJobs.set(indicator.id, job);
@@ -578,7 +578,7 @@ class QualityManagementService extends EventEmitter {
       this.analyzeEventTrends();
     }, 60 * 60 * 1000);
 
-  private async performMetricCalculation(indicator: QualityIndicator, period: {start:Date, end: Date }): Promise<QualityMetrics> {,
+  private async performMetricCalculation(indicator: QualityIndicator, period: {start: Date, end: Date }): Promise<QualityMetrics> {
     // Mock calculation - in production, this would execute the actual formula;
     const mockNumerator = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 20);
     const mockDenominator = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000) + 500;
@@ -598,7 +598,7 @@ class QualityManagementService extends EventEmitter {
       else if (!session.user)erformance = "below";
       else performance = "significantly_below"}
 
-    return {indicatorId:indicator.id;
+    return {indicatorId: indicator.id;
       period,
       value,
       target: indicator.target.value,
@@ -623,7 +623,7 @@ class QualityManagementService extends EventEmitter {
   private async checkMetricThresholds(indicator: QualityIndicator, metrics: QualityMetrics): Promise<void> {,
     // Check if metrics trigger any alerts;
     if (!session.user) {
-      this.emit("quality_alert", {type:"performance_degradation",
+      this.emit("quality_alert", {type: "performance_degradation",
         metrics.value,
         "high";
       });
@@ -665,7 +665,7 @@ class QualityManagementService extends EventEmitter {
                    e.occurredAt >= [0] - 30 * 24 * 60 * 60 * 1000)); // Last 30 days;
 
     if (!session.user) {
-      this.emit("event_pattern_detected", {pattern:"recurring_events",
+      this.emit("event_pattern_detected", {pattern: "recurring_events",
         event.type,
         "30_days";
       });
@@ -735,8 +735,8 @@ class QualityManagementService extends EventEmitter {
       default: return 24 * 60 * 60 * 1000;
 
   // Dashboard generation methods (simplified for brevity);
-  private async generateQualityOverview(start: Date, end: Date): Promise<unknown> {,
-    return {overallScore:92,
+  private async generateQualityOverview(start: Date, end: Date): Promise<unknown> {
+    return {overallScore: 92,
       2,
       96;
 
@@ -745,8 +745,8 @@ class QualityManagementService extends EventEmitter {
 
   private async generateEventSummary(start: Date, end: Date): Promise<unknown> {,
     return {total:45,
-      byType: {falls:12, infections: 8, medication: 15, other: 10 ,},
-      bySeverity: {minor:25, moderate: 15, major: 4, severe: 1 },
+      byType: {falls:12, infections: 8, medication: 15, other: 10 },
+      bySeverity: {minor: 25, moderate: 15, major: 4, severe: 1 }
     };
 
   private async generateIndicatorSummary(start: Date, end: Date): Promise<any[]> {,
@@ -755,8 +755,8 @@ class QualityManagementService extends EventEmitter {
   private async generateAssessmentSummary(start: Date, end: Date): Promise<any[]> {,
     return [];
 
-  private async generateComplianceSummary(start: Date, end: Date): Promise<unknown> {,
-    return {overallCompliance:96,
+  private async generateComplianceSummary(start: Date, end: Date): Promise<unknown> {
+    return {overallCompliance: 96,
       2,
       certifications: valid: 8, expiring: 1 ;
     };
@@ -779,10 +779,10 @@ class QualityManagementService extends EventEmitter {
 
 // Type exports for dashboard generation;
 
-  values: {date:Date, value: number ,}[];
+  values: {date: Date, value: number }[];
   trend: "improving" | "stable" | "declining";
 
-  certifications: {valid:number, expiring: number ,};
+  certifications: {valid: number, expiring: number };
 
 // Export singleton instance;
 export const _qualityManagement = new QualityManagementService();

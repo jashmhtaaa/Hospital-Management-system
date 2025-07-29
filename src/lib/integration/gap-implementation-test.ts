@@ -305,7 +305,7 @@ import {getQualityPersistenceService  } from "next/server"
     const icdService = getICDCodingService();
 
     // Test 1: Search ICD codes;
-    const searchResults = await icdService.searchCodes({query:"diabetes",
+    const searchResults = await icdService.searchCodes({query: "diabetes",
       5;
     });
 
@@ -327,7 +327,7 @@ import {getQualityPersistenceService  } from "next/server"
       throw new Error("ICD coding suggestions failed");
 
     // Test 4: Submit coding request;
-    const requestId = await icdService.submitCodingRequest({patientId:"test_patient_123",
+    const requestId = await icdService.submitCodingRequest({patientId: "test_patient_123",
       "Test clinical text",
       "test_coder_789",
       priority: "routine";
@@ -345,7 +345,7 @@ import {getQualityPersistenceService  } from "next/server"
     const qualityPersistence = getQualityPersistenceService();
 
     // Test 1: Save quality indicator;
-    const testIndicator = {id:"test_indicator_123",
+    const testIndicator = {id: "test_indicator_123",
       "Test indicator for gap testing",
       "emergency",
       95,
@@ -395,7 +395,7 @@ import {getQualityPersistenceService  } from "next/server"
     const ehrPersistence = getEHRPersistenceService();
 
     // Test 1: Save clinical note;
-    const testNote = {id:"test_note_123",
+    const testNote = {id: "test_note_123",
       "test_encounter_456",
       "Test Clinical Note",
       "test_doctor_789",
@@ -520,7 +520,7 @@ import {getQualityPersistenceService  } from "next/server"
     await integratedService.start();
 
     // Test 2: Register quality indicator;
-    const indicatorId = await integratedService.registerQualityIndicator({name:"Integrated Test Indicator",
+    const indicatorId = await integratedService.registerQualityIndicator({name: "Integrated Test Indicator",
       "efficiency",
       "automated",
       85,

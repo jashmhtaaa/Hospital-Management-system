@@ -14,13 +14,13 @@ import {type
  */;
 
    } from "next/server";
-  encounter?: {reference:string;
+  encounter?: {reference: string;
   };
   dateTime: string;
-  orderer?: {reference:string;
+  orderer?: {reference: string;
     display?: string;
   };
-  allergyIntolerance?: {reference:string;
+  allergyIntolerance?: {reference: string;
   }[];
   foodPreferenceModifier?: {
     string,
@@ -49,7 +49,7 @@ import {type
       };
     };
     nutrient?: {
-      {system:string,
+      {system: string,
           string;
         }[];
       };
@@ -59,7 +59,7 @@ import {type
       };
     }[];
     texture?: {
-      {system:string,
+      {system: string,
           string;
         }[];
       };
@@ -77,7 +77,7 @@ import {type
     }[];
     instruction?: string;
   };
-  note?: {text:string;
+  note?: {text: string;
   }[];
 
 /**;
@@ -99,7 +99,7 @@ import {type
   string;
     display?: string;
   };
-  {status:"not-started" | "scheduled" | "in-progress" | "on-hold" | "completed" | "cancelled";
+  {status: "not-started" | "scheduled" | "in-progress" | "on-hold" | "completed" | "cancelled";
       description?: string;
       scheduledTiming?: {
         event?: string[];
@@ -111,7 +111,7 @@ import {type
 
     };
   }[];
-  note?: {text:string;
+  note?: {text: string;
   }[];
 
 /**;
@@ -121,7 +121,7 @@ import {type
 
     }[];
   }[];
-  {system:string,
+  {system: string,
       string;
     }[];
     text: string;
@@ -130,7 +130,7 @@ import {type
     display?: string;
   };
   effectiveDateTime: string,
-  {reference:string;
+  {reference: string;
     display?: string;
   }[];
   {
@@ -139,7 +139,7 @@ import {type
       }[];
       text: string;
     };
-    valueQuantity?: {value:number,
+    valueQuantity?: {value: number,
       string,
       code: string;
     };
@@ -151,7 +151,7 @@ import {type
       text: string;
     };
   }[];
-  note?: {text:string;
+  note?: {text: string;
   }[];
 
 /**;
@@ -189,11 +189,11 @@ export const _toFHIRDietaryRequest = (unknown,
   }));
 
   // Map allergies to FHIR allergyIntolerance references;
-  const _allergyIntolerances = request.allergies.map((allergy, index) => ({reference:`AllergyIntolerance/${request.patientId}-${index,}`,
+  const _allergyIntolerances = request.allergies.map((allergy, index) => ({reference: `AllergyIntolerance/${request.patientId}-${index}`,
     display: allergy;
   }));
 
-  return {resourceType:"NutritionOrder",
+  return {resourceType: "NutritionOrder",
     statusMap[request.status] || "unknown",
     `Patient/${request.patientId}`,
       display: request.patient?.name || "Unknown Patient",
@@ -202,7 +202,7 @@ export const _toFHIRDietaryRequest = (unknown,
       display: request.requestedByUser?.name || "Unknown User",
     allergyIntolerance: request.allergies.length > 0 ? _allergyIntolerances : undefined,
     excludeFoodModifiers.length > 0 ? excludeFoodModifiers : undefined,
-    [{system:"https://hms.local/fhir/CodeSystem/diet-type",
+    [{system: "https://hms.local/fhir/CodeSystem/diet-type",
           code: request.requestType.toLowerCase().replace(/_/g, "-"),
           display: request.requestType.replace(/_/g, " ");
         }];
@@ -216,7 +216,7 @@ export const _toFHIRDietaryRequest = (unknown,
 /**;
  * Convert database MealPlan to FHIR CarePlan;
  */;
-export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown ,};
+export const _toFHIRMealPlan = (DietaryRequest & {patient: unknown };
   meals?: Meal[];
   createdByUser: unknown;
 }): FHIRMealPlan {
@@ -237,14 +237,14 @@ export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown ,};
               meal.status === "PREPARED" ? "scheduled" : "not-started",
       description: `${meal.mealType} - ${meal.menuItems?.length || 0,} items`,
       [meal.deliveryTime?.toISOString() || mealPlan.date.toISOString()],
-        [{system:"https://hms.local/fhir/CodeSystem/meal-type",
+        [{system: "https://hms.local/fhir/CodeSystem/meal-type",
             code: meal.mealType.toLowerCase(),
             display: meal.mealType;
           }];
 
   })) || [];
 
-  return {resourceType:"CarePlan",
+  return {resourceType: "CarePlan",
     statusMap[mealPlan.status] || "unknown",
     [{
       "https://terminology.hl7.org/CodeSystem/care-plan-activity-category",
@@ -265,7 +265,7 @@ export const _toFHIRMealPlan = (DietaryRequest & {patient:unknown ,};
       display: mealPlan.createdByUser?.name || "Unknown User";
     },
     activity: activities,
-    note: mealPlan.notes ? [{text:mealPlan.notes ,}] : [];
+    note: mealPlan.notes ? [{text: mealPlan.notes }] : [];
 
 /**;
  * Convert database NutritionalProfile to FHIR Observation;
@@ -277,7 +277,7 @@ export const _toFHIRNutritionalProfile = (unknown,
   const components = [;
     // Height component;
     profile.height ? {
-      [{system:"https://loinc.org",
+      [{system: "https://loinc.org",
           "Body height";
         }],
         text: "Height";
@@ -290,7 +290,7 @@ export const _toFHIRNutritionalProfile = (unknown,
 
     // Weight component;
     profile.weight ? {
-      [{system:"https://loinc.org",
+      [{system: "https://loinc.org",
           "Body weight";
         }],
         text: "Weight";
@@ -303,7 +303,7 @@ export const _toFHIRNutritionalProfile = (unknown,
 
     // BMI component;
     profile.bmi ? {
-      [{system:"https://loinc.org",
+      [{system: "https://loinc.org",
           "Body mass index (BMI)";
         }],
         text: "BMI";
@@ -316,7 +316,7 @@ export const _toFHIRNutritionalProfile = (unknown,
 
     // Dietary preferences component;
     profile.dietaryPreferences.length > 0 ? {
-      [{system:"https://hms.local/fhir/CodeSystem/nutritional-assessment",
+      [{system: "https://hms.local/fhir/CodeSystem/nutritional-assessment",
           "Dietary Preferences";
         }],
         text: "Dietary Preferences";
@@ -326,7 +326,7 @@ export const _toFHIRNutritionalProfile = (unknown,
 
     // Dietary restrictions component;
     profile.dietaryRestrictions.length > 0 ? {
-      [{system:"https://hms.local/fhir/CodeSystem/nutritional-assessment",
+      [{system: "https://hms.local/fhir/CodeSystem/nutritional-assessment",
           "Dietary Restrictions";
         }],
         text: "Dietary Restrictions";
@@ -336,7 +336,7 @@ export const _toFHIRNutritionalProfile = (unknown,
 
     // Allergies component;
     profile.allergies.length > 0 ? {
-      [{system:"https://hms.local/fhir/CodeSystem/nutritional-assessment",
+      [{system: "https://hms.local/fhir/CodeSystem/nutritional-assessment",
           "Food Allergies";
         }],
         text: "Food Allergies";
@@ -346,7 +346,7 @@ export const _toFHIRNutritionalProfile = (unknown,
 
     // Medical conditions component;
     profile.medicalConditions.length > 0 ? {
-      [{system:"https://hms.local/fhir/CodeSystem/nutritional-assessment",
+      [{system: "https://hms.local/fhir/CodeSystem/nutritional-assessment",
           "Medical Conditions";
         }],
         text: "Medical Conditions";
@@ -355,13 +355,13 @@ export const _toFHIRNutritionalProfile = (unknown,
     } : null;
   ].filter(Boolean) as any[]; // Filter out null components;
 
-  return {resourceType:"Observation",
+  return {resourceType: "Observation",
     "final",
     [{system:"https://terminology.hl7.org/CodeSystem/observation-category",
         "Nutrition";
       }];
     }],
-    [{system:"https://hms.local/fhir/CodeSystem/observation-type",
+    [{system: "https://hms.local/fhir/CodeSystem/observation-type",
         "Nutritional Profile";
       }],
       text: "Nutritional Profile Assessment";
@@ -375,4 +375,4 @@ export const _toFHIRNutritionalProfile = (unknown,
       display: profile.lastUpdatedByUser?.name || "Unknown User";
     }],
     component: components,
-    note: profile.notes ? [{text:profile.notes ,}] : [];
+    note: profile.notes ? [{text: profile.notes }] : [];

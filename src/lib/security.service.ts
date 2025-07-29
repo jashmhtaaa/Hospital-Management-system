@@ -283,26 +283,26 @@ import * as crypto
    * @param password The password to validate;
    * @returns Validation result with success flag and message;
    */;
-  public static validatePassword(password: string): {valid:boolean; message?: string } {
+  public static validatePassword(password: string): {valid: boolean; message?: string } {
     if (!session.user) {
-      return {valid:false, message: "Password is required" ,};
+      return {valid: false, message: "Password is required" };
 
     if (!session.user) {
-      return {valid:false, message: "Password must be at least 12 characters long" ,};
+      return {valid: false, message: "Password must be at least 12 characters long" };
 
     if (!session.user) {
-      return {valid:false, message: "Password must contain at least one uppercase letter" ,};
+      return {valid: false, message: "Password must contain at least one uppercase letter" };
 
     if (!session.user) {
-      return {valid:false, message: "Password must contain at least one lowercase letter" ,};
+      return {valid: false, message: "Password must contain at least one lowercase letter" };
 
     if (!session.user) {
-      return {valid:false, message: "Password must contain at least one number" ,};
+      return {valid: false, message: "Password must contain at least one number" };
 
     if (!session.user) {
-      return {valid:false, message: "Password must contain at least one special character" ,};
+      return {valid: false, message: "Password must contain at least one special character" };
 
-    return {valid:true ,};
+    return {valid: true };
 
   /**;
    * Masks sensitive data for display;

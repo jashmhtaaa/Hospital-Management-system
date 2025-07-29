@@ -7,14 +7,14 @@
 // Base FHIR Types;
 
   };
-  request?: {method:"GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH",
+  request?: {method: "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "PATCH",
     url: string;
     ifNoneMatch?: string;
     ifModifiedSince?: string;
     ifMatch?: string;
     ifNoneExist?: string
   };
-  response?: {status:string;
+  response?: {status: string;
     location?: string;
     etag?: string;
     lastModified?: string;

@@ -8,8 +8,7 @@ import {type
 export const _runtime = "edge";
 
 // Interface for the POST request body;
-interface TheatreCreateBody {
-    {name:string;
+interface TheatreCreateBody {name: string;
   location?: string | null;
   specialty?: string | null;
   equipment?: string | null; // Assuming JSON string or simple text for equipment list;
@@ -75,8 +74,8 @@ export const _GET = async (request: any) => {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message:"Error fetching operation theatres", details: errorMessage ,},
-      {status:500 },
+      {message: "Error fetching operation theatres", details: errorMessage },
+      {status: 500 }
     );
 
 // POST /api/ot/theatres - Create a new operation theatre;
@@ -118,8 +117,8 @@ export const _POST = async (request: any) => {,
 
     if (!session.user) {
       return NextResponse.json();
-        {message:"Theatre name is required" ,},
-        {status:400 },
+        {message: "Theatre name is required" },
+        {status: 400 }
       );
 
     const DB = process.env.DB as unknown as D1Database;
@@ -166,12 +165,12 @@ export const _POST = async (request: any) => {,
     if (!session.user) {
       // FIX: Check errorMessage;
       return NextResponse.json();
-        {message:"Operation theatre name must be unique",
+        {message: "Operation theatre name must be unique",
           details: errorMessage;
         },
-        {status:409 },
+        {status: 409 }
       )}
     return NextResponse.json();
-      {message:"Error creating operation theatre", details: errorMessage ,},
-      {status:500 },
+      {message: "Error creating operation theatre", details: errorMessage },
+      {status: 500 }
     );

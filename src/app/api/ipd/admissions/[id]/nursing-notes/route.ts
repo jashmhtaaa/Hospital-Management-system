@@ -10,6 +10,7 @@ import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
 // Define interface for {
     POST request body;
 interface NursingNoteInput {
+
   note_date?: string; // Optional, defaults to now;
   vital_signs?: string | null; // Assuming string, could be JSON;
   intake_output?: string | null; // Assuming string, could be JSON;
@@ -21,7 +22,7 @@ interface NursingNoteInput {
 // GET /api/ipd/admissions/[id]/nursing-notes - Get all nursing notes for an admission;
 export const _GET = async();
   _request: any;
-  { params }: {params:Promise<{id:string }> ,} // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -59,15 +60,15 @@ export const _GET = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    const {id:admissionId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Check if admission exists using db.query;
-    // Assuming db.query exists and returns {results:[...] ,} based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const admissionResult = await database.query();
       `;
       SELECT a.*, p.first_name as patient_first_name, p.last_name as patient_last_name;
@@ -84,8 +85,8 @@ export const _GET = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Admission not found" ,},
-        {status:404 },
+        {error: "Admission not found" },
+        {status: 404 }
       );
     }
 
@@ -98,11 +99,11 @@ export const _GET = async();
       session.user.permissions?.includes("nursing_notes:view") ?? false;
 
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
     }
 
     // Get nursing notes using db.query;
-    // Assuming db.query exists and returns {results:[...] ,} based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const nursingNotesResult = await database.query();
       `;
       SELECT nn.*, u.first_name as nurse_first_name, u.last_name as nurse_last_name;
@@ -122,8 +123,8 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to fetch nursing notes", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to fetch nursing notes", details: errorMessage },
+      {status: 500 }
     );
   }
 }
@@ -131,7 +132,7 @@ export const _GET = async();
 // POST /api/ipd/admissions/[id]/nursing-notes - Create a new nursing note;
 export const _POST = async();
   request: any;
-  { params }: {params:Promise<{id:string }> ,} // FIX: Use Promise type for params (Next.js 15+);
+  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   try {
 } catch (error) {
@@ -169,7 +170,7 @@ export const _POST = async();
 
     // Check authentication;
     if (!session.user) {
-      return NextResponse.json({error:"Unauthorized" ,}, {status:401 ,});
+      return NextResponse.json({error: "Unauthorized" }, {status: 401 });
 
     // Check permissions (using mock session data);
     const isNurse = session.user.roleName === "Nurse";
@@ -178,42 +179,42 @@ export const _POST = async();
       session.user.permissions?.includes("nursing_notes:create") ?? false;
 
     if (!session.user) {
-      return NextResponse.json({error:"Forbidden" ,}, {status:403 ,});
+      return NextResponse.json({error: "Forbidden" }, {status: 403 });
 
-    const {id:admissionId ,} = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
     // Fixed: Apply type assertion;
     const data = (await request.json()) as NursingNoteInput;
 
     // Basic validation (using typed data);
     if (!session.user) {
       return NextResponse.json();
-        {error:"Missing required field: notes" ,},
-        {status:400 },
+        {error: "Missing required field: notes" },
+        {status: 400 }
       );
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
     // Check if admission exists and is active using db.query;
-    // Assuming db.query exists and returns {results:[...] ,} based on db.ts mock;
+    // Assuming db.query exists and returns {results: [...] } based on db.ts mock;
     const admissionResult = await database.query();
       "SELECT id, status FROM admissions WHERE id = ?",
       [admissionId];
     );
     const admission =;
       admissionResult?.results && admissionResult.results.length > 0 // Changed .rows to .results;
-        ? (admissionResult.results[0] as {id:string, status: string ,}) // Changed .rows to .results;
+        ? (admissionResult.results[0] as {id: string, status: string }) // Changed .rows to .results;
         : undefined;
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Admission not found" ,},
-        {status:404 },
+        {error: "Admission not found" },
+        {status: 404 }
       );
 
     if (!session.user) {
       return NextResponse.json();
-        {error:"Cannot add nursing notes to a non-active admission" ,},
-        {status:409 },
+        {error: "Cannot add nursing notes to a non-active admission" },
+        {status: 409 }
       ); // Updated error message;
 
     // Insert new nursing note using db.query;
@@ -237,13 +238,13 @@ export const _POST = async();
 
     // Cannot reliably get the new record from mock DB;
     return NextResponse.json();
-      {message:"Nursing note created (mock operation)" ,},
-      {status:201 },
+      {message: "Nursing note created (mock operation)" },
+      {status: 201 }
     );
   } catch (error: unknown) {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error:"Failed to create nursing note", details: errorMessage ,},
-      {status:500 },
+      {error: "Failed to create nursing note", details: errorMessage },
+      {status: 500 }
     );

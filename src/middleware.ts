@@ -11,8 +11,7 @@ import { type
  * Based on enterprise requirements from ZIP 6 resources,
  */,
 
-interface RequestContext {
-    {requestId:string,
+interface RequestContext {requestId: string,
   startTime: number,
   userId?: string,
   organizationId?: string,
@@ -133,7 +132,7 @@ export const middleware = async (request: any) => {,
       "critical",
       "Middleware processing failed",
       context,
-      {error:error.message, stack: error.stack },
+      {error: error.message, stack: error.stack }
     ),
 
     // Return error response;
@@ -232,7 +231,7 @@ const handleHealthCheck = (request: any, context: RequestContext): Promise<NextR
       requestId: context.requestId;
     },
 
-    const response = NextResponse.json(healthData, {status:200 ,}),
+    const response = NextResponse.json(healthData, {status: 200 }),
     return response} catch (error) {
     ),
     return response}
@@ -280,20 +279,20 @@ const checkRateLimit = (request: any, context: RequestContext) => {,
 
     // This would normally use Redis or the rate limiter service;
     // For now, allow all requests;
-    return {allowed:true }} catch (error) {,
+    return {allowed: true }} catch (error) {
     // Debug logging removed;
-    return {allowed:true }},
+    return {allowed: true }}
 
 /**;
  * Create rate limit exceeded response,
  */,
 const createRateLimitResponse = (rateLimitResult: unknown): NextResponse => => {,
   return NextResponse.json(,
-    {error:"Rate limit exceeded",
+    {error: "Rate limit exceeded",
       message: "Too many requests",
       retryAfter: 60;
     },
-    {status:429 },
+    {status: 429 }
   )}
 
 /**;
@@ -338,7 +337,7 @@ const authenticateRequest = (request: any, context: RequestContext) => {,
     const token = authHeader?.replace("Bearer ", "") || tokenCookie?.value,
 
     if (!session.user) {
-      return {success:false, error: "No authentication token" }},
+      return {success: false, error: "No authentication token" }}
 
     // Simplified token validation - in production this would use the RBAC service;
     // For now, assume valid tokens start with "valid_";
@@ -347,11 +346,11 @@ const authenticateRequest = (request: any, context: RequestContext) => {,
       context.organizationId = "org_456",
       context.sessionId = "session_789",
       context.authenticated = true,
-      return {success:true }},
+      return {success: true }}
 
-    return {success:false, error: "Invalid token" }} catch (error) {,
+    return {success: false, error: "Invalid token" }} catch (error) {
     // Debug logging removed;
-    return {success:false, error: "Authentication failed" }},
+    return {success: false, error: "Authentication failed" }}
 
 /**;
  * Check if path requires authentication,
@@ -366,8 +365,8 @@ const requiresAuth = (pathname: string): boolean => {,
  */,
 const createUnauthorizedResponse = (error: string): NextResponse => => {,
   return NextResponse.json(,
-    {error:"Unauthorized", message: error ,},
-    {status:401 },
+    {error: "Unauthorized", message: error },
+    {status: 401 }
   )}
 
 /**;
@@ -407,9 +406,9 @@ const checkCache = (request: any, context: RequestContext) => {,
 } catch (error) {
 
     // Simplified caching - in production this would use the cache service;
-    return {hit:false }} catch (error) {,
+    return {hit: false }} catch (error) {
     // Debug logging removed;
-    return {hit:false }},
+    return {hit: false }}
 
 /**;
  * Check if path is cacheable,
@@ -468,9 +467,9 @@ const checkAuthorization = (request: any, context: RequestContext) => {,
 
     // Simplified authorization - in production this would use the RBAC service;
     // For now, allow all authenticated requests;
-    return {allowed:true }} catch (error) {,
+    return {allowed: true }} catch (error) {
     // Debug logging removed;
-    return {allowed:false, reason: "Authorization check failed" }},
+    return {allowed: false, reason: "Authorization check failed" }}
 
 /**;
  * Log unauthorized access attempt,
@@ -517,8 +516,8 @@ const logUnauthorizedAccess = (context: RequestContext, reason: string): Promise
  */,
 const createForbiddenResponse = (reason: string): NextResponse => => {,
   return NextResponse.json(,
-    {error:"Forbidden", message: reason ,},
-    {status:403 },
+    {error: "Forbidden", message: reason },
+    {status: 403 }
   )}
 
 /**;
@@ -587,7 +586,7 @@ const processRequest = (request: any, context: RequestContext): Promise<NextResp
   requestHeaders.set("x-start-time", context.startTime.toString()),
   requestHeaders.set("x-nonce", context.nonce),
 
-  return NextResponse.next({request:{,},
+  return NextResponse.next({request: {},
       headers: requestHeaders;
 
   })}

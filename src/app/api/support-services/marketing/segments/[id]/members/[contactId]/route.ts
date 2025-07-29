@@ -19,7 +19,7 @@ const segmentService = new SegmentService();
  */;
 export const POST = async();
   request: any;
-  { params }: {id:string },
+  { params }: {id: string }
 ) => {
   return withErrorHandling();
     request,
@@ -29,8 +29,8 @@ export const POST = async();
 
       if (!session.user) {
         return NextResponse.json();
-          {error:"Contact ID is required" ,},
-          {status:400 },
+          {error: "Contact ID is required" },
+          {status: 400 }
         );
       }
 
@@ -40,9 +40,9 @@ export const POST = async();
         session?.user?.id as string;
       );
 
-      return NextResponse.json(member, {status:201 ,});
+      return NextResponse.json(member, {status: 201 });
     },
-    {requiredPermission:"marketing.segments.update",
+    {requiredPermission: "marketing.segments.update",
       auditAction: "SEGMENT_MEMBER_ADD";
     }
   );
@@ -54,7 +54,7 @@ export const POST = async();
  */;
 export const DELETE = async();
   request: any;
-  { params }: {id:string, contactId: string },
+  { params }: {id: string, contactId: string }
 ) => {
   return withErrorHandling();
     request,
@@ -69,7 +69,7 @@ export const DELETE = async();
 
       return NextResponse.json(member);
     },
-    {requiredPermission:"marketing.segments.update",
+    {requiredPermission: "marketing.segments.update",
       auditAction: "SEGMENT_MEMBER_REMOVE";
     }
   );

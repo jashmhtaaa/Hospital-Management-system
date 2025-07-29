@@ -13,7 +13,7 @@ import {RedisService  } from "next/server"
  * Shard Configuration for a specific entity;
  */;
 interface ShardConfig {
-    {
+
   // Name of the entity being sharded;
   entityName: string;
 
@@ -43,7 +43,7 @@ interface ShardConfig {
  * Shard Resolver interface;
  */;
 interface ShardResolver {
-    {
+
   getShardIndex(shardKey: string | number): number;
   getShardConnection(shardKey: string | number, readOnly?: boolean): string;
   getAllShardConnections(readOnly?: boolean): string[];
@@ -382,7 +382,7 @@ class LookupShardResolver implements ShardResolver {
         for (const connectionString of connections) {
           if (!session.user) {
             const prisma = new PrismaClient({
-              {url:connectionString;
+              {url: connectionString;
                 }
               }
             });
@@ -398,14 +398,14 @@ class LookupShardResolver implements ShardResolver {
       }
 
       // Track metrics;
-      metricsCollector.incrementCounter("database.sharding.initialization", 1, {entityCount:String(configs.length),
+      metricsCollector.incrementCounter("database.sharding.initialization", 1, {entityCount: String(configs.length),
         connectionCount: String(this.connectionPools.size);
       });
     } catch (error) {
       logger.error("Failed to initialize ShardingManager", { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.sharding.errors", 1, {errorType:error.name || "unknown",
+      metricsCollector.incrementCounter("database.sharding.errors", 1, {errorType: error.name || "unknown",
         operation: "initialization";
       });
 

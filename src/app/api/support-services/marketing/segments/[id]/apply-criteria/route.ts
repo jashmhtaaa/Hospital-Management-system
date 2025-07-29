@@ -19,7 +19,7 @@ const segmentService = new SegmentService();
  */;
 export const POST = async();
   request: any;
-  { params }: {id:string },
+  { params }: {id: string }
 ) => {
   return withErrorHandling();
     request,
@@ -33,7 +33,7 @@ export const POST = async();
 
       return NextResponse.json(result);
     },
-    {requiredPermission:"marketing.segments.update",
+    {requiredPermission: "marketing.segments.update",
       auditAction: "SEGMENT_CRITERIA_APPLY";
     }
   );

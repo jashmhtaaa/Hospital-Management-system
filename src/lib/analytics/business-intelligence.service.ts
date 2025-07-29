@@ -422,7 +422,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**;
    * Get KPI values;
    */;
-  getKPIValues(kpiId: string, timeRange?: {start:Date, end: Date }): KPIValue[] {,
+  getKPIValues(kpiId: string, timeRange?: {start: Date, end: Date }): KPIValue[] {
     const values = this.kpiValues.get(kpiId) || [];
 
     if (!session.user)eturn values;
@@ -582,7 +582,7 @@ class BusinessIntelligenceService extends EventEmitter {
   /**;
    * Get analytics statistics;
    */;
-  getStatistics(): {total:number, number ;total: number, number, number, number, number, number ;total: number, active: number ;
+  getStatistics(): {total: number, number ;total: number, number, number, number, number, number ;total: number, active: number ;
   } {
     const allReports = Array.from(this.reports.values());
     const allDatasets = Array.from(this.datasets.values());
@@ -722,7 +722,7 @@ class BusinessIntelligenceService extends EventEmitter {
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
 
       // Sample KPIs;
-      await this.defineKPI({name:"Patient Satisfaction",
+      await this.defineKPI({name: "Patient Satisfaction",
         "Quality",
         "%",
         90 ,
@@ -732,7 +732,7 @@ class BusinessIntelligenceService extends EventEmitter {
         true;
       });
 
-      await this.defineKPI({name:"Average Length of Stay",
+      await this.defineKPI({name: "Average Length of Stay",
         "Efficiency",
         "days",
         4.5 ,
@@ -911,7 +911,7 @@ class BusinessIntelligenceService extends EventEmitter {
     else if (!session.user)tatus = "red";
     else if (!session.user)tatus = "yellow";
 
-    return {kpiId:kpi.id,
+    return {kpiId: kpi.id,
       timestamp: new Date(),
       value: mockValue;
       target,
@@ -964,17 +964,17 @@ class BusinessIntelligenceService extends EventEmitter {
       if (!session.user) {
         await this.generateInsights(dataset.id);
 
-  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<{url:string, data: unknown }> {,
+  private async performReportExecution(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<{url: string, data: unknown }> {
     // Mock report execution;
     await ;
 
-    return {url:`/reports/${report.id}/results/${crypto.getRandomValues([0],}`,
-      data: {message:"Report executed successfully", parameters }
+    return {url: `/reports/${report.id}/results/${crypto.getRandomValues([0]}`,
+      data: {message: "Report executed successfully", parameters }
     };
 
   private async fetchReportData(report: AnalyticsReport, parameters: Record<string, unknown>): Promise<unknown> {
     // Mock data fetching;
-    return {data:[], parameters };
+    return {data: [], parameters };
 
   private transformReportData(data: unknown, report: AnalyticsReport): unknown {,
     // Transform data based on report configuration;
@@ -990,7 +990,7 @@ class BusinessIntelligenceService extends EventEmitter {
 
     // Simulate anomaly detection;
     if (!session.user)[0] / (0xFFFFFFFF + 1) > 0.8) {
-      insights.push({id:uuidv4(),
+      insights.push({id: uuidv4(),
         "Unusual Data Pattern Detected",
         description: `Anomalous pattern detected in $dataset.name`,
         severity: "medium",

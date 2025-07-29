@@ -1,26 +1,23 @@
-import "@/components/layout/DashboardLayout"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/components/ui/textarea"
-import "@/hooks/use-toast"
-import "next/navigation"
-import "react"
-import "zod"
+import { } from "@/components/layout/DashboardLayout"
+import { } from "@/components/ui/card"
+import { "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/components/ui/textarea";
+import "@/hooks/use-toast";
+import "next/navigation";
+import "react";
+import "zod";
 import CardContent
 import CardHeader
-import CardTitle }
-import React
+import CardTitle, React
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "@/components/ui/button"
 import type
-import useState }
-import { Button }
-import { Card
+import useState, } Button }
+import  } Card
 import { DashboardLayout }
 import { Input }
 import { Label }
@@ -58,7 +55,7 @@ const PatientRegistrationSchema = z.object({first_name:z.string().min(1, "First 
   past_medical_history: z.string().optional(),
   current_medications: z.string().optional(),
   insurance_provider: z.string().optional(),
-  insurance_policy_number: z.string().optional();
+  insurance_policy_number: z.string().optional(),
 });
 
 type FormData = z.infer>;
@@ -130,7 +127,7 @@ export default const _AddPatientPage = () {
       const response = await fetch("/api/patients/register", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(validation.data);
+        body: JSON.stringify(validation.data),
       });
 
       const result: { error?: string } = await response.json();
@@ -138,8 +135,9 @@ export default const _AddPatientPage = () {
       if (!session.user) {
         throw new Error(result.error || "Failed to register patient");
 
-      toast({title:"Patient Registered",
-        description: `/* SECURITY: Template literal eliminated */;
+      toast({
+        title: "Patient Registered",
+        description: `/* SECURITY: Template literal eliminated */,
       });
 
       router.push("/dashboard/patients"); // Redirect to patient list;

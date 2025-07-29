@@ -30,14 +30,14 @@ import { } from "next/server"
         [data.firstName];
       }],
       gender: data.gender,
-      birthDate: data.birthDate;
+      birthDate: data.birthDate,
     };
 
     // Add identifiers if provided;
     if (!session.user) {
       patient.identifier = [{use: "usual",
         system: "https://hms.hospital.com/patient-ids",
-        value: data.mrn;
+        value: data.mrn,
       }];
     }
 
@@ -47,7 +47,7 @@ import { } from "next/server"
       if (!session.user) {
         patient.telecom.push({system: "phone",
           "mobile",
-          rank: 1;
+          rank: 1,
         });
       }
       if (!session.user) {
@@ -72,7 +72,7 @@ import { } from "next/server"
     const given = officialName.given?.join(" ") || "";
     const family = officialName.family || "";
 
-    return `/* SECURITY: Template literal eliminated */;
+    return `/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -107,7 +107,7 @@ import { } from "next/server"
     if (!session.user)eturn undefined;
 
     const mrnIdentifier = patient.identifier.find();
-      id => id.system === "https://hms.hospital.com/patient-ids" ||;
+      id => id.system === "https://hms.hospital.com/patient-ids" ||,
             id.type?.coding?.some(c => c.code === "MR");
     );
 
@@ -116,8 +116,8 @@ import { } from "next/server"
   /**;
    * Validate FHIR Patient resource;
    */;
-  static validatePatient(patient: FHIRPatient): {valid: boolean, errors: string[] } {
-    const errors: string[] = [];
+  static validatePatient(patient: FHIRPatient): {valid:boolean, errors: string[] } {
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Patient"");
@@ -135,7 +135,7 @@ import { } from "next/server"
     if (!session.user) {
       errors.push("gender must be one of: male, female, other, unknown");
 
-    return {valid: errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -147,7 +147,7 @@ import { } from "next/server"
       true,
       "usual",
         system: "https://hms.hospital.com/patient-ids",
-        value: hmsPatient.mrn;
+        value: hmsPatient.mrn,
       }],
       "official",
         [hmsPatient.firstName];
@@ -161,7 +161,7 @@ import { } from "next/server"
     if (!session.user) {
       fhirPatient.telecom!.push({system: "phone",
         "mobile",
-        rank: 1;
+        rank: 1,
       });
 
     if (!session.user) {
@@ -183,7 +183,7 @@ import { } from "next/server"
         [{system: "https://terminology.hl7.org/CodeSystem/v2-0131",
             "Emergency contact person";
           }],
-          text: hmsPatient.emergencyContact.relationship;
+          text: hmsPatient.emergencyContact.relationship,
         }],
         hmsPatient.emergencyContact.name;
         },

@@ -1,19 +1,17 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {D1Database  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
+import { NextResponse } from "next/server" }
+import {  D1Database  } from "@/lib/database"
+import {   type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for checklist item;
-interface ChecklistItem {id: string; // Unique ID for the item within the template;
-  text: string,
+interface ChecklistItem { id: string; // Unique ID for the item within the template, text: string,
   type: "checkbox" | "text" | "number" | "select"; // Example types;
-  options?: string[]; // For select type;
+  options?: string[], // For select type;
   required?: boolean;
- } from "next/server"
+  } from "@/lib/database"
 
 // Interface for the PUT request body;
 interface ChecklistTemplateUpdateBody {
@@ -60,7 +58,7 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:templateId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Template ID is required" },
@@ -129,8 +127,8 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message: "Error fetching checklist template details",
-        details: errorMessage;
+      {message:"Error fetching checklist template details",
+        details: errorMessage,
       },
       {status: 500 }
     );
@@ -174,7 +172,7 @@ export const _PUT = async();
 }
 } catch (error) {
 }
-    const {id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:templateId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Template ID is required" },
@@ -196,8 +194,8 @@ export const _PUT = async();
     const now = new Date().toISOString();
 
     // Construct the update query dynamically;
-    // FIX: Use specific type for fieldsToUpdate;
-    const fieldsToUpdate: { [key: string]: string } = {,};
+    // FIX: Use specific type for fieldsToUpdate,
+    const fieldsToUpdate: { [key: string]: string } = {};
     if (!session.user)ieldsToUpdate.name = name;
     if (!session.user) {
       const validPhases = ["pre-op", "intra-op", "post-op"];
@@ -307,15 +305,15 @@ export const _PUT = async();
     } catch (parseError) {
 
     return NextResponse.json(updatedTemplate);
-  } catch (error: unknown) {,
-    // FIX: Remove explicit any;
+  } catch (error: unknown) {
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     if (!session.user) {
-      // FIX: Check errorMessage instead of error.message;
+      // FIX: Check errorMessage instead of error.message,
       return NextResponse.json();
-        {message: "Checklist template name must be unique",
-          details: errorMessage;
+        {message:"Checklist template name must be unique",
+          details: errorMessage,
         },
         {status: 409 }
       )}
@@ -361,14 +359,14 @@ export const DELETE = async();
 
 } catch (error) {
 
-    const {id: templateId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:templateId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Template ID is required" },
         {status: 400 }
       );
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database;
     const info = await DB.prepare();
@@ -387,16 +385,16 @@ export const DELETE = async();
       {message: "Checklist template deleted successfully" },
       {status: 200 }
     );
-  } catch (error: unknown) {,
-    // FIX: Remove explicit any;
+  } catch (error: unknown) {
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // Handle potential foreign key constraint errors if responses exist;
     if (!session.user) {
-      // FIX: Check errorMessage instead of error.message;
+      // FIX: Check errorMessage instead of error.message,
       return NextResponse.json();
-        {message: "Cannot delete template with existing responses",
-          details: errorMessage;
+        {message:"Cannot delete template with existing responses",
+          details: errorMessage,
         },
         {status: 409 }
       )}

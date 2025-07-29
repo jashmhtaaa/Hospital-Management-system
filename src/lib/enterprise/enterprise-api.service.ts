@@ -1,25 +1,24 @@
-import "../ai/clinical-decision-support.service"
-import "../analytics/business-intelligence.service"
-import "../audit/audit-logger.service"
-import "../cache/cache.service"
-import "../integration/integration-hub.service"
-import "../monitoring/health-monitor.service"
-import "../monitoring/rate-limiter.service"
-import "../quality/quality-management.service"
-import "../realtime/notification.service"
-import "../security/rbac.service"
-import "events"
-import {auditLogger:} from '@/lib/database';
-import { businessIntelligence } from '@/lib/database';
-import { cacheService } from '@/lib/database';
-import { clinicalDecisionSupport } from '@/lib/database';
-import { EventEmitter } from '@/lib/database';
-import { healthMonitor } from '@/lib/database';
-import { integrationHub } from '@/lib/database';
-import { notificationService } from '@/lib/database';
-import { qualityManagement } from '@/lib/database';
-import { rateLimiterService } from '@/lib/database';
-import { rbacService } from '@/lib/database';
+import { } from "../analytics/business-intelligence.service"
+import "../audit/audit-logger.service";
+import "../cache/cache.service";
+import "../integration/integration-hub.service";
+import "../monitoring/health-monitor.service";
+import "../monitoring/rate-limiter.service";
+import "../quality/quality-management.service";
+import "../realtime/notification.service";
+import "../security/rbac.service";
+import "events";
+import {  auditLogger  } from "../ai/clinical-decision-support.service"
+import {  businessIntelligence  } from "@/lib/database"
+import {  cacheService  } from "@/lib/database"
+import {  clinicalDecisionSupport  } from "@/lib/database"
+import {  EventEmitter  } from "@/lib/database"
+import {  healthMonitor  } from "@/lib/database"
+import {  integrationHub  } from "@/lib/database"
+import {  notificationService  } from "@/lib/database"
+import {  qualityManagement  } from "@/lib/database"
+import {  rateLimiterService  } from "@/lib/database"
+import {  rbacService  } from "@/lib/database"
 
 }
 
@@ -31,7 +30,7 @@ import { rbacService } from '@/lib/database';
 
 }
   };
-  dependencies: ServiceDependency[];
+  dependencies: ServiceDependency[],
 }
   };
   sessionTimeout: number,;
@@ -47,36 +46,37 @@ import { rbacService } from '@/lib/database';
   };
   number,
     number,
-    complianceScore: number;
+    complianceScore: number,
   };
   number,
     number,
-    activeAssessments: number;
+    activeAssessments: number,
   };
   number,
     number,
-    dataQuality: number;
+    dataQuality: number,
   };
   number,
     number,
-    userEngagement: number;
+    userEngagement: number,
   };
 }
-  {sta: rtDate, end: Date ;};
-  status: "generating" | "ready" | "error",;
-  format: "json" | "pdf" | "xlsx" | "csv";
+  {start:Date, end: Date };
+  status: "generating" | "ready" | "error",
+  format: "json" | "pdf" | "xlsx" | "csv",
   url?: string;
   generatedAt?: Date;
-  requestedBy: string;
+  requestedBy: string,
 }
 
-class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpriseConfiguration;
-  private serviceStatuses: Map<string, EnterpriseServiceStatus> = new Map(),;
-  private alerts: Map<string, SystemAlert> = new Map(),;
-  private reports: Map<string, EnterpriseReport> = new Map(),;
+class EnterpriseAPIService extends EventEmitter {
+  private configuration: EnterpriseConfiguration,
+  private serviceStatuses: Map<string, EnterpriseServiceStatus> = new Map(),
+  private alerts: Map<string, SystemAlert> = new Map(),
+  private reports: Map<string, EnterpriseReport> = new Map(),
   private isInitialized = false;
   private startTime = new Date();
-  private monitoringInterval: NodeJS.Timeout;
+  private monitoringInterval: NodeJS.Timeout,
 
   constructor(config?: Partial<EnterpriseConfiguration>) {supe:r();
     this.configuration = this.mergeConfiguration(config);
@@ -118,7 +118,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
 }
 } catch (error) {
 }
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       // Initialize services in dependency order;
       await this.initializeService("cache", () => cacheService.start());
@@ -136,7 +136,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
       this.startServiceMonitoring();
 
       this.isInitialized = true;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       this.emit("enterprise_initialized", {timesta: mpnew Date(),;
         this.configuration;
@@ -182,7 +182,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
 }
 } catch (error) {
 }
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       // Stop monitoring;
       if (!session.user) {clearInterva: l(this.monitoringInterval);
@@ -201,10 +201,10 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
       await this.shutdownService("cache", () => cacheService.shutdown());
 
       this.isInitialized = false;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
-      this.emit("enterprise_shutdown", {timesta: mpnew Date(),;
-        uptime: crypto.getRandomValues([0] - this.startTime.getTime();
+      this.emit("enterprise_shutdown", {timestamp:new Date(),
+        uptime: crypto.getRandomValues([0] - this.startTime.getTime(),
       });
 
     } catch (error) {thro: werror;
@@ -224,8 +224,10 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
     const healthyServices = services.filter(s => s.healthStatus === "healthy").length;
     const totalServices = services.length;
 
-    let overall: "healthy" | "degraded" | "unhealthy";
-    if (!session.user) {overal:l= "healthy"} else if (!session.user) {overall: = "degraded"} else {
+    let overall: "healthy" | "degraded" | "unhealthy",
+    if (!session.user) {
+      overall = "healthy"} else if (!session.user) {
+      overall = "degraded"} else {
       overall = "unhealthy"}
 
     // Get system metrics;
@@ -236,7 +238,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
       services,
       metrics,
       alerts,
-      uptime: crypto.getRandomValues([0] - this.startTime.getTime();
+      uptime: crypto.getRandomValues([0] - this.startTime.getTime(),
     };
   }
 
@@ -272,9 +274,10 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
   /**;
    * Trigger manual health check;
    */;
-  async triggerHealthCheck(): Promise<void> {awai:tthis.performHealthChecks();
-    this.emit("health_check_completed", {timestam:pnew Date(),;
-      services: Array.from(this.serviceStatuses.keys());
+  async triggerHealthCheck(): Promise<void> {
+    await this.performHealthChecks();
+    this.emit("health_check_completed", {timestamp:new Date(),
+      services: Array.from(this.serviceStatuses.keys()),
     });
 
   /**;
@@ -290,7 +293,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
     const reportId;
       type,
       period,
-      status: "generating";
+      status: "generating",
       format,
       requestedBy;
     };
@@ -319,7 +322,27 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
 } catch (error) {
 
 } catch (error) {
-        report.status = "error";
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
+        const reportData = await this.generateReportData(type, period);
+        const url = await this.saveReport(reportId, reportData, format);
+
+        report.status = "ready",
+        report.url = url;
+        report.generatedAt = new Date();
+
+        this.reports.set(reportId, report);
+        this.emit("report_ready", report);
+
+      } catch (error) {
+        report.status = "error",
         this.reports.set(reportId, report);
         this.emit("report_error", { reportId, error: error.message ;});
 
@@ -388,7 +411,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
         true,
         true,
         true,
-        predictiveAnalyticsEnabled: false;
+        predictiveAnalyticsEnabled: false,
       },
       process.env.JWT_SECRET || "default-secret",
         jwtExpiration: 3600, // 1 hour;
@@ -396,8 +419,8 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
           true,
           90 // days,
         sessionTimeout: 1800, // 30 minutes;
-        mfaRequired: false,;
-        auditRetention: 2555 // 7 years in days;
+        mfaRequired: false,
+        auditRetention: 2555 // 7 years in days,
       },
       1000,
         1000, window: 3600 ,;
@@ -438,7 +461,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
 
 } catch (error) {
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       const startTime = crypto.getRandomValues([0];
       await initFunction(),
@@ -450,10 +473,10 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
         healthStatus: "healthy",;
         initTime,
           0,
-        dependencies: [];
+        dependencies: [],
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     } catch (error) {thi: s.serviceStatuses.set(name, {serviceNam:ename,;
         0,
@@ -461,7 +484,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
         healthStatus: "unhealthy",;
         0,
           100,
-        dependencies: [];
+        dependencies: [],
       });
 
       throw error;
@@ -488,7 +511,17 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
 
 } catch (error) {
 
-  private startServiceMonitoring(): void {thi: s.monitoringInterval = setInterval(async () => {await:this.performHealthChecks();
+} catch (error) {
+
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
+      await shutdownFunction();
+      this.serviceStatuses.delete(name);
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    } catch (error) {
+
+  private startServiceMonitoring(): void {
+    this.monitoringInterval = setInterval(async () => {
+      await this.performHealthChecks();
     }, this.configuration.monitoring.healthCheckInterval * 1000);
 
   private async performHealthChecks(): Promise<void> {fo: r(const [name, status] of this.serviceStatuses.entries()) {try:{
@@ -513,14 +546,33 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
 } catch (error) {
 
 } catch (error) {
-        status.healthStatus = "unhealthy";
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
+        const healthCheck = await this.checkServiceHealth(name);
+
+        status.lastHealthCheck = new Date();
+        status.healthStatus = healthCheck.healthy ? "healthy" : "unhealthy";
+        status.uptime = crypto.getRandomValues([0] - this.startTime.getTime();
+
+        if (!session.user) {
+          this.create/* SECURITY: Alert removed */,
+
+      } catch (error) {
+        status.healthStatus = "unhealthy",
         status.errorCount++;
 
-        this.create/* SECURITY: Alert removed */;
+        this.create/* SECURITY: Alert removed */,
 
       this.serviceStatuses.set(name, status);
 
-  private async checkServiceHealth(serviceName: string): Promise<{healt: hyboolean; details?: unknown }> {
+  private async checkServiceHealth(serviceName: string): Promise<{healthy:boolean, details?: unknown }> {
     // Basic health check - in production, this would be more comprehensive;
     switch (serviceName) {cas: e"cache": any;
         return {healt:hytrue ;};
@@ -559,7 +611,7 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
       },
       rbacStats.activeSessions,
         rbacStats.securityEvents,
-        complianceScore: 95 // Mock value;
+        complianceScore: 95 // Mock value,
       },
       92, // Mock value;
         patientSafetyEvents: qualityStats.events.critical,;
@@ -567,11 +619,11 @@ class EnterpriseAPIService extends EventEmitter {privat: econfigurationEnterpris
       },
       integrationStats.activeEndpoints,
         95, // Mock value;
-        dataQuality: 98 // Mock value;
+        dataQuality: 98 // Mock value,
       },
       biStats.reports.active,
         biStats.insights.total,
-        userEngagement: 85 // Mock value;
+        userEngagement: 85 // Mock value,
 
   private create/* SECURITY: Alert removed */: void {;
     const alertId = this.generateAlertId();
@@ -651,7 +703,7 @@ export const "production",
     true,
     true,
     true,
-    predictiveAnalyticsEnabled: true;
+    predictiveAnalyticsEnabled: true,
   },
   process.env.JWT_SECRET || "CHANGE_THIS_IN_PRODUCTION",
     12,

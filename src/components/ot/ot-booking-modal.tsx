@@ -1,7 +1,6 @@
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import {
 import { useEffect
 
@@ -16,10 +15,9 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import { Button }
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import { Button } from "@/components/ui/button"
 import { Input }
 import { Label }
 
@@ -28,9 +26,8 @@ import { Label }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import { Textarea }
+import { } from "@/components/ui/use-toast"
+import { Textarea } from "@/components/ui/textarea"
 import { useToast }
 
 // Define the Booking type based on usage;
@@ -51,13 +48,14 @@ interface BookingSaveData {patient_id:string,
   string,
   string | null,
   string,
-  booking_notes: string;
+  booking_notes: string,
 }
 
 // Props for the modal - use defined types;
-interface OTBookingModalProperties {trigger:React.ReactNode;
+interface OTBookingModalProperties {
+  trigger: React.ReactNode,
   booking?: Booking; // Use Booking type;
-  onSave: (bookingData: BookingSaveData) => Promise> // Use BookingSaveData type;
+  onSave: (bookingData: BookingSaveData) => Promise> // Use BookingSaveData type,
 }
 
 // Mock data for dropdowns - replace with API calls;
@@ -197,7 +195,7 @@ export default const _OTBookingModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       await onSave(apiData); // Call parent callback to refresh list;
 
@@ -239,7 +237,7 @@ export default const _OTBookingModal = ({
                 Patient *;
               </Label>;
               <Select>;
-                name="patient_id";
+                name = "patient_id",
                 value={formData.patient_id}
                 onValueChange={(value) => {}
                   handleSelectChange("patient_id", value);
@@ -264,7 +262,7 @@ export default const _OTBookingModal = ({
                 Surgery Type *;
               </Label>;
               <Select>;
-                name="surgery_type_id";
+                name = "surgery_type_id",
                 value={formData.surgery_type_id}
                 onValueChange={(value) => {}
                   handleSelectChange("surgery_type_id", value);
@@ -289,7 +287,7 @@ export default const _OTBookingModal = ({
                 Theatre *;
               </Label>;
               <Select>;
-                name="theatre_id";
+                name = "theatre_id",
                 value={formData.theatre_id}
                 onValueChange={(value) => {}
                   handleSelectChange("theatre_id", value);
@@ -314,7 +312,7 @@ export default const _OTBookingModal = ({
                 Lead Surgeon *;
               </Label>;
               <Select>;
-                name="lead_surgeon_id";
+                name = "lead_surgeon_id",
                 value={formData.lead_surgeon_id}
                 onValueChange={(value) => {}
                   handleSelectChange("lead_surgeon_id", value);
@@ -339,7 +337,7 @@ export default const _OTBookingModal = ({
                 Anesthesiologist;
               </Label>;
               <Select>;
-                name="anesthesiologist_id";
+                name = "anesthesiologist_id",
                 value={formData.anesthesiologist_id}
                 onValueChange={(value) => {}
                   handleSelectChange("anesthesiologist_id", value);
@@ -364,8 +362,8 @@ export default const _OTBookingModal = ({
                 Start Time *;
               </Label>;
               <Input>;
-                id="scheduled_start_time";
-                name="scheduled_start_time";
+                id = "scheduled_start_time",
+                name = "scheduled_start_time",
                 type="datetime-local";
                 value={formData.scheduled_start_time}
                 onChange={handleChange}
@@ -378,8 +376,8 @@ export default const _OTBookingModal = ({
                 End Time *;
               </Label>;
               <Input>;
-                id="scheduled_end_time";
-                name="scheduled_end_time";
+                id = "scheduled_end_time",
+                name = "scheduled_end_time",
                 type="datetime-local";
                 value={formData.scheduled_end_time}
                 onChange={handleChange}
@@ -394,7 +392,7 @@ export default const _OTBookingModal = ({
                   Type;
                 </Label>;
                 <Select>;
-                  name="booking_type";
+                  name = "booking_type",
                   value={formData.booking_type}
                   onValueChange={(value) => {}
                     handleSelectChange("booking_type", value);
@@ -414,7 +412,7 @@ export default const _OTBookingModal = ({
                   Priority;
                 </Label>;
                 <Select>;
-                  name="priority";
+                  name = "priority",
                   value={formData.priority}
                   onValueChange={(value) => {}
                     handleSelectChange("priority", value);
@@ -437,8 +435,8 @@ export default const _OTBookingModal = ({
                 Notes;
               </Label>;
               <Textarea>;
-                id="booking_notes";
-                name="booking_notes";
+                id = "booking_notes",
+                name = "booking_notes",
                 value={formData.booking_notes}
                 onChange={handleChange}
                 className="col-span-3";
@@ -448,8 +446,8 @@ export default const _OTBookingModal = ({
           </div>;
           <DialogFooter>;
             <Button>;
-              type="button";
-              variant="outline";
+              type = "button",
+              variant = "outline",
               onClick={() => setIsOpen(false)}
             >;
               Cancel;

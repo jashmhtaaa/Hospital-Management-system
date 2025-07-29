@@ -1,28 +1,26 @@
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import { useEffect
 
 }
 
 "use client";
 
-// import { useRouter } from "next/navigation"; // FIX: Removed unused import;
-import "lucide-react"
-import { Loader2 }
+// import { useRouter } from "next/navigation"; // FIX: Removed unused import,
+import { { Loader2 } from "lucide-react"
 
 // Define interfaces for data structures;
 interface PrescriptionItem {id:string,
   string,
   string,
   number,
-  quantity: number;
+  quantity: number,
 }
 
 interface Prescription {id:string,
   string; // e.g., "active", "partially_dispensed", "completed";
-  items: PrescriptionItem[];
+  items: PrescriptionItem[],
 }
 
 interface MedicationScheduleItem {id:string,
@@ -31,7 +29,8 @@ interface MedicationScheduleItem {id:string,
   condition?: string;
 }
 
-interface AdministrationRecord {id:string;
+interface AdministrationRecord {
+  id: string,
   schedule_id?: string; // Link to schedule if applicable;
   prescription_item_id?: string; // Link to prescription item;
   medication_name: string,
@@ -39,14 +38,15 @@ interface AdministrationRecord {id:string;
   notes?: string;
 }
 
-interface IPDPharmacyIntegrationProperties {admissionId:string | null,
-  patientId: string | null;
+interface IPDPharmacyIntegrationProperties {
+  admissionId: string | null,
+  patientId: string | null,
 }
 
 const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   admissionId,
   patientId}) => {
-  // const _router = useRouter(); // FIX: Removed unused router;
+  // const _router = useRouter(); // FIX: Removed unused router,
   const [loading, setLoading] = useState<boolean>(true),
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
   const [medicationSchedule, setMedicationSchedule] = useState<;
@@ -130,24 +130,24 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
                 "Amoxicillin 250mg",
                 "BID",
                 10,
-                quantity: 14;
+                quantity: 14,
               },
               {id:"item_004",
                 "Paracetamol 500mg",
                 "PRN",
                 5,
-                quantity: 10;
+                quantity: 10,
               }]}];
         const mockSchedule: MedicationScheduleItem[] = [;
           {id:"sched_001",
             "Amoxicillin 250mg",
             scheduled_time: "08:00",
-            status: "pending";
+            status: "pending",
           },
           {id:"sched_002",
             "Amoxicillin 250mg",
             scheduled_time: "20:00",
-            status: "pending";
+            status: "pending",
           },
           {id:"sched_003",
             "Paracetamol 500mg",
@@ -183,7 +183,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     scheduleItem: MedicationScheduleItem;
   ): Promise<void> => {}
     if (!session.user) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       return;
 
     setLoading(true); // Use a specific loading state for this action if needed;
@@ -229,7 +229,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       //     medication_name: scheduleItem.medication_name;
       //     administered_time: new Date().toISOString();
       //     // administered_by_id: Get current user ID from session;
-      //     notes: "Administered as scheduled.";
+      //     notes: "Administered as scheduled.",
       //   }),
       // });
       // if (!session.user) {
@@ -263,7 +263,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
     } finally ;
       setLoading(false);
   };
@@ -318,7 +318,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         // month: "short";
         // day: "numeric",
         "2-digit",
-        hour12: true;
+        hour12: true,
 
       return new Intl.DateTimeFormat(undefined, options).format();
         new Date(dateString);

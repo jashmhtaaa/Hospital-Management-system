@@ -1,12 +1,11 @@
-import "@/lib/audit"
-import "@/lib/logger"
-import "@prisma/client"
-import "zod"
-import logAudit }
-import {AuditAction
-import {  logger  } from "next/server"
-import {PrismaClient  } from "next/server"
-import {z  } from "next/server"
+import { } from "@/lib/logger"
+import "@prisma/client";
+import "zod";
+import logAudit } from "@/lib/audit"
+import {   AuditAction
+import {  logger  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 // Initialize Prisma client;
 const prisma = new PrismaClient();
@@ -18,16 +17,16 @@ export const LabOrderSchema = z.object({encounterId: z.string().uuid(),
     testCode: z.string().min(1),
     specimenType: z.string().min(1),
     priority: z.enum(["STAT", "URGENT", "ROUTINE"]).optional(),
-    orderNotes: z.string().optional();
+    orderNotes: z.string().optional(),
   })).min(1)});
 
-export const LabCancelSchema = z.object({orderId: z.string().uuid(),
-  reason: z.string().min(1);
+export const LabCancelSchema = z.object({orderId:z.string().uuid(),
+  reason: z.string().min(1),
 });
 
 export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
   notifyUserId: z.string().uuid().optional(),
-  criticalResult: z.boolean().optional();
+  criticalResult: z.boolean().optional(),
 });
 
 /**;
@@ -60,7 +59,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
           test.orderNotes,
           new Date(),
           createdAt: new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date(),
         }});
 
       createdOrders.push(order);
@@ -106,7 +105,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
       "CANCELLED",
         userId,
         cancelledAt: new Date(),
-        updatedAt: new Date();
+        updatedAt: new Date(),
       }});
 
     // Log the lab cancellation;
@@ -162,7 +161,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
       await prisma.labOrder.update({where: { id: data.orderId },
         "RESULTED",
           resultedAt: new Date(),
-          updatedAt: new Date();
+          updatedAt: new Date(),
         }});
 
     // Log the notification;
@@ -177,9 +176,9 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
 
     );
 
-    return {success:true;
+    return {success:true,
       notification,
-      message: "Laboratory result notification sent successfully";
+      message: "Laboratory result notification sent successfully",
     };
 
   /**;
@@ -199,7 +198,7 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
     return {
       patientId,
       pendingOrders,
-      count: pendingOrders.length;
+      count: pendingOrders.length,
     };
 
   /**;
@@ -216,10 +215,10 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
     // Build query;
     const {
         patientId,
-        status: "RESULTED";
+        status: "RESULTED",
       },
-      orderBy: {resultedAt: "desc" },
-      take: limit;
+      orderBy: {resultedAt:"desc" },
+      take: limit,
     };
 
     // Add encounter filter if provided;
@@ -247,10 +246,10 @@ export const LabResultNotificationSchema = z.object({orderId: z.string().uuid(),
 
     return {
       patientId,
-      encounterId: encounterId || null;
+      encounterId: encounterId || null,
       labResults,
       _groupedResults: includeDetails ? _groupedResults : null,
-      count: labResults.length;
+      count: labResults.length,
     };
 
   /**;

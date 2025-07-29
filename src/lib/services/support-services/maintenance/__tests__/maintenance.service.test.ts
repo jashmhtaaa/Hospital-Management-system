@@ -1,7 +1,7 @@
-import "../maintenance.service"
-import "@/lib/prisma"
-import "@/lib/security.service"
-import "vitest"
+import "../maintenance.service";
+import "@/lib/prisma";
+import "@/lib/security.service";
+import "vitest";
 import beforeEach
 import describe
 import expect

@@ -1,7 +1,6 @@
-import "@/lib/audit/audit-service"
-import "@/lib/prisma"
-import {AuditService  } from "next/server"
-import {prisma  } from "next/server"
+import { } from "@/lib/prisma"
+import {  AuditService  } from "@/lib/audit/audit-service"
+import {  prisma  } from "@/lib/database"
 
 // src/modules/opd-management/services/opd-service.ts;
 }
@@ -60,7 +59,7 @@ import {prisma  } from "next/server"
 
   static async updateAppointmentStatus();
     appointmentId: string,
-    status: "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+    status: "CONFIRMED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW",
     updatedBy?: string;
   ) {
     const oldAppointment = await prisma.appointment.findUnique({where: { id: appointmentId }
@@ -94,23 +93,23 @@ import {prisma  } from "next/server"
 
     const [scheduled, completed, cancelled, inProgress] = await Promise.all([;
       prisma.appointment.count({
-        {gte: startOfDay, lte: endOfDay },
-          status: "SCHEDULED";
+        {gte:startOfDay, lte: endOfDay },
+          status: "SCHEDULED",
 
       }),
       prisma.appointment.count({
-        {gte: startOfDay, lte: endOfDay },
-          status: "COMPLETED";
+        {gte:startOfDay, lte: endOfDay },
+          status: "COMPLETED",
 
       }),
       prisma.appointment.count({
-        {gte: startOfDay, lte: endOfDay },
-          status: "CANCELLED";
+        {gte:startOfDay, lte: endOfDay },
+          status: "CANCELLED",
 
       }),
       prisma.appointment.count({
-        {gte: startOfDay, lte: endOfDay },
-          status: "IN_PROGRESS";
+        {gte:startOfDay, lte: endOfDay },
+          status: "IN_PROGRESS",
 
       });
     ]);

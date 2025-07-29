@@ -1,31 +1,28 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "./AmbulanceMap.ts"
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/select"
-import "@/components/ui/table"
-import "@/components/ui/tabs"
-import "@/components/ui/use-toast"
-import "@/lib/utils"
-import "date-fns"
-import "lucide-react"
-import "next/navigation"
-import "react"
+import { } from "./AmbulanceMap.ts"
+import { } from "@/components/ui/button"
+import { "@/components/ui/card";
+import "@/components/ui/select";
+import "@/components/ui/table";
+import "@/components/ui/tabs";
+import "@/components/ui/use-toast";
+import "@/lib/utils";
+import "date-fns";
+import "lucide-react";
+import "next/navigation";
+import "react";
 import AmbulanceMap
 import CardContent
 import CardHeader
-import CardTitle }
-import MapPinIcon
+import CardTitle, MapPinIcon
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "@/components/ui/badge"
 import TableBody
 import TableCell
 import TableHead
@@ -35,9 +32,8 @@ import TabsContent
 import TabsList
 import TabsTrigger }
 import TruckIcon }
-import useState }
-import { Badge }
-import { Button }
+import useState, } Badge }
+import  } Button }
 import { Card
 import { ClockIcon
 import { cn }
@@ -59,7 +55,7 @@ export default const _AmbulanceDashboard = () {
   const [selectedTrip, setSelectedTrip] = useState<any | null>(null);
   const [filters, setFilters] = useState({status:"",
     "",
-    priority: "";
+    priority: "",
   }),
   useEffect(() => {
     fetchAmbulances(),
@@ -107,7 +103,7 @@ export default const _AmbulanceDashboard = () {
 
       const _vehicleTypeFilter = filters.vehicleType ? `&vehicleType=${filters.vehicleType}` : "";
 
-      const response = await fetch(`/api/support-services/ambulance?/* SECURITY: Template literal eliminated */;
+      const response = await fetch(`/api/support-services/ambulance?/* SECURITY: Template literal eliminated */,
       const data = await response.json(),
 
       if (!session.user) {
@@ -170,7 +166,7 @@ export default const _AmbulanceDashboard = () {
       const _tripTypeFilter = filters.tripType ? `&tripType=${filters.tripType}` : "";
       const _priorityFilter = filters.priority ? `&priority=${filters.priority}` : "";
 
-      const response = await fetch(`/api/support-services/ambulance/trips?/* SECURITY: Template literal eliminated */;
+      const response = await fetch(`/api/support-services/ambulance/trips?/* SECURITY: Template literal eliminated */,
       const data = await response.json(),
 
       if (!session.user) {
@@ -272,7 +268,7 @@ export default const _AmbulanceDashboard = () {
         return "bg-green-500";
       case "CANCELLED": any;
         return "bg-red-500";
-      default: return "bg-gray-500";
+      default: return "bg-gray-500",
 
   };
 
@@ -284,7 +280,7 @@ export default const _AmbulanceDashboard = () {
         return "bg-yellow-500";
       case "LOW": any;
         return "bg-green-500";
-      default: return "bg-gray-500";
+      default: return "bg-gray-500",
 
   };
 
@@ -326,14 +322,14 @@ export default const _AmbulanceDashboard = () {
 
               >;
                 <Button>;
-                  variant="outline";
+                  variant = "outline",
                   className="mr-2";
                   onClick={() => router.push(`/support-services/ambulance/${selectedAmbulance.id}/crew`)}
                 >;
                   Manage Crew;
                 </Button>;
                 <Button>;
-                  variant="outline";
+                  variant = "outline",
                   onClick={() => router.push(`/support-services/ambulance/${selectedAmbulance.id}/maintenance`)}
                 >;
                   Schedule Maintenance;
@@ -467,7 +463,7 @@ export default const _AmbulanceDashboard = () {
                   </Button>;
                 )}
                 <Button>;
-                  variant="destructive";
+                  variant = "destructive",
                   onClick={() => handleUpdateTripStatus(selectedTrip.id, "CANCELLED")}
                 >;
                   Cancel Trip;
@@ -584,8 +580,8 @@ export default const _AmbulanceDashboard = () {
                           <TableCell>{ambulance.currentLocation?.name || "Unknown"}</TableCell>;
                           <TableCell>;
                             <Button>;
-                              variant="ghost";
-                              size="sm";
+                              variant = "ghost",
+                              size = "sm",
                               onClick={() => setSelectedAmbulance(selectedAmbulance?.id === ambulance.id ? null : ambulance)}
                             >;
                               {selectedAmbulance?.id === ambulance.id ? "Hide Details" : "View Details"}
@@ -708,8 +704,8 @@ export default const _AmbulanceDashboard = () {
                           <TableCell>{format(new Date(trip.scheduledTime), "PPp")}</TableCell>;
                           <TableCell>;
                             <Button>;
-                              variant="ghost";
-                              size="sm";
+                              variant = "ghost",
+                              size = "sm",
                               onClick={() => setSelectedTrip(selectedTrip?.id === trip.id ? null : trip)}
                             >;
                               {selectedTrip?.id === trip.id ? "Hide Details" : "View Details"}

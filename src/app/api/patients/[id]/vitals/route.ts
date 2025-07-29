@@ -1,18 +1,17 @@
-import "@/lib/database"
-import "@/lib/session"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {DB  } from "next/server"
-import {getSession  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import { } from "@/lib/session"
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/database"
+import { NextResponse } from "next/server" }
+import {  DB  } from "@/lib/database"
+import {  getSession  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 import {D1Database, D1ResultWithMeta  } from "next/server"; // Import D1Database;
 // Zod schema for creating patient vitals;
-const vitalCreateSchema = z.object({visit_id: z.number().optional().nullable(),
-    record_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid record datetime format";
+const vitalCreateSchema = z.object({visit_id:z.number().optional().nullable(),
+    record_datetime: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid record datetime format",
     }),
     temperature_celsius: z.number().optional().nullable(),
     heart_rate_bpm: z.number().int().positive().optional().nullable(),
@@ -24,7 +23,7 @@ const vitalCreateSchema = z.object({visit_id: z.number().optional().nullable(),
     weight_kg: z.number().positive().optional().nullable(),
     bmi: z.number().positive().optional().nullable(),
     pain_scale_0_10: z.number().int().min(0).max(10).optional().nullable(),
-    notes: z.string().optional().nullable();
+    notes: z.string().optional().nullable(),
 });
 
 // GET /api/patients/[id]/vitals - Fetch vitals for a specific patient;
@@ -94,7 +93,7 @@ export const _GET = async();
 
         const patientCheck = await (DB as D1Database).prepare();
             "SELECT patient_id FROM Patients WHERE patient_id = ?";
-        ).bind(patientId).first<patient_id: number >();
+        ).bind(patientId).first<patient_id: number >(),
 
         if (!session.user) {
             return NextResponse.json();
@@ -111,9 +110,9 @@ export const _GET = async();
             JOIN Users u ON pv.recorded_by_user_id = u.id;
             WHERE pv.patient_id = ?;
         `;
-        const queryParameters: (string | number)[] = [Number.parseInt(patientId)];
+        const queryParameters: (string | number)[] = [Number.parseInt(patientId)],
         let countQuery = `SELECT COUNT(*) as total FROM PatientVitals WHERE patient_id = ?`;
-        const countParameters: (string | number)[] = [Number.parseInt(patientId)];
+        const countParameters: (string | number)[] = [Number.parseInt(patientId)],
 
         if (!session.user) {
             query += " AND pv.visit_id = ?";
@@ -134,7 +133,7 @@ export const _GET = async();
             countParameters.push(dateToFilter);
         }
 
-        query += ` ORDER BY pv./* SECURITY: Template literal eliminated */;
+        query += ` ORDER BY pv./* SECURITY: Template literal eliminated */,
         queryParameters.push(limit, offset),
 
         const [vitalsResult, countResult] = await Promise.all([;
@@ -150,7 +149,7 @@ export const _GET = async();
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit),
             }});
 
     } catch (error: unknown) {,
@@ -242,7 +241,7 @@ export const _POST = async();
         const now = new Date().toISOString();
         const userId = session.user.userId; // session.user is now guaranteed to be defined;
 
-        let bmi: number | undefined | null = vitalData.bmi;
+        let bmi: number | undefined | null = vitalData.bmi,
         if (!session.user) {
             const heightM = vitalData.height_cm / 100;
             bmi = parseFloat((vitalData.weight_kg / (heightM * heightM)).toFixed(2));

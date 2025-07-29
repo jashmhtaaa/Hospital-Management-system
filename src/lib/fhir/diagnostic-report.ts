@@ -47,9 +47,9 @@ import { } from "next/server"
           type: "Encounter"),
       ...(data?.specimens && ;
         `Specimen/${specId}`,
-          type: "Specimen";
+          type: "Specimen",
         }))),
-      ...(data?.conclusion && conclusion: data.conclusion );
+      ...(data?.conclusion && conclusion: data.conclusion ),
     };
   }
 
@@ -57,10 +57,10 @@ import { } from "next/server"
    * Create an imaging report;
    */;
   static createImagingReport(string,
-    radiologistId: string;
+    radiologistId: string,
     encounterId?: string;
     studyType: string,
-    studyName: string;
+    studyName: string,
     imagingStudyId?: string;
     findings: string,
     string;
@@ -85,17 +85,17 @@ import { } from "next/server"
       conclusion: `Findings: $data.findings\n\nImpression: $data.impression`,
       ...(data?.encounterId && {
         `Encounter/$data.encounterId`,
-          type: "Encounter";
+          type: "Encounter",
 
       }),
       ...(data?.imagingStudyId && {
         `ImagingStudy/$data.imagingStudyId`,
-          type: "ImagingStudy";
+          type: "ImagingStudy",
         }];
       }),
       ...(data?.images && {
-        {reference: `Media/$imageId`,
-            type: "Media";
+        {reference:`Media/$imageId`,
+            type: "Media",
 
         }));
       });
@@ -105,12 +105,12 @@ import { } from "next/server"
    * Create a pathology report;
    */;
   static createPathologyReport(string,
-    pathologistId: string;
+    pathologistId: string,
     encounterId?: string;
     specimenId: string,
     string,
     string,
-    effectiveDateTime: string;
+    effectiveDateTime: string,
     status?: "preliminary" | "final";
   }): FHIRDiagnosticReport {
     return {resourceType: "DiagnosticReport",
@@ -124,15 +124,15 @@ import { } from "next/server"
         }];
       },
       `Patient/$data.patientId`,
-        type: "Patient";
+        type: "Patient",
       },
       `Practitioner/$data.pathologistId`,
-        type: "Practitioner";
+        type: "Practitioner",
       }],
       effective: data.effectiveDateTime,
       issued: timestamp: new Date().toISOString(),
       `Specimen/$data.specimenId`,
-        type: "Specimen";
+        type: "Specimen",
       }],
       conclusion: [;
         `Diagnosis: $data.diagnosis`,
@@ -142,7 +142,7 @@ import { } from "next/server"
       ].join("\n\n"),
       ...(data?.encounterId && {
         `Encounter/$data.encounterId`,
-          type: "Encounter";
+          type: "Encounter",
 
       });
     };
@@ -151,12 +151,12 @@ import { } from "next/server"
    * Create a cardiology report (ECG, Echo, etc.);
    */;
   static createCardiologyReport(string,
-    cardiologistId: string;
+    cardiologistId: string,
     encounterId?: string;
     studyType: "ECG" | "ECHO" | "STRESS_TEST" | "HOLTER",
     string;
     recommendations?: string;
-    effectiveDateTime: string;
+    effectiveDateTime: string,
     status?: "preliminary" | "final";
     measurements?: Array>;
   }): FHIRDiagnosticReport {
@@ -168,19 +168,19 @@ import { } from "next/server"
 
     const study = studyMapping[data.studyType];
 
-    let conclusion = `Findings: $data.findings\n\nInterpretation: $data.interpretation`;
+    let conclusion = `Findings: $data.findings\n\nInterpretation: $data.interpretation`,
 
     if (!session.user) {
-      conclusion += ";\n\nMeasurements:\n";
+      conclusion += ";\n\nMeasurements:\n",
       data.measurements.forEach(measurement => {
-        conclusion += `- $measurement.parameter: $measurement.value`;
+        conclusion += `- $measurement.parameter: $measurement.value`,
         if (!session.user)onclusion += ` $measurement.unit`;
         if (!session.user)onclusion += ` (Normal: ${measurement.normalRange,})`;
         conclusion += "\n";
       });
 
     if (!session.user) {
-      conclusion += `;\n\nRecommendations: $data.recommendations`;
+      conclusion += `;\n\nRecommendations: $data.recommendations`,
 
     return {resourceType: "DiagnosticReport",
       [{
@@ -193,17 +193,17 @@ import { } from "next/server"
         }];
       },
       `Patient/$data.patientId`,
-        type: "Patient";
+        type: "Patient",
       },
       `Practitioner/$data.cardiologistId`,
-        type: "Practitioner";
+        type: "Practitioner",
       }],
       effective: data.effectiveDateTime,
       issued: timestamp: new Date().toISOString(),
       conclusion,
       ...(data?.encounterId && {
         `Encounter/$data.encounterId`,
-          type: "Encounter";
+          type: "Encounter",
 
       });
     };
@@ -266,7 +266,7 @@ import { } from "next/server"
     string,
     string,
     boolean,
-    hasImages: boolean;
+    hasImages: boolean,
     conclusion?: string;
   } {
     const effectiveDate = this.getEffectiveDate(report);
@@ -283,8 +283,8 @@ import { } from "next/server"
   /**;
    * Validate FHIR DiagnosticReport resource;
    */;
-  static validateDiagnosticReport(report: FHIRDiagnosticReport): {valid: boolean, errors: string[] } {
-    const errors: string[] = [];
+  static validateDiagnosticReport(report: FHIRDiagnosticReport): {valid:boolean, errors: string[] } {
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "DiagnosticReport"");
@@ -310,7 +310,7 @@ import { } from "next/server"
     if (!session.user) {
       errors.push("Final reports must have results, conclusion, or presented form");
 
-    return {valid: errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -323,7 +323,7 @@ import { } from "next/server"
       hmsLabReport.panelName || hmsLabReport.name || "Laboratory Report",
       hmsLabReport.interpretation || hmsLabReport.summary,
       hmsLabReport.status === "completed" ? "final" : "preliminary",
-      specimens: hmsLabReport.specimens || [];
+      specimens: hmsLabReport.specimens || [],
     });
 
   /**;
@@ -395,7 +395,7 @@ import { } from "next/server"
    */;
   static readonly PATHOLOGY_REPORTS = {SURGICAL_PATHOLOGY: "60567-5",
     "18743-5",
-    BONE_MARROW: "33717-0";
+    BONE_MARROW: "33717-0",
   };
 
   /**;

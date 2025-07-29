@@ -1,11 +1,10 @@
-import "../../services/encryption_service_secure"
-import "../audit.service"
-import "@prisma/client"
-import "zod"
-import {AuditService  } from "next/server"
-import {getEncryptionService  } from "next/server"
-import {PrismaClient  } from "next/server"
-import {z  } from "next/server"
+import { } from "../audit.service"
+import "@prisma/client";
+import "zod";
+import {  AuditService  } from "../../services/encryption_service_secure"
+import {  getEncryptionService  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 /**;
  * Quality Management Persistence Service;
@@ -85,13 +84,13 @@ import {ActionPlan,
         update: {
           ...dataToStore,
           updatedAt: new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
         },
         create: {,
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
         }
       });
 
@@ -104,7 +103,7 @@ import {ActionPlan,
         });
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to save quality indicator");
     }
   }
@@ -185,7 +184,7 @@ import {ActionPlan,
 }
           indicator.metadata = JSON.parse(await this.decryptData(indicator.metadata));
         } catch (error) {
-          /* SECURITY: Console statement removed */;
+          /* SECURITY: Console statement removed */,
           indicator.metadata = {};
         }
       }
@@ -194,13 +193,13 @@ import {ActionPlan,
         await this.auditService.logAuditEvent({action: "quality_indicator_accessed",
           id;
           userId,
-          details: type: indicator.type ;
+          details: type: indicator.type ,
         });
       }
 
       return indicator;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to retrieve quality indicator");
     }
   }
@@ -312,13 +311,13 @@ import {ActionPlan,
           userId,
           details: null,
             filters,
-            resultCount: indicators.length;
+            resultCount: indicators.length,
         });
       }
 
       return indicators;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to retrieve quality indicators");
     }
   }
@@ -373,13 +372,13 @@ import {ActionPlan,
         update: {
           ...dataToStore,
           updatedAt: new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
         },
         create: {,
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
         }
       });
 
@@ -392,7 +391,7 @@ import {ActionPlan,
         });
       }
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to save quality event");
     }
   }
@@ -543,12 +542,12 @@ import {ActionPlan,
           userId,
           details: null,
             filters,
-            resultCount: events.length;
+            resultCount: events.length,
         });
 
       return events;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to retrieve quality events");
 
   // Quality Assessments Persistence;
@@ -599,13 +598,13 @@ import {ActionPlan,
         update: {
           ...dataToStore,
           updatedAt: new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
         },
         create: {,
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
 
       });
 
@@ -618,7 +617,7 @@ import {ActionPlan,
         });
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to save quality assessment");
 
   // Compliance Reports Persistence;
@@ -672,13 +671,13 @@ import {ActionPlan,
         update: {
           ...dataToStore,
           updatedAt: new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
         },
         create: {,
           ...dataToStore,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
 
       });
 
@@ -688,11 +687,11 @@ import {ActionPlan,
           userId,
           report.regulatoryBody,
             report.status,
-            overallCompliance: report.overallCompliance;
+            overallCompliance: report.overallCompliance,
         });
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to save compliance report");
 
   async getComplianceReports(filters?: {
@@ -874,12 +873,12 @@ import {ActionPlan,
           userId,
           details: null,
             filters,
-            resultCount: reports.length;
+            resultCount: reports.length,
         });
 
       return reports;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to retrieve compliance reports");
 
   // Action Plans Persistence;
@@ -920,13 +919,13 @@ import {ActionPlan,
         update: {
           ...actionPlan,
           updatedAt: new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
         },
         create: {,
           ...actionPlan,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
 
       });
 
@@ -939,7 +938,7 @@ import {ActionPlan,
         });
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to save action plan");
 
   // Quality Metrics Persistence;
@@ -980,13 +979,13 @@ import {ActionPlan,
         update: {
           ...metric,
           updatedAt: new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
         },
         create: {,
           ...metric,
           createdAt: new Date(),
           new Date(),
-          updatedBy: userId;
+          updatedBy: userId,
 
       });
 
@@ -999,7 +998,7 @@ import {ActionPlan,
         });
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to save quality metric");
 
   // Utility Methods;
@@ -1014,7 +1013,7 @@ import {ActionPlan,
   // Data Retention and Archiving;
   async archiveOldRecords(): Promise<{archivedIndicators: number,
     number,
-    archivedReports: number;
+    archivedReports: number,
   }> {
     if (!session.user) {
       return {archivedIndicators: 0, archivedEvents: 0, archivedAssessments: 0, archivedReports: 0 };
@@ -1071,10 +1070,10 @@ import {ActionPlan,
 
       return {archivedIndicators: indicators.count,
         assessments.count,
-        archivedReports: reports.count;
+        archivedReports: reports.count,
       };
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to archive old records");
 
   /**;
@@ -1084,7 +1083,7 @@ import {ActionPlan,
     await this.prisma.$disconnect();
 
 // Singleton instance for application use;
-let qualityPersistenceInstance: QualityPersistenceService | null = null;
+let qualityPersistenceInstance: QualityPersistenceService | null = null,
 
 export const _getQualityPersistenceService = (;
   config?: Partial<QualityPersistenceConfig>;

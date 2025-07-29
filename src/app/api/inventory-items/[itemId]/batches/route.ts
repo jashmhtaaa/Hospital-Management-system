@@ -1,13 +1,12 @@
-import "@/types/inventory"
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import "zod"
-import {cookies  } from "next/server"
-import {getCloudflareContext  } from "next/server"
-import {getIronSession  } from "next/server"
-import {StockBatch  } from "next/server"
-import {z  } from "next/server"
+import { } from "@opennextjs/cloudflare"
+import "iron-session";
+import "next/headers";
+import "zod";
+import {  cookies  } from "@/types/inventory"
+import {  getCloudflareContext  } from "@/lib/database"
+import {  getIronSession  } from "@/lib/database"
+import {  StockBatch  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 import {type IronSessionData, sessionOptions } from "next/server"; // FIX: Import IronSessionData;
 
@@ -26,8 +25,8 @@ const getItemId = (pathname: string): number | null {,
 }
 
 // GET handler for listing batches for a specific inventory item;
-export const _GET = async (request: Request) => {,
-    const cookieStore = await cookies(); // FIX: Await cookies();
+export const _GET = async (request: Request) => {
+    const cookieStore = await cookies(); // FIX: Await cookies(),
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const inventoryItemId = getItemId(url.pathname);
@@ -77,7 +76,7 @@ export const _GET = async (request: Request) => {,
 }
         const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Await and type context;
         // const { env } = context; // Removed destructuring;
-        const DB = context.env.DB; // FIX: Access DB via context.env;
+        const DB = context.env.DB; // FIX: Access DB via context.env,
 
         if (!session.user) { throw new Error("Database binding not found."); } // Add null check
 
@@ -109,12 +108,12 @@ const AddStockBatchSchema = z.object({batch_number: z.string().optional(),
     cost_price_per_unit: z.number().nonnegative("Cost price must be non-negative").optional().nullable(),
     selling_price_per_unit: z.number().nonnegative("Selling price must be non-negative").optional().nullable(),
     supplier_id: z.number().int().positive().optional().nullable(), // Assuming Suppliers table exists later;
-    received_date: z.string().datetime({message: "Invalid ISO 8601 datetime string for received date" }).optional(), // Default is CURRENT_TIMESTAMP in DB;
-    notes: z.string().optional();
+    received_date: z.string().datetime({message:"Invalid ISO 8601 datetime string for received date" }).optional(), // Default is CURRENT_TIMESTAMP in DB;
+    notes: z.string().optional(),
 });
 
-export const _POST = async (request: Request) => {,
-    const cookieStore = await cookies(); // FIX: Await cookies();
+export const _POST = async (request: Request) => {
+    const cookieStore = await cookies(); // FIX: Await cookies(),
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const inventoryItemId = getItemId(url.pathname);
@@ -173,7 +172,7 @@ export const _POST = async (request: Request) => {,
 
         const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Await and type context;
         // const { env } = context; // Removed destructuring;
-        const DB = context.env.DB; // FIX: Access DB via context.env;
+        const DB = context.env.DB; // FIX: Access DB via context.env,
 
         if (!session.user) { throw new Error("Database binding not found."); } // Add null check
 

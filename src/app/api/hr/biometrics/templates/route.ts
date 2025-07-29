@@ -1,11 +1,11 @@
-import "@/lib/hr/biometric-service"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {biometricService  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import "@/lib/hr/biometric-service";
+import "next/server";
+import "zod";
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {  biometricService  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 // Schema for biometric template registration;
 const biometricTemplateSchema = z.object({employeeId: z.string().min(1, "Employee ID is required"),

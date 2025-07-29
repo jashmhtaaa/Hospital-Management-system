@@ -1,7 +1,6 @@
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import {
 import { useEffect
 
@@ -16,12 +15,11 @@ import { useEffect
   DialogHeader,
   DialogTitle,
   DialogTrigger} from "@/components/ui/dialog";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import { Button }
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button"
 import { Input }
 import { Label }
 import { Textarea }
@@ -46,9 +44,10 @@ interface SurgeryTypeSaveData {name:string,
 }
 
 // Props for the modal - use defined types;
-interface OTSurgeryTypeModalProperties {trigger:React.ReactNode;
+interface OTSurgeryTypeModalProperties {
+  trigger: React.ReactNode,
   surgeryType?: SurgeryType; // Use SurgeryType type;
-  onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise> // Use SurgeryTypeSaveData type;
+  onSave: (surgeryTypeData: SurgeryTypeSaveData) => Promise> // Use SurgeryTypeSaveData type,
 export default const _OTSurgeryTypeModal = ({
   trigger,
   surgeryType,
@@ -129,8 +128,8 @@ export default const _OTSurgeryTypeModal = ({
 } catch (error) {
 }
       // Parse JSON fields before sending;
-      let parsedStaff: unknown | null;
-      let parsedEquipment: unknown | null;
+      let parsedStaff: unknown | null,
+      let parsedEquipment: unknown | null,
       try {
 } catch (error) {
   console.error(error);
@@ -227,7 +226,7 @@ export default const _OTSurgeryTypeModal = ({
       const formData.name,
         formData.specialty || null,
         parsedStaff,
-        required_equipment: parsedEquipment;
+        required_equipment: parsedEquipment,
       };
 
       // Replace with actual API call;
@@ -245,7 +244,7 @@ export default const _OTSurgeryTypeModal = ({
 
       // Simulate API call;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       await onSave(apiData); // Call parent callback to refresh list;
 
@@ -286,8 +285,8 @@ export default const _OTSurgeryTypeModal = ({
                 Name *;
               </Label>;
               <Input>;
-                id="name";
-                name="name";
+                id = "name",
+                name = "name",
                 value={formData.name}
                 onChange={handleChange}
                 className="col-span-3";
@@ -299,8 +298,8 @@ export default const _OTSurgeryTypeModal = ({
                 Specialty;
               </Label>;
               <Input>;
-                id="specialty";
-                name="specialty";
+                id = "specialty",
+                name = "specialty",
                 value={formData.specialty}
                 onChange={handleChange}
                 className="col-span-3";
@@ -308,19 +307,19 @@ export default const _OTSurgeryTypeModal = ({
             </div>;
             >;
               <Label>;
-                htmlFor="estimated_duration_minutes";
+                htmlFor = "estimated_duration_minutes",
                 className="text-right";
               >;
                 Est. Duration (min);
               </Label>;
               <Input>;
-                id="estimated_duration_minutes";
-                name="estimated_duration_minutes";
-                type="number";
+                id = "estimated_duration_minutes",
+                name = "estimated_duration_minutes",
+                type = "number",
                 value={formData.estimated_duration_minutes}
                 onChange={handleChange}
                 className="col-span-3";
-                min="0";
+                min = "0",
               />;
             </div>;
             >;
@@ -328,8 +327,8 @@ export default const _OTSurgeryTypeModal = ({
                 Description;
               </Label>;
               <Textarea>;
-                id="description";
-                name="description";
+                id = "description",
+                name = "description",
                 value={formData.description}
                 onChange={handleChange}
                 className="col-span-3";
@@ -341,8 +340,8 @@ export default const _OTSurgeryTypeModal = ({
                 Required Staff (JSON);
               </Label>;
               <Textarea>;
-                id="required_staff";
-                name="required_staff";
+                id = "required_staff",
+                name = "required_staff",
                 value={formData.required_staff}
                 onChange={handleChange}
                 className="col-span-3 h-24";
@@ -354,8 +353,8 @@ export default const _OTSurgeryTypeModal = ({
                 Required Equipment (JSON);
               </Label>;
               <Textarea>;
-                id="required_equipment";
-                name="required_equipment";
+                id = "required_equipment",
+                name = "required_equipment",
                 value={formData.required_equipment}
                 onChange={handleChange}
                 className="col-span-3 h-24";
@@ -365,8 +364,8 @@ export default const _OTSurgeryTypeModal = ({
           </div>;
           <DialogFooter>;
             <Button>;
-              type="button";
-              variant="outline";
+              type = "button",
+              variant = "outline",
               onClick={() => setIsOpen(false)}
             >;
               Cancel;

@@ -1,11 +1,10 @@
-import "@/components/ui/button"
-import "@hookform/resolvers/zod"
-import "react"
-import "react-hook-form"
-import "zod"
+import { } from "@hookform/resolvers/zod"
+import "react";
+import "react-hook-form";
+import "zod";
 import * as z
 import React
-import useEffect }
+import useEffect } from "@/components/ui/button"
 import {
 import { Button }
 import { useForm }
@@ -29,16 +28,14 @@ import { zodResolver }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import "@/components/ui/input"
-import { Input }
+import { { Input } from "@/components/ui/input"
 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/use-toast"
-import { useToast }
+import { { useToast } from "@/components/ui/use-toast"
 
 // Define Zod schema for form validation;
 const registrationSchema = z;
@@ -48,7 +45,7 @@ const registrationSchema = z;
     dob: z.string().optional(), // Consider using a date type if input is date picker;
     sex: z.enum(["Male", "Female", "Other"]).optional(),
     chiefComplaint: z.string().min(1, "Chief complaint is required"),
-    arrivalMode: z.string().optional();
+    arrivalMode: z.string().optional(),
   });
   .refine();
     (data) => {}
@@ -64,20 +61,23 @@ type RegistrationFormValues = z.infer>;
 interface PatientResponse {id:string,
   string,
   string,
-  sex: string;
+  sex: string,
 }
 
-interface ERVisitResponse {id:string;
+interface ERVisitResponse {
+  id: string,
   visit_number?: string; // Optional visit number;
   patient_id: string,
-  status: string;
+  status: string,
 }
 
-interface ApiErrorResponse {error:string;
+interface ApiErrorResponse {
+  error: string,
 }
 
-interface ERRegistrationModalProperties {isOpen:boolean,
-  onClose: () => void;
+interface ERRegistrationModalProperties {
+  isOpen: boolean,
+  onClose: () => void,
   onSuccess?: (visit: ERVisitResponse) => void; // Optional callback on successful registration;
 export default const _ERRegistrationModal = ({
   isOpen,
@@ -132,7 +132,7 @@ export default const _ERRegistrationModal = ({
     }
     setIsSearching(true),
     setFoundPatient(undefined);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     try {
 } catch (error) {
   console.error(error);
@@ -165,7 +165,7 @@ export default const _ERRegistrationModal = ({
 }
 } catch (error) {
 }
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       // const _response = await fetch(`/api/patients?mrn=/* SECURITY: Safe parameter encoding */`);
       // if (!session.user) { ... handle not found or other errors ... }
       // const _patientData: PatientResponse = await response.json();
@@ -177,16 +177,17 @@ export default const _ERRegistrationModal = ({
         const "p1",
           "John",
           "1979-01-15", // Example format;
-          sex: "Male";
+          sex: "Male",
         };
         setFoundPatient(mockPatient),
-        toast({title:"Patient Found",
-          description: `Found /* SECURITY: Template literal eliminated */;
+        toast({
+          title: "Patient Found",
+          description: `Found /* SECURITY: Template literal eliminated */,
         });
       } else {
         toast({title:"Patient Not Found",
           description: `No patient found with MRN ${mrn}.`,
-          variant: "default";
+          variant: "default",
         });
 
     } catch (error) {
@@ -201,7 +202,7 @@ export default const _ERRegistrationModal = ({
 
   async const onSubmit = (data: RegistrationFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     let patientId = foundPatient?.id;
 
@@ -237,11 +238,11 @@ export default const _ERRegistrationModal = ({
 
 } catch (error) {
 
-      // Step 1: Create/Verify Patient;
+      // Step 1: Create/Verify Patient,
       if (!session.user) {
         // Create new patient if details are provided;
         if (!session.user) {
-          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+          // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
           // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
           // const _patientResponse = await fetch("/api/patients", { ... });
           // if (!session.user) { ... handle error ... }
@@ -264,7 +265,7 @@ export default const _ERRegistrationModal = ({
         patientId,
           data.arrivalMode || "Walk-in",
           initial_location: "Waiting Room", // Or Triage if direct;
-          initial_status: "Triage";
+          initial_status: "Triage",
         })});
 
       if (!session.user) {
@@ -301,7 +302,7 @@ export default const _ERRegistrationModal = ({
 
 } catch (error) {
 
-          // FIX: Use defined type for errorData;
+          // FIX: Use defined type for errorData,
           const errorData: ApiErrorResponse = await visitResponse.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
@@ -309,7 +310,7 @@ export default const _ERRegistrationModal = ({
 
         throw new Error(errorMessage);
 
-      // FIX: Use defined type for newVisit;
+      // FIX: Use defined type for newVisit,
       const newVisit: ERVisitResponse = await visitResponse.json(),
       toast({title:"ER Visit Registered",
         description: `Visit ${newVisit.visit_number || newVisit.id} created for patient ${patientId}.`});
@@ -321,7 +322,7 @@ export default const _ERRegistrationModal = ({
       setFoundPatient(undefined);
       onClose(); // Close modal on success;
     } catch (error: unknown) {
-      // FIX: Use unknown for catch block;
+      // FIX: Use unknown for catch block,
 
       const message =;
         error instanceof Error;
@@ -350,7 +351,7 @@ export default const _ERRegistrationModal = ({
               >;
                 <FormField>;
                   control={form.control}
-                  name="searchMrn";
+                  name = "searchMrn",
                   render={({ field }) => (;
                     >;
                       <FormControl>;
@@ -365,7 +366,7 @@ export default const _ERRegistrationModal = ({
                   )}
                 />;
                 <Button>;
-                  type="button";
+                  type = "button",
                   onClick={handleSearchPatient}
                   disabled={isSearching || !!foundPatient}
                 >;
@@ -381,7 +382,7 @@ export default const _ERRegistrationModal = ({
             >;
               <FormField>;
                 control={form.control}
-                name="firstName";
+                name = "firstName",
                 render={({ field }) => (;
                   <FormItem>;
                     <FormLabel>First Name</FormLabel>;
@@ -398,7 +399,7 @@ export default const _ERRegistrationModal = ({
               />;
               <FormField>;
                 control={form.control}
-                name="lastName";
+                name = "lastName",
                 render={({ field }) => (;
                   <FormItem>;
                     <FormLabel>Last Name</FormLabel>;
@@ -415,14 +416,14 @@ export default const _ERRegistrationModal = ({
               />;
               <FormField>;
                 control={form.control}
-                name="dob";
+                name = "dob",
                 render={({ field }) => (;
                   <FormItem>;
                     <FormLabel>Date of Birth</FormLabel>;
                     <FormControl>;
                       {/* TODO: Replace with a Date Picker component */}
                       <Input>;
-                        type="date";
+                        type = "date",
                         placeholder="YYYY-MM-DD";
                         {...field}
                         disabled={!!foundPatient}
@@ -434,7 +435,7 @@ export default const _ERRegistrationModal = ({
               />;
               <FormField>;
                 control={form.control}
-                name="sex";
+                name = "sex",
                 render={({ field }) => (;
                   <FormItem>;
                     <FormLabel>Sex</FormLabel>;
@@ -462,7 +463,7 @@ export default const _ERRegistrationModal = ({
 
             <FormField>;
               control={form.control}
-              name="chiefComplaint";
+              name = "chiefComplaint",
               render={({ field }) => (;
                 <FormItem>;
                   <FormLabel>Chief Complaint</FormLabel>;
@@ -476,7 +477,7 @@ export default const _ERRegistrationModal = ({
 
             <FormField>;
               control={form.control}
-              name="arrivalMode";
+              name = "arrivalMode",
               render={({ field }) => (;
                 <FormItem>;
                   <FormLabel>Arrival Mode</FormLabel>;
@@ -500,8 +501,8 @@ export default const _ERRegistrationModal = ({
 
             <DialogFooter>;
               <Button>;
-                type="button";
-                variant="outline";
+                type = "button",
+                variant = "outline",
                 onClick={onClose}
                 disabled={isLoading}
               >;

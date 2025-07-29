@@ -1,8 +1,7 @@
-import "@/lib/utils"
-import "class-variance-authority"
-import "react"
+import { } from "class-variance-authority"
+import "react";
 import * as React
-import { cn }
+import { cn } from "@/lib/utils"
 import { cva }
 
 const badgeVariants = cva();

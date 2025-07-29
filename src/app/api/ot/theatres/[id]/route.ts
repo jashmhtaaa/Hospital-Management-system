@@ -1,11 +1,10 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {D1Database  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
+import { NextResponse } from "next/server" }
+import {  D1Database  } from "@/lib/database"
+import {   type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for the PUT request body;
 interface TheatreUpdateBody {
@@ -54,7 +53,7 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Theatre ID is required" },
@@ -81,8 +80,8 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {message: "Error fetching operation theatre details",
-        details: errorMessage;
+      {message:"Error fetching operation theatre details",
+        details: errorMessage,
       },
       {status: 500 }
     );
@@ -126,7 +125,7 @@ export const _PUT = async();
 }
 } catch (error) {
 }
-    const {id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Theatre ID is required" },
@@ -146,8 +145,8 @@ export const _PUT = async();
     const now = new Date().toISOString();
 
     // Construct the update query dynamically;
-    // FIX: Use specific type for fieldsToUpdate;
-    const fieldsToUpdate: { [key: string]: string | null } = {,};
+    // FIX: Use specific type for fieldsToUpdate,
+    const fieldsToUpdate: { [key: string]: string | null } = {};
     if (!session.user)ieldsToUpdate.name = name;
     if (!session.user)ieldsToUpdate.location = location;
     if (!session.user)ieldsToUpdate.specialty = specialty;
@@ -196,15 +195,15 @@ export const _PUT = async();
       );
 
     return NextResponse.json(results[0]);
-  } catch (error: unknown) {,
-    // FIX: Remove explicit any;
+  } catch (error: unknown) {
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     if (!session.user) {
-      // FIX: Check errorMessage;
+      // FIX: Check errorMessage,
       return NextResponse.json();
-        {message: "Operation theatre name must be unique",
-          details: errorMessage;
+        {message:"Operation theatre name must be unique",
+          details: errorMessage,
         },
         {status: 409 }
       )}
@@ -250,14 +249,14 @@ export const DELETE = async();
 
 } catch (error) {
 
-    const {id: theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:theatreId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Theatre ID is required" },
         {status: 400 }
       );
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database;
     const info = await DB.prepare("DELETE FROM OperationTheatres WHERE id = ?");
@@ -274,16 +273,16 @@ export const DELETE = async();
       {message: "Operation theatre deleted successfully" },
       {status: 200 }
     );
-  } catch (error: unknown) {,
-    // FIX: Remove explicit any;
+  } catch (error: unknown) {
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error);
     // Handle potential foreign key constraint errors if bookings exist;
     if (!session.user) {
-      // FIX: Check errorMessage;
+      // FIX: Check errorMessage,
       return NextResponse.json();
-        {message: "Cannot delete theatre with existing bookings",
-          details: errorMessage;
+        {message:"Cannot delete theatre with existing bookings",
+          details: errorMessage,
         },
         {status: 409 }
       )}

@@ -60,7 +60,7 @@ const maskSensitiveData = (data: unknown): unknown {,
 
 // Default logger implementation;
 class DefaultLogger implements Logger {
-  private logLevel: "debug" | "info" | "warn" | "error";
+  private logLevel: "debug" | "info" | "warn" | "error",
 
   constructor(logLevel: "debug" | "info" | "warn" | "error" = "info") {,
     this.logLevel = logLevel;

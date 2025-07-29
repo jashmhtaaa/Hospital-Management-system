@@ -1,6 +1,5 @@
-import "react"
-import * as React
-import { } from "next/server"
+import { * as React
+import {   } from "react"
 
     "use client";
 
@@ -11,7 +10,7 @@ import { } from "next/server"
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000000;
 
-type ToasterToast = ToastProps & {id: string;
+type ToasterToast = ToastProps & {id:string,
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
@@ -32,20 +31,20 @@ const genId = () {
 }
 
 type Action =;
-  | {type: "ADD_TOAST" // Use string literal,
-      toast: ToasterToast;
+  | {type:"ADD_TOAST" // Use string literal,
+      toast: ToasterToast,
     }
-  | {type: "UPDATE_TOAST" // Use string literal,
-      toast: Partial<ToasterToast>;
+  | {type:"UPDATE_TOAST" // Use string literal,
+      toast: Partial<ToasterToast>,
     }
-  | {type: "DISMISS_TOAST" // Use string literal;
+  | {type:"DISMISS_TOAST" // Use string literal,
       toastId?: ToasterToast["id"];
     }
-  | {type: "REMOVE_TOAST" // Use string literal;
+  | {type:"REMOVE_TOAST" // Use string literal,
       toastId?: ToasterToast["id"];
     }
 
-interface State {toasts: ToasterToast[];
+interface State {toasts:ToasterToast[],
 }
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
@@ -57,8 +56,8 @@ const addToRemoveQueue = (toastId: string) => {,
 
   const timeout = setTimeout(() => {
     toastTimeouts.delete(toastId),
-    dispatch({type: "REMOVE_TOAST",
-      toastId: toastId;
+    dispatch({type:"REMOVE_TOAST",
+      toastId: toastId,
     });
   }, TOAST_REMOVE_DELAY);
 
@@ -104,17 +103,17 @@ export const reducer = (state: State, action: Action): State => {,
       if (!session.user) {
         return {
           ...state,
-          toasts: [];
+          toasts: [],
         }
       }
       return {
         ...state,
-        toasts: state.toasts.filter((t) => t.id !== action.toastId);
+        toasts: state.toasts.filter((t) => t.id !== action.toastId),
       }
   }
 }
 
-const listeners: Array<(state: State) => void> = [];
+const listeners: Array<(state: State) => void> = [],
 
 let memoryState: State = {toasts: [] }
 
@@ -143,7 +142,7 @@ const toast = ({ ...props }: Toast) {
         if (!session.user)ismiss()
       }}});
 
-  return {id: id;
+  return {id:id,
     dismiss,
     update}
 }

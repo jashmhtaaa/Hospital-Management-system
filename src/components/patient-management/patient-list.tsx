@@ -1,8 +1,7 @@
-import "next/navigation"
-import "react"
+import { } from "react"
 import React
 import type
-import useEffect }
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -29,9 +28,8 @@ import { useState
   CardHeader,
   CardTitle;
 } from "../ui/card";
-import "../ui/button"
-import "../ui/input"
-import { Button }
+import { } from "../ui/input"
+import { Button } from "../ui/button"
 import { Input }
 
   Select,
@@ -40,14 +38,12 @@ import { Input }
   SelectTrigger,
   SelectValue;
 } from "../ui/select";
-import "../../hooks/use-toast"
-import "../ui/badge"
-import "date-fns"
-import "lucide-react"
-import Filter }
-import RefreshCw
+import { } from "../../hooks/use-toast"
+import { } from "date-fns"
+import "lucide-react";
+import Filter, RefreshCw
 import UserPlus
-import { Badge }
+import  } from "../ui/badge" Badge }
 import { format }
 import { Search
 import { useToast }
@@ -63,7 +59,7 @@ interface Patient {id:string,
   string,
   string,
   string,
-  createdAt: string;
+  createdAt: string,
   contact?: {
     phoneMobile?: string;
     email?: string;
@@ -96,7 +92,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   const [searchFilters, setSearchFilters] = useState({mrn:"",
     "",
     "",
-    status: "";
+    status: "",
   });
 
   // Advanced filter visibility;
@@ -195,7 +191,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
   const handleStatusChange = (value: string) => {
     setSearchFilters((prev) => ({
       ...prev,
-      status: value;
+      status: value,
     }));
   };
 
@@ -334,8 +330,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
           </div>;
           >;
             <Button>;
-              variant="outline";
-              size="sm";
+              variant = "outline",
+              size = "sm",
               onClick={handleRefresh}
               disabled={loading}
             >;
@@ -343,7 +339,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
               Refresh;
             </Button>;
             <Button>;
-              size="sm";
+              size = "sm",
               onClick={handleCreatePatient}
             >;
               <UserPlus className="h-4 w-4 mr-2" />;
@@ -357,7 +353,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
           >;
             >;
               <Input>;
-                name="lastName";
+                name = "lastName",
                 placeholder="Last Name";
                 value={searchFilters.lastName}
                 onChange={handleFilterChange}
@@ -365,7 +361,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
             </div>;
             >;
               <Input>;
-                name="firstName";
+                name = "firstName",
                 placeholder="First Name";
                 value={searchFilters.firstName}
                 onChange={handleFilterChange}
@@ -373,8 +369,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
             </div>;
             >;
               <Input>;
-                name="mrn";
-                placeholder="MRN";
+                name = "mrn",
+                placeholder = "MRN",
                 value={searchFilters.mrn}
                 onChange={handleFilterChange}
               />;
@@ -387,8 +383,8 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
             </div>;
             >;
               <Button>;
-                type="button";
-                variant="outline";
+                type = "button",
+                variant = "outline",
                 onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
               >;
                 <Filter className="h-4 w-4 mr-2" />;
@@ -401,7 +397,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
             >;
               >;
                 <Input>;
-                  name="phone";
+                  name = "phone",
                   placeholder="Phone Number";
                   value={searchFilters.phone}
                   onChange={handleFilterChange}
@@ -409,7 +405,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
               </div>;
               >;
                 <Input>;
-                  name="dateOfBirth";
+                  name = "dateOfBirth",
                   placeholder="Date of Birth (YYYY-MM-DD)";
                   value={searchFilters.dateOfBirth}
                   onChange={handleFilterChange}
@@ -434,13 +430,13 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
               </div>;
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => {
                     setSearchFilters({mrn:"",
                       "",
                       "",
-                      status: "";
+                      status: "",
                     });
                   }}
                 >;
@@ -489,7 +485,7 @@ export default const _PatientList = ({ initialData }: PatientListProps) {
                 patients.map((patient) => (;
                   <TableRow>;
                     key={patient.id}
-                    className="cursor-pointer hover:bg-muted/50";
+                    className="cursor-pointer hover:bg-muted/50",
                     onClick={() => handlePatientSelect(patient.id)}
                   >;
                     <TableCell className="font-medium">{patient.mrn}>;

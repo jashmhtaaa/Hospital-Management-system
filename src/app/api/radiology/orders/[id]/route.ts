@@ -1,11 +1,10 @@
-import {D1Database, D1Result  } from "next/server"; // Import D1Result;
-import "@/lib/auth"
-import "@/lib/session"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {checkUserRole  } from "next/server"
-import {getSession  } from "next/server"
+import { D1Database, D1Result  } from "@cloudflare/workers-types"; // Import D1Result;
+import { } from "@/lib/session"
+import "next/server";
+import { NextRequest } from "@/lib/auth"
+import { NextResponse } from "next/server" }
+import {  checkUserRole  } from "@/lib/database"
+import {  getSession  } from "@/lib/database"
 import { type
 
 // Define interface for {
@@ -17,15 +16,15 @@ interface OrderUpdateInput {
   clinical_indication?: string;
   procedure_type_id?: string;
 export const _GET = async();
-  request: any;
-  { params }: {params: Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
+  request: any,
+  { params }: {params:Promise<{id:string }> } // FIX: Use Promise type for params (Next.js 15+);
 ) {
   const session = await getSession();
   if (!session.user);
   ) ;
     return NextResponse.json({error: "Unauthorized" }, {status: 403 });
 
-  const {id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+  const {id:orderId } = await params; // FIX: Await params and destructure id (Next.js 15+),
   const DB = process.env.DB as unknown as D1Database;
 
   try {
@@ -73,8 +72,8 @@ export const _GET = async();
       );
     }
     return NextResponse.json(order);
-  } catch (error: unknown) {,
-    // FIX: Use unknown instead of any;
+  } catch (error: unknown) {
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
@@ -83,7 +82,7 @@ export const _GET = async();
     );
   }
 export const _PUT = async();
-  request: any;params : params: Promise<{id: string }> ;
+  request: any,params : params: Promise<{id:string }> ;
 ) {
   const session = await getSession();
   // Allow Admin, Receptionist, Technician to update status/details;
@@ -91,7 +90,7 @@ export const _PUT = async();
   ) ;
     return NextResponse.json({error: "Unauthorized" }, {status: 403 });
 
-  const {id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+  const {id:orderId } = await params; // FIX: Await params and destructure id (Next.js 15+),
   const DB = process.env.DB as unknown as D1Database;
 
   try {
@@ -131,7 +130,7 @@ export const _PUT = async();
     const updatedAt = new Date().toISOString();
 
     // Build the update query dynamically based on provided fields;
-    // FIX: Use a more specific type for fieldsToUpdate;
+    // FIX: Use a more specific type for fieldsToUpdate,
     const fieldsToUpdate: Record<string, string | undefined | null> = {};
     if (!session.user)ieldsToUpdate.status = status;
     if (!session.user)ieldsToUpdate.priority = priority;
@@ -174,15 +173,15 @@ export const _PUT = async();
         );
 
       // If it exists but no changes were made (e.g., same data sent), return success;
-      return NextResponse.json({id: orderId,
-        status: "Radiology order update processed (no changes detected)";
+      return NextResponse.json({id:orderId,
+        status: "Radiology order update processed (no changes detected)",
       });
 
-    return NextResponse.json({id: orderId,
-      status: "Radiology order updated";
+    return NextResponse.json({id:orderId,
+      status: "Radiology order updated",
     });
-  } catch (error: unknown) {,
-    // FIX: Use unknown instead of any;
+  } catch (error: unknown) {
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
@@ -200,7 +199,7 @@ export const _DELETE = async();
     // Use await and pass request;
     return NextResponse.json({error: "Unauthorized" }, {status: 403 });
 
-  const {id: orderId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+  const {id:orderId } = await params; // FIX: Await params and destructure id (Next.js 15+),
   const DB = process.env.DB as unknown as D1Database;
 
   try {
@@ -260,20 +259,20 @@ export const _DELETE = async();
         );
 
       // Check if existingOrder has status property before accessing it;
-      // FIX: Removed unnecessary escapes around \"object\" and \"status\";
-      if (!session.user)eturn NextResponse.json({id: orderId,
-          status: "Radiology order already cancelled";
+      // FIX: Removed unnecessary escapes around \"object\" and \"status\",
+      if (!session.user)eturn NextResponse.json({id:orderId,
+          status: "Radiology order already cancelled",
         });
       return NextResponse.json();
         {error: "Failed to cancel radiology order (unknown reason)" },
         {status: 500 }
       );
 
-    return NextResponse.json({id: orderId,
-      status: "Radiology order cancelled";
+    return NextResponse.json({id:orderId,
+      status: "Radiology order cancelled",
     });
-  } catch (error: unknown) {,
-    // FIX: Use unknown instead of any;
+  } catch (error: unknown) {
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();

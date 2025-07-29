@@ -1,9 +1,7 @@
-import "@/lib/utils"
-import "react"
-import forwardRef }
-import React
+import { } from "@/lib/utils"
+import { forwardRef, React
 import SelectHTMLAttributes
-import { cn }
+import  } from "react" cn }
 import { type
 
   }>;
@@ -17,8 +15,8 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(;
       >;
         <select>;
           className={cn();
-            "flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus: outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50";
-            error && "border-red-500 focus: ring-red-500";
+            "flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus: outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50",
+            error && "border-red-500 focus: ring-red-500",
             className;
           )}
           ref={ref}
@@ -39,6 +37,6 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(;
 
 );
 
-Select.displayName = "Select";
+Select.displayName = "Select",
 
 export { Select };

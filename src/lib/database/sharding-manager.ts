@@ -1,13 +1,12 @@
-import "@/lib/cache/redis"
-import "@/lib/core/config.service"
-import "@/lib/core/logging"
-import "@/lib/monitoring/metrics-collector"
-import "@prisma/client"
-import {ConfigService  } from "next/server"
-import {logger  } from "next/server"
-import {metricsCollector  } from "next/server"
-import {PrismaClient  } from "next/server"
-import {RedisService  } from "next/server"
+import { } from "@/lib/core/config.service"
+import "@/lib/core/logging";
+import "@/lib/monitoring/metrics-collector";
+import "@prisma/client";
+import {  ConfigService  } from "@/lib/cache/redis"
+import {  logger  } from "@/lib/database"
+import {  metricsCollector  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
+import {  RedisService  } from "@/lib/database"
 
 /**;
  * Shard Configuration for a specific entity;
@@ -15,7 +14,7 @@ import {RedisService  } from "next/server"
 interface ShardConfig {
 
   // Name of the entity being sharded;
-  entityName: string;
+  entityName: string,
 
   // Key used for sharding (e.g., tenantId, regionId);
   shardKey: string;
@@ -36,15 +35,14 @@ interface ShardConfig {
   lookupMap?: Record>;
 
   // Connection details for each shard;
-  shardConnections: Array>;
+  shardConnections: Array>,
 }
 
 /**;
  * Shard Resolver interface;
  */;
 interface ShardResolver {
-
-  getShardIndex(shardKey: string | number): number;
+  getShardIndex(shardKey: string | number): number,
   getShardConnection(shardKey: string | number, readOnly?: boolean): string;
   getAllShardConnections(readOnly?: boolean): string[];
 }
@@ -105,7 +103,7 @@ class HashShardResolver implements ShardResolver {
   getAllShardConnections(readOnly = false): string[] {
     if (!session.user) {
       // Get all read-only connections, or default connections if no read-only exists;
-      const connections: string[] = [];
+      const connections: string[] = [],
 
       for (let i = 0; i < this.config.shardCount; i++) {
         const readOnlyConn = this.config.shardConnections.find();
@@ -199,7 +197,7 @@ class RangeShardResolver implements ShardResolver {
   getAllShardConnections(readOnly = false): string[] {
     if (!session.user) {
       // Get all read-only connections, or default connections if no read-only exists;
-      const connections: string[] = [];
+      const connections: string[] = [],
 
       for (let i = 0; i < this.config.shardCount; i++) {
         const readOnlyConn = this.config.shardConnections.find();
@@ -284,7 +282,7 @@ class LookupShardResolver implements ShardResolver {
   getAllShardConnections(readOnly = false): string[] {
     if (!session.user) {
       // Get all read-only connections, or default connections if no read-only exists;
-      const connections: string[] = [];
+      const connections: string[] = [],
 
       for (let i = 0; i < this.config.shardCount; i++) {
         const readOnlyConn = this.config.shardConnections.find();
@@ -360,7 +358,7 @@ class LookupShardResolver implements ShardResolver {
 
       // Create resolvers for each entity;
       for (const config of configs) {
-        let resolver: ShardResolver;
+        let resolver: ShardResolver,
 
         switch (config.algorithm) {
           case "hash": any;
@@ -382,7 +380,7 @@ class LookupShardResolver implements ShardResolver {
         for (const connectionString of connections) {
           if (!session.user) {
             const prisma = new PrismaClient({
-              {url: connectionString;
+              {url:connectionString,
                 }
               }
             });
@@ -398,15 +396,15 @@ class LookupShardResolver implements ShardResolver {
       }
 
       // Track metrics;
-      metricsCollector.incrementCounter("database.sharding.initialization", 1, {entityCount: String(configs.length),
-        connectionCount: String(this.connectionPools.size);
+      metricsCollector.incrementCounter("database.sharding.initialization", 1, {entityCount:String(configs.length),
+        connectionCount: String(this.connectionPools.size),
       });
     } catch (error) {
       logger.error("Failed to initialize ShardingManager", { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.sharding.errors", 1, {errorType: error.name || "unknown",
-        operation: "initialization";
+      metricsCollector.incrementCounter("database.sharding.errors", 1, {errorType:error.name || "unknown",
+        operation: "initialization",
       });
 
       throw error;
@@ -422,7 +420,7 @@ class LookupShardResolver implements ShardResolver {
    */;
   getClientForShard();
     entityName: string,
-    shardKey: string | number;
+    shardKey: string | number,
     readOnly = false;
   ): PrismaClient {
     try {
@@ -473,7 +471,7 @@ class LookupShardResolver implements ShardResolver {
       // Track metrics;
       metricsCollector.incrementCounter("database.sharding.client_requests", 1, {
         entityName,
-        readOnly: String(readOnly);
+        readOnly: String(readOnly),
       });
 
       return client;
@@ -488,7 +486,7 @@ class LookupShardResolver implements ShardResolver {
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "getClient";
+        operation: "getClient",
       });
 
       throw error;
@@ -551,7 +549,7 @@ class LookupShardResolver implements ShardResolver {
       metricsCollector.incrementCounter("database.sharding.all_clients_requests", 1, {
         entityName,
         readOnly: String(readOnly),
-        clientCount: String(clients.length);
+        clientCount: String(clients.length),
       });
 
       return clients;
@@ -565,7 +563,7 @@ class LookupShardResolver implements ShardResolver {
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "getAllClients";
+        operation: "getAllClients",
       });
 
       throw error;
@@ -579,7 +577,7 @@ class LookupShardResolver implements ShardResolver {
    */;
   async executeAcrossShards<T>(;
     entityName: string,
-    fn: (client: PrismaClient) => Promise>;
+    fn: (client: PrismaClient) => Promise>,
     readOnly = true;
   ): Promise<T[]> {
     try {
@@ -671,7 +669,7 @@ class LookupShardResolver implements ShardResolver {
       // Track metrics;
       metricsCollector.recordTimer("database.sharding.cross_shard_execution_time", duration, {
         entityName,
-        readOnly: String(readOnly);
+        readOnly: String(readOnly),
       });
 
       return flatResults;
@@ -685,7 +683,7 @@ class LookupShardResolver implements ShardResolver {
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "executeAcrossShards";
+        operation: "executeAcrossShards",
       });
 
       throw error;
@@ -699,7 +697,7 @@ class LookupShardResolver implements ShardResolver {
    */;
   async cacheShardMapping();
     entityName: string,
-    shardKey: string | number;
+    shardKey: string | number,
     ttlSeconds = 3600 // 1 hour default;
   ): Promise<void> {
     try {
@@ -759,7 +757,7 @@ class LookupShardResolver implements ShardResolver {
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "cacheMapping";
+        operation: "cacheMapping",
       });
 
   /**;
@@ -832,7 +830,7 @@ class LookupShardResolver implements ShardResolver {
       metricsCollector.incrementCounter("database.sharding.errors", 1, {
         entityName,
         errorType: error.name || "unknown",
-        operation: "getCachedMapping";
+        operation: "getCachedMapping",
       });
 
       return null;

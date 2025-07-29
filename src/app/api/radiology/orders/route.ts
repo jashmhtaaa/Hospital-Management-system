@@ -1,7 +1,6 @@
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {type
+import { { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import { type
 
 // src/app/api/radiology/orders/route.ts;
 // import { getRequestContext } from "next/server"; // Import when ready to use D1;
@@ -21,7 +20,7 @@ interface RadiologyOrderFilters {
 
 interface RadiologyOrderInput {patient_id: number,
   string,
-  body_part: string;
+  body_part: string,
   order_date?: string;
   priority?: string;
   clinical_history?: string;
@@ -68,7 +67,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {,
       undefined,
       "Patient has history of tuberculosis",
       created_at: "2025-04-28T09:15:00Z",
-      updated_at: "2025-04-28T09:30:00Z";
+      updated_at: "2025-04-28T09:30:00Z",
     },
     {id: 2,
       102,
@@ -81,7 +80,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {,
       undefined,
       "Headache and dizziness following fall",
       "2025-04-28T10:30:00Z",
-      updated_at: "2025-04-28T14:15:00Z";
+      updated_at: "2025-04-28T14:15:00Z",
     },
     {id: 3,
       103,
@@ -94,7 +93,7 @@ async const getRadiologyOrdersFromDB = (filters: RadiologyOrderFilters) {,
       "2025-04-28T09:00:00Z",
       "Lower back pain radiating to left leg",
       "2025-04-27T14:00:00Z",
-      updated_at: "2025-04-28T09:15:00Z";
+      updated_at: "2025-04-28T09:15:00Z",
     }];
 
   return mockRadiologyOrders.filter((order) => {
@@ -165,7 +164,7 @@ async const createRadiologyOrderInDB = (orderData: RadiologyOrderInput) {,
     undefined,
     undefined,
     timestamp: new Date().toISOString(),
-    updated_at: new Date().toISOString();
+    updated_at: new Date().toISOString(),
   };
 }
 
@@ -193,7 +192,7 @@ async const getRadiologyOrderByIdFromDB = (id: number) {,
       updated_at: "2025-04-28T09:30:00Z",
       35,
         "+91-9876543210",
-        medical_record_number: "MRN00101";
+        medical_record_number: "MRN00101",
       }
     },
     {id: 3,
@@ -210,7 +209,7 @@ async const getRadiologyOrderByIdFromDB = (id: number) {,
       updated_at: "2025-04-28T09:15:00Z",
       28,
         "+91-9876543212",
-        medical_record_number: "MRN00103";
+        medical_record_number: "MRN00103",
       },
       "L4-L5 disc herniation with compression of left L5 nerve root. Mild degenerative changes at L3-L4 and L5-S1 levels.",
         "Neurosurgical consultation recommended. Consider conservative management with physical therapy and pain management initially.";
@@ -236,7 +235,7 @@ async const updateRadiologyOrderInDB = (;
   return {
     id,
     ...updateData,
-    updated_at: new Date().toISOString();
+    updated_at: new Date().toISOString(),
   };
 }
 

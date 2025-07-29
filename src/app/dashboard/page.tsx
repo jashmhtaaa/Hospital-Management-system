@@ -1,7 +1,6 @@
-import "react"
-import React
+import { React
 import type
-import useState }
+import useState } from "react"
 import {
 import { useEffect
 
@@ -16,11 +15,10 @@ export const dynamic = "force-dynamic";
   CardTitle,
   CardContent} from "@/components/ui/card";
 import { DashboardLayout } from "@/components/layout/DashboardLayout"; // Use DashboardLayout from origin/master;
-import "@/components/ui/button"
-import "@/components/ui/skeleton"
-import "next/link"
+import { } from "@/components/ui/skeleton"
+import "next/link";
 import Link
-import { Button }
+import { Button } from "@/components/ui/button"
 import { Skeleton }
 
   UsersIcon,
@@ -53,14 +51,14 @@ interface PharmacyStatsResponse {
 interface DashboardStats {totalPatients:number,
   number,
   number,
-  lowStockItems: number;
+  lowStockItems: number,
 }
 
 const Dashboard = () {
   const [stats, setStats] = useState<DashboardStats>({totalPatients:0,
     0,
     0,
-    lowStockItems: 0;
+    lowStockItems: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -119,8 +117,7 @@ const Dashboard = () {
             pharmacyResponse].find((_response_) => !_response_.ok);
           throw new Error();
             `Failed to fetch dashboard data: ${failedResponse?.statusText ||;
-              "Unknown error"} (status: ${failedResponse?.status ||;
-              "N/A"})`;
+              "Unknown error"} (status: ${failedResponse?.status ||, "N/A"})`;
           );
 
         const opdData = (await opdResponse.json()) as OpdStatsResponse;
@@ -133,7 +130,7 @@ const Dashboard = () {
         setStats({totalPatients:opdData?.totalPatients ?? 0,
           ipdData?.activeAdmissions ?? 0,
           billingData?.pendingBills ?? 0,
-          lowStockItems: pharmacyData?.lowStockItems ?? 0;
+          lowStockItems: pharmacyData?.lowStockItems ?? 0,
         });
       } catch (error_) ;
 
@@ -146,7 +143,7 @@ const Dashboard = () {
           totalPatients: 0,
           0,
           0,
-          lowStockItems: 0);finally ;
+          lowStockItems: 0),finally ;
         setLoading(false);
     };
 
@@ -204,7 +201,7 @@ const Dashboard = () {
       </Card>;
     );
   };
-  StatCard.displayName = "StatCard";
+  StatCard.displayName = "StatCard",
 
   // --- JSX (Using DashboardLayout) ---;
   return();
@@ -246,7 +243,7 @@ const Dashboard = () {
                 icon={UsersIcon}
                 link="/dashboard/patients";
                 linkText="View Patients";
-                colorClass="blue";
+                colorClass = "blue",
               />;
               <StatCard>;
                 title="Today"s Appointments";
@@ -254,7 +251,7 @@ const Dashboard = () {
                 icon={CalendarIcon}
                 link="/dashboard/opd";
                 linkText="View OPD";
-                colorClass="green";
+                colorClass = "green",
               />;
               <StatCard>;
                 title="Active Admissions";
@@ -262,7 +259,7 @@ const Dashboard = () {
                 icon={BedIcon}
                 link="/dashboard/ipd";
                 linkText="View IPD";
-                colorClass="purple";
+                colorClass = "purple",
               />;
               <StatCard>;
                 title="Available Beds";
@@ -270,7 +267,7 @@ const Dashboard = () {
                 icon={BedDoubleIcon}
                 link="/dashboard/ipd";
                 linkText="Bed Management";
-                colorClass="indigo";
+                colorClass = "indigo",
               />;
               <StatCard>;
                 title="Pending Bills";
@@ -278,7 +275,7 @@ const Dashboard = () {
                 icon={CreditCardIcon}
                 link="/dashboard/billing";
                 linkText="View Billing";
-                colorClass="red";
+                colorClass = "red",
               />;
               <StatCard>;
                 title="Low Stock Items";
@@ -286,7 +283,7 @@ const Dashboard = () {
                 icon={PillIcon}
                 link="/dashboard/pharmacy";
                 linkText="View Pharmacy";
-                colorClass="amber";
+                colorClass = "amber",
               />;
             </div>;
             {/* Recent Activity Sections (from HEAD - Consider making these separate components) */}
@@ -339,19 +336,19 @@ const Dashboard = () {
                     <ActivityItem>;
                       name="Neha Gupta";
                       detail="General Medicine";
-                      time="10:00 AM";
+                      time="10:00 AM",
                       doctor="Dr. John Smith";
                     />;
                     <ActivityItem>;
                       name="Rajesh Kumar";
-                      detail="Orthopedics";
-                      time="11:30 AM";
+                      detail = "Orthopedics",
+                      time="11:30 AM",
                       doctor="Dr. Robert Williams";
                     />;
                     <ActivityItem>;
                       name="Ananya Desai";
-                      detail="Pediatrics";
-                      time="2:15 PM";
+                      detail = "Pediatrics",
+                      time="2:15 PM",
                       doctor="Dr. Sarah Johnson";
                     />;
                   </div>;
@@ -371,12 +368,12 @@ const Dashboard = () {
     </DashboardLayout>;
   );
 
-Dashboard.displayName = "Dashboard";
+Dashboard.displayName = "Dashboard",
 
 // --- Helper Component for Activity Lists (from HEAD) ---;
 interface ActivityItemProperties {name:string,
   string,
-  doctor: string;
+  doctor: string,
 
 const ActivityItem: React.FC<ActivityItemProperties> = ({
   name,
@@ -396,6 +393,6 @@ const ActivityItem: React.FC<ActivityItemProperties> = ({
     </div>;
   </div>;
 );
-ActivityItem.displayName = "ActivityItem";
+ActivityItem.displayName = "ActivityItem",
 
 export default Dashboard;

@@ -1,7 +1,6 @@
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {type
+import { { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import { type
 
 // src/app/api/portal/patient/auth/route.ts;
 // import { getRequestContext } from "next/server"; // Import when ready to use D1;
@@ -54,7 +53,7 @@ async const authenticatePatient = (email: string, password: string) {,
       "123 Main St, Anytown",
       medical_record_number: "MRN00101",
       "+91-9876543210",
-      created_at: "2025-01-01T10:00:00Z";
+      created_at: "2025-01-01T10:00:00Z",
     };
   }
 
@@ -72,8 +71,8 @@ async const registerPatient = (patientData: RegisterData) {,
   // const _passwordHash = await bcrypt.hash(patientData.password, 10);
   //;
   // // Generate a unique medical record number;
-  // const _mrnPrefix = "MRN";
-  // const {results: lastMRN } = await env.DB.prepare();
+  // const _mrnPrefix = "MRN",
+  // const {results:lastMRN } = await env.DB.prepare();
   //   `SELECT medical_record_number FROM patients;
   //    WHERE medical_record_number LIKE ?;
   //    ORDER BY id DESC LIMIT 1`;

@@ -1,8 +1,7 @@
-import "react"
-import React
+import { React
 import type
 import {
-import { useState }
+import { useState } from "react"
 
 }
 
@@ -14,12 +13,11 @@ import { useState }
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/textarea"
-import "lucide-react"
-import { Button }
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import "@/components/ui/textarea";
+import "lucide-react";
+import { Button } from "@/components/ui/button"
 import { Input }
 import { Label }
 import { Loader2 }
@@ -30,8 +28,9 @@ import { Textarea }
 }
 
 // Define the type for the component props;
-interface CreateProcedureTypeModalProperties {isOpen:boolean,
-  (data: ProcedureTypeFormData) => Promise<void>;
+interface CreateProcedureTypeModalProperties {
+  isOpen: boolean,
+  (data: ProcedureTypeFormData) => Promise<void>,
 export default const _CreateProcedureTypeModal = ({
   isOpen,
   onClose,
@@ -44,7 +43,7 @@ export default const _CreateProcedureTypeModal = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!session.user) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       return;
     }
     setIsSubmitting(true);
@@ -93,7 +92,7 @@ export default const _CreateProcedureTypeModal = ({
     } catch (error) { // FIX: Added error parameter;
 
       // Optionally show an error message to the user;
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
     } finally {
       setIsSubmitting(false);
 
@@ -113,7 +112,7 @@ export default const _CreateProcedureTypeModal = ({
                 Name *;
               </Label>;
               <Input>;
-                id="name";
+                id = "name",
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="col-span-3";
@@ -126,7 +125,7 @@ export default const _CreateProcedureTypeModal = ({
                 Modality Type;
               </Label>;
               <Input>;
-                id="modalityType";
+                id = "modalityType",
                 value={modalityType}
                 onChange={(e) => setModalityType(e.target.value)}
                 className="col-span-3";
@@ -139,7 +138,7 @@ export default const _CreateProcedureTypeModal = ({
                 Description;
               </Label>;
               <Textarea>;
-                id="description";
+                id = "description",
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="col-span-3";
@@ -150,8 +149,8 @@ export default const _CreateProcedureTypeModal = ({
           <DialogFooter>;
             <DialogClose asChild>;
               <Button>;
-                type="button";
-                variant="outline";
+                type = "button",
+                variant = "outline",
                 onClick={onClose}
                 disabled={isSubmitting}
               >;

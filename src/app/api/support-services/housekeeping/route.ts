@@ -1,15 +1,14 @@
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/security.service"
-import "@/lib/services/support-services/housekeeping/housekeeping.service"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {HousekeepingService  } from "next/server"
-import {SecurityService  } from "next/server"
-import {type
-import {  withErrorHandling  } from "next/server"
-import {z  } from "next/server"
+import { } from "@/lib/security.service"
+import "@/lib/services/support-services/housekeeping/housekeeping.service";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/middleware/error-handling.middleware"
+import { NextResponse } from "next/server" }
+import {  HousekeepingService  } from "@/lib/database"
+import {  SecurityService  } from "@/lib/database"
+import {   type
+import {  withErrorHandling  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 // Initialize service;
 const housekeepingService = new HousekeepingService();
@@ -20,7 +19,7 @@ const createRequestSchema = z.object({locationId: z.string().uuid(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
   description: z.string().min(5).max(500),
   z.string().max(1000).optional(),
-  requestedById: z.string().uuid();
+  requestedById: z.string().uuid(),
 });
 
 const updateRequestSchema = z.object({requestType: z.enum(["CLEANING", "DISINFECTION", "LINEN_CHANGE", "WASTE_DISPOSAL", "OTHER"]).optional(),
@@ -29,7 +28,7 @@ const updateRequestSchema = z.object({requestType: z.enum(["CLEANING", "DISINFEC
   scheduledTime: z.string().transform(val => .optional(),
   notes: z.string().max(1000).optional(),
   status: z.enum(["PENDING", "ASSIGNED", "IN_PROGRESS", "COMPLETED", "CANCELLED"]).optional(),
-  assignedToId: z.string().uuid().optional();
+  assignedToId: z.string().uuid().optional(),
 });
 
 // GET /api/support-services/housekeeping/requests;
@@ -43,7 +42,7 @@ export const _GET = async (request: any) => {,
         searchParams.get("locationId") || undefined,
         searchParams.get("fromDate") ? new Date(searchParams.get("fromDate")!) : undefined,
         Number.parseInt(searchParams.get("page") || "1"),
-        limit: parseInt(searchParams.get("limit") || "10");
+        limit: parseInt(searchParams.get("limit") || "10"),
       };
 
       // Get housekeeping requests with filters;
@@ -51,8 +50,8 @@ export const _GET = async (request: any) => {,
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "housekeeping:read",
-      auditAction: "HOUSEKEEPING_REQUESTS_VIEW";
+    {requiredPermission:"housekeeping:read",
+      auditAction: "HOUSEKEEPING_REQUESTS_VIEW",
     }
   );
 }
@@ -74,8 +73,8 @@ export const _POST = async (request: any) => {,
 
       return NextResponse.json(result, {status: 201 });
     },
-    {requiredPermission: "housekeeping:create",
-      auditAction: "HOUSEKEEPING_REQUEST_CREATE";
+    {requiredPermission:"housekeeping:create",
+      auditAction: "HOUSEKEEPING_REQUEST_CREATE",
     }
   );
 }
@@ -91,8 +90,8 @@ export const _GET_BY_ID = async (request: any, { params }: {params: { id: string
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "housekeeping:read",
-      auditAction: "HOUSEKEEPING_REQUEST_VIEW";
+    {requiredPermission:"housekeeping:read",
+      auditAction: "HOUSEKEEPING_REQUEST_VIEW",
     }
   );
 }
@@ -114,8 +113,8 @@ export const _PATCH = async (request: any, { params }: {params: { id: string } }
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "housekeeping:update",
-      auditAction: "HOUSEKEEPING_REQUEST_UPDATE";
+    {requiredPermission:"housekeeping:update",
+      auditAction: "HOUSEKEEPING_REQUEST_UPDATE",
     }
   );
 }
@@ -130,8 +129,8 @@ export const _DELETE = async (request: any, { params }: {params: { id: string } 
 
       return NextResponse.json({success: true });
     },
-    {requiredPermission: "housekeeping:delete",
-      auditAction: "HOUSEKEEPING_REQUEST_DELETE";
+    {requiredPermission:"housekeeping:delete",
+      auditAction: "HOUSEKEEPING_REQUEST_DELETE",
     }
   );
 }
@@ -154,8 +153,8 @@ export const _ASSIGN = async (request: any, { params }: {params: { id: string } 
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "housekeeping:assign",
-      auditAction: "HOUSEKEEPING_REQUEST_ASSIGN";
+    {requiredPermission:"housekeeping:assign",
+      auditAction: "HOUSEKEEPING_REQUEST_ASSIGN",
     }
   );
 }
@@ -178,8 +177,8 @@ export const _COMPLETE = async (request: any, { params }: {params: { id: string 
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "housekeeping:update",
-      auditAction: "HOUSEKEEPING_REQUEST_COMPLETE";
+    {requiredPermission:"housekeeping:update",
+      auditAction: "HOUSEKEEPING_REQUEST_COMPLETE",
     }
   );
 }
@@ -199,8 +198,8 @@ export const _GET_ANALYTICS = async (request: any) => {,
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "housekeeping:analytics",
-      auditAction: "HOUSEKEEPING_ANALYTICS_VIEW";
+    {requiredPermission:"housekeeping:analytics",
+      auditAction: "HOUSEKEEPING_ANALYTICS_VIEW",
     }
   );
 

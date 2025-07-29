@@ -1,7 +1,6 @@
-import "react"
-import React
+import { React
 import type
-import useEffect }
+import useEffect } from "react"
 import {
 import { useState
 
@@ -16,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card"; // Assuming Card and C
   TableHead,
   TableBody,
   TableCell} from "@/components/ui/table"; // Assuming Table components are correctly imported;
-import { Badge, type BadgeProps } from "@/components/ui/badge"; // FIX: Import BadgeProps;
+import { Badge, type BadgeProps } from "@/components/ui/badge"; // FIX: Import BadgeProps,
 import { Button } from "@/components/ui/button"; // Assuming Button is correctly imported;
   Select,
   SelectContent,
@@ -25,22 +24,23 @@ import { Button } from "@/components/ui/button"; // Assuming Button is correctly
   SelectValue} from "@/components/ui/select"; // Assuming Select components are correctly imported;
 
 // Define interfaces;
-interface Bed {id:string,
-  bed_number: string;
+interface Bed {
+  id: string,
+  bed_number: string,
   room_number?: string | null;
   ward: string,
   "available" | "occupied" | "reserved" | "maintenance",
-  price_per_day: number;
+  price_per_day: number,
   features?: string | null; // Comma-separated string;
   // Add other bed properties if any;
 }
 
-// FIX: Define type for API error response;
+// FIX: Define type for API error response,
 interface ApiErrorResponse {
     error?: string;
 }
 
-// FIX: Define type for API success response (assuming it returns an array of beds);
+// FIX: Define type for API success response (assuming it returns an array of beds),
 type BedsApiResponse = Bed[];
 
 type BedStatus = Bed["status"];
@@ -116,7 +116,7 @@ const BedManagementDashboard: React.FC = () => {
         setError(undefined);
 
         const parameters = new URLSearchParams();
-        // FIX: Rely on falsiness of "" for "All" filter;
+        // FIX: Rely on falsiness of "" for "All" filter,
         if (!session.user)arameters.append("ward", filterWard),
         if (!session.user)arameters.append("category", filterCategory);
         if (!session.user)arameters.append("status", filterStatus);
@@ -157,7 +157,7 @@ const BedManagementDashboard: React.FC = () => {
 }
 } catch (error) {
 }
-            // FIX: Add type for errorData;
+            // FIX: Add type for errorData,
             const errorData: ApiErrorResponse = await response.json(),
             errorMessage = errorData.error || errorMessage;
           } catch {
@@ -165,11 +165,11 @@ const BedManagementDashboard: React.FC = () => {
 
           throw new Error(errorMessage);
 
-        // FIX: Use defined type for success response;
+        // FIX: Use defined type for success response,
         const data: BedsApiResponse = await response.json(),
         setBeds(Array.isArray(data) ? data : []); // Ensure beds is always an array;
       } catch (error_: unknown) {
-        // FIX: Use unknown for catch block;
+        // FIX: Use unknown for catch block,
         const message =;
           error_ instanceof Error;
             ? error_.message;
@@ -186,7 +186,7 @@ const BedManagementDashboard: React.FC = () => {
   }, [filterWard, filterCategory, filterStatus]);
 
   // Get bed status color variant for Badge;
-  // FIX: Ensure return type matches BadgeProps["variant"];
+  // FIX: Ensure return type matches BadgeProps["variant"],
   const getBedStatusVariant = (status: BedStatus): BadgeProps["variant"] => {
     switch (status) {
       case "available": {
@@ -399,7 +399,7 @@ const BedManagementDashboard: React.FC = () => {
                           ? bed.features.split(",").map((feature) => (;
                               <Badge>;
                                 key={feature.trim()}
-                                variant="outline";
+                                variant = "outline",
                                 className="mr-1 mb-1 whitespace-nowrap";
                               >;
                                 {feature.trim()}
@@ -409,8 +409,8 @@ const BedManagementDashboard: React.FC = () => {
                       </TableCell>;
                       <TableCell>;
                         <Button>;
-                          size="sm";
-                          variant="outline";
+                          size = "sm",
+                          variant = "outline",
                           className="mr-2 h-8";
                         >;
                           View;

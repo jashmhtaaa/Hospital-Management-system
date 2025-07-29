@@ -1,6 +1,5 @@
-import "react"
-import React
-import useEffect }
+import { React
+import useEffect } from "react"
 import {
 import { useState
 
@@ -14,12 +13,11 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "lucide-react"
+import { } from "@/components/ui/button"
+import "lucide-react";
 import Edit
 import Trash2
-import WifiOff }
+import WifiOff } from "@/components/ui/badge"
 import { Activity
 import { Badge }
 import { Button }
@@ -31,7 +29,7 @@ import { Card, CardContent } from "@/components/ui/card"; // FIX: Add missing im
 interface Theatre {id:string,
   string | null,
   string,
-  updated_at: string;
+  updated_at: string,
 export default const _OTTheatreList = () {
   const [theatres, setTheatres] = useState<Theatre[]>([]);
   const [loading, setLoading] = useState(true);
@@ -88,22 +86,22 @@ export default const _OTTheatreList = () {
           {id:"theatre-1",
             "Floor 2, Wing A",
             specialty: "General Surgery",
-            "2025-04-28T10:00:00Z";
+            "2025-04-28T10:00:00Z",
           },
           {id:"theatre-2",
             "Floor 2, Wing A",
             specialty: "Orthopedics",
-            "2025-04-28T09:30:00Z";
+            "2025-04-28T09:30:00Z",
           },
           {id:"theatre-3",
             "Floor 2, Wing B",
             specialty: "Cardiology",
-            "2025-04-27T15:00:00Z";
+            "2025-04-27T15:00:00Z",
           },
           {id:"theatre-4",
             "Floor 3, Wing C",
             specialty: "Neurosurgery",
-            "2025-04-28T11:00:00Z";
+            "2025-04-28T11:00:00Z",
           }];
         setTheatres(mockData),
         setLoading(false);
@@ -177,15 +175,15 @@ export default const _OTTheatreList = () {
                     <TableCell>;
                       >;
                         <Button>;
-                          variant="outline";
-                          size="icon";
+                          variant = "outline",
+                          size = "icon",
                           title="Edit Theatre";
                         >;
                           <Edit className="h-4 w-4" />;
                         </Button>;
                         <Button>;
-                          variant="destructive";
-                          size="icon";
+                          variant = "destructive",
+                          size = "icon",
                           title="Delete Theatre";
                         >;
                           <Trash2 className="h-4 w-4" />;

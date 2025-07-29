@@ -1,9 +1,8 @@
-import "@prisma/client"
-import "winston"
-import "winston-elasticsearch"
+import { } from "winston"
+import "winston-elasticsearch";
 import winston
-import {ElasticsearchTransport  } from "next/server"
-import {PrismaClient  } from "next/server"
+import {  ElasticsearchTransport  } from "@prisma/client"
+import {  PrismaClient  } from "@/lib/database"
 
 }
 
@@ -81,13 +80,13 @@ import {PrismaClient  } from "next/server"
 
       // Send alerts for critical events;
       if (!session.user) {
-        await this.sendCritical/* SECURITY: Alert removed */;
+        await this.sendCritical/* SECURITY: Alert removed */,
       }
 
     } catch (error) {
 
       // Fallback to console logging;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     }
   }
 
@@ -155,7 +154,7 @@ import {PrismaClient  } from "next/server"
           where,
           orderBy: {timestamp: "desc" },
           take: query.limit || 100,
-          skip: query.offset || 0;
+          skip: query.offset || 0,
         }),
         this.prisma.auditLog.count({ where });
       ]);
@@ -192,7 +191,7 @@ import {PrismaClient  } from "next/server"
    * Get user activity report;
    */;
   async getUserActivity();
-    userId: string;
+    userId: string,
     startDate?: Date,
     endDate?: Date;
   ): Promise<AuditEvent[]> {
@@ -220,14 +219,14 @@ import {PrismaClient  } from "next/server"
       "ENCRYPTION_ERROR";
     ];
 
-    const events: AuditEvent[] = [];
+    const events: AuditEvent[] = [],
 
     for (const eventType of securityEventTypes) {
       const report = await this.queryLogs({
         eventType,
         startDate,
         endDate,
-        limit: 1000;
+        limit: 1000,
       });
       events.push(...report.events);
 
@@ -280,7 +279,7 @@ import {PrismaClient  } from "next/server"
       await this.logEvent({eventType: "AUDIT_LOGS_ARCHIVED",
         result.count,
           olderThan: olderThan.toISOString(),
-        severity: "LOW";
+        severity: "LOW",
       });
 
       return result.count;
@@ -311,7 +310,7 @@ import {PrismaClient  } from "next/server"
         event.userAgent,
         event.timestamp || new Date(),
         event.outcome || "SUCCESS",
-        compliance: event.compliance;
+        compliance: event.compliance,
 
     });
 
@@ -320,12 +319,12 @@ import {PrismaClient  } from "next/server"
       ...event,
       "@timestamp": event.timestamp || new Date(),
       service: "hms-audit",
-      environment: process.env.NODE_ENV || "development";
+      environment: process.env.NODE_ENV || "development",
     });
 
   private setupLogger(): void {
-    const transports: winston.transport[] = [;
-      new winston.transports.Console({format: winston.format.combine()
+    const transports: winston.transport[] = [,
+      new winston.transports.Console({format:winston.format.combine()
           winston.format.timestamp(),
           winston.format.json();
         );
@@ -344,7 +343,7 @@ import {PrismaClient  } from "next/server"
         new ElasticsearchTransport({
           process.env.ELASTICSEARCH_URL;
           },
-          index: "hms-audit-logs";
+          index: "hms-audit-logs",
         });
       );
 
@@ -401,7 +400,7 @@ import {PrismaClient  } from "next/server"
       this.prisma.auditLog.count(...where, outcome: "SUCCESS" ),
       this.prisma.auditLog.count(...where, outcome: "FAILURE" ),
       this.prisma.auditLog.groupBy();
-        by: ["severity"];
+        by: ["severity"],
         where,
         _count: severity: true ),
       this.prisma.auditLog.groupBy();
@@ -411,7 +410,7 @@ import {PrismaClient  } from "next/server"
         orderBy: userId: "desc" ,
         take: 10),
       this.prisma.auditLog.groupBy();
-        by: ["resource"];
+        by: ["resource"],
         where,
         _count: resource: true ,
         orderBy: resource: "desc" ,
@@ -427,10 +426,10 @@ import {PrismaClient  } from "next/server"
         return acc;
       }, {} as Record<string, number>),
       group.userId || "unknown",
-        count: group._count.userId;
+        count: group._count.userId,
       })),
       group.resource,
-        count: group._count.resource;
+        count: group._count.resource,
       }));
     };
 
@@ -442,14 +441,14 @@ import {PrismaClient  } from "next/server"
       dbEvent.userAgent,
       dbEvent.timestamp,
       dbEvent.outcome,
-      compliance: dbEvent.compliance;
+      compliance: dbEvent.compliance,
     };
 
   private async sendCritical/* SECURITY: Alert removed */: Promise<void> {,
     // Implement critical alert logic;
     // This could send emails, SMS, Slack notifications, etc.;
 
-    // Example: Log to dedicated critical events log;
+    // Example: Log to dedicated critical events log,
     this.logger.error("CRITICAL_AUDIT_EVENT', event);
 
 // Export convenience function;

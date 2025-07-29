@@ -1,14 +1,13 @@
-import "../../../../lib/audit"
-import "../../../../lib/error-handler"
-import "../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../lib/validation/pharmacy-validation"
-import "../../models/domain-models"
-import "../../models/fhir-mappers"
-import "../../services/barcode-administration-service"
-import "next/server"
-import getPrescriptionById }
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
+import { } from "../../../../lib/error-handler"
+import "../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../lib/validation/pharmacy-validation";
+import "../../models/domain-models";
+import "../../models/fhir-mappers";
+import "../../services/barcode-administration-service";
+import "next/server";
+import getPrescriptionById } from "../../../../lib/audit"
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
 import validateBarcodeVerificationRequest }
 import {auditLog  } from "next/server"
 import {BarcodeAdministrationService  } from "next/server"
@@ -32,8 +31,8 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
- } from "next/server"
+  delete: () => Promise.resolve(true),
+ } from "@/lib/database"
 
 const getPrescriptionById,
   findByPatientId: () => Promise.resolve([]),
@@ -42,7 +41,7 @@ const getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const () => Promise.resolve(null),
@@ -52,7 +51,7 @@ const () => Promise.resolve(null),
   findByStatus: () => Promise.resolve([]),
   save: (administration) => Promise.resolve(administration.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 // Initialize services;
@@ -142,13 +141,13 @@ export const POST = async (req: any) => {,
       administrationId,
       data.patientId,
       data.medicationId,
-        prescriptionId: data.prescriptionId;
+        prescriptionId: data.prescriptionId,
     });
 
     // Return response;
     return NextResponse.json();
-      {id: administrationId,
-        message: "Medication administration recorded successfully";
+      {id:administrationId,
+        message: "Medication administration recorded successfully",
       },
       {status: 201 }
     );
@@ -387,8 +386,8 @@ export const recordMissedDose = async (req: any) => {,
 
     // Return response;
     return NextResponse.json();
-      {id: administrationId,
-        message: "Missed dose recorded successfully";
+      {id:administrationId,
+        message: "Missed dose recorded successfully",
       },
       {status: 201 }
     );
@@ -469,7 +468,7 @@ export const getAdministrationSchedule = async (req: any, { params }: {params: {
           medication.name,
           prescription.dosage.unit,
           scheduleTime,
-          status: "scheduled";
+          status: "scheduled",
         });
       }
     }
@@ -685,8 +684,8 @@ export const recordPRNAdministration = async (req: any) => {,
 
     // Return response;
     return NextResponse.json();
-      {id: administrationId,
-        message: "PRN medication administration recorded successfully";
+      {id:administrationId,
+        message: "PRN medication administration recorded successfully",
       },
       {status: 201 }
     );
@@ -763,13 +762,13 @@ export const recordPatientEducation = async (req: any) => {,
       education.id,
       data.patientId,
       data.medicationId,
-        understanding: data.patientUnderstanding;
+        understanding: data.patientUnderstanding,
     });
 
     // Return response;
     return NextResponse.json();
-      {id: education.id,
-        message: "Patient education recorded successfully";
+      {id:education.id,
+        message: "Patient education recorded successfully",
       },
       {status: 201 }
     );
@@ -837,7 +836,7 @@ export const recordAdverseReaction = async (req: any) => {,
       reaction: data.reaction,
       data.onset || new Date(),
       data.interventions || [],
-      outcome: data.outcome || "unknown";
+      outcome: data.outcome || "unknown",
     };
 
     // In a real implementation, save to reaction repository;
@@ -859,8 +858,8 @@ export const recordAdverseReaction = async (req: any) => {,
 
     // Return response;
     return NextResponse.json();
-      {id: reaction.id,
-        message: "Adverse reaction recorded successfully";
+      {id:reaction.id,
+        message: "Adverse reaction recorded successfully",
       },
       {status: 201 }
     );
@@ -1014,7 +1013,7 @@ export const getOverdueMedications = async (req: any) => {,
         40,
         "oral",
         "overdue",
-        overdueBy: 45 // minutes;
+        overdueBy: 45 // minutes,
       },
       {patientId: "patient4",
         "104-B",
@@ -1097,7 +1096,7 @@ export const generateAdministrationReports = async (req: any) => {,
     let report;
 
     if (!session.user) {
-      report = {reportType: "summary";
+      report = {reportType:"summary",
         startDate,
         endDate,
         wardId,
@@ -1112,7 +1111,7 @@ export const generateAdministrationReports = async (req: any) => {,
         ];
       };
     } else if (!session.user) {
-      report = {reportType: "missed-doses";
+      report = {reportType:"missed-doses",
         startDate,
         endDate,
         wardId,
@@ -1128,7 +1127,7 @@ export const generateAdministrationReports = async (req: any) => {,
         ];
       };
     } else if (!session.user) {
-      report = {reportType: "medication-specific";
+      report = {reportType:"medication-specific",
         startDate,
         endDate,
         medicationId,

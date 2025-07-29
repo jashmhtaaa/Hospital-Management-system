@@ -1,17 +1,16 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../../lib/validation/pharmacy-validation"
-import "../../../models/domain-models"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {auditLog  } from "next/server"
-import {errorHandler  } from "next/server"
-import {getMedicationById  } from "next/server"
-import {PharmacyDomain  } from "next/server"
-import {type
-import {  validateReorderRequest  } from "next/server"
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../../lib/validation/pharmacy-validation";
+import "../../../models/domain-models";
+import "next/server";
+import { NextRequest } from "../../../../../lib/audit"
+import { NextResponse } from "next/server" }
+import {  auditLog  } from "@/lib/database"
+import {  errorHandler  } from "@/lib/database"
+import {  getMedicationById  } from "@/lib/database"
+import {  PharmacyDomain  } from "@/lib/database"
+import {   type
+import {  validateReorderRequest  } from "@/lib/database"
 
 }
 
@@ -28,7 +27,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const inventoryRepository = {findById: (id: string) => Promise.resolve(null),
@@ -38,7 +37,7 @@ const inventoryRepository = {findById: (id: string) => Promise.resolve(null),
   findAll: () => Promise.resolve([]),
   save: (item: unknown) => Promise.resolve(item.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const reorderRepository = {findById: (id: string) => Promise.resolve(null),
@@ -48,7 +47,7 @@ const reorderRepository = {findById: (id: string) => Promise.resolve(null),
   findAll: () => Promise.resolve([]),
   save: (reorder: unknown) => Promise.resolve(reorder.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const supplierRepository = {findById: (id: string) => Promise.resolve(null),
@@ -56,7 +55,7 @@ const supplierRepository = {findById: (id: string) => Promise.resolve(null),
   findAll: () => Promise.resolve([]),
   save: (supplier: unknown) => Promise.resolve(supplier.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 /**;
@@ -155,7 +154,7 @@ export const GET = async (req: any) => {,
       return {inventoryId: item.id,
         medication ? medication.name : "Unknown",
         item.quantityOnHand,
-        reorderLevel: item.reorderLevel;
+        reorderLevel: item.reorderLevel,
         suggestedQuantity,
         estimatedCost: suggestedQuantity * (item.unitCost || 0),
         medication ? medication.isHighAlert : false,
@@ -188,19 +187,19 @@ export const GET = async (req: any) => {,
         locationId,
         includeOnOrder,
         criticalOnly,
-        resultCount: paginatedItems.length;
+        resultCount: paginatedItems.length,
         statusCounts;
       }
     });
 
     // Return response;
-    return NextResponse.json({reorderItems: paginatedItems;
+    return NextResponse.json({reorderItems:paginatedItems,
       statusCounts,
       pagination: {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
       }
     }, {status: 200 });
   } catch (error) {
@@ -273,8 +272,8 @@ export const POST = async (req: any) => {,
 
     if (!session.user) {
       return NextResponse.json();
-        {error: "Pending reorder already exists for this medication",
-          existingReorderId: pendingReorder.id;
+        {error:"Pending reorder already exists for this medication",
+          existingReorderId: pendingReorder.id,
         },
         {status: 409 }
       );
@@ -287,20 +286,20 @@ export const POST = async (req: any) => {,
       new Date(),
       data.notes || "",
       data.expectedDeliveryDate ? new Date(data.expectedDeliveryDate) : null,
-      purchaseOrderNumber: generatePurchaseOrderNumber();
+      purchaseOrderNumber: generatePurchaseOrderNumber(),
     };
 
     // Special handling for controlled substances;
     if (!session.user) {
       reorder.requiresApproval = true;
-      reorder.approvalStatus = "pending";
+      reorder.approvalStatus = "pending",
 
       // Additional logging for controlled substances;
       await auditLog("CONTROLLED_SUBSTANCE", {action: "REORDER_REQUEST",
         userId,
         data.medicationId,
           data.supplierId,
-          purchaseOrderNumber: reorder.purchaseOrderNumber;
+          purchaseOrderNumber: reorder.purchaseOrderNumber,
       });
 
     // Save reorder record;
@@ -312,7 +311,7 @@ export const POST = async (req: any) => {,
       userId: userId;
       {medicationId:data.medicationId,
         data.supplierId,
-        purchaseOrderNumber: reorder.purchaseOrderNumber;
+        purchaseOrderNumber: reorder.purchaseOrderNumber,
 
     });
 
@@ -320,7 +319,7 @@ export const POST = async (req: any) => {,
     return NextResponse.json();
       {id: reorderId,
         reorder.requiresApproval,
-        message: "Reorder request created successfully";
+        message: "Reorder request created successfully",
       },
       {status: 201 }
     );
@@ -344,7 +343,7 @@ const getStockStatus = (quantity: number, reorderLevel: number): "critical" | "l
  * Helper function to generate a purchase order number;
  */;
 const generatePurchaseOrderNumber = (): string {
-  const prefix = "PO";
+  const prefix = "PO",
   const timestamp = crypto.getRandomValues([0].toString().slice(-6);
   const random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, "0");
   return `${prefix}-${timestamp}-${random}`;

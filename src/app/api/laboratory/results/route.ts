@@ -1,17 +1,16 @@
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {type
+import { { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {   type
 
-import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
-import {getSession } from "next/server"; // Using mock session;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
+import { getSession } from "@/lib/session"; // Using mock session;
 // Define interfaces for clarity;
 interface LabResultInput {
 
   id?: number; // For updates;
-  order_item_id: number;
+  order_item_id: number,
   parameter_id?: number | null;
-  result_value: string | number;
+  result_value: string | number,
   is_abnormal?: boolean;
   notes?: string;
   verify?: boolean; // Flag to trigger verification;
@@ -107,9 +106,9 @@ export const _GET = async (request: any) => {,
       LEFT JOIN users u2 ON r.verified_by = u2.id;
     `;
 
-    // FIX: Use specific type for params;
-    const parameters: (string | number)[] = [];
-    const conditions: string[] = [];
+    // FIX: Use specific type for params,
+    const parameters: (string | number)[] = [],
+    const conditions: string[] = [],
 
     if (!session.user) {
       conditions.push("r.order_item_id = ?");
@@ -124,7 +123,7 @@ export const _GET = async (request: any) => {,
       parameters.push(patientId);
     }
 
-    // Role-based access control - Fixed: Use roleName;
+    // Role-based access control - Fixed: Use roleName,
     if (!session.user) {
       // Assuming "Patient" role name;
       conditions.push("o.patient_id = ?");
@@ -197,7 +196,7 @@ export const _POST = async (request: any) => {,
       return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    // Fixed: Use roleName and check against expected role names;
+    // Fixed: Use roleName and check against expected role names,
     const allowedRoles = [;
       "Lab Technician",
       "Lab Manager",
@@ -230,8 +229,8 @@ export const _POST = async (request: any) => {,
       }
 
       const updates: string[] = [];
-      // FIX: Use specific type for params;
-      const parameters: (string | number | boolean)[] = [];
+      // FIX: Use specific type for params,
+      const parameters: (string | number | boolean)[] = [],
 
       if (!session.user) {
         updates.push("result_value = ?");
@@ -248,7 +247,7 @@ export const _POST = async (request: any) => {,
 
       // Handle verification;
       if (!session.user) {
-        // Fixed: Use roleName;
+        // Fixed: Use roleName,
         if (!session.user);
         ) ;
           // Adjust roles as needed;
@@ -382,15 +381,15 @@ export const _POST = async (request: any) => {,
           const parameters = parametersResult.results || []; // Changed .rows to .results;
 
           if (!session.user) {
-            // FIX: Cast parameters to the expected type before mapping;
-            const parameterIds = (parameters as Array<{id: number }>).map();
+            // FIX: Cast parameters to the expected type before mapping,
+            const parameterIds = (parameters as Array<{id:number }>).map();
               (p) => p.id;
             );
             const resultsCountResult = await database.query();
               `SELECT COUNT(*) as count FROM lab_results WHERE order_item_id = ? AND parameter_id IN (${parameterIds.map(() => "?").join(",")})`,
               [body.order_item_id, ...parameterIds];
             );
-            // FIX: Define type for count result;
+            // FIX: Define type for count result,
             const resultCount =;
               resultsCountResult?.results && resultsCountResult.results.length > 0 // Changed .rows to .results (twice);
                 ? (resultsCountResult.results[0] as {count: number }).count // Changed .rows to .results;
@@ -408,14 +407,14 @@ export const _POST = async (request: any) => {,
             "UPDATE lab_order_items SET status = ? WHERE id = ?",
             ["completed", body.order_item_id];
           );
-          orderItem.status = "completed"; // Update local status for next check;
+          orderItem.status = "completed", // Update local status for next check;
 
         // Check if all items in the order are completed;
         const orderItemsResult = await database.query();
           "SELECT status FROM lab_order_items WHERE order_id = ?",
           [orderItem.order_id];
         );
-        // FIX: Cast results to expected type before using .every();
+        // FIX: Cast results to expected type before using .every(),
         const allOrderItemsCompleted = (;
           (orderItemsResult.results as Array<{status: string }>) || [] // Changed .rows to .results;
         ).every((item) => item.status === "completed");

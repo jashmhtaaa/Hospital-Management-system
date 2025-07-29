@@ -1,15 +1,13 @@
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import {cookies  } from "next/server"
-import {getCloudflareContext  } from "next/server"
-import {getIronSession  } from "next/server"
+import { } from "iron-session"
+import "next/headers";
+import {  cookies  } from "@opennextjs/cloudflare"
+import {  getCloudflareContext  } from "@/lib/database"
+import {  getIronSession  } from "@/lib/database"
 
 import {type IronSessionData, sessionOptions } from "next/server"; // Import IronSessionData;
 // app/api/prescriptions/[prescriptionId]/items/route.ts;
-// import {PrescriptionItem } from "next/server"; // Removed unused import;
-import "zod"
-import {z  } from "next/server"
+// import { PrescriptionItem } from "@/types/opd"; // Removed unused import;
+import { {  z  } from "zod"
 
 // Define roles allowed to add items to prescriptions (adjust as needed);
 const ALLOWED_ROLES_ADD = ["Doctor"];
@@ -30,7 +28,7 @@ const AddPrescriptionItemSchema = z.object({inventory_item_id: z.number().int().
     duration: z.string().min(1, "Duration is required"),
     route: z.string().optional().nullable(),
     instructions: z.string().optional().nullable(),
-    quantity_prescribed: z.number().int().positive().optional().nullable();
+    quantity_prescribed: z.number().int().positive().optional().nullable(),
 });
 type AddPrescriptionItemType = z.infer>;
 
@@ -103,7 +101,7 @@ export const _POST = async (request: Request) => {,
         // 3. Check if prescription exists and belongs to the doctor;
         const presCheck = await DB.prepare("SELECT prescription_id, doctor_id FROM Prescriptions WHERE prescription_id = ?");
                                   .bind(prescriptionId);
-                                  .first<prescription_id: number, doctor_id: number >();
+                                  .first<prescription_id: number, doctor_id: number >(),
 
         if (!session.user) {
             return new Response(JSON.stringify({error: "Prescription not found" }), {status: 404 });

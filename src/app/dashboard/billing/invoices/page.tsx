@@ -1,10 +1,8 @@
-import "next/link"
-import "react"
-import Link
+import { } from "next/link"
+import { Link
 import React
-import useCallback }
-import useEffect
-import {
+import useCallback, useEffect
+import  } from "react"
 import { useState
 
 }
@@ -20,12 +18,11 @@ export const dynamic = "force-dynamic";
   TableHeader,
   TableRow} from "@/components/ui/table";
 import { Badge, type BadgeProps } from "@/components/ui/badge"; // Import BadgeProps;
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/skeleton"
-import "lucide-react"
+import { } from "@/components/ui/input"
+import "@/components/ui/skeleton";
+import "lucide-react";
 import PlusCircle
-import Search }
+import Search } from "@/components/ui/button"
 import { Button }
 import { Eye
 import { Input }
@@ -49,10 +46,10 @@ interface Invoice {id:number,
 //   // Add other potential properties if the API returns more data;
 // }
 
-// FIX: Define allowed badge variants type based on BadgeProps;
+// FIX: Define allowed badge variants type based on BadgeProps,
 type AllowedBadgeVariant = BadgeProps["variant"];
 
-// FIX: Ensure returned variant is one of the allowed types;
+// FIX: Ensure returned variant is one of the allowed types,
 const getStatusBadgeVariant = (status: string): AllowedBadgeVariant => {
   switch (status.toLowerCase()) {
     case "paid": {
@@ -119,7 +116,7 @@ export default const _InvoicesListPage = () {
 } catch (error) {
 
       // Simulate API call;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       await ; // Simulate delay;
       // Replace with actual API call: const _response = await fetch(`/api/billing/invoices?search=/* SECURITY: Safe parameter encoding */`);
       // const data = await response.json();
@@ -159,7 +156,7 @@ export default const _InvoicesListPage = () {
           {/* Adjusted max-width */}
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />;
           <Input>;
-            type="search";
+            type = "search",
             placeholder="Search by Invoice #, Patient Name...";
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)} // Use setSearchTerm;
@@ -249,7 +246,7 @@ export default const _InvoicesListPage = () {
                   <TableCell>;
                     <Badge>;
                       variant={getStatusBadgeVariant(invoice.status)}
-                      className="capitalize";
+                      className = "capitalize",
                     >;
                       {invoice.status.replace("_", " ")}
                     </Badge>;
@@ -258,8 +255,8 @@ export default const _InvoicesListPage = () {
                     {/* Link to a potential invoice detail page */}
                     {/* <Link href={`/dashboard/billing/invoices/${invoice.id}`} passHref> */}
                     <Button>;
-                      variant="ghost";
-                      size="icon";
+                      variant = "ghost",
+                      size = "icon",
                       title="View Invoice Details";
                     >;
                       {" "}

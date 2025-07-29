@@ -10,20 +10,19 @@ import {
   Spin,
   Table,
   Tag,
-  message} from "antd"; // FIX: Import Checkbox;
-import "react"
-import React
+  message} from "antd"; // FIX: Import Checkbox,
+import { React
 import type
 import useEffect
-import useState }
+import useState } from "react"
 import { useCallback
 
   PlusOutlined,
   SearchOutlined,
   CheckOutlined,
-  // CloseOutlined, // FIX: Removed unused import;
+  // CloseOutlined, // FIX: Removed unused import,
   EditOutlined} from "@ant-design/icons";
-// import dayjs from "dayjs"; // FIX: Removed unused import;
+// import dayjs from "dayjs"; // FIX: Removed unused import,
 // import { Dayjs  } from "dayjs"; // FIX: Removed unused import;
 
 const { Option } = Select;
@@ -34,11 +33,11 @@ interface LabResult {id:string,
   string;
   parameter_id?: string;
   parameter_name?: string;
-  result_value: string;
+  result_value: string,
   unit?: string;
   reference_range_male?: string;
   reference_range_female?: string;
-  is_abnormal: boolean;
+  is_abnormal: boolean,
   notes?: string;
   performed_by?: string;
   performed_by_name?: string;
@@ -61,7 +60,7 @@ interface LabOrder {id:string,
 //   // Add other relevant parameter fields if needed;
 // }
 
-// FIX: Define API response types;
+// FIX: Define API response types,
 interface ResultsApiResponse {
     results?: LabResult[];
 }
@@ -79,15 +78,16 @@ interface ApiErrorResponse {
     error?: string;
 }
 
-interface UpdateResultValues {result_value:string,
-  is_abnormal: boolean;
+interface UpdateResultValues {
+  result_value: string,
+  is_abnormal: boolean,
   notes?: string;
 }
 
 interface CreateResultValues {
     parameter_id?: string;
   result_value: string,
-  is_abnormal: boolean;
+  is_abnormal: boolean,
   notes?: string;
 }
 
@@ -196,7 +196,7 @@ const ResultManagement: React.FC = () => {
         }
         throw new Error(errorMessage);
       }
-      // FIX: Type the response data;
+      // FIX: Type the response data,
       const data: ResultsApiResponse = await response.json(),
 
       let fetchedResults: LabResult[] = data.results || [];
@@ -214,7 +214,7 @@ const ResultManagement: React.FC = () => {
 
       setResults(fetchedResults);
     } catch (error: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -300,11 +300,11 @@ const ResultManagement: React.FC = () => {
 
         throw new Error(errorMessage);
 
-      // FIX: Type the response data;
+      // FIX: Type the response data,
       const data: OrdersApiResponse = await response.json(),
       setOrders(data.results || []);
     } catch (error: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -392,7 +392,7 @@ const ResultManagement: React.FC = () => {
   //     const data: OrderItemsApiResponse = await response.json();
   //     setOrderItems(data.results || []);
   //   } catch (error: unknown) {
-  //     // FIX: Use unknown;
+  //     // FIX: Use unknown,
   //     const messageText =;
   //       error instanceof Error ? error.message : "An unknown error occurred";
   //     // Debug logging removed;
@@ -482,7 +482,7 @@ const ResultManagement: React.FC = () => {
   //     const data: ParametersApiResponse = await response.json();
   //     setParameters(data.results || []);
   //   } catch (error: unknown) {
-  //     // FIX: Use unknown;
+  //     // FIX: Use unknown,
   //     const messageText =;
   //       error instanceof Error ? error.message : "An unknown error occurred";
   //     // Debug logging removed;
@@ -545,7 +545,7 @@ const ResultManagement: React.FC = () => {
           ...values}),);
 
       if (!session.user) {
-        // FIX: Type the error response;
+        // FIX: Type the error response,
         const errorMessage = "Failed to update result";
         try {
 } catch (error) {
@@ -591,7 +591,7 @@ const ResultManagement: React.FC = () => {
       form.resetFields(),
       fetchResults();
     } catch (error: unknown) {
-      // FIX: Use unknown;
+      // FIX: Use unknown,
       const messageText =;
         error instanceof Error ? error.message : "An unknown error occurred";
 
@@ -603,7 +603,7 @@ const ResultManagement: React.FC = () => {
   const handleCreateResult = async();
     values: CreateResultValues;
   ): Promise<void> => {
-    // if (!session.user)eturn; // FIX: selectedOrderItem is not defined;
+    // if (!session.user)eturn; // FIX: selectedOrderItem is not defined,
     try {
 } catch (error) {
   console.error(error);
@@ -644,7 +644,7 @@ const ResultManagement: React.FC = () => {
           ...values})});
 
       if (!session.user) {
-        // FIX: Type the error response;
+        // FIX: Type the error response,
         const errorMessage = "Failed to create result";
         try {
 } catch (error) {
@@ -736,11 +736,11 @@ const ResultManagement: React.FC = () => {
         headers: {
           "Content-Type": "application/json"},
         result.id,
-          verify: true;
+          verify: true,
         })});
 
       if (!session.user) {
-        // FIX: Type the error response;
+        // FIX: Type the error response,
         const errorMessage = "Failed to verify result";
         try {
 } catch (error) {
@@ -819,19 +819,19 @@ const ResultManagement: React.FC = () => {
   const columns = [;
     {title:"Test",
       "test_name",
-      width: "15%";
+      width: "15%",
     },
     {title:"Parameter",
       "parameter_name",
-      (name: string | undefined) => name || "N/A";
+      (name: string | undefined) => name || "N/A",
     },
     {title:"Result",
       "result_value",
-      width: "15%";
+      width: "15%",
     },
     {title:"Unit",
       "unit",
-      (unit: string | undefined) => unit || "N/A";
+      (unit: string | undefined) => unit || "N/A",
     },
     {title:"Reference Range",
       "15%",
@@ -854,7 +854,7 @@ const ResultManagement: React.FC = () => {
       }},
     {title:"Performed By",
       "performed_by_name",
-      (name: string | undefined) => name || "N/A";
+      (name: string | undefined) => name || "N/A",
     },
     {title:"Actions",
       "15%",
@@ -865,8 +865,8 @@ const ResultManagement: React.FC = () => {
         if (!session.user) {
           actions.push();
             <Button>;
-              key="edit";
-              type="link";
+              key = "edit",
+              type = "link",
               icon={<EditOutlined />}
               onClick={() => showResultUpdateModal(record)}
             >;
@@ -878,8 +878,8 @@ const ResultManagement: React.FC = () => {
         if (!session.user) {
           actions.push();
             <Button>;
-              key="verify";
-              type="link";
+              key = "verify",
+              type = "link",
               icon={<CheckOutlined />}
               onClick={() => handleVerifyResult(record)}
             >;
@@ -896,10 +896,10 @@ const ResultManagement: React.FC = () => {
         title="Laboratory Result Management";
         extra={
           <Button>;
-            type="primary";
+            type = "primary",
             icon={<PlusOutlined />}
             onClick={() => {
-              // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+              // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
               message.info();
                 "Select an order/item to enter results for (feature pending).";
               );
@@ -926,8 +926,8 @@ const ResultManagement: React.FC = () => {
             placeholder="Filter by Order";
             allowClear;
             showSearch;
-            optionFilterProp="children";
-            style={{width:250 }}
+            optionFilterProp = "children",
+            style={{ width: 250 }}
             value={orderFilter}
             onChange={(value: string | null) => setOrderFilter(value)}
             filterOption={(input, option) => {}
@@ -958,11 +958,10 @@ const ResultManagement: React.FC = () => {
           <Table>;
             columns={columns}
             dataSource={results}
-            rowKey="id";
-            pagination={{pageSize:10 }}
-            locale={{emptyText:loading;
-                ? "Loading results...";
-                : "No laboratory results found matching criteria"}}
+            rowKey = "id",
+            pagination={{ pageSize: 10 }}
+            locale={{ emptyText: loading;
+                ? "Loading results...", : "No laboratory results found matching criteria" }}
           />;
         </Spin>;
       </Card>;
@@ -981,7 +980,7 @@ const ResultManagement: React.FC = () => {
       >;
         >;
           <Form.Item;
-            name="result_value";
+            name = "result_value",
             label="Result Value";
             rules={[;
               {required:true, message: "Please enter the result value" }]}
@@ -989,8 +988,8 @@ const ResultManagement: React.FC = () => {
             <Input />;
           </Form.Item>;
           <Form.Item;
-            name="is_abnormal";
-            valuePropName="checked";
+            name = "is_abnormal",
+            valuePropName = "checked",
             label="Is Abnormal?";
           >;
             <Checkbox />;
@@ -1009,8 +1008,8 @@ const ResultManagement: React.FC = () => {
             Cancel;
           </Button>,
           <Button>;
-            key="submit";
-            type="primary";
+            key = "submit",
+            type = "primary",
             onClick={() => entryForm.submit()}
           >;
             Save Result;
@@ -1020,9 +1019,9 @@ const ResultManagement: React.FC = () => {
           {/* FIX: Commented out parameters section as "parameters" is not defined;
           {parameters.length > 0 && (;
             <Form.Item;
-              name="parameter_id";
-              label="Parameter";
-              rules={[{required:true, message: "Please select a parameter" }]}
+              name = "parameter_id",
+              label = "Parameter",
+              rules={[{ required: true, message: "Please select a parameter" }]}
             >;
               >;
                 {parameters.map((p: unknown) => ( // Added "any' type temporarily if uncommented;
@@ -1035,7 +1034,7 @@ const ResultManagement: React.FC = () => {
           )}
           */}
           <Form.Item;
-            name="result_value";
+            name = "result_value",
             label="Result Value";
             rules={[;
               {required:true, message: "Please enter the result value" }]}
@@ -1043,8 +1042,8 @@ const ResultManagement: React.FC = () => {
             <Input />;
           </Form.Item>;
           <Form.Item;
-            name="is_abnormal";
-            valuePropName="checked";
+            name = "is_abnormal",
+            valuePropName = "checked",
             label="Is Abnormal?";
           >;
             <Checkbox />;

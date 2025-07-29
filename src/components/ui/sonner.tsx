@@ -1,5 +1,4 @@
-import "next-themes"
-import { useTheme }
+import { { useTheme } from "next-themes"
 
 }
 
@@ -17,7 +16,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border group-[.toaster]:shadow-lg",
           "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-          cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground";
+          cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
         }}}
       {...props}
     />;

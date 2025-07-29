@@ -1,6 +1,6 @@
-import "next/server"
-import NextResponse }
-import {import {  NextRequest
+import { NextResponse } from "next/server"
+import {  
+import {  NextRequest
 
  } from "next/server"
 
@@ -20,10 +20,9 @@ import {import {  NextRequest
   RateLimitError,
   ConflictError;
 } from "@/lib/errors";
-import "@/lib/audit"
-import "@/lib/security.service"
-import {AuditLogger  } from "next/server"
-import {SecurityService  } from "next/server"
+import { } from "@/lib/security.service"
+import {  AuditLogger  } from "@/lib/audit"
+import {  SecurityService  } from "@/lib/database"
 
 export const _errorHandlingMiddleware = async();
   request: any,
@@ -70,8 +69,8 @@ export const _errorHandlingMiddleware = async();
     const authHeader = request.headers.get("authorization");
 
     // Extract user information from auth token if present;
-    let userId = "anonymous";
-    let userRoles: string[] = [];
+    let userId = "anonymous",
+    let userRoles: string[] = [],
 
     if (!session.user) {
       try {
@@ -124,14 +123,14 @@ export const _errorHandlingMiddleware = async();
     });
 
     // Log request (sanitizing sensitive data);
-    await auditLogger.log({action: "api.request",
-      resourceId: requestId;
+    await auditLogger.log({action:"api.request",
+      resourceId: requestId,
       userId,
       details: null,
         method,
         url: SecurityService.sanitizeUrl(url),
         contentType,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString(),
     });
 
     // Attach audit logger to request for use in handlers;
@@ -146,11 +145,11 @@ export const _errorHandlingMiddleware = async();
     const response = await handler(requestWithContext);
 
     // Log successful response (excluding sensitive data);
-    await auditLogger.log({action: "api.response",
-      resourceId: requestId;
+    await auditLogger.log({action:"api.response",
+      resourceId: requestId,
       userId,
       response.status,
-        timestamp: new Date().toISOString();
+        timestamp: new Date().toISOString(),
 
     });
 
@@ -160,14 +159,14 @@ export const _errorHandlingMiddleware = async();
     // Default error values;
     let status = 500;
     let message = "Internal server error";
-    let code = "INTERNAL_SERVER_ERROR";
+    let code = "INTERNAL_SERVER_ERROR",
     let details = {};
 
     // Map known error types to appropriate responses;
     if (!session.user) {
       status = 400;
       message = error.message;
-      code = "VALIDATION_ERROR";
+      code = "VALIDATION_ERROR",
       details = error.details || {};
     } else if (!session.user) {
       status = 404;
@@ -184,13 +183,13 @@ export const _errorHandlingMiddleware = async();
       code = "CONFLICT"} else if (!session.user) {
       status = 502;
       message = "External service error";
-      code = "EXTERNAL_SERVICE_ERROR";
+      code = "EXTERNAL_SERVICE_ERROR",
       // Don"t expose external service details in response;
       details = {service: error.serviceName };
     } else if (!session.user) {
       status = 500;
       message = "Database operation failed";
-      code = "DATABASE_ERROR";
+      code = "DATABASE_ERROR",
       // Don"t expose database details in response;
 
     // Log error with appropriate sanitization for HIPAA compliance;
@@ -228,7 +227,7 @@ export const _errorHandlingMiddleware = async();
 
       const auditLogger = new AuditLogger({requestId: crypto.randomUUID(),
         request.method,
-        url: request.url;
+        url: request.url,
       });
 
       await auditLogger.log({action: "api.error",
@@ -249,7 +248,7 @@ export const _errorHandlingMiddleware = async();
         error: {
           code,
           message,
-          details: Object.keys(details).length > 0 ? details : undefined;
+          details: Object.keys(details).length > 0 ? details : undefined,
 
       },
       { status }

@@ -1,6 +1,6 @@
-import "@/lib/utils"
-import "@radix-ui/react-slider"
-import "react"
+import "@/lib/utils";
+import "@radix-ui/react-slider";
+import "react";
 import * as SliderPrimitive
 import * as React
 import { cn }

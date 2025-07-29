@@ -1,5 +1,4 @@
-import "redis"
-import {createClient  } from "next/server"
+import { {  createClient  } from "redis"
 
 }
 
@@ -10,14 +9,14 @@ import {createClient  } from "next/server"
  */;
 
 // Configuration for Redis connection;
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
+const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379",
 const REDIS_ENABLED = process.env.REDIS_ENABLED === "true";
 
 // In-memory cache fallback;
 const memoryCache: Record<string, {value: string, expiry: number }> = {};
 
 class CacheService {
-  private redisClient: unknown;
+  private redisClient: unknown,
   private connected = false;
 
   constructor() {
@@ -70,7 +69,7 @@ class CacheService {
       });
 
       this.redisClient.on("connect", () => {
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
         this.connected = true;
       });
 
@@ -189,7 +188,7 @@ class CacheService {
       // Fallback to memory cache;
       memoryCache[key] = {
         value,
-        expiry: crypto.getRandomValues([0] + (ttl * 1000);
+        expiry: crypto.getRandomValues([0] + (ttl * 1000),
       };
     } catch (error) {
 

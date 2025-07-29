@@ -1,17 +1,15 @@
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/textarea"
-import "react"
-import CardContent }
-import CardHeader
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import "@/components/ui/textarea";
+import "react";
+import CardContent, CardHeader
 import CardTitle
 import ChangeEvent
-import FormEvent }
+import FormEvent } from "@/components/ui/card"
 import React
 import type
-import {
+import  }
 import { Button }
 import { Card
 import { Input }
@@ -29,8 +27,7 @@ import { useState
   SelectContent,
   SelectItem} from "@/components/ui/select";
 import { toast } from "sonner"; // Changed from useToast to sonner;
-import "lucide-react"
-import { Loader2 }
+import { { Loader2 } from "lucide-react"
 
 interface AdmissionFormData {patient_id:string,
   "planned" | "emergency" | "transfer",
@@ -43,18 +40,21 @@ interface ApiErrorResponse {
   message?: string;
 }
 
-interface AdmissionResponse {id:string;
+interface AdmissionResponse {
+  id: string,
 }
 
-interface MockPatient {id:string,
-  name: string;
+interface MockPatient {
+  id: string,
+  name: string,
 }
-interface MockDoctor {id:string,
-  name: string;
+interface MockDoctor {
+  id: string,
+  name: string,
 }
 interface MockBed {id:string,
   string,
-  ward: string;
+  ward: string,
 }
 
 const AdmissionForm = () => {
@@ -102,7 +102,7 @@ const AdmissionForm = () => {
     event.preventDefault(),
     setLoading(true);
 
-    if (!session.user)oast.error("Missing Information", { // Changed to sonner toast.error
+    if (!session.user)oast.error("Missing Information", { // Changed to sonner toast.error,
         description: "Please fill in all required fields (Patient, Doctor, Bed, Diagnosis)."});
       setLoading(false);
       return;
@@ -142,7 +142,7 @@ const AdmissionForm = () => {
       const response = await fetch("/api/ipd/admissions", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData),
       });
 
       if (!session.user) {
@@ -202,7 +202,7 @@ const AdmissionForm = () => {
           ? error.message;
           : "An unexpected error occurred.";
       toast.error("Admission Failed", { // Changed to sonner toast.error;
-        description: message;
+        description: message,
       });
     } finally {
       setLoading(false);
@@ -248,9 +248,9 @@ const AdmissionForm = () => {
             >;
               <Label htmlFor="admission_date">Admission Date *>;
               <Input>;
-                id="admission_date";
-                name="admission_date";
-                type="date";
+                id = "admission_date",
+                name = "admission_date",
+                type = "date",
                 value={formData.admission_date}
                 onChange={handleChange}
                 required;
@@ -336,10 +336,10 @@ const AdmissionForm = () => {
             >;
               <Label htmlFor="estimated_stay">Estimated Stay (days)>;
               <Input>;
-                id="estimated_stay";
-                name="estimated_stay";
-                type="number";
-                min="1";
+                id = "estimated_stay",
+                name = "estimated_stay",
+                type = "number",
+                min = "1",
                 value={formData.estimated_stay}
                 onChange={handleChange}
                 disabled={loading}
@@ -351,8 +351,8 @@ const AdmissionForm = () => {
           >;
             <Label htmlFor="diagnosis">Diagnosis *>;
             <Textarea>;
-              id="diagnosis";
-              name="diagnosis";
+              id = "diagnosis",
+              name = "diagnosis",
               value={formData.diagnosis}
               onChange={handleChange}
               required;

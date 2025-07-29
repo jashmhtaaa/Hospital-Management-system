@@ -2,7 +2,7 @@ import {type NextRequest, NextResponse } from "next/server"; // FIX: Import Next
 // src/app/api/ot/bookings/[id]/route.ts;
 // import {getRequestContext } from "next/server";
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // GET /api/ot/bookings/[id] - Get a specific OT booking by ID;
 export const _GET = async();
@@ -43,7 +43,7 @@ export const _GET = async();
 }
     // const { env } = getRequestContext();
     // const DB = env.DB;
-    const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     // Placeholder for database query;
     /*;
@@ -59,7 +59,7 @@ export const _GET = async();
       timestamp: new Date().toISOString(),
       "scheduled",
       [0] - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: [0] - 3 * 24 * 60 * 60 * 1000).toISOString();
+      updated_at: [0] - 3 * 24 * 60 * 60 * 1000).toISOString(),
     };
 
     if (!session.user) {
@@ -73,7 +73,7 @@ export const _GET = async();
   } catch (error: unknown) {,
     // FIX: Remove explicit any;
 
-    // FIX: Handle error type;
+    // FIX: Handle error type,
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
       {message: "Error fetching OT booking", details: errorMessage },
@@ -160,16 +160,15 @@ export const _PUT = async();
     */;
 
     // Mock update for development;
-    const updatedBooking = {id: bookingId;
-      ...updateData,
-      updated_at: new Date().toISOString();
-    };
+    const updatedBooking = { id: bookingId, ...updateData,
+      updated_at: new Date().toISOString(),
+     };
 
     return NextResponse.json(updatedBooking);
   } catch (error: unknown) {,
     // FIX: Remove explicit any;
 
-    // FIX: Handle error type;
+    // FIX: Handle error type,
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
       {message: "Error updating OT booking", details: errorMessage },
@@ -232,7 +231,7 @@ export const _DELETE = async();
     )} catch (error: unknown) {
     // FIX: Remove explicit any;
 
-    // FIX: Handle error type;
+    // FIX: Handle error type,
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
       {message: "Error cancelling OT booking", details: errorMessage },

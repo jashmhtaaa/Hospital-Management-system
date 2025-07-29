@@ -1,46 +1,42 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "@/components/shared/FileUploader"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/checkbox"
-import "@/components/ui/dialog"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import "@hookform/resolvers/zod"
-import "lucide-react"
-import "next-auth/react"
-import "react"
-import "react-hook-form"
-import "zod"
+import { } from "@/components/shared/FileUploader"
+import { } from "@/components/ui/card"
+import { "@/components/ui/checkbox";
+import "@/components/ui/dialog";
+import "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
+import "@hookform/resolvers/zod";
+import "lucide-react";
+import "next-auth/react";
+import "react";
+import "react-hook-form";
+import "zod";
 import * as z
 import AlertTriangle
 import CardContent
 import CardDescription
 import CardFooter
 import CardHeader
-import CardTitle }
-import DialogContent
+import CardTitle, DialogContent
 import DialogDescription
 import DialogFooter
 import DialogHeader
-import DialogTitle }
+import DialogTitle } from "@/components/ui/button"
 import Loader2 }
 import SelectContent
 import SelectItem
 import SelectTrigger
 import SelectValue }
 import useForm }
-import useState }
-import { AlertCircle
-import { Button }
+import useState, } AlertCircle
+import  } Button }
 import { Card
 import { Checkbox }
 import { Controller
@@ -56,9 +52,12 @@ import { useSession }
 import { zodResolver }
 
 // Form schema;
-const complaintFormSchema = z.object({title:z.string().min(5, {message:"Title must be at least 5 characters";
+const complaintFormSchema = z.object({
+  title: z.string().min(5, {
+    message: "Title must be at least 5 characters",
   }),
-  description: z.string().min(10, {message:"Description must be at least 10 characters";
+  description: z.string().min(10, {
+    message: "Description must be at least 10 characters",
   }),
   "Please select a complaint category";
   }),
@@ -68,14 +67,14 @@ const complaintFormSchema = z.object({title:z.string().min(5, {message:"Title mu
   anonymous: z.boolean().default(false),
   z.string().optional(),
     email: z.string().email().optional(),
-    phone: z.string().optional();
+    phone: z.string().optional(),
   }).optional()});
 
 type ComplaintFormValues = z.infer>;
 
 interface ComplaintFormProps {
-    departments?: {id:string, name: string }[];
-  onSuccess?: (data: unknown) => void;
+  departments?: { id: string, name: string }[];
+  onSuccess?: (data: unknown) => void,
   defaultValues?: Partial>;
 export default const _ComplaintForm = ({ departments = [], onSuccess, defaultValues }: ComplaintFormProps) {
   const {data:session } = useSession();
@@ -151,7 +150,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       const response = await fetch("/api/support-services/feedback/complaint", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(values);
+        body: JSON.stringify(values),
       });
 
       if (!session.user) {
@@ -164,8 +163,9 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
       if (!session.user) {
         await uploadFiles(data.id);
 
-      toast({title:"Complaint Submitted",
-        description: "Your complaint has been submitted successfully.";
+      toast({
+        title: "Complaint Submitted",
+        description: "Your complaint has been submitted successfully.",
       });
 
       // Reset form;
@@ -223,8 +223,9 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
 } catch (error) {
 
-        await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {method:"POST",
-          body: formData;
+        await fetch(`/api/support-services/feedback/complaint/${complaintId}/attachment`, {
+          method: "POST",
+          body: formData,
         });
       } catch (error) {
 
@@ -261,7 +262,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 <div;
                 <Label htmlFor="category">Category>;
                 <Controller>;
-                  name="category";
+                  name = "category",
                   control={form.control}
                   render={({ field }) => (;
                     <Select>;
@@ -291,7 +292,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 <div;
                 <Label htmlFor="severity">Severity>;
                 <Controller>;
-                  name="severity";
+                  name = "severity",
                   control={form.control}
                   render={({ field }) => (;
                     <Select>;
@@ -328,7 +329,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 <div;
                   <Label htmlFor="departmentId">Department (Optional)>;
                   <Controller>;
-                    name="departmentId";
+                    name = "departmentId",
                     control={form.control}
                     render={({ field }) => (;
                       <Select>;
@@ -388,7 +389,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
 
               >;
                 <Checkbox>;
-                  id="anonymous";
+                  id = "anonymous",
                   checked={isAnonymous}
                   onCheckedChange={(checked) => {
                     form.setValue("anonymous", checked === true);
@@ -417,7 +418,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
                     <Label htmlFor="contactInfo.email">Email>;
                     <Input>;
                       {...form.register("contactInfo.email")}
-                      type="email";
+                      type = "email",
                       placeholder="Your email";
                       disabled={isSubmitting}
                     />;
@@ -482,7 +483,7 @@ export default const _ComplaintForm = ({ departments = [], onSuccess, defaultVal
               Cancel;
             </Button>;
             <Button>;
-              variant="destructive";
+              variant = "destructive",
               onClick={() => formValues && submitComplaint(formValues)}
               disabled={isSubmitting}
             >;

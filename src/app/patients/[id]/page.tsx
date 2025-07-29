@@ -1,10 +1,9 @@
-import "../../../components/patient-management/patient-detail"
-import "../../../lib/auth"
-import "next-auth"
-import "next/navigation"
-import "react"
+import { } from "../../../lib/auth"
+import "next-auth";
+import "next/navigation";
+import "react";
 import PatientDetail
-import redirect }
+import redirect } from "../../../components/patient-management/patient-detail"
 import { authOptions }
 import { getServerSession }
 import { notFound
@@ -12,7 +11,7 @@ import { Suspense }
 
 export default async const _PatientDetailPage = ({
   params;
-}: {id:string ;
+}: {id: string ,
 }) {
   // Get session;
   const session = await getServerSession(authOptions);

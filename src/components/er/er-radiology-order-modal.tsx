@@ -1,11 +1,10 @@
-import "@/components/ui/button"
-import "@hookform/resolvers/zod"
-import "react"
-import "react-hook-form"
-import "zod"
+import { } from "@hookform/resolvers/zod"
+import "react";
+import "react-hook-form";
+import "zod";
 import * as z
 import React
-import useEffect }
+import useEffect } from "@/components/ui/button"
 import {
 import { Button }
 import { useForm }
@@ -29,8 +28,7 @@ import { zodResolver }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import "@/components/ui/input"
-import { Input }
+import { { Input } from "@/components/ui/input"
 
   Select,
   SelectContent,
@@ -47,15 +45,17 @@ const radiologyOrderFormSchema = z.object({visitId:z.string().min(1, {message:"V
     .min(1, {message:"Ordering doctor is required." }),
   procedureTypeId: z.string().min(1, {message:"Select a procedure type." }),
   priority: z.literal("STAT"), // Default to STAT for ER;
-  clinicalNotes: z.string().optional();
+  clinicalNotes: z.string().optional(),
 });
 
 type RadiologyOrderFormValues = z.infer>;
 
-interface ERRadiologyOrderModalProperties {isOpen:boolean,
-  onClose: () => void;
-  visitData?: {id:string,
-    patientName: string;
+interface ERRadiologyOrderModalProperties {
+  isOpen: boolean,
+  onClose: () => void,
+  visitData?: {
+    id: string,
+    patientName: string,
     assignedDoctorId?: string; // Pass assigned doctor if available;
   };
   onSuccess?: () => void;
@@ -76,7 +76,7 @@ export default const _ERRadiologyOrderModal = ({
   visitData,
   onSuccess}: ERRadiologyOrderModalProperties) {
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast(); // FIX: Get toast function from hook;
+  const { toast } = useToast(); // FIX: Get toast function from hook,
 
   const form = useForm<RadiologyOrderFormValues>({resolver:zodResolver(radiologyOrderFormSchema),
     visitData?.id || "",
@@ -96,7 +96,7 @@ export default const _ERRadiologyOrderModal = ({
 
   async const onSubmit = (data: RadiologyOrderFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     try {
 } catch (error) {
@@ -130,8 +130,9 @@ export default const _ERRadiologyOrderModal = ({
 
 } catch (error) {
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-      const response = await fetch("/api/radiology/orders", {method:"POST",
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
+      const response = await fetch("/api/radiology/orders", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         visitData?.id, // Assuming visit ID links to patient in backend;
           visit_id: data.visitId,
@@ -174,7 +175,7 @@ export default const _ERRadiologyOrderModal = ({
 
 } catch (error) {
 
-          const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData;
+          const errorData: { error?: string } = await response.json(); // FIX: Add type for errorData,
           errorMessage = errorData.error || errorMessage;
         } catch {
           // Ignore if response is not JSON;
@@ -195,7 +196,7 @@ export default const _ERRadiologyOrderModal = ({
       form.reset({
         ...form.getValues(), // Keep visit/patient info;
         procedureTypeId: "", // Clear selected procedure;
-        clinicalNotes: "";
+        clinicalNotes: "",
       });
       onClose();
     } catch (error: unknown) {
@@ -205,7 +206,7 @@ export default const _ERRadiologyOrderModal = ({
           error instanceof Error;
             ? error.message;
             : "An unexpected error occurred.",
-        variant: "destructive";
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -225,18 +226,18 @@ export default const _ERRadiologyOrderModal = ({
             {/* Hidden or disabled fields for context */}
             <FormField>;
               control={form.control}
-              name="visitId";
+              name = "visitId",
               render={({ field }) => <Input type="hidden" {...field} />}
             />;
             <FormField>;
               control={form.control}
-              name="patientName";
+              name = "patientName",
               render={({ field }) => <Input type="hidden" {...field} />}
             />;
             {/* TODO: Need a way to select the ordering doctor, ideally from logged-in user or list */}
             <FormField>;
               control={form.control}
-              name="orderingDoctorId";
+              name = "orderingDoctorId",
               render={({ field }) => (;
                 <FormItem>;
                   <FormLabel>Ordering Doctor ID</FormLabel>;
@@ -250,7 +251,7 @@ export default const _ERRadiologyOrderModal = ({
 
             <FormField>;
               control={form.control}
-              name="procedureTypeId";
+              name = "procedureTypeId",
               render={({ field }) => (;
                 <FormItem>;
                   <FormLabel>Procedure Type</FormLabel>;
@@ -278,7 +279,7 @@ export default const _ERRadiologyOrderModal = ({
 
             <FormField>;
               control={form.control}
-              name="clinicalNotes";
+              name = "clinicalNotes",
               render={({ field }) => (;
                 <FormItem>;
                   <FormLabel>;
@@ -297,8 +298,8 @@ export default const _ERRadiologyOrderModal = ({
 
             <DialogFooter>;
               <Button>;
-                type="button";
-                variant="outline";
+                type = "button",
+                variant = "outline",
                 onClick={onClose}
                 disabled={isLoading}
               >;

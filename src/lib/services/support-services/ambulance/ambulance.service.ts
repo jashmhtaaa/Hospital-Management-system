@@ -1,18 +1,15 @@
-import "@/lib/audit-logging"
-import "@/lib/models/ambulance"
-import "@/lib/prisma"
-import "@/lib/services/notification.service"
-import "@/lib/services/support-services/ambulance/routing.service"
-import "@prisma/client"
+import { } from "@/lib/audit-logging"
+import { } from "@/lib/prisma"
+import { "@/lib/services/notification.service";
+import "@/lib/services/support-services/ambulance/routing.service";
+import "@prisma/client";
 import AmbulanceCrew
 import AmbulanceInventory
 import AmbulanceMaintenance
-import AmbulanceTrip }
-import estimateArrivalTime }
-import toFHIRAmbulanceTrip }
-import {Ambulance
-import { calculateRoute
-import { createAuditLog  } from "next/server"
+import AmbulanceTrip, estimateArrivalTime } from "@/lib/models/ambulance"
+import toFHIRAmbulanceTrip, }  Ambulance
+import  } calculateRoute
+import { createAuditLog  } from "@/lib/database"
 import { NotificationService }
 import { prisma }
 import { toFHIRAmbulance
@@ -63,12 +60,12 @@ import { toFHIRAmbulance
     // Convert to FHIR format;
     const fhirAmbulances = ambulances.map(ambulance => toFHIRAmbulance(ambulance));
 
-    return {data: ambulances,
-      fhir: fhirAmbulances;
+    return {data:ambulances,
+      fhir: fhirAmbulances,
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
     };
   }
 
@@ -88,10 +85,10 @@ import { toFHIRAmbulance
         ["SCHEDULED", "EN_ROUTE_TO_PICKUP", "ARRIVED_AT_PICKUP", "EN_ROUTE_TO_DESTINATION", "ARRIVED_AT_DESTINATION"],
           true,
             true,
-          orderBy: scheduledTime: "asc" ;
+          orderBy: scheduledTime: "asc" ,
         },
         ["SCHEDULED", "IN_PROGRESS"],
-          orderBy: scheduledDate: "asc" ;
+          orderBy: scheduledDate: "asc" ,
         }
       }
     });
@@ -101,8 +98,8 @@ import { toFHIRAmbulance
     }
 
     if (!session.user) {
-      return {data: ambulance,
-        fhir: toFHIRAmbulance(ambulance);
+      return {data:ambulance,
+        fhir: toFHIRAmbulance(ambulance),
       };
     }
 
@@ -127,7 +124,7 @@ import { toFHIRAmbulance
         "AVAILABLE",
         data.features,
         data.lastMaintenanceDate,
-        nextMaintenanceDate: data.nextMaintenanceDate;
+        nextMaintenanceDate: data.nextMaintenanceDate,
       },
       true;
       }
@@ -184,7 +181,7 @@ import { toFHIRAmbulance
         recipientRoles: ["MAINTENANCE_MANAGER", "AMBULANCE_COORDINATOR"],
         entityId: ambulance.id,
         ambulance.id,
-          registrationNumber: ambulance.registrationNumber;
+          registrationNumber: ambulance.registrationNumber,
       });
     }
 
@@ -218,7 +215,7 @@ import { toFHIRAmbulance
         true,
           {id: true,
               true,
-              gender: true;
+              gender: true,
             }
           },
           {id: true,
@@ -245,12 +242,12 @@ import { toFHIRAmbulance
     // Convert to FHIR format;
     const fhirTrips = trips.map(trip => toFHIRAmbulanceTrip(trip));
 
-    return {data: trips,
-      fhir: fhirTrips;
+    return {data:trips,
+      fhir: fhirTrips,
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
     };
   }
 
@@ -262,18 +259,18 @@ import { toFHIRAmbulance
       true,
         {id: true,
             true,
-            gender: true;
+            gender: true,
           }
         },
         true,
             true;
         },
         pickupLocation: true,
-        dropLocation: true;
-        {id: true,
+        dropLocation: true,
+        {id:true,
                 true;
         },
-        route: true;
+        route: true,
       }
     });
 
@@ -282,8 +279,8 @@ import { toFHIRAmbulance
     }
 
     if (!session.user) {
-      return {data: trip,
-        fhir: toFHIRAmbulanceTrip(trip);
+      return {data:trip,
+        fhir: toFHIRAmbulanceTrip(trip),
       };
     }
 
@@ -389,7 +386,7 @@ import { toFHIRAmbulance
         await prisma.ambulanceRoute.create({
           trip.id,
             routeData.distance,
-            estimatedDuration: routeData.duration;
+            estimatedDuration: routeData.duration,
           }
         });
       } catch (error) {
@@ -478,7 +475,7 @@ import { toFHIRAmbulance
   async updateAmbulanceTripStatus(id: string, status: string, userId: string, locationData?: unknown): Promise<AmbulanceTrip> {
     const trip = await prisma.ambulanceTrip.findUnique({where: { id },
       true,
-        patient: true;
+        patient: true,
 
     });
 
@@ -563,16 +560,16 @@ import { toFHIRAmbulance
         await prisma.ambulanceRoute.upsert({where: { tripId: id },
           {
               ...locationData,
-              lastUpdated: new Date().toISOString();
+              lastUpdated: new Date().toISOString(),
 
           },
           id,
             routeData: {,
               ...locationData,
-              lastUpdated: new Date().toISOString();
+              lastUpdated: new Date().toISOString(),
             },
             estimatedDistance: locationData.distance || 0,
-            estimatedDuration: locationData.duration || 0;
+            estimatedDuration: locationData.duration || 0,
 
         });
       } catch (error) {
@@ -592,12 +589,12 @@ import { toFHIRAmbulance
         await this.notificationService.sendNotification({type: "AMBULANCE_EN_ROUTE",
           `Ambulance ${trip.ambulance.registrationNumber} is en route to pickup location`,
           recipientIds: [trip.requestedById],
-          entityId: trip.id;
+          entityId: trip.id,
         }),\n    }\n    case "ARRIVED_AT_PICKUP": any;
         await this.notificationService.sendNotification({type: "AMBULANCE_ARRIVED_PICKUP",
           `Ambulance ${trip.ambulance.registrationNumber} has arrived at pickup location`,
           recipientIds: [trip.requestedById],
-          entityId: trip.id;
+          entityId: trip.id,
         }),\n    }\n    case "COMPLETED": any;
         await this.notificationService.sendNotification({type: "AMBULANCE_TRIP_COMPLETED",
           `Trip with ambulance ${trip.ambulance.registrationNumber} has been completed`,
@@ -618,11 +615,11 @@ import { toFHIRAmbulance
 
       },
       true,
-        {status: "ON_DUTY";
+        {status:"ON_DUTY",
           },
           {
               true,
-                name: true;
+                name: true,
 
         },
         {
@@ -632,7 +629,7 @@ import { toFHIRAmbulance
               // Find trips that might conflict with the scheduled time;
               // Assuming trips take at most 2 hours;
               gte: new Date(scheduledTime.getTime() - 2 * 60 * 60 * 1000),
-              lte: new Date(scheduledTime.getTime() + 2 * 60 * 60 * 1000);
+              lte: new Date(scheduledTime.getTime() + 2 * 60 * 60 * 1000),
 
     });
 
@@ -710,19 +707,19 @@ import { toFHIRAmbulance
               return {
                 ...ambulance,
                 eta.duration,
-                  distance: eta.distance;
+                  distance: eta.distance,
 
               };
             } catch (error) {
 
               return {
                 ...ambulance,
-                eta: null;
+                eta: null,
               };
 
           return {
             ...ambulance,
-            eta: null;
+            eta: null,
           };
         });
       );
@@ -766,7 +763,7 @@ import { toFHIRAmbulance
       const updatedCrew = await prisma.ambulanceCrew.update({where: { id: existingCrew.id },
         data: {
           role,
-          status: "ON_DUTY";
+          status: "ON_DUTY",
           shiftStart,
           shiftEnd;
         },
@@ -775,7 +772,7 @@ import { toFHIRAmbulance
               true;
 
           },
-          ambulance: true;
+          ambulance: true,
 
       });
 
@@ -792,7 +789,7 @@ import { toFHIRAmbulance
           ambulanceId,
           userId,
           role,
-          status: "ON_DUTY";
+          status: "ON_DUTY",
           shiftStart,
           shiftEnd;
         },
@@ -801,7 +798,7 @@ import { toFHIRAmbulance
               true;
 
           },
-          ambulance: true;
+          ambulance: true,
 
       });
 
@@ -815,11 +812,11 @@ import { toFHIRAmbulance
       await this.notificationService.sendNotification({type: "CREW_ASSIGNMENT",
         `You have been assigned as ${role} to ambulance ${ambulance.registrationNumber}`,
         recipientIds: [userId],
-        {crewId: crew.id;
+        {crewId:crew.id,
           ambulanceId,
           role,
           shiftStart: shiftStart.toISOString(),
-          shiftEnd: shiftEnd.toISOString();
+          shiftEnd: shiftEnd.toISOString(),
 
       });
 
@@ -831,7 +828,7 @@ import { toFHIRAmbulance
   async endCrewShift(crewId: string, userId: string): Promise<AmbulanceCrew> {
     const crew = await prisma.ambulanceCrew.findUnique({where: { id: crewId },
       true,
-        ambulance: true;
+        ambulance: true,
 
     });
 
@@ -841,10 +838,10 @@ import { toFHIRAmbulance
     // Update crew status to OFF_DUTY;
     const updatedCrew = await prisma.ambulanceCrew.update({where: { id: crewId },
       "OFF_DUTY",
-        shiftEnd: new Date();
+        shiftEnd: new Date(),
       },
       true,
-        ambulance: true;
+        ambulance: true,
 
     });
 
@@ -874,7 +871,7 @@ import { toFHIRAmbulance
         maintenanceType: data.maintenanceType,
         data.description,
         scheduledDate: new Date(data.scheduledDate),
-        notes: data.notes;
+        notes: data.notes,
       },
       true;
 
@@ -891,10 +888,10 @@ import { toFHIRAmbulance
     await this.notificationService.sendNotification({type: "MAINTENANCE_SCHEDULED",
       `${data.maintenanceType} maintenance scheduled for ambulance ${ambulance.registrationNumber} on ${new Date(data.scheduledDate).toLocaleDateString()}`,
       recipientRoles: ["MAINTENANCE_STAFF"],
-      {maintenanceId: maintenance.id;
+      {maintenanceId:maintenance.id,
         ambulanceId,
         maintenanceType: data.maintenanceType,
-        scheduledDate: data.scheduledDate;
+        scheduledDate: data.scheduledDate,
 
     });
 
@@ -930,7 +927,7 @@ import { toFHIRAmbulance
       await prisma.ambulance.update({where: { id: maintenance.ambulanceId },
         new Date(),
           nextMaintenanceDate: [0] + 90 * 24 * 60 * 60 * 1000), // 90 days from now;
-          status: "AVAILABLE" // Set ambulance back to available;
+          status: "AVAILABLE" // Set ambulance back to available,
 
       });
 
@@ -955,7 +952,7 @@ import { toFHIRAmbulance
       await this.notificationService.sendNotification({type: "MAINTENANCE_COMPLETED",
         `Maintenance for ambulance ${maintenance.ambulance.registrationNumber} has been completed`,
         recipientRoles: ["AMBULANCE_COORDINATOR"],
-        entityId: maintenance.id;
+        entityId: maintenance.id,
       });
 
     return updatedMaintenance;
@@ -1014,7 +1011,7 @@ import { toFHIRAmbulance
       await this.notificationService.sendNotification({type: "INVENTORY_LOW",
         `${updatedItem.itemName} is running low on ambulance ${updatedItem.ambulance.registrationNumber} (${updatedItem.quantity} remaining)`,
         recipientRoles: ["AMBULANCE_COORDINATOR", "INVENTORY_MANAGER"],
-        entityId: updatedItem.id;
+        entityId: updatedItem.id,
       });
 
     return updatedItem;
@@ -1025,7 +1022,7 @@ import { toFHIRAmbulance
   async getAmbulanceAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
     // Get date range based on period;
     const now = new Date();
-    let startDate: Date;
+    let startDate: Date,
 
     switch (period) {
       case "DAILY": any;
@@ -1038,27 +1035,27 @@ import { toFHIRAmbulance
         startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
 
     // Get trip counts by status;
-    const tripsByStatus = await prisma.ambulanceTrip.groupBy({by: ["status"],
-      {gte:startDate;
+    const tripsByStatus = await prisma.ambulanceTrip.groupBy({by:["status"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get trip counts by type;
-    const tripsByType = await prisma.ambulanceTrip.groupBy({by: ["tripType"],
-      {gte:startDate;
+    const tripsByType = await prisma.ambulanceTrip.groupBy({by:["tripType"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get trip counts by priority;
-    const tripsByPriority = await prisma.ambulanceTrip.groupBy({by: ["priority"],
-      {gte:startDate;
+    const tripsByPriority = await prisma.ambulanceTrip.groupBy({by:["priority"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get ambulance utilization;
@@ -1073,7 +1070,7 @@ import { toFHIRAmbulance
     const ambulanceUtilization = ambulances;
       .map(ambulance => ({id: ambulance.id,
         ambulance.vehicleType,
-        tripCount: ambulance._count.trips;
+        tripCount: ambulance._count.trips,
       }));
       .sort((a, b) => b.tripCount - a.tripCount);
 
@@ -1086,7 +1083,7 @@ import { toFHIRAmbulance
 
       },
       true,
-        tripType: true;
+        tripType: true,
 
     });
 
@@ -1110,8 +1107,8 @@ import { toFHIRAmbulance
     });
 
     // Get maintenance statistics;
-    const maintenanceByType = await prisma.ambulanceMaintenance.groupBy({by: ["maintenanceType"],
-      {gte:startDate;
+    const maintenanceByType = await prisma.ambulanceMaintenance.groupBy({by:["maintenanceType"],
+      {gte:startDate,
 
       },
       _count: true,

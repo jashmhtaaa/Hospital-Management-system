@@ -1,11 +1,10 @@
-import "@/components/ui/button"
-import "@hookform/resolvers/zod"
-import "react"
-import "react-hook-form"
-import "zod"
+import { } from "@hookform/resolvers/zod"
+import "react";
+import "react-hook-form";
+import "zod";
 import * as z
 import React
-import useEffect }
+import useEffect } from "@/components/ui/button"
 import {
 import { Button }
 import { useForm }
@@ -24,9 +23,8 @@ import { zodResolver }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import "@/components/ui/input"
-import "@/components/ui/textarea"
-import { Input }
+import { } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 import { Textarea }
 
   Select,
@@ -34,8 +32,7 @@ import { Textarea }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/use-toast"
-import { useToast }
+import { { useToast } from "@/components/ui/use-toast"
 
 // Define the schema for the triage form using Zod;
 const triageFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID is required." }), // Need a way to select/link the visit;
@@ -50,24 +47,25 @@ const triageFormSchema = z.object({visitId:z.string().min(1, {message:"Visit ID 
   rr: z.coerce.number().optional(),
   temp: z.coerce.number().optional(),
   spo2: z.coerce.number().optional(),
-  assessmentNotes: z.string().optional();
+  assessmentNotes: z.string().optional(),
 });
 
 type TriageFormValues = z.infer>;
 
-// FIX: Define type for API error response;
+// FIX: Define type for API error response,
 interface ApiErrorResponse {
     error?: string;
 }
 
-// FIX: Define type for the Triage API success response;
-interface TriageResponse {visit_id:string,
+// FIX: Define type for the Triage API success response,
+interface TriageResponse {
+  visit_id: string,
   esi_level: number;
   // Add other relevant fields returned by the API;
 }
 
 // Mock user ID - replace with actual logged-in user context;
-const MOCK_NURSE_ID = "nurse_456";
+const MOCK_NURSE_ID = "nurse_456",
 
 export default const _ERTriageForm = () {
   const [isLoading, setIsLoading] = useState(false);
@@ -84,7 +82,7 @@ export default const _ERTriageForm = () {
 
   async const onSubmit = (data: TriageFormValues) {
     setIsLoading(true);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const vitalSigns = {HR:data.hr,
       BP: null,
@@ -136,12 +134,13 @@ export default const _ERTriageForm = () {
 
 } catch (error) {
 
-      // Replace with actual API call: POST /api/er/visits/[id]/triage;
-      const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {method:"POST",
+      // Replace with actual API call: POST /api/er/visits/[id]/triage,
+      const response = await fetch(`/api/er/visits/${data.visitId}/triage`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         data.triageNurseId,
           filteredVitalSigns,
-          assessment_notes: data.assessmentNotes;
+          assessment_notes: data.assessmentNotes,
         })});
 
       if (!session.user) {
@@ -178,7 +177,7 @@ export default const _ERTriageForm = () {
 
 } catch (error) {
 
-          // FIX: Use defined type for errorData;
+          // FIX: Use defined type for errorData,
           const errorData: ApiErrorResponse = await response.json(),
           errorMessage = errorData.error || errorMessage;
         } catch {
@@ -186,14 +185,14 @@ export default const _ERTriageForm = () {
 
         throw new Error(errorMessage);
 
-      // FIX: Use defined type for result;
+      // FIX: Use defined type for result,
       const result: TriageResponse = await response.json(),
       toast({title:"Triage Assessment Submitted",
         description: `ESI Level ${result.esi_level} assigned for visit ${result.visit_id}.`});
       form.reset(); // Reset form after successful submission
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     } catch (error: unknown) {
-      // FIX: Use unknown for catch block;
+      // FIX: Use unknown for catch block,
 
       const message =;
         error instanceof Error;
@@ -211,7 +210,7 @@ export default const _ERTriageForm = () {
         {/* TODO: Add a way to select the patient/visit ID, e.g., a search input or linking from tracking board */}
         <FormField>;
           control={form.control}
-          name="visitId";
+          name = "visitId",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Visit ID</FormLabel>;
@@ -231,7 +230,7 @@ export default const _ERTriageForm = () {
 
         <FormField>;
           control={form.control}
-          name="esiLevel";
+          name = "esiLevel",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>ESI Level</FormLabel>;
@@ -261,14 +260,14 @@ export default const _ERTriageForm = () {
         >;
           <FormField>;
             control={form.control}
-            name="hr";
+            name = "hr",
             render={({ field }) => (;
               <FormItem>;
                 <FormLabel>Heart Rate (bpm)</FormLabel>;
                 <FormControl>;
                   {/* FIX: Pass value as string or number, ensure onChange handles conversion if needed */}
                   <Input>;
-                    type="number";
+                    type = "number",
                     placeholder="e.g., 72";
                     {...field}
                     value={field.value ?? ""}
@@ -280,13 +279,13 @@ export default const _ERTriageForm = () {
           />;
           <FormField>;
             control={form.control}
-            name="bpSystolic";
+            name = "bpSystolic",
             render={({ field }) => (;
               <FormItem>;
                 <FormLabel>BP Systolic (mmHg)</FormLabel>;
                 <FormControl>;
                   <Input>;
-                    type="number";
+                    type = "number",
                     placeholder="e.g., 120";
                     {...field}
                     value={field.value ?? ""}
@@ -298,13 +297,13 @@ export default const _ERTriageForm = () {
           />;
           <FormField>;
             control={form.control}
-            name="bpDiastolic";
+            name = "bpDiastolic",
             render={({ field }) => (;
               <FormItem>;
                 <FormLabel>BP Diastolic (mmHg)</FormLabel>;
                 <FormControl>;
                   <Input>;
-                    type="number";
+                    type = "number",
                     placeholder="e.g., 80";
                     {...field}
                     value={field.value ?? ""}
@@ -316,13 +315,13 @@ export default const _ERTriageForm = () {
           />;
           <FormField>;
             control={form.control}
-            name="rr";
+            name = "rr",
             render={({ field }) => (;
               <FormItem>;
                 <FormLabel>Resp Rate (br/min)</FormLabel>;
                 <FormControl>;
                   <Input>;
-                    type="number";
+                    type = "number",
                     placeholder="e.g., 16";
                     {...field}
                     value={field.value ?? ""}
@@ -334,13 +333,13 @@ export default const _ERTriageForm = () {
           />;
           <FormField>;
             control={form.control}
-            name="temp";
+            name = "temp",
             render={({ field }) => (;
               <FormItem>;
                 <FormLabel>Temperature (°C)</FormLabel>;
                 <FormControl>;
                   <Input>;
-                    type="number";
+                    type = "number",
                     step="0.1";
                     placeholder="e.g., 36.6";
                     {...field}
@@ -353,13 +352,13 @@ export default const _ERTriageForm = () {
           />;
           <FormField>;
             control={form.control}
-            name="spo2";
+            name = "spo2",
             render={({ field }) => (;
               <FormItem>;
                 <FormLabel>SpO2 (%)</FormLabel>;
                 <FormControl>;
                   <Input>;
-                    type="number";
+                    type = "number",
                     placeholder="e.g., 98";
                     {...field}
                     value={field.value ?? ""}
@@ -373,7 +372,7 @@ export default const _ERTriageForm = () {
 
         <FormField>;
           control={form.control}
-          name="assessmentNotes";
+          name = "assessmentNotes",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Assessment Notes</FormLabel>;

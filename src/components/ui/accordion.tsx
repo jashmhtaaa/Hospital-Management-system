@@ -1,10 +1,9 @@
-import "@/lib/utils"
-import "@radix-ui/react-accordion"
-import "lucide-react"
-import "react"
+import { } from "@radix-ui/react-accordion"
+import "lucide-react";
+import "react";
 import * as AccordionPrimitive
 import * as React
-import { ChevronDown }
+import { ChevronDown } from "@/lib/utils"
 import { cn }
 
 }
@@ -23,7 +22,7 @@ const AccordionItem = React.forwardRef<;
     {...props}
   />;
 ));
-AccordionItem.displayName = "AccordionItem";
+AccordionItem.displayName = "AccordionItem",
 
 const AccordionTrigger = React.forwardRef<;
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
@@ -33,7 +32,7 @@ const AccordionTrigger = React.forwardRef<;
     <AccordionPrimitive.Trigger;
       ref={ref}
       className={cn();
-        "flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover: underline text-left [&[data-state=open]>svg]:rotate-180";
+        "flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover: underline text-left [&[data-state=open]>svg]:rotate-180",
         className;
       )}
       {...props}

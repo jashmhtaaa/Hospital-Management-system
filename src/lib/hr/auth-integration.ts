@@ -1,13 +1,12 @@
-import "@/lib/prisma"
-import "@next-auth/prisma-adapter"
-import "bcrypt"
-import "next-auth"
-import "next-auth/providers/credentials"
+import { } from "@next-auth/prisma-adapter"
+import "bcrypt";
+import "next-auth";
+import "next-auth/providers/credentials";
 import CredentialsProvider
-import {compare  } from "next/server"
-import {NextAuthOptions  } from "next/server"
-import {prisma  } from "next/server"
-import {PrismaAdapter  } from "next/server"
+import {  compare  } from "@/lib/prisma"
+import {  NextAuthOptions  } from "@/lib/database"
+import {  prisma  } from "@/lib/database"
+import {  PrismaAdapter  } from "@/lib/database"
 
 /**;
  * Authentication integration for HR & Asset Management module;
@@ -18,8 +17,8 @@ export const PrismaAdapter(prisma),
   },
   "/login";
   },
-  providers: [;
-    CredentialsProvider({name: "Credentials",
+  providers: [,
+    CredentialsProvider({name:"Credentials",
       {label:"Email", type: "email" },
         password: {label: "Password", type: "password" }
       },
@@ -32,7 +31,7 @@ export const PrismaAdapter(prisma),
           credentials.email;
           },
           true,
-            roles: true;
+            roles: true,
           }
         });
 

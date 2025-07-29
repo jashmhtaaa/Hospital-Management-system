@@ -1,21 +1,20 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/patient/patient.service"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../../lib/validation/pharmacy-validation"
-import "../../../models/domain-models"
-import "../../../services/drug-interaction-service"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {auditLog  } from "next/server"
-import {DrugInteractionService  } from "next/server"
-import {errorHandler  } from "next/server"
-import {getMedicationById  } from "next/server"
-import {getPatientConditions  } from "next/server"
-import {PharmacyDomain  } from "next/server"
-import {type
-import {  validateDrugConditionInteractionRequest  } from "next/server"
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/patient/patient.service";
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../../lib/validation/pharmacy-validation";
+import "../../../models/domain-models";
+import "../../../services/drug-interaction-service";
+import "next/server";
+import { NextRequest } from "../../../../../lib/audit"
+import { NextResponse } from "next/server" }
+import {  auditLog  } from "@/lib/database"
+import {  DrugInteractionService  } from "@/lib/database"
+import {  errorHandler  } from "@/lib/database"
+import {  getMedicationById  } from "@/lib/database"
+import {  getPatientConditions  } from "@/lib/database"
+import {  PharmacyDomain  } from "@/lib/database"
+import {   type
+import {  validateDrugConditionInteractionRequest  } from "@/lib/database"
 
 }
 
@@ -32,7 +31,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 // Initialize services;

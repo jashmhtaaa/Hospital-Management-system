@@ -1,19 +1,18 @@
-import "../../../../lib/audit"
-import "../../../../lib/error-handler"
-import "../../../../lib/security.service"
-import "../../../../lib/validation/pharmacy-validation"
-import "../../models/domain-models"
-import "../../models/fhir-mappers"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {auditLog  } from "next/server"
-import {encryptionService  } from "next/server"
-import {errorHandler  } from "next/server"
-import {FHIRMapper  } from "next/server"
-import {PharmacyDomain  } from "next/server"
-import {type
-import {  validateInventoryRequest  } from "next/server"
+import { } from "../../../../lib/error-handler"
+import "../../../../lib/security.service";
+import "../../../../lib/validation/pharmacy-validation";
+import "../../models/domain-models";
+import "../../models/fhir-mappers";
+import "next/server";
+import { NextRequest } from "../../../../lib/audit"
+import { NextResponse } from "next/server" }
+import {  auditLog  } from "@/lib/database"
+import {  encryptionService  } from "@/lib/database"
+import {  errorHandler  } from "@/lib/database"
+import {  FHIRMapper  } from "@/lib/database"
+import {  PharmacyDomain  } from "@/lib/database"
+import {   type
+import {  validateInventoryRequest  } from "@/lib/database"
 
 }
 
@@ -34,7 +33,7 @@ const inventoryRepository = {findById: (id: string) => Promise.resolve(null),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
   adjustStock: () => Promise.resolve(true),
-  transferStock: () => Promise.resolve(true);
+  transferStock: () => Promise.resolve(true),
 }
 
 /**;
@@ -112,11 +111,11 @@ export const GET = async (req: any) => {,
     // Audit logging;
     await auditLog("INVENTORY", {action: "LIST",
       userId,
-      details: any;
+      details: any,
         filter,
         page,
         limit,
-        resultCount: paginatedItems.length;
+        resultCount: paginatedItems.length,
     });
 
     // Return response;
@@ -125,7 +124,7 @@ export const GET = async (req: any) => {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
       }
     }, {status: 200 });
   } catch (error) {
@@ -217,13 +216,13 @@ export const POST = async (req: any) => {,
       inventoryItemId,
       data.medicationId,
         data.quantityOnHand,
-        isControlled: data.isControlled || false;
+        isControlled: data.isControlled || false,
     });
 
     // Return response;
     return NextResponse.json();
-      {id: inventoryItemId,
-        message: "Inventory item created successfully";
+      {id:inventoryItemId,
+        message: "Inventory item created successfully",
       },
       {status: 201 }
     );

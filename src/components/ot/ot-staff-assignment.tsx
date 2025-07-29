@@ -1,15 +1,13 @@
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "react"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import "react";
 import CardContent
 import CardHeader
-import CardTitle }
-import React
-import useCallback }
+import CardTitle, React
+import useCallback } from "@/components/ui/card"
 import useEffect
-import {
+import  }
 import { Button }
 import { Card
 import { Input }
@@ -31,21 +29,21 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/use-toast"
-import "lucide-react"
+import { } from "lucide-react"
 import Trash2
-import Users }
+import Users } from "@/components/ui/use-toast"
 import { PlusCircle
 import { useToast }
 
 // Props for the component;
-interface OTStaffAssignmentProperties {bookingId:string;
+interface OTStaffAssignmentProperties {
+  bookingId: string,
 }
 
 // Mock data structures;
 interface AssignedStaff {assignment_id:string,
   string,
-  role: string;
+  role: string,
 }
 
 interface User {id:string,
@@ -121,15 +119,15 @@ export default const _OTStaffAssignment = ({
       const mockAssigned: AssignedStaff[] = [;
         {assignment_id:"assign-1",
           "Dr. Alice Brown",
-          role: "Lead Surgeon";
+          role: "Lead Surgeon",
         },
         {assignment_id:"assign-2",
           "Dr. Charlie Green",
-          role: "Anesthesiologist";
+          role: "Anesthesiologist",
         },
         {assignment_id:"assign-3",
           "Nurse Eve Adams",
-          role: "Scrub Nurse";
+          role: "Scrub Nurse",
         }];
       setAssignedStaff(mockAssigned),
       setLoading(false);
@@ -376,8 +374,8 @@ export default const _OTStaffAssignment = ({
                     <TableCell>{staff.role}</TableCell>;
                     >;
                       <Button>;
-                        variant="ghost";
-                        size="icon";
+                        variant = "ghost",
+                        size = "icon",
                         onClick={() => handleRemoveStaff(staff.assignment_id)}
                         title="Remove Staff";
                       >;

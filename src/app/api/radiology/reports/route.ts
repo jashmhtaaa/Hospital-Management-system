@@ -1,20 +1,19 @@
-import {IronSession  } from "next/server"; // Import IronSession;
-import "nanoid"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {nanoid  } from "next/server"
-import {type
+import { IronSession  } from "iron-session"; // Import IronSession;
+import { } from "next/server"
+import { NextRequest } from "nanoid"
+import { NextResponse } from "next/server" }
+import {  nanoid  } from "@/lib/database"
+import { type
 
 // import { checkUserRole } from "next/server"; // Assuming checkUserRole might not be fully implemented or needed based on roleName;
 import {getDB } from "next/server"; // Import getDB;
 import {type IronSessionData, getSession } from "next/server"; // Import IronSessionData;
 
 // Interface for POST request body;
-interface RadiologyReportPostData {study_id: string,
-  radiologist_id: string;
+interface RadiologyReportPostData {study_id:string,
+  radiologist_id: string,
   findings?: string | null;
-  impression: string;
+  impression: string,
   recommendations?: string | null;
   status?: "preliminary" | "final" | "addendum";
 }
@@ -22,7 +21,7 @@ interface RadiologyReportPostData {study_id: string,
 // Interface for GET response items (adjust based on actual query results);
 interface RadiologyReportListItem {id: string,
   string,
-  status: string;
+  status: string,
   accession_number?: string;
   radiologist_name?: string;
   patient_id?: string;
@@ -100,8 +99,8 @@ export const _GET = async (request: any) => {,
                  JOIN RadiologyOrders ro ON rs.order_id = ro.id;
                  JOIN Patients p ON ro.patient_id = p.id;
                  JOIN RadiologyProcedureTypes pt ON ro.procedure_type_id = pt.id`;
-    const parameters: string[] = [];
-    const conditions: string[] = [];
+    const parameters: string[] = [],
+    const conditions: string[] = [],
 
     if (!session.user) {
       conditions.push("rr.study_id = ?");
@@ -212,7 +211,7 @@ export const _POST = async (request: any) => {,
     const studyResult = await database;
       .prepare("SELECT id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
-      .first<id: string >();
+      .first<id: string >(),
     if (!session.user) {
       return NextResponse.json();
         {error: "Associated radiology study not found" },
@@ -260,7 +259,7 @@ export const _POST = async (request: any) => {,
     const orderIdResult = await database;
       .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
       .bind(study_id);
-      .first<order_id: string >();
+      .first<order_id: string >(),
     if (!session.user) {
       await database;
         .prepare();
@@ -288,8 +287,8 @@ export const _POST = async (request: any) => {,
     if (!session.user);
     ) ;
       return NextResponse.json();
-        {error: "Failed to create radiology report: A report for this study might already exist.",
-          details: message;
+        {error:"Failed to create radiology report: A report for this study might already exist.",
+          details: message,
         },
         {status: 409 }
       );

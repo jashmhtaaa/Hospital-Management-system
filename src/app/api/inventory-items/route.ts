@@ -1,25 +1,24 @@
-import "@/lib/session"
-import "@/types/inventory"
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import "zod"
+import { } from "@/types/inventory"
+import "@opennextjs/cloudflare";
+import "iron-session";
+import "next/headers";
+import "zod";
 import IronSessionData
-import sessionOptions }
-import {cookies  } from "next/server"
-import {getCloudflareContext  } from "next/server"
-import {getIronSession  } from "next/server"
-import {InventoryItem  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import sessionOptions } from "@/lib/session"
+import {  cookies  } from "@/lib/database"
+import {  getCloudflareContext  } from "@/lib/database"
+import {  getIronSession  } from "@/lib/database"
+import {  InventoryItem  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 // Define roles allowed to view/manage inventory items (adjust as needed);
 const ALLOWED_ROLES_VIEW = ["Admin", "Pharmacist", "Nurse", "Inventory Manager"]; // Add Inventory Manager role if needed;
 const ALLOWED_ROLES_MANAGE = ["Admin", "Pharmacist", "Inventory Manager"];
 
 // GET handler for listing inventory items;
-export const _GET = async (request: Request) => {,
-    const cookieStore = await cookies(); // FIX: Add await;
+export const _GET = async (request: Request) => {
+    const cookieStore = await cookies(); // FIX: Add await,
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const { searchParams } = new URL(request.url);
 
@@ -61,7 +60,7 @@ export const _GET = async (request: Request) => {,
 }
 } catch (error) {
 }
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type;
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type,
         const { env } = context;
         const { DB } = env;
 
@@ -75,7 +74,7 @@ export const _GET = async (request: Request) => {,
             LEFT JOIN StockBatches sb ON ii.inventory_item_id = sb.inventory_item_id;
             WHERE ii.is_active = TRUE;
         `;
-        const queryParams: string[] = [];
+        const queryParams: string[] = [],
 
         const category = searchParams.get("category");
         if (!session.user) {
@@ -117,11 +116,11 @@ const AddInventoryItemSchema = z.object({billable_item_id: z.number().int().posi
     manufacturer: z.string().optional(),
     unit_of_measure: z.string().optional(),
     reorder_level: z.number().int().nonnegative().optional().default(0),
-    is_active: z.boolean().optional().default(true);
+    is_active: z.boolean().optional().default(true),
 });
 
-export const _POST = async (request: Request) => {,
-    const cookieStore = await cookies(); // FIX: Add await;
+export const _POST = async (request: Request) => {
+    const cookieStore = await cookies(); // FIX: Add await,
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions);
 
     // 1. Check Authentication & Authorization;
@@ -171,11 +170,11 @@ export const _POST = async (request: Request) => {,
 
         const itemData = validation.data;
 
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type;
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type,
         const { env } = context;
         const { DB } = env;
 
-        // 2. Optional: Check if billable_item_id exists and is valid if provided;
+        // 2. Optional: Check if billable_item_id exists and is valid if provided,
         if (!session.user) {
             const billableItem = await DB.prepare("SELECT item_id FROM BillableItems WHERE item_id = ? AND is_active = TRUE");
                                         .bind(itemData.billable_item_id);
@@ -184,7 +183,7 @@ export const _POST = async (request: Request) => {,
                 return new Response(JSON.stringify({error: "Invalid or inactive Billable Item ID provided" }), {status: 400,
                     headers: { "Content-Type": "application/json" }});
 
-            // Optional: Check if billable_item_id is already linked to another inventory item;
+            // Optional: Check if billable_item_id is already linked to another inventory item,
             const existingLink = await DB.prepare("SELECT inventory_item_id FROM InventoryItems WHERE billable_item_id = ?");
                                          .bind(itemData.billable_item_id);
                                          .first();

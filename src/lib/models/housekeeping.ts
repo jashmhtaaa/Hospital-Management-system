@@ -1,7 +1,6 @@
-import "@prisma/client"
-import HousekeepingRequest
-import HousekeepingTask }
-import {HousekeepingInspection
+import { HousekeepingRequest
+import HousekeepingTask } from "@prisma/client"
+import {  HousekeepingInspection
 
 // FHIR-compliant interfaces for Housekeeping Management;
 
@@ -15,7 +14,7 @@ import {HousekeepingInspection
   {system: string,
       string;
     }[];
-    text: string;
+    text: string,
   };
   string;
     display?: string;
@@ -23,15 +22,15 @@ import {HousekeepingInspection
   string;
     display?: string;
   };
-  performer?: {reference: string;
+  performer?: {reference:string,
     display?: string;
   }[];
   string;
     display?: string;
   }[];
   occurrenceDateTime?: string;
-  authoredOn: string;
-  note?: {text: string;
+  authoredOn: string,
+  note?: {text:string,
   }[];
 
 /**;
@@ -42,18 +41,18 @@ import {HousekeepingInspection
   }[];
   status: "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error",
   "routine" | "urgent" | "asap" | "stat",
-  {reference: string;
+  {reference:string,
   };
   string;
   };
   authoredOn: string,
-  {reference: string;
+  {reference:string,
     display?: string;
   };
-  owner?: {reference: string;
+  owner?: {reference:string,
     display?: string;
   };
-  note?: {text: string;
+  note?: {text:string,
   }[];
   executionPeriod?: {
     start?: string;
@@ -72,9 +71,9 @@ import {HousekeepingInspection
       string;
     }[];
   };
-  managingOrganization?: {reference: string;
+  managingOrganization?: {reference:string,
   };
-  partOf?: {reference: string;
+  partOf?: {reference:string,
   };
 
 /**;
@@ -87,9 +86,9 @@ import {HousekeepingInspection
   {system: string,
       string;
     }[];
-    text: string;
+    text: string,
   };
-  subject?: {reference: string;
+  subject?: {reference:string,
   };
   effectiveDateTime: string,
   string;
@@ -97,18 +96,18 @@ import {HousekeepingInspection
   }[];
   valueQuantity?: {value: number,
     string,
-    code: string;
+    code: string,
   };
   component?: {
     {system: string,
         string;
       }[];
-      text: string;
+      text: string,
     };
     valueString?: string;
     valueQuantity?: {value: number,
       string,
-      code: string;
+      code: string,
     };
   }[];
 
@@ -116,7 +115,7 @@ import {HousekeepingInspection
  * Convert database HousekeepingRequest to FHIR ServiceRequest;
  */;
 export const _toFHIRHousekeepingRequest = (unknown,
-  requestedByUser: unknown;
+  requestedByUser: unknown,
   tasks?: unknown[];
 }): FHIRHousekeepingRequest {
   // Map status from internal to FHIR status;
@@ -152,7 +151,7 @@ export const _toFHIRHousekeepingRequest = (unknown,
       }]],
     "https://hms.local/fhir/CodeSystem/housekeeping-request-type",
         code: requestTypeMap[request.requestType]?.code || request.requestType.toLowerCase(),
-        display: requestTypeMap[request.requestType]?.display || request.requestType;
+        display: requestTypeMap[request.requestType]?.display || request.requestType,
       }],
       text: request.description,
     `Location/${request.locationId}`,
@@ -172,7 +171,7 @@ export const _toFHIRHousekeepingRequest = (unknown,
  */;
 export const _toFHIRHousekeepingTask = (HousekeepingRequest;
   assignedToUser?: unknown;
-  createdByUser: unknown;
+  createdByUser: unknown,
 }): FHIRHousekeepingTask {
   // Map status from internal to FHIR status;
   const statusMap: Record<string, "draft" | "requested" | "received" | "accepted" | "rejected" | "ready" | "cancelled" | "in-progress" | "on-hold" | "failed" | "completed" | "entered-in-error"> = {
@@ -197,14 +196,14 @@ export const _toFHIRHousekeepingTask = (HousekeepingRequest;
       display: task.assignedToUser?.name || "Unknown User": undefined,
     note: task.notes ? [text: task.notes ] : [],
     task.startTime?.toISOString(),
-      end: task.endTime?.toISOString();
+      end: task.endTime?.toISOString(),
   };
 
 /**;
  * Convert database HousekeepingInspection to FHIR Observation;
  */;
 export const _toFHIRHousekeepingInspection = (unknown,
-  inspector: unknown;
+  inspector: unknown,
 }): FHIRHousekeepingInspection {
   // Map status from internal to FHIR status;
   const statusMap: Record<string, "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown"> = {
@@ -220,36 +219,36 @@ export const _toFHIRHousekeepingInspection = (unknown,
       }]],
     "https://hms.local/fhir/CodeSystem/housekeeping-inspection-type",
         code: inspection.inspectionType.toLowerCase(),
-        display: inspection.inspectionType;
+        display: inspection.inspectionType,
       }],
-      text: `Housekeeping Inspection - $inspection.inspectionType`;
+      text: `Housekeeping Inspection - $inspection.inspectionType`,
     },
     `Location/$inspection.locationId`;
     },
     effectiveDateTime: inspection.inspectionDate.toISOString(),
     `User/$inspection.inspectorId`,
-      display: inspection.inspector?.name || "Unknown Inspector";
+      display: inspection.inspector?.name || "Unknown Inspector",
     }],
     inspection.score,
       "https://unitsofmeasure.org",
-      code: "score";
+      code: "score",
     } : undefined,
     component: [,
       ...(inspection.findings ? [{
         [{system: "https://hms.local/fhir/CodeSystem/housekeeping-inspection",
             "Findings";
           }],
-          text: "Findings";
+          text: "Findings",
         },
-        valueString: inspection.findings;
+        valueString: inspection.findings,
       }] : []),
       ...(inspection.recommendations ? [{
         [{system: "https://hms.local/fhir/CodeSystem/housekeeping-inspection",
             "Recommendations";
           }],
-          text: "Recommendations";
+          text: "Recommendations",
         },
-        valueString: inspection.recommendations;
+        valueString: inspection.recommendations,
       }] : []);
     ];
   };

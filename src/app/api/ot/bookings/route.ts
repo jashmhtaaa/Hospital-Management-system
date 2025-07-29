@@ -1,25 +1,24 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {D1Database  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
+import { NextResponse } from "next/server" }
+import {  D1Database  } from "@/lib/database"
+import {   type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for the POST request body;
-interface OTBookingBody {patient_id: string; // Assuming ID is string;
+interface OTBookingBody { patient_id: string; // Assuming ID is string;
   surgery_type_id: string; // Assuming ID is string;
   theatre_id: string; // Assuming ID is string;
   lead_surgeon_id: string; // Assuming ID is string;
-  anesthesiologist_id?: string | null; // Assuming ID is string, optional;
+  anesthesiologist_id?: string | null, // Assuming ID is string, optional;
   scheduled_start_time: string; // ISO string format;
   scheduled_end_time: string; // ISO string format;
   booking_type?: string | null; // e.g., "elective", "emergency";
   priority?: string | null; // e.g., "routine", "urgent";
   booking_notes?: string | null;
   created_by_id?: string | null; // Assuming ID is string, optional;
- } from "next/server"
+  } from "@/lib/database"
 
 // GET /api/ot/bookings - List OT bookings;
 export const _GET = async (request: any) => {,
@@ -60,9 +59,9 @@ export const _GET = async (request: any) => {,
     const surgeonId = searchParams.get("surgeonId");
     const patientId = searchParams.get("patientId");
     const status = searchParams.get("status");
-    const startDate = searchParams.get("startDate"); // Expected format: YYYY-MM-DD;
+    const startDate = searchParams.get("startDate"); // Expected format: YYYY-MM-DD,
     const endDate = searchParams.get("endDate"); // Expected format: YYYY-MM-DD;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database;
     let query = `;
@@ -78,8 +77,8 @@ export const _GET = async (request: any) => {,
       JOIN OperationTheatres t ON b.theatre_id = t.id;
       JOIN Users u_surgeon ON b.lead_surgeon_id = u_surgeon.id;
     `;
-    const conditions: string[] = [];
-    const parameters: string[] = [];
+    const conditions: string[] = [],
+    const parameters: string[] = [],
 
     if (!session.user) {
       conditions.push("b.theatre_id = ?");
@@ -110,7 +109,7 @@ export const _GET = async (request: any) => {,
       query += " WHERE " + conditions.join(" AND ");
 
     query += " ORDER BY b.scheduled_start_time ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
@@ -180,7 +179,7 @@ export const _POST = async (request: any) => {,
         {status: 400 }
       );
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database;
     const id = crypto.randomUUID(),
@@ -237,12 +236,11 @@ export const _POST = async (request: any) => {,
     return results && results.length > 0;
       ? NextResponse.json(results[0], status: 201 );
       : // Fallback if select fails;
-        NextResponse.json(message: "Booking created, but failed to fetch details" ,status: 201 ;
-        )} catch (error: unknown) {,
-    // FIX: Remove explicit any;
+        NextResponse.json(message: "Booking created, but failed to fetch details" ,status: 201 , )} catch (error: unknown) {
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error);
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     return NextResponse.json();
       {message: "Error creating OT booking", details: errorMessage },
       {status: 500 }

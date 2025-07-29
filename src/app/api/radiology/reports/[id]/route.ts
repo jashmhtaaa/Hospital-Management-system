@@ -1,11 +1,10 @@
-import {IronSession  } from "next/server"; // Import IronSession;
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {type
+import { IronSession  } from "iron-session"; // Import IronSession;
+import { { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {   type
 
-import {  getDB  } from "next/server" from "@/lib/database"; // Import getDB function;
-import {type IronSessionData, getSession } from "next/server"; // Import IronSessionData;
+import {  getDB  } from "@/lib/database"; // Import getDB function;
+import { type IronSessionData, getSession } from "@/lib/session"; // Import IronSessionData;
 // Define generic SingleQueryResult type for .first();
 interface SingleQueryResult {
     <T> {
@@ -14,8 +13,8 @@ interface SingleQueryResult {
 }
 
 // Define interfaces;
-interface RadiologyReport {id: string,
-  study_id: string;
+interface RadiologyReport {id:string,
+  study_id: string,
   report_text?: string | null;
   findings?: string | null;
   impression?: string | null;
@@ -89,7 +88,7 @@ export const _GET = async();
 } catch (error) {
 }
     // Use IronSession<IronSessionData>;
-    const session: IronSession<IronSessionData> = await getSession();
+    const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user) {
       return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
@@ -191,7 +190,7 @@ export const _PUT = async();
 } catch (error) {
 }
     // Use IronSession<IronSessionData>;
-    const session: IronSession<IronSessionData> = await getSession();
+    const session: IronSession<IronSessionData> = await getSession(),
     if (!session.user) {
       return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
@@ -425,7 +424,7 @@ export const _DELETE = async();
 
     const database = await getDB();
 
-    // Option 1: Soft delete (recommended - set status to \"retracted\");
+    // Option 1: Soft delete (recommended - set status to \"retracted\"),
     const retractedAt = new Date().toISOString();
     // Assume .run() returns a structure with success/meta;
     const info = await database;
@@ -447,8 +446,8 @@ export const _DELETE = async();
         {status: 404 }
       );
 
-    return NextResponse.json({id: reportId,
-      status: "Radiology report retracted";
+    return NextResponse.json({id:reportId,
+      status: "Radiology report retracted",
     });
   } catch (error: unknown) {,
     const message =;

@@ -1,5 +1,4 @@
-import "zod"
-import {z  } from "next/server"
+import { {  z  } from "zod"
 
 }
 
@@ -37,7 +36,7 @@ export const MedicationSchema = z.object({id: z.string(),
   sideEffects: z.array(z.string()).optional(),
   storageRequirements: z.string().optional(),
   requiresRefrigeration: z.boolean().optional(),
-  requiresControlledStorage: z.boolean().optional();
+  requiresControlledStorage: z.boolean().optional(),
 });
 
 export const MedicationInventorySchema = z.object({id: z.string(),
@@ -54,7 +53,7 @@ export const MedicationInventorySchema = z.object({id: z.string(),
   cost: z.number().nonnegative(),
   supplier: z.string(),
   receivedDate: z.date(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export const MedicationOrderSchema = z.object({id: z.string(),
@@ -76,7 +75,7 @@ export const MedicationOrderSchema = z.object({id: z.string(),
   isStatOrder: z.boolean().optional(),
   prn: z.boolean().optional(),
   prnReason: z.string().optional(),
-  reconciliationId: z.string().optional();
+  reconciliationId: z.string().optional(),
 });
 
 // Factory functions to create domain objects with validation;

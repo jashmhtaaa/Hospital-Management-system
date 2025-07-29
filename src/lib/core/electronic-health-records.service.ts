@@ -1,5 +1,4 @@
-import "zod"
-import {z  } from "next/server"
+import { {  z  } from "zod"
 
 }
 
@@ -40,7 +39,7 @@ export const ClinicalNoteSchema = z.object({patient_id: z.string().min(1, "Patie
     weight: z.number().optional(),
     height: z.number().optional(),
     bmi: z.number().optional(),
-    pain_scale: z.number().min(0).max(10).optional();
+    pain_scale: z.number().min(0).max(10).optional(),
   }).optional(),
 
   // Diagnoses;
@@ -74,7 +73,7 @@ export const ClinicalNoteSchema = z.object({patient_id: z.string().min(1, "Patie
 
   // Template and formatting;
   free_text_content: z.string().optional(),
-  structured_data: z.record(z.any()).optional();
+  structured_data: z.record(z.any()).optional(),
 });
 
 export const CarePlanSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
@@ -90,7 +89,7 @@ export const CarePlanSchema = z.object({patient_id: z.string().min(1, "Patient I
     status: z.enum(["active", "completed", "cancelled", "on_hold"]).default("active"),
     outcome_measure: z.string().optional(),
     target_value: z.string().optional(),
-    current_value: z.string().optional();
+    current_value: z.string().optional(),
   })),
 
   z.string(),
@@ -105,7 +104,7 @@ export const CarePlanSchema = z.object({patient_id: z.string().min(1, "Patient I
   z.string(),
     role: z.string(),
     responsibilities: z.string().optional(),
-    contact_information: z.string().optional();
+    contact_information: z.string().optional(),
   })),
 
   patient_preferences: z.string().optional(),
@@ -117,7 +116,7 @@ export const CarePlanSchema = z.object({patient_id: z.string().min(1, "Patient I
   end_date: z.string().optional(),
 
   status: z.enum(["active", "completed", "cancelled", "on_hold"]).default("active"),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export const ProblemListSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
@@ -144,7 +143,7 @@ export const ProblemListSchema = z.object({patient_id: z.string().min(1, "Patien
   related_encounters: z.array(z.string()).default([]),
   related_problems: z.array(z.string()).default([]),
 
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export const ClinicalGuidelineSchema = z.object({guideline_id: z.string(),
@@ -160,7 +159,7 @@ export const ClinicalGuidelineSchema = z.object({guideline_id: z.string(),
     strength: z.enum(["strong", "weak", "conditional"]),
     quality_of_evidence: z.enum(["high", "moderate", "low", "very_low"]),
     patient_population: z.string().optional(),
-    considerations: z.string().optional();
+    considerations: z.string().optional(),
   })),
 
   z.string(),
@@ -169,15 +168,15 @@ export const ClinicalGuidelineSchema = z.object({guideline_id: z.string(),
     alert_type: z.enum(["info", "warning", "critical"])})),
 
   evidence_links: z.array(z.string()).default([]),
-  references: z.array(z.string()).default([]));
+  references: z.array(z.string()).default([])),
 
 export type ClinicalNote = z.infer<typeof ClinicalNoteSchema> & {id: string,
   Date,
-  updated_at: Date;
+  updated_at: Date,
   signed_at?: Date;
   signed_by?: string;
   amendments: string[],
-  version: number;
+  version: number,
   provider_name?: string;
   patient_name?: string;
 };
@@ -191,7 +190,7 @@ export type CarePlan = z.infer<typeof CarePlanSchema> & {id: string,
 
 export type ProblemListItem = z.infer<typeof ProblemListSchema> & {id: string,
   Date,
-  last_updated_by: string;
+  last_updated_by: string,
 };
 
 export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: string,
@@ -203,7 +202,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
   }[];
   string,
     string[],
-    triggered_rules: string[];
+    triggered_rules: string[],
   }[];
 }
   };
@@ -214,7 +213,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
   unknown[],
   QualityMeasure[],
   string,
-  last_encounter_date: Date;
+  last_encounter_date: Date,
 }
           },
           {id: "HTN-2",
@@ -225,11 +224,11 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
         decision_support_rules: [;
           {rule_id: "HTN-ALERT-1",
             "Alert provider of hypertensive crisis",
-            alert_type: "critical";
+            alert_type: "critical",
           },
           {rule_id: "HTN-ALERT-2",
             "Suggest antihypertensive therapy",
-            alert_type: "warning";
+            alert_type: "warning",
           }],
         evidence_links: ["https://doi.org/10.1161/HYP.0000000000000065"],
         references: ["2017 ACC/AHA/AAPA/ABC/ACPM/AGS/APhA/ASH/ASPC/NMA/PCNA Guideline for the Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults"]},
@@ -250,14 +249,14 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
         decision_support_rules: [;
           {rule_id: "DM-ALERT-1",
             "Alert provider of poor glycemic control",
-            alert_type: "warning";
+            alert_type: "warning",
           },
           {rule_id: "DM-ALERT-2",
             "Recommend HbA1c testing",
-            alert_type: "info";
+            alert_type: "info",
           }],
         evidence_links: ["https://doi.org/10.2337/dc24-S001"],
-        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024;47(Suppl. 1)"]}];
+        references: ["American Diabetes Association. Standards of Medical Care in Diabetes—2024. Diabetes Care 2024,47(Suppl. 1)"]}];
 
     guidelines.forEach(guidelineData => {
       const guideline: ClinicalGuideline = {,
@@ -281,20 +280,20 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
         "Chief Complaint:\n\nHistory of Present Illness:\n\nReview of Systems:\n",
           objective: "Vital Signs:\n\nPhysical Examination:\n\nLaboratory/Diagnostic Results:\n",
           assessment: "Primary Diagnosis:\n\nSecondary Diagnoses:\n\nDifferential Diagnosis:\n",
-          plan: "Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n";
+          plan: "Treatment Plan:\n\nOrders:\n\nFollow-up:\n\nPatient Education:\n",
         }},
       {id: "progress-note",
         "progress_note",
         "Patient reports:\n",
           objective: "Vital Signs:\nPhysical Examination:\n",
-          assessment: "Assessment and Plan:\n";
+          assessment: "Assessment and Plan:\n",
         }},
       {id: "discharge-summary",
         "discharge_summary",
         "",
           "",
           "",
-          discharge_disposition: "";
+          discharge_disposition: "",
         }}];
 
     templates.forEach(template => {
@@ -327,7 +326,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       new Date(),
       updated_at: new Date(),
       amendments: [],
-      version: 1;
+      version: 1,
     };
 
     this.clinicalNotes.set(noteId, clinicalNote);
@@ -344,7 +343,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
   private generateNoteNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `NOTE/* SECURITY: Template literal eliminated */;
+    return `NOTE/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -363,7 +362,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     const updatedNote: ClinicalNote = {,
       ...existingNote,
       ...updateData,
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.clinicalNotes.set(noteId, updatedNote);
@@ -383,7 +382,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       throw new Error("Note is already signed");
     }
 
-    note.note_status = "final";
+    note.note_status = "final",
     note.signed_at = new Date();
     note.signed_by = providerId;
     note.updated_at = new Date();
@@ -416,7 +415,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       updated_at: new Date(),
       signed_at: new Date(),
       originalNote.version + 1,
-      amendments: [];
+      amendments: [],
     };
 
     // Update original note to reference amendment;
@@ -448,7 +447,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       new Date(),
       updated_at: new Date(),
       version: 1,
-      next_review_date: nextReviewDate.toISOString().split("T")[0];
+      next_review_date: nextReviewDate.toISOString().split("T")[0],
     };
 
     this.carePlans.set(carePlanId, carePlan);
@@ -461,7 +460,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
   private generateCarePlanNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 1000).toString().padStart(3, "0");
-    return `CP/* SECURITY: Template literal eliminated */;
+    return `CP/* SECURITY: Template literal eliminated */,
   }
 
   /**;
@@ -477,7 +476,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       id: problemId,
       created_at: new Date(),
       updated_at: new Date(),
-      last_updated_by: validatedData.provider_id;
+      last_updated_by: validatedData.provider_id,
     };
 
     const patientProblems = this.problemLists.get(validatedData.patient_id) || [];
@@ -493,7 +492,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
   async updateProblemStatus();
     patientId: string,
     ProblemListItem["status"],
-    providerId: string;
+    providerId: string,
     resolutionDate?: string;
   ): Promise<ProblemListItem> {
     const patientProblems = this.problemLists.get(patientId) || [];
@@ -530,7 +529,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     patientId: string,
     ClinicalNote;
   ): Promise<void> {
-    const alerts: ClinicalDecisionSupport["alerts"] = [];
+    const alerts: ClinicalDecisionSupport["alerts"] = [],
     const guidelines: ClinicalDecisionSupport["guidelines"] = [];
 
     // Check vital signs for alerts;
@@ -574,7 +573,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       if (!session.user) {
         guidelines.push({guideline_id: guideline.guideline_id,
           applicableRecommendations,
-          triggered_rules: triggeredRules;
+          triggered_rules: triggeredRules,
         });
 
         // Create alerts for triggered rules;
@@ -584,7 +583,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
               rule.alert_type === "critical" ? "critical" : rule.alert_type === "warning" ? "warning" : "info",
               `Based on ${guideline.name}`,
               source: guideline.organization,
-              dismissed: false;
+              dismissed: false,
             });
           }
         }
@@ -592,7 +591,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     }
 
     const patientId,
-      encounter_id: encounterId;
+      encounter_id: encounterId,
       alerts,
       guidelines};
 
@@ -662,7 +661,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
         "Patients with hypertension",
         crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.5 ? "met" : "not_met",
         "2024",
-        next_opportunity: "Next visit";
+        next_opportunity: "Next visit",
       }];
 
     const patientId,
@@ -680,7 +679,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
       qualityMeasures,
       risk_factors: ["Hypertension", "Diabetes"],
       provider_notes: "Patient stable, continue current management",
-      last_encounter_date: new Date();
+      last_encounter_date: new Date(),
     };
 
     return summary;
@@ -697,8 +696,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     search_text?: string;
     status?: ClinicalNote["note_status"];
     page?: number;
-    limit?: number;
-  }): Promise<{notes: ClinicalNote[], number }> {
+    limit?: number, }): Promise<{notes:ClinicalNote[], number }> {
     const { page = 1, limit = 10, search_text, ...filters } = criteria;
 
     let filteredNotes = Array.from(this.clinicalNotes.values());
@@ -778,7 +776,7 @@ export type ClinicalGuideline = z.infer<typeof ClinicalGuidelineSchema> & {id: s
     const updatedNote = {
       ...note,
       ...draftContent,
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.clinicalNotes.set(noteId, updatedNote);

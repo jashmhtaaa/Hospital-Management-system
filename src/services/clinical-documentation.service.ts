@@ -1,16 +1,14 @@
-import "../lib/audit"
-import "../lib/core/errors"
-import "../lib/rbac.service"
-import "@prisma/client"
+import { } from "../lib/audit"
+import { } from "../lib/rbac.service"
+import "@prisma/client";
 import ClinicalDocument
 import DocumentAmendment
 import DocumentSection
 import DocumentSignature
-import NotFoundError }
-import PrismaClient }
+import NotFoundError, PrismaClient } from "../lib/core/errors"
 import type
-import {auditLog  } from "next/server"
-import {BadRequestError
+import  }  auditLog  } from "@/lib/database"
+import {  BadRequestError
 import { type
 import { validatePermission  } from "next/server"
 
@@ -42,7 +40,7 @@ const prisma = new PrismaClient();
           status: "Draft",
           content: data.content,          templateId: data.templateId,
           isConfidential: data.isConfidential || false,          attachmentUrls: data.attachmentUrls || [],
-          tags: data.tags || [];
+          tags: data.tags || [],
         }
       });
 
@@ -54,7 +52,7 @@ const prisma = new PrismaClient();
             document.id,
               sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
-              authorId: userId,              authoredDate: new Date();
+              authorId: userId,              authoredDate: new Date(),
             }
           });
         }
@@ -67,7 +65,7 @@ const prisma = new PrismaClient();
     await auditLog({action: "CREATE",
       resourceType: "ClinicalDocument",      resourceId: document.id,      userId,
       data.documentType,
-        patientId: data.patientId,        encounterId: data.encounterId;
+        patientId: data.patientId,        encounterId: data.encounterId,
       }
     });
 
@@ -91,7 +89,7 @@ const prisma = new PrismaClient();
           }
         },
         signatures: true,
-        amendments: true;
+        amendments: true,
       }
     });
 
@@ -119,7 +117,7 @@ const prisma = new PrismaClient();
     await auditLog({action: "READ",
       resourceType: "ClinicalDocument",      resourceId: document.id,      userId,
       document.documentType,
-        patientId: document.patientId;
+        patientId: document.patientId,
       }
     });
 
@@ -158,7 +156,7 @@ const prisma = new PrismaClient();
         data.documentTitle || undefined,
           content: data.content || undefined,          status: data.status || undefined,
           isConfidential: data.isConfidential !== undefined ? data.isConfidential : undefined,          attachmentUrls: data.attachmentUrls || undefined,
-          tags: data.tags || undefined,          updatedAt: new Date();
+          tags: data.tags || undefined,          updatedAt: new Date(),
         }
       });
 
@@ -176,7 +174,7 @@ const prisma = new PrismaClient();
                 sectionType: section.sectionType || undefined,                sectionOrder: section.sectionOrder || undefined,
                 content: section.content || undefined,                updatedById: userId,
                 updatedDate: new Date(),
-                updatedAt: new Date();
+                updatedAt: new Date(),
               }
             });
           } else {
@@ -186,7 +184,7 @@ const prisma = new PrismaClient();
                 sectionTitle: section.sectionTitle,                sectionType: section.sectionType,
                 sectionOrder: section.sectionOrder || (existingSections.length + 1),
                 content: section.content,
-                authorId: userId,                authoredDate: new Date();
+                authorId: userId,                authoredDate: new Date(),
               }
             });
           }
@@ -197,7 +195,7 @@ const prisma = new PrismaClient();
       if (!session.user) {
         await tx.clinicalDocument.update({where: { id },
           new Date(),
-            finalizedById: userId;
+            finalizedById: userId,
           }
         });
       }
@@ -209,7 +207,7 @@ const prisma = new PrismaClient();
     await auditLog({action: "UPDATE",
       resourceType: "ClinicalDocument",      resourceId: updatedDocument.id,      userId,
       document.documentType,
-        patientId: document.patientId,        newStatus: data.status;
+        patientId: document.patientId,        newStatus: data.status,
       }
     });
 
@@ -243,7 +241,7 @@ const prisma = new PrismaClient();
         signatureDate: new Date(),
         signatureType: data.signatureType,
         attestation: data.attestation,        ipAddress: data.ipAddress,
-        deviceInfo: data.deviceInfo,        notes: data.notes;
+        deviceInfo: data.deviceInfo,        notes: data.notes,
       }
     });
 
@@ -252,7 +250,7 @@ const prisma = new PrismaClient();
       await prisma.clinicalDocument.update({where: { id },
         "Final",
           finalizedDate: new Date(),
-          finalizedById: userId;
+          finalizedById: userId,
         }
       });
     }
@@ -261,7 +259,7 @@ const prisma = new PrismaClient();
     await auditLog({action: "SIGN",
       resourceType: "ClinicalDocument",      resourceId: document.id,      userId,
       document.documentType,
-        patientId: document.patientId,        signatureType: data.signatureType;
+        patientId: document.patientId,        signatureType: data.signatureType,
       }
     });
 
@@ -303,7 +301,7 @@ const prisma = new PrismaClient();
         amendmentReason: data.amendmentReason,        content: data.content,
         authorId: userId,        authoredDate: new Date(),
         status: data.status || "Draft",        finalizedDate: data.status === "Final" ? new Date() : null,
-        finalizedById: data.status === "Final" ? userId : null;
+        finalizedById: data.status === "Final" ? userId : null,
       }
     });
 
@@ -378,7 +376,7 @@ const prisma = new PrismaClient();
       "desc";
       },
       skip,
-      take: pageSize;
+      take: pageSize,
     });
 
     // Audit log;
@@ -393,7 +391,7 @@ const prisma = new PrismaClient();
         total,
         page,
         pageSize,
-        totalPages: Math.ceil(total / pageSize);
+        totalPages: Math.ceil(total / pageSize),
 
     };
 
@@ -444,7 +442,7 @@ const prisma = new PrismaClient();
         total,
         page,
         pageSize,
-        totalPages: Math.ceil(total / pageSize);
+        totalPages: Math.ceil(total / pageSize),
 
     };
 
@@ -473,7 +471,7 @@ const prisma = new PrismaClient();
           isActive: true,          authorId: userId,
           createdDate: new Date(),
           version: 1,
-          approvalStatus: "Draft";
+          approvalStatus: "Draft",
 
       });
 
@@ -485,7 +483,7 @@ const prisma = new PrismaClient();
             template.id,
               sectionTitle: section.sectionTitle,              sectionType: section.sectionType,
               sectionOrder: section.sectionOrder || i + 1,              content: section.content,
-              isRequired: section.isRequired || false,              defaultExpanded: section.defaultExpanded !== undefined ? section.defaultExpanded : true;
+              isRequired: section.isRequired || false,              defaultExpanded: section.defaultExpanded !== undefined ? section.defaultExpanded : true,
 
           });
 
@@ -496,7 +494,7 @@ const prisma = new PrismaClient();
     await auditLog({action: "CREATE",
       resourceType: "DocumentTemplate",      resourceId: template.id,      userId,
       data.templateType,
-        templateName: data.templateName;
+        templateName: data.templateName,
 
     });
 

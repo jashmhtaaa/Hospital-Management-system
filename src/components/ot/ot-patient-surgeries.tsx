@@ -1,13 +1,11 @@
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "react"
+import { } from "@/components/ui/badge"
+import { } from "@/components/ui/card"
+import "react";
 import CardContent
 import CardHeader
-import CardTitle }
-import React
-import useEffect }
-import {
+import CardTitle, React
+import useEffect } from "@/components/ui/button"
+import  }
 import { Badge }
 import { Button }
 import { Card
@@ -24,10 +22,9 @@ import { useState
   TableHeader,
   TableRow} from "@/components/ui/table";
 import { Calendar, ArrowRight, Loader2 } from "lucide-react"; // Added Loader2;
-import "next/link"
-import Link
+import { Link
 
-import { toast } from "@/components/ui/use-toast"; // Import toast;
+import { toast } from "next/link"; // Import toast;
 
 // Define the structure for a surgery booking;
 interface Surgery {id:string,
@@ -35,13 +32,14 @@ interface Surgery {id:string,
   scheduled_end_time: string; // ISO string or Date object;
   status: "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled",
   string,
-  surgeon_name: string;
+  surgeon_name: string,
 }
 
-interface OTPatientSurgeriesProperties {patientId:string;
+interface OTPatientSurgeriesProperties {
+  patientId: string,
 export default const _OTPatientSurgeries = ({
   patientId}: OTPatientSurgeriesProperties) {
-  // FIX: Use the Surgery interface for state typing;
+  // FIX: Use the Surgery interface for state typing,
   const [surgeries, setSurgeries] = useState<Surgery[]>([]),
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>();
@@ -107,14 +105,14 @@ export default const _OTPatientSurgeries = ({
             surgery_name: "Wound Debridement",
             "Dr. Bob White";
           }];
-        // Example: Filter mock data to show only upcoming/scheduled;
+        // Example: Filter mock data to show only upcoming/scheduled,
         setSurgeries();
           mockData.filter();
             (s) => s.status === "scheduled" || s.status === "confirmed";
           );
         );
       } catch (error_: unknown) {
-        // FIX: Use unknown for error type;
+        // FIX: Use unknown for error type,
         const message =;
           error_ instanceof Error;
             ? error_.message;
@@ -123,7 +121,7 @@ export default const _OTPatientSurgeries = ({
         setError(message),
         toast({title:"Error",
           description: `Failed to load surgeries: ${message}`,
-          variant: "destructive";
+          variant: "destructive",
         });
       } finally {
         setLoading(false);
@@ -135,7 +133,7 @@ export default const _OTPatientSurgeries = ({
     }
   }, [patientId]);
 
-  // FIX: Type the status parameter using the Surgery interface;
+  // FIX: Type the status parameter using the Surgery interface,
   const getStatusBadge = (status: Surgery["status"]) => {
     switch (status) {
       case "scheduled": {

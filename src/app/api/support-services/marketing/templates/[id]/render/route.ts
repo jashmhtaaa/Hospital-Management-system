@@ -1,15 +1,14 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {authOptions  } from "next/server"
-import {getServerSession  } from "next/server"
-import {TemplateService  } from "next/server"
-import {type
-import {  withErrorHandling  } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
+import { NextResponse } from "next/server" }
+import {  authOptions  } from "@/lib/database"
+import {  getServerSession  } from "@/lib/database"
+import {  TemplateService  } from "@/lib/database"
+import {   type
+import {  withErrorHandling  } from "@/lib/database"
 
 const templateService = new TemplateService();
 
@@ -41,8 +40,8 @@ export const POST = async();
 
       return NextResponse.json({ renderedContent });
     },
-    {requiredPermission: "marketing.templates.read",
-      auditAction: "TEMPLATE_RENDER";
+    {requiredPermission:"marketing.templates.read",
+      auditAction: "TEMPLATE_RENDER",
     }
   );
 

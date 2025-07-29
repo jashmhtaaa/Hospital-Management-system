@@ -1,7 +1,6 @@
-import "next/navigation"
-import "react"
+import { } from "react"
 import React
-import useEffect }
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -18,9 +17,8 @@ import { useState
   CardHeader,
   CardTitle;
 } from "../ui/card";
-import "../ui/badge"
-import "../ui/button"
-import { Badge }
+import { } from "../ui/button"
+import { Badge } from "../ui/badge"
 import { Button }
 
   AlertCircle,
@@ -42,18 +40,16 @@ import { Button }
   UserCheck,
   Users;
 } from "lucide-react";
-import "../../hooks/use-toast"
-import "./patient-allergies.ts"
-import "./patient-appointments.ts"
-import "./patient-conditions.ts"
-import "./patient-contacts.ts"
-import "./patient-demographics.ts"
-import "./patient-documents.ts"
-import "./patient-insurance.ts"
-import "./patient-visits.ts"
-import "date-fns"
-import formatDistance }
-import PatientAllergies
+import { } from "../../hooks/use-toast"
+import { } from "./patient-appointments.ts"
+import "./patient-conditions.ts";
+import "./patient-contacts.ts";
+import "./patient-demographics.ts";
+import "./patient-documents.ts";
+import "./patient-insurance.ts";
+import "./patient-visits.ts";
+import "date-fns";
+import formatDistance, PatientAllergies
 import PatientAppointments
 import PatientConditions
 import PatientContacts
@@ -61,7 +57,7 @@ import PatientDemographics
 import PatientDocuments
 import PatientInsurance
 import PatientVisits
-import { format
+import  } from "./patient-allergies.ts" format
 import { useToast }
 
 // Define patient status colors;
@@ -73,10 +69,10 @@ const statusColors: Record<string, string> = {Active:"success",
 // Patient interface;
 interface Patient {id:string,
   string,
-  lastName: string;
+  lastName: string,
   middleName?: string;
   dateOfBirth: string,
-  gender: string;
+  gender: string,
   biologicalSex?: string;
   maritalStatus?: string;
   language?: string;
@@ -92,23 +88,23 @@ interface Patient {id:string,
     phoneHome?: string;
     phoneMobile?: string;
     phoneWork?: string;
-    phonePreferred: string;
+    phonePreferred: string,
     email?: string;
     emailOptIn: boolean,
-    smsOptIn: boolean;
+    smsOptIn: boolean,
   };
   addresses?: {id:string,
     boolean,
-    addressLine1: string;
+    addressLine1: string,
     addressLine2?: string;
-    city: string;
+    city: string,
     state?: string;
     postalCode: string,
-    country: string;
+    country: string,
   }[];
   identifications?: {id:string,
     string,
-    isPrimary: boolean;
+    isPrimary: boolean,
     issuingCountry?: string;
     issuingState?: string;
     issueDate?: string;
@@ -120,20 +116,20 @@ interface Patient {id:string,
     phoneHome?: string;
     phoneMobile?: string;
     phoneWork?: string;
-    phonePreferred: string;
+    phonePreferred: string,
     email?: string;
     isLegalGuardian: boolean,
-    hasDecisionMaking: boolean;
+    hasDecisionMaking: boolean,
   }[];
   insurances?: {id:string,
     string;
     planName?: string;
-    policyNumber: string;
+    policyNumber: string,
     groupNumber?: string;
     subscriberId?: string;
     subscriberName?: string;
     subscriberRelation?: string;
-    startDate: string;
+    startDate: string,
     endDate?: string;
   }[];
   allergies?: unknown[];
@@ -144,7 +140,8 @@ interface Patient {id:string,
 }
 
 // Props interface;
-interface PatientDetailProps {patientId:string;
+interface PatientDetailProps {
+  patientId: string,
   initialData?: Patient;
 export default const _PatientDetail = ({ patientId, initialData }: PatientDetailProps) {
   const router = useRouter();
@@ -372,7 +369,7 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
               </div>;
 >;
                   >;
-                    {`${patient.lastName}, /* SECURITY: Template literal eliminated */;
+                    {`${patient.lastName}, /* SECURITY: Template literal eliminated */,
                       VIP;
                     </Badge>;
                   )}
@@ -420,32 +417,32 @@ export default const _PatientDetail = ({ patientId, initialData }: PatientDetail
 <span;
                         {`/* SECURITY: Template literal eliminated */;
               <Button>;
-                variant="outline";
-                size="sm";
+                variant = "outline",
+                size = "sm",
                 onClick={handleBack}
               >;
                 <ChevronLeft className="h-4 w-4 mr-1" />;
                 Back;
               </Button>;
               <Button>;
-                variant="outline";
-                size="sm";
+                variant = "outline",
+                size = "sm",
                 onClick={handleRefresh}
               >;
                 <RefreshCw className="h-4 w-4 mr-1" />;
                 Refresh;
               </Button>;
               <Button>;
-                variant="outline";
-                size="sm";
+                variant = "outline",
+                size = "sm",
                 onClick={handlePrint}
               >;
                 <Printer className="h-4 w-4 mr-1" />;
                 Print;
               </Button>;
               <Button>;
-                variant="outline";
-                size="sm";
+                variant = "outline",
+                size = "sm",
                 onClick={handleEditPatient}
               >;
                 <Edit className="h-4 w-4 mr-1" />;

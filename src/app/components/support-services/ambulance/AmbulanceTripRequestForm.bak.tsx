@@ -1,34 +1,30 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "@/components/ui/button"
-import "@/components/ui/calendar"
-import "@/components/ui/card"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/popover"
-import "@/components/ui/select"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import "date-fns"
-import "lucide-react"
-import "next/navigation"
-import "react"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/card"
+import { "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/popover";
+import "@/components/ui/select";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
+import "date-fns";
+import "lucide-react";
+import "next/navigation";
+import "react";
 import CardContent
 import CardHeader
-import CardTitle }
-import PopoverContent
-import PopoverTrigger }
+import CardTitle, PopoverContent
+import PopoverTrigger } from "@/components/ui/calendar"
 import SelectContent
 import SelectItem
 import SelectTrigger
 import SelectValue }
-import useState }
-import { Button }
-import { Calendar }
+import useState, } Button }
+import  } Calendar }
 import { CalendarIcon }
 import { Card
 import { format }
@@ -62,7 +58,7 @@ export default const _AmbulanceTripRequestForm = () {
     },
     requiresOxygen: false,
     false,
-    additionalNotes: "";
+    additionalNotes: "",
   }),
   useEffect(() => {
     fetchAmbulances(),
@@ -329,14 +325,15 @@ export default const _AmbulanceTripRequestForm = () {
       const response = await fetch("/api/support-services/ambulance/trips", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(payload);
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
 
       if (!session.user) {
-        toast({title:"Success",
-          description: "Ambulance trip scheduled successfully";
+        toast({
+          title: "Success",
+          description: "Ambulance trip scheduled successfully",
         });
         router.push("/support-services/ambulance");
       } else {
@@ -358,7 +355,7 @@ export default const _AmbulanceTripRequestForm = () {
     if (!session.user) {
       toast({title:"Error",
         description: "Please select date, time, trip type, and pickup location",
-        variant: "destructive";
+        variant: "destructive",
       });
       return;
 
@@ -448,7 +445,7 @@ export default const _AmbulanceTripRequestForm = () {
               >;
                 <Label htmlFor="tripType">Trip Type>;
                 <Select>;
-                  name="tripType";
+                  name = "tripType",
                   value={formData.tripType}
                   onValueChange={(value) => setFormData({...formData, tripType: value})}
                 >;
@@ -467,7 +464,7 @@ export default const _AmbulanceTripRequestForm = () {
               >;
                 <Label htmlFor="priority">Priority>;
                 <Select>;
-                  name="priority";
+                  name = "priority",
                   value={formData.priority}
                   onValueChange={(value) => setFormData({...formData, priority: value})}
                 >;
@@ -487,7 +484,7 @@ export default const _AmbulanceTripRequestForm = () {
                 <Popover>;
                   <PopoverTrigger asChild>;
                     <Button>;
-                      variant="outline";
+                      variant = "outline",
                       className="w-full justify-start text-left font-normal";
                     >;
                       <CalendarIcon className="mr-2 h-4 w-4" />;
@@ -496,7 +493,7 @@ export default const _AmbulanceTripRequestForm = () {
                   </PopoverTrigger>;
                   >;
                     <Calendar>;
-                      mode="single";
+                      mode = "single",
                       selected={selectedDate}
                       onSelect={setSelectedDate}
                       initialFocus;
@@ -509,7 +506,7 @@ export default const _AmbulanceTripRequestForm = () {
               >;
                 <Label htmlFor="time">Time>;
                 <Input>;
-                  type="time";
+                  type = "time",
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
                   className="w-full";
@@ -519,7 +516,7 @@ export default const _AmbulanceTripRequestForm = () {
               >;
                 <Label htmlFor="pickupLocationId">Pickup Location>;
                 <Select>;
-                  name="pickupLocationId";
+                  name = "pickupLocationId",
                   value={formData.pickupLocationId}
                   onValueChange={(value) => setFormData({...formData, pickupLocationId: value})}
                 >;
@@ -539,7 +536,7 @@ export default const _AmbulanceTripRequestForm = () {
               >;
                 <Label htmlFor="dropLocationId">Destination>;
                 <Select>;
-                  name="dropLocationId";
+                  name = "dropLocationId",
                   value={formData.dropLocationId}
                   onValueChange={(value) => setFormData({...formData, dropLocationId: value})}
                 >;
@@ -559,7 +556,7 @@ export default const _AmbulanceTripRequestForm = () {
               >;
                 <Label htmlFor="patientId">Patient (Optional)>;
                 <Select>;
-                  name="patientId";
+                  name = "patientId",
                   value={formData.patientId}
                   onValueChange={(value) => setFormData({...formData, patientId: value})}
                 >;
@@ -579,8 +576,8 @@ export default const _AmbulanceTripRequestForm = () {
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={handleFindAvailableAmbulances}
                   disabled={loading}
                   className="w-full";
@@ -592,7 +589,7 @@ export default const _AmbulanceTripRequestForm = () {
               >;
                 <Label htmlFor="ambulanceId">Ambulance>;
                 <Select>;
-                  name="ambulanceId";
+                  name = "ambulanceId",
                   value={formData.ambulanceId}
                   onValueChange={(value) => setFormData({...formData, ambulanceId: value})}
                 >;
@@ -613,7 +610,7 @@ export default const _AmbulanceTripRequestForm = () {
               >;
                 <Label htmlFor="notes">Notes>;
                 <Textarea>;
-                  name="notes";
+                  name = "notes",
                   value={formData.notes}
                   onChange={handleInputChange}
                   placeholder="Enter any additional notes";
@@ -634,7 +631,7 @@ export default const _AmbulanceTripRequestForm = () {
                 >;
                   <Label htmlFor="chiefComplaint">Chief Complaint>;
                   <Textarea>;
-                    name="chiefComplaint";
+                    name = "chiefComplaint",
                     value={medicalDetails.chiefComplaint}
                     onChange={handleMedicalDetailsChange}
                     placeholder="Enter chief complaint";
@@ -697,9 +694,9 @@ export default const _AmbulanceTripRequestForm = () {
                   >;
                     >;
                       <input>;
-                        type="checkbox";
-                        id="requiresOxygen";
-                        name="requiresOxygen";
+                        type = "checkbox",
+                        id = "requiresOxygen",
+                        name = "requiresOxygen",
                         checked={medicalDetails.requiresOxygen}
                         onChange={handleMedicalDetailsChange}
                         className="h-4 w-4 rounded border-gray-300";
@@ -708,9 +705,9 @@ export default const _AmbulanceTripRequestForm = () {
                     </div>;
                     >;
                       <input>;
-                        type="checkbox";
-                        id="requiresIV";
-                        name="requiresIV";
+                        type = "checkbox",
+                        id = "requiresIV",
+                        name = "requiresIV",
                         checked={medicalDetails.requiresIV}
                         onChange={handleMedicalDetailsChange}
                         className="h-4 w-4 rounded border-gray-300";
@@ -719,9 +716,9 @@ export default const _AmbulanceTripRequestForm = () {
                     </div>;
                     >;
                       <input>;
-                        type="checkbox";
-                        id="requiresMonitoring";
-                        name="requiresMonitoring";
+                        type = "checkbox",
+                        id = "requiresMonitoring",
+                        name = "requiresMonitoring",
                         checked={medicalDetails.requiresMonitoring}
                         onChange={handleMedicalDetailsChange}
                         className="h-4 w-4 rounded border-gray-300";
@@ -734,7 +731,7 @@ export default const _AmbulanceTripRequestForm = () {
                 >;
                   <Label htmlFor="additionalNotes">Additional Medical Notes>;
                   <Textarea>;
-                    name="additionalNotes";
+                    name = "additionalNotes",
                     value={medicalDetails.additionalNotes}
                     onChange={handleMedicalDetailsChange}
                     placeholder="Enter any additional medical notes";
@@ -748,14 +745,14 @@ export default const _AmbulanceTripRequestForm = () {
 
         >;
           <Button>;
-            variant="outline";
-            type="button";
+            variant = "outline",
+            type = "button",
             onClick={() => router.push("/support-services/ambulance")}
           >;
             Cancel;
           </Button>;
           <Button>;
-            type="submit";
+            type = "submit",
             disabled={submitting}
           >;
             {submitting ? "Scheduling..." : "Schedule Trip"}

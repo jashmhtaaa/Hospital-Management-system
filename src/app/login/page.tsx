@@ -1,12 +1,11 @@
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "next/image"
-import "react"
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import "next/image";
+import "react";
 import Image
 import React
 import type
-import useState }
+import useState } from "@/components/ui/button"
 import { Button }
 import { Input }
 import { Label }
@@ -128,8 +127,8 @@ export default const _LoginPage = () {
 <div;
               <Label htmlFor="identifier">Username or Email>;
               <Input>;
-                id="identifier";
-                name="identifier";
+                id = "identifier",
+                name = "identifier",
                 type="text" // Allow both username and email;
                 autoComplete="username email";
                 required;
@@ -143,13 +142,13 @@ export default const _LoginPage = () {
             >;
               <Label htmlFor="password">Password>;
               <Input>;
-                id="password";
-                name="password";
-                type="password";
+                id = "password",
+                name = "password",
+                type = "password",
                 autoComplete="current-password";
                 required;
                 className="mt-1";
-                placeholder="Password";
+                placeholder = "Password",
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={isLoading}

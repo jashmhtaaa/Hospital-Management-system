@@ -1,4 +1,4 @@
-import "./user.ts"
-import {User  } from "next/server"
+import "./user.ts";
+import {  User  } from "@/lib/database"
 
 // types/doctor.ts;

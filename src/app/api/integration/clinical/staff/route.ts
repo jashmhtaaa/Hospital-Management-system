@@ -1,9 +1,9 @@
-import "@/lib/hr/integration-service"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {integrationService  } from "next/server"
-import {type
+import "@/lib/hr/integration-service";
+import "next/server";
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {  integrationService  } from "@/lib/database"
+import {  type
 
 /**;
  * API route for clinical module integration;

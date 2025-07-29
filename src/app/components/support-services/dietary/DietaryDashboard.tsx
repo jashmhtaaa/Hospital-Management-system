@@ -1,36 +1,32 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/calendar"
-import "@/components/ui/card"
-import "@/components/ui/separator"
-import "@/components/ui/table"
-import "@/components/ui/tabs"
-import "@/components/ui/use-toast"
-import "date-fns"
-import "next/navigation"
-import "react"
+import { } from "@/components/ui/badge"
+import { } from "@/components/ui/calendar"
+import { "@/components/ui/card";
+import "@/components/ui/separator";
+import "@/components/ui/table";
+import "@/components/ui/tabs";
+import "@/components/ui/use-toast";
+import "date-fns";
+import "next/navigation";
+import "react";
 import CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
-import TableBody
+import CardTitle, TableBody
 import TableCell
 import TableHead
 import TableHeader
-import TableRow }
+import TableRow } from "@/components/ui/button"
 import TabsContent
 import TabsList
 import TabsTrigger }
 import useEffect }
-import useSearchParams }
-import {
-import { Badge }
+import useSearchParams, }
+import  } Badge }
 import { Button }
 import { Calendar }
 import { Card
@@ -60,11 +56,10 @@ import { useToast }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/input"
-import "@/components/ui/popover"
-import "@/lib/utils"
+import { } from "@/components/ui/popover"
+import "@/lib/utils";
 import PopoverContent
-import PopoverTrigger }
+import PopoverTrigger } from "@/components/ui/input"
 import { cn }
 import { Input }
 import { Popover
@@ -75,8 +70,7 @@ import { Popover
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import "@/components/ui/skeleton"
-import { Skeleton }
+import { { Skeleton } from "@/components/ui/skeleton"
 
   Dialog,
   DialogContent,
@@ -459,7 +453,7 @@ export const _DietaryDashboard = () => {
         >;
           <p className="text-muted-foreground">No dietary requests found.>;
           <Button>;
-            variant="outline";
+            variant = "outline",
             className="mt-4";
             onClick={() => router.push("/support-services/dietary/new")}
           >;
@@ -854,7 +848,7 @@ export const _DietaryDashboard = () => {
                   {selectedRequest.mealPlans.map((mealPlan: unknown) => (;
 <div;
                       key={mealPlan.id}
-                      className="flex justify-between items-center p-3 border rounded-md hover:bg-muted/50 cursor-pointer";
+                      className="flex justify-between items-center p-3 border rounded-md hover:bg-muted/50 cursor-pointer",
                       onClick={() => viewMealPlanDetails(mealPlan.id)}
                     >;
                       >;
@@ -969,7 +963,7 @@ export const _DietaryDashboard = () => {
                       </PopoverTrigger>;
                       >;
                         <Calendar>;
-                          mode="single";
+                          mode = "single",
                           selected={filters.startDate || undefined}
                           onSelect={(date) => handleFilterChange("startDate", date)}
                           initialFocus;
@@ -994,8 +988,8 @@ export const _DietaryDashboard = () => {
                     </p>;
                     >;
                       <Button>;
-                        variant="outline";
-                        size="sm";
+                        variant = "outline",
+                        size = "sm",
                         onClick={handlePreviousPage}
                         disabled={page === 1}
                       >;
@@ -1003,8 +997,8 @@ export const _DietaryDashboard = () => {
                         <span className="sr-only">Previous page</span>;
                       </Button>;
                       <Button>;
-                        variant="outline";
-                        size="sm";
+                        variant = "outline",
+                        size = "sm",
                         onClick={handleNextPage}
                         disabled={page === totalPages}
                       >;

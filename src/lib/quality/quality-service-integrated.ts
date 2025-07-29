@@ -1,7 +1,7 @@
-import "./quality-management.service"
-import "./quality-persistence.service"
-import {import {  QualityManagementService  } from "next/server"
-import {QualityPersistenceService  } from "next/server"
+import { } from "./quality-persistence.service"
+import {  
+import {  QualityManagementService  } from "./quality-management.service"
+import {  QualityPersistenceService  } from "@/lib/database"
 
 /**;
  * Integrated Quality Management Service;
@@ -54,7 +54,7 @@ import {QualityPersistenceService  } from "next/server"
       ...indicator,
       id: indicatorId,
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date(),
     } as QualityIndicator;
 
     await this.persistenceService.saveQualityIndicator(fullIndicator, userId);
@@ -89,7 +89,7 @@ import {QualityPersistenceService  } from "next/server"
       id: eventId,
       [],
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date(),
     } as QualityEvent;
 
     await this.persistenceService.saveQualityEvent(fullEvent, userId);
@@ -108,7 +108,7 @@ import {QualityPersistenceService  } from "next/server"
       const updatedEvent = {
         ...updates,
         id: eventId,
-        updatedAt: new Date();
+        updatedAt: new Date(),
       } as QualityEvent;
 
       await this.persistenceService.saveQualityEvent(updatedEvent, userId);
@@ -140,7 +140,7 @@ import {QualityPersistenceService  } from "next/server"
       ...reportData,
       id: reportId,
       overallCompliance: this.calculateOverallCompliance(reportData.requirements || []),
-      status: this.determineComplianceStatus(reportData.requirements || []);
+      status: this.determineComplianceStatus(reportData.requirements || []),
     } as ComplianceReport;
 
     await this.persistenceService.saveComplianceReport(fullReport, userId);
@@ -174,7 +174,7 @@ import {QualityPersistenceService  } from "next/server"
       },
       0, // Would need assessment persistence;
         active: 0,
-        completed: 0;
+        completed: 0,
       },
       reports.length,
         reports.reduce((sum, r) => sum + (r.gaps?.length || 0), 0);
@@ -191,7 +191,7 @@ import {QualityPersistenceService  } from "next/server"
     const stats = await this.getQualityStatistics();
 
     // Get recent events for overview;
-    const recentEvents = await this.persistenceService.getQualityEvents({dateFrom: [0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days;
+    const recentEvents = await this.persistenceService.getQualityEvents({dateFrom:[0] - 30 * 24 * 60 * 60 * 1000) // Last 30 days,
     }, "system");
 
     return {
@@ -199,12 +199,12 @@ import {QualityPersistenceService  } from "next/server"
         stats.compliance.reports > 0;
           ? (stats.compliance.compliant / stats.compliance.reports * 100).toFixed(1);
           : "0.0",
-        criticalAlerts: stats.events.critical;
+        criticalAlerts: stats.events.critical,
       },
       trends: [], // Would need time-series data;
       recentEvents.slice(0, 10),
         byType: this.groupEventsByType(recentEvents),
-        bySeverity: this.groupEventsBySeverity(recentEvents);
+        bySeverity: this.groupEventsBySeverity(recentEvents),
       },
       assessments: [], // Would need assessment data;
       alerts: this.generateAlerts(stats, recentEvents);
@@ -255,15 +255,15 @@ import {QualityPersistenceService  } from "next/server"
       // This would require access to the private Maps in the quality service;
       // For now, return zeros as the persistence is now the primary storage;
 
-      /* SECURITY: Console statement removed */return migratedCounts;
+      /* SECURITY: Console statement removed */return migratedCounts,
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to migrate existing quality data");
 
   // Data Archival and Cleanup;
   async archiveOldData(): Promise<{archivedIndicators: number,
     number,
-    archivedReports: number;
+    archivedReports: number,
   }> {
     return await this.persistenceService.archiveOldRecords();
 
@@ -300,7 +300,7 @@ import {QualityPersistenceService  } from "next/server"
     if (!session.user) {
       alerts.push({type: "critical_events",
         `${stats.events.critical} critical quality events require immediate attention`,
-        actionRequired: true;
+        actionRequired: true,
       });
 
     // High event frequency alert;
@@ -311,7 +311,7 @@ import {QualityPersistenceService  } from "next/server"
     if (!session.user) {
       alerts.push({type: "high_event_frequency",
         `${todayEvents} quality events reported today - higher than usual`,
-        actionRequired: false;
+        actionRequired: false,
       });
 
     return alerts;
@@ -360,20 +360,20 @@ import {QualityPersistenceService  } from "next/server"
 
       return {status: "healthy",
         true,
-          persistenceService: true;
+          persistenceService: true,
         },
-        lastChecked: new Date();
+        lastChecked: new Date(),
       };
     } catch (error) {
       return {status: "unhealthy',
         false,
-          persistenceService: false;
+          persistenceService: false,
         },
-        lastChecked: new Date();
+        lastChecked: new Date(),
       };
 
 // Singleton instance for application use;
-let integratedQualityServiceInstance: IntegratedQualityService | null = null;
+let integratedQualityServiceInstance: IntegratedQualityService | null = null,
 
 export const _getIntegratedQualityService = (): IntegratedQualityService => {
   if (!session.user) {

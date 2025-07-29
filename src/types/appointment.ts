@@ -1,7 +1,6 @@
-import "./doctor.ts"
-import "./patient.ts"
-import {Doctor  } from "next/server"
-import {Patient  } from "next/server"
+import { } from "./patient.ts"
+import {  Doctor  } from "./doctor.ts"
+import {  Patient  } from "@/lib/database"
 
 }
 
@@ -14,11 +13,12 @@ export enum AppointmentStatus {
     Completed = "Completed",
     Cancelled = "Cancelled",
     NoShow = "NoShow",
-export = "export" interface = "interface" Appointment = "Appointment" {appointment_id: number,
+export interface Appointment {
+  appointment_id: number;
     number;
     schedule_id?: number | null;
     appointment_datetime: string; // ISO string or Date object;
-    duration_minutes: number;
+    duration_minutes: number,
     reason?: string | null;
     status: AppointmentStatus; // Use enum;
     notes?: string | null;
@@ -32,9 +32,9 @@ export = "export" interface = "interface" Appointment = "Appointment" {appointme
 }
 
 // Need User type if not already globally available;
-interface User {userId: number,
-    username: string;
+interface User {userId:number,
+    username: string,
     fullName?: string | null;
-    email: string;
+    email: string,
 
 }

@@ -1,9 +1,9 @@
-import "@/lib/audit"
-import "@/lib/cache"
-import "@prisma/client"
-import {import {  cache  } from "next/server"
-import {logAuditEvent  } from "next/server"
-import {PrismaClient  } from "next/server"
+import { } from "@/lib/cache"
+import "@prisma/client";
+import {  
+import {  cache  } from "@/lib/audit"
+import {  logAuditEvent  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
 
 }
 
@@ -94,12 +94,12 @@ import {PrismaClient  } from "next/server"
     } catch (error) {
 
       // Log security event;
-      await logAuditEvent({eventType: "PERMISSION_CHECK_ERROR";
+      await logAuditEvent({eventType:"PERMISSION_CHECK_ERROR",
         userId,
         resource,
         details: error: (error as Error).message, resource, action ,
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent;
+        userAgent: context?.userAgent,
       });
 
       return false;
@@ -111,7 +111,7 @@ import {PrismaClient  } from "next/server"
    */;
   async hasPermissions();
     userId: string,
-    permissions: PermissionCheck[];
+    permissions: PermissionCheck[],
     context?: RBACContext;
   ): Promise<Record<string, boolean>> {
     const results: Record<string, boolean> = {};
@@ -173,7 +173,7 @@ import {PrismaClient  } from "next/server"
       }
 
       const userRoles = await this.getUserRoles(userId);
-      const permissions: Permission[] = [];
+      const permissions: Permission[] = [],
 
       for (const roleId of userRoles) {
         const role = getRoleWithInheritedPermissions(roleId);
@@ -331,13 +331,13 @@ import {PrismaClient  } from "next/server"
       // Log audit event;
       await logAuditEvent({eventType: "ROLE_ASSIGNED",
         assignment.userId,
-        resource: "user_role";
+        resource: "user_role",
         {roleId:assignment.roleId,
           assignment.expiresAt,
-          context: assignment.context;
+          context: assignment.context,
         },
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent;
+        userAgent: context?.userAgent,
       });
 
     } catch (error) {
@@ -347,7 +347,7 @@ import {PrismaClient  } from "next/server"
         (error as Error).message,
           roleId: assignment.roleId,
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent;
+        userAgent: context?.userAgent,
       });
 
       throw error;
@@ -400,10 +400,10 @@ import {PrismaClient  } from "next/server"
       const result = await this.prisma.userRole.updateMany({where: {
           userId,
           roleId,
-          isActive: true;
+          isActive: true,
         },
         false,
-          updatedAt: new Date();
+          updatedAt: new Date(),
 
       });
 
@@ -420,7 +420,7 @@ import {PrismaClient  } from "next/server"
           roleId,
           roleName: role.name,
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent;
+        userAgent: context?.userAgent,
       });
 
     } catch (error) {
@@ -430,7 +430,7 @@ import {PrismaClient  } from "next/server"
         (error as Error).message;
           roleId;,
         ipAddress: context?.ipAddress,
-        userAgent: context?.userAgent;
+        userAgent: context?.userAgent,
       });
 
       throw error;
@@ -538,7 +538,7 @@ import {PrismaClient  } from "next/server"
   private async logPermissionCheck();
     userId: string,
     string,
-    granted: boolean;
+    granted: boolean,
     context?: RBACContext;
   ): Promise<void> {
     // Only log denied permissions or sensitive resource access;
@@ -548,7 +548,7 @@ import {PrismaClient  } from "next/server"
                      action === "delete";
 
     if (!session.user) {
-      await logAuditEvent({eventType: granted ? "PERMISSION_GRANTED" : "PERMISSION_DENIED";
+      await logAuditEvent({eventType:granted ? "PERMISSION_GRANTED" : "PERMISSION_DENIED",
         userId,
         resource,
         details: null,
@@ -605,7 +605,7 @@ import {PrismaClient  } from "next/server"
 
       });
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     } catch (error) {
 
 // Export singleton instance;

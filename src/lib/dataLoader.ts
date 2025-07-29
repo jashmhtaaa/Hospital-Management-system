@@ -1,9 +1,8 @@
-import "@/lib/logger"
-import "@/lib/prisma"
-import "dataloader"
+import { } from "@/lib/prisma"
+import "dataloader";
 import DataLoader
-import {logger  } from "next/server"
-import {prisma  } from "next/server"
+import {  logger  } from "@/lib/logger"
+import {  prisma  } from "@/lib/database"
 
 /**;
  * DataLoader implementation for efficient batch loading of database records;

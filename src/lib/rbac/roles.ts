@@ -107,7 +107,7 @@ export const PERMISSIONS: Record<string, Permission> = {
   "appointment:manage",
     "Create, update, and cancel appointments",
     resource: Resource.APPOINTMENT,
-    action: Action.UPDATE;
+    action: Action.UPDATE,
   },
   "prescription:create",
     "Create new prescriptions",
@@ -177,12 +177,12 @@ export const ROLES: Record<string, Role> = {
     "Full system access with all permissions",
     permissions: Object.values(PERMISSIONS),
     priority: 1000,
-    isActive: true;
+    isActive: true,
   },
 
   "hospital_admin",
     "Hospital-wide administrative access",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_CREATE,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
@@ -193,13 +193,13 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.USER_MANAGEMENT,
       PERMISSIONS.AUDIT_LOG_READ],
     priority: 900,
-    isActive: true;
+    isActive: true,
   },
 
   // Clinical Roles;
   "chief_medical_officer",
     "Senior medical staff with oversight responsibilities",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
       PERMISSIONS.MEDICAL_RECORD_READ,
@@ -210,12 +210,12 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.LAB_RESULT_APPROVE,
       PERMISSIONS.EMERGENCY_OVERRIDE],
     priority: 850,
-    isActive: true;
+    isActive: true,
   },
 
   "doctor",
     "Licensed physician with clinical privileges",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
       PERMISSIONS.MEDICAL_RECORD_READ,
@@ -224,33 +224,33 @@ export const ROLES: Record<string, Role> = {
       PERMISSIONS.LAB_ORDER_CREATE,
       PERMISSIONS.APPOINTMENT_MANAGE],
     priority: 800,
-    isActive: true;
+    isActive: true,
   },
 
   "nurse",
     "Registered nurse with patient care responsibilities",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.MEDICAL_RECORD_READ,
       PERMISSIONS.MEDICAL_RECORD_UPDATE,
       PERMISSIONS.APPOINTMENT_MANAGE],
     priority: 700,
-    isActive: true;
+    isActive: true,
   },
 
   // Laboratory Roles;
   "lab_technician",
     "Laboratory staff for sample processing",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.LAB_RESULT_UPDATE],
     priority: 600,
-    isActive: true;
+    isActive: true,
   },
 
   "lab_manager",
     "Laboratory management with approval authority",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.LAB_RESULT_UPDATE,
       PERMISSIONS.LAB_RESULT_APPROVE],
@@ -261,17 +261,17 @@ export const ROLES: Record<string, Role> = {
   // Financial Roles;
   "billing_clerk",
     "Billing and payment processing staff",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.BILLING_CREATE,
       PERMISSIONS.PAYMENT_PROCESS],
     priority: 500,
-    isActive: true;
+    isActive: true,
   },
 
   "finance_manager",
     "Financial management and reporting",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.BILLING_CREATE,
       PERMISSIONS.BILLING_APPROVE,
@@ -284,34 +284,34 @@ export const ROLES: Record<string, Role> = {
   // Support Roles;
   "receptionist",
     "Front desk and appointment management",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_CREATE,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PATIENT_UPDATE,
       PERMISSIONS.APPOINTMENT_MANAGE],
     priority: 400,
-    isActive: true;
+    isActive: true,
   },
 
   "pharmacist",
     "Licensed pharmacist with medication authority",
-    permissions: [;
+    permissions: [,
       PERMISSIONS.PATIENT_READ,
       PERMISSIONS.PRESCRIPTION_APPROVE,
       // Additional pharmacy-specific permissions would be added;
     ],
     priority: 600,
-    isActive: true;
+    isActive: true,
   },
 
   // Limited Access Roles;
   "patient_portal",
     "Patient self-service portal access",
-    permissions: [;
+    permissions: [,
       // Limited patient read access to own records only;
     ],
     priority: 100,
-    isActive: true;
+    isActive: true,
   },
 
   "audit_viewer",
@@ -319,7 +319,7 @@ export const ROLES: Record<string, Role> = {
     permissions: [;
       PERMISSIONS.AUDIT_LOG_READ],
     priority: 300,
-    isActive: true;
+    isActive: true,
   }};
 
 // Role hierarchy and inheritance helper;
@@ -327,7 +327,7 @@ export const getRoleWithInheritedPermissions = (roleId: string): Role | null {,
   const role = ROLES[roleId];
   if (!session.user)eturn null;
 
-  const inheritedPermissions: Permission[] = [];
+  const inheritedPermissions: Permission[] = [],
 
   if (!session.user) {
     for (const inheritedRoleId of role.inherits) {

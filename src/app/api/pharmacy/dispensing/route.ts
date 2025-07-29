@@ -1,24 +1,23 @@
-import "../../../../lib/audit"
-import "../../../../lib/error-handler"
-import "../../../../lib/security.service"
-import "../../../../lib/services/patient/patient.service"
-import "../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../lib/validation/pharmacy-validation"
-import "../../models/domain-models"
-import "../../models/fhir-mappers"
-import "next/server"
-import getPrescriptionById }
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {auditLog  } from "next/server"
-import {encryptionService  } from "next/server"
-import {errorHandler  } from "next/server"
-import {FHIRMapper  } from "next/server"
-import {getMedicationById
-import {  getPatientById  } from "next/server"
-import {PharmacyDomain  } from "next/server"
-import {type
-import {  validateDispensingRequest  } from "next/server"
+import { } from "../../../../lib/error-handler"
+import "../../../../lib/security.service";
+import "../../../../lib/services/patient/patient.service";
+import "../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../lib/validation/pharmacy-validation";
+import "../../models/domain-models";
+import "../../models/fhir-mappers";
+import "next/server";
+import getPrescriptionById } from "../../../../lib/audit"
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {  auditLog  } from "@/lib/database"
+import {  encryptionService  } from "@/lib/database"
+import {  errorHandler  } from "@/lib/database"
+import {  FHIRMapper  } from "@/lib/database"
+import {   getMedicationById
+import {  getPatientById  } from "@/lib/database"
+import {  PharmacyDomain  } from "@/lib/database"
+import {   type
+import {  validateDispensingRequest  } from "@/lib/database"
 
 }
 
@@ -35,7 +34,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {findById: getPrescriptionById,
@@ -45,7 +44,7 @@ const prescriptionRepository = {findById: getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const dispensingRepository = {findById: (id: string) => Promise.resolve(null),
@@ -55,13 +54,13 @@ const dispensingRepository = {findById: (id: string) => Promise.resolve(null),
   findAll: () => Promise.resolve([]),
   save: (dispensing: unknown) => Promise.resolve(dispensing.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const inventoryRepository = {findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
-  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true);
+  adjustStock: (inventoryId: string, newQuantity: number) => Promise.resolve(true),
 };
 
 /**;
@@ -159,11 +158,11 @@ export const GET = async (req: any) => {,
     // Audit logging;
     await auditLog("DISPENSING", {action: "LIST",
       userId,
-      details: any;
+      details: any,
         filter,
         page,
         limit,
-        resultCount: paginatedRecords.length;
+        resultCount: paginatedRecords.length,
     });
 
     // Return response;
@@ -172,7 +171,7 @@ export const GET = async (req: any) => {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
       }
     }, {status: 200 });
   } catch (error) {
@@ -286,7 +285,7 @@ export const POST = async (req: any) => {,
         userId,
         prescription.medicationId,
           data.quantityDispensed,
-          witnessId: data.witnessId;
+          witnessId: data.witnessId,
       });
 
     // Save dispensing record;
@@ -304,14 +303,14 @@ export const POST = async (req: any) => {,
       prescription.patientId,
       prescription.medicationId,
         data.quantityDispensed,
-        location: data.location;
+        location: data.location,
 
     });
 
     // Return response;
     return NextResponse.json();
-      {id: dispensingId,
-        message: "Medication dispensed successfully";
+      {id:dispensingId,
+        message: "Medication dispensed successfully",
       },
       {status: 201 }
     );

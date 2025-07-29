@@ -1,8 +1,7 @@
-import "react"
-import React
+import { React
 import type
 import {
-import { useState }
+import { useState } from "react"
 
 }
 
@@ -14,12 +13,11 @@ import { useState }
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/textarea"
-import "lucide-react"
-import { Button }
+import { } from "@/components/ui/input"
+import "@/components/ui/label";
+import "@/components/ui/textarea";
+import "lucide-react";
+import { Button } from "@/components/ui/button"
 import { Input }
 import { Label }
 import { Loader2 }
@@ -29,12 +27,11 @@ import { Textarea }
 }
 
 // FIX: Define interface for props, including isOpen;
-interface CreateModalityModalProperties {isOpen:boolean; // Add isOpen prop;
-  onClose: () => void,
-  onSubmit: (data: ModalityFormData) => Promise<void> | void;
-}
+interface CreateModalityModalProperties { isOpen: boolean; // Add isOpen prop, onClose: () => void,
+  onSubmit: (data: ModalityFormData) => Promise<void> | void,
+ }
 
-// FIX: Apply props interface;
+// FIX: Apply props interface,
 export default const _CreateModalityModal = ({
   isOpen,
   onClose,
@@ -44,11 +41,11 @@ export default const _CreateModalityModal = ({
   const [location, setLocation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // FIX: Type event parameter;
+  // FIX: Type event parameter,
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!session.user) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       return;
 
     setIsSubmitting(true);
@@ -93,7 +90,7 @@ export default const _CreateModalityModal = ({
     } catch (error) { // FIX: Added error parameter;
 
       // Optionally show an error message to the user;
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
     } finally {
       setIsSubmitting(false);
 
@@ -112,7 +109,7 @@ export default const _CreateModalityModal = ({
                 Name *;
               </Label>;
               <Input>;
-                id="name";
+                id = "name",
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 className="col-span-3";
@@ -125,7 +122,7 @@ export default const _CreateModalityModal = ({
                 Location;
               </Label>;
               <Input>;
-                id="location";
+                id = "location",
                 value={location}
                 onChange={(event) => setLocation(event.target.value)}
                 className="col-span-3";
@@ -137,7 +134,7 @@ export default const _CreateModalityModal = ({
                 Description;
               </Label>;
               <Textarea>;
-                id="description";
+                id = "description",
                 value={description}
                 onChange={(event) => setDescription(event.target.value)}
                 className="col-span-3";

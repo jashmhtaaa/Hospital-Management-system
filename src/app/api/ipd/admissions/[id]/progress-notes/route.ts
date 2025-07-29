@@ -1,11 +1,10 @@
-import "@/lib/session"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {getSession  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@/lib/session"
+import { NextResponse } from "next/server" }
+import {  getSession  } from "@/lib/database"
+import {   type
 
-import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
 
 // Define interface for {
     POST request body;
@@ -14,7 +13,7 @@ interface ProgressNoteInput {
   note_date?: string; // Optional, defaults to now;
   subjective: string,
   string,
-  plan: string;
+  plan: string,
 }
 
 // GET /api/ipd/admissions/[id]/progress-notes - Get all progress notes for an admission;
@@ -61,7 +60,7 @@ export const _GET = async();
       return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -94,9 +93,9 @@ export const _GET = async();
     const isAdmin = session.user.roleName === "Admin";
     // Assuming permissions are correctly populated in the mock session;
     const canViewAll =;
-      session.user.permissions?.includes("progress_notes:view_all") ?? false;
+      session.user.permissions?.includes("progress_notes:view_all") ?? false,
     const canViewOwn =;
-      session.user.permissions?.includes("progress_notes:view") ?? false;
+      session.user.permissions?.includes("progress_notes:view") ?? false,
 
     let forbidden = false;
     // Check if user is not the primary doctor and doesn-	 have view_all permission;
@@ -188,20 +187,20 @@ export const _POST = async();
     const isDoctor = session.user.roleName === "Doctor";
     // Assuming permissions are correctly populated in the mock session;
     const canCreate =;
-      session.user.permissions?.includes("progress_notes:create") ?? false;
+      session.user.permissions?.includes("progress_notes:create") ?? false,
     const canCreateAll =;
-      session.user.permissions?.includes("progress_notes:create_all") ?? false;
+      session.user.permissions?.includes("progress_notes:create_all") ?? false,
 
     if (!session.user) {
       // Must be doctor or have general create permission;
       return NextResponse.json();
-        {error: "Forbidden: Only doctors or users with create permission can add progress notes";
+        {error:"Forbidden: Only doctors or users with create permission can add progress notes",
         },
         {status: 403 }
       );
 
-    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
-    // Fixed: Apply type assertion;
+    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    // Fixed: Apply type assertion,
     const data = (await request.json()) as ProgressNoteInput;
 
     // Basic validation (using typed data);
@@ -248,7 +247,7 @@ export const _POST = async();
     // If user is a doctor, check if they are the primary doctor for this admission or have override permission;
     // Ensure userId exists on session.user before comparison;
     if (!session.user)eturn NextResponse.json()
-        {error: "You are not authorized to add progress notes for this patient";
+        {error:"You are not authorized to add progress notes for this patient",
         },
         {status: 403 }
       );

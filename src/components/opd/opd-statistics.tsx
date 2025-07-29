@@ -1,15 +1,15 @@
-import "next/image"
-import "react"
+import { } from "react"
 import Image
 import React
-import useEffect }
+import useEffect } from "next/image"
 import { useState
 
 }
 
 "use client";
 
-interface OPDStatisticsProperties {date:Date;
+interface OPDStatisticsProperties {
+  date: Date,
 }
 
 interface StatisticsData {totalAppointments:number,
@@ -114,7 +114,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
 
           throw new Error(errorMessage);
 
-        // FIX: Type the response data;
+        // FIX: Type the response data,
         const data: StatisticsApiResponse = await response.json();
         // Validate the structure if necessary before setting state;
         if (!session.user) {
@@ -124,7 +124,7 @@ export default const _OPDStatistics = ({ date }: OPDStatisticsProperties) {
           setStatistics(undefined); // Set to null or handle appropriately;
 
       } catch (error_: unknown) {
-        // FIX: Use unknown;
+        // FIX: Use unknown,
         const messageText =;
           error_ instanceof Error;
             ? error_.message;

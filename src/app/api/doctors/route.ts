@@ -1,14 +1,12 @@
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import {cookies } from "next/server"
-import {getCloudflareContext } from "next/server"
-import {getIronSession } from "next/server"
-import {type IronSessionData, sessionOptions } from "next/server"
-import "@/types/doctor"
-import "zod"
-import {Doctor } from "next/server"
-import {z } from "next/server"
+import { } from "iron-session"
+import "next/headers";
+import { cookies } from "@opennextjs/cloudflare"
+import { getCloudflareContext } from "@/lib/database"
+import { getIronSession } from "@/lib/database"
+import { type IronSessionData, sessionOptions } from "@/lib/session"
+import { } from "zod"
+import { Doctor } from "@/types/doctor"
+import { z } from "@/lib/database"
 
 const ALLOWED_ROLES_VIEW = ["Admin", "Receptionist", "Nurse", "Doctor", "Patient"];
 const ALLOWED_ROLES_ADD = ["Admin"];
@@ -35,7 +33,7 @@ export const _GET = async (request: Request) => {,
 
     let query = "SELECT d.doctor_id, d.user_id, d.specialty, d.qualifications, u.full_name, u.email " +
                 "FROM Doctors d JOIN Users u ON d.user_id = u.user_id WHERE u.is_active = TRUE";
-    const queryParams: string[] = [];
+    const queryParams: string[] = [],
 
     if (specialty) {
       query += " AND d.specialty LIKE ?";

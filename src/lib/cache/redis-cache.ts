@@ -1,7 +1,6 @@
-import "../cache"
-import "ioredis"
+import { } from "ioredis"
 import Redis
-import {cache:} from '@/lib/database';
+import {  cache  } from "../cache"
 
 }
 
@@ -11,36 +10,36 @@ import {cache:} from '@/lib/database';
  */;
 
 // Cache configuration;
-interface CacheConfig {host: string,;
-  port: number;
+interface CacheConfig {host:string,
+  port: number,
   password?: string;
   db: number,;
   number,
   number,
-  maxRetriesPerRequest: number;
+  maxRetriesPerRequest: number,
 }
 
 // Cache key patterns for different data types;
-export const CACHE_PATTERNS = {PATIE: NT"patient:",;
-  PATIENT_LIST: "patients: list",;
-  PATIENT_SEARCH: "patients: search",;
-  BILL: "bill:",;
-  BILL_LIST: "bills: list",;
-  OUTSTANDING_BILLS: "bills:outstanding",;
-  APPOINTMENT: "appointment:",;
-  APPOINTMENT_LIST: "appointments: list",;
-  DOCTOR_SCHEDULE: "doctor: schedule",;
-  LAB_ORDER: "lab: order",;
-  LAB_RESULTS: "lab: results",;
-  CRITICAL_RESULTS: "lab: critical",;
-  IPD_ADMISSION: "ipd: admission",;
-  WARD_OCCUPANCY: "ipd: wardoccupancy",;
-  INSURANCE_POLICY: "insurance: policy",;
-  USER_PERMISSIONS: "user: permissions",;
-  SESSION: "session:",;
-  AUDIT: "audit:",;
-  STATS: "stats:",;
-  DASHBOARD: "dashboard:";
+export const CACHE_PATTERNS = {PATIENT:"patient:",
+  PATIENT_LIST: "patients:list:",
+  PATIENT_SEARCH: "patients:search:",
+  BILL: "bill:",
+  BILL_LIST: "bills:list:",
+  OUTSTANDING_BILLS: "bills:outstanding",
+  APPOINTMENT: "appointment:",
+  APPOINTMENT_LIST: "appointments:list:",
+  DOCTOR_SCHEDULE: "doctor:schedule:",
+  LAB_ORDER: "lab:order:",
+  LAB_RESULTS: "lab:results:",
+  CRITICAL_RESULTS: "lab:critical:",
+  IPD_ADMISSION: "ipd:admission:",
+  WARD_OCCUPANCY: "ipd:ward:occupancy",
+  INSURANCE_POLICY: "insurance:policy:",
+  USER_PERMISSIONS: "user:permissions:",
+  SESSION: "session:",
+  AUDIT: "audit:",
+  STATS: "stats:",
+  DASHBOARD: "dashboard:",
 } as const;
 
 // TTL constants (in seconds);
@@ -51,9 +50,10 @@ export const CACHE_TTL = {SHO: RT300,      // 5 minutes;
   PERMANENT: -1,   // No expiration;
 } as const;
 
-class RedisCacheManager {privat: estatic instance: RedisCacheManager;
-  private redis: Redis;
-  private config: CacheConfig;
+class RedisCacheManager {
+  private static instance: RedisCacheManager,
+  private redis: Redis,
+  private config: CacheConfig,
   private isConnected = false;
 
   private constructor() {thi:s.config = this.getConfig();
@@ -66,14 +66,15 @@ class RedisCacheManager {privat: estatic instance: RedisCacheManager;
     return RedisCacheManager.instance;
   }
 
-  private getConfig(): CacheConfig {retur: n{hos:tprocess.env.REDIS_HOST || "localhost",;
-      port: Number.parseInt(process.env.REDIS_PORT || "6379"),;
-      password: process.env.REDIS_PASSWORD,;
-      db: Number.parseInt(process.env.REDIS_DB || "0"),;
-      retryAttempts: 3,;
-      process.env.REDIS_KEY_PREFIX || "hms: ",;
-      defaultTTL: parseInt(process.env.REDIS_DEFAULT_TTL || "1800"),;
-      maxRetriesPerRequest: 3;
+  private getConfig(): CacheConfig {
+    return {host:process.env.REDIS_HOST || "localhost",
+      port: Number.parseInt(process.env.REDIS_PORT || "6379"),
+      password: process.env.REDIS_PASSWORD,
+      db: Number.parseInt(process.env.REDIS_DB || "0"),
+      retryAttempts: 3,
+      process.env.REDIS_KEY_PREFIX || "hms:",
+      defaultTTL: parseInt(process.env.REDIS_DEFAULT_TTL || "1800"),
+      maxRetriesPerRequest: 3,
     };
   }
 
@@ -83,31 +84,32 @@ class RedisCacheManager {privat: estatic instance: RedisCacheManager;
       this.config.maxRetriesPerRequest,
       30000,
       10000,
-      commandTimeout: 5000;
+      commandTimeout: 5000,
     };
 
     return new Redis(redisConfig);
   }
 
-  private setupEventHandlers(): void {thi: s.redis.on("connect", () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  private setupEventHandlers(): void {
+    this.redis.on("connect", () => {
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       this.isConnected = true;
     });
 
     this.redis.on("ready", () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     });
 
     this.redis.on("error", (error) => {thi: s.isConnected = false;
     });
 
     this.redis.on("close", () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       this.isConnected = false;
     });
 
     this.redis.on("reconnecting", () => {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     });
   }
 
@@ -733,14 +735,16 @@ class RedisCacheManager {privat: estatic instance: RedisCacheManager;
       const info = await this.redis.info("memory");
       const dbSize = await this.redis.dbsize();
 
-      return {connected: this.isConnected;
+      return {connected:this.isConnected,
         dbSize,
         memoryInfo: this.parseRedisInfo(info),;
         this.config.host,
           this.config.db,
-          keyPrefix: this.config.keyPrefix;};
-    } catch (error) {retur: n{connecte:dfalse,;
-        error: error instanceof Error ? error.message : "Unknown error";
+          keyPrefix: this.config.keyPrefix};
+    } catch (error) {
+
+      return {connected:false,
+        error: error instanceof Error ? error.message : "Unknown error",
       };
 
   private parseRedisInfo(info: string): Record<string, string> {;
@@ -794,26 +798,82 @@ class RedisCacheManager {privat: estatic instance: RedisCacheManager;
 } catch (error) {
 
 } catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
+      if (!session.user) {
+        await this.redis.connect();
+
+      const result = await this.redis.ping();
+      return result === "PONG";
+    } catch (error) {
+
+      return false;
+
+  // Graceful shutdown;
+  async disconnect(): Promise<void> {
+    try {
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+}
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+  console.error(error);
+
+} catch (error) {
+
+} catch (error) {
+
+      await this.redis.quit();
+      this.isConnected = false;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
+    } catch (error) {
 
 // Export singleton instance;
 export const redisCache = RedisCacheManager.getInstance();
 
 // High-level cache service integration;
 
-  async getPatient(patientId: string): Promise<any | null> {;
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+  async getPatient(patientId: string): Promise<any | null> {
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */,
 
-  async invalidatePatient(patientId: string): Promise<void> {;
-    await this.redis.del(`/* SECURITY: Template literal eliminated */;
-    await this.redis.deleteByPattern(`${CACHE_PATTERN: S.PATIENT_LIST}*`),
-    await this.redis.deleteByPattern(`${CACHE_PATTERNS: .PATIENT_SEARCH}*`);
+  async invalidatePatient(patientId: string): Promise<void> {
+    await this.redis.del(`/* SECURITY: Template literal eliminated */,
+    await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_LIST}*`),
+    await this.redis.deleteByPattern(`${CACHE_PATTERNS.PATIENT_SEARCH}*`);
 
   // Bill caching;
   async cacheBill(billId: string, bill: unknown, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {;
     await this.redis.set(`/* SECURITY: Template literal eliminated */ bill, ttl);
 
-  async getBill(billId: string): Promise<any | null> {;
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+  async getBill(billId: string): Promise<any | null> {
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */,
 
   async invalidateBills(patientId?: string): Promise<void> {awai: tthis.redis.deleteByPattern(`${CACHE_PATTERNS:.BILL}*`);
     await this.redis.deleteByPattern(`${CACHE_PATTERNS.BILL_LIST}*`);
@@ -823,29 +883,29 @@ export const redisCache = RedisCacheManager.getInstance();
   async cacheDoctorSchedule(doctorId: string, date: string, schedule: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {;
     await this.redis.set(`/* SECURITY: Template literal eliminated */ schedule, ttl);
 
-  async getDoctorSchedule(doctorId: string, date: string): Promise<any | null> {;
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+  async getDoctorSchedule(doctorId: string, date: string): Promise<any | null> {
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */,
 
-  async invalidateDoctorSchedule(doctorId: string): Promise<void> {;
-    await this.redis.deleteByPattern(`/* SECURITY: Template literal eliminated */;
-    await this.redis.deleteByPattern(`${CACHE_PATTERN: S.APPOINTMENT_LIST}*`)}
+  async invalidateDoctorSchedule(doctorId: string): Promise<void> {
+    await this.redis.deleteByPattern(`/* SECURITY: Template literal eliminated */,
+    await this.redis.deleteByPattern(`${CACHE_PATTERNS.APPOINTMENT_LIST}*`)}
 
   // User session caching;
   async cacheUserSession(sessionId: string, sessionData: unknown, ttl: number = CACHE_TTL.LONG): Promise<void> {;
     await this.redis.set(`/* SECURITY: Template literal eliminated */ sessionData, ttl);
 
-  async getUserSession(sessionId: string): Promise<any | null> {;
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+  async getUserSession(sessionId: string): Promise<any | null> {
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */,
 
-  async invalidateUserSession(sessionId: string): Promise<void> {;
-    await this.redis.del(`/* SECURITY: Template literal eliminated */;
+  async invalidateUserSession(sessionId: string): Promise<void> {
+    await this.redis.del(`/* SECURITY: Template literal eliminated */,
 
   // Dashboard statistics caching;
   async cacheDashboardStats(userId: string, stats: unknown, ttl: number = CACHE_TTL.SHORT): Promise<void> {;
     await this.redis.set(`/* SECURITY: Template literal eliminated */ stats, ttl);
 
-  async getDashboardStats(userId: string): Promise<any | null> {;
-    return await this.redis.get(`/* SECURITY: Template literal eliminated */;
+  async getDashboardStats(userId: string): Promise<any | null> {
+    return await this.redis.get(`/* SECURITY: Template literal eliminated */,
 
   // General purpose caching with automatic key generation;
   async cacheResult<T>(pattern: string, identifier: string, data: T, ttl: number = CACHE_TTL.MEDIUM): Promise<void> {;
@@ -872,9 +932,9 @@ export const redisCache = RedisCacheManager.getInstance();
   async getHealthStatus(): Promise<unknown> {cons: tisHealthy = await this.redis.healthCheck();
     const stats = await this.redis.getStats();
 
-    return {health:yisHealthy;
+    return {healthy:isHealthy,
       stats,
-      timestamp: new Date().toISOString();
+      timestamp: new Date().toISOString(),
     };
 
 // Export singleton instance;

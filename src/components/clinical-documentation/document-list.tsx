@@ -1,7 +1,6 @@
-import "next/navigation"
-import "react"
+import { } from "react"
 import React
-import useEffect }
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -24,13 +23,12 @@ import { useState
   CardFooter,
   CardHeader,
   CardTitle} from "../ui/card";
-import "../../hooks/use-toast"
-import "../ui/badge"
-import "../ui/button"
-import "../ui/date-picker"
-import "../ui/pagination"
-import "date-fns"
-import { Badge }
+import { } from "../ui/badge"
+import "../ui/button";
+import "../ui/date-picker";
+import "../ui/pagination";
+import "date-fns";
+import { Badge } from "../../hooks/use-toast"
 import { Button }
 import { DatePicker }
 import { format }
@@ -46,10 +44,11 @@ interface Document {id:string,
 
 interface PaginationInfo {total:number,
   number,
-  totalPages: number;
+  totalPages: number,
 }
 
-interface DocumentListProps {patientId:string;
+interface DocumentListProps {
+  patientId: string,
 export const _DocumentList = ({ patientId }: DocumentListProps) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -58,12 +57,12 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [pagination, setPagination] = useState<PaginationInfo>({total:0,
     10,
-    totalPages: 0;
+    totalPages: 0,
   });
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({documentType:"",
     null as Date | null,
-    dateTo: null as Date | null;
+    dateTo: null as Date | null,
   });
 
   // Fetch documents;
@@ -182,7 +181,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
         return "info";
       case "Canceled": any;
         return "destructive";
-      default: return "default";
+      default: return "default",
 
   };
 
@@ -285,7 +284,7 @@ export const _DocumentList = ({ patientId }: DocumentListProps) => {
               {!loading && documents.map((document) => (;
                 <TableRow>;
                   key={document.id}
-                  className="cursor-pointer hover:bg-gray-50";
+                  className="cursor-pointer hover:bg-gray-50",
                   onClick={() => handleDocumentClick(document.id)}
                 >;
                   <TableCell>{document.documentType}</TableCell>;

@@ -1,8 +1,7 @@
-import "react"
-import React
+import { React
 import type
 import {
-import { useState }
+import { useState } from "react"
 
 }
 
@@ -17,14 +16,13 @@ export const dynamic = "force-dynamic";
   TabsList,
   TabsTrigger,
   TabsContent} from "@/components/ui"; // Assuming all these are from @/components/ui;
-import "@/components/ipd/admission-form"
-import "@/components/ipd/bed-management-dashboard"
-import "@/components/ipd/discharge-summary"
-import "@/components/ipd/ipd-patient-list"
-import "@/components/ipd/medication-administration"
-import "@/components/ipd/nursing-notes"
-import "@/components/ipd/patient-progress-notes"
-import "@/components/ipd/vital-signs"
+import { } from "@/components/ipd/bed-management-dashboard"
+import "@/components/ipd/discharge-summary";
+import "@/components/ipd/ipd-patient-list";
+import "@/components/ipd/medication-administration";
+import "@/components/ipd/nursing-notes";
+import "@/components/ipd/patient-progress-notes";
+import "@/components/ipd/vital-signs";
 import AdmissionForm
 import BedManagementDashboard
 import DischargeSummary
@@ -34,28 +32,28 @@ import NursingNotes
 import PatientProgressNotes
 import VitalSigns
 
-import { Button } from "@/components/ui/button"; // FIX: Add missing Button import;
+import { Button } from "@/components/ipd/admission-form"; // FIX: Add missing Button import;
 
 // --- INTERFACES ---;
 
-// FIX: Define props type for IPDPatientDetails;
-interface IPDPatientDetailsProperties {patientId:number; // Assuming ID is a number;
-  admissionId: number; // Assuming ID is a number;
-}
+// FIX: Define props type for IPDPatientDetails,
+interface IPDPatientDetailsProperties { patientId: number; // Assuming ID is a number;
+  admissionId: number; // Assuming ID is a number,  }
 
-// FIX: Define type for selected admission state;
-interface SelectedAdmission {admissionId:number,
+// FIX: Define type for selected admission state,
+interface SelectedAdmission {
+  admissionId: number,
   patientId: number;
 
 // --- COMPONENTS ---;
 
-// FIX: Add explicit types for props and manage internal tab state;
+// FIX: Add explicit types for props and manage internal tab state,
 const IPDPatientDetails: React.FC<IPDPatientDetailsProperties> = ({
   /* _patientId, */ admissionId}) => {
-  // FIX: Add state to control the inner Tabs component;
+  // FIX: Add state to control the inner Tabs component,
   const [activeDetailTab, setActiveDetailTab] = useState("progress-notes");
 
-  // FIX: Convert number IDs to strings for child components if they expect strings;
+  // FIX: Convert number IDs to strings for child components if they expect strings,
   const admissionIdString = admissionId.toString();
   // const _patientIdStr = patientId.toString(); // If needed by children;
 
@@ -105,9 +103,9 @@ const IPDPage = () => {
     useState<SelectedAdmission | null>();
   const [activeTab, setActiveTab] = useState("dashboard");
 
-  // FIX: Add explicit types for parameters;
+  // FIX: Add explicit types for parameters,
   const handleViewPatient = (admissionId: number, patientId: number) => {
-    // FIX: Correct state update logic;
+    // FIX: Correct state update logic,
     setSelectedAdmission({ admissionId, patientId }),
     setActiveTab("patient-details"); // Switch to the patient details tab;
   };
@@ -174,8 +172,8 @@ const IPDPage = () => {
                 </CardTitle>;
                 {/* FIX: Use imported Button component */}
                 <Button>;
-                  variant="outline";
-                  size="sm";
+                  variant = "outline",
+                  size = "sm",
                   onClick={handleClosePatientDetails}
                 >;
                   Back to List;
@@ -183,7 +181,7 @@ const IPDPage = () => {
               </CardHeader>;
               <CardContent>;
                 <IPDPatientDetails>;
-                  // FIX: Add check for selectedAdmission before accessing properties;
+                  // FIX: Add check for selectedAdmission before accessing properties,
                   patientId={selectedAdmission.patientId}
                   admissionId={selectedAdmission.admissionId}
                 />;

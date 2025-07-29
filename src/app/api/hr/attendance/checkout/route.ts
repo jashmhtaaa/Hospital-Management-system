@@ -1,11 +1,11 @@
-import "@/lib/hr/attendance-service"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {attendanceService  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import "@/lib/hr/attendance-service";
+import "next/server";
+import "zod";
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {  attendanceService  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 // Schema for check-out request;
 const checkOutSchema = z.object({employeeId: z.string().min(1, "Employee ID is required"),

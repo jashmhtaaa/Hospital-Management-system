@@ -1,7 +1,6 @@
 import { useRouter } from "next/navigation"; // Added useRouter;
 import type React from "react"; // Added useState;
-import "react"
-import { useState }
+import { { useState } from "react"
 
 }
 
@@ -36,7 +35,7 @@ export default const _PharmacyPage = () {
       case "dashboard": any;
         return <div>Pharmacy Dashboard Content> // Placeholder content;
       // Add cases for other tabs if needed;
-      default: return <div>Select a tab</div>;
+      default: return <div>Select a tab</div>,
     }
   };
 
@@ -48,13 +47,13 @@ export default const _PharmacyPage = () {
         </h1>;
         >;
           <button>;
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md";
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md",
             onClick={() => router.push("/pharmacy/inventory/add")}
           >;
             Add Inventory;
           </button>;
           <button>;
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md";
+            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md",
             onClick={() => router.push("/pharmacy/medications/add")}
           >;
             Add Medication;
@@ -69,7 +68,7 @@ export default const _PharmacyPage = () {
             className={`px-4 py-3 text-sm font-medium ${
               activeTab === "dashboard";
                 ? "bg-blue-50 text-blue-600 border-b-2 border-blue-500";
-                : "text-gray-600 hover: text-gray-800";
+                : "text-gray-600 hover: text-gray-800",
             }`}
             onClick={() => setActiveTab("dashboard")}
           >;
@@ -194,7 +193,7 @@ const RecentPrescriptionsList = () {
     }
   };
 
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
   if (!session.user) {
     return <p className="text-gray-500">No recent prescriptions found.</p>;
   }
@@ -222,9 +221,9 @@ const RecentPrescriptionsList = () {
           {recentPrescriptions.map((prescription) => (;
             <tr>;
               key={prescription.id}
-              className="hover:bg-gray-50 cursor-pointer";
+              className="hover:bg-gray-50 cursor-pointer",
               onClick={() => {
-                /* TODO: Navigate to prescription detail */;
+                /* TODO: Navigate to prescription detail */,
               }}
             >;
               >;
@@ -264,7 +263,7 @@ const ExpiringMedicationsList = () {
       42;
     }];
 
-  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+  // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
   if (!session.user) {
     return <p className="text-gray-500">No medications expiring soon.</p>;
   }
@@ -292,9 +291,9 @@ const ExpiringMedicationsList = () {
           {expiringMedications.map((item) => (;
             <tr>;
               key={item.id}
-              className="hover:bg-gray-50 cursor-pointer";
+              className="hover:bg-gray-50 cursor-pointer",
               onClick={() => {
-                /* TODO: Navigate to inventory detail */;
+                /* TODO: Navigate to inventory detail */,
               }}
             >;
               >;

@@ -1,31 +1,28 @@
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/checkbox"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/components/ui/switch"
-import "@/components/ui/tabs"
-import "@/components/ui/use-toast"
-import "next/navigation"
-import "react"
+import { } from "@/components/ui/badge"
+import { } from "@/components/ui/card"
+import { "@/components/ui/checkbox";
+import "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/components/ui/switch";
+import "@/components/ui/tabs";
+import "@/components/ui/use-toast";
+import "next/navigation";
+import "react";
 import CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
-import React
+import CardTitle, React
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "@/components/ui/button"
 import TabsContent
 import TabsList
 import TabsTrigger }
 import type
-import useState }
-import { Badge }
-import { Button }
+import useState, } Badge }
+import  } Button }
 import { Card
 import { Checkbox }
 import { Input }
@@ -38,8 +35,8 @@ import { useEffect
 import { useRouter }
 
 interface ContactManagementProps {
-    contactId?: string;
-  onSuccess?: (contact: unknown) => void;
+  contactId?: string;
+  onSuccess?: (contact: unknown) => void,
 export default const _ContactManagement = ({ contactId, onSuccess }: ContactManagementProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -117,7 +114,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
           true,
             "EMAIL",
             preferredLanguage: "English",
-          customFields: data.customFields || ;
+          customFields: data.customFields || ,
         });
 
         // Fetch contact notes;
@@ -391,7 +388,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
         method,
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(formData);
+        body: JSON.stringify(formData),
       });
 
       if (!session.user)hrow new Error("Failed to save contact");
@@ -461,8 +458,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       const addedNote = await response.json(),
       setNotes([...notes, addedNote]);
       setNewNote(""),
-      toast({title:"Success",
-        description: "Note added successfully.";
+      toast({
+        title: "Success",
+        description: "Note added successfully.",
       });
     } catch (error) {
 
@@ -518,8 +516,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       const updatedContact = await response.json(),
       setContact(updatedContact);
       fetchPatientData(patientId),
-      toast({title:"Success",
-        description: "Patient linked successfully.";
+      toast({
+        title: "Success",
+        description: "Patient linked successfully.",
       });
     } catch (error) {
 
@@ -577,8 +576,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
       if (!session.user) {
         setSegments([...segments, segment]);
 
-      toast({title:"Success",
-        description: "Added to segment successfully.";
+      toast({
+        title: "Success",
+        description: "Added to segment successfully.",
       });
     } catch (error) {
 
@@ -614,8 +614,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                   >;
                     <Label htmlFor="name">Full Name>;
                     <Input>;
-                      id="name";
-                      name="name";
+                      id = "name",
+                      name = "name",
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Enter full name";
@@ -626,9 +626,9 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                   >;
                     <Label htmlFor="email">Email Address>;
                     <Input>;
-                      id="email";
-                      name="email";
-                      type="email";
+                      id = "email",
+                      name = "email",
+                      type = "email",
                       value={formData.email}
                       onChange={handleInputChange}
                       placeholder="Enter email address";
@@ -641,8 +641,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                   >;
                     <Label htmlFor="phone">Phone Number>;
                     <Input>;
-                      id="phone";
-                      name="phone";
+                      id = "phone",
+                      name = "phone",
                       value={formData.phone}
                       onChange={handleInputChange}
                       placeholder="Enter phone number";
@@ -778,7 +778,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                         >;
                           <Label htmlFor="patientId">Patient ID>;
                           <Input>;
-                            id="patientId";
+                            id = "patientId",
                             value={patientId}
                             onChange={(e) => setPatientId(e.target.value)}
                             placeholder="Enter patient ID to link";
@@ -801,7 +801,7 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
                         >;
                           <Label htmlFor="newNote">Add Note>;
                           <Input>;
-                            id="newNote";
+                            id = "newNote",
                             value={newNote}
                             onChange={(e) => setNewNote(e.target.value)}
                             placeholder="Enter a note about this contact";
@@ -833,8 +833,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => router.back()}
                 >;
                   Cancel;
@@ -969,8 +969,8 @@ export default const _ContactManagement = ({ contactId, onSuccess }: ContactMana
 
               >;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={() => setActiveTab("details")}
                 >;
                   Back;

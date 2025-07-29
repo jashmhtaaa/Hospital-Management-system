@@ -1,10 +1,9 @@
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/integration/hms-integration.service"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {errorHandlingMiddleware  } from "next/server"
-import {HMSIntegrationService  } from "next/server"
+import { } from "@/lib/services/integration/hms-integration.service"
+import "next/server";
+import { NextRequest } from "@/lib/middleware/error-handling.middleware"
+import { NextResponse } from "next/server" }
+import {  errorHandlingMiddleware  } from "@/lib/database"
+import {  HMSIntegrationService  } from "@/lib/database"
 import { type
 
 /**;
@@ -33,8 +32,8 @@ export const GET = async();
       userRoles;
     );
 
-    return NextResponse.json({success: true,
-      data: patientInfo;
+    return NextResponse.json({success:true,
+      data: patientInfo,
     });
   });
 }
@@ -59,8 +58,8 @@ export const GET = async();
       userRoles;
     );
 
-    return NextResponse.json({success: true,
-      data: locationInfo;
+    return NextResponse.json({success:true,
+      data: locationInfo,
     });
   });
 }
@@ -102,8 +101,8 @@ export const POST = async (request: any) => {,
       userRoles;
     );
 
-    return NextResponse.json({success: true,
-      data: notification;
+    return NextResponse.json({success:true,
+      data: notification,
     });
   });
 }
@@ -142,8 +141,8 @@ export const POST = async (request: any) => {,
       userRoles;
     );
 
-    return NextResponse.json({success: true,
-      data: report;
+    return NextResponse.json({success:true,
+      data: report,
     });
   });
 }
@@ -185,7 +184,7 @@ export const POST = async();
       return NextResponse.json();
         {success: false,
           "VALIDATION_ERROR",
-            message: "Invalid service type";
+            message: "Invalid service type",
               validServiceTypes;
           }
         },
@@ -202,8 +201,8 @@ export const POST = async();
       userRoles;
     );
 
-    return NextResponse.json({success: true,
-      data: request;
+    return NextResponse.json({success:true,
+      data: request,
     });
   });
 
@@ -243,7 +242,7 @@ export const POST = async();
       return NextResponse.json();
         {success: false,
           "VALIDATION_ERROR",
-            message: "Invalid service type";
+            message: "Invalid service type",
               validServiceTypes;
 
         },
@@ -259,7 +258,7 @@ export const POST = async();
       userRoles;
     );
 
-    return NextResponse.json({success: true,
-      data: request;
+    return NextResponse.json({success:true,
+      data: request,
     });
   });

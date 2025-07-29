@@ -1,27 +1,24 @@
-import "@/components/layout/DashboardLayout"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/checkbox"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/hooks/use-toast"
-import "@/types/billing"
-import "next/navigation"
-import "react"
-import "zod"
+import { } from "@/components/layout/DashboardLayout"
+import { } from "@/components/ui/card"
+import { "@/components/ui/checkbox";
+import "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/select";
+import "@/hooks/use-toast";
+import "@/types/billing";
+import "next/navigation";
+import "react";
+import "zod";
 import CardContent
 import CardHeader
-import CardTitle }
-import React
+import CardTitle, React
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
+import SelectValue } from "@/components/ui/button"
 import type
-import useState }
-import { BillableItem }
-import { Button }
+import useState, } BillableItem }
+import  } Button }
 import { Card
 import { Checkbox }
 import { DashboardLayout }
@@ -44,7 +41,7 @@ const AddInventoryItemSchema = z.object({billable_item_id:z.string().optional().
     manufacturer: z.string().optional(),
     unit_of_measure: z.string().optional(),
     reorder_level: z.coerce.number().int().nonnegative().optional().default(0),
-    is_active: z.boolean().optional().default(true);
+    is_active: z.boolean().optional().default(true),
 });
 
 type FormData = z.infer>;
@@ -52,8 +49,9 @@ type FormData = z.infer>;
 export default const _AddInventoryItemPage = () {
   const router = useRouter();
   const { toast } = useToast();
-  const [formData, setFormData] = useState<Partial<FormData>>({is_active:true,
-      reorder_level: 0;
+  const [formData, setFormData] = useState<Partial<FormData>>({
+      is_active: true,
+      reorder_level: 0,
   });
   const [billableItems, setBillableItems] = useState<BillableItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -177,7 +175,7 @@ export default const _AddInventoryItemPage = () {
       const response = await fetch("/api/inventory-items", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(dataToSend);
+        body: JSON.stringify(dataToSend),
       });
 
       const result: { error?: string } = await response.json();

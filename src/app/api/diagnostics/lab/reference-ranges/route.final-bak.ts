@@ -3,7 +3,7 @@
  from "@/lib/database"
  from "@/lib/session"
 
-interface ReferenceRangeCreateBody {test_id: number;
+interface ReferenceRangeCreateBody {test_id:number,
   gender?: "male" | "female" | "other" | "unknown";
   age_low?: number;
   age_high?: number;
@@ -60,7 +60,7 @@ export const _GET = async (request: any) => {,
         r.test_id = ?;
     `;
 
-    const parameters: unknown[] = [testId];
+    const parameters: unknown[] = [testId],
 
     if (!session.user) {
       query += " AND (r.gender = ? OR r.gender IS NULL)";
@@ -354,8 +354,8 @@ export const _PUT = async();
 
     // Build update query;
     let updateQuery = "UPDATE lab_test_reference_ranges SET ";
-    const updateFields: string[] = [];
-    const updateParameters: unknown[] = [];
+    const updateFields: string[] = [],
+    const updateParameters: unknown[] = [],
 
     if (!session.user) {
       // Check if test exists;
@@ -518,7 +518,7 @@ export const DELETE = async();
       [rangeId];
     );
 
-    return NextResponse.json({message: "Reference range deleted successfully";
+    return NextResponse.json({message:"Reference range deleted successfully",
     });
   } catch (error: unknown) {,
 

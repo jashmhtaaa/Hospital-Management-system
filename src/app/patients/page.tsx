@@ -1,10 +1,9 @@
-import "../../components/patient-management/patient-list"
-import "../../lib/auth"
-import "next-auth"
-import "next/navigation"
-import "react"
+import { } from "../../lib/auth"
+import "next-auth";
+import "next/navigation";
+import "react";
 import PatientList
-import { authOptions }
+import { authOptions } from "../../components/patient-management/patient-list"
 import { getServerSession }
 import { redirect }
 import { Suspense }

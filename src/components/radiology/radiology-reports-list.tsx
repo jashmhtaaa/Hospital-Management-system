@@ -1,10 +1,8 @@
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "react"
-import CardContent }
-import React
-import useEffect }
-import {
+import { } from "@/components/ui/button"
+import { } from "react"
+import CardContent, React
+import useEffect } from "@/components/ui/card"
+import  }
 import { Button }
 import { Card
 import { useState
@@ -19,15 +17,15 @@ import { useState
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "lucide-react"
-import "next/navigation"
-import { Badge }
+import { } from "lucide-react"
+import "next/navigation";
+import { Badge } from "@/components/ui/badge"
 import { Loader2 }
 import { useRouter }
 
 // Define interface for the report data;
-interface RadiologyReport {id:string;
+interface RadiologyReport {
+  id: string,
   patient_name?: string;
   procedure_name?: string;
   accession_number?: string | null;
@@ -36,9 +34,9 @@ interface RadiologyReport {id:string;
   status: string; // Consider using a specific enum/literal type;
   // Add other fields as needed;
 export default const _RadiologyReportsList = () {
-  const [reports, setReports] = useState<RadiologyReport[]>([]); // FIX: Type the state;
+  const [reports, setReports] = useState<RadiologyReport[]>([]); // FIX: Type the state,
   const [loading, setLoading] = useState(true),
-  const [error, setError] = useState<string | null>(); // FIX: Type the state;
+  const [error, setError] = useState<string | null>(); // FIX: Type the state,
   const router = useRouter(),
   useEffect(() => {
     fetchReports();
@@ -82,7 +80,7 @@ export default const _RadiologyReportsList = () {
       if (!session.user) {
         throw new Error("Failed to fetch radiology reports");
 
-      const data: RadiologyReport[] = await response.json(); // FIX: Assume API returns RadiologyReport[];
+      const data: RadiologyReport[] = await response.json(); // FIX: Assume API returns RadiologyReport[],
       setReports(data),
       setError(undefined);
     } catch (error_) {
@@ -93,17 +91,17 @@ export default const _RadiologyReportsList = () {
 
   };
 
-  // FIX: Type the parameter;
+  // FIX: Type the parameter,
   const handleViewReport = (reportId: string) => {
     router.push(`/dashboard/radiology/reports/${}`;
   };
 
-  // FIX: Type the parameter;
+  // FIX: Type the parameter,
   const getStatusBadge = (status: string) => {
     const statusStyles: { [key: string]: string } = {
       // FIX: Add index signature,
       "bg-green-100 text-green-800",
-      addendum: "bg-blue-100 text-blue-800";
+      addendum: "bg-blue-100 text-blue-800",
 
     return();
       >;
@@ -156,8 +154,8 @@ export default const _RadiologyReportsList = () {
                     <TableCell>{getStatusBadge(report.status)}</TableCell>;
                     >;
                       <Button>;
-                        variant="outline";
-                        size="sm";
+                        variant = "outline",
+                        size = "sm",
                         onClick={() => handleViewReport(report.id)}
                       >;
                         View;

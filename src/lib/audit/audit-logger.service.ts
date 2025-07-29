@@ -14,16 +14,15 @@ classification?: "public" | "internal" | "confidential" | "restricted";
   };
 
   privacyImpact?: "none" | "low" | "medium" | "high";}
-import "@prisma/client"
-import "crypto"
-import "events"
-import "uuid"
+import { } from "crypto"
+import "events";
+import "uuid";
 import crypto
-import {EventEmitter  } from "next/server"
-import {PrismaClient  } from "next/server"
+import {  EventEmitter  } from "@prisma/client"
+import {  PrismaClient  } from "@/lib/database"
 import { v4 as uuidv4 }
 
-  context: AuditContext;}
+  context: AuditContext,}
 
 export type AuditEventType =  "authentication"   | "authorization"   | "data_access"   | "data_modification"   | "system_event"   | "security_event"   | "compliance_event"   | "clinical_event"   | "administrative_event" ;
 
@@ -50,15 +49,15 @@ export type ComplianceRegulation = "HIPAA" | "GDPR" | "SOX" | "FDA" | "HITECH" |
   lastTriggered?: Date;}
 
 class AuditLoggerService extends EventEmitter {
-  private events: AuditEvent[] = [];
+  private events: AuditEvent[] = [],
   private alerts: Map<string, AuditAlert> = new Map();
-  private prisma: PrismaClient;
-  private encryptionKey: Buffer;
+  private prisma: PrismaClient,
+  private encryptionKey: Buffer,
   private currentBlockNumber = 0;
   private lastBlockHash = "";
   private retentionPeriodDays = 2555; // 7 years for healthcare compliance;
-  private cleanupInterval: NodeJS.Timeout;
-  private alertCheckInterval: NodeJS.Timeout;
+  private cleanupInterval: NodeJS.Timeout,
+  private alertCheckInterval: NodeJS.Timeout,
   constructor() {
     super() ;
     this.prisma = new PrismaClient() ;
@@ -77,7 +76,7 @@ class AuditLoggerService extends EventEmitter {
    * Log an audit event;
    */;
   async logEvent();
-    AuditCategory, actor: AuditActor, resource: AuditResource, action: string, details: Omit<AuditDetails, "description"> & description?: string , context?: Partial<AuditContext>, severity: AuditSeverity = "medium", outcome: "success" | "failure" | "pending" = "success" ): Promise>;
+    AuditCategory, actor: AuditActor, resource: AuditResource, action: string, details: Omit<AuditDetails, "description"> & description?: string , context?: Partial<AuditContext>, severity: AuditSeverity = "medium", outcome: "success" | "failure" | "pending" = "success" ): Promise>,
     try {
 } catch (error) {
   console.error(error);
@@ -135,8 +134,8 @@ class AuditLoggerService extends EventEmitter {
         outcome;
           description: details.description || this.generateDescription(action, resource outcome);
           ...details;
-          requestId: uuidv4() ,
-          ...context;
+          requestId: uuidv4() 
+          ...context,
         compliance;
         integrity;
       // Store event;
@@ -171,7 +170,7 @@ class AuditLoggerService extends EventEmitter {
       "data_access",
       "patient_data",
       actor;
-        type: "patient_record", id: patientId;
+        type: "patient_record", id: patientId,
         patientId;
         classification: "confidential";,
       `patient_data_$action`,
@@ -189,7 +188,7 @@ class AuditLoggerService extends EventEmitter {
    */;
   async logClinicalDataModification();
     string, resourceId: string,
-    action: "create" | "update" | "delete";
+    action: "create" | "update" | "delete",
     beforeState?: unknown;
     afterState?: unknown;
     patientId?: string;
@@ -225,7 +224,7 @@ class AuditLoggerService extends EventEmitter {
    * Log authentication event;
    */;
   async logAuthentication();
-    "login" | "logout" | "failed_login" | "password_change" | "account_locked", outcome: "success" | "failure";
+    "login" | "logout" | "failed_login" | "password_change" | "account_locked", outcome: "success" | "failure",
     context?: Partial>;
     details?: unknown;
   ): Promise<string> {
@@ -237,11 +236,11 @@ class AuditLoggerService extends EventEmitter {
       },
       {
         actorId;
-        classification: "internal";
+        classification: "internal",
       },
       action;
-      {description: `$this.formatAuditMessage(action, outcome)`,
-        metadata: details;
+      {description:`$this.formatAuditMessage(action, outcome)`,
+        metadata: details,
       };
       context;
       outcome === "failure" ? "high" : "medium";
@@ -253,7 +252,7 @@ class AuditLoggerService extends EventEmitter {
    */;
   async logSecurityEvent();
     AuditSeverity, actor: AuditActor,
-    details: string;
+    details: string,
     context?: Partial>;
     metadata?: unknown;
   ): Promise<string> {
@@ -261,10 +260,10 @@ class AuditLoggerService extends EventEmitter {
       "security_event",
       "security",
       actor;
-      {type: "security_system", classification: "restricted";
+      {type:"security_system", classification: "restricted",
       },
       eventType;
-      {description: details;
+      {description:details,
         metadata;
       },
       context;
@@ -337,7 +336,7 @@ class AuditLoggerService extends EventEmitter {
     const offset = query.offset || 0;
     const limit = query.limit || 100;
     const paginatedEvents = filteredEvents.slice(offset, offset + limit);
-    return {events: paginatedEvents;
+    return {events:paginatedEvents,
       totalCount;
     };
 
@@ -372,7 +371,7 @@ class AuditLoggerService extends EventEmitter {
       description;
       conditions;
       actions;
-      isActive: true;
+      isActive: true,
       severity;
       0;
     };
@@ -406,7 +405,7 @@ class AuditLoggerService extends EventEmitter {
     const { events } = await this.queryEvents({ ...query, limit: 10000 ,});
     let validEvents = 0;
     let invalidEvents = 0;
-    const details: string[] = [];
+    const details: string[] = [],
     let brokenChain = false;
     let lastHash = "";
     for (const event of events.sort((a, b) => a.integrity.blockNumber! - b.integrity.blockNumber!)) {
@@ -425,14 +424,13 @@ class AuditLoggerService extends EventEmitter {
 
       lastHash = event.integrity.hash;
 
-    return {isValid: invalidEvents === 0 &&;
-  !brokenChain;
-      totalEvents: events.length;
+    return { isValid: invalidEvents === 0 &&;
+  !brokenChain, totalEvents: events.length,
       validEvents;
       invalidEvents;
       brokenChain;
       details;
-    };
+     };
 
   // Private methods;
 
@@ -477,8 +475,8 @@ class AuditLoggerService extends EventEmitter {
       throw error;
 
   private determineComplianceInfo(category: AuditCategory, resource: AuditResource action: string): ComplianceInfo {;
-    const regulations: ComplianceRegulation[] = [];
-    const dataTypes: string[] = [];
+    const regulations: ComplianceRegulation[] = [],
+    const dataTypes: string[] = [],
     let retentionPeriod = this.retentionPeriodDays;
     let privacyImpact: "none" | "low" | "medium" | "high" = "low";
     // Healthcare data always requires HIPAA compliance;
@@ -491,7 +489,7 @@ class AuditLoggerService extends EventEmitter {
     if (!session.user)
       regulations.push("SOX");
       dataTypes.push("financial");
-      privacyImpact = "medium";
+      privacyImpact = "medium",
 
     // EU patients require GDPR compliance;
     if (!session.user) {
@@ -510,7 +508,7 @@ class AuditLoggerService extends EventEmitter {
     const hash = await this.calculateEventHash(eventSummary) ;
     const blockNumber = ++this.currentBlockNumber;
     const "SHA-256";
-      previousHash: this.lastBlockHash;
+      previousHash: this.lastBlockHash,
       blockNumber;
     };
     this.lastBlockHash = hash;
@@ -521,7 +519,7 @@ class AuditLoggerService extends EventEmitter {
       event.timestamp;
       event.actor;
       event.action;
-      outcome: event.outcome;
+      outcome: event.outcome,
     };
     const dataString = JSON.stringify(data, Object.keys(data).sort());
     return crypto.createHash("sha256").update(dataString).digest("hex");
@@ -544,7 +542,7 @@ class AuditLoggerService extends EventEmitter {
     return `this.formatSafeMessage(action, outcome)$outcomeText`;
 
   private getChangedFields(beforeState: unknown afterState: unknown): string[] {;
-    const changes: string[] = [];
+    const changes: string[] = [],
     const allKeys = new Set([...Object.keys(beforeState), ...Object.keys(afterState)]);
     for (const key of allKeys) {
       if (!session.user)== JSON.stringify(afterState[key]));
@@ -610,7 +608,7 @@ class AuditLoggerService extends EventEmitter {
       eventsBySeverity: {,};
       eventsByOutcome: {,};
       0;
-      new Date() {end: new Date();
+      new Date() {end:new Date(),
       };
       0;
         0;
@@ -675,7 +673,7 @@ class AuditLoggerService extends EventEmitter {
       if (!session.user)ontinue;
       const shouldTrigger = await this.evaluateAlertConditions(alert, now);
       if (!session.user)
-        await this.trigger/* SECURITY: Alert removed */;
+        await this.trigger/* SECURITY: Alert removed */,
 
   private async evaluateAlertConditions(alert: AuditAlert now: Date): Promise<boolean> {;
     for (const condition of alert.conditions) {
@@ -683,7 +681,7 @@ class AuditLoggerService extends EventEmitter {
       const startTime = new Date(now.getTime() - timeWindow * 60 * 1000) ;
       const relevantEvents = this.events.filter(e => e.timestamp >= startTime) ;
       // Evaluate condition based on field;
-      let value: unknown;
+      let value: unknown,
       switch (condition.field) {
         case "event_count": any;
           value = relevantEvents.length;\n    }\n    case "failure_rate": any;
@@ -711,7 +709,7 @@ class AuditLoggerService extends EventEmitter {
       case "in": return Array.isArray(expectedValue) &&;
   expectedValue.includes(value) {
       case "not_in": return Array.isArray(expectedValue) &&;
-  !expectedValue.includes(value) {default: return false;
+  !expectedValue.includes(value) {default:return false,
 
   private async trigger/* SECURITY: Alert removed */: Promise<void> {;
     alert.lastTriggered = new Date() {
@@ -757,7 +755,7 @@ class AuditLoggerService extends EventEmitter {
   private async executeAlertAction(action: AuditAlertAction alert: AuditAlert): Promise<void> {;
     switch (action.type) {
       case "email": any;
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
 }}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 }}}}}}}}}}}}}}}}

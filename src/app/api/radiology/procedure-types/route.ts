@@ -1,15 +1,14 @@
-import "@/lib/auth"
-import "@/lib/session"
-import "@cloudflare/workers-types"
-import "nanoid"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {checkUserRole  } from "next/server"
-import {D1Database  } from "next/server"
-import {getSession  } from "next/server"
-import {nanoid  } from "next/server"
-import {type
+import { } from "@/lib/session"
+import "@cloudflare/workers-types";
+import "nanoid";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
+import { NextResponse } from "next/server" }
+import {  checkUserRole  } from "@/lib/database"
+import {  D1Database  } from "@/lib/database"
+import {  getSession  } from "@/lib/database"
+import {  nanoid  } from "@/lib/database"
+import {   type
 
 // Define interface for {
     POST request body;
@@ -65,13 +64,13 @@ export const _GET = async (request: any) => {,
       "SELECT * FROM RadiologyProcedureTypes ORDER BY name ASC";
     ).all();
     return NextResponse.json(results);
-  } catch (error: unknown) {,
-    // FIX: Replaced any with unknown;
+  } catch (error: unknown) {
+    // FIX: Replaced any with unknown,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
-      {error: "Failed to fetch radiology procedure types",
-        details: errorMessage;
+      {error:"Failed to fetch radiology procedure types",
+        details: errorMessage,
       },
       {status: 500 }
     );
@@ -152,20 +151,20 @@ export const _POST = async (request: any) => {,
       { id, status: "Radiology procedure type created" },
       {status: 201 }
     );
-  } catch (error: unknown) {,
-    // FIX: Replaced any with unknown;
+  } catch (error: unknown) {
+    // FIX: Replaced any with unknown,
     const errorMessage = error instanceof Error ? error.message : String(error);
 
     // Handle potential unique constraint violation if check fails due to race condition;
     if (!session.user) {
-      // FIX: Check errorMessage instead of e.message;
+      // FIX: Check errorMessage instead of e.message,
       return NextResponse.json();
         {error: "Procedure type with this name already exists" },
         {status: 409 }
       )}
     return NextResponse.json();
-      {error: "Failed to create radiology procedure type",
-        details: errorMessage;
+      {error:"Failed to create radiology procedure type",
+        details: errorMessage,
       },
       {status: 500 }
     );

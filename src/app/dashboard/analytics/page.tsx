@@ -1,17 +1,15 @@
-import "@/components/ui/alert"
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/progress"
-import "@/components/ui/select"
-import "@/components/ui/tabs"
-import "react"
+import { } from "@/components/ui/alert"
+import { } from "@/components/ui/button"
+import { "@/components/ui/card";
+import "@/components/ui/progress";
+import "@/components/ui/select";
+import "@/components/ui/tabs";
+import "react";
 import AlertDescription
-import AlertTitle }
-import CardContent
+import AlertTitle, CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
+import CardTitle } from "@/components/ui/badge"
 import React
 import SelectContent
 import SelectItem
@@ -21,9 +19,8 @@ import TabsContent
 import TabsList
 import TabsTrigger }
 import useEffect
-import useMemo }
-import {
-import { Alert
+import useMemo, }
+import  } Alert
 import { Badge }
 import { Button }
 import { Card
@@ -103,7 +100,7 @@ interface AnalyticsData {realTimeMetrics:RealTimeMetrics,
   FinancialMetrics,
   ResourceMetrics[],
   SystemAlert[],
-  complianceStatus: ComplianceMetrics;
+  complianceStatus: ComplianceMetrics,
 }
 
 interface RealTimeMetrics {currentPatients:number,
@@ -111,14 +108,14 @@ interface RealTimeMetrics {currentPatients:number,
   number,
   number,
   number,
-  systemHealth: "excellent" | "good" | "warning" | "critical";
+  systemHealth: "excellent" | "good" | "warning" | "critical",
 }
 
 interface OperationalKPI {metric:string,
   number,
   number,
   string,
-  category: "patient_care" | "efficiency" | "quality" | "financial";
+  category: "patient_care" | "efficiency" | "quality" | "financial",
 }
 
 interface DepartmentMetrics {department:string,
@@ -139,7 +136,7 @@ interface FinancialMetrics {revenue24h:number,
   number,
   number,
   number,
-  operatingRatio: number;
+  operatingRatio: number,
 }
 
 interface QualityMetrics {indicator:string,
@@ -152,7 +149,7 @@ interface ResourceMetrics {resource:string,
   number,
   number,
   number,
-  cost: number;
+  cost: number,
 }
 
 interface PredictiveData {prediction:string,
@@ -163,7 +160,7 @@ interface PredictiveData {prediction:string,
 
 interface SystemAlert {id:string,
   string,
-  message: string;
+  message: string,
   department?: string;
   timestamp: string,
   number;
@@ -180,7 +177,7 @@ const COLORS = {primary:"#3b82f6",
   "#f59e0b",
   "#22c55e",
   "#8b5cf6",
-  pink: "#ec4899";
+  pink: "#ec4899",
 };
 
 const CHART_COLORS = [COLORS.primary, COLORS.secondary, COLORS.warning, COLORS.danger, COLORS.purple, COLORS.pink];
@@ -264,7 +261,7 @@ export default const _AdvancedAnalyticsDashboard = () {
       case "good": return "bg-blue-100 text-blue-800";
       case "warning": return "bg-yellow-100 text-yellow-800";
       case "critical": return "bg-red-100 text-red-800";
-      default: return "bg-gray-100 text-gray-800";
+      default: return "bg-gray-100 text-gray-800",
 
   };
 
@@ -276,7 +273,7 @@ export default const _AdvancedAnalyticsDashboard = () {
       case "down": any;
       case "declining": any;
         return <ChevronDown className="h-4 w-4 text-red-500" />;
-      default: return <div className="h-4 w-4" />;
+      default: return <div className="h-4 w-4" />,
 
   };
 
@@ -332,8 +329,8 @@ export default const _AdvancedAnalyticsDashboard = () {
                 </SelectContent>;
               </Select>;
               <Button>;
-                variant="outline";
-                size="icon";
+                variant = "outline",
+                size = "icon",
                 onClick={handleRefresh}
                 disabled={loading}
               >;
@@ -471,25 +468,25 @@ export default const _AdvancedAnalyticsDashboard = () {
                   <Tooltip />;
                   <Legend />;
                   <Area>;
-                    type="monotone";
-                    dataKey="admissions";
-                    stackId="1";
+                    type = "monotone",
+                    dataKey = "admissions",
+                    stackId = "1",
                     stroke={COLORS.primary}
                     fill={COLORS.primary}
                     fillOpacity={0.6}
                   />;
                   <Area>;
-                    type="monotone";
-                    dataKey="discharges";
-                    stackId="1";
+                    type = "monotone",
+                    dataKey = "discharges",
+                    stackId = "1",
                     stroke={COLORS.secondary}
                     fill={COLORS.secondary}
                     fillOpacity={0.6}
                   />;
                   <Area>;
-                    type="monotone";
-                    dataKey="transfers";
-                    stackId="1";
+                    type = "monotone",
+                    dataKey = "transfers",
+                    stackId = "1",
                     stroke={COLORS.warning}
                     fill={COLORS.warning}
                     fillOpacity={0.6}
@@ -602,7 +599,7 @@ export default const _AdvancedAnalyticsDashboard = () {
                       cx="50%";
                       cy="50%";
                       outerRadius={80}
-                      dataKey="value";
+                      dataKey = "value",
                       label={({name, value}) => `${name}: ${value}%`}
                     >;
                       {[].map((entry, index) => (;
@@ -633,15 +630,15 @@ export default const _AdvancedAnalyticsDashboard = () {
                   <Tooltip />;
                   <Legend />;
                   <Line>;
-                    type="monotone";
-                    dataKey="admissions";
+                    type = "monotone",
+                    dataKey = "admissions",
                     stroke={COLORS.primary}
                     strokeWidth={2}
                     dot={{r:4 }}
                   />;
                   <Line>;
-                    type="monotone";
-                    dataKey="discharges";
+                    type = "monotone",
+                    dataKey = "discharges",
                     stroke={COLORS.secondary}
                     strokeWidth={2}
                     dot={{r:4 }}
@@ -838,8 +835,8 @@ export default const _AdvancedAnalyticsDashboard = () {
                     <Tooltip />;
                     <Legend />;
                     <Line>;
-                      type="monotone";
-                      dataKey="occupancy";
+                      type = "monotone",
+                      dataKey = "occupancy",
                       stroke={COLORS.primary}
                       strokeWidth={3}
                       dot={{r:5 }}
@@ -997,26 +994,26 @@ const generateMockAnalyticsData = (): AnalyticsData {
       23,
       342,
       3,
-      systemHealth: "good";
+      systemHealth: "good",
     },
     operationalKPIs: [;
       {metric:"Avg Wait Time",
         30,
         -8,
         "min",
-        category: "efficiency";
+        category: "efficiency",
       },
       {metric:"Patient Satisfaction",
         90,
         3,
         "%",
-        category: "patient_care";
+        category: "patient_care",
       },
       {metric:"Staff Utilization",
         80,
         0,
         "%",
-        category: "efficiency";
+        category: "efficiency",
       },
       {metric:"Revenue per Patient",
         4000,
@@ -1064,7 +1061,7 @@ const generateMockAnalyticsData = (): AnalyticsData {
       23,
       4200000,
       925,
-      operatingRatio: 91;
+      operatingRatio: 91,
     },
     qualityIndicators: [;
       {indicator:"Patient Safety Score",

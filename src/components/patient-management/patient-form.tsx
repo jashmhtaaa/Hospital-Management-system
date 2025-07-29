@@ -1,8 +1,7 @@
-import "next/navigation"
-import "react"
+import { } from "react"
 import React
 import {
-import { useRouter }
+import { useRouter } from "next/navigation"
 import { useState }
 
   Form,
@@ -24,10 +23,9 @@ import { useState }
   AccordionContent,
   AccordionItem,
   AccordionTrigger} from "../ui/accordion";
-import "../ui/button"
-import "../ui/checkbox"
-import "../ui/input"
-import { Button }
+import { } from "../ui/checkbox"
+import "../ui/input";
+import { Button } from "../ui/button"
 import { Checkbox }
 import { Input }
 
@@ -49,13 +47,12 @@ import { Input }
   User,
   X;
 } from "lucide-react";
-import "../../hooks/use-toast"
-import "@hookform/resolvers/zod"
-import "date-fns"
-import "react-hook-form"
-import "zod"
+import { } from "@hookform/resolvers/zod"
+import "date-fns";
+import "react-hook-form";
+import "zod";
 import * as z
-import { format }
+import { format } from "../../hooks/use-toast"
 import { useForm }
 import { useToast }
 import { zodResolver }
@@ -112,7 +109,7 @@ const patientFormSchema = z.object({
   status: z.string().default("Active"),
   vip: z.boolean().default(false),
   confidential: z.boolean().default(false),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 type PatientFormValues = z.infer>;
@@ -144,9 +141,9 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
     mailOptIn: initialData.contact?.mailOptIn || true;
 
     // Address;
-    addressLine1: initialData?.addresses &&;
+    addressLine1: initialData?.addresses &&,
       initialData.addresses.length > 0 ? initialData.addresses[0].addressLine1 : "",
-    addressLine2: initialData?.addresses &&;
+    addressLine2: initialData?.addresses &&,
       initialData.addresses.length > 0 ? initialData.addresses[0].addressLine2 : "",
     city: initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].city : "",
     initialData?.addresses && initialData.addresses.length > 0 ? initialData.addresses[0].postalCode : "",
@@ -246,14 +243,14 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
         response = await fetch(`/api/patients/${initialData.id}`, {method:"PUT",
           headers: {
             "Content-Type": "application/json"},
-          body: JSON.stringify(requestData);
+          body: JSON.stringify(requestData),
         });
       } else {
         // Create new patient;
         response = await fetch("/api/patients", {method:"POST",
           headers: {
             "Content-Type": "application/json"},
-          body: JSON.stringify(requestData);
+          body: JSON.stringify(requestData),
         });
 
       if (!session.user) {
@@ -263,8 +260,9 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
       const patient = await response.json();
 
       // Show success message;
-      toast({title:isEditing ? "Patient Updated" : "Patient Created",
-        description: `/* SECURITY: Template literal eliminated */;
+      toast({
+        title: isEditing ? "Patient Updated" : "Patient Created",
+        description: `/* SECURITY: Template literal eliminated */,
       });
 
       // Navigate to patient detail;
@@ -327,7 +325,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                   >;
                     <FormField>;
                       control={form.control}
-                      name="firstName";
+                      name = "firstName",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>First Name <span className="text-destructive">*</span>>;
@@ -341,7 +339,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="lastName";
+                      name = "lastName",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Last Name <span className="text-destructive">*</span>>;
@@ -355,7 +353,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="middleName";
+                      name = "middleName",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Middle Name</FormLabel>;
@@ -369,7 +367,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="preferredName";
+                      name = "preferredName",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Preferred Name</FormLabel>;
@@ -385,7 +383,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                   >;
                     <FormField>;
                       control={form.control}
-                      name="dateOfBirth";
+                      name = "dateOfBirth",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Date of Birth <span className="text-destructive">*</span>>;
@@ -399,7 +397,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="gender";
+                      name = "gender",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Gender <span className="text-destructive">*</span>>;
@@ -433,7 +431,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                         >;
                           <FormField>;
                             control={form.control}
-                            name="biologicalSex";
+                            name = "biologicalSex",
                             render={({ field }) => (;
                               <FormItem>;
                                 <FormLabel>Biological Sex</FormLabel>;
@@ -461,7 +459,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                           <FormField>;
                             control={form.control}
-                            name="genderIdentity";
+                            name = "genderIdentity",
                             render={({ field }) => (;
                               <FormItem>;
                                 <FormLabel>Gender Identity</FormLabel>;
@@ -475,7 +473,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                           <FormField>;
                             control={form.control}
-                            name="pronouns";
+                            name = "pronouns",
                             render={({ field }) => (;
                               <FormItem>;
                                 <FormLabel>Pronouns</FormLabel>;
@@ -503,7 +501,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                           <FormField>;
                             control={form.control}
-                            name="maritalStatus";
+                            name = "maritalStatus",
                             render={({ field }) => (;
                               <FormItem>;
                                 <FormLabel>Marital Status</FormLabel>;
@@ -533,7 +531,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                           <FormField>;
                             control={form.control}
-                            name="bloodType";
+                            name = "bloodType",
                             render={({ field }) => (;
                               <FormItem>;
                                 <FormLabel>Blood Type</FormLabel>;
@@ -561,7 +559,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                           <FormField>;
                             control={form.control}
-                            name="rh";
+                            name = "rh",
                             render={({ field }) => (;
                               <FormItem>;
                                 <FormLabel>Rh Factor</FormLabel>;
@@ -587,7 +585,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                           <FormField>;
                             control={form.control}
-                            name="organDonor";
+                            name = "organDonor",
                             render={({ field }) => (;
                               >;
                                 <FormControl>;
@@ -616,7 +614,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                   >;
                     <FormField>;
                       control={form.control}
-                      name="phoneMobile";
+                      name = "phoneMobile",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Mobile Phone</FormLabel>;
@@ -630,7 +628,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="phoneHome";
+                      name = "phoneHome",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Home Phone</FormLabel>;
@@ -644,7 +642,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="phoneWork";
+                      name = "phoneWork",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Work Phone</FormLabel>;
@@ -658,7 +656,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="phonePreferred";
+                      name = "phonePreferred",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Preferred Phone <span className="text-destructive">*</span>>;
@@ -684,7 +682,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="email";
+                      name = "email",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Email</FormLabel>;
@@ -700,7 +698,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                   >;
                     <FormField>;
                       control={form.control}
-                      name="emailOptIn";
+                      name = "emailOptIn",
                       render={({ field }) => (;
                         >;
                           <FormControl>;
@@ -721,7 +719,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="smsOptIn";
+                      name = "smsOptIn",
                       render={({ field }) => (;
                         >;
                           <FormControl>;
@@ -742,7 +740,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="mailOptIn";
+                      name = "mailOptIn",
                       render={({ field }) => (;
                         >;
                           <FormControl>;
@@ -767,7 +765,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                     >;
                       <FormField>;
                         control={form.control}
-                        name="addressLine1";
+                        name = "addressLine1",
                         render={({ field }) => (;
                           <FormItem>;
                             <FormLabel>Address Line 1</FormLabel>;
@@ -781,7 +779,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                       <FormField>;
                         control={form.control}
-                        name="addressLine2";
+                        name = "addressLine2",
                         render={({ field }) => (;
                           <FormItem>;
                             <FormLabel>Address Line 2</FormLabel>;
@@ -795,7 +793,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                       <FormField>;
                         control={form.control}
-                        name="city";
+                        name = "city",
                         render={({ field }) => (;
                           <FormItem>;
                             <FormLabel>City</FormLabel>;
@@ -810,7 +808,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                       >;
                         <FormField>;
                           control={form.control}
-                          name="state";
+                          name = "state",
                           render={({ field }) => (;
                             <FormItem>;
                               <FormLabel>State</FormLabel>;
@@ -824,7 +822,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                         <FormField>;
                           control={form.control}
-                          name="postalCode";
+                          name = "postalCode",
                           render={({ field }) => (;
                             <FormItem>;
                               <FormLabel>Postal Code</FormLabel>;
@@ -839,7 +837,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                       <FormField>;
                         control={form.control}
-                        name="country";
+                        name = "country",
                         render={({ field }) => (;
                           <FormItem>;
                             <FormLabel>Country</FormLabel>;
@@ -859,7 +857,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                   >;
                     <FormField>;
                       control={form.control}
-                      name="language";
+                      name = "language",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Primary Language</FormLabel>;
@@ -893,7 +891,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="interpreter";
+                      name = "interpreter",
                       render={({ field }) => (;
                         >;
                           <FormControl>;
@@ -914,7 +912,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="ethnicity";
+                      name = "ethnicity",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Ethnicity</FormLabel>;
@@ -941,7 +939,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="race";
+                      name = "race",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Race</FormLabel>;
@@ -972,7 +970,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="nationality";
+                      name = "nationality",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Nationality</FormLabel>;
@@ -986,7 +984,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="religion";
+                      name = "religion",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Religion</FormLabel>;
@@ -1000,7 +998,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="educationLevel";
+                      name = "educationLevel",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Education Level</FormLabel>;
@@ -1032,7 +1030,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="occupation";
+                      name = "occupation",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Occupation</FormLabel>;
@@ -1051,7 +1049,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                   >;
                     <FormField>;
                       control={form.control}
-                      name="mrn";
+                      name = "mrn",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>MRN</FormLabel>;
@@ -1071,7 +1069,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="status";
+                      name = "status",
                       render={({ field }) => (;
                         <FormItem>;
                           <FormLabel>Status</FormLabel>;
@@ -1100,7 +1098,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
                   >;
                     <FormField>;
                       control={form.control}
-                      name="vip";
+                      name = "vip",
                       render={({ field }) => (;
                         >;
                           <FormControl>;
@@ -1121,7 +1119,7 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                     <FormField>;
                       control={form.control}
-                      name="confidential";
+                      name = "confidential",
                       render={({ field }) => (;
                         >;
                           <FormControl>;
@@ -1143,13 +1141,13 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
                   <FormField>;
                     control={form.control}
-                    name="notes";
+                    name = "notes",
                     render={({ field }) => (;
                       <FormItem>;
                         <FormLabel>Administrative Notes</FormLabel>;
                         <FormControl>;
                           <textarea>;
-                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[100px]";
+                            className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none min-h-[100px]",
                             placeholder="Additional notes about this patient...";
                             {...field}
                           />;
@@ -1164,15 +1162,15 @@ export default const _PatientForm = ({ initialData, isEditing = false }: Patient
 
             >;
               <Button>;
-                type="button";
-                variant="outline";
+                type = "button",
+                variant = "outline",
                 onClick={handleCancel}
               >;
                 <X className="h-4 w-4 mr-2" />;
                 Cancel;
               </Button>;
               <Button>;
-                type="submit";
+                type = "submit",
                 disabled={isSubmitting}
               >;
                 <Save className="h-4 w-4 mr-2" />;

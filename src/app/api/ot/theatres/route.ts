@@ -1,14 +1,13 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {D1Database  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
+import { NextResponse } from "next/server" }
+import {  D1Database  } from "@/lib/database"
+import {   type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for the POST request body;
-interface TheatreCreateBody {name: string;
+interface TheatreCreateBody {name:string,
   location?: string | null;
   specialty?: string | null;
   equipment?: string | null; // Assuming JSON string or simple text for equipment list;
@@ -50,12 +49,12 @@ export const _GET = async (request: any) => {,
 }
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const DB = process.env.DB as unknown as D1Database;
     let query =;
       "SELECT id, name, location, specialty, status, updated_at FROM OperationTheatres";
-    const parameters: string[] = [];
+    const parameters: string[] = [],
 
     if (!session.user) {
       query += " WHERE status = ?";
@@ -63,7 +62,7 @@ export const _GET = async (request: any) => {,
     }
 
     query += " ORDER BY name ASC";
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
     const { results } = await DB.prepare(query)
       .bind(...parameters);
@@ -158,15 +157,15 @@ export const _POST = async (request: any) => {,
             equipment,
             status: "available",
             now,status: 201 ;
-        )} catch (error: unknown) {,
-    // FIX: Remove explicit any;
+        )} catch (error: unknown) {
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     if (!session.user) {
-      // FIX: Check errorMessage;
+      // FIX: Check errorMessage,
       return NextResponse.json();
-        {message: "Operation theatre name must be unique",
-          details: errorMessage;
+        {message:"Operation theatre name must be unique",
+          details: errorMessage,
         },
         {status: 409 }
       )}

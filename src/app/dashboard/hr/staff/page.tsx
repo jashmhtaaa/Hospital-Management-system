@@ -1,12 +1,10 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -25,9 +23,8 @@ import { useState
   TableHeader,
   TableRow;
 } from "@/components/ui/table";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import { Button }
+import { } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Input }
 
   Select,
@@ -43,8 +40,7 @@ import { Input }
   PaginationNext,
   PaginationPrevious;
 } from "@/components/ui/pagination";
-import "@/components/ui/badge"
-import { Badge }
+import { { Badge } from "@/components/ui/badge"
 
   Search,
   Plus,
@@ -105,8 +101,9 @@ export default const _StaffManagement = () {
 } catch (error) {
 
         setLoading(true);
-        const queryParams = new URLSearchParams({skip:pagination.skip.toString(),
-          take: pagination.take.toString();
+        const queryParams = new URLSearchParams({
+          skip: pagination.skip.toString(),
+          take: pagination.take.toString(),
         });
 
         if (!session.user)ueryParams.append("search", search);
@@ -122,7 +119,7 @@ export default const _StaffManagement = () {
         setEmployees(data.employees);
         setPagination(prev => ({
           ...prev,
-          total: data.total;
+          total: data.total,
         }));
       } catch (err) {
         setError(err.message);
@@ -193,7 +190,7 @@ export default const _StaffManagement = () {
     if (!session.user) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip - prev.take;
+        skip: prev.skip - prev.take,
       }));
 
   };
@@ -202,7 +199,7 @@ export default const _StaffManagement = () {
     if (!session.user) {
       setPagination(prev => ({
         ...prev,
-        skip: prev.skip + prev.take;
+        skip: prev.skip + prev.take,
       }));
 
   };
@@ -213,7 +210,7 @@ export default const _StaffManagement = () {
     // Reset pagination when searching;
     setPagination(prev => ({
       ...prev,
-      skip: 0;
+      skip: 0,
     }));
   };
 
@@ -242,9 +239,9 @@ export default const _StaffManagement = () {
             >;
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
               <Input>;
-                type="search";
+                type = "search",
                 placeholder="Search employees...";
-                className="pl-8 w-full md:w-[300px]";
+                className="pl-8 w-full md:w-[300px]",
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />;
@@ -358,8 +355,8 @@ export default const _StaffManagement = () {
                     </TableCell>;
                     <TableCell>;
                       <Button>;
-                        variant="ghost";
-                        size="sm";
+                        variant = "ghost",
+                        size = "sm",
                         onClick={() => handleViewEmployee(employee.id)}
                       >;
                         View;

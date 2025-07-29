@@ -1,11 +1,10 @@
-import "@/lib/session"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {getSession  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@/lib/session"
+import { NextResponse } from "next/server" }
+import {  getSession  } from "@/lib/database"
+import {   type
 
-import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
 
 // Define interface for POST request body;
 interface MedicationAdminInput {medication_id: number | string,
@@ -58,7 +57,7 @@ export const _GET = async();
       return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -91,7 +90,7 @@ export const _GET = async();
     const isAdmin = session.user.roleName === "Admin";
     // Assuming permissions are correctly populated in the mock session;
     const canViewMedAdmin =;
-      session.user.permissions?.includes("medication_administration:view") ??;
+      session.user.permissions?.includes("medication_administration:view") ??,
       false;
 
     if (!session.user) {
@@ -124,8 +123,8 @@ export const _GET = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error: "Failed to fetch medication administration records",
-        details: errorMessage;
+      {error:"Failed to fetch medication administration records",
+        details: errorMessage,
       },
       {status: 500 }
     );
@@ -180,14 +179,14 @@ export const _POST = async();
     const isDoctor = session.user.roleName === "Doctor";
     // Assuming permissions are correctly populated in the mock session;
     const canCreateMedAdmin =;
-      session.user.permissions?.includes("medication_administration:create") ??;
+      session.user.permissions?.includes("medication_administration:create") ??,
       false;
 
     if (!session.user) {
       return NextResponse.json({error: "Forbidden" }, {status: 403 });
 
-    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
-    // Fixed: Apply type assertion;
+    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    // Fixed: Apply type assertion,
     const data = (await request.json()) as MedicationAdminInput;
 
     // Basic validation (using typed data);
@@ -223,7 +222,7 @@ export const _POST = async();
 
     if (!session.user) {
       return NextResponse.json();
-        {error: "Cannot record medication administration for a non-active admission";
+        {error:"Cannot record medication administration for a non-active admission",
         },
         {status: 409 }
       );
@@ -272,8 +271,8 @@ export const _POST = async();
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return NextResponse.json();
-      {error: "Failed to create medication administration record",
-        details: errorMessage;
+      {error:"Failed to create medication administration record",
+        details: errorMessage,
       },
       {status: 500 }
     );

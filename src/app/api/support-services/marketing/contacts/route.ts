@@ -1,15 +1,14 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {authOptions  } from "next/server"
-import {ContactService  } from "next/server"
-import {getServerSession  } from "next/server"
-import {type
-import {  withErrorHandling  } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
+import { NextResponse } from "next/server" }
+import {  authOptions  } from "@/lib/database"
+import {  ContactService  } from "@/lib/database"
+import {  getServerSession  } from "@/lib/database"
+import {   type
+import {  withErrorHandling  } from "@/lib/database"
 
 const contactService = new ContactService();
 
@@ -41,8 +40,8 @@ export const GET = async (request: any) => {,
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "marketing.contacts.read",
-      auditAction: "CONTACTS_LIST";
+    {requiredPermission:"marketing.contacts.read",
+      auditAction: "CONTACTS_LIST",
     }
   );
 }
@@ -65,8 +64,8 @@ export const POST = async (request: any) => {,
 
       return NextResponse.json(contact, {status: 201 });
     },
-    {requiredPermission: "marketing.contacts.create",
-      auditAction: "CONTACT_CREATE";
+    {requiredPermission:"marketing.contacts.create",
+      auditAction: "CONTACT_CREATE",
     }
   );
 

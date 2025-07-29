@@ -1,17 +1,15 @@
-import "@/components/ui/alert"
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/progress"
-import "@/components/ui/select"
-import "@/components/ui/tabs"
-import "react"
+import { } from "@/components/ui/alert"
+import { } from "@/components/ui/button"
+import { "@/components/ui/card";
+import "@/components/ui/progress";
+import "@/components/ui/select";
+import "@/components/ui/tabs";
+import "react";
 import AlertDescription
-import AlertTitle }
-import CardContent
+import AlertTitle, CardContent
 import CardDescription
 import CardHeader
-import CardTitle }
+import CardTitle } from "@/components/ui/badge"
 import React
 import SelectContent
 import SelectItem
@@ -21,9 +19,8 @@ import TabsContent
 import TabsList
 import TabsTrigger }
 import useEffect
-import useMemo }
-import {
-import { Alert
+import useMemo, }
+import  } Alert
 import { Badge }
 import { Button }
 import { Card
@@ -100,7 +97,7 @@ interface ExecutiveDashboardData {strategicKPIs:StrategyMetric[],
   MarketMetrics,
   BoardMetric[],
   ExecutiveAlert[],
-  benchmarks: BenchmarkData[];
+  benchmarks: BenchmarkData[],
 
 interface StrategyMetric {kpi:string,
   number,
@@ -112,7 +109,7 @@ interface StrategyMetric {kpi:string,
 interface FinancialOverview {
   number,
     number,
-    trend: number[];
+    trend: number[],
   };
   number,
     number;
@@ -128,54 +125,54 @@ interface FinancialOverview {
   };
   number,
     number,
-    denialRate: number;
+    denialRate: number,
   };
 
 interface OperationalMetrics {
     number,
     number,
-    equipmentEfficiency: number;
+    equipmentEfficiency: number,
   };
   number,
     number,
-    dischargeEfficiency: number;
+    dischargeEfficiency: number,
   };
   number,
     number,
-    cyberSecurityScore: number;
+    cyberSecurityScore: number,
   };
   number,
     number,
-    trainingCompliance: number;
+    trainingCompliance: number,
   };
 
 interface QualityOverview {
     number,
     number,
-    infectionRate: number;
+    infectionRate: number,
   };
   number,
     number,
-    compliments: number;
+    compliments: number,
   };
   number,
     number,
-    evidenceBasedCare: number;
+    evidenceBasedCare: number,
   };
   number,
     string,
-    lastAuditScore: number;
+    lastAuditScore: number,
   };
 
 interface MarketMetrics {marketShare:number,
   number,
   number,
     number,
-    lifetimeValue: number;
+    lifetimeValue: number,
   };
   string,
     number,
-    marketPosition: number;
+    marketPosition: number,
   }[];
   number,
     number;
@@ -191,13 +188,13 @@ interface RiskAssessment {overallRisk:"low" | "medium" | "high" | "critical",
   };
   number,
     number,
-    overall: number;
+    overall: number,
   };
 
 interface BoardMetric {metric:string,
   number,
   string,
-  priority: "board" | "executive" | "operational";
+  priority: "board" | "executive" | "operational",
 
 interface StrategicInitiative {id:string,
   "growth" | "efficiency" | "quality" | "innovation",
@@ -215,13 +212,13 @@ interface ExecutiveAlert {id:string,
 interface BenchmarkData {metric:string,
   number,
   number,
-  percentile: number;
+  percentile: number,
 
 const CHART_COLORS = {primary:"#1e40af",
   "#d97706",
   "#16a34a",
   "#7c3aed",
-  pink: "#db2777";
+  pink: "#db2777",
 };
 
 export default const _ExecutiveDashboard = () {
@@ -284,7 +281,7 @@ export default const _ExecutiveDashboard = () {
       case "good": return "text-blue-600";
       case "attention": return "text-yellow-600";
       case "critical": return "text-red-600";
-      default: return "text-gray-600";
+      default: return "text-gray-600",
 
   };
 
@@ -437,16 +434,17 @@ export default const _ExecutiveDashboard = () {
                     </div>;
                   </div>;
                   >;
-                    <LineChart data={data.financialOverview.revenue.trend.map((value, index) => ({month:`Month ${index + 1}`,
-                      revenue: value;
+                    <LineChart data={data.financialOverview.revenue.trend.map((value, index) => ({
+                      month: `Month ${index + 1}`,
+                      revenue: value,
                     }))}>;
                       <CartesianGrid strokeDasharray="3 3" />;
                       <XAxis dataKey="month" />;
                       <YAxis />;
                       <Tooltip formatter={(value) => [`$${value}M`, "Revenue"]} />;
                       <Line>;
-                        type="monotone";
-                        dataKey="revenue";
+                        type = "monotone",
+                        dataKey = "revenue",
                         stroke={CHART_COLORS.primary}
                         strokeWidth={3}
                         dot={{r:4 }}
@@ -570,7 +568,7 @@ export default const _ExecutiveDashboard = () {
                       cy="50%";
                       outerRadius={80}
                       fill={CHART_COLORS.primary}
-                      dataKey="value";
+                      dataKey = "value",
                       label={({name, value}) => `${name}: ${value}%`}
                     >;
                       {[CHART_COLORS.primary, CHART_COLORS.secondary, CHART_COLORS.warning, CHART_COLORS.purple].map((color, index) => (;
@@ -1016,7 +1014,7 @@ export default const _ExecutiveDashboard = () {
                       cx="50%";
                       cy="50%";
                       outerRadius={80}
-                      dataKey="value";
+                      dataKey = "value",
                       label={({name, value}) => `${name}: ${value}%`}
                     />;
                     <Tooltip />;
@@ -1234,15 +1232,16 @@ export default const _ExecutiveDashboard = () {
 
 // Mock data generation function for executive dashboard;
 const generateMockExecutiveData = (): ExecutiveDashboardData {
-  return {strategicKPIs:[;
-      {kpi:"Annual Revenue",
+  return { strategicKPIs: [, {
+        kpi: "Annual Revenue",
         450000000,
         "positive",
         "good",
         "financial",
         "high";
-      },
-      {kpi:"EBITDA Margin",
+       },
+      {
+        kpi: "EBITDA Margin",
         20.0,
         "positive",
         "good",
@@ -1282,7 +1281,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
       },
       55,
         13,
-        denialRate: 4.2;
+        denialRate: 4.2,
 
     },
     87.3,
@@ -1296,7 +1295,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         cyberSecurityScore: 92.1,
       91.2,
         93.1,
-        trainingCompliance: 96.8;
+        trainingCompliance: 96.8,
     },
     96.2,
         2.1,
@@ -1309,7 +1308,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         evidenceBasedCare: 95.1,
       94.8,
         "A",
-        lastAuditScore: 96.2;
+        lastAuditScore: 96.2,
     },
     32.8,
       2,
@@ -1329,7 +1328,7 @@ const generateMockExecutiveData = (): ExecutiveDashboardData {
         22,
       98.2,
         96.1,
-        overall: 96.4;
+        overall: 96.4,
     },
     boardMetrics: [;
       {metric:"ROI", value: "14.2%", change: 2.1, status: "positive", benchmark: "12.5%", priority: "board" },

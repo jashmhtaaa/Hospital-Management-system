@@ -1,9 +1,8 @@
-import "@/lib/hr/auth-integration"
-import "@prisma/client"
-import "next-auth"
-import {authOptions  } from "next/server"
-import {getServerSession  } from "next/server"
-import {PrismaClient  } from "next/server"
+import { } from "@prisma/client"
+import "next-auth";
+import {  authOptions  } from "@/lib/hr/auth-integration"
+import {  getServerSession  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
 
 /**;
  * Integration service for connecting HR & Asset Management with other HMS modules;
@@ -35,7 +34,7 @@ import {PrismaClient  } from "next/server"
           true,
             true,
             true,
-            expiryDate: true;
+            expiryDate: true,
       }
     });
   }
@@ -46,7 +45,7 @@ import {PrismaClient  } from "next/server"
    */;
   async getBiomedicalEquipmentForClinical() {
     return this.prisma.biomedicalEquipment.findMany({
-      {status: "AVAILABLE";
+      {status:"AVAILABLE",
         }
       },
       true,
@@ -57,7 +56,7 @@ import {PrismaClient  } from "next/server"
             true,
             true,
             true,
-                name: true;
+                name: true,
       }
     });
 
@@ -67,7 +66,7 @@ import {PrismaClient  } from "next/server"
    */;
   async getAssetsForFinance() {
     return this.prisma.asset.findMany({
-      {not: "DISPOSED";
+      {not:"DISPOSED",
 
       },
       true,
@@ -77,7 +76,7 @@ import {PrismaClient  } from "next/server"
         true,
         true,
             name: true,
-        status: true;
+        status: true,
 
     });
 
@@ -88,7 +87,7 @@ import {PrismaClient  } from "next/server"
   async getPayrollForFinance(periodId: string) {,
     return this.prisma.payrollPeriod.findUnique({
       periodId,
-        status: "PAID";
+        status: "PAID",
       },
       true,
         true,
@@ -112,7 +111,7 @@ import {PrismaClient  } from "next/server"
     return this.prisma.attendance.findMany({where: {
         employeeId,
         startDate,
-          lte: endDate;
+          lte: endDate,
 
       },
       "asc";
@@ -130,7 +129,7 @@ import {PrismaClient  } from "next/server"
         },
         startDate;
         },
-        status: "APPROVED";
+        status: "APPROVED",
       },
       "asc";
 
@@ -162,7 +161,7 @@ import {PrismaClient  } from "next/server"
         {type: "STATUS_CHANGE",
             date: new Date(),
             "UNKNOWN", // Will be replaced in service layer;
-              newStatus: status;
+              newStatus: status,
               notes,
               updatedBy: session.user.email,
               "CLINICAL_MODULE";
@@ -174,12 +173,11 @@ import {PrismaClient  } from "next/server"
    * This allows clinical modules to record equipment maintenance;
    */;
   async recordMaintenanceFromClinical(assetId: string, "PREVENTIVE" | "CORRECTIVE" | "CALIBRATION" | "INSPECTION",
-    date: Date;
+    date: Date,
     performedBy?: string;
     cost?: number;
-    description: string;
-    nextMaintenanceDate?: Date;
-  }) {
+    description: string,
+    nextMaintenanceDate?: Date, }) {
     // Get current session for audit;
     const session = await getServerSession(authOptions);
     if (!session.user) {
@@ -210,9 +208,9 @@ import {PrismaClient  } from "next/server"
         maintenanceRecord.id,
           data.description,
           session.user.email,
-          updatedByName: session.user.name;
+          updatedByName: session.user.name,
         },
-        employeeId: session.user.employeeId || null;
+        employeeId: session.user.employeeId || null,
       }});
 
     // Update asset status;
@@ -233,7 +231,7 @@ import {PrismaClient  } from "next/server"
         true,
         true,
         true,
-            name: true;
+            name: true,
 
     });
 

@@ -1,18 +1,17 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../../lib/validation/pharmacy-validation"
-import "../../../models/domain-models"
-import "next/server"
-import getPrescriptionById }
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {auditLog  } from "next/server"
-import {errorHandler  } from "next/server"
-import {getMedicationById
-import {  PharmacyDomain  } from "next/server"
-import {type
-import {  validateDispensingVerificationRequest  } from "next/server"
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../../lib/validation/pharmacy-validation";
+import "../../../models/domain-models";
+import "next/server";
+import getPrescriptionById } from "../../../../../lib/audit"
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {  auditLog  } from "@/lib/database"
+import {  errorHandler  } from "@/lib/database"
+import {   getMedicationById
+import {  PharmacyDomain  } from "@/lib/database"
+import {   type
+import {  validateDispensingVerificationRequest  } from "@/lib/database"
 
 }
 
@@ -29,7 +28,7 @@ const getMedicationById,
   search: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 }
 
 const prescriptionRepository = {findById: getPrescriptionById,
@@ -39,7 +38,7 @@ const prescriptionRepository = {findById: getPrescriptionById,
   findByStatus: () => Promise.resolve([]),
   save: () => Promise.resolve(""),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 const dispensingRepository = {findById: (id: string) => Promise.resolve(null),
@@ -48,7 +47,7 @@ const dispensingRepository = {findById: (id: string) => Promise.resolve(null),
   findByStatus: (status: string) => Promise.resolve([]),
   save: (dispensing: unknown) => Promise.resolve(dispensing.id || "new-id"),
   update: () => Promise.resolve(true),
-  delete: () => Promise.resolve(true);
+  delete: () => Promise.resolve(true),
 };
 
 /**;
@@ -142,7 +141,7 @@ export const POST = async (req: any) => {,
       userId,
       verifiedAt: new Date(),
       status: "verified",
-      notes: data.notes || "";
+      notes: data.notes || "",
     };
 
     // In a real implementation, save verification record;
@@ -152,7 +151,7 @@ export const POST = async (req: any) => {,
     if (!session.user) {
       const dispensing = await dispensingRepository.findById(data.dispensingId);
       if (!session.user) {
-        dispensing.status = "verified";
+        dispensing.status = "verified",
         dispensing.verifiedBy = userId;
         dispensing.verifiedAt = new Date();
         await dispensingRepository.update(dispensing);
@@ -171,7 +170,7 @@ export const POST = async (req: any) => {,
       {success: true,
         message: "Dispensing verification successful";
         {id:verification.id,
-          verifiedAt: verification.verifiedAt;
+          verifiedAt: verification.verifiedAt,
 
       },
       {status: 200 }

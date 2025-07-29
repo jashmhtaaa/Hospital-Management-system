@@ -1,14 +1,12 @@
-import "./errors.ts"
-import "./logging.ts"
-import "next/server"
-import "zod"
+import { } from "./errors.ts"
+import { } from "next/server"
+import "zod";
 import NextRequest
-import NextResponse }
-import ValidationError }
-import {AppError
-import {  logger  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import NextResponse, ValidationError } from "./logging.ts"
+import  }   AppError
+import {  logger  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 }
 
@@ -165,8 +163,8 @@ export const _withErrorHandling = (;
 
       return await handler(req, ...args);
     } catch (error) {
-      logger.error("API error", {path: req.nextUrl.pathname,
-        method: req.method;
+      logger.error("API error", {path:req.nextUrl.pathname,
+        method: req.method,
         error;
       });
 

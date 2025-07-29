@@ -1,7 +1,6 @@
-import "../lib/database/postgresql_adapter.ts"
-import "pg"
-import {IDatabaseAdapter  } from "next/server"
-import {QueryResult  } from "next/server"
+import { } from "pg"
+import {  IDatabaseAdapter  } from "../lib/database/postgresql_adapter.ts"
+import {  QueryResult  } from "@/lib/database"
 
 }
 
@@ -22,7 +21,7 @@ import {QueryResult  } from "next/server"
     const dobForDb = patientData.dateOfBirth instanceof Date ? patientData.dateOfBirth.toISOString().split("T")[0] : patientData.dateOfBirth;
     const values = [patientData.name, dobForDb /*, ... */];
 
-    let result: QueryResult>;
+    let result: QueryResult>,
     try {
 } catch (error) {
   console.error(error);
@@ -68,7 +67,7 @@ import {QueryResult  } from "next/server"
         ...dbPatient,
         dateOfBirth: new Date(dbPatient.dateOfBirth),
         createdAt: new Date(dbPatient.createdAt),
-        updatedAt: new Date(dbPatient.updatedAt);
+        updatedAt: new Date(dbPatient.updatedAt),
       };
     } else {
       // This case means DB execution was successful (no error thrown from execute);
@@ -117,7 +116,7 @@ import {QueryResult  } from "next/server"
           ...dbPatient,
           dateOfBirth: new Date(dbPatient.dateOfBirth),
           createdAt: new Date(dbPatient.createdAt),
-          updatedAt: new Date(dbPatient.updatedAt);
+          updatedAt: new Date(dbPatient.updatedAt),
         };
 
       return null; // Not found;

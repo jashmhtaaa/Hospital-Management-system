@@ -1,20 +1,18 @@
-import "@/lib/session"
-import "@/types/opd"
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import "zod"
+import { } from "@/lib/session"
+import { } from "@opennextjs/cloudflare"
+import "iron-session";
+import "next/headers";
+import "zod";
 import OPDVisit
 import OPDVisitStatus
-import OPDVisitType }
-import type
-import {cookies  } from "next/server"
-import {getCloudflareContext  } from "next/server"
-import {getIronSession  } from "next/server"
-import {IronSessionData  } from "next/server"
-import {sessionOptions  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import OPDVisitType, type
+import  } from "@/types/opd"  cookies  } from "@/lib/database"
+import {  getCloudflareContext  } from "@/lib/database"
+import {  getIronSession  } from "@/lib/database"
+import {  IronSessionData  } from "@/lib/database"
+import {  sessionOptions  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 // app/api/opd-visits/[visitId]/route.ts;
 // Define the expected shape of the database query result;
@@ -126,7 +124,7 @@ export const _GET = async (request: Request) => {,
                 visitResult.patient_last_name,
             visitResult.doctor_id, // No longer need non-null assertion;
                 user: fullName: visitResult.doctor_full_name ;
-            // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+            // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
         }
 
         // 4. Return the detailed visit;
@@ -215,7 +213,7 @@ export const _PUT = async (request: Request) => {,
         // 2. Check if visit exists;
         const visitCheck = await DB.prepare("SELECT opd_visit_id FROM OPDVisits WHERE opd_visit_id = ?");
                                    .bind(visitId);
-                                   .first<opd_visit_id: number >();
+                                   .first<opd_visit_id: number >(),
         if (!session.user) {
             return new Response(JSON.stringify({error: "OPD Visit not found" }), {status: 404,
                 headers: { "Content-Type": "application/json" }});
@@ -224,7 +222,7 @@ export const _PUT = async (request: Request) => {,
 
         // 3. Build update query;
         let query = "UPDATE OPDVisits SET updated_at = CURRENT_TIMESTAMP";
-        const queryParams: (string | null | number)[] = [];
+        const queryParams: (string | null | number)[] = [],
 
         Object.entries(updateData).forEach(([key, value]) => {
             if (!session.user) { // Allow null values to be set

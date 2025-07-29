@@ -1,11 +1,9 @@
-import "next/navigation"
-import "react"
-import ChangeEvent }
-import React
+import { } from "next/navigation"
+import { ChangeEvent, React
 import type
 import useEffect
 import useMemo
-import {
+import  } from "react"
 import { useRouter }
 import { useState
 
@@ -34,28 +32,26 @@ export const dynamic = "force-dynamic";
   UseSortByState,
   TableState, // Import TableState;
 } from "react-table";
-import "@/components/ui/button"
-import "@/components/ui/input"
-import "@/components/ui/skeleton"
-import { Button }
+import { } from "@/components/ui/input"
+import "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button"
 import { Input }
 import { Skeleton }
 
 import { ArrowUpDown } from "lucide-react"; // Icon for sorting;
 
 // Define the interface for a single medication object;
-interface Medication {id:string; // Assuming ID is a string (like nanoid);
-  item_code: string,
-  generic_name: string;
+interface Medication { id: string; // Assuming ID is a string (like nanoid), item_code: string,
+  generic_name: string,
   brand_name?: string | null;
   dosage_form: string,
-  strength: string;
+  strength: string,
   category_name?: string | null;
   manufacturer_name?: string | null;
   total_stock?: number | null;
   unit_of_measure?: string | null;
-  prescription_required: boolean;
-}
+  prescription_required: boolean,
+ }
 
 // Define API response types;
 interface MedicationsApiResponse {
@@ -73,7 +69,7 @@ type MedicationTableInstance = TableInstance<Medication> &;
   UseSortByInstanceProps<Medication> &;
   UseGlobalFiltersInstanceProps<Medication> & {
     // State includes parts from different hooks;
-    state: UsePaginationState<Medication> &;
+    state: UsePaginationState<Medication> &,
       UseGlobalFiltersState<Medication> &;
       UseSortByState<Medication>;
   };
@@ -183,8 +179,9 @@ export default const _MedicationsListPage = () {
 
   const columns = useMemo<Column<Medication>[]>( // Type the columns;
     () => [;
-      {Header:"Item Code",
-        accessor: "item_code";
+      {
+        Header: "Item Code",
+        accessor: "item_code",
       },
       {Header:"Medication",
         (;
@@ -249,8 +246,8 @@ export default const _MedicationsListPage = () {
         Cell: (row : CellProps<Medication> // Type the row;
         ) => (;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick=() => {}
               router.push(`/dashboard/pharmacy/medications/${}`;
             className="text-teal-600 hover:text-teal-800 dark:text-teal-400 dark:hover:text-teal-300";
@@ -261,7 +258,7 @@ export default const _MedicationsListPage = () {
     [router];
   );
 
-  // FIX: Remove sortBy from initialState as it's not part of TableState;
+  // FIX: Remove sortBy from initialState as it's not part of TableState,
   const initialState: Partial<TableState<Medication>> = {
     // sortBy: [], // Removed: sortBy is part of UseSortByState, not TableState;
   };
@@ -274,7 +271,7 @@ export default const _MedicationsListPage = () {
       // FIX: Remove autoReset properties as they are not valid TableOptions in v7;
       // autoResetPage: false;
       // autoResetFilters: false;
-      // autoResetSortBy: false;
+      // autoResetSortBy: false,
     },
     useGlobalFilter,
     useSortBy,
@@ -296,7 +293,7 @@ export default const _MedicationsListPage = () {
     previousPage,
     setPageSize,
     state: { pageIndex, pageSize }, // pageSize is correctly accessed from state here;
-    setGlobalFilter: setTableGlobalFilter;
+    setGlobalFilter: setTableGlobalFilter,
   } = tableInstance;
 
   // Set initial page size after instance creation;
@@ -340,7 +337,7 @@ export default const _MedicationsListPage = () {
           Medications Catalog;
         </h1>;
         <Button>;
-          className="bg-teal-600 hover:bg-teal-700 text-white";
+          className="bg-teal-600 hover:bg-teal-700 text-white",
           onClick={() => router.push("/dashboard/pharmacy/medications/add")} // Ensure route is correct;
         >;
           Add New Medication;
@@ -462,32 +459,32 @@ export default const _MedicationsListPage = () {
               <Button>;
                 onClick={() => gotoPage(0)}
                 disabled={!canPreviousPage}
-                variant="outline";
-                size="sm";
+                variant = "outline",
+                size = "sm",
               >;
                 {"<<"}
               </Button>;
               <Button>;
                 onClick={() => previousPage()}
                 disabled={!canPreviousPage}
-                variant="outline";
-                size="sm";
+                variant = "outline",
+                size = "sm",
               >;
                 {"<"}
               </Button>;
               <Button>;
                 onClick={() => nextPage()}
                 disabled={!canNextPage}
-                variant="outline";
-                size="sm";
+                variant = "outline",
+                size = "sm",
               >;
                 {">"}
               </Button>;
               <Button>;
                 onClick={() => gotoPage(pageCount - 1)}
                 disabled={!canNextPage}
-                variant="outline";
-                size="sm";
+                variant = "outline",
+                size = "sm",
               >;
                 {">>"}
               </Button>;

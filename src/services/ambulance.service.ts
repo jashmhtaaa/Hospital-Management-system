@@ -1,5 +1,4 @@
-import "zod"
-import {z  } from "next/server"
+import { {  z  } from "zod"
 
 // Create enums to match Prisma schema;
 export enum AmbulanceStatus {
@@ -29,10 +28,10 @@ export const createAmbulanceSchema = z.object({vehicleNumber: z.string().min(1, 
   status: z.nativeEnum(AmbulanceStatus).default(AmbulanceStatus.AVAILABLE),
   currentDriverId: z.string().optional().nullable(),
   currentLocation: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
-export const updateAmbulanceSchema = createAmbulanceSchema.partial().extend({id: z.string();
+export const updateAmbulanceSchema = createAmbulanceSchema.partial().extend({id:z.string(),
 });
 
 // Validation schemas for AmbulanceRun;
@@ -47,10 +46,10 @@ export const createAmbulanceRunSchema = z.object({ambulanceId: z.string().min(1,
   arrivalAtDestinationTime: z.date().optional().nullable(),
   crewMembers: z.array(z.string()).optional().default([]),
   notes: z.string().optional(),
-  status: z.nativeEnum(AmbulanceRunStatus).default(AmbulanceRunStatus.PENDING);
+  status: z.nativeEnum(AmbulanceRunStatus).default(AmbulanceRunStatus.PENDING),
 });
 
-export const updateAmbulanceRunSchema = createAmbulanceRunSchema.partial().extend({id: z.string();
+export const updateAmbulanceRunSchema = createAmbulanceRunSchema.partial().extend({id:z.string(),
 });
 
 export type CreateAmbulanceInput = z.infer>;
@@ -59,8 +58,7 @@ export type CreateAmbulanceRunInput = z.infer>;
 export type UpdateAmbulanceRunInput = z.infer>;
 
 // Import prisma client;
-import "../lib/prisma"
-import { prisma }
+import { { prisma } from "../lib/prisma"
 
 /**;
  * Service class for managing ambulance fleet and runs;
@@ -133,7 +131,7 @@ import { prisma }
         where,
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return ambulances;
@@ -183,7 +181,7 @@ import { prisma }
       const ambulance = await prisma.ambulance.findUnique({where: { id },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return ambulance;
@@ -242,7 +240,7 @@ import { prisma }
         data: updateData,
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return ambulance;
@@ -354,7 +352,7 @@ import { prisma }
         },
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return ambulance;
@@ -420,7 +418,7 @@ import { prisma }
           status},
         {
             true,
-              name: true;
+              name: true,
             }}}});
 
       return ambulance;
@@ -480,7 +478,7 @@ import { prisma }
       // Create the run and update ambulance status in a transaction;
       const run = await prisma.$transaction(async (tx) => {
         // Create the run;
-        const newRun = await tx.ambulanceRun.create({data: validatedData;
+        const newRun = await tx.ambulanceRun.create({data:validatedData,
         });
 
         // Update ambulance status;
@@ -567,8 +565,8 @@ import { prisma }
         orderBy: [;
           {callTime: "desc" }],
         true,
-          {id: true,
-              name: true;
+          {id:true,
+              name: true,
             }}}});
 
       return runs;
@@ -615,8 +613,8 @@ import { prisma }
 
       const run = await prisma.ambulanceRun.findUnique({where: { id },
         true,
-          {id: true,
-              name: true;
+          {id:true,
+              name: true,
             }}}});
 
       return run;
@@ -678,8 +676,8 @@ import { prisma }
       const run = await prisma.ambulanceRun.update({where: { id },
         data: updateData,
         true,
-          {id: true,
-              name: true;
+          {id:true,
+              name: true,
             }}}});
 
       // If status is changing to COMPLETED or CANCELLED, update ambulance status;
@@ -802,19 +800,19 @@ import { prisma }
         status};
 
       switch (status) {
-        case AmbulanceRunStatus.DISPATCHED: any;
-          updateData.dispatchTime = new Date();\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_SCENE: any;
+        case AmbulanceRunStatus.DISPATCHED: any,
+          updateData.dispatchTime = new Date();\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_SCENE: any,
           if (!session.user) {
             updateData.dispatchTime = new Date();
-          }\n    }\n    case AmbulanceRunStatus.AT_SCENE: any;
+          }\n    }\n    case AmbulanceRunStatus.AT_SCENE: any,
           if (!session.user) {
             updateData.dispatchTime = new Date();
 
-          updateData.arrivalAtSceneTime = new Date();\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION: any;
+          updateData.arrivalAtSceneTime = new Date();\n    }\n    case AmbulanceRunStatus.EN_ROUTE_TO_DESTINATION: any,
           if (!session.user) {
             updateData.arrivalAtSceneTime = new Date();
 
-          updateData.departureFromSceneTime = new Date();\n    }\n    case AmbulanceRunStatus.AT_DESTINATION: any;
+          updateData.departureFromSceneTime = new Date();\n    }\n    case AmbulanceRunStatus.AT_DESTINATION: any,
           if (!session.user) {
             updateData.departureFromSceneTime = new Date();
 
@@ -826,8 +824,8 @@ import { prisma }
         const updatedRun = await tx.ambulanceRun.update({where: { id: runId },
           data: updateData,
           true,
-            {id: true,
-                name: true;
+            {id:true,
+                name: true,
               }}}});
 
         // If status is changing to COMPLETED or CANCELLED, update ambulance status;

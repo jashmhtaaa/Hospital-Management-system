@@ -1,8 +1,7 @@
-import "@/lib/core/patient-management.service"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/core/patient-management.service"
+import { NextResponse } from "next/server" }
 import patientManagementService }
 import {PatientCreateSchema
 import { type
@@ -24,7 +23,7 @@ const SearchQuerySchema = z.object({firstName: z.string().optional(),
   email: z.string().optional(),
   status: z.enum(["active", "inactive", "deceased"]).optional(),
   page: z.string().transform(Number).default("1"),
-  limit: z.string().transform(Number).default("10");
+  limit: z.string().transform(Number).default("10"),
 });
 
 /**;
@@ -150,7 +149,7 @@ export const POST = async (request: any) => {,
       return NextResponse.json();
         {success: false,
           error.errors,
-          message: "Please check the provided patient information";
+          message: "Please check the provided patient information",
         },status: 400 ;
       );
 

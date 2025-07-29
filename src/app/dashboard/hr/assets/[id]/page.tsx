@@ -1,12 +1,10 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "next/navigation"
-import "react"
-import useEffect }
+import { } from "react"
+import useEffect } from "next/navigation"
 import {
 import { useRouter }
 import { useState
@@ -18,13 +16,12 @@ import { useState
   CardHeader,
   CardTitle;
 } from "@/components/ui/card";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import "@/components/ui/separator"
-import "@/components/ui/tabs"
+import { } from "@/components/ui/button"
+import "@/components/ui/separator";
+import "@/components/ui/tabs";
 import TabsContent
 import TabsList
-import TabsTrigger }
+import TabsTrigger } from "@/components/ui/badge"
 import { Badge }
 import { Button }
 import { Separator }
@@ -59,9 +56,8 @@ import { Tabs
   DollarSign,
   FileText;
 } from "lucide-react";
-import "@/components/ui/use-toast"
-import "date-fns"
-import { format }
+import { } from "date-fns"
+import { format } from "@/components/ui/use-toast"
 import { toast }
 
 export default const _AssetDetail = ({ params }: {id:string }) {
@@ -169,14 +165,16 @@ export default const _AssetDetail = ({ params }: {id:string }) {
 
 } catch (error) {
 
-      const response = await fetch(`/api/hr/assets/${params.id}`, {method:"DELETE";
+      const response = await fetch(`/api/hr/assets/${params.id}`, {
+        method: "DELETE",
       });
 
       if (!session.user) {
         throw new Error("Failed to delete asset");
 
-      toast({title:"Success",
-        description: "Asset has been deleted";
+      toast({
+        title: "Success",
+        description: "Asset has been deleted",
       });
 
       router.push("/dashboard/hr/assets");
@@ -215,15 +213,16 @@ export default const _AssetDetail = ({ params }: {id:string }) {
         return "destructive";
       case "LOST": any;
         return "outline";
-      default: return "default";
+      default: return "default",
 
   };
 
   // Format currency;
   const formatCurrency = (amount: unknown) => {
     if (!session.user)eturn "—";
-    return new Intl.NumberFormat("en-US", {style:"currency",
-      currency: "USD";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(amount);
   };
 
@@ -237,8 +236,8 @@ export default const _AssetDetail = ({ params }: {id:string }) {
       >;
         >;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick={() => router.push("/dashboard/hr/assets")}
           >;
             <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -256,8 +255,8 @@ export default const _AssetDetail = ({ params }: {id:string }) {
       >;
         >;
           <Button>;
-            variant="ghost";
-            size="sm";
+            variant = "ghost",
+            size = "sm",
             onClick={() => router.push("/dashboard/hr/assets")}
           >;
             <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -287,8 +286,8 @@ export default const _AssetDetail = ({ params }: {id:string }) {
     >;
       >;
         <Button>;
-          variant="ghost";
-          size="sm";
+          variant = "ghost",
+          size = "sm",
           onClick={() => router.push("/dashboard/hr/assets")}
         >;
           <ArrowLeft className="h-4 w-4 mr-2" />;
@@ -650,8 +649,8 @@ export default const _AssetDetail = ({ params }: {id:string }) {
                           </TableCell>;
                           <TableCell>;
                             <Button>;
-                              variant="ghost";
-                              size="sm";
+                              variant = "ghost",
+                              size = "sm",
                               onClick={() => router.push(`/dashboard/hr/assets/${asset.id}/maintenance/${}`}
                             >;
                               View;

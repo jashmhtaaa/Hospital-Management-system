@@ -1,19 +1,17 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {D1Database  } from "next/server"
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
+import { NextResponse } from "next/server" }
+import {  D1Database  } from "@/lib/database"
 import { type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for checklist item (re-used from [id] route, consider moving to a shared types file);
-interface ChecklistItem {id: string; // Unique ID for the item within the template;
-  text: string,
+interface ChecklistItem { id: string; // Unique ID for the item within the template, text: string,
   type: "checkbox" | "text" | "number" | "select"; // Example types;
-  options?: string[]; // For select type;
+  options?: string[], // For select type;
   required?: boolean;
-}
+ }
 
 // Interface for the POST request body;
 interface ChecklistTemplateCreateBody {name: string,
@@ -59,7 +57,7 @@ export const _GET = async (request: any) => {,
 
     const DB = process.env.DB as unknown as D1Database;
     let query = "SELECT id, name, phase, updated_at FROM OTChecklistTemplates";
-    const parameters: string[] = [];
+    const parameters: string[] = [],
 
     if (!session.user) {
       query += " WHERE phase = ?";
@@ -217,14 +215,14 @@ export const _POST = async (request: any) => {,
         {status: 201 }
       );
 
-  } catch (error: unknown) {,
-    // FIX: Remove explicit any;
+  } catch (error: unknown) {
+    // FIX: Remove explicit any,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     if (!session.user) {
       return NextResponse.json();
-        {message: "Checklist template name must be unique",
-          details: errorMessage;
+        {message:"Checklist template name must be unique",
+          details: errorMessage,
         },
         {status: 409 }
       );

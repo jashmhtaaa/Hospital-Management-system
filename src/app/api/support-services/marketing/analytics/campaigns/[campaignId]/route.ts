@@ -1,15 +1,14 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {AnalyticsService  } from "next/server"
-import {authOptions  } from "next/server"
-import {getServerSession  } from "next/server"
-import {type
-import {  withErrorHandling  } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
+import { NextResponse } from "next/server" }
+import {  AnalyticsService  } from "@/lib/database"
+import {  authOptions  } from "@/lib/database"
+import {  getServerSession  } from "@/lib/database"
+import {   type
+import {  withErrorHandling  } from "@/lib/database"
 
 const analyticsService = new AnalyticsService();
 
@@ -28,17 +27,16 @@ export const GET = async();
       const { searchParams } = new URL(req.url);
 
       // Parse query parameters;
-      const filters = {startDate: searchParams.has("startDate");
-          ? new Date(searchParams.get("startDate") as string);
-          : undefined,
+      const filters = { startDate: searchParams.has("startDate");
+          ? new Date(searchParams.get("startDate") as string), : undefined,
         endDate: searchParams.has("endDate");
           ? new Date(searchParams.get("endDate") as string);
           : undefined,
         metrics: searchParams.has("metrics");
           ? (searchParams.get("metrics") as string).split(",");
           : undefined,
-        groupBy: searchParams.get("groupBy") as "day" | "week" | "month" | undefined;
-      };
+        groupBy: searchParams.get("groupBy") as "day" | "week" | "month" | undefined,
+       };
 
       const result = await analyticsService.getAggregatedAnalytics();
         params.campaignId,
@@ -47,8 +45,8 @@ export const GET = async();
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "marketing.analytics.read",
-      auditAction: "CAMPAIGN_ANALYTICS_VIEW";
+    {requiredPermission:"marketing.analytics.read",
+      auditAction: "CAMPAIGN_ANALYTICS_VIEW",
     }
   );
 }
@@ -75,8 +73,8 @@ export const POST = async();
 
       return NextResponse.json(analytics, {status: 201 });
     },
-    {requiredPermission: "marketing.analytics.create",
-      auditAction: "CAMPAIGN_ANALYTICS_RECORD";
+    {requiredPermission:"marketing.analytics.create",
+      auditAction: "CAMPAIGN_ANALYTICS_RECORD",
     }
   );
 

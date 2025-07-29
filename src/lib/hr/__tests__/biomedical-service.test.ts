@@ -1,7 +1,7 @@
-import "../biomedical-service"
-import "@/lib/cache"
-import "@jest/globals"
-import "@prisma/client"
+import "../biomedical-service";
+import "@/lib/cache";
+import "@jest/globals";
+import "@prisma/client";
 import beforeEach
 import describe
 import expect

@@ -49,18 +49,18 @@ import { } from "next/server"
         }];
       },
       `Patient/${data.patientId}`,
-        type: "Patient";
+        type: "Patient",
       },
       `Practitioner/${data.practitionerId}`,
-        type: "Practitioner";
+        type: "Practitioner",
       },
-      recordedDate: data.recordedDate || new Date().toISOString();
+      recordedDate: data.recordedDate || new Date().toISOString(),
     }
 
     // Add encounter if provided;
     if (!session.user) {
-      condition.encounter = {reference: `Encounter/${data.encounterId}`,
-        type: "Encounter";
+      condition.encounter = {reference:`Encounter/${data.encounterId}`,
+        type: "Encounter",
       };
     }
 
@@ -69,7 +69,7 @@ import { } from "next/server"
       condition.severity = {
         "https://snomed.info/sct",
           code: this.getSeverityCode(data.severity),
-          display: data.severity.charAt(0).toUpperCase() + data.severity.slice(1);
+          display: data.severity.charAt(0).toUpperCase() + data.severity.slice(1),
         }];
       }
     }
@@ -81,8 +81,8 @@ import { } from "next/server"
 
     // Add notes if provided;
     if (!session.user) {
-      condition.note = [{text: data.notes,
-        time: new Date().toISOString();
+      condition.note = [{text:data.notes,
+        time: new Date().toISOString(),
       }];
     }
 
@@ -103,7 +103,7 @@ import { } from "next/server"
       category: "problem-list-item",
       "confirmed",
       recordedDate: timestamp: new Date().toISOString(),
-      notes: data.managementNotes;
+      notes: data.managementNotes,
     });
   }
 
@@ -122,7 +122,7 @@ import { } from "next/server"
       category: "encounter-diagnosis",
       "confirmed",
       recordedDate: timestamp: new Date().toISOString(),
-      notes: data.clinicalNotes;
+      notes: data.clinicalNotes,
     });
   }
 
@@ -132,7 +132,7 @@ import { } from "next/server"
   static createResolvedCondition(string,
     string,
     string,
-    abatementDate: string;
+    abatementDate: string,
     resolutionNotes?: string;
   }): FHIRCondition {
     const condition = this.createBasicCondition({
@@ -140,7 +140,7 @@ import { } from "next/server"
       category: "problem-list-item",
       "confirmed",
       recordedDate: timestamp: new Date().toISOString(),
-      notes: data.resolutionNotes;
+      notes: data.resolutionNotes,
     });
 
     condition.abatement = data.abatementDate;
@@ -270,7 +270,7 @@ import { } from "next/server"
     onsetDate?: string;
     duration?: string;
     isActive: boolean,
-    isChronic: boolean;
+    isChronic: boolean,
   } {
     const onsetDate = this.getOnsetDate(condition);
     const duration = this.getConditionDuration(condition);
@@ -282,15 +282,15 @@ import { } from "next/server"
       severity: this.getSeverityDisplay(condition),
       duration ? `${duration} days` : undefined,
       isActive: this.isActive(condition),
-      isChronic: this.isChronic(condition);
+      isChronic: this.isChronic(condition),
     };
   }
 
   /**;
    * Validate FHIR Condition resource;
    */;
-  static validateCondition(condition: FHIRCondition): {valid: boolean, errors: string[] } {
-    const errors: string[] = [];
+  static validateCondition(condition: FHIRCondition): {valid:boolean, errors: string[] } {
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Condition"");
@@ -318,7 +318,7 @@ import { } from "next/server"
       if (!session.user) {
         errors.push(`verificationStatus must be one of: ${,}`;
 
-    return {valid: errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -332,7 +332,7 @@ import { } from "next/server"
       hmsDiagnosis.status === "resolved" ? "resolved" : "active",
       hmsDiagnosis.severity,
       hmsDiagnosis.recordedAt || hmsDiagnosis.createdAt,
-      notes: hmsDiagnosis.notes || hmsDiagnosis.description;
+      notes: hmsDiagnosis.notes || hmsDiagnosis.description,
     });
 
   /**;

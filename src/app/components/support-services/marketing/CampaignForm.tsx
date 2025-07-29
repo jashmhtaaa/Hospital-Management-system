@@ -1,29 +1,27 @@
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/date-picker"
-import "@/components/ui/form"
-import "@/components/ui/input"
-import "@/components/ui/select"
-import "@/components/ui/tabs"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import "@hookform/resolvers/zod"
-import "next/navigation"
-import "react"
-import "react-hook-form"
-import "zod"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/date-picker"
+import { "@/components/ui/form";
+import "@/components/ui/input";
+import "@/components/ui/select";
+import "@/components/ui/tabs";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
+import "@hookform/resolvers/zod";
+import "next/navigation";
+import "react";
+import "react-hook-form";
+import "zod";
 import * as z
 import CardContent
 import CardDescription
 import CardFooter
 import CardHeader
-import CardTitle }
-import FormControl
+import CardTitle, FormControl
 import FormDescription
 import FormField
 import FormItem
 import FormLabel
-import FormMessage }
+import FormMessage } from "@/components/ui/card"
 import React
 import SelectContent
 import SelectItem
@@ -32,9 +30,8 @@ import SelectValue }
 import TabsContent
 import TabsList
 import TabsTrigger }
-import useEffect }
-import { Button }
-import { Card
+import useEffect, } Button }
+import  } Card
 import { DatePicker }
 import { Form
 import { Input }
@@ -48,7 +45,9 @@ import { useState
 import { zodResolver }
 
 // Form schema for campaign creation/editing;
-const campaignFormSchema = z.object({name:z.string().min(3, {message:"Campaign name must be at least 3 characters.";
+const campaignFormSchema = z.object({
+  name: z.string().min(3, {
+    message: "Campaign name must be at least 3 characters.",
   }),
   description: z.string().optional(),
   "Please select a campaign type.";
@@ -60,14 +59,15 @@ const campaignFormSchema = z.object({name:z.string().min(3, {message:"Campaign n
   endDate: z.date().optional(),
   budget: z.number().optional(),
   targetAudience: z.record(z.any()).optional(),
-  goals: z.array(z.string()).min(1, {message:"At least one goal is required.";
+  goals: z.array(z.string()).min(1, {
+    message: "At least one goal is required.",
   })});
 
 type CampaignFormValues = z.infer>;
 
 interface CampaignFormProps {
-    campaignId?: string;
-  onSuccess?: (campaign: unknown) => void;
+  campaignId?: string;
+  onSuccess?: (campaign: unknown) => void,
 export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -134,12 +134,12 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
           new Date(data.startDate),
           data.budget || undefined,
           targetAudience: data.targetAudience || ,
-          goals: data.goals || [];
+          goals: data.goals || [],
         });
 
         // Fetch campaign segments;
         if (!session.user) {
-          setSelectedSegments(data.segments.map((s: unknown) => s.segment));
+          setSelectedSegments(data.segments.map((s: unknown) => s.segment)),
 
       } catch (error) ;
 
@@ -246,7 +246,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         method,
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(values);
+        body: JSON.stringify(values),
       });
 
       if (!session.user)hrow new Error("Failed to save campaign");
@@ -333,8 +333,9 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
       if (!session.user) {
         setSelectedSegments(prev => [...prev, segment]);
 
-      toast({title:"Success",
-        description: "Segment added to campaign.";
+      toast({
+        title: "Success",
+        description: "Segment added to campaign.",
       });
     } catch (error) {
 
@@ -367,7 +368,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
               >;
                 <FormField>;
                   control={form.control}
-                  name="name";
+                  name = "name",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Campaign Name</FormLabel>;
@@ -384,7 +385,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
                 <FormField>;
                   control={form.control}
-                  name="description";
+                  name = "description",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Description</FormLabel>;
@@ -406,7 +407,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                 >;
                   <FormField>;
                     control={form.control}
-                    name="type";
+                    name = "type",
                     render={({ field }) => (;
                       <FormItem>;
                         <FormLabel>Campaign Type</FormLabel>;
@@ -439,7 +440,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
                   <FormField>;
                     control={form.control}
-                    name="status";
+                    name = "status",
                     render={({ field }) => (;
                       <FormItem>;
                         <FormLabel>Status</FormLabel>;
@@ -473,7 +474,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                 >;
                   <FormField>;
                     control={form.control}
-                    name="startDate";
+                    name = "startDate",
                     render={({ field }) => (;
                       >;
                         <FormLabel>Start Date</FormLabel>;
@@ -491,7 +492,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
                   <FormField>;
                     control={form.control}
-                    name="endDate";
+                    name = "endDate",
                     render={({ field }) => (;
                       >;
                         <FormLabel>End Date (Optional)</FormLabel>;
@@ -510,13 +511,13 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
                 <FormField>;
                   control={form.control}
-                  name="budget";
+                  name = "budget",
                   render={({ field }) => (;
                     <FormItem>;
                       <FormLabel>Budget (Optional)</FormLabel>;
                       <FormControl>;
                         <Input>;
-                          type="number";
+                          type = "number",
                           placeholder="Enter budget amount";
                           {...field}
                           onChange={(e) => field.onChange(e.target.value ? Number.parseFloat(e.target.value) : undefined)}
@@ -549,9 +550,9 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
                       >;
                         <span>{goal}</span>;
                         <Button>;
-                          type="button";
-                          variant="ghost";
-                          size="sm";
+                          type = "button",
+                          variant = "ghost",
+                          size = "sm",
                           onClick={() => handleRemoveGoal(index)}
                         >;
                           Remove;
@@ -568,8 +569,8 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
 
                 >;
                   <Button>;
-                    type="button";
-                    variant="outline";
+                    type = "button",
+                    variant = "outline",
                     onClick={() => router.back()}
                   >;
                     Cancel;
@@ -732,7 +733,7 @@ export default const _CampaignForm = ({ campaignId, onSuccess }: CampaignFormPro
         >;
           {activeTab !== "details" && (;
             <Button>;
-              variant="outline";
+              variant = "outline",
               onClick={() => setActiveTab(activeTab === "audience" ? "details" : "audience")}
             >;
               {activeTab === "channels" ? "Previous" : "Cancel"}

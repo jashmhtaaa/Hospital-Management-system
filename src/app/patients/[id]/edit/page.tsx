@@ -1,11 +1,10 @@
-import "../../../../components/patient-management/patient-form"
-import "../../../../lib/auth"
-import "../../../../lib/rbac.service"
-import "next-auth"
-import "next/navigation"
-import "react"
+import { } from "../../../../lib/auth"
+import "../../../../lib/rbac.service";
+import "next-auth";
+import "next/navigation";
+import "react";
 import PatientForm
-import redirect }
+import redirect } from "../../../../components/patient-management/patient-form"
 import { authOptions }
 import { getServerSession }
 import { hasPermission }
@@ -14,7 +13,7 @@ import { Suspense }
 
 export default async const _PatientEditPage = ({
   params;
-}: {id:string ;
+}: {id: string ,
 }) {
   // Get session;
   const session = await getServerSession(authOptions);

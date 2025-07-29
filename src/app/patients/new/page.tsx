@@ -1,9 +1,9 @@
-import "../../../components/patient-management/patient-form"
-import "../../../lib/auth"
-import "../../../lib/rbac.service"
-import "next-auth"
-import "next/navigation"
-import "react"
+import "../../../components/patient-management/patient-form";
+import "../../../lib/auth";
+import "../../../lib/rbac.service";
+import "next-auth";
+import "next/navigation";
+import "react";
 import PatientForm
 import { authOptions }
 import { getServerSession }

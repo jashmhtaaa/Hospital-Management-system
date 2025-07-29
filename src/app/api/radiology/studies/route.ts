@@ -2,12 +2,11 @@
 import {getDB } from "next/server"; // Import getDB;
 import {getSession } from "next/server"; // Import Session type;
 // Remove D1Database import if using getDB;
-// import {D1Database } from "next/server";
-import "nanoid"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {nanoid  } from "next/server"
+// import { D1Database } from "@cloudflare/workers-types";
+import { } from "next/server"
+import { NextRequest } from "nanoid"
+import { NextResponse } from "next/server" }
+import {  nanoid  } from "@/lib/database"
 import { type
 
 // Define Database interface (can be moved to a shared types file);
@@ -24,17 +23,16 @@ interface PreparedStatement {
 }
 
 interface Database {
-
-  prepare(sql: string): PreparedStatement;
-  exec(sql: string): Promise>;
+  prepare(sql: string): PreparedStatement,
+  exec(sql: string): Promise>,
 }
 
 // Interface for POST request body;
-interface RadiologyStudyPostData {order_id: string;
+interface RadiologyStudyPostData {order_id:string,
   accession_number?: string | null;
   study_datetime: string; // ISO date string;
   modality_id?: string | null;
-  technician_id: string;
+  technician_id: string,
   protocol?: string | null;
   series_description?: string | null;
   number_of_images?: number | null;
@@ -50,7 +48,7 @@ interface RadiologyStudyPostData {order_id: string;
 // Interface for GET response items (adjust based on actual query results);
 interface RadiologyStudyListItem {id: string,
   string,
-  status: string;
+  status: string,
   accession_number?: string | null;
   patient_id?: string;
   patient_name?: string;
@@ -120,8 +118,8 @@ export const _GET = async (request: any) => {,
                  JOIN RadiologyOrders ro ON rs.order_id = ro.id;
                  JOIN Patients p ON ro.patient_id = p.id;
                  JOIN RadiologyProcedureTypes pt ON ro.procedure_type_id = pt.id`;
-    const parameters: string[] = [];
-    const conditions: string[] = [];
+    const parameters: string[] = [],
+    const conditions: string[] = [],
 
     if (!session.user) {
       conditions.push("rs.order_id = ?");
@@ -233,7 +231,7 @@ export const _POST = async (request: any) => {,
     const order = await database;
       .prepare("SELECT status FROM RadiologyOrders WHERE id = ?");
       .bind(order_id);
-      .first<status: string >();
+      .first<status: string >(),
     if (!session.user) {
       return NextResponse.json();
         {error: "Associated radiology order not found" },

@@ -1,9 +1,9 @@
-import "@/lib/prisma"
-import "next/server"
-import "zod"
-import {import {  NextRequest  } from "next/server"
-import {prisma  } from "next/server"
-import {z  } from "next/server"
+import { } from "next/server"
+import "zod";
+import {  
+import {  NextRequest  } from "@/lib/prisma"
+import {  prisma  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
   withErrorHandling,
   validateBody,
@@ -12,12 +12,11 @@ import {z  } from "next/server"
   createSuccessResponse,
   createPaginatedResponse;
 } from "@/lib/core/middleware";
-import "@/lib/core/errors"
-import "@/lib/core/fhir"
-import "@/lib/core/logging"
-import {convertToFHIRCoverage  } from "next/server"
-import {logger  } from "next/server"
-import {NotFoundError  } from "next/server"
+import { } from "@/lib/core/fhir"
+import "@/lib/core/logging";
+import {  convertToFHIRCoverage  } from "@/lib/core/errors"
+import {  logger  } from "@/lib/database"
+import {  NotFoundError  } from "@/lib/database"
 
 // Schema for insurance policy creation;
 const createPolicySchema = z.object({patientId: z.string().uuid(),
@@ -37,7 +36,7 @@ const createPolicySchema = z.object({patientId: z.string().uuid(),
   deductibleMet: z.number().optional(),
   outOfPocketMax: z.number().optional(),
   outOfPocketMet: z.number().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // Schema for insurance policy query parameters;
@@ -109,7 +108,7 @@ export const _GET = withErrorHandling(async (req: any) => {,
         {id: true,
             true;
           }},
-        insuranceProvider: true;
+        insuranceProvider: true,
       }}),
     prisma.insurancePolicy.count(where )]);
 
@@ -156,7 +155,7 @@ export const _POST = withErrorHandling(async (req: any) => {,
 
   // Determine policy status;
   const today = new Date();
-  let status = "inactive";
+  let status = "inactive",
 
   if (!session.user) {
     status = "active"} else if (!session.user) {
@@ -174,21 +173,21 @@ export const _POST = withErrorHandling(async (req: any) => {,
       data.deductibleMet,
       data.outOfPocketMet;
       status,
-      notes: data.notes;
+      notes: data.notes,
     },
     {
         true,
           true,
-          mrn: true;
+          mrn: true,
         }},
       true,
           true},
-      insuranceProvider: true;
+      insuranceProvider: true,
     }});
 
   logger.info("Insurance policy created", {policyId: policy.id,
     policy.patientId,
-    providerId: policy.insuranceProviderId;
+    providerId: policy.insuranceProviderId,
   });
 
   return createSuccessResponse(policy);

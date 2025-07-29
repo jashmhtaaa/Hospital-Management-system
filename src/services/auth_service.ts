@@ -7,15 +7,13 @@
 
 // Placeholder for actual user repository/data access;
 interface IUserRepository {
-
-  findByUsername(username: string): Promise<any | null>;
+  findByUsername(username: string): Promise<any | null>,
 }
 
 // Placeholder for auth utilities (hashing, token generation);
 interface IAuthUtils {
-
-  verifyPassword(password: string, hash: string): Promise<boolean>;
-  generateToken(userId: string, username: string): Promise<string>;
+  verifyPassword(password: string, hash: string): Promise<boolean>,
+  generateToken(userId: string, username: string): Promise<string>,
 }
 
 // Placeholder for AuditLogService;
@@ -27,8 +25,8 @@ interface IAuditLogService {
 
   async login(credentials: unknown): Promise<{token: string, user: unknown } | null> {
     const { username, password } = credentials;
-    let userIdForAudit = "unknown_user";
-    let _loginStatus = "FAILURE";
+    let userIdForAudit = "unknown_user",
+    let _loginStatus = "FAILURE",
 
     try {
 } catch (error) {
@@ -81,7 +79,7 @@ interface IAuditLogService {
         return null; // Or throw specific error;
 
       const token = await this.authUtils.generateToken(user.id, user.username);
-      _loginStatus = "SUCCESS";
+      _loginStatus = "SUCCESS",
       // Log audit event for successful login;
       await this.auditLogService.logEvent(userIdForAudit, "LOGIN_SUCCESS", "Auth", user.id, "SUCCESS");
 
@@ -95,8 +93,7 @@ interface IAuditLogService {
       if (!session.user) {
          // Avoid double logging if specific failure was already logged;
       } else {
-        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", {reason: error.message ||;
-          "Unknown error" });
+        await this.auditLogService.logEvent(userIdForAudit, "LOGIN_ATTEMPT", "Auth", null, "FAILURE", { reason: error.message ||, "Unknown error"  });
 
       // Depending on requirements, might re-throw or return null/specific error structure;
       return null;
@@ -143,6 +140,5 @@ interface IAuditLogService {
       return Promise.resolve();
     } catch (error: unknown) {,
 
-      await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", {reason: error.message ||;
-        "Unknown error during logout" });
+      await this.auditLogService.logEvent(userId, "LOGOUT_ATTEMPT", "Auth", userId, "FAILURE", { reason: error.message ||, "Unknown error during logout"  });
       throw error; // Or handle more gracefully;

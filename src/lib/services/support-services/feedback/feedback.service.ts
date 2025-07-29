@@ -1,8 +1,7 @@
-import "@/lib/audit-logging"
-import "@/lib/models/feedback"
-import "@/lib/prisma"
-import "@/lib/services/notification.service"
-import "@prisma/client"
+import { } from "@/lib/audit-logging"
+import { } from "@/lib/prisma"
+import "@/lib/services/notification.service";
+import "@prisma/client";
 import ComplaintActivity
 import ComplaintAttachment
 import Feedback
@@ -10,13 +9,12 @@ import FeedbackAttachment
 import FeedbackResponse
 import FeedbackSurvey
 import FeedbackSurveyTemplate
-import FollowUpAction }
-import toFHIRFeedback }
-import {Complaint
-import {  createAuditLog  } from "next/server"
-import {NotificationService  } from "next/server"
-import {prisma  } from "next/server"
-import {toFHIRComplaint
+import FollowUpAction, toFHIRFeedback } from "@/lib/models/feedback"
+import  }   Complaint
+import {  createAuditLog  } from "@/lib/database"
+import {  NotificationService  } from "@/lib/database"
+import {  prisma  } from "@/lib/database"
+import {  toFHIRComplaint
 
  } from "next/server"
   }
@@ -52,7 +50,7 @@ import {toFHIRComplaint
           },
           {id: true,
               true,
-              gender: true;
+              gender: true,
             }
           },
           department: true,
@@ -97,12 +95,12 @@ import {toFHIRComplaint
     // Convert to FHIR format;
     const fhirFeedback = feedback.map(item => toFHIRFeedback(item));
 
-    return {data: feedback,
-      fhir: fhirFeedback;
+    return {data:feedback,
+      fhir: fhirFeedback,
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
     };
   }
 
@@ -118,7 +116,7 @@ import {toFHIRComplaint
         },
         true,
             true,
-            gender: true;
+            gender: true,
         },
         department: true,
         true,
@@ -126,7 +124,7 @@ import {toFHIRComplaint
         },
         true,
                 true,
-          orderBy: createdAt: "desc" ;
+          orderBy: createdAt: "desc" ,
         },
         true,
                 true;
@@ -135,7 +133,7 @@ import {toFHIRComplaint
                 true,
             true,
                 true,
-          orderBy: createdAt: "desc" ;
+          orderBy: createdAt: "desc" ,
         }
       }
     });
@@ -145,8 +143,8 @@ import {toFHIRComplaint
     }
 
     if (!session.user) {
-      return {data: feedback,
-        fhir: toFHIRFeedback(feedback);
+      return {data:feedback,
+        fhir: toFHIRFeedback(feedback),
       };
     }
 
@@ -191,7 +189,7 @@ import {toFHIRComplaint
             true,
         true,
             name: true,
-        department: true;
+        department: true,
       }
     });
 
@@ -200,7 +198,7 @@ import {toFHIRComplaint
       await createAuditLog({action: "CREATE",
         feedback.id;
         userId,
-        details: `Created $data.typefeedback with rating $data.rating`;
+        details: `Created $data.typefeedback with rating $data.rating`,
       });
     }
 
@@ -251,15 +249,15 @@ import {toFHIRComplaint
         status,
         reviewedById: userId,
         reviewedAt: new Date(),
-        reviewNotes: reviewNotes || undefined;
+        reviewNotes: reviewNotes || undefined,
       },
       {
           true,
             true;
           }
         },
-        {id: true,
-            name: true;
+        {id:true,
+            name: true,
           }
         },
         department: true,
@@ -274,7 +272,7 @@ import {toFHIRComplaint
     await createAuditLog({action: "UPDATE",
       id;
       userId,
-      details: `Updated feedback status to $status`;
+      details: `Updated feedback status to $status`,
     });
 
     // Send notification to submitter if not anonymous and has user account;
@@ -282,7 +280,7 @@ import {toFHIRComplaint
       await this.notificationService.sendNotification({type: "FEEDBACK_STATUS_UPDATE",
         `Your feedback has been $status.toLowerCase()`,
         recipientIds: [feedback.submittedById],
-        {feedbackId:feedback.id;
+        {feedbackId:feedback.id,
           status;
         }
       });
@@ -312,7 +310,7 @@ import {toFHIRComplaint
     const response = await prisma.feedbackResponse.create({data: {
         feedbackId,
         responseText,
-        respondedById: userId;
+        respondedById: userId,
         isPublic;
       },
       {
@@ -327,7 +325,7 @@ import {toFHIRComplaint
     await createAuditLog({action: "CREATE",
       response.id;
       userId,
-      details: `Added response to feedback $feedbackId`;
+      details: `Added response to feedback $feedbackId`,
     });
 
     // Send notification to submitter if not anonymous and has user account;
@@ -337,7 +335,7 @@ import {toFHIRComplaint
         feedbackId,
         metadata: {,
           feedbackId,
-          responseId: response.id;
+          responseId: response.id,
         }
       });
     }
@@ -363,7 +361,7 @@ import {toFHIRComplaint
         fileName,
         fileType,
         fileSize,
-        uploadedById: userId;
+        uploadedById: userId,
       },
       {
           true,
@@ -377,7 +375,7 @@ import {toFHIRComplaint
     await createAuditLog({action: "CREATE",
       attachment.id;
       userId,
-      details: `Added attachment $fileNameto feedback $feedbackId`;
+      details: `Added attachment $fileNameto feedback $feedbackId`,
     });
 
     return attachment;
@@ -414,7 +412,7 @@ import {toFHIRComplaint
           },
           {id: true,
               true,
-              gender: true;
+              gender: true,
             }
           },
           department: true,
@@ -453,7 +451,7 @@ import {toFHIRComplaint
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
       }
     };
   }
@@ -470,7 +468,7 @@ import {toFHIRComplaint
         },
         {id: true,
             true,
-            gender: true;
+            gender: true,
           }
         },
         department: true,
@@ -521,8 +519,8 @@ import {toFHIRComplaint
     }
 
     if (!session.user) {
-      return {data: complaint,
-        fhir: toFHIRComplaint(complaint);
+      return {data:complaint,
+        fhir: toFHIRComplaint(complaint),
       };
     }
 
@@ -568,11 +566,11 @@ import {toFHIRComplaint
             true;
 
         },
-        {id: true,
-            name: true;
+        {id:true,
+            name: true,
 
         },
-        department: true;
+        department: true,
 
     });
 
@@ -580,7 +578,7 @@ import {toFHIRComplaint
     await prisma.complaintActivity.create({
       complaint.id,
         "Complaint submitted",
-        performedById: userId || "system";
+        performedById: userId || "system",
 
     });
 
@@ -589,7 +587,7 @@ import {toFHIRComplaint
       await createAuditLog({action: "CREATE",
         complaint.id;
         userId,
-        details: `Created /* SECURITY: Template literal eliminated */;
+        details: `Created /* SECURITY: Template literal eliminated */,
       });
 
     // Send notification to complaint managers;
@@ -607,12 +605,12 @@ import {toFHIRComplaint
 
     await this.notificationService.sendNotification({type: "NEW_COMPLAINT",
       title: `New ${data.severity} Complaint`,
-      message: `New /* SECURITY: Template literal eliminated */;
+      message: `New /* SECURITY: Template literal eliminated */,
       recipientRoles,
       entityId: complaint.id,
       complaint.id,
         data.category,
-        departmentId: data.departmentId;
+        departmentId: data.departmentId,
 
     });
 
@@ -648,8 +646,8 @@ import {toFHIRComplaint
             true;
 
         },
-        {id: true,
-            name: true;
+        {id:true,
+            name: true,
 
         },
         department: true,
@@ -685,7 +683,7 @@ import {toFHIRComplaint
       await this.notificationService.sendNotification({type: "COMPLAINT_STATUS_UPDATE",
         `Your complaint has been ${status.toLowerCase()}`,
         recipientIds: [complaint.submittedById],
-        {complaintId: id;
+        {complaintId:id,
           status;
 
       });
@@ -695,7 +693,7 @@ import {toFHIRComplaint
       await this.notificationService.sendNotification({type: "COMPLAINT_STATUS_UPDATE",
         `Complaint ${id} has been ${status.toLowerCase()}`,
         recipientIds: [complaint.assignedToId],
-        {complaintId: id;
+        {complaintId:id,
           status;
 
       });
@@ -723,7 +721,7 @@ import {toFHIRComplaint
     const updatedComplaint = await prisma.complaint.update({where: { id },
       data: {
         assignedToId,
-        status: complaint.status === "SUBMITTED" ? "UNDER_INVESTIGATION" : complaint.status;
+        status: complaint.status === "SUBMITTED" ? "UNDER_INVESTIGATION" : complaint.status,
       },
       {
           true,
@@ -735,7 +733,7 @@ import {toFHIRComplaint
     await prisma.complaintActivity.create({
       id,
         `Assigned to ${assignedUser.name}`,
-        performedById: userId;
+        performedById: userId,
 
     });
 
@@ -780,7 +778,7 @@ import {toFHIRComplaint
         escalatedToId,
         escalationReason: reason,
         escalationDate: new Date(),
-        status: "ESCALATED";
+        status: "ESCALATED",
       },
       {
           true,
@@ -792,7 +790,7 @@ import {toFHIRComplaint
     await prisma.complaintActivity.create({
       id,
         `Escalated to ${escalatedUser.name}: ${reason}`,
-        performedById: userId;
+        performedById: userId,
 
     });
 
@@ -829,7 +827,7 @@ import {toFHIRComplaint
     const activity = await prisma.complaintActivity.create({
       id,
         comment,
-        performedById: userId;
+        performedById: userId,
       },
       {
           true,
@@ -849,8 +847,8 @@ import {toFHIRComplaint
       await this.notificationService.sendNotification({type: "COMPLAINT_COMMENT",
         `A new comment has been added to complaint ${id}`,
         recipientIds: [complaint.assignedToId],
-        {complaintId: id,
-          activityId: activity.id;
+        {complaintId:id,
+          activityId: activity.id,
 
       });
 
@@ -873,7 +871,7 @@ import {toFHIRComplaint
         fileName,
         fileType,
         fileSize,
-        uploadedById: userId;
+        uploadedById: userId,
       },
       {
           true,
@@ -885,8 +883,8 @@ import {toFHIRComplaint
     await prisma.complaintActivity.create({data: {
         complaintId,
         activityType: "COMMENT",
-        description: `Attached file: ${fileName,}`,
-        performedById: userId;
+        description: `Attached file: ${fileName}`,
+        performedById: userId,
 
     });
 
@@ -937,7 +935,7 @@ import {toFHIRComplaint
         "PLANNED",
         data.assignedToId,
         data.complaintId,
-        createdById: userId;
+        createdById: userId,
       },
       {
           true,
@@ -949,7 +947,7 @@ import {toFHIRComplaint
 
         },
         feedback: true,
-        complaint: true;
+        complaint: true,
 
     });
 
@@ -964,8 +962,8 @@ import {toFHIRComplaint
     if (!session.user) {
       await prisma.complaintActivity.create({
         data.complaintId,
-          `Created follow-up action: ${data.actionType} - ${data.description,}`,
-          performedById: userId;
+          `Created follow-up action: ${data.actionType} - ${data.description}`,
+          performedById: userId,
 
       });
 
@@ -988,7 +986,7 @@ import {toFHIRComplaint
   async updateFollowUpActionStatus(id: string, status: string, userId: string): Promise<FollowUpAction> {
     const action = await prisma.followUpAction.findUnique({where: { id },
       true,
-        complaint: true;
+        complaint: true,
 
     });
 
@@ -1014,7 +1012,7 @@ import {toFHIRComplaint
 
         },
         feedback: true,
-        complaint: true;
+        complaint: true,
 
     });
 
@@ -1030,7 +1028,7 @@ import {toFHIRComplaint
       await prisma.complaintActivity.create({
         action.complaintId,
           `Follow-up action status updated to ${status}: ${action.description}`,
-          performedById: userId;
+          performedById: userId,
 
       });
 
@@ -1038,10 +1036,10 @@ import {toFHIRComplaint
     await this.notificationService.sendNotification({type: "FOLLOW_UP_ACTION_STATUS",
       `Follow-up action status updated to ${status.toLowerCase()}`,
       recipientIds: [action.createdById],
-      {actionId: id;
+      {actionId:id,
         status,
         feedbackId: action.feedbackId,
-        complaintId: action.complaintId;
+        complaintId: action.complaintId,
 
     });
 
@@ -1056,7 +1054,7 @@ import {toFHIRComplaint
       data.name,
         data.serviceType,
         data.isActive !== undefined ? data.isActive : true,
-        createdById: userId;
+        createdById: userId,
       },
       {
           true,
@@ -1102,15 +1100,15 @@ import {toFHIRComplaint
         submittedById: data.anonymous ? null : (data.submittedById || userId),
         data.serviceId,
         data.anonymous,
-        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null;
+        contactInfo: data?.anonymous && data.contactInfo ? data.contactInfo : null,
       },
       true,
         {id: true,
             true;
 
         },
-        {id: true,
-            name: true;
+        {id:true,
+            name: true,
 
     });
 
@@ -1135,7 +1133,7 @@ import {toFHIRComplaint
       entityId: survey.id,
       survey.id;
         templateId,
-        serviceType: data.serviceType || template.serviceType;
+        serviceType: data.serviceType || template.serviceType,
 
     });
 
@@ -1147,7 +1145,7 @@ import {toFHIRComplaint
   async getFeedbackAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
     // Get date range based on period;
     const now = new Date();
-    let startDate: Date;
+    let startDate: Date,
 
     switch (period) {
       case "DAILY": any;
@@ -1160,37 +1158,37 @@ import {toFHIRComplaint
         startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
 
     // Get feedback counts by type;
-    const feedbackByType = await prisma.feedback.groupBy({by: ["type"],
-      {gte:startDate;
+    const feedbackByType = await prisma.feedback.groupBy({by:["type"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get feedback counts by source;
-    const feedbackBySource = await prisma.feedback.groupBy({by: ["source"],
-      {gte:startDate;
+    const feedbackBySource = await prisma.feedback.groupBy({by:["source"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get feedback counts by status;
-    const feedbackByStatus = await prisma.feedback.groupBy({by: ["status"],
-      {gte:startDate;
+    const feedbackByStatus = await prisma.feedback.groupBy({by:["status"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get feedback counts by service type;
-    const feedbackByServiceType = await prisma.feedback.groupBy({by: ["serviceType"],
-      {gte:startDate;
+    const feedbackByServiceType = await prisma.feedback.groupBy({by:["serviceType"],
+      {gte:startDate,
         },
         null;
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get feedback counts by department;
@@ -1205,12 +1203,12 @@ import {toFHIRComplaint
 
     // Get average ratings;
     const ratings = await prisma.feedback.findMany({
-      {gte: startDate;
+      {gte:startDate,
 
       },
       true,
         true,
-        {name: true;
+        {name:true,
 
     });
 
@@ -1260,27 +1258,27 @@ import {toFHIRComplaint
     });
 
     // Get complaint counts by category;
-    const complaintsByCategory = await prisma.complaint.groupBy({by: ["category"],
-      {gte:startDate;
+    const complaintsByCategory = await prisma.complaint.groupBy({by:["category"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get complaint counts by severity;
-    const complaintsBySeverity = await prisma.complaint.groupBy({by: ["severity"],
-      {gte:startDate;
+    const complaintsBySeverity = await prisma.complaint.groupBy({by:["severity"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get complaint counts by status;
-    const complaintsByStatus = await prisma.complaint.groupBy({by: ["status"],
-      {gte:startDate;
+    const complaintsByStatus = await prisma.complaint.groupBy({by:["status"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get complaint resolution time;

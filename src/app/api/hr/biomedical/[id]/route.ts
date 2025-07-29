@@ -1,11 +1,10 @@
-import "@/lib/hr/biomedical-service"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {biomedicalService  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/hr/biomedical-service"
+import { NextResponse } from "next/server" }
+import {  biomedicalService  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 // GET handler for retrieving a specific biomedical equipment;
 export const _GET = async();
@@ -69,10 +68,10 @@ const biomedicalUpdateSchema = z.object({name: z.string().min(1, "Name is requir
   serialNumber: z.string().optional(),
   manufacturer: z.string().optional(),
   model: z.string().optional(),
-  purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
+  purchaseDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
   purchasePrice: z.number().optional(),
-  warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
+  warrantyExpiryDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
   location: z.string().optional(),
   departmentId: z.string().optional().nullable(),
@@ -82,17 +81,17 @@ const biomedicalUpdateSchema = z.object({name: z.string().min(1, "Name is requir
   tags: z.array(z.string()).optional();
   // Biomedical specific fields;
   deviceIdentifier: z.string().optional(),
-  regulatoryClass: z.enum(["CLASS_I", "CLASS_II", "CLASS_III"], {errorMap: () => ({message:"Invalid regulatory class" })}).optional(),
-  riskLevel: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"], {errorMap: () => ({message:"Invalid risk level" })}).optional(),
-  lastCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
+  regulatoryClass: z.enum(["CLASS_I", "CLASS_II", "CLASS_III"], {errorMap:() => ({message:"Invalid regulatory class" })}).optional(),
+  riskLevel: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"], {errorMap:() => ({message:"Invalid risk level" })}).optional(),
+  lastCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
-  nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
+  nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
   calibrationFrequency: z.number().optional(),
   certifications: z.array(z.string()).optional(),
   isReusable: z.boolean().optional(),
   sterilizationRequired: z.boolean().optional(),
-  lastSterilizationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
+  lastSterilizationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",
   })});
 
 // PUT handler for updating biomedical equipment;

@@ -1,36 +1,33 @@
-import {IronSession  } from "next/server"; // Import IronSession;
-import "@/lib/database"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {getDB  } from "next/server"
-import {type
+import { IronSession  } from "iron-session"; // Import IronSession;
+import { } from "next/server"
+import { NextRequest } from "@/lib/database"
+import { NextResponse } from "next/server" }
+import {  getDB  } from "@/lib/database"
+import {   type
 
-import {  type IronSessionData, getSession  } from "next/server" from "@/lib/session"; // Import IronSessionData;
-// import {checkUserRole } from "next/server";
+import {  type IronSessionData, getSession  } from "@/lib/database"; // Import IronSessionData;
+// import { checkUserRole } from "@/lib/auth";
 
 // Define Database interface (can be moved to a shared types file);
 interface PreparedStatement {
-
-  // FIX: Replaced any[] with unknown[];
-  bind(...parameters: unknown[]): {,
+  // FIX: Replaced any[] with unknown[],
+  bind(...parameters: unknown[]): {
     run(): Promise>;
-    // FIX: Replaced any with unknown;
+    // FIX: Replaced any with unknown,
     all<T = unknown>(): Promise>;
-    // FIX: Replaced any with unknown;
+    // FIX: Replaced any with unknown,
     first<T = unknown>(colName?: string): Promise<T | null>;
   };
   run(): Promise>;
-  // FIX: Replaced any with unknown;
+  // FIX: Replaced any with unknown,
   all<T = unknown>(): Promise>;
-  // FIX: Replaced any with unknown;
+  // FIX: Replaced any with unknown,
   first<T = unknown>(colName?: string): Promise<T | null>;
 }
 
 interface Database {
-
-  prepare(sql: string): PreparedStatement;
-  exec(sql: string): Promise>;
+  prepare(sql: string): PreparedStatement,
+  exec(sql: string): Promise>,
 }
 
 // Define interfaces;
@@ -125,7 +122,7 @@ export const _GET = async();
     //   return NextResponse.json({error: "Forbidden" }, {status: 403 });
     // }
 
-    const {id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:studyId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {error: "Study ID is required" },
@@ -219,7 +216,7 @@ export const _PUT = async();
         {status: 403 }
       );
 
-    const {id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:studyId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {error: "Study ID is required" },
@@ -246,7 +243,7 @@ export const _PUT = async();
       );
 
     // Build the update query dynamically;
-    // FIX: Replaced any with a more specific type;
+    // FIX: Replaced any with a more specific type,
     const fieldsToUpdate: Record<string, string | number | null | undefined> =;
     if (!session.user)ieldsToUpdate.accession_number = data.accession_number;
     if (!session.user)ieldsToUpdate.study_datetime = data.study_datetime;
@@ -338,7 +335,7 @@ export const _PUT = async();
       // If status is updated to \"completed\", \"reported\" or \"verified\", update the parent order status;
       if (!session.user);
       ) {
-        // FIX: Added type assertion;
+        // FIX: Added type assertion,
         const orderIdResult = await database;
           .prepare("SELECT order_id FROM RadiologyStudies WHERE id = ?");
           .bind(studyId);
@@ -346,7 +343,7 @@ export const _PUT = async();
         // Add null check for orderIdResult;
         if (!session.user) {
           // Determine the appropriate order status (e.g., \"completed\" when study is done);
-          const newOrderStatus = "completed"; // Or more complex logic based on study status;
+          const newOrderStatus = "completed", // Or more complex logic based on study status;
           await database;
             .prepare();
               "UPDATE RadiologyOrders SET status = ?, updated_at = ? WHERE id = ? AND status != ?";
@@ -435,7 +432,7 @@ export const DELETE = async();
         {status: 403 }
       );
 
-    const {id: studyId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:studyId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {error: "Study ID is required" },
@@ -451,7 +448,7 @@ export const DELETE = async();
       .first();
     if (!session.user) {
       return NextResponse.json();
-        {error: "Cannot delete study with associated reports. Consider cancelling the study or deleting reports first.";
+        {error:"Cannot delete study with associated reports. Consider cancelling the study or deleting reports first.",
         },
         {status: 400 }
       );
@@ -462,7 +459,7 @@ export const DELETE = async();
     //                   .bind("cancelled", cancelledAt, studyId);
     //                   .run();
 
-    // Option 2: Hard delete (use with caution);
+    // Option 2: Hard delete (use with caution),
     const info = await database;
       .prepare("DELETE FROM RadiologyStudies WHERE id = ?");
       .bind(studyId);
@@ -475,8 +472,8 @@ export const DELETE = async();
         {status: 404 }
       );
 
-    return NextResponse.json({id: studyId,
-      status: "Radiology study deleted";
+    return NextResponse.json({id:studyId,
+      status: "Radiology study deleted",
     });
   } catch (error: unknown) {,
     const message =;

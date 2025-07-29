@@ -1,11 +1,10 @@
-import "@/types/user"
-import "iron-session"
-import "next/headers"
-import getIronSession }
-import SessionOptions
-import {cookies  } from "next/server"
-import {type
-import {  User  } from "next/server"
+import { "@/types/user";
+import "iron-session";
+import "next/headers";
+import getIronSession, SessionOptions
+import  }  cookies  } from "@/lib/database"
+import {   type
+import {  User  } from "@/lib/database"
 
 // Define and export the shape of the session data;
 }

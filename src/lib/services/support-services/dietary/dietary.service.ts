@@ -1,16 +1,15 @@
-import "@/lib/audit-logging"
-import "@/lib/models/dietary"
-import "@/lib/prisma"
-import "@/lib/services/notification.service"
-import "@prisma/client"
+import { } from "@/lib/models/dietary"
+import "@/lib/prisma";
+import "@/lib/services/notification.service";
+import "@prisma/client";
 import Meal
 import MealPlan
-import NutritionalProfile }
-import {createAuditLog  } from "next/server"
-import {DietaryRequest
-import {  NotificationService  } from "next/server"
-import {prisma  } from "next/server"
-import {toFHIRDietaryRequest  } from "next/server"
+import NutritionalProfile } from "@/lib/audit-logging"
+import {  createAuditLog  } from "@/lib/database"
+import {   DietaryRequest
+import {  NotificationService  } from "@/lib/database"
+import {  prisma  } from "@/lib/database"
+import {  toFHIRDietaryRequest  } from "@/lib/database"
 
 }
   }
@@ -40,7 +39,7 @@ import {toFHIRDietaryRequest  } from "next/server"
         {
             true,
               true,
-              gender: true;
+              gender: true,
             }
           },
           {id: true,
@@ -65,12 +64,12 @@ import {toFHIRDietaryRequest  } from "next/server"
     // Convert to FHIR format;
     const fhirRequests = requests.map(request => toFHIRDietaryRequest(request));
 
-    return {data: requests,
-      fhir: fhirRequests;
+    return {data:requests,
+      fhir: fhirRequests,
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
     };
   }
 
@@ -102,14 +101,14 @@ import {toFHIRDietaryRequest  } from "next/server"
     const request = await prisma.dietaryRequest.create({data: {
         patientId,
         requestType,
-        status: "PENDING";
+        status: "PENDING",
         startDate,
         endDate,
         mealPreferences,
         dietaryRestrictions,
         allergies,
         specialInstructions,
-        requestedById: requestedBy;
+        requestedById: requestedBy,
       },
       true,
             true,
@@ -146,7 +145,7 @@ import {toFHIRDietaryRequest  } from "next/server"
       {
           true,
             true,
-            gender: true;
+            gender: true,
           }
         },
         true,
@@ -156,7 +155,7 @@ import {toFHIRDietaryRequest  } from "next/server"
             true;
         },
         true,
-          orderBy: date: "asc" ;
+          orderBy: date: "asc" ,
         }
       }
     });
@@ -166,8 +165,8 @@ import {toFHIRDietaryRequest  } from "next/server"
     }
 
     if (!session.user) {
-      return {data: request,
-        fhir: toFHIRDietaryRequest(request);
+      return {data:request,
+        fhir: toFHIRDietaryRequest(request),
       };
     }
 
@@ -197,7 +196,7 @@ import {toFHIRDietaryRequest  } from "next/server"
       {
           true,
             true,
-            gender: true;
+            gender: true,
           }
         },
         true,
@@ -206,7 +205,7 @@ import {toFHIRDietaryRequest  } from "next/server"
         true,
             true;
         },
-        mealPlans: true;
+        mealPlans: true,
       }
     });
 
@@ -246,7 +245,7 @@ import {toFHIRDietaryRequest  } from "next/server"
     // Check if meal plan already exists for this date;
     const existingMealPlan = await prisma.mealPlan.findFirst({where: {
         requestId,
-        date: new Date(data.date);
+        date: new Date(data.date),
       }
     });
 
@@ -260,7 +259,7 @@ import {toFHIRDietaryRequest  } from "next/server"
         date: new Date(data.date),
         data.notes,
         nutritionalSummary: data.nutritionalSummary || ,
-        createdById: userId;
+        createdById: userId,
       },
       true,
         true,
@@ -297,7 +296,7 @@ import {toFHIRDietaryRequest  } from "next/server"
     // Check if meal of this type already exists;
     const existingMeal = await prisma.meal.findFirst({where: {
         mealPlanId,
-        mealType: data.mealType;
+        mealType: data.mealType,
       }
     });
 
@@ -312,7 +311,7 @@ import {toFHIRDietaryRequest  } from "next/server"
         data.protein,
         data.fat,
         data.deliveryTime ? new Date(data.deliveryTime) : undefined,
-        notes: data.notes;
+        notes: data.notes,
       }
     });
 
@@ -415,7 +414,7 @@ import {toFHIRDietaryRequest  } from "next/server"
           true;
           }
         },
-        {menuItems: true;
+        {menuItems:true,
           }
         },
         {id: true,
@@ -464,7 +463,7 @@ import {toFHIRDietaryRequest  } from "next/server"
       data,
       true,
         {
-            {patient: true;
+            {patient:true,
 
     });
 
@@ -617,7 +616,7 @@ import {toFHIRDietaryRequest  } from "next/server"
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
 
     };
 
@@ -656,7 +655,7 @@ import {toFHIRDietaryRequest  } from "next/server"
     const where: unknown = {,};
     if (!session.user)here.category = category;
     if (!session.user) {
-      where.currentStock = {lte: prisma.dietaryInventory.fields.minimumStock;
+      where.currentStock = {lte:prisma.dietaryInventory.fields.minimumStock,
       };
 
     const [items, total] = await Promise.all([;
@@ -674,7 +673,7 @@ import {toFHIRDietaryRequest  } from "next/server"
         total,
         page,
         limit,
-        totalPages: Math.ceil(total / limit);
+        totalPages: Math.ceil(total / limit),
 
     };
 
@@ -722,7 +721,7 @@ import {toFHIRDietaryRequest  } from "next/server"
   async getDietaryAnalytics(period: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY") {,
     // Get date range based on period;
     const now = new Date();
-    let startDate: Date;
+    let startDate: Date,
 
     switch (period) {
       case "DAILY": any;
@@ -735,32 +734,32 @@ import {toFHIRDietaryRequest  } from "next/server"
         startDate = new Date(now.setDate(now.getDate() - 30)); // Default to last 30 days;
 
     // Get request counts by status;
-    const requestsByStatus = await prisma.dietaryRequest.groupBy({by: ["status"],
-      {gte:startDate;
+    const requestsByStatus = await prisma.dietaryRequest.groupBy({by:["status"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get request counts by type;
-    const requestsByType = await prisma.dietaryRequest.groupBy({by: ["requestType"],
-      {gte:startDate;
+    const requestsByType = await prisma.dietaryRequest.groupBy({by:["requestType"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get meal counts by type;
-    const mealsByType = await prisma.meal.groupBy({by: ["mealType"],
-      {gte:startDate;
+    const mealsByType = await prisma.meal.groupBy({by:["mealType"],
+      {gte:startDate,
 
       },
-      _count: true;
+      _count: true,
     });
 
     // Get average nutritional values;
     const mealPlans = await prisma.mealPlan.findMany({
-      {gte: startDate;
+      {gte:startDate,
         },
         null;
 
@@ -789,13 +788,13 @@ import {toFHIRDietaryRequest  } from "next/server"
     const averageNutrition = count > 0 ? {calories: Math.round(totalCalories / count),
       protein: Math.round(totalProtein / count),
       carbohydrates: Math.round(totalCarbs / count),
-      fat: Math.round(totalFat / count);
+      fat: Math.round(totalFat / count),
     } : null;
 
     // Get most common dietary restrictions;
     const profiles = await prisma.nutritionalProfile.findMany({
       true,
-        allergies: true;
+        allergies: true,
 
     });
 

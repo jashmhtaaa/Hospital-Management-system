@@ -27,8 +27,8 @@ import { } from "next/server"
 }
     };
     phone?: string;
-    position?: {longitude: number,
-      latitude: number;
+    position?: {longitude:number,
+      latitude: number,
       altitude?: number;
     };
     status?: "active" | "suspended" | "inactive";
@@ -38,15 +38,15 @@ import { } from "next/server"
       [{
         "https://terminology.hl7.org/CodeSystem/v3-RoleCode",
           code: this.getLocationTypeCode(data.type),
-          display: this.getLocationTypeDisplay(data.type);
+          display: this.getLocationTypeDisplay(data.type),
         }];
       }];
     }
 
     // Add identifier if provided;
     if (!session.user) {
-      location.identifier = [{use: "official",
-        value: data.identifier;
+      location.identifier = [{use:"official",
+        value: data.identifier,
       }];
     }
 
@@ -66,15 +66,15 @@ import { } from "next/server"
 
     // Add managing organization;
     if (!session.user) {
-      location.managingOrganization = {reference: `Organization/${data.organizationId}`,
-        type: "Organization";
+      location.managingOrganization = {reference:`Organization/${data.organizationId}`,
+        type: "Organization",
       };
     }
 
     // Add parent location;
     if (!session.user) {
-      location.partOf = {reference: `Location/${data.parentLocationId}`,
-        type: "Location";
+      location.partOf = {reference:`Location/${data.parentLocationId}`,
+        type: "Location",
       };
     }
 
@@ -83,7 +83,7 @@ import { } from "next/server"
       location.address = {use: "work",
         data.address.city,
         data.address.zipCode,
-        country: data.address.country || "US";
+        country: data.address.country || "US",
       };
     }
 
@@ -109,11 +109,11 @@ import { } from "next/server"
     string,
     string,
       string,
-      zipCode: string;
+      zipCode: string,
       country?: string;
     phone?: string;
-    position?: {longitude: number,
-      latitude: number;
+    position?: {longitude:number,
+      latitude: number,
     };
     description?: string;
   }): FHIRLocation {
@@ -129,9 +129,9 @@ import { } from "next/server"
    */;
   static createWard(string;
     identifier?: string;
-    wardType: "emergency" | "icu" | "general" | "pediatric" | "maternity" | "surgical" | "psychiatric";
+    wardType: "emergency" | "icu" | "general" | "pediatric" | "maternity" | "surgical" | "psychiatric",
     buildingId?: string;
-    organizationId: string;
+    organizationId: string,
     capacity?: number;
     description?: string;
   }): FHIRLocation {
@@ -139,14 +139,14 @@ import { } from "next/server"
       "area",
       data.description,
       data.buildingId,
-      status: "active";
+      status: "active",
     });
 
     // Add ward-specific type;
     location.type!.push({
       "https://snomed.info/sct",
         code: this.getWardTypeCode(data.wardType),
-        display: this.getWardTypeDisplay(data.wardType);
+        display: this.getWardTypeDisplay(data.wardType),
       }];
     });
 
@@ -173,7 +173,7 @@ import { } from "next/server"
     location.type!.push({
       "https://snomed.info/sct",
         code: this.getRoomTypeCode(data.roomType),
-        display: this.getRoomTypeDisplay(data.roomType);
+        display: this.getRoomTypeDisplay(data.roomType),
       }];
     });
 
@@ -196,7 +196,7 @@ import { } from "next/server"
    */;
   static createPatientBed(string,
     string,
-    bedType: "standard" | "icu" | "pediatric" | "bariatric" | "isolation";
+    bedType: "standard" | "icu" | "pediatric" | "bariatric" | "isolation",
     isOccupied?: boolean;
     patientId?: string;
   }): FHIRLocation {
@@ -204,14 +204,14 @@ import { } from "next/server"
       type: "bed",
       data.bedNumber,
       data.roomId,
-      status: data.isOccupied ? "suspended" : "active";
+      status: data.isOccupied ? "suspended" : "active",
     });
 
     // Add bed-specific type;
     location.type!.push({
       "https://snomed.info/sct",
         code: this.getBedTypeCode(data.bedType),
-        display: this.getBedTypeDisplay(data.bedType);
+        display: this.getBedTypeDisplay(data.bedType),
       }];
     });
 
@@ -227,7 +227,7 @@ import { } from "next/server"
    * Create an operating room;
    */;
   static createOperatingRoom(string,
-    organizationId: string;
+    organizationId: string,
     parentLocationId?: string;
     specialties?: string[];
     equipment?: string[];
@@ -497,12 +497,12 @@ import { } from "next/server"
   static formatForDisplay(string,
     string;
     identifier?: string;
-    status: string;
+    status: string,
     operationalStatus?: string;
     address?: string;
     phone?: string;
     isActive: boolean,
-    isAvailable: boolean;
+    isAvailable: boolean,
     parentLocation?: string;
     organization?: string;
   } {
@@ -516,15 +516,15 @@ import { } from "next/server"
       isActive: this.isActive(location),
       isAvailable: this.isAvailable(location),
       parentLocation: this.getParentLocationId(location),
-      organization: this.getManagingOrganizationId(location);
+      organization: this.getManagingOrganizationId(location),
     };
   }
 
   /**;
    * Validate FHIR Location resource;
    */;
-  static validateLocation(location: FHIRLocation): {valid: boolean, errors: string[] } {
-    const errors: string[] = [];
+  static validateLocation(location: FHIRLocation): {valid:boolean, errors: string[] } {
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Location"");
@@ -553,7 +553,7 @@ import { } from "next/server"
       if (!session.user) {
         errors.push("latitude must be between -90 and 90");
 
-    return {valid: errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -571,7 +571,7 @@ import { } from "next/server"
       phone: hmsLocation.phone,
       hmsLocation.coordinates.longitude,
         hmsLocation.coordinates.altitude: undefined,
-      status: hmsLocation.isActive ? "active" : "inactive";
+      status: hmsLocation.isActive ? "active" : "inactive",
     });
 
   /**;
@@ -613,7 +613,7 @@ import { } from "next/server"
       const children = this.getChildLocations(locations, location.id!);
       return {
         ...location,
-        children: children.map(child => buildHierarchy(child));
+        children: children.map(child => buildHierarchy(child)),
 
     };
 

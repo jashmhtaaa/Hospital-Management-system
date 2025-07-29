@@ -1,10 +1,9 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "react"
+import "react";
 import * as React
 
 /**;
@@ -37,7 +36,7 @@ export const DataTable = ({
               {columns.map((column, index) => (;
                 <th>;
                   key={index}
-                  scope="col";
+                  scope = "col",
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
                 >;
                   {column.header}
@@ -81,7 +80,7 @@ export const DataTable = ({
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
               className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
-                currentPage === 1 ? "text-gray-300" : "text-gray-700 hover: bg-gray-50";
+                currentPage === 1 ? "text-gray-300" : "text-gray-700 hover: bg-gray-50",
               }`}
             >;
               Previous;
@@ -90,7 +89,7 @@ export const DataTable = ({
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
               className={`relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium ${
-                currentPage === totalPages ? "text-gray-300" : "text-gray-700 hover: bg-gray-50";
+                currentPage === totalPages ? "text-gray-300" : "text-gray-700 hover: bg-gray-50",
               }`}
             >;
               Next;
@@ -108,7 +107,7 @@ export const DataTable = ({
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
                   className={`relative inline-flex items-center rounded-l-md px-2 py-2 ${
-                    currentPage === 1 ? "text-gray-300" : "text-gray-400 hover: bg-gray-50";
+                    currentPage === 1 ? "text-gray-300" : "text-gray-400 hover: bg-gray-50",
                   }`}
                 >;
                   Previous;
@@ -118,7 +117,7 @@ export const DataTable = ({
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
                   className={`relative inline-flex items-center rounded-r-md px-2 py-2 ${
-                    currentPage === totalPages ? "text-gray-300" : "text-gray-400 hover: bg-gray-50";
+                    currentPage === totalPages ? "text-gray-300" : "text-gray-400 hover: bg-gray-50",
                   }`}
                 >;
                   Next;

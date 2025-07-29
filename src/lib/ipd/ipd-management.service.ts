@@ -1,9 +1,8 @@
-import "../../services/encryption_service_secure"
-import "@prisma/client"
-import "zod"
-import {getEncryptionService  } from "next/server"
-import {PrismaClient  } from "next/server"
-import {z  } from "next/server"
+import { } from "@prisma/client"
+import "zod";
+import {  getEncryptionService  } from "../../services/encryption_service_secure"
+import {  PrismaClient  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 /**;
  * IPD (Inpatient Department) Management Service;
@@ -71,7 +70,7 @@ export const DischargeSchema = z.object({admission_id: z.string().min(1, "Admiss
   z.string(),
     procedure_code: z.string().optional(),
     date_performed: z.date(),
-    surgeon: z.string().optional();
+    surgeon: z.string().optional(),
   })).optional(),
 
   // Discharge planning;
@@ -80,12 +79,12 @@ export const DischargeSchema = z.object({admission_id: z.string().min(1, "Admiss
     dosage: z.string(),
     frequency: z.string(),
     duration: z.string(),
-    instructions: z.string().optional();
+    instructions: z.string().optional(),
   })).optional(),
   z.string(),
     department: z.string(),
     appointment_date: z.date().optional(),
-    instructions: z.string().optional();
+    instructions: z.string().optional(),
   })).optional(),
 
   // Functional status;
@@ -168,7 +167,7 @@ export const BedManagementSchema = z.object({ward_id: z.string().min(1, "Ward ID
 
   // Metadata;
   created_by: z.string(),
-  updated_by: z.string().optional();
+  updated_by: z.string().optional(),
 });
 
 // Type definitions;
@@ -238,9 +237,9 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
           validated.admission_time,
           validated.admission_source,
           encryptedData.admitting_diagnosis,
-          secondaryDiagnoses: validated.secondary_diagnoses ?;
+          secondaryDiagnoses: validated.secondary_diagnoses ?,
             JSON.stringify(validated.secondary_diagnoses) : null,
-          icd10Codes: validated.icd10_codes ?;
+          icd10Codes: validated.icd10_codes ?,
             JSON.stringify(validated.icd10_codes) : null,
           attendingDoctorId: validated.attending_doctor_id,
           validated.consulting_doctors ?;
@@ -253,7 +252,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
           validated.estimated_length_of_stay,
           validated.isolation_required,
           validated.admitted_by,
-          admissionStatus: validated.admission_status;
+          admissionStatus: validated.admission_status,
         }
       });
 
@@ -262,7 +261,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 
       return {
         ...validated,
-        id: admission.id;
+        id: admission.id,
       };
     } catch (error) {
       throw new Error(`Failed to create admission: ${,}`;
@@ -371,7 +370,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
         true,
           true;
         },
-        orderBy: admissionDate: "desc" ;
+        orderBy: admissionDate: "desc" ,
       });
 
       return Promise.all(admissions.map(admission => this.deserializeAdmission(admission)));
@@ -416,15 +415,15 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
       const updated = await this.prisma.admission.update({where: { id },
         data: {
           ...encryptedUpdates,
-          secondaryDiagnoses: updates.secondary_diagnoses ?;
+          secondaryDiagnoses: updates.secondary_diagnoses ?,
             JSON.stringify(updates.secondary_diagnoses) : undefined,
-          icd10Codes: updates.icd10_codes ?;
+          icd10Codes: updates.icd10_codes ?,
             JSON.stringify(updates.icd10_codes) : undefined,
-          consultingDoctors: updates.consulting_doctors ?;
+          consultingDoctors: updates.consulting_doctors ?,
             JSON.stringify(updates.consulting_doctors) : undefined,
-          insuranceDetails: updates.insurance_details ?;
+          insuranceDetails: updates.insurance_details ?,
             JSON.stringify(updates.insurance_details) : undefined,
-          emergencyContact: updates.emergency_contact ?;
+          emergencyContact: updates.emergency_contact ?,
             JSON.stringify(await this.encryptionService.encryptObject(updates.emergency_contact, this.encryptedFields)) : undefined}
       });
 
@@ -493,12 +492,12 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
           validated.discharge_disposition,
           validated.secondary_diagnoses ?;
             JSON.stringify(validated.secondary_diagnoses) : null,
-          proceduresPerformed: validated.procedures_performed ?;
+          proceduresPerformed: validated.procedures_performed ?,
             JSON.stringify(validated.procedures_performed) : null,
           dischargeInstructions: encryptedData.discharge_instructions,
-          medicationsOnDischarge: validated.medications_on_discharge ?;
+          medicationsOnDischarge: validated.medications_on_discharge ?,
             JSON.stringify(await this.encryptionService.encryptObject(validated.medications_on_discharge, this.encryptedFields)) : null,
-          followUpAppointments: validated.follow_up_appointments ?;
+          followUpAppointments: validated.follow_up_appointments ?,
             JSON.stringify(await this.encryptionService.encryptObject(validated.follow_up_appointments, this.encryptedFields)) : null,
           functionalStatusOnAdmission: encryptedData.functional_status_on_admission,
           validated.readmission_risk,
@@ -509,8 +508,8 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
       });
 
       // Update admission status;
-      await this.prisma.admission.update({id: validated.admission_id ,
-        data: admissionStatus: "discharged" ;
+      await this.prisma.admission.update({id:validated.admission_id ,
+        data: admissionStatus: "discharged" ,
       });
 
       // Free up the bed;
@@ -519,7 +518,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
       return {
         ...validated,
         id: discharge.id,
-        length_of_stay: lengthOfStay;
+        length_of_stay: lengthOfStay,
       };
     } catch (error) {
       throw new Error(`Failed to discharge patient: ${,}`;
@@ -580,11 +579,11 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
           validated.receiving_doctor,
           validated.external_facility_address,
           encryptedData.transfer_notes,
-          equipmentTransferred: validated.equipment_transferred ?;
+          equipmentTransferred: validated.equipment_transferred ?,
             JSON.stringify(validated.equipment_transferred) : null,
           medicationsDuringTransfer: validated.medications_during_transfer,
           validated.approved_by,
-          transferStatus: validated.transfer_status;
+          transferStatus: validated.transfer_status,
 
       });
 
@@ -594,7 +593,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 
       return {
         ...validated,
-        id: transfer.id;
+        id: transfer.id,
       };
     } catch (error) {
       throw new Error(`Failed to transfer patient: ${,}`;
@@ -667,7 +666,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
           totalBeds > 0 ? (occupiedBeds.length / totalBeds) * 100 : 0,
           bed.bedNumber,
             bed.bedType,
-            accommodation_class: bed.accommodationClass));
+            accommodation_class: bed.accommodationClass)),
         };
       });
     } catch (error) {
@@ -709,10 +708,10 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
       await this.prisma.bed.updateMany({where: {
           wardId,
           bedNumber,
-          bedStatus: "available";
+          bedStatus: "available",
         },
         "reserved",
-          reservedForPatient: patientId;
+          reservedForPatient: patientId,
           reservedUntil});
     } catch (error) {
       throw new Error(`Failed to reserve bed: ${,}`;
@@ -721,7 +720,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
     const bed = await this.prisma.bed.findFirst({where: {
         wardId,
         bedNumber,
-        bedStatus: "available";
+        bedStatus: "available",
 
     });
     return !!bed;
@@ -734,7 +733,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
     await this.prisma.bed.updateMany({where: { wardId, bedNumber },
       status,
         status === "available" ? null : undefined,
-        reservedUntil: status === "available" ? null : undefined;
+        reservedUntil: status === "available" ? null : undefined,
 
     });
 
@@ -774,7 +773,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
 
       const whereClause = dateRange ? {
         dateRange.from,
-          lte: dateRange.to;
+          lte: dateRange.to,
 
       } : {};
 
@@ -788,8 +787,8 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
         this.prisma.admission.count({where: { ...whereClause, admissionStatus: "active" }
         }),
         this.prisma.discharge.findMany({
-          {gte: dateRange.from,
-              lte: dateRange.to;
+          {gte:dateRange.from,
+              lte: dateRange.to,
 
           } : {},
           select: {lengthOfStay: true }
@@ -820,9 +819,9 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
       admission.admissionTime,
       admission.admissionSource,
       decrypted.admittingDiagnosis,
-      secondary_diagnoses: admission.secondaryDiagnoses ?;
+      secondary_diagnoses: admission.secondaryDiagnoses ?,
         JSON.parse(admission.secondaryDiagnoses) : undefined,
-      icd10_codes: admission.icd10Codes ?;
+      icd10_codes: admission.icd10Codes ?,
         JSON.parse(admission.icd10Codes) : undefined,
       attending_doctor_id: admission.attendingDoctorId,
       admission.consultingDoctors ?;
@@ -835,7 +834,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
       admission.estimatedLengthOfStay,
       admission.isolationRequired,
       admission.admittedBy,
-      admission_status: admission.admissionStatus;
+      admission_status: admission.admissionStatus,
     };
 
   // Cleanup;
@@ -843,7 +842,7 @@ export type BedManagement = z.infer<typeof BedManagementSchema> & { id?: string 
     await this.prisma.$disconnect();
 
 // Export singleton instance;
-let ipdServiceInstance: IPDManagementService | null = null;
+let ipdServiceInstance: IPDManagementService | null = null,
 
 export const getIPDService = (prismaClient?: PrismaClient): IPDManagementService => {
   if (!session.user) {

@@ -1,5 +1,4 @@
-import "@/lib/prisma"
-import {prisma  } from "next/server"
+import { {  prisma  } from "@/lib/prisma"
 
 }
 }
@@ -9,7 +8,7 @@ import {prisma  } from "next/server"
  */;
 export const checkDoctorAvailability = async();
   doctorId: string,
-  requestedSlot: TimeSlot;
+  requestedSlot: TimeSlot,
   appointmentId?: string // For updates, exclude current appointment;
 ): Promise<AvailabilityCheck> {
   try {
@@ -53,7 +52,7 @@ export const checkDoctorAvailability = async();
           {
             // Overlapping start time,
             requestedSlot.start,
-              lt: requestedSlot.end;
+              lt: requestedSlot.end,
             }
           },
           {
@@ -62,7 +61,7 @@ export const checkDoctorAvailability = async();
               {scheduledDateTime: { lte: requestedSlot.start } },
               {estimatedDuration: {
                   // Calculate end time overlap,
-                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues([0]) / (1000 * 60));
+                  gte: Math.floor((requestedSlot.start.getTime() - crypto.getRandomValues([0]) / (1000 * 60)),
                 }
               }
             ];
@@ -71,7 +70,7 @@ export const checkDoctorAvailability = async();
       },
       true,
         true,
-        patient: firstName: true, lastName: true ;
+        patient: firstName: true, lastName: true ,
       }
     });
 
@@ -80,7 +79,7 @@ export const checkDoctorAvailability = async();
     const doctorSchedule = await prisma.doctorSchedule.findFirst({where: {
         doctorId,
         dayOfWeek,
-        isActive: true;
+        isActive: true,
       }
     });
 
@@ -89,7 +88,7 @@ export const checkDoctorAvailability = async();
     // Check for appointment conflicts;
     if (!session.user) {
       conflictingAppointments.forEach(apt => {
-        conflicts.push(`Conflicting appointment with /* SECURITY: Template literal eliminated */;
+        conflicts.push(`Conflicting appointment with /* SECURITY: Template literal eliminated */,
       });
     }
 
@@ -105,7 +104,7 @@ export const checkDoctorAvailability = async();
     }
 
     // 3. Generate suggested slots if conflicts exist;
-    let suggestedSlots: TimeSlot[] = [];
+    let suggestedSlots: TimeSlot[] = [],
     if (!session.user) {
       suggestedSlots = await generateAlternativeSlots(doctorId, requestedSlot.start);
     }
@@ -127,7 +126,7 @@ async const generateAlternativeSlots = (;
   doctorId: string,
   preferredDate: Date;
 ): Promise<TimeSlot[]> {
-  const alternatives: TimeSlot[] = [];
+  const alternatives: TimeSlot[] = [],
   const dateToCheck = new Date(preferredDate);
 
   // Check next 7 days for available slots;
@@ -135,7 +134,7 @@ async const generateAlternativeSlots = (;
     const daySchedule = await prisma.doctorSchedule.findFirst({where: {
         doctorId,
         dayOfWeek: dateToCheck.getDay(),
-        isActive: true;
+        isActive: true,
       }
     });
 
@@ -155,8 +154,8 @@ async const generateAlternativeSlots = (;
           slotEnd.setMinutes(slotEnd.getMinutes() + 30);
 
           // Check if this slot is available;
-          const availabilityCheck = await checkDoctorAvailability(doctorId, {start: slotStart,
-            end: slotEnd;
+          const availabilityCheck = await checkDoctorAvailability(doctorId, {start:slotStart,
+            end: slotEnd,
           });
 
           if (!session.user) {
@@ -215,10 +214,10 @@ export const _blockTimeSlot = async();
     await prisma.doctorBlockedTime.create({data: {
         doctorId,
         startTime: timeSlot.start,
-        endTime: timeSlot.end;
+        endTime: timeSlot.end,
         reason,
         blockedBy: userId,
-        isActive: true;
+        isActive: true,
 
     });
   } catch (error) {
@@ -267,7 +266,7 @@ export const _getDoctorSchedule = async();
     const appointments = await prisma.appointment.findMany({where: {
         doctorId,
         startDate,
-          lte: endDate;
+          lte: endDate,
         },
         status: {in: ["SCHEDULED", "IN_PROGRESS", "COMPLETED"] }
       },
@@ -283,8 +282,8 @@ export const _getDoctorSchedule = async();
     const blockedTimes = await prisma.doctorBlockedTime.findMany({where: {
         doctorId,
         startTime: {gte:startDate },
-        endTime: {lte: endDate },
-        isActive: true;
+        endTime: {lte:endDate },
+        isActive: true,
 
     });
 

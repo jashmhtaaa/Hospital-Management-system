@@ -1,11 +1,10 @@
-import "@/lib/ipd-service.production"
-import "@opennextjs/cloudflare"
-import "next/server"
-import "zod"
-import {getCloudflareContext  } from "next/server"
-import {IPDProductionService  } from "next/server"
-import {NextRequest  } from "next/server"
-import {z  } from "next/server"
+import { } from "@opennextjs/cloudflare"
+import "next/server";
+import "zod";
+import {  getCloudflareContext  } from "@/lib/ipd-service.production"
+import {  IPDProductionService  } from "@/lib/database"
+import {  NextRequest  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 }
 
@@ -30,7 +29,7 @@ const AdmissionSchema = z.object({patient_id: z.number(),
   insurance_approval_status: z;
     .enum(["Pending", "Approved", "Rejected"]);
     .optional(),
-  insurance_approval_number: z.string().optional();
+  insurance_approval_number: z.string().optional(),
 });
 
 export async function GET(request: any): unknown {,
@@ -83,8 +82,8 @@ export async function GET(request: any): unknown {,
     const offset = Number.parseInt(searchParams.get("offset") || "0");
 
     // Build query conditions;
-    const conditions: string[] = [];
-    const parameters: (string | number)[] = [];
+    const conditions: string[] = [],
+    const parameters: (string | number)[] = [],
 
     if (!session.user) {
       conditions.push("a.patient_id = ?");
@@ -159,8 +158,8 @@ export async function GET(request: any): unknown {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return new Response();
-      JSON.stringify({error: "Failed to fetch IPD admissions",
-        details: errorMessage;
+      JSON.stringify({error:"Failed to fetch IPD admissions",
+        details: errorMessage,
       }),
       {status: 500,
         headers: { "Content-Type": "application/json" }}
@@ -212,8 +211,8 @@ export async function POST(request: any): unknown {,
     const validationResult = AdmissionSchema.safeParse(data);
     if (!session.user) {
       return new Response();
-        JSON.stringify({error: "Invalid input data",
-          details: validationResult.error.format();
+        JSON.stringify({error:"Invalid input data",
+          details: validationResult.error.format(),
         }),
         {status: 400,
           headers: { "Content-Type": "application/json" }}
@@ -295,7 +294,7 @@ export async function POST(request: any): unknown {,
         data.ward_id,
         data.admission_type || "elective",
         data.admission_notes,
-        admittedBy: "1" // TODO: Get from authenticated user context;
+        admittedBy: "1" // TODO: Get from authenticated user context,
 
       const admissionId = await ipdService.createAdmission(admissionData);
 
@@ -304,12 +303,12 @@ export async function POST(request: any): unknown {,
         admissionId,
         ward: data.ward_id,
         data.bed_id,
-        assignedBy: "1" // TODO: Get from authenticated user context;
+        assignedBy: "1" // TODO: Get from authenticated user context,
       });
 
       return new Response();
-        JSON.stringify({message: "IPD Admission created successfully",
-          admission_id: admissionId;
+        JSON.stringify({message:"IPD Admission created successfully",
+          admission_id: admissionId,
         }),
         {status: 201,
           headers: { "Content-Type": "application/json" }}
@@ -320,8 +319,8 @@ export async function POST(request: any): unknown {,
       const errorMessage =;
         txError instanceof Error ? txError.message : String(txError),
       return new Response();
-        JSON.stringify({error: "Failed during admission creation database operations",
-          details: errorMessage;
+        JSON.stringify({error:"Failed during admission creation database operations",
+          details: errorMessage,
         }),
         {status: 500, headers: { "Content-Type": "application/json" } }
       );
@@ -330,8 +329,8 @@ export async function POST(request: any): unknown {,
 
     const errorMessage = error instanceof Error ? error.message : String(error),
     return new Response();
-      JSON.stringify({error: "Failed to create IPD admission",
-        details: errorMessage;
+      JSON.stringify({error:"Failed to create IPD admission",
+        details: errorMessage,
       }),
       {status: 500,
         headers: { "Content-Type": "application/json" }}

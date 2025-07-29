@@ -1,21 +1,18 @@
-import "@/components/layout/DashboardLayout"
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/hooks/use-toast"
-import "@/types/patient"
-import "lucide-react"
-import "next/navigation"
-import "react"
+import { } from "@/components/layout/DashboardLayout"
+import { } from "@/components/ui/card"
+import { "@/hooks/use-toast";
+import "@/types/patient";
+import "lucide-react";
+import "next/navigation";
+import "react";
 import CardContent
-import CardDescription }
-import CardHeader
+import CardDescription, CardHeader
 import CardTitle
 import React
-import Trash2 }
+import Trash2 } from "@/components/ui/button"
 import useEffect }
-import useRouter }
-import {
-import { Button }
+import useRouter, }
+import  } Button }
 import { Card
 import { DashboardLayout }
 import { Edit
@@ -145,14 +142,16 @@ export default const _PatientDetailPage = () {
 
 } catch (error) {
 
-        const response = await fetch(`/api/patients/${patientId}`, {method:"DELETE";
+        const response = await fetch(`/api/patients/${patientId}`, {
+            method: "DELETE",
         });
         const result: { error?: string } = await response.json();
         if (!session.user) {
             throw new Error(result.error || "Failed to deactivate patient");
 
-        toast({title:"Patient Deactivated",
-            description: `/* SECURITY: Template literal eliminated */;
+        toast({
+            title: "Patient Deactivated",
+            description: `/* SECURITY: Template literal eliminated */,
         });
         router.push("/dashboard/patients"); // Redirect to list after deactivation;
     } catch (err: unknown) { // Use unknown;

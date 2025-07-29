@@ -1,5 +1,4 @@
-import "zod"
-import {z  } from "next/server"
+import { {  z  } from "zod"
 
 }
 
@@ -23,7 +22,7 @@ export const DrugSchema = z.object({ndc: z.string().min(1, "NDC number is requir
   black_box_warning: z.boolean().default(false),
   formulary_status: z.enum(["preferred", "non-preferred", "restricted", "excluded"]).default("preferred"),
   cost_per_unit: z.number().min(0),
-  is_active: z.boolean().default(true);
+  is_active: z.boolean().default(true),
 });
 
 export const PrescriptionSchema = z.object({patient_id: z.string().min(1, "Patient ID is required"),
@@ -46,7 +45,7 @@ export const PrescriptionSchema = z.object({patient_id: z.string().min(1, "Patie
   written_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid written date"),
   effective_date: z.string().optional(),
   discontinue_date: z.string().optional(),
-  special_instructions: z.string().optional();
+  special_instructions: z.string().optional(),
 });
 
 export const InventorySchema = z.object({drug_ndc: z.string().min(1, "Drug NDC is required"),
@@ -61,7 +60,7 @@ export const InventorySchema = z.object({drug_ndc: z.string().min(1, "Drug NDC i
   storage_location: z.string(),
   storage_requirements: z.string().optional(),
   received_date: z.string().refine((date) => !isNaN(Date.parse(date)), "Invalid received date"),
-  received_by: z.string();
+  received_by: z.string(),
 });
 
 export const DispensingSchema = z.object({prescription_id: z.string().min(1, "Prescription ID is required"),
@@ -76,7 +75,7 @@ export const DispensingSchema = z.object({prescription_id: z.string().min(1, "Pr
   counseling_provided: z.boolean().default(false),
   counseling_notes: z.string().optional(),
   patient_questions: z.string().optional(),
-  adherence_score: z.number().min(0).max(100).optional();
+  adherence_score: z.number().min(0).max(100).optional(),
 });
 
 export const AllergySchema = z.object({patient_id: z.string(),
@@ -88,7 +87,7 @@ export const AllergySchema = z.object({patient_id: z.string(),
   verified_date: z.string().optional(),
   verified_by: z.string().optional(),
   status: z.enum(["active", "inactive", "resolved"]).default("active"),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 export type Drug = z.infer<typeof DrugSchema> & {id: string,
@@ -101,16 +100,16 @@ export type Prescription = z.infer<typeof PrescriptionSchema> & {id: string,
   dispensing_date?: Date;
   pickup_date?: Date;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
   patient_name?: string;
   prescriber_name?: string;
 };
 
-export type InventoryItem = z.infer<typeof InventorySchema> & {id: string;
+export type InventoryItem = z.infer<typeof InventorySchema> & {id:string,
   drug_name?: string;
   drug_strength?: string;
   created_at: Date,
-  updated_at: Date;
+  updated_at: Date,
 };
 
 export type DispensingRecord = z.infer<typeof DispensingSchema> & {id: string,
@@ -170,7 +169,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
         "II",
         true,
         2.50,
-        is_active: true;
+        is_active: true,
       }];
 
     commonDrugs.forEach(drugData => {
@@ -178,7 +177,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
         ...drugData,
         id: uuidv4(),
         created_at: new Date(),
-        updated_at: new Date();
+        updated_at: new Date(),
       };
       this.drugs.set(drug.ndc, drug);
     });
@@ -195,7 +194,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
         drug2_name: "Metformin",
         "Additive hypotensive effects",
         "Monitor blood pressure closely when initiating therapy",
-        documentation_level: "good";
+        documentation_level: "good",
       },
       {drug1_ndc: "0071-0222-23", // Atorvastatin;
         drug2_ndc: "0172-4368-70", // Oxycodone;
@@ -220,7 +219,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
       ...validatedData,
       id: uuidv4(),
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.drugs.set(drug.ndc, drug);
@@ -266,7 +265,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
       id: prescriptionId,
       "pending",
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     this.prescriptions.set(prescriptionId, prescription);
@@ -283,14 +282,14 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
   private generatePrescriptionNumber(): string {
     const _timestamp = crypto.getRandomValues([0].toString().slice(-6);
     const _random = Math.floor(crypto.getRandomValues([0] / (0xFFFFFFFF + 1) * 10000).toString().padStart(4, "0");
-    return `RX/* SECURITY: Template literal eliminated */;
+    return `RX/* SECURITY: Template literal eliminated */,
   }
 
   /**;
    * Check for clinical alerts;
    */;
-  private async checkClinicalAlerts(prescription: Prescription): Promise<void> {,
-    const alerts: ClinicalAlert[] = [];
+  private async checkClinicalAlerts(prescription: Prescription): Promise<void> {
+    const alerts: ClinicalAlert[] = [],
 
     // Check for drug allergies;
     const patientAllergies = this.allergies.get(prescription.patient_id) || [];
@@ -367,7 +366,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
 
         alerts.push({id: uuidv4(),
           prescription.id,
-          alert_type: "drug_interaction";
+          alert_type: "drug_interaction",
           severity,
           message: `Drug interaction: $interaction.drug1_nameand $interaction.drug2_name- $interaction.clinical_effect`,
           recommendation: interaction.management,
@@ -479,7 +478,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
       throw new Error("Cannot verify prescription with unacknowledged critical alerts");
     }
 
-    prescription.status = "verified";
+    prescription.status = "verified",
     prescription.verification_date = new Date();
     prescription.updated_at = new Date();
 
@@ -524,11 +523,11 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
       totalCost,
       insuranceAmount,
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     // Update prescription status;
-    prescription.status = "dispensed";
+    prescription.status = "dispensed",
     prescription.dispensing_date = new Date(validatedData.dispensing_date);
     prescription.updated_at = new Date();
     this.prescriptions.set(prescription.id, prescription);
@@ -585,7 +584,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
       ...validatedData,
       id: uuidv4(),
       created_at: new Date(),
-      updated_at: new Date();
+      updated_at: new Date(),
     };
 
     const patientAllergies = this.allergies.get(validatedData.patient_id) || [];
@@ -688,7 +687,7 @@ export type PatientAllergy = z.infer<typeof AllergySchema> & {id: string,
       totalClinicalAlerts,
       criticalAlerts,
       averageProcessingTime: Math.round(averageProcessingTime * 100) / 100,
-      totalRevenue: Math.round(totalRevenue * 100) / 100;
+      totalRevenue: Math.round(totalRevenue * 100) / 100,
     };
 
   /**;

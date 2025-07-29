@@ -1,7 +1,6 @@
-import "@prisma/client"
-import "perf_hooks"
-import {performance  } from "next/server"
-import {PrismaClient  } from "next/server"
+import { } from "perf_hooks"
+import {  performance  } from "@prisma/client"
+import {  PrismaClient  } from "@/lib/database"
 
 /**;
  * Database Performance Optimization Service;
@@ -18,12 +17,12 @@ import {PrismaClient  } from "next/server"
   };
   number,
     number,
-    queriesPerSecond: number;
+    queriesPerSecond: number,
   };
   number,
     number;
   };
-  tableStats: Array>;
+  tableStats: Array>,
 }
   }
 
@@ -56,7 +55,7 @@ import {PrismaClient  } from "next/server"
     if (!session.user) {
       clearInterval(this.monitoringInterval);
     }
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */,
   }
 
   /**;
@@ -110,7 +109,7 @@ import {PrismaClient  } from "next/server"
           executionTime,
           timestamp: new Date(),
           this.mapPrismaActionToSql(params.action),
-          table: params.model;
+          table: params.model,
         });
 
         // Check for slow queries;
@@ -118,7 +117,7 @@ import {PrismaClient  } from "next/server"
           await this.create/* SECURITY: Alert removed */,}ms`,
             details: { queryId, executionTime, model: params.model, action: params.action ,},
             timestamp: new Date(),
-            resolved: false;
+            resolved: false,
           });
         }
 
@@ -132,7 +131,7 @@ import {PrismaClient  } from "next/server"
           executionTime,
           timestamp: new Date(),
           this.mapPrismaActionToSql(params.action),
-          table: params.model;
+          table: params.model,
         });
 
         throw error;
@@ -252,7 +251,7 @@ import {PrismaClient  } from "next/server"
       const tableStats = await this.getTableStatistics();
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
     }
   }
 
@@ -298,7 +297,7 @@ import {PrismaClient  } from "next/server"
       await this.checkIndexUsage();
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
     }
   }
 
@@ -306,7 +305,7 @@ import {PrismaClient  } from "next/server"
    * Generate optimization recommendations;
    */;
   private async generateRecommendations(): Promise<IndexRecommendation[]> {
-    const recommendations: IndexRecommendation[] = [];
+    const recommendations: IndexRecommendation[] = [],
 
     try {
 } catch (error) {
@@ -362,11 +361,11 @@ import {PrismaClient  } from "next/server"
       const missingFkIndexes = await this.checkMissingForeignKeyIndexes();
       recommendations.push(...missingFkIndexes);
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       return recommendations;
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       return [];
     }
   }
@@ -412,13 +411,13 @@ import {PrismaClient  } from "next/server"
       const tableStats = await this.getTableStatistics();
       const indexStats = await this.getIndexStatistics();
 
-      return {connectionPool: connectionStats;
+      return {connectionPool:connectionStats,
         queryMetrics,
-        indexUsage: indexStats;
+        indexUsage: indexStats,
         tableStats;
       };
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to collect database statistics");
 
   /**;
@@ -433,7 +432,7 @@ import {PrismaClient  } from "next/server"
   async resolve/* SECURITY: Alert removed */: Promise<void> {,
     if (!session.user) {
       this.alerts[alertIndex].resolved = true;
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
 
   /**;
    * Get query performance history;
@@ -444,7 +443,7 @@ import {PrismaClient  } from "next/server"
       return this.performanceMetrics.get(key) || [];
 
     // Return all metrics;
-    const allMetrics: QueryPerformanceMetric[] = [];
+    const allMetrics: QueryPerformanceMetric[] = [],
     for (const metrics of this.performanceMetrics.values()) {
       allMetrics.push(...metrics);
 
@@ -453,11 +452,11 @@ import {PrismaClient  } from "next/server"
   /**;
    * Apply automatic optimizations;
    */;
-  async applyAutomaticOptimizations(): Promise<{indexesCreated: number,
-    optimizationsApplied: string[];
+  async applyAutomaticOptimizations(): Promise<{indexesCreated:number,
+    optimizationsApplied: string[],
   }> {
-    const result = {indexesCreated: 0,
-      optimizationsApplied: [] as string[];
+    const result = {indexesCreated:0,
+      optimizationsApplied: [] as string[],
     };
 
     try {
@@ -533,13 +532,13 @@ import {PrismaClient  } from "next/server"
             result.indexesCreated++;
             result.optimizationsApplied.push(`Created index on $rec.table($rec.columns.join(", "))`);
           } catch (error) {
-            /* SECURITY: Console statement removed */;
+            /* SECURITY: Console statement removed */,
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       return result;
 
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to apply automatic optimizations");
 
   // Private helper methods;
@@ -560,7 +559,7 @@ import {PrismaClient  } from "next/server"
       case "delete": any;
       case "deleteMany": any;
         return "DELETE";
-      default: return "SELECT";
+      default: return "SELECT",
 
   private async create/* SECURITY: Alert removed */: Promise<void> {,
     this.alerts.push(alert);
@@ -575,17 +574,17 @@ import {PrismaClient  } from "next/server"
     // Mock implementation - would need actual database driver stats;
     return {total: 20,
       15,
-      utilization: 25;
+      utilization: 25,
 
   private calculateQueryMetrics(): DatabaseStats["queryMetrics"] {
-    const allMetrics: QueryPerformanceMetric[] = [];
+    const allMetrics: QueryPerformanceMetric[] = [],
     for (const metrics of this.performanceMetrics.values()) {
       allMetrics.push(...metrics);
 
     if (!session.user) {
       return {totalQueries:0,
         0,
-        queriesPerSecond: 0;
+        queriesPerSecond: 0,
       };
 
     const totalQueries = allMetrics.length;
@@ -655,7 +654,7 @@ import {PrismaClient  } from "next/server"
       94.5;
 
   private async checkSlowQueries(): Promise<void> {
-    const allMetrics: QueryPerformanceMetric[] = [];
+    const allMetrics: QueryPerformanceMetric[] = [],
     for (const metrics of this.performanceMetrics.values()) {
       allMetrics.push(...metrics);
 
@@ -666,7 +665,7 @@ import {PrismaClient  } from "next/server"
 
     if (!session.user) {
       await this.create/* SECURITY: Alert removed */,
-        resolved: false;
+        resolved: false,
       });
 
   private async checkConnectionPoolUtilization(): Promise<void> {
@@ -674,7 +673,7 @@ import {PrismaClient  } from "next/server"
 
     if (!session.user) {
       await this.create/* SECURITY: Alert removed */,
-        resolved: false;
+        resolved: false,
       });
 
   private async checkIndexUsage(): Promise<void> {
@@ -682,7 +681,7 @@ import {PrismaClient  } from "next/server"
 
     if (!session.user) {
       await this.create/* SECURITY: Alert removed */,
-        resolved: false;
+        resolved: false,
       });
 
   private async checkMissingForeignKeyIndexes(): Promise<IndexRecommendation[]> {
@@ -716,7 +715,7 @@ import {PrismaClient  } from "next/server"
     await this.prisma.$disconnect();
 
 // Singleton instance for application use;
-let dbOptimizationServiceInstance: DatabaseOptimizationService | null = null;
+let dbOptimizationServiceInstance: DatabaseOptimizationService | null = null,
 
 export const _getDatabaseOptimizationService = (): DatabaseOptimizationService => {
   if (!session.user) {

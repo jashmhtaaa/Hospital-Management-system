@@ -1,15 +1,14 @@
-import "@/lib/auth"
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/services/support-services/marketing"
-import "next-auth"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {authOptions  } from "next/server"
-import {ContactService  } from "next/server"
-import {getServerSession  } from "next/server"
-import {type
-import {  withErrorHandling  } from "next/server"
+import { } from "@/lib/middleware/error-handling.middleware"
+import "@/lib/services/support-services/marketing";
+import "next-auth";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
+import { NextResponse } from "next/server" }
+import {  authOptions  } from "@/lib/database"
+import {  ContactService  } from "@/lib/database"
+import {  getServerSession  } from "@/lib/database"
+import {   type
+import {  withErrorHandling  } from "@/lib/database"
 
 const contactService = new ContactService();
 
@@ -33,8 +32,8 @@ export const GET = async();
 
       return NextResponse.json(contact);
     },
-    {requiredPermission: "marketing.contacts.read",
-      auditAction: "CONTACT_VIEW";
+    {requiredPermission:"marketing.contacts.read",
+      auditAction: "CONTACT_VIEW",
     }
   );
 }
@@ -61,8 +60,8 @@ export const PUT = async();
 
       return NextResponse.json(contact);
     },
-    {requiredPermission: "marketing.contacts.update",
-      auditAction: "CONTACT_UPDATE";
+    {requiredPermission:"marketing.contacts.update",
+      auditAction: "CONTACT_UPDATE",
     }
   );
 }
@@ -96,8 +95,8 @@ export const POST = async();
 
       return NextResponse.json(note, {status: 201 });
     },
-    {requiredPermission: "marketing.contacts.update",
-      auditAction: "CONTACT_NOTE_ADD";
+    {requiredPermission:"marketing.contacts.update",
+      auditAction: "CONTACT_NOTE_ADD",
     }
   );
 

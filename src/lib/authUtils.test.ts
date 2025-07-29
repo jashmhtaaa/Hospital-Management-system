@@ -1,5 +1,5 @@
-import "./authUtils.ts"
-import "bcryptjs"
+import "./authUtils.ts";
+import "bcryptjs";
 import bcrypt
 import hashPassword }
 import { comparePassword

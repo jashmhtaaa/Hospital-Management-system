@@ -29,7 +29,7 @@ import { } from "next/server"
 }
     value: number | {systolic: number, diastolic: number };
     unit: string,
-    effectiveDateTime: string;
+    effectiveDateTime: string,
     status?: "preliminary" | "final";
   }): FHIRObservation {
     const "Observation",
@@ -42,20 +42,20 @@ import { } from "next/server"
       `Patient/${data.patientId}`,
         type: "Patient",
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString();
+      issued: new Date().toISOString(),
     }
 
     // Add encounter if provided;
     if (!session.user) {
-      observation.encounter = {reference: `Encounter/${data.encounterId}`,
-        type: "Encounter";
+      observation.encounter = {reference:`Encounter/${data.encounterId}`,
+        type: "Encounter",
       };
     }
 
     // Add performer if provided;
     if (!session.user) {
-      observation.performer = [{reference: `Practitioner/${data.practitionerId}`,
-        type: "Practitioner";
+      observation.performer = [{reference:`Practitioner/${data.practitionerId}`,
+        type: "Practitioner",
       }];
     }
 
@@ -69,7 +69,7 @@ import { } from "next/server"
           },
           data.value.systolic,
             "https://unitsofmeasure.org",
-            code: data.unit;
+            code: data.unit,
           }
         },
         {
@@ -79,7 +79,7 @@ import { } from "next/server"
           },
           data.value.diastolic,
             "https://unitsofmeasure.org",
-            code: data.unit;
+            code: data.unit,
           }
         }
       ];
@@ -87,7 +87,7 @@ import { } from "next/server"
       // Single value observation;
       observation.value = {value: data.value,
         "https://unitsofmeasure.org",
-        code: data.unit;
+        code: data.unit,
       }
     }
 
@@ -105,7 +105,7 @@ import { } from "next/server"
     unit?: string;
     referenceRange?: { low?: number; high?: number };
     interpretation?: "normal" | "high" | "low" | "critical";
-    effectiveDateTime: string;
+    effectiveDateTime: string,
     status?: "preliminary" | "final";
     specimenId?: string;
   }): FHIRObservation {
@@ -121,27 +121,27 @@ import { } from "next/server"
       `Patient/${data.patientId}`,
         type: "Patient",
       effective: data.effectiveDateTime,
-      issued: new Date().toISOString();
+      issued: new Date().toISOString(),
     }
 
     // Add encounter if provided;
     if (!session.user) {
-      observation.encounter = {reference: `Encounter/${data.encounterId}`,
-        type: "Encounter";
+      observation.encounter = {reference:`Encounter/${data.encounterId}`,
+        type: "Encounter",
       };
     }
 
     // Add performer if provided;
     if (!session.user) {
-      observation.performer = [{reference: `Practitioner/${data.practitionerId}`,
-        type: "Practitioner";
+      observation.performer = [{reference:`Practitioner/${data.practitionerId}`,
+        type: "Practitioner",
       }];
     }
 
     // Add specimen if provided;
     if (!session.user) {
-      observation.specimen = {reference: `Specimen/${data.specimenId}`,
-        type: "Specimen";
+      observation.specimen = {reference:`Specimen/${data.specimenId}`,
+        type: "Specimen",
       };
     }
 
@@ -149,7 +149,7 @@ import { } from "next/server"
     if (!session.user) {
       observation.value = {value: data.value,
         "https://unitsofmeasure.org",
-        code: data.unit;
+        code: data.unit,
       }
     } else {
       observation.value = data.value;
@@ -160,7 +160,7 @@ import { } from "next/server"
       observation.interpretation = [{
         "https://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
           code: data.interpretation.toUpperCase(),
-          display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1);
+          display: data.interpretation.charAt(0).toUpperCase() + data.interpretation.slice(1),
         }];
       }];
     }
@@ -171,13 +171,13 @@ import { } from "next/server"
         ...(data.referenceRange?.low && {
           data.referenceRange.low,
             "https://unitsofmeasure.org",
-            code: data.unit || "";
+            code: data.unit || "",
           }
         }),
         ...(data.referenceRange?.high && ;
             value: data.referenceRange.high,
             "https://unitsofmeasure.org",
-            code: data.unit || "");
+            code: data.unit || ""),
       }];
     }
 
@@ -188,11 +188,11 @@ import { } from "next/server"
    * Create a clinical assessment observation;
    */;
   static createClinicalAssessmentObservation(string,
-    practitionerId: string;
+    practitionerId: string,
     encounterId?: string;
     assessmentCode: string,
     string,
-    effectiveDateTime: string;
+    effectiveDateTime: string,
     status?: "preliminary" | "final";
   }): FHIRObservation {
     return {resourceType: "Observation",
@@ -212,8 +212,8 @@ import { } from "next/server"
       issued: timestamp: new Date().toISOString(),
       value: data.finding;
       ...(data?.encounterId && ;
-          reference: `Encounter/${data.encounterId,}`,
-          type: "Encounter");
+          reference: `Encounter/${data.encounterId}`,
+          type: "Encounter"),
     };
   }
 
@@ -346,8 +346,8 @@ import { } from "next/server"
   /**;
    * Validate FHIR Observation resource;
    */;
-  static validateObservation(observation: FHIRObservation): {valid: boolean, errors: string[] } {
-    const errors: string[] = [];
+  static validateObservation(observation: FHIRObservation): {valid:boolean, errors: string[] } {
+    const errors: string[] = [],
 
     if (!session.user) {
       errors.push("resourceType must be "Observation"");
@@ -370,7 +370,7 @@ import { } from "next/server"
     if (!session.user) {
       errors.push("Either value, component, or dataAbsentReason must be present");
 
-    return {valid: errors.length === 0;
+    return {valid:errors.length === 0,
       errors;
     };
 
@@ -386,7 +386,7 @@ import { } from "next/server"
         high: hmsLabResult.referenceRange.max: undefined,
       interpretation: hmsLabResult.interpretation || hmsLabResult.flag,
       hmsLabResult.status === "completed" ? "final" : "preliminary",
-      specimenId: hmsLabResult.specimenId;
+      specimenId: hmsLabResult.specimenId,
     });
 
   /**;
@@ -410,7 +410,7 @@ import { } from "next/server"
         hmsVitalSigns.encounterId,
         hmsVitalSigns.heartRate,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: "final";
+        status: "final",
       }));
 
     if (!session.user) {
@@ -418,7 +418,7 @@ import { } from "next/server"
         hmsVitalSigns.encounterId,
         hmsVitalSigns.temperature,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: "final";
+        status: "final",
       }));
 
     if (!session.user) {
@@ -426,7 +426,7 @@ import { } from "next/server"
         hmsVitalSigns.encounterId,
         hmsVitalSigns.respiratoryRate,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: "final";
+        status: "final",
       }));
 
     if (!session.user) {
@@ -434,7 +434,7 @@ import { } from "next/server"
         hmsVitalSigns.encounterId,
         hmsVitalSigns.oxygenSaturation,
         hmsVitalSigns.recordedAt || hmsVitalSigns.createdAt,
-        status: "final";
+        status: "final",
       }));
 
     return observations;

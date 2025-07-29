@@ -1,13 +1,12 @@
-import "../lib/notifications"
-import "./audit_log_service.ts"
-import "./encryption_service.ts"
-import "@prisma/client"
-import "zod"
+import { } from "./audit_log_service.ts"
+import "./encryption_service.ts";
+import "@prisma/client";
+import "zod";
 import * as z
-import {AuditService  } from "next/server"
-import {EncryptionService  } from "next/server"
-import {NotificationService  } from "next/server"
-import {PrismaClient  } from "next/server"
+import {  AuditService  } from "../lib/notifications"
+import {  EncryptionService  } from "@/lib/database"
+import {  NotificationService  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
 
 const prisma = new PrismaClient();
 
@@ -35,7 +34,7 @@ const LabTestSchema = z.object({testCode: z.string().min(1, "Test code is requir
   status: z.string().default("Active"),
   isVisible: z.boolean().default(true),
   referralTest: z.boolean().default(false),
-  referralLabId: z.string().optional();
+  referralLabId: z.string().optional(),
 });
 
 // Define schema for lab order;
@@ -69,7 +68,7 @@ const LabOrderSchema = z.object({patientId: z.string().min(1, "Patient ID is req
     performingLabId: z.string().optional(),
     referralLabId: z.string().optional(),
     billable: z.boolean().default(true),
-    notes: z.string().optional();
+    notes: z.string().optional(),
   })).min(1, "At least one test must be ordered")});
 
 // Define schema for lab sample;
@@ -90,7 +89,7 @@ const LabSampleSchema = z.object({orderId: z.string().min(1, "Order ID is requir
   parentSampleId: z.string().optional(),
   isAliquot: z.boolean().default(false),
   processingNotes: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // Define schema for lab result;
@@ -123,7 +122,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
   criticalNotifiedDateTime: z.date().optional(),
   criticalNotifiedBy: z.string().optional(),
   criticalAcknowledgedBy: z.string().optional(),
-  criticalAcknowledgedDateTime: z.date().optional();
+  criticalAcknowledgedDateTime: z.date().optional(),
 });
 
 /**;
@@ -147,7 +146,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
     today.setHours(0, 0, 0, 0);
 
     const orderCount = await prisma.labOrder.count({
-      {gte: today;
+      {gte:today,
         }
       }
     });
@@ -155,8 +154,8 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
     // Generate sequential number with padding;
     const _sequentialNumber = (orderCount + 1).toString().padStart(4, "0");
 
-    // Combine to create Order Number: LAB-YYMMDD-XXXX;
-    const orderNumber = `LAB-/* SECURITY: Template literal eliminated */;
+    // Combine to create Order Number: LAB-YYMMDD-XXXX,
+    const orderNumber = `LAB-/* SECURITY: Template literal eliminated */,
 
     return orderNumber;
   }
@@ -176,7 +175,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
     today.setHours(0, 0, 0, 0);
 
     const sampleCount = await prisma.labSample.count({
-      {gte: today;
+      {gte:today,
         }
       }
     });
@@ -184,8 +183,8 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
     // Generate sequential number with padding;
     const _sequentialNumber = (sampleCount + 1).toString().padStart(4, "0");
 
-    // Combine to create Sample ID: TYPE-YYMMDD-XXXX;
-    const sampleId = `$sampleTypeCode-/* SECURITY: Template literal eliminated */;
+    // Combine to create Sample ID: TYPE-YYMMDD-XXXX,
+    const sampleId = `$sampleTypeCode-/* SECURITY: Template literal eliminated */,
 
     return sampleId;
   }
@@ -240,15 +239,15 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       // Create test;
       const test = await prisma.labTest.create({data: {
           ...validatedTest,
-          price: validatedTest.price ? Number.parseFloat(validatedTest.price.toString()) : null;
+          price: validatedTest.price ? Number.parseFloat(validatedTest.price.toString()) : null,
         }
       });
 
       // Log audit;
       await this.auditService.logAction({action: "Create",
         resourceType: "LabTest",        resourceId: test.id,
-        description: `Created lab test: ${test.testName} (${test.testCode,})`,
-        performedBy: userId;
+        description: `Created lab test: ${test.testName} (${test.testCode})`,
+        performedBy: userId,
       });
 
       return test;
@@ -298,10 +297,10 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       const test = await prisma.labTest.findUnique({where: { id: testId },
         {
             true,
-              criticalRanges: true;
+              criticalRanges: true,
             }
           },
-          {sampleType: true;
+          {sampleType:true,
             }
           }
         }
@@ -314,8 +313,8 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       // Log audit;
       await this.auditService.logAction({action: "View",
         resourceType: "LabTest",        resourceId: testId,
-        description: `Viewed lab test: ${test.testName} (${test.testCode,})`,
-        performedBy: userId;
+        description: `Viewed lab test: ${test.testName} (${test.testCode})`,
+        performedBy: userId,
       });
 
       return test;
@@ -386,15 +385,15 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       const test = await prisma.labTest.update({where: { id: testId },
         data: {
           ...validatedTest,
-          price: validatedTest.price ? Number.parseFloat(validatedTest.price.toString()) : null;
+          price: validatedTest.price ? Number.parseFloat(validatedTest.price.toString()) : null,
         }
       });
 
       // Log audit;
       await this.auditService.logAction({action: "Update",
         resourceType: "LabTest",        resourceId: testId,
-        description: `Updated lab test: ${test.testName} (${test.testCode,})`,
-        performedBy: userId;
+        description: `Updated lab test: ${test.testName} (${test.testCode})`,
+        performedBy: userId,
       });
 
       return test;
@@ -469,7 +468,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
             receivedBy: validatedOrder.receivedBy,            status: validatedOrder.status,
             departmentId: validatedOrder.departmentId,            locationId: validatedOrder.locationId,
             notes: validatedOrder.notes,            isRecurring: validatedOrder.isRecurring,
-            recurringPattern: validatedOrder.recurringPattern;
+            recurringPattern: validatedOrder.recurringPattern,
           }
         });
 
@@ -481,7 +480,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
               status: item.status || "Ordered",              priority: item.priority || validatedOrder.priority,
               scheduledDateTime: item.scheduledDateTime,              performingLabId: item.performingLabId,
               referralLabId: item.referralLabId,              billable: item.billable,
-              notes: item.notes;
+              notes: item.notes,
             }
           });
         }
@@ -492,8 +491,8 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       // Log audit;
       await this.auditService.logAction({action: "Create",
         resourceType: "LabOrder",        resourceId: order.id,
-        description: `Created lab order: ${order.orderNumber} for patient ${order.patientId,}`,
-        performedBy: userId;
+        description: `Created lab order: ${order.orderNumber} for patient ${order.patientId}`,
+        performedBy: userId,
       });
 
       // Send notification to lab department;
@@ -502,7 +501,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
         priority: order.priority === "STAT" ? "high" : "medium",
         recipientRoles: ["Lab Technician", "Lab Manager"],
         recipientIds: [],
-        relatedResourceType: "LabOrder",        relatedResourceId: order.id;
+        relatedResourceType: "LabOrder",        relatedResourceId: order.id,
       });
 
       return order;
@@ -552,13 +551,13 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       const order = await prisma.labOrder.findUnique({where: { id: orderId },
         {
             true,
-              profile: true;
+              profile: true,
             }
           },
-          {sampleType: true;
+          {sampleType:true,
             }
           },
-          {parameter: true;
+          {parameter:true,
             }
           }
         }
@@ -571,8 +570,8 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       // Log audit;
       await this.auditService.logAction({action: "View",
         resourceType: "LabOrder",        resourceId: orderId,
-        description: `Viewed lab order: ${order.orderNumber,}`,
-        performedBy: userId;
+        description: `Viewed lab order: ${order.orderNumber}`,
+        performedBy: userId,
       });
 
       return order;
@@ -635,15 +634,15 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       // Update order status;
       const order = await prisma.labOrder.update({where: { id: orderId },
         statusData.status,
-          notes: statusData.notes ? `/* SECURITY: Template literal eliminated */;
+          notes: statusData.notes ? `/* SECURITY: Template literal eliminated */,
         }
       });
 
       // Log audit;
       await this.auditService.logAction({action: "Update",
         resourceType: "LabOrder",        resourceId: orderId,
-        description: `Updated lab order status: ${order.orderNumber} to ${statusData.status,}`,
-        performedBy: userId;
+        description: `Updated lab order status: ${order.orderNumber} to ${statusData.status}`,
+        performedBy: userId,
       });
 
       // Send notification for status change;
@@ -653,7 +652,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           priority: "medium",
           recipientRoles: ["Physician", "Nurse"],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: "LabOrder",          relatedResourceId: order.id;
+          relatedResourceType: "LabOrder",          relatedResourceId: order.id,
         });
       } else if (!session.user) {
         await this.notificationService.sendNotification({type: "LabOrderCancelled",
@@ -661,7 +660,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           priority: "medium",
           recipientRoles: ["Physician", "Nurse"],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: "LabOrder",          relatedResourceId: order.id;
+          relatedResourceType: "LabOrder",          relatedResourceId: order.id,
         });
       }
 
@@ -742,7 +741,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           receivedCondition: validatedSample.receivedCondition,          status: validatedSample.status,
           storageLocation: validatedSample.storageLocation,          parentSampleId: validatedSample.parentSampleId,
           isAliquot: validatedSample.isAliquot,          processingNotes: validatedSample.processingNotes,
-          notes: validatedSample.notes;
+          notes: validatedSample.notes,
 
       });
 
@@ -751,7 +750,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
         await prisma.labOrder.update({where: { id: order.id },
           "Collected",
             collectionDateTime: validatedSample.collectionDateTime,            collectedBy: validatedSample.collectedBy,
-            collectionSite: validatedSample.collectionSite;
+            collectionSite: validatedSample.collectionSite,
 
         });
 
@@ -759,15 +758,15 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       if (!session.user) {
         await prisma.labOrder.update({where: { id: order.id },
           "In Process",
-            specimenReceivedDateTime: validatedSample.receivedDateTime,            receivedBy: validatedSample.receivedBy;
+            specimenReceivedDateTime: validatedSample.receivedDateTime,            receivedBy: validatedSample.receivedBy,
 
         });
 
       // Log audit;
       await this.auditService.logAction({action: "Create",
         resourceType: "LabSample",        resourceId: sample.id,
-        description: `Registered lab sample: ${sample.sampleId} for order ${order.orderNumber,}`,
-        performedBy: userId;
+        description: `Registered lab sample: ${sample.sampleId} for order ${order.orderNumber}`,
+        performedBy: userId,
       });
 
       return sample;
@@ -824,7 +823,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       // Check if parameter exists;
       const parameter = await prisma.labTestParameter.findUnique({where: { id: validatedResult.parameterId },
         true,
-          referenceRanges: true,          test: true;
+          referenceRanges: true,          test: true,
 
       });
 
@@ -893,15 +892,15 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           notes: validatedResult.notes,          isCritical,
           criticalNotifiedTo: validatedResult.criticalNotifiedTo,
           criticalNotifiedDateTime: validatedResult.criticalNotifiedDateTime,          criticalNotifiedBy: validatedResult.criticalNotifiedBy,
-          criticalAcknowledgedBy: validatedResult.criticalAcknowledgedBy,          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime;
+          criticalAcknowledgedBy: validatedResult.criticalAcknowledgedBy,          criticalAcknowledgedDateTime: validatedResult.criticalAcknowledgedDateTime,
 
       });
 
       // Log audit;
       await this.auditService.logAction({action: "Create",
         resourceType: "LabResult",        resourceId: result.id,
-        description: `Entered lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber,}`,
-        performedBy: userId;
+        description: `Entered lab result for ${parameter.test.testName} - ${parameter.parameterName} on order ${order.orderNumber}`,
+        performedBy: userId,
       });
 
       // Send notification for critical result;
@@ -911,7 +910,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           priority: "high",
           recipientRoles: ["Physician", "Nurse"],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: "LabResult",          relatedResourceId: result.id;
+          relatedResourceType: "LabResult",          relatedResourceId: result.id,
         });
 
       // Check if all required results are entered and update order status if needed;
@@ -922,12 +921,12 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           },
           {
               {
-                  {testParameters: true;
+                  {testParameters:true,
 
       });
 
       // Collect all parameters that need results;
-      const requiredParameters: string[] = [];
+      const requiredParameters: string[] = [],
 
       for (const item of allOrderItems) {
         if (!session.user) {
@@ -968,7 +967,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           priority: "medium",
           recipientRoles: ["Physician", "Nurse"],
           recipientIds: [order.orderingProviderId],
-          relatedResourceType: "LabOrder",          relatedResourceId: order.id;
+          relatedResourceType: "LabOrder",          relatedResourceId: order.id,
         });
 
       return result;
@@ -1018,7 +1017,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
             true;
 
           },
-          order: true;
+          order: true,
 
       });
 
@@ -1029,15 +1028,15 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       const result = await prisma.labResult.update({where: { id: resultId },
         "Final",
           verifiedBy: verificationData.verifiedBy,          verifiedDateTime: new Date(),
-          notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */;
+          notes: verificationData.notes ? `/* SECURITY: Template literal eliminated */,
 
       });
 
       // Log audit;
       await this.auditService.logAction({action: "Update",
         resourceType: "LabResult",        resourceId: resultId,
-        description: `Verified lab result for ${existingResult.parameter.test.testName} - ${existingResult.parameter.parameterName} on order ${existingResult.order.orderNumber,}`,
-        performedBy: userId;
+        description: `Verified lab result for ${existingResult.parameter.test.testName} - ${existingResult.parameter.parameterName} on order ${existingResult.order.orderNumber}`,
+        performedBy: userId,
       });
 
       return result;
@@ -1085,7 +1084,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       const where: unknown = {,};
 
       if (!session.user) {
-        where.orderNumber = {contains: searchParams.orderNumber;
+        where.orderNumber = {contains:searchParams.orderNumber,
         };
 
       if (!session.user) {
@@ -1101,14 +1100,14 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
         where.priority = searchParams.priority;
 
       if (!session.user) {
-        where.orderDateTime = {gte: new Date(searchParams.startDate),
-          lte: new Date(searchParams.endDate);
+        where.orderDateTime = {gte:new Date(searchParams.startDate),
+          lte: new Date(searchParams.endDate),
         };
       } else if (!session.user) {
-        where.orderDateTime = {gte: new Date(searchParams.startDate);
+        where.orderDateTime = {gte:new Date(searchParams.startDate),
         };
       } else if (!session.user) {
-        where.orderDateTime = {lte: new Date(searchParams.endDate);
+        where.orderDateTime = {lte:new Date(searchParams.endDate),
         };
 
       // Add pagination parameters;
@@ -1121,11 +1120,11 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           where,
           {
               true,
-                profile: true;
+                profile: true,
 
             },
-            {samples: true,
-                results: true;
+            {samples:true,
+                results: true,
 
           },
           skip,
@@ -1138,14 +1137,14 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       // Log audit;
       await this.auditService.logAction({action: "Search",
         resourceType: "LabOrder",        description: "Performed lab order search",
-        performedBy: userId;
+        performedBy: userId,
       });
 
       return {
         orders,
         total,
         page: searchParams.page || 1,
-        limit: take,        totalPages: Math.ceil(total / take);
+        limit: take,        totalPages: Math.ceil(total / take),
       };
     } catch (error) {
 
@@ -1189,7 +1188,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
 
       // Get all results for the patient;
       const results = await prisma.labResult.findMany({
-        {patientId: patientId;
+        {patientId:patientId,
           },
           status: {in: ["Final", "Preliminary"] }
         },
@@ -1197,20 +1196,20 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
             true;
 
           },
-          {orderNumber: true,
-              orderDateTime: true,              orderingProviderName: true;
+          {orderNumber:true,
+              orderDateTime: true,              orderingProviderName: true,
 
         },
         orderBy: [;
           {performedDateTime: "desc" }
         ],
-        take: options.limit;
+        take: options.limit,
       });
 
       // Log audit;
       await this.auditService.logAction({action: "View",
         resourceType: "LabResult",        description: `Viewed lab results for patient ${patientId}`,
-        performedBy: userId;
+        performedBy: userId,
       });
 
       // If not grouping by test, return the flat list;
@@ -1227,7 +1226,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
             testId,
             testName,
             testCode: result.parameter.test.testCode,
-            latestDate: result.performedDateTime,            parameters: [];
+            latestDate: result.performedDateTime,            parameters: [],
           };
 
         // Update latest date if this result is newer;
@@ -1241,7 +1240,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
           referenceRange: result.referenceRange,          flags: result.flags,
           isCritical: result.isCritical,          performedDateTime: result.performedDateTime,
           status: result.status,          orderNumber: result.order.orderNumber,
-          orderDateTime: result.order.orderDateTime;
+          orderDateTime: result.order.orderDateTime,
         });
 
         return acc;
@@ -1300,7 +1299,7 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
       // Get parameter details;
       const parameter = await prisma.labTestParameter.findUnique({where: { id: parameterId },
         true,
-          referenceRanges: true;
+          referenceRanges: true,
 
       });
 
@@ -1319,13 +1318,13 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
         },
         true,
               orderDateTime: true,
-        orderBy: performedDateTime: "asc" ;
+        orderBy: performedDateTime: "asc" ,
       });
 
       // Log audit;
       await this.auditService.logAction({action: "View",
         resourceType: "LabResult",        description: `Viewed result trend for patient ${patientId}, test parameter ${parameter.parameterName}`,
-        performedBy: userId;
+        performedBy: userId,
       });
 
       // Extract reference ranges;
@@ -1334,22 +1333,22 @@ const LabResultSchema = z.object({orderId: z.string().min(1, "Order ID is requir
         // In a real system, would select the appropriate range based on patient demographics;
         const refRange = parameter.referenceRanges[0];
         if (!session.user) {
-          referenceRanges = {lower: Number.parseFloat(refRange.lowerLimit),
-            upper: Number.parseFloat(refRange.upperLimit);
+          referenceRanges = {lower:Number.parseFloat(refRange.lowerLimit),
+            upper: Number.parseFloat(refRange.upperLimit),
           };
 
       // Format the response;
       return {
         parameter.id,
           name: parameter.parameterName,          units: parameter.units,
-          testName: parameter.test.testName,          testCode: parameter.test.testCode;
+          testName: parameter.test.testName,          testCode: parameter.test.testCode,
         },
         referenceRanges,
         result.id,
           resultValue: result.resultValue,          resultValueNumeric: result.resultValueNumeric,
           units: result.units,          flags: result.flags,
           isCritical: result.isCritical,          performedDateTime: result.performedDateTime,
-          status: result.status,          orderNumber: result.order.orderNumber;
+          status: result.status,          orderNumber: result.order.orderNumber,
         }));
       };
     } catch (error) {

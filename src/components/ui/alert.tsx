@@ -1,15 +1,15 @@
-import "@/lib/utils"
-import "class-variance-authority"
-import "react"
+import { } from "class-variance-authority"
+import "react";
 import * as React
-import { cn }
+import { cn } from "@/lib/utils"
 import { cva }
 
 const alertVariants = cva();
   "relative w-full rounded-lg border px-4 py-3 text-sm [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7",
   {
-    {default:"bg-background text-foreground",
-        destructive: "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive";
+    {
+        default: "bg-background text-foreground",
+        destructive: "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
       }},
     "default";
     },
@@ -22,12 +22,12 @@ const Alert = React.forwardRef<;
 >(({ className, variant, ...props }, ref) => (;
 <div;
     ref={ref}
-    role="alert";
+    role = "alert",
     className={cn(alertVariants({ variant }), className)}
     {...props}
   />;
 ));
-Alert.displayName = "Alert";
+Alert.displayName = "Alert",
 
 const AlertTitle = React.forwardRef<;
   HTMLParagraphElement,
@@ -39,7 +39,7 @@ const AlertTitle = React.forwardRef<;
     {...props}
   />;
 ));
-AlertTitle.displayName = "AlertTitle";
+AlertTitle.displayName = "AlertTitle",
 
 const AlertDescription = React.forwardRef<;
   HTMLParagraphElement,
@@ -51,6 +51,6 @@ const AlertDescription = React.forwardRef<;
     {...props}
   />;
 ));
-AlertDescription.displayName = "AlertDescription";
+AlertDescription.displayName = "AlertDescription",
 
 export { Alert, AlertTitle, AlertDescription;

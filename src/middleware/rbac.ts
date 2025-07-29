@@ -1,13 +1,12 @@
-import "@/lib/auth/auth-service"
-import "@/lib/logger"
-import "@prisma/client"
-import "next/server"
+import { } from "@/lib/logger"
+import "@prisma/client";
+import "next/server";
 import NextRequest
-import NextResponse }
-import {AuthService  } from "next/server"
-import {logger  } from "next/server"
-import {type
-import {  UserRole  } from "next/server"
+import NextResponse } from "@/lib/auth/auth-service"
+import {  AuthService  } from "@/lib/database"
+import {  logger  } from "@/lib/database"
+import {   type
+import {  UserRole  } from "@/lib/database"
 
 // src/middleware/rbac.ts;
 }
@@ -121,5 +120,5 @@ export const _requireDoctor = createRBACMiddleware({roles: [UserRole.DOCTOR, Use
 export const _requireMedicalStaff = createRBACMiddleware({roles: [UserRole.DOCTOR, UserRole.NURSE, UserRole.ADMIN, UserRole.SUPER_ADMIN];
 });
 
-export const _requirePatientAccess = createRBACMiddleware({permissions: ["patient:read"];
+export const _requirePatientAccess = createRBACMiddleware({permissions:["patient:read"],
 });

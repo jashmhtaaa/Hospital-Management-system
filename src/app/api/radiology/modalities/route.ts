@@ -1,15 +1,14 @@
-import "@/lib/auth"
-import "@/lib/session"
-import "@cloudflare/workers-types"
-import "nanoid"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {checkUserRole  } from "next/server"
-import {D1Database  } from "next/server"
-import {getSession  } from "next/server"
-import {nanoid  } from "next/server"
-import {type
+import { } from "@/lib/session"
+import "@cloudflare/workers-types";
+import "nanoid";
+import "next/server";
+import { NextRequest } from "@/lib/auth"
+import { NextResponse } from "next/server" }
+import {  checkUserRole  } from "@/lib/database"
+import {  D1Database  } from "@/lib/database"
+import {  getSession  } from "@/lib/database"
+import {  nanoid  } from "@/lib/database"
+import {   type
 
 // Define interface for {
     POST request body;
@@ -64,8 +63,8 @@ export const _GET = async (request: any) => {,
       "SELECT * FROM RadiologyModalities ORDER BY name ASC";
     ).all();
     return NextResponse.json(results);
-  } catch (error: unknown) {,
-    // FIX: Use unknown instead of any;
+  } catch (error: unknown) {
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     return NextResponse.json();
@@ -149,8 +148,8 @@ export const _POST = async (request: any) => {,
       { id, status: "Radiology modality created" },
       {status: 201 }
     );
-  } catch (error: unknown) {,
-    // FIX: Use unknown instead of any;
+  } catch (error: unknown) {
+    // FIX: Use unknown instead of any,
     const errorMessage = error instanceof Error ? error.message : String(error),
 
     if (!session.user) {

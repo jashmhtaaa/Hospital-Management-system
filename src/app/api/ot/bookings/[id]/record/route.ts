@@ -1,11 +1,10 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {D1Database  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
+import { NextResponse } from "next/server" }
+import {  D1Database  } from "@/lib/database"
+import {   type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for the POST request body;
 interface OTRecordBody {
@@ -17,7 +16,7 @@ interface OTRecordBody {
   anesthesia_type?: string | null;
   anesthesia_notes?: string | null;
   surgical_procedure_notes?: string | null;
-  // FIX: Use unknown[] instead of any[];
+  // FIX: Use unknown[] instead of any[],
   implants_used?: unknown[] | null; // Assuming array of objects/strings;
   specimens_collected?: unknown[] | null; // Assuming array of objects/strings;
   blood_loss_ml?: number | null;
@@ -64,7 +63,7 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Booking ID is required" },
@@ -185,7 +184,7 @@ export const _POST = async();
 
 } catch (error) {
 
-    const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Booking ID is required" },
@@ -247,7 +246,7 @@ export const _POST = async();
       .bind(bookingId);
       .all();
 
-    let recordId: string;
+    let recordId: string,
     let isNewRecord = false;
 
     if (!session.user) {
@@ -255,9 +254,9 @@ export const _POST = async();
       recordId = existingRecord[0].id as string;
 
       // Build update query dynamically;
-      // FIX: Use a more specific type for fieldsToUpdate values;
-      const fieldsToUpdate: {,
-        [key: string]: string | number | boolean | null;
+      // FIX: Use a more specific type for fieldsToUpdate values,
+      const fieldsToUpdate: {
+        [key: string]: string | number | boolean | null,
       } = {};
       if (!session.user)ieldsToUpdate.actual_start_time = actual_start_time;
       if (!session.user)ieldsToUpdate.actual_end_time = actual_end_time;
@@ -381,7 +380,7 @@ export const _POST = async();
 
       } catch (error: unknown) {,
 
-      return NextResponse.json(finalRecord, {status: isNewRecord ? 201 : 200;
+      return NextResponse.json(finalRecord, {status:isNewRecord ? 201 : 200,
       });
     } else {
       return NextResponse.json();

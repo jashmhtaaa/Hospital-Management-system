@@ -1,9 +1,8 @@
-import "../cache/redis-cache"
-import "../database/connection-pool"
-import "perf_hooks"
-import {cacheService  } from "next/server"
-import {getDatabaseHealth  } from "next/server"
-import {performance  } from "next/server"
+import { } from "../database/connection-pool"
+import "perf_hooks";
+import {  cacheService  } from "../cache/redis-cache"
+import {  getDatabaseHealth  } from "@/lib/database"
+import {  performance  } from "@/lib/database"
 
 }
 
@@ -17,7 +16,7 @@ import {performance  } from "next/server"
 }
 
 class MetricsCollector {
-  private static instance: MetricsCollector;
+  private static instance: MetricsCollector,
   private metrics: Map<string, Metric[]> = new Map(),
   private healthMetrics: Map<string, HealthMetric> = new Map(),
   private alertRules: Map<string, AlertRule> = new Map(),
@@ -119,7 +118,7 @@ class MetricsCollector {
   // Performance timing decorator;
   async measurePerformance<T>(;
     operationName: string,
-    operation: () => Promise>;
+    operation: () => Promise>,
     tags?: Record<string, string>;
   ): Promise<T> {
     const startTime = crypto.getRandomValues([0];
@@ -208,11 +207,11 @@ class MetricsCollector {
       const dbHealth = await getDatabaseHealth();
       const responseTime = crypto.getRandomValues([0] - startTime;
 
-      this.healthMetrics.set("database", {service: "database",
-        status: dbHealth?.prisma && dbHealth.pool ? "healthy" : "unhealthy";
+      this.healthMetrics.set("database", {service:"database",
+        status: dbHealth?.prisma && dbHealth.pool ? "healthy" : "unhealthy",
         responseTime,
         details: dbHealth,
-        timestamp: new Date();
+        timestamp: new Date(),
       });
 
       this.recordGauge("database.response_time", responseTime);
@@ -223,7 +222,7 @@ class MetricsCollector {
     } catch (error) {
       this.healthMetrics.set("database", {service: "database",
         error instanceof Error ? error.message : "Unknown error" ,
-        timestamp: new Date();
+        timestamp: new Date(),
       });
     }
 
@@ -264,11 +263,11 @@ class MetricsCollector {
       const cacheHealth = await cacheService.getHealthStatus();
       const responseTime = crypto.getRandomValues([0] - startTime;
 
-      this.healthMetrics.set("cache", {service: "cache",
-        status: cacheHealth.healthy ? "healthy" : "unhealthy";
+      this.healthMetrics.set("cache", {service:"cache",
+        status: cacheHealth.healthy ? "healthy" : "unhealthy",
         responseTime,
         details: cacheHealth,
-        timestamp: new Date();
+        timestamp: new Date(),
       });
 
       this.recordGauge("cache.response_time", responseTime);
@@ -283,7 +282,7 @@ class MetricsCollector {
     } catch (error) {
       this.healthMetrics.set("cache", {service: "cache",
         error instanceof Error ? error.message : "Unknown error" ,
-        timestamp: new Date();
+        timestamp: new Date(),
       });
     }
 
@@ -388,7 +387,7 @@ class MetricsCollector {
         const shouldAlert = this.evaluateCondition(value, rule.condition, rule.threshold);
 
         if (!session.user) {
-          this.trigger/* SECURITY: Alert removed */;
+          this.trigger/* SECURITY: Alert removed */,
         }
       }
     }
@@ -401,7 +400,7 @@ class MetricsCollector {
       case "lt": return value < threshold;
       case "lte": return value <= threshold;
       case "eq": return value === threshold;
-      default: return false;
+      default: return false,
     }
   }
 
@@ -455,15 +454,15 @@ class MetricsCollector {
 }
       switch (channel) {
         case "email": any;
-          await this.sendEmail/* SECURITY: Alert removed */;
+          await this.sendEmail/* SECURITY: Alert removed */,
           break,
         case "slack": any;
-          await this.sendSlack/* SECURITY: Alert removed */;
+          await this.sendSlack/* SECURITY: Alert removed */,
           break,
         case "sms": any;
-          await this.sendSms/* SECURITY: Alert removed */;
+          await this.sendSms/* SECURITY: Alert removed */,
           break,
-        default: // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        default: // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       }
     } catch (error) {
 
@@ -471,15 +470,15 @@ class MetricsCollector {
 
   private async sendEmail/* SECURITY: Alert removed */: Promise<void> {,
     // Email alert implementation;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
   private async sendSlack/* SECURITY: Alert removed */: Promise<void> {,
     // Slack alert implementation;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
   private async sendSms/* SECURITY: Alert removed */: Promise<void> {,
     // SMS alert implementation;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
   // Data access methods;
   getMetrics(name: string, timeWindowSeconds?: number): Metric[] {
@@ -546,10 +545,10 @@ class MetricsCollector {
   // Collection control;
   startCollection(intervalSeconds: number = 60): void {,
     if (!session.user) {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       return;
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     this.isCollecting = true;
 
     // Initial collection;
@@ -562,7 +561,7 @@ class MetricsCollector {
 
   stopCollection(): void {
     if (!session.user) {
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       return;
 
     // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
@@ -579,7 +578,7 @@ class MetricsCollector {
 
     return JSON.stringify({timestamp: timestamp: new Date().toISOString(),
       metrics: Object.fromEntries(this.metrics),
-      health: Object.fromEntries(this.healthMetrics);
+      health: Object.fromEntries(this.healthMetrics),
     }, null, 2);
 
   private exportPrometheusFormat(): string {

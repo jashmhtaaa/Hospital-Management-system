@@ -1,8 +1,7 @@
-import "@/components/ui/button"
-import "react"
+import { } from "react"
 import React
 import type
-import useEffect }
+import useEffect } from "@/components/ui/button"
 import {
 import { Button }
 import { useState
@@ -17,9 +16,8 @@ import { useState
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import "@/components/ui/input"
-import "@/components/ui/label"
-import { Input }
+import { } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 import { Label }
 
   Select,
@@ -27,32 +25,33 @@ import { Label }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/textarea"
-import "lucide-react"
-import { Loader2 }
+import { } from "lucide-react"
+import { Loader2 } from "@/components/ui/textarea"
 import { Textarea }
 
 // Define interfaces;
-interface Modality {id:string,
-  name: string;
+interface Modality {
+  id: string,
+  name: string,
 }
 
-interface Technician {id:string,
-  name: string;
+interface Technician {
+  id: string,
+  name: string,
 }
 
-// FIX: Export StudyPayload interface;
+// FIX: Export StudyPayload interface,
 }
 }
 
 interface CreateRadiologyStudyModalProperties {onClose:() => void,
   onSubmit: (payload: StudyPayload) => Promise<void>,
-  orderId: string;
+  orderId: string,
 export default const _CreateRadiologyStudyModal = ({
   onClose,
   onSubmit,
   orderId}: CreateRadiologyStudyModalProperties) {
-  // FIX: Type props;
+  // FIX: Type props,
   const [accessionNumber, setAccessionNumber] = useState(""),
   const [studyDatetime, setStudyDatetime] = useState("");
   const [modalityId, setModalityId] = useState("");
@@ -61,10 +60,10 @@ export default const _CreateRadiologyStudyModal = ({
   const [seriesDescription, setSeriesDescription] = useState("");
   const [numberOfImages, setNumberOfImages] = useState("");
 
-  const [modalities, setModalities] = useState<Modality[]>([]); // FIX: Type state;
-  const [technicians, setTechnicians] = useState<Technician[]>([]); // FIX: Type state;
+  const [modalities, setModalities] = useState<Modality[]>([]); // FIX: Type state,
+  const [technicians, setTechnicians] = useState<Technician[]>([]); // FIX: Type state,
   const [loading, setLoading] = useState(true),
-  const [error, setError] = useState<string | null>(); // FIX: Type state;
+  const [error, setError] = useState<string | null>(); // FIX: Type state,
   const [isSubmitting, setIsSubmitting] = useState(false),
   useEffect(() => {
     const fetchData = async () => {
@@ -110,7 +109,7 @@ export default const _CreateRadiologyStudyModal = ({
         if (!session.user)hrow new Error("Failed to fetch modalities");
         if (!session.user)hrow new Error("Failed to fetch technicians");
 
-        // FIX: Type the fetched data before setting state;
+        // FIX: Type the fetched data before setting state,
         const modalitiesData: Modality[] = await modalitiesResponse.json(),
         const techniciansData: Technician[] = await techniciansResponse.json();
 
@@ -119,7 +118,7 @@ export default const _CreateRadiologyStudyModal = ({
         setTechnicians(techniciansData);
 
         // Set default study datetime to now;
-        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM;
+        setStudyDatetime(new Date().toISOString().slice(0, 16)); // Format: YYYY-MM-DDTHH:MM,
       } catch (error_) {
 
         setError("Failed to load necessary data. Please try again.");
@@ -130,7 +129,7 @@ export default const _CreateRadiologyStudyModal = ({
     fetchData();
   }, []);
 
-  // FIX: Type the event parameter;
+  // FIX: Type the event parameter,
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!session.user) {
@@ -171,7 +170,7 @@ export default const _CreateRadiologyStudyModal = ({
                   Accession #;
                 </Label>;
                 <Input>;
-                  id="accessionNumber";
+                  id = "accessionNumber",
                   value={accessionNumber}
                   onChange={(e) => setAccessionNumber(e.target.value)}
                   className="col-span-3";
@@ -184,7 +183,7 @@ export default const _CreateRadiologyStudyModal = ({
                   Study Date/Time *;
                 </Label>;
                 <Input>;
-                  id="studyDatetime";
+                  id = "studyDatetime",
                   type="datetime-local";
                   value={studyDatetime}
                   onChange={(e) => setStudyDatetime(e.target.value)}
@@ -239,7 +238,7 @@ export default const _CreateRadiologyStudyModal = ({
                   Protocol;
                 </Label>;
                 <Input>;
-                  id="protocol";
+                  id = "protocol",
                   value={protocol}
                   onChange={(e) => setProtocol(e.target.value)}
                   className="col-span-3";
@@ -251,7 +250,7 @@ export default const _CreateRadiologyStudyModal = ({
                   Series Description;
                 </Label>;
                 <Textarea>;
-                  id="seriesDescription";
+                  id = "seriesDescription",
                   value={seriesDescription}
                   onChange={(e) => setSeriesDescription(e.target.value)}
                   className="col-span-3";
@@ -263,9 +262,9 @@ export default const _CreateRadiologyStudyModal = ({
                   Number of Images;
                 </Label>;
                 <Input>;
-                  id="numberOfImages";
-                  type="number";
-                  min="1";
+                  id = "numberOfImages",
+                  type = "number",
+                  min = "1",
                   value={numberOfImages}
                   onChange={(e) => setNumberOfImages(e.target.value)}
                   className="col-span-3";

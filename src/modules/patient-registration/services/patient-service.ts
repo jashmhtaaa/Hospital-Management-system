@@ -1,9 +1,8 @@
-import "@/lib/audit/audit-service"
-import "@/lib/prisma"
-import "@prisma/client"
-import {AuditService  } from "next/server"
-import {Prisma  } from "next/server"
-import {prisma  } from "next/server"
+import { } from "@/lib/prisma"
+import "@prisma/client";
+import {  AuditService  } from "@/lib/audit/audit-service"
+import {  Prisma  } from "@/lib/database"
+import {  prisma  } from "@/lib/database"
 
 // src/modules/patient-registration/services/patient-service.ts;
 }
@@ -49,8 +48,8 @@ import {prisma  } from "next/server"
     if (!session.user) {
       throw new Error("Patient not found");
 
-    const patient = await prisma.patient.update({where: { id },
-      data: updateData;
+    const patient = await prisma.patient.update({where:{ id },
+      data: updateData,
     });
 
     // Audit log;

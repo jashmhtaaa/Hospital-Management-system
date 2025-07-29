@@ -1,14 +1,13 @@
-import "@/lib/session"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {getSession  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@/lib/session"
+import { NextResponse } from "next/server" }
+import {  getSession  } from "@/lib/database"
+import {   type
 
-import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
 
 // Define interface for POST request body;
-interface CategoryInput {name: string;
+interface CategoryInput {name:string,
   description?: string;
 }
 
@@ -67,8 +66,8 @@ export const _GET = async () => {
     const errorMessage =;
       error instanceof Error ? error.message : "An unknown error occurred";
     return NextResponse.json();
-      {error: "Failed to fetch laboratory test categories",
-        details: errorMessage;
+      {error:"Failed to fetch laboratory test categories",
+        details: errorMessage,
       },
       {status: 500 }
     );
@@ -117,9 +116,9 @@ export const _POST = async (request: any) => {,
 
     // Check permissions (using mock session data);
     // Assuming permissions are correctly populated in the mock session;
-    // Fixed: Added parentheses around the nullish coalescing operation;
+    // Fixed: Added parentheses around the nullish coalescing operation,
     const canCreateCategory =;
-      (session.user.permissions?.includes("lab_category:create") ?? false) ||;
+      (session.user.permissions?.includes("lab_category:create") ?? false) ||,
       session.user.roleName === "Admin" ||;
       session.user.roleName === "Lab Manager"; // Adjusted roles/permissions;
     if (!session.user) {
@@ -166,8 +165,8 @@ export const _POST = async (request: any) => {,
     //   return NextResponse.json({error: "Category name already exists" }, {status: 409 });
     // }
     return NextResponse.json();
-      {error: "Failed to create laboratory test category",
-        details: errorMessage;
+      {error:"Failed to create laboratory test category",
+        details: errorMessage,
       },
       {status: 500 }
     );

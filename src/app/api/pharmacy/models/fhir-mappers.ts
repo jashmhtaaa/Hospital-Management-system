@@ -16,11 +16,11 @@ import {/**;
 
   };
   Array>;
-    text: string;
+    text: string,
   };
-  status: "active" | "inactive" | "entered-in-error";
-  manufacturer?: {reference: string,
-    display: string;
+  status: "active" | "inactive" | "entered-in-error",
+  manufacturer?: {reference:string,
+    display: string,
   };
   form?: {
     string;
@@ -28,79 +28,79 @@ import {/**;
   amount?: {
     number,
       string,
-      code: string;
+      code: string,
     };
     number,
       string,
-      code: string;
+      code: string,
 
   };
   ingredient?: Array>;
-      text: string;
+      text: string,
     };
     strength?: {
       number,
         string,
-        code: string;
+        code: string,
       };
       number,
         string,
-        code: string;
+        code: string,
 
     };
   }>;
 
   };
   status: "active" | "on-hold" | "cancelled" | "completed" | "entered-in-error" | "stopped" | "draft" | "unknown",
-  {reference: string,
-    display: string;
+  {reference:string,
+    display: string,
   };
   string,
-    display: string;
+    display: string,
   };
-  encounter?: {reference: string;
+  encounter?: {reference:string,
   };
   authoredOn: string,
   string,
-    display: string;
+    display: string,
   };
-  recorder?: {reference: string,
-    display: string;
+  recorder?: {reference:string,
+    display: string,
   };
   reasonCode?: Array>;
-    text: string;
+    text: string,
   }>;
   dosageInstruction?: Array>;
-        text: string;
+        text: string,
 
     };
     route?: {
       string;
     };
     doseAndRate?: Array>;
-        text: string;
+        text: string,
       };
       doseQuantity?: {value: number,
         string,
-        code: string;
+        code: string,
       };
     }>;
   }>;
   dispenseRequest?: {
-    validityPeriod?: {start: string,
-      end: string;
+    validityPeriod?: {start:string,
+      end: string,
     };
     numberOfRepeatsAllowed?: number;
     quantity?: {value: number,
       string,
-      code: string;
+      code: string,
     };
     expectedSupplyDuration?: {value: number,
       string,
-      code: string;
+      code: string,
 
   };
-  substitution?: {allowedBoolean: boolean;
+  substitution?: {allowedBoolean:boolean,
     reason?: {
       string;
 
@@ -109,10 +109,10 @@ import {/**;
   };
   status: "preparation" | "in-progress" | "cancelled" | "on-hold" | "completed" | "entered-in-error" | "stopped" | "declined" | "unknown",
   string,
-    display: string;
+    display: string,
   };
   string,
-    display: string;
+    display: string,
   };
   performer?: Array>;
   authorizingPrescription?: Array>;
@@ -121,31 +121,31 @@ import {/**;
   };
   quantity?: {value: number,
     string,
-    code: string;
+    code: string,
   };
   daysSupply?: {value: number,
     string,
-    code: string;
+    code: string,
   };
   whenPrepared?: string;
   whenHandedOver?: string;
-  destination?: {reference: string,
-    display: string;
+  destination?: {reference:string,
+    display: string,
   };
   note?: Array>;
   dosageInstruction?: Array>;
-        text: string;
+        text: string,
 
     };
     route?: {
       string;
     };
     doseAndRate?: Array>;
-        text: string;
+        text: string,
       };
       doseQuantity?: {value: number,
         string,
-        code: string;
+        code: string,
       };
     }>;
   }>;
@@ -153,19 +153,19 @@ import {/**;
   };
   status: "in-progress" | "not-done" | "on-hold" | "completed" | "entered-in-error" | "stopped" | "unknown",
   string,
-    display: string;
+    display: string,
   };
   string,
-    display: string;
+    display: string,
   };
-  context?: {reference: string;
+  context?: {reference:string,
   };
-  effectiveDateTime: string;
+  effectiveDateTime: string,
   performer?: Array>;
   reasonCode?: Array>;
-    text: string;
+    text: string,
   }>;
-  request?: {reference: string;
+  request?: {reference:string,
   };
   dosage?: {
     text?: string;
@@ -177,7 +177,7 @@ import {/**;
     };
     dose?: {value: number,
       string,
-      code: string;
+      code: string,
 
   };
   note?: Array>;
@@ -214,16 +214,16 @@ export const _medicationToFHIR = (medication: Medication): FHIRMedication {
         code: medication.unit,
       1,
         "https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm",
-        code: "unit";
+        code: "unit",
 
 /**;
  * Convert FHIR Medication to domain Medication;
  * @param fhirMedication FHIR Medication resource;
  * @returns Domain medication model;
  */;
-export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {,
-  const ndcCoding = fhirMedication.code.coding.find(c => c.system === "https://hl7.org/fhir/sid/ndc");
-  const formCoding = fhirMedication.form?.coding.find(c => c.system === "https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm");
+export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {
+  const ndcCoding = fhirMedication.code.coding.find(c => c.system === "https://hl7.org/fhir/sid/ndc"),
+  const formCoding = fhirMedication.form?.coding.find(c => c.system === "https://terminology.hl7.org/CodeSystem/v3-orderableDrugForm"),
 
   return {id:fhirMedication.id,
     fhirMedication.code.text, // Assuming brand name is the same as display name if not specified;
@@ -231,7 +231,7 @@ export const _fhirToMedication = (fhirMedication: FHIRMedication): Medication {,
     fhirMedication.amount?.numerator.value || 0,
     false, // Default value, would need additional logic to determine;
     isHighAlert: false, // Default value, would need additional logic to determine;
-    manufacturer: fhirMedication.manufacturer?.display;
+    manufacturer: fhirMedication.manufacturer?.display,
   };
 
 /**;
@@ -282,7 +282,7 @@ export const _medicationOrderToFHIR = (;
         ];
     ],
     order.startDate?.toISOString() || order.orderDate.toISOString(),
-        end: order.endDate?.toISOString() ||;
+        end: order.endDate?.toISOString() ||,
           new Date(order.orderDate.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString(),
       numberOfRepeatsAllowed: dosageInfo.refills as number || 0,
       dosageInfo.quantity as number || 1,
@@ -343,8 +343,8 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
 
   // Parse dates;
   const orderDate = new Date(fhirRequest.authoredOn);
-  let startDate: Date | undefined;
-  let endDate: Date | undefined;
+  let startDate: Date | undefined,
+  let endDate: Date | undefined,
 
   if (!session.user) {
     startDate = new Date(dispenseRequest.validityPeriod.start);
@@ -361,11 +361,11 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
   // Extract route;
   const route = dosageInstruction?.route?.text || "oral";
 
-  return {id: fhirRequest.id;
+  return {id:fhirRequest.id,
     patientId,
     providerId,
     medicationId,
-    status: fhirRequest.status;
+    status: fhirRequest.status,
     orderDate,
     dosage,
     frequency,
@@ -373,7 +373,7 @@ export const _fhirToMedicationOrder = (fhirRequest: FHIRMedicationRequest): Medi
     duration,
     startDate,
     endDate,
-    indication: fhirRequest.reasonCode?.[0]?.text;
+    indication: fhirRequest.reasonCode?.[0]?.text,
   };
 
 // Additional mapper functions would be implemented similarly;
@@ -394,14 +394,14 @@ export const _medicationDispenseToFHIR = (;
 ): FHIRMedicationDispense {
   return {resourceType: "MedicationDispense",
     {versionId:"1",
-      lastUpdated: new Date().toISOString();
+      lastUpdated: new Date().toISOString(),
     },
     status: dispense.status,
     `Medication/$dispense.medicationId`,
-      display: medicationName;
+      display: medicationName,
     },
     `Patient/$dispense.patientId`,
-      display: patientName;
+      display: patientName,
     },
     performer: [;
       {
@@ -410,27 +410,24 @@ export const _medicationDispenseToFHIR = (;
 
     ],
     authorizingPrescription: [;
-      {reference: `MedicationRequest/$dispense.prescriptionId`;
-
-    ],
+      { reference: `MedicationRequest/$dispense.prescriptionId`, ],
     dispense.quantity,
       "https://unitsofmeasure.org",
       code: "unit";
-    },
+     },
     dispense.daysSupply,
       "https://unitsofmeasure.org",
-      code: "d";
+      code: "d",
     },
     whenPrepared: dispense.dispenseDate.toISOString(),
     whenHandedOver: dispense.dispenseDate.toISOString(),
     `Location/$dispense.locationId`,
-      display: "Pharmacy";
+      display: "Pharmacy",
     },
     note: dispense.notes ? [;
-      {text: dispense.notes;
+      { text: dispense.notes;
 
-    ] : undefined;
-  };
+    ] : undefined,  };
 
 /**;
  * Convert FHIR MedicationDispense to domain MedicationDispense;
@@ -453,16 +450,16 @@ export const _fhirToMedicationDispense = (fhirDispense: FHIRMedicationDispense):
   // Extract notes;
   const notes = fhirDispense.note?.[0]?.text;
 
-  return {id: fhirDispense.id;
+  return {id:fhirDispense.id,
     patientId,
     providerId: "", // Not directly available in FHIR MedicationDispense;
     medicationId,
     prescriptionId,
     dispenserId,
-    status: fhirDispense.status;
+    status: fhirDispense.status,
     dispenseDate,
     quantity: fhirDispense.quantity?.value || 0,
-    daysSupply: fhirDispense.daysSupply?.value || 0;
+    daysSupply: fhirDispense.daysSupply?.value || 0,
     notes,
     locationId;
   };
@@ -482,14 +479,14 @@ export const _medicationAdministrationToFHIR = (;
 ): FHIRMedicationAdministration {
   return {resourceType: "MedicationAdministration",
     {versionId:"1",
-      lastUpdated: new Date().toISOString();
+      lastUpdated: new Date().toISOString(),
     },
     status: administration.status,
     `Medication/$administration.medicationId`,
-      display: medicationName;
+      display: medicationName,
     },
     `Patient/$administration.patientId`,
-      display: patientName;
+      display: patientName,
     },
     effectiveDateTime: administration.administrationDate.toISOString(),
     performer: [;
@@ -500,14 +497,13 @@ export const _medicationAdministrationToFHIR = (;
     ],
     `MedicationRequest/$administration.prescriptionId`;
     },
-    `/* administration.site ? {coding: [;
-          {system:"https://terminology.hl7.org/CodeSystem/v3-BodySite",
+    `/* administration.site ? { coding: [, {system:"https://terminology.hl7.org/CodeSystem/v3-BodySite",
             code: administration.site.toLowerCase().replace(/\s+/g, "-"),
             display: administration.site;
 
         ],
-        text: administration.site;
-      } : undefined,
+        text: administration.site,
+       } : undefined,
       [;
           {system: "https://terminology.hl7.org/CodeSystem/v3-RouteOfAdministration",
             code: administration.route.toLowerCase().replace(/\s+/g, "-"),
@@ -517,7 +513,7 @@ export const _medicationAdministrationToFHIR = (;
         text: administration.route,
       administration.dosage,
         "https://unitsofmeasure.org",
-        code: administration.unit;
+        code: administration.unit,
     },
     administration.notes;
     ] : undefined;
@@ -547,12 +543,12 @@ export const _fhirToMedicationAdministration = (fhirAdministration: FHIRMedicati
   // Extract notes;
   const notes = fhirAdministration.note?.[0]?.text;
 
-  return {id: fhirAdministration.id;
+  return {id:fhirAdministration.id,
     patientId,
     providerId,
     medicationId,
     prescriptionId,
-    status: fhirAdministration.status;
+    status: fhirAdministration.status,
     administrationDate,
     dosage,
     unit,

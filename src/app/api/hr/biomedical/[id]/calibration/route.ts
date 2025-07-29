@@ -1,21 +1,20 @@
-import "@/lib/hr/biomedical-service"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {biomedicalService  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import { } from "next/server"
+import "zod";
+import { NextRequest } from "@/lib/hr/biomedical-service"
+import { NextResponse } from "next/server" }
+import {  biomedicalService  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 // Schema for calibration record;
-const calibrationSchema = z.object({date: z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid date format";
+const calibrationSchema = z.object({date:z.string().refine(val => !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
   performedBy: z.string().optional(),
   result: z.enum(["PASS", "FAIL", "ADJUSTED"], {errorMap: () => ({message:"Invalid result" })}),
   notes: z.string().optional(),
-  nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message: "Invalid date format";
+  nextCalibrationDate: z.string().optional().refine(val => !val || !isNaN(Date.parse(val)), {message:"Invalid date format",
   }),
-  attachments: z.array(z.string()).optional();
+  attachments: z.array(z.string()).optional(),
 });
 
 // POST handler for recording calibration;

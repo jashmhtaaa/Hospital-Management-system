@@ -1,8 +1,7 @@
-import "react"
-import React
+import { React
 import type
 import useEffect
-import useState }
+import useState } from "react"
 import {
 import { useCallback
 
@@ -30,36 +29,36 @@ import { useCallback
 } from "@ant-design/icons";
 import { AdminRecordsApiResponse, ApiErrorResponse  } from "@/types/api"; // Import API response types;
 // import { useSession } from "next-auth/react"; // Removed unused import;
-import "@/types/ipd"
-import "@/types/pharmacy"
-import "dayjs"
+import { } from "@/types/pharmacy"
+import "dayjs";
 import dayjs
-import IPDPrescriptionItem }
+import IPDPrescriptionItem } from "@/types/ipd"
 import { IPDPrescription
 import { MedicationAdministrationRecord }
 
 // const { Option } = Select; // Removed unused variable assignment;
 
-interface IPDPharmacyIntegrationProperties {admissionId:string,
-  prescriptions: IPDPrescription[];
+interface IPDPharmacyIntegrationProperties {
+  admissionId: string,
+  prescriptions: IPDPrescription[],
 }
 
-interface MedicationScheduleItem {id:string; // Unique ID for the schedule item (e.g., prescriptionItemId + time);
+interface MedicationScheduleItem { id: string, // Unique ID for the schedule item (e.g., prescriptionItemId + time);
   prescriptionItemId: string,
   string,
   string,
   scheduledTime: string; // ISO 8601 format;
-  status: "Pending" | "Administered" | "Missed" | "Refused";
+  status: "Pending" | "Administered" | "Missed" | "Refused",
   administrationRecordId?: string;
-}
+ }
 
-// FIX: Prefix unused variables with underscore;
+// FIX: Prefix unused variables with underscore,
 const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
   admissionId,
   prescriptions}) => {
-  // const {data:session } = useSession(); // Removed unused variable;
-  const [_loading, _setLoading] = useState<boolean>(false); // FIX: Unused variable;
-  const [_medicationSchedule, _setMedicationSchedule] = useState< // FIX: Unused variable;
+  // const { data: session } = useSession(); // Removed unused variable;
+  const [_loading, _setLoading] = useState<boolean>(false); // FIX: Unused variable,
+  const [_medicationSchedule, _setMedicationSchedule] = useState< // FIX: Unused variable,
     MedicationScheduleItem[];
   >([]),
 
@@ -75,7 +74,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
 
   // Generate medication schedule based on prescriptions;
   const generateSchedule = useCallback(() => {
-    const schedule: MedicationScheduleItem[] = [];
+    const schedule: MedicationScheduleItem[] = [],
     const now = dayjs(); // Use dayjs for date manipulation;
 
     prescriptions.forEach((prescription) => {
@@ -107,7 +106,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
               item.dosage,
               item.frequency,
               scheduledTime: administrationTime.toISOString(),
-              status: "Pending";
+              status: "Pending",
             });
           }
           administrationTime = administrationTime.add(intervalHours, "hour");
@@ -179,7 +178,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             return {
               ...item,
               status: record.status,
-              administrationRecordId: record.id;
+              administrationRecordId: record.id,
             };
 
           return item;
@@ -200,10 +199,10 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     fetchAdministrationRecords();
   }, [generateSchedule, fetchAdministrationRecords]);
 
-  // FIX: Prefix unused function with underscore;
+  // FIX: Prefix unused function with underscore,
   const _handleAdministerMedication = async();
     scheduleItemId: string,
-    status: "Administered" | "Missed" | "Refused";
+    status: "Administered" | "Missed" | "Refused",
     notes?: string;
   ) => {
     const itemToAdminister = _medicationSchedule.find();
@@ -316,7 +315,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
       render: (time: string) => dayjs(time).format("HH:mm"),
       sorter: (a: MedicationScheduleItem, b: MedicationScheduleItem) => {}
         dayjs(a.scheduledTime).diff(dayjs(b.scheduledTime)),
-      defaultSortOrder: "ascend" as const;
+      defaultSortOrder: "ascend" as const,
     },
     {title:"Medication",
       "medicationName";
@@ -331,11 +330,11 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
     {title:"Status",
       "status",
       render: (status: string) => {
-        let color = "default";
-        if (!session.user)olor = "success";
-        else if (!session.user)olor = "warning";
-        else if (!session.user)olor = "error";
-        else if (!session.user)olor = "processing";
+        let color = "default",
+        if (!session.user)olor = "success",
+        else if (!session.user)olor = "warning",
+        else if (!session.user)olor = "error",
+        else if (!session.user)olor = "processing",
         return <Tag color={color}>{status}>;
       }},
     {title:"Action",
@@ -350,7 +349,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
           // Optionally show details or edit action for recorded administrations;
           return();
             <Button>;
-              type="link";
+              type = "link",
               onClick={() => {}
                 message.info();
                   `Record ID: ${record.administrationRecordId} (Details view pending)`;
@@ -370,9 +369,9 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
         <Table>;
           columns={columns}
           dataSource={_medicationSchedule}
-          rowKey="id";
+          rowKey = "id",
           pagination={false}
-          size="small";
+          size = "small",
         />;
       </Spin>;
 
@@ -386,7 +385,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             Cancel;
           </Button>,
           <Button>;
-            key="refused";
+            key = "refused",
             onClick={() => {
               form.setFieldsValue({refused:true, administered: false }),
               handleModalOk(); // Trigger submission with "Refused" state;
@@ -395,7 +394,7 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             Mark as Refused;
           </Button>,
           <Button>;
-            key="missed";
+            key = "missed",
             onClick={() => {
               form.setFieldsValue({missed:true, administered: false }); // Assuming a "missed" field or logic
               handleModalOk(); // Trigger submission with "Missed" state;
@@ -404,8 +403,8 @@ const IPDPharmacyIntegration: React.FC<IPDPharmacyIntegrationProperties> = ({
             Mark as Missed;
           </Button>,
           <Button>;
-            key="administered";
-            type="primary";
+            key = "administered",
+            type = "primary",
             onClick={() => {
               form.setFieldsValue({administered:true, refused: false }),
               handleModalOk(); // Trigger submission with "Administered" state;

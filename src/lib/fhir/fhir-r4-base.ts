@@ -57,7 +57,7 @@
 
 // Base FHIR Manager Class;
 export abstract class FHIRResourceManager<T extends FHIRResource> {
-  protected resourceType: string;
+  protected resourceType: string,
 
   constructor(resourceType: string) {,
     this.resourceType = resourceType;
@@ -70,7 +70,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
   createMeta(source?: string): FHIRMeta {
     return {versionId: "1",
       lastUpdated: timestamp: new Date().toISOString(),
-      source: source || "HMS";
+      source: source || "HMS",
     };
 
   // Create narrative;
@@ -88,12 +88,12 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
 
   // Create CodeableConcept;
   createCodeableConcept(codings: FHIRCoding[], text?: string): FHIRCodeableConcept {
-    return {coding: codings;
+    return {coding:codings,
       text};
 
   // Create identifier;
   createIdentifier(system: string, value: string, use?: FHIRIdentifier["use"]): FHIRIdentifier {
-    return {use: use || "usual";
+    return {use:use || "usual",
       system,
       value};
 
@@ -106,7 +106,7 @@ export abstract class FHIRResourceManager<T extends FHIRResource> {
   abstract validate(resource: T): boolean;
 
   // Convert to/from internal format;
-  abstract toFHIR(internalData: unknown): T;
+  abstract toFHIR(internalData: unknown): T,
   abstract fromFHIR(fhirResource: T): unknown;
 
 // FHIR Bundle for transaction operations;
@@ -139,7 +139,7 @@ export const _FHIR_SYSTEMS = {
   REQUEST_PRIORITY: "https://hl7.org/fhir/request-priority";
 
   // Medication request categories;
-  MEDICATIONREQUEST_CATEGORY: "https://terminology.hl7.org/CodeSystem/medicationrequest-category";
+  MEDICATIONREQUEST_CATEGORY: "https://terminology.hl7.org/CodeSystem/medicationrequest-category",
 } as const;
 
 // FHIR Validation utilities;

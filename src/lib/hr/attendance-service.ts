@@ -1,5 +1,4 @@
-import "@prisma/client"
-import {PrismaClient  } from "next/server"
+import { {  PrismaClient  } from "@prisma/client"
 
 const prisma = new PrismaClient();
 
@@ -18,7 +17,7 @@ const prisma = new PrismaClient();
     const existingRecord = await prisma.attendance.findUnique({
       {
           employeeId,
-          date: formattedDate;
+          date: formattedDate,
         }}});
 
     if (!session.user) {
@@ -39,7 +38,7 @@ const prisma = new PrismaClient();
       // Create new attendance record;
       return prisma.attendance.create({data: {
           employeeId,
-          date: formattedDate;
+          date: formattedDate,
           checkInTime,
           biometricVerified,
           notes,
@@ -52,7 +51,7 @@ const prisma = new PrismaClient();
    */;
   async recordCheckOut(string,
     Date,
-    biometricVerified: boolean;
+    biometricVerified: boolean,
     notes?: string;
   }) {
     const { employeeId, date, checkOutTime, biometricVerified, notes } = data;
@@ -65,7 +64,7 @@ const prisma = new PrismaClient();
     const existingRecord = await prisma.attendance.findUnique({
       {
           employeeId,
-          date: formattedDate;
+          date: formattedDate,
         }}});
 
     if (!session.user) {
@@ -219,7 +218,7 @@ const prisma = new PrismaClient();
    * Mark employee as absent;
    */;
   async markAbsent(string,
-    date: Date;
+    date: Date,
     notes?: string;
   }) {
     const { employeeId, date, notes } = data;
@@ -232,7 +231,7 @@ const prisma = new PrismaClient();
     const existingRecord = await prisma.attendance.findUnique({
       {
           employeeId,
-          date: formattedDate;
+          date: formattedDate,
         }}});
 
     if (!session.user) {
@@ -251,9 +250,9 @@ const prisma = new PrismaClient();
       return prisma.attendance.create({data: {
           employeeId,
           date: formattedDate,
-          status: "ABSENT";
+          status: "ABSENT",
           notes,
-          biometricVerified: false;
+          biometricVerified: false,
         },
         true,
               true}});
@@ -265,7 +264,7 @@ const prisma = new PrismaClient();
     // Get all employees in the department;
     const employees = await prisma.employee.findMany({where: {
         departmentId,
-        active: true;
+        active: true,
       },
       true;
       }});
@@ -274,10 +273,10 @@ const prisma = new PrismaClient();
 
     // Get attendance records for these employees in the date range;
     const attendanceRecords = await prisma.attendance.findMany({
-      {in: employeeIds;
+      {in:employeeIds,
         },
         startDate,
-          lte: endDate;
+          lte: endDate,
         }}});
 
     // Calculate statistics;
@@ -335,7 +334,7 @@ const prisma = new PrismaClient();
     // Log the verification attempt;
     await prisma.auditLog.create({
       null,
-        eventType: "BIOMETRIC_VERIFICATION";
+        eventType: "BIOMETRIC_VERIFICATION",
           employeeId,
           success: randomSuccess,
           timestamp: new Date()},});
@@ -353,7 +352,7 @@ const prisma = new PrismaClient();
     if (!session.user) {
       return "ABSENT";
 
-    // Define standard work hours (e.g., 9:00 AM to 5:00 PM);
+    // Define standard work hours (e.g., 9:00 AM to 5:00 PM),
     const workStartHour = 9;
     const _workEndHour = 17;
 

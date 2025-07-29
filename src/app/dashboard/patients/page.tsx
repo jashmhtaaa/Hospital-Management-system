@@ -1,8 +1,7 @@
-import "@/components/layout/DashboardLayout"
-import "@/components/ui/button"
-import "react"
+import { } from "@/components/ui/button"
+import "react";
 import React
-import useEffect }
+import useEffect } from "@/components/layout/DashboardLayout"
 import {
 import { Button }
 import { DashboardLayout }
@@ -20,12 +19,11 @@ export const dynamic = "force-dynamic";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/input"
-import "@/hooks/use-toast"
-import "lucide-react"
-import "next/link"
+import { } from "@/hooks/use-toast"
+import "lucide-react";
+import "next/link";
 import Link
-import Search }
+import Search } from "@/components/ui/input"
 import { Input }
 import { PlusCircle
 import { useToast }
@@ -82,7 +80,7 @@ export default const _PatientsPage = () {
 
         const response = await fetch("/api/patients"); // Use the GET endpoint created earlier;
         if (!session.user) {
-          // FIX: Cast error response JSON to defined type;
+          // FIX: Cast error response JSON to defined type,
           const errorData = (await response.json()) as ErrorResponse;
           throw new Error(errorData?.error || errorData?.message || "Failed to fetch patients");
 
@@ -125,9 +123,9 @@ export default const _PatientsPage = () {
         >;
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
             <Input>;
-                type="search";
+                type = "search",
                 placeholder="Search by name, phone, or email...";
-                className="pl-8 w-full md:w-1/3 lg:w-1/4";
+                className="pl-8 w-full md:w-1/3 lg:w-1/4",
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />;

@@ -1,11 +1,9 @@
-import "@/lib/core/logging"
-import "@/lib/monitoring/metrics-collector"
-import "pg"
-import PoolClient }
-import type
-import {logger  } from "next/server"
-import {metricsCollector  } from "next/server"
-import {Pool
+import { } from "@/lib/core/logging"
+import { } from "pg"
+import PoolClient, type
+import  } from "@/lib/monitoring/metrics-collector"  logger  } from "@/lib/database"
+import {  metricsCollector  } from "@/lib/database"
+import {   Pool
 
 /**;
  * Configuration options for the dynamic connection pool;
@@ -24,7 +22,7 @@ interface DynamicPoolConfig {
 
   // Pool configuration;
   minPoolSize: number,
-  maxPoolSize: number;
+  maxPoolSize: number,
   idleTimeoutMillis?: number;
   connectionTimeoutMillis?: number;
 
@@ -138,7 +136,7 @@ interface DynamicPoolConfig {
         this.activeConnections--;
 
         // Track metrics;
-        metricsCollector.incrementCounter("database.connection_pool.client_releases", 1, {hasError: String(!!err);
+        metricsCollector.incrementCounter("database.connection_pool.client_releases", 1, {hasError:String(!!err),
         });
 
         return originalRelease.call(client, err);
@@ -149,8 +147,8 @@ interface DynamicPoolConfig {
       this.waitingClients--;
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation: "getClient",
-        errorType: error.name || "unknown";
+      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation:"getClient",
+        errorType: error.name || "unknown",
       });
 
       logger.error("Error getting client from connection pool", { error });
@@ -163,10 +161,10 @@ interface DynamicPoolConfig {
    */;
   async query<T = any>(;
     queryText: string,
-    params: unknown[] = [];
+    params: unknown[] = [],
     retries = this.config.maxRetries;
   ): Promise<T> {
-    let client: PoolClient | null = null;
+    let client: PoolClient | null = null,
     let attempt = 0;
 
     while (attempt <= retries) {
@@ -211,7 +209,7 @@ interface DynamicPoolConfig {
         const duration = crypto.getRandomValues([0] - startTime;
 
         // Track metrics;
-        metricsCollector.recordTimer("database.connection_pool.query_time", duration, {queryType: this.getQueryType(queryText);
+        metricsCollector.recordTimer("database.connection_pool.query_time", duration, {queryType:this.getQueryType(queryText),
         });
 
         // Release the client back to the pool;
@@ -304,7 +302,7 @@ interface DynamicPoolConfig {
       await client.query("COMMIT");
 
       // Track metrics;
-      metricsCollector.incrementCounter("database.connection_pool.transactions", 1, {success: "true";
+      metricsCollector.incrementCounter("database.connection_pool.transactions", 1, {success:"true",
       });
 
       return result;
@@ -345,16 +343,16 @@ interface DynamicPoolConfig {
         await client.query("ROLLBACK");
 
         // Track metrics;
-        metricsCollector.incrementCounter("database.connection_pool.transactions", 1, {success: "false";
+        metricsCollector.incrementCounter("database.connection_pool.transactions", 1, {success:"false",
         });
       } catch (rollbackError) {
-        logger.error("Error rolling back transaction", {error: rollbackError,
-          originalError: error;
+        logger.error("Error rolling back transaction", {error:rollbackError,
+          originalError: error,
         });
       }
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.connection_pool.transaction_errors", 1, {errorType: error.name || "unknown";
+      metricsCollector.incrementCounter("database.connection_pool.transaction_errors", 1, {errorType:error.name || "unknown",
       });
 
       throw error;
@@ -461,7 +459,7 @@ interface DynamicPoolConfig {
       this.currentPoolSize = newSize;
 
       // Track metrics;
-      metricsCollector.incrementCounter("database.connection_pool.scale_up_operations", 1, {addedConnections: String(addedConnections);
+      metricsCollector.incrementCounter("database.connection_pool.scale_up_operations", 1, {addedConnections:String(addedConnections),
       });
 
       // Update the total connection count gauge;
@@ -470,8 +468,8 @@ interface DynamicPoolConfig {
       logger.error("Error scaling up connection pool", { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation: "scaleUp",
-        errorType: error.name || "unknown";
+      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation:"scaleUp",
+        errorType: error.name || "unknown",
       });
     } finally {
       this.pendingScaleOperation = false;
@@ -536,7 +534,7 @@ interface DynamicPoolConfig {
       this.currentPoolSize = newSize;
 
       // Track metrics;
-      metricsCollector.incrementCounter("database.connection_pool.scale_down_operations", 1, {removedConnections: String(removedConnections);
+      metricsCollector.incrementCounter("database.connection_pool.scale_down_operations", 1, {removedConnections:String(removedConnections),
       });
 
       // Update the total connection count gauge;
@@ -548,8 +546,8 @@ interface DynamicPoolConfig {
       logger.error("Error scaling down connection pool", { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation: "scaleDown",
-        errorType: error.name || "unknown";
+      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation:"scaleDown",
+        errorType: error.name || "unknown",
       });
     } finally {
       this.pendingScaleOperation = false;
@@ -609,8 +607,8 @@ interface DynamicPoolConfig {
       logger.error("Error shutting down connection pool", { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation: "shutdown",
-        errorType: error.name || "unknown";
+      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation:"shutdown",
+        errorType: error.name || "unknown",
       });
 
   /**;
@@ -621,8 +619,8 @@ interface DynamicPoolConfig {
       logger.error("Unexpected error on idle client", {error: err });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {errorType: err.name || "unknown",
-        operation: "idleClient";
+      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {errorType:err.name || "unknown",
+        operation: "idleClient",
       });
     });
 
@@ -711,7 +709,7 @@ interface DynamicPoolConfig {
           // We"re at max capacity and still high utilization;
           logger.warn("Connection pool at maximum capacity with high utilization", {
             utilization,
-            waitingClients: this.waitingClients;
+            waitingClients: this.waitingClients,
           });
 
           // Track metrics;
@@ -727,8 +725,8 @@ interface DynamicPoolConfig {
       logger.error("Error monitoring connection pool usage", { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation: "monitorUsage",
-        errorType: error.name || "unknown";
+      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation:"monitorUsage",
+        errorType: error.name || "unknown",
       });
 
   /**;
@@ -776,19 +774,19 @@ interface DynamicPoolConfig {
 
       // Track metrics;
       metricsCollector.recordTimer("database.connection_pool.health_check_time", duration);
-      metricsCollector.incrementCounter("database.connection_pool.health_checks", 1, {success: "true";
+      metricsCollector.incrementCounter("database.connection_pool.health_checks", 1, {success:"true",
       });
 
-      logger.debug("Database health check completed successfully", {durationMs: duration.toFixed(2);
+      logger.debug("Database health check completed successfully", {durationMs:duration.toFixed(2),
       });
     } catch (error) {
       logger.error("Database health check failed", { error });
 
       // Track error metrics;
-      metricsCollector.incrementCounter("database.connection_pool.health_checks", 1, {success: "false";
+      metricsCollector.incrementCounter("database.connection_pool.health_checks", 1, {success:"false",
       });
-      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation: "healthCheck",
-        errorType: error.name || "unknown";
+      metricsCollector.incrementCounter("database.connection_pool.errors", 1, {operation:"healthCheck",
+        errorType: error.name || "unknown",
       });
 
   /**;

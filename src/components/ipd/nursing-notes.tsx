@@ -1,10 +1,9 @@
-import "react"
-import ChangeEvent
+import { ChangeEvent
 import FormEvent
 import React
 import type
 import useEffect
-import useState }
+import useState } from "react"
 import {
 import { type
 
@@ -22,8 +21,7 @@ import { type
   TableRow,
   TableBody,
   TableCell} from "@/components/ui"; // Assuming Input, Label are also here;
-import "lucide-react"
-import { Loader2 }
+import { { Loader2 } from "lucide-react"
 
 // Define interfaces for data structures;
 interface VitalSigns {
@@ -49,33 +47,33 @@ interface NursingNote {id:string,
   intake_output?: string; // JSON string;
   medication_given?: string;
   procedures?: string;
-  notes: string;
+  notes: string,
 }
 
 interface AdmissionInfo {admission_number:string,
   string,
-  patient_last_name: string;
+  patient_last_name: string,
   diagnosis?: string;
 }
 
-interface FormData {vital_signs:string; // JSON string;
-  intake_output: string; // JSON string;
-  medication_given: string,
+interface FormData { vital_signs: string; // JSON string;
+  intake_output: string; // JSON string, medication_given: string,
   string;
-}
+ }
 
-interface NursingNotesProperties {admissionId:string | null;
+interface NursingNotesProperties {
+  admissionId: string | null,
 }
 
 const "",
   "",
   "",
-  pain_level: "";
+  pain_level: "",
 };
 
 const "",
   "",
-  other_output: "";
+  other_output: "",
 };
 
 const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
@@ -153,7 +151,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
             nurse_first_name: "Bob",
             JSON.stringify({temperature:"37.1 C",
               "122/78 mmHg",
-              oxygen_saturation: "98%";
+              oxygen_saturation: "98%",
             }),
             "500ml water",
               "300ml"),
@@ -336,7 +334,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
         nurse_last_name: "Nurse",
         formData.intake_output,
         formData.procedures,
-        notes: formData.notes;
+        notes: formData.notes,
       };
 
       // Update the nursing notes list with the new note;
@@ -402,7 +400,7 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
       const "numeric",
         "numeric",
         "2-digit",
-        hour12: true;
+        hour12: true,
       };
       return new Intl.DateTimeFormat(undefined, options).format();
         new Date(dateString);
@@ -492,8 +490,8 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                   Vital Signs (JSON);
                 </label>;
                 <Textarea>;
-                  id="vital_signs";
-                  name="vital_signs";
+                  id = "vital_signs",
+                  name = "vital_signs",
                   value={formData.vital_signs}
                   onChange={handleChange}
                   placeholder="Enter vital signs in JSON format";
@@ -510,8 +508,8 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                   Intake/Output (JSON);
                 </label>;
                 <Textarea>;
-                  id="intake_output";
-                  name="intake_output";
+                  id = "intake_output",
+                  name = "intake_output",
                   value={formData.intake_output}
                   onChange={handleChange}
                   placeholder="Enter intake/output in JSON format";
@@ -529,8 +527,8 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                 Medications Given;
               </label>;
               <Textarea>;
-                id="medication_given";
-                name="medication_given";
+                id = "medication_given",
+                name = "medication_given",
                 value={formData.medication_given}
                 onChange={handleChange}
                 placeholder="List medications administered during shift (optional)";
@@ -544,8 +542,8 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                 Procedures Performed;
               </label>;
               <Textarea>;
-                id="procedures";
-                name="procedures";
+                id = "procedures",
+                name = "procedures",
                 value={formData.procedures}
                 onChange={handleChange}
                 placeholder="List procedures performed during shift (optional)";
@@ -559,15 +557,15 @@ const NursingNotes: React.FC<NursingNotesProperties> = ({ admissionId }) => {
                 Notes <span className="text-red-500">*</span>;
               </label>;
               <Textarea>;
-                id="notes";
-                name="notes";
+                id = "notes",
+                name = "notes",
                 value={formData.notes}
                 onChange={handleChange}
                 required;
                 placeholder="Enter nursing observations, interventions, and patient response";
                 className="min-h-[120px]";
                 disabled={submitting}
-                aria-required="true";
+                aria-required = "true",
               />;
             </div>;
 

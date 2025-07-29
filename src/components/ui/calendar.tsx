@@ -1,12 +1,10 @@
-import "@/components/ui/button"
-import "@/lib/utils"
-import "lucide-react"
-import "react"
-import "react-day-picker"
+import { } from "@/components/ui/button"
+import { } from "lucide-react"
+import "react";
+import "react-day-picker";
 import * as React
-import ChevronRight }
-import type
-import { buttonVariants }
+import ChevronRight, type
+import  } from "@/lib/utils" buttonVariants }
 import { ChevronLeft
 import { cn }
 import { DayPicker }
@@ -29,8 +27,8 @@ const Calendar = ({ className,
       classNames={{months:"flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         "flex justify-center pt-1 relative items-center",
         "space-x-1 flex items-center",
-        nav_button: cn();
-          buttonVariants({variant:"outline" }),
+        nav_button: cn(),
+          buttonVariants({ variant: "outline" }),
           "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100";
         ),
         nav_button_previous: "absolute left-1",
@@ -42,8 +40,8 @@ const Calendar = ({ className,
             ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md";
             : "[&:has([aria-selected])]:rounded-md";
         ),
-        day: cn();
-          buttonVariants({variant:"ghost" }),
+        day: cn(),
+          buttonVariants({ variant: "ghost" }),
           "h-8 w-8 p-0 font-normal aria-selected:opacity-100";
         ),
         day_range_start: "day-range-start",
@@ -62,6 +60,6 @@ const Calendar = ({ className,
     />;
   );
 }
-Calendar.displayName = "Calendar";
+Calendar.displayName = "Calendar",
 
 export { Calendar;

@@ -1,10 +1,9 @@
-import "@/components/ui/button"
-import "@/lib/utils"
-import "next/link"
-import "next/navigation"
+import { } from "@/lib/utils"
+import "next/link";
+import "next/navigation";
 import Link
 import {
-import { Button }
+import { Button } from "@/components/ui/button"
 import { cn }
 import { usePathname }
 
@@ -20,17 +19,16 @@ import { usePathname }
   Boxes,
   Settings,
   LogOut} from "lucide-react";
-import "next/image"
-import Image
+import { Image
 
 // Define navigation items;
 const navItems = [;
-  {href:"/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  {href:"/dashboard/patients", label: "Patients", icon: Users },
-  {href:"/dashboard/appointments", label: "Appointments", icon: CalendarDays },
-  {href:"/dashboard/billing", label: "Billing", icon: ReceiptText },
-  {href:"/dashboard/inventory", label: "Inventory", icon: Boxes },
-  {href:"/dashboard/settings", label: "Settings", icon: Settings }];
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard } from "next/image",
+  { href: "/dashboard/patients", label: "Patients", icon: Users },
+  { href: "/dashboard/appointments", label: "Appointments", icon: CalendarDays },
+  { href: "/dashboard/billing", label: "Billing", icon: ReceiptText },
+  { href: "/dashboard/inventory", label: "Inventory", icon: Boxes },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings }];
 
 export const _Sidebar = () => {
   const pathname = usePathname();
@@ -59,7 +57,7 @@ export const _Sidebar = () => {
               key={item.label}
               href={item.href}
               className={cn();
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover: text-gray-900 dark:text-gray-400 dark:hover:text-gray-50";
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover: text-gray-900 dark:text-gray-400 dark:hover:text-gray-50",
                 isActive && "bg-gray-200/50 text-gray-900 dark:bg-gray-800 dark:text-gray-50";
               )}
             >;

@@ -1,7 +1,6 @@
-import "@/lib/audit/audit-service"
-import "@/lib/prisma"
-import {AuditService  } from "next/server"
-import {prisma  } from "next/server"
+import { } from "@/lib/prisma"
+import {  AuditService  } from "@/lib/audit/audit-service"
+import {  prisma  } from "@/lib/database"
 
 // src/modules/emergency-department/services/emergency-service.ts;
 }
@@ -25,14 +24,14 @@ import {prisma  } from "next/server"
 
     // Auto-alert for critical cases;
     if (!session.user) {
-      await this.triggerCritical/* SECURITY: Alert removed */;
+      await this.triggerCritical/* SECURITY: Alert removed */,
 
     return emergencyVisit;
 
   static async triggerCritical/* SECURITY: Alert removed */{,
     // Implementation for critical patient alerts;
     // Could integrate with notification system;
-    /* SECURITY: Console statement removed */;
+    /* SECURITY: Console statement removed */,
 
   static async getEmergencyQueue() {
     return await prisma.emergencyVisit.findMany({where: { status: "ACTIVE" },
@@ -50,7 +49,7 @@ import {prisma  } from "next/server"
 
   static async updateEmergencyStatus();
     emergencyVisitId: string,
-    status: "ACTIVE" | "IN_TREATMENT" | "DISCHARGED" | "ADMITTED";
+    status: "ACTIVE" | "IN_TREATMENT" | "DISCHARGED" | "ADMITTED",
     updatedBy?: string;
   ) {
     const oldVisit = await prisma.emergencyVisit.findUnique({where: { id: emergencyVisitId }
@@ -85,13 +84,13 @@ import {prisma  } from "next/server"
 
       }),
       prisma.emergencyVisit.count({
-        {gte: startOfDay, lte: endOfDay },
-          triageLevel: "CRITICAL";
+        {gte:startOfDay, lte: endOfDay },
+          triageLevel: "CRITICAL",
 
       }),
       prisma.emergencyVisit.count({
-        {gte: startOfDay, lte: endOfDay },
-          triageLevel: "HIGH";
+        {gte:startOfDay, lte: endOfDay },
+          triageLevel: "HIGH",
 
       }),
       prisma.emergencyVisit.count({where: { status: "ACTIVE" }

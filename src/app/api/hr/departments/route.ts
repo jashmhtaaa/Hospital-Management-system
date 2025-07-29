@@ -1,11 +1,11 @@
-import "@/lib/hr/department-service"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {departmentService  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import "@/lib/hr/department-service";
+import "next/server";
+import "zod";
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {  departmentService  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 // Schema for department creation;
 const createDepartmentSchema = z.object({name: z.string().min(1, "Department name is required"),

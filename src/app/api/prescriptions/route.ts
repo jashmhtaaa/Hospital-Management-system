@@ -1,15 +1,14 @@
-import "@/lib/database"
-import "@/lib/session"
-import "@/types/opd"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {DB  } from "next/server"
-import {getSession  } from "next/server"
-import {Prescription  } from "next/server"
-import {type
-import {  z  } from "next/server"
+import { } from "@/lib/session"
+import "@/types/opd";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/database"
+import { NextResponse } from "next/server" }
+import {  DB  } from "@/lib/database"
+import {  getSession  } from "@/lib/database"
+import {  Prescription  } from "@/lib/database"
+import {   type
+import {  z  } from "@/lib/database"
 
 import {D1ResultWithMeta  } from "next/server"; // Import the specific type;
 
@@ -21,13 +20,13 @@ const prescriptionItemSchema = z.object({inventory_item_id: z.number(),
     duration: z.string().min(1),
     route: z.string().optional().nullable(),
     instructions: z.string().optional().nullable(),
-    quantity_prescribed: z.number().positive().optional().nullable();
+    quantity_prescribed: z.number().positive().optional().nullable(),
 });
 
 const prescriptionCreateSchema = z.object({patient_id: z.number(),
     doctor_id: z.number(), // Or derive from session;
     consultation_id: z.number().optional().nullable(),
-    prescription_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid prescription date format";
+    prescription_date: z.string().refine((val) => !isNaN(Date.parse(val)), {message:"Invalid prescription date format",
     }),
     notes: z.string().optional().nullable(),
     items: z.array(prescriptionItemSchema).min(1, "At least one medication item is required")});
@@ -102,9 +101,9 @@ export const _GET = async (request: any) => {,
             JOIN Users u ON pr.doctor_id = u.id;
             WHERE 1=1;
         `;
-        const queryParameters: (string | number)[] = [];
+        const queryParameters: (string | number)[] = [],
         let countQuery = `SELECT COUNT(*) as total FROM Prescriptions WHERE 1=1`;
-        const countParameters: (string | number)[] = [];
+        const countParameters: (string | number)[] = [],
 
         if (!session.user) {
             query += " AND pr.patient_id = ?";
@@ -137,7 +136,7 @@ export const _GET = async (request: any) => {,
             countParameters.push(dateToFilter);
         }
 
-        query += ` ORDER BY pr./* SECURITY: Template literal eliminated */;
+        query += ` ORDER BY pr./* SECURITY: Template literal eliminated */,
         queryParameters.push(limit, offset);
 
         // Execute queries;
@@ -157,7 +156,7 @@ export const _GET = async (request: any) => {,
                 page,
                 limit,
                 total,
-                totalPages: Math.ceil(total / limit);
+                totalPages: Math.ceil(total / limit),
             }});
 
     } catch (error: unknown) {,

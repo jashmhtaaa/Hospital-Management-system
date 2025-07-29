@@ -1,5 +1,3 @@
-}
-
 // types/billing.ts;
 
 export enum ItemType {
@@ -9,16 +7,20 @@ export enum ItemType {
     Consumable = "Consumable",
     EquipmentUsage = "EquipmentUsage",
     Package = "Package",
-export = "export" interface = "interface" BillableItem = "BillableItem" {item_id: number;
+}
+
+export interface BillableItem {
+    item_id: number,
     item_code?: string | null;
-    item_name: string;
+    item_name: string,
     description?: string | null;
     item_type: ItemType; // Use enum;
-    unit_price: number;
+    unit_price: number,
     department?: string | null;
     is_taxable: boolean,
-    string,
-    updated_at: string;
+    updated_at: string,
+}
+
 export enum InvoiceStatus {
     Draft = "Draft",
     Issued = "Issued",
@@ -26,30 +28,54 @@ export enum InvoiceStatus {
     PartiallyPaid = "PartiallyPaid",
     Overdue = "Overdue",
     Cancelled = "Cancelled",
-export = "export" interface = "interface" Invoice = "Invoice" ;
-    invoice_id: number,
-    number;
+}
+
+export interface Invoice {
+    id?: number;
+    invoice_number: string,
+    patient_id: number,
+    visit_id?: number | null;
     appointment_id?: number | null;
     admission_id?: number | null;
-    invoice_date: string;
-    due_date?: string | null;
     total_amount: number,
-    number,
-    InvoiceStatus; // Use enum;
+    due_date?: string | null;
+    status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled',
+    payment_status: 'unpaid' | 'partial' | 'paid' | 'refunded',
     notes?: string | null;
     created_by_user_id?: number | null;
     created_at: string,
-    updated_at: string;
-    // Optional expanded details;
-    patient?: {patient_id:number, string ;
+    updated_at: string,
+    
+    patient?: { patient_id: number, name: string };
     items?: InvoiceItem[];
     payments?: Payment[];
 }
-\n\nexport PaymentMethod {
-    Cash = "Cash",
-    Card = "Card",
-    BankTransfer = "BankTransfer",
-    Insurance = "Insurance",
-    Online = "Online"}
+
+export enum PaymentMethod {
+    CASH = 'cash',
+    CARD = 'card',
+    BANK_TRANSFER = 'bank_transfer',
+    UPI = 'upi',
+    INSURANCE = 'insurance',
 }
+
+export interface InvoiceItem {
+    id?: number;
+    invoice_id: number,
+    service_item_id: number,
+    description: string,
+    quantity: number,
+    unit_price: number,
+    discount: number,
+    total: number,
+}
+
+export interface Payment {
+    id?: number;
+    invoice_id: number,
+    amount: number,
+    method: PaymentMethod,
+    reference_number?: string;
+    payment_date: string,
+    notes?: string;
 }

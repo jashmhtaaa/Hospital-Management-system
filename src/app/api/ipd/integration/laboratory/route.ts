@@ -1,18 +1,16 @@
-import "../../middleware/auth"
-import "@/lib/api/errorHandler"
-import "@/lib/logger"
-import "@/services/integration/LaboratoryService"
-import "next/server"
-import LaboratoryService }
-import LabOrderSchema
+import { } from "../../middleware/auth"
+import { } from "@/lib/logger"
+import "@/services/integration/LaboratoryService";
+import "next/server";
+import LaboratoryService, LabOrderSchema
 import LabResultNotificationSchema
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {handleApiError  } from "next/server"
-import {ipdMiddleware  } from "next/server"
-import {LabCancelSchema
-import {  logger  } from "next/server"
-import {type
+import  } from "@/lib/api/errorHandler" NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {  handleApiError  } from "@/lib/database"
+import {  ipdMiddleware  } from "@/lib/database"
+import {   LabCancelSchema
+import {  logger  } from "@/lib/database"
+import {  type
 
 /**;
  * Integration endpoint for Laboratory Module;
@@ -318,7 +316,7 @@ export const getLabResults = async (req: any) => {,
         {status: 400 }
       );
 
-    logger.info({route: "GET /api/ipd/integration/laboratory/results";
+    logger.info({route:"GET /api/ipd/integration/laboratory/results",
       patientId,
       encounterId,
       limit,

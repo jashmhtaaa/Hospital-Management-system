@@ -1,22 +1,21 @@
-import "@/lib/prisma"
-import "next/server"
-import "zod"
-import {import {  NextRequest  } from "next/server"
-import {prisma  } from "next/server"
-import {z  } from "next/server"
+import { } from "next/server"
+import "zod";
+import {  
+import {  NextRequest  } from "@/lib/prisma"
+import {  prisma  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
   withErrorHandling,
   validateBody,
   checkPermission,
   createSuccessResponse;
 } from "@/lib/core/middleware";
-import "@/lib/core/errors"
-import "@/lib/core/fhir"
-import "@/lib/core/logging"
-import NotFoundError }
-import {convertToFHIRCoverage  } from "next/server"
-import {logger  } from "next/server"
-import {ValidationError
+import { } from "@/lib/core/fhir"
+import "@/lib/core/logging";
+import NotFoundError } from "@/lib/core/errors"
+import {  convertToFHIRCoverage  } from "@/lib/database"
+import {  logger  } from "@/lib/database"
+import {   ValidationError
 
 // Schema for insurance policy update;
 const updatePolicySchema = z.object({insuranceProviderId: z.string().uuid().optional(),
@@ -36,8 +35,8 @@ const updatePolicySchema = z.object({insuranceProviderId: z.string().uuid().opti
   outOfPocketMax: z.number().optional(),
   outOfPocketMet: z.number().optional(),
   status: z.enum(["active", "inactive", "expired"]).optional(),
-  notes: z.string().optional();
- } from "next/server");
+  notes: z.string().optional(),
+ } from "@/lib/database");
 
 // Schema for policy verification;
 const verifyPolicySchema = z.object({verificationMethod: z.enum(["phone", "portal", "api", "fax", "email"]),
@@ -45,7 +44,7 @@ const verifyPolicySchema = z.object({verificationMethod: z.enum(["phone", "porta
   verifiedBy: z.string(),
   eligibilityStatus: z.enum(["eligible", "ineligible", "pending"]),
   coverageDetails: z.string().optional(),
-  notes: z.string().optional();
+  notes: z.string().optional(),
 });
 
 // GET handler for retrieving a specific insurance policy;
@@ -140,18 +139,18 @@ export const _PUT = withErrorHandling(async (req: any, { params }: {params: { id
       data.copayAmount,
       data.deductibleAmount,
       data.outOfPocketMax,
-      outOfPocketMet: data.outOfPocketMet;
+      outOfPocketMet: data.outOfPocketMet,
       status,
-      notes: data.notes;
+      notes: data.notes,
     },
     {
         true,
           true,
-          mrn: true;
+          mrn: true,
         }},
       true,
           true},
-      insuranceProvider: true;
+      insuranceProvider: true,
     }});
 
   logger.info("Insurance policy updated", {policyId: updatedPolicy.id });
@@ -215,8 +214,8 @@ export const _PATCH = withErrorHandling(async (req: any, { params }: {params: { 
   switch (operation) {
     case "verify": any;
       return verifyPolicy(req, params.id, existingPolicy),
-    default: any;
-      throw new ValidationError(`Unknown operation: ${operation,}`, "INVALID_OPERATION")});
+    default: any,
+      throw new ValidationError(`Unknown operation: ${operation}`, "INVALID_OPERATION")});
 
 // Helper function to verify a policy;
 async const verifyPolicy = (req: any, policyId: string, existingPolicy: unknown) {,

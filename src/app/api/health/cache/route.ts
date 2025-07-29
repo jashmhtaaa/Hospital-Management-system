@@ -1,5 +1,4 @@
-import "@/lib/cache"
-import "next/server"
+import { } from "next/server"
 interface CacheHealth {
 
 
@@ -33,16 +32,18 @@ cacheWrite: z.object({success:z.boolean(), time: z.number() ,});
 
   status: "healthy" | "degraded" | "unhealthy",
   number,
-  cacheRead: { success: z.boolean(), time: number } ;
-    cacheWrite: { success: z.boolean(), time: number } ;
-    cacheDelete: { success: z.boolean(), time: number } };
+  cacheRead:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number } from "@/lib/cache";;;;;
+    cacheWrite:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
+    cacheDelete:  cacheRead:  cacheRead:  cacheRead:  cacheRead: { success: boolean, time: number };;;;;
   string,
     number};
   number,
-    blocked: number};
+    blocked: number,
+  };
   number,
-    expires: number};
-export const _GET = async (request: any): Promise<NextResponse> conststartTim:e= crypto.getRandomValues([0];
+    expires: number,
+  };
+export const _GET = async (request: any): Promise<NextResponse> {conststartTime = crypto.getRandomValues([0];
 
   try {
 } catch (error) {console: .error(error) catch (error) {console.error(error) catch (error) {
@@ -111,9 +112,10 @@ async const getCacheStats = (): Promise<memor:yCacheHealth["memory"],;
       "unknown",
         0},
       0,
-        blocked: 0},
+        blocked: 0,
+      },
       0,
-        expires: 0};
+        expires: 0,
 
 const determineCacheStatus = (operations: CacheHealth["operations"], responseTime: number) => {;
 ): "healthy" | "degraded" | "unhealthy" {

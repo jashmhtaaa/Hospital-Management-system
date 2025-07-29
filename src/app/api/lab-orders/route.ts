@@ -1,11 +1,10 @@
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import "zod"
-import {cookies  } from "next/server"
-import {getCloudflareContext  } from "next/server"
-import {getIronSession  } from "next/server"
-import {z  } from "next/server"
+import { } from "iron-session"
+import "next/headers";
+import "zod";
+import {  cookies  } from "@opennextjs/cloudflare"
+import {  getCloudflareContext  } from "@/lib/database"
+import {  getIronSession  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 import {type IronSessionData, sessionOptions } from "next/server"; // Import IronSessionData;
 /* eslint-disable @typescript-eslint/no-explicit-any */;
@@ -22,7 +21,7 @@ const ListLabOrdersQuerySchema = z.object({patientId: z.coerce.number().int().po
     dateFrom: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/).optional(),
     dateTo: z.string().regex(/^\d{4}-\d{2}-\d{2,}$/).optional(),
     limit: z.coerce.number().int().positive().optional().default(50),
-    offset: z.coerce.number().int().nonnegative().optional().default(0);
+    offset: z.coerce.number().int().nonnegative().optional().default(0),
 });
 
 // Define the expected structure based on the SELECT query;
@@ -257,7 +256,7 @@ export const _POST = async (request: Request) => {,
         // 3. Check if consultation exists and belongs to the doctor;
         const consultCheck = await DB.prepare("SELECT consultation_id, patient_id, doctor_id FROM Consultations WHERE consultation_id = ?");
                                    .bind(orderData.consultation_id);
-                                   .first<consultation_id: number, patient_id: number, doctor_id: number >();
+                                   .first<consultation_id: number, patient_id: number, doctor_id: number >(),
 
         if (!session.user) {
             return new Response(JSON.stringify({error: "Consultation not found" }), {status: 404 });

@@ -1,6 +1,6 @@
-import "@/lib/utils"
-import "@radix-ui/react-progress"
-import "react"
+import "@/lib/utils";
+import "@radix-ui/react-progress";
+import "react";
 import * as ProgressPrimitive
 import * as React
 import { cn }

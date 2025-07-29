@@ -1,7 +1,6 @@
-import "./redis.ts"
-import "@/config"
-import {config  } from "next/server"
-import {RedisCache  } from "next/server"
+import { } from "@/config"
+import {  config  } from "./redis.ts"
+import {  RedisCache  } from "@/lib/database"
 
 }
     await RedisCache.deletePattern(`${config.cache.prefix.test}list:*`);
@@ -60,7 +59,7 @@ import {RedisCache  } from "next/server"
     await RedisCache.delete(`/* SECURITY: Template literal eliminated */;
 
     // Invalidate report lists;
-    await RedisCache.deletePattern(`${config.cache.prefix.report}list: *`);
+    await RedisCache.deletePattern(`${config.cache.prefix.report}list: *`),
   }
 
   /**;
@@ -77,7 +76,7 @@ import {RedisCache  } from "next/server"
     }
 
     // Invalidate panel lists;
-    await RedisCache.deletePattern("diagnostic: lab: panel:list:*");
+    await RedisCache.deletePattern("diagnostic: lab: panel:list:*"),
   }
 
   /**;

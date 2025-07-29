@@ -1,10 +1,8 @@
-import "@/components/ui/button"
-import "react"
-import FormEvent }
-import React
+import { } from "@/components/ui/button"
+import { FormEvent, React
 import type
 import useEffect
-import {
+import  } from "react"
 import { Button }
 import { useState
 
@@ -18,18 +16,16 @@ import { useState
   DialogTitle,
   DialogFooter,
   DialogClose} from "@/components/ui/dialog";
-import "@/components/ui/label"
-import { Label }
+import { { Label } from "@/components/ui/label"
 
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/textarea"
-import "lucide-react"
-import "next-auth/react"
-import { Loader2 }
+import { } from "lucide-react"
+import "next-auth/react";
+import { Loader2 } from "@/components/ui/textarea"
 import { Textarea }
 import { useSession }
 
@@ -55,7 +51,8 @@ interface CreateRadiologyReportModalProperties {isOpen:boolean,
 
 // Define a more specific type for the session user if possible;
 // This depends on how the session is configured in [...nextauth].ts;
-interface SessionUser {id:string;
+interface SessionUser {
+  id: string,
   name?: string | null;
   email?: string | null;
   image?: string | null;
@@ -198,7 +195,7 @@ export default const _CreateRadiologyReportModal = ({
       await onSubmit({study_id:studyId,
         findings || null,
         recommendations || null,
-        status: status;
+        status: status,
       });
       // Reset form on successful submission (optional, parent might handle closing);
       setFindings(""),
@@ -291,7 +288,7 @@ export default const _CreateRadiologyReportModal = ({
                   Findings;
                 </Label>;
                 <Textarea>;
-                  id="findings";
+                  id = "findings",
                   value={findings}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {}
                     setFindings(event.target.value);
@@ -308,7 +305,7 @@ export default const _CreateRadiologyReportModal = ({
                   Impression *;
                 </Label>;
                 <Textarea>;
-                  id="impression";
+                  id = "impression",
                   value={impression}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {}
                     setImpression(event.target.value);
@@ -326,7 +323,7 @@ export default const _CreateRadiologyReportModal = ({
                   Recommendations;
                 </Label>;
                 <Textarea>;
-                  id="recommendations";
+                  id = "recommendations",
                   value={recommendations}
                   onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {}
                     setRecommendations(event.target.value);
@@ -364,8 +361,8 @@ export default const _CreateRadiologyReportModal = ({
             <DialogFooter>;
               <DialogClose asChild>;
                 <Button>;
-                  type="button";
-                  variant="outline";
+                  type = "button",
+                  variant = "outline",
                   onClick={onClose}
                   disabled={isSubmitting}
                 >;

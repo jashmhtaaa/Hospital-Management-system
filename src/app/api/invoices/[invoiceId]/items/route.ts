@@ -1,15 +1,13 @@
-import "@opennextjs/cloudflare"
-import "iron-session"
-import "next/headers"
-import {cookies  } from "next/server"
-import {getCloudflareContext  } from "next/server"
-import {getIronSession  } from "next/server"
+import { } from "iron-session"
+import "next/headers";
+import {  cookies  } from "@opennextjs/cloudflare"
+import {  getCloudflareContext  } from "@/lib/database"
+import {  getIronSession  } from "@/lib/database"
 
 import {type IronSessionData, sessionOptions } from "next/server"; // FIX: Import IronSessionData;
 // app/api/invoices/[invoiceId]/items/route.ts;
-// import {InvoiceItem } from "next/server";
-import "zod"
-import {z  } from "next/server"
+// import { InvoiceItem } from "@/types/billing";
+import { {  z  } from "zod"
 
 // Define roles allowed to manage invoice items (adjust as needed);
 const ALLOWED_ROLES_MANAGE = ["Admin", "Receptionist", "Billing Staff"];
@@ -33,8 +31,8 @@ const AddInvoiceItemSchema = z.object({billable_item_id: z.number().int().positi
     description: z.string().optional(), // Optional override;
 });
 
-export const _POST = async (request: Request) => {,
-    const cookieStore = await cookies(); // FIX: Add await;
+export const _POST = async (request: Request) => {
+    const cookieStore = await cookies(); // FIX: Add await,
     const session = await getIronSession<IronSessionData>(cookieStore, sessionOptions),
     const url = new URL(request.url);
     const invoiceId = getInvoiceId(url.pathname);
@@ -92,7 +90,7 @@ export const _POST = async (request: Request) => {,
 
         const itemData = validation.data;
 
-        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type;
+        const context = await getCloudflareContext<CloudflareEnv>(); // FIX: Add await and type,
         const { env } = context;
         const { DB } = env;
 
@@ -102,7 +100,7 @@ export const _POST = async (request: Request) => {,
             DB.prepare("SELECT status FROM Invoices WHERE invoice_id = ?").bind(invoiceId),
             // 3. Check if billable item exists and is active;
             DB.prepare("SELECT item_id, unit_price, is_taxable FROM BillableItems WHERE item_id = ? AND is_active = TRUE").bind(itemData.billable_item_id),
-            // 4. Optional: Check if batch exists and has sufficient quantity if batch_id is provided;
+            // 4. Optional: Check if batch exists and has sufficient quantity if batch_id is provided,
             itemData.batch_id ? DB.prepare("SELECT current_quantity FROM StockBatches WHERE batch_id = ? AND inventory_item_id = (SELECT inventory_item_id FROM InventoryItems WHERE billable_item_id = ?)").bind(itemData.batch_id, itemData.billable_item_id) : null;
         ].filter(Boolean) as D1PreparedStatement[]); // Filter out null for optional batch check;
 
@@ -124,7 +122,7 @@ export const _POST = async (request: Request) => {,
         // Use provided unit_price or fetch from billable item;
         const unitPrice = itemData.unit_price !== undefined ? itemData.unit_price : billableItem.unit_price;
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
         const calculatedTaxAmount = itemData.tax_amount; // Placeholder;
 
         const totalAmount = (itemData.quantity * unitPrice) - itemData.discount_amount + calculatedTaxAmount;
@@ -163,7 +161,7 @@ export const _POST = async (request: Request) => {,
             ).bind(itemData.quantity, itemData.batch_id));
 
         // 5c. Update the invoice totals (total_amount, tax_amount, discount_amount);
-        // Note: This recalculates the entire invoice total. More complex logic might sum incrementally.;
+        // Note: This recalculates the entire invoice total. More complex logic might sum incrementally.,
         batchActions.push(DB.prepare();
             `UPDATE Invoices;
              SET;
@@ -190,8 +188,8 @@ export const _POST = async (request: Request) => {,
     } catch (error) {
 
         const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred";
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
-        return new Response(JSON.stringify({error: "Internal Server Error", details: errorMessage }), {status: 500,
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
+        return new Response(JSON.stringify({error:"Internal Server Error", details: errorMessage }), {status:500,
             headers: { "Content-Type": "application/json" }});
 
 // Note: DELETE for removing an item would follow a similar pattern: any;

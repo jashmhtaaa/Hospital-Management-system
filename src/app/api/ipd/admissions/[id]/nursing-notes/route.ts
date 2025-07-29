@@ -1,11 +1,10 @@
-import "@/lib/session"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {getSession  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@/lib/session"
+import { NextResponse } from "next/server" }
+import {  getSession  } from "@/lib/database"
+import {   type
 
-import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
 
 // Define interface for {
     POST request body;
@@ -63,7 +62,7 @@ export const _GET = async();
       return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -96,7 +95,7 @@ export const _GET = async();
     const isAdmin = session.user.roleName === "Admin";
     // Assuming permissions are correctly populated in the mock session;
     const canViewNotes =;
-      session.user.permissions?.includes("nursing_notes:view") ?? false;
+      session.user.permissions?.includes("nursing_notes:view") ?? false,
 
     if (!session.user) {
       return NextResponse.json({error: "Forbidden" }, {status: 403 });
@@ -176,13 +175,13 @@ export const _POST = async();
     const isNurse = session.user.roleName === "Nurse";
     // Assuming permissions are correctly populated in the mock session;
     const canCreateNotes =;
-      session.user.permissions?.includes("nursing_notes:create") ?? false;
+      session.user.permissions?.includes("nursing_notes:create") ?? false,
 
     if (!session.user) {
       return NextResponse.json({error: "Forbidden" }, {status: 403 });
 
-    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
-    // Fixed: Apply type assertion;
+    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    // Fixed: Apply type assertion,
     const data = (await request.json()) as NursingNoteInput;
 
     // Basic validation (using typed data);

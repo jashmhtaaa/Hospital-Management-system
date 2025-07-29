@@ -1,16 +1,14 @@
-import "@cloudflare/workers-types"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {D1Database  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@cloudflare/workers-types"
+import { NextResponse } from "next/server" }
+import {  D1Database  } from "@/lib/database"
+import {   type
 
-export const _runtime = "edge";
+export const _runtime = "edge",
 
 // Interface for the POST request body;
-interface StaffAssignmentBody {user_id: string; // Assuming ID is string;
-  role: string;
- } from "next/server"
+interface StaffAssignmentBody { user_id: string; // Assuming ID is string, role: string,
+  } from "@/lib/database"
 
 // GET /api/ot/bookings/[id]/staff - Get staff assigned to a specific OT booking;
 export const _GET = async();
@@ -49,7 +47,7 @@ export const _GET = async();
 }
 } catch (error) {
 }
-    const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Booking ID is required" },
@@ -120,7 +118,7 @@ export const _POST = async();
 }
 } catch (error) {
 }
-    const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Booking ID is required" },
@@ -262,7 +260,7 @@ export const DELETE = async();
 
 } catch (error) {
 
-    const {id: bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:bookingId } = await params; // FIX: Await params and destructure id (Next.js 15+),
     if (!session.user) {
       return NextResponse.json();
         {message: "Booking ID is required" },
@@ -275,10 +273,9 @@ export const DELETE = async();
       .run();
 
     return NextResponse.json();
-      {message: "Staff assignments removed successfully";
-        // D1 delete doesn\"t reliably return changes, so we might not have an accurate count;
-        // count: info.meta.changes;
-      },status: 200 ;
+      { message: "Staff assignments removed successfully", // D1 delete doesn\"t reliably return changes, so we might not have an accurate count;
+        // count: info.meta.changes,
+       },status: 200 ;
     );
   } catch (error: unknown) {,
 

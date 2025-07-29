@@ -1,11 +1,10 @@
-import "@/lib/session"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {getSession  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@/lib/session"
+import { NextResponse } from "next/server" }
+import {  getSession  } from "@/lib/database"
+import {   type
 
-import {  getDB  } from "next/server" from "@/lib/database"; // Using mock DB;
+import {  getDB  } from "@/lib/database"; // Using mock DB;
 
 // Define interface for POST request body;
 interface BedInput {bed_number: string,
@@ -61,10 +60,10 @@ export const _GET = async (request: any) => {,
     const category = searchParams.get("category");
     const status = searchParams.get("status");
 
-    const database = await getDB(); // Fixed: Await the promise returned by getDB();
+    const database = await getDB(); // Fixed: Await the promise returned by getDB(),
 
     let query = "SELECT * FROM beds WHERE 1=1";
-    const parameters: string[] = [];
+    const parameters: string[] = [],
 
     if (!session.user) {
       query += " AND ward = ?";
@@ -141,11 +140,11 @@ export const _POST = async (request: any) => {,
     // Check permissions (using mock session data);
     // Assuming permissions are correctly populated in the mock session;
     const canCreateBed =;
-      session.user.permissions?.includes("bed:create") ?? false;
+      session.user.permissions?.includes("bed:create") ?? false,
     if (!session.user) {
       return NextResponse.json({error: "Forbidden" }, {status: 403 });
 
-    // Fixed: Apply type assertion;
+    // Fixed: Apply type assertion,
     const data = (await request.json()) as BedInput;
 
     // Basic validation (using typed data);

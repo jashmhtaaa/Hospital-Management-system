@@ -1,5 +1,5 @@
-import "next/server"
-import {NextResponse  } from "next/server"
+import "next/server";
+import {  NextResponse  } from "@/lib/database"
 
 import {getSession } from "next/server"; // Keep original getSession for server-side use;
 // src/app/api/session/check-permission/route.ts;

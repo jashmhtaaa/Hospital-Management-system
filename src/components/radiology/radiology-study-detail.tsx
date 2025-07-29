@@ -1,6 +1,5 @@
-import React, { useState, useEffect, type ReactNode, useCallback } from "react"; // FIX: Add useCallback;
-import "next/navigation"
-import useRouter }
+import React, { useState, useEffect, type ReactNode, useCallback } from "react"; // FIX: Add useCallback,
+import { useRouter } from "next/navigation"
 import {
 import { useParams
 
@@ -13,16 +12,14 @@ import { useParams
   CardHeader,
   CardTitle,
   CardDescription} from "@/components/ui/card";
-import "@/components/ui/badge"
-import "@/components/ui/button"
-import { Badge }
+import { } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Button }
 
 // FIX: Remove unused Edit, Trash2;
-import "lucide-react"
-import ArrowLeft
+import { ArrowLeft
 import CreateRadiologyReportModal
-import FileText }
+import FileText } from "lucide-react"
 import {
 import { Loader2
 
@@ -30,10 +27,11 @@ import { Loader2
 // import RadiologyReportsList from "./RadiologyReportsList.ts"; // Assuming this exists;
 
 // Define interfaces;
-interface StudyDetails {id:string,
-  patient_id: string;
+interface StudyDetails {
+  id: string,
+  patient_id: string,
   patient_name?: string; // Assuming joined;
-  order_id: string;
+  order_id: string,
   procedure_name?: string; // Assuming joined;
   accession_number?: string | null;
   study_datetime: string,
@@ -69,7 +67,7 @@ interface StudyDetails {id:string,
   const [showCreateReportModal, setShowCreateReportModal] =;
     useState<boolean>(false);
 
-  // FIX: Wrap fetchStudyDetails in useCallback;
+  // FIX: Wrap fetchStudyDetails in useCallback,
   const fetchStudyDetails = useCallback(async (): Promise<void> => {
     if (!session.user) {
       setError("Study ID is missing."),
@@ -136,7 +134,7 @@ interface StudyDetails {id:string,
           status: "acquired",
           "Tech Sarah",
           "PA and Lateral views",
-          number_of_images: 2;
+          number_of_images: 2,
         };
         setStudy(mockStudy);
       } else ;
@@ -157,15 +155,15 @@ interface StudyDetails {id:string,
     if (!session.user) {
       fetchStudyDetails();
     }
-    // FIX: Add fetchStudyDetails to dependency array;
+    // FIX: Add fetchStudyDetails to dependency array,
   }, [studyId, fetchStudyDetails]);
 
-  // FIX: Adjust function signature to match the onSubmit prop type expected by the modal;
+  // FIX: Adjust function signature to match the onSubmit prop type expected by the modal,
   const handleCreateReport = async();
     formData: ModalReportFormData;
   ): Promise<void> => {
     if (!session.user) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       return;
     }
     try {
@@ -248,7 +246,7 @@ interface StudyDetails {id:string,
 
           const errorData: { error?: string } = await response.json();
           errorMessage = errorData.error || errorMessage;
-          // FIX: Prefix unused variable with underscore;
+          // FIX: Prefix unused variable with underscore,
         } catch {
           /* Ignore if response is not JSON */;
 
@@ -256,7 +254,7 @@ interface StudyDetails {id:string,
 
       // await ; // Simulate delay;
 
-      /* SECURITY: Console statement removed */.");
+      /* SECURITY: Console statement removed */."),
       setShowCreateReportModal(false);
       // Refresh study details or associated reports list;
       fetchStudyDetails();
@@ -264,7 +262,7 @@ interface StudyDetails {id:string,
       const message =;
         error_ instanceof Error ? error_.message : "An unknown error occurred.";
 
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
 
   };
 
@@ -313,14 +311,14 @@ interface StudyDetails {id:string,
 
     const statusStyles: { [key: string]: string } = {scheduled:"bg-yellow-100 text-yellow-800 border-yellow-200",
       "bg-purple-100 text-purple-800 border-purple-200",
-      verified: "bg-green-100 text-green-800 border-green-200";
+      verified: "bg-green-100 text-green-800 border-green-200",
     };
     const displayText =;
       status.charAt(0).toUpperCase() + status.slice(1).replace("_", " ");
 
     return();
       <Badge>;
-        variant="outline";
+        variant = "outline",
         className={`${statusStyles[status] || "bg-gray-100 border-gray-200"} font-medium`}
       >;
         {displayText}
@@ -381,7 +379,7 @@ interface StudyDetails {id:string,
 <div;
               <strong>Order ID:>;
               <Button>;
-                variant="link";
+                variant = "link",
                 className="p-0 h-auto ml-1 text-sm";
                 onClick={() => {}
                   router.push(`/dashboard/radiology/orders/${}`;

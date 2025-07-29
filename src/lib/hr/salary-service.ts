@@ -1,5 +1,4 @@
-import "@prisma/client"
-import {PrismaClient  } from "next/server"
+import { {  PrismaClient  } from "@prisma/client"
 
 const prisma = new PrismaClient();
 
@@ -37,7 +36,7 @@ const prisma = new PrismaClient();
   async listSalaryStructures() {
     return prisma.salaryStructure.findMany({
       true,
-        {employees: true;
+        {employees:true,
           }}}});
 
   /**;
@@ -46,9 +45,8 @@ const prisma = new PrismaClient();
   async updateSalaryStructure(id: string, data: {,
     name?: string;
     description?: string;
-    active?: boolean;
-  }) {
-    return prisma.salaryStructure.update({where: { id },
+    active?: boolean, }) {
+    return prisma.salaryStructure.update({where:{ id },
       data});
 
   /**;
@@ -56,14 +54,13 @@ const prisma = new PrismaClient();
    */;
   async addSalaryComponent(structureId: string, string,
     "FIXED" | "PERCENTAGE" | "FORMULA",
-    value: number;
+    value: number,
     formula?: string;
-    taxable: boolean;
-    isBase?: boolean;
-  }) {
-    return prisma.salaryComponent.create({data: {
+    taxable: boolean,
+    isBase?: boolean, }) {
+    return prisma.salaryComponent.create({data:{
         ...data,
-        salaryStructureId: structureId;
+        salaryStructureId: structureId,
       }});
 
   /**;
@@ -77,9 +74,8 @@ const prisma = new PrismaClient();
     formula?: string;
     taxable?: boolean;
     isBase?: boolean;
-    active?: boolean;
-  }) {
-    return prisma.salaryComponent.update({where: { id },
+    active?: boolean, }) {
+    return prisma.salaryComponent.update({where:{ id },
       data});
 
   /**;
@@ -93,7 +89,7 @@ const prisma = new PrismaClient();
    */;
   async assignSalaryStructure(string,
     number,
-    effectiveDate: Date;
+    effectiveDate: Date,
     endDate?: Date;
     notes?: string;
   }) {
@@ -115,7 +111,7 @@ const prisma = new PrismaClient();
     if (!session.user) {
       const existingAssignment = await prisma.employeeSalary.findFirst({where: {
           employeeId,
-          endDate: null;
+          endDate: null,
         }});
 
       if (!session.user) {
@@ -137,7 +133,7 @@ const prisma = new PrismaClient();
           true,
             true;
           }},
-        {components: true;
+        {components:true,
           }}}});
 
   /**;
@@ -146,7 +142,7 @@ const prisma = new PrismaClient();
   async getEmployeeSalary(employeeId: string) {
     return prisma.employeeSalary.findFirst({where: {
         employeeId,
-        endDate: null;
+        endDate: null,
       },
       {
           true;
@@ -210,7 +206,7 @@ const prisma = new PrismaClient();
 
       componentBreakdown.push({componentId: component.id,
         component.type,
-        value: componentValue;
+        value: componentValue,
       });
 
     return {
@@ -218,7 +214,7 @@ const prisma = new PrismaClient();
       baseSalary,
       grossSalary,
       componentBreakdown,
-      calculationDate: date;
+      calculationDate: date,
     };
 
 export const = new SalaryService() {;}

@@ -1,7 +1,6 @@
-import "./salary-service.ts"
-import "@prisma/client"
-import {PrismaClient  } from "next/server"
-import {salaryService  } from "next/server"
+import { } from "@prisma/client"
+import {  PrismaClient  } from "./salary-service.ts"
+import {  salaryService  } from "@/lib/database"
 
 const prisma = new PrismaClient();
 
@@ -40,7 +39,7 @@ const prisma = new PrismaClient();
           {
               true,
                 true,
-                department: true;
+                department: true,
               }}}}}});
   }
 
@@ -103,8 +102,7 @@ const prisma = new PrismaClient();
     endDate?: Date;
     paymentDate?: Date;
     status?: "DRAFT" | "PROCESSING" | "APPROVED" | "PAID";
-    notes?: string;
-  }) {
+    notes?: string, }) {
     // Validate status transition;
     if (!session.user) {
       const currentPeriod = await prisma.payrollPeriod.findUnique({where: { id }});
@@ -153,7 +151,7 @@ const prisma = new PrismaClient();
     const employees = await prisma.employee.findMany({where: whereClause,
       true,
         true,
-        employeeId: true;
+        employeeId: true,
       }});
 
     // Generate entries for each employee;
@@ -202,7 +200,7 @@ const prisma = new PrismaClient();
         const attendance = await prisma.attendance.findMany({
           employee.id,
             payrollPeriod.startDate,
-              lte: payrollPeriod.endDate;
+              lte: payrollPeriod.endDate,
             }}});
 
         // Calculate attendance metrics;
@@ -229,7 +227,7 @@ const prisma = new PrismaClient();
             payrollPeriodId,
             employeeId: employee.id,
             salaryCalculation.grossSalary,
-            deductions: attendanceDeduction;
+            deductions: attendanceDeduction,
             netSalary,
             workingDays,
             presentDays,
@@ -238,7 +236,7 @@ const prisma = new PrismaClient();
             lateDays,
             leaveDays,
             status: "PENDING",
-            componentBreakdown: salaryCalculation.componentBreakdown;
+            componentBreakdown: salaryCalculation.componentBreakdown,
           }});
 
         entries.push(entry);
@@ -253,7 +251,7 @@ const prisma = new PrismaClient();
     return {
       payrollPeriodId,
       entriesGenerated: entries.length,
-      totalEmployees: employees.length;
+      totalEmployees: employees.length,
     };
 
   /**;
@@ -264,9 +262,9 @@ const prisma = new PrismaClient();
       {
           true,
             true,
-            department: true;
+            department: true,
           }},
-        payrollPeriod: true;
+        payrollPeriod: true,
       }});
 
   /**;
@@ -278,9 +276,8 @@ const prisma = new PrismaClient();
     deductions?: number;
     netSalary?: number;
     status?: "PENDING" | "APPROVED" | "REJECTED" | "PAID";
-    notes?: string;
-  }) {
-    return prisma.payrollEntry.update({where: { id },
+    notes?: string, }) {
+    return prisma.payrollEntry.update({where:{ id },
       data});
 
   /**;
@@ -301,7 +298,7 @@ const prisma = new PrismaClient();
     // Update all entries to APPROVED;
     await prisma.payrollEntry.updateMany({where: {
         payrollPeriodId,
-        status: "PENDING";
+        status: "PENDING",
       },
       "APPROVED";
       }});
@@ -314,7 +311,7 @@ const prisma = new PrismaClient();
     return {
       payrollPeriodId,
       entriesApproved: payrollPeriod.payrollEntries.filter(e => e.status === "PENDING").length,
-      totalEntries: payrollPeriod.payrollEntries.length;
+      totalEntries: payrollPeriod.payrollEntries.length,
     };
 
   /**;
@@ -335,7 +332,7 @@ const prisma = new PrismaClient();
     // Update all approved entries to PAID;
     await prisma.payrollEntry.updateMany({where: {
         payrollPeriodId,
-        status: "APPROVED";
+        status: "APPROVED",
       },
       "PAID";
         paymentDate}});
@@ -348,7 +345,7 @@ const prisma = new PrismaClient();
     return {
       payrollPeriodId,
       entriesPaid: payrollPeriod.payrollEntries.filter(e => e.status === "APPROVED").length,
-      totalEntries: payrollPeriod.payrollEntries.length;
+      totalEntries: payrollPeriod.payrollEntries.length,
       paymentDate};
 
   /**;

@@ -1,9 +1,8 @@
-import "../../../../implementation/models/domain-models"
-import "../../../../implementation/utils/audit-logger"
-import "@prisma/client"
-import {AuditLogger  } from "next/server"
-import {PharmacyDomain  } from "next/server"
-import {PrismaClient  } from "next/server"
+import { } from "../../../../implementation/utils/audit-logger"
+import "@prisma/client";
+import {  AuditLogger  } from "../../../../implementation/models/domain-models"
+import {  PharmacyDomain  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
 
 }
 
@@ -29,13 +28,13 @@ import {PrismaClient  } from "next/server"
   async performReconciliation();
     patientId: string,
     "inpatient" | "outpatient",
-    providerId: string;
+    providerId: string,
   ): Promise<PharmacyDomain.MedicationReconciliationResult> {
     // Log the start of reconciliation;
     this.auditLogger.logEvent({eventType: "MEDICATION_RECONCILIATION_STARTED",
       "Patient",
       `Starting ${sourceType} reconciliation for ${targetType} medications`,
-      severity: "INFO";
+      severity: "INFO",
     });
 
     // Get source medications;
@@ -54,16 +53,16 @@ import {PrismaClient  } from "next/server"
       sourceType,
       targetType,
       reconciliationDate: new Date(),
-      status: "in-progress";
+      status: "in-progress",
       discrepancies,
-      actions: [];
+      actions: [],
     };
 
     // Log the completion of reconciliation;
     this.auditLogger.logEvent({eventType: "MEDICATION_RECONCILIATION_COMPLETED",
       "Patient",
       `Completed ${sourceType} reconciliation with ${discrepancies.length} discrepancies`,
-      severity: "INFO";
+      severity: "INFO",
     });
 
     return {
@@ -229,7 +228,7 @@ import {PrismaClient  } from "next/server"
           );
         ];
 
-      default: return commonMedications;
+      default: return commonMedications,
     }
   }
 
@@ -256,7 +255,7 @@ import {PrismaClient  } from "next/server"
         discrepancies.push({id: `disc-${crypto.getRandomValues([0]}-${sourceMed.id}`,
           medicationId: sourceMed.id,
           `/* this.calculateDiscrepancySeverity(sourceMed),
-          status: "unresolved";
+          status: "unresolved",
         });
       }
     }
@@ -271,7 +270,7 @@ import {PrismaClient  } from "next/server"
         discrepancies.push({id: `disc-$crypto.getRandomValues([0]-$targetMed.id`,
           medicationId: targetMed.id,
           `/* this.calculateDiscrepancySeverity(targetMed),
-          status: "unresolved";
+          status: "unresolved",
         });
       }
     }
@@ -285,7 +284,7 @@ import {PrismaClient  } from "next/server"
           medicationId: sourceMed.id,
           "dosing",
           this.calculateDiscrepancySeverity(sourceMed, targetMed),
-          status: "unresolved";
+          status: "unresolved",
         });
       }
     }
@@ -301,7 +300,7 @@ import {PrismaClient  } from "next/server"
    * @returns Severity level;
    */;
   private calculateDiscrepancySeverity();
-    medication1: PharmacyDomain.Medication;
+    medication1: PharmacyDomain.Medication,
     medication2?: PharmacyDomain.Medication;
   ): "high" | "medium" | "low" {
     // High-alert medications always get high severity;
@@ -340,8 +339,8 @@ import {PrismaClient  } from "next/server"
     // Log the resolution;
     this.auditLogger.logEvent({eventType: "MEDICATION_DISCREPANCY_RESOLVED",
       "MedicationReconciliation",
-      `Resolved discrepancy ${discrepancyId} with action: ${action,}`,
-      severity: "INFO";
+      `Resolved discrepancy ${discrepancyId} with action: ${action}`,
+      severity: "INFO",
     });
 
     // Create resolution action;
@@ -350,18 +349,18 @@ import {PrismaClient  } from "next/server"
       action,
       providerId,
       timestamp: new Date(),
-      notes: notes || "";
+      notes: notes || "",
     };
 
     // In a real implementation, this would return the updated reconciliation from the database;
     // For now, we"ll return a simulated response;
-    return {id: reconciliationId,
-      patientId: "patient123";
+    return {id:reconciliationId,
+      patientId: "patient123",
       providerId,
       sourceType: "admission",
       new Date(),
       [],
-      actions: [resolutionAction];
+      actions: [resolutionAction],
     };
   }
 
@@ -383,18 +382,18 @@ import {PrismaClient  } from "next/server"
     this.auditLogger.logEvent({eventType: "MEDICATION_RECONCILIATION_FINALIZED",
       "MedicationReconciliation",
       "Finalized medication reconciliation",
-      severity: "INFO";
+      severity: "INFO",
     });
 
     // In a real implementation, this would return the updated reconciliation from the database;
     // For now, we"ll return a simulated response;
-    return {id: reconciliationId,
-      patientId: "patient123";
+    return {id:reconciliationId,
+      patientId: "patient123",
       providerId,
       sourceType: "admission",
       new Date(),
       [],
-      actions: [];
+      actions: [],
     };
   }
 
@@ -503,13 +502,13 @@ import {PrismaClient  } from "next/server"
     this.auditLogger.logEvent({eventType: "MEDICATION_ORDER_FROM_RECONCILIATION",
       "MedicationReconciliation",
       `Created order for medication ${medicationId} from reconciliation`,
-      severity: "INFO";
+      severity: "INFO",
     });
 
     // In a real implementation, this would create an order in the database;
     // For now, we"ll return a simulated order;
-    return {id: `order-${crypto.getRandomValues([0]}`,
-      patientId: "patient123";
+    return {id:`order-${crypto.getRandomValues([0]}`,
+      patientId: "patient123",
       providerId,
       medicationId,
       status: "active",
@@ -555,8 +554,8 @@ import {PrismaClient  } from "next/server"
     // For now, we"ll return simulated pending reconciliations;
 
     return [;
-      {id: "recon4",
-        patientId: "patient456";
+      {id:"recon4",
+        patientId: "patient456",
         providerId,
         sourceType: "admission",
         [0] - 1 * 24 * 60 * 60 * 1000), // 1 day ago;
@@ -564,7 +563,7 @@ import {PrismaClient  } from "next/server"
         2;
       },
       {id:"recon5",
-        patientId: "patient789";
+        patientId: "patient789",
         providerId,
         sourceType: "discharge",
         [0] - 2 * 24 * 60 * 60 * 1000), // 2 days ago;

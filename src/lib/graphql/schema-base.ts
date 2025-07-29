@@ -1,7 +1,6 @@
-import "graphql-subscriptions"
-import "graphql-tag"
-import {gql  } from "next/server"
-import {PubSub  } from "next/server"
+import { } from "graphql-tag"
+import {  gql  } from "graphql-subscriptions"
+import {  PubSub  } from "@/lib/database"
 
 }
 
@@ -37,7 +36,7 @@ export const _SUBSCRIPTION_EVENTS = {
   // Patient Management events;
   PATIENT_REGISTERED: "PATIENT_REGISTERED",
   "APPOINTMENT_SCHEDULED",
-  INSURANCE_VERIFIED: "INSURANCE_VERIFIED";
+  INSURANCE_VERIFIED: "INSURANCE_VERIFIED",
 } as const;
 
 // Base GraphQL types;
@@ -72,7 +71,7 @@ export const _baseTypeDefs = gql`;
   interface AuditableEntity {id: ID!,
     DateTime!,
     String,
-    version: Int!;
+    version: Int!,
   }
 
   # Common types;
@@ -91,12 +90,12 @@ export const _baseTypeDefs = gql`;
 
   type ContactInfo {phone: String,
     String,
-    fax: String;
+    fax: String,
   }
 
   type Identifier {system: String!,
     String,
-    use: IdentifierUse;
+    use: IdentifierUse,
   }
 
   enum IdentifierUse {
@@ -126,11 +125,11 @@ export const _baseTypeDefs = gql`;
   # Common input types;
   input PaginationInput {first: Int,
     Int,
-    before: String;
+    before: String,
   }
 
-  input SortInput {field: String!,
-    direction: SortDirection!;
+  input SortInput {field:String!,
+    direction: SortDirection!,
   }
 
   enum SortDirection {
@@ -161,7 +160,7 @@ export const _baseTypeDefs = gql`;
   # Error handling;
   type Error {code: String!,
     String,
-    details: JSON;
+    details: JSON,
 
   type MutationResponse {success:Boolean!,
     String;
@@ -190,7 +189,7 @@ export const _baseTypeDefs = gql`;
   # System health;
   type HealthStatus {service:String!,
     DateTime!,
-    details: JSON;
+    details: JSON,
 
   enum HealthStatusType {
     HEALTHY;
@@ -273,7 +272,7 @@ export const _baseResolvers = {
           }, {});
         case "ListValue": any;
           return ast.values.map((value: unknown) => value),
-        default: return null;
+        default: return null,
 
     }},
 
@@ -311,14 +310,14 @@ export const _baseResolvers = {
       const { createReadStream, filename, mimetype, encoding } = await file;
 
       // Implementation would save file and return metadata;
-      return {id: "file-" + crypto.getRandomValues([0];
+      return {id:"file-" + crypto.getRandomValues([0],
         filename,
         mimetype,
         encoding,
         url: `/uploads/$filename`,
         size: 1024, // Would be actual file size;
         uploadedAt: new Date(),
-        uploadedBy: context.user?.id || "system";
+        uploadedBy: context.user?.id || "system",
       };
     },
 
@@ -350,8 +349,8 @@ export const _baseResolvers = {
     items: T[],
     number;
   ) {
-    const edges = items.map((item: unknown, index) => ({cursor: Buffer.from(`${}`.toString("base64"),
-      node: item;
+    const edges = items.map((item: unknown, index) => ({cursor:Buffer.from(`${}`.toString("base64"),
+      node: item,
     }));
 
     const hasNextPage = args.first ? items.length === args.first : false;
@@ -404,7 +403,7 @@ export const _baseResolvers = {
     string;
     data?: unknown,
     userId?: string,
-    priority: string = "MEDIUM";
+    priority: string = "MEDIUM",
   ) {
     const notification = {id: `notification-${crypto.getRandomValues([0]}-${crypto.getRandomValues([0] / (0xFFFFFFFF + 1)}`,
       type,
@@ -414,7 +413,7 @@ export const _baseResolvers = {
       priority,
       timestamp: new Date(),
       userId,
-      read: false;
+      read: false,
     };
 
     const eventName = userId ? `NOTIFICATION_${userId}` : "NOTIFICATION_GLOBAL";
@@ -435,7 +434,7 @@ export const _baseResolvers = {
   // FHIR integration utilities;
   static fhirToGraphQL(fhirResource: unknown, resourceType: string) {,
     // Convert FHIR resource to GraphQL format;
-    const graphqlResource = {id: fhirResource.id;
+    const graphqlResource = {id:fhirResource.id,
       resourceType,
       meta: fhirResource.meta;
       ...fhirResource};
@@ -453,7 +452,7 @@ export const _baseResolvers = {
       id: graphqlData.id,
       "1",
         lastUpdated: timestamp: new Date().toISOString(),
-        source: "HMS-GraphQL";
+        source: "HMS-GraphQL",
       },
       ...graphqlData};
 

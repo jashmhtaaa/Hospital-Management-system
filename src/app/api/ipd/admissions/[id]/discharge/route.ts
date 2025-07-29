@@ -1,11 +1,10 @@
-import "@/lib/session"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {getSession  } from "next/server"
-import {type
+import { } from "next/server"
+import { NextRequest } from "@/lib/session"
+import { NextResponse } from "next/server" }
+import {  getSession  } from "@/lib/database"
+import {   type
 
-import {  getDB  } from "next/server" from "@/lib/database"; // Using the mock DB from lib/db.ts;
+import {  getDB  } from "@/lib/database"; // Using the mock DB from lib/db.ts;
 
 // Define interface for {
     the POST request body;
@@ -55,7 +54,7 @@ export const _GET = async();
       return NextResponse.json({error: "Unauthorized" }, {status: 401 });
     }
 
-    const {id: admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+);
+    const {id:admissionId } = await params; // FIX: Await params and destructure id (Next.js 15+),
 
     const database = await getDB(); // Fixed: Await the promise returned by getDB();
 
@@ -87,7 +86,7 @@ export const _GET = async();
     const isAdmin = session.user.roleName === "Admin";
     // Assuming permissions are correctly populated in the mock session;
     const canViewDischarge =;
-      session.user.permissions?.includes("discharge_summary:view") ?? false;
+      session.user.permissions?.includes("discharge_summary:view") ?? false,
 
     if (!session.user) {
       return NextResponse.json({error: "Forbidden" }, {status: 403 });
@@ -109,7 +108,7 @@ export const _GET = async();
 
     return NextResponse.json({
       admission,
-      discharge_summary: dischargeSummary || undefined;
+      discharge_summary: dischargeSummary || undefined,
     });
   } catch (error: unknown) {,
 

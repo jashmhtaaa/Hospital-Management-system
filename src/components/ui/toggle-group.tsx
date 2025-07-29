@@ -1,10 +1,9 @@
-import "@/components/ui/toggle"
-import "@/lib/utils"
-import "@radix-ui/react-toggle-group"
-import "react"
+import { } from "@/lib/utils"
+import "@radix-ui/react-toggle-group";
+import "react";
 import * as ToggleGroupPrimitive
 import * as React
-import { cn }
+import { cn } from "@/components/ui/toggle"
 import { toggleVariants }
 
 }
@@ -13,8 +12,9 @@ import { toggleVariants }
 
 const ToggleGroupContext = React.createContext<;
   VariantProps<typeof toggleVariants>;
->({size:"default",
-  variant: "default";
+>({
+  size: "default",
+  variant: "default",
 });
 
 const ToggleGroup = React.forwardRef<;
@@ -46,8 +46,9 @@ const ToggleGroupItem = React.forwardRef<;
     <ToggleGroupPrimitive.Item;
       ref={ref}
       className={cn();
-        toggleVariants({variant:context.variant || variant,
-          size: context.size || size;
+        toggleVariants({
+          variant: context.variant || variant,
+          size: context.size || size,
         }),
         className;
       )}

@@ -1,15 +1,14 @@
-import "@/lib/middleware/error-handling.middleware"
-import "@/lib/security.service"
-import "@/lib/services/support-services/feedback/feedback.service"
-import "next/server"
-import "zod"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {FeedbackService  } from "next/server"
-import {SecurityService  } from "next/server"
-import {type
-import {  withErrorHandling  } from "next/server"
-import {z  } from "next/server"
+import { } from "@/lib/security.service"
+import "@/lib/services/support-services/feedback/feedback.service";
+import "next/server";
+import "zod";
+import { NextRequest } from "@/lib/middleware/error-handling.middleware"
+import { NextResponse } from "next/server" }
+import {  FeedbackService  } from "@/lib/database"
+import {  SecurityService  } from "@/lib/database"
+import {   type
+import {  withErrorHandling  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 // Initialize service;
 const feedbackService = new FeedbackService();
@@ -25,7 +24,7 @@ const createFeedbackSchema = z.object({type: z.enum(["GENERAL", "SERVICE", "STAF
   staffId: z.string().uuid().optional(),
   contactEmail: z.string().email().optional(),
   contactPhone: z.string().max(20).optional(),
-  isAnonymous: z.boolean().default(false);
+  isAnonymous: z.boolean().default(false),
 });
 
 const createComplaintSchema = z.object({category: z.enum(["CARE_QUALITY", "STAFF_BEHAVIOR", "BILLING", "FACILITY", "SAFETY", "PRIVACY", "OTHER"]),
@@ -39,13 +38,13 @@ const createComplaintSchema = z.object({category: z.enum(["CARE_QUALITY", "STAFF
   contactEmail: z.string().email().optional(),
   contactPhone: z.string().max(20).optional(),
   isAnonymous: z.boolean().default(false),
-  desiredResolution: z.string().max(1000).optional();
+  desiredResolution: z.string().max(1000).optional(),
 });
 
 const updateFeedbackSchema = z.object({status: z.enum(["NEW", "UNDER_REVIEW", "ACKNOWLEDGED", "RESOLVED", "CLOSED"]).optional(),
   response: z.string().max(2000).optional(),
   assignedToId: z.string().uuid().optional(),
-  internalNotes: z.string().max(1000).optional();
+  internalNotes: z.string().max(1000).optional(),
 });
 
 const updateComplaintSchema = z.object({status: z.enum(["NEW", "UNDER_INVESTIGATION", "IN_PROGRESS", "RESOLVED", "CLOSED"]).optional(),
@@ -75,8 +74,8 @@ export const _GET = async (request: any) => {,
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "feedback:read",
-      auditAction: "FEEDBACK_VIEW";
+    {requiredPermission:"feedback:read",
+      auditAction: "FEEDBACK_VIEW",
     }
   );
 }
@@ -101,7 +100,7 @@ export const _POST = async (request: any) => {,
     {
       // Allow anonymous feedback submission;
       skipAuth: true,
-      auditAction: "FEEDBACK_CREATE";
+      auditAction: "FEEDBACK_CREATE",
     }
   );
 }
@@ -117,8 +116,8 @@ export const _GET_BY_ID = async (request: any, { params }: {params: { id: string
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "feedback:read",
-      auditAction: "FEEDBACK_DETAIL_VIEW";
+    {requiredPermission:"feedback:read",
+      auditAction: "FEEDBACK_DETAIL_VIEW",
     }
   );
 }
@@ -140,8 +139,8 @@ export const _PATCH = async (request: any, { params }: {params: { id: string } }
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "feedback:update",
-      auditAction: "FEEDBACK_UPDATE";
+    {requiredPermission:"feedback:update",
+      auditAction: "FEEDBACK_UPDATE",
     }
   );
 }
@@ -166,8 +165,8 @@ export const _GET_COMPLAINTS = async (request: any) => {,
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "complaints:read",
-      auditAction: "COMPLAINTS_VIEW";
+    {requiredPermission:"complaints:read",
+      auditAction: "COMPLAINTS_VIEW",
     }
   );
 }
@@ -192,7 +191,7 @@ export const _POST_COMPLAINT = async (request: any) => {,
     {
       // Allow anonymous complaint submission;
       skipAuth: true,
-      auditAction: "COMPLAINT_CREATE";
+      auditAction: "COMPLAINT_CREATE",
     }
   );
 }
@@ -208,8 +207,8 @@ export const _GET_COMPLAINT_BY_ID = async (request: any, { params }: {params: { 
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "complaints:read",
-      auditAction: "COMPLAINT_DETAIL_VIEW";
+    {requiredPermission:"complaints:read",
+      auditAction: "COMPLAINT_DETAIL_VIEW",
     }
   );
 }
@@ -231,8 +230,8 @@ export const _PATCH_COMPLAINT = async (request: any, { params }: {params: { id: 
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "complaints:update",
-      auditAction: "COMPLAINT_UPDATE";
+    {requiredPermission:"complaints:update",
+      auditAction: "COMPLAINT_UPDATE",
     }
   );
 }
@@ -260,8 +259,8 @@ export const _ESCALATE_COMPLAINT = async (request: any, { params }: {params: { i
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "complaints:escalate",
-      auditAction: "COMPLAINT_ESCALATE";
+    {requiredPermission:"complaints:escalate",
+      auditAction: "COMPLAINT_ESCALATE",
     }
   );
 }
@@ -282,8 +281,8 @@ export const _GET_ANALYTICS = async (request: any) => {,
 
       return NextResponse.json(result);
     },
-    {requiredPermission: "feedback:analytics",
-      auditAction: "FEEDBACK_ANALYTICS_VIEW";
+    {requiredPermission:"feedback:analytics",
+      auditAction: "FEEDBACK_ANALYTICS_VIEW",
     }
   );
 

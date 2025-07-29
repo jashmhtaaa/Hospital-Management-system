@@ -1,11 +1,10 @@
-import "../repositories/patient_repository.ts"
-import "./encryption_service.ts"
+import { } from "./encryption_service.ts"
 import Patient
-import PatientInputData }
-import {IEncryptionService  } from "next/server"
-import {IPatientRepository
+import PatientInputData } from "../repositories/patient_repository.ts"
+import {  IEncryptionService  } from "@/lib/database"
+import {   IPatientRepository
 
-import {  IAuditLogService   } from "next/server" from "./audit_log_service.ts"; // Import AuditLogService interface;
+import {  IAuditLogService   } from "@/lib/database"; // Import AuditLogService interface;
 
 }
 
@@ -24,9 +23,9 @@ import {  IAuditLogService   } from "next/server" from "./audit_log_service.ts";
    * @param performingUserId The ID of the user performing the registration.;
    * @returns The newly registered patient (with PHI fields still in their repository/encrypted form).;
    */;
-  async registerPatient(patientInputData: PatientInputData, performingUserId: string): Promise<Patient> {,
-    let _auditStatus = "FAILURE";
-    let _createdPatientId: string | null = null;
+  async registerPatient(patientInputData: PatientInputData, performingUserId: string): Promise<Patient> {
+    let _auditStatus = "FAILURE",
+    let _createdPatientId: string | null = null,
     try {
 } catch (error) {
   console.error(error);
@@ -68,7 +67,7 @@ import {  IAuditLogService   } from "next/server" from "./audit_log_service.ts";
 
       const newPatientFromRepo = await this.patientRepository.create(encryptedPatientData);
       _createdPatientId = newPatientFromRepo.id;
-      _auditStatus = "SUCCESS";
+      _auditStatus = "SUCCESS",
       await this.auditLogService.logEvent();
         performingUserId,
         "PATIENT_REGISTERED",
@@ -145,7 +144,7 @@ import {  IAuditLogService   } from "next/server" from "./audit_log_service.ts";
       const decryptedPatient: Patient = {,
         ...patientFromRepo,
         name: this.encryptionService.decrypt(patientFromRepo.name),
-        dateOfBirth: );
+        dateOfBirth: ),
       };
 
       await this.auditLogService.logEvent();

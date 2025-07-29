@@ -1,9 +1,8 @@
-import "../audit.service"
-import "@prisma/client"
-import "zod"
-import {AuditService  } from "next/server"
-import {PrismaClient  } from "next/server"
-import {z  } from "next/server"
+import { } from "@prisma/client"
+import "zod";
+import {  AuditService  } from "../audit.service"
+import {  PrismaClient  } from "@/lib/database"
+import {  z  } from "@/lib/database"
 
 /**;
  * Advanced ICD Coding Service;
@@ -51,7 +50,7 @@ export const CodingRequestSchema = z.object({patientId: z.string().min(1, "Patie
   requestDate: z.date().default(() => ,
   dueDate: z.date().optional(),
   status: z.enum(["pending", "in_progress", "completed", "rejected"]).default("pending"),
-  specialInstructions: z.string().optional();
+  specialInstructions: z.string().optional(),
 });
 
 export const CodingResultSchema = z.object({requestId: z.string(),
@@ -64,7 +63,7 @@ export const CodingResultSchema = z.object({requestId: z.string(),
   notes: z.string().optional(),
   validationStatus: z.enum(["pending", "validated", "rejected"]).default("pending"),
   validatedBy: z.string().optional(),
-  validationDate: z.date().optional();
+  validationDate: z.date().optional(),
 });
 
 export type ICDCode = z.infer>;
@@ -133,7 +132,7 @@ export type CodingResult = z.infer>;
           true,
           ["DM Type 2", "NIDDM"],
           excludes: ["E11.0", "E11.1"],
-          includes: ["Adult-onset diabetes"];
+          includes: ["Adult-onset diabetes"],
         }
       ];
 
@@ -157,12 +156,12 @@ export type CodingResult = z.infer>;
       // Log search activity;
       await this.auditService.logAuditEvent({action: "icd_code_search",
         query,
-        userId: "system";query, version, resultsCount: filteredResults.length ;
+        userId: "system",query, version, resultsCount: filteredResults.length ,
       });
 
       return filteredResults;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to search ICD codes");
     }
   }
@@ -171,8 +170,7 @@ export type CodingResult = z.infer>;
    * Get ICD code hierarchy (parent/child relationships);
    */;
   async getCodeHierarchy(code: string, ICDCode[],
-    ICDCode[];
-  }> {
+    ICDCode[], }> {
     try {
 } catch (error) {
   console.error(error);
@@ -211,24 +209,24 @@ export type CodingResult = z.infer>;
           "Chronic ischemic heart disease",
           false,
           false,
-          sex: "both" as const;
+          sex: "both" as const,
         }],
         children: [],
         "I25.11",
           "Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm",
           true,
           true,
-          sex: "both" as const;
+          sex: "both" as const,
         }];
 
       await this.auditService.logAuditEvent({action: "icd_hierarchy_lookup",
         code,
-        userId: "system";code, version ;
+        userId: "system",code, version ;
       });
 
       return mockHierarchy;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to get code hierarchy");
 
   /**;
@@ -236,7 +234,7 @@ export type CodingResult = z.infer>;
    */;
   async validateCode(code: string, boolean,
     string[],
-    suggestions: string[];
+    suggestions: string[],
   }> {
     try {
 } catch (error) {
@@ -275,7 +273,7 @@ export type CodingResult = z.infer>;
 
       const result = {isValid: !!foundCode && foundCode.isValid,
         [] as string[],
-        suggestions: [] as string[];
+        suggestions: [] as string[],
       };
 
       if (!session.user) {
@@ -290,12 +288,12 @@ export type CodingResult = z.infer>;
 
       await this.auditService.logAuditEvent({action: "icd_code_validation",
         code,
-        userId: "system";code, version, isValid: result.isValid ;
+        userId: "system",code, version, isValid: result.isValid ,
       });
 
       return result;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to validate ICD code");
 
   /**;
@@ -346,7 +344,7 @@ export type CodingResult = z.infer>;
 
       return requestId;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to submit coding request");
 
   /**;
@@ -392,9 +390,9 @@ export type CodingResult = z.infer>;
         requestId,
         validatedResult.primaryCodes,
           validatedResult.methodology,
-          confidence: validatedResult.confidence;
+          confidence: validatedResult.confidence,
       })} catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to complete coding request");
 
   /**;
@@ -404,7 +402,7 @@ export type CodingResult = z.infer>;
     clinicalText: string,
     CodingAssistanceOptions = {}
   ): Promise>;
-    confidence: number;
+    confidence: number,
   }> {
     try {
 } catch (error) {
@@ -463,17 +461,17 @@ export type CodingResult = z.infer>;
 
       await this.auditService.logAuditEvent({action:"coding_assistance_requested",
         "suggestion_request",
-        userId: "system";
+        userId: "system",
           codeType,
           textLength: clinicalText.length,
           overallConfidence;
       });
 
-      return {suggestions: filteredSuggestions,
-        confidence: overallConfidence;
+      return {suggestions:filteredSuggestions,
+        confidence: overallConfidence,
       };
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to get coding suggestions");
 
   /**;
@@ -527,12 +525,12 @@ export type CodingResult = z.infer>;
 
       await this.auditService.logAuditEvent({action:"coding_metrics_accessed",
         "metrics",
-        userId: "system";dateRange ;
+        userId: "system",dateRange ;
       });
 
       return mockMetrics;
     } catch (error) {
-      /* SECURITY: Console statement removed */;
+      /* SECURITY: Console statement removed */,
       throw new Error("Failed to get coding metrics");
 
   /**;
@@ -542,7 +540,7 @@ export type CodingResult = z.infer>;
     await this.prisma.$disconnect();
 
 // Singleton instance for application use;
-let icdCodingServiceInstance: ICDCodingService | null = null;
+let icdCodingServiceInstance: ICDCodingService | null = null,
 
 export const _getICDCodingService = (): ICDCodingService => {
   if (!session.user) {

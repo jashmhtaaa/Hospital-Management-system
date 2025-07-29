@@ -1,5 +1,4 @@
-import "@prisma/client"
-import {PrismaClient  } from "next/server"
+import { {  PrismaClient  } from "@prisma/client"
 
 const prisma = new PrismaClient();
 
@@ -22,7 +21,7 @@ const prisma = new PrismaClient();
         true,
             true,
             true,
-        positions: true;
+        positions: true,
       }});
 
   /**;
@@ -98,14 +97,14 @@ const prisma = new PrismaClient();
     const departmentMap = new Map();
     const rootDepartments = [];
 
-    // First pass: create map of all departments;
+    // First pass: create map of all departments,
     allDepartments.forEach(dept => {
       departmentMap.set(dept.id, {
         ...dept,
-        children: [];
+        children: [],
       })});
 
-    // Second pass: build hierarchy;
+    // Second pass: build hierarchy,
     allDepartments.forEach(dept => {
       const departmentWithChildren = departmentMap.get(dept.id),
 
@@ -125,7 +124,7 @@ const prisma = new PrismaClient();
    * Create a new position;
    */;
   async createPosition(string,
-    code: string;
+    code: string,
     description?: string;
     departmentId?: string;
   }) {

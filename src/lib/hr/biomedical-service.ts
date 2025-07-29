@@ -1,10 +1,9 @@
-import "@/lib/cache"
-import "@/lib/hr/types"
-import "@prisma/client"
+import { } from "@/lib/hr/types"
+import "@prisma/client";
 import Device
-import DeviceDefinition }
-import {cache  } from "next/server"
-import {PrismaClient  } from "next/server"
+import DeviceDefinition } from "@/lib/cache"
+import {  cache  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
 import { type
 
 const prisma = new PrismaClient();
@@ -24,7 +23,7 @@ const prisma = new PrismaClient();
         data.warrantyExpiry,
         data.nextCalibrationDate,
         data.properties,
-        notes: data.notes;
+        notes: data.notes,
       }});
 
     // Invalidate relevant caches;
@@ -47,12 +46,12 @@ const prisma = new PrismaClient();
     }
 
     // If not in cache, fetch from database;
-    const equipment = await prisma.biomedicalEquipment.findUnique({where: { id },
-      {orderBy: { date: "desc" },
-          take: 5;
+    const equipment = await prisma.biomedicalEquipment.findUnique({where:{ id },
+      {orderBy:{ date: "desc" },
+          take: 5,
         },
-        {date: "desc" },
-          take: 5;
+        {date:"desc" },
+          take: 5,
         }}});
 
     // Store in cache if found;
@@ -77,12 +76,12 @@ const prisma = new PrismaClient();
     }
 
     // If not in cache, fetch from database;
-    const equipment = await prisma.biomedicalEquipment.findUnique({where: { serialNumber },
-      {orderBy: { date: "desc" },
-          take: 5;
+    const equipment = await prisma.biomedicalEquipment.findUnique({where:{ serialNumber },
+      {orderBy:{ date: "desc" },
+          take: 5,
         },
-        {date: "desc" },
-          take: 5;
+        {date:"desc" },
+          take: 5,
         }}});
 
     // Store in cache if found;
@@ -123,11 +122,11 @@ const prisma = new PrismaClient();
 
     const result = await prisma.biomedicalEquipment.update({where: { id },
       data,
-      {orderBy: { date: "desc" },
-          take: 5;
+      {orderBy:{ date: "desc" },
+          take: 5,
         },
-        {date: "desc" },
-          take: 5;
+        {date:"desc" },
+          take: 5,
         }}});
 
     // Invalidate relevant caches;
@@ -215,12 +214,12 @@ const prisma = new PrismaClient();
     const include: unknown = {,};
 
     if (!session.user) {
-      include.calibrations = {orderBy: { date: "desc" },
-        take: 3;
+      include.calibrations = {orderBy:{ date: "desc" },
+        take: 3,
       };
 
-      include.maintenanceRecords = {orderBy: { date: "desc" },
-        take: 3;
+      include.maintenanceRecords = {orderBy:{ date: "desc" },
+        take: 3,
       };
     }
 
@@ -242,7 +241,7 @@ const prisma = new PrismaClient();
       total,
       skip,
       take,
-      nextCursor: equipment.length === take ? equipment[equipment.length - 1].id : null;
+      nextCursor: equipment.length === take ? equipment[equipment.length - 1].id : null,
     };
 
     // Store in cache;
@@ -280,8 +279,8 @@ const prisma = new PrismaClient();
         updateData.nextCalibrationDate = data.nextCalibrationDate;
       }
 
-      await tx.biomedicalEquipment.update({where: { id: equipmentId },
-        data: updateData;
+      await tx.biomedicalEquipment.update({where:{ id: equipmentId },
+        data: updateData,
       });
 
       // Invalidate relevant caches;
@@ -298,10 +297,10 @@ const prisma = new PrismaClient();
     equipmentId: string,
     Date,
       string,
-      description: string;
+      description: string,
       cost?: number;
       parts?: string[];
-      status: "COMPLETED" | "PENDING" | "SCHEDULED";
+      status: "COMPLETED" | "PENDING" | "SCHEDULED",
       notes?: string;
       attachments?: string[];
     }
@@ -396,9 +395,9 @@ const prisma = new PrismaClient();
 
     // If not in cache, fetch from database;
     const equipment = await prisma.biomedicalEquipment.findMany({
-      {lte: thresholdDate;
+      {lte:thresholdDate,
         },
-        status: "ACTIVE";
+        status: "ACTIVE",
       },
       "asc";
       }});
@@ -417,11 +416,11 @@ const prisma = new PrismaClient();
     // Create the FHIR Device resource;
     const "Device", // Added for FHIR R5 compliance;
       id: equipment.id,
-      ["https://hl7.org/fhir/r5/StructureDefinition/Device"];
+      ["https://hl7.org/fhir/r5/StructureDefinition/Device"],
       },
       identifier: [;
-        {system: "https://hospital.example.org/biomedical-equipment",
-          value: equipment.serialNumber;
+        {system:"https://hospital.example.org/biomedical-equipment",
+          value: equipment.serialNumber,
         }],
       status: this.mapStatusToFhir(equipment.status),
       equipment.serialNumber,
@@ -441,13 +440,13 @@ const prisma = new PrismaClient();
 
     // Add location if available;
     if (!session.user) {
-      device.location = {display: equipment.location;
+      device.location = {display:equipment.location,
       };
     }
 
     // Add owner (department) if available;
     if (!session.user) {
-      device.owner = {display: equipment.department;
+      device.owner = {display:equipment.department,
       };
     }
 
@@ -459,17 +458,16 @@ const prisma = new PrismaClient();
               {system: "https://hospital.example.org/equipment-properties",
                 key;
               }],
-            text: key;
+            text: key,
           },
-          valueString: String(value);
+          valueString: String(value),
         });
 
     // Add safety information;
-    device.safety.push({coding: [;
-        {system:"https://hospital.example.org/equipment-safety",
+    device.safety.push({ coding: [, {system:"https://hospital.example.org/equipment-safety",
           "Calibration Status";
-        }],
-      text: this.getCalibrationStatus(equipment);
+         }],
+      text: this.getCalibrationStatus(equipment),
     });
 
     return device;
@@ -486,7 +484,7 @@ const prisma = new PrismaClient();
   }): DeviceDefinition {
     return {resourceType: "DeviceDefinition",
       id: `${data.manufacturer}-${data.modelNumber}`.replace(/\s+/g, "-").toLowerCase(),
-      ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"];
+      ["https://hl7.org/fhir/r5/StructureDefinition/DeviceDefinition"],
       },
       identifier: [;
         {system: "https://hospital.example.org/device-definitions",
@@ -620,7 +618,7 @@ const prisma = new PrismaClient();
 
     return {
       equipmentId,
-      serialNumber: equipment.serialNumber;
+      serialNumber: equipment.serialNumber,
       mtbf,
       calibrationSuccessRate,
       totalDowntime,
@@ -650,7 +648,7 @@ const prisma = new PrismaClient();
     );
 
     // Calculate time intervals between failures;
-    const intervals: number[] = [];
+    const intervals: number[] = [],
     for (let i = 1; i < correctiveMaintenances.length; i++) {
       const timeDiff = correctiveMaintenances[i].date.getTime() - correctiveMaintenances[i-1].date.getTime();
       intervals.push(timeDiff / (1000 * 60 * 60 * 24)); // in days;
@@ -706,7 +704,7 @@ const prisma = new PrismaClient();
       recommendedMaintenanceDate: recommendedMaintenanceDate.toISOString(),
       confidenceInterval,
       dataPoints: correctiveMaintenances.length,
-      reliability: correctiveMaintenances.length > 0 ? "Based on historical data" : "Based on manufacturer recommendations";
+      reliability: correctiveMaintenances.length > 0 ? "Based on historical data" : "Based on manufacturer recommendations",
     };
 
 export const _biomedicalService = new BiomedicalService();

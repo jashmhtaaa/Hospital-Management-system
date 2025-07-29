@@ -1,6 +1,6 @@
-import "@/lib/utils"
-import "@radix-ui/react-hover-card"
-import "react"
+import "@/lib/utils";
+import "@radix-ui/react-hover-card";
+import "react";
 import * as HoverCardPrimitive
 import * as React
 import { cn }

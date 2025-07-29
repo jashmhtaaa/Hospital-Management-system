@@ -1,9 +1,8 @@
-import "@/lib/logger"
-import "@/lib/prisma"
-import "@prisma/client"
-import {logger  } from "next/server"
-import {LogSeverity  } from "next/server"
-import {prisma  } from "next/server"
+import { } from "@/lib/prisma"
+import "@prisma/client";
+import {  logger  } from "@/lib/logger"
+import {  LogSeverity  } from "@/lib/database"
+import {  prisma  } from "@/lib/database"
 
 // src/lib/audit/audit-service.ts;
 }
@@ -35,20 +34,20 @@ import {prisma  } from "next/server"
       resource,
       resourceId,
       description,
-      severity: LogSeverity.INFO;
+      severity: LogSeverity.INFO,
     });
 
   static async logDataChange();
     context: AuditContext,
     string,
     unknown): Promise<void> {
-    await this.log(context, {action: "UPDATE";
+    await this.log(context, {action:"UPDATE",
       resource,
       resourceId,
       oldValues,
       newValues,
       description: `$resourcedata updated`,
-      severity: LogSeverity.INFO;
+      severity: LogSeverity.INFO,
     });
 
   static async logSecurityEvent();
@@ -58,7 +57,7 @@ import {prisma  } from "next/server"
   ): Promise<void> {
     await this.log(context, {
       action,
-      resource: "SECURITY";
+      resource: "SECURITY",
       description,
       severity;
     });
@@ -82,8 +81,8 @@ import {prisma  } from "next/server"
             true;
 
       },
-      orderBy: {timestamp: "desc" },
-      take: limit;
+      orderBy: {timestamp:"desc" },
+      take: limit,
     });
 
 // Audit decorator for automatic logging;
@@ -133,7 +132,7 @@ export function withAudit(resource: string): unknown {,
           propertyName.toUpperCase(),
           resource,
           result?.id,
-          `/* SECURITY: Template literal eliminated */;
+          `/* SECURITY: Template literal eliminated */,
 
         return result;
       } catch (error) {

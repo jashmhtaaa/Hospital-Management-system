@@ -1,5 +1,5 @@
-import "./pharmacy.ts"
-import {MedicationAdministrationRecord  } from "next/server"
+import "./pharmacy.ts";
+import {  MedicationAdministrationRecord  } from "@/lib/database"
 
 // src/types/api.ts;
 

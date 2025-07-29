@@ -1,8 +1,7 @@
-import "@/components/layout/DashboardLayout"
-import "@/components/ui/button"
-import "react"
+import { } from "@/components/ui/button"
+import "react";
 import React
-import useEffect }
+import useEffect } from "@/components/layout/DashboardLayout"
 import {
 import { Button }
 import { DashboardLayout }
@@ -20,14 +19,13 @@ export const dynamic = "force-dynamic";
   TableHead,
   TableHeader,
   TableRow} from "@/components/ui/table";
-import "@/components/ui/badge"
-import "@/components/ui/input"
-import "@/hooks/use-toast"
-import "@/types/inventory"
-import "lucide-react"
-import "next/link"
+import { } from "@/components/ui/input"
+import "@/hooks/use-toast";
+import "@/types/inventory";
+import "lucide-react";
+import "next/link";
 import Link
-import Search }
+import Search } from "@/components/ui/badge"
 import { Badge }
 import { Input }
 import { InventoryItem }
@@ -80,7 +78,7 @@ export default const _InventoryPage = () {
         if (!session.user) {
             params.append("name", searchTerm);
 
-        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+        // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
         const response = await fetch(`/api/inventory-items?${}`;
         if (!session.user) {
@@ -137,9 +135,9 @@ export default const _InventoryPage = () {
             >;
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />;
                 <Input>;
-                    type="search";
+                    type = "search",
                     placeholder="Search by Item Name...";
-                    className="pl-8 w-full sm:w-64";
+                    className="pl-8 w-full sm:w-64",
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />;

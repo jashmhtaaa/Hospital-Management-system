@@ -1,13 +1,12 @@
-import "../../../../../lib/audit"
-import "../../../../../lib/error-handler"
-import "../../../../../lib/validation/pharmacy-validation"
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {auditLog  } from "next/server"
-import {errorHandler  } from "next/server"
-import {type
-import {  validateInventoryAdjustmentRequest  } from "next/server"
+import { } from "../../../../../lib/error-handler"
+import "../../../../../lib/validation/pharmacy-validation";
+import "next/server";
+import { NextRequest } from "../../../../../lib/audit"
+import { NextResponse } from "next/server" }
+import {  auditLog  } from "@/lib/database"
+import {  errorHandler  } from "@/lib/database"
+import {   type
+import {  validateInventoryAdjustmentRequest  } from "@/lib/database"
 
 }
 
@@ -26,7 +25,7 @@ const inventoryRepository = {findById: (id: string) => Promise.resolve(null),
   save: (item: unknown) => Promise.resolve(item.id || "new-id"),
   update: () => Promise.resolve(true),
   delete: () => Promise.resolve(true),
-  adjustStock: () => Promise.resolve(true);
+  adjustStock: () => Promise.resolve(true),
 }
 
 const adjustmentRepository = {findById: (id: string) => Promise.resolve(null),
@@ -34,7 +33,7 @@ const adjustmentRepository = {findById: (id: string) => Promise.resolve(null),
   findByLocationId: (locationId: string) => Promise.resolve([]),
   findByMedicationId: (medicationId: string) => Promise.resolve([]),
   findAll: () => Promise.resolve([]),
-  save: (adjustment: unknown) => Promise.resolve(adjustment.id || "new-id");
+  save: (adjustment: unknown) => Promise.resolve(adjustment.id || "new-id"),
 };
 
 /**;
@@ -106,11 +105,11 @@ export const POST = async (req: any) => {,
     const adjustment = {id: crypto.randomUUID(),
       inventory.locationId,
       inventory.quantityOnHand,
-      newQuantity: data.newQuantity;
+      newQuantity: data.newQuantity,
       adjustmentQuantity,
       reason: data.reason,
       new Date(),
-      notes: data.notes || "";
+      notes: data.notes || "",
     };
 
     // Save adjustment record;
@@ -124,12 +123,12 @@ export const POST = async (req: any) => {,
       // Additional logging for controlled substances;
       await auditLog("CONTROLLED_SUBSTANCE", {action: "ADJUST",
         data.inventoryId,
-        userId: userId;
+        userId: userId,
           adjustmentId,
           medicationId: inventory.medicationId,
           data.newQuantity;
           adjustmentQuantity,
-          reason: data.reason;
+          reason: data.reason,
       });
     }
 
@@ -139,16 +138,16 @@ export const POST = async (req: any) => {,
       userId: userId;
       {inventoryId:data.inventoryId,
         inventory.quantityOnHand,
-        newQuantity: data.newQuantity;
+        newQuantity: data.newQuantity,
         adjustmentQuantity,
-        reason: data.reason;
+        reason: data.reason,
       }
     });
 
     // Return response;
     return NextResponse.json();
-      {id: adjustmentId,
-        message: "Inventory adjusted successfully";
+      {id:adjustmentId,
+        message: "Inventory adjusted successfully",
       },
       {status: 201 }
     );
@@ -236,7 +235,7 @@ export const GET = async (req: any) => {,
         filter,
         page,
         limit,
-        resultCount: adjustments.length;
+        resultCount: adjustments.length,
     });
 
     // Return response;
@@ -246,7 +245,7 @@ export const GET = async (req: any) => {,
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit);
+        pages: Math.ceil(total / limit),
 
     }, {status: 200 });
   } catch (error) {

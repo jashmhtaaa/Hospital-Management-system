@@ -1,11 +1,9 @@
-import "./quality-persistence.service"
-import "@prisma/client"
-import "events"
-import getQualityPersistenceService }
-import QualityPersistenceService
-import {EventEmitter  } from "next/server"
-import {PrismaClient  } from "next/server"
-import {type
+import { } from "./quality-persistence.service"
+import { } from "events"
+import getQualityPersistenceService, QualityPersistenceService
+import  } from "@prisma/client"  EventEmitter  } from "@/lib/database"
+import {  PrismaClient  } from "@/lib/database"
+import {  type
 
  } from "next/server"
 
@@ -19,11 +17,11 @@ import {type
   range?: {min: number, max: number };
   percentile?: number; // Target percentile (e.g., 75th percentile);
   source: "internal" | "benchmark" | "regulatory" | "best_practice",
-  validFrom: Date;
+  validFrom: Date,
   validTo?: Date;
 }
-  {start: Date, end: Date };
-  standards: string[];
+  {start:Date, end: Date };
+  standards: string[],
   excludedAreas?: string[];
 }
   range?: {min: number, max: number };
@@ -34,12 +32,12 @@ import {type
   number,
   number,
   "improving" | "stable" | "declining",
-  performance: "exceeds" | "meets" | "below" | "significantly_below";
+  performance: "exceeds" | "meets" | "below" | "significantly_below",
   benchmarkComparison?: BenchmarkComparison[];
   riskAdjusted?: boolean;
   dataQuality: DataQualityScore,
   string,
-  validated: boolean;
+  validated: boolean,
   validatedBy?: string;
   validatedAt?: Date;
   notes?: string;
@@ -49,7 +47,7 @@ import {type
   ComplianceRequirement[],
   "compliant" | "non_compliant" | "conditional" | "pending",
   ComplianceGap[],
-  actionPlan: ActionPlan;
+  actionPlan: ActionPlan,
   submittedAt?: Date;
   submittedBy?: string;
   approvedAt?: Date;
@@ -58,8 +56,8 @@ import {type
 }
 
 class QualityManagementService extends EventEmitter {
-  private prisma: PrismaClient;
-  private persistenceService: QualityPersistenceService;
+  private prisma: PrismaClient,
+  private persistenceService: QualityPersistenceService,
   private calculationJobs: Map<string, NodeJS.Timeout> = new Map(),
   private isRunning = false;
 
@@ -121,7 +119,7 @@ class QualityManagementService extends EventEmitter {
       // Start monitoring;
       this.startEventMonitoring();
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       this.emit("quality_service_started");
     } catch (error) {
 
@@ -141,7 +139,7 @@ class QualityManagementService extends EventEmitter {
     this.calculationJobs.forEach(job => clearInterval(job));
     this.calculationJobs.clear();
 
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     this.emit("quality_service_stopped");
   }
 
@@ -153,7 +151,7 @@ class QualityManagementService extends EventEmitter {
       ...indicator,
       id: uuidv4(),
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date(),
     };
 
     // Persist to database using persistence service;
@@ -214,7 +212,7 @@ class QualityManagementService extends EventEmitter {
       id: uuidv4(),
       [],
       createdAt: new Date(),
-      updatedAt: new Date();
+      updatedAt: new Date(),
     };
 
     // Persist to database using persistence service;
@@ -242,7 +240,7 @@ class QualityManagementService extends EventEmitter {
     const updatedEvent = {
       ...updates,
       id: eventId,
-      updatedAt: new Date();
+      updatedAt: new Date(),
     } as QualityEvent;
 
     // Persist to database using persistence service;
@@ -346,7 +344,7 @@ class QualityManagementService extends EventEmitter {
       ...reportData,
       id: uuidv4(),
       overallCompliance: this.calculateOverallCompliance(reportData.requirements),
-      status: this.determineComplianceStatus(reportData.requirements);
+      status: this.determineComplianceStatus(reportData.requirements),
     };
 
     // Persist to database using persistence service;
@@ -362,7 +360,7 @@ class QualityManagementService extends EventEmitter {
   async getQualityDashboard(QualityOverview,
     EventSummary,
     AssessmentSummary[],
-    compliance: ComplianceSummary;
+    compliance: ComplianceSummary,
   }> {
     const endDate = new Date();
     const startDate = this.calculateStartDate(endDate, timeframe);
@@ -379,7 +377,7 @@ class QualityManagementService extends EventEmitter {
       trends,
       events: eventSummary,
       assessmentSummary,
-      compliance: complianceSummary;
+      compliance: complianceSummary,
     };
   }
 
@@ -402,7 +400,7 @@ class QualityManagementService extends EventEmitter {
       },
       0, // Would need to implement getQualityAssessments in persistence service;
         active: 0,
-        completed: 0;
+        completed: 0,
       },
       allReports.length,
         allReports.reduce((sum, r) => sum + r.gaps.length, 0);
@@ -446,7 +444,7 @@ class QualityManagementService extends EventEmitter {
 } catch (error) {
 }
       // In production, load from database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
       // Sample core indicators;
       await this.registerQualityIndicator({name: "Central Line-Associated Bloodstream Infection (CLABSI) Rate",
@@ -540,7 +538,7 @@ class QualityManagementService extends EventEmitter {
 } catch (error) {
 }
       // In production, load from database;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
     } catch (error) {
 
     }
@@ -587,25 +585,25 @@ class QualityManagementService extends EventEmitter {
     const variance = value - indicator.target.value;
     const variancePercent = (variance / indicator.target.value) * 100;
 
-    let performance: "exceeds" | "meets" | "below" | "significantly_below";
+    let performance: "exceeds" | "meets" | "below" | "significantly_below",
     if (!session.user) {
-      if (!session.user)erformance = "exceeds";
-      else if (!session.user)erformance = "meets";
-      else if (!session.user)erformance = "below";
+      if (!session.user)erformance = "exceeds",
+      else if (!session.user)erformance = "meets",
+      else if (!session.user)erformance = "below",
       else performance = "significantly_below"} else {
-      if (!session.user)erformance = "exceeds";
-      else if (!session.user)erformance = "meets";
-      else if (!session.user)erformance = "below";
+      if (!session.user)erformance = "exceeds",
+      else if (!session.user)erformance = "meets",
+      else if (!session.user)erformance = "below",
       else performance = "significantly_below"}
 
-    return {indicatorId: indicator.id;
+    return {indicatorId:indicator.id,
       period,
       value,
       target: indicator.target.value,
       mockDenominator;
       variance,
       variancePercent,
-      trend: crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.5 ? "improving" : crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.3 ? "stable" : "declining";
+      trend: crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.5 ? "improving" : crypto.getRandomValues([0] / (0xFFFFFFFF + 1) > 0.3 ? "stable" : "declining",
       performance,
       b.source,
         b.percentile || 50,
@@ -637,17 +635,17 @@ class QualityManagementService extends EventEmitter {
         recipient,
         method: "email",
         sentAt: new Date(),
-        acknowledged: false;
+        acknowledged: false,
       };
 
       event.notifications.push(notification);
 
       // In production, actually send the notification;
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
   private getEventNotificationRecipients(event: QualityEvent): string[] {,
     // Determine recipients based on event characteristics;
-    const recipients: string[] = ["quality.manager@hospital.com"];
+    const recipients: string[] = ["quality.manager@hospital.com"],
 
     if (!session.user) {
       recipients.push("ceo@hospital.com", "cmo@hospital.com");
@@ -684,7 +682,7 @@ class QualityManagementService extends EventEmitter {
 
   private async sendStatusChangeNotifications(event: QualityEvent): Promise<void> {,
     // Send notifications when event status changes;
-    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+    // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 
   private calculateOverallCompliance(requirements: ComplianceRequirement[]): number {,
     if (!session.user)eturn 100
@@ -713,7 +711,7 @@ class QualityManagementService extends EventEmitter {
       case "weekly": return new Date(date.setDate(date.getDate() - 7));
       case "monthly": return new Date(date.setMonth(date.getMonth() - 1));
       case "quarterly": return new Date(date.setMonth(date.getMonth() - 3));
-      default: return new Date(date.setMonth(date.getMonth() - 1));
+      default: return new Date(date.setMonth(date.getMonth() - 1)),
 
   private calculatePeriodStart(endDate: Date, period: string): Date {,
     const date = new Date(endDate);
@@ -723,7 +721,7 @@ class QualityManagementService extends EventEmitter {
       case "monthly": return new Date(date.setMonth(date.getMonth() - 1));
       case "quarterly": return new Date(date.setMonth(date.getMonth() - 3));
       case "annual": return new Date(date.setFullYear(date.getFullYear() - 1));
-      default: return new Date(date.setDate(date.getDate() - 1));
+      default: return new Date(date.setDate(date.getDate() - 1)),
 
   private getCalculationInterval(period: string): number {,
     switch (period) {
@@ -758,7 +756,7 @@ class QualityManagementService extends EventEmitter {
   private async generateComplianceSummary(start: Date, end: Date): Promise<unknown> {
     return {overallCompliance: 96,
       2,
-      certifications: valid: 8, expiring: 1 ;
+      certifications: valid: 8, expiring: 1 ,
     };
 
   /**;
@@ -779,8 +777,8 @@ class QualityManagementService extends EventEmitter {
 
 // Type exports for dashboard generation;
 
-  values: {date: Date, value: number }[];
-  trend: "improving" | "stable" | "declining";
+  values: {date:Date, value: number }[];
+  trend: "improving" | "stable" | "declining",
 
   certifications: {valid: number, expiring: number };
 

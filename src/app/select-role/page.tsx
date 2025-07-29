@@ -1,18 +1,16 @@
-import "@/components/ui/button"
-import "@/components/ui/label"
-import "@/components/ui/select"
-import "@/hooks/use-toast"
-import "next/image"
-import "next/navigation"
-import "react"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/select"
+import "@/hooks/use-toast";
+import "next/image";
+import "next/navigation";
+import "react";
 import Image
 import React
 import SelectContent
 import SelectItem
 import SelectTrigger
-import SelectValue }
-import useEffect }
-import { Button }
+import SelectValue, useEffect } from "@/components/ui/label"
+import  } Button }
 import { Label }
 import { Select
 import { useRouter }
@@ -89,7 +87,7 @@ export default const _SelectRolePage = () {
 
 } catch (error) {
 
-      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+      // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
       // This might involve an API call or just updating client-side state/session;
       // await updateSessionRole(selectedRole);
       // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;

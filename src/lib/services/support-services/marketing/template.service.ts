@@ -1,13 +1,12 @@
-import "@/lib/audit"
-import "@/lib/errors"
-import "@/lib/models/marketing"
-import "@/lib/prisma"
+import { } from "@/lib/errors"
+import "@/lib/models/marketing";
+import "@/lib/prisma";
 import NotFoundError
-import ValidationError }
-import {AuditLogger  } from "next/server"
-import {DatabaseError
-import {  MarketingTemplate  } from "next/server"
-import {prisma  } from "next/server"
+import ValidationError } from "@/lib/audit"
+import {  AuditLogger  } from "@/lib/database"
+import {   DatabaseError
+import {  MarketingTemplate  } from "@/lib/database"
+import {  prisma  } from "@/lib/database"
 
 /**;
  * Service for managing marketing templates;
@@ -17,11 +16,11 @@ import {prisma  } from "next/server"
       });
 
       // Log audit event;
-      await this.auditLogger.log({action: "template.create",
-        resourceId: template.id;
+      await this.auditLogger.log({action:"template.create",
+        resourceId: template.id,
         userId,
         template.name,
-          templateType: template.type;
+          templateType: template.type,
         }
       });
 
@@ -73,7 +72,7 @@ import {prisma  } from "next/server"
       const template = await prisma.marketingTemplate.findUnique({where: { id },
         {
             true,
-              name: true;
+              name: true,
             }
           }
         }
@@ -100,8 +99,7 @@ import {prisma  } from "next/server"
     isActive?: boolean;
     search?: string;
     page?: number;
-    limit?: number;
-  }): Promise<{data: MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
+    limit?: number, }): Promise<{data:MarketingTemplate[], pagination: total: number, number, totalPages: number }> {
     try {
 } catch (error) {
   console.error(error);
@@ -168,7 +166,7 @@ import {prisma  } from "next/server"
         where,
         {
             true,
-              name: true;
+              name: true,
             }
           }
         },
@@ -181,7 +179,7 @@ import {prisma  } from "next/server"
           total,
           page,
           limit,
-          totalPages: Math.ceil(total / limit);
+          totalPages: Math.ceil(total / limit),
         }
       };
     } catch (error) {
@@ -236,11 +234,11 @@ import {prisma  } from "next/server"
       });
 
       // Log audit event;
-      await this.auditLogger.log({action: "template.update",
-        resourceId: id;
+      await this.auditLogger.log({action:"template.update",
+        resourceId: id,
         userId,
         updatedTemplate.name,
-          updatedFields: Object.keys(data);
+          updatedFields: Object.keys(data),
       });
 
       return updatedTemplate;
@@ -298,11 +296,11 @@ import {prisma  } from "next/server"
       });
 
       // Log audit event;
-      await this.auditLogger.log({action: "template.delete",
-        resourceId: id;
+      await this.auditLogger.log({action:"template.delete",
+        resourceId: id,
         userId,
         existingTemplate.name,
-          templateType: existingTemplate.type;
+          templateType: existingTemplate.type,
       });
     } catch (error) {
       if (!session.user) {

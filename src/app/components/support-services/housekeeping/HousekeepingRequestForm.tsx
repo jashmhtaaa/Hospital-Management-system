@@ -1,13 +1,11 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "@/components/ui/button"
-import "@/components/ui/calendar"
+import { } from "@/components/ui/calendar"
 import {
-import { Button }
+import { Button } from "@/components/ui/button"
 import { Calendar }
 
   Form,
@@ -17,12 +15,11 @@ import { Calendar }
   FormItem,
   FormLabel,
   FormMessage} from "@/components/ui/form";
-import "@hookform/resolvers/zod"
-import "react"
-import "react-hook-form"
-import "zod"
+import { } from "react"
+import "react-hook-form";
+import "zod";
 import * as z
-import useState }
+import useState } from "@hookform/resolvers/zod"
 import { useEffect
 import { useForm }
 import { zodResolver }
@@ -32,15 +29,14 @@ import { zodResolver }
   SelectItem,
   SelectTrigger,
   SelectValue} from "@/components/ui/select";
-import "@/components/ui/popover"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import "@/lib/utils"
-import "date-fns"
-import "lucide-react"
-import "next/navigation"
+import { } from "@/components/ui/textarea"
+import "@/components/ui/use-toast";
+import "@/lib/utils";
+import "date-fns";
+import "lucide-react";
+import "next/navigation";
 import PopoverContent
-import PopoverTrigger }
+import PopoverTrigger } from "@/components/ui/popover"
 import { CalendarIcon }
 import { cn }
 import { format }
@@ -65,8 +61,9 @@ const formSchema = z.object({
 
 type FormValues = z.infer>;
 
-interface Location {id:string,
-  name: string;
+interface Location {
+  id: string,
+  name: string,
 }
 
 interface HousekeepingRequestFormProps {
@@ -85,7 +82,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
   // Initialize the form with react-hook-form;
   const form = useForm<FormValues>({resolver:zodResolver(formSchema),
     "",
-      notes: "";
+      notes: "",
     }});
 
   // Fetch locations when component mounts;
@@ -183,7 +180,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
         method,
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(values);
+        body: JSON.stringify(values),
       });
 
       if (!session.user) {
@@ -215,7 +212,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
       >;
         <FormField>;
           control={form.control}
-          name="locationId";
+          name = "locationId",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Location</FormLabel>;
@@ -247,7 +244,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="requestType";
+          name = "requestType",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Request Type</FormLabel>;
@@ -280,7 +277,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="description";
+          name = "description",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Description</FormLabel>;
@@ -302,7 +299,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="priority";
+          name = "priority",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Priority</FormLabel>;
@@ -333,7 +330,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="scheduledDate";
+          name = "scheduledDate",
           render={({ field }) => (;
             >;
               <FormLabel>Scheduled Date (Optional)</FormLabel>;
@@ -359,7 +356,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
                 </PopoverTrigger>;
                 >;
                   <Calendar>;
-                    mode="single";
+                    mode = "single",
                     selected={field.value}
                     onSelect={field.onChange}
                     disabled={(date) => date < new Date()}
@@ -377,7 +374,7 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
         <FormField>;
           control={form.control}
-          name="notes";
+          name = "notes",
           render={({ field }) => (;
             <FormItem>;
               <FormLabel>Additional Notes (Optional)</FormLabel>;
@@ -399,8 +396,8 @@ export const _HousekeepingRequestForm = ({ onSuccess,
 
         >;
           <Button>;
-            type="button";
-            variant="outline";
+            type = "button",
+            variant = "outline",
             onClick={() => router.back()}
             disabled={isLoading}
           >;

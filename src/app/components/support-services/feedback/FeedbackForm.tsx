@@ -1,40 +1,36 @@
-import "react"
-import React
-import { useState }
+import { React
+import { useState } from "react"
 
 "use client";
 
-import "@/components/ui/button"
-import "@/components/ui/card"
-import "@/components/ui/checkbox"
-import "@/components/ui/input"
-import "@/components/ui/label"
-import "@/components/ui/radio-group"
-import "@/components/ui/select"
-import "@/components/ui/textarea"
-import "@/components/ui/use-toast"
-import "@hookform/resolvers/zod"
-import "lucide-react"
-import "next-auth/react"
-import "react"
-import "react-hook-form"
-import "zod"
+import { } from "@/components/ui/button"
+import { } from "@/components/ui/checkbox"
+import { "@/components/ui/input";
+import "@/components/ui/label";
+import "@/components/ui/radio-group";
+import "@/components/ui/select";
+import "@/components/ui/textarea";
+import "@/components/ui/use-toast";
+import "@hookform/resolvers/zod";
+import "lucide-react";
+import "next-auth/react";
+import "react";
+import "react-hook-form";
+import "zod";
 import * as z
 import CardContent
 import CardDescription
 import CardFooter
 import CardHeader
-import CardTitle }
-import RadioGroupItem }
+import CardTitle, RadioGroupItem } from "@/components/ui/card"
 import SelectContent
 import SelectItem
 import SelectTrigger
 import SelectValue }
 import Star }
 import useForm }
-import useState }
-import { Button }
-import { Card
+import useState, } Button }
+import  } Card
 import { Checkbox }
 import { Controller
 import { Input }
@@ -63,7 +59,7 @@ const feedbackFormSchema = z.object({
   anonymous: z.boolean().default(false),
   z.string().optional(),
     email: z.string().email().optional(),
-    phone: z.string().optional();
+    phone: z.string().optional(),
   }).optional()});
 
 type FeedbackFormValues = z.infer>;
@@ -71,7 +67,7 @@ type FeedbackFormValues = z.infer>;
 interface FeedbackFormProps {
     departments?: {id:string, name: string }[];
   serviceTypes?: string[];
-  onSuccess?: (data: unknown) => void;
+  onSuccess?: (data: unknown) => void,
   defaultValues?: Partial>;
 export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onSuccess, defaultValues }: FeedbackFormProps) {
   const {data:session } = useSession();
@@ -132,7 +128,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
       const response = await fetch("/api/support-services/feedback", {method:"POST",
         headers: {
           "Content-Type": "application/json"},
-        body: JSON.stringify(values);
+        body: JSON.stringify(values),
       });
 
       if (!session.user) {
@@ -140,8 +136,9 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
         throw new Error(error.error || "Failed to submit feedback");
 
       const data = await response.json(),
-      toast({title:"Feedback Submitted",
-        description: "Thank you for your feedback!";
+      toast({
+        title: "Feedback Submitted",
+        description: "Thank you for your feedback!",
       });
 
       // Reset form;
@@ -174,7 +171,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 <div;
               <Label htmlFor="type">Feedback Type>;
               <Controller>;
-                name="type";
+                name = "type",
                 control={form.control}
                 render={({ field }) => (;
                   <Select>;
@@ -203,7 +200,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 <div;
               <Label htmlFor="source">Feedback Source>;
               <Controller>;
-                name="source";
+                name = "source",
                 control={form.control}
                 render={({ field }) => (;
                   <Select>;
@@ -231,7 +228,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 <div;
               <Label>Rating</Label>;
               <Controller>;
-                name="rating";
+                name = "rating",
                 control={form.control}
                 render={({ field }) => (;
                   >;
@@ -272,7 +269,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 <div;
                 <Label htmlFor="departmentId">Department (Optional)>;
                 <Controller>;
-                  name="departmentId";
+                  name = "departmentId",
                   control={form.control}
                   render={({ field }) => (;
                     <Select>;
@@ -300,7 +297,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 <div;
                 <Label htmlFor="serviceType">Service Type (Optional)>;
                 <Controller>;
-                  name="serviceType";
+                  name = "serviceType",
                   control={form.control}
                   render={({ field }) => (;
                     <Select>;
@@ -336,7 +333,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
 
             >;
               <Checkbox>;
-                id="anonymous";
+                id = "anonymous",
                 checked={isAnonymous}
                 onCheckedChange={(checked) => {
                   form.setValue("anonymous", checked === true);
@@ -365,7 +362,7 @@ export default const _FeedbackForm = ({ departments = [], serviceTypes = [], onS
                   <Label htmlFor="contactInfo.email">Email>;
                   <Input>;
                     {...form.register("contactInfo.email")}
-                    type="email";
+                    type = "email",
                     placeholder="Your email";
                     disabled={isSubmitting}
                   />;

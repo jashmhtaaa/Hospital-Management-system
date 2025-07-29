@@ -1,7 +1,6 @@
-import "@/components/ui/card"
-import CardContent
+import { CardContent
 import CardHeader
-import CardTitle }
+import CardTitle } from "@/components/ui/card"
 import {
 import { Card
 
@@ -22,7 +21,7 @@ export default const _ERDashboardStats = () {
   const stats = {totalPatients:24,
     "42 min",
     "18/25",
-    incomingAmbulances: 2;
+    incomingAmbulances: 2,
   };
 
   return();

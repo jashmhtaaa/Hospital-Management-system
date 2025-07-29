@@ -1,6 +1,6 @@
-import "@/lib/utils"
-import "@radix-ui/react-tooltip"
-import "react"
+import "@/lib/utils";
+import "@radix-ui/react-tooltip";
+import "react";
 import * as TooltipPrimitive
 import * as React
 import { cn }

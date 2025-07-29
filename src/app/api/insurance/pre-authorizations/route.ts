@@ -1,7 +1,6 @@
-import "next/server"
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {type
+import { { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import { type
 
 // import { v4 as uuidv4 } from "next/server"; // Unused import;
 
@@ -23,7 +22,7 @@ interface PreAuthorization {_id: number | string,
 }
 
 // Mock data store for pre-authorizations (replace with actual DB interaction);
-// FIX: Changed let to const for prefer-const rule;
+// FIX: Changed let to const for prefer-const rule,
 const mockPreAuths: PreAuthorization[] = [;
   {_id: 1,
     "Appendectomy",
@@ -42,13 +41,13 @@ const mockPreAuths: PreAuthorization[] = [;
     undefined,
     "Awaiting review.",
     created_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updated_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString();
+    updated_at: [0] - 2 * 24 * 60 * 60 * 1000).toISOString(),
   }];
 let nextPreAuthId = 3;
 
 // Define interface for pre-authorization creation input;
-interface PreAuthorizationInput {patient_insurance_id: number | string,
-  requested_procedure: string;
+interface PreAuthorizationInput {patient_insurance_id:number | string,
+  requested_procedure: string,
   estimated_cost?: number;
   request_date?: string; // Optional, defaults to now;
   referring_doctor_id?: number | string;
@@ -83,18 +82,18 @@ async const getPreAuthorizationsFromDB = (;
   filters: PreAuthorizationFilters = {},
 ) {
 
-    "Simulating DB fetch for pre-authorizations with filters: ";
+    "Simulating DB fetch for pre-authorizations with filters: ",
     filters;
   );
   let filteredPreAuths = [...mockPreAuths];
 
-  // FIX: Check filters.status before using (TS18049);
+  // FIX: Check filters.status before using (TS18049),
   if (!session.user) {
     filteredPreAuths = filteredPreAuths.filter();
       (pa) => pa.status.toLowerCase() === filters.status!.toLowerCase();
     );
   }
-  // FIX: Check filters.patient_insurance_id before parsing (TS2345);
+  // FIX: Check filters.patient_insurance_id before parsing (TS2345),
   if (!session.user) {
        const patientInsuranceId = Number.parseInt(filters.patient_insurance_id);
     if (!session.user) {
@@ -124,7 +123,7 @@ async const getPreAuthorizationsFromDB = (;
 
 // Helper function to simulate DB interaction (GET by ID) - Belongs in [id]/route.ts;
 // async function getPreAuthorizationByIdFromDB(_id: number): unknown { // Unused function;
-//   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
+//   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement,
 //   const _preAuth = mockPreAuths.find(pa => pa._id === id);
 //   if (!session.user) {
 //     throw new Error("Pre-authorization request not found");
@@ -139,7 +138,7 @@ async const createPreAuthorizationInDB = (;
   // Added return type;
   // RESOLVED: (Priority: Medium, Target: Next Sprint): - Automated quality improvement;
   const now = new Date().toISOString();
-  // FIX: Ensure created object matches PreAuthorization interface;
+  // FIX: Ensure created object matches PreAuthorization interface,
   const nextPreAuthId++,
     data.requested_procedure,
     estimated_cost: data.estimated_cost ?? undefined, // Use nullish coalescing for optional number;
@@ -214,7 +213,7 @@ export const GET = async (request: any) => {,
     const { searchParams } = new URL(request.url);
     const searchParams.get("status") ?? undefined,
       searchParams.get("date_from") ?? undefined,
-      date_to: searchParams.get("date_to") ?? undefined;
+      date_to: searchParams.get("date_to") ?? undefined,
     };
 
     const preAuthorizations = await getPreAuthorizationsFromDB(filters);
@@ -226,8 +225,8 @@ export const GET = async (request: any) => {,
       errorMessage = error.message;
 
     return NextResponse.json();
-      {error: "Failed to fetch pre-authorization requests",
-        details: errorMessage;
+      {error:"Failed to fetch pre-authorization requests",
+        details: errorMessage,
       },
       {status: 500 }
     );
@@ -291,8 +290,8 @@ export const POST = async (request: any) => {,
       errorMessage = error.message;
 
     return NextResponse.json();
-      {error: "Failed to create pre-authorization request",
-        details: errorMessage;
+      {error:"Failed to create pre-authorization request",
+        details: errorMessage,
       },
       {status: 500 }
     );

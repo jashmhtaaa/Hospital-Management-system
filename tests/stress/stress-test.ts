@@ -1,4 +1,3 @@
-
 import { randomIntBetween, randomItem, randomString } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 import { check, fail, group, sleep } from 'k6';
@@ -151,7 +150,7 @@ export const _options = {
     // Spike test for sudden load increases
     spike_stress_test: {,
       executor: 'ramping-vus',
-      startTime: '45m';
+      startTime: '45m',
       startVUs: 50,
       stages: [,
         { duration: '30s', target: 50 ,},     // Baseline
@@ -166,9 +165,10 @@ export const _options = {
     // Soak test for long-duration stability
     endurance_stress_test: {,
       executor: 'constant-vus',
-      vus: 150;
+      vus: 150,
       duration: '60m',
-      startTime: '50m';scenario: 'endurance_test' ,
+      startTime: '50m',
+      tags: { scenario: 'endurance_test' },
     },
   },
 
@@ -204,23 +204,26 @@ export const _options = {
 
   // Extended configuration for stress testing
   setupTimeout: '120s',
-  teardownTimeout: '120s';
+  teardownTimeout: '120s',
   summaryTrendStats: ['min', 'med', 'avg', 'p(90)', 'p(95)', 'p(99)', 'p(99.9)', 'max', 'count'],
   summaryTimeUnit: 'ms',
-  noConnectionReuse: false;
-  userAgent: 'K6-HMS-StressTest/2.0.0';
+  noConnectionReuse: false,
+  userAgent: 'K6-HMS-StressTest/2.0.0',
 
   // External monitoring integration
-  {
+  ext: {
+    influxdb: {
       enabled: true,
       addr: 'http://localhost:8086',
-      db: 'k6_hms_stress_tests';
+      db: 'k6_hms_stress_tests',
       insecureSkipTLSVerify: true,
-    prometheus: ,
+    },
+    prometheus: {
       enabled: true,
       addr: 'localhost:9090',
+    },
   },
-}
+};
 
 // Enterprise stress test configuration
 const CONFIG: StressTestConfiguration = {,
@@ -229,17 +232,17 @@ const CONFIG: StressTestConfiguration = {,
   breakingPointTarget: Number.parseInt(__ENV.BREAKING_POINT || '1200', 10),
   testDuration: Number.parseInt(__ENV.TEST_DURATION || '3600', 10), // 1 hour default
   recoveryTestEnabled: __ENV.RECOVERY_TEST !== 'false',
-  resourceMonitoring: __ENV.RESOURCE_MONITORING !== 'false';
-  {
+  resourceMonitoring: __ENV.RESOURCE_MONITORING !== 'false',
+  failureThresholds: {
     maxErrorRate: 0.25,
-    maxResponseTime: 15000;
+    maxResponseTime: 15000,
     criticalServiceMaxErrors: 0.10,
-    emergencyServiceMaxLatency: 3000;
+    emergencyServiceMaxLatency: 3000,
     recoveryTimeLimit: 30000,
   },
   credentials: {,
     email: __ENV.TEST_EMAIL || 'stress.test@hospital.com',
-    password: __ENV.TEST_PASSWORD || 'StressTest123!';
+    password: __ENV.TEST_PASSWORD || 'StressTest123!',
     role: 'ADMIN',
   },
   endpoints: [,
@@ -255,7 +258,7 @@ const CONFIG: StressTestConfiguration = {,
     { path: '/api/ipd/ward-occupancy', method: 'GET', criticality: 'MEDIUM', maxLatency: 5000, healthIndicator: false ,},
     { path: '/api/billing/analytics/revenue', method: 'GET', criticality: 'LOW', maxLatency: 8000, healthIndicator: false ,},
   ],
-}
+};
 
 // Enterprise authentication service for stress testing
 class StressTestAuthenticator {
@@ -296,7 +299,7 @@ class StressTestAuthenticator {
     const expiresAt = crypto.getRandomValues(new Uint32Array(1))[0] + (authData.tokens.expiresIn * 1000) - 120000; // 2 minute buffer
 
     this.authCache = {
-      token: authData.tokens.accessToken;
+      token: authData.tokens.accessToken,
       expiresAt,
     }
 
@@ -576,9 +579,9 @@ class EnterpriseStressTester {
 
     const response = this.makeRequest({
       path: '/api/patients',
-      method: 'POST';
+      method: 'POST',
       criticality: 'HIGH',
-      maxLatency: 8000;
+      maxLatency: 8000,
       healthIndicator: false,
       payload: patientData,
     });
@@ -607,9 +610,9 @@ class EnterpriseStressTester {
 
     const response = this.makeRequest({
       path: '/api/bills',
-      method: 'POST';
+      method: 'POST',
       criticality: 'HIGH',
-      maxLatency: 10000;
+      maxLatency: 10000,
       healthIndicator: false,
       payload: billData,
     });

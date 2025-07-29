@@ -1,22 +1,21 @@
-import "../../../../lib/audit"
-import "../../../../lib/error-handler"
-import "../../../../lib/services/patient/patient.service"
-import "../../../../lib/services/pharmacy/pharmacy.service"
-import "../../../../lib/validation/pharmacy-validation"
-import "../../models/domain-models"
-import "../../services/drug-interaction-service"
-import "next/server"
-import getPrescriptionById }
-import {NextRequest } from "next/server"
-import {NextResponse } from "next/server" }
-import {auditLog  } from "next/server"
-import {DrugInteractionService  } from "next/server"
-import {errorHandler  } from "next/server"
-import {getMedicationById
-import {  getPatientById  } from "next/server"
-import {PharmacyDomain  } from "next/server"
-import {type
-import {  validateInteractionCheckRequest  } from "next/server"
+import { } from "../../../../lib/error-handler"
+import "../../../../lib/services/patient/patient.service";
+import "../../../../lib/services/pharmacy/pharmacy.service";
+import "../../../../lib/validation/pharmacy-validation";
+import "../../models/domain-models";
+import "../../services/drug-interaction-service";
+import "next/server";
+import getPrescriptionById } from "../../../../lib/audit"
+import { NextRequest } from "next/server"
+import { NextResponse } from "next/server" }
+import {  auditLog  } from "@/lib/database"
+import {  DrugInteractionService  } from "@/lib/database"
+import {  errorHandler  } from "@/lib/database"
+import {   getMedicationById
+import {  getPatientById  } from "@/lib/database"
+import {  PharmacyDomain  } from "@/lib/database"
+import {   type
+import {  validateInteractionCheckRequest  } from "@/lib/database"
 
 }
 
@@ -29,21 +28,21 @@ import {  validateInteractionCheckRequest  } from "next/server"
 
 // Initialize repositories (in production, use dependency injection);
 const getMedicationById,
-  findAll: () => Promise.resolve([]),;
-  search: () => Promise.resolve([]),;
-  save: () => Promise.resolve(""),;
-  update: () => Promise.resolve(true),;
-  delete: () => Promise.resolve(true);
+  findAll: () => Promise.resolve([]),
+  search: () => Promise.resolve([]),
+  save: () => Promise.resolve(""),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true),
 }
 
 const getPrescriptionById,
-  findByPatientId: () => Promise.resolve([]),;
-  findByPrescriberId: () => Promise.resolve([]),;
-  findByMedicationId: () => Promise.resolve([]),;
-  findByStatus: () => Promise.resolve([]),;
-  save: () => Promise.resolve(""),;
-  update: () => Promise.resolve(true),;
-  delete: () => Promise.resolve(true);
+  findByPatientId: () => Promise.resolve([]),
+  findByPrescriberId: () => Promise.resolve([]),
+  findByMedicationId: () => Promise.resolve([]),
+  findByStatus: () => Promise.resolve([]),
+  save: () => Promise.resolve(""),
+  update: () => Promise.resolve(true),
+  delete: () => Promise.resolve(true),
 };
 
 // Initialize services;
@@ -114,7 +113,8 @@ export const POST = async (req: any) => {;
     await auditLog("DRUG_INTERACTION", {action: "CHECK",
       userId,
       data.medicationIds,
-        interactionCount: interactions.length,});
+        interactionCount: interactions.length,
+    });
 
     // Return response;
     return NextResponse.json({ interactions }, {status: 200 });
@@ -187,7 +187,8 @@ export const GET = async (req: any, { params }: {params: { patientId: string } }
     await auditLog("DRUG_INTERACTION", {action: "CHECK_PATIENT",
       userId,
       medicationIds.length,
-        interactionCount: interactions.length,});
+        interactionCount: interactions.length,
+    });
 
     // Return response;
     return NextResponse.json({
